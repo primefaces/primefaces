@@ -33,7 +33,7 @@ public class ConstraintDescriptorWrapper<T extends Annotation> implements Constr
     public ConstraintDescriptorWrapper(ConstraintDescriptor<?> wrapped) {
         this.wrapped = (ConstraintDescriptor<T>) wrapped;
     }
-    
+
     @Override
     public T getAnnotation() {
         return wrapped.getAnnotation();

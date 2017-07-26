@@ -22,17 +22,17 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 
 public class ResetInputContextCallback implements ContextCallback {
-    
+
     private VisitContext visitContext;
-    
+
     public ResetInputContextCallback(VisitContext visitContext) {
         this.visitContext = visitContext;
     }
-    
+
     public void invokeContextCallback(FacesContext fc, UIComponent component) {
         if (component instanceof EditableValueHolder) {
-            ((EditableValueHolder)component).resetValue();
-        } 
+            ((EditableValueHolder) component).resetValue();
+        }
         else {
             component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
         }

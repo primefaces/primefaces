@@ -18,8 +18,8 @@ package org.primefaces.validate;
 import java.util.Map;
 
 public interface ClientValidator {
-    
-    public Map<String,Object> getMetadata();
-    
+
+    public Map<String, Object> getMetadata();
+
     public String getValidatorId();
 }

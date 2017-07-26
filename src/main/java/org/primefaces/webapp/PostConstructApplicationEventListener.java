@@ -35,11 +35,11 @@ public class PostConstructApplicationEventListener implements SystemEventListene
     }
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
-    	// temp manually instantiate startup config as the default config is not available yet
-    	PrimeConfiguration config = new StartupPrimeConfiguration(FacesContext.getCurrentInstance());
-    	
+        // temp manually instantiate startup config as the default config is not available yet
+        PrimeConfiguration config = new StartupPrimeConfiguration(FacesContext.getCurrentInstance());
+
         logger.log(Level.INFO,
-        		"Running on PrimeFaces {0}", 
-        		config.getBuildVersion());
+                "Running on PrimeFaces {0}",
+                config.getBuildVersion());
     }
 }

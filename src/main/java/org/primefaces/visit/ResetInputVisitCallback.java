@@ -25,7 +25,7 @@ import javax.faces.component.visit.VisitResult;
 public class ResetInputVisitCallback implements VisitCallback {
 
     public static final ResetInputVisitCallback INSTANCE = new ResetInputVisitCallback();
-    
+
     private boolean clearModel;
 
     public ResetInputVisitCallback() {
@@ -44,19 +44,19 @@ public class ResetInputVisitCallback implements VisitCallback {
     }
 
     public VisitResult visit(VisitContext context, UIComponent target) {
-        if(target instanceof EditableValueHolder) {
+        if (target instanceof EditableValueHolder) {
             EditableValueHolder input = (EditableValueHolder) target;
             input.resetValue();
-            
-            if(this.clearModel) {
+
+            if (this.clearModel) {
                 ValueExpression ve = target.getValueExpression("value");
-                if(ve != null) {
+                if (ve != null) {
                     ve.setValue(context.getFacesContext().getELContext(), null);
                 }
             }
         }
-        
+
         return VisitResult.ACCEPT;
     }
-    
+
 }

@@ -56,11 +56,13 @@ public class MultipartRequest extends HttpServletRequestWrapper {
         try {
             List<FileItem> fileItems = servletFileUpload.parseRequest(request);
 
-            for(FileItem item : fileItems) {
-                if(item.isFormField())
+            for (FileItem item : fileItems) {
+                if (item.isFormField()) {
                     addFormParam(item);
-                else
+                }
+                else {
                     addFileParam(item);
+                }
             }
 
         } catch (FileUploadException e) {
@@ -71,7 +73,7 @@ public class MultipartRequest extends HttpServletRequestWrapper {
     }
 
     private void addFileParam(FileItem item) {
-        if(fileParams.containsKey(item.getFieldName())) {
+        if (fileParams.containsKey(item.getFieldName())) {
             fileParams.get(item.getFieldName()).add(item);
         }
         else {
@@ -82,7 +84,7 @@ public class MultipartRequest extends HttpServletRequestWrapper {
     }
 
     private void addFormParam(FileItem item) {
-        if(formParams.containsKey(item.getFieldName())) {
+        if (formParams.containsKey(item.getFieldName())) {
             formParams.get(item.getFieldName()).add(getItemString(item));
         }
         else {
@@ -104,9 +106,9 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 
     @Override
     public String getParameter(String name) {
-        if(formParams.containsKey(name)) {
+        if (formParams.containsKey(name)) {
             List<String> values = formParams.get(name);
-            if(values.isEmpty()) {
+            if (values.isEmpty()) {
                 return "";
             }
             else {
@@ -120,10 +122,10 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 
     @Override
     public Map getParameterMap() {
-        if(parameterMap == null) {
-            Map<String,String[]> map = new LinkedHashMap<String, String[]>();
+        if (parameterMap == null) {
+            Map<String, String[]> map = new LinkedHashMap<String, String[]>();
 
-            for(String formParam : formParams.keySet()) {
+            for (String formParam : formParams.keySet()) {
                 map.put(formParam, formParams.get(formParam).toArray(new String[0]));
             }
 
@@ -141,7 +143,7 @@ public class MultipartRequest extends HttpServletRequestWrapper {
         paramNames.addAll(formParams.keySet());
 
         Enumeration<String> original = super.getParameterNames();
-        while(original.hasMoreElements()) {
+        while (original.hasMoreElements()) {
             paramNames.add(original.nextElement());
         }
 
@@ -150,9 +152,9 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 
     @Override
     public String[] getParameterValues(String name) {
-        if(formParams.containsKey(name)) {
+        if (formParams.containsKey(name)) {
             List<String> values = formParams.get(name);
-            if(values.isEmpty()) {
+            if (values.isEmpty()) {
                 return new String[0];
             }
             else {
@@ -165,7 +167,7 @@ public class MultipartRequest extends HttpServletRequestWrapper {
     }
 
     public FileItem getFileItem(String name) {
-        if(fileParams.containsKey(name)) {
+        if (fileParams.containsKey(name)) {
             List<FileItem> items = fileParams.get(name);
 
             return items.get(0);

@@ -23,7 +23,7 @@ import javax.validation.MessageInterpolator;
 import javax.validation.metadata.ConstraintDescriptor;
 
 public class MessageInterpolatingConstraintWrapper extends ConstraintDescriptorWrapper<Annotation> {
-    
+
     private final MessageInterpolator interpolator;
     private final MessageInterpolator.Context context;
 
@@ -36,7 +36,7 @@ public class MessageInterpolatingConstraintWrapper extends ConstraintDescriptorW
     @Override
     public Map<String, Object> getAttributes() {
         Map<String, Object> attributes = super.getAttributes();
-        
+
         // wrap it - could be unmodifiable
         attributes = new HashMap<String, Object>(attributes);
 
@@ -53,17 +53,17 @@ public class MessageInterpolatingConstraintWrapper extends ConstraintDescriptorW
     private MessageInterpolator.Context getContext() {
         return context;
     }
-    
+
     public class ContextImpl implements MessageInterpolator.Context {
 
         private final ConstraintDescriptor<?> constraintDescriptor;
         private final Object validatedValue;
-        
+
         public ContextImpl(ConstraintDescriptor<?> constraintDescriptor, Object validatedValue) {
             this.constraintDescriptor = constraintDescriptor;
             this.validatedValue = validatedValue;
         }
-        
+
         public ConstraintDescriptor<?> getConstraintDescriptor() {
             return constraintDescriptor;
         }

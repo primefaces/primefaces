@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 public class BeanValidationMetadata {
-    
-    private Map<String,Object> attributes;
+
+    private Map<String, Object> attributes;
     private List<String> validatorIds;
 
     public BeanValidationMetadata() {
@@ -30,7 +30,7 @@ public class BeanValidationMetadata {
         this.attributes = attributes;
         this.validatorIds = validatorIds;
     }
-    
+
     public Map<String, Object> getAttributes() {
         return attributes;
     }
