@@ -23,44 +23,44 @@ import com.hazelcast.core.IMap;
 public class HazelcastCacheProvider implements CacheProvider {
 
     private HazelcastInstance hazelcastInstance;
-    
+
     public HazelcastCacheProvider() {
         Config config = new Config();
         hazelcastInstance = Hazelcast.newHazelcastInstance(config);
     }
-    
+
     public Object get(String region, String key) {
-        IMap<String,Object> cacheRegion = getRegion(region);
-        
+        IMap<String, Object> cacheRegion = getRegion(region);
+
         return cacheRegion.get(key);
     }
 
     public void put(String region, String key, Object object) {
-        IMap<String,Object> cacheRegion = getRegion(region);
-        
+        IMap<String, Object> cacheRegion = getRegion(region);
+
         cacheRegion.put(key, object);
     }
 
     public void remove(String region, String key) {
-        IMap<String,Object> cacheRegion = getRegion(region);
-        
+        IMap<String, Object> cacheRegion = getRegion(region);
+
         cacheRegion.remove(key);
     }
 
     public void clear() {
-        
+
     }
-    
-    protected IMap<String,Object> getRegion(String name) {
-        IMap<String,Object> region = getHazelcastInstance().getMap(name);   
-        
+
+    protected IMap<String, Object> getRegion(String name) {
+        IMap<String, Object> region = getHazelcastInstance().getMap(name);
+
         return region;
     }
 
     public HazelcastInstance getHazelcastInstance() {
         return hazelcastInstance;
     }
-    
+
     public void setHazelcastInstance(HazelcastInstance hazelcastInstance) {
         this.hazelcastInstance = hazelcastInstance;
     }

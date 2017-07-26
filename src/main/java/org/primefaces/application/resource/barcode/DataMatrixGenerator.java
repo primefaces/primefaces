@@ -20,7 +20,7 @@ import org.krysalis.barcode4j.impl.datamatrix.DataMatrixBean;
 import org.krysalis.barcode4j.output.CanvasProvider;
 
 public class DataMatrixGenerator implements BarcodeGenerator {
-    
+
     public void generate(CanvasProvider canvasProvider, String value) throws IOException {
         DataMatrixBean bean = new DataMatrixBean();
         bean.generateBarcode(canvasProvider, value);

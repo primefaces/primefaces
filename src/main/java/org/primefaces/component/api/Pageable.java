@@ -19,11 +19,11 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 public interface Pageable {
-    
+
     public String getClientId(FacesContext context);
-    
+
     public String getPaginatorPosition();
-    
+
     public String getCurrentPageReportTemplate();
 
     public int getRows();
@@ -45,7 +45,7 @@ public interface Pageable {
     public UIComponent getFacet(String element);
 
     public int getPageCount();
-    
+
     public int getFirst();
 
     public int getRowsToRender();

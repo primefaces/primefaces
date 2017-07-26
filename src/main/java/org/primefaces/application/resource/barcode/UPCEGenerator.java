@@ -20,7 +20,7 @@ import org.krysalis.barcode4j.impl.upcean.UPCEBean;
 import org.krysalis.barcode4j.output.CanvasProvider;
 
 public class UPCEGenerator implements BarcodeGenerator {
-    
+
     public void generate(CanvasProvider canvasProvider, String value) throws IOException {
         UPCEBean bean = new UPCEBean();
         bean.generateBarcode(canvasProvider, value);

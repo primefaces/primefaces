@@ -19,22 +19,22 @@ package org.primefaces.component.api;
  * InputHolder is implemented by input components who has an input field along with complex markup like spinner, autocomplete.
  */
 public interface InputHolder {
-    
+
     /**
      * @return Client id of the input element
      */
     public String getInputClientId();
-    
+
     /**
      * @return Client id of the validatable input element
      */
     public String getValidatableInputClientId();
-    
+
     /**
      * @return Client id of the label for aria
      */
     public String getLabelledBy();
-    
+
     /**
      * @return Sets the id of the label for aria
      */

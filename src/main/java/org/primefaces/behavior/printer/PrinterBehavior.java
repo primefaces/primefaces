@@ -24,13 +24,13 @@ import javax.faces.context.FacesContext;
 import org.primefaces.expression.SearchExpressionFacade;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
-	@ResourceDependency(library="primefaces", name="printer/printer.js"),
+    @ResourceDependency(library="primefaces", name="jquery/jquery.js"),
+    @ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
+    @ResourceDependency(library="primefaces", name="printer/printer.js"),
     @ResourceDependency(library="primefaces", name="core.js")
 })
 public class PrinterBehavior extends ClientBehaviorBase {
-    
+
     private String target;
 
     public String getTarget() {
@@ -46,8 +46,8 @@ public class PrinterBehavior extends ClientBehaviorBase {
         FacesContext context = behaviorContext.getFacesContext();
 
         String components = SearchExpressionFacade.resolveClientId(
-        		context, behaviorContext.getComponent(), target);
-        
+                context, behaviorContext.getComponent(), target);
+
         return "PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector('" + components + "').jqprint();return false;";
     }
 }

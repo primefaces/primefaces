@@ -19,6 +19,6 @@ import java.io.IOException;
 import org.krysalis.barcode4j.output.CanvasProvider;
 
 public interface BarcodeGenerator {
-    
+
     public void generate(CanvasProvider canvasProvider, String value) throws IOException;
 }

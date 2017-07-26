@@ -31,18 +31,18 @@ public class DialogActionListener implements ActionListener {
     public DialogActionListener(ActionListener base) {
         this.base = base;
     }
-        
+
     public void processAction(ActionEvent event) throws AbortProcessingException {
         UIComponent source = event.getComponent();
         RequestContext context = RequestContext.getCurrentInstance();
-        Map<Object,Object> attrs = context.getAttributes();
-        if(source instanceof Widget) {
+        Map<Object, Object> attrs = context.getAttributes();
+        if (source instanceof Widget) {
             attrs.put(Constants.DIALOG_FRAMEWORK.SOURCE_WIDGET, ((Widget) source).resolveWidgetVar());
         }
-        
+
         attrs.put(Constants.DIALOG_FRAMEWORK.SOURCE_COMPONENT, source.getClientId());
-        
+
         base.processAction(event);
     }
-    
+
 }

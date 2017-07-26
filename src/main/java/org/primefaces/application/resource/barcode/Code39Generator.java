@@ -25,5 +25,5 @@ public class Code39Generator implements BarcodeGenerator {
         Code39Bean bean = new Code39Bean();
         bean.generateBarcode(canvasProvider, value);
     }
-    
+
 }

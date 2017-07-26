@@ -128,7 +128,8 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
 
         if (event.isLiteral()) {
             return event.getValue();
-        } else {
+        }
+        else {
             FaceletContext faceletContext = getFaceletContext(FacesContext.getCurrentInstance());
             ValueExpression expression = event.getValueExpression(faceletContext, String.class);
             return (String) expression.getValue(faceletContext);
@@ -172,7 +173,8 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
             if (null == eventName) {
                 throw new TagException(this.tag, "Event attribute could not be determined: " + eventName);
             }
-        } else {
+        }
+        else {
             Collection<String> eventNames = holder.getEventNames();
             if (!eventNames.contains(eventName)) {
                 throw new TagException(this.tag, "Event:" + eventName + " is not supported.");

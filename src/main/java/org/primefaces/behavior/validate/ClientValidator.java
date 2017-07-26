@@ -21,25 +21,26 @@ import javax.faces.component.behavior.ClientBehaviorContext;
 import org.primefaces.component.api.InputHolder;
 
 public class ClientValidator extends ClientBehaviorBase {
-    
+
     private String event;
     private boolean disabled;
-    
+
     @Override
     public String getScript(ClientBehaviorContext behaviorContext) {
-        if(disabled) {
-           return null; 
+        if (disabled) {
+            return null;
         }
-        
+
         UIComponent component = behaviorContext.getComponent();
         String target = (component instanceof InputHolder) ? "'" + ((InputHolder) component).getValidatableInputClientId() + "'" : "this";
-        
+
         return "return PrimeFaces.vi(" + target + ")";
     }
 
     public String getEvent() {
         return event;
     }
+
     public void setEvent(String event) {
         this.event = event;
     }
@@ -47,6 +48,7 @@ public class ClientValidator extends ClientBehaviorBase {
     public boolean isDisabled() {
         return disabled;
     }
+
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
     }

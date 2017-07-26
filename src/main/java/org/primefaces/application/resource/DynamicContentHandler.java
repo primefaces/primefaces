@@ -19,7 +19,7 @@ import java.io.IOException;
 import javax.faces.context.FacesContext;
 
 public interface DynamicContentHandler {
-    
+
     public void handle(FacesContext context) throws IOException;
-    
+
 }

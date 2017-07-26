@@ -25,5 +25,5 @@ public class Int2of5Generator implements BarcodeGenerator {
         Interleaved2Of5Bean bean = new Interleaved2Of5Bean();
         bean.generateBarcode(canvasProvider, value);
     }
-    
+
 }

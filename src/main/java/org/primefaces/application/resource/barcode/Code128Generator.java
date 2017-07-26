@@ -25,5 +25,5 @@ public class Code128Generator implements BarcodeGenerator {
         Code128Bean bean = new Code128Bean();
         bean.generateBarcode(canvasProvider, value);
     }
-    
+
 }

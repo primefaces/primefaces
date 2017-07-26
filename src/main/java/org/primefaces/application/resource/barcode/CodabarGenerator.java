@@ -25,5 +25,5 @@ public class CodabarGenerator implements BarcodeGenerator {
         CodabarBean bean = new CodabarBean();
         bean.generateBarcode(canvasProvider, value);
     }
-    
+
 }

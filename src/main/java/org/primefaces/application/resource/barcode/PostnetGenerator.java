@@ -20,7 +20,7 @@ import org.krysalis.barcode4j.impl.postnet.POSTNETBean;
 import org.krysalis.barcode4j.output.CanvasProvider;
 
 public class PostnetGenerator implements BarcodeGenerator {
-    
+
     public void generate(CanvasProvider canvasProvider, String value) throws IOException {
         POSTNETBean bean = new POSTNETBean();
         bean.generateBarcode(canvasProvider, value);

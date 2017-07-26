@@ -19,6 +19,6 @@ import java.util.Map;
 import javax.faces.event.BehaviorEvent;
 
 public interface PrimeClientBehaviorHolder {
-    
+
     Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping();
 }

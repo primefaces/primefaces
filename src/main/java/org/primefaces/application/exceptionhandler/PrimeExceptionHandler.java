@@ -112,8 +112,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         }
     }
 
-    protected void logException(Throwable rootCause)
-    {
+    protected void logException(Throwable rootCause) {
         LOG.log(Level.SEVERE, rootCause.getMessage(), rootCause);
     }
 
@@ -291,8 +290,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     }
 
     /**
-     * Builds the view if not already available.
-     * This is mostly required for ViewExpiredException's.
+     * Builds the view if not already available. This is mostly required for ViewExpiredException's.
      *
      * @param context The {@link FacesContext}.
      * @param throwable The occurred {@link Throwable}.
@@ -346,7 +344,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         }
         else {
             // workaround for IllegalStateException from redirect of committed response
-            if(externalContext.isResponseCommitted() && !context.getPartialViewContext().isAjaxRequest()) {
+            if (externalContext.isResponseCommitted() && !context.getPartialViewContext().isAjaxRequest()) {
                 PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
                 writer.startElement("script", null);
                 writer.write("window.location.href = '" + url + "';");

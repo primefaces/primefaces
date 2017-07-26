@@ -17,13 +17,13 @@ package org.primefaces.component.api;
 
 import java.io.Serializable;
 
-@SuppressWarnings({"SerializableHasSerializationMethods","NonSerializableFieldInSerializableClass"})
+@SuppressWarnings({"SerializableHasSerializationMethods", "NonSerializableFieldInSerializableClass"})
 public class SavedState implements Serializable {
 
     private static final long serialVersionUID = 4325654657465654768L;
-    
+
     private Object submittedValue;
-    
+
     private boolean submitted;
 
     Object getSubmittedValue() {

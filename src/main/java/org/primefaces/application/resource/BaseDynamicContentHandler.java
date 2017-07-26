@@ -23,9 +23,9 @@ import java.util.TimeZone;
 import javax.faces.context.ExternalContext;
 
 public abstract class BaseDynamicContentHandler implements DynamicContentHandler {
-    
+
     public void handleCache(ExternalContext externalContext, boolean cache) {
-        if(cache) {
+        if (cache) {
             DateFormat httpDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
             httpDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
             Calendar calendar = Calendar.getInstance();

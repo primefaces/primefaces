@@ -20,7 +20,7 @@ import org.krysalis.barcode4j.impl.upcean.EAN13Bean;
 import org.krysalis.barcode4j.output.CanvasProvider;
 
 public class EAN13Generator implements BarcodeGenerator {
-    
+
     public void generate(CanvasProvider canvasProvider, String value) throws IOException {
         EAN13Bean bean = new EAN13Bean();
         bean.generateBarcode(canvasProvider, value);

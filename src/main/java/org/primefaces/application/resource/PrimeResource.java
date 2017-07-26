@@ -24,58 +24,58 @@ import org.primefaces.context.RequestContext;
  * {@link ResourceWrapper} which appends the version of PrimeFaces to the URL.
  */
 public class PrimeResource extends ResourceWrapper {
-    
+
     private Resource wrapped;
-	private String version;
+    private String version;
 
-	public PrimeResource(final Resource resource) {
-		super();
-		wrapped = resource;
-		version = "&v=" + RequestContext.getCurrentInstance().getApplicationContext().getConfig().getBuildVersion();
-	}
+    public PrimeResource(final Resource resource) {
+        super();
+        wrapped = resource;
+        version = "&v=" + RequestContext.getCurrentInstance().getApplicationContext().getConfig().getBuildVersion();
+    }
 
-	@Override
-	public Resource getWrapped() {
-		return wrapped;
-	}
+    @Override
+    public Resource getWrapped() {
+        return wrapped;
+    }
 
-	@Override
-	public String getRequestPath() {
-		return super.getRequestPath() + version;
-	}
+    @Override
+    public String getRequestPath() {
+        return super.getRequestPath() + version;
+    }
 
-	@Override
-	public String getContentType() {
-		return getWrapped().getContentType();
-	}
+    @Override
+    public String getContentType() {
+        return getWrapped().getContentType();
+    }
 
-	@Override
-	public String getLibraryName() {
-		return getWrapped().getLibraryName();
-	}
+    @Override
+    public String getLibraryName() {
+        return getWrapped().getLibraryName();
+    }
 
-	@Override
-	public String getResourceName() {
-		return getWrapped().getResourceName();
-	}
+    @Override
+    public String getResourceName() {
+        return getWrapped().getResourceName();
+    }
 
-	@Override
-	public void setContentType(final String contentType) {
-		getWrapped().setContentType(contentType);
-	}
+    @Override
+    public void setContentType(final String contentType) {
+        getWrapped().setContentType(contentType);
+    }
 
-	@Override
-	public void setLibraryName(final String libraryName) {
-		getWrapped().setLibraryName(libraryName);
-	}
+    @Override
+    public void setLibraryName(final String libraryName) {
+        getWrapped().setLibraryName(libraryName);
+    }
 
-	@Override
-	public void setResourceName(final String resourceName) {
-		getWrapped().setResourceName(resourceName);
-	}
+    @Override
+    public void setResourceName(final String resourceName) {
+        getWrapped().setResourceName(resourceName);
+    }
 
-	@Override
-	public String toString() {
-		return getWrapped().toString();
-	}
+    @Override
+    public String toString() {
+        return getWrapped().toString();
+    }
 }
