@@ -57,9 +57,8 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
 /**
- * UITabPanel is a specialized version of UIRepeat focusing on components that
- * repeat tabs like tabView and accordionPanel. Most of the code is copied from
- * MyFaces.
+ * UITabPanel is a specialized version of UIRepeat focusing on components that repeat tabs like tabView and accordionPanel.
+ * Most of the code is copied from MyFaces.
  */
 public class UITabPanel extends UIPanel implements NamingContainer {
 
@@ -224,7 +223,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     @Override
     public String getContainerClientId(FacesContext context) {
-        if(this.isPrependId() || this.isRepeating()) {
+        if (this.isPrependId() || this.isRepeating()) {
             String clientId = super.getContainerClientId(context);
 
             int index = getIndex();
@@ -234,8 +233,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
             StringBuilder bld = _getBuffer(); //SharedStringBuilder(context);
             return bld.append(clientId).append(UINamingContainer.getSeparatorChar(context)).append(index).toString();
-        }
-        else {
+        } else {
             UIComponent parent = this.getParent();
             while (parent != null) {
                 if (parent instanceof NamingContainer) {
@@ -380,8 +378,8 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     }
 
     /**
-     * Just call component.setId(component.getId()) to reset all client ids and ensure they will be calculated for the current row, but do not waste time
-     * dealing with row state code.
+     * Just call component.setId(component.getId()) to reset all client ids and ensure they will be calculated for the current row, but do not waste
+     * time dealing with row state code.
      *
      * @param parent
      * @param iterateFacets
@@ -796,7 +794,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     @Override
     public boolean invokeOnComponent(FacesContext context, String clientId, ContextCallback callback) throws FacesException {
-        if(!this.isRepeating()) {
+        if (!this.isRepeating()) {
             return super.invokeOnComponent(context, clientId, callback);
         }
         else {
@@ -918,7 +916,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     @Override
     public boolean visitTree(VisitContext context, VisitCallback callback) {
-        if(!this.isRepeating()) {
+        if (!this.isRepeating()) {
             return super.visitTree(context, callback);
         }
         else {
@@ -1271,7 +1269,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
-        if(!this.isRepeating()) {
+        if (!this.isRepeating()) {
             super.broadcast(event);
         }
         else {
@@ -1331,7 +1329,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        if(!this.isRepeating()) {
+        if (!this.isRepeating()) {
             super.queueEvent(event);
         }
         else {
@@ -1452,15 +1450,15 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             }
         }
     }
-    
+
     protected boolean shouldSkipChildren(FacesContext context) {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String paramValue = params.get(Constants.RequestParams.SKIP_CHILDREN_PARAM);
-        
+
         if (ComponentUtils.isValueBlank(paramValue)) {
             return true;
         }
-        
+
         return Boolean.valueOf(paramValue);
     }
 }

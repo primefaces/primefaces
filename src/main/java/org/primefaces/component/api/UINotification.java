@@ -16,8 +16,8 @@
 package org.primefaces.component.api;
 
 public interface UINotification {
- 
+
     public boolean isRedisplay();
-    
+
     public String getSeverity();
 }
