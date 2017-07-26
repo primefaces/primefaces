@@ -25,50 +25,49 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 public class ImageCompareRenderer extends CoreRenderer {
-	
+
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		ImageCompare compare = (ImageCompare) component;
-		
-		encodeMarkup(context, compare);
-		encodeScript(context, compare);
-	}
-	
-	protected void encodeScript(FacesContext context, ImageCompare compare) throws IOException {
-		String clientId = compare.getClientId(context);
-        
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ImageCompare compare = (ImageCompare) component;
+
+        encodeMarkup(context, compare);
+        encodeScript(context, compare);
+    }
+
+    protected void encodeScript(FacesContext context, ImageCompare compare) throws IOException {
+        String clientId = compare.getClientId(context);
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("ImageCompare", compare.resolveWidgetVar(), clientId)
-            .attr("handle", getResourceRequestPath(context, "imagecompare/handle.gif"))
-            .attr("lt", getResourceRequestPath(context, "imagecompare/lt-small.png"))
-            .attr("rt", getResourceRequestPath(context, "imagecompare/rt-small.png"));
+                .attr("handle", getResourceRequestPath(context, "imagecompare/handle.gif"))
+                .attr("lt", getResourceRequestPath(context, "imagecompare/lt-small.png"))
+                .attr("rt", getResourceRequestPath(context, "imagecompare/rt-small.png"));
 
         wb.finish();
-	}
-	
-	protected void encodeMarkup(FacesContext context, ImageCompare compare) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		
-		writer.startElement("div", compare);
-		writer.writeAttribute("id", compare.getClientId(context), "id");
-		renderImage(context, compare, "before", compare.getLeftImage());
-		renderImage(context, compare, "fter", compare.getRightImage());
-		writer.endElement("div");
-	}
+    }
 
-	
-	private void renderImage(FacesContext context, ImageCompare compare, String type, String src) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		
-		writer.startElement("div", compare);
-		
-		writer.startElement("img", null);
-		writer.writeAttribute("alt", type, null);
-		writer.writeAttribute("src", getResourceURL(context, src), null);
-		writer.writeAttribute("width", compare.getWidth(), null);
-		writer.writeAttribute("height", compare.getHeight(), null);
-		writer.endElement("img");
-		
-		writer.endElement("div");
-	}
+    protected void encodeMarkup(FacesContext context, ImageCompare compare) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("div", compare);
+        writer.writeAttribute("id", compare.getClientId(context), "id");
+        renderImage(context, compare, "before", compare.getLeftImage());
+        renderImage(context, compare, "fter", compare.getRightImage());
+        writer.endElement("div");
+    }
+
+    private void renderImage(FacesContext context, ImageCompare compare, String type, String src) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("div", compare);
+
+        writer.startElement("img", null);
+        writer.writeAttribute("alt", type, null);
+        writer.writeAttribute("src", getResourceURL(context, src), null);
+        writer.writeAttribute("width", compare.getWidth(), null);
+        writer.writeAttribute("height", compare.getHeight(), null);
+        writer.endElement("img");
+
+        writer.endElement("div");
+    }
 }

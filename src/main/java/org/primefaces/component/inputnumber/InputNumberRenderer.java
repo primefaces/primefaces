@@ -82,7 +82,7 @@ public class InputNumberRenderer extends InputRenderer {
         if (valueToRender == null) {
             valueToRender = "";
         }
-        
+
         encodeMarkup(context, inputNumber, value, valueToRender);
         encodeScript(context, inputNumber, value, valueToRender);
     }
@@ -122,19 +122,19 @@ public class InputNumberRenderer extends InputRenderer {
         if (inputNumber.getOnchange() != null) {
             writer.writeAttribute("onchange", inputNumber.getOnchange(), null);
         }
-        
+
         if (inputNumber.getOnkeydown() != null) {
             writer.writeAttribute("onkeydown", inputNumber.getOnkeydown(), null);
         }
-        
+
         if (inputNumber.getOnkeyup() != null) {
             writer.writeAttribute("onkeyup", inputNumber.getOnkeyup(), null);
         }
 
-        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, inputNumber);
         }
-        
+
         writer.endElement("input");
 
     }
@@ -149,7 +149,7 @@ public class InputNumberRenderer extends InputRenderer {
         String inputStyleClass = inputNumber.getInputStyleClass();
 
         String style = inputStyle;
-        
+
         String styleClass = InputText.STYLE_CLASS;
         styleClass = inputNumber.isValid() ? styleClass : styleClass + " ui-state-error";
         styleClass = !inputNumber.isDisabled() ? styleClass : styleClass + " ui-state-disabled";
@@ -176,10 +176,10 @@ public class InputNumberRenderer extends InputRenderer {
         if (!isValueBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
-        
+
         writer.writeAttribute("class", styleClass, null);
 
-        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, inputNumber);
         }
 
@@ -274,7 +274,7 @@ public class InputNumberRenderer extends InputRenderer {
             }
         }
     }
-    
+
     protected boolean doubleValueCheck(String valueToRender) {
         int counter = 0;
         int length = valueToRender.length();
@@ -292,5 +292,5 @@ public class InputNumberRenderer extends InputRenderer {
     protected String getHighlighter() {
         return "inputnumber";
     }
-    
+
 }

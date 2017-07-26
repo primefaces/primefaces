@@ -27,18 +27,18 @@ import javax.faces.FacesException;
  */
 public class ConstantsHashMap<K, V> extends HashMap<K, V> {
 
-	private final Class<?> clazz;
+    private final Class<?> clazz;
 
-	public ConstantsHashMap(Class<?> clazz) {
-		this.clazz = clazz;
-	}
+    public ConstantsHashMap(Class<?> clazz) {
+        this.clazz = clazz;
+    }
 
-	@Override
-	public V get(Object key) {
-		if (!containsKey(key)) {
-			throw new FacesException("Class " + clazz.getName() + " does not contain the constant " + key);
-		}
+    @Override
+    public V get(Object key) {
+        if (!containsKey(key)) {
+            throw new FacesException("Class " + clazz.getName() + " does not contain the constant " + key);
+        }
 
-		return super.get(key);
-	}
+        return super.get(key);
+    }
 }

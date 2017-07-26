@@ -34,17 +34,17 @@ public class IdleMonitorRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         IdleMonitor idleMonitor = (IdleMonitor) component;
         String clientId = idleMonitor.getClientId(context);
-        
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("IdleMonitor", idleMonitor.resolveWidgetVar(), clientId)
-            .attr("timeout", idleMonitor.getTimeout())
-            .attr("multiWindowSupport", idleMonitor.isMultiWindowSupport())
-            .attr("contextPath", context.getExternalContext().getRequestContextPath())
-            .callback("onidle", "function()", idleMonitor.getOnidle())
-            .callback("onactive", "function()", idleMonitor.getOnactive());
-        
+                .attr("timeout", idleMonitor.getTimeout())
+                .attr("multiWindowSupport", idleMonitor.isMultiWindowSupport())
+                .attr("contextPath", context.getExternalContext().getRequestContextPath())
+                .callback("onidle", "function()", idleMonitor.getOnidle())
+                .callback("onactive", "function()", idleMonitor.getOnactive());
+
         encodeClientBehaviors(context, idleMonitor);
-        
+
         wb.finish();
     }
 }

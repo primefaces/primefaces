@@ -39,104 +39,104 @@ import org.primefaces.context.RequestContext;
  */
 public class ImportConstantsTagHandler extends TagHandler {
 
-	private final TagAttribute typeTagAttribute;
-	private final TagAttribute varTagAttribute;
+    private final TagAttribute typeTagAttribute;
+    private final TagAttribute varTagAttribute;
 
-	public ImportConstantsTagHandler(TagConfig config) {
-		super(config);
+    public ImportConstantsTagHandler(TagConfig config) {
+        super(config);
 
-		typeTagAttribute = super.getRequiredAttribute("type");
-		varTagAttribute = super.getAttribute("var");
-	}
+        typeTagAttribute = super.getRequiredAttribute("type");
+        varTagAttribute = super.getAttribute("var");
+    }
 
     @Override
-	public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
-        
+    public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
+
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        
-		Class<?> type = getClassFromAttribute(typeTagAttribute, ctx);
-		Map<String, Object> constants = getConstants(facesContext, type);
 
-		// Create alias/var expression
-		String var;
-		if (varTagAttribute == null) {
-			var = type.getSimpleName(); // fall back to class name
-		} else {
-			var = varTagAttribute.getValue(ctx);
-		}
+        Class<?> type = getClassFromAttribute(typeTagAttribute, ctx);
+        Map<String, Object> constants = getConstants(facesContext, type);
 
-		if (var.charAt(0) != '#') {
-			StringBuilder varBuilder = new StringBuilder();
-			varBuilder.append("#{").append(var).append("}");
+        // Create alias/var expression
+        String var;
+        if (varTagAttribute == null) {
+            var = type.getSimpleName(); // fall back to class name
+        } else {
+            var = varTagAttribute.getValue(ctx);
+        }
 
-			var = varBuilder.toString();
-		}
+        if (var.charAt(0) != '#') {
+            StringBuilder varBuilder = new StringBuilder();
+            varBuilder.append("#{").append(var).append("}");
 
-		// Assign constants to alias/var expression
-		ELContext elContext = facesContext.getELContext();
-		ExpressionFactory expressionFactory = facesContext.getApplication().getExpressionFactory();
+            var = varBuilder.toString();
+        }
 
-		ValueExpression aliasValueExpression = expressionFactory.createValueExpression(elContext, var, Map.class);
-		aliasValueExpression.setValue(elContext, constants);
-	}
+        // Assign constants to alias/var expression
+        ELContext elContext = facesContext.getELContext();
+        ExpressionFactory expressionFactory = facesContext.getApplication().getExpressionFactory();
 
-	/**
-	 * Gets the {@link Class} from the {@link TagAttribute}.
-	 * 
-	 * @param attribute The {@link TagAttribute}.
-	 * @param ctx The {@link FaceletContext}.
-	 * @return The {@link Class}.
-	 */
-	protected Class<?> getClassFromAttribute(TagAttribute attribute, FaceletContext ctx) {
-		String type = attribute.getValue(ctx);
+        ValueExpression aliasValueExpression = expressionFactory.createValueExpression(elContext, var, Map.class);
+        aliasValueExpression.setValue(elContext, constants);
+    }
 
-		try {
-			return Class.forName(type, true, Thread.currentThread().getContextClassLoader());
-		}
+    /**
+     * Gets the {@link Class} from the {@link TagAttribute}.
+     *
+     * @param attribute The {@link TagAttribute}.
+     * @param ctx The {@link FaceletContext}.
+     * @return The {@link Class}.
+     */
+    protected Class<?> getClassFromAttribute(TagAttribute attribute, FaceletContext ctx) {
+        String type = attribute.getValue(ctx);
+
+        try {
+            return Class.forName(type, true, Thread.currentThread().getContextClassLoader());
+        }
         catch (ClassNotFoundException e) {
-			throw new FacesException("Class " + type + " not found.", e);
-		}
-	}
+            throw new FacesException("Class " + type + " not found.", e);
+        }
+    }
 
-	/**
-	 * Get all constants of the given {@link Class}.
-	 *
+    /**
+     * Get all constants of the given {@link Class}.
+     *
      * @param facesContext The {@link FacesContext}.
-	 * @param type The class which includes the constants.
-	 * @return A {@link Map} with the constants.
-	 */
-	protected Map<String, Object> getConstants(FacesContext facesContext, Class<?> type) {
+     * @param type The class which includes the constants.
+     * @return A {@link Map} with the constants.
+     */
+    protected Map<String, Object> getConstants(FacesContext facesContext, Class<?> type) {
         boolean cacheEnabled = facesContext.isProjectStage(ProjectStage.Production);
-        Map<Class<?>, Map<String, Object>> cache =
-                RequestContext.getCurrentInstance().getApplicationContext().getConstantsCacheMap();
+        Map<Class<?>, Map<String, Object>> cache
+                = RequestContext.getCurrentInstance().getApplicationContext().getConstantsCacheMap();
 
-		Map<String, Object> constants;
+        Map<String, Object> constants;
 
-		if (cacheEnabled && cache.containsKey(type)) {
-			constants = cache.get(type);
-		}
+        if (cacheEnabled && cache.containsKey(type)) {
+            constants = cache.get(type);
+        }
         else {
-			constants = Collections.unmodifiableMap(collectConstants(type));
+            constants = Collections.unmodifiableMap(collectConstants(type));
 
             if (cacheEnabled) {
                 cache.put(type, constants);
             }
-		}
+        }
 
-		return constants;
-	}
+        return constants;
+    }
 
-	/**
-	 * Collects all constants of the given {@link Class}.
-	 *
-	 * @param type The class which includes the constants.
-	 * @return A {@link Map} with the found constants.
-	 */
-	protected Map<String, Object> collectConstants(Class<?> type) {
-		Map<String, Object> constants = new ConstantsHashMap<String, Object>(type);
+    /**
+     * Collects all constants of the given {@link Class}.
+     *
+     * @param type The class which includes the constants.
+     * @return A {@link Map} with the found constants.
+     */
+    protected Map<String, Object> collectConstants(Class<?> type) {
+        Map<String, Object> constants = new ConstantsHashMap<String, Object>(type);
 
-		// Go through all the fields, and put static ones in a map.
-		Field[] fields = type.getDeclaredFields();
+        // Go through all the fields, and put static ones in a map.
+        Field[] fields = type.getDeclaredFields();
 
         for (Field field : fields) {
             // Check to see if this is public static final. If not, it's not a constant.
@@ -148,12 +148,11 @@ public class ImportConstantsTagHandler extends TagHandler {
             try {
                 Object value = field.get(null); // null for static fields.
                 constants.put(field.getName(), value);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 throw new FacesException("Could not get value of " + field.getName() + " in " + type.getName() + ".", e);
             }
         }
 
-		return constants;
-	}
+        return constants;
+    }
 }

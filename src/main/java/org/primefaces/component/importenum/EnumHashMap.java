@@ -27,18 +27,18 @@ import javax.faces.FacesException;
  */
 public class EnumHashMap<K, V> extends HashMap<K, V> {
 
-	private final Class<?> clazz;
+    private final Class<?> clazz;
 
-	public EnumHashMap(Class<?> clazz) {
-		this.clazz = clazz;
-	}
+    public EnumHashMap(Class<?> clazz) {
+        this.clazz = clazz;
+    }
 
-	@Override
-	public V get(Object key) {
-		if (!containsKey(key)) {
-			throw new FacesException("Class " + clazz.getName() + " does not contain the enum " + key);
-		}
+    @Override
+    public V get(Object key) {
+        if (!containsKey(key)) {
+            throw new FacesException("Class " + clazz.getName() + " does not contain the enum " + key);
+        }
 
-		return super.get(key);
-	}
+        return super.get(key);
+    }
 }
