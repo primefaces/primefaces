@@ -30,15 +30,15 @@ import org.primefaces.util.ComponentUtils;
 public class AjaxExceptionHandlerVisitCallback implements VisitCallback {
 
     private final Throwable throwable;
-    
+
     private Map<String, AjaxExceptionHandler> handlers;
 
     public AjaxExceptionHandlerVisitCallback(Throwable throwable) {
         this.throwable = throwable;
-        
+
         this.handlers = new HashMap<String, AjaxExceptionHandler>();
     }
-    
+
     public VisitResult visit(VisitContext context, UIComponent target) {;
 
         if (target instanceof AjaxExceptionHandler) {
@@ -49,7 +49,7 @@ public class AjaxExceptionHandlerVisitCallback implements VisitCallback {
             }
             else {
                 handlers.put(currentHandler.getType(), currentHandler);
-                
+
                 // exact type matched - we don't need to search more generic handlers
                 if (throwable.getClass().getName().equals(currentHandler.getType())) {
                     return VisitResult.COMPLETE;
@@ -59,10 +59,10 @@ public class AjaxExceptionHandlerVisitCallback implements VisitCallback {
         else if (target instanceof UIData) {
             return VisitResult.REJECT;
         }
-        
+
         return VisitResult.ACCEPT;
     }
-    
+
     public Map<String, AjaxExceptionHandler> getHandlers() {
         return handlers;
     }

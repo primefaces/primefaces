@@ -20,7 +20,7 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 
 public class AutoCompleteEvent extends FacesEvent {
-    
+
     private String query;
 
     public AutoCompleteEvent(UIComponent component, String query) {

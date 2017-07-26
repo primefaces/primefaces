@@ -19,54 +19,56 @@ import javax.faces.context.FacesContext;
 
 public class AgentUtils {
 
-	private AgentUtils() {}
-	
-	public static boolean isIE(FacesContext context) {
+    private AgentUtils() {
+    }
+
+    public static boolean isIE(FacesContext context) {
         String userAgent = context.getExternalContext().getRequestHeaderMap().get("User-Agent");
-        
-		if(userAgent == null)
-			return false;
-		else
-			return userAgent.contains("MSIE");
-	}
-    
-    public static boolean isIE(FacesContext context, int value) {
-        String userAgent = context.getExternalContext().getRequestHeaderMap().get("User-Agent");
-        
-		if(userAgent == null) {
-			return false;
+
+        if (userAgent == null) {
+            return false;
         }
         else {
+            return userAgent.contains("MSIE");
+        }
+    }
+
+    public static boolean isIE(FacesContext context, int value) {
+        String userAgent = context.getExternalContext().getRequestHeaderMap().get("User-Agent");
+
+        if (userAgent == null) {
+            return false;
+        } else {
             int index = userAgent.indexOf("MSIE");
-            
-            if(index == -1) {
+
+            if (index == -1) {
                 return false;
             }
             else {
                 int version = Double.valueOf(userAgent.substring((index + 5), userAgent.indexOf(';', index))).intValue();
-                
+
                 return version == value;
             }
         }
-	}
-    
+    }
+
     public static boolean isLessThanIE(FacesContext context, int value) {
         String userAgent = context.getExternalContext().getRequestHeaderMap().get("User-Agent");
-        
-		if(userAgent == null) {
-			return false;
+
+        if (userAgent == null) {
+            return false;
         }
         else {
             int index = userAgent.indexOf("MSIE");
-            
-            if(index == -1) {
+
+            if (index == -1) {
                 return false;
             }
             else {
                 int version = Double.valueOf(userAgent.substring((index + 5), userAgent.indexOf(';', index))).intValue();
-                
+
                 return version > value;
             }
         }
-	}
+    }
 }

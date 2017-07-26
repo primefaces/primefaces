@@ -31,11 +31,11 @@ public class AutoUpdateComponentListener implements SystemEventListener {
         AutoUpdatable component = (AutoUpdatable) cse.getSource();
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if(component.isAutoUpdate() && context.isPostback()) {
-            
+        if (component.isAutoUpdate() && context.isPostback()) {
+
             if (!RequestContext.getCurrentInstance(context).isIgnoreAutoUpdate()) {
-        		context.getPartialViewContext().getRenderIds().add(component.getClientId(context));
-        	}
+                context.getPartialViewContext().getRenderIds().add(component.getClientId(context));
+            }
         }
     }
 

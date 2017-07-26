@@ -26,15 +26,15 @@ import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.context.RequestContext;
 
 public abstract class AbstractInputMetadataTransformer implements MetadataTransformer {
-    
+
     public void transform(FacesContext context, RequestContext requestContext, UIComponent component) throws IOException {
         if (component instanceof EditableValueHolder && component instanceof UIInput) {
             transformInput(context, requestContext, (UIInput) component);
         }
     }
-    
+
     protected abstract void transformInput(FacesContext context, RequestContext requestContext, UIInput component) throws IOException;
-    
+
     protected void setMaxlength(UIInput input, int maxlength) {
         if (input instanceof HtmlInputText) {
             ((HtmlInputText) input).setMaxlength(maxlength);
@@ -46,7 +46,7 @@ public abstract class AbstractInputMetadataTransformer implements MetadataTransf
             ((InputTextarea) input).setMaxlength(maxlength);
         }
     }
-    
+
     protected int getMaxlength(UIInput input) {
         if (input instanceof HtmlInputText) {
             return ((HtmlInputText) input).getMaxlength();
@@ -54,10 +54,10 @@ public abstract class AbstractInputMetadataTransformer implements MetadataTransf
         else if (input instanceof HtmlInputSecret) {
             return ((HtmlInputSecret) input).getMaxlength();
         }
-        
+
         return Integer.MIN_VALUE;
     }
-    
+
     protected boolean isMaxlenghtSet(UIInput input) {
         return getMaxlength(input) != Integer.MIN_VALUE;
     }

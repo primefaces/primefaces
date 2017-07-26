@@ -21,8 +21,8 @@ import javax.faces.context.FacesContext;
  * For Components that support auto updating
  */
 public interface AutoUpdatable {
-    
+
     public boolean isAutoUpdate();
-    
+
     public String getClientId(FacesContext context);
 }

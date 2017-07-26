@@ -16,8 +16,7 @@
 package org.primefaces.component.api;
 
 /**
- * AjaxSource is the contract that needs to be implemented by components that fully implement all 
- * configuration options of PrimeFaces PPR
+ * AjaxSource is the contract that needs to be implemented by components that fully implement all configuration options of PrimeFaces PPR
  */
 public interface AjaxSource {
 
@@ -36,24 +35,24 @@ public interface AjaxSource {
     public boolean isGlobal();
 
     public boolean isAsync();
-    
+
     public boolean isPartialSubmit();
-    
+
     public boolean isPartialSubmitSet();
-    
+
     public String getPartialSubmitFilter();
-    
+
     public boolean isResetValues();
-    
+
     public boolean isResetValuesSet();
-    
+
     public boolean isIgnoreAutoUpdate();
-    
+
     public boolean isAjaxified();
-    
+
     public String getDelay();
-    
+
     public int getTimeout();
-    
+
     public String getForm();
 }

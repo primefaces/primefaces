@@ -27,15 +27,15 @@ import org.primefaces.expression.SearchExpressionResolver;
  */
 public class AllExpressionResolver implements SearchExpressionResolver, ClientIdSearchExpressionResolver {
 
-	public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
-		UIComponent parent = last.getParent();
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+        UIComponent parent = last.getParent();
 
-		while (parent.getParent() != null) {
-			parent = parent.getParent();
-		}
+        while (parent.getParent() != null) {
+            parent = parent.getParent();
+        }
 
-		return parent;
-	}
+        return parent;
+    }
 
     public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
         return SearchExpressionConstants.ALL_KEYWORD;

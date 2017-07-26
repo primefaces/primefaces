@@ -26,19 +26,19 @@ import org.primefaces.facelets.MethodRule;
 
 public class AutoCompleteHandler extends ComponentHandler {
 
-	private static final MetaRule COMPLETE_METHOD =
-			new MethodRule("completeMethod", List.class, new Class[]{String.class});
+    private static final MetaRule COMPLETE_METHOD
+            = new MethodRule("completeMethod", List.class, new Class[]{String.class});
 
-	public AutoCompleteHandler(ComponentConfig config) {
-		super(config);
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected MetaRuleset createMetaRuleset(Class type) { 
-		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
-		
-		metaRuleset.addRule(COMPLETE_METHOD);
-		
-		return metaRuleset; 
-	} 
+    public AutoCompleteHandler(ComponentConfig config) {
+        super(config);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected MetaRuleset createMetaRuleset(Class type) {
+        MetaRuleset metaRuleset = super.createMetaRuleset(type);
+
+        metaRuleset.addRule(COMPLETE_METHOD);
+
+        return metaRuleset;
+    }
 }
