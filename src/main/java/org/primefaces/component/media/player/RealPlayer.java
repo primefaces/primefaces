@@ -17,23 +17,23 @@ package org.primefaces.component.media.player;
 
 public class RealPlayer implements MediaPlayer {
 
-	private final static String[] supportedTypes = new String[]{"ra", "ram", "rm", "rpm", "rv", "smi", "smil"};
-	
-	public String getClassId() {
-		return "clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA";
-	}
+    private final static String[] supportedTypes = new String[]{"ra", "ram", "rm", "rpm", "rv", "smi", "smil"};
 
-	public String getCodebase() {
-		return null;
-	}
+    public String getClassId() {
+        return "clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA";
+    }
 
-	public String getSourceParam() {
-		return "src";
-	}
+    public String getCodebase() {
+        return null;
+    }
 
-	public String getType() {
-		return "audio/x-pn-realaudio-plugin";
-	}
+    public String getSourceParam() {
+        return "src";
+    }
+
+    public String getType() {
+        return "audio/x-pn-realaudio-plugin";
+    }
 
     public String[] getSupportedTypes() {
         return supportedTypes;

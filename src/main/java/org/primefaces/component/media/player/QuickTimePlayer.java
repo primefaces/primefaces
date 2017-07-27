@@ -17,25 +17,25 @@ package org.primefaces.component.media.player;
 
 public class QuickTimePlayer implements MediaPlayer {
 
-	private final static String[] supportedTypes = new String[]{"aif","aiff","aac","au","bmp","gsm","mov","mid","midi","mpg","mpeg",
-																"mp4","m4a","psd","qt","qtif","qif","qti","snd","tif","tiff","wav","3g2","3pg"};
-	
-	public String getClassId() {
-		return "clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B";
-	}
+    private final static String[] supportedTypes = new String[]{"aif", "aiff", "aac", "au", "bmp", "gsm", "mov", "mid", "midi", "mpg", "mpeg",
+        "mp4", "m4a", "psd", "qt", "qtif", "qif", "qti", "snd", "tif", "tiff", "wav", "3g2", "3pg"};
 
-	public String getCodebase() {
-		return "http://www.apple.com/qtactivex/qtplugin.cab";
-	}
-	
-	public String getSourceParam() {
-		return "src";
-	}
+    public String getClassId() {
+        return "clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B";
+    }
 
-	public String getType() {
-		return null;
-	}
-	
+    public String getCodebase() {
+        return "http://www.apple.com/qtactivex/qtplugin.cab";
+    }
+
+    public String getSourceParam() {
+        return "src";
+    }
+
+    public String getType() {
+        return null;
+    }
+
     public String[] getSupportedTypes() {
         return supportedTypes;
     }

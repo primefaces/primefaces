@@ -16,12 +16,12 @@
 package org.primefaces.component.menu;
 
 public interface OverlayMenu {
-    
+
     public String getTrigger();
-    
+
     public String getMy();
-    
+
     public String getAt();
-    
+
     public String getTriggerEvent();
 }

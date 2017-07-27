@@ -17,23 +17,23 @@ package org.primefaces.component.media.player;
 
 public class FlashPlayer implements MediaPlayer {
 
-	private final static String[] supportedTypes = new String[]{"flv", "mp3", "swf"};
-	
-	public String getClassId() {
-		return "clsid:d27cdb6e-ae6d-11cf-96b8-444553540000";
-	}
+    private final static String[] supportedTypes = new String[]{"flv", "mp3", "swf"};
 
-	public String getCodebase() {
-		return "http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7";
-	}
-	
-	public String getSourceParam() {
-		return "movie";
-	}
+    public String getClassId() {
+        return "clsid:d27cdb6e-ae6d-11cf-96b8-444553540000";
+    }
 
-	public String getType() {
-		return "application/x-shockwave-flash";
-	}
+    public String getCodebase() {
+        return "http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7";
+    }
+
+    public String getSourceParam() {
+        return "movie";
+    }
+
+    public String getType() {
+        return "application/x-shockwave-flash";
+    }
 
     public String[] getSupportedTypes() {
         return supportedTypes;

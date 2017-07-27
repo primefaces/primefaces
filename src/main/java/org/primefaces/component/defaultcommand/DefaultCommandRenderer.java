@@ -25,20 +25,20 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 public class DefaultCommandRenderer extends CoreRenderer {
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         DefaultCommand command = (DefaultCommand) component;
 
         UIComponent target = SearchExpressionFacade.resolveComponent(context, command, command.getTarget());
-        
+
         String clientId = command.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("DefaultCommand", command.resolveWidgetVar(), clientId)
                 .attr("target", target.getClientId(context));
-        
+
         String scope = command.getScope();
-        if(scope != null) {
+        if (scope != null) {
             UIComponent scopeComponent = SearchExpressionFacade.resolveComponent(context, command, scope);
             wb.attr("scope", scopeComponent.getClientId(context));
         }
