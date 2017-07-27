@@ -59,7 +59,7 @@ import org.primefaces.validate.bean.BeanValidationMetadataMapper;
 public abstract class CoreRenderer extends Renderer {
 
     private static final Logger LOG = Logger.getLogger(CoreRenderer.class.getName());
-    
+
     private static final String SB_RENDER_DOM_EVENTS = CoreRenderer.class.getName() + "#renderDomEvents";
     private static final String SB_BUILD_NON_AJAX_REQUEST = CoreRenderer.class.getName() + "#buildNonAjaxRequest";
     private static final String SB_GET_EVENT_BEHAVIORS = CoreRenderer.class.getName() + "#getEventBehaviors";
@@ -103,12 +103,13 @@ public abstract class CoreRenderer extends Renderer {
         ResponseWriter writer = context.getResponseWriter();
 
         //pre-defined attributes
-        if(attrs != null && attrs.length > 0) {
-            for(String attribute : attrs) {
+        if (attrs != null && attrs.length > 0) {
+            for (String attribute : attrs) {
                 Object value = component.getAttributes().get(attribute);
 
-                if(shouldRenderAttribute(value))
+                if (shouldRenderAttribute(value)) {
                     writer.writeAttribute(attribute, value.toString(), attribute);
+                }
             }
         }
 
@@ -116,42 +117,45 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected void renderDynamicPassThruAttributes(FacesContext context, UIComponent component) throws IOException {
-        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF22()) {
+        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF22()) {
             RendererUtils.renderPassThroughAttributes(context, component);
         }
     }
 
     protected void renderDomEvents(FacesContext context, UIComponent component, String[] eventAttrs) throws IOException {
-        if(component instanceof ClientBehaviorHolder)
+        if (component instanceof ClientBehaviorHolder) {
             renderDomEvents(context, component, eventAttrs, ((ClientBehaviorHolder) component).getClientBehaviors());
-        else
+        }
+        else {
             renderPassThruAttributes(context, component, eventAttrs);
-	}
+        }
+    }
 
-    private void renderDomEvents(FacesContext context, UIComponent component, String[] eventAttrs, Map<String,List<ClientBehavior>> behaviors) throws IOException {
+    private void renderDomEvents(FacesContext context, UIComponent component, String[] eventAttrs, Map<String, List<ClientBehavior>> behaviors) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         StringBuilder builder = null;
 
-        for(String domEvent : eventAttrs) {
+        for (String domEvent : eventAttrs) {
             Object eventValue = component.getAttributes().get(domEvent);
             String behaviorEvent = domEvent.substring(2, domEvent.length());
             List<ClientBehavior> eventBehaviors = behaviors.get(behaviorEvent);
             boolean hasEventValue = (eventValue != null);
             boolean hasEventBehaviors = (eventBehaviors != null && !eventBehaviors.isEmpty());
 
-            if(domEvent.equals("onchange") && !hasEventBehaviors) {
+            if (domEvent.equals("onchange") && !hasEventBehaviors) {
                 eventBehaviors = behaviors.get("valueChange");
                 hasEventBehaviors = (eventBehaviors != null && !eventBehaviors.isEmpty());
-                if(hasEventBehaviors)
+                if (hasEventBehaviors) {
                     behaviorEvent = "valueChange";
+                }
             }
 
-            if(hasEventValue || hasEventBehaviors) {
-                if(builder == null) {
+            if (hasEventValue || hasEventBehaviors) {
+                if (builder == null) {
                     builder = SharedStringBuilder.get(context, SB_RENDER_DOM_EVENTS);
                 }
-                
-                if(hasEventBehaviors) {
+
+                if (hasEventBehaviors) {
                     String clientId = ((UIComponent) component).getClientId(context);
                     List<ClientBehaviorContext.Parameter> params = new ArrayList<ClientBehaviorContext.Parameter>();
                     params.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.OBSTRUSIVE));
@@ -159,19 +163,19 @@ public abstract class CoreRenderer extends Renderer {
                     int size = eventBehaviors.size();
                     boolean chained = false;
 
-                    if(size > 1 || hasEventValue) {
+                    if (size > 1 || hasEventValue) {
                         builder.append("PrimeFaces.bcn(this,event,[");
-                        
-                        if(hasEventValue) {
+
+                        if (hasEventValue) {
                             builder.append("function(event){").append(eventValue).append("}");
                             chained = true;
                         }
-                        
+
                         for (int i = 0; i < size; i++) {
                             ClientBehavior behavior = eventBehaviors.get(i);
                             String script = behavior.getScript(cbc);
-                            if(script != null) {
-                                if(chained) {
+                            if (script != null) {
+                                if (chained) {
                                     builder.append(",");
                                 }
                                 builder.append("function(event){").append(script).append("}");
@@ -183,40 +187,41 @@ public abstract class CoreRenderer extends Renderer {
                     else {
                         ClientBehavior behavior = eventBehaviors.get(0);
                         String script = behavior.getScript(cbc);
-                        if(script != null) {
+                        if (script != null) {
                             builder.append(script);
                         }
                     }
                 }
-                else if(hasEventValue) {
+                else if (hasEventValue) {
                     builder.append(eventValue);
                 }
 
-                if(builder.length() > 0) {
+                if (builder.length() > 0) {
                     writer.writeAttribute(domEvent, builder.toString(), domEvent);
                     builder.setLength(0);
                 }
             }
         }
     }
-        
+
     protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs, String[] ignoredAttrs) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         //pre-defined attributes
-        for(String attribute : attrs) {
-            if(isIgnoredAttribute(attribute, ignoredAttrs)) {
+        for (String attribute : attrs) {
+            if (isIgnoredAttribute(attribute, ignoredAttrs)) {
                 continue;
             }
 
             Object value = component.getAttributes().get(attribute);
 
-            if(shouldRenderAttribute(value))
+            if (shouldRenderAttribute(value)) {
                 writer.writeAttribute(attribute, value.toString(), attribute);
+            }
         }
 
         //dynamic attributes
-        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF22()) {
+        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF22()) {
             RendererUtils.renderPassThroughAttributes(context, component);
         }
     }
@@ -239,17 +244,17 @@ public abstract class CoreRenderer extends Renderer {
 
     protected String buildDomEvent(FacesContext context, UIComponent component, String domEvent, String behaviorEvent, String behaviorEventAlias, String command) {
         StringBuilder builder = null;
-        
+
         boolean hasCommand = (command != null);
-        
-        Map<String,List<ClientBehavior>> allBehaviors = null;
-        if(component instanceof ClientBehaviorHolder) {
+
+        Map<String, List<ClientBehavior>> allBehaviors = null;
+        if (component instanceof ClientBehaviorHolder) {
             allBehaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
         }
-        
+
         Object event = component.getAttributes().get(domEvent);
         boolean hasEvent = (event != null);
-        
+
         String behaviorEventName = behaviorEventAlias;
         if (allBehaviors != null && allBehaviors.containsKey(behaviorEvent)) {
             behaviorEventName = behaviorEvent;
@@ -293,7 +298,7 @@ public abstract class CoreRenderer extends Renderer {
                         String script = behavior.getScript(cbc);
 
                         if (script != null) {
-                            if(!first) {
+                            if (!first) {
                                 builder.append(",");
                             }
 
@@ -346,34 +351,41 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected boolean shouldRenderAttribute(Object value) {
-        if(value == null)
+        if (value == null) {
             return false;
+        }
 
-        if(value instanceof Boolean) {
+        if (value instanceof Boolean) {
             return ((Boolean) value).booleanValue();
         }
-        else if(value instanceof Number) {
+        else if (value instanceof Number) {
             Number number = (Number) value;
 
-            if (value instanceof Integer)
+            if (value instanceof Integer) {
                 return number.intValue() != Integer.MIN_VALUE;
-            else if (value instanceof Double)
+            }
+            else if (value instanceof Double) {
                 return number.doubleValue() != Double.MIN_VALUE;
-            else if (value instanceof Long)
+            }
+            else if (value instanceof Long) {
                 return number.longValue() != Long.MIN_VALUE;
-            else if (value instanceof Byte)
+            }
+            else if (value instanceof Byte) {
                 return number.byteValue() != Byte.MIN_VALUE;
-            else if (value instanceof Float)
+            }
+            else if (value instanceof Float) {
                 return number.floatValue() != Float.MIN_VALUE;
-            else if (value instanceof Short)
+            }
+            else if (value instanceof Short) {
                 return number.shortValue() != Short.MIN_VALUE;
+            }
         }
 
         return true;
     }
 
     public boolean isValueBlank(String value) {
-            return ComponentUtils.isValueBlank(value);
+        return ComponentUtils.isValueBlank(value);
     }
 
     protected String buildAjaxRequest(FacesContext context, AjaxSource source, UIComponent form) {
@@ -400,7 +412,7 @@ public abstract class CoreRenderer extends Renderer {
                 .oncomplete(source.getOncomplete())
                 .params(component);
 
-        if(form != null) {
+        if (form != null) {
             builder.form(form.getClientId(context));
         }
 
@@ -412,9 +424,9 @@ public abstract class CoreRenderer extends Renderer {
     protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, boolean submit) {
         StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
         String formId = form.getClientId(context);
-        Map<String,Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<String, Object>();
 
-        if(decodeParam != null) {
+        if (decodeParam != null) {
             params.put(decodeParam, decodeParam);
         }
 
@@ -427,91 +439,92 @@ public abstract class CoreRenderer extends Renderer {
         }
 
         //append params
-        if(!params.isEmpty()) {
+        if (!params.isEmpty()) {
             request.append("PrimeFaces.addSubmitParam('").append(formId).append("',{");
 
-            for(Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
+            for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
                 String key = it.next();
                 Object value = params.get(key);
 
                 request.append("'").append(key).append("':'").append(value).append("'");
 
-                if(it.hasNext())
+                if (it.hasNext()) {
                     request.append(",");
+                }
             }
 
             request.append("})");
         }
 
-        if(submit) {
+        if (submit) {
             Object target = component.getAttributes().get("target");
             request.append(".submit('").append(formId).append("'");
 
-            if(target != null) {
+            if (target != null) {
                 request.append(",'").append(target).append("'");
             }
 
             request.append(");return false;");
         }
-        
-        if(!submit && !params.isEmpty()) {
+
+        if (!submit && !params.isEmpty()) {
             request.append(";");
         }
 
         request.append("PrimeFaces.onPost();");
-        
-		return request.toString();
-	}
+
+        return request.toString();
+    }
 
     protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Map<String,List<ClientBehavior>> clientBehaviors = component.getClientBehaviors();
+        Map<String, List<ClientBehavior>> clientBehaviors = component.getClientBehaviors();
 
-        if(clientBehaviors != null && !clientBehaviors.isEmpty()) {
+        if (clientBehaviors != null && !clientBehaviors.isEmpty()) {
             boolean written = false;
-            Collection<String> eventNames = (component instanceof MixedClientBehaviorHolder) ?
-                                ((MixedClientBehaviorHolder) component).getUnobstrusiveEventNames() : clientBehaviors.keySet();
+            Collection<String> eventNames = (component instanceof MixedClientBehaviorHolder)
+                    ? ((MixedClientBehaviorHolder) component).getUnobstrusiveEventNames() : clientBehaviors.keySet();
             String clientId = ((UIComponent) component).getClientId(context);
             List<ClientBehaviorContext.Parameter> params = new ArrayList<ClientBehaviorContext.Parameter>();
             params.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
 
             writer.write(",behaviors:{");
-            for(Iterator<String> eventNameIterator = eventNames.iterator(); eventNameIterator.hasNext();) {
+            for (Iterator<String> eventNameIterator = eventNames.iterator(); eventNameIterator.hasNext();) {
                 String eventName = eventNameIterator.next();
                 List<ClientBehavior> eventBehaviors = clientBehaviors.get(eventName);
 
-                if(eventBehaviors != null && !eventBehaviors.isEmpty()) {
-                    if(written) {
+                if (eventBehaviors != null && !eventBehaviors.isEmpty()) {
+                    if (written) {
                         writer.write(",");
                     }
-                    
+
                     int eventBehaviorsSize = eventBehaviors.size();
 
                     writer.write(eventName + ":");
                     writer.write("function(ext,event) {");
-                    
-                    if(eventBehaviorsSize > 1) {
+
+                    if (eventBehaviorsSize > 1) {
                         boolean chained = false;
                         writer.write("PrimeFaces.bcnu(ext,event,[");
-                        
-                        for(int i = 0; i < eventBehaviorsSize; i++) {
+
+                        for (int i = 0; i < eventBehaviorsSize; i++) {
                             ClientBehavior behavior = eventBehaviors.get(i);
                             ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, eventName, clientId, params);
                             String script = behavior.getScript(cbc);
 
-                            if(script != null) {
-                                if(chained) {
+                            if (script != null) {
+                                if (chained) {
                                     writer.write(",");
                                 }
-                                
+
                                 writer.write("function(ext,event) {");
                                 writer.write(script);
                                 writer.write("}");
-                                
+
                                 chained = true;
                             }
                         }
-                        
+
                         writer.write("]);");
                     }
                     else {
@@ -519,13 +532,13 @@ public abstract class CoreRenderer extends Renderer {
                         ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, eventName, clientId, params);
                         String script = behavior.getScript(cbc);
 
-                        if(script != null) {
+                        if (script != null) {
                             writer.write(script);
                         }
                     }
 
                     writer.write("}");
-                    
+
                     written = true;
                 }
             }
@@ -534,31 +547,31 @@ public abstract class CoreRenderer extends Renderer {
         }
     }
 
-    protected void decodeBehaviors(FacesContext context, UIComponent component)  {
-        if(!(component instanceof ClientBehaviorHolder)) {
+    protected void decodeBehaviors(FacesContext context, UIComponent component) {
+        if (!(component instanceof ClientBehaviorHolder)) {
             return;
         }
 
         Map<String, List<ClientBehavior>> behaviors = ((ClientBehaviorHolder) component).getClientBehaviors();
-        if(behaviors.isEmpty()) {
+        if (behaviors.isEmpty()) {
             return;
         }
 
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String behaviorEvent = params.get("javax.faces.behavior.event");
 
-        if(null != behaviorEvent) {
+        if (null != behaviorEvent) {
             List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
 
-            if(behaviorsForEvent != null && !behaviorsForEvent.isEmpty()) {
-               String behaviorSource = params.get("javax.faces.source");
-               String clientId = component.getClientId(context);
+            if (behaviorsForEvent != null && !behaviorsForEvent.isEmpty()) {
+                String behaviorSource = params.get("javax.faces.source");
+                String clientId = component.getClientId(context);
 
-               if(behaviorSource != null && clientId.equals(behaviorSource)) {
-                   for(ClientBehavior behavior: behaviorsForEvent) {
-                       behavior.decode(context, component);
-                   }
-               }
+                if (behaviorSource != null && clientId.equals(behaviorSource)) {
+                    for (ClientBehavior behavior : behaviorsForEvent) {
+                        behavior.decode(context, component);
+                    }
+                }
             }
         }
     }
@@ -581,14 +594,14 @@ public abstract class CoreRenderer extends Renderer {
         List<ClientBehavior> behaviors = cbh.getClientBehaviors().get(event);
         StringBuilder sb = SharedStringBuilder.get(context, SB_GET_EVENT_BEHAVIORS);
 
-        if(behaviors != null && !behaviors.isEmpty()) {
+        if (behaviors != null && !behaviors.isEmpty()) {
             UIComponent component = (UIComponent) cbh;
             String clientId = component.getClientId(context);
             List<ClientBehaviorContext.Parameter> params;
-            if(parameters != null && !parameters.isEmpty()) {
+            if (parameters != null && !parameters.isEmpty()) {
                 params = parameters;
             } else {
-               params = Collections.emptyList();
+                params = Collections.emptyList();
             }
 
             for (int i = 0; i < behaviors.size(); i++) {
@@ -596,8 +609,9 @@ public abstract class CoreRenderer extends Renderer {
                 ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, component, event, clientId, params);
                 String script = behavior.getScript(cbc);
 
-                if(script != null)
+                if (script != null) {
                     sb.append(script).append(";");
+                }
             }
         }
 
@@ -607,8 +621,8 @@ public abstract class CoreRenderer extends Renderer {
     protected boolean shouldWriteId(UIComponent component) {
         String id = component.getId();
 
-        return (null != id) && (!id.startsWith(UIViewRoot.UNIQUE_ID_PREFIX) || ((component instanceof ClientBehaviorHolder) &&
-                          ! ((ClientBehaviorHolder) component).getClientBehaviors().isEmpty()));
+        return (null != id) && (!id.startsWith(UIViewRoot.UNIQUE_ID_PREFIX) || ((component instanceof ClientBehaviorHolder)
+                && !((ClientBehaviorHolder) component).getClientBehaviors().isEmpty()));
     }
 
     protected WidgetBuilder getWidgetBuilder(FacesContext context) {
@@ -618,9 +632,9 @@ public abstract class CoreRenderer extends Renderer {
     protected void renderValidationMetadata(FacesContext context, EditableValueHolder component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent comp = (UIComponent) component;
-        
+
         Converter converter = null;
-        
+
         try {
             converter = ComponentUtils.getConverter(context, comp);
         }
@@ -631,9 +645,8 @@ public abstract class CoreRenderer extends Renderer {
             LOG.log(Level.FINE, message);
             return;
         }
-        
-        
-        Map<String,Object> attrs = comp.getAttributes();
+
+        Map<String, Object> attrs = comp.getAttributes();
         Object label = attrs.get("label");
         Object requiredMessage = attrs.get("requiredMessage");
         Object validatorMessage = attrs.get("validatorMessage");
@@ -650,19 +663,19 @@ public abstract class CoreRenderer extends Renderer {
         if(converterMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.CONVERTER_MESSAGE, converterMessage, null);
 
         //converter
-        if(converter != null && converter instanceof ClientConverter) {
+        if (converter != null && converter instanceof ClientConverter) {
             ClientConverter clientConverter = (ClientConverter) converter;
-            Map<String,Object> metadata = clientConverter.getMetadata();
+            Map<String, Object> metadata = clientConverter.getMetadata();
 
             writer.writeAttribute(HTML.VALIDATION_METADATA.CONVERTER, ((ClientConverter) converter).getConverterId(), null);
 
-            if(metadata != null && !metadata.isEmpty()) {
+            if (metadata != null && !metadata.isEmpty()) {
                 renderValidationMetadataMap(context, metadata);
             }
         }
 
         //bean validation
-        if(requestContext.getApplicationContext().getConfig().isBeanValidationAvailable()) {
+        if (requestContext.getApplicationContext().getConfig().isBeanValidationAvailable()) {
             BeanValidationMetadata beanValidationMetadata = BeanValidationMetadataMapper.resolveValidationMetadata(context, comp, requestContext);
             if (beanValidationMetadata != null) {
                 if (beanValidationMetadata.getAttributes() != null) {
@@ -678,7 +691,7 @@ public abstract class CoreRenderer extends Renderer {
         }
 
         //required validation
-        if(component.isRequired()) {
+        if (component.isRequired()) {
             writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED, "true", null);
         }
 
@@ -686,15 +699,15 @@ public abstract class CoreRenderer extends Renderer {
         Validator[] validators = component.getValidators();
         if (validators != null) {
             for (Validator validator : validators) {
-                if(validator instanceof ClientValidator) {
+                if (validator instanceof ClientValidator) {
                     ClientValidator clientValidator = (ClientValidator) validator;
                     if (validatorIds == null) {
                         validatorIds = new ArrayList<String>();
                     }
                     validatorIds.add(clientValidator.getValidatorId());
-                    Map<String,Object> metadata = clientValidator.getMetadata();
+                    Map<String, Object> metadata = clientValidator.getMetadata();
 
-                    if(metadata != null && !metadata.isEmpty()) {
+                    if (metadata != null && !metadata.isEmpty()) {
                         renderValidationMetadataMap(context, metadata);
                     }
                 }
@@ -703,41 +716,41 @@ public abstract class CoreRenderer extends Renderer {
 
         renderValidatorIds(context, validatorIds);
 
-        if(highlighter != null) {
+        if (highlighter != null) {
             writer.writeAttribute(HTML.VALIDATION_METADATA.HIGHLIGHTER, highlighter, null);
         }
 
-        if(isGrouped()) {
+        if (isGrouped()) {
             writer.writeAttribute(HTML.VALIDATION_METADATA.GROUPED, "true", null);
         }
     }
 
-    private void renderValidationMetadataMap(FacesContext context, Map<String,Object> metadata) throws IOException {
-        if(metadata == null || metadata.isEmpty()) {
+    private void renderValidationMetadataMap(FacesContext context, Map<String, Object> metadata) throws IOException {
+        if (metadata == null || metadata.isEmpty()) {
             return;
         }
 
         ResponseWriter writer = context.getResponseWriter();
 
-        for(Map.Entry<String, Object> entry : metadata.entrySet()) {
+        for (Map.Entry<String, Object> entry : metadata.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
 
-            if(value != null) {
+            if (value != null) {
                 writer.writeAttribute(key, value, null);
             }
         }
     }
 
     private void renderValidatorIds(FacesContext context, List<String> validatorIds) throws IOException {
-        if(validatorIds == null || validatorIds.isEmpty()) {
+        if (validatorIds == null || validatorIds.isEmpty()) {
             return;
         }
 
         ResponseWriter writer = context.getResponseWriter();
         StringBuilder builder = SharedStringBuilder.get(context, SB_RENDER_VALIDATOR_IDS);
 
-        for(int i = 0; i < validatorIds.size(); i++) {
+        for (int i = 0; i < validatorIds.size(); i++) {
             if (i != 0) {
                 builder.append(',');
             }

@@ -32,6 +32,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Documented
 public @interface PathParam {
+
     /**
      * The URI template variable to bind to.
      */

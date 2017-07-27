@@ -27,9 +27,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class EventBusImpl implements EventBus {
-    
-    private final MetaBroadcaster metaBroadcaster; 
-    
+
+    private final MetaBroadcaster metaBroadcaster;
+
     public EventBusImpl(MetaBroadcaster metaBroadcaster) {
         this.metaBroadcaster = metaBroadcaster;
     }
@@ -42,7 +42,9 @@ public class EventBusImpl implements EventBus {
 
     //@Override
     public EventBus publish(String path, Object o) {
-        if (!path.startsWith("/")) path = "/" + path;
+        if (!path.startsWith("/")) {
+            path = "/" + path;
+        }
 
         metaBroadcaster.broadcastTo(path, o);
         return this;

@@ -47,7 +47,7 @@ public class BodyRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         RequestContext requestContext = RequestContext.getCurrentInstance(context);
-        
+
         encodeResources(context);
 
         if (!requestContext.isAjaxRequest()) {
@@ -75,7 +75,7 @@ public class BodyRenderer extends CoreRenderer {
             writer.endElement("script");
         }
     }
-    
+
     protected void encodeResources(FacesContext context) throws IOException {
         UIViewRoot viewRoot = context.getViewRoot();
         ListIterator iter = (viewRoot.getComponentResources(context, "body")).listIterator();

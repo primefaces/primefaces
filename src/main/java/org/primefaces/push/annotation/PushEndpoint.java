@@ -29,8 +29,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface PushEndpoint {
+
     /**
      * The path that will be used to map incoming request to a PushEndpoint
+     *
      * @return the path, or "/" by default.
      */
     String value() default "/";

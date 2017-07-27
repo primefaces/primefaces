@@ -24,6 +24,7 @@ import java.lang.reflect.Type;
 
 @ApplicationScoped
 public class ServletContextInjectable implements Injectable<ServletContext> {
+
     public boolean supportedType(Type t) {
         return (t instanceof Class) && ServletContext.class.isAssignableFrom((Class) t);
     }

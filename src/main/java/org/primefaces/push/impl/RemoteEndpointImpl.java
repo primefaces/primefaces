@@ -109,10 +109,10 @@ public class RemoteEndpointImpl implements RemoteEndpoint {
 
     @Override
     public String toString() {
-        return "RemoteEndpointImpl{" +
-                "request=" + request +
-                ", uri='" + request.getRequestURI() + '\'' +
-                ", status=" + status +
-                '}';
+        return "RemoteEndpointImpl{"
+                + "request=" + request
+                + ", uri='" + request.getRequestURI() + '\''
+                + ", status=" + status
+                + '}';
     }
 }

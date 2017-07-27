@@ -19,14 +19,14 @@ import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
 import org.primefaces.push.Decoder;
 
-public class JSONDecoder implements Decoder<String,Object> {
+public class JSONDecoder implements Decoder<String, Object> {
 
     public Object decode(String s) {
-        if(s == null || s.trim().length() == 0 ) {
+        if (s == null || s.trim().length() == 0) {
             return null;
         }
         else {
-            try {  
+            try {
                 return new JSONObject(s);
             } catch (JSONException ex) {
                 throw new RuntimeException(ex);

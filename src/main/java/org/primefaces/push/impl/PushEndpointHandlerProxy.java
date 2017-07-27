@@ -75,7 +75,6 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
 
     private final Set<String> trackedUUID = Collections.synchronizedSet(new HashSet<String>());
 
-
     // Duplicate message because of Atmosphere 2.2.x API Changes from 2.1.x
     private final BroadcastFilter onMessageFilter = new BroadcastFilter() {
         //@Override
@@ -162,7 +161,9 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
                 @Override
                 public void onSuspend(AtmosphereResourceEvent event) {
                     try {
-                        if (!trackedUUID.add(resource.uuid())) return;
+                        if (!trackedUUID.add(resource.uuid())) {
+                            return;
+                        }
 
                         // TODO: Document this behavior
                         // Temporary remove the resource from being the target for event, to avoid long-poling loop.

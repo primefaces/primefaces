@@ -62,8 +62,9 @@ public class OutcomeTargetRenderer extends CoreRenderer {
     protected boolean containsEL(List<String> values) {
         if (!values.isEmpty()) {
             for (String value : values) {
-                if (isExpression(value))
+                if (isExpression(value)) {
                     return true;
+                }
             }
         }
 
@@ -99,7 +100,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
                 params = new LinkedHashMap<String, List<String>>();
             }
 
-            for (Map.Entry<String,List<String>> entry : navCaseParams.entrySet()) {
+            for (Map.Entry<String, List<String>> entry : navCaseParams.entrySet()) {
                 String key = entry.getKey();
 
                 //UIParams take precedence
@@ -151,15 +152,14 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             NavigationCase navCase = findNavigationCase(context, outcomeTarget);
 
             if (navCase == null) {
-            	throw new FacesException("Could not resolve NavigationCase for outcome: " + outcomeTarget.getOutcome());
+                throw new FacesException("Could not resolve NavigationCase for outcome: " + outcomeTarget.getOutcome());
             }
 
             String toViewId = navCase.getToViewId(context);
             boolean isIncludeViewParams = isIncludeViewParams(outcomeTarget, navCase);
             Map<String, List<String>> params = getParams(context, navCase, outcomeTarget);
 
-            if (params == null)
-            {
+            if (params == null) {
                 params = Collections.emptyMap();
             }
 
