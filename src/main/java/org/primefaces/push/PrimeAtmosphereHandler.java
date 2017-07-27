@@ -65,7 +65,9 @@ public class PrimeAtmosphereHandler extends AbstractReflectorAtmosphereHandler {
         boolean ok;
         for (PushRule r : rules) {
             ok = r.apply(resource);
-            if (!ok) return;
+            if (!ok) {
+                return;
+            }
         }
     }
 

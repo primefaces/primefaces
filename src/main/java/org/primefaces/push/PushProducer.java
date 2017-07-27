@@ -29,7 +29,7 @@ public class PushProducer {
     }
 
     @Produces
-    public EventBus getEventBus(){
+    public EventBus getEventBus() {
         return eventBus;
     }
 

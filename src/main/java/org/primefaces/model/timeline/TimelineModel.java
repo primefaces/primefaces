@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.primefaces.model.timeline;
 
 import java.io.Serializable;
@@ -372,8 +371,8 @@ public class TimelineModel implements Serializable {
             }
         }
 
-        TimelineEvent mergedEvent =
-                new TimelineEvent(event.getData(), orderedEvents.first().getStartDate(), endDate, event.isEditable(),
+        TimelineEvent mergedEvent
+                = new TimelineEvent(event.getData(), orderedEvents.first().getStartDate(), endDate, event.isEditable(),
                         event.getGroup(), event.getStyleClass());
 
         // merge...
@@ -481,9 +480,8 @@ public class TimelineModel implements Serializable {
             // 3. event 2 is completely strong within the event 1
             return (event1.getStartDate().equals(event2.getStartDate()) || event1.getStartDate().equals(event2.getEndDate())
                     || (event1.getStartDate().after(event2.getStartDate()) && event1.getStartDate().before(event2.getEndDate())))
-                    ||
-                    (event1.getEndDate().equals(event2.getStartDate()) || event1.getEndDate().equals(event2.getEndDate())
-                            || (event1.getEndDate().after(event2.getStartDate()) && event1.getEndDate().before(event2.getEndDate())))
+                    || (event1.getEndDate().equals(event2.getStartDate()) || event1.getEndDate().equals(event2.getEndDate())
+                    || (event1.getEndDate().after(event2.getStartDate()) && event1.getEndDate().before(event2.getEndDate())))
                     || (event1.getStartDate().before(event2.getStartDate()) && event1.getEndDate().after(event2.getEndDate()));
         }
     }

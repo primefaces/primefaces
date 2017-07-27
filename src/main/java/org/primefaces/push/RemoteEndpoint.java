@@ -23,6 +23,7 @@ import java.util.Map;
  * A representation of a remote client.
  */
 public interface RemoteEndpoint {
+
     /**
      * Return the HTTP Headers
      *

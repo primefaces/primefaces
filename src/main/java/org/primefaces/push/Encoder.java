@@ -42,10 +42,12 @@ package org.primefaces.push;
  * @param <U>
  * @param <T>
  */
-public interface Encoder<U, T> extends org.atmosphere.config.managed.Encoder<U, T>{
-   // Atmosphere Proxy
+public interface Encoder<U, T> extends org.atmosphere.config.managed.Encoder<U, T> {
+    // Atmosphere Proxy
+
     /**
      * Encode the object of type U into an object of type T.
+     *
      * @param s an object that has already been encoded or returned from an @Message annotated class.
      * @return an encoded object.
      */

@@ -25,12 +25,13 @@ import org.atmosphere.cpr.AtmosphereResource;
  * @deprecated With PrimeFaces 4.1 and up, it is recommended to use {@link PushEndpoint}
  */
 public interface PushRule {
+
     /**
      * Configure an {@link AtmosphereResource} and creates channel of communication on the fly.
+     *
      * @param resource an {@link AtmosphereResource}
      * @return true if other rule can be invoked, false if this rule terminate the process.
      */
     boolean apply(AtmosphereResource resource);
 
 }
-
