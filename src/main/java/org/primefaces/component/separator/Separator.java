@@ -19,5 +19,5 @@ package org.primefaces.component.separator;
  * Backward compatibility between PrimeFaces Mobile targeting 3.5 and PrimeFaces 4.0
  */
 public interface Separator {
-    
+
 }

@@ -26,7 +26,7 @@ public class PanelGridBodyRowRenderer extends CoreRenderer implements HelperRowR
 
     public void encode(FacesContext context, Row row) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
         writer.startElement("tr", row);
         writer.writeAttribute("class", PanelGrid.TABLE_ROW_CLASS, null);
         writer.writeAttribute("role", "row", null);

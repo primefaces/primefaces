@@ -23,22 +23,22 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
 
-public class SeparatorRenderer extends CoreRenderer{
+public class SeparatorRenderer extends CoreRenderer {
 
-	@Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
-		UISeparator separator = (UISeparator) component;
-		ResponseWriter writer = context.getResponseWriter();
-		String styleClass = separator.getStyleClass();
+    @Override
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        UISeparator separator = (UISeparator) component;
+        ResponseWriter writer = context.getResponseWriter();
+        String styleClass = separator.getStyleClass();
         styleClass = styleClass == null ? UISeparator.DEFAULT_STYLE_CLASS : UISeparator.DEFAULT_STYLE_CLASS + " " + styleClass;
-		
-		writer.startElement("hr", separator);
-		writer.writeAttribute("id", separator.getClientId(context), "id");
-		writer.writeAttribute("class", styleClass, "styleClass");
-		
-		if(separator.getTitle() != null) writer.writeAttribute("title", separator.getTitle(), "title");
-		if(separator.getStyle() != null) writer.writeAttribute("style", separator.getStyle(), "style");
-        
+
+        writer.startElement("hr", separator);
+        writer.writeAttribute("id", separator.getClientId(context), "id");
+        writer.writeAttribute("class", styleClass, "styleClass");
+
+        if (separator.getTitle() != null) writer.writeAttribute("title", separator.getTitle(), "title");
+        if (separator.getStyle() != null) writer.writeAttribute("style", separator.getStyle(), "style");
+
         writer.endElement("hr");
-	}
+    }
 }

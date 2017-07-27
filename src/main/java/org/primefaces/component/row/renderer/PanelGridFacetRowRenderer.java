@@ -25,7 +25,7 @@ public class PanelGridFacetRowRenderer extends CoreRenderer implements HelperRow
 
     public void encode(FacesContext context, Row row) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
         writer.startElement("tr", row);
         writer.writeAttribute("class", "ui-widget-header", null);
         writer.writeAttribute("role", "row", null);

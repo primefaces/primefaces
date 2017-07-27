@@ -25,10 +25,10 @@ public class ColumnGroupHelperRenderer extends CoreRenderer implements HelperRow
 
     public void encode(FacesContext context, Row row) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
         writer.startElement("tr", row);
         renderChildren(context, row);
         writer.endElement("tr");
     }
-    
+
 }

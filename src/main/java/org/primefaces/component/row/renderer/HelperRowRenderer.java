@@ -20,6 +20,6 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.row.Row;
 
 public interface HelperRowRenderer {
- 
+
     public void encode(FacesContext context, Row row) throws IOException;
 }
