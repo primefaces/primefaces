@@ -21,30 +21,30 @@ import java.util.List;
 
 public class DefaultDashboardModel implements DashboardModel, Serializable {
 
-	private List<DashboardColumn> columns;
+    private List<DashboardColumn> columns;
 
-	public DefaultDashboardModel() {
-		columns = new ArrayList<DashboardColumn>();
-	}
-	
-	public List<DashboardColumn> getColumns() {
-		return columns;
-	}
-	
-	public void addColumn(DashboardColumn column) {
-		columns.add(column);
-	}
-	
-	public int getColumnCount() {
-		return columns.size();
-	}
-	
-	public DashboardColumn getColumn(int index) {
-		return columns.get(index);
-	}
-	
-	public void transferWidget(DashboardColumn fromColumn, DashboardColumn toColumn, String widgetId, int index) {
-		fromColumn.removeWidget(widgetId);
-		toColumn.addWidget(index, widgetId);
-	}
+    public DefaultDashboardModel() {
+        columns = new ArrayList<DashboardColumn>();
+    }
+
+    public List<DashboardColumn> getColumns() {
+        return columns;
+    }
+
+    public void addColumn(DashboardColumn column) {
+        columns.add(column);
+    }
+
+    public int getColumnCount() {
+        return columns.size();
+    }
+
+    public DashboardColumn getColumn(int index) {
+        return columns.get(index);
+    }
+
+    public void transferWidget(DashboardColumn fromColumn, DashboardColumn toColumn, String widgetId, int index) {
+        fromColumn.removeWidget(widgetId);
+        toColumn.addWidget(index, widgetId);
+    }
 }

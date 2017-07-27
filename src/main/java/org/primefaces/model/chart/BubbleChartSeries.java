@@ -24,7 +24,8 @@ public class BubbleChartSeries implements Serializable {
     private int radius;
     private String label;
 
-    public BubbleChartSeries() {}
+    public BubbleChartSeries() {
+    }
 
     public BubbleChartSeries(String label) {
         this.label = label;
@@ -36,7 +37,7 @@ public class BubbleChartSeries implements Serializable {
         this.y = y;
         this.radius = radius;
     }
-    
+
     public String getLabel() {
         return label;
     }
@@ -44,7 +45,7 @@ public class BubbleChartSeries implements Serializable {
     public void setLabel(String label) {
         this.label = label;
     }
-    
+
     public int getRadius() {
         return radius;
     }

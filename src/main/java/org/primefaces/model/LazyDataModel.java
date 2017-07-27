@@ -65,10 +65,12 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
     public void setRowIndex(int rowIndex) {
         int oldIndex = this.rowIndex;
 
-        if (rowIndex == -1 || pageSize == 0)
+        if (rowIndex == -1 || pageSize == 0) {
             this.rowIndex = -1;
-        else
+        }
+        else {
             this.rowIndex = (rowIndex % pageSize);
+        }
 
         if (data == null) {
             return;

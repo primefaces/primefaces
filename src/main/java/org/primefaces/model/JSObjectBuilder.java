@@ -17,5 +17,5 @@ package org.primefaces.model;
 
 public interface JSObjectBuilder {
 
-	public String build();
+    public String build();
 }

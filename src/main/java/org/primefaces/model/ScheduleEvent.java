@@ -20,24 +20,24 @@ import java.util.Date;
 public interface ScheduleEvent {
 
     public String getId();
-    
+
     public void setId(String id);
-    
+
     public Object getData();
-    
+
     public String getTitle();
-    
+
     public Date getStartDate();
-    
+
     public Date getEndDate();
-    
+
     public boolean isAllDay();
-    
+
     public String getStyleClass();
-    
+
     public boolean isEditable();
-        
+
     public String getDescription();
-    
+
     public String getUrl();
 }

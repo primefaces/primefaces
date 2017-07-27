@@ -16,13 +16,13 @@
 package org.primefaces.model.chart;
 
 public enum LegendPlacement {
-    
+
     OUTSIDE("outside"),
     OUTSIDEGRID("outsideGrid"),
     INSIDE("inside");
-    
+
     private final String text;
-    
+
     LegendPlacement(String text) {
         this.text = text;
     }

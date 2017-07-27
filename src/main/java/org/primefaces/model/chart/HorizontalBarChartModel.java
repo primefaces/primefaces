@@ -18,14 +18,14 @@ package org.primefaces.model.chart;
 import java.util.HashMap;
 
 public class HorizontalBarChartModel extends BarChartModel {
-    
+
     @Override
     public void createAxes() {
         axes = new HashMap<AxisType, Axis>();
         axes.put(AxisType.X, new LinearAxis());
         axes.put(AxisType.Y, new CategoryAxis());
     }
-    
+
     @Override
     public String getOrientation() {
         return "horizontal";

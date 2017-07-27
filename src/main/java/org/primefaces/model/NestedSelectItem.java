@@ -18,5 +18,5 @@ package org.primefaces.model;
 import javax.faces.model.SelectItem;
 
 public class NestedSelectItem extends SelectItem {
-    
+
 }

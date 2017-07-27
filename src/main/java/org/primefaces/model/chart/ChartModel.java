@@ -63,7 +63,7 @@ public class ChartModel implements Serializable {
     public void setNegativeSeriesColors(String negativeSeriesColors) {
         this.negativeSeriesColors = negativeSeriesColors;
     }
-    
+
     public String getLegendPosition() {
         return legendPosition;
     }
@@ -95,7 +95,7 @@ public class ChartModel implements Serializable {
     public void setLegendPlacement(LegendPlacement legendPlacement) {
         this.legendPlacement = legendPlacement;
     }
-    
+
     public boolean isMouseoverHighlight() {
         return mouseoverHighlight;
     }
@@ -111,7 +111,7 @@ public class ChartModel implements Serializable {
     public void setResetAxesOnResize(boolean resetAxesOnResize) {
         this.resetAxesOnResize = resetAxesOnResize;
     }
- 
+
     public String getExtender() {
         return extender;
     }
@@ -119,7 +119,7 @@ public class ChartModel implements Serializable {
     public void setExtender(String extender) {
         this.extender = extender;
     }
-    
+
     public boolean isLegendEscapeHtml() {
         return legendEscapeHtml;
     }

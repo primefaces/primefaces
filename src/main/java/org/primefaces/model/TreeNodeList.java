@@ -21,6 +21,7 @@ public class TreeNodeList extends ArrayList<TreeNode> {
 
     /**
      * Optimized set implementation to be used in sorting
+     *
      * @param index index of the element to replace
      * @param node node to be stored at the specified position
      * @return the node previously at the specified position
@@ -29,4 +30,3 @@ public class TreeNodeList extends ArrayList<TreeNode> {
         throw new UnsupportedOperationException();
     }
 }
-

@@ -30,7 +30,8 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     private String filename;
     private byte[] cachedContent;
 
-    public NativeUploadedFile() {}
+    public NativeUploadedFile() {
+    }
 
     public NativeUploadedFile(Part part) {
         this.part = part;
@@ -49,7 +50,7 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
         return part.getSize();
     }
 
-     public byte[] getContents() {
+    public byte[] getContents() {
         if (cachedContent != null) {
             return cachedContent;
         }
@@ -84,7 +85,7 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     }
 
     public String getContentType() {
-       return part.getContentType();
+        return part.getContentType();
     }
 
     private String resolveFilename(Part part) {

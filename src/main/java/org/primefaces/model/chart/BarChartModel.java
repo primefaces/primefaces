@@ -22,12 +22,12 @@ import java.util.List;
 import java.util.Map;
 
 public class BarChartModel extends CartesianChartModel {
-    
+
     private int barPadding = 8;
     private int barMargin = 10;
     private int barWidth = 0;
     private boolean stacked = false;
-        
+
     @Override
     public void createAxes() {
         axes = new HashMap<AxisType, Axis>();
@@ -54,35 +54,36 @@ public class BarChartModel extends CartesianChartModel {
     public void setBarMargin(int barMargin) {
         this.barMargin = barMargin;
     }
-    
-	public int getBarWidth() {
-		return barWidth;
-	}
 
-	public void setBarWidth(int barWidth) {
-		this.barWidth = barWidth;
-	}
+    public int getBarWidth() {
+        return barWidth;
+    }
 
-	public boolean isStacked() {
+    public void setBarWidth(int barWidth) {
+        this.barWidth = barWidth;
+    }
+
+    public boolean isStacked() {
         return stacked;
     }
+
     public void setStacked(boolean stacked) {
         this.stacked = stacked;
     }
-    
+
     public List<String> getTicks() {
         List<ChartSeries> series = this.getSeries();
         List<String> ticks = new ArrayList<String>();
-        
-        if(series.size() > 0) {
-            Map<Object,Number> firstSeriesData = series.get(0).getData();
-            for(Iterator<Object> it = firstSeriesData.keySet().iterator(); it.hasNext();) {
+
+        if (series.size() > 0) {
+            Map<Object, Number> firstSeriesData = series.get(0).getData();
+            for (Iterator<Object> it = firstSeriesData.keySet().iterator(); it.hasNext();) {
                 Object key = it.next();
-                
+
                 ticks.add(key.toString());
             }
         }
-        
+
         return ticks;
     }
 }

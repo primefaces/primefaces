@@ -22,7 +22,8 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
-public class TreeNodeComparator implements Comparator{
+public class TreeNodeComparator implements Comparator {
+
     private ValueExpression sortBy;
     private boolean asc;
     private String var;
@@ -50,19 +51,23 @@ public class TreeNodeComparator implements Comparator{
             Object value2 = sortBy.getValue(context.getELContext());
 
             int result;
-            
+
             //Empty check
             if (value1 == null && value2 == null) {
-            	return 0;
-            } else if (value1 == null) {
-            	result = 1;
-            } else if (value2 == null) {
-            	result = -1;
-            } else if (sortFunction == null) {
-                if(value1 instanceof String && value2 instanceof String) {
-                    result = this.caseSensitive ? ((Comparable) value1).compareTo(value2):
-                                        (((String) value1).toLowerCase(locale)).compareTo(((String) value2).toLowerCase(locale));
-                } else {
+                return 0;
+            }
+            else if (value1 == null) {
+                result = 1;
+            }
+            else if (value2 == null) {
+                result = -1;
+            }
+            else if (sortFunction == null) {
+                if (value1 instanceof String && value2 instanceof String) {
+                    result = this.caseSensitive ? ((Comparable) value1).compareTo(value2)
+                            : (((String) value1).toLowerCase(locale)).compareTo(((String) value2).toLowerCase(locale));
+                }
+                else {
                     result = ((Comparable) value1).compareTo(value2);
                 }
             } else {
@@ -71,7 +76,8 @@ public class TreeNodeComparator implements Comparator{
 
             return asc ? result : -1 * result;
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new FacesException(e);
         }
     }

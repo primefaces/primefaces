@@ -22,8 +22,9 @@ import org.primefaces.util.ComponentUtils;
 public class BarChartSeries extends ChartSeries {
 
     private boolean disableStack;
-    
-    public BarChartSeries() {}
+
+    public BarChartSeries() {
+    }
 
     public boolean isDisableStack() {
         return disableStack;
@@ -37,15 +38,15 @@ public class BarChartSeries extends ChartSeries {
     public String getRenderer() {
         return "BarRenderer";
     }
-    
+
     @Override
     public void encode(Writer writer) throws IOException {
         writer.write("{");
         writer.write("label:\"" + ComponentUtils.escapeText(this.getLabel()) + "\"");
 
         writer.write(",renderer: $.jqplot." + this.getRenderer());
-        
-        if(disableStack) writer.write(",disableStack:true");
+
+        if (disableStack) writer.write(",disableStack:true");
 
         writer.write("}");
     }

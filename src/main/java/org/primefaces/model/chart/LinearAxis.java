@@ -16,13 +16,14 @@
 package org.primefaces.model.chart;
 
 public class LinearAxis extends Axis {
- 
-    public LinearAxis() {}
-    
+
+    public LinearAxis() {
+    }
+
     public LinearAxis(String label) {
         super(label);
     }
-    
+
     public String getRenderer() {
         return "LinearAxisRenderer";
     }

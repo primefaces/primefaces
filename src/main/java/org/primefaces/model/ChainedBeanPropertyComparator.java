@@ -22,27 +22,27 @@ import java.util.List;
 public class ChainedBeanPropertyComparator implements Comparator {
 
     private List<BeanPropertyComparator> comparators;
-    
+
     public ChainedBeanPropertyComparator() {
-        comparators = new ArrayList<BeanPropertyComparator>(); 
+        comparators = new ArrayList<BeanPropertyComparator>();
     }
-    
+
     public void addComparator(BeanPropertyComparator comparator) {
         this.comparators.add(comparator);
     }
-    
-    public int compare(Object obj1, Object obj2) {        
-        for(BeanPropertyComparator comparator : comparators) {
+
+    public int compare(Object obj1, Object obj2) {
+        for (BeanPropertyComparator comparator : comparators) {
             int result = comparator.compare(obj1, obj2);
-            
-            if(result == 0) {
+
+            if (result == 0) {
                 continue;
             }
             else {
                 return result;
             }
         }
-        
+
         return 0;
     }
 }

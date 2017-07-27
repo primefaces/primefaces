@@ -60,23 +60,23 @@ public class BeanPropertyComparator implements Comparator {
             Object value2 = sortBy.getValue(context.getELContext());
 
             int result;
-            
+
             //Empty check
             if (value1 == null && value2 == null) {
-            	return 0;
+                return 0;
             } else if (value1 == null) {
-            	result = 1 * nullSortOrder;
+                result = 1 * nullSortOrder;
             } else if (value2 == null) {
-            	result = -1 * nullSortOrder;
+                result = -1 * nullSortOrder;
             } else if (sortFunction == null) {
-                if(value1 instanceof String && value2 instanceof String) {
-                    if(this.caseSensitive) {
+                if (value1 instanceof String && value2 instanceof String) {
+                    if (this.caseSensitive) {
                         result = collator.compare(value1, value2);
                     }
                     else {
                         String str1 = (((String) value1).toLowerCase(locale));
                         String str2 = (((String) value2).toLowerCase(locale));
-                        
+
                         result = collator.compare(str1, str2);
                     }
                 } else {

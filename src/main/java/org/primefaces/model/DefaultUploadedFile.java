@@ -23,38 +23,39 @@ import java.io.Serializable;
 import org.apache.commons.fileupload.FileItem;
 
 /**
- * 
+ *
  * UploadedFile implementation based on Commons FileUpload FileItem
  */
 public class DefaultUploadedFile implements UploadedFile, Serializable {
 
-	private FileItem fileItem;
-	
-	public DefaultUploadedFile() {}
+    private FileItem fileItem;
 
-	public DefaultUploadedFile(FileItem fileItem) {
-		this.fileItem = fileItem;
-	}
+    public DefaultUploadedFile() {
+    }
 
-	public String getFileName() {
-		return fileItem.getName();
-	}
+    public DefaultUploadedFile(FileItem fileItem) {
+        this.fileItem = fileItem;
+    }
 
-	public InputStream getInputstream() throws IOException {
-		return fileItem.getInputStream();
-	}
+    public String getFileName() {
+        return fileItem.getName();
+    }
 
-	public long getSize() {
-		return fileItem.getSize();
-	}
+    public InputStream getInputstream() throws IOException {
+        return fileItem.getInputStream();
+    }
 
-	public byte[] getContents() {
-		return fileItem.get();
-	}
+    public long getSize() {
+        return fileItem.getSize();
+    }
 
-	public String getContentType() {
-		return fileItem.getContentType();
-	}
+    public byte[] getContents() {
+        return fileItem.get();
+    }
+
+    public String getContentType() {
+        return fileItem.getContentType();
+    }
 
     public void write(String filePath) throws Exception {
         fileItem.write(new File(filePath));

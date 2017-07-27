@@ -16,9 +16,10 @@
 package org.primefaces.model.chart;
 
 public class DateAxis extends Axis {
-    
-    public DateAxis() {}
-    
+
+    public DateAxis() {
+    }
+
     public DateAxis(String label) {
         super(label);
     }

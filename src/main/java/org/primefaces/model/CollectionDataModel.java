@@ -25,7 +25,7 @@ public class CollectionDataModel<E> extends DataModel<E> {
     private int index = -1;
     private Collection<E> wrapped;
     private E[] wrappedArray;
-    
+
     public CollectionDataModel() {
         this(null);
     }
@@ -39,7 +39,7 @@ public class CollectionDataModel<E> extends DataModel<E> {
         if (wrappedArray == null) {
             return -1;
         }
-        
+
         return wrappedArray.length;
     }
 
@@ -62,22 +62,22 @@ public class CollectionDataModel<E> extends DataModel<E> {
         if (rowIndex < -1) {
             throw new IllegalArgumentException();
         }
-        
+
         int oldIndex = index;
         index = rowIndex;
 
         if (wrappedArray == null) {
             return;
         }
-        
+
         DataModelListener[] listeners = getDataModelListeners();
         if (oldIndex != index && listeners != null) {
-            
+
             Object rowData = null;
             if (isRowAvailable()) {
                 rowData = getRowData();
             }
-            
+
             DataModelEvent event = new DataModelEvent(this, index, rowData);
             for (DataModelListener listener : listeners) {
                 if (listener != null) {

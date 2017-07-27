@@ -18,42 +18,42 @@ package org.primefaces.model;
 import java.util.List;
 
 public interface TreeNode {
-		
-	public String getType();
-    
+
+    public String getType();
+
     public void setType(String type);
 
-	public Object getData();
-	
-	public List<TreeNode> getChildren();
-	
-	public TreeNode getParent();
-	
-	public void setParent(TreeNode treeNode);
+    public Object getData();
 
-	public boolean isExpanded();
-	
-	public void setExpanded(boolean expanded);
+    public List<TreeNode> getChildren();
 
-	public int getChildCount();
-	
-	public boolean isLeaf();
+    public TreeNode getParent();
+
+    public void setParent(TreeNode treeNode);
+
+    public boolean isExpanded();
+
+    public void setExpanded(boolean expanded);
+
+    public int getChildCount();
+
+    public boolean isLeaf();
 
     public boolean isSelected();
 
     public void setSelected(boolean value);
-    
+
     public boolean isSelectable();
-	
-	public void setSelectable(boolean selectable);
-    
+
+    public void setSelectable(boolean selectable);
+
     public boolean isPartialSelected();
-    
+
     public void setPartialSelected(boolean value);
-    
+
     public void setRowKey(String rowKey);
-    
+
     public String getRowKey();
-    
+
     public void clearParent();
 }

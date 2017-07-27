@@ -19,17 +19,18 @@ import javax.el.MethodExpression;
 import org.primefaces.component.api.UIColumn;
 
 public class SortMeta {
-    
+
     private UIColumn column;
-    
+
     private String sortField;
-    
+
     private SortOrder sortOrder;
-    
+
     private MethodExpression sortFunction;
 
-    public SortMeta() {}
-    
+    public SortMeta() {
+    }
+
     public SortMeta(UIColumn column, String sortField, SortOrder sortOrder, MethodExpression sortFunction) {
         this.column = column;
         this.sortField = sortField;
@@ -69,9 +70,9 @@ public class SortMeta {
         this.sortFunction = sortFunction;
     }
 
-   @Override
-   public String toString() {
-      return "SortMeta [column=" + column + ", sortField=" + sortField + ", sortOrder=" + sortOrder + ", sortFunction="
-               + sortFunction + "]";
-   }
+    @Override
+    public String toString() {
+        return "SortMeta [column=" + column + ", sortField=" + sortField + ", sortOrder=" + sortOrder + ", sortFunction="
+                + sortFunction + "]";
+    }
 }

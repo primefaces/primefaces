@@ -16,9 +16,10 @@
 package org.primefaces.model.chart;
 
 public class CategoryAxis extends Axis {
-    
-    public CategoryAxis() {}
-    
+
+    public CategoryAxis() {
+    }
+
     public CategoryAxis(String label) {
         super(label);
     }
