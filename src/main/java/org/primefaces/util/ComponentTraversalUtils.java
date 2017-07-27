@@ -82,18 +82,18 @@ public class ComponentTraversalUtils {
             components.add(base);
         }
 
-    	if (base.getFacetCount() > 0) {
-    		for (UIComponent facet : base.getFacets().values()) {
-    			withId(id, facet, components);
-    		}
-    	}
+        if (base.getFacetCount() > 0) {
+            for (UIComponent facet : base.getFacets().values()) {
+                withId(id, facet, components);
+            }
+        }
 
-    	if (base.getChildCount() > 0) {
-	    	for (int i = 0, childCount = base.getChildCount(); i < childCount; i++) {
-	    		UIComponent child = base.getChildren().get(i);
-	    		withId(id, child, components);
-	    	}
-    	}
+        if (base.getChildCount() > 0) {
+            for (int i = 0, childCount = base.getChildCount(); i < childCount; i++) {
+                UIComponent child = base.getChildren().get(i);
+                withId(id, child, components);
+            }
+        }
     }
 
     /**
@@ -150,13 +150,10 @@ public class ComponentTraversalUtils {
 
             context.getViewRoot().invokeOnComponent(context, tempExpression, callback);
         }
-        else
-        {
+        else {
             callback.invokeContextCallback(context, component);
         }
     }
-
-
 
     public static UIForm closestForm(FacesContext context, UIComponent component) {
         return closest(UIForm.class, component);

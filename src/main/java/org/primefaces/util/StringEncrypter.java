@@ -28,8 +28,8 @@ import javax.faces.FacesException;
  */
 public class StringEncrypter {
 
-	private static final Logger LOG = Logger.getLogger(StringEncrypter.class.getName());
-	
+    private static final Logger LOG = Logger.getLogger(StringEncrypter.class.getName());
+
     private Cipher ecipher;
     private Cipher dcipher;
 
@@ -105,7 +105,7 @@ public class StringEncrypter {
             return Base64.encodeToString(enc, false);
 
         } catch (Exception e) {
-        	LOG.log(Level.WARNING, "Could not encrypt string", e);
+            LOG.log(Level.WARNING, "Could not encrypt string", e);
         }
 
         return null;
@@ -131,7 +131,7 @@ public class StringEncrypter {
             return new String(utf8, "UTF8");
 
         } catch (Exception e) {
-        	LOG.log(Level.WARNING, "Could not decrypt string", e);
+            LOG.log(Level.WARNING, "Could not decrypt string", e);
         }
 
         return null;

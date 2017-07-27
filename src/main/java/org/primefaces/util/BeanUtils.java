@@ -22,9 +22,9 @@ import java.util.List;
  * @author jagatai
  */
 public class BeanUtils {
-    
+
     private static List<Class<?>> primitiveTypes;
-    
+
     static {
         primitiveTypes = new ArrayList<Class<?>>();
         primitiveTypes.add(Boolean.class);
@@ -37,7 +37,7 @@ public class BeanUtils {
         primitiveTypes.add(Short.class);
         primitiveTypes.add(String.class);
     }
-    
+
     public static boolean isBean(Class<?> valueClass) {
         if (valueClass.isArray()) {
             return isBean(valueClass.getComponentType());

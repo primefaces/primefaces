@@ -18,53 +18,53 @@ package org.primefaces.util;
 import org.apache.xmlbeans.impl.common.XMLChar;
 
 public class XMLUtils {
-    
+
     /**
      * Ensure a valid XMLElement name is returned.<br>
      * Uses the {@link org.apache.xmlbeans.impl.common.XMLChar}<br>
      * Replaces spaces by underscores,  &lt; by .lt, &gt; by .gt. and
      * all other characters by '.X.', 
      * where is the output of {@link java.lang.Integer}.toHexString()
-     * 
+     *
      * @param intag the source for the element name
-     * 
+     *
      * @return valid XML element name
      */
     public static String escapeTag(String intag) {
-        if ( XMLChar.isValidName(intag) || intag == null || intag.length() == 0) {
+        if (XMLChar.isValidName(intag) || intag == null || intag.length() == 0) {
             return intag;
         }
-        
+
         StringBuilder sb = new StringBuilder(intag);
         char c;
-        for( int i=sb.length()-1; i>=0; i-- ) {
+        for (int i = sb.length() - 1; i >= 0; i--) {
             c = intag.charAt(i);
-            if ( !XMLChar.isName(c) ) {
-                switch( c ) {
+            if (!XMLChar.isName(c)) {
+                switch (c) {
                     case ' ':
                         sb.setCharAt(i, '_');
                         break;
                     case '<':
                         sb.setCharAt(i, '.');
-                        sb.insert( i+1, "lt." );
+                        sb.insert(i + 1, "lt.");
                         break;
                     case '>':
                         sb.setCharAt(i, '.');
-                        sb.insert( i+1, "gt." );
+                        sb.insert(i + 1, "gt.");
                         break;
                     default:
                         sb.setCharAt(i, '.');
-                        sb.insert( i+1, '.');
-                        sb.insert( i+1, Integer.toHexString(c));
+                        sb.insert(i + 1, '.');
+                        sb.insert(i + 1, Integer.toHexString(c));
                         break;
                 }
             }
         }
         // Make sure the first character is an allowed one
-        if ( !XMLChar.isNameStart( sb.charAt(0)) ) {
-            sb.insert(0, '_' ); 
+        if (!XMLChar.isNameStart(sb.charAt(0))) {
+            sb.insert(0, '_');
         }
-        
+
         return sb.toString();
     }
 }

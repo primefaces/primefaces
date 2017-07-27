@@ -19,9 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GridLayoutUtils {
-    
+
     private static final Map<Integer, String> COLUMN_MAP = new HashMap<Integer, String>();
-    
+
     static {
         COLUMN_MAP.put(1, "ui-grid-col-12");
         COLUMN_MAP.put(2, "ui-grid-col-6");
@@ -30,9 +30,10 @@ public class GridLayoutUtils {
         COLUMN_MAP.put(6, "ui-grid-col-2");
         COLUMN_MAP.put(12, "ui-grid-col-1");
     }
-    
-    private GridLayoutUtils() {}
-    
+
+    private GridLayoutUtils() {
+    }
+
     public static String getColumnClass(int columns) {
         return COLUMN_MAP.get(columns);
     }
