@@ -124,7 +124,8 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("value", itemValueAsString, null);
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("tabindex", "-1", null);
         
         if(selected) writer.writeAttribute("checked", "checked", null);
         if(disabled) writer.writeAttribute("disabled", "disabled", null);
