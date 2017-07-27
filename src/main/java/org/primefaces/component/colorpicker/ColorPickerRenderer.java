@@ -57,7 +57,7 @@ public class ColorPickerRenderer extends CoreRenderer {
         } else {
             value = (String) colorPicker.getValue();
         }
-        
+
         encodeMarkup(context, colorPicker, value);
         encodeScript(context, colorPicker, value);
     }
@@ -73,13 +73,13 @@ public class ColorPickerRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(colorPicker.getStyle() != null) {
+        if (colorPicker.getStyle() != null) {
             writer.writeAttribute("style", colorPicker.getStyle(), "style");
         }
 
-        if(isPopup) {
+        if (isPopup) {
             encodeButton(context, clientId, value);
-        } 
+        }
         else {
             encodeInline(context, clientId);
         }
@@ -94,58 +94,58 @@ public class ColorPickerRenderer extends CoreRenderer {
         if (!isValueBlank(onchange)) {
             writer.writeAttribute("onchange", onchange, null);
         }
-        
+
         renderPassThruAttributes(context, colorPicker, null);
 
-        if(value != null) {
+        if (value != null) {
             writer.writeAttribute("value", value, null);
         }
         writer.endElement("input");
 
         writer.endElement("span");
     }
-    
+
     protected void encodeButton(FacesContext context, String clientId, String value) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-        
+        ResponseWriter writer = context.getResponseWriter();
+
         writer.startElement("button", null);
         writer.writeAttribute("id", clientId + "_button", null);
         writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS, null);
-                
+
         //text
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        
-        writer.write("<span id=\""+ clientId + "_livePreview\" style=\"overflow:hidden;width:1em;height:1em;display:block;border:solid 1px #000;text-indent:1em;white-space:nowrap;");
-        if(value != null) {
+
+        writer.write("<span id=\"" + clientId + "_livePreview\" style=\"overflow:hidden;width:1em;height:1em;display:block;border:solid 1px #000;text-indent:1em;white-space:nowrap;");
+        if (value != null) {
             writer.write("background-color:#" + value);
         }
         writer.write("\">Live Preview</span>");
-        
+
         writer.endElement("span");
 
         writer.endElement("button");
     }
-    
+
     protected void encodeInline(FacesContext context, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId + "_inline", "id");
         writer.endElement("div");
     }
 
     protected void encodeScript(FacesContext context, ColorPicker colorPicker, String value) throws IOException {
-		String clientId = colorPicker.getClientId(context);
+        String clientId = colorPicker.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        
+
         wb.initWithDomReady("ColorPicker", colorPicker.resolveWidgetVar(), clientId)
-            .attr("mode", colorPicker.getMode())
-            .attr("color", value, null);
+                .attr("mode", colorPicker.getMode())
+                .attr("color", value, null);
 
         encodeClientBehaviors(context, colorPicker);
-        
+
         wb.finish();
     }
 }

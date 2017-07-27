@@ -34,8 +34,8 @@ public class ScrollFeature implements DataTableFeature {
         boolean isVirtualScroll = table.isVirtualScroll();
         boolean isLazy = table.isLazy();
         int scrollOffset = 0;
-        
-        if(isVirtualScroll) {
+
+        if (isVirtualScroll) {
             scrollOffset = Integer.parseInt(params.get(table.getClientId(context) + "_first"));
             int rowCount = table.getRowCount();
             int virtualScrollRows = (scrollRows * 2);
@@ -49,14 +49,14 @@ public class ScrollFeature implements DataTableFeature {
         if (isLazy) {
             table.loadLazyScrollData(scrollOffset, scrollRows);
         }
-        
+
         if (table.isSelectionEnabled()) {
             table.findSelectedRowKeys();
         }
-        
+
         int firstIndex = (isLazy && isVirtualScroll) ? 0 : scrollOffset;
         int lastIndex = (firstIndex + scrollRows);
-                
+
         for (int i = firstIndex; i < lastIndex; i++) {
             table.setRowIndex(i);
 
@@ -74,5 +74,5 @@ public class ScrollFeature implements DataTableFeature {
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_scrolling");
     }
-    
+
 }

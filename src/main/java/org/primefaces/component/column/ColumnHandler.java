@@ -26,27 +26,27 @@ import org.primefaces.facelets.MethodRule;
 
 public class ColumnHandler extends ComponentHandler {
 
-	private static final MetaRule SORT_FUNCTION =
-			new MethodRule("sortFunction", Integer.class, new Class[]{Object.class, Object.class});
-    
-    private static final MetaRule FILTER_FUNCTION =
-			new MethodRule("filterFunction", Integer.class, new Class[]{Object.class, Object.class, Locale.class});
-    
-    private static final MetaRule EXPORT_FUNCTION =
-			new MethodRule("exportFunction", Integer.class, new Class[]{UIColumn.class});
-	
-	public ColumnHandler(ComponentConfig config) {
-		super(config);
-	}
-	
+    private static final MetaRule SORT_FUNCTION
+            = new MethodRule("sortFunction", Integer.class, new Class[]{Object.class, Object.class});
+
+    private static final MetaRule FILTER_FUNCTION
+            = new MethodRule("filterFunction", Integer.class, new Class[]{Object.class, Object.class, Locale.class});
+
+    private static final MetaRule EXPORT_FUNCTION
+            = new MethodRule("exportFunction", Integer.class, new Class[]{UIColumn.class});
+
+    public ColumnHandler(ComponentConfig config) {
+        super(config);
+    }
+
     @Override
-	protected MetaRuleset createMetaRuleset(Class type) { 
-		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
- 
-		metaRuleset.addRule(SORT_FUNCTION);
+    protected MetaRuleset createMetaRuleset(Class type) {
+        MetaRuleset metaRuleset = super.createMetaRuleset(type);
+
+        metaRuleset.addRule(SORT_FUNCTION);
         metaRuleset.addRule(FILTER_FUNCTION);
         metaRuleset.addRule(EXPORT_FUNCTION);
-		
-		return metaRuleset; 
-	} 
+
+        return metaRuleset;
+    }
 }

@@ -25,11 +25,11 @@ public class ResizableColumnsFeature implements DataTableFeature {
     public void decode(FacesContext context, DataTable table) {
         throw new RuntimeException("ResizableColumnsFeature should not decode.");
     }
-    
+
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         throw new RuntimeException("ResizableColumnsFeature should not encode.");
     }
-    
+
     public boolean shouldDecode(FacesContext context, DataTable table) {
         return false;
     }

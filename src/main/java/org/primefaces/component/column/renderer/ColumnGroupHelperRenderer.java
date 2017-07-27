@@ -36,20 +36,22 @@ public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
                 DataTable.DEFAULT_RENDERER,
                 DataTableRenderer.class);
 
-        if(type.equals("header") || type.equals("frozenHeader") || type.equals("scrollableHeader"))
+        if (type.equals("header") || type.equals("frozenHeader") || type.equals("scrollableHeader")) {
             renderer.encodeColumnHeader(context, table, column);
-        else if(type.equals("footer") || type.equals("frozenFooter") || type.equals("scrollableFooter"))
+        }
+        else if (type.equals("footer") || type.equals("frozenFooter") || type.equals("scrollableFooter")) {
             renderer.encodeColumnFooter(context, table, column);
+        }
     }
-    
+
     private ColumnGroup findGroup(Column column) {
         UIComponent parent = column.getParent();
-        
-        while(!(parent instanceof ColumnGroup)) {
+
+        while (!(parent instanceof ColumnGroup)) {
             parent = parent.getParent();
         }
-        
+
         return (ColumnGroup) parent;
     }
-    
+
 }

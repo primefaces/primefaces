@@ -31,7 +31,7 @@ public class RowExpandFeature implements DataTableFeature {
     }
 
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         int expandedRowIndex = Integer.parseInt(params.get(table.getClientId(context) + "_expandedRowIndex"));
 
         if (table.isLazy() && ((LazyDataModel) table.getValue()).getWrappedData() == null) {
@@ -48,14 +48,14 @@ public class RowExpandFeature implements DataTableFeature {
         RowExpansion rowExpansion = table.getRowExpansion();
 
         String styleClass = DataTable.EXPANDED_ROW_CONTENT_CLASS + " ui-widget-content";
-        if(rowExpansion.getStyleClass() != null) {
+        if (rowExpansion.getStyleClass() != null) {
             styleClass = styleClass + " " + rowExpansion.getStyleClass();
         }
 
         table.setRowIndex(rowIndex);
 
-        if(rowExpansion.isRendered()) {
-            if(rowIndexVar != null) {
+        if (rowExpansion.isRendered()) {
+            if (rowIndexVar != null) {
                 context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
             }
 

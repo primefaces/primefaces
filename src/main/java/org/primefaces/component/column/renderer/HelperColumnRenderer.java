@@ -20,6 +20,6 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.column.Column;
 
 public interface HelperColumnRenderer {
-    
-    public void encode(FacesContext context, Column column) throws IOException ;
+
+    public void encode(FacesContext context, Column column) throws IOException;
 }

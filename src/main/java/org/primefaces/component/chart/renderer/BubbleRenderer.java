@@ -34,7 +34,7 @@ public class BubbleRenderer extends CartesianPlotRenderer {
         List<BubbleChartSeries> data = model.getData();
 
         writer.write(",data:[[");
-        for(Iterator<BubbleChartSeries> it = data.iterator(); it.hasNext();) {
+        for (Iterator<BubbleChartSeries> it = data.iterator(); it.hasNext();) {
             BubbleChartSeries s = it.next();
             writer.write("[");
             writer.write(String.valueOf(s.getX()));
@@ -46,33 +46,35 @@ public class BubbleRenderer extends CartesianPlotRenderer {
             writer.write(ComponentUtils.escapeText(String.valueOf(s.getLabel())));
             writer.write("\"]");
 
-            if(it.hasNext()) {
+            if (it.hasNext()) {
                 writer.write(",");
             }
         }
-        
+
         writer.write("]]");
     }
-    
+
     @Override
     protected void encodeOptions(FacesContext context, Chart chart) throws IOException {
         super.encodeOptions(context, chart);
-        
+
         ResponseWriter writer = context.getResponseWriter();
         BubbleChartModel model = (BubbleChartModel) chart.getModel();
-        
+
         writer.write(",showLabels:" + model.isShowLabels());
         writer.write(",bubbleGradients:" + model.isBubbleGradients());
         writer.write(",bubbleAlpha:" + model.getBubbleAlpha());
-        
-        if(model.isZoom())
+
+        if (model.isZoom()) {
             writer.write(",zoom:true");
-        
-        if(model.isShowDatatip()) {
+        }
+
+        if (model.isShowDatatip()) {
             writer.write(",datatip:true");
-            if(model.getDatatipFormat() != null)
+            if (model.getDatatipFormat() != null) {
                 writer.write(",datatipFormat:\"" + model.getDatatipFormat() + "\"");
+            }
         }
     }
-    
+
 }
