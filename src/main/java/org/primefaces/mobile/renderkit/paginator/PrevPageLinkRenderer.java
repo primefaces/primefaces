@@ -24,8 +24,8 @@ public class PrevPageLinkRenderer extends PageLinkRenderer implements PaginatorE
 
     public void render(FacesContext context, Pageable pageable) throws IOException {
         boolean disabled = pageable.getPage() == 0;
-       
+
         super.render(context, pageable, "ui-paginator-prev ui-btn ui-btn-icon-notext ui-icon-back", disabled);
     }
-    
+
 }

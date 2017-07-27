@@ -28,9 +28,9 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 public class PaginatorRenderer extends CoreRenderer {
-    
-    private static Map<String,PaginatorElementRenderer> ELEMENTS;
-    
+
+    private static Map<String, PaginatorElementRenderer> ELEMENTS;
+
     static {
         ELEMENTS = new HashMap<String, PaginatorElementRenderer>();
         ELEMENTS.put("{FirstPageLink}", new FirstPageLinkRenderer());
@@ -41,41 +41,42 @@ public class PaginatorRenderer extends CoreRenderer {
     }
 
     public void encodeMarkup(FacesContext context, Pageable pageable, String position) throws IOException {
-        if(!pageable.isPaginatorAlwaysVisible() && pageable.getPageCount() <= 1) {
+        if (!pageable.isPaginatorAlwaysVisible() && pageable.getPageCount() <= 1) {
             return;
         }
-        
+
         ResponseWriter writer = context.getResponseWriter();
-        String id = pageable.getClientId(context) + "_paginator_" + position; 
-                
+        String id = pageable.getClientId(context) + "_paginator_" + position;
+
         writer.startElement("div", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("class", "ui-bar-a ui-paginator", null);
         writer.writeAttribute("role", "navigation", null);
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-controlgroup ui-controlgroup-horizontal ui-corner-all", null);
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-controlgroup-controls", null);
-        
+
         String[] elements = pageable.getPaginatorTemplate().split(" ");
-        for(String element : elements) {            
+        for (String element : elements) {
             PaginatorElementRenderer renderer = ELEMENTS.get(element);
-            if(renderer != null) {
+            if (renderer != null) {
                 renderer.render(context, pageable);
-            } 
+            }
             else {
                 UIComponent elementFacet = pageable.getFacet(element);
-                if(elementFacet != null)
+                if (elementFacet != null) {
                     elementFacet.encodeAll(context);
+                }
                 //else
-                    //writer.write(element + " ");
+                //writer.write(element + " ");
             }
         }
-        
+
         writer.endElement("div");
-        
+
         writer.endElement("div");
 
         writer.endElement("div");
@@ -86,26 +87,31 @@ public class PaginatorRenderer extends CoreRenderer {
         String paginatorPosition = uidata.getPaginatorPosition();
         String paginatorContainers = null;
         String currentPageTemplate = uidata.getCurrentPageReportTemplate();
-        
-        if(paginatorPosition.equalsIgnoreCase("both"))
+
+        if (paginatorPosition.equalsIgnoreCase("both")) {
             paginatorContainers = "'" + clientId + "_paginator_top','" + clientId + "_paginator_bottom'";
-        else
+        }
+        else {
             paginatorContainers = "'" + clientId + "_paginator_" + paginatorPosition + "'";
+        }
 
         wb.append(",paginator:{")
-            .append("id:[").append(paginatorContainers).append("]")
-            .append(",rows:").append(uidata.getRows())
-            .append(",rowCount:").append(uidata.getRowCount())
-            .append(",page:").append(uidata.getPage());
-        
-        if(currentPageTemplate != null)
-            wb.append(",currentPageTemplate:'").append(currentPageTemplate).append("'");
+                .append("id:[").append(paginatorContainers).append("]")
+                .append(",rows:").append(uidata.getRows())
+                .append(",rowCount:").append(uidata.getRowCount())
+                .append(",page:").append(uidata.getPage());
 
-        if(uidata.getPageLinks() != 10) 
+        if (currentPageTemplate != null) {
+            wb.append(",currentPageTemplate:'").append(currentPageTemplate).append("'");
+        }
+
+        if (uidata.getPageLinks() != 10) {
             wb.append(",pageLinks:").append(uidata.getPageLinks());
-        
-        if(!uidata.isPaginatorAlwaysVisible()) 
+        }
+
+        if (!uidata.isPaginatorAlwaysVisible()) {
             wb.append(",alwaysVisible:false");
+        }
 
         wb.append("}");
     }

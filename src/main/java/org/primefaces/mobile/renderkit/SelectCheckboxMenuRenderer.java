@@ -26,15 +26,15 @@ import org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectCheckboxMenuRenderer extends org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenuRenderer {
-        
+
     @Override
     protected void encodeScript(FacesContext context, SelectCheckboxMenu menu) throws IOException {
         String clientId = menu.getClientId(context);
-        
+
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("SelectCheckboxMenu", menu.resolveWidgetVar(), clientId).finish();        
+        wb.initWithDomReady("SelectCheckboxMenu", menu.resolveWidgetVar(), clientId).finish();
     }
-    
+
     @Override
     public void encodeMarkup(FacesContext context, SelectCheckboxMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -52,33 +52,33 @@ public class SelectCheckboxMenuRenderer extends org.primefaces.component.selectc
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("multiple", "multiple", null);
         writer.writeAttribute("data-role", "none", null);
-        
-        if(menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
-        if(menu.getOnkeydown() != null) writer.writeAttribute("onkeydown", menu.getOnkeydown(), null);
-        if(menu.getOnkeyup() != null) writer.writeAttribute("onkeyup", menu.getOnkeyup(), null);
-        
+
+        if (menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        if (menu.getOnkeydown() != null) writer.writeAttribute("onkeydown", menu.getOnkeydown(), null);
+        if (menu.getOnkeyup() != null) writer.writeAttribute("onkeyup", menu.getOnkeyup(), null);
+
         renderOnchange(context, menu);
         renderDynamicPassThruAttributes(context, menu);
-        
+
         encodeSelectItems(context, menu, selectItems, values, submittedValues, converter);
 
         writer.endElement("select");
-        
+
         writer.endElement("div");
     }
-    
+
     protected void encodeSelectItems(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems, Object values, Object submittedValues, Converter converter) throws IOException {
-        for(SelectItem selectItem : selectItems) {
+        for (SelectItem selectItem : selectItems) {
             encodeOption(context, menu, selectItem, values, submittedValues, converter);
         }
     }
-    
+
     protected void encodeOption(FacesContext context, SelectCheckboxMenu menu, SelectItem option, Object values, Object submittedValues, Converter converter) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
-        if(option instanceof SelectItemGroup) {
-            SelectItemGroup group = (SelectItemGroup) option;            
-            for(SelectItem groupItem : group.getSelectItems()) {
+
+        if (option instanceof SelectItemGroup) {
+            SelectItemGroup group = (SelectItemGroup) option;
+            for (SelectItem groupItem : group.getSelectItems()) {
                 encodeOption(context, menu, groupItem, values, submittedValues, converter);
             }
         }
@@ -88,7 +88,7 @@ public class SelectCheckboxMenuRenderer extends org.primefaces.component.selectc
 
             Object valuesArray;
             Object itemValue;
-            if(submittedValues != null) {
+            if (submittedValues != null) {
                 valuesArray = submittedValues;
                 itemValue = itemValueAsString;
             } else {
@@ -100,14 +100,16 @@ public class SelectCheckboxMenuRenderer extends org.primefaces.component.selectc
 
             writer.startElement("option", null);
             writer.writeAttribute("value", itemValueAsString, null);
-            if(disabled) writer.writeAttribute("disabled", "disabled", null);
-            if(selected) writer.writeAttribute("selected", "selected", null);
+            if (disabled) writer.writeAttribute("disabled", "disabled", null);
+            if (selected) writer.writeAttribute("selected", "selected", null);
 
-            if(!isValueBlank(option.getLabel())) {
-	            if(option.isEscape())
-	                writer.writeText(option.getLabel(), "value");
-	            else
-	                writer.write(option.getLabel());
+            if (!isValueBlank(option.getLabel())) {
+                if (option.isEscape()) {
+                    writer.writeText(option.getLabel(), "value");
+                }
+                else {
+                    writer.write(option.getLabel());
+                }
             }
 
             writer.endElement("option");

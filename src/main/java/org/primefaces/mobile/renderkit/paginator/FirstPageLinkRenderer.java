@@ -24,8 +24,8 @@ public class FirstPageLinkRenderer extends PageLinkRenderer implements Paginator
 
     public void render(FacesContext context, Pageable pageable) throws IOException {
         boolean disabled = pageable.getPage() == 0;
-       
+
         super.render(context, pageable, "ui-paginator-first ui-btn ui-btn-icon-notext ui-icon-carat-l", disabled);
     }
-    
+
 }
