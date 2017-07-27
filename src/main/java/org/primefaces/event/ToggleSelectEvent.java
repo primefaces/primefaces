@@ -19,13 +19,13 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 
 public class ToggleSelectEvent extends AbstractAjaxBehaviorEvent {
-	
-	private boolean selected;
-    
-	public ToggleSelectEvent(UIComponent component, Behavior behavior, boolean selected) {
-		super(component, behavior);
-		this.selected = selected;
-	}
+
+    private boolean selected;
+
+    public ToggleSelectEvent(UIComponent component, Behavior behavior, boolean selected) {
+        super(component, behavior);
+        this.selected = selected;
+    }
 
     public boolean isSelected() {
         return selected;

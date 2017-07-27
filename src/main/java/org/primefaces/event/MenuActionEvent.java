@@ -20,9 +20,9 @@ import javax.faces.event.ActionEvent;
 import org.primefaces.model.menu.MenuItem;
 
 public class MenuActionEvent extends ActionEvent {
-    
+
     private MenuItem menuItem;
-    
+
     public MenuActionEvent(UIComponent component, MenuItem menuItem) {
         super(component);
         this.menuItem = menuItem;

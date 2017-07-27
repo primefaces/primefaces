@@ -20,20 +20,20 @@ import javax.faces.component.behavior.Behavior;
 
 public class ResizeEvent extends AbstractAjaxBehaviorEvent {
 
-	private int width;
-	private int height;
-	
-	public ResizeEvent(UIComponent component, Behavior behavior, int width, int height) {
-		super(component, behavior);
-		this.width = width;
-		this.height = height;
-	}
-	
-	public int getWidth() {
-		return width;
-	}
+    private int width;
+    private int height;
 
-	public int getHeight() {
-		return height;
-	}
+    public ResizeEvent(UIComponent component, Behavior behavior, int width, int height) {
+        super(component, behavior);
+        this.width = width;
+        this.height = height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }

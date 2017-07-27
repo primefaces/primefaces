@@ -20,32 +20,32 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 
 public class FlowEvent extends FacesEvent {
-	
-	private String oldStep;
-	
-	private String newStep;
 
-	public FlowEvent(UIComponent component, String oldStep, String newStep) {
-		super(component);
-		this.oldStep = oldStep;
-		this.newStep = newStep;
-	}
+    private String oldStep;
 
-	@Override
-	public boolean isAppropriateListener(FacesListener listener) {
-		return false;
-	}
+    private String newStep;
 
-	@Override
-	public void processListener(FacesListener listener) {
-		throw new UnsupportedOperationException();
-	}
-	
-	public String getOldStep() {
-		return oldStep;
-	}
+    public FlowEvent(UIComponent component, String oldStep, String newStep) {
+        super(component);
+        this.oldStep = oldStep;
+        this.newStep = newStep;
+    }
 
-	public String getNewStep() {
-		return newStep;
-	}
+    @Override
+    public boolean isAppropriateListener(FacesListener listener) {
+        return false;
+    }
+
+    @Override
+    public void processListener(FacesListener listener) {
+        throw new UnsupportedOperationException();
+    }
+
+    public String getOldStep() {
+        return oldStep;
+    }
+
+    public String getNewStep() {
+        return newStep;
+    }
 }

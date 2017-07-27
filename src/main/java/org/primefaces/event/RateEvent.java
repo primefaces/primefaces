@@ -20,14 +20,14 @@ import javax.faces.component.behavior.Behavior;
 
 public class RateEvent extends AbstractAjaxBehaviorEvent {
 
-	private Object rating;
-	
-	public RateEvent(UIComponent component, Behavior behavior, Object rating) {
-		super(component, behavior);
-		this.rating = rating;
-	}
+    private Object rating;
 
-	public Object getRating() {
-		return rating;
+    public RateEvent(UIComponent component, Behavior behavior, Object rating) {
+        super(component, behavior);
+        this.rating = rating;
+    }
+
+    public Object getRating() {
+        return rating;
     }
 }

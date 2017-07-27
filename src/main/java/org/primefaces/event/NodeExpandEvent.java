@@ -22,18 +22,18 @@ import org.primefaces.model.TreeNode;
 
 public class NodeExpandEvent extends AbstractAjaxBehaviorEvent {
 
-	private TreeNode treeNode;
-	
-	public NodeExpandEvent(UIComponent component, Behavior behavior, TreeNode treeNode) {
-		super(component, behavior);
-		this.treeNode = treeNode;
-	}
+    private TreeNode treeNode;
 
-	public TreeNode getTreeNode() {
-		return treeNode;
-	}
+    public NodeExpandEvent(UIComponent component, Behavior behavior, TreeNode treeNode) {
+        super(component, behavior);
+        this.treeNode = treeNode;
+    }
 
-	public void setTreeNode(TreeNode treeNode) {
-		this.treeNode = treeNode;
-	}
+    public TreeNode getTreeNode() {
+        return treeNode;
+    }
+
+    public void setTreeNode(TreeNode treeNode) {
+        this.treeNode = treeNode;
+    }
 }

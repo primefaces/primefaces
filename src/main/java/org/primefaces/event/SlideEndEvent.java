@@ -22,10 +22,10 @@ public class SlideEndEvent extends AbstractAjaxBehaviorEvent {
 
     private int value;
 
-	public SlideEndEvent(UIComponent component, Behavior behavior, int value) {
-		super(component , behavior);
+    public SlideEndEvent(UIComponent component, Behavior behavior, int value) {
+        super(component, behavior);
         this.value = value;
-	}
+    }
 
     public int getValue() {
         return value;

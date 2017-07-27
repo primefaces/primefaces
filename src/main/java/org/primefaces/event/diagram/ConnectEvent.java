@@ -22,7 +22,7 @@ import org.primefaces.model.diagram.Element;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 
 public class ConnectEvent extends AbstractAjaxBehaviorEvent {
-    
+
     private final Element sourceElement;
     private final Element targetElement;
     private final EndPoint sourceEndPoint;

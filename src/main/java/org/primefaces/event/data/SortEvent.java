@@ -23,18 +23,18 @@ import org.primefaces.model.SortOrder;
 
 public class SortEvent extends AbstractAjaxBehaviorEvent {
 
-	private UIColumn sortColumn;
-    
+    private UIColumn sortColumn;
+
     private boolean ascending;
 
     private int sortColumnIndex;
-	
-	public SortEvent(UIComponent component, Behavior behavior, UIColumn sortColumn, SortOrder order, int sortColumnIndex) {
-		super(component, behavior);
-		this.sortColumn = sortColumn;
+
+    public SortEvent(UIComponent component, Behavior behavior, UIColumn sortColumn, SortOrder order, int sortColumnIndex) {
+        super(component, behavior);
+        this.sortColumn = sortColumn;
         this.ascending = order.equals(SortOrder.ASCENDING);
         this.sortColumnIndex = sortColumnIndex;
-	}
+    }
 
     public boolean isAscending() {
         return ascending;

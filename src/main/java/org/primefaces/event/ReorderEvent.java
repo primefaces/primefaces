@@ -23,11 +23,11 @@ public class ReorderEvent extends AbstractAjaxBehaviorEvent {
     private int fromIndex;
     private int toIndex;
 
-	public ReorderEvent(UIComponent component, Behavior behavior, int fromIndex, int toIndex) {
-		super(component, behavior);
+    public ReorderEvent(UIComponent component, Behavior behavior, int fromIndex, int toIndex) {
+        super(component, behavior);
         this.fromIndex = fromIndex;
         this.toIndex = toIndex;
-	}
+    }
 
     public int getFromIndex() {
         return fromIndex;

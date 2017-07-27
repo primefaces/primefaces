@@ -19,11 +19,11 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 
 public class MoveEvent extends AbstractAjaxBehaviorEvent {
-    
+
     private int top;
-    
+
     private int left;
-    
+
     public MoveEvent(UIComponent component, Behavior behavior, int top, int left) {
         super(component, behavior);
         this.top = top;

@@ -24,16 +24,16 @@ public class TransferEvent extends AbstractAjaxBehaviorEvent {
     private List<?> items;
     private boolean add;
 
-	public TransferEvent(UIComponent component, Behavior behavior, List<?> items, boolean add) {
-		super(component, behavior);
+    public TransferEvent(UIComponent component, Behavior behavior, List<?> items, boolean add) {
+        super(component, behavior);
         this.items = items;
         this.add = add;
-	}
+    }
 
     public boolean isAdd() {
         return add;
     }
-    
+
     public boolean isRemove() {
         return !add;
     }

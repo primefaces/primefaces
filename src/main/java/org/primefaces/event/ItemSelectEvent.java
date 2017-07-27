@@ -19,22 +19,22 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 
 public class ItemSelectEvent extends AbstractAjaxBehaviorEvent {
-	
-	private int itemIndex;
-	
-	private int seriesIndex;
 
-	public ItemSelectEvent(UIComponent source, Behavior behavior, int itemIndex, int seriesIndex) {
-		super(source, behavior);
-		this.itemIndex = itemIndex;
-		this.seriesIndex = seriesIndex;
-	}
+    private int itemIndex;
 
-	public int getItemIndex() {
-		return itemIndex;
-	}
+    private int seriesIndex;
 
-	public int getSeriesIndex() {
-		return seriesIndex;
-	}
+    public ItemSelectEvent(UIComponent source, Behavior behavior, int itemIndex, int seriesIndex) {
+        super(source, behavior);
+        this.itemIndex = itemIndex;
+        this.seriesIndex = seriesIndex;
+    }
+
+    public int getItemIndex() {
+        return itemIndex;
+    }
+
+    public int getSeriesIndex() {
+        return seriesIndex;
+    }
 }

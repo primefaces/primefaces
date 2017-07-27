@@ -18,8 +18,8 @@ package org.primefaces.event;
 import org.primefaces.component.tabview.Tab;
 
 public interface TabEvent {
-    
+
     public Tab getTab();
-    
+
     public Object getData();
 }

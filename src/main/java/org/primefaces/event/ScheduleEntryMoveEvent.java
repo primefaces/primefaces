@@ -22,28 +22,28 @@ import org.primefaces.model.ScheduleEvent;
 
 public class ScheduleEntryMoveEvent extends AbstractAjaxBehaviorEvent {
 
-	private ScheduleEvent scheduleEvent;
-	
-	private int dayDelta;
-	
-	private int minuteDelta;
+    private ScheduleEvent scheduleEvent;
 
-	public ScheduleEntryMoveEvent(UIComponent component, Behavior behavior, ScheduleEvent scheduleEvent, int dayDelta, int minuteDelta) {
-		super(component, behavior);
-		this.scheduleEvent = scheduleEvent;
-		this.dayDelta = dayDelta;
-		this.minuteDelta = minuteDelta;
-	}
-	
-	public ScheduleEvent getScheduleEvent() {
-		return scheduleEvent;
-	}
-	
-	public int getDayDelta() {
-		return dayDelta;
-	}
+    private int dayDelta;
 
-	public int getMinuteDelta() {
-		return minuteDelta;
-	}
+    private int minuteDelta;
+
+    public ScheduleEntryMoveEvent(UIComponent component, Behavior behavior, ScheduleEvent scheduleEvent, int dayDelta, int minuteDelta) {
+        super(component, behavior);
+        this.scheduleEvent = scheduleEvent;
+        this.dayDelta = dayDelta;
+        this.minuteDelta = minuteDelta;
+    }
+
+    public ScheduleEvent getScheduleEvent() {
+        return scheduleEvent;
+    }
+
+    public int getDayDelta() {
+        return dayDelta;
+    }
+
+    public int getMinuteDelta() {
+        return minuteDelta;
+    }
 }

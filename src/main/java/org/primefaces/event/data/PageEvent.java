@@ -21,12 +21,12 @@ import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
 public class PageEvent extends AbstractAjaxBehaviorEvent {
 
-	private int page;
-	
-	public PageEvent(UIComponent component, Behavior behavior, int page) {
-		super(component, behavior);
-		this.page = page;
-	}
+    private int page;
+
+    public PageEvent(UIComponent component, Behavior behavior, int page) {
+        super(component, behavior);
+        this.page = page;
+    }
 
     public int getPage() {
         return page;

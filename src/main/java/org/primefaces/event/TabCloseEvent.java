@@ -24,23 +24,23 @@ public class TabCloseEvent extends AbstractAjaxBehaviorEvent implements TabEvent
     private Tab tab;
     private Object data;
 
-	public TabCloseEvent(UIComponent component, Behavior behavior, Tab tab) {
-		super(component, behavior);
+    public TabCloseEvent(UIComponent component, Behavior behavior, Tab tab) {
+        super(component, behavior);
         this.tab = tab;
-	}
+    }
 
     public Tab getTab() {
         return tab;
     }
-    
+
     public void setTab(Tab tab) {
         this.tab = tab;
     }
-    
+
     public Object getData() {
         return data;
     }
-    
+
     public void setData(Object data) {
         this.data = data;
     }
