@@ -54,7 +54,8 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
 
                     if (dynamicContentEL != null) {
                         ELContext eLContext = context.getELContext();
-                        ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(context.getELContext(), dynamicContentEL, StreamedContent.class);
+                        ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(
+                                context.getELContext(), dynamicContentEL, StreamedContent.class);
                         streamedContent = (StreamedContent) ve.getValue(eLContext);
 
                         if (streamedContent == null || streamedContent.getStream() == null) {
@@ -98,7 +99,8 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
                 externalContext.responseFlushBuffer();
                 context.responseComplete();
 
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 LOG.log(Level.SEVERE, "Error in streaming dynamic resource.", e);
                 throw new IOException(e);
             }

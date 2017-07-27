@@ -20,16 +20,15 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 public class MessageFactory {
 
-    private static String DEFAULT_BUNDLE_BASENAME = "javax.faces.Messages";
-    private static String PRIMEFACES_BUNDLE_BASENAME = "org.primefaces.Messages";
-    private static String DEFAULT_DETAIL_SUFFIX = "_detail";
+    private static final String DEFAULT_BUNDLE_BASENAME = "javax.faces.Messages";
+    private static final String PRIMEFACES_BUNDLE_BASENAME = "org.primefaces.Messages";
+    private static final String DEFAULT_DETAIL_SUFFIX = "_detail";
 
     private MessageFactory() {
     }
@@ -52,8 +51,8 @@ public class MessageFactory {
             try {
                 bundle = ResourceBundle.getBundle(userBundleName, locale, getCurrentClassLoader(userBundleName));
                 summary = bundle.getString(messageId);
-             }
-             catch (MissingResourceException e) {
+            }
+            catch (MissingResourceException e) {
                 // No Op
             }
         }
@@ -66,7 +65,8 @@ public class MessageFactory {
                     throw new NullPointerException();
                 }
                 summary = bundle.getString(messageId);
-            } catch (MissingResourceException e) {
+            }
+            catch (MissingResourceException e) {
                 // No Op
             }
         }
@@ -79,7 +79,8 @@ public class MessageFactory {
                     throw new NullPointerException();
                 }
                 summary = bundle.getString(messageId);
-            } catch (MissingResourceException e) {
+            }
+            catch (MissingResourceException e) {
                 // No Op
             }
         }

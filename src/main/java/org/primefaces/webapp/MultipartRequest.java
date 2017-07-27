@@ -98,7 +98,8 @@ public class MultipartRequest extends HttpServletRequestWrapper {
         try {
             String characterEncoding = getRequest().getCharacterEncoding();
             return (characterEncoding == null) ? item.getString() : item.getString(characterEncoding);
-        } catch (UnsupportedEncodingException e) {
+        }
+        catch (UnsupportedEncodingException e) {
             logger.log(Level.SEVERE, "Unsupported character encoding " + getRequest().getCharacterEncoding(), e);
             return item.getString();
         }

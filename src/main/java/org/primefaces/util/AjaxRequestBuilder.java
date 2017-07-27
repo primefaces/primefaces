@@ -129,7 +129,8 @@ public class AjaxRequestBuilder {
             if (context.isProjectStage(ProjectStage.Development)) {
                 try {
                     Integer.parseInt(delay);
-                } catch (NumberFormatException e) {
+                }
+                catch (NumberFormatException e) {
                     throw new FaceletException("Delay attribute should only take numbers or \"none\"");
                 }
             }

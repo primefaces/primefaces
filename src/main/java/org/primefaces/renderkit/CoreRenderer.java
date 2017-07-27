@@ -131,7 +131,8 @@ public abstract class CoreRenderer extends Renderer {
         }
     }
 
-    private void renderDomEvents(FacesContext context, UIComponent component, String[] eventAttrs, Map<String, List<ClientBehavior>> behaviors) throws IOException {
+    private void renderDomEvents(FacesContext context, UIComponent component, String[] eventAttrs, Map<String, List<ClientBehavior>> behaviors)
+            throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         StringBuilder builder = null;
 
@@ -157,9 +158,13 @@ public abstract class CoreRenderer extends Renderer {
 
                 if (hasEventBehaviors) {
                     String clientId = ((UIComponent) component).getClientId(context);
+                    
                     List<ClientBehaviorContext.Parameter> params = new ArrayList<ClientBehaviorContext.Parameter>();
-                    params.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.OBSTRUSIVE));
-                    ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, behaviorEvent, clientId, params);
+                    params.add(new ClientBehaviorContext.Parameter(
+                            Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.OBSTRUSIVE));
+                    
+                    ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
+                            context, (UIComponent) component, behaviorEvent, clientId, params);
                     int size = eventBehaviors.size();
                     boolean chained = false;
 
@@ -204,7 +209,8 @@ public abstract class CoreRenderer extends Renderer {
         }
     }
 
-    protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs, String[] ignoredAttrs) throws IOException {
+    protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs, String[] ignoredAttrs)
+            throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         //pre-defined attributes
@@ -234,7 +240,9 @@ public abstract class CoreRenderer extends Renderer {
         this.renderDomEvent(context, component, "onclick", "click", "action", command);
     }
 
-    protected void renderDomEvent(FacesContext context, UIComponent component, String domEvent, String behaviorEvent, String behaviorEventAlias, String command) throws IOException {
+    protected void renderDomEvent(FacesContext context, UIComponent component, String domEvent, String behaviorEvent,
+            String behaviorEventAlias, String command) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         String callback = buildDomEvent(context, component, domEvent, behaviorEvent, behaviorEventAlias, command);
         if (callback != null) {
@@ -242,7 +250,9 @@ public abstract class CoreRenderer extends Renderer {
         }
     }
 
-    protected String buildDomEvent(FacesContext context, UIComponent component, String domEvent, String behaviorEvent, String behaviorEventAlias, String command) {
+    protected String buildDomEvent(FacesContext context, UIComponent component, String domEvent, String behaviorEvent,
+            String behaviorEventAlias, String command) {
+
         StringBuilder builder = null;
 
         boolean hasCommand = (command != null);
@@ -293,7 +303,8 @@ public abstract class CoreRenderer extends Renderer {
                     for (int i = 0; i < behaviors.size(); i++) {
                         ClientBehavior behavior = behaviors.get(i);
                         if (cbc == null) {
-                            cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, behaviorEventName, component.getClientId(context), Collections.EMPTY_LIST);
+                            cbc = ClientBehaviorContext.createClientBehaviorContext(
+                                    context, (UIComponent) component, behaviorEventName, component.getClientId(context), Collections.EMPTY_LIST);
                         }
                         String script = behavior.getScript(cbc);
 
@@ -321,7 +332,8 @@ public abstract class CoreRenderer extends Renderer {
             }
             else {
                 if (hasBehaviors) {
-                    ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, behaviorEventName, component.getClientId(context), Collections.EMPTY_LIST);
+                    ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
+                            context, (UIComponent) component, behaviorEventName, component.getClientId(context), Collections.EMPTY_LIST);
                     ClientBehavior behavior = behaviors.get(0);
                     String script = behavior.getScript(cbc);
                     if (script != null) {
@@ -509,7 +521,8 @@ public abstract class CoreRenderer extends Renderer {
 
                         for (int i = 0; i < eventBehaviorsSize; i++) {
                             ClientBehavior behavior = eventBehaviors.get(i);
-                            ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, eventName, clientId, params);
+                            ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
+                                    context, (UIComponent) component, eventName, clientId, params);
                             String script = behavior.getScript(cbc);
 
                             if (script != null) {
@@ -529,7 +542,8 @@ public abstract class CoreRenderer extends Renderer {
                     }
                     else {
                         ClientBehavior behavior = eventBehaviors.get(0);
-                        ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) component, eventName, clientId, params);
+                        ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
+                                context, (UIComponent) component, eventName, clientId, params);
                         String script = behavior.getScript(cbc);
 
                         if (script != null) {
@@ -590,7 +604,9 @@ public abstract class CoreRenderer extends Renderer {
         return ComponentUtils.escapeText(text);
     }
 
-    protected String getEventBehaviors(FacesContext context, ClientBehaviorHolder cbh, String event, List<ClientBehaviorContext.Parameter> parameters) {
+    protected String getEventBehaviors(FacesContext context, ClientBehaviorHolder cbh, String event,
+            List<ClientBehaviorContext.Parameter> parameters) {
+
         List<ClientBehavior> behaviors = cbh.getClientBehaviors().get(event);
         StringBuilder sb = SharedStringBuilder.get(context, SB_GET_EVENT_BEHAVIORS);
 
@@ -606,7 +622,8 @@ public abstract class CoreRenderer extends Renderer {
 
             for (int i = 0; i < behaviors.size(); i++) {
                 ClientBehavior behavior = behaviors.get(i);
-                ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, component, event, clientId, params);
+                ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
+                        context, component, event, clientId, params);
                 String script = behavior.getScript(cbc);
 
                 if (script != null) {
@@ -657,10 +674,10 @@ public abstract class CoreRenderer extends Renderer {
         RequestContext requestContext = RequestContext.getCurrentInstance(context);
 
         //messages
-        if(label != null) writer.writeAttribute(HTML.VALIDATION_METADATA.LABEL, label, null);
-        if(requiredMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED_MESSAGE, requiredMessage, null);
-        if(validatorMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.VALIDATOR_MESSAGE, validatorMessage, null);
-        if(converterMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.CONVERTER_MESSAGE, converterMessage, null);
+        if (label != null) writer.writeAttribute(HTML.VALIDATION_METADATA.LABEL, label, null);
+        if (requiredMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED_MESSAGE, requiredMessage, null);
+        if (validatorMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.VALIDATOR_MESSAGE, validatorMessage, null);
+        if (converterMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.CONVERTER_MESSAGE, converterMessage, null);
 
         //converter
         if (converter != null && converter instanceof ClientConverter) {

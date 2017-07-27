@@ -97,11 +97,11 @@ public class ArrowOverlay implements Overlay, Serializable {
     public String toJS(StringBuilder sb) {
         sb.append("['Arrow',{location:").append(location);
 
-        if(width != 20) sb.append(",width:").append(width);
-        if(length != 20) sb.append(",length:").append(length);
-        if(direction != 1) sb.append(",direction:").append(direction);
-        if(foldback != 0.623) sb.append(",foldback:").append(foldback);
-        if(paintStyle != null) sb.append(",paintStyle:{").append(paintStyle).append("}");
+        if (width != 20) sb.append(",width:").append(width);
+        if (length != 20) sb.append(",length:").append(length);
+        if (direction != 1) sb.append(",direction:").append(direction);
+        if (foldback != 0.623) sb.append(",foldback:").append(foldback);
+        if (paintStyle != null) sb.append(",paintStyle:{").append(paintStyle).append("}");
 
         sb.append("}]");
 

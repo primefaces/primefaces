@@ -21,7 +21,7 @@ public enum DynamicContentType {
     BARCODE("barcode"),
     QR_CODE("qr");
 
-    String toString;
+    private String toString;
 
     DynamicContentType(String toString) {
         this.toString = toString;
@@ -30,6 +30,7 @@ public enum DynamicContentType {
     DynamicContentType() {
     }
 
+    @Override
     public String toString() {
         return ((this.toString != null) ? this.toString : super.toString());
     }

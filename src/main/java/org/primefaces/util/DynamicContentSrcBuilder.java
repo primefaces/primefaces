@@ -54,12 +54,13 @@ public class DynamicContentSrcBuilder {
             StreamedContent streamedContent = (StreamedContent) value;
 
             if (stream) {
-                Resource resource = context.getApplication().getResourceHandler().createResource("dynamiccontent.properties", "primefaces", streamedContent.getContentType());
+                Resource resource = context.getApplication().getResourceHandler().createResource(
+                        "dynamiccontent.properties", "primefaces", streamedContent.getContentType());
                 String resourcePath = resource.getRequestPath();
 
                 Map<String,Object> session = context.getExternalContext().getSessionMap();
                 Map<String,String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
-                if(dynamicResourcesMapping == null) {
+                if (dynamicResourcesMapping == null) {
                     dynamicResourcesMapping = new LimitedSizeHashMap<String, String>(200);
                     session.put(Constants.DYNAMIC_RESOURCES_MAPPING, dynamicResourcesMapping);
                 }
@@ -121,7 +122,7 @@ public class DynamicContentSrcBuilder {
             byte[] data = new byte[16384];
 
             while ((nRead = stream.read(data, 0, data.length)) != -1) {
-              buffer.write(data, 0, nRead);
+                buffer.write(data, 0, nRead);
             }
 
             buffer.flush();

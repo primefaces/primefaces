@@ -42,10 +42,10 @@ public class RemoteEndpointIntrospector extends InjectIntrospectorAdapter<Remote
     @Override
     public RemoteEndpoint injectable(final AtmosphereResource r) {
         return (RemoteEndpoint) Proxy.newProxyInstance(this.getClass().getClassLoader(),
-                new Class[]{RemoteEndpoint.class}, new ThreadLocalInvoker() {
-            {
-                set(r);
-            }
+                new Class[] { RemoteEndpoint.class}, new ThreadLocalInvoker() {
+                    {
+                        set(r);
+                    }
 
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {

@@ -109,7 +109,7 @@ public class BarRenderer extends CartesianPlotRenderer {
         if (model.isAnimate()) writer.write(",animate:true");  
         if (model.isShowPointLabels()) writer.write(",showPointLabels:true");
         
-        if(model.isShowDatatip()) {
+        if (model.isShowDatatip()) {
             writer.write(",datatip:true");
             if (model.getDatatipFormat() != null) {
                 writer.write(",datatipFormat:\"" + model.getDatatipFormat() + "\"");

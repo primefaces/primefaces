@@ -84,7 +84,8 @@ public class BeanValidationMetadataMapper {
 
             if (constraints != null && !constraints.isEmpty()) {
 
-                boolean interpolateClientSideValidationMessages = requestContext.getApplicationContext().getConfig().isInterpolateClientSideValidationMessages();
+                boolean interpolateClientSideValidationMessages =
+                        requestContext.getApplicationContext().getConfig().isInterpolateClientSideValidationMessages();
 
                 MessageInterpolator messageInterpolator = null;
                 if (interpolateClientSideValidationMessages) {

@@ -44,10 +44,12 @@ public class PushEndpointProcessor implements Processor<Object> {
             List<AtmosphereInterceptor> l = new ArrayList<AtmosphereInterceptor>();
 
             Object c = framework.newClassInstance(Object.class, aClass);
-            AtmosphereHandler handler = framework.newClassInstance(PushEndpointHandlerProxy.class, PushEndpointHandlerProxy.class).configure(framework.getAtmosphereConfig(), c);
+            AtmosphereHandler handler = framework.newClassInstance(
+                    PushEndpointHandlerProxy.class, PushEndpointHandlerProxy.class).configure(framework.getAtmosphereConfig(), c);
             l.add(framework.newClassInstance(AtmosphereInterceptor.class, PushEndpointInterceptor.class));
 
-            Class<? extends Broadcaster> b = (Class<? extends Broadcaster>) IOUtils.loadClass(this.getClass(), framework.getDefaultBroadcasterClassName());
+            Class<? extends Broadcaster> b = (Class<? extends Broadcaster>) IOUtils.loadClass(
+                    this.getClass(), framework.getDefaultBroadcasterClassName());
 
             framework.addAtmosphereHandler(a.value(), handler, broadcaster(framework, b, a.value()), l);
         } catch (Throwable e) {

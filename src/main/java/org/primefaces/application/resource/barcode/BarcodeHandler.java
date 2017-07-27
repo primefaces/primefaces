@@ -82,7 +82,8 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
                 if (format.equals("png")) {
                     externalContext.setResponseContentType("image/png");
 
-                    BitmapCanvasProvider bitmapCanvasProvider = new BitmapCanvasProvider(out, "image/x-png", 150, BufferedImage.TYPE_BYTE_BINARY, false, orientation);
+                    BitmapCanvasProvider bitmapCanvasProvider = new BitmapCanvasProvider(
+                            out, "image/x-png", 150, BufferedImage.TYPE_BYTE_BINARY, false, orientation);
                     generator.generate(bitmapCanvasProvider, value);
                     bitmapCanvasProvider.finish();
                 }

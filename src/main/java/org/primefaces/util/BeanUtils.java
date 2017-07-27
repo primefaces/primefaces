@@ -41,9 +41,11 @@ public class BeanUtils {
     public static boolean isBean(Class<?> valueClass) {
         if (valueClass.isArray()) {
             return isBean(valueClass.getComponentType());
-        } else if (valueClass.isPrimitive()) {
+        }
+        else if (valueClass.isPrimitive()) {
             return false;
-        } else {
+        }
+        else {
             return !primitiveTypes.contains(valueClass);
         }
     }

@@ -56,6 +56,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         this.event = this.getAttribute("event");
     }
 
+    @Override
     public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException {
         if (!ComponentHandler.isNew(parent)) {
             return;
@@ -121,6 +122,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         }
     }
 
+    @Override
     public String getEventName() {
         if (event == null) {
             return null;
@@ -143,7 +145,8 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
             String attributeName = attr.getLocalName();
             if (attr.isLiteral()) {
                 behavior.setLiteral(attributeName, attr.getObject(ctx, type));
-            } else {
+            }
+            else {
                 behavior.setValueExpression(attributeName, attr.getValueExpression(ctx, type));
             }
         }
@@ -158,6 +161,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         return faceletContext;
     }
 
+    @Override
     public void applyAttachedObject(FacesContext context, UIComponent parent) {
         FaceletContext faceletContext = getFaceletContext(context);
         applyAttachedObject(faceletContext, parent);
@@ -185,6 +189,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         holder.addClientBehavior(eventName, behavior);
     }
 
+    @Override
     public String getFor() {
         return null;
     }
@@ -192,8 +197,8 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Mojarra ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    protected static String MOJARRA_ATTACHED_OBJECT_HANDLERS_KEY = "javax.faces.RetargetableHandlers";
-    protected static String MOJARRA_22_ATTACHED_OBJECT_HANDLERS_KEY = "javax.faces.view.AttachedObjectHandlers";
+    protected static final String MOJARRA_ATTACHED_OBJECT_HANDLERS_KEY = "javax.faces.RetargetableHandlers";
+    protected static final String MOJARRA_22_ATTACHED_OBJECT_HANDLERS_KEY = "javax.faces.view.AttachedObjectHandlers";
 
     protected void addAttachedObjectHandlerToMojarra(UIComponent component) {
 

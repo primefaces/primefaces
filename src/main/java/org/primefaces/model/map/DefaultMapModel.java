@@ -76,11 +76,11 @@ public class DefaultMapModel implements MapModel, Serializable {
             overlay.setId(MARKER_ID_PREFIX + UUID.randomUUID().toString());
             markers.add((Marker) overlay);
         }
-        else if(overlay instanceof Polyline) {
+        else if (overlay instanceof Polyline) {
             overlay.setId(POLYLINE_ID_PREFIX + UUID.randomUUID().toString());
             polylines.add((Polyline) overlay);
         }
-        else if(overlay instanceof Polygon) {
+        else if (overlay instanceof Polygon) {
             overlay.setId(POLYGON_ID_PREFIX + UUID.randomUUID().toString());
             polygons.add((Polygon) overlay);
         }

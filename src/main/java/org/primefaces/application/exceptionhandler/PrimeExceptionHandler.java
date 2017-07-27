@@ -30,7 +30,6 @@ import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
 import javax.faces.application.ViewExpiredException;
 import javax.faces.application.ViewHandler;
-import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
@@ -96,10 +95,12 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
                     if (context.getPartialViewContext().isAjaxRequest()) {
                         handleAjaxException(context, rootCause, info);
-                    } else {
+                    }
+                    else {
                         handleRedirect(context, rootCause, info, false);
                     }
-                } catch (Exception ex) {
+                }
+                catch (Exception ex) {
                     LOG.log(Level.SEVERE, "Could not handle exception!", ex);
                 }
             }
@@ -350,7 +351,8 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                 writer.write("window.location.href = '" + url + "';");
                 writer.endElement("script");
                 writer.getWrapped().endDocument();
-            } else {
+            }
+            else {
                 externalContext.redirect(url);
             }
         }

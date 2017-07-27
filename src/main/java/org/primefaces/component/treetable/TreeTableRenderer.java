@@ -95,10 +95,12 @@ public class TreeTableRenderer extends DataRenderer {
             if (isValueBlank(selectionValue)) {
                 if (isSingle) {
                     tt.setSelection(null);
-                } else {
+                }
+                else {
                     tt.setSelection(new TreeNode[0]);
                 }
-            } else {
+            }
+            else {
                 String[] selectedRowKeys = selectionValue.split(",");
 
                 if (isSingle) {
@@ -309,13 +311,15 @@ public class TreeTableRenderer extends DataRenderer {
         String tableStyle = tt.getTableStyle();
         String tableStyleClass = tt.getTableStyleClass();
 
-        encodeScrollAreaStart(context, tt, TreeTable.SCROLLABLE_HEADER_CLASS, TreeTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass, "header", TreeTable.HEADER_CLASS);
+        encodeScrollAreaStart(context, tt, TreeTable.SCROLLABLE_HEADER_CLASS, TreeTable.SCROLLABLE_HEADER_BOX_CLASS,
+                tableStyle, tableStyleClass, "header", TreeTable.HEADER_CLASS);
         encodeThead(context, tt);
         encodeScrollAreaEnd(context);
 
         encodeScrollBody(context, tt, tableStyle, tableStyleClass);
 
-        encodeScrollAreaStart(context, tt, TreeTable.SCROLLABLE_FOOTER_CLASS, TreeTable.SCROLLABLE_FOOTER_BOX_CLASS, tableStyle, tableStyleClass, "footer", TreeTable.FOOTER_CLASS);
+        encodeScrollAreaStart(context, tt, TreeTable.SCROLLABLE_FOOTER_CLASS, TreeTable.SCROLLABLE_FOOTER_BOX_CLASS,
+                tableStyle, tableStyleClass, "footer", TreeTable.FOOTER_CLASS);
         encodeTfoot(context, tt);
         encodeScrollAreaEnd(context);
     }
@@ -1092,7 +1096,8 @@ public class TreeTableRenderer extends DataRenderer {
         }
     }
 
-    protected void findFilteredRowKeys(FacesContext context, TreeTable tt, TreeNode node, List<FilterMeta> filterMetadata, Locale filterLocale) throws IOException {
+    protected void findFilteredRowKeys(FacesContext context, TreeTable tt, TreeNode node, List<FilterMeta> filterMetadata, Locale filterLocale)
+            throws IOException {
         int childCount = node.getChildCount();
         ELContext elContext = context.getELContext();
 

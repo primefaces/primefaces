@@ -209,7 +209,8 @@ public class ComponentUtils {
         }
         if (len == 2) {
             return new Locale(str, "");
-        } else {
+        }
+        else {
             if (str.charAt(2) != '_') {
                 throw new IllegalArgumentException("Invalid locale format: " + str);
             }
@@ -223,7 +224,8 @@ public class ComponentUtils {
             }
             if (len == 5) {
                 return new Locale(str.substring(0, 2), str.substring(3, 5));
-            } else {
+            }
+            else {
                 if (str.charAt(5) != '_') {
                     throw new IllegalArgumentException("Invalid locale format: " + str);
                 }
@@ -599,7 +601,8 @@ public class ComponentUtils {
     public static String createContentDisposition(String value, String filename) {
         try {
             return String.format("%s;filename=\"%2$s\"; filename*=UTF-8''%2$s", value, encodeURI(filename));
-        } catch (UnsupportedEncodingException e) {
+        }
+        catch (UnsupportedEncodingException e) {
             throw new FacesException(e);
         }
     }

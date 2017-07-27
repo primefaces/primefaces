@@ -29,7 +29,7 @@ import javax.faces.event.AjaxBehaviorListener;
 
 public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializable {
 
-    private static Logger LOG = Logger.getLogger(AjaxBehaviorListenerImpl.class.getName());
+    private static final Logger LOG = Logger.getLogger(AjaxBehaviorListenerImpl.class.getName());
 
     private MethodExpression listener;
     private MethodExpression listenerWithArg;

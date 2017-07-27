@@ -44,7 +44,7 @@ public class InputTextareaRenderer extends org.primefaces.component.inputtextare
         renderPassThruAttributes(context, inputTextarea, HTML.INPUT_TEXTAREA_ATTRS);
         renderDomEvents(context, inputTextarea, HTML.INPUT_TEXT_EVENTS);
 
-        if( inputTextarea.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+        if (inputTextarea.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         if (inputTextarea.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
         if (style != null) writer.writeAttribute("style", style, null);  
         if (valueToRender != null) writer.writeText(valueToRender, "value");        
