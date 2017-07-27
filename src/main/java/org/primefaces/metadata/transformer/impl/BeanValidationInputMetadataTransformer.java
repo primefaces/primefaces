@@ -41,36 +41,36 @@ import org.primefaces.metadata.transformer.AbstractInputMetadataTransformer;
 public class BeanValidationInputMetadataTransformer extends AbstractInputMetadataTransformer {
 
     private static final Logger LOG = Logger.getLogger(BeanValidationInputMetadataTransformer.class.getName());
-    
+
     public void transformInput(FacesContext context, RequestContext requestContext, UIInput input) throws IOException {
 
         EditableValueHolder editableValueHolder = (EditableValueHolder) input;
-       
+
         if (editableValueHolder.isRequired() && isMaxlenghtSet(input)) {
             return;
         }
-         
+
         try {
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
                     context, requestContext, input.getValueExpression("value"));
-            if (constraints != null && !constraints.isEmpty()) {    
+            if (constraints != null && !constraints.isEmpty()) {
                 for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
                     applyConstraint(constraintDescriptor, input, editableValueHolder);
                 }
             }
         }
-        catch (PropertyNotFoundException e)  {
+        catch (PropertyNotFoundException e) {
             String message = "Skip transform metadata for component \"" + input.getClientId(context) + "\" because"
                     + " the ValueExpression of the \"value\" attribute"
                     + " isn't resolvable completely (e.g. a sub-expression returns null)";
             LOG.log(Level.FINE, message);
         }
     }
-    
+
     protected void applyConstraint(ConstraintDescriptor constraintDescriptor, UIInput input, EditableValueHolder editableValueHolder) {
-        
+
         Annotation constraint = constraintDescriptor.getAnnotation();
-        
+
         if (!isMaxlenghtSet(input)) {
             if (constraint.annotationType().equals(Size.class)) {
                 Size size = (Size) constraint;
@@ -79,7 +79,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
                 }
             }
         }
-        
+
         if (input instanceof Spinner) {
             Spinner spinner = (Spinner) input;
 
@@ -92,7 +92,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
                 spinner.setMin(min.value());
             }
         }
-        
+
         if (input instanceof Calendar) {
             Calendar calendar = (Calendar) input;
 

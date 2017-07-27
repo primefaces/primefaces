@@ -24,21 +24,20 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.mobile.util.MobileUtils;
 
 public class MobileNavigationHandler extends ConfigurableNavigationHandler {
-    
+
     private ConfigurableNavigationHandler base;
 
-    
     public MobileNavigationHandler(ConfigurableNavigationHandler base) {
         this.base = base;
     }
 
     @Override
     public void handleNavigation(FacesContext context, String fromAction, String outcome) {
-        if(outcome != null && outcome.startsWith("pm:")) {
+        if (outcome != null && outcome.startsWith("pm:")) {
             String command = MobileUtils.buildNavigation(outcome);
 
             RequestContext requestContext = RequestContext.getCurrentInstance(context);
-            if(requestContext != null) {
+            if (requestContext != null) {
                 requestContext.execute(command);
             }
         }

@@ -34,11 +34,11 @@ public class ContentRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("role", "main", null);
         writer.writeAttribute("class", styleClass, null);
-        
-        if(style != null) {
+
+        if (style != null) {
             writer.writeAttribute("style", style, null);
         }
-        
+
         renderDynamicPassThruAttributes(context, component);
     }
 

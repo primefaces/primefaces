@@ -31,30 +31,30 @@ public class HeaderRenderer extends CoreRenderer {
         String swatch = header.getSwatch();
         UIComponent left = header.getFacet("left");
         UIComponent right = header.getFacet("right");
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("id", header.getClientId(context), "id");
         writer.writeAttribute("data-role", "header", null);
         writer.writeAttribute("data-backbtn", "false", null);
-        
-        if(header.getStyle() != null) writer.writeAttribute("style", header.getStyle(), null);
-        if(header.getStyleClass() != null) writer.writeAttribute("class", header.getStyleClass(), null);
-        if(swatch != null) writer.writeAttribute("data-theme", swatch, null);
-        if(header.isFixed())  writer.writeAttribute("data-position", "fixed", null);
-        
+
+        if (header.getStyle() != null) writer.writeAttribute("style", header.getStyle(), null);
+        if (header.getStyleClass() != null) writer.writeAttribute("class", header.getStyleClass(), null);
+        if (swatch != null) writer.writeAttribute("data-theme", swatch, null);
+        if (header.isFixed())  writer.writeAttribute("data-position", "fixed", null);
+
         renderDynamicPassThruAttributes(context, component);
 
-        if(left != null) {
+        if (left != null) {
             left.encodeAll(context);
         }
-            
-        if(title != null) {
-             writer.startElement("h1", header);
-             writer.writeText(title, null);
-             writer.endElement("h1");
+
+        if (title != null) {
+            writer.startElement("h1", header);
+            writer.writeText(title, null);
+            writer.endElement("h1");
         }
-        
-        if(right != null) {
+
+        if (right != null) {
             right.getAttributes().put("styleClass", "ui-btn-right");
             right.encodeAll(context);
         }

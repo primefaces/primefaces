@@ -21,6 +21,6 @@ import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 
 public interface MetadataTransformer {
-    
+
     void transform(FacesContext context, RequestContext requestContext, UIComponent component) throws IOException;
 }

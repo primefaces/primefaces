@@ -33,7 +33,7 @@ public class FieldRenderer extends CoreRenderer {
             writer.writeAttribute("id", field.getClientId(context), "id");
         }
         writer.writeAttribute("class", "ui-field-contain", null);
-        
+
         renderDynamicPassThruAttributes(context, component);
     }
 

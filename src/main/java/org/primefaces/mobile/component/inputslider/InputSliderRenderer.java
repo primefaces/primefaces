@@ -25,9 +25,9 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class InputSliderRenderer extends InputRenderer {
-    
+
     @Override
-	public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, UIComponent component) {
         if (!shouldDecode(component)) {
             return;
         }
@@ -38,15 +38,15 @@ public class InputSliderRenderer extends InputRenderer {
         if (submittedValue != null) {
             inputSlider.setSubmittedValue(submittedValue);
         }
-	}
-    
+    }
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         InputSlider inputSlider = (InputSlider) component;
-        
+
         encodeMarkup(context, inputSlider);
-        
-        if(!(inputSlider.getParent() instanceof RangeSlider)) {
+
+        if (!(inputSlider.getParent() instanceof RangeSlider)) {
             encodeScript(context, inputSlider);
         }
     }
@@ -57,7 +57,7 @@ public class InputSliderRenderer extends InputRenderer {
         String style = inputSlider.getStyle();
         String styleClass = inputSlider.getStyleClass();
         String valueToRender = ComponentUtils.getValueToRender(context, inputSlider);
-        
+
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("name", clientId, null);
@@ -66,7 +66,7 @@ public class InputSliderRenderer extends InputRenderer {
         writer.writeAttribute("max", inputSlider.getMaxValue(), null);
         writer.writeAttribute("step", inputSlider.getStep(), null);
         writer.writeAttribute("data-role", "none", null);
-        
+
         if (style != null) writer.writeAttribute("style", style, null);  
         if (styleClass != null) writer.writeAttribute("class", styleClass, null); 
         if (inputSlider.isHighlight()) writer.writeAttribute("data-highlight", "true", null);

@@ -21,14 +21,14 @@ import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
 public class SwipeEvent extends AbstractAjaxBehaviorEvent {
 
-	private Object data;
-	
-	public SwipeEvent(UIComponent component, Behavior behavior, Object data) {
-		super(component, behavior);
-		this.data = data;
-	}
-	
-	public Object getData() {
-		return data;
-	}
+    private Object data;
+
+    public SwipeEvent(UIComponent component, Behavior behavior, Object data) {
+        super(component, behavior);
+        this.data = data;
+    }
+
+    public Object getData() {
+        return data;
+    }
 }

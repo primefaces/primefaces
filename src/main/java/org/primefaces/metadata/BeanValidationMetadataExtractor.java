@@ -37,7 +37,7 @@ public class BeanValidationMetadataExtractor {
         if (propertyDescriptor != null) {
             return propertyDescriptor.getConstraintDescriptors();
         }
-        
+
         return null;
     }
 
@@ -45,7 +45,7 @@ public class BeanValidationMetadataExtractor {
 
         return extractConstraintDescriptors(context, requestContext, ve, Default.class);
     }
-    
+
     public static Set<ConstraintDescriptor<?>> extractConstraintDescriptors(FacesContext context, RequestContext requestContext, ValueExpression ve, Class... groups) {
 
         PropertyDescriptor propertyDescriptor = extractPropertyDescriptor(context, requestContext, ve);
@@ -53,7 +53,7 @@ public class BeanValidationMetadataExtractor {
         if (propertyDescriptor != null) {
             return propertyDescriptor.findConstraints().unorderedAndMatchingGroups(groups).getConstraintDescriptors();
         }
-        
+
         return null;
     }
 
@@ -62,22 +62,22 @@ public class BeanValidationMetadataExtractor {
         if (ve != null) {
             ELContext elContext = context.getELContext();
             ValueReference vr = ValueExpressionAnalyzer.getReference(elContext, ve);
-            
+
             if (vr != null) {
                 Validator validator = requestContext.getApplicationContext().getValidator();
                 Object base = vr.getBase();
                 Object property = vr.getProperty();
-                
+
                 if (base != null && property != null) {
                     BeanDescriptor beanDescriptor = validator.getConstraintsForClass(base.getClass());
-                    
+
                     if (beanDescriptor != null) {
                         return beanDescriptor.getConstraintsForProperty(property.toString());
                     }
                 }
             }
         }
-        
+
         return null;
     }
 }
