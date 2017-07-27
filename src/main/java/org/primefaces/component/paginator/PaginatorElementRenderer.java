@@ -20,6 +20,6 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.api.Pageable;
 
 public interface PaginatorElementRenderer {
-    
+
     public void render(FacesContext context, Pageable pageable) throws IOException;
 }

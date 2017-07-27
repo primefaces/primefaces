@@ -45,9 +45,9 @@ import org.primefaces.util.SharedStringBuilder;
 public class OutputLabelRenderer extends CoreRenderer {
 
     private static final Logger LOG = Logger.getLogger(OutputLabelRenderer.class.getName());
-    
+
     private static final String SB_STYLE_CLASS = OutputLabelRenderer.class.getName() + "#styleClass";
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         final ResponseWriter writer = context.getResponseWriter();
@@ -61,9 +61,9 @@ public class OutputLabelRenderer extends CoreRenderer {
             styleClass.append(" ");
             styleClass.append(label.getStyleClass());
         }
-        
+
         final EditableValueHolderState state = new EditableValueHolderState();;
-        
+
         String _for = label.getFor();
         if (!isValueBlank(_for)) {
             ContextCallback callback = new ContextCallback() {
@@ -85,14 +85,14 @@ public class OutputLabelRenderer extends CoreRenderer {
                         if (value != null && (input.getAttributes().get("label") == null || input.getValueExpression("label") == null)) {
                             ValueExpression ve = label.getValueExpression("value");
 
-                            if(ve != null) {
+                            if (ve != null) {
                                 input.setValueExpression("label", ve);
                             }
                             else {
                                 String labelString = value;
                                 int colonPos = labelString.lastIndexOf(':');
 
-                                if(colonPos != -1) {
+                                if (colonPos != -1) {
                                     labelString = labelString.substring(0, colonPos);
                                 }
 
@@ -103,7 +103,7 @@ public class OutputLabelRenderer extends CoreRenderer {
                         if (!input.isValid()) {
                             styleClass.append(" ui-state-error");
                         }
-                        
+
                         if (label.isIndicateRequired()) {
                             state.setRequired(input.isRequired());
 
@@ -118,7 +118,7 @@ public class OutputLabelRenderer extends CoreRenderer {
                     }
                 }
             };
-            
+
             UIComponent forComponent = SearchExpressionFacade.resolveComponent(context, label, _for);
 
             if (CompositeUtils.isComposite(forComponent)) {
@@ -133,12 +133,12 @@ public class OutputLabelRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass.toString(), "id");
         renderPassThruAttributes(context, label, HTML.LABEL_ATTRS);
-        
+
         if (!isValueBlank(_for)) {
             writer.writeAttribute("for", state.getClientId(), "for");
         }
-        
-        if (value != null) {            
+
+        if (value != null) {
             if (label.isEscape()) {
                 writer.writeText(value, "value");
             }
@@ -146,23 +146,23 @@ public class OutputLabelRenderer extends CoreRenderer {
                 writer.write(value);
             }
         }
-        
+
         renderChildren(context, label);
 
         if (!isValueBlank(_for) && label.isIndicateRequired() && state.isRequired()) {
             encodeRequiredIndicator(writer, label);
         }
 
-        writer.endElement("label");        
+        writer.endElement("label");
     }
-    
+
     protected void encodeRequiredIndicator(ResponseWriter writer, OutputLabel label) throws IOException {
         writer.startElement("span", label);
         writer.writeAttribute("class", OutputLabel.REQUIRED_FIELD_INDICATOR_CLASS, null);
         writer.write("*");
-        writer.endElement("span");   
+        writer.endElement("span");
     }
-    
+
     protected boolean isNotNullDefined(UIInput input, FacesContext context) {
 
         // skip @NotNull check
@@ -170,7 +170,7 @@ public class OutputLabelRenderer extends CoreRenderer {
         if (!RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isInterpretEmptyStringAsNull()) {
             return false;
         }
-        
+
         try {
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
                     context, RequestContext.getCurrentInstance(context), ValueExpressionAnalyzer.getExpression(context.getELContext(), input.getValueExpression("value")));
@@ -182,7 +182,7 @@ public class OutputLabelRenderer extends CoreRenderer {
                 }
             }
         }
-        catch (PropertyNotFoundException e)  {
+        catch (PropertyNotFoundException e) {
             String message = "Skip evaluating @NotNull for outputLabel and referenced component \"" + input.getClientId(context) + "\" because"
                     + " the ValueExpression of the \"value\" attribute"
                     + " isn't resolvable completely (e.g. a sub-expression returns null)";
@@ -191,7 +191,7 @@ public class OutputLabelRenderer extends CoreRenderer {
 
         return false;
     }
-    
+
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Do nothing

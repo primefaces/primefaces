@@ -25,9 +25,9 @@ public class FirstPageLinkRenderer extends PageLinkRenderer implements Paginator
 
     public void render(FacesContext context, Pageable pageable) throws IOException {
         boolean disabled = pageable.getPage() == 0;
-        
+
         String ariaMessage = MessageFactory.getMessage(UIData.ARIA_FIRST_PAGE_LABEL, new Object[]{});
-       
+
         super.render(context, pageable, UIData.PAGINATOR_FIRST_PAGE_LINK_CLASS, UIData.PAGINATOR_FIRST_PAGE_ICON_CLASS, disabled, ariaMessage);
     }
 }

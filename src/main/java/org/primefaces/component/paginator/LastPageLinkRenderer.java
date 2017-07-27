@@ -26,11 +26,11 @@ public class LastPageLinkRenderer extends PageLinkRenderer implements PaginatorE
     public void render(FacesContext context, Pageable pageable) throws IOException {
         int currentPage = pageable.getPage();
         int pageCount = pageable.getPageCount();
-        
+
         boolean disabled = (currentPage == (pageCount - 1)) || (currentPage == 0 && pageCount == 0);
-        
+
         String ariaMessage = MessageFactory.getMessage(UIData.ARIA_LAST_PAGE_LABEL, new Object[]{});
-       
+
         super.render(context, pageable, UIData.PAGINATOR_LAST_PAGE_LINK_CLASS, UIData.PAGINATOR_LAST_PAGE_ICON_CLASS, disabled, ariaMessage);
-    }   
+    }
 }

@@ -27,19 +27,19 @@ import org.primefaces.facelets.MethodRule;
 
 public class PhotoCamHandler extends ComponentHandler {
 
-	private static final MetaRule LISTENER =
-			new MethodRule("listener", List.class, new Class[]{CaptureEvent.class});
-	
-	public PhotoCamHandler(ComponentConfig config) {
-		super(config);
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected MetaRuleset createMetaRuleset(Class type) { 
-		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
-		
-		metaRuleset.addRule(LISTENER);
-		
-		return metaRuleset; 
-	} 
+    private static final MetaRule LISTENER
+            = new MethodRule("listener", List.class, new Class[]{CaptureEvent.class});
+
+    public PhotoCamHandler(ComponentConfig config) {
+        super(config);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected MetaRuleset createMetaRuleset(Class type) {
+        MetaRuleset metaRuleset = super.createMetaRuleset(type);
+
+        metaRuleset.addRule(LISTENER);
+
+        return metaRuleset;
+    }
 }

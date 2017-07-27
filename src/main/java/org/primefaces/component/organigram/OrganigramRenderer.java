@@ -191,7 +191,6 @@ public class OrganigramRenderer extends CoreRenderer {
             }
         }
 
-
         // encode node
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-organigram-node-content", null);

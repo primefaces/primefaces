@@ -36,13 +36,15 @@ public class PollRenderer extends CoreRenderer {
     public void decode(FacesContext context, UIComponent component) {
         Poll poll = (Poll) component;
 
-        if(context.getExternalContext().getRequestParameterMap().containsKey(poll.getClientId(context))) {
+        if (context.getExternalContext().getRequestParameterMap().containsKey(poll.getClientId(context))) {
             ActionEvent event = new ActionEvent(poll);
-            if(poll.isImmediate())
+            if (poll.isImmediate()) {
                 event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-            else
+            }
+            else {
                 event.setPhaseId(PhaseId.INVOKE_APPLICATION);
-            
+            }
+
             poll.queueEvent(event);
         }
     }
@@ -53,12 +55,12 @@ public class PollRenderer extends CoreRenderer {
         String clientId = poll.getClientId(context);
 
         UIComponent form = ComponentTraversalUtils.closestForm(context, poll);
-        if(form == null) {
+        if (form == null) {
             throw new FacesException("Poll:" + clientId + " needs to be enclosed in a form component");
         }
 
         AjaxRequestBuilder builder = RequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
-        
+
         String request = builder.init()
                 .source(clientId)
                 .form(form.getClientId(context))
@@ -77,12 +79,12 @@ public class PollRenderer extends CoreRenderer {
                 .oncomplete(poll.getOncomplete())
                 .params(poll)
                 .build();
-        
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("Poll", poll.resolveWidgetVar(), clientId)
-            .attr("frequency", poll.getInterval())
-            .attr("autoStart", poll.isAutoStart())
-            .callback("fn", "function()", request);
+                .attr("frequency", poll.getInterval())
+                .attr("autoStart", poll.isAutoStart())
+                .callback("fn", "function()", request);
 
         wb.finish();
     }

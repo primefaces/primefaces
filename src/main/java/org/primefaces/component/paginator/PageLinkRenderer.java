@@ -34,12 +34,12 @@ public class PageLinkRenderer {
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("aria-label", ariaLabel, null);
         writer.writeAttribute("tabindex", tabindex, null);
-        
+
         writer.startElement("span", null);
         writer.writeAttribute("class", iconClass, null);
         writer.writeText(text, null);
         writer.endElement("span");
-        
+
         writer.endElement("a");
-    }    
+    }
 }
