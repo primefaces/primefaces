@@ -22,12 +22,12 @@ import javax.faces.context.PartialViewContextFactory;
 public class PrimePartialViewContextFactory extends PartialViewContextFactory {
 
     private PartialViewContextFactory parent;
-    
-	// #6212 - don't remove it
+
+    // #6212 - don't remove it
     public PrimePartialViewContextFactory() {
-    	
+
     }
-    
+
     public PrimePartialViewContextFactory(PartialViewContextFactory parent) {
         this.parent = parent;
     }
@@ -40,7 +40,7 @@ public class PrimePartialViewContextFactory extends PartialViewContextFactory {
     @Override
     public PartialViewContext getPartialViewContext(FacesContext fc) {
         PartialViewContext parentContext = getWrapped().getPartialViewContext(fc);
-        
+
         return new PrimePartialViewContext(parentContext);
     }
 }

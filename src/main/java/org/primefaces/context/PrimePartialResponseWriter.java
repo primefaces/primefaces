@@ -39,8 +39,8 @@ import org.primefaces.util.ResourceUtils;
 public class PrimePartialResponseWriter extends PartialResponseWriter {
 
     private static final Map<String, String> CALLBACK_EXTENSION_PARAMS = Collections.unmodifiableMap(new HashMap<String, String>() {{
-        put("ln", "primefaces");
-        put("type", "args");
+            put("ln", "primefaces");
+            put("type", "args");
     }});
 
     private final PartialResponseWriter wrapped;
@@ -97,7 +97,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
         wrapped.endDocument();
     }
-    
+
     @Override
     public void startDocument() throws IOException {
         wrapped.startDocument();
@@ -106,14 +106,14 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     @Override
     public void startError(String errorName) throws IOException {
         startMetadataIfNecessary();
-        
+
         wrapped.startError(errorName);
     }
 
     @Override
     public void startEval() throws IOException {
         startMetadataIfNecessary();
-        
+
         wrapped.startEval();
     }
 
@@ -134,24 +134,24 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     @Override
     public void startInsertBefore(String targetId) throws IOException {
         startMetadataIfNecessary();
-        
+
         wrapped.startInsertBefore(targetId);
     }
 
     @Override
     public void startUpdate(String targetId) throws IOException {
         startMetadataIfNecessary();
-        
+
         wrapped.startUpdate(targetId);
     }
 
     @Override
     public void updateAttributes(String targetId, Map<String, String> attributes) throws IOException {
         startMetadataIfNecessary();
-        
+
         wrapped.updateAttributes(targetId, attributes);
     }
-    
+
     @Override
     public void redirect(String url) throws IOException {
         wrapped.redirect(url);
@@ -160,7 +160,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     @Override
     public void delete(String targetId) throws IOException {
         startMetadataIfNecessary();
-        
+
         wrapped.delete(targetId);
     }
 
@@ -175,7 +175,6 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
         return true;
     }
-    
 
     public void encodeJSONObject(String paramName, JSONObject jsonObject) throws IOException, JSONException {
         String json = jsonObject.toString();
@@ -186,7 +185,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         getWrapped().write("\":");
         getWrapped().write(json);
     }
-    
+
     public void encodeJSONArray(String paramName, JSONArray jsonArray) throws IOException, JSONException {
         String json = jsonArray.toString();
         json = ComponentUtils.escapeXml(json);
@@ -196,7 +195,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         getWrapped().write("\":");
         getWrapped().write(json);
     }
-    
+
     public void encodeJSONValue(String paramName, Object paramValue) throws IOException, JSONException {
         String json = new JSONObject().put(paramName, paramValue).toString();
         json = ComponentUtils.escapeXml(json);
@@ -211,7 +210,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
             startExtension(CALLBACK_EXTENSION_PARAMS);
             getWrapped().write("{");
 
-            for(Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
+            for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
                 String paramName = it.next();
                 Object paramValue = params.get(paramName);
 
@@ -252,15 +251,14 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         }
     }
 
-    
     protected void startMetadataIfNecessary() throws IOException {
-        
+
         if (metadataRendered) {
             return;
         }
-        
+
         metadataRendered = true;
-        
+
         FacesContext context = FacesContext.getCurrentInstance();
         RequestContext requestContext = RequestContext.getCurrentInstance(context);
 
@@ -329,5 +327,5 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
             }
         }
     }
-    
+
 }

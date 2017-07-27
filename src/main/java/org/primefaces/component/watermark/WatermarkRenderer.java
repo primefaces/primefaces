@@ -27,25 +27,25 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 public class WatermarkRenderer extends CoreRenderer {
-	
+
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		Watermark watermark = (Watermark) component;
-		String target = null;
-		
-		String _for = watermark.getFor();
-		if(_for != null) {
-			target = SearchExpressionFacade.resolveClientIds(context, watermark, _for);
-		} 
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        Watermark watermark = (Watermark) component;
+        String target = null;
+
+        String _for = watermark.getFor();
+        if (_for != null) {
+            target = SearchExpressionFacade.resolveClientIds(context, watermark, _for);
+        }
         else {
-			throw new FacesException("\"For\" option must be used to define a watermark.");
-		}
-		
+            throw new FacesException("\"For\" option must be used to define a watermark.");
+        }
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("Watermark", watermark.resolveWidgetVar(), watermark.getClientId(context))
-            .attr("value", watermark.getValue())
-            .attr("target", target);
+                .attr("value", watermark.getValue())
+                .attr("target", target);
 
-		wb.finish();
-	}
+        wb.finish();
+    }
 }

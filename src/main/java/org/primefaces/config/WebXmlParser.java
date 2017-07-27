@@ -38,14 +38,14 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 public class WebXmlParser {
-    
+
     private static final Logger LOG = Logger.getLogger(WebXmlParser.class.getName());
-    
+
     public static Map<String, String> getErrorPages(FacesContext context) {
-        
+
         Map<String, String> webXmlErrorPages = getWebXmlErrorPages(context);
         Map<String, String> webFragmentXmlsErrorPages = getWebFragmentXmlsErrorPages(context);
-        
+
         Map<String, String> errorPages = webXmlErrorPages;
         if (errorPages == null) {
             errorPages = webFragmentXmlsErrorPages;
@@ -69,8 +69,8 @@ public class WebXmlParser {
         }
         catch (Throwable e) {
             LOG.log(Level.SEVERE, "Could not load or parse web.xml", e);
-        } 
-        
+        }
+
         return null;
     }
 
@@ -97,20 +97,19 @@ public class WebXmlParser {
                             }
                         }
                     }
-                }
-                catch (Throwable e) {
+                } catch (Throwable e) {
                     LOG.log(Level.SEVERE, "Could not load or parse web-fragment.xml", e);
                 }
             }
         } catch (IOException e) {
             LOG.log(Level.SEVERE, "Could not get web-fragment.xml's from ClassLoader", e);
         }
-        
+
         return webFragmentXmlsErrorPages;
     }
-    
+
     private static Document toDocument(URL url) throws Exception {
-        
+
         InputStream is = null;
 
         try {
@@ -118,7 +117,7 @@ public class WebXmlParser {
             if (url == null) {
                 return null;
             }
-            
+
             is = url.openStream();
 
             if (is == null) {
@@ -159,7 +158,7 @@ public class WebXmlParser {
             else {
                 document = builder.parse(is);
             }
-            
+
             return document;
         }
         finally {
@@ -173,11 +172,11 @@ public class WebXmlParser {
             }
         }
     }
-    
+
     private static Map<String, String> parseErrorPages(Element webXml) throws Exception {
 
         Map<String, String> errorPages = new HashMap<String, String>();
-        
+
         XPath xpath = XPathFactory.newInstance().newXPath();
 
         NodeList exceptionTypes = (NodeList) xpath.compile("error-page/exception-type").evaluate(webXml, XPathConstants.NODESET);
@@ -206,8 +205,8 @@ public class WebXmlParser {
                 errorPages.put(null, defaultLocation);
             }
         }
-        
+
         return errorPages;
     }
-    
+
 }

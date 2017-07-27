@@ -10,20 +10,20 @@ import javax.faces.lifecycle.Lifecycle;
  */
 public class PrimeFacesContextFactory extends FacesContextFactory {
 
-	private FacesContextFactory wrapped;
-	
-	// #6212 - don't remove it 
-	public PrimeFacesContextFactory() {
-		
-	}
-	
-	public PrimeFacesContextFactory(FacesContextFactory wrapped) {
-		this.wrapped = wrapped;
-	}
-	
-	@Override
-	public FacesContext getFacesContext(Object context, Object request, Object response, Lifecycle lifecycle)
-			throws FacesException {
+    private FacesContextFactory wrapped;
+
+    // #6212 - don't remove it 
+    public PrimeFacesContextFactory() {
+
+    }
+
+    public PrimeFacesContextFactory(FacesContextFactory wrapped) {
+        this.wrapped = wrapped;
+    }
+
+    @Override
+    public FacesContext getFacesContext(Object context, Object request, Object response, Lifecycle lifecycle)
+            throws FacesException {
 
         FacesContext wrappedContext = wrapped.getFacesContext(context, request, response, lifecycle);
 
@@ -31,8 +31,8 @@ public class PrimeFacesContextFactory extends FacesContextFactory {
             return wrappedContext;
         }
 
-		return new PrimeFacesContext(wrappedContext);
-	}
+        return new PrimeFacesContext(wrappedContext);
+    }
 
     public FacesContextFactory getWrapped() {
         return wrapped;

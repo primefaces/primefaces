@@ -25,19 +25,19 @@ import org.primefaces.facelets.MethodRule;
 
 public class WizardHandler extends ComponentHandler {
 
-	private static final MetaRule FLOW_LISTENER =
-			new MethodRule("flowListener", String.class, new Class[]{FlowEvent.class});
-	
-	public WizardHandler(ComponentConfig config) {
-		super(config);
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected MetaRuleset createMetaRuleset(Class type) { 
-		MetaRuleset metaRuleset = super.createMetaRuleset(type);
+    private static final MetaRule FLOW_LISTENER
+            = new MethodRule("flowListener", String.class, new Class[]{FlowEvent.class});
 
-		metaRuleset.addRule(FLOW_LISTENER);
-		
-		return metaRuleset;
-	} 
+    public WizardHandler(ComponentConfig config) {
+        super(config);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected MetaRuleset createMetaRuleset(Class type) {
+        MetaRuleset metaRuleset = super.createMetaRuleset(type);
+
+        metaRuleset.addRule(FLOW_LISTENER);
+
+        return metaRuleset;
+    }
 }
