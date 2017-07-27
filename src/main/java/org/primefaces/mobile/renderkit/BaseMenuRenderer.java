@@ -33,33 +33,33 @@ import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.ComponentUtils;
 
 public abstract class BaseMenuRenderer extends org.primefaces.component.menu.BaseMenuRenderer {
-     
+
     @Override
     protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String title = menuitem.getTitle();
-		boolean disabled = menuitem.isDisabled();
+        boolean disabled = menuitem.isDisabled();
         String styleClass = getLinkStyleClass(menuitem);
-        if(disabled) {
+        if (disabled) {
             styleClass = styleClass + " ui-state-disabled";
         }
-            
+
         writer.startElement("a", null);
         writer.writeAttribute("tabindex", "-1", null);
-        if(shouldRenderId(menuitem)) {
+        if (shouldRenderId(menuitem)) {
             writer.writeAttribute("id", menuitem.getClientId(), null);
         }
-        if(title != null) {
+        if (title != null) {
             writer.writeAttribute("title", title, null);
         }
 
         writer.writeAttribute("class", styleClass, null);
 
-        if(menuitem.getStyle() != null) {
+        if (menuitem.getStyle() != null) {
             writer.writeAttribute("style", menuitem.getStyle(), null);
         }
 
-        if(disabled) {
+        if (disabled) {
             writer.writeAttribute("href", "#", null);
             writer.writeAttribute("onclick", "return false;", null);
         }
@@ -69,8 +69,8 @@ public abstract class BaseMenuRenderer extends org.primefaces.component.menu.Bas
             String onclick = menuitem.getOnclick();
 
             //GET
-            if(url != null || outcome != null) {
-                if(outcome != null && outcome.startsWith("pm:")) {
+            if (url != null || outcome != null) {
+                if (outcome != null && outcome.startsWith("pm:")) {
                     String command = MobileUtils.buildNavigation(outcome) + "return false;";
                     onclick = (onclick == null) ? command : onclick + ";" + command;
                     writer.writeAttribute("href", "#", null);
@@ -79,25 +79,24 @@ public abstract class BaseMenuRenderer extends org.primefaces.component.menu.Bas
                     String targetURL = getTargetURL(context, (UIOutcomeTarget) menuitem);
                     writer.writeAttribute("href", targetURL, null);
 
-                    if(menuitem.getTarget() != null) {
+                    if (menuitem.getTarget() != null) {
                         writer.writeAttribute("target", menuitem.getTarget(), null);
                     }
                 }
-            }
-            //POST
+            } //POST
             else {
                 writer.writeAttribute("href", "#", null);
 
                 UIComponent form = ComponentTraversalUtils.closestForm(context, menu);
-                if(form == null) {
+                if (form == null) {
                     throw new FacesException("MenuItem must be inside a form element.");
                 }
 
                 String command;
-                if(menuitem.isDynamic()) {
+                if (menuitem.isDynamic()) {
                     String menuClientId = menu.getClientId(context);
-                    Map<String,List<String>> params = menuitem.getParams();
-                    if(params == null) {
+                    Map<String, List<String>> params = menuitem.getParams();
+                    if (params == null) {
                         params = new LinkedHashMap<String, List<String>>();
                     }
                     List<String> idParams = new ArrayList<String>();
@@ -105,7 +104,7 @@ public abstract class BaseMenuRenderer extends org.primefaces.component.menu.Bas
                     params.put(menuClientId + "_menuid", idParams);
 
                     command = menuitem.isAjax() ? buildAjaxRequest(context, menu, (AjaxSource) menuitem, form, params) : buildNonAjaxRequest(context, menu, form, menuClientId, params, true);
-                } 
+                }
                 else {
                     command = menuitem.isAjax() ? buildAjaxRequest(context, (AjaxSource) menuitem, form) : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
                 }
@@ -113,16 +112,16 @@ public abstract class BaseMenuRenderer extends org.primefaces.component.menu.Bas
                 onclick = (onclick == null) ? command : onclick + ";" + command;
             }
 
-            if(onclick != null) {
+            if (onclick != null) {
                 writer.writeAttribute("onclick", onclick, null);
             }
         }
 
         Object value = menuitem.getValue();
-        if(value != null) {
+        if (value != null) {
             writer.writeText(value, null);
         }
 
-        writer.endElement("a");  
+        writer.endElement("a");
     }
 }

@@ -24,20 +24,20 @@ import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class PanelRenderer extends org.primefaces.component.panel.PanelRenderer {
-    
+
     @Override
     protected void encodeScript(FacesContext context, Panel panel) throws IOException {
         String clientId = panel.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("Panel", panel.resolveWidgetVar(), clientId);
-        
+
         wb.attr("toggleable", panel.isToggleable(), false);
-        
+
         encodeClientBehaviors(context, panel);
 
         wb.finish();
     }
-    
+
     @Override
     protected void encodeMarkup(FacesContext context, Panel panel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -51,25 +51,25 @@ public class PanelRenderer extends org.primefaces.component.panel.PanelRenderer 
         if (collapsed) {
             styleClass += " ui-hidden-container";
         }
-    
+
         writer.startElement("div", panel);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
-        
+
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
-                
+
         encodeHeader(context, panel, collapsed, toggleable);
         encodeContent(context, panel, collapsed);
-        
+
         renderDynamicPassThruAttributes(context, panel);
-        
+
         if (toggleable) {
             encodeStateHolder(context, panel, clientId + "_collapsed", String.valueOf(collapsed));
         }
-        
+
         writer.endElement("div");
     }
 
@@ -77,10 +77,10 @@ public class PanelRenderer extends org.primefaces.component.panel.PanelRenderer 
         ResponseWriter writer = context.getResponseWriter();
         UIComponent header = panel.getFacet("header");
         String headerText = panel.getHeader();
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("class", Panel.MOBILE_TITLE_CLASS, null);
-                 
+
         writer.startElement("h3", null);
         if (header != null) {
             renderChild(context, header);
@@ -88,7 +88,7 @@ public class PanelRenderer extends org.primefaces.component.panel.PanelRenderer 
             writer.write(headerText);
         }
         writer.endElement("h3");
-        
+
         if (toggleable) {
             String toggleIconClass = collapsed ? Panel.MOBILE_TOGGLEICON_COLLAPSED_CLASS : Panel.MOBILE_TOGGLEICON_EXPANDED_CLASS;
             writer.startElement("a", null);
@@ -96,13 +96,13 @@ public class PanelRenderer extends org.primefaces.component.panel.PanelRenderer 
             writer.writeAttribute("class", toggleIconClass, null);
             writer.endElement("a");
         }
-        
+
         writer.endElement("div");
     }
-    
+
     protected void encodeContent(FacesContext context, Panel panel, boolean collapsed) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
- 
+
         writer.startElement("div", null);
         writer.writeAttribute("class", Panel.MOBILE_CONTENT_CLASS, null);
         if (collapsed) {
