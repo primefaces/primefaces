@@ -24,30 +24,30 @@ import org.primefaces.model.chart.PieChartModel;
 import org.primefaces.util.ComponentUtils;
 
 public class PieRenderer extends BasePlotRenderer {
-    
+
     @Override
     protected void encodeData(FacesContext context, Chart chart) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
+        ResponseWriter writer = context.getResponseWriter();
         PieChartModel model = (PieChartModel) chart.getModel();
 
-		writer.write(",data:[[" );
-        for(Iterator<String> it = model.getData().keySet().iterator(); it.hasNext();) {
+        writer.write(",data:[[");
+        for (Iterator<String> it = model.getData().keySet().iterator(); it.hasNext();) {
             String key = it.next();
             Number value = model.getData().get(key);
 
             writer.write("[\"" + ComponentUtils.escapeText(key) + "\"," + value + "]");
 
-            if(it.hasNext()) {
+            if (it.hasNext()) {
                 writer.write(",");
             }
         }
         writer.write("]]");
-	}
-    
+    }
+
     @Override
     protected void encodeOptions(FacesContext context, Chart chart) throws IOException {
         super.encodeOptions(context, chart);
-		
+
         ResponseWriter writer = context.getResponseWriter();
         PieChartModel model = (PieChartModel) chart.getModel();
         int diameter = model.getDiameter();
@@ -57,27 +57,29 @@ public class PieRenderer extends BasePlotRenderer {
         String dataFormat = model.getDataFormat();
         String dataLabelFormatString = model.getDataLabelFormatString();
         int dataLabelThreshold = model.getDataLabelThreshold();
- 
-        if(diameter != 0) writer.write(",diameter:" + diameter);
-        if(sliceMargin != 0) writer.write(",sliceMargin:" + sliceMargin);
-        if(!fill) writer.write(",fill:false");
-        if(showDataLabels) writer.write(",showDataLabels:true");
-        if(dataFormat != null) writer.write(",dataFormat:\"" + dataFormat + "\"");
-        if(dataLabelFormatString != null) writer.write(",dataLabelFormatString:\"" + dataLabelFormatString + "\"");
-        if(dataLabelThreshold > 0 && dataLabelThreshold < 100) writer.write(",dataLabelThreshold:" + dataLabelThreshold);
-        
-        if(model.isShowDatatip()) {
+
+        if (diameter != 0) writer.write(",diameter:" + diameter);
+        if (sliceMargin != 0) writer.write(",sliceMargin:" + sliceMargin);
+        if (!fill) writer.write(",fill:false");
+        if (showDataLabels) writer.write(",showDataLabels:true");
+        if (dataFormat != null) writer.write(",dataFormat:\"" + dataFormat + "\"");
+        if (dataLabelFormatString != null) writer.write(",dataLabelFormatString:\"" + dataLabelFormatString + "\"");
+        if (dataLabelThreshold > 0 && dataLabelThreshold < 100) writer.write(",dataLabelThreshold:" + dataLabelThreshold);
+
+        if (model.isShowDatatip()) {
             writer.write(",datatip:true");
-            
+
             String datatipFormat = model.getDatatipFormat();
             String datatipEditor = model.getDatatipEditor();
-            
-            if(datatipFormat != null)
+
+            if (datatipFormat != null) {
                 writer.write(",datatipFormat:\"" + model.getDatatipFormat() + "\"");
-            
-            if(datatipEditor != null)
+            }
+
+            if (datatipEditor != null) {
                 writer.write(",datatipEditor:" + datatipEditor);
+            }
         }
     }
-    
+
 }

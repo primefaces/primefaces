@@ -30,31 +30,31 @@ import javax.faces.view.facelets.TagException;
 import javax.faces.view.facelets.TagHandler;
 
 public class ResetInputTagHandler extends TagHandler {
-    
+
     private final TagAttribute target;
     private final TagAttribute clearModel;
-    
-    public ResetInputTagHandler(TagConfig tagConfig) {
-		super(tagConfig);
-		this.target = getRequiredAttribute("target");
-        this.clearModel = getAttribute("clearModel");
-	}
 
-	public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
-		if(parent == null || !ComponentHandler.isNew(parent)) {
+    public ResetInputTagHandler(TagConfig tagConfig) {
+        super(tagConfig);
+        this.target = getRequiredAttribute("target");
+        this.clearModel = getAttribute("clearModel");
+    }
+
+    public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
+        if (parent == null || !ComponentHandler.isNew(parent)) {
             return;
         }
-        
-        if(parent instanceof ActionSource) {
-			ValueExpression targetVE = target.getValueExpression(faceletContext, Object.class);
+
+        if (parent instanceof ActionSource) {
+            ValueExpression targetVE = target.getValueExpression(faceletContext, Object.class);
             ValueExpression clearModelVE = clearModel != null ? clearModel.getValueExpression(faceletContext, Boolean.class) : null;
-			
-			ActionSource actionSource = (ActionSource) parent;
-			actionSource.addActionListener(new ResetInputActionListener(targetVE, clearModelVE));
-		}
+
+            ActionSource actionSource = (ActionSource) parent;
+            actionSource.addActionListener(new ResetInputActionListener(targetVE, clearModelVE));
+        }
         else {
             throw new TagException(this.tag, "ResetInput can only be attached to ActionSource components.");
         }
-	}
-    
+    }
+
 }
