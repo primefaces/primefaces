@@ -24,19 +24,19 @@ import org.primefaces.facelets.MethodRule;
 
 public class SummaryRowHandler extends ComponentHandler {
 
-	private static final MetaRule LISTENER =
-			new MethodRule("listener", null, new Class[]{Object.class});
-	
-	public SummaryRowHandler(ComponentConfig config) {
-		super(config);
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected MetaRuleset createMetaRuleset(Class type) { 
-		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
-		
-		metaRuleset.addRule(LISTENER);
-		
-		return metaRuleset; 
-	} 
+    private static final MetaRule LISTENER
+            = new MethodRule("listener", null, new Class[]{Object.class});
+
+    public SummaryRowHandler(ComponentConfig config) {
+        super(config);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected MetaRuleset createMetaRuleset(Class type) {
+        MetaRuleset metaRuleset = super.createMetaRuleset(type);
+
+        metaRuleset.addRule(LISTENER);
+
+        return metaRuleset;
+    }
 }

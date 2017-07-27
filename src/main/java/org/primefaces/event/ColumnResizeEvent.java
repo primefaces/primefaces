@@ -21,12 +21,12 @@ import org.primefaces.component.api.UIColumn;
 
 public class ColumnResizeEvent extends ResizeEvent {
 
-	private UIColumn column;
-	
-	public ColumnResizeEvent(UIComponent component, Behavior behavior, int width, int height, UIColumn column) {
-		super(component, behavior, width, height);
-		this.column = column;
-	}
+    private UIColumn column;
+
+    public ColumnResizeEvent(UIComponent component, Behavior behavior, int width, int height, UIColumn column) {
+        super(component, behavior, width, height);
+        this.column = column;
+    }
 
     public UIColumn getColumn() {
         return column;

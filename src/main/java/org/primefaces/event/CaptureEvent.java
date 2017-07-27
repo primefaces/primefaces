@@ -22,29 +22,29 @@ import javax.faces.event.FacesListener;
 public class CaptureEvent extends FacesEvent {
 
     private byte[] data;
-    
+
     private String rawData;
 
-	public CaptureEvent(UIComponent component, byte[] data, String rawData) {
-		super(component);
-		this.data = data;
+    public CaptureEvent(UIComponent component, byte[] data, String rawData) {
+        super(component);
+        this.data = data;
         this.rawData = rawData;
-	}
+    }
 
-	@Override
-	public boolean isAppropriateListener(FacesListener listener) {
-		return false;
-	}
+    @Override
+    public boolean isAppropriateListener(FacesListener listener) {
+        return false;
+    }
 
-	@Override
-	public void processListener(FacesListener listener) {
-		throw new UnsupportedOperationException();
-	}
-	
-	public byte[] getData() {
-		return data;
-	}
-    
+    @Override
+    public void processListener(FacesListener listener) {
+        throw new UnsupportedOperationException();
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
     public String getRawData() {
         return rawData;
     }

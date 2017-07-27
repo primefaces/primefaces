@@ -18,7 +18,7 @@ package org.primefaces.convert;
 import java.util.Map;
 
 public class DoubleConverter extends javax.faces.convert.DoubleConverter implements ClientConverter {
-    
+
     public Map<String, Object> getMetadata() {
         return null;
     }

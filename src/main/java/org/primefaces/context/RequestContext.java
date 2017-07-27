@@ -38,11 +38,11 @@ import org.primefaces.util.WidgetBuilder;
 public abstract class RequestContext {
 
     private static final String INSTANCE_KEY = RequestContext.class.getName();
-    
+
     public static RequestContext getCurrentInstance() {
         return getCurrentInstance(FacesContext.getCurrentInstance());
     }
-    
+
     public static RequestContext getCurrentInstance(FacesContext facesContext) {
         if (facesContext != null && !facesContext.isReleased()) {
             return (RequestContext) facesContext.getAttributes().get(INSTANCE_KEY);
@@ -60,7 +60,7 @@ public abstract class RequestContext {
             facesContext.getAttributes().put(INSTANCE_KEY, context);
         }
     }
-    
+
     /**
      * @return true if request is an ajax request, otherwise return false.
      */
@@ -87,36 +87,42 @@ public abstract class RequestContext {
 
     /**
      * Execute a javascript after current ajax request is completed.
+     *
      * @param script Javascript statement to execute.
      */
     public abstract void execute(String script);
 
     /**
      * Scroll to a component after ajax request is completed.
+     *
      * @param clientId Client side identifier of the component.
      */
     public abstract void scrollTo(String clientId);
 
     /**
      * Update a component with ajax.
+     *
      * @param name Client side identifier of the component.
      */
     public abstract void update(String name);
 
     /**
      * Update components with ajax.
+     *
      * @param collection Client side identifiers of the components.
      */
     public abstract void update(Collection<String> collection);
 
     /**
      * Reset an editableValueHolder.
+     *
      * @param expressions A string with one or multiple search expression to resolve the components.
      */
     public abstract void reset(String expressions);
 
     /**
      * Reset a collection of editableValueHolders.
+     *
      * @param expressions A list with with one or multiple search expression to resolve the components.
      */
     public abstract void reset(Collection<String> expressions);
@@ -139,30 +145,34 @@ public abstract class RequestContext {
     /**
      * @return Attributes map in RequestContext scope
      */
-    public abstract Map<Object,Object> getAttributes();
+    public abstract Map<Object, Object> getAttributes();
 
     /**
      * Open a view in dialog.
+     *
      * @param outcome The logical outcome used to resolve a navigation case.
      */
     public abstract void openDialog(String outcome);
 
     /**
      * Open a view in dialog.
+     *
      * @param outcome The logical outcome used to resolve a navigation case.
      * @param options Configuration options for the dialog.
      * @param params Parameters to send to the view displayed in a dialog.
      */
-    public abstract void openDialog(String outcome, Map<String,Object> options, Map<String,List<String>> params);
+    public abstract void openDialog(String outcome, Map<String, Object> options, Map<String, List<String>> params);
 
     /**
      * Close a dialog.
+     *
      * @param data Optional data to pass back to a dialogReturn event.
      */
     public abstract void closeDialog(Object data);
 
     /**
      * Displays a message in a dialog.
+     *
      * @param message FacesMessage to be displayed.
      */
     public abstract void showMessageInDialog(FacesMessage message);
@@ -193,8 +203,8 @@ public abstract class RequestContext {
     public abstract boolean isIgnoreAutoUpdate();
 
     public abstract boolean isRTL();
-    
+
     public abstract void clearTableStates();
-    
+
     public abstract void clearTableState(String clientId);
 }

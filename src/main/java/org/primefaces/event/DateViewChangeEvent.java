@@ -20,14 +20,14 @@ import javax.faces.component.behavior.Behavior;
 
 public class DateViewChangeEvent extends AbstractAjaxBehaviorEvent {
 
-	private int month;
+    private int month;
     private int year;
-	
-	public DateViewChangeEvent(UIComponent component, Behavior behavior, int month, int year) {
-		super(component, behavior);
-		this.month = month;
+
+    public DateViewChangeEvent(UIComponent component, Behavior behavior, int month, int year) {
+        super(component, behavior);
+        this.month = month;
         this.year = year;
-	}
+    }
 
     public int getMonth() {
         return month;

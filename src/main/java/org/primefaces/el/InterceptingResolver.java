@@ -77,10 +77,10 @@ public class InterceptingResolver extends ELResolver {
     // @Override
     // < EL 2.2 compatibility
     public Object invoke(ELContext context,
-                         Object base,
-                         Object method,
-                         Class<?>[] paramTypes,
-                         Object[] params) {
+            Object base,
+            Object method,
+            Class<?>[] paramTypes,
+            Object[] params) {
         return delegate.invoke(context, base, method, paramTypes, params);
     }
 }

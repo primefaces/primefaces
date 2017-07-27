@@ -20,8 +20,8 @@ import javax.faces.component.behavior.Behavior;
 
 public class CloseEvent extends AbstractAjaxBehaviorEvent {
 
-	public CloseEvent(UIComponent component, Behavior behavior) {
-		super(component, behavior);
-	}
+    public CloseEvent(UIComponent component, Behavior behavior) {
+        super(component, behavior);
+    }
 
 }

@@ -8,6 +8,7 @@ import javax.el.FunctionMapper;
 import javax.el.VariableMapper;
 
 public class InterceptingContext extends ELContext {
+
     private final ELContext context;
     private final ELResolver resolver;
 

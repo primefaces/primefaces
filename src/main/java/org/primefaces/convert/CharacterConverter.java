@@ -18,7 +18,7 @@ package org.primefaces.convert;
 import java.util.Map;
 
 public class CharacterConverter extends javax.faces.convert.CharacterConverter implements ClientConverter {
-    
+
     public Map<String, Object> getMetadata() {
         return null;
     }

@@ -18,7 +18,7 @@ package org.primefaces.convert;
 import java.util.Map;
 
 public class BigIntegerConverter extends javax.faces.convert.BigIntegerConverter implements ClientConverter {
-    
+
     public Map<String, Object> getMetadata() {
         return null;
     }

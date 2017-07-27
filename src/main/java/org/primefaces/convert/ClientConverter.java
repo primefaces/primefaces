@@ -18,8 +18,8 @@ package org.primefaces.convert;
 import java.util.Map;
 
 public interface ClientConverter {
-    
-    public Map<String,Object> getMetadata();
-    
+
+    public Map<String, Object> getMetadata();
+
     public String getConverterId();
 }
