@@ -30,7 +30,6 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
 public class WizardRenderer extends CoreRenderer {
@@ -124,7 +123,8 @@ public class WizardRenderer extends CoreRenderer {
 
                 if (!firstStep) {
                     writer.write(",");
-                } else {
+                }
+                else {
                     firstStep = false;
                 }
 

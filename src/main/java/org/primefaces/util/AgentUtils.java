@@ -38,7 +38,8 @@ public class AgentUtils {
 
         if (userAgent == null) {
             return false;
-        } else {
+        }
+        else {
             int index = userAgent.indexOf("MSIE");
 
             if (index == -1) {

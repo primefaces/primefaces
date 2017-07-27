@@ -93,7 +93,8 @@ public class SelectCheckboxMenuRenderer extends org.primefaces.component.selectc
             if (submittedValues != null) {
                 valuesArray = submittedValues;
                 itemValue = itemValueAsString;
-            } else {
+            }
+            else {
                 valuesArray = values;
                 itemValue = option.getValue();
             }

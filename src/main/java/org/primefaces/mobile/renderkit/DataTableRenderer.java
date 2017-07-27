@@ -224,7 +224,7 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
                 sortIcon = DataTable.MOBILE_SORT_ICON_CLASS;
             }
             else {
-                styleClass = styleClass + " " + DataTable.MOBILE_SORTED_COLUMN_CLASS;;
+                styleClass = styleClass + " " + DataTable.MOBILE_SORTED_COLUMN_CLASS;
             }
         }
 
@@ -320,7 +320,8 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
 
             if (emptyFacet != null) {
                 emptyFacet.encodeAll(context);
-            } else {
+            }
+            else {
                 writer.write(emptyMessage);
             }
 

@@ -292,7 +292,8 @@ public class TreeTableRenderer extends DataRenderer {
 
         if (scrollable) {
             encodeScrollableMarkup(context, tt);
-        } else {
+        }
+        else {
             encodeRegularMarkup(context, tt);
         }
 
@@ -647,7 +648,8 @@ public class TreeTableRenderer extends DataRenderer {
 
             if (sortIcon == null) {
                 sortIcon = TreeTable.SORTABLE_COLUMN_ICON_CLASS;
-            } else {
+            }
+            else {
                 columnClass += " ui-state-active";
             }
         }
@@ -936,7 +938,8 @@ public class TreeTableRenderer extends DataRenderer {
 
         ValueExpression sortByVE = tt.getValueExpression("sortBy");
         SortOrder sortOrder = SortOrder.valueOf(tt.getSortOrder().toUpperCase(Locale.ENGLISH));
-        TreeUtils.sortNode(root, new TreeNodeComparator(sortByVE, tt.getVar(), sortOrder, tt.getSortFunction(), tt.isCaseSensitiveSort(), tt.resolveDataLocale()));
+        TreeUtils.sortNode(root, new TreeNodeComparator(sortByVE, tt.getVar(), sortOrder, tt.getSortFunction(),
+                tt.isCaseSensitiveSort(), tt.resolveDataLocale()));
         tt.updateRowKeys(root);
 
         RequestContext requestContext = RequestContext.getCurrentInstance();

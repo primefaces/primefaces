@@ -46,7 +46,6 @@ import org.primefaces.model.menu.Separator;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 

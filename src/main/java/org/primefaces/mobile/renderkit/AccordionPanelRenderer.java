@@ -106,7 +106,8 @@ public class AccordionPanelRenderer extends org.primefaces.component.accordionpa
         writer.writeAttribute("class", iconClass, null);
         if (titleFacet == null) {
             writer.write(tab.getTitle());
-        } else {
+        }
+        else {
             titleFacet.encodeAll(context);
         }
         writer.endElement("a");

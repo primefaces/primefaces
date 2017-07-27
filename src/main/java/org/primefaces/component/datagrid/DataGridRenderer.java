@@ -139,7 +139,7 @@ public class DataGridRenderer extends DataRenderer {
 
     protected void encodeGrid(FacesContext context, DataGrid grid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-
+        
         int columns = grid.getColumns();
         int rowIndex = grid.getFirst();
         int rows = grid.getRows();

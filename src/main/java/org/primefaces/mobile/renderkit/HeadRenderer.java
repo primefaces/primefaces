@@ -52,7 +52,8 @@ public class HeadRenderer extends Renderer {
         String theme = resolveTheme(context);
         if (theme == null) {
             renderCSS(context, "mobile/jquery-mobile.css", "primefaces");
-        } else {
+        }
+        else {
             renderCSS(context, "theme.css", "primefaces-" + theme);
             renderCSS(context, "mobile/jquery-mobile-icons.css", "primefaces");
             renderCSS(context, "mobile/jquery-mobile-structure.css", "primefaces");

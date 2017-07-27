@@ -56,7 +56,8 @@ public abstract class RequestContext {
             if (facesContext != null) {
                 facesContext.getAttributes().remove(INSTANCE_KEY);
             }
-        } else {
+        }
+        else {
             facesContext.getAttributes().put(INSTANCE_KEY, context);
         }
     }

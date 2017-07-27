@@ -130,7 +130,10 @@ public class DataListRenderer extends org.primefaces.component.datalist.DataList
 
         for (int i = first; i < pageSize; i++) {
             if (varStatus != null) {
-                requestMap.put(varStatus, new org.primefaces.component.datalist.DataListRenderer.VarStatus(first, (pageSize - 1), (i == 0), (i == (rowCount - 1)), i, (i % 2 == 0), (i % 2 == 1), 1));
+                requestMap.put(
+                        varStatus, 
+                        new org.primefaces.component.datalist.DataListRenderer.VarStatus(
+                            first, (pageSize - 1), (i == 0), (i == (rowCount - 1)), i, (i % 2 == 0), (i % 2 == 1), 1));
             }
 
             list.setRowIndex(i);

@@ -84,7 +84,8 @@ public class PanelRenderer extends org.primefaces.component.panel.PanelRenderer 
         writer.startElement("h3", null);
         if (header != null) {
             renderChild(context, header);
-        } else if (headerText != null) {
+        }
+        else if (headerText != null) {
             writer.write(headerText);
         }
         writer.endElement("h3");

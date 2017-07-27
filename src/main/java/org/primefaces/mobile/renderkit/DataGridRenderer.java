@@ -139,7 +139,7 @@ public class DataGridRenderer extends org.primefaces.component.datagrid.DataGrid
             }
         }
 
-        grid.setRowIndex(-1);	//cleanup
+        grid.setRowIndex(-1); //cleanup
     }
 
     private PaginatorRenderer getPaginatorRenderer(FacesContext context) {

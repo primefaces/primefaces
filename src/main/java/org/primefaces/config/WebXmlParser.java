@@ -97,11 +97,13 @@ public class WebXmlParser {
                             }
                         }
                     }
-                } catch (Throwable e) {
+                }
+                catch (Throwable e) {
                     LOG.log(Level.SEVERE, "Could not load or parse web-fragment.xml", e);
                 }
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             LOG.log(Level.SEVERE, "Could not get web-fragment.xml's from ClassLoader", e);
         }
 

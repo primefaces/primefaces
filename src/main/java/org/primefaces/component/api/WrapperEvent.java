@@ -11,14 +11,14 @@ import javax.faces.event.PhaseId;
 
 public class WrapperEvent extends FacesEvent {
 
+    private FacesEvent event = null;
+    private String rowKey = null;
+    
     public WrapperEvent(UIComponent component, FacesEvent event, String rowKey) {
         super(component);
         this.event = event;
         this.rowKey = rowKey;
     }
-
-    private FacesEvent event = null;
-    private String rowKey = null;
 
     public FacesEvent getFacesEvent() {
         return (this.event);

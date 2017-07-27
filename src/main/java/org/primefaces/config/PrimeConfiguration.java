@@ -175,7 +175,8 @@ public class PrimeConfiguration {
         if (param == null) {
             // null means the same as auto.
             param = "auto";
-        } else {
+        }
+        else {
             // The environment variables are case insensitive.
             param = param.toLowerCase();
         }
@@ -191,7 +192,8 @@ public class PrimeConfiguration {
             is = getClass().getResourceAsStream("/META-INF/maven/org.primefaces/primefaces/pom.properties");
             buildProperties.load(is);
             buildVersion = buildProperties.getProperty("version");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.log(Level.SEVERE, "Could not load pom.properties", e);
         }
 

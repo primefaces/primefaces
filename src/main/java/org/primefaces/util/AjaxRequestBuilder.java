@@ -246,7 +246,8 @@ public class AjaxRequestBuilder {
                 if (!paramWritten) {
                     paramWritten = true;
                     buffer.append(",pa:[");
-                } else {
+                }
+                else {
                     buffer.append(",");
                 }
 

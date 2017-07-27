@@ -30,7 +30,6 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.mobile.util.MobileUtils;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.ComponentUtils;
 
 public abstract class BaseMenuRenderer extends org.primefaces.component.menu.BaseMenuRenderer {
 
@@ -103,10 +102,14 @@ public abstract class BaseMenuRenderer extends org.primefaces.component.menu.Bas
                     idParams.add(menuitem.getId());
                     params.put(menuClientId + "_menuid", idParams);
 
-                    command = menuitem.isAjax() ? buildAjaxRequest(context, menu, (AjaxSource) menuitem, form, params) : buildNonAjaxRequest(context, menu, form, menuClientId, params, true);
+                    command = menuitem.isAjax()
+                            ? buildAjaxRequest(context, menu, (AjaxSource) menuitem, form, params)
+                            : buildNonAjaxRequest(context, menu, form, menuClientId, params, true);
                 }
                 else {
-                    command = menuitem.isAjax() ? buildAjaxRequest(context, (AjaxSource) menuitem, form) : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
+                    command = menuitem.isAjax()
+                            ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
+                            : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
                 }
 
                 onclick = (onclick == null) ? command : onclick + ";" + command;

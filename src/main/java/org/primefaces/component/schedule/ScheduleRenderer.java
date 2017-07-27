@@ -78,8 +78,8 @@ public class ScheduleRenderer extends CoreRenderer {
             Date endDate = new Date(Long.valueOf(endDateParam));
 
             LazyScheduleModel lazyModel = ((LazyScheduleModel) model);
-            lazyModel.clear();							//Clear old events
-            lazyModel.loadEvents(startDate, endDate);	//Lazy load events
+            lazyModel.clear(); //Clear old events
+            lazyModel.loadEvents(startDate, endDate); //Lazy load events
         }
 
         encodeEventsAsJSON(context, schedule, model);

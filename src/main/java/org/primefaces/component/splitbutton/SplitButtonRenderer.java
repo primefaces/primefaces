@@ -39,7 +39,6 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
@@ -294,7 +293,9 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
                         throw new FacesException("MenuItem must be inside a form element");
                     }
 
-                    String command = menuitem.isAjax() ? buildAjaxRequest(context, (AjaxSource) menuitem, form) : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
+                    String command = menuitem.isAjax()
+                            ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
+                            : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
 
                     onclick = (onclick == null) ? command : onclick + ";" + command;
                 }
@@ -362,7 +363,8 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
                 for (int i = 0; i < clickBehaviors.size(); i++) {
                     ClientBehavior clientBehavior = clickBehaviors.get(i);
                     if (clientBehavior instanceof ConfirmBehavior) {
-                        ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) item, "click", item.getClientId(), Collections.EMPTY_LIST);
+                        ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
+                                context, (UIComponent) item, "click", item.getClientId(), Collections.EMPTY_LIST);
                         clientBehavior.getScript(cbc);
                         break;
                     }

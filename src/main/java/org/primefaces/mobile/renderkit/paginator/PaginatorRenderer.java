@@ -29,10 +29,9 @@ import org.primefaces.util.WidgetBuilder;
 
 public class PaginatorRenderer extends CoreRenderer {
 
-    private static Map<String, PaginatorElementRenderer> ELEMENTS;
+    private static Map<String, PaginatorElementRenderer> ELEMENTS = new HashMap<String, PaginatorElementRenderer>();
 
     static {
-        ELEMENTS = new HashMap<String, PaginatorElementRenderer>();
         ELEMENTS.put("{FirstPageLink}", new FirstPageLinkRenderer());
         ELEMENTS.put("{PreviousPageLink}", new PrevPageLinkRenderer());
         ELEMENTS.put("{NextPageLink}", new NextPageLinkRenderer());
