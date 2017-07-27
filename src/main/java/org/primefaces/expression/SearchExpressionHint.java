@@ -20,8 +20,8 @@ public class SearchExpressionHint {
     public static final int NONE = 0x0;
 
     /**
-     * Checks if the {@link UIComponent} has a renderer or not. This check is currently only useful for the update attributes, as a component without renderer
-     * can't be updated.
+     * Checks if the {@link UIComponent} has a renderer or not. This check is currently only useful for the update attributes, as a component without
+     * renderer can't be updated.
      */
     public static final int VALIDATE_RENDERER = 0x1;
 

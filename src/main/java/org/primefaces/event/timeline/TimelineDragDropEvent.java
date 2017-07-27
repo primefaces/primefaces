@@ -22,22 +22,26 @@ import javax.faces.component.behavior.Behavior;
 
 public class TimelineDragDropEvent extends TimelineAddEvent {
 
-	/** client ID of the dragged component */
-	private String dragId;
-    
-    /** dragged model object if draggable item is within a data iteration component or null */
+    /**
+     * client ID of the dragged component
+     */
+    private String dragId;
+
+    /**
+     * dragged model object if draggable item is within a data iteration component or null
+     */
     private Object data;
 
-	public TimelineDragDropEvent(UIComponent component, Behavior behavior, Date startDate, Date endDate, String group,
-	                             String dragId, Object data) {
-		super(component, behavior, startDate, endDate, group);
-		this.dragId = dragId;
+    public TimelineDragDropEvent(UIComponent component, Behavior behavior, Date startDate, Date endDate, String group,
+            String dragId, Object data) {
+        super(component, behavior, startDate, endDate, group);
+        this.dragId = dragId;
         this.data = data;
-	}
+    }
 
-	public String getDragId() {
-		return dragId;
-	}
+    public String getDragId() {
+        return dragId;
+    }
 
     public Object getData() {
         return data;

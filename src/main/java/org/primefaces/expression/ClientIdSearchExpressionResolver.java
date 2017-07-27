@@ -30,7 +30,7 @@ public interface ClientIdSearchExpressionResolver {
      * @param context The {@link FacesContext}.
      * @param source The source component. E.g. a button.
      * @param last The last resolved component in the chain.
-     * If it's not a nested expression, it's the same as the source component.
+     *             If it's not a nested expression, it's the same as the source component.
      * @param expression The search expression.
      * @param options The options.
      *

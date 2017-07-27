@@ -24,23 +24,27 @@ import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
 public class TimelineRangeEvent extends AbstractAjaxBehaviorEvent {
 
-	/** new start time of the visible range */
-	private Date startDate;
+    /**
+     * new start time of the visible range
+     */
+    private Date startDate;
 
-	/** new end time of the visible range */
-	private Date endDate;
+    /**
+     * new end time of the visible range
+     */
+    private Date endDate;
 
-	public TimelineRangeEvent(UIComponent component, Behavior behavior, Date startDate, Date endDate) {
-		super(component, behavior);
-		this.startDate = startDate;
-		this.endDate = endDate;
-	}
+    public TimelineRangeEvent(UIComponent component, Behavior behavior, Date startDate, Date endDate) {
+        super(component, behavior);
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
-	public Date getStartDate() {
-		return startDate;
-	}
+    public Date getStartDate() {
+        return startDate;
+    }
 
-	public Date getEndDate() {
-		return endDate;
-	}
+    public Date getEndDate() {
+        return endDate;
+    }
 }

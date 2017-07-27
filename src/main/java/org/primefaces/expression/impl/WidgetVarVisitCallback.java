@@ -22,17 +22,17 @@ import javax.faces.component.visit.VisitResult;
 import org.primefaces.component.api.Widget;
 
 public class WidgetVarVisitCallback implements VisitCallback {
-    
+
     private final String widgetVar;
-    
+
     private UIComponent component;
 
     public WidgetVarVisitCallback(String widgetVar) {
         this.widgetVar = widgetVar;
-        
+
         this.component = null;
     }
-    
+
     public VisitResult visit(VisitContext context, UIComponent target) {
 
         if (target instanceof Widget) {
@@ -41,7 +41,7 @@ public class WidgetVarVisitCallback implements VisitCallback {
                 return VisitResult.COMPLETE;
             }
         }
-        
+
         return VisitResult.ACCEPT;
     }
 

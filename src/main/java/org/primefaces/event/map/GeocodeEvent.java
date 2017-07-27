@@ -22,15 +22,15 @@ import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.map.GeocodeResult;
 
 public class GeocodeEvent extends AbstractAjaxBehaviorEvent {
-	
+
     private final String query;
-	private final List<GeocodeResult> results;
-	
-	public GeocodeEvent(UIComponent component, Behavior behavior, String query, List<GeocodeResult> results) {
-		super(component, behavior);
+    private final List<GeocodeResult> results;
+
+    public GeocodeEvent(UIComponent component, Behavior behavior, String query, List<GeocodeResult> results) {
+        super(component, behavior);
         this.query = query;
         this.results = results;
-	}
+    }
 
     public String getQuery() {
         return query;

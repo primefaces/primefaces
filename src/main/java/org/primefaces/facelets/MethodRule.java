@@ -40,42 +40,41 @@ import javax.faces.view.facelets.TagAttributeException;
  *
  * @author Mike Kienenberger
  * @author Jacob Hookom
- * 
+ *
  * Implementation copied from Facelets 1.1.14, as it got hidden by JSF 2.0
  */
 public class MethodRule extends MetaRule {
 
     private final String methodName;
-
     private final Class returnTypeClass;
-
     private final Class[] params;
 
     public MethodRule(String methodName, Class returnTypeClass,
-                      Class[] params) {
+            Class[] params) {
         this.methodName = methodName;
         this.returnTypeClass = returnTypeClass;
         this.params = params;
     }
 
-    public Metadata applyRule(String name, TagAttribute attribute,
-                              MetadataTarget meta) {
-        if (false == name.equals(this.methodName))
+    public Metadata applyRule(String name, TagAttribute attribute, MetadataTarget meta) {
+        if (false == name.equals(this.methodName)) {
             return null;
+        }
 
         if (MethodBinding.class.equals(meta.getPropertyType(name))) {
             Method method = meta.getWriteMethod(name);
             if (method != null) {
                 return new MethodBindingMetadata(method, attribute,
-                                                 this.returnTypeClass,
-                                                 this.params);
+                        this.returnTypeClass,
+                        this.params);
             }
-        } else if (MethodExpression.class.equals(meta.getPropertyType(name))) {
+        }
+        else if (MethodExpression.class.equals(meta.getPropertyType(name))) {
             Method method = meta.getWriteMethod(name);
             if (method != null) {
                 return new MethodExpressionMetadata(method, attribute,
-                                                    this.returnTypeClass,
-                                                    this.params);
+                        this.returnTypeClass,
+                        this.params);
             }
         }
 
@@ -83,16 +82,15 @@ public class MethodRule extends MetaRule {
     }
 
     private static class MethodBindingMetadata extends Metadata {
-        private final Method _method;
 
+        private final Method _method;
         private final TagAttribute _attribute;
 
         private Class[] _paramList;
-
         private Class _returnType;
 
         public MethodBindingMetadata(Method method, TagAttribute attribute,
-                                     Class returnType, Class[] paramList) {
+                Class returnType, Class[] paramList) {
             _method = method;
             _attribute = attribute;
             _paramList = paramList;
@@ -100,31 +98,32 @@ public class MethodRule extends MetaRule {
         }
 
         public void applyMetadata(FaceletContext ctx, Object instance) {
-            MethodExpression expr =
-                _attribute.getMethodExpression(ctx, _returnType, _paramList);
+            MethodExpression expr
+                    = _attribute.getMethodExpression(ctx, _returnType, _paramList);
 
             try {
                 _method.invoke(instance,
-                               new Object[] { new LegacyMethodBinding(expr) });
-            } catch (InvocationTargetException e) {
+                        new Object[]{new LegacyMethodBinding(expr)});
+            }
+            catch (InvocationTargetException e) {
                 throw new TagAttributeException(_attribute, e.getCause());
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 throw new TagAttributeException(_attribute, e);
             }
         }
     }
 
     private static class MethodExpressionMetadata extends Metadata {
-        private final Method _method;
 
+        private final Method _method;
         private final TagAttribute _attribute;
 
         private Class[] _paramList;
-
         private Class _returnType;
 
         public MethodExpressionMetadata(Method method, TagAttribute attribute,
-                                        Class returnType, Class[] paramList) {
+                Class returnType, Class[] paramList) {
             _method = method;
             _attribute = attribute;
             _paramList = paramList;
@@ -132,19 +131,20 @@ public class MethodRule extends MetaRule {
         }
 
         public void applyMetadata(FaceletContext ctx, Object instance) {
-            MethodExpression expr =
-                _attribute.getMethodExpression(ctx, _returnType, _paramList);
+            MethodExpression expr
+                    = _attribute.getMethodExpression(ctx, _returnType, _paramList);
 
             try {
-                _method.invoke(instance, new Object[] { expr });
-            } catch (InvocationTargetException e) {
+                _method.invoke(instance, new Object[]{expr});
+            }
+            catch (InvocationTargetException e) {
                 throw new TagAttributeException(_attribute, e.getCause());
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 throw new TagAttributeException(_attribute, e);
             }
         }
     }
-    
 
     private static class LegacyMethodBinding extends MethodBinding implements Serializable {
 
@@ -157,18 +157,19 @@ public class MethodRule extends MetaRule {
         }
 
         /*
-       * (non-Javadoc)
-       *
-       * @see javax.faces.el.MethodBinding#getType(javax.faces.context.FacesContext)
-       */
-
+         * (non-Javadoc)
+         *
+         * @see javax.faces.el.MethodBinding#getType(javax.faces.context.FacesContext)
+         */
         public Class getType(FacesContext context) throws MethodNotFoundException {
             try {
                 return m.getMethodInfo(context.getELContext()).getReturnType();
-            } catch (javax.el.MethodNotFoundException e) {
+            }
+            catch (javax.el.MethodNotFoundException e) {
                 throw new MethodNotFoundException(e.getMessage(),
-                                                  e.getCause());
-            } catch (ELException e) {
+                        e.getCause());
+            }
+            catch (ELException e) {
                 throw new EvaluationException(e.getMessage(), e.getCause());
             }
         }
@@ -178,17 +179,18 @@ public class MethodRule extends MetaRule {
        *
        * @see javax.faces.el.MethodBinding#invoke(javax.faces.context.FacesContext,
        *      java.lang.Object[])
-       */
-
+         */
         public Object invoke(FacesContext context,
-                             Object[] params) throws EvaluationException,
-                                                     MethodNotFoundException {
+                Object[] params) throws EvaluationException,
+                MethodNotFoundException {
             try {
                 return m.invoke(context.getELContext(), params);
-            } catch (javax.el.MethodNotFoundException e) {
+            }
+            catch (javax.el.MethodNotFoundException e) {
                 throw new MethodNotFoundException(e.getMessage(),
-                                                  e.getCause());
-            } catch (ELException e) {
+                        e.getCause());
+            }
+            catch (ELException e) {
                 throw new EvaluationException(e.getMessage(), e.getCause());
             }
         }

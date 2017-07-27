@@ -18,20 +18,19 @@ package org.primefaces.expression;
 import javax.faces.FacesException;
 
 public class ComponentNotFoundException extends FacesException {
-    
-    public ComponentNotFoundException()
-    {
+
+    public ComponentNotFoundException() {
         super();
     }
-    
+
     public ComponentNotFoundException(String message) {
         super(message);
     }
-    
+
     public ComponentNotFoundException(Throwable cause) {
         super(cause);
     }
-    
+
     public ComponentNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }

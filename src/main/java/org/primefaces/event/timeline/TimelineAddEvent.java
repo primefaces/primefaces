@@ -24,26 +24,26 @@ import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
 public class TimelineAddEvent extends AbstractAjaxBehaviorEvent {
 
-	private Date startDate;
-	private Date endDate;
-	private String group;
+    private Date startDate;
+    private Date endDate;
+    private String group;
 
-	public TimelineAddEvent(UIComponent component, Behavior behavior, Date startDate, Date endDate, String group) {
-		super(component, behavior);
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.group = group;
-	}
+    public TimelineAddEvent(UIComponent component, Behavior behavior, Date startDate, Date endDate, String group) {
+        super(component, behavior);
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.group = group;
+    }
 
-	public Date getStartDate() {
-		return startDate;
-	}
+    public Date getStartDate() {
+        return startDate;
+    }
 
-	public Date getEndDate() {
-		return endDate;
-	}
+    public Date getEndDate() {
+        return endDate;
+    }
 
-	public String getGroup() {
-		return group;
-	}
+    public String getGroup() {
+        return group;
+    }
 }

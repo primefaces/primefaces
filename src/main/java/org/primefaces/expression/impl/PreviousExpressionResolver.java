@@ -38,12 +38,13 @@ public class PreviousExpressionResolver implements SearchExpressionResolver {
                 int nextIndex = -1;
                 do {
                     index--;
-                    
+
                     String className = children.get(index).getClass().getName();
                     if (!className.contains("UIInstructions") && !className.contains("UILeaf")) {
                         nextIndex = index;
                     }
-                } while (nextIndex == -1 && index > 0);
+                }
+                while (nextIndex == -1 && index > 0);
 
                 if (nextIndex != -1) {
                     return children.get(nextIndex);

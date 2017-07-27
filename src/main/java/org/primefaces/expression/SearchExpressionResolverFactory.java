@@ -37,8 +37,7 @@ import org.primefaces.expression.impl.ThisExpressionResolver;
 import org.primefaces.expression.impl.WidgetVarExpressionResolver;
 
 /**
- * Factory for providing different {@link SearchExpressionResolver} for
- * expressions.
+ * Factory for providing different {@link SearchExpressionResolver} for expressions.
  */
 public class SearchExpressionResolverFactory {
 
@@ -79,10 +78,12 @@ public class SearchExpressionResolverFactory {
             if (parenthesisPosition > 0) {
                 String expressionWithoutParam = expression.substring(0, parenthesisPosition);
                 resolver = RESOLVER_MAPPING.get(expressionWithoutParam);
-            } else {
+            }
+            else {
                 resolver = RESOLVER_MAPPING.get(expression);
             }
-        } else {
+        }
+        else {
             // if it's not a keyword, just delegate it to JSF
             resolver = FIND_COMPONENT_EXPRESSION_RESOLVER;
         }

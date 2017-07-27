@@ -35,23 +35,23 @@ public class RowExpressionResolver implements SearchExpressionResolver, ClientId
         String clientIds = "";
 
         for (UIComponent column : data.getChildren()) {
-        	// handle dynamic columns
-			if (column instanceof Columns) {
+            // handle dynamic columns
+            if (column instanceof Columns) {
 
                 List<DynamicColumn> dynamicColumns = ((Columns) column).getDynamicColumns();
                 for (int i = 0; i < dynamicColumns.size(); i++) {
                     DynamicColumn dynamicColumn = dynamicColumns.get(i);
-					for (UIComponent comp : column.getChildren()) {
+                    for (UIComponent comp : column.getChildren()) {
 
-						if (clientIds.length() > 0) {
-							clientIds += " ";
-						}
+                        if (clientIds.length() > 0) {
+                            clientIds += " ";
+                        }
 
-						clientIds += data.getClientId(context) + seperatorChar + row + seperatorChar + dynamicColumn.getId() + seperatorChar + i + seperatorChar + comp.getId();
-					}
-				}
-			}
-			else if (column instanceof UIColumn) {
+                        clientIds += data.getClientId(context) + seperatorChar + row + seperatorChar + dynamicColumn.getId() + seperatorChar + i + seperatorChar + comp.getId();
+                    }
+                }
+            }
+            else if (column instanceof UIColumn) {
                 for (UIComponent cell : column.getChildren()) {
 
                     if (clientIds.length() > 0) {
@@ -90,11 +90,13 @@ public class RowExpressionResolver implements SearchExpressionResolver, ClientId
 
                 return row;
 
-            } else {
+            }
+            else {
                 throw new FacesException("Expression does not match following pattern @row(n). Expression: \"" + expression + "\"");
             }
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new FacesException("Expression does not match following pattern @row(n). Expression: \"" + expression + "\"", e);
         }
     }

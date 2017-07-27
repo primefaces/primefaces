@@ -22,15 +22,15 @@ import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.map.LatLng;
 
 public class PointSelectEvent extends AbstractAjaxBehaviorEvent {
-	
-	private LatLng latLng;
-	
-	public PointSelectEvent(UIComponent component, Behavior behavior, LatLng latLng) {
-		super(component, behavior);
-		this.latLng = latLng;
-	}
-	
-	public LatLng getLatLng() {
-		return latLng;
-	}
+
+    private LatLng latLng;
+
+    public PointSelectEvent(UIComponent component, Behavior behavior, LatLng latLng) {
+        super(component, behavior);
+        this.latLng = latLng;
+    }
+
+    public LatLng getLatLng() {
+        return latLng;
+    }
 }

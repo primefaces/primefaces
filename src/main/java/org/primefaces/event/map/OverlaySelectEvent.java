@@ -22,15 +22,15 @@ import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.map.Overlay;
 
 public class OverlaySelectEvent extends AbstractAjaxBehaviorEvent {
-	
-	private Overlay overlay;
 
-	public OverlaySelectEvent(UIComponent component, Behavior behavior, Overlay overlay) {
-		super(component, behavior);
-		this.overlay = overlay;
-	}
-	
-	public Overlay getOverlay() {
-		return overlay;
-	}
+    private Overlay overlay;
+
+    public OverlaySelectEvent(UIComponent component, Behavior behavior, Overlay overlay) {
+        super(component, behavior);
+        this.overlay = overlay;
+    }
+
+    public Overlay getOverlay() {
+        return overlay;
+    }
 }

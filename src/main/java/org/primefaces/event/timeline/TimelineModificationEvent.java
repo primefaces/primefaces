@@ -23,14 +23,14 @@ import org.primefaces.model.timeline.TimelineEvent;
 
 public class TimelineModificationEvent extends AbstractAjaxBehaviorEvent {
 
-	private TimelineEvent timelineEvent;
+    private TimelineEvent timelineEvent;
 
-	public TimelineModificationEvent(UIComponent component, Behavior behavior, TimelineEvent timelineEvent) {
-		super(component, behavior);
-		this.timelineEvent = timelineEvent;
-	}
+    public TimelineModificationEvent(UIComponent component, Behavior behavior, TimelineEvent timelineEvent) {
+        super(component, behavior);
+        this.timelineEvent = timelineEvent;
+    }
 
-	public TimelineEvent getTimelineEvent() {
-		return timelineEvent;
-	}
+    public TimelineEvent getTimelineEvent() {
+        return timelineEvent;
+    }
 }

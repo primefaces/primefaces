@@ -41,8 +41,7 @@ public class IdExpressionResolver implements SearchExpressionResolver, MultiSear
                 components);
     }
 
-    protected String extractId(String expression)
-    {
+    protected String extractId(String expression) {
         try {
             Matcher matcher = PATTERN.matcher(expression);
 
@@ -50,11 +49,13 @@ public class IdExpressionResolver implements SearchExpressionResolver, MultiSear
 
                 return matcher.group(1);
 
-            } else {
+            }
+            else {
                 throw new FacesException("Expression does not match following pattern @id(id). Expression: \"" + expression + "\"");
             }
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new FacesException("Expression does not match following pattern @id(id). Expression: \"" + expression + "\"", e);
         }
     }
