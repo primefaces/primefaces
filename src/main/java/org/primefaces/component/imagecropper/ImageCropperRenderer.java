@@ -95,7 +95,7 @@ public class ImageCropperRenderer extends CoreRenderer {
             int y2 = y + croppedImage.getHeight();
 
             select = "[" + x + "," + y + "," + x2 + "," + y2 + "]";
-        } 
+        }
         else if (cropper.getInitialCoords() != null) {
             select = "[" + cropper.getInitialCoords() + "]";
         }

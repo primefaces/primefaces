@@ -22,7 +22,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 /**
  * Different implementation of ExcelXExporter using the POI streaming API:
- * 
+ *
  * SXSSF (package: org.apache.poi.xssf.streaming) is an API-compatible streaming extension of XSSF
  * to be used when very large spreadsheets have to be produced, and heap space is limited.
  * SXSSF achieves its low memory footprint by limiting access to the rows that are within a sliding window.

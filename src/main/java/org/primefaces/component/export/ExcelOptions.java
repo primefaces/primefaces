@@ -16,36 +16,37 @@
 package org.primefaces.component.export;
 
 public class ExcelOptions implements ExporterOptions {
-    
+
     private String facetFontStyle;
-    
+
     private String facetFontColor;
-    
+
     private String facetBgColor;
-    
+
     private String facetFontSize;
 
     private String cellFontStyle;
-    
+
     private String cellFontColor;
-    
+
     private String cellFontSize;
-    
-    public ExcelOptions() {}
-    
+
+    public ExcelOptions() {
+    }
+
     public ExcelOptions(String facetFontStyle, String facetFontColor, String facetBgColor, String facetFontSize) {
         this.facetFontStyle = facetFontStyle;
         this.facetFontColor = facetFontColor;
         this.facetBgColor = facetBgColor;
         this.facetFontSize = facetFontSize;
     }
-    
+
     public ExcelOptions(String cellFontStyle, String cellFontColor, String cellFontSize) {
         this.cellFontStyle = cellFontStyle;
         this.cellFontColor = cellFontColor;
         this.cellFontSize = cellFontSize;
     }
-    
+
     public ExcelOptions(String facetFontStyle, String facetFontColor, String facetBgColor, String facetFontSize, String cellFontStyle, String cellFontColor, String cellFontSize) {
         this(facetFontStyle, facetFontColor, facetBgColor, facetFontSize);
         this.cellFontStyle = cellFontStyle;
@@ -108,5 +109,5 @@ public class ExcelOptions implements ExporterOptions {
     public void setCellFontSize(String cellFontSize) {
         this.cellFontSize = cellFontSize;
     }
- 
+
 }

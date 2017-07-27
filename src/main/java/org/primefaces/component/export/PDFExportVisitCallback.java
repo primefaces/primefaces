@@ -26,7 +26,7 @@ import javax.faces.view.facelets.FaceletException;
 import org.primefaces.component.datatable.DataTable;
 
 public class PDFExportVisitCallback implements VisitCallback {
-    
+
     private PDFExporter exporter;
     private Document document;
     private boolean pageOnly;
@@ -45,16 +45,16 @@ public class PDFExportVisitCallback implements VisitCallback {
         DataTable dt = (DataTable) target;
         try {
             document.add(exporter.exportPDFTable(context.getFacesContext(), dt, pageOnly, selectionOnly, encoding));
-            
+
             Paragraph preface = new Paragraph();
             exporter.addEmptyLine(preface, 3);
             document.add(preface);
-            
+
         } catch (DocumentException e) {
             throw new FaceletException(e.getMessage());
         }
-        
+
         return VisitResult.ACCEPT;
     }
-    
+
 }

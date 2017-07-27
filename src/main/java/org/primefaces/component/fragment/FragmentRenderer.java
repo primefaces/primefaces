@@ -25,27 +25,27 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 
 public class FragmentRenderer extends CoreRenderer {
-    
+
     @Override
-	public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         Fragment fragment = (Fragment) component;
         String clientId = fragment.getClientId(context);
-        Map<Object,Object> attrs = RequestContext.getCurrentInstance(context).getAttributes();
+        Map<Object, Object> attrs = RequestContext.getCurrentInstance(context).getAttributes();
         attrs.put(Constants.FRAGMENT_ID, clientId);
-        
-        if(fragment.isAutoUpdate()) {
+
+        if (fragment.isAutoUpdate()) {
             attrs.put(Constants.FRAGMENT_AUTO_RENDERED, true);
         }
-        
+
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
-	}
-    
+    }
+
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		context.getResponseWriter().endElement("div");
-        
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        context.getResponseWriter().endElement("div");
+
         RequestContext.getCurrentInstance(context).getAttributes().remove(Constants.FRAGMENT_ID);
-	}
+    }
 }

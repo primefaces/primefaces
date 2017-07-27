@@ -41,13 +41,13 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.ComponentUtils;
 
 public abstract class Exporter {
-	    
-	protected enum ColumnType{
-		HEADER("header"),
-		FOOTER("footer");
-        
+
+    protected enum ColumnType {
+        HEADER("header"),
+        FOOTER("footer");
+
         private final String facet;
-        
+
         ColumnType(String facet) {
             this.facet = facet;
         }
@@ -55,33 +55,33 @@ public abstract class Exporter {
         public String facet() {
             return facet;
         }
-        
+
         @Override
         public String toString() {
             return facet;
         }
-	};
+    };
 
     public abstract void export(FacesContext facesContext, DataTable table,
-			String outputFileName, boolean pageOnly, boolean selectionOnly,
-			String encodingType, MethodExpression preProcessor,
-			MethodExpression postProcessor, ExporterOptions options) throws IOException;
+            String outputFileName, boolean pageOnly, boolean selectionOnly,
+            String encodingType, MethodExpression preProcessor,
+            MethodExpression postProcessor, ExporterOptions options) throws IOException;
 
     public abstract void export(FacesContext facesContext, List<String> clientIds,
-			String outputFileName, boolean pageOnly, boolean selectionOnly,
-			String encodingType, MethodExpression preProcessor,
-			MethodExpression postProcessor, ExporterOptions options) throws IOException;
-    
+            String outputFileName, boolean pageOnly, boolean selectionOnly,
+            String encodingType, MethodExpression preProcessor,
+            MethodExpression postProcessor, ExporterOptions options) throws IOException;
+
     public abstract void export(FacesContext facesContext,
-			String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
-			String encodingType, MethodExpression preProcessor,
-			MethodExpression postProcessor, ExporterOptions options) throws IOException;
-	
-	protected List<UIColumn> getColumnsToExport(UIData table) {
+            String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
+            String encodingType, MethodExpression preProcessor,
+            MethodExpression postProcessor, ExporterOptions options) throws IOException;
+
+    protected List<UIColumn> getColumnsToExport(UIData table) {
         List<UIColumn> columns = new ArrayList<UIColumn>();
 
-        for(UIComponent child : table.getChildren()) {
-            if(child instanceof UIColumn) {
+        for (UIComponent child : table.getChildren()) {
+            if (child instanceof UIColumn) {
                 UIColumn column = (UIColumn) child;
 
                 columns.add(column);
@@ -92,9 +92,10 @@ public abstract class Exporter {
     }
 
     protected boolean hasColumnFooter(List<UIColumn> columns) {
-        for(UIColumn column : columns) {
-            if(column.getFooter() != null)
+        for (UIColumn column : columns) {
+            if (column.getFooter() != null) {
                 return true;
+            }
         }
 
         return false;
@@ -102,27 +103,27 @@ public abstract class Exporter {
 
     protected String exportColumnByFunction(FacesContext context, org.primefaces.component.api.UIColumn column) {
         MethodExpression exportFunction = column.getExportFunction();
-        
-        if(exportFunction != null) {
+
+        if (exportFunction != null) {
             return (String) exportFunction.invoke(context.getELContext(), new Object[]{column});
         }
-        
+
         return "";
     }
-    
+
     protected String exportValue(FacesContext context, UIComponent component) {
 
-        if(component instanceof HtmlCommandLink) {  //support for PrimeFaces and standard HtmlCommandLink
+        if (component instanceof HtmlCommandLink) {  //support for PrimeFaces and standard HtmlCommandLink
             HtmlCommandLink link = (HtmlCommandLink) component;
             Object value = link.getValue();
 
-            if(value != null) {
+            if (value != null) {
                 return String.valueOf(value);
-            } 
+            }
             else {
                 //export first value holder
-                for(UIComponent child : link.getChildren()) {
-                    if(child instanceof ValueHolder) {
+                for (UIComponent child : link.getChildren()) {
+                    if (child instanceof ValueHolder) {
                         return exportValue(context, child);
                     }
                 }
@@ -130,55 +131,55 @@ public abstract class Exporter {
                 return "";
             }
         }
-        else if(component instanceof ValueHolder) {
- 
-			if(component instanceof EditableValueHolder) {
-				Object submittedValue = ((EditableValueHolder) component).getSubmittedValue();
-				if (submittedValue != null) {
-					return submittedValue.toString();
-				}
-			}
+        else if (component instanceof ValueHolder) {
 
-			ValueHolder valueHolder = (ValueHolder) component;
-			Object value = valueHolder.getValue();
-			if(value == null) {
-				return "";
+            if (component instanceof EditableValueHolder) {
+                Object submittedValue = ((EditableValueHolder) component).getSubmittedValue();
+                if (submittedValue != null) {
+                    return submittedValue.toString();
+                }
             }
-			
+
+            ValueHolder valueHolder = (ValueHolder) component;
+            Object value = valueHolder.getValue();
+            if (value == null) {
+                return "";
+            }
+
             Converter converter = valueHolder.getConverter();
-            if(converter == null) {
+            if (converter == null) {
                 Class valueType = value.getClass();
                 converter = context.getApplication().createConverter(valueType);
             }
-            
-            if(converter != null) {
-                if(component instanceof UISelectMany) {
+
+            if (converter != null) {
+                if (component instanceof UISelectMany) {
                     StringBuilder builder = new StringBuilder();
                     List collection = null;
-                    
-                    if(value instanceof List) {
+
+                    if (value instanceof List) {
                         collection = (List) value;
                     }
-                    else if(value.getClass().isArray()) {
+                    else if (value.getClass().isArray()) {
                         collection = Arrays.asList(value);
-                    } 
+                    }
                     else {
                         throw new FacesException("Value of " + component.getClientId(context) + " must be a List or an Array.");
                     }
-                    
+
                     int collectionSize = collection.size();
                     for (int i = 0; i < collectionSize; i++) {
                         Object object = collection.get(i);
                         builder.append(converter.getAsString(context, component, object));
-                        
-                        if(i < (collectionSize - 1)) {
+
+                        if (i < (collectionSize - 1)) {
                             builder.append(",");
                         }
                     }
 
                     String valuesAsString = builder.toString();
                     builder.setLength(0);
-                    
+
                     return valuesAsString;
                 }
                 else {
@@ -188,7 +189,7 @@ public abstract class Exporter {
             else {
                 return value.toString();
             }
-		}
+        }
         else if (component instanceof CellEditor) {
             return exportValue(context, ((CellEditor) component).getFacet("output"));
         }
@@ -196,60 +197,61 @@ public abstract class Exporter {
             return (String) component.getAttributes().get("alt");
         }
         else {
-			//This would get the plain texts on UIInstructions when using Facelets
-			String value = component.toString();
+            //This would get the plain texts on UIInstructions when using Facelets
+            String value = component.toString();
 
-			if(value != null)
-				return value.trim();
-			else
-				return "";
-		}
+            if (value != null) {
+                return value.trim();
+            }
+            else {
+                return "";
+            }
+        }
     }
-    
-    protected void exportPageOnly(FacesContext context, DataTable table, Object document) {        
+
+    protected void exportPageOnly(FacesContext context, DataTable table, Object document) {
         int first = table.getFirst();
         int rows = table.getRows();
-        if(rows == 0) {
+        if (rows == 0) {
             rows = table.getRowCount();
         }
-        
-    	int rowsToExport = first + rows;
-        
-        for(int rowIndex = first; rowIndex < rowsToExport; rowIndex++) {                
+
+        int rowsToExport = first + rows;
+
+        for (int rowIndex = first; rowIndex < rowsToExport; rowIndex++) {
             exportRow(table, document, rowIndex);
         }
     }
-    
+
     protected void exportAll(FacesContext context, DataTable table, Object document) {
         int first = table.getFirst();
-    	int rowCount = table.getRowCount();
+        int rowCount = table.getRowCount();
         int rows = table.getRows();
         boolean lazy = table.isLazy();
-        
-        if(lazy) {
-        	 if(rowCount > 0)
-             {
+
+        if (lazy) {
+            if (rowCount > 0) {
                 table.setFirst(0);
                 table.setRows(rowCount);
                 table.clearLazyCache();
                 table.loadLazyData();
-             }
+            }
 
-            for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+            for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
                 exportRow(table, document, rowIndex);
             }
-     
+
             //restore
             table.setFirst(first);
             table.setRowIndex(-1);
             table.clearLazyCache();
             table.loadLazyData();
-        } 
+        }
         else {
-            for(int rowIndex = 0; rowIndex < rowCount; rowIndex++) {                
+            for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
                 exportRow(table, document, rowIndex);
             }
-            
+
             //restore
             table.setFirst(first);
         }
@@ -257,40 +259,40 @@ public abstract class Exporter {
 
     protected void exportRow(DataTable table, Object document, int rowIndex) {
         table.setRowIndex(rowIndex);
-        if(!table.isRowAvailable()) {
+        if (!table.isRowAvailable()) {
             return;
         }
-       
+
         preRowExport(table, document);
         exportCells(table, document);
         postRowExport(table, document);
     }
-    
-    protected void exportRow(DataTable table, Object document) {       
+
+    protected void exportRow(DataTable table, Object document) {
         preRowExport(table, document);
         exportCells(table, document);
         postRowExport(table, document);
     }
-    
-    protected void exportSelectionOnly(FacesContext context, DataTable table, Object document) {        
+
+    protected void exportSelectionOnly(FacesContext context, DataTable table, Object document) {
         Object selection = table.getSelection();
         String var = table.getVar();
-        
-        if(selection != null) {
-            Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
 
-            if(selection.getClass().isArray()) {
+        if (selection != null) {
+            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+
+            if (selection.getClass().isArray()) {
                 int size = Array.getLength(selection);
-                
-                for(int i = 0; i < size; i++) {
+
+                for (int i = 0; i < size; i++) {
                     requestMap.put(var, Array.get(selection, i));
                     exportRow(table, document);
                 }
             }
-            else if(List.class.isAssignableFrom(selection.getClass())) {
+            else if (List.class.isAssignableFrom(selection.getClass())) {
                 List<?> list = (List) selection;
-                
-                for(int i = 0; i < list.size(); i++) {
+
+                for (int i = 0; i < list.size(); i++) {
                     requestMap.put(var, list.get(i));
                     exportRow(table, document);
                 }
@@ -301,18 +303,18 @@ public abstract class Exporter {
             }
         }
     }
-    
+
     public String getSheetName(FacesContext context, DataTable table) {
         UIComponent header = table.getFacet("header");
-        if(header != null) {
-            if(header instanceof UIPanel) {
-                for(UIComponent child : header.getChildren()) {
-                    if(child.isRendered()) {
+        if (header != null) {
+            if (header instanceof UIPanel) {
+                for (UIComponent child : header.getChildren()) {
+                    if (child.isRendered()) {
                         String value = ComponentUtils.getValueToRender(context, child);
 
-                        if(value != null) {
+                        if (value != null) {
                             return value;
-                        }         
+                        }
                     }
                 }
             }
@@ -320,13 +322,15 @@ public abstract class Exporter {
                 return ComponentUtils.getValueToRender(context, header);
             }
         }
-        
+
         return null;
     }
-    
-    protected void preRowExport(DataTable table, Object document) {}
-    
-    protected void postRowExport(DataTable table, Object document) {}
-    
+
+    protected void preRowExport(DataTable table, Object document) {
+    }
+
+    protected void postRowExport(DataTable table, Object document) {
+    }
+
     protected abstract void exportCells(DataTable table, Object document);
 }
