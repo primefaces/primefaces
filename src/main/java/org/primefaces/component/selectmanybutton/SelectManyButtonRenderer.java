@@ -35,14 +35,14 @@ import org.primefaces.util.WidgetBuilder;
 public class SelectManyButtonRenderer extends SelectManyRenderer {
 
     @Override
-	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectMany",
                 "javax.faces.Checkbox",
                 Renderer.class);
         return renderer.getConvertedValue(context, component, submittedValue);
-	}
+    }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -63,11 +63,10 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         styleClass = styleClass + " ui-buttonset-" + selectItemsSize;
         styleClass = !button.isValid() ? styleClass + " ui-state-error" : styleClass;
 
-        
         writer.startElement("div", button);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
 
@@ -75,7 +74,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
 
         writer.endElement("div");
     }
-    
+
     protected void encodeSelectItems(FacesContext context, SelectManyButton button, List<SelectItem> selectItems) throws IOException {
         Converter converter = button.getConverter();
         Object values = getValues(button);
@@ -83,13 +82,13 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         int selectItemsSize = selectItems.size();
 
         int idx = -1;
-        for(SelectItem selectItem : selectItems) {
+        for (SelectItem selectItem : selectItems) {
             idx++;
 
             encodeOption(context, button, values, submittedValues, converter, selectItem, idx, selectItemsSize);
         }
     }
-    
+
     protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter, SelectItem option, int idx, int size) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         SelectManyButton button = (SelectManyButton) component;
@@ -98,38 +97,41 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         String id = name + UINamingContainer.getSeparatorChar(context) + idx;
         boolean disabled = option.isDisabled() || button.isDisabled();
         String tabindex = button.getTabindex();
-        
+
         Object valuesArray;
         Object itemValue;
-        if(submittedValues != null) {
+        if (submittedValues != null) {
             valuesArray = submittedValues;
             itemValue = itemValueAsString;
         } else {
             valuesArray = values;
             itemValue = option.getValue();
         }
-        
+
         boolean selected = isSelected(context, component, itemValue, valuesArray, converter);
-        if(option.isNoSelectionOption() && values != null && !selected) {
+        if (option.isNoSelectionOption() && values != null && !selected) {
             return;
         }
-        
+
         String buttonStyle = HTML.BUTTON_TEXT_ONLY_BUTTON_FLAT_CLASS;
-        if(size == 0)
+        if (size == 0) {
             buttonStyle = buttonStyle + " ui-corner-all";
-        else if(idx == 0)
+        }
+        else if (idx == 0) {
             buttonStyle = buttonStyle + " ui-corner-left";
-        else if(idx == (size - 1))
+        }
+        else if (idx == (size - 1)) {
             buttonStyle = buttonStyle + " ui-corner-right";
-        
+        }
+
         buttonStyle = selected ? buttonStyle + " ui-state-active" : buttonStyle;
         buttonStyle = disabled ? buttonStyle + " ui-state-disabled" : buttonStyle;
-        
+
         //button
         writer.startElement("div", null);
-		writer.writeAttribute("class", buttonStyle, null);
-        if(option.getDescription() != null) writer.writeAttribute("title", option.getDescription(), null);
-              
+        writer.writeAttribute("class", buttonStyle, null);
+        if (option.getDescription() != null) writer.writeAttribute("title", option.getDescription(), null);
+
         //input
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);
@@ -139,13 +141,13 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
         renderOnchange(context, button);
-        
-        if(selected) writer.writeAttribute("checked", "checked", null);
-        if(disabled) writer.writeAttribute("disabled", "disabled", null);
-        if(tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
+
+        if (selected) writer.writeAttribute("checked", "checked", null);
+        if (disabled) writer.writeAttribute("disabled", "disabled", null);
+        if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
 
         writer.endElement("input");
-        
+
         //item label
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
@@ -160,10 +162,10 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectManyButton", button.resolveWidgetVar(), clientId).finish();
     }
-    
+
     @Override
     protected String getSubmitParam(FacesContext context, UISelectMany selectMany) {
         return selectMany.getClientId(context);
     }
-    
+
 }
