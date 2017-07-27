@@ -18,7 +18,7 @@ package org.primefaces.component.lifecycle;
 import java.io.Serializable;
 
 public class PhaseInfo implements Serializable {
-    
+
     private int phase;
     private long start;
     private long end;

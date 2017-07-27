@@ -25,17 +25,17 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 public class LifecycleRenderer extends CoreRenderer {
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Lifecycle lifecycle = (Lifecycle) component;
         String clientId = lifecycle.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
-        
+
         writer.startElement("table", lifecycle);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", Lifecycle.STYLE_CLASS, null);
-        
+
         writer.startElement("tr", null);
         for (PhaseId phaseId : PhaseId.VALUES) {
             if (phaseId != PhaseId.ANY_PHASE) {
@@ -44,15 +44,14 @@ public class LifecycleRenderer extends CoreRenderer {
         }
         encodePhase(PhaseId.ANY_PHASE, "ALL", context, writer);
         writer.endElement("tr");
-        
-        writer.endElement("table");
 
+        writer.endElement("table");
 
         WidgetBuilder wb = RequestContext.getCurrentInstance(context).getWidgetBuilder();
         wb.initWithDomReady("Lifecycle", lifecycle.resolveWidgetVar(), clientId);
         wb.finish();
     }
-    
+
     protected void encodePhase(PhaseId phaseId, String name, FacesContext context, ResponseWriter writer) throws IOException {
         PhaseInfo phaseInfo = LifecyclePhaseListener.getPhaseInfo(phaseId, context);
 
@@ -70,11 +69,11 @@ public class LifecycleRenderer extends CoreRenderer {
 
         writer.endElement("td");
     }
-    
+
     protected int getScore(PhaseId phaseId, double duration) {
-  
+
         if (phaseId == PhaseId.ANY_PHASE) {
-            
+
             if (duration <= 400) {
                 return 100;
             }
@@ -86,7 +85,7 @@ public class LifecycleRenderer extends CoreRenderer {
             }
         }
         else if (phaseId == PhaseId.RESTORE_VIEW || phaseId == PhaseId.RENDER_RESPONSE) {
-            
+
             if (duration <= 100) {
                 return 100;
             }
@@ -98,7 +97,7 @@ public class LifecycleRenderer extends CoreRenderer {
             }
         }
         else {
-            
+
             if (duration <= 50) {
                 return 100;
             }

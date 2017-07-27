@@ -25,19 +25,19 @@ import org.primefaces.facelets.MethodRule;
 
 public class DroppableHandler extends ComponentHandler {
 
-	private static final MetaRule DROP_LISTENER =
-			new MethodRule("dropListener", null, new Class[]{DragDropEvent.class});
+    private static final MetaRule DROP_LISTENER
+            = new MethodRule("dropListener", null, new Class[]{DragDropEvent.class});
 
-	public DroppableHandler(ComponentConfig config) {
-		super(config);
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected MetaRuleset createMetaRuleset(Class type) { 
-		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
-		
-		metaRuleset.addRule(DROP_LISTENER);
-		
-		return metaRuleset;  
-	}
+    public DroppableHandler(ComponentConfig config) {
+        super(config);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected MetaRuleset createMetaRuleset(Class type) {
+        MetaRuleset metaRuleset = super.createMetaRuleset(type);
+
+        metaRuleset.addRule(DROP_LISTENER);
+
+        return metaRuleset;
+    }
 }

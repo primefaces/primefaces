@@ -35,7 +35,7 @@ public class DraggableRenderer extends CoreRenderer {
         String clientId = draggable.getClientId(context);
 
         UIComponent target = SearchExpressionFacade.resolveComponent(
-        		context, draggable, draggable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
+                context, draggable, draggable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
 
         String dashboard = draggable.getDashboard();
         WidgetBuilder wb = getWidgetBuilder(context);
@@ -53,20 +53,22 @@ public class DraggableRenderer extends CoreRenderer {
                 .attr("stack", draggable.getStack(), null)
                 .attr("scope", draggable.getScope(), null);
 
-        if(draggable.isRevert())
+        if (draggable.isRevert()) {
             wb.attr("revert", "invalid");
+        }
 
-        if(draggable.getGrid() != null)
+        if (draggable.getGrid() != null) {
             wb.append(",grid:[").append(draggable.getGrid()).append("]");
+        }
 
-        if(draggable.isSnap()) {
+        if (draggable.isSnap()) {
             wb.attr("snap", true)
-                .attr("snapTolerance", draggable.getSnapTolerance())
-                .attr("snapMode", draggable.getSnapMode(), null);
+                    .attr("snapTolerance", draggable.getSnapTolerance())
+                    .attr("snapMode", draggable.getSnapMode(), null);
         }
 
         //Dashboard support
-        if(dashboard != null) {
+        if (dashboard != null) {
             Dashboard db = (Dashboard) SearchExpressionFacade.resolveComponent(context, draggable, dashboard);
 
             String selector = ComponentUtils.escapeJQueryId(db.getClientId(context)) + " .ui-dashboard-column";
