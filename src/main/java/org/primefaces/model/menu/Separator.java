@@ -16,10 +16,10 @@
 package org.primefaces.model.menu;
 
 public interface Separator extends MenuElement {
-    
+
     public String getTitle();
-    
+
     public String getStyle();
-    
+
     public String getStyleClass();
 }

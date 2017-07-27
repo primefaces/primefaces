@@ -33,9 +33,9 @@ public enum EndPointAnchor {
     TOP("Top"),
     TOP_LEFT("TopLeft"),
     TOP_RIGHT("TopRight");
-    
+
     private final String text;
-    
+
     private EndPointAnchor(final String text) {
         this.text = text;
     }
@@ -45,4 +45,3 @@ public enum EndPointAnchor {
         return this.text;
     }
 }
-

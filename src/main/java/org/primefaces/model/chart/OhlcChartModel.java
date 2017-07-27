@@ -21,7 +21,7 @@ import java.util.List;
 public class OhlcChartModel extends CartesianChartModel {
 
     private List<OhlcChartSeries> data;
-    
+
     private boolean candleStick;
 
     public OhlcChartModel() {
@@ -31,7 +31,7 @@ public class OhlcChartModel extends CartesianChartModel {
     public OhlcChartModel(List<OhlcChartSeries> data) {
         this.data = data;
     }
-    
+
     public List<OhlcChartSeries> getData() {
         return data;
     }
@@ -39,16 +39,16 @@ public class OhlcChartModel extends CartesianChartModel {
     public void setData(List<OhlcChartSeries> data) {
         this.data = data;
     }
-    
-    public void add(OhlcChartSeries ohlc){
+
+    public void add(OhlcChartSeries ohlc) {
         this.data.add(ohlc);
     }
-    
+
     @Deprecated
-    public void addRecord(OhlcChartSeries ohlc){
+    public void addRecord(OhlcChartSeries ohlc) {
         this.data.add(ohlc);
     }
-    
+
     public void clear() {
         this.data.clear();
     }
@@ -56,6 +56,7 @@ public class OhlcChartModel extends CartesianChartModel {
     public boolean isCandleStick() {
         return candleStick;
     }
+
     public void setCandleStick(boolean candleStick) {
         this.candleStick = candleStick;
     }

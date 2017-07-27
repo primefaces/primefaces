@@ -22,9 +22,9 @@ import java.util.List;
  */
 public interface MenuModel {
 
-	public List<MenuElement> getElements();
-	
-	public void addElement(MenuElement element);
-    
+    public List<MenuElement> getElements();
+
+    public void addElement(MenuElement element);
+
     public void generateUniqueIds();
 }

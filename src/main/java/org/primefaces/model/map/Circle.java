@@ -18,17 +18,17 @@ package org.primefaces.model.map;
 public class Circle extends Overlay {
 
     private LatLng center;
-    
+
     private double radius;
-    
+
     private String strokeColor;
-    
+
     private double strokeOpacity = 1.0;
-    
+
     private int strokeWeight = 1;
-    
+
     private String fillColor;
-    
+
     private double fillOpacity = 1.0;
 
     public Circle(LatLng center, double radius) {

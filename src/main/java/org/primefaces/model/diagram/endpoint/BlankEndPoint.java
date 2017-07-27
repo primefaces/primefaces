@@ -24,7 +24,7 @@ public class BlankEndPoint extends EndPoint {
     public BlankEndPoint(EndPointAnchor anchor) {
         super(anchor);
     }
-    
+
     @Override
     public String getType() {
         return "Blank";

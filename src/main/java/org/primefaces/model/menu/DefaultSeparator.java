@@ -18,7 +18,7 @@ package org.primefaces.model.menu;
 import java.io.Serializable;
 
 public class DefaultSeparator implements Separator, Serializable {
-    
+
     private String id;
     private String title;
     private String style;
@@ -28,6 +28,7 @@ public class DefaultSeparator implements Separator, Serializable {
     public String getId() {
         return id;
     }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -35,13 +36,15 @@ public class DefaultSeparator implements Separator, Serializable {
     public String getTitle() {
         return title;
     }
+
     public void setTitle(String title) {
         this.title = title;
     }
-    
+
     public String getStyle() {
         return style;
     }
+
     public void setStyle(String style) {
         this.style = style;
     }
@@ -49,10 +52,11 @@ public class DefaultSeparator implements Separator, Serializable {
     public String getStyleClass() {
         return styleClass;
     }
+
     public void setStyleClass(String styleClass) {
         this.styleClass = styleClass;
     }
-    
+
     public boolean isRendered() {
         return rendered;
     }

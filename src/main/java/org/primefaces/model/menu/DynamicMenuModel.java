@@ -19,5 +19,5 @@ package org.primefaces.model.menu;
  * Default implementation of a MenuModel optimized for dynamic menus that may change after getting initialized.
  */
 public class DynamicMenuModel extends BaseMenuModel {
-    
+
 }

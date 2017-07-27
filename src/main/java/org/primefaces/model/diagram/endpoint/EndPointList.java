@@ -22,11 +22,10 @@ public class EndPointList extends ArrayList<EndPoint> {
 
     @Override
     public boolean add(EndPoint e) {
-        if(e.getId() == null) {
+        if (e.getId() == null) {
             e.setId(UUID.randomUUID().toString());
         }
-        
+
         return super.add(e);
     }
 }
-

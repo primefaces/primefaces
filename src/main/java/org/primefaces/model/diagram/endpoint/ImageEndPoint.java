@@ -40,7 +40,7 @@ public class ImageEndPoint extends EndPoint {
     public String getType() {
         return "Image";
     }
-    
+
     @Override
     public String toJS(StringBuilder sb) {
         return sb.append("['Image', {src:'").append(path).append("'}]").toString();

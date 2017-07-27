@@ -28,7 +28,7 @@ public class DefaultTagCloudItem implements TagCloudItem, Serializable {
     public DefaultTagCloudItem() {
 
     }
-    
+
     public DefaultTagCloudItem(String label, int strength) {
         this.label = label;
         this.strength = strength;

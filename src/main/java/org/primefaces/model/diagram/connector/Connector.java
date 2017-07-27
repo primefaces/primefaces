@@ -18,9 +18,9 @@ package org.primefaces.model.diagram.connector;
 import java.io.Serializable;
 
 public abstract class Connector implements Serializable {
-    
+
     private String paintStyle;
-    
+
     private String hoverPaintStyle;
 
     public Connector() {
@@ -41,8 +41,8 @@ public abstract class Connector implements Serializable {
     public void setHoverPaintStyle(String hoverPaintStyle) {
         this.hoverPaintStyle = hoverPaintStyle;
     }
-    
+
     public abstract String getType();
-    
+
     public abstract String toJS(StringBuilder sb);
 }

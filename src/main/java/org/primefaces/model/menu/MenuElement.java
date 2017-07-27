@@ -16,10 +16,10 @@
 package org.primefaces.model.menu;
 
 public interface MenuElement {
-    
+
     public String getId();
-    
+
     public void setId(String id);
-    
+
     public boolean isRendered();
 }

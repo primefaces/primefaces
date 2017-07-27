@@ -18,8 +18,8 @@ package org.primefaces.model.menu;
 import java.util.List;
 
 public interface MenuColumn extends MenuGroup {
-    
+
     public String getStyle();
-    
+
     public String getStyleClass();
 }

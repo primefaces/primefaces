@@ -22,10 +22,10 @@ class ElementList extends ArrayList<Element> {
 
     @Override
     public boolean add(Element e) {
-        if(e.getId() == null) {
+        if (e.getId() == null) {
             e.setId(UUID.randomUUID().toString());
         }
-        
+
         return super.add(e);
     }
 }

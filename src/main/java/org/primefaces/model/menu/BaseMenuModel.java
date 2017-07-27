@@ -23,9 +23,9 @@ import java.util.List;
  * Base implementation for model of a programmatic menu
  */
 public class BaseMenuModel implements MenuModel, Serializable {
-    
+
     public final static String ID_SEPARATOR = "_";
-    
+
     private List<MenuElement> elements;
 
     public BaseMenuModel() {
@@ -35,27 +35,27 @@ public class BaseMenuModel implements MenuModel, Serializable {
     public void addElement(MenuElement element) {
         elements.add(element);
     }
-    
+
     public List<MenuElement> getElements() {
         return elements;
     }
-    
+
     public void generateUniqueIds() {
         this.generateUniqueIds(getElements(), null);
     }
-    
+
     private void generateUniqueIds(List<MenuElement> elements, String seed) {
-        if(elements == null || elements.isEmpty()) {
+        if (elements == null || elements.isEmpty()) {
             return;
         }
-        
+
         int counter = 0;
-        
-        for(MenuElement element : elements) {
+
+        for (MenuElement element : elements) {
             String id = (seed == null) ? String.valueOf(counter++) : seed + ID_SEPARATOR + counter++;
             element.setId(id);
-            
-            if(element instanceof MenuGroup) {                
+
+            if (element instanceof MenuGroup) {
                 generateUniqueIds(((MenuGroup) element).getElements(), id);
             }
         }

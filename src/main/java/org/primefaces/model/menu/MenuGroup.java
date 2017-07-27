@@ -18,8 +18,8 @@ package org.primefaces.model.menu;
 import java.util.List;
 
 public interface MenuGroup extends MenuElement {
-    
+
     public int getElementsCount();
-    
+
     public List getElements();
 }

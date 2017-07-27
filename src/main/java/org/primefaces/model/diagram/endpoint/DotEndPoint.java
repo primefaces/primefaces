@@ -16,7 +16,7 @@
 package org.primefaces.model.diagram.endpoint;
 
 public class DotEndPoint extends EndPoint {
-    
+
     private int radius = 10;
 
     public DotEndPoint() {
@@ -26,12 +26,12 @@ public class DotEndPoint extends EndPoint {
     public DotEndPoint(EndPointAnchor anchor) {
         super(anchor);
     }
-    
+
     public DotEndPoint(EndPointAnchor anchor, int radius) {
         super(anchor);
         this.radius = radius;
     }
-    
+
     public int getRadius() {
         return radius;
     }
@@ -44,7 +44,7 @@ public class DotEndPoint extends EndPoint {
     public String getType() {
         return "Dot";
     }
-    
+
     @Override
     public String toJS(StringBuilder sb) {
         return sb.append("['Dot', {radius:").append(radius).append("}]").toString();

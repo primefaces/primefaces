@@ -20,14 +20,14 @@ import java.util.Locale;
 public class EqualsFilterConstraint implements FilterConstraint {
 
     public boolean applies(Object value, Object filter, Locale locale) {
-        if(filter == null) {
+        if (filter == null) {
             return true;
         }
-                
-        if(value == null) {
+
+        if (value == null) {
             return false;
         }
-        
+
         return value.equals(filter);
     }
 }

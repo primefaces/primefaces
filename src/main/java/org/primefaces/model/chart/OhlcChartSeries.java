@@ -25,7 +25,8 @@ public class OhlcChartSeries implements Serializable {
     private double low;
     private double close;
 
-    public OhlcChartSeries() {}
+    public OhlcChartSeries() {
+    }
 
     public OhlcChartSeries(Object value, double open, double high, double low, double close) {
         this.value = value;

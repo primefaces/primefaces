@@ -16,18 +16,18 @@
 package org.primefaces.model.menu;
 
 public interface Submenu extends MenuGroup {
-    
+
     public String getStyle();
-    
+
     public String getStyleClass();
-    
+
     public String getIcon();
-    
+
     public String getLabel();
-    
+
     public Object getParent();
-    
+
     public String getClientId();
-    
+
     public boolean isExpanded();
 }

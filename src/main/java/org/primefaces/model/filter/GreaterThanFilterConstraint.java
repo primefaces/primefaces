@@ -20,16 +20,16 @@ import java.util.Locale;
 public class GreaterThanFilterConstraint implements FilterConstraint {
 
     public boolean applies(Object value, Object filter, Locale locale) {
-        if(filter == null) {
+        if (filter == null) {
             return true;
         }
-                
-        if(value instanceof Comparable) {
+
+        if (value instanceof Comparable) {
             int compared = ((Comparable) value).compareTo(filter);
-            
+
             return (compared > 0);
         }
-        
+
         return false;
     }
 }

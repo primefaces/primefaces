@@ -21,31 +21,31 @@ import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.overlay.Overlay;
 
 public interface DiagramModel {
-    
+
     public List<Element> getElements();
-    
+
     public List<Connection> getConnections();
-    
+
     public void addElement(Element element);
-    
+
     public void removeElement(Element element);
-    
+
     public void clearElements();
-    
+
     public void connect(Connection connection);
-    
+
     public void disconnect(Connection connection);
-    
+
     public Connector getDefaultConnector();
-    
+
     public List<Overlay> getDefaultConnectionOverlays();
-    
+
     public boolean isConnectionsDetachable();
-    
+
     public Element findElement(String id);
-    
+
     public EndPoint findEndPoint(Element element, String id);
-    
+
     public int getMaxConnections();
 
     public boolean isContainment();

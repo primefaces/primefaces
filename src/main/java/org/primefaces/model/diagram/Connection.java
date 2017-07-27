@@ -23,27 +23,27 @@ import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.overlay.Overlay;
 
 public class Connection implements Serializable {
-    
+
     private EndPoint source;
-    
+
     private EndPoint target;
-    
+
     private Connector connector;
-    
+
     private List<Overlay> overlays;
-    
+
     private boolean detachable = true;
 
     public Connection() {
         overlays = new ArrayList<Overlay>();
     }
-    
+
     public Connection(EndPoint source, EndPoint target) {
         this();
         this.source = source;
         this.target = target;
     }
-    
+
     public Connection(EndPoint source, EndPoint target, Connector connector) {
         this(source, target);
         this.connector = connector;
@@ -64,7 +64,7 @@ public class Connection implements Serializable {
     public void setTarget(EndPoint target) {
         this.target = target;
     }
-    
+
     public Connector getConnector() {
         return connector;
     }

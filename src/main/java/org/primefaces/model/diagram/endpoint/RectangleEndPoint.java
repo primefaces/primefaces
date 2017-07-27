@@ -18,13 +18,13 @@ package org.primefaces.model.diagram.endpoint;
 public class RectangleEndPoint extends EndPoint {
 
     private int width = 20;
-    
+
     private int height = 20;
 
     public RectangleEndPoint() {
         super();
     }
-    
+
     public RectangleEndPoint(EndPointAnchor anchor) {
         super(anchor);
     }
@@ -50,15 +50,15 @@ public class RectangleEndPoint extends EndPoint {
     public void setHeight(int height) {
         this.height = height;
     }
-    
+
     @Override
     public String getType() {
         return "Rectangle";
     }
-    
+
     @Override
     public String toJS(StringBuilder sb) {
         return sb.append("['Rectangle', {width:").append(width).append(",height:").append(height).append("}]").toString();
     }
-    
+
 }

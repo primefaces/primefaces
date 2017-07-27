@@ -20,12 +20,16 @@ import java.io.Serializable;
 public class TimelineGroup implements Serializable {
 
     private static final long serialVersionUID = 20140413L;
-    
-    /** unique group's id */
+
+    /**
+     * unique group's id
+     */
     private String id;
-   
-   	/** any custom data object (required to show content of the group) */
-   	private Object data;
+
+    /**
+     * any custom data object (required to show content of the group)
+     */
+    private Object data;
 
     public TimelineGroup() {
     }

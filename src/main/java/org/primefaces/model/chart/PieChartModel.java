@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class PieChartModel extends ChartModel {
 
-    private Map<String,Number> data;
+    private Map<String, Number> data;
     private int diameter;
     private int sliceMargin;
     private boolean fill = true;
@@ -39,7 +39,7 @@ public class PieChartModel extends ChartModel {
     public PieChartModel(Map<String, Number> data) {
         this.data = data;
     }
-    
+
     public Map<String, Number> getData() {
         return data;
     }
@@ -111,7 +111,7 @@ public class PieChartModel extends ChartModel {
     public void setDataLabelThreshold(int dataLabelThreshold) {
         this.dataLabelThreshold = dataLabelThreshold;
     }
-    
+
     public boolean isShowDatatip() {
         return showDatatip;
     }
@@ -126,8 +126,8 @@ public class PieChartModel extends ChartModel {
 
     public void setDatatipFormat(String datatipFormat) {
         this.datatipFormat = datatipFormat;
-    } 
-    
+    }
+
     public String getDatatipEditor() {
         return datatipEditor;
     }

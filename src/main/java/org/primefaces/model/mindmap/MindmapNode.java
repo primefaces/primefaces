@@ -18,22 +18,22 @@ package org.primefaces.model.mindmap;
 import java.util.List;
 
 public interface MindmapNode {
-    
+
     public List<MindmapNode> getChildren();
-    
+
     public MindmapNode getParent();
-    
+
     public void setParent(MindmapNode node);
-    
+
     public Object getData();
-    
+
     public String getLabel();
-    
+
     public String getFill();
-    
+
     public void addNode(MindmapNode node);
-    
+
     public void setSelectable(boolean selectable);
-    
+
     public boolean isSelectable();
 }

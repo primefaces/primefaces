@@ -18,15 +18,15 @@ package org.primefaces.model.map;
 public class Rectangle extends Overlay {
 
     private LatLngBounds bounds;
-    
+
     private String strokeColor;
-    
+
     private double strokeOpacity = 1.0;
-    
+
     private int strokeWeight = 1;
-    
+
     private String fillColor;
-    
+
     private double fillOpacity = 1.0;
 
     public Rectangle(LatLngBounds bounds) {

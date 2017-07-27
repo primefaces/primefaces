@@ -21,10 +21,10 @@ package org.primefaces.model.menu;
 public class DefaultMenuModel extends BaseMenuModel {
 
     private boolean generated = false;
-    
+
     @Override
     public void generateUniqueIds() {
-        if(!generated) {
+        if (!generated) {
             super.generateUniqueIds();
             generated = true;
         }

@@ -16,8 +16,8 @@
 package org.primefaces.model.diagram.overlay;
 
 public interface Overlay {
-    
+
     public String getType();
-    
+
     public String toJS(StringBuilder sb);
 }

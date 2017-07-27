@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 package org.primefaces.model.diagram.connector;
+
 public class BezierConnector extends Connector {
-    
+
     private int curviness = 150;
-    
+
     private int stub = 0;
 
     public BezierConnector() {
     }
-    
+
     public BezierConnector(int curviness, int stub) {
         this.curviness = curviness;
         this.stub = stub;
     }
-    
+
     public int getCurviness() {
         return curviness;
     }
