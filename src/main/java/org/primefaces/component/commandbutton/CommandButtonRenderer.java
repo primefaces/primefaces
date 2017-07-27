@@ -33,126 +33,129 @@ import org.primefaces.util.WidgetBuilder;
 public class CommandButtonRenderer extends CoreRenderer {
 
     @Override
-	public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, UIComponent component) {
         CommandButton button = (CommandButton) component;
-        if(button.isDisabled()) {
+        if (button.isDisabled()) {
             return;
         }
-        
-		String param = component.getClientId(context);
-		if(context.getExternalContext().getRequestParameterMap().containsKey(param)) {
-			component.queueEvent(new ActionEvent(component));
-		}
-        
-        decodeBehaviors(context, component);
-	}
 
-	@Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		CommandButton button = (CommandButton) component;
-		
-		encodeMarkup(context, button);
-		encodeScript(context, button);
-	}
-	
-	protected void encodeMarkup(FacesContext context, CommandButton button) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		String clientId = button.getClientId(context);
-		String type = button.getType();
-        boolean pushButton = (type.equals("reset")||type.equals("button"));
+        String param = component.getClientId(context);
+        if (context.getExternalContext().getRequestParameterMap().containsKey(param)) {
+            component.queueEvent(new ActionEvent(component));
+        }
+
+        decodeBehaviors(context, component);
+    }
+
+    @Override
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        CommandButton button = (CommandButton) component;
+
+        encodeMarkup(context, button);
+        encodeScript(context, button);
+    }
+
+    protected void encodeMarkup(FacesContext context, CommandButton button) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = button.getClientId(context);
+        String type = button.getType();
+        boolean pushButton = (type.equals("reset") || type.equals("button"));
         Object value = button.getValue();
         String icon = button.resolveIcon();
         String title = button.getTitle();
         String onclick = null;
-        
+
         if (!button.isDisabled() || button.isRenderDisabledClick()) {
-            String request = pushButton ? null : buildRequest(context, button, clientId);        
+            String request = pushButton ? null : buildRequest(context, button, clientId);
             onclick = buildDomEvent(context, button, "onclick", "click", "action", request);
         }
 
-		writer.startElement("button", button);
-		writer.writeAttribute("id", clientId, "id");
-		writer.writeAttribute("name", clientId, "name");
+        writer.startElement("button", button);
+        writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("name", clientId, "name");
         writer.writeAttribute("class", button.resolveStyleClass(), "styleClass");
 
-		if(onclick != null) {
-            if(button.requiresConfirmation()) {
+        if (onclick != null) {
+            if (button.requiresConfirmation()) {
                 writer.writeAttribute("data-pfconfirmcommand", onclick, null);
                 writer.writeAttribute("onclick", button.getConfirmationScript(), "onclick");
             }
-            else
+            else {
                 writer.writeAttribute("onclick", onclick, "onclick");
-		}
-		
-		renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
+            }
+        }
 
-        if(button.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
-        
+        renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
+
+        if (button.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+
         //icon
-        if(!isValueBlank(icon)) {
-            String defaultIconClass = button.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS; 
+        if (!isValueBlank(icon)) {
+            String defaultIconClass = button.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS;
             String iconClass = defaultIconClass + " " + icon;
-            
+
             writer.startElement("span", null);
             writer.writeAttribute("class", iconClass, null);
             writer.endElement("span");
         }
-        
+
         //text
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        
-        if(value == null) {
+
+        if (value == null) {
             //For ScreenReader
-            String text = (title != null) ? title: "ui-button";
-            
+            String text = (title != null) ? title : "ui-button";
+
             writer.write(text);
         }
         else {
-            if(button.isEscape())
+            if (button.isEscape()) {
                 writer.writeText(value, "value");
-            else
+            }
+            else {
                 writer.write(value.toString());
+            }
         }
-        
+
         writer.endElement("span");
-			
-		writer.endElement("button");
-	}
+
+        writer.endElement("button");
+    }
 
     protected String buildRequest(FacesContext context, CommandButton button, String clientId) throws FacesException {
         RequestContext requestContext = RequestContext.getCurrentInstance(context);
-        boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled()&&button.isValidateClient();
+        boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled() && button.isValidateClient();
         String request = null;
         boolean ajax = button.isAjax();
-            
-        if(ajax) {
+
+        if (ajax) {
             request = buildAjaxRequest(context, button, null);
         }
         else {
             UIComponent form = ComponentTraversalUtils.closestForm(context, button);
-            if(form == null) {
+            if (form == null) {
                 throw new FacesException("CommandButton : \"" + clientId + "\" must be inside a form element");
             }
 
             request = buildNonAjaxRequest(context, button, form, null, false);
         }
 
-        if(csvEnabled) {
+        if (csvEnabled) {
             CSVBuilder csvb = requestContext.getCSVBuilder();
             request = csvb.init().source("this").ajax(ajax).process(button, button.getProcess()).update(button, button.getUpdate()).command(request).build();
         }
-        
+
         return request;
     }
-	
-	protected void encodeScript(FacesContext context, CommandButton button) throws IOException {
-		String clientId = button.getClientId(context);
+
+    protected void encodeScript(FacesContext context, CommandButton button) throws IOException {
+        String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("CommandButton", button.resolveWidgetVar(), clientId);
-        
-		encodeClientBehaviors(context, button);
-        
+
+        encodeClientBehaviors(context, button);
+
         wb.finish();
-	}
+    }
 }

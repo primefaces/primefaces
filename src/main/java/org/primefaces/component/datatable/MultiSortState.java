@@ -20,7 +20,7 @@ import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
 public class MultiSortState implements java.io.Serializable {
-        
+
     private String sortKey;
 
     private String sortField;
@@ -29,7 +29,8 @@ public class MultiSortState implements java.io.Serializable {
 
     private MethodExpression sortFunction;
 
-    public MultiSortState() {}
+    public MultiSortState() {
+    }
 
     public MultiSortState(SortMeta sortMeta) {
         this.sortKey = sortMeta.getColumn().getColumnKey();
@@ -68,5 +69,5 @@ public class MultiSortState implements java.io.Serializable {
 
     public void setSortFunction(MethodExpression sortFunction) {
         this.sortFunction = sortFunction;
-    } 
+    }
 }

@@ -28,19 +28,19 @@ public class PanelGridBodyColumnRenderer extends CoreRenderer implements HelperC
         ResponseWriter writer = context.getResponseWriter();
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
-        styleClass = (styleClass == null) ? PanelGrid.CELL_CLASS: PanelGrid.CELL_CLASS + " " + styleClass;
-        
+        styleClass = (styleClass == null) ? PanelGrid.CELL_CLASS : PanelGrid.CELL_CLASS + " " + styleClass;
+
         writer.startElement("td", null);
         writer.writeAttribute("role", "gridcell", null);
         writer.writeAttribute("class", styleClass, null);
 
-        if(style != null) writer.writeAttribute("style", style, null);
-        if(column.getColspan() > 1) writer.writeAttribute("colspan", column.getColspan(), null);
-        if(column.getRowspan() > 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
+        if (style != null) writer.writeAttribute("style", style, null);
+        if (column.getColspan() > 1) writer.writeAttribute("colspan", column.getColspan(), null);
+        if (column.getRowspan() > 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
 
         renderChildren(context, column);
 
         writer.endElement("td");
     }
-    
+
 }

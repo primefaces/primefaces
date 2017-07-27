@@ -26,7 +26,7 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 
 public class DraggableRowsFeature implements DataTableFeature {
-    
+
     private static final Logger LOGGER = Logger.getLogger(DraggableRowsFeature.class.getName());
 
     public boolean shouldDecode(FacesContext context, DataTable table) {
@@ -39,11 +39,11 @@ public class DraggableRowsFeature implements DataTableFeature {
 
     public void decode(FacesContext context, DataTable table) {
         MethodExpression me = table.getDraggableRowsFunction();
-        if(me != null) {
+        if (me != null) {
             me.invoke(context.getELContext(), new Object[]{table});
         }
         else {
-            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String clientId = table.getClientId(context);
             int fromIndex = Integer.parseInt(params.get(clientId + "_fromIndex"));
             int toIndex = Integer.parseInt(params.get(clientId + "_toIndex"));
@@ -51,16 +51,16 @@ public class DraggableRowsFeature implements DataTableFeature {
             Object rowData = table.getRowData();
             Object value = table.getValue();
 
-            if(value instanceof List) {
+            if (value instanceof List) {
                 List list = (List) value;
 
-                if(toIndex >= fromIndex) {
+                if (toIndex >= fromIndex) {
                     Collections.rotate(list.subList(fromIndex, toIndex + 1), -1);
                 }
                 else {
                     Collections.rotate(list.subList(toIndex, fromIndex + 1), 1);
-                }            
-            } 
+                }
+            }
             else {
                 LOGGER.info("Row reordering is only available for list backed datatables, use rowReorder ajax behavior with listener for manual handling of model update.");
             }
@@ -70,5 +70,5 @@ public class DraggableRowsFeature implements DataTableFeature {
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         throw new RuntimeException("DraggableRows Feature should not encode.");
     }
-    
+
 }

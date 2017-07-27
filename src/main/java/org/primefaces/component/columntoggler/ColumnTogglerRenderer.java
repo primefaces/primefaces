@@ -33,7 +33,7 @@ public class ColumnTogglerRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ColumnToggler columnToggler = (ColumnToggler) component;
-        
+
         encodeMarkup(context, columnToggler);
         encodeScript(context, columnToggler);
     }
@@ -41,7 +41,7 @@ public class ColumnTogglerRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, ColumnToggler columnToggler) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = columnToggler.getClientId(context);
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
         writer.endElement("div");
@@ -49,13 +49,13 @@ public class ColumnTogglerRenderer extends CoreRenderer {
 
     protected void encodeScript(FacesContext context, ColumnToggler columnToggler) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        
+
         wb.initWithDomReady("ColumnToggler", columnToggler.resolveWidgetVar(), columnToggler.getClientId(context));
         wb.attr("trigger", SearchExpressionFacade.resolveClientIds(context, columnToggler, columnToggler.getTrigger()))
-            .attr("datasource", SearchExpressionFacade.resolveClientIds(context, columnToggler, columnToggler.getDatasource()));
-        
+                .attr("datasource", SearchExpressionFacade.resolveClientIds(context, columnToggler, columnToggler.getDatasource()));
+
         encodeClientBehaviors(context, columnToggler);
-        
+
         wb.finish();
     }
 }

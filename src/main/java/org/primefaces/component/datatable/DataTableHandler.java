@@ -25,23 +25,23 @@ import org.primefaces.facelets.MethodRule;
 
 public class DataTableHandler extends ComponentHandler {
 
-	private static final MetaRule SORT_FUNCTION =
-			new MethodRule("sortFunction", Integer.class, new Class[]{Object.class, Object.class});
-    
-    private static final MetaRule DRAGGABLE_ROWS_FUNCTION = 
-            new MethodRule("draggableRowsFunction", null, new Class[]{UIData.class});
-	
-	public DataTableHandler(ComponentConfig config) {
-		super(config);
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected MetaRuleset createMetaRuleset(Class type) { 
-		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
+    private static final MetaRule SORT_FUNCTION
+            = new MethodRule("sortFunction", Integer.class, new Class[]{Object.class, Object.class});
 
-		metaRuleset.addRule(SORT_FUNCTION);
+    private static final MetaRule DRAGGABLE_ROWS_FUNCTION
+            = new MethodRule("draggableRowsFunction", null, new Class[]{UIData.class});
+
+    public DataTableHandler(ComponentConfig config) {
+        super(config);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected MetaRuleset createMetaRuleset(Class type) {
+        MetaRuleset metaRuleset = super.createMetaRuleset(type);
+
+        metaRuleset.addRule(SORT_FUNCTION);
         metaRuleset.addRule(DRAGGABLE_ROWS_FUNCTION);
-		
-		return metaRuleset; 
-	} 
+
+        return metaRuleset;
+    }
 }

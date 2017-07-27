@@ -39,128 +39,133 @@ import org.primefaces.util.SharedStringBuilder;
 public class CommandLinkRenderer extends CoreRenderer {
 
     private static final String SB_BUILD_ONCLICK = CommandLinkRenderer.class.getName() + "#buildOnclick";
-    
+
     @Override
-	public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, UIComponent component) {
         CommandLink link = (CommandLink) component;
-        if(link.isDisabled()) {
+        if (link.isDisabled()) {
             return;
         }
-        
-		String param = component.getClientId(context);
 
-		if(context.getExternalContext().getRequestParameterMap().containsKey(param)) {
-			component.queueEvent(new ActionEvent(component));
-		}
-        
+        String param = component.getClientId(context);
+
+        if (context.getExternalContext().getRequestParameterMap().containsKey(param)) {
+            component.queueEvent(new ActionEvent(component));
+        }
+
         decodeBehaviors(context, component);
-	}
+    }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-            ResponseWriter writer = context.getResponseWriter();
-            CommandLink link = (CommandLink) component;
-            String clientId = link.getClientId(context);
-            Object label = link.getValue();
+        ResponseWriter writer = context.getResponseWriter();
+        CommandLink link = (CommandLink) component;
+        String clientId = link.getClientId(context);
+        Object label = link.getValue();
 
-		if(!link.isDisabled()) {
+        if (!link.isDisabled()) {
             String request;
             boolean ajax = link.isAjax();
             String styleClass = link.getStyleClass();
             styleClass = styleClass == null ? CommandLink.STYLE_CLASS : CommandLink.STYLE_CLASS + " " + styleClass;
             RequestContext requestContext = RequestContext.getCurrentInstance(context);
-            boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled()&&link.isValidateClient();
-        
+            boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled() && link.isValidateClient();
+
             StringBuilder onclick = SharedStringBuilder.get(context, SB_BUILD_ONCLICK);
-            if(link.getOnclick() != null) {
+            if (link.getOnclick() != null) {
                 onclick.append(link.getOnclick()).append(";");
             }
-            
-            
+
             String onclickBehaviors = getEventBehaviors(context, link, "click", null);
-            if(onclickBehaviors != null) {
+            if (onclickBehaviors != null) {
                 onclick.append(onclickBehaviors);
             }
-            
-			writer.startElement("a", link);
-			writer.writeAttribute("id", clientId, "id");
-			writer.writeAttribute("href", "#", null);
-			writer.writeAttribute("class", styleClass, null);
-            if(link.getTitle() != null) {
+
+            writer.startElement("a", link);
+            writer.writeAttribute("id", clientId, "id");
+            writer.writeAttribute("href", "#", null);
+            writer.writeAttribute("class", styleClass, null);
+            if (link.getTitle() != null) {
                 writer.writeAttribute("aria-label", link.getTitle(), null);
             }
-            
-            if(ajax) {
+
+            if (ajax) {
                 request = buildAjaxRequest(context, link, null);
             }
             else {
                 UIComponent form = ComponentTraversalUtils.closestForm(context, link);
-                if(form == null) {
+                if (form == null) {
                     throw new FacesException("Commandlink \"" + clientId + "\" must be inside a form component");
                 }
-                
+
                 request = buildNonAjaxRequest(context, link, form, clientId, true);
             }
-            
-            if(csvEnabled) {
+
+            if (csvEnabled) {
                 CSVBuilder csvb = requestContext.getCSVBuilder();
                 request = csvb.init().source("this").ajax(ajax).process(link, link.getProcess()).update(link, link.getUpdate()).command(request).build();
             }
-            
+
             onclick.append(request);
 
-            if(onclick.length() > 0) {
-                if(link.requiresConfirmation()) {
+            if (onclick.length() > 0) {
+                if (link.requiresConfirmation()) {
                     writer.writeAttribute("data-pfconfirmcommand", onclick.toString(), null);
                     writer.writeAttribute("onclick", link.getConfirmationScript(), "onclick");
                 }
-                else
+                else {
                     writer.writeAttribute("onclick", onclick.toString(), "onclick");
+                }
             }
-            
+
             List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<ClientBehaviorContext.Parameter>();
             behaviorParams.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
             String dialogReturnBehavior = getEventBehaviors(context, link, "dialogReturn", behaviorParams);
-            if(dialogReturnBehavior != null) {
+            if (dialogReturnBehavior != null) {
                 writer.writeAttribute("data-dialogreturn", dialogReturnBehavior, null);
             }
-			
-			renderPassThruAttributes(context, link, HTML.LINK_ATTRS, HTML.CLICK_EVENT);
 
-			if(label != null)
-				writer.writeText(label, "value");
-			else
-				renderChildren(context, link);
-			
-			writer.endElement("a");
-		}
+            renderPassThruAttributes(context, link, HTML.LINK_ATTRS, HTML.CLICK_EVENT);
+
+            if (label != null) {
+                writer.writeText(label, "value");
+            }
+            else {
+                renderChildren(context, link);
+            }
+
+            writer.endElement("a");
+        }
         else {
             String styleClass = link.getStyleClass();
             styleClass = styleClass == null ? CommandLink.DISABLED_STYLE_CLASS : CommandLink.DISABLED_STYLE_CLASS + " " + styleClass;
 
-			writer.startElement("span", link);
-			writer.writeAttribute("id", clientId, "id");
+            writer.startElement("span", link);
+            writer.writeAttribute("id", clientId, "id");
             writer.writeAttribute("class", styleClass, "styleclass");
 
-            if(link.getStyle() != null)
+            if (link.getStyle() != null) {
                 writer.writeAttribute("style", link.getStyle(), "style");
-			
-			if(label != null)
-				writer.writeText(label, "value");
-			else
-				renderChildren(context, link);
-			
-			writer.endElement("span");
-		}
-	}
+            }
+
+            if (label != null) {
+                writer.writeText(label, "value");
+            }
+            else {
+                renderChildren(context, link);
+            }
+
+            writer.endElement("span");
+        }
+    }
 
     @Override
-	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-		//Do Nothing
-	}
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Do Nothing
+    }
 
     @Override
-	public boolean getRendersChildren() {
-		return true;
-	}
+    public boolean getRendersChildren() {
+        return true;
+    }
 }
