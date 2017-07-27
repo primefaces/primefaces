@@ -173,7 +173,8 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
                         } finally {
                             event.broadcaster().addAtmosphereResource(resource);
                         }
-                    } finally {
+                    }
+                    finally {
                         event.getResource().removeEventListener(this);
                     }
                 }
@@ -187,7 +188,8 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
                     if (event.isResumedOnTimeout()) {
                         try {
                             invokeOpenOrClose(onResumeMethod, remoteEndpoint);
-                        } finally {
+                        }
+                        finally {
                             event.getResource().removeEventListener(this);
                         }
                     }
@@ -202,13 +204,15 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
                 Object o = null;
                 try {
                     o = invoke(remoteEndpoint, body);
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
                     logger.error("", e);
                 }
                 if (o != null) {
                     resource.getBroadcaster().broadcast(o);
                 }
-            } else {
+            }
+            else {
                 logger.warn("{} received an empty body", ManagedServiceInterceptor.class.getSimpleName());
             }
         }
@@ -245,12 +249,14 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
                 trackedUUID.remove(r.uuid());
 
                 invokeOpenOrClose(onCloseMethod, remoteEndpoint);
-            } else if (event.isResumedOnTimeout() || event.isResuming()) {
+            }
+            else if (event.isResumedOnTimeout() || event.isResuming()) {
                 remoteEndpoint.status().status(Status.STATUS.CLOSED_BY_TIMEOUT);
                 request.removeAttribute(RemoteEndpointImpl.class.getName());
 
                 invokeOpenOrClose(onTimeoutMethod, remoteEndpoint);
-            } else {
+            }
+            else {
                 super.onStateChange(event);
             }
         }
@@ -295,7 +301,8 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
                 List<Class<?>> classes = Arrays.asList(cls);
                 if (classes.contains(EventBus.class)) {
                     injectEventBus = true;
-                } else if (classes.contains(RemoteEndpoint.class)) {
+                }
+                else if (classes.contains(RemoteEndpoint.class)) {
                     injectEndpoint = true;
                 }
                 methods.add(m);
@@ -310,7 +317,8 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
             for (Class<? extends Encoder> s : m.getAnnotation(OnMessage.class).encoders()) {
                 try {
                     l.add(config.framework().newClassInstance(Encoder.class, s));
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     logger.error("Unable to load encoder {}", s);
                 }
             }
@@ -324,7 +332,8 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
             for (Class<? extends Decoder> s : m.getAnnotation(OnMessage.class).decoders()) {
                 try {
                     l.add(config.framework().newClassInstance(Decoder.class, s));
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     logger.error("Unable to load encoder {}", s);
                 }
             }
@@ -344,13 +353,15 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
                 Object objectToEncode = null;
                 if (m.getParameterTypes().length == 3 && resource != null) {
                     objectToEncode = Invoker.invokeMethod(m, proxiedInstance, resource, eventBus, decoded);
-                } else if (m.getParameterTypes().length == 2 && resource != null) {
+                }
+                else if (m.getParameterTypes().length == 2 && resource != null) {
                     if (!injectEventBus) {
                         objectToEncode = Invoker.invokeMethod(m, proxiedInstance, resource, decoded);
                     } else if (objectToEncode == null) {
                         objectToEncode = Invoker.invokeMethod(m, proxiedInstance, eventBus, decoded);
                     }
-                } else {
+                }
+                else {
                     objectToEncode = Invoker.invokeMethod(m, proxiedInstance, decoded);
                 }
 
@@ -358,7 +369,8 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
                     return Invoker.encode(encoders.get(m), objectToEncode);
                 }
             }
-        } catch (Throwable t) {
+        }
+        catch (Throwable t) {
             logger.error("", t);
         }
         return null;
@@ -377,9 +389,11 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
         Object objectToEncode = null;
         if (m.getParameterTypes().length == 2) {
             Invoker.invokeMethod(m, proxiedInstance, r, eventBus);
-        } else if (!injectEventBus) {
+        }
+        else if (!injectEventBus) {
             Invoker.invokeMethod(m, proxiedInstance, r);
-        } else if (objectToEncode == null) {
+        }
+        else if (objectToEncode == null) {
             Invoker.invokeMethod(m, proxiedInstance, eventBus);
         }
     }

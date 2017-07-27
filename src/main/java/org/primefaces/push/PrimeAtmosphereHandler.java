@@ -55,7 +55,8 @@ public class PrimeAtmosphereHandler extends AbstractReflectorAtmosphereHandler {
         // We only handle GET. POST are supported by PrimeFaces directly via the Broadcaster.
         if (r.getMethod().equalsIgnoreCase("GET")) {
             applyRules(resource);
-        } else {
+        }
+        else {
             StringBuilder stringBuilder = read(resource);
             resource.getAtmosphereConfig().metaBroadcaster().broadcastTo("/*", stringBuilder.toString());
         }
@@ -80,7 +81,8 @@ public class PrimeAtmosphereHandler extends AbstractReflectorAtmosphereHandler {
                 if (inputStream != null) {
                     bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 }
-            } catch (IllegalStateException ex) {
+            }
+            catch (IllegalStateException ex) {
                 logger.trace("", ex);
                 Reader reader = r.getRequest().getReader();
                 if (reader != null) {
@@ -94,16 +96,20 @@ public class PrimeAtmosphereHandler extends AbstractReflectorAtmosphereHandler {
                 while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
                     stringBuilder.append(charBuffer, 0, bytesRead);
                 }
-            } else {
+            }
+            else {
                 stringBuilder.append("");
             }
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             logger.warn("", ex);
-        } finally {
+        }
+        finally {
             if (bufferedReader != null) {
                 try {
                     bufferedReader.close();
-                } catch (IOException ex) {
+                }
+                catch (IOException ex) {
                     logger.warn("", ex);
                 }
             }

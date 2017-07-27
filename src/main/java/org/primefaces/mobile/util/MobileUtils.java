@@ -21,29 +21,28 @@ import java.util.Map;
 
 public class MobileUtils {
 
-    private static final Map<Integer, String> _GRID_MAP = new HashMap<Integer, String>();
-
-    private static final Map<Integer, String> _BLOCK_MAP = new HashMap<Integer, String>();
-
-    static {
-        _GRID_MAP.put(1, "ui-grid-solo");
-        _GRID_MAP.put(2, "ui-grid-a");
-        _GRID_MAP.put(3, "ui-grid-b");
-        _GRID_MAP.put(4, "ui-grid-c");
-        _GRID_MAP.put(5, "ui-grid-d");
-    }
+    public static final Map<Integer, String> GRID_MAP;
+    public static final Map<Integer, String> BLOCK_MAP;
 
     static {
-        _BLOCK_MAP.put(0, "ui-block-a");
-        _BLOCK_MAP.put(1, "ui-block-b");
-        _BLOCK_MAP.put(2, "ui-block-c");
-        _BLOCK_MAP.put(3, "ui-block-d");
-        _BLOCK_MAP.put(4, "ui-block-e");
+        HashMap<Integer, String> gridMap = new HashMap<Integer, String>();
+        gridMap.put(1, "ui-grid-solo");
+        gridMap.put(2, "ui-grid-a");
+        gridMap.put(3, "ui-grid-b");
+        gridMap.put(4, "ui-grid-c");
+        gridMap.put(5, "ui-grid-d");
+        GRID_MAP = Collections.unmodifiableMap(gridMap);
+
+        HashMap<Integer, String> blockMap = new HashMap<Integer, String>();
+        blockMap.put(0, "ui-block-a");
+        blockMap.put(1, "ui-block-b");
+        blockMap.put(2, "ui-block-c");
+        blockMap.put(3, "ui-block-d");
+        blockMap.put(4, "ui-block-e");
+        BLOCK_MAP = Collections.unmodifiableMap(blockMap);
     }
 
-    public static final Map<Integer, String> GRID_MAP = Collections.unmodifiableMap(_GRID_MAP);
 
-    public static final Map<Integer, String> BLOCK_MAP = Collections.unmodifiableMap(_BLOCK_MAP);
 
     public static String buildNavigation(String value) {
         String outcome = value;

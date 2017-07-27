@@ -39,7 +39,8 @@ public class TreeNodeChildren extends TreeNodeList {
     public boolean add(TreeNode node) {
         if (node == null) {
             throw new NullPointerException();
-        } else {
+        }
+        else {
             eraseParent(node);
             boolean result = super.add(node);
             node.setParent(parent);

@@ -23,16 +23,6 @@ import java.util.UUID;
 
 public class DefaultMapModel implements MapModel, Serializable {
 
-    private List<Marker> markers;
-
-    private List<Polyline> polylines;
-
-    private List<Polygon> polygons;
-
-    private List<Circle> circles;
-
-    private List<Rectangle> rectangles;
-
     private final static String MARKER_ID_PREFIX = "marker";
 
     private final static String POLYLINE_ID_PREFIX = "polyline_";
@@ -42,6 +32,12 @@ public class DefaultMapModel implements MapModel, Serializable {
     private final static String CIRCLE_ID_PREFIX = "circle_";
 
     private final static String RECTANGLE_ID_PREFIX = "rectangle_";
+    
+    private List<Marker> markers;
+    private List<Polyline> polylines;
+    private List<Polygon> polygons;
+    private List<Circle> circles;
+    private List<Rectangle> rectangles;
 
     public DefaultMapModel() {
         markers = new ArrayList<Marker>();

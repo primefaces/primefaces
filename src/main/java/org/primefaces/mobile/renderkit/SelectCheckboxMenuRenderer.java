@@ -67,13 +67,15 @@ public class SelectCheckboxMenuRenderer extends org.primefaces.component.selectc
         writer.endElement("div");
     }
 
-    protected void encodeSelectItems(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems, Object values, Object submittedValues, Converter converter) throws IOException {
+    protected void encodeSelectItems(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems, Object values,
+            Object submittedValues, Converter converter) throws IOException {
         for (SelectItem selectItem : selectItems) {
             encodeOption(context, menu, selectItem, values, submittedValues, converter);
         }
     }
 
-    protected void encodeOption(FacesContext context, SelectCheckboxMenu menu, SelectItem option, Object values, Object submittedValues, Converter converter) throws IOException {
+    protected void encodeOption(FacesContext context, SelectCheckboxMenu menu, SelectItem option, Object values,
+            Object submittedValues, Converter converter) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         if (option instanceof SelectItemGroup) {

@@ -102,7 +102,11 @@ public class DataTableRenderer extends DataRenderer {
             table.restoreTableState();
         }
 
-        boolean defaultSorted = (table.getSortField() != null || table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null || table.getSortBy() != null || table.getMultiSortMeta() != null);
+        boolean defaultSorted = (table.getSortField() != null
+                || table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null
+                || table.getSortBy() != null
+                || table.getMultiSortMeta() != null);
+
         if (defaultSorted && table.isDefaultSort()) {
             ValueExpression sortVE;
             String sortField = table.getSortField();

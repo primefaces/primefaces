@@ -17,7 +17,6 @@ package org.primefaces.mobile.renderkit;
 
 import java.io.IOException;
 import java.util.List;
-import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
@@ -25,7 +24,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.selectmanybutton.SelectManyButton;
-import org.primefaces.component.selectonebutton.SelectOneButton;
 
 public class SelectManyButtonRenderer extends org.primefaces.component.selectmanybutton.SelectManyButtonRenderer {
 

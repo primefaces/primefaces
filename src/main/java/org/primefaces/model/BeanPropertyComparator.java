@@ -64,11 +64,14 @@ public class BeanPropertyComparator implements Comparator {
             //Empty check
             if (value1 == null && value2 == null) {
                 return 0;
-            } else if (value1 == null) {
+            }
+            else if (value1 == null) {
                 result = 1 * nullSortOrder;
-            } else if (value2 == null) {
+            }
+            else if (value2 == null) {
                 result = -1 * nullSortOrder;
-            } else if (sortFunction == null) {
+            }
+            else if (sortFunction == null) {
                 if (value1 instanceof String && value2 instanceof String) {
                     if (this.caseSensitive) {
                         result = collator.compare(value1, value2);
@@ -79,16 +82,19 @@ public class BeanPropertyComparator implements Comparator {
 
                         result = collator.compare(str1, str2);
                     }
-                } else {
+                }
+                else {
                     result = ((Comparable) value1).compareTo(value2);
                 }
-            } else {
+            }
+            else {
                 result = (Integer) sortFunction.invoke(context.getELContext(), new Object[]{value1, value2});
             }
 
             return asc ? result : -1 * result;
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new FacesException(e);
         }
     }

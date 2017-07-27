@@ -23,30 +23,16 @@ import org.primefaces.model.diagram.overlay.Overlay;
 public abstract class EndPoint implements Serializable {
 
     private String id;
-
     private EndPointAnchor anchor;
-
     private int maxConnections = 1;
-
     private String styleClass;
-
     private String hoverStyleClass;
-
     private String style;
-
     private String hoverStyle;
-
     private boolean source;
-
     private boolean target;
-
     private List<Overlay> overlays;
-
     private String scope;
-
-    public abstract String getType();
-
-    public abstract String toJS(StringBuilder sb);
 
     public EndPoint() {
         overlays = new ArrayList<Overlay>();
@@ -57,6 +43,10 @@ public abstract class EndPoint implements Serializable {
         this.anchor = anchor;
     }
 
+    public abstract String getType();
+
+    public abstract String toJS(StringBuilder sb);
+    
     public String getId() {
         return id;
     }

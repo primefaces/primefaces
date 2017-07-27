@@ -123,7 +123,8 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
     }
 
     @Override
-    protected void encodeThead(FacesContext context, DataTable table, int columnStart, int columnEnd, String theadId, String columnGroupName) throws IOException {
+    protected void encodeThead(FacesContext context, DataTable table, int columnStart, int columnEnd, String theadId, String columnGroupName)
+            throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ColumnGroup group = table.getColumnGroup("header");
         List<UIColumn> columns = table.getColumns();
@@ -201,7 +202,8 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         int priority = column.getPriority();
         boolean sortable = (columnSortByVE != null);
         String sortIcon = null;
-        String defaultStyleClass = sortable ? DataTable.MOBILE_COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.MOBILE_COLUMN_HEADER_CLASS;
+        String defaultStyleClass = sortable
+                ? DataTable.MOBILE_COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.MOBILE_COLUMN_HEADER_CLASS;
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
         styleClass = (styleClass == null) ? defaultStyleClass : defaultStyleClass + " " + styleClass;
@@ -273,7 +275,8 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         String text = column.getFooterText();
         if (facet != null) {
             facet.encodeAll(context);
-        } else if (text != null) {
+        }
+        else if (text != null) {
             writer.write(text);
         }
 
@@ -460,7 +463,8 @@ public class DataTableRenderer extends org.primefaces.component.datatable.DataTa
         String sortField = table.getSortField();
         String sortIcon = null;
 
-        if ((sortField != null && field != null && sortField.equals(field)) || (tableSortByExpression != null && tableSortByExpression.equals(columnSortByExpression))) {
+        if ((sortField != null && field != null && sortField.equals(field))
+                || (tableSortByExpression != null && tableSortByExpression.equals(columnSortByExpression))) {
             if (sortOrder.equalsIgnoreCase("ASCENDING")) {
                 sortIcon = DataTable.MOBILE_SORT_ICON_ASC_CLASS;
             }
