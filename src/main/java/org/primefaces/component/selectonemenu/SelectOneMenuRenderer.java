@@ -268,7 +268,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     
     protected void encodePanelContent(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean customContent = menu.getVar() != null;
+        boolean customContent = menu.isCustomContent();
         
         if(customContent) {
             writer.startElement("table", menu);
@@ -336,7 +336,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         for(SelectItem selectItem : selectItems) {
             String itemLabel = selectItem.getLabel();
             itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
-            Object itemValue = selectItem.getValue();
             String itemStyleClass = SelectOneMenu.ROW_CLASS;
             if(selectItem.isNoSelectionOption()) {
                 itemStyleClass = itemStyleClass + " ui-noselection-option"; 
@@ -351,24 +350,25 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 writer.writeAttribute("title", selectItem.getDescription(), null);
             }
 
-            if(itemValue == null || itemValue instanceof String) {
-                writer.startElement("td", null);
-                writer.writeAttribute("colspan", columns.size(), null);
-                writer.writeText(selectItem.getLabel(), null);
-                writer.endElement("td");
-            } 
-            else {
+            if(menu.isCustomContent()) {
                 for(Column column : columns) {
                     String style = column.getStyle();
                     String styleClass = column.getStyleClass();
-                    
+                  
                     writer.startElement("td", null);
                     if(style != null) writer.writeAttribute("style", style, null);
                     if(styleClass != null) writer.writeAttribute("class", styleClass, null);
-                    
+                  
                     renderChildren(context, column);
                     writer.endElement("td");
                 }
+            } 
+            else {
+               writer.startElement("td", null);
+               writer.writeAttribute("colspan", columns.size(), null);
+               writer.writeText(selectItem.getLabel(), null);
+               writer.endElement("td");
+
             }
 
             writer.endElement("tr");
