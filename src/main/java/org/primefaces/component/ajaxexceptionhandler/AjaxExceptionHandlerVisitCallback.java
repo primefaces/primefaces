@@ -39,7 +39,8 @@ public class AjaxExceptionHandlerVisitCallback implements VisitCallback {
         this.handlers = new HashMap<String, AjaxExceptionHandler>();
     }
 
-    public VisitResult visit(VisitContext context, UIComponent target) {;
+    @Override
+    public VisitResult visit(VisitContext context, UIComponent target) {
 
         if (target instanceof AjaxExceptionHandler) {
             AjaxExceptionHandler currentHandler = (AjaxExceptionHandler) target;

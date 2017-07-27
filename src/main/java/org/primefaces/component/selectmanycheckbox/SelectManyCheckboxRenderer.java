@@ -197,7 +197,9 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         writer.endElement("table");
     }
 
-    protected void encodeOptionInput(FacesContext context, SelectManyCheckbox checkbox, String id, String name, boolean checked, boolean disabled, String value) throws IOException {
+    protected void encodeOptionInput(FacesContext context, SelectManyCheckbox checkbox, String id, String name, boolean checked,
+            boolean disabled, String value) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         String tabindex = checkbox.getTabindex();
 
@@ -227,7 +229,9 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeOptionLabel(FacesContext context, SelectManyCheckbox checkbox, String containerClientId, SelectItem option, boolean disabled) throws IOException {
+    protected void encodeOptionLabel(FacesContext context, SelectManyCheckbox checkbox, String containerClientId, SelectItem option,
+            boolean disabled) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("label", null);
@@ -348,7 +352,8 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
                     writer.endElement("tr");
                     idx++;
                 }
-            } else {
+            }
+            else {
                 writer.startElement("tr", null);
                 writer.startElement("td", null);
                 encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);

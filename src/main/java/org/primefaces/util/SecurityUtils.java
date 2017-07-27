@@ -35,7 +35,8 @@ public class SecurityUtils {
         for (String role : roles) {
             if (ifGranted(role.trim())) {
                 isAuthorized = true;
-            } else {
+            }
+            else {
                 isAuthorized = false;
                 break;
             }
@@ -66,7 +67,8 @@ public class SecurityUtils {
             if (ifGranted(role.trim())) {
                 isAuthorized = false;
                 break;
-            } else {
+            }
+            else {
                 isAuthorized = true;
             }
         }

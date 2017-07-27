@@ -141,8 +141,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             if (idx != 0 && (idx % columns) != 0) {
                 writer.endElement("div");
             }
-
-        } else {
+        }
+        else {
             throw new FacesException("The value of columns attribute must be greater than zero.");
         }
 
@@ -174,11 +174,14 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     protected void encodeSelectItems(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems, String layout) throws IOException {
         if (layout.equals("lineDirection")) {
             encodeLineLayout(context, radio, selectItems);
-        } else if (layout.equals("pageDirection")) {
+        }
+        else if (layout.equals("pageDirection")) {
             encodePageLayout(context, radio, selectItems);
-        } else if (layout.equals("grid")) {
+        }
+        else if (layout.equals("grid")) {
             encodeGridLayout(context, radio, selectItems);
-        } else {
+        }
+        else {
             throw new FacesException("Invalid '" + layout + "' type for component '" + radio.getClientId(context) + "'.");
         }
     }
@@ -271,7 +274,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
                     writer.endElement("tr");
                 }
             }
-        } else {
+        }
+        else {
             throw new FacesException("The value of columns attribute must be greater than zero.");
         }
     }

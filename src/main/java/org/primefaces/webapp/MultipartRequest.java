@@ -64,8 +64,8 @@ public class MultipartRequest extends HttpServletRequestWrapper {
                     addFileParam(item);
                 }
             }
-
-        } catch (FileUploadException e) {
+        }
+        catch (FileUploadException e) {
             logger.log(Level.SEVERE, "Error in parsing fileupload request", e);
 
             throw new IOException(e.getMessage(), e);

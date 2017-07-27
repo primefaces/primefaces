@@ -89,7 +89,8 @@ public class PickListRenderer extends CoreRenderer {
         }
 
         //Source List
-        encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(), pickList.getFacet("sourceCaption"), pickList.isShowSourceFilter());
+        encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(),
+                pickList.getFacet("sourceCaption"), pickList.isShowSourceFilter());
 
         //Buttons
         writer.startElement("div", null);
@@ -112,7 +113,8 @@ public class PickListRenderer extends CoreRenderer {
         writer.endElement("div");
 
         //Target List
-        encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(), pickList.getFacet("targetCaption"), pickList.isShowTargetFilter());
+        encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(),
+                pickList.getFacet("targetCaption"), pickList.isShowTargetFilter());
 
         //Target List Reorder Buttons
         if (pickList.isShowTargetControls()) {
@@ -200,7 +202,9 @@ public class PickListRenderer extends CoreRenderer {
         writer.endElement("button");
     }
 
-    protected void encodeList(FacesContext context, PickList pickList, String listId, String styleClass, List model, UIComponent caption, boolean filter) throws IOException {
+    protected void encodeList(FacesContext context, PickList pickList, String listId, String styleClass, List model, UIComponent caption,
+            boolean filter) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
@@ -254,7 +258,8 @@ public class PickListRenderer extends CoreRenderer {
         for (Iterator it = model.iterator(); it.hasNext();) {
             Object item = it.next();
             context.getExternalContext().getRequestMap().put(var, item);
-            String itemValue = converter != null ? converter.getAsString(context, pickList, pickList.getItemValue()) : pickList.getItemValue().toString();
+            String itemValue = converter != null ?
+                    converter.getAsString(context, pickList, pickList.getItemValue()) : pickList.getItemValue().toString();
             String itemLabel = pickList.getItemLabel();
             String itemClass = pickList.isItemDisabled() ? PickList.ITEM_CLASS + " " + PickList.ITEM_DISABLED_CLASS : PickList.ITEM_CLASS;
 

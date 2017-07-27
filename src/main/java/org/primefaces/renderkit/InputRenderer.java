@@ -43,7 +43,12 @@ public abstract class InputRenderer extends CoreRenderer {
                 Object selectItemValue = uiSelectItem.getValue();
 
                 if (selectItemValue == null) {
-                    selectItems.add(new SelectItem(uiSelectItem.getItemValue(), uiSelectItem.getItemLabel(), uiSelectItem.getItemDescription(), uiSelectItem.isItemDisabled(), uiSelectItem.isItemEscaped(), uiSelectItem.isNoSelectionOption()));
+                    selectItems.add(new SelectItem(uiSelectItem.getItemValue(),
+                            uiSelectItem.getItemLabel(),
+                            uiSelectItem.getItemDescription(),
+                            uiSelectItem.isItemDisabled(),
+                            uiSelectItem.isItemEscaped(),
+                            uiSelectItem.isNoSelectionOption()));
                 }
                 else {
                     selectItems.add((SelectItem) selectItemValue);
@@ -63,7 +68,8 @@ public abstract class InputRenderer extends CoreRenderer {
 
                             if (item instanceof SelectItem) {
                                 selectItems.add((SelectItem) item);
-                            } else {
+                            }
+                            else {
                                 selectItems.add(createSelectItem(context, uiSelectItems, item, null));
                             }
                         }
@@ -84,7 +90,8 @@ public abstract class InputRenderer extends CoreRenderer {
                             Object item = it.next();
                             if (item instanceof SelectItem) {
                                 selectItems.add((SelectItem) item);
-                            } else {
+                            }
+                            else {
                                 selectItems.add(createSelectItem(context, uiSelectItems, item, null));
                             }
                         }

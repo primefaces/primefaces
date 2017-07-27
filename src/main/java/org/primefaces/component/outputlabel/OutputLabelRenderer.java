@@ -173,7 +173,9 @@ public class OutputLabelRenderer extends CoreRenderer {
 
         try {
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
-                    context, RequestContext.getCurrentInstance(context), ValueExpressionAnalyzer.getExpression(context.getELContext(), input.getValueExpression("value")));
+                    context,
+                    RequestContext.getCurrentInstance(context),
+                    ValueExpressionAnalyzer.getExpression(context.getELContext(), input.getValueExpression("value")));
             if (constraints != null && !constraints.isEmpty()) {
                 for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
                     if (constraintDescriptor.getAnnotation().annotationType().equals(NotNull.class)) {

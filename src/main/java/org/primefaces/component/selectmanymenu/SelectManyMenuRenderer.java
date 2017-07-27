@@ -97,7 +97,9 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         wb.finish();
     }
 
-    protected void encodeInput(FacesContext context, SelectManyMenu menu, String clientId, List<SelectItem> selectItems) throws IOException {
+    protected void encodeInput(FacesContext context, SelectManyMenu menu, String clientId, List<SelectItem> selectItems)
+            throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         String inputid = clientId + "_input";
         String labelledBy = menu.getLabelledBy();
@@ -178,7 +180,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         if (submittedValues != null) {
             valuesArray = submittedValues;
             itemValue = itemValueAsString;
-        } else {
+        }
+        else {
             valuesArray = values;
             itemValue = option.getValue();
         }
@@ -233,7 +236,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
             if (option.isEscape()) {
                 writer.writeText(option.getLabel(), null);
-            } else {
+            }
+            else {
                 writer.write(option.getLabel());
             }
 
@@ -252,7 +256,9 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         }
     }
 
-    protected void encodeOption(FacesContext context, SelectManyMenu menu, SelectItem option, Object values, Object submittedValues, Converter converter) throws IOException {
+    protected void encodeOption(FacesContext context, SelectManyMenu menu, SelectItem option, Object values, Object submittedValues,
+            Converter converter) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
         boolean disabled = option.isDisabled() || menu.isDisabled();
@@ -280,7 +286,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
         if (option.isEscape()) {
             writer.writeText(option.getLabel(), null);
-        } else {
+        }
+        else {
             writer.write(option.getLabel());
         }
 

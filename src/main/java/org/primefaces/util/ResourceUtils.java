@@ -30,11 +30,11 @@ import javax.faces.context.FacesContext;
 
 public class ResourceUtils {
 
-    private static final Logger LOG = Logger.getLogger(ResourceUtils.class.getName());
-    
     public static final String RENDERER_SCRIPT = "javax.faces.resource.Script";
     public static final String RENDERER_STYLESHEET = "javax.faces.resource.Stylesheet";
-   
+    
+    private static final Logger LOG = Logger.getLogger(ResourceUtils.class.getName());
+    
     public static void addComponentResource(FacesContext context, String name, String library, String target) {
 
         Application application = context.getApplication();

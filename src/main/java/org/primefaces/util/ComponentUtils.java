@@ -55,6 +55,8 @@ public class ComponentUtils {
 
     // marker for a undefined value when a null check is not reliable enough
     private static final Object UNDEFINED_VALUE = new Object();
+    
+    private static final Pattern PATTERN_NEW_LINE = Pattern.compile("(\r\n|\n\r|\r|\n)");
 
     public static String getValueToRender(FacesContext context, UIComponent component) {
         return getValueToRender(context, component, UNDEFINED_VALUE);
@@ -101,7 +103,8 @@ public class ComponentUtils {
                 Converter converter = valueHolder.getConverter();
                 if (converter == null) {
                     Class valueType = value.getClass();
-                    if (valueType == String.class && !RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isStringConverterAvailable()) {
+                    if (valueType == String.class
+                            && !RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isStringConverterAvailable()) {
                         return (String) value;
                     }
 
@@ -363,7 +366,7 @@ public class ComponentUtils {
         }
     }
 
-    private static final Pattern PATTERN_NEW_LINE = Pattern.compile("(\r\n|\n\r|\r|\n)");
+    
 
     public static String replaceNewLineWithHtml(String text) {
         if (text == null) {
@@ -425,7 +428,8 @@ public class ComponentUtils {
                             sb.append('0');
                         }
                         sb.append(ss.toUpperCase());
-                    } else {
+                    }
+                    else {
                         sb.append(ch);
                     }
             }
@@ -523,9 +527,11 @@ public class ComponentUtils {
     public static TimeZone resolveTimeZone(Object timeZone) {
         if (timeZone instanceof String) {
             return TimeZone.getTimeZone((String) timeZone);
-        } else if (timeZone instanceof TimeZone) {
+        }
+        else if (timeZone instanceof TimeZone) {
             return (TimeZone) timeZone;
-        } else {
+        }
+        else {
             return TimeZone.getDefault();
         }
     }

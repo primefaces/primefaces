@@ -39,7 +39,8 @@ public class GraphicImageRenderer extends CoreRenderer {
         String imageSrc;
         try {
             imageSrc = getImageSrc(context, image);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             throw new IOException(ex);
         }
 

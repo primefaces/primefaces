@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -31,13 +30,13 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class FocusRenderer extends CoreRenderer {
 
-    private final static Map<String, Integer> severityOrdinals = new HashMap<String, Integer>();
+    private static final Map<String, Integer> SEVERITY_ORDINALS = new HashMap<String, Integer>();
 
     static {
-        severityOrdinals.put("info", FacesMessage.SEVERITY_INFO.getOrdinal());
-        severityOrdinals.put("warn", FacesMessage.SEVERITY_WARN.getOrdinal());
-        severityOrdinals.put("error", FacesMessage.SEVERITY_ERROR.getOrdinal());
-        severityOrdinals.put("fatal", FacesMessage.SEVERITY_FATAL.getOrdinal());
+        SEVERITY_ORDINALS.put("info", FacesMessage.SEVERITY_INFO.getOrdinal());
+        SEVERITY_ORDINALS.put("warn", FacesMessage.SEVERITY_WARN.getOrdinal());
+        SEVERITY_ORDINALS.put("error", FacesMessage.SEVERITY_ERROR.getOrdinal());
+        SEVERITY_ORDINALS.put("fatal", FacesMessage.SEVERITY_FATAL.getOrdinal());
     }
 
     @Override
@@ -98,7 +97,7 @@ public class FocusRenderer extends CoreRenderer {
     }
 
     protected String findFirstInvalidComponentClientId(FacesContext context, Focus focus) {
-        int minSeverityOrdinal = severityOrdinals.get(focus.getMinSeverity());
+        int minSeverityOrdinal = SEVERITY_ORDINALS.get(focus.getMinSeverity());
 
         for (Iterator<String> iterator = context.getClientIdsWithMessages(); iterator.hasNext();) {
             String clientId = iterator.next();

@@ -197,10 +197,14 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
                     idParams.add(menuitem.getId());
                     params.put(menuClientId + "_menuid", idParams);
 
-                    command = menuitem.isAjax() ? buildAjaxRequest(context, menu, (AjaxSource) menuitem, form, params) : buildNonAjaxRequest(context, menu, form, menuClientId, params, true);
+                    command = menuitem.isAjax()
+                            ? buildAjaxRequest(context, menu, (AjaxSource) menuitem, form, params)
+                            : buildNonAjaxRequest(context, menu, form, menuClientId, params, true);
                 }
                 else {
-                    command = menuitem.isAjax() ? buildAjaxRequest(context, (AjaxSource) menuitem, form) : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
+                    command = menuitem.isAjax()
+                            ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
+                            : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
                 }
 
                 onclick = (onclick == null) ? command : onclick + ";" + command;
@@ -231,7 +235,8 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
                 for (int i = 0; i < clickBehaviors.size(); i++) {
                     ClientBehavior clientBehavior = clickBehaviors.get(i);
                     if (clientBehavior instanceof ConfirmBehavior) {
-                        ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(context, (UIComponent) item, "click", item.getClientId(), Collections.EMPTY_LIST);
+                        ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
+                                context, (UIComponent) item, "click", item.getClientId(), Collections.EMPTY_LIST);
                         clientBehavior.getScript(cbc);
                         break;
                     }
@@ -316,7 +321,9 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         return true;
     }
 
-    protected String buildAjaxRequest(FacesContext context, AbstractMenu menu, AjaxSource source, UIComponent form, Map<String, List<String>> params) {
+    protected String buildAjaxRequest(FacesContext context, AbstractMenu menu, AjaxSource source, UIComponent form,
+            Map<String, List<String>> params) {
+        
         String clientId = menu.getClientId(context);
 
         AjaxRequestBuilder builder = RequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
@@ -347,7 +354,9 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         return builder.build();
     }
 
-    protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, Map<String, List<String>> parameters, boolean submit) {
+    protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam,
+            Map<String, List<String>> parameters, boolean submit) {
+        
         StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
         String formId = form.getClientId(context);
         Map<String, Object> params = new HashMap<String, Object>();

@@ -467,7 +467,8 @@ public class SearchExpressionFacade {
         return component;
     }
 
-    private static UIComponent resolveComponentByExpressionChain(FacesContext context, UIComponent source, String expression, char separatorChar, String separatorString, int hints) {
+    private static UIComponent resolveComponentByExpressionChain(FacesContext context, UIComponent source, String expression,
+            char separatorChar, String separatorString, int hints) {
 
         boolean startsWithSeperator = expression.charAt(0) == separatorChar;
 
@@ -829,10 +830,12 @@ public class SearchExpressionFacade {
                     tokens.add(buffer.toString());
                     // now we need to clear buffer
                     buffer.delete(0, buffer.length());
-                } else {
+                }
+                else {
                     buffer.append(c);
                 }
-            } else {
+            }
+            else {
                 buffer.append(c);
             }
         }

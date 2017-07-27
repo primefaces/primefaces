@@ -95,7 +95,9 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         wb.finish();
     }
 
-    protected void encodeInput(FacesContext context, SelectOneListbox listbox, String clientId, List<SelectItem> selectItems) throws IOException {
+    protected void encodeInput(FacesContext context, SelectOneListbox listbox, String clientId, List<SelectItem> selectItems)
+            throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         String inputid = clientId + "_input";
         String labelledBy = listbox.getLabelledBy();
@@ -162,7 +164,9 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeItem(FacesContext context, SelectOneListbox listbox, SelectItem option, Object values, Object submittedValues, Converter converter, boolean customContent) throws IOException {
+    protected void encodeItem(FacesContext context, SelectOneListbox listbox, SelectItem option, Object values, Object submittedValues,
+            Converter converter, boolean customContent) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, listbox, converter, option.getValue());
         boolean disabled = option.isDisabled() || listbox.isDisabled();
@@ -233,7 +237,9 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         }
     }
 
-    protected void encodeOption(FacesContext context, SelectOneListbox listbox, SelectItem option, Object values, Object submittedValues, Converter converter) throws IOException {
+    protected void encodeOption(FacesContext context, SelectOneListbox listbox, SelectItem option, Object values, Object submittedValues,
+            Converter converter) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, listbox, converter, option.getValue());
         boolean disabled = option.isDisabled() || listbox.isDisabled();

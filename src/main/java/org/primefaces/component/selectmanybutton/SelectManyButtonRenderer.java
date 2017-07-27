@@ -89,7 +89,9 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         }
     }
 
-    protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter, SelectItem option, int idx, int size) throws IOException {
+    protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter,
+            SelectItem option, int idx, int size) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         SelectManyButton button = (SelectManyButton) component;
         String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
@@ -103,7 +105,8 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         if (submittedValues != null) {
             valuesArray = submittedValues;
             itemValue = itemValueAsString;
-        } else {
+        }
+        else {
             valuesArray = values;
             itemValue = option.getValue();
         }

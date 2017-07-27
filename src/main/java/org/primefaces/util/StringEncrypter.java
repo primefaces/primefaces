@@ -46,7 +46,8 @@ public class StringEncrypter {
             dcipher = Cipher.getInstance(algorithm);
             ecipher.init(Cipher.ENCRYPT_MODE, key);
             dcipher.init(Cipher.DECRYPT_MODE, key);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new FacesException("Could not initialize Cipher objects", e);
         }
     }
@@ -81,8 +82,8 @@ public class StringEncrypter {
 
             ecipher.init(Cipher.ENCRYPT_MODE, key, paramSpec);
             dcipher.init(Cipher.DECRYPT_MODE, key, paramSpec);
-
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new FacesException("Could not initialize Cipher objects", e);
         }
     }
@@ -103,8 +104,8 @@ public class StringEncrypter {
 
             // Encode bytes to base64 to get a string
             return Base64.encodeToString(enc, false);
-
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.log(Level.WARNING, "Could not encrypt string", e);
         }
 
@@ -129,8 +130,8 @@ public class StringEncrypter {
 
             // Decode using utf-8
             return new String(utf8, "UTF8");
-
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.log(Level.WARNING, "Could not decrypt string", e);
         }
 

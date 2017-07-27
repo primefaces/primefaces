@@ -220,7 +220,8 @@ public class PanelRenderer extends CoreRenderer {
 
             if (footer != null) {
                 renderChild(context, footer);
-            } else if (footerText != null) {
+            }
+            else if (footerText != null) {
                 writer.writeText(footerText, null);
             }
 

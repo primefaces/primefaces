@@ -90,7 +90,7 @@ public class MessageFactory {
         try {
             detail = getFormattedText(locale, bundle.getString(messageId + DEFAULT_DETAIL_SUFFIX), params);
         }
-        catch(MissingResourceException e) {
+        catch (MissingResourceException e) {
             // NoOp
         }
 

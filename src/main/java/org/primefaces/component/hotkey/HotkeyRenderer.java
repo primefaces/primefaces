@@ -28,7 +28,6 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.ComponentUtils;
 
 public class HotkeyRenderer extends CoreRenderer {
 
@@ -83,8 +82,8 @@ public class HotkeyRenderer extends CoreRenderer {
                     .build();
 
             writer.write(request);
-
-        } else {
+        }
+        else {
             writer.write(hotkey.getHandler());
         }
 

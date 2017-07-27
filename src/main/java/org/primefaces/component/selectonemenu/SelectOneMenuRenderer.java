@@ -117,7 +117,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeInput(FacesContext context, SelectOneMenu menu, String clientId, List<SelectItem> selectItems, Object values, Object submittedValues, Converter converter) throws IOException {
+    protected void encodeInput(FacesContext context, SelectOneMenu menu, String clientId, List<SelectItem> selectItems, Object values,
+            Object submittedValues, Converter converter) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         String focusId = clientId + "_focus";
         String labelledBy = menu.getLabelledBy();
@@ -155,7 +157,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
     }
 
-    protected void encodeHiddenSelect(FacesContext context, SelectOneMenu menu, String clientId, List<SelectItem> selectItems, Object values, Object submittedValues, Converter converter) throws IOException {
+    protected void encodeHiddenSelect(FacesContext context, SelectOneMenu menu, String clientId, List<SelectItem> selectItems,
+            Object values, Object submittedValues, Converter converter) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
 
@@ -454,7 +458,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         wb.finish();
     }
 
-    protected void encodeSelectItems(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, Object values, Object submittedValues, Converter converter) throws IOException {
+    protected void encodeSelectItems(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, Object values,
+            Object submittedValues, Converter converter) throws IOException {
+        
         int itemIndex = 0;
         for (SelectItem selectItem : selectItems) {
             encodeOption(context, menu, selectItem, values, submittedValues, converter, itemIndex);
@@ -462,7 +468,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         }
     }
 
-    protected void encodeOption(FacesContext context, SelectOneMenu menu, SelectItem option, Object values, Object submittedValues, Converter converter, int itemIndex) throws IOException {
+    protected void encodeOption(FacesContext context, SelectOneMenu menu, SelectItem option, Object values, Object submittedValues,
+            Converter converter, int itemIndex) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
 
         if (option instanceof SelectItemGroup) {

@@ -83,7 +83,8 @@ public abstract class CoreRenderer extends Renderer {
 
         if (child.getRendersChildren()) {
             child.encodeChildren(context);
-        } else {
+        }
+        else {
             renderChildren(context, child);
         }
         child.encodeEnd(context);
@@ -616,7 +617,8 @@ public abstract class CoreRenderer extends Renderer {
             List<ClientBehaviorContext.Parameter> params;
             if (parameters != null && !parameters.isEmpty()) {
                 params = parameters;
-            } else {
+            }
+            else {
                 params = Collections.emptyList();
             }
 
