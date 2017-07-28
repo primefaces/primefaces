@@ -797,7 +797,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     });
     },
     
-    toggleRow(row) {
+    toggleRow: function(row) {
         if(row && !this.isRowTogglerClicked) {
             var toggler = row.find('> td > div.ui-row-toggler');
             this.toggleExpansion(toggler);
