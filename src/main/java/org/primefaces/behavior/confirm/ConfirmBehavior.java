@@ -54,13 +54,18 @@ public class ConfirmBehavior extends AbstractBehavior {
 
         if (component instanceof Confirmable) {
             String sourceProperty = (source == null) ? "source:this" : "source:\"" + source + "\"";
-            String script = "PrimeFaces.confirm({" + sourceProperty + ",header:" + headerText + ",message:" + messageText + ",icon:\"" + getIcon() + "\"});return false;";
+            String script = "PrimeFaces.confirm({" + sourceProperty
+                    + ",header:" + headerText
+                    + ",message:" + messageText
+                    + ",icon:\"" + getIcon()
+                    + "\"});return false;";
             ((Confirmable) component).setConfirmationScript(script);
 
             return null;
         }
         else {
-            throw new FacesException("Component " + source + " is not a Confirmable. ConfirmBehavior can only be attached to components that implement org.primefaces.component.api.Confirmable interface");
+            throw new FacesException("Component " + source + " is not a Confirmable. "
+                    + "ConfirmBehavior can only be attached to components that implement " + Confirmable.class.getName() + " interface");
         }
     }
 

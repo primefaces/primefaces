@@ -42,7 +42,8 @@ public class InputSwitchRenderer extends InputRenderer {
 
         if (submittedValue != null && isChecked(submittedValue)) {
             inputSwitch.setSubmittedValue(true);
-        } else {
+        }
+        else {
             inputSwitch.setSubmittedValue(false);
         }
     }

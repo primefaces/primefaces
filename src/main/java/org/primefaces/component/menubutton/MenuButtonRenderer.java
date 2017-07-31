@@ -35,6 +35,7 @@ import org.primefaces.util.WidgetBuilder;
 
 public class MenuButtonRenderer extends BaseMenuRenderer {
 
+    @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         MenuButton button = (MenuButton) abstractMenu;
@@ -94,7 +95,8 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 
         if (isValueBlank(value)) {
             writer.write("ui-button");
-        } else {
+        }
+        else {
             writer.writeText(value, "value");
         }
 
@@ -127,7 +129,8 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
                         writer.writeAttribute("role", "menuitem", null);
                         encodeMenuItem(context, button, (MenuItem) element);
                         writer.endElement("li");
-                    } else if (element instanceof Separator) {
+                    }
+                    else if (element instanceof Separator) {
                         encodeSeparator(context, (Separator) element);
                     }
                 }
@@ -139,6 +142,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 
     }
 
+    @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         MenuButton button = (MenuButton) abstractMenu;
         String clientId = button.getClientId(context);

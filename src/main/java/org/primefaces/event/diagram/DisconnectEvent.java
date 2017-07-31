@@ -28,7 +28,9 @@ public class DisconnectEvent extends AbstractAjaxBehaviorEvent {
     private final EndPoint sourceEndPoint;
     private final EndPoint targetEndPoint;
 
-    public DisconnectEvent(UIComponent component, Behavior behavior, Element sourceElement, Element targetElement, EndPoint sourceEndPoint, EndPoint targetEndPoint) {
+    public DisconnectEvent(UIComponent component, Behavior behavior, Element sourceElement, Element targetElement, EndPoint sourceEndPoint,
+            EndPoint targetEndPoint) {
+        
         super(component, behavior);
         this.sourceElement = sourceElement;
         this.targetElement = targetElement;

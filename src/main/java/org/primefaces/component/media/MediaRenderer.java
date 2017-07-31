@@ -42,7 +42,8 @@ public class MediaRenderer extends CoreRenderer {
         String src;
         try {
             src = getMediaSrc(context, media);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             throw new IOException(ex);
         }
         boolean isIE = AgentUtils.isIE(context);
@@ -103,7 +104,8 @@ public class MediaRenderer extends CoreRenderer {
 
         if (asAttribute) {
             writer.writeAttribute(name, value, null);
-        } else {
+        }
+        else {
             writer.startElement("param", null);
             writer.writeAttribute("name", name, null);
             writer.writeAttribute("value", value.toString(), null);

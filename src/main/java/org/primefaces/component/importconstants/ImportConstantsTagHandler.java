@@ -61,7 +61,8 @@ public class ImportConstantsTagHandler extends TagHandler {
         String var;
         if (varTagAttribute == null) {
             var = type.getSimpleName(); // fall back to class name
-        } else {
+        }
+        else {
             var = varTagAttribute.getValue(ctx);
         }
 
@@ -148,7 +149,8 @@ public class ImportConstantsTagHandler extends TagHandler {
             try {
                 Object value = field.get(null); // null for static fields.
                 constants.put(field.getName(), value);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 throw new FacesException("Could not get value of " + field.getName() + " in " + type.getName() + ".", e);
             }
         }

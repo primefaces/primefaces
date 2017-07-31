@@ -63,6 +63,13 @@ public class SearchExpressionResolverFactory {
         RESOLVER_MAPPING.put(SearchExpressionConstants.ROOT_KEYWORD, new RootExpressionResolver());
     }
 
+    /*
+     * Prevent instantiation.
+     */
+    private SearchExpressionResolverFactory() {
+
+    }
+    
     /**
      * Finds a {@link SearchExpressionResolver} for the given expression.
      *
@@ -101,12 +108,5 @@ public class SearchExpressionResolverFactory {
 
     public static SearchExpressionResolver removeResolver(final String keyword) {
         return RESOLVER_MAPPING.remove(keyword);
-    }
-
-    /**
-     * Prevent instantiation.
-     */
-    private SearchExpressionResolverFactory() {
-
     }
 }

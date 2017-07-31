@@ -108,7 +108,8 @@ public class OutcomeTargetRenderer extends CoreRenderer {
                     List<String> values = entry.getValue();
                     if (containsEL(values)) {
                         params.put(key, evaluateValueExpressions(context, values));
-                    } else {
+                    }
+                    else {
                         params.put(key, values);
                     }
                 }
@@ -181,7 +182,8 @@ public class OutcomeTargetRenderer extends CoreRenderer {
 
                 url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, isIncludeViewParams);
 
-            } finally {
+            }
+            finally {
                 if (clientWindowRenderingModeEnabled && clientWindow != null) {
                     ((ClientWindow) clientWindow).enableClientWindowRenderMode(context);
                 }

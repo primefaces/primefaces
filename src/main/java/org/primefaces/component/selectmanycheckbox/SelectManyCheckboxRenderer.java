@@ -430,7 +430,9 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         }
     }
 
-    protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter, SelectItem option, int idx) throws IOException {
+    protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter,
+            SelectItem option, int idx) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         SelectManyCheckbox checkbox = (SelectManyCheckbox) component;
         String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());

@@ -68,7 +68,8 @@ public class LifecyclePhaseListener implements PhaseListener {
     public static PhaseInfo getPhaseInfo(PhaseId id, FacesContext facesContext) {
 
         Map<String, Object> session = facesContext.getExternalContext().getSessionMap();
-        Map<String, LinkedHashMap<Integer, PhaseInfo>> storePerView = (Map<String, LinkedHashMap<Integer, PhaseInfo>>) session.get(LifecyclePhaseListener.class.getName());
+        Map<String, LinkedHashMap<Integer, PhaseInfo>> storePerView =
+                (Map<String, LinkedHashMap<Integer, PhaseInfo>>) session.get(LifecyclePhaseListener.class.getName());
 
         if (storePerView == null) {
             storePerView = new HashMap<String, LinkedHashMap<Integer, PhaseInfo>>();

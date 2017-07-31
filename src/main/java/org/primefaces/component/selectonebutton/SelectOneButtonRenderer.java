@@ -96,7 +96,9 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         }
     }
 
-    protected void encodeOption(FacesContext context, SelectOneButton button, SelectItem option, String id, String name, Converter converter, boolean selected, boolean disabled, int idx, int size) throws IOException {
+    protected void encodeOption(FacesContext context, SelectOneButton button, SelectItem option, String id, String name, Converter converter,
+            boolean selected, boolean disabled, int idx, int size) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, button, converter, option.getValue());
 

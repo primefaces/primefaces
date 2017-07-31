@@ -253,7 +253,8 @@ public class InputNumberRenderer extends InputRenderer {
                 Object objectToRender;
                 if (value instanceof BigDecimal || doubleValueCheck(valueToRender)) {
                     objectToRender = new BigDecimal(valueToRender);
-                } else {
+                }
+                else {
                     objectToRender = new Double(valueToRender);
                 }
 

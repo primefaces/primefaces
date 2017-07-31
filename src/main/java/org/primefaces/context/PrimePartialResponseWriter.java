@@ -38,10 +38,15 @@ import org.primefaces.util.ResourceUtils;
 
 public class PrimePartialResponseWriter extends PartialResponseWriter {
 
-    private static final Map<String, String> CALLBACK_EXTENSION_PARAMS = Collections.unmodifiableMap(new HashMap<String, String>() {{
-            put("ln", "primefaces");
-            put("type", "args");
-    }});
+    private static final Map<String, String> CALLBACK_EXTENSION_PARAMS;
+    
+    static {
+        Map<String, String> callbackExtensionParams = new HashMap<String, String>();
+        callbackExtensionParams.put("ln", "primefaces");
+        callbackExtensionParams.put("type", "args");
+
+        CALLBACK_EXTENSION_PARAMS = Collections.unmodifiableMap(callbackExtensionParams);
+    }
 
     private final PartialResponseWriter wrapped;
     private boolean metadataRendered = false;
