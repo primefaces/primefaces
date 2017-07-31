@@ -358,7 +358,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         if (label != null) {
             if (option.isEscape()) {
                 writer.writeText(label, null);
-            } else {
+            }
+            else {
                 writer.write(label);
             }
         }

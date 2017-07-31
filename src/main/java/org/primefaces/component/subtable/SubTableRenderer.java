@@ -173,7 +173,8 @@ public class SubTableRenderer extends CoreRenderer {
         UIComponent facet = column.getFacet(facetName);
         if (facet != null) {
             facet.encodeAll(context);
-        } else if (text != null) {
+        }
+        else if (text != null) {
             writer.write(text);
         }
 

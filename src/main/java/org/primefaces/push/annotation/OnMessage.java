@@ -24,8 +24,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * An annotation to use with {@link PushEndpoint} annotated classes. A {@link PushEndpoint} may annotate one or more methods with {@code OnMessage}.
- * Methods will be invoked when one of many {@link Decoder}, if an {@link java.io.InputStream}, {@link java.io.Reader} or {@link String }match the method signature. For example
+ * An annotation to use with {@link PushEndpoint} annotated classes.
+ * A {@link PushEndpoint} may annotate one or more methods with {@code OnMessage}.
+ * Methods will be invoked when one of many {@link Decoder}, if an {@link java.io.InputStream},
+ * {@link java.io.Reader} or {@link String }match the method signature. For example
  *
  * <blockquote>
  *     @OnMessage

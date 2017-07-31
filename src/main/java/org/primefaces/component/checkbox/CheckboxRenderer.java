@@ -63,7 +63,9 @@ public class CheckboxRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeOptionInput(FacesContext context, SelectManyCheckbox selectManyCheckbox, Checkbox checkbox, String id, String name, boolean disabled) throws IOException {
+    protected void encodeOptionInput(FacesContext context, SelectManyCheckbox selectManyCheckbox, Checkbox checkbox, String id, String name,
+            boolean disabled) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         String tabindex = checkbox.getTabindex();
         if (tabindex == null) {
@@ -96,8 +98,8 @@ public class CheckboxRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected String buildEvent(FacesContext context, SelectManyCheckbox selectManyCheckbox, Checkbox checkbox, String domEvent, String behaviorEvent,
-            String behaviorEventAlias) {
+    protected String buildEvent(FacesContext context, SelectManyCheckbox selectManyCheckbox, Checkbox checkbox, String domEvent,
+            String behaviorEvent, String behaviorEventAlias) {
 
         String manyCheckboxEvent = buildDomEvent(context, selectManyCheckbox, domEvent, behaviorEvent, behaviorEventAlias, null);
         String checkboxEvent = buildDomEvent(context, checkbox, domEvent, behaviorEvent, behaviorEventAlias, null);

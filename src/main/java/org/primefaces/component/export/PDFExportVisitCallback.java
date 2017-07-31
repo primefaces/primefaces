@@ -50,7 +50,8 @@ public class PDFExportVisitCallback implements VisitCallback {
             exporter.addEmptyLine(preface, 3);
             document.add(preface);
 
-        } catch (DocumentException e) {
+        }
+        catch (DocumentException e) {
             throw new FaceletException(e.getMessage());
         }
 

@@ -98,7 +98,8 @@ public class SelectionFeature implements DataTableFeature {
                     table.setRowIndex(i);
                     selectionList.add(table.getRowData());
                 }
-            } else {
+            }
+            else {
                 String[] rowKeys = selection.split(",");
                 for (int i = 0; i < rowKeys.length; i++) {
                     Object rowData = table.getRowData(rowKeys[i]);

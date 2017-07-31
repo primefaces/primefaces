@@ -55,7 +55,9 @@ public class ExcelExporter extends Exporter {
     private CellStyle facetStyle;
 
     @Override
-    public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+    public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType,
+            MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+        
         Workbook wb = createWorkBook();
         String sheetName = getSheetName(context, table);
         if (sheetName == null) {
@@ -88,7 +90,9 @@ public class ExcelExporter extends Exporter {
     }
 
     @Override
-    public void export(FacesContext context, String filename, List<DataTable> tables, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+    public void export(FacesContext context, String filename, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
+            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+        
         Workbook wb = createWorkBook();
 
         if (preProcessor != null) {
@@ -124,7 +128,9 @@ public class ExcelExporter extends Exporter {
     }
 
     @Override
-    public void export(FacesContext context, List<String> clientIds, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+    public void export(FacesContext context, List<String> clientIds, String filename, boolean pageOnly, boolean selectionOnly,
+            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+        
         Workbook wb = createWorkBook();
 
         if (preProcessor != null) {

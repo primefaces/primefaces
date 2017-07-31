@@ -109,7 +109,8 @@ public class GalleriaRenderer extends CoreRenderer {
 
         if (context.isPostback()) {
             wb.initWithDomReady("Galleria", galleria.resolveWidgetVar(), clientId);
-        } else {
+        }
+        else {
             wb.initWithWindowLoad("Galleria", galleria.resolveWidgetVar(), clientId);
         }
 

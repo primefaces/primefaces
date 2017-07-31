@@ -194,7 +194,8 @@ public class PickListRenderer extends CoreRenderer {
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
         if (tooltip) {
             writer.write(title);
-        } else {
+        }
+        else {
             writer.writeText(title, null);
         }
         writer.endElement("span");

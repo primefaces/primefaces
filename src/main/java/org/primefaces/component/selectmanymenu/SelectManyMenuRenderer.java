@@ -226,7 +226,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
             }
 
             writer.endElement("tr");
-        } else {
+        }
+        else {
             writer.startElement("li", null);
             writer.writeAttribute("class", itemClass, null);
 

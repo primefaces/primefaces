@@ -63,7 +63,9 @@ public class RadioButtonRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeOptionInput(FacesContext context, SelectOneRadio radio, RadioButton button, String id, String name, boolean disabled) throws IOException {
+    protected void encodeOptionInput(FacesContext context, SelectOneRadio radio, RadioButton button, String id, String name,
+            boolean disabled) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         String tabindex = button.getTabindex();
         if (tabindex == null) {

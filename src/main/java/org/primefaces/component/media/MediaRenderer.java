@@ -131,7 +131,8 @@ public class MediaRenderer extends CoreRenderer {
             }
         }
 
-        throw new IllegalArgumentException("Cannot resolve mediaplayer for media component '" + media.getClientId(context) + "', cannot play source:" + media.getValue());
+        throw new IllegalArgumentException("Cannot resolve mediaplayer for media component '"
+                + media.getClientId(context) + "', cannot play source:" + media.getValue());
     }
 
     protected String getMediaSrc(FacesContext context, Media media) throws Exception {

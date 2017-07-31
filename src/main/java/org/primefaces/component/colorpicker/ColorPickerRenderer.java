@@ -41,7 +41,8 @@ public class ColorPickerRenderer extends CoreRenderer {
             if (converter != null) {
                 colorPicker.setSubmittedValue(
                         converter.getAsObject(context, component, submittedValue));
-            } else {
+            }
+            else {
                 colorPicker.setSubmittedValue(submittedValue);
             }
         }
@@ -54,7 +55,8 @@ public class ColorPickerRenderer extends CoreRenderer {
         String value;
         if (converter != null) {
             value = converter.getAsString(context, component, colorPicker.getValue());
-        } else {
+        }
+        else {
             value = (String) colorPicker.getValue();
         }
 
@@ -117,7 +119,8 @@ public class ColorPickerRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
-        writer.write("<span id=\"" + clientId + "_livePreview\" style=\"overflow:hidden;width:1em;height:1em;display:block;border:solid 1px #000;text-indent:1em;white-space:nowrap;");
+        writer.write("<span id=\"" + clientId + "_livePreview\" "
+                + "style=\"overflow:hidden;width:1em;height:1em;display:block;border:solid 1px #000;text-indent:1em;white-space:nowrap;");
         if (value != null) {
             writer.write("background-color:#" + value);
         }

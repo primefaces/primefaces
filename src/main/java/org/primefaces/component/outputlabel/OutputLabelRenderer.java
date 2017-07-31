@@ -62,7 +62,7 @@ public class OutputLabelRenderer extends CoreRenderer {
             styleClass.append(label.getStyleClass());
         }
 
-        final EditableValueHolderState state = new EditableValueHolderState();;
+        final EditableValueHolderState state = new EditableValueHolderState();
 
         String _for = label.getFor();
         if (!isValueBlank(_for)) {

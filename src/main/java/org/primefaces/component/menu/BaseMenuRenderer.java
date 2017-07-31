@@ -53,7 +53,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
     private static final String SB_BUILD_NON_AJAX_REQUEST = BaseMenuRenderer.class.getName() + "#buildNonAjaxRequest";
 
-    public final static String SEPARATOR = "_";
+    public static final String SEPARATOR = "_";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {

@@ -488,7 +488,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             if (submittedValues != null) {
                 valuesArray = submittedValues;
                 itemValue = itemValueAsString;
-            } else {
+            }
+            else {
                 valuesArray = values;
                 itemValue = option.getValue();
             }
@@ -520,7 +521,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         if (height != Integer.MAX_VALUE) {
             return height + "px";
-        } else if (itemSize > 10) {
+        }
+        else if (itemSize > 10) {
             return 200 + "px";
         }
 

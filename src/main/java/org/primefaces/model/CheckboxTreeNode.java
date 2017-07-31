@@ -127,7 +127,8 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
     public void setSelected(boolean value, boolean propagate) {
         if (propagate) {
             this.setSelected(value);
-        } else {
+        }
+        else {
             this.selected = value;
         }
     }

@@ -119,11 +119,13 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
     }
 
     public T getRowData(String rowKey) {
-        throw new UnsupportedOperationException(getMessage("getRowData(String rowKey) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
+        throw new UnsupportedOperationException(
+                getMessage("getRowData(String rowKey) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
     public Object getRowKey(T object) {
-        throw new UnsupportedOperationException(getMessage("getRowKey(T object) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
+        throw new UnsupportedOperationException(
+                getMessage("getRowKey(T object) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
     private String getMessage(String format) {

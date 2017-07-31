@@ -59,7 +59,7 @@ public class EffectRenderer extends CoreRenderer {
             if (child instanceof UIParameter) {
                 UIParameter param = (UIParameter) child;
 
-                effectBuilder.withOption(param.getName(), (String) param.getValue());		//TODO: Use converter
+                effectBuilder.withOption(param.getName(), (String) param.getValue()); //TODO: Use converter
             }
         }
 

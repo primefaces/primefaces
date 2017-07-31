@@ -267,7 +267,8 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
 
         if (option.isEscape()) {
             writer.writeText(option.getLabel(), null);
-        } else {
+        }
+        else {
             writer.write(option.getLabel());
         }
 
@@ -305,7 +306,8 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
 
         if (height != Integer.MAX_VALUE) {
             return height + "px";
-        } else if (itemSize > 10) {
+        }
+        else if (itemSize > 10) {
             return 200 + "px";
         }
 

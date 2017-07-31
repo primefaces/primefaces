@@ -47,7 +47,8 @@ public class PDFOptions implements ExporterOptions {
         this.cellFontSize = cellFontSize;
     }
 
-    public PDFOptions(String facetFontStyle, String facetFontColor, String facetBgColor, String facetFontSize, String cellFontStyle, String cellFontColor, String cellFontSize) {
+    public PDFOptions(String facetFontStyle, String facetFontColor, String facetBgColor, String facetFontSize, String cellFontStyle,
+            String cellFontColor, String cellFontSize) {
         this(facetFontStyle, facetFontColor, facetBgColor, facetFontSize);
         this.cellFontStyle = cellFontStyle;
         this.cellFontColor = cellFontColor;

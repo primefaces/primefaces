@@ -78,7 +78,9 @@ public class DataGridRenderer extends DataRenderer {
         String paginatorPosition = grid.getPaginatorPosition();
         String style = grid.getStyle();
         String styleClass = grid.getStyleClass() == null ? DataGrid.DATAGRID_CLASS : DataGrid.DATAGRID_CLASS + " " + grid.getStyleClass();
-        String contentClass = empty ? DataGrid.EMPTY_CONTENT_CLASS : (layout.equals("tabular") ? DataGrid.TABLE_CONTENT_CLASS : DataGrid.GRID_CONTENT_CLASS);
+        String contentClass = empty
+                ? DataGrid.EMPTY_CONTENT_CLASS
+                : (layout.equals("tabular") ? DataGrid.TABLE_CONTENT_CLASS : DataGrid.GRID_CONTENT_CLASS);
 
         if (hasPaginator) {
             grid.calculateFirst();
@@ -130,9 +132,11 @@ public class DataGridRenderer extends DataRenderer {
 
         if (layout.equals("tabular")) {
             encodeTable(context, grid);
-        } else if (layout.equals("grid")) {
+        }
+        else if (layout.equals("grid")) {
             encodeGrid(context, grid);
-        } else {
+        }
+        else {
             throw new FacesException(layout + " is not a valid value for DataGrid layout. Possible values are 'tabular' and 'grid'.");
         }
     }

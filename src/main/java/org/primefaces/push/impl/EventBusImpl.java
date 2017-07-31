@@ -56,7 +56,8 @@ public class EventBusImpl implements EventBus {
             public void onComplete(Broadcaster b) {
                 try {
                     r.completed(b.getID());
-                } finally {
+                }
+                finally {
                     metaBroadcaster.removeBroadcasterListener(this);
                 }
             }
