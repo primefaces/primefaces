@@ -75,16 +75,14 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //Initialize calendar
-        if(!this.cfg.disabled) {
-            if(hasTimePicker) {
-                if(this.cfg.timeOnly)
-                    this.jqEl.timepicker(this.cfg);
-                else
-                    this.jqEl.datetimepicker(this.cfg);
-            }
-            else {
-                this.jqEl.datepicker(this.cfg);
-            }
+        if(hasTimePicker) {
+            if(this.cfg.timeOnly)
+                this.jqEl.timepicker(this.cfg);
+            else
+                this.jqEl.datetimepicker(this.cfg);
+        }
+        else {
+            this.jqEl.datepicker(this.cfg);
         }
 
         //extensions
@@ -96,6 +94,10 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             var title = this.jqEl.attr('title');
             if(title) {
                 triggerButton.attr('title', title);
+            }
+            
+            if(this.cfg.disabled) {
+                triggerButton.addClass('ui-state-disabled');
             }
             
             var buttonIndex = this.cfg.buttonTabindex||this.jqEl.attr('tabindex');
