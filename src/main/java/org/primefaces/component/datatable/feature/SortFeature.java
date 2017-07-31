@@ -83,7 +83,12 @@ public class SortFeature implements DataTableFeature {
                     }
                 }
 
-                multiSortMeta.add(new SortMeta(sortColumn, sortField, SortOrder.valueOf(convertSortOrderParam(sortOrders[i])), sortColumn.getSortFunction()));
+                multiSortMeta.add(
+                        new SortMeta(
+                                sortColumn, 
+                                sortField, 
+                                SortOrder.valueOf(convertSortOrderParam(sortOrders[i])), 
+                                sortColumn.getSortFunction()));
             }
 
             table.setMultiSortMeta(multiSortMeta);
@@ -99,6 +104,7 @@ public class SortFeature implements DataTableFeature {
         }
     }
 
+    @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         table.setFirst(0);
 
@@ -199,7 +205,8 @@ public class SortFeature implements DataTableFeature {
             throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
         }
 
-        Collections.sort(list, new BeanPropertyComparator(sortVE, table.getVar(), sortOrder, sortFunction, table.isCaseSensitiveSort(), table.resolveDataLocale(), table.getNullSortOrder()));
+        Collections.sort(list, new BeanPropertyComparator(
+                sortVE, table.getVar(), sortOrder, sortFunction, table.isCaseSensitiveSort(), table.resolveDataLocale(), table.getNullSortOrder()));
 
         context.getApplication().publishEvent(context, PostSortEvent.class, table);
     }
@@ -234,10 +241,13 @@ public class SortFeature implements DataTableFeature {
 
             if (sortColumn.isDynamic()) {
                 ((DynamicColumn) sortColumn).applyStatelessModel();
-                comparator = new DynamicChainedPropertyComparator((DynamicColumn) sortColumn, sortByVE, table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction(), caseSensitiveSort, locale, nullSortOrder);
+                comparator = new DynamicChainedPropertyComparator(
+                        (DynamicColumn) sortColumn, sortByVE, table.getVar(),
+                        meta.getSortOrder(), sortColumn.getSortFunction(), caseSensitiveSort, locale, nullSortOrder);
             }
             else {
-                comparator = new BeanPropertyComparator(sortByVE, table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction(), caseSensitiveSort, locale, nullSortOrder);
+                comparator = new BeanPropertyComparator(sortByVE, table.getVar(),
+                        meta.getSortOrder(), sortColumn.getSortFunction(), caseSensitiveSort, locale, nullSortOrder);
             }
 
             chainedComparator.addComparator(comparator);

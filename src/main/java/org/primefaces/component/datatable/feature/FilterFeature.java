@@ -80,14 +80,17 @@ public class FilterFeature implements DataTableFeature {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_filtering");
     }
 
+    @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
         return false;
     }
 
+    @Override
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return isFilterRequest(context, table);
     }
 
+    @Override
     public void decode(FacesContext context, DataTable table) {
         String globalFilterParam = table.getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
         List<FilterMeta> filterMetadata = this.populateFilterMetaData(context, table);
@@ -96,6 +99,7 @@ public class FilterFeature implements DataTableFeature {
         table.setFilterMetadata(filterMetadata);
     }
 
+    @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String globalFilterValue = null;
@@ -127,7 +131,9 @@ public class FilterFeature implements DataTableFeature {
             filter(context, table, table.getFilterMetadata(), globalFilterValue);
 
             //sort new filtered data to restore sort state
-            boolean sorted = (table.getSortField() != null || table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null || table.getSortBy() != null);
+            boolean sorted = table.getSortField() != null
+                    || table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null
+                    || table.getSortBy() != null;
             if (sorted) {
                 SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);
 
@@ -232,7 +238,9 @@ public class FilterFeature implements DataTableFeature {
         table.setRowIndex(-1);  //reset datamodel
     }
 
-    public Map<String, Object> populateFilterParameterMap(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, String globalFilterParam) {
+    public Map<String, Object> populateFilterParameterMap(FacesContext context, DataTable table, List<FilterMeta> filterMetadata,
+            String globalFilterParam) {
+        
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         Map<String, Object> filterParameterMap = new HashMap<String, Object>();
 
@@ -318,7 +326,9 @@ public class FilterFeature implements DataTableFeature {
         return filterMetadata;
     }
 
-    private void populateFilterMetaDataInColumnGroup(FacesContext context, List<FilterMeta> filterMetadata, ColumnGroup group, Map<String, String> params, String separator) {
+    private void populateFilterMetaDataInColumnGroup(FacesContext context, List<FilterMeta> filterMetadata, ColumnGroup group,
+            Map<String, String> params, String separator) {
+        
         if (group == null) {
             return;
         }
@@ -344,7 +354,9 @@ public class FilterFeature implements DataTableFeature {
                             }
                             if (filterVE != null) {
                                 UIComponent filterFacet = column.getFacet("filter");
-                                Object filterValue = (filterFacet == null) ? params.get(column.getClientId(context) + separator + "filter") : ((ValueHolder) filterFacet).getLocalValue();
+                                Object filterValue = (filterFacet == null)
+                                        ? params.get(column.getClientId(context) + separator + "filter")
+                                        : ((ValueHolder) filterFacet).getLocalValue();
 
                                 filterMetadata.add(new FilterMeta(column, filterVE, filterValue));
                             }
@@ -383,7 +395,9 @@ public class FilterFeature implements DataTableFeature {
         }
     }
 
-    private void populateFilterMetaDataWithoutColumnGroups(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, Map<String, String> params, String separator) {
+    private void populateFilterMetaDataWithoutColumnGroups(FacesContext context, DataTable table, List<FilterMeta> filterMetadata,
+            Map<String, String> params, String separator) {
+        
         for (UIColumn column : table.getColumns()) {
             ValueExpression filterVE;
             String columnField = column.getField();

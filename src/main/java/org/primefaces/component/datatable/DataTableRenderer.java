@@ -129,7 +129,11 @@ public class DataTableRenderer extends DataRenderer {
         if (filters != null) {
             for (FilterState filterState : filters) {
                 UIColumn column = table.findColumn(filterState.getColumnKey());
-                filterMetadata.add(new FilterMeta(column, column.getValueExpression(DataTable.PropertyKeys.filterBy.toString()), filterState.getFilterValue()));
+                filterMetadata.add(
+                        new FilterMeta(
+                            column,
+                            column.getValueExpression(DataTable.PropertyKeys.filterBy.toString()),
+                            filterState.getFilterValue()));
             }
 
             table.setFilterMetadata(filterMetadata);
@@ -162,7 +166,8 @@ public class DataTableRenderer extends DataRenderer {
 
                 String globalFilter = table.getGlobalFilter();
                 if (globalFilter != null) {
-                    UIComponent globalFilterComponent = SearchExpressionFacade.resolveComponent(context, table, DataTable.PropertyKeys.globalFilter.toString());
+                    UIComponent globalFilterComponent = SearchExpressionFacade.resolveComponent(context, table,
+                            DataTable.PropertyKeys.globalFilter.toString());
                     if (globalFilterComponent != null) {
                         ((ValueHolder) globalFilterComponent).setValue(globalFilter);
                     }
@@ -498,7 +503,9 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeScrollBody(FacesContext context, DataTable table, String tableStyle, String tableStyleClass, int columnStart, int columnEnd, String tbodyId) throws IOException {
+    protected void encodeScrollBody(FacesContext context, DataTable table, String tableStyle, String tableStyleClass, int columnStart,
+            int columnEnd, String tbodyId) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         String scrollHeight = table.getScrollHeight();
 
@@ -520,7 +527,9 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeVirtualScrollBody(FacesContext context, DataTable table, String tableStyle, String tableStyleClass, int columnStart, int columnEnd, String tbodyId) throws IOException {
+    protected void encodeVirtualScrollBody(FacesContext context, DataTable table, String tableStyle, String tableStyleClass, int columnStart,
+            int columnEnd, String tbodyId) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         String scrollHeight = table.getScrollHeight();
         tableStyleClass = (tableStyleClass == null) ? DataTable.VIRTUALSCROLL_TABLE_CLASS : tableStyleClass + " " + DataTable.VIRTUALSCROLL_TABLE_CLASS;
@@ -715,10 +724,12 @@ public class DataTableRenderer extends DataRenderer {
         String sortField = table.getSortField();
         String sortIcon = null;
 
-        if ((sortField != null && field != null && sortField.equals(field)) || (tableSortByExpression != null && tableSortByExpression.equals(columnSortByExpression))) {
+        if ((sortField != null && field != null && sortField.equals(field))
+                || (tableSortByExpression != null && tableSortByExpression.equals(columnSortByExpression))) {
             if (sortOrder.equalsIgnoreCase("ASCENDING")) {
                 sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
-            } else if (sortOrder.equalsIgnoreCase("DESCENDING")) {
+            }
+            else if (sortOrder.equalsIgnoreCase("DESCENDING")) {
                 sortIcon = DataTable.SORTABLE_COLUMN_DESCENDING_ICON_CLASS;
             }
         }
@@ -794,7 +805,9 @@ public class DataTableRenderer extends DataRenderer {
             writer.endElement("label");
 
             if (column.getValueExpression(Column.PropertyKeys.filterOptions.toString()) == null) {
-                filterStyleClass = filterStyleClass == null ? DataTable.COLUMN_INPUT_FILTER_CLASS : DataTable.COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;
+                filterStyleClass = filterStyleClass == null
+                        ? DataTable.COLUMN_INPUT_FILTER_CLASS
+                        : DataTable.COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;
 
                 writer.startElement("input", null);
                 writer.writeAttribute("id", filterId, null);
@@ -926,7 +939,9 @@ public class DataTableRenderer extends DataRenderer {
         this.encodeThead(context, table, 0, table.getColumns().size(), null, null);
     }
 
-    protected void encodeThead(FacesContext context, DataTable table, int columnStart, int columnEnd, String theadId, String columnGroupType) throws IOException {
+    protected void encodeThead(FacesContext context, DataTable table, int columnStart, int columnEnd, String theadId,
+            String columnGroupType) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         List<UIColumn> columns = table.getColumns();
         String theadClientId = (theadId == null) ? table.getClientId(context) + "_head" : theadId;
@@ -1008,7 +1023,9 @@ public class DataTableRenderer extends DataRenderer {
         this.encodeTbody(context, table, dataOnly, 0, table.getColumns().size(), null);
     }
 
-    public void encodeTbody(FacesContext context, DataTable table, boolean dataOnly, int columnStart, int columnEnd, String tbodyId) throws IOException {
+    public void encodeTbody(FacesContext context, DataTable table, boolean dataOnly, int columnStart, int columnEnd, String tbodyId)
+            throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         String rowIndexVar = table.getRowIndexVar();
         String clientId = table.getClientId(context);
@@ -1099,8 +1116,10 @@ public class DataTableRenderer extends DataRenderer {
             groupByVE = tableSortByVE;
         }
         else {
-            groupByVE = (table.getSortBy() == null || table.isMultiSort()) ? null : context.getApplication().getExpressionFactory().createValueExpression(
-                    eLContext, "#{" + table.getVar() + "." + table.getSortBy() + "}", Object.class);
+            groupByVE = (table.getSortBy() == null || table.isMultiSort())
+                    ? null
+                    : context.getApplication().getExpressionFactory().createValueExpression(
+                            eLContext, "#{" + table.getVar() + "." + table.getSortBy() + "}", Object.class);
         }
 
         boolean encodeSummaryRow = (summaryRow != null && groupByVE != null);
@@ -1167,7 +1186,9 @@ public class DataTableRenderer extends DataRenderer {
         return this.encodeRow(context, table, clientId, rowIndex, 0, table.getColumns().size());
     }
 
-    public boolean encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, int columnStart, int columnEnd) throws IOException {
+    public boolean encodeRow(FacesContext context, DataTable table, String clientId, int rowIndex, int columnStart, int columnEnd)
+            throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         boolean selectionEnabled = table.isSelectionEnabled();
         Object rowKey = null;
@@ -1251,11 +1272,18 @@ public class DataTableRenderer extends DataRenderer {
         boolean selectionEnabled = column.getSelectionMode() != null;
         int priority = column.getPriority();
         String style = column.getStyle();
-        String styleClass = selectionEnabled ? DataTable.SELECTION_COLUMN_CLASS : (column.getCellEditor() != null && column.getCellEditor().isRendered()) ? DataTable.EDITABLE_COLUMN_CLASS : null;
-        styleClass = (column.isSelectRow()) ? styleClass : (styleClass == null) ? DataTable.UNSELECTABLE_COLUMN_CLASS : styleClass + " " + DataTable.UNSELECTABLE_COLUMN_CLASS;
-        styleClass = (column.isVisible()) ? styleClass : (styleClass == null) ? DataTable.HIDDEN_COLUMN_CLASS : styleClass + " " + DataTable.HIDDEN_COLUMN_CLASS;
+        String styleClass = selectionEnabled
+                ? DataTable.SELECTION_COLUMN_CLASS
+                : (column.getCellEditor() != null && column.getCellEditor().isRendered()) ? DataTable.EDITABLE_COLUMN_CLASS : null;
+        styleClass = (column.isSelectRow())
+                ? styleClass
+                : (styleClass == null) ? DataTable.UNSELECTABLE_COLUMN_CLASS : styleClass + " " + DataTable.UNSELECTABLE_COLUMN_CLASS;
+        styleClass = (column.isVisible())
+                ? styleClass
+                : (styleClass == null) ? DataTable.HIDDEN_COLUMN_CLASS : styleClass + " " + DataTable.HIDDEN_COLUMN_CLASS;
         String userStyleClass = column.getStyleClass();
-        styleClass = userStyleClass == null ? styleClass : (styleClass == null) ? userStyleClass : styleClass + " " + userStyleClass;
+        styleClass = userStyleClass == null
+                ? styleClass : (styleClass == null) ? userStyleClass : styleClass + " " + userStyleClass;
 
         if (priority > 0) {
             styleClass = (styleClass == null) ? "ui-column-p-" + priority : styleClass + " ui-column-p-" + priority;
@@ -1289,7 +1317,9 @@ public class DataTableRenderer extends DataRenderer {
         this.encodeTFoot(context, table, 0, table.getColumns().size(), null, null);
     }
 
-    protected void encodeTFoot(FacesContext context, DataTable table, int columnStart, int columnEnd, String tfootId, String columnGroupType) throws IOException {
+    protected void encodeTFoot(FacesContext context, DataTable table, int columnStart, int columnEnd, String tfootId, String columnGroupType)
+            throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         List<UIColumn> columns = table.getColumns();
         String tfootClientId = (tfootId == null) ? table.getClientId(context) + "_foot" : tfootId;
@@ -1408,7 +1438,9 @@ public class DataTableRenderer extends DataRenderer {
         return true;
     }
 
-    protected void encodeColumnSelection(FacesContext context, DataTable table, String clientId, UIColumn column, boolean selected) throws IOException {
+    protected void encodeColumnSelection(FacesContext context, DataTable table, String clientId, UIColumn column, boolean selected)
+            throws IOException {
+        
         String selectionMode = column.getSelectionMode();
         boolean disabled = table.isDisabledSelection();
 
@@ -1455,7 +1487,9 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeCheckbox(FacesContext context, DataTable table, boolean checked, boolean disabled, String styleClass, boolean isHeaderCheckbox) throws IOException {
+    protected void encodeCheckbox(FacesContext context, DataTable table, boolean checked, boolean disabled, String styleClass,
+            boolean isHeaderCheckbox) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
 
         if (table.isNativeElements()) {
@@ -1486,7 +1520,9 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeNativeCheckbox(FacesContext context, DataTable table, boolean checked, boolean disabled, boolean isHeaderCheckbox) throws IOException {
+    protected void encodeNativeCheckbox(FacesContext context, DataTable table, boolean checked, boolean disabled,
+            boolean isHeaderCheckbox) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
 
         String ariaRowLabel = table.getAriaRowLabel();
@@ -1541,7 +1577,9 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected boolean isInSameGroup(FacesContext context, DataTable table, int currentRowIndex, int step, ValueExpression groupByVE, ELContext eLContext) {
+    protected boolean isInSameGroup(FacesContext context, DataTable table, int currentRowIndex, int step, ValueExpression groupByVE,
+            ELContext eLContext) {
+        
         table.setRowIndex(currentRowIndex);
         Object currentGroupByData = groupByVE.getValue(eLContext);
 
@@ -1613,7 +1651,9 @@ public class DataTableRenderer extends DataRenderer {
 
             for (int headerIndex = 0; headerIndex < options.size(); headerIndex++) {
                 for (int order = 0; order < 2; order++) {
-                    String orderVal = (order == 0) ? MessageFactory.getMessage(DataTable.SORT_ASC, null) : MessageFactory.getMessage(DataTable.SORT_DESC, null);
+                    String orderVal = (order == 0)
+                            ? MessageFactory.getMessage(DataTable.SORT_ASC, null)
+                            : MessageFactory.getMessage(DataTable.SORT_DESC, null);
 
                     writer.startElement("option", null);
                     writer.writeAttribute("value", headerIndex + "_" + order, null);
