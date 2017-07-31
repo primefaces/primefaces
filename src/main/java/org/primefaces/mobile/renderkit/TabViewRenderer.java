@@ -139,7 +139,8 @@ public class TabViewRenderer extends org.primefaces.component.tabview.TabViewRen
         writer.writeAttribute("href", "#" + tab.getClientId(context), null);
         if (titleFacet == null) {
             writer.write(tab.getTitle());
-        } else {
+        }
+        else {
             titleFacet.encodeAll(context);
         }
         writer.endElement("a");

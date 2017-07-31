@@ -32,7 +32,9 @@ public class ConnectionChangeEvent extends AbstractAjaxBehaviorEvent {
     private EndPoint originalTargetEndPoint;
     private EndPoint newTargetEndPoint;
 
-    public ConnectionChangeEvent(UIComponent component, Behavior behavior, Element originalSourceElement, Element newSourceElement, Element originalTargetElement, Element newTargetElement, EndPoint originalSourceEndPoint, EndPoint newSourceEndPoint, EndPoint originalTargetEndPoint, EndPoint newTargetEndPoint) {
+    public ConnectionChangeEvent(UIComponent component, Behavior behavior, Element originalSourceElement, Element newSourceElement,
+            Element originalTargetElement, Element newTargetElement, EndPoint originalSourceEndPoint, EndPoint newSourceEndPoint,
+            EndPoint originalTargetEndPoint, EndPoint newTargetEndPoint) {
         super(component, behavior);
         this.originalSourceElement = originalSourceElement;
         this.newSourceElement = newSourceElement;

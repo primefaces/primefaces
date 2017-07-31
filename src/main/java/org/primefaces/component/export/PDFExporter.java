@@ -54,7 +54,9 @@ public class PDFExporter extends Exporter {
     private ExporterOptions expOptions;
 
     @Override
-    public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+    public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType,
+            MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+        
         try {
             Document document = new Document();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -82,13 +84,16 @@ public class PDFExporter extends Exporter {
 
             writePDFToResponse(context.getExternalContext(), baos, filename);
 
-        } catch (DocumentException e) {
+        }
+        catch (DocumentException e) {
             throw new IOException(e.getMessage());
         }
     }
 
     @Override
-    public void export(FacesContext context, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+    public void export(FacesContext context, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly,
+            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+        
         try {
             Document document = new Document();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -118,13 +123,16 @@ public class PDFExporter extends Exporter {
 
             writePDFToResponse(context.getExternalContext(), baos, outputFileName);
 
-        } catch (DocumentException e) {
+        }
+        catch (DocumentException e) {
             throw new IOException(e.getMessage());
         }
     }
 
     @Override
-    public void export(FacesContext context, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+    public void export(FacesContext context, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
+            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+        
         try {
             Document document = new Document();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -328,7 +336,9 @@ public class PDFExporter extends Exporter {
         }
     }
 
-    protected void writePDFToResponse(ExternalContext externalContext, ByteArrayOutputStream baos, String fileName) throws IOException, DocumentException {
+    protected void writePDFToResponse(ExternalContext externalContext, ByteArrayOutputStream baos, String fileName)
+            throws IOException, DocumentException {
+        
         externalContext.setResponseContentType("application/pdf");
         externalContext.setResponseHeader("Expires", "0");
         externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");

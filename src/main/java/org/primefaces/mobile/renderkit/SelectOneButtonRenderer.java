@@ -70,10 +70,14 @@ public class SelectOneButtonRenderer extends org.primefaces.component.selectoneb
         writer.endElement("div");
     }
 
-    protected void encodeOption(FacesContext context, SelectOneButton button, SelectItem option, String id, String name, Converter converter, boolean selected, boolean disabled, String labelClass) throws IOException {
+    protected void encodeOption(FacesContext context, SelectOneButton button, SelectItem option, String id, String name,
+            Converter converter, boolean selected, boolean disabled, String labelClass) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, button, converter, option.getValue());
-        String labelStyleClass = (labelClass == null) ? SelectOneButton.MOBILE_LABEL_CLASS : SelectOneButton.MOBILE_LABEL_CLASS + " " + labelClass;
+        String labelStyleClass = (labelClass == null)
+                ? SelectOneButton.MOBILE_LABEL_CLASS
+                : SelectOneButton.MOBILE_LABEL_CLASS + " " + labelClass;
 
         if (selected) {
             labelStyleClass = labelStyleClass + " ui-btn-active";

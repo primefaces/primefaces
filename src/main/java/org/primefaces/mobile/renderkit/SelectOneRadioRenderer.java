@@ -71,7 +71,9 @@ public class SelectOneRadioRenderer extends org.primefaces.component.selectonera
     }
 
     @Override
-    protected void encodeOption(FacesContext context, SelectOneRadio radio, SelectItem option, String id, String name, Converter converter, boolean selected, boolean disabled) throws IOException {
+    protected void encodeOption(FacesContext context, SelectOneRadio radio, SelectItem option, String id, String name,
+            Converter converter, boolean selected, boolean disabled) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, radio, converter, option.getValue());
 

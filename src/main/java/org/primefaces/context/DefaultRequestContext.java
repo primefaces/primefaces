@@ -300,7 +300,8 @@ public class DefaultRequestContext extends RequestContext {
             String param = context.getExternalContext().getInitParameter(Constants.ContextParams.DIRECTION);
             if (param == null) {
                 rtl = false;
-            } else {
+            }
+            else {
                 ELContext elContext = context.getELContext();
                 ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
                 ValueExpression expression = expressionFactory.createValueExpression(elContext, param, String.class);

@@ -289,7 +289,8 @@ public class TimelineRenderer extends CoreRenderer {
             // group's content is coded in the event self
             if (event.getGroup() != null) {
                 fsw.write(",\"group\":\"" + event.getGroup() + "\"");
-            } else {
+            }
+            else {
                 // no group for the event
                 fsw.write(",\"group\":null");
             }

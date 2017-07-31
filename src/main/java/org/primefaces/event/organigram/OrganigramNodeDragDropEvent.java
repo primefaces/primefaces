@@ -27,7 +27,8 @@ public class OrganigramNodeDragDropEvent extends AbstractOrganigramNodeEvent {
     private final OrganigramNode targetOrganigramNode;
     private final OrganigramNode sourceOrganigramNode;
 
-    public OrganigramNodeDragDropEvent(UIComponent component, Behavior behavior, OrganigramNode organigramNode, OrganigramNode targetOrganigramNode, OrganigramNode sourceOrganigramNode) {
+    public OrganigramNodeDragDropEvent(UIComponent component, Behavior behavior, OrganigramNode organigramNode,
+            OrganigramNode targetOrganigramNode, OrganigramNode sourceOrganigramNode) {
         super(component, behavior, organigramNode);
         this.targetOrganigramNode = targetOrganigramNode;
         this.sourceOrganigramNode = sourceOrganigramNode;

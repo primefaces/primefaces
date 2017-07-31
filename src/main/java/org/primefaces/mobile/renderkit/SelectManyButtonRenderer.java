@@ -64,7 +64,9 @@ public class SelectManyButtonRenderer extends org.primefaces.component.selectman
         writer.endElement("div");
     }
 
-    protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter, SelectItem option, int idx, String labelClass) throws IOException {
+    protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues,
+            Converter converter, SelectItem option, int idx, String labelClass) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         SelectManyButton button = (SelectManyButton) component;
         String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
@@ -88,7 +90,9 @@ public class SelectManyButtonRenderer extends org.primefaces.component.selectman
             return;
         }
 
-        String labelStyleClass = (labelClass == null) ? SelectManyButton.MOBILE_LABEL_CLASS : SelectManyButton.MOBILE_LABEL_CLASS + " " + labelClass;
+        String labelStyleClass = (labelClass == null)
+                ? SelectManyButton.MOBILE_LABEL_CLASS
+                : SelectManyButton.MOBILE_LABEL_CLASS + " " + labelClass;
 
         if (selected) {
             labelStyleClass = labelStyleClass + " ui-btn-active";

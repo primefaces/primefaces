@@ -59,8 +59,8 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
 
     private static final Logger LOG = LoggerFactory.getLogger(PushEndpointHandlerProxy.class);
     
-    final Map<Method, List<Encoder<?, ?>>> encoders = new HashMap<Method, List<Encoder<?, ?>>>();
-    final Map<Method, List<Decoder<?, ?>>> decoders = new HashMap<Method, List<Decoder<?, ?>>>();
+    private final Map<Method, List<Encoder<?, ?>>> encoders = new HashMap<Method, List<Encoder<?, ?>>>();
+    private final Map<Method, List<Decoder<?, ?>>> decoders = new HashMap<Method, List<Decoder<?, ?>>>();
     
     private final Set<String> trackedUUID = Collections.synchronizedSet(new HashSet<String>());
 
@@ -101,16 +101,6 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
             return filter(r, originalMessage, message);
         }
     };
-
-    private BroadcastFilter.BroadcastAction invoke(RemoteEndpoint r, Object originalMessage, Object message) {
-        Object o;
-        o = message(r, message);
-        if (o != null) {
-            return new BroadcastFilter.BroadcastAction(BroadcastFilter.BroadcastAction.ACTION.CONTINUE, o);
-        }
-        return new BroadcastFilter.BroadcastAction(BroadcastFilter.BroadcastAction.ACTION.CONTINUE, message);
-    }
-
     
     private Object proxiedInstance;
     private List<Method> onMessageMethods;
@@ -127,6 +117,15 @@ public class PushEndpointHandlerProxy extends AbstractReflectorAtmosphereHandler
     public PushEndpointHandlerProxy() {
     }
 
+    private BroadcastFilter.BroadcastAction invoke(RemoteEndpoint r, Object originalMessage, Object message) {
+        Object o;
+        o = message(r, message);
+        if (o != null) {
+            return new BroadcastFilter.BroadcastAction(BroadcastFilter.BroadcastAction.ACTION.CONTINUE, o);
+        }
+        return new BroadcastFilter.BroadcastAction(BroadcastFilter.BroadcastAction.ACTION.CONTINUE, message);
+    }
+    
     public AnnotatedProxy configure(AtmosphereConfig config, Object c) {
         this.proxiedInstance = c;
         this.onMessageMethods = populateMessage(c, OnMessage.class);
