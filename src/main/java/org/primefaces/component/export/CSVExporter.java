@@ -35,7 +35,10 @@ import org.primefaces.util.Constants;
 public class CSVExporter extends Exporter {
 
     @Override
-    public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+    public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly,
+            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options)
+            throws IOException {
+        
         ExternalContext externalContext = context.getExternalContext();
         configureResponse(externalContext, filename, encodingType);
         Writer writer = externalContext.getResponseOutputWriter();

@@ -63,7 +63,9 @@ public class DataExporter implements ActionListener, StateHolder {
     public DataExporter() {
     }
 
-    public DataExporter(ValueExpression target, ValueExpression type, ValueExpression fileName, ValueExpression pageOnly, ValueExpression selectionOnly, ValueExpression encoding, MethodExpression preProcessor, MethodExpression postProcessor, ValueExpression options) {
+    public DataExporter(ValueExpression target, ValueExpression type, ValueExpression fileName, ValueExpression pageOnly,
+            ValueExpression selectionOnly, ValueExpression encoding, MethodExpression preProcessor,
+            MethodExpression postProcessor, ValueExpression options) {
         this.target = target;
         this.type = type;
         this.fileName = fileName;
@@ -98,17 +100,23 @@ public class DataExporter implements ActionListener, StateHolder {
 
         boolean repeating = false;
         if (repeat != null) {
-            repeating = repeat.isLiteralText() ? Boolean.valueOf(repeat.getValue(context.getELContext()).toString()) : (Boolean) repeat.getValue(context.getELContext());
+            repeating = repeat.isLiteralText()
+                    ? Boolean.valueOf(repeat.getValue(context.getELContext()).toString())
+                    : (Boolean) repeat.getValue(context.getELContext());
         }
 
         boolean isPageOnly = false;
         if (pageOnly != null) {
-            isPageOnly = pageOnly.isLiteralText() ? Boolean.valueOf(pageOnly.getValue(context.getELContext()).toString()) : (Boolean) pageOnly.getValue(context.getELContext());
+            isPageOnly = pageOnly.isLiteralText()
+                    ? Boolean.valueOf(pageOnly.getValue(context.getELContext()).toString())
+                    : (Boolean) pageOnly.getValue(context.getELContext());
         }
 
         boolean isSelectionOnly = false;
         if (selectionOnly != null) {
-            isSelectionOnly = selectionOnly.isLiteralText() ? Boolean.valueOf(selectionOnly.getValue(context.getELContext()).toString()) : (Boolean) selectionOnly.getValue(context.getELContext());
+            isSelectionOnly = selectionOnly.isLiteralText()
+                    ? Boolean.valueOf(selectionOnly.getValue(context.getELContext()).toString())
+                    : (Boolean) selectionOnly.getValue(context.getELContext());
         }
 
         ExporterOptions exporterOptions = null;
@@ -123,21 +131,25 @@ public class DataExporter implements ActionListener, StateHolder {
                 List components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), tables);
 
                 if (components.size() > 1) {
-                    exporter.export(context, outputFileName, (List<DataTable>) components, isPageOnly, isSelectionOnly, encodingType, preProcessor, postProcessor, exporterOptions);
+                    exporter.export(context, outputFileName, (List<DataTable>) components, isPageOnly, isSelectionOnly,
+                            encodingType, preProcessor, postProcessor, exporterOptions);
                 }
                 else {
                     UIComponent component = (UIComponent) components.get(0);
                     if (!(component instanceof DataTable)) {
-                        throw new FacesException("Unsupported datasource target:\"" + component.getClass().getName() + "\", exporter must target a PrimeFaces DataTable.");
+                        throw new FacesException("Unsupported datasource target:\"" + component.getClass().getName()
+                                + "\", exporter must target a PrimeFaces DataTable.");
                     }
 
                     DataTable table = (DataTable) component;
-                    exporter.export(context, table, outputFileName, isPageOnly, isSelectionOnly, encodingType, preProcessor, postProcessor, exporterOptions);
+                    exporter.export(context, table, outputFileName, isPageOnly, isSelectionOnly, encodingType,
+                            preProcessor, postProcessor, exporterOptions);
                 }
             }
             else {
                 String[] clientIds = tables.split("\\s+|,");
-                exporter.export(context, Arrays.asList(clientIds), outputFileName, isPageOnly, isSelectionOnly, encodingType, preProcessor, postProcessor, exporterOptions);
+                exporter.export(context, Arrays.asList(clientIds), outputFileName, isPageOnly, isSelectionOnly, encodingType,
+                        preProcessor, postProcessor, exporterOptions);
             }
 
             context.responseComplete();
