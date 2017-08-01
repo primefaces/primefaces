@@ -115,7 +115,8 @@ public class SortFeature implements DataTableFeature {
             else {
                 table.loadLazyData();
             }
-        } else {
+        }
+        else {
             if (table.isMultiSort()) {
                 multiSort(context, table);
             }
@@ -258,10 +259,12 @@ public class SortFeature implements DataTableFeature {
         context.getApplication().publishEvent(context, PostSortEvent.class, table);
     }
 
+    @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
         return isSortRequest(context, table);
     }
 
+    @Override
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return isSortRequest(context, table);
     }

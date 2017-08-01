@@ -39,7 +39,8 @@ public class CaptchaRenderer extends CoreRenderer {
 
         if (answer != null) {
             captcha.setSubmittedValue(answer);
-        } else {
+        }
+        else {
             captcha.setSubmittedValue("");
         }
     }

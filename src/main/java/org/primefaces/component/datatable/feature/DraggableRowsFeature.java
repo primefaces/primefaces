@@ -29,14 +29,17 @@ public class DraggableRowsFeature implements DataTableFeature {
 
     private static final Logger LOGGER = Logger.getLogger(DraggableRowsFeature.class.getName());
 
+    @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_rowreorder");
     }
 
+    @Override
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return false;
     }
 
+    @Override
     public void decode(FacesContext context, DataTable table) {
         MethodExpression me = table.getDraggableRowsFunction();
         if (me != null) {
@@ -62,11 +65,13 @@ public class DraggableRowsFeature implements DataTableFeature {
                 }
             }
             else {
-                LOGGER.info("Row reordering is only available for list backed datatables, use rowReorder ajax behavior with listener for manual handling of model update.");
+                LOGGER.info("Row reordering is only available for list backed datatables, "
+                        + "use rowReorder ajax behavior with listener for manual handling of model update.");
             }
         }
     }
 
+    @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         throw new RuntimeException("DraggableRows Feature should not encode.");
     }

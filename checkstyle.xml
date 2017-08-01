@@ -90,7 +90,6 @@
         <module name="EqualsHashCode"/>
         <module name="InnerAssignment"/>
         <module name="DefaultComesLast"/>
-        <module name="MissingSwitchDefault"/>
         <module name="FallThrough"/>
 
         <!-- Checks for class design                         -->

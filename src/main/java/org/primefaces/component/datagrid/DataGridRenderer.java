@@ -176,7 +176,7 @@ public class DataGridRenderer extends DataRenderer {
             writer.endElement("div");
         }
 
-        grid.setRowIndex(-1);	//cleanup
+        grid.setRowIndex(-1); //cleanup
     }
 
     protected void encodeTable(FacesContext context, DataGrid grid) throws IOException {

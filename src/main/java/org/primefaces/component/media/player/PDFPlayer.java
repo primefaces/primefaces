@@ -17,25 +17,30 @@ package org.primefaces.component.media.player;
 
 public class PDFPlayer implements MediaPlayer {
 
-    private final static String[] supportedTypes = new String[]{"pdf"};
+    private final static String[] SUPPORTED_TYPES = new String[] { "pdf" };
 
+    @Override
     public String getClassId() {
         return null;
     }
 
+    @Override
     public String getCodebase() {
         return null;
     }
 
+    @Override
     public String getSourceParam() {
         return null;
     }
 
+    @Override
     public String getType() {
         return "application/pdf";
     }
 
+    @Override
     public String[] getSupportedTypes() {
-        return supportedTypes;
+        return SUPPORTED_TYPES;
     }
 }

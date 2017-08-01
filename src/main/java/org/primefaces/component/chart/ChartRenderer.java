@@ -80,7 +80,7 @@ public class ChartRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeScript(FacesContext context, Chart chart) throws IOException{
+    protected void encodeScript(FacesContext context, Chart chart) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String type = chart.getType();
         BasePlotRenderer plotRenderer = CHART_RENDERERS.get(type);

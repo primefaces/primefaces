@@ -288,7 +288,8 @@ public class CalendarRenderer extends InputRenderer {
                     }
                 }
             }
-        } catch (ConverterException e) {
+        }
+        catch (ConverterException e) {
             calendar.setConversionFailed(true);
 
             throw e;

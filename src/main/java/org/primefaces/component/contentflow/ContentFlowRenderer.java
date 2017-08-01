@@ -107,7 +107,8 @@ public class ContentFlowRenderer extends CoreRenderer {
 
         if (context.isPostback()) {
             wb.initWithDomReady("ContentFlow", cf.resolveWidgetVar(), cf.getClientId(context));
-        } else {
+        }
+        else {
             wb.initWithWindowLoad("ContentFlow", cf.resolveWidgetVar(), cf.getClientId(context));
         }
 

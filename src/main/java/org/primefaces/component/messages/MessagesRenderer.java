@@ -52,14 +52,14 @@ public class MessagesRenderer extends UINotificationRenderer {
             Iterator<FacesMessage> messagesIterator = context.getMessages(_for);
             
             // key case
-            if(forType == null || forType.equals("key")) { 
+            if (forType == null || forType.equals("key")) { 
                 while (messagesIterator.hasNext()) {
                     messages.add(messagesIterator.next());
                 }
             }
 
             // clientId / SearchExpression case
-            if(forType == null || forType.equals("expression")) {
+            if (forType == null || forType.equals("expression")) {
                 UIComponent forComponent = SearchExpressionFacade.resolveComponent(
                         context, uiMessages, _for, SearchExpressionHint.IGNORE_NO_RESULT);
                 if (forComponent != null) {

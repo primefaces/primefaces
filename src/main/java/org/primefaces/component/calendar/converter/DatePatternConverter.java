@@ -17,6 +17,7 @@ package org.primefaces.component.calendar.converter;
 
 public class DatePatternConverter implements PatternConverter {
 
+    @Override
     public String convert(String pattern) {
 
         //year
@@ -28,15 +29,13 @@ public class DatePatternConverter implements PatternConverter {
         }
 
         //month
-        if (pattern.contains("MMMM")) // name
-        {
+        if (pattern.contains("MMMM")) { // name 
             pattern = pattern.replaceAll("MMMM*", "MM");
         }
         else if (pattern.contains("MMM")) {
             pattern = pattern.replaceAll("MMM", "M");
         }
-        else if (pattern.contains("MM")) // number
-        {
+        else if (pattern.contains("MM")) { // number
             pattern = pattern.replaceAll("MM", "mm");
         }
         else {

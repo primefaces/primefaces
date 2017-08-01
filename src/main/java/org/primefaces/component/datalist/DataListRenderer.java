@@ -43,10 +43,12 @@ public class DataListRenderer extends DataRenderer {
 
             if (list.getType().equals("none")) {
                 encodeFreeList(context, list);
-            } else {
+            }
+            else {
                 encodeStrictList(context, list);
             }
-        } else {
+        }
+        else {
             encodeMarkup(context, list);
             encodeScript(context, list);
         }

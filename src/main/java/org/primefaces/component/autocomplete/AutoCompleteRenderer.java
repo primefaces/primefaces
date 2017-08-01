@@ -109,7 +109,8 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         if (query != null) {
             encodeResults(context, component, query);
-        } else {
+        }
+        else {
             encodeMarkup(context, autoComplete);
             encodeScript(context, autoComplete);
         }
