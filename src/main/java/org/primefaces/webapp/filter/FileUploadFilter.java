@@ -56,7 +56,7 @@ public class FileUploadFilter implements Filter {
         String uploader = filterConfig.getServletContext().getInitParameter(Constants.ContextParams.UPLOADER);
 
         if (uploader == null || uploader.equals("auto")) {
-            bypass = isAtLeastJSF22 ? true : false;
+            bypass = isAtLeastJSF22;
         }
         else if (uploader.equals("native")) {
             bypass = true;

@@ -53,7 +53,7 @@ public class CommonsFileUploadDecoder {
         FileItem file = request.getFileItem(inputToDecodeId);
 
         if (file != null) {
-            if (file.getName().equals("")) {
+            if (file.getName().isEmpty()) {
                 fileUpload.setSubmittedValue("");
             }
             else {

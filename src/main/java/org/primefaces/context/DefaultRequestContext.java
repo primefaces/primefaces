@@ -288,7 +288,7 @@ public class DefaultRequestContext extends RequestContext {
     public boolean isIgnoreAutoUpdate() {
         if (ignoreAutoUpdate == null) {
             Object ignoreAutoUpdateObject = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.IGNORE_AUTO_UPDATE_PARAM);
-            ignoreAutoUpdate = (null != ignoreAutoUpdateObject && "true".equals(ignoreAutoUpdateObject)) ? true : false;
+            ignoreAutoUpdate = (null != ignoreAutoUpdateObject && "true".equals(ignoreAutoUpdateObject));
         }
 
         return ignoreAutoUpdate;
