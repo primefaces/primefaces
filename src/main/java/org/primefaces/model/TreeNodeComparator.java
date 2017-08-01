@@ -31,7 +31,8 @@ public class TreeNodeComparator implements Comparator {
     private boolean caseSensitive = false;
     private Locale locale;
 
-    public TreeNodeComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction, boolean caseSensitive, Locale locale) {
+    public TreeNodeComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction, boolean caseSensitive,
+            Locale locale) {
         this.sortBy = sortBy;
         this.var = var;
         this.asc = sortOrder.equals(SortOrder.ASCENDING);
@@ -70,7 +71,8 @@ public class TreeNodeComparator implements Comparator {
                 else {
                     result = ((Comparable) value1).compareTo(value2);
                 }
-            } else {
+            }
+            else {
                 result = (Integer) sortFunction.invoke(context.getELContext(), new Object[]{value1, value2});
             }
 

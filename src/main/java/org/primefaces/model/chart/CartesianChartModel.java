@@ -22,8 +22,9 @@ import java.util.Map;
 
 public class CartesianChartModel extends ChartModel {
 
-    private List<ChartSeries> series;
     protected Map<AxisType, Axis> axes;
+    
+    private List<ChartSeries> series;
     private boolean zoom = false;
     private boolean animate = false;
     private boolean showDatatip = true;

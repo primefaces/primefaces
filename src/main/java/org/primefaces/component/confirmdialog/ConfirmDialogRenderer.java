@@ -144,7 +144,8 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 
         if (messageFacet != null) {
             messageFacet.encodeAll(context);
-        } else if (messageText != null) {
+        }
+        else if (messageText != null) {
             writer.writeText(messageText, null);
         }
 

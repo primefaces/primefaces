@@ -216,7 +216,7 @@ public class DataGridRenderer extends DataRenderer {
             writer.endElement("tr");
         }
 
-        grid.setRowIndex(-1);	//cleanup
+        grid.setRowIndex(-1); //cleanup
 
         writer.endElement("tbody");
         writer.endElement("table");

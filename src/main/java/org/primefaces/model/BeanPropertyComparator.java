@@ -38,7 +38,9 @@ public class BeanPropertyComparator implements Comparator {
     private Collator collator;
     private int nullSortOrder;
 
-    public BeanPropertyComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction, boolean caseSensitive, Locale locale, int nullSortOrder) {
+    public BeanPropertyComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction,
+            boolean caseSensitive, Locale locale, int nullSortOrder) {
+        
         this.sortBy = sortBy;
         this.var = var;
         this.asc = sortOrder.equals(SortOrder.ASCENDING);

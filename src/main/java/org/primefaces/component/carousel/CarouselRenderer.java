@@ -138,8 +138,7 @@ public class CarouselRenderer extends CoreRenderer {
                 writer.endElement("li");
             }
 
-            carousel.setRowIndex(-1); 	//clear
-
+            carousel.setRowIndex(-1); //clear
         }
         else {
             for (UIComponent kid : carousel.getChildren()) {

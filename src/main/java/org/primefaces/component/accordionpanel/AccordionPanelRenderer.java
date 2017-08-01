@@ -182,14 +182,20 @@ public class AccordionPanelRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeTab(FacesContext context, AccordionPanel accordionPanel, Tab tab, boolean active, boolean dynamic, boolean rtl) throws IOException {
+    protected void encodeTab(FacesContext context, AccordionPanel accordionPanel, Tab tab, boolean active, boolean dynamic,
+            boolean rtl) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
 
         String headerClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_CLASS : AccordionPanel.TAB_HEADER_CLASS;
         headerClass = tab.isDisabled() ? headerClass + " ui-state-disabled" : headerClass;
         headerClass = tab.getTitleStyleClass() == null ? headerClass : headerClass + " " + tab.getTitleStyleClass();
-        String iconClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS : (rtl ? AccordionPanel.TAB_HEADER_ICON_RTL_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS);
-        String contentClass = active ? AccordionPanel.ACTIVE_TAB_CONTENT_CLASS : AccordionPanel.INACTIVE_TAB_CONTENT_CLASS;
+        String iconClass = active
+                ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS
+                : (rtl ? AccordionPanel.TAB_HEADER_ICON_RTL_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS);
+        String contentClass = active
+                ? AccordionPanel.ACTIVE_TAB_CONTENT_CLASS
+                : AccordionPanel.INACTIVE_TAB_CONTENT_CLASS;
         UIComponent titleFacet = tab.getFacet("title");
         String title = tab.getTitle();
         String tabindex = tab.isDisabled() ? "-1" : accordionPanel.getTabindex();
