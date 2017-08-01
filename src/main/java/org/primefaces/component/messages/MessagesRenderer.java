@@ -48,23 +48,29 @@ public class MessagesRenderer extends UINotificationRenderer {
         String _for = uiMessages.getFor();
         List<FacesMessage> messages = new ArrayList<FacesMessage>();
         if (_for != null) {
-            // key case
+            String forType = uiMessages.getForType();
             Iterator<FacesMessage> messagesIterator = context.getMessages(_for);
-            while (messagesIterator.hasNext()) {
-                messages.add(messagesIterator.next());
+            
+            // key case
+            if(forType == null || forType.equals("key")) { 
+                while (messagesIterator.hasNext()) {
+                    messages.add(messagesIterator.next());
+                }
             }
 
             // clientId / SearchExpression case
-            UIComponent forComponent = SearchExpressionFacade.resolveComponent(
-                    context, uiMessages, _for, SearchExpressionHint.IGNORE_NO_RESULT);
-            if (forComponent != null) {
-                String forComponentClientId = forComponent.getClientId(context);
-                if (!_for.equals(forComponentClientId)) {
-                    messagesIterator = context.getMessages(forComponentClientId);
-                    while (messagesIterator.hasNext()) {
-                        FacesMessage next = messagesIterator.next();
-                        if (!messages.contains(next)) {
-                            messages.add(next);
+            if(forType == null || forType.equals("expression")) {
+                UIComponent forComponent = SearchExpressionFacade.resolveComponent(
+                        context, uiMessages, _for, SearchExpressionHint.IGNORE_NO_RESULT);
+                if (forComponent != null) {
+                    String forComponentClientId = forComponent.getClientId(context);
+                    if (!_for.equals(forComponentClientId)) {
+                        messagesIterator = context.getMessages(forComponentClientId);
+                        while (messagesIterator.hasNext()) {
+                            FacesMessage next = messagesIterator.next();
+                            if (!messages.contains(next)) {
+                                messages.add(next);
+                            }
                         }
                     }
                 }
