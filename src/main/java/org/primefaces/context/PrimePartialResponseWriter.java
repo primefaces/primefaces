@@ -32,6 +32,7 @@ import org.primefaces.application.resource.DynamicResourcesPhaseListener;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
+import org.primefaces.util.BeanUtils;
 import org.primefaces.util.CollectionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.ResourceUtils;
@@ -169,18 +170,6 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         wrapped.delete(targetId);
     }
 
-    private boolean isBean(Object value) {
-        if (value == null) {
-            return false;
-        }
-
-        if (value instanceof Boolean || value instanceof String || value instanceof Number) {
-            return false;
-        }
-
-        return true;
-    }
-
     public void encodeJSONObject(String paramName, JSONObject jsonObject) throws IOException, JSONException {
         String json = jsonObject.toString();
         json = ComponentUtils.escapeXml(json);
@@ -225,7 +214,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                 else if (paramValue instanceof JSONArray) {
                     encodeJSONArray(paramName, (JSONArray) paramValue);
                 }
-                else if (isBean(paramValue)) {
+                else if (BeanUtils.isBean(paramValue)) {
                     encodeJSONObject(paramName, new JSONObject(paramValue));
                 }
                 else {

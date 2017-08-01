@@ -49,4 +49,18 @@ public class BeanUtils {
             return !primitiveTypes.contains(valueClass);
         }
     }
+    
+    public static boolean isBean(Object value) {
+        if (value instanceof Boolean || value instanceof String || value instanceof Number) {
+            return false;
+        }
+        else if (value.getClass().isArray()) {
+            return isBean(value.getClass().getComponentType());
+        }
+        else if (value.getClass().isPrimitive()) {
+            return false;
+        }
+
+        return true;
+    }
 }

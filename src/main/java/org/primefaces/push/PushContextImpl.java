@@ -32,6 +32,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import org.primefaces.util.BeanUtils;
 
 /**
  * @deprecated With PrimeFaces 4.1 and up, it is recommended to use {@link EventBus}
@@ -98,7 +99,7 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
             StringBuilder jsonBuilder = new StringBuilder();
             jsonBuilder.append("{");
 
-            if (isBean(data)) {
+            if (BeanUtils.isBean(data)) {
                 jsonBuilder.append("\"").append("data").append("\":").append(new JSONObject(data).toString());
             }
             else {
@@ -117,18 +118,6 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
             throw new RuntimeException(e);
         }
 
-    }
-
-    private boolean isBean(Object value) {
-        if (value == null) {
-            return false;
-        }
-
-        if (value instanceof Boolean || value instanceof String || value instanceof Number) {
-            return false;
-        }
-
-        return true;
     }
 
     @Override
