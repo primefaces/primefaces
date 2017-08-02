@@ -571,7 +571,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 default:
                 break;
             }
-        });
+        }).on('paste.ui-selectonemenu', function() {
+            setTimeout(function(){
+                $this.filter($this.filterInput.val());
+            },2);
+		});
     },
 
     highlightNext: function(event) {
