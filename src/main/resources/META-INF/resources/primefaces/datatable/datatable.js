@@ -2361,7 +2361,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     }
                     else if(key === keyCode.ESCAPE) {
                         $this.doCellEditCancelRequest(cell);
-                        $this.currentCell = null;
                         e.preventDefault();
                     }
                 })
@@ -2514,6 +2513,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 if($this.cfg.clientCache) {
                     $this.clearCacheMap();
                 }
+                
+                $this.currentCell = null;
             }
         };
 
