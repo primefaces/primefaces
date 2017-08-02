@@ -2250,6 +2250,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 return true;
             },
             oncomplete: function(xhr, status, args) {
+                cell.data('edit-events-bound', false);
                 $this.showCurrentCell(cell);
             }
         };
