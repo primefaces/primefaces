@@ -371,7 +371,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 };
             }
 
-        });
+        }).on('paste.autoComplete', function() {
+			$this.suppressInput = false;
+		});
     },
 
     bindDynamicEvents: function() {
