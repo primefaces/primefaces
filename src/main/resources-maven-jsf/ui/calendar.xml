@@ -328,6 +328,13 @@
             <type>java.lang.String</type>
             <description>Style class of the input element. Used when mode is popup.</description>
         </attribute>
+        <attribute>
+            <name>type</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>text</defaultValue>
+            <description>Input field type. Default is text.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

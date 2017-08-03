@@ -97,7 +97,7 @@ public class CalendarRenderer extends InputRenderer {
 
     protected void encodeInput(FacesContext context, Calendar calendar, String id, String value, boolean popup) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String type = popup ? "text" : "hidden";
+        String type = popup ? calendar.getType() : "hidden";
         String labelledBy = calendar.getLabelledBy();
         String inputStyle = calendar.getInputStyle();
         String inputStyleClass = calendar.getInputStyleClass();
