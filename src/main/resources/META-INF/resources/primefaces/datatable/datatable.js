@@ -2165,15 +2165,20 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         });
         }
         else if(this.cfg.editMode === 'cell') {
-            var cellSelector = '> tr > td.ui-editable-column';
-
-            this.tbody.off('click.datatable-cell', cellSelector)
-                        .on('click.datatable-cell', cellSelector, null, function(e) {
+            var cellSelector = '> tr > td.ui-editable-column',
+            editEvent = this.cfg.editInitEvent + '.datatable-cell';
+            
+            this.tbody.off(editEvent, cellSelector)
+                        .on(editEvent, cellSelector, null, function(e) {
                             $this.incellClick = true;
-
+                            
                             var cell = $(this);
                             if(!cell.hasClass('ui-cell-editing')) {
                                 $this.showCellEditor($(this));
+                                
+                                if($this.cfg.editInitEvent === "dblclick") {
+                                    $this.incellClick = false;
+                                }
                             }
                         });
 
