@@ -69,7 +69,7 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
 
         //toolbar
         this.toolbar = $(this.jqId + '_toolbar');
-        if(!this.toolbar.length) {
+        if(!this.toolbar.length && this.cfg.toolbarVisible) {
             this.jq.prepend(this.toolbarTemplate);
             this.toolbar = this.jq.children('.ui-editor-toolbar')
             this.toolbar.attr('id', this.id + '_toolbar');
@@ -82,7 +82,7 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
 
         this.cfg.theme = 'snow';
         this.cfg.modules = {
-            toolbar: PrimeFaces.escapeClientId(this.id + '_toolbar')
+            toolbar: this.cfg.toolbarVisible ? PrimeFaces.escapeClientId(this.id + '_toolbar') : false
         };
 
         //initialize
