@@ -68,7 +68,7 @@ public class TextEditorRenderer extends CoreRenderer {
         if (style != null) writer.writeAttribute("style", style, null);
         if (styleClass != null) writer.writeAttribute("class", editor.getStyleClass(), null);
 
-        if (toolbar != null) {
+        if (toolbar != null && editor.isToolbarVisible()) {
             writer.startElement("div", editor);
             writer.writeAttribute("id", clientId + "_toolbar", null);
             writer.writeAttribute("class", "ui-editor-toolbar", null);
@@ -95,6 +95,7 @@ public class TextEditorRenderer extends CoreRenderer {
         String clientId = editor.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("TextEditor", editor.resolveWidgetVar(), clientId)
+                .attr("toolbarVisible", editor.isToolbarVisible())
                 .attr("readOnly", editor.isReadonly(), false)
                 .attr("placeholder", editor.getPlaceholder(), null)
                 .attr("height", editor.getHeight(), Integer.MIN_VALUE);
