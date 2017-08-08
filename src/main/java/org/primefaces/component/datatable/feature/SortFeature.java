@@ -156,8 +156,8 @@ public class SortFeature implements DataTableFeature {
             else {
                 sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             }
-            List<SortMeta> multiSortMeta = null;
-            if (sortVE != null || (table.isMultiSort() && (multiSortMeta = table.getMultiSortMeta()) != null)) {
+            List<SortMeta> multiSortMeta = table.isMultiSort() ? table.getMultiSortMeta() : null;
+            if (sortVE != null || multiSortMeta != null) {
                 TableState ts = table.getTableState(true);
                 ts.setSortBy(sortVE);
                 ts.setMultiSortMeta(multiSortMeta);
