@@ -21,11 +21,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
+
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
@@ -46,6 +48,7 @@ public class SortFeature implements DataTableFeature {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_sorting");
     }
 
+    @Override
     public void decode(FacesContext context, DataTable table) {
         table.setRowIndex(-1);
         String clientId = table.getClientId(context);
@@ -85,9 +88,9 @@ public class SortFeature implements DataTableFeature {
 
                 multiSortMeta.add(
                         new SortMeta(
-                                sortColumn, 
-                                sortField, 
-                                SortOrder.valueOf(convertSortOrderParam(sortOrders[i])), 
+                                sortColumn,
+                                sortField,
+                                SortOrder.valueOf(convertSortOrderParam(sortOrders[i])),
                                 sortColumn.getSortFunction()));
             }
 
@@ -153,7 +156,7 @@ public class SortFeature implements DataTableFeature {
             else {
                 sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             }
-            List<SortMeta> multiSortMeta = table.getMultiSortMeta();
+            List<SortMeta> multiSortMeta = table.isMultiSort() ? table.getMultiSortMeta() : null;
             if (sortVE != null || multiSortMeta != null) {
                 TableState ts = table.getTableState(true);
                 ts.setSortBy(sortVE);
