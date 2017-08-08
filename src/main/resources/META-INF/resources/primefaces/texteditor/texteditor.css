@@ -1,5 +1,5 @@
 /*!
- * Quill Editor v1.3.0
+ * Quill Editor v1.3.1
  * https://quilljs.com/
  * Copyright (c) 2014, Jason Chen
  * Copyright (c) 2013, salesforce.com
@@ -633,13 +633,7 @@
 }
 .ql-snow .ql-editor code {
   font-size: 85%;
-  padding-bottom: 2px;
-  padding-top: 2px;
-}
-.ql-snow .ql-editor code:before,
-.ql-snow .ql-editor code:after {
-  content: "\A0";
-  letter-spacing: -2px;
+  padding: 2px 4px;
 }
 .ql-snow .ql-editor pre.ql-syntax {
   background-color: #23241f;
