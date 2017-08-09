@@ -242,7 +242,7 @@ public class PickListRenderer extends CoreRenderer {
         writer.startElement("select", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("name", clientId, null);
-        writer.writeAttribute("multiple", "true", null);
+        writer.writeAttribute("multiple", "multiple", null);
         writer.writeAttribute("class", "ui-helper-hidden", null);
 
         //items generated on client side
