@@ -907,7 +907,7 @@ if (!PrimeFaces.ajax) {
         }
     };
 
-    $(window).unload(function() {
+    $(window).on('beforeunload', function() {
         PrimeFaces.ajax.Queue.abortAll();
     });
 
