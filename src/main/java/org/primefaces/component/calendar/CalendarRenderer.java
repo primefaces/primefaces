@@ -187,7 +187,8 @@ public class CalendarRenderer extends InputRenderer {
                 .attr("showWeek", calendar.isShowWeek(), false)
                 .attr("disabledWeekends", calendar.isDisabledWeekends(), false)
                 .attr("disabled", calendar.isDisabled(), false)
-                .attr("yearRange", calendar.getYearRange(), null);
+                .attr("yearRange", calendar.getYearRange(), null)
+                .attr("focusOnSelect", calendar.isFocusOnSelect(), false);
 
         if (calendar.isNavigator()) {
             wb.attr("changeMonth", true).attr("changeYear", true);

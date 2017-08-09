@@ -155,6 +155,10 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.onSelect = function() {
             if(_self.cfg.popup) {
                 _self.fireDateSelectEvent();
+                
+                if(_self.cfg.focusOnSelect) {
+                    _self.jqEl.focus();
+                }
             }
             else {
                 var newDate = $.datepicker.formatDate(_self.cfg.dateFormat, _self.getDate());

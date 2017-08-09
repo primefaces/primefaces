@@ -335,6 +335,13 @@
             <defaultValue>text</defaultValue>
             <description>Input field type. Default is text.</description>
         </attribute>
+        <attribute>
+            <name>focusOnSelect</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>If enabled, the input is focused again after selecting a date. Default is false.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
