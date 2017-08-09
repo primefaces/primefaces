@@ -537,7 +537,7 @@ if (!PrimeFaces.ajax) {
                             $(document).trigger('pfAjaxSend', [xhr, this]);
                         }
                     },
-                    error: function(xhr, status, errorThrown) {
+                    fail: function(xhr, status, errorThrown) {
                         if(cfg.onerror) {
                             cfg.onerror.call(this, xhr, status, errorThrown);
                         }
@@ -551,7 +551,7 @@ if (!PrimeFaces.ajax) {
 
                         PrimeFaces.error('Request return with error:' + status + '.');
                     },
-                    success: function(data, status, xhr) {
+                    done: function(data, status, xhr) {
                         PrimeFaces.debug('Response received succesfully.');
 
                         var parsed;
@@ -580,7 +580,7 @@ if (!PrimeFaces.ajax) {
 
                         PrimeFaces.debug('DOM is updated.');
                     },
-                    complete: function(xhr, status) {
+                    always: function(xhr, status) {
                         if(cfg.oncomplete) {
                             cfg.oncomplete.call(this, xhr, status, xhr.pfArgs);
                         }
@@ -602,6 +602,11 @@ if (!PrimeFaces.ajax) {
                         }
                     }
                 };
+
+                // TODO remove when updating to jQuery 3
+                xhrOptions.success = xhrOptions.done;
+                xhrOptions.error = xhrOptions.fail;
+                xhrOptions.complete = xhrOptions.always;
 
                 if (cfg.timeout) {
                     xhrOptions['timeout'] = cfg.timeout;
