@@ -436,6 +436,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.rowSelectMode = this.cfg.rowSelectMode||'new';
         this.rowSelector = '> tr.ui-widget-content.ui-datatable-selectable';
         this.cfg.disabledTextSelection = this.cfg.disabledTextSelection === false ? false : true;
+        this.rowSelectorForRowClick = this.cfg.rowSelector||'td:not(.ui-column-unselectable),span:not(.ui-c)';
 
         var preselection = $(this.selectionHolder).val();
         this.selection = (preselection === "") ? [] : preselection.split(',');
@@ -1563,7 +1564,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     onRowClick: function(event, rowElement, silent) {
         //Check if rowclick triggered this event not a clickable element in row content
-        if($(event.target).is('td:not(.ui-column-unselectable),span:not(.ui-c)')) {
+        if($(event.target).is(this.rowSelectorForRowClick)) {
             var row = $(rowElement),
             selected = row.hasClass('ui-state-highlight'),
             metaKey = event.metaKey||event.ctrlKey,

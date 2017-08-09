@@ -550,6 +550,12 @@
             <defaultValue>click</defaultValue>
             <description>Defines a client side event to open cell on editable table.</description>
 		</attribute>
+        <attribute>
+			<name>rowSelector</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Client side check if rowclick triggered row click event not a clickable element in row content.</description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>

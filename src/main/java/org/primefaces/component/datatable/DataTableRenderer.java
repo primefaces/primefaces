@@ -239,6 +239,7 @@ public class DataTableRenderer extends DataRenderer {
         wb.attr("selectionMode", selectionMode, null)
                 .attr("rowSelectMode", table.getRowSelectMode(), "new")
                 .attr("nativeElements", table.isNativeElements(), false)
+                .attr("rowSelector", table.getRowSelector(), null)
                 .attr("disabledTextSelection", table.isDisabledTextSelection(), true);
 
         //Filtering
