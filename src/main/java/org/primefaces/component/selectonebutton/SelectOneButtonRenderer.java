@@ -84,15 +84,14 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         }
         Class type = value == null ? String.class : value.getClass();
 
-        int idx = -1;
-        for (SelectItem selectItem : selectItems) {
-            idx++;
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
             boolean disabled = selectItem.isDisabled() || button.isDisabled();
-            String id = name + UINamingContainer.getSeparatorChar(context) + idx;
+            String id = name + UINamingContainer.getSeparatorChar(context) + i;
             Object coercedItemValue = coerceToModelType(context, selectItem.getValue(), type);
             boolean selected = (coercedItemValue != null) && coercedItemValue.equals(value);
 
-            encodeOption(context, button, selectItem, id, name, converter, selected, disabled, idx, selectItemsSize);
+            encodeOption(context, button, selectItem, id, name, converter, selected, disabled, i, selectItemsSize);
         }
     }
 

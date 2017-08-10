@@ -55,15 +55,14 @@ public class SelectOneRadioRenderer extends org.primefaces.component.selectonera
             }
             Class type = value == null ? String.class : value.getClass();
 
-            int idx = 0;
-            for (SelectItem selectItem : selectItems) {
+            for (int i = 0; i < selectItems.size(); i++) {
+                SelectItem selectItem = selectItems.get(i);
                 boolean disabled = selectItem.isDisabled() || radio.isDisabled();
-                String id = clientId + UINamingContainer.getSeparatorChar(context) + idx;
+                String id = clientId + UINamingContainer.getSeparatorChar(context) + i;
                 Object coercedItemValue = coerceToModelType(context, selectItem.getValue(), type);
                 boolean selected = (coercedItemValue != null) && coercedItemValue.equals(value);
 
                 encodeOption(context, radio, selectItem, id, clientId, converter, selected, disabled);
-                idx++;
             }
         }
 

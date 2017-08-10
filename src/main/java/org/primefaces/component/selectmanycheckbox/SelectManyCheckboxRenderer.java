@@ -114,7 +114,8 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         Object values = getValues(checkbox);
         Object submittedValues = getSubmittedValues(checkbox);
         int idx = 0, groupIdx = 0, colMod;
-        for (SelectItem selectItem : selectItems) {
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
             if (selectItem instanceof SelectItemGroup) {
                 writer.startElement("div", null);
                 writer.writeAttribute("class", "ui-selectmanycheckbox-responsive-group", null);
@@ -309,8 +310,8 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         Object submittedValues = getSubmittedValues(checkbox);
 
         writer.startElement("tr", null);
-        int idx = 0;
-        for (SelectItem selectItem : selectItems) {
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
             if (selectItem instanceof SelectItemGroup) {
                 writer.startElement("td", null);
                 encodeGroupLabel(context, checkbox, (SelectItemGroup) selectItem);
@@ -318,11 +319,9 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             }
             else {
                 writer.startElement("td", null);
-                encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
+                encodeOption(context, checkbox, values, submittedValues, converter, selectItem, i);
                 writer.endElement("td");
             }
-
-            idx++;
         }
         writer.endElement("tr");
     }
@@ -335,7 +334,8 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         Object submittedValues = getSubmittedValues(checkbox);
 
         int idx = 0;
-        for (SelectItem selectItem : selectItems) {
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
             if (selectItem instanceof SelectItemGroup) {
                 writer.startElement("tr", null);
                 writer.startElement("td", null);

@@ -97,7 +97,8 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("class", "ui-helper-hidden", null);
 
         int idx = -1;
-        for (SelectItem selectItem : selectItems) {
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
             if (selectItem instanceof SelectItemGroup) {
                 SelectItemGroup selectItemGroup = (SelectItemGroup) selectItem;
                 String selectItemGroupLabel = selectItemGroup.getLabel() == null ? "" : selectItemGroup.getLabel();

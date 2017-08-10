@@ -47,16 +47,15 @@ public class SelectManyButtonRenderer extends org.primefaces.component.selectman
         writer.writeAttribute("class", SelectManyButton.MOBILE_ITEMS_CLASS, "id");
 
         if (selectItems != null && !selectItems.isEmpty()) {
-            int itemCount = selectItems.size();
             Converter converter = button.getConverter();
             Object values = getValues(button);
             Object submittedValues = getSubmittedValues(button);
 
-            for (int idx = 0; idx < itemCount; idx++) {
-                SelectItem selectItem = selectItems.get(idx);
-                String labelClass = (idx == 0) ? "ui-first-child" : (idx == (itemCount - 1)) ? "ui-last-child" : null;
+            for (int i = 0; i < selectItems.size(); i++) {
+                SelectItem selectItem = selectItems.get(i);
+                String labelClass = (i == 0) ? "ui-first-child" : (i == (selectItems.size() - 1)) ? "ui-last-child" : null;
 
-                encodeOption(context, button, values, submittedValues, converter, selectItem, idx, labelClass);
+                encodeOption(context, button, values, submittedValues, converter, selectItem, i, labelClass);
             }
         }
 

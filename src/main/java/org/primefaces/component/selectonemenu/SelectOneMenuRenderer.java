@@ -340,7 +340,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         String var = menu.getVar();
         List<Column> columns = menu.getColums();
 
-        for (SelectItem selectItem : selectItems) {
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
             String itemLabel = selectItem.getLabel();
             itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
             Object itemValue = selectItem.getValue();
@@ -460,11 +461,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
     protected void encodeSelectItems(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, Object values,
             Object submittedValues, Converter converter) throws IOException {
-        
-        int itemIndex = 0;
-        for (SelectItem selectItem : selectItems) {
-            encodeOption(context, menu, selectItem, values, submittedValues, converter, itemIndex);
-            itemIndex++;
+
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
+            encodeOption(context, menu, selectItem, values, submittedValues, converter, i);
         }
     }
 

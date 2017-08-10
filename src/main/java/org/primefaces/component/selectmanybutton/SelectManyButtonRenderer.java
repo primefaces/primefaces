@@ -79,13 +79,10 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         Converter converter = button.getConverter();
         Object values = getValues(button);
         Object submittedValues = getSubmittedValues(button);
-        int selectItemsSize = selectItems.size();
 
-        int idx = -1;
-        for (SelectItem selectItem : selectItems) {
-            idx++;
-
-            encodeOption(context, button, values, submittedValues, converter, selectItem, idx, selectItemsSize);
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
+            encodeOption(context, button, values, submittedValues, converter, selectItem, i, selectItems.size());
         }
     }
 

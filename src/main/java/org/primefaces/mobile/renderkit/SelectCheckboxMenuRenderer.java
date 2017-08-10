@@ -69,7 +69,8 @@ public class SelectCheckboxMenuRenderer extends org.primefaces.component.selectc
 
     protected void encodeSelectItems(FacesContext context, SelectCheckboxMenu menu, List<SelectItem> selectItems, Object values,
             Object submittedValues, Converter converter) throws IOException {
-        for (SelectItem selectItem : selectItems) {
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
             encodeOption(context, menu, selectItem, values, submittedValues, converter);
         }
     }

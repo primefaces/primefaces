@@ -115,7 +115,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         if (columns > 0) {
             int idx = 0, colMod;
 
-            for (SelectItem selectItem : selectItems) {
+            for (int i = 0; i < selectItems.size(); i++) {
+                SelectItem selectItem = selectItems.get(i);
                 boolean disabled = selectItem.isDisabled() || radio.isDisabled();
                 String id = name + UINamingContainer.getSeparatorChar(context) + idx;
                 boolean selected = isSelected(context, radio, selectItem, currentValue);
@@ -194,13 +195,12 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         List<SelectItem> selectItems = getSelectItems(context, radio);
         String currentValue = ComponentUtils.getValueToRender(context, radio);
 
-        int idx = 0;
-        for (SelectItem selectItem : selectItems) {
-            String id = name + UINamingContainer.getSeparatorChar(context) + idx;
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
+            String id = name + UINamingContainer.getSeparatorChar(context) + i;
             boolean selected = isSelected(context, radio, selectItem, currentValue);
             String itemValueAsString = getOptionAsString(context, radio, converter, selectItem.getValue());
             encodeOptionInput(context, radio, id, name, selected, true, itemValueAsString);
-            idx++;
         }
     }
 
@@ -211,16 +211,15 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String currentValue = ComponentUtils.getValueToRender(context, radio);
 
         writer.startElement("tr", null);
-        int idx = 0;
-        for (SelectItem selectItem : selectItems) {
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
             boolean disabled = selectItem.isDisabled() || radio.isDisabled();
-            String id = name + UINamingContainer.getSeparatorChar(context) + idx;
+            String id = name + UINamingContainer.getSeparatorChar(context) + i;
             boolean selected = isSelected(context, radio, selectItem, currentValue);
 
             writer.startElement("td", null);
             encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
             writer.endElement("td");
-            idx++;
         }
         writer.endElement("tr");
     }
@@ -231,10 +230,10 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String name = radio.getClientId(context);
         String currentValue = ComponentUtils.getValueToRender(context, radio);
 
-        int idx = 0;
-        for (SelectItem selectItem : selectItems) {
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
             boolean disabled = selectItem.isDisabled() || radio.isDisabled();
-            String id = name + UINamingContainer.getSeparatorChar(context) + idx;
+            String id = name + UINamingContainer.getSeparatorChar(context) + i;
             boolean selected = isSelected(context, radio, selectItem, currentValue);
 
             writer.startElement("tr", null);
@@ -242,7 +241,6 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             encodeOption(context, radio, selectItem, id, name, converter, selected, disabled);
             writer.endElement("td");
             writer.endElement("tr");
-            idx++;
         }
     }
 
@@ -256,7 +254,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         if (columns > 0) {
             int idx = 0, colMod;
 
-            for (SelectItem selectItem : selectItems) {
+            for (int i = 0; i < selectItems.size(); i++) {
+                SelectItem selectItem = selectItems.get(i);
                 boolean disabled = selectItem.isDisabled() || radio.isDisabled();
                 String id = name + UINamingContainer.getSeparatorChar(context) + idx;
                 boolean selected = isSelected(context, radio, selectItem, currentValue);

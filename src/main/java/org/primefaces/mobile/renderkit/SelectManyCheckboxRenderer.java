@@ -54,10 +54,9 @@ public class SelectManyCheckboxRenderer extends org.primefaces.component.selectm
             Object values = getValues(checkbox);
             Object submittedValues = getSubmittedValues(checkbox);
 
-            int idx = 0;
-            for (SelectItem selectItem : selectItems) {
-                encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
-                idx++;
+            for (int i = 0; i < selectItems.size(); i++) {
+                SelectItem selectItem = selectItems.get(i);
+                encodeOption(context, checkbox, values, submittedValues, converter, selectItem, i);
             }
         }
 

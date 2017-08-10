@@ -146,7 +146,8 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
             writer.startElement("table", null);
             writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
             writer.startElement("tbody", null);
-            for (SelectItem selectItem : selectItems) {
+            for (int i = 0; i < selectItems.size(); i++) {
+                SelectItem selectItem = selectItems.get(i);
                 encodeItem(context, listbox, selectItem, values, submittedValues, converter, customContent);
             }
             writer.endElement("tbody");
@@ -155,7 +156,8 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         else {
             writer.startElement("ul", null);
             writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
-            for (SelectItem selectItem : selectItems) {
+            for (int i = 0; i < selectItems.size(); i++) {
+                SelectItem selectItem = selectItems.get(i);
                 encodeItem(context, listbox, selectItem, values, submittedValues, converter, customContent);
             }
             writer.endElement("ul");
@@ -232,7 +234,8 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         Object values = getValues(listbox);
         Object submittedValues = getSubmittedValues(listbox);
 
-        for (SelectItem selectItem : selectItems) {
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
             encodeOption(context, listbox, selectItem, values, submittedValues, converter);
         }
     }

@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.RandomAccess;
 import javax.el.ELException;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
@@ -81,6 +82,19 @@ public abstract class InputRenderer extends CoreRenderer {
                             Object key = it.next();
 
                             selectItems.add(createSelectItem(context, uiSelectItems, map.get(key), String.valueOf(key)));
+                        }
+                    }
+                    else if (value instanceof List && value instanceof RandomAccess) {
+                        List list = (List) value;
+
+                        for (int i = 0; i < list.size(); i++) {
+                            Object item = list.get(i);
+                            if (item instanceof SelectItem) {
+                                selectItems.add((SelectItem) item);
+                            }
+                            else {
+                                selectItems.add(createSelectItem(context, uiSelectItems, item, null));
+                            }
                         }
                     }
                     else if (value instanceof Collection) {

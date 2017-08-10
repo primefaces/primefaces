@@ -150,7 +150,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
             writer.startElement("table", null);
             writer.writeAttribute("class", SelectManyMenu.LIST_CLASS, null);
             writer.startElement("tbody", null);
-            for (SelectItem selectItem : selectItems) {
+            for (int i = 0; i < selectItems.size(); i++) {
+                SelectItem selectItem = selectItems.get(i);
                 encodeItem(context, menu, selectItem, values, submittedValues, converter, customContent, showCheckbox);
             }
             writer.endElement("tbody");
@@ -159,7 +160,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         else {
             writer.startElement("ul", null);
             writer.writeAttribute("class", SelectManyMenu.LIST_CLASS, null);
-            for (SelectItem selectItem : selectItems) {
+            for (int i = 0; i < selectItems.size(); i++) {
+                SelectItem selectItem = selectItems.get(i);
                 encodeItem(context, menu, selectItem, values, submittedValues, converter, customContent, showCheckbox);
             }
             writer.endElement("ul");

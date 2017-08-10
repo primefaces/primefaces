@@ -106,25 +106,25 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeListItems(FacesContext context, MultiSelectListbox listbox, SelectItem[] items) throws IOException {
-        if (items != null && items.length > 0) {
+    protected void encodeListItems(FacesContext context, MultiSelectListbox listbox, SelectItem[] selectItems) throws IOException {
+        if (selectItems != null && selectItems.length > 0) {
             ResponseWriter writer = context.getResponseWriter();
             Converter converter = ComponentUtils.getConverter(context, listbox);
             String itemValue = null;
 
-            for (int i = 0; i < items.length; i++) {
-                SelectItem item = items[i];
-                itemValue = converter != null ? converter.getAsString(context, listbox, item.getValue()) : String.valueOf(item.getValue());
+            for (int i = 0; i < selectItems.length; i++) {
+                SelectItem selectItem = selectItems[i];
+                itemValue = converter != null ? converter.getAsString(context, listbox, selectItem.getValue()) : String.valueOf(selectItem.getValue());
                 writer.startElement("li", null);
                 writer.writeAttribute("class", MultiSelectListbox.ITEM_CLASS, null);
                 writer.writeAttribute("data-value", itemValue, null);
 
                 writer.startElement("span", listbox);
-                writer.writeText(item.getLabel(), null);
+                writer.writeText(selectItem.getLabel(), null);
                 writer.endElement("span");
 
-                if (item instanceof SelectItemGroup) {
-                    SelectItemGroup group = (SelectItemGroup) item;
+                if (selectItem instanceof SelectItemGroup) {
+                    SelectItemGroup group = (SelectItemGroup) selectItem;
                     SelectItem[] groupItems = group.getSelectItems();
 
                     if (groupItems != null && groupItems.length > 0) {
