@@ -86,10 +86,10 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
 
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
-            boolean disabled = selectItem.isDisabled() || button.isDisabled();
+
             String id = name + UINamingContainer.getSeparatorChar(context) + i;
-            Object coercedItemValue = coerceToModelType(context, selectItem.getValue(), type);
-            boolean selected = (coercedItemValue != null) && coercedItemValue.equals(value);
+            boolean disabled = selectItem.isDisabled() || button.isDisabled();
+            boolean selected = ComponentUtils.equals(selectItem.getValue(), value);
 
             encodeOption(context, button, selectItem, id, name, converter, selected, disabled, i, selectItemsSize);
         }
