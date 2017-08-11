@@ -416,6 +416,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("class", "ui-datatable-frozen-container", null);
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
             encodeThead(context, table, 0, frozenColumns, clientId + "_frozenThead", "frozenHeader");
+            encodeFrozenRows(context, table, 0, frozenColumns);
             encodeScrollAreaEnd(context);
 
             if (isVirtualScroll) {
@@ -439,6 +440,7 @@ public class DataTableRenderer extends DataRenderer {
 
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
             encodeThead(context, table, frozenColumns, columnsCount, clientId + "_scrollableThead", "scrollableHeader");
+            encodeFrozenRows(context, table, frozenColumns, columnsCount);
             encodeScrollAreaEnd(context);
 
             if (isVirtualScroll) {
@@ -461,6 +463,7 @@ public class DataTableRenderer extends DataRenderer {
         else {
             encodeScrollAreaStart(context, table, DataTable.SCROLLABLE_HEADER_CLASS, DataTable.SCROLLABLE_HEADER_BOX_CLASS, tableStyle, tableStyleClass);
             encodeThead(context, table);
+            encodeFrozenRows(context, table, 0, columnsCount);
             encodeScrollAreaEnd(context);
 
             if (isVirtualScroll) {
@@ -1016,8 +1019,6 @@ public class DataTableRenderer extends DataRenderer {
             writer.endElement("tr");
         }
 
-        encodeFrozenRows(context, table);
-
         writer.endElement("thead");
     }
 
@@ -1151,7 +1152,7 @@ public class DataTableRenderer extends DataRenderer {
         }
     }
 
-    protected void encodeFrozenRows(FacesContext context, DataTable table) throws IOException {
+    protected void encodeFrozenRows(FacesContext context, DataTable table, int columnStart, int columnEnd) throws IOException {
         int frozenRows = table.getFrozenRows();
         if (frozenRows == 0) {
             return;
@@ -1165,7 +1166,7 @@ public class DataTableRenderer extends DataRenderer {
 
         for (int i = 0; i < frozenRows; i++) {
             table.setRowIndex(i);
-            encodeRow(context, table, clientId, i, 0, table.getColumnsCount());
+            encodeRow(context, table, clientId, i, columnStart, columnEnd);
         }
 
         writer.endElement("tbody");
