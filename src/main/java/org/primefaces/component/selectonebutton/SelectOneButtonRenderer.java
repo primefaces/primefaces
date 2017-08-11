@@ -82,7 +82,6 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         if (value == null) {
             value = button.getValue();
         }
-        Class type = value == null ? String.class : value.getClass();
 
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
