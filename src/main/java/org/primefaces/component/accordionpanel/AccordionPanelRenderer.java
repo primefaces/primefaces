@@ -17,6 +17,7 @@ package org.primefaces.component.accordionpanel;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -151,8 +152,12 @@ public class AccordionPanelRenderer extends CoreRenderer {
     protected void encodeTabs(FacesContext context, AccordionPanel acco) throws IOException {
         boolean dynamic = acco.isDynamic();
         String var = acco.getVar();
-        List<String> activeIndexes = Arrays.asList(acco.getActiveIndex().split(","));
         boolean rtl = acco.getDir().equalsIgnoreCase("rtl");
+
+        String activeIndex = acco.getActiveIndex();
+        List<String> activeIndexes = activeIndex == null
+                ? Collections.EMPTY_LIST
+                : Arrays.asList(activeIndex.split(","));        
 
         if (var == null) {
             int i = 0;
