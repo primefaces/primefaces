@@ -116,13 +116,11 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeOption(FacesContext context, SelectCheckboxMenu menu, Object values, Object submittedValues, Converter converter,
-            SelectItem option, int idx) throws IOException {
+    protected void encodeOption(FacesContext context, SelectCheckboxMenu menu, Object values, Object submittedValues, Converter converter, SelectItem option, int idx) throws IOException {
         encodeOption(context, menu, values, submittedValues, converter, option, idx, null);
     }
 
-    protected void encodeOption(FacesContext context, SelectCheckboxMenu menu, Object values, Object submittedValues, Converter converter,
-            SelectItem option, int idx, String selectItemGroupLabel) throws IOException {
+    protected void encodeOption(FacesContext context, SelectCheckboxMenu menu, Object values, Object submittedValues, Converter converter, SelectItem option, int idx, String selectItemGroupLabel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
         String name = menu.getClientId(context);
