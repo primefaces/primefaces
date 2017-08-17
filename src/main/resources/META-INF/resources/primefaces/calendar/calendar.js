@@ -16,6 +16,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         //events
         this.bindDateSelectListener();
         this.bindViewChangeListener();
+        this.bindCloseListener();
 
         //disabled dates
         this.cfg.beforeShowDay = function(date) {
@@ -201,6 +202,24 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 };
 
                 viewChangeBehavior.call(this, ext);
+            }
+        }
+    },
+
+    bindCloseListener: function() {
+        if(this.hasBehavior('close')) {
+            var $this = this;
+            this.cfg.onClose = function() {
+                $this.fireCloseEvent();
+            };
+        }
+    },
+
+    fireCloseEvent: function() {
+        if(this.cfg.behaviors) {
+            var closeBehavior = this.cfg.behaviors['close'];
+            if(closeBehavior) {
+                closeBehavior.call(this);
             }
         }
     },
