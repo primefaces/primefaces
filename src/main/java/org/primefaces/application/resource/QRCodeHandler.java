@@ -17,23 +17,35 @@ package org.primefaces.application.resource;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+
 import net.glxn.qrgen.QRCode;
 import net.glxn.qrgen.image.ImageType;
-import org.primefaces.util.Constants;
 
 public class QRCodeHandler extends BaseDynamicContentHandler {
 
-    public void handle(FacesContext context) throws IOException {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        ExternalContext externalContext = context.getExternalContext();
-        String sessionKey = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
-        Map<String, Object> session = externalContext.getSessionMap();
-        Map<String, String> barcodeMapping = (Map) session.get(Constants.BARCODE_MAPPING);
-        String value = barcodeMapping.get(sessionKey);
+   private final static Logger logger = Logger.getLogger(QRCodeHandler.class.getName());
 
-        if (value != null) {
+   @Override
+   public void handle(FacesContext context) throws IOException {
+      Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+      ExternalContext externalContext = context.getExternalContext();
+      String sessionKey = params.get(Constants.DYNAMIC_CONTENT_PARAM);
+      Map<String, Object> session = externalContext.getSessionMap();
+      Map<String, String> barcodeMapping = (Map) session.get(Constants.BARCODE_MAPPING);
+      String value = barcodeMapping.get(sessionKey);
+
+      if (value != null) {
+         try {
             boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
 
             externalContext.setResponseStatus(200);
@@ -41,11 +53,21 @@ public class QRCodeHandler extends BaseDynamicContentHandler {
 
             handleCache(externalContext, cache);
 
-            QRCode.from(value).to(ImageType.PNG).withCharset("UTF-8").writeTo(externalContext.getResponseOutputStream());
+            ErrorCorrectionLevel ecl = ErrorCorrectionLevel.L;
+            String errorCorrection = params.get("qrec");
+            if (!ComponentUtils.isValueBlank(errorCorrection)) {
+               ecl = ErrorCorrectionLevel.valueOf(errorCorrection);
+            }
+
+            QRCode.from(value).to(ImageType.PNG).withErrorCorrection(ecl).withCharset("UTF-8")
+                     .writeTo(externalContext.getResponseOutputStream());
 
             externalContext.responseFlushBuffer();
             context.responseComplete();
-        }
-    }
+         } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error in streaming qrCode resource. {0}", new Object[] { e.getMessage() });
+         }
+      }
+   }
 
 }
