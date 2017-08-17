@@ -1452,6 +1452,10 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     }
 
     protected boolean shouldSkipChildren(FacesContext context) {
+        if (!ComponentUtils.isRequestSource(this, context)) {
+            return false;
+        }
+        
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String paramValue = params.get(Constants.RequestParams.SKIP_CHILDREN_PARAM);
 
