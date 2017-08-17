@@ -16,9 +16,33 @@
 package org.primefaces.application.resource.barcode;
 
 import java.io.IOException;
+
+import org.krysalis.barcode4j.impl.AbstractBarcodeBean;
 import org.krysalis.barcode4j.output.CanvasProvider;
 
-public interface BarcodeGenerator {
+public abstract class BarcodeGenerator {
+   
+   private AbstractBarcodeBean barcodeBean;
+   
+   public BarcodeGenerator() {
+      super();
+   }
 
-    public void generate(CanvasProvider canvasProvider, String value) throws IOException;
+   public BarcodeGenerator(AbstractBarcodeBean bean) {
+      this();
+      setBarcodeBean(bean);
+   }
+
+   public void generate(CanvasProvider canvasProvider, String value) throws IOException {
+      getBarcodeBean().generateBarcode(canvasProvider, value);
+   }
+
+   public AbstractBarcodeBean getBarcodeBean() {
+      return barcodeBean;
+   }
+
+   public void setBarcodeBean(AbstractBarcodeBean barcodeBean) {
+      this.barcodeBean = barcodeBean;
+   }
+   
 }

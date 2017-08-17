@@ -15,14 +15,12 @@
  */
 package org.primefaces.application.resource.barcode;
 
-import java.io.IOException;
 import org.krysalis.barcode4j.impl.upcean.UPCABean;
-import org.krysalis.barcode4j.output.CanvasProvider;
 
-public class UPCAGenerator implements BarcodeGenerator {
+public class UPCAGenerator extends BarcodeGenerator {
 
-    public void generate(CanvasProvider canvasProvider, String value) throws IOException {
-        UPCABean bean = new UPCABean();
-        bean.generateBarcode(canvasProvider, value);
-    }
+   public UPCAGenerator() {
+      super(new UPCABean());
+   }
+
 }
