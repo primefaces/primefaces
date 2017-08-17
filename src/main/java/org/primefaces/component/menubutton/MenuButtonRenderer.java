@@ -50,7 +50,9 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         if (button.getStyle() != null) {
             writer.writeAttribute("style", button.getStyle(), "style");
         }
-
+        if (button.getTitle() != null) {
+            writer.writeAttribute("title", button.getTitle(), "title");
+        }
         encodeButton(context, button, clientId + "_button", disabled);
         if (!disabled) {
             encodeMenu(context, button, clientId + "_menu");
