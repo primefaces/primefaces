@@ -20,6 +20,8 @@ import javax.faces.context.FacesContext;
 
 public interface Pageable {
 
+    public String getId();
+
     public String getClientId(FacesContext context);
 
     public String getPaginatorPosition();
