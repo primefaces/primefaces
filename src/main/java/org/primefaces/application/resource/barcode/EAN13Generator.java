@@ -15,14 +15,12 @@
  */
 package org.primefaces.application.resource.barcode;
 
-import java.io.IOException;
 import org.krysalis.barcode4j.impl.upcean.EAN13Bean;
-import org.krysalis.barcode4j.output.CanvasProvider;
 
-public class EAN13Generator implements BarcodeGenerator {
+public class EAN13Generator extends BarcodeGenerator {
 
-    public void generate(CanvasProvider canvasProvider, String value) throws IOException {
-        EAN13Bean bean = new EAN13Bean();
-        bean.generateBarcode(canvasProvider, value);
-    }
+   public EAN13Generator() {
+      super(new EAN13Bean());
+   }
+
 }

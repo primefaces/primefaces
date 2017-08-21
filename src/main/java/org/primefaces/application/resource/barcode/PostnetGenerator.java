@@ -15,14 +15,12 @@
  */
 package org.primefaces.application.resource.barcode;
 
-import java.io.IOException;
 import org.krysalis.barcode4j.impl.postnet.POSTNETBean;
-import org.krysalis.barcode4j.output.CanvasProvider;
 
-public class PostnetGenerator implements BarcodeGenerator {
+public class PostnetGenerator extends BarcodeGenerator {
 
-    public void generate(CanvasProvider canvasProvider, String value) throws IOException {
-        POSTNETBean bean = new POSTNETBean();
-        bean.generateBarcode(canvasProvider, value);
-    }
+   public PostnetGenerator() {
+      super(new POSTNETBean());
+   }
+
 }

@@ -15,14 +15,12 @@
  */
 package org.primefaces.application.resource.barcode;
 
-import java.io.IOException;
 import org.krysalis.barcode4j.impl.datamatrix.DataMatrixBean;
-import org.krysalis.barcode4j.output.CanvasProvider;
 
-public class DataMatrixGenerator implements BarcodeGenerator {
+public class DataMatrixGenerator extends BarcodeGenerator {
 
-    public void generate(CanvasProvider canvasProvider, String value) throws IOException {
-        DataMatrixBean bean = new DataMatrixBean();
-        bean.generateBarcode(canvasProvider, value);
-    }
+   public DataMatrixGenerator() {
+      super(new DataMatrixBean());
+   }
+
 }

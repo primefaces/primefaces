@@ -15,15 +15,12 @@
  */
 package org.primefaces.application.resource.barcode;
 
-import java.io.IOException;
 import org.krysalis.barcode4j.impl.code39.Code39Bean;
-import org.krysalis.barcode4j.output.CanvasProvider;
 
-public class Code39Generator implements BarcodeGenerator {
+public class Code39Generator extends BarcodeGenerator {
 
-    public void generate(CanvasProvider canvasProvider, String value) throws IOException {
-        Code39Bean bean = new Code39Bean();
-        bean.generateBarcode(canvasProvider, value);
-    }
+   public Code39Generator() {
+      super(new Code39Bean());
+   }
 
 }

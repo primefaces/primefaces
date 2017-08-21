@@ -28,6 +28,8 @@ import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+
+import org.krysalis.barcode4j.HumanReadablePlacement;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 import org.krysalis.barcode4j.output.svg.SVGCanvasProvider;
 import org.primefaces.application.resource.BaseDynamicContentHandler;
@@ -68,8 +70,11 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
             try {
                 BarcodeGenerator generator = generators.get(params.get("gen"));
                 String format = params.get("fmt");
+                String hrp = params.get("hrp");
                 int orientation = Integer.parseInt(params.get("ori"));
                 boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
+                
+                generator.getBarcodeBean().setMsgPosition(HumanReadablePlacement.byName(hrp));
 
                 if (AgentUtils.isLessThanIE(context, 9)) {
                     format = "png";
