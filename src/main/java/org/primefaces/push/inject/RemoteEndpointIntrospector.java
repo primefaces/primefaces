@@ -22,7 +22,6 @@ import org.atmosphere.util.ThreadLocalInvoker;
 import org.primefaces.push.RemoteEndpoint;
 import org.primefaces.push.impl.RemoteEndpointImpl;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 

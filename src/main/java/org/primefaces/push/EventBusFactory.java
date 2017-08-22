@@ -24,10 +24,10 @@ import javax.inject.Inject;
  */
 public class EventBusFactory {
 
+    private static EventBusFactory f = null;
+    
     @Inject
     private EventBus eventBus;
-
-    private static EventBusFactory f = null;
 
     public EventBusFactory() {
         f = this;
