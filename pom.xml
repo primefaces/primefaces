@@ -286,6 +286,9 @@
                 <version>3.0</version>
                 <configuration>
                     <header>./header.txt</header>
+                    <includes>
+                        <include>src/main/java/**</include>
+                    </includes>
                 </configuration>
                 <executions>
                     <execution>
