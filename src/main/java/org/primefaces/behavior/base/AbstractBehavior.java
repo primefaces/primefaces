@@ -115,7 +115,8 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
             else {
                 values = new Object[] { superState };
             }
-        } else {
+        }
+        else {
             values = new Object[3];
 
             values[0] = superState;

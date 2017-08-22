@@ -32,7 +32,7 @@ import org.primefaces.component.api.AjaxSource;
         @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
         @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
         @ResourceDependency(library = "primefaces", name = "core.js")
-})
+    })
 public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
 
     public final static String BEHAVIOR_ID = "org.primefaces.component.AjaxBehavior";
@@ -89,6 +89,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         setLiteral(PropertyKeys.disabled, disabled);
     }
 
+    @Override
     public boolean isAsync() {
         return eval(PropertyKeys.async, Boolean.FALSE);
     }
@@ -97,6 +98,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         setLiteral(PropertyKeys.async, async);
     }
 
+    @Override
     public boolean isGlobal() {
         return eval(PropertyKeys.global, Boolean.TRUE);
     }
@@ -105,6 +107,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         setLiteral(PropertyKeys.global, global);
     }
 
+    @Override
     public String getOncomplete() {
         return eval(PropertyKeys.oncomplete, null);
     }
@@ -113,6 +116,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         setLiteral(PropertyKeys.oncomplete, oncomplete);
     }
 
+    @Override
     public String getOnstart() {
         return eval(PropertyKeys.onstart, null);
     }
@@ -121,6 +125,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         setLiteral(PropertyKeys.onstart, onstart);
     }
 
+    @Override
     public String getOnsuccess() {
         return eval(PropertyKeys.onsuccess, null);
     }
@@ -129,6 +134,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         setLiteral(PropertyKeys.onsuccess, onsuccess);
     }
 
+    @Override
     public String getOnerror() {
         return eval(PropertyKeys.onerror, null);
     }
@@ -137,6 +143,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         setLiteral(PropertyKeys.onerror, onerror);
     }
 
+    @Override
     public String getProcess() {
         return eval(PropertyKeys.process, null);
     }
@@ -145,6 +152,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         setLiteral(PropertyKeys.process, process);
     }
 
+    @Override
     public String getUpdate() {
         return eval(PropertyKeys.update, null);
     }
@@ -153,6 +161,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         setLiteral(PropertyKeys.update, update);
     }
 
+    @Override
     public String getDelay() {
         return eval(PropertyKeys.delay, null);
     }
@@ -169,6 +178,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         setLiteral(PropertyKeys.immediate, immediate);
     }
 
+    @Override
     public boolean isIgnoreAutoUpdate() {
         return eval(PropertyKeys.ignoreAutoUpdate, Boolean.FALSE);
     }
@@ -177,6 +187,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         setLiteral(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
     }
 
+    @Override
     public boolean isPartialSubmit() {
         return eval(PropertyKeys.partialSubmit, Boolean.FALSE);
     }
@@ -185,6 +196,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         setLiteral(PropertyKeys.partialSubmit, partialSubmit);
     }
 
+    @Override
     public boolean isResetValues() {
         return eval(PropertyKeys.resetValues, Boolean.FALSE);
     }
@@ -201,6 +213,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         setLiteral(PropertyKeys.listener, listener);
     }
 
+    @Override
     public int getTimeout() {
         return eval(PropertyKeys.timeout, 0);
     }
@@ -209,6 +222,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         setLiteral(PropertyKeys.timeout, timeout);
     }
 
+    @Override
     public String getPartialSubmitFilter() {
         return eval(PropertyKeys.partialSubmitFilter, null);
     }
@@ -217,6 +231,7 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         setLiteral(PropertyKeys.partialSubmitFilter, partialSubmitFilter);
     }
 
+    @Override
     public String getForm() {
         return eval(PropertyKeys.form, null);
     }
@@ -237,15 +252,17 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         return isAttributeSet(PropertyKeys.immediate);
     }
 
+    @Override
     public boolean isPartialSubmitSet() {
         return isAttributeSet(PropertyKeys.partialSubmit);
     }
 
+    @Override
     public boolean isResetValuesSet() {
         return isAttributeSet(PropertyKeys.resetValues);
     }
 
-    
+    @Override
     public boolean isAjaxified() {
         return true;
     }
