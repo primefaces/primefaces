@@ -33,7 +33,7 @@ public class ConfirmBehavior extends AbstractBehavior {
         icon(String.class),
         disabled(Boolean.class);
 
-        final Class<?> expectedType;
+        private final Class<?> expectedType;
 
         PropertyKeys(Class<?> expectedType) {
             this.expectedType = expectedType;
