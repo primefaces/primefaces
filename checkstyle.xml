@@ -76,8 +76,8 @@
         </module>
 
         <module name="NeedBraces">
-			<property name="allowSingleLineStatement" value="true"/>
-		</module>
+		<property name="allowSingleLineStatement" value="true" />
+	</module>
         <module name="LeftCurly">
         </module>
         <module name="RightCurly">
