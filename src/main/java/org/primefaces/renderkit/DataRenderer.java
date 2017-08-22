@@ -96,7 +96,8 @@ public class DataRenderer extends CoreRenderer {
             else {
                 UIComponent elementFacet = pageable.getFacet(element);
                 if (elementFacet != null) {
-                    elementFacet.setId(pageable.getId() + "_" + position);
+                    String facetName = element.replaceAll("[\\W+]", "_").toLowerCase();
+                    elementFacet.setId(pageable.getId() + facetName + position);
                     elementFacet.encodeAll(context);
                 }
                 else {
