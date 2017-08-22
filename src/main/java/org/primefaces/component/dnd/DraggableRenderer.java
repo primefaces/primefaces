@@ -37,7 +37,6 @@ public class DraggableRenderer extends CoreRenderer {
         UIComponent target = SearchExpressionFacade.resolveComponent(
                 context, draggable, draggable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
 
-        String dashboard = draggable.getDashboard();
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("Draggable", draggable.resolveWidgetVar(), clientId)
                 .attr("target", target.getClientId(context))
@@ -68,6 +67,7 @@ public class DraggableRenderer extends CoreRenderer {
         }
 
         //Dashboard support
+        String dashboard = draggable.getDashboard();
         if (dashboard != null) {
             Dashboard db = (Dashboard) SearchExpressionFacade.resolveComponent(context, draggable, dashboard);
 
