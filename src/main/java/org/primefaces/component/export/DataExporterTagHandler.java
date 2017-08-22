@@ -93,7 +93,8 @@ public class DataExporterTagHandler extends TagHandler {
             }
 
             ActionSource actionSource = (ActionSource) parent;
-            DataExporter dataExporter = new DataExporter(targetVE, typeVE, fileNameVE, pageOnlyVE, selectionOnlyVE, encodingVE, preProcessorME, postProcessorME, optionsVE);
+            DataExporter dataExporter = new DataExporter(targetVE, typeVE, fileNameVE, pageOnlyVE, selectionOnlyVE,
+                    encodingVE, preProcessorME, postProcessorME, optionsVE);
             dataExporter.setRepeat(repeatVE);
             actionSource.addActionListener(dataExporter);
         }

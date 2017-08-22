@@ -28,13 +28,9 @@ import javax.faces.event.ActionListener;
 public class Collector implements ActionListener, StateHolder {
 
     private ValueExpression addTo;
-
     private ValueExpression removeFrom;
-
     private ValueExpression value;
-
     private ValueExpression unique;
-
     private boolean _transient;
 
     public Collector() {
@@ -47,7 +43,7 @@ public class Collector implements ActionListener, StateHolder {
         this.unique = unique;
     }
 
-    @SuppressWarnings("unchecked")
+    @Override
     public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
         if (value == null) {
             throw new AbortProcessingException("Value has not been set");
@@ -80,6 +76,7 @@ public class Collector implements ActionListener, StateHolder {
         }
     }
 
+    @Override
     public Object saveState(FacesContext context) {
         Object[] state = new Object[4];
         state[0] = addTo;
@@ -90,6 +87,7 @@ public class Collector implements ActionListener, StateHolder {
         return state;
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object[] values = (Object[]) state;
         addTo = (ValueExpression) values[0];
@@ -98,10 +96,12 @@ public class Collector implements ActionListener, StateHolder {
         unique = (ValueExpression) values[3];
     }
 
+    @Override
     public boolean isTransient() {
         return _transient;
     }
 
+    @Override
     public void setTransient(boolean _transient) {
         this._transient = _transient;
     }
