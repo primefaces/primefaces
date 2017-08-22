@@ -3,8 +3,8 @@ package org.primefaces.push;
 import org.atmosphere.cpr.AtmosphereResource;
 
 /**
- * A PushRule configure the <a href="http://github.com/Atmosphere/atmosphere">Atmosphere Framework</a> behavior. By default, the {@link DefaultPushRule} is used to creates
- * channel of communication based on the value of the request's pathInfo.
+ * A PushRule configure the <a href="http://github.com/Atmosphere/atmosphere">Atmosphere Framework</a> behavior.
+ * By default, the {@link DefaultPushRule} is used to creates channel of communication based on the value of the request's pathInfo.
  * <br/>
  * PushRule can be implemented to customize the behavior of Atmosphere and to create channel (named {@link org.atmosphere.cpr.Broadcaster})
  * on the fly. For example, the following PushRule will create a single Channel of communication. All invocation of

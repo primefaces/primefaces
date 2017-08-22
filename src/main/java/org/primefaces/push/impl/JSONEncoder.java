@@ -25,6 +25,7 @@ public class JSONEncoder implements Encoder<Object, String> {
 
     private final static String PRIMITIVE_DATA = "pfpd";
 
+    @Override
     public String encode(Object object) {
         if (object == null) {
             return null;

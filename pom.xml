@@ -277,7 +277,7 @@
                 <configuration>
                     <consoleOutput>true</consoleOutput>
                     <configLocation>./checkstyle.xml</configLocation>
-                    <excludes>**/UIData.java,**/Base64.java,**/UITabPanel.java,**/json/**,**/UITree.java</excludes>
+                    <excludes>**/UIData.java,**/Base64.java,**/UITabPanel.java,**/json/**,**/UITree.java,**/UIRepeat.java</excludes>
                 </configuration>
             </plugin>
             <plugin>

@@ -19,8 +19,8 @@ import org.krysalis.barcode4j.impl.code39.Code39Bean;
 
 public class Code39Generator extends BarcodeGenerator {
 
-   public Code39Generator() {
-      super(new Code39Bean());
-   }
+    public Code39Generator() {
+        super(new Code39Bean());
+    }
 
 }

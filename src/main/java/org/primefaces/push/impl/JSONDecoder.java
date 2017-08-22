@@ -21,6 +21,7 @@ import org.primefaces.push.Decoder;
 
 public class JSONDecoder implements Decoder<String, Object> {
 
+    @Override
     public Object decode(String s) {
         if (s == null || s.trim().length() == 0) {
             return null;
@@ -28,7 +29,8 @@ public class JSONDecoder implements Decoder<String, Object> {
         else {
             try {
                 return new JSONObject(s);
-            } catch (JSONException ex) {
+            }
+            catch (JSONException ex) {
                 throw new RuntimeException(ex);
             }
         }

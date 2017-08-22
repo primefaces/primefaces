@@ -19,8 +19,8 @@ import org.krysalis.barcode4j.impl.datamatrix.DataMatrixBean;
 
 public class DataMatrixGenerator extends BarcodeGenerator {
 
-   public DataMatrixGenerator() {
-      super(new DataMatrixBean());
-   }
+    public DataMatrixGenerator() {
+        super(new DataMatrixBean());
+    }
 
 }

@@ -19,8 +19,8 @@ import org.krysalis.barcode4j.impl.upcean.EAN13Bean;
 
 public class EAN13Generator extends BarcodeGenerator {
 
-   public EAN13Generator() {
-      super(new EAN13Bean());
-   }
+    public EAN13Generator() {
+        super(new EAN13Bean());
+    }
 
 }

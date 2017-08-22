@@ -19,8 +19,8 @@ import org.krysalis.barcode4j.impl.upcean.EAN8Bean;
 
 public class EAN8Generator extends BarcodeGenerator {
 
-   public EAN8Generator() {
-      super(new EAN8Bean());
-   }
+    public EAN8Generator() {
+        super(new EAN8Bean());
+    }
 
 }

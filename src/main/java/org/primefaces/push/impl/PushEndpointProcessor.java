@@ -34,7 +34,7 @@ import static org.atmosphere.annotation.AnnotationUtil.broadcaster;
 @AtmosphereAnnotation(PushEndpoint.class)
 public class PushEndpointProcessor implements Processor<Object> {
 
-    private static final Logger logger = LoggerFactory.getLogger(PushEndpointProcessor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PushEndpointProcessor.class);
 
     //@Override
     public void handle(AtmosphereFramework framework, Class<Object> annotatedClass) {
@@ -52,8 +52,9 @@ public class PushEndpointProcessor implements Processor<Object> {
                     this.getClass(), framework.getDefaultBroadcasterClassName());
 
             framework.addAtmosphereHandler(a.value(), handler, broadcaster(framework, b, a.value()), l);
-        } catch (Throwable e) {
-            logger.warn("", e);
+        }
+        catch (Throwable e) {
+            LOG.warn("", e);
         }
     }
 

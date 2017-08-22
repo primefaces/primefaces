@@ -21,28 +21,28 @@ import org.krysalis.barcode4j.impl.AbstractBarcodeBean;
 import org.krysalis.barcode4j.output.CanvasProvider;
 
 public abstract class BarcodeGenerator {
-   
-   private AbstractBarcodeBean barcodeBean;
-   
-   public BarcodeGenerator() {
-      super();
-   }
 
-   public BarcodeGenerator(AbstractBarcodeBean bean) {
-      this();
-      setBarcodeBean(bean);
-   }
+    private AbstractBarcodeBean barcodeBean;
 
-   public void generate(CanvasProvider canvasProvider, String value) throws IOException {
-      getBarcodeBean().generateBarcode(canvasProvider, value);
-   }
+    public BarcodeGenerator() {
+        super();
+    }
 
-   public AbstractBarcodeBean getBarcodeBean() {
-      return barcodeBean;
-   }
+    public BarcodeGenerator(AbstractBarcodeBean bean) {
+        this();
+        setBarcodeBean(bean);
+    }
 
-   public void setBarcodeBean(AbstractBarcodeBean barcodeBean) {
-      this.barcodeBean = barcodeBean;
-   }
-   
+    public void generate(CanvasProvider canvasProvider, String value) throws IOException {
+        getBarcodeBean().generateBarcode(canvasProvider, value);
+    }
+
+    public AbstractBarcodeBean getBarcodeBean() {
+        return barcodeBean;
+    }
+
+    public void setBarcodeBean(AbstractBarcodeBean barcodeBean) {
+        this.barcodeBean = barcodeBean;
+    }
+
 }

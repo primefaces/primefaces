@@ -18,7 +18,6 @@ package org.primefaces.component.datatable.feature;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.*;
-import java.util.logging.Logger;
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -45,21 +44,19 @@ import org.primefaces.util.Constants;
 
 public class FilterFeature implements DataTableFeature {
 
-    private final static Logger logger = Logger.getLogger(DataTable.class.getName());
+    private static final String STARTS_WITH_MATCH_MODE = "startsWith";
+    private static final String ENDS_WITH_MATCH_MODE = "endsWith";
+    private static final String CONTAINS_MATCH_MODE = "contains";
+    private static final String EXACT_MATCH_MODE = "exact";
+    private static final String LESS_THAN_MODE = "lt";
+    private static final String LESS_THAN_EQUALS_MODE = "lte";
+    private static final String GREATER_THAN_MODE = "gt";
+    private static final String GREATER_THAN_EQUALS_MODE = "gte";
+    private static final String EQUALS_MODE = "equals";
+    private static final String IN_MODE = "in";
+    private static final String GLOBAL_MODE = "global";
 
-    private final static String STARTS_WITH_MATCH_MODE = "startsWith";
-    private final static String ENDS_WITH_MATCH_MODE = "endsWith";
-    private final static String CONTAINS_MATCH_MODE = "contains";
-    private final static String EXACT_MATCH_MODE = "exact";
-    private final static String LESS_THAN_MODE = "lt";
-    private final static String LESS_THAN_EQUALS_MODE = "lte";
-    private final static String GREATER_THAN_MODE = "gt";
-    private final static String GREATER_THAN_EQUALS_MODE = "gte";
-    private final static String EQUALS_MODE = "equals";
-    private final static String IN_MODE = "in";
-    private final static String GLOBAL_MODE = "global";
-
-    final static Map<String, FilterConstraint> FILTER_CONSTRAINTS;
+    private static final Map<String, FilterConstraint> FILTER_CONSTRAINTS;
 
     static {
         FILTER_CONSTRAINTS = new HashMap<String, FilterConstraint>();

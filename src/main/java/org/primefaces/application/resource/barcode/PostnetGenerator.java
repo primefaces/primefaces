@@ -19,8 +19,8 @@ import org.krysalis.barcode4j.impl.postnet.POSTNETBean;
 
 public class PostnetGenerator extends BarcodeGenerator {
 
-   public PostnetGenerator() {
-      super(new POSTNETBean());
-   }
+    public PostnetGenerator() {
+        super(new POSTNETBean());
+    }
 
 }

@@ -19,8 +19,8 @@ import org.krysalis.barcode4j.impl.code128.Code128Bean;
 
 public class Code128Generator extends BarcodeGenerator {
 
-   public Code128Generator() {
-      super(new Code128Bean());
-   }
+    public Code128Generator() {
+        super(new Code128Bean());
+    }
 
 }

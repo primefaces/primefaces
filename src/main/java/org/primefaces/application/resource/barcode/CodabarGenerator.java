@@ -19,8 +19,8 @@ import org.krysalis.barcode4j.impl.codabar.CodabarBean;
 
 public class CodabarGenerator extends BarcodeGenerator {
 
-   public CodabarGenerator() {
-      super(new CodabarBean());
-   }
+    public CodabarGenerator() {
+        super(new CodabarBean());
+    }
 
 }

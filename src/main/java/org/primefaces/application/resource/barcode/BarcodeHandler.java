@@ -39,7 +39,7 @@ import org.w3c.dom.DocumentFragment;
 
 public class BarcodeHandler extends BaseDynamicContentHandler {
 
-    private final static Logger logger = Logger.getLogger(BarcodeHandler.class.getName());
+    private final static Logger LOG = Logger.getLogger(BarcodeHandler.class.getName());
 
     private final Map<String, BarcodeGenerator> generators;
 
@@ -73,7 +73,7 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
                 String hrp = params.get("hrp");
                 int orientation = Integer.parseInt(params.get("ori"));
                 boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
-                
+
                 generator.getBarcodeBean().setMsgPosition(HumanReadablePlacement.byName(hrp));
 
                 if (AgentUtils.isLessThanIE(context, 9)) {
@@ -109,7 +109,7 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
                 externalContext.setResponseStatus(200);
             }
             catch (Exception e) {
-                logger.log(Level.SEVERE, "Error in streaming barcode resource. {0}", new Object[]{e.getMessage()});
+                LOG.log(Level.SEVERE, "Error in streaming barcode resource. {0}", new Object[]{e.getMessage()});
             }
             finally {
                 externalContext.responseFlushBuffer();

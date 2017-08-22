@@ -19,8 +19,8 @@ import org.krysalis.barcode4j.impl.int2of5.Interleaved2Of5Bean;
 
 public class Int2of5Generator extends BarcodeGenerator {
 
-   public Int2of5Generator() {
-      super(new Interleaved2Of5Bean());
-   }
+    public Int2of5Generator() {
+        super(new Interleaved2Of5Bean());
+    }
 
 }

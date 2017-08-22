@@ -19,8 +19,8 @@ import org.krysalis.barcode4j.impl.upcean.UPCABean;
 
 public class UPCAGenerator extends BarcodeGenerator {
 
-   public UPCAGenerator() {
-      super(new UPCABean());
-   }
+    public UPCAGenerator() {
+        super(new UPCABean());
+    }
 
 }

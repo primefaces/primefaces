@@ -19,8 +19,8 @@ import org.krysalis.barcode4j.impl.pdf417.PDF417Bean;
 
 public class PDF417Generator extends BarcodeGenerator {
 
-   public PDF417Generator() {
-      super(new PDF417Bean());
-   }
+    public PDF417Generator() {
+        super(new PDF417Bean());
+    }
 
 }
