@@ -95,6 +95,18 @@ public class WidgetBuilder {
         context.getResponseWriter().writeAttribute("type", "text/javascript", null);
     }
 
+    public WidgetBuilder selectorAttr(String name, String value) throws IOException {
+        if (value != null) {
+            context.getResponseWriter().write(",");
+            context.getResponseWriter().write(name);
+            context.getResponseWriter().write(":\"");
+            context.getResponseWriter().write(value);
+            context.getResponseWriter().write("\"");
+        }
+
+        return this;
+    }
+    
     public WidgetBuilder attr(String name, String value) throws IOException {
         if (value != null) {
             context.getResponseWriter().write(",");

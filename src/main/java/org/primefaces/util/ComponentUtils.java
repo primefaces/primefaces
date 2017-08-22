@@ -173,7 +173,7 @@ public class ComponentUtils {
     }
 
     public static String escapeJQueryId(String id) {
-        return "#" + id.replaceAll(":", "\\\\:");
+        return "#" + id.replaceAll(":", "\\\\\\\\:");
     }
 
     public static String resolveWidgetVar(String expression) {
