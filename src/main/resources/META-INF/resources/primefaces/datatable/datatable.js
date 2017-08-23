@@ -2387,6 +2387,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var tabRow = forward ? cell.parent().next() : cell.parent().prev();
             targetCell = forward ? tabRow.children('td.ui-editable-column:first') : tabRow.children('td.ui-editable-column:last');
         }
+        
+        var cellEditor = targetCell.children('div.ui-cell-editor'),
+        inputContainer = cellEditor.children('div.ui-cell-editor-input');
+
+        if(inputContainer.length) {
+            var inputs = inputContainer.find(':input'),
+            disabledInputs = inputs.filter(':disabled');
+    
+            if(inputs.length === disabledInputs.length) {
+                this.tabCell(targetCell, forward);
+                return;
+            }
+        }
 
         this.showCellEditor(targetCell);
     },
