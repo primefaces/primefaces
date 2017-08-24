@@ -22,13 +22,13 @@ import org.junit.Test;
 public class ComponentUtilsTest {
 
     @Test
-    public void shouldEscapeJQueryId() {
+    public void escapeSelector() {
         String id = "test";
 
-        assertEquals("#test", ComponentUtils.escapeJQueryId(id));
+        assertEquals("test", ComponentUtils.escapeSelector(id));
 
         id = "form:test";
-        assertEquals("#form\\\\:test", ComponentUtils.escapeJQueryId(id));
+        assertEquals("form\\\\:test", ComponentUtils.escapeSelector(id));
     }
 
     @Test
