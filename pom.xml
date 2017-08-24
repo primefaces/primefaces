@@ -488,7 +488,16 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/growl/growl.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inplace/inplace.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/lightbox/lightbox.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.base.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.tieredmenu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.menubar.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.slidemenu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.plainmenu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.menubutton.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.contextmenu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.megamenu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.panelmenu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.tabmenu.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/messages/messages.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/notificationbar/notificationbar.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.js</include>
