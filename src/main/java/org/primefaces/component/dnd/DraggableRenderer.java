@@ -24,7 +24,6 @@ import org.primefaces.component.dashboard.Dashboard;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DraggableRenderer extends CoreRenderer {
