@@ -95,12 +95,22 @@ public class WidgetBuilder {
         context.getResponseWriter().writeAttribute("type", "text/javascript", null);
     }
 
+    /**
+     * This should only be used internally if the selector is directly used by jQuery on the client.
+     * If PFS is used and specified by the user, {@link #attr(java.lang.String, java.lang.String)} should be used
+     * as the users have to escape colons like @(myForm\:myId).
+     * 
+     * @param name
+     * @param value
+     * @return
+     * @throws IOException 
+     */
     public WidgetBuilder selectorAttr(String name, String value) throws IOException {
         if (value != null) {
             context.getResponseWriter().write(",");
             context.getResponseWriter().write(name);
             context.getResponseWriter().write(":\"");
-            context.getResponseWriter().write(value);
+            context.getResponseWriter().write(ComponentUtils.escapeSelector(value));
             context.getResponseWriter().write("\"");
         }
 

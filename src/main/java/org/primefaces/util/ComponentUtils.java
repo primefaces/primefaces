@@ -172,8 +172,8 @@ public class ComponentUtils {
         return component.getClientId(facesContext);
     }
 
-    public static String escapeJQueryId(String id) {
-        return "#" + id.replaceAll(":", "\\\\\\\\:");
+    public static String escapeSelector(String selector) {
+        return selector.replaceAll(":", "\\\\\\\\:");
     }
 
     public static String resolveWidgetVar(String expression) {

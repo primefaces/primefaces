@@ -70,9 +70,7 @@ public class DraggableRenderer extends CoreRenderer {
         String dashboard = draggable.getDashboard();
         if (dashboard != null) {
             Dashboard db = (Dashboard) SearchExpressionFacade.resolveComponent(context, draggable, dashboard);
-
-            String selector = ComponentUtils.escapeJQueryId(db.getClientId(context)) + " .ui-dashboard-column";
-            wb.selectorAttr("connectToSortable", selector);
+            wb.selectorAttr("connectToSortable", "#" + db.getClientId(context) + " .ui-dashboard-column");
         }
 
         wb.finish();

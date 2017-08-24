@@ -305,7 +305,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
         String trigger = menu.getTrigger();
         if (trigger != null) {
-            wb.selectorAttr("trigger", SearchExpressionFacade.resolveClientIds(context, (UIComponent) menu, trigger))
+            wb.attr("trigger", SearchExpressionFacade.resolveClientIds(context, (UIComponent) menu, trigger))
                     .attr("triggerEvent", menu.getTriggerEvent());
         }
     }

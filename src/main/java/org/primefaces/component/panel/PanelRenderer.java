@@ -133,7 +133,7 @@ public class PanelRenderer extends CoreRenderer {
 
         if (optionsMenu != null) {
             optionsMenu.setOverlay(true);
-            optionsMenu.setTrigger("@(" + ComponentUtils.escapeJQueryId(clientId) + "_menu)");
+            optionsMenu.setTrigger("@(#" + ComponentUtils.escapeSelector(clientId) + "_menu)");
             optionsMenu.setMy("left top");
             optionsMenu.setAt("left bottom");
 
