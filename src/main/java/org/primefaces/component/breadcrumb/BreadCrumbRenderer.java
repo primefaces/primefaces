@@ -72,7 +72,8 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 
                     if (item.isDisabled()) {
                         encodeDisabledMenuItem(context, item);
-                    } else {
+                    }
+                    else {
                         encodeMenuItem(context, menu, item);
                     }
 
@@ -139,7 +140,8 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         if (value != null) {
             if (menuItem.isEscape()) {
                 writer.writeText(value, "value");
-            } else {
+            }
+            else {
                 writer.write(value.toString());
             }
         }
