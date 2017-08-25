@@ -1,12 +1,12 @@
 /**
  * Copyright 2009-2017 PrimeTek.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,15 +15,16 @@
  */
 package org.primefaces.component.breadcrumb;
 
-import java.io.IOException;
-import java.util.List;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
+import java.util.List;
 
 public class BreadCrumbRenderer extends BaseMenuRenderer {
 
@@ -71,8 +72,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 
                     if (item.isDisabled()) {
                         encodeDisabledMenuItem(context, item);
-                    }
-                    else {
+                    } else {
                         encodeMenuItem(context, menu, item);
                     }
 
@@ -124,10 +124,26 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", style, null);
         }
 
+        String icon = menuItem.getIcon();
+        Object value = menuItem.getValue();
+
+        if (icon != null) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", BreadCrumb.MENUITEM_ICON_CLASS + " " + icon, null);
+            writer.endElement("span");
+        }
+
         writer.startElement("span", null);
         writer.writeAttribute("class", BreadCrumb.MENUITEM_TEXT_CLASS, null);
-        writer.writeText((String) menuItem.getValue(), "value");
-        writer.endElement("span");
+
+        if (value != null) {
+            if (menuItem.isEscape()) {
+                writer.writeText(value, "value");
+            } else {
+                writer.write(value.toString());
+            }
+        }
+
 
         writer.endElement("span");
     }
