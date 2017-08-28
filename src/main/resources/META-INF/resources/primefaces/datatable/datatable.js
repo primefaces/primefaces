@@ -2172,14 +2172,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         else if(this.cfg.editMode === 'cell') {
             var cellSelector = '> tr > td.ui-editable-column',
-            editEvent = this.cfg.editInitEvent + '.datatable-cell';
+            editEvent = (this.cfg.editInitEvent !== 'click') ? this.cfg.editInitEvent + '.datatable-cell click.datatable-cell' : 'click.datatable-cell';
             
             this.tbody.off(editEvent, cellSelector)
                         .on(editEvent, cellSelector, null, function(e) {
                             $this.incellClick = true;
                             
                             var cell = $(this);
-                            if(!cell.hasClass('ui-cell-editing')) {
+                            if(!cell.hasClass('ui-cell-editing') && e.type === $this.cfg.editInitEvent) {
                                 $this.showCellEditor($(this));
                                 
                                 if($this.cfg.editInitEvent === "dblclick") {
