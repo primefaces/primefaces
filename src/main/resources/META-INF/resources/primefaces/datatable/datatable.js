@@ -2512,6 +2512,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(rowMeta.key) {
             cellInfo = cellInfo + ',' + rowMeta.key;
         }
+        
+        this.currentCell = null;
 
         var options = {
             source: this.id,
@@ -2537,8 +2539,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 if($this.cfg.clientCache) {
                     $this.clearCacheMap();
                 }
-                
-                $this.currentCell = null;
             }
         };
 
