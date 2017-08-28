@@ -146,7 +146,14 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         //item label
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        writer.writeText(option.getLabel(), "itemLabel");
+        
+        if (option.isEscape()) {
+            writer.writeText(option.getLabel(), "itemLabel");
+        }
+        else {
+            writer.write(option.getLabel());
+        }
+        
         writer.endElement("span");
 
         writer.endElement("div");
