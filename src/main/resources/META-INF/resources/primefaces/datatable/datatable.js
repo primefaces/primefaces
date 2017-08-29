@@ -2190,6 +2190,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             $(document).off('click.datatable-cell-blur' + this.id)
                         .on('click.datatable-cell-blur' + this.id, function(e) {
+                            var target = $(e.target);
+                            if(!$this.incellClick && (target.is('.ui-selectonemenu-panel') || target.closest('.ui-selectonemenu-panel').length)) {
+                                $this.incellClick = true;
+                            }
+                            
                             if(!$this.incellClick && $this.currentCell && !$this.contextMenuClick && !$.datepicker._datepickerShowing) {
                                 if($this.cfg.saveOnCellBlur)
                                     $this.saveCell($this.currentCell);
