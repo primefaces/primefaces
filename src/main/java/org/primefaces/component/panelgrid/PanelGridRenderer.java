@@ -234,7 +234,7 @@ public class PanelGridRenderer extends CoreRenderer {
             }
 
             String columnClass = (colMod < columnClasses.length) ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim() : PanelGrid.CELL_CLASS;
-            if (!columnClass.contains("ui-grid-col-")) {
+            if (!columnClass.contains("ui-md-") && !columnClass.contains("ui-g-")) {
                 columnClass = columnClass + " " + GridLayoutUtils.getColumnClass(columns);
             }
 

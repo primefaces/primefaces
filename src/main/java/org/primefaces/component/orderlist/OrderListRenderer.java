@@ -77,7 +77,7 @@ public class OrderListRenderer extends CoreRenderer {
         }
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-grid-row", null);
+        writer.writeAttribute("class", "ui-g", null);
 
         if (controlsLocation.equals("left")) {
             encodeControls(context, ol);
@@ -98,7 +98,7 @@ public class OrderListRenderer extends CoreRenderer {
         String clientId = ol.getClientId(context);
         UIComponent caption = ol.getFacet("caption");
         String listStyleClass = OrderList.LIST_CLASS;
-        String columnGridClass = ol.getControlsLocation().equals("none") ? "ui-grid-col-12" : "ui-grid-col-10";
+        String columnGridClass = ol.getControlsLocation().equals("none") ? "ui-g-12 ui-md-12" : "ui-g-12 ui-md-10";
 
         writer.startElement("div", null);
         writer.writeAttribute("class", columnGridClass, null);
