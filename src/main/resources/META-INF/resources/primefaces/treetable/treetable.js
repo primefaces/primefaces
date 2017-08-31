@@ -38,6 +38,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     
     refresh: function(cfg) {
         this.columnWidthsFixed = false;
+        this.scrollStateVal = this.scrollStateHolder.val();
         this.init(cfg);
     },
     
@@ -1108,11 +1109,12 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     },
             
     restoreScrollState: function() {
-        var scrollState = this.scrollStateHolder.val(),
+        var scrollState = this.scrollStateVal||this.scrollStateHolder.val(),
         scrollValues = scrollState.split(',');
 
         this.scrollBody.scrollLeft(scrollValues[0]);
         this.scrollBody.scrollTop(scrollValues[1]);
+        this.scrollStateVal = null;
     },
     
     saveScrollState: function() {
