@@ -132,14 +132,14 @@ public class XMLExporter extends Exporter {
         writer.write("\t\t<" + tag + ">");
 
         if (column.getExportFunction() != null) {
-            writer.write(exportColumnByFunction(context, column));
+            writer.write(XMLUtils.escapeXml(exportColumnByFunction(context, column)));
         }
         else {
             for (UIComponent component : components) {
                 if (component.isRendered()) {
                     String value = exportValue(context, component);
                     if (value != null) {
-                        writer.write(value);
+                        writer.write(XMLUtils.escapeXml(value));
                     }
                 }
             }

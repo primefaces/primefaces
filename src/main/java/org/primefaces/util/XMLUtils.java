@@ -22,12 +22,10 @@ public class XMLUtils {
     /**
      * Ensure a valid XMLElement name is returned.<br>
      * Uses the {@link org.apache.xmlbeans.impl.common.XMLChar}<br>
-     * Replaces spaces by underscores,  &lt; by .lt, &gt; by .gt. and
-     * all other characters by '.X.', 
-     * where is the output of {@link java.lang.Integer}.toHexString()
+     * Replaces spaces by underscores, &lt; by .lt, &gt; by .gt. and all other characters by '.X.', where is the output of
+     * {@link java.lang.Integer}.toHexString()
      *
      * @param intag the source for the element name
-     *
      * @return valid XML element name
      */
     public static String escapeTag(String intag) {
@@ -65,6 +63,44 @@ public class XMLUtils {
             sb.insert(0, '_');
         }
 
+        return sb.toString();
+    }
+
+    /**
+     * Escapes <, >, ", &, and ' in XML strings.
+     * 
+     * @param value the value to escape
+     * @return the escaped XML string
+     */
+    public static String escapeXml(String value) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < value.length(); i++) {
+            char c = value.charAt(i);
+            switch (c) {
+                case '<':
+                    sb.append("&lt;");
+                    break;
+                case '>':
+                    sb.append("&gt;");
+                    break;
+                case '\"':
+                    sb.append("&quot;");
+                    break;
+                case '&':
+                    sb.append("&amp;");
+                    break;
+                case '\'':
+                    sb.append("&apos;");
+                    break;
+                default:
+                    if (c > 0x7e) {
+                        sb.append("&#" + ((int) c) + ";");
+                    }
+                    else {
+                        sb.append(c);
+                    }
+            }
+        }
         return sb.toString();
     }
 }
