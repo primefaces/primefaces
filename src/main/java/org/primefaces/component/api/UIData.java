@@ -66,6 +66,7 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.model.CollectionDataModel;
 import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.SharedStringBuilder;
 
 public class UIData extends javax.faces.component.UIData {
 
@@ -92,9 +93,10 @@ public class UIData extends javax.faces.component.UIData {
     public static final String ARIA_NEXT_PAGE_LABEL = "primefaces.paginator.aria.NEXT_PAGE";
     public static final String ARIA_LAST_PAGE_LABEL = "primefaces.paginator.aria.LAST_PAGE";
     public static final String ROWS_PER_PAGE_LABEL = "primefaces.paginator.aria.ROWS_PER_PAGE";
+    
+    private static final String SB_ID = UIData.class.getName() + "#id";
 
     private String clientId = null;
-    private StringBuilder idBuilder = new StringBuilder();
     private DataModel model = null;
     private Object oldVar = null;
     private Map<String, Object> _rowDeltaStates = new HashMap<String, Object>();
@@ -421,8 +423,8 @@ public class UIData extends javax.faces.component.UIData {
             String containerClientId = namingContainer.getContainerClientId(context);
 
             if (containerClientId != null) {
-                this.clientId = this.idBuilder.append(containerClientId).append(UINamingContainer.getSeparatorChar(context)).append(id).toString();
-                this.idBuilder.setLength(0);
+                StringBuilder sb = SharedStringBuilder.get(getFacesContext(), SB_ID, containerClientId.length() + 10);
+                this.clientId = sb.append(containerClientId).append(UINamingContainer.getSeparatorChar(context)).append(id).toString();
             }
             else {
                 this.clientId = id;
@@ -450,8 +452,8 @@ public class UIData extends javax.faces.component.UIData {
             return componentClientId;
         }
 
-        String containerClientId = idBuilder.append(componentClientId).append(UINamingContainer.getSeparatorChar(context)).append(rowIndex).toString();
-        idBuilder.setLength(0);
+        StringBuilder sb = SharedStringBuilder.get(getFacesContext(), SB_ID, componentClientId.length() + 4);
+        String containerClientId = sb.append(componentClientId).append(UINamingContainer.getSeparatorChar(context)).append(rowIndex).toString();
 
         return containerClientId;
     }

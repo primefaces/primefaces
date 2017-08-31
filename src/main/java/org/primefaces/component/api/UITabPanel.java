@@ -55,6 +55,7 @@ import javax.faces.render.Renderer;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.SharedStringBuilder;
 
 /**
  * UITabPanel is a specialized version of UIRepeat focusing on components that repeat tabs like tabView and accordionPanel.
@@ -67,6 +68,8 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     private static final Class<Object[]> OBJECT_ARRAY_CLASS = Object[].class;
 
     private static final Object[] LEAF_NO_STATE = new Object[]{null, null};
+    
+    private static final String SB_ID = UITabPanel.class.getName() + "#id";
 
     public enum PropertyKeys {
         value,
@@ -102,7 +105,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     private int _index = -1;
 
-    private transient StringBuilder _clientIdBuffer;
     private transient Object _origValue;
     private transient Object _origVarStatus;
 
@@ -231,8 +233,8 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                 return clientId;
             }
 
-            StringBuilder bld = _getBuffer(); //SharedStringBuilder(context);
-            return bld.append(clientId).append(UINamingContainer.getSeparatorChar(context)).append(index).toString();
+            StringBuilder sb = SharedStringBuilder.get(getFacesContext(), SB_ID, clientId.length() + 4);
+            return sb.append(clientId).append(UINamingContainer.getSeparatorChar(context)).append(index).toString();
         } else {
             UIComponent parent = this.getParent();
             while (parent != null) {
@@ -260,16 +262,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         if (varStatus != null) {
             _origVarStatus = getFacesContext().getExternalContext().getRequestMap().get(varStatus);
         }
-    }
-
-    private StringBuilder _getBuffer() {
-        if (_clientIdBuffer == null) {
-            _clientIdBuffer = new StringBuilder();
-        }
-
-        _clientIdBuffer.setLength(0);
-
-        return _clientIdBuffer;
     }
 
     private boolean _isIndexAvailable() {

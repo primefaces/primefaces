@@ -33,12 +33,15 @@ import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
 import org.primefaces.context.RequestContext;
+import org.primefaces.util.SharedStringBuilder;
 
 /**
  * {@link TagHandler} for the <code>ImportConstants</code> component.
  */
 public class ImportConstantsTagHandler extends TagHandler {
 
+    private static final String SB_VAR = ImportConstantsTagHandler.class.getName() + "#var";
+    
     private final TagAttribute typeTagAttribute;
     private final TagAttribute varTagAttribute;
 
@@ -67,7 +70,7 @@ public class ImportConstantsTagHandler extends TagHandler {
         }
 
         if (var.charAt(0) != '#') {
-            StringBuilder varBuilder = new StringBuilder();
+            StringBuilder varBuilder = SharedStringBuilder.get(facesContext, SB_VAR, var.length() + 3);
             varBuilder.append("#{").append(var).append("}");
 
             var = varBuilder.toString();

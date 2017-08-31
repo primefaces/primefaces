@@ -31,6 +31,7 @@ import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
 import org.primefaces.context.RequestContext;
+import org.primefaces.util.SharedStringBuilder;
 
 /**
  * {@link TagHandler} for the <code>ImportEnum</code> component.
@@ -38,6 +39,7 @@ import org.primefaces.context.RequestContext;
 public class ImportEnumTagHandler extends TagHandler {
 
     private static final String DEFAULT_ALL_SUFFIX = "ALL_VALUES";
+    private static final String SB_VAR = ImportEnumTagHandler.class.getName() + "#var";
 
     private final TagAttribute typeTagAttribute;
     private final TagAttribute varTagAttribute;
@@ -70,7 +72,7 @@ public class ImportEnumTagHandler extends TagHandler {
         }
 
         if (var.charAt(0) != '#') {
-            StringBuilder varBuilder = new StringBuilder();
+            StringBuilder varBuilder = SharedStringBuilder.get(facesContext, SB_VAR, var.length() + 3);
             varBuilder.append("#{").append(var).append("}");
 
             var = varBuilder.toString();
