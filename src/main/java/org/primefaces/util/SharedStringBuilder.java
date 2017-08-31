@@ -26,13 +26,14 @@ public class SharedStringBuilder {
      *
      * @param context The {@link FacesContext}
      * @param key The key for the {@link FacesContext} attributes.
+     * @param initialSize The initial size for the {@link StringBuilder}.
      * @return The shared {@link StringBuilder} instance
      */
-    public static StringBuilder get(FacesContext context, String key) {
+    public static StringBuilder get(FacesContext context, String key, int initialSize) {
         StringBuilder builder = (StringBuilder) context.getAttributes().get(key);
 
         if (builder == null) {
-            builder = new StringBuilder();
+            builder = new StringBuilder(initialSize);
             context.getAttributes().put(key, builder);
         }
         else {
@@ -42,6 +43,19 @@ public class SharedStringBuilder {
         return builder;
     }
 
+    /**
+     * Get a shared {@link StringBuilder} instance.
+     * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveClientId} calls would create 
+     * 300 {@link StringBuilder} instances!
+     *
+     * @param context The {@link FacesContext}
+     * @param key The key for the {@link FacesContext} attributes.
+     * @return The shared {@link StringBuilder} instance
+     */
+    public static StringBuilder get(FacesContext context, String key) {
+        return get(context, key, 16);
+    }
+    
     /**
      * Get a shared {@link StringBuilder} instance.
      * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveClientId} calls would create 
