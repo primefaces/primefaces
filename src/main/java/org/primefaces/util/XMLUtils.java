@@ -70,42 +70,4 @@ public class XMLUtils {
         return sb.toString();
     }
 
-    /**
-     * Escapes <, >, ", &, and ' in XML strings.
-     * 
-     * @param value the value to escape
-     * @return the escaped XML string
-     */
-    public static String escapeXml(String value) {
-        StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE, value.length());
-        
-        for (int i = 0; i < value.length(); i++) {
-            char c = value.charAt(i);
-            switch (c) {
-                case '<':
-                    sb.append("&lt;");
-                    break;
-                case '>':
-                    sb.append("&gt;");
-                    break;
-                case '\"':
-                    sb.append("&quot;");
-                    break;
-                case '&':
-                    sb.append("&amp;");
-                    break;
-                case '\'':
-                    sb.append("&apos;");
-                    break;
-                default:
-                    if (c > 0x7e) {
-                        sb.append("&#" + ((int) c) + ";");
-                    }
-                    else {
-                        sb.append(c);
-                    }
-            }
-        }
-        return sb.toString();
-    }
 }

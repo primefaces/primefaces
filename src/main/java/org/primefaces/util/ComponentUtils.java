@@ -481,25 +481,33 @@ public class ComponentUtils {
      * @param string The string to be escaped.
      * @return The escaped string.
      */
-    public static String escapeXml(String string) {
-        StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE, string.length());
-        for (int i = 0, length = string.length(); i < length; i++) {
-            char c = string.charAt(i);
+    public static String escapeXml(String value) {
+        StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE, value.length());
+        for (int i = 0, length = value.length(); i < length; i++) {
+            char c = value.charAt(i);
             switch (c) {
-                case '&':
-                    sb.append("&amp;");
-                    break;
                 case '<':
                     sb.append("&lt;");
                     break;
                 case '>':
                     sb.append("&gt;");
                     break;
+                case '\"':
+                    sb.append("&quot;");
+                    break;
+                case '&':
+                    sb.append("&amp;");
+                    break;
                 case '\'':
                     sb.append("&apos;");
                     break;
                 default:
-                    sb.append(c);
+                    if (c > 0x7e) {
+                        sb.append("&#" + ((int) c) + ";");
+                    }
+                    else {
+                        sb.append(c);
+                    }
             }
         }
         return sb.toString();
