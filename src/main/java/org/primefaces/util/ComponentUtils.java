@@ -51,7 +51,7 @@ public class ComponentUtils {
 
     public static final String SKIP_ITERATION_HINT = "javax.faces.visit.SKIP_ITERATION";
 
-    private static final String SB_ESCAPE_TEXT = ComponentUtils.class.getName() + "#escapeText";
+    private static final String SB_ESCAPE = ComponentUtils.class.getName() + "#escape";
 
     // marker for a undefined value when a null check is not reliable enough
     private static final Object UNDEFINED_VALUE = new Object();
@@ -390,7 +390,7 @@ public class ComponentUtils {
             return null;
         }
 
-        StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE_TEXT);
+        StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE);
 
         for (int i = 0; i < text.length(); i++) {
             char ch = text.charAt(i);
@@ -443,7 +443,7 @@ public class ComponentUtils {
             return null;
         }
 
-        StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE_TEXT);
+        StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE);
 
         for (int i = 0; i < text.length(); i++) {
             char ch = text.charAt(i);
@@ -482,7 +482,7 @@ public class ComponentUtils {
      * @return The escaped string.
      */
     public static String escapeXml(String string) {
-        StringBuilder sb = new StringBuilder(string.length());
+        StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE, string.length());
         for (int i = 0, length = string.length(); i < length; i++) {
             char c = string.charAt(i);
             switch (c) {
