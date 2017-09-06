@@ -1060,6 +1060,15 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             this.columnWidthsFixed = true;
         }
     },
+    
+    updateColumnWidths: function() {
+        this.columnWidthsFixed = false;
+        this.jq.find('> table > thead > tr > th').each(function() {
+            var col = $(this);
+            col.css('width', '');
+        });
+        this.fixColumnWidths();
+    },
 
     adjustScrollHeight: function() {
         var relativeHeight = this.jq.parent().innerHeight() * (parseInt(this.cfg.scrollHeight) / 100),
