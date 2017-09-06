@@ -187,7 +187,10 @@ public class PanelRenderer extends CoreRenderer {
         //Actions
         UIComponent actionsFacet = panel.getFacet("actions");
         if (actionsFacet != null) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", Panel.PANEL_ACTIONS_CLASS, null);
             actionsFacet.encodeAll(context);
+            writer.endElement("div");
         }
 
         writer.endElement("div");
