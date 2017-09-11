@@ -95,7 +95,6 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
 
                             // show prompt again and focus input
                             $this.promptContainerParent.show();
-
                             $this.focus();
 
                             // add response
@@ -128,7 +127,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                             var responseObj = JSON.parse(content);
 
                             if (responseObj == null) {
-                            	// if the response is null (no command model), do nothing
+                                // if the response is null (no command model), do nothing
                             } else if (responseObj == null || responseObj.matches.length === 1) { // if there is one match, replace the current command with the match
                                 if (responseObj.baseCommand == '') {
                                     $this.input.val(responseObj.matches[0]);
@@ -193,14 +192,14 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
     },
 
     focus: function() {
-    	if (PrimeFaces.env.isIE()) {
-    		window.setTimeout(function(terminal){
-    			terminal.input.trigger('focus');
-    		}, 50);
-    	}
-    	else {
-    		this.input.trigger('focus');
-    	}
+        if (PrimeFaces.env.isIE()) {
+            window.setTimeout(function(terminal){
+                terminal.input.trigger('focus');
+            }, 50);
+        }
+        else {
+            this.input.trigger('focus');
+        }
     },
 
     clear: function() {

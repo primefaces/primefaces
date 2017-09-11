@@ -47,7 +47,6 @@ public class TerminalRenderer extends CoreRenderer {
     }
 
     protected void encodeMarkup(FacesContext context, Terminal terminal) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = terminal.getClientId(context);
         String style = terminal.getStyle();
         String styleClass = terminal.getStyleClass();
@@ -55,6 +54,8 @@ public class TerminalRenderer extends CoreRenderer {
         String welcomeMessage = terminal.getWelcomeMessage();
         String prompt = terminal.getPrompt();
         String inputId = clientId + "_input";
+        
+        ResponseWriter writer = context.getResponseWriter();
         
         writer.startElement("div", terminal);
         writer.writeAttribute("id", clientId, "id");
