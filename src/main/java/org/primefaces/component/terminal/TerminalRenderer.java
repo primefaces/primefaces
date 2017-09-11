@@ -36,9 +36,11 @@ public class TerminalRenderer extends CoreRenderer {
            
         if (terminal.isCommandRequest()) {
             handleCommand(context, terminal);
-        } else if(terminal.isAutoCompleteRequest()) {
+        }
+        else if (terminal.isAutoCompleteRequest()) {
             autoCompleteCommand(context, terminal);
-        } else {
+        }
+        else {
             encodeMarkup(context, terminal);
             encodeScript(context, terminal);
         }
@@ -65,8 +67,8 @@ public class TerminalRenderer extends CoreRenderer {
             writer.startElement("div", null);
             if (terminal.isEscape()) {
                 writer.writeText(welcomeMessage, null);
-            else {
             }
+            else {
                 writer.write(welcomeMessage);
             }
             writer.endElement("div");
@@ -82,8 +84,8 @@ public class TerminalRenderer extends CoreRenderer {
         if (terminal.isEscape()) {
             writer.writeText(prompt, null);
         }
-            writer.write(prompt);
         else {
+            writer.write(prompt);
         }
         writer.endElement("span");
 
@@ -129,12 +131,12 @@ public class TerminalRenderer extends CoreRenderer {
 
         MethodExpression commandModelHandler = terminal.getCommandModel();
         ResponseWriter writer = context.getResponseWriter();
-		
+
         if (commandModelHandler == null) {
         } else {
             writer.write("null");
             TreeNode commandModel = (TreeNode) commandModelHandler.invoke(context.getELContext(), new Object[]{});
-			
+
             AutoCompleteMatches matches = terminal.traverseCommandModel(commandModel, command, args);
             writer.write(matches.toString());
         }

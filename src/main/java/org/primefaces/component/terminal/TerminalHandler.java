@@ -24,16 +24,16 @@ import org.primefaces.model.TreeNode;
 
 public class TerminalHandler extends ComponentHandler {
 
-	private static final MethodRule COMMAND_HANDLER =
-			new MethodRule("commandHandler", String.class, new Class[]{ String.class, String[].class });
-	
-	private static final MethodRule COMMAND_MODEL =
-			new MethodRule("commandModel", TreeNode.class, new Class[]{});
-	
+    private static final MethodRule COMMAND_HANDLER =
+            new MethodRule("commandHandler", String.class, new Class[]{ String.class, String[].class });
+
+    private static final MethodRule COMMAND_MODEL =
+            new MethodRule("commandModel", TreeNode.class, new Class[]{});
+
     public TerminalHandler(ComponentConfig config) {
         super(config);
     }
-    
+
     @SuppressWarnings("unchecked")
     protected MetaRuleset createMetaRuleset(Class type) {
         MetaRuleset metaRuleset = super.createMetaRuleset(type);
