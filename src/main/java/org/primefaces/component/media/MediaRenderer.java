@@ -57,6 +57,11 @@ public class MediaRenderer extends CoreRenderer {
                 src = src.substring(0, index) + ";/" + streamedContent.getName() + "" + src.substring(index, src.length());
             }
         }
+        
+        String zoom = media.getZoom();
+        if (zoom != null && player.getType().equals("application/pdf")) {
+            src = src + "#zoom=" + zoom; 
+        }
 
         writer.startElement("object", media);
         writer.writeAttribute("type", player.getType(), null);
