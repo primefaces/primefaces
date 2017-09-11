@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,16 +30,17 @@ public class TerminalHandler extends ComponentHandler {
 	private static final MethodRule COMMAND_MODEL =
 			new MethodRule("commandModel", TreeNode.class, new Class[]{});
 	
-	public TerminalHandler(ComponentConfig config) {
-		super(config);
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected MetaRuleset createMetaRuleset(Class type) { 
-		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
-		metaRuleset.addRule(COMMAND_HANDLER);
-		metaRuleset.addRule(COMMAND_MODEL);
-		
-		return metaRuleset; 
-	} 
+    public TerminalHandler(ComponentConfig config) {
+        super(config);
+    }
+    
+    @SuppressWarnings("unchecked")
+    protected MetaRuleset createMetaRuleset(Class type) {
+        MetaRuleset metaRuleset = super.createMetaRuleset(type);
+        metaRuleset.addRule(COMMAND_HANDLER);
+        metaRuleset.addRule(COMMAND_MODEL);
+
+        return metaRuleset;
+    }
+
 }

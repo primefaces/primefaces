@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,42 +21,42 @@ import java.util.List;
 
 public class DefaultDashboardColumn implements DashboardColumn, Serializable {
 
-	private List<String> widgets;
+    private List<String> widgets;
     private String style;
     private String styleClass;
-	
-	public DefaultDashboardColumn() {
-		widgets = new LinkedList<String>();
-	}
-	
-	public void removeWidget(String widgetId) {
-		widgets.remove(widgetId);
-	}
 
-	public List<String> getWidgets() {
-		return widgets;
-	}
-	
-	public int getWidgetCount() {
-		return widgets.size();
-	}
-	
-	public String getWidget(int index) {
-		return widgets.get(index);
-	}
-	
-	public void addWidget(int index, String widgetId) {
+    public DefaultDashboardColumn() {
+        widgets = new LinkedList<String>();
+    }
+
+    public void removeWidget(String widgetId) {
+        widgets.remove(widgetId);
+    }
+
+    public List<String> getWidgets() {
+        return widgets;
+    }
+
+    public int getWidgetCount() {
+        return widgets.size();
+    }
+
+    public String getWidget(int index) {
+        return widgets.get(index);
+    }
+
+    public void addWidget(int index, String widgetId) {
         widgets.add(index, widgetId);
-	}
+    }
 
-	public void reorderWidget(int index, String widgetId) {
-		widgets.remove(widgetId);
-		widgets.add(index, widgetId);
-	}
+    public void reorderWidget(int index, String widgetId) {
+        widgets.remove(widgetId);
+        widgets.add(index, widgetId);
+    }
 
-	public void addWidget(String widgetId) {
-		widgets.add(widgetId);
-	}
+    public void addWidget(String widgetId) {
+        widgets.add(widgetId);
+    }
 
     public String getStyle() {
         return style;

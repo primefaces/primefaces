@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,38 +25,38 @@ import org.primefaces.util.WidgetBuilder;
 
 public class InputTextareaRenderer extends org.primefaces.component.inputtextarea.InputTextareaRenderer {
 
-	@Override
-	public void encodeMarkup(FacesContext context, InputTextarea inputTextarea) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
+    @Override
+    public void encodeMarkup(FacesContext context, InputTextarea inputTextarea) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         String clientId = inputTextarea.getClientId(context);
         String valueToRender = ComponentUtils.getValueToRender(context, inputTextarea);
         String style = inputTextarea.getStyle();
         String styleClass = inputTextarea.getStyleClass();
-        styleClass = (styleClass == null) ? InputTextarea.MOBILE_STYLE_CLASS: InputTextarea.MOBILE_STYLE_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? InputTextarea.MOBILE_STYLE_CLASS : InputTextarea.MOBILE_STYLE_CLASS + " " + styleClass;
         styleClass = !inputTextarea.isDisabled() ? styleClass : styleClass + " ui-state-disabled";
-        
-		writer.startElement("textarea", inputTextarea);
-        writer.writeAttribute("data-role", "none", null);
-		writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("name", clientId, null);
-        writer.writeAttribute("class", styleClass, null); 
 
-		renderPassThruAttributes(context, inputTextarea, HTML.INPUT_TEXTAREA_ATTRS);
+        writer.startElement("textarea", inputTextarea);
+        writer.writeAttribute("data-role", "none", null);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("name", clientId, null);
+        writer.writeAttribute("class", styleClass, null);
+
+        renderPassThruAttributes(context, inputTextarea, HTML.INPUT_TEXTAREA_ATTRS);
         renderDomEvents(context, inputTextarea, HTML.INPUT_TEXT_EVENTS);
 
-        if(inputTextarea.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
-        if(inputTextarea.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
-        if(style != null) writer.writeAttribute("style", style, null);  
-		if(valueToRender != null) writer.writeText(valueToRender, "value");        
+        if (inputTextarea.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+        if (inputTextarea.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
+        if (style != null) writer.writeAttribute("style", style, null);  
+        if (valueToRender != null) writer.writeText(valueToRender, "value");        
 
         writer.endElement("textarea");
-	}
-    
+    }
+
     @Override
-	public void encodeScript(FacesContext context, InputTextarea inputTextarea) throws IOException {
-		String clientId = inputTextarea.getClientId(context);
-        
+    public void encodeScript(FacesContext context, InputTextarea inputTextarea) throws IOException {
+        String clientId = inputTextarea.getClientId(context);
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("InputTextarea", inputTextarea.resolveWidgetVar(), clientId).finish();
-	}
+    }
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,59 +25,59 @@ import org.primefaces.component.tieredmenu.TieredMenuRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 public class SlideMenuRenderer extends TieredMenuRenderer {
-    
+
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         SlideMenu menu = (SlideMenu) abstractMenu;
-		String clientId = menu.getClientId(context);
+        String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("SlideMenu", menu.resolveWidgetVar(), clientId);
-        
-        if(menu.isOverlay()) {
+
+        if (menu.isOverlay()) {
             encodeOverlayConfig(context, menu, wb);
         }
 
         wb.finish();
-	}
+    }
 
     @Override
-	protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
+    protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         SlideMenu menu = (SlideMenu) abstractMenu;
-        
+
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
         String defaultStyleClass = menu.isOverlay() ? SlideMenu.DYNAMIC_CONTAINER_CLASS : SlideMenu.STATIC_CONTAINER_CLASS;
-        styleClass = styleClass == null ?  defaultStyleClass : defaultStyleClass + " " + styleClass;
-        
+        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+
         writer.startElement("div", menu);
-		writer.writeAttribute("id", menu.getClientId(context), "id");
+        writer.writeAttribute("id", menu.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
         writer.writeAttribute("role", "menu", null);
-        
+
         //wrapper
         writer.startElement("div", menu);
         writer.writeAttribute("class", SlideMenu.WRAPPER_CLASS, "styleClass");
-        
+
         //content
         writer.startElement("div", menu);
         writer.writeAttribute("class", SlideMenu.CONTENT_CLASS, "styleClass");
 
         //root menu
-        if(menu.getElementsCount() > 0) {
+        if (menu.getElementsCount() > 0) {
             writer.startElement("ul", null);
             writer.writeAttribute("class", Menu.LIST_CLASS, null);
             encodeElements(context, abstractMenu, menu.getElements());
             writer.endElement("ul");
         }
-        
+
         //content
         writer.endElement("div");
-                
+
         //back navigator
         writer.startElement("div", menu);
         writer.writeAttribute("class", SlideMenu.BACKWARD_CLASS, null);
@@ -86,10 +86,10 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
         writer.endElement("span");
         writer.write(menu.getBackLabel());
         writer.endElement("div");
-        
+
         //wrapper
         writer.endElement("div");
 
         writer.endElement("div");
-	}
+    }
 }

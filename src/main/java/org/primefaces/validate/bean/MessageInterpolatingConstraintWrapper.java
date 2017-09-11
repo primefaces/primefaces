@@ -1,17 +1,17 @@
-/*
- * Copyright 2009-2014 PrimeTek.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- * 
+/**
+ * Copyright 2009-2017 PrimeTek.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.primefaces.validate.bean;
 
@@ -23,7 +23,7 @@ import javax.validation.MessageInterpolator;
 import javax.validation.metadata.ConstraintDescriptor;
 
 public class MessageInterpolatingConstraintWrapper extends ConstraintDescriptorWrapper<Annotation> {
-    
+
     private final MessageInterpolator interpolator;
     private final MessageInterpolator.Context context;
 
@@ -36,7 +36,7 @@ public class MessageInterpolatingConstraintWrapper extends ConstraintDescriptorW
     @Override
     public Map<String, Object> getAttributes() {
         Map<String, Object> attributes = super.getAttributes();
-        
+
         // wrap it - could be unmodifiable
         attributes = new HashMap<String, Object>(attributes);
 
@@ -53,17 +53,17 @@ public class MessageInterpolatingConstraintWrapper extends ConstraintDescriptorW
     private MessageInterpolator.Context getContext() {
         return context;
     }
-    
+
     public class ContextImpl implements MessageInterpolator.Context {
 
         private final ConstraintDescriptor<?> constraintDescriptor;
         private final Object validatedValue;
-        
+
         public ContextImpl(ConstraintDescriptor<?> constraintDescriptor, Object validatedValue) {
             this.constraintDescriptor = constraintDescriptor;
             this.validatedValue = validatedValue;
         }
-        
+
         public ConstraintDescriptor<?> getConstraintDescriptor() {
             return constraintDescriptor;
         }

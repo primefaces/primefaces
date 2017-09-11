@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,35 +27,39 @@ import org.primefaces.util.WidgetBuilder;
 public class ImageSwitchRenderer extends CoreRenderer {
 
     @Override
-	public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-		ImageSwitch imageSwitch = (ImageSwitch) component;
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+        ImageSwitch imageSwitch = (ImageSwitch) component;
         ResponseWriter writer = context.getResponseWriter();
-		String clientId = imageSwitch.getClientId(context);
+        String clientId = imageSwitch.getClientId(context);
 
         writer.startElement("div", imageSwitch);
-		writer.writeAttribute("id", clientId, "id");
-        
-		if(imageSwitch.getStyle() != null) writer.writeAttribute("style", imageSwitch.getStyle(), null);
-		if(imageSwitch.getStyleClass() != null) writer.writeAttribute("class", imageSwitch.getStyleClass(), null);
-	}
+        writer.writeAttribute("id", clientId, "id");
+
+        if (imageSwitch.getStyle() != null) {
+            writer.writeAttribute("style", imageSwitch.getStyle(), null);
+        }
+        if (imageSwitch.getStyleClass() != null) {
+            writer.writeAttribute("class", imageSwitch.getStyleClass(), null);
+        }
+    }
 
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ImageSwitch imageSwitch = (ImageSwitch) component;
         String clientId = imageSwitch.getClientId(context);
         ResponseWriter writer = context.getResponseWriter();
         int slideshowSpeed = imageSwitch.isSlideshowAuto() ? imageSwitch.getSlideshowSpeed() : 0;
-        
+
         writer.endElement("div");
-        
+
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("ImageSwitch", imageSwitch.resolveWidgetVar(), clientId)            
-            .attr("fx", imageSwitch.getEffect())
-            .attr("speed", imageSwitch.getSpeed())
-            .attr("timeout", slideshowSpeed)
-            .attr("startingSlide", imageSwitch.getActiveIndex(), 0);
+        wb.initWithDomReady("ImageSwitch", imageSwitch.resolveWidgetVar(), clientId)
+                .attr("fx", imageSwitch.getEffect())
+                .attr("speed", imageSwitch.getSpeed())
+                .attr("timeout", slideshowSpeed)
+                .attr("startingSlide", imageSwitch.getActiveIndex(), 0);
 
         wb.finish();
-	}
+    }
 
 }

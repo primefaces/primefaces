@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2015 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.columns.Columns;
 
 public class DynamicColumn implements UIColumn {
-    
+
     private int index;
     private Columns columns;
     private String columnKey;
@@ -34,7 +34,7 @@ public class DynamicColumn implements UIColumn {
         this.index = index;
         this.columns = columns;
     }
-    
+
     public DynamicColumn(int index, Columns columns, String columnKey) {
         this.index = index;
         this.columns = columns;
@@ -44,19 +44,19 @@ public class DynamicColumn implements UIColumn {
     public int getIndex() {
         return index;
     }
-    
+
     public void applyModel() {
         this.columns.setRowIndex(index);
     }
-    
+
     public void applyStatelessModel() {
         this.columns.setRowModel(index);
     }
-    
+
     public void cleanStatelessModel() {
         this.columns.setRowModel(-1);
     }
-    
+
     public void cleanModel() {
         this.columns.setRowIndex(-1);
     }
@@ -68,9 +68,9 @@ public class DynamicColumn implements UIColumn {
     public String getContainerClientId(FacesContext context) {
         return this.columns.getContainerClientId(context);
     }
-    
+
     public String getId() {
-    	return this.columns.getId();
+        return this.columns.getId();
     }
 
     public String getClientId() {
@@ -172,15 +172,15 @@ public class DynamicColumn implements UIColumn {
     public void renderChildren(FacesContext context) throws IOException {
         this.columns.encodeChildren(context);
     }
-    
+
     public String getColumnKey() {
         return this.columnKey;
     }
-    
+
     public void setColumnKey(String columnKey) {
         this.columnKey = columnKey;
     }
-    
+
     public String getWidth() {
         return this.columns.getWidth();
     }
@@ -196,7 +196,7 @@ public class DynamicColumn implements UIColumn {
     public boolean isToggleable() {
         return this.columns.isToggleable();
     }
-    
+
     public MethodExpression getFilterFunction() {
         return this.columns.getFilterFunction();
     }
@@ -208,11 +208,11 @@ public class DynamicColumn implements UIColumn {
     public Object getFilterValue() {
         return this.columns.getFilterValue();
     }
-    
+
     public int getPriority() {
         return this.columns.getPriority();
     }
-    
+
     public boolean isSortable() {
         return this.columns.isSortable();
     }
@@ -224,15 +224,15 @@ public class DynamicColumn implements UIColumn {
     public boolean isVisible() {
         return this.columns.isVisible();
     }
-    
+
     public boolean isSelectRow() {
         return this.columns.isSelectRow();
     }
-    
+
     public String getAriaHeaderText() {
         return this.columns.getAriaHeaderText();
     }
-    
+
     public MethodExpression getExportFunction() {
         return this.columns.getExportFunction();
     }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,10 @@ import java.util.Map;
 import javax.validation.metadata.ConstraintDescriptor;
 
 public interface ClientValidationConstraint {
-    
+
     public static final String ATTR_MESSAGE = "message";
-    
-    public Map<String,Object> getMetadata(ConstraintDescriptor constraintDescriptor);
-    
+
+    public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor);
+
     public String getValidatorId();
 }

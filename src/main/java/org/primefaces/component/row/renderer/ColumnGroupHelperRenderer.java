@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,10 +25,10 @@ public class ColumnGroupHelperRenderer extends CoreRenderer implements HelperRow
 
     public void encode(FacesContext context, Row row) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
         writer.startElement("tr", row);
         renderChildren(context, row);
         writer.endElement("tr");
     }
-    
+
 }

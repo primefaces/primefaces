@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,13 +24,13 @@ import org.primefaces.util.Constants;
 import org.primefaces.util.ResourceUtils;
 
 public class CalendarResourceListener implements SystemEventListener {
-    
+
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
         UIViewRoot view = context.getViewRoot();
         String renderKitId = view.getRenderKitId();
-        
-        if(Constants.MOBILE_RENDER_KIT_ID.equals(renderKitId)) {
+
+        if (Constants.MOBILE_RENDER_KIT_ID.equals(renderKitId)) {
             ResourceUtils.addComponentResource(context, "mobile/widgets/datepicker.css", Constants.LIBRARY, "head");
             ResourceUtils.addComponentResource(context, "mobile/widgets/datepicker.js", Constants.LIBRARY, "head");
         }

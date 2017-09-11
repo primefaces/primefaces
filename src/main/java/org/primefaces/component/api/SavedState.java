@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,36 +17,34 @@ package org.primefaces.component.api;
 
 import java.io.Serializable;
 
-@SuppressWarnings({"SerializableHasSerializationMethods","NonSerializableFieldInSerializableClass"})
+@SuppressWarnings({"SerializableHasSerializationMethods", "NonSerializableFieldInSerializableClass"})
 public class SavedState implements Serializable {
 
     private static final long serialVersionUID = 4325654657465654768L;
-    
-    private Object submittedValue;
-    
-    private boolean submitted;
 
-    Object getSubmittedValue() {
+    private Object submittedValue;
+    private boolean submitted;
+    private boolean valid = true;
+    private Object value;
+    private boolean localValueSet;
+
+    public Object getSubmittedValue() {
         return (this.submittedValue);
     }
 
-    void setSubmittedValue(Object submittedValue) {
+    public void setSubmittedValue(Object submittedValue) {
         this.submittedValue = submittedValue;
     }
 
-    private boolean valid = true;
-
-    boolean isValid() {
+    public boolean isValid() {
         return (this.valid);
     }
 
-    void setValid(boolean valid) {
+    public void setValid(boolean valid) {
         this.valid = valid;
     }
 
-    private Object value;
-
-    Object getValue() {
+    public Object getValue() {
         return (this.value);
     }
 
@@ -54,9 +52,7 @@ public class SavedState implements Serializable {
         this.value = value;
     }
 
-    private boolean localValueSet;
-
-    boolean isLocalValueSet() {
+    public boolean isLocalValueSet() {
         return (this.localValueSet);
     }
 

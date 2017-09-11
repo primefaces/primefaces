@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,9 @@ public final class Status {
         /**
          * Connection closed abruptly
          */
-        UNEXPECTED_CLOSE}
+        UNEXPECTED_CLOSE
+    }
+
     private STATUS status;
 
     public Status(STATUS status) {
@@ -46,6 +48,7 @@ public final class Status {
 
     /**
      * Return the current {@link #Status(org.primefaces.push.Status.STATUS)}
+     *
      * @return {@link #Status(org.primefaces.push.Status.STATUS)}
      */
     public STATUS status() {
@@ -54,6 +57,7 @@ public final class Status {
 
     /**
      * Set the current {@link #Status(org.primefaces.push.Status.STATUS)}
+     *
      * @param status {@link #Status(org.primefaces.push.Status.STATUS)}
      * @return this
      */
@@ -64,8 +68,8 @@ public final class Status {
 
     @Override
     public String toString() {
-        return "Status{" +
-                "status=" + status +
-                '}';
+        return "Status{"
+                + "status=" + status
+                + '}';
     }
 }

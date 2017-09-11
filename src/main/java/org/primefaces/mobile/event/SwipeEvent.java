@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,14 +21,14 @@ import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
 public class SwipeEvent extends AbstractAjaxBehaviorEvent {
 
-	private Object data;
-	
-	public SwipeEvent(UIComponent component, Behavior behavior, Object data) {
-		super(component, behavior);
-		this.data = data;
-	}
-	
-	public Object getData() {
-		return data;
-	}
+    private Object data;
+
+    public SwipeEvent(UIComponent component, Behavior behavior, Object data) {
+        super(component, behavior);
+        this.data = data;
+    }
+
+    public Object getData() {
+        return data;
+    }
 }

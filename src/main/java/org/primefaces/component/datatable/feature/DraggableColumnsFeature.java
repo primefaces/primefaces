@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,39 +32,39 @@ import org.primefaces.util.ComponentUtils;
 public class DraggableColumnsFeature implements DataTableFeature {
 
     public void decode(FacesContext context, DataTable table) {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String columnOrderParam = params.get(table.getClientId(context) + "_columnOrder");
-        if(ComponentUtils.isValueBlank(columnOrderParam)) {
+        if (ComponentUtils.isValueBlank(columnOrderParam)) {
             return;
         }
-        
+
         String[] order = columnOrderParam.split(",");
         List orderedColumns = new ArrayList();
         String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
-        
-        for(String columnId : order) {
-            
-            for(UIComponent child : table.getChildren()) {
-                if(child instanceof Column && child.getClientId(context).equals(columnId)) {
+
+        for (String columnId : order) {
+
+            for (UIComponent child : table.getChildren()) {
+                if (child instanceof Column && child.getClientId(context).equals(columnId)) {
                     orderedColumns.add(child);
                     break;
                 }
-                else if(child instanceof Columns) {
-                    String columnsClientId =  child.getClientId(context);
-                    
-                    if(columnId.startsWith(columnsClientId)) {
+                else if (child instanceof Columns) {
+                    String columnsClientId = child.getClientId(context);
+
+                    if (columnId.startsWith(columnsClientId)) {
                         String[] ids = columnId.split(separator);
                         int index = Integer.parseInt(ids[ids.length - 1]);
 
                         orderedColumns.add(new DynamicColumn(index, (Columns) child, (columnsClientId + separator + index)));
                         break;
                     }
-                    
+
                 }
             }
-                        
+
         }
-        
+
         table.setColumns(orderedColumns);
     }
 

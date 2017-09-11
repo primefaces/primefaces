@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,37 +34,43 @@ import org.primefaces.renderkit.UINotificationRenderer;
 public class MessagesRenderer extends UINotificationRenderer {
 
     @Override
-    public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Messages uiMessages = (Messages) component;
         ResponseWriter writer = context.getResponseWriter();
         String clientId = uiMessages.getClientId(context);
         Map<String, List<FacesMessage>> messagesMap = new HashMap<String, List<FacesMessage>>();
         boolean globalOnly = uiMessages.isGlobalOnly();
-        String containerClass = uiMessages.isShowIcon() ? Messages.CONTAINER_CLASS: Messages.ICONLESS_CONTAINER_CLASS;
+        String containerClass = uiMessages.isShowIcon() ? Messages.CONTAINER_CLASS : Messages.ICONLESS_CONTAINER_CLASS;
         String style = uiMessages.getStyle();
         String styleClass = uiMessages.getStyleClass();
-        styleClass = (styleClass == null) ? containerClass: containerClass + " " + styleClass;
+        styleClass = (styleClass == null) ? containerClass : containerClass + " " + styleClass;
 
         String _for = uiMessages.getFor();
         List<FacesMessage> messages = new ArrayList<FacesMessage>();
-        if(_for != null) {
-            // key case
+        if (_for != null) {
+            String forType = uiMessages.getForType();
             Iterator<FacesMessage> messagesIterator = context.getMessages(_for);
-            while (messagesIterator.hasNext()) {
-                messages.add(messagesIterator.next());
+            
+            // key case
+            if (forType == null || forType.equals("key")) { 
+                while (messagesIterator.hasNext()) {
+                    messages.add(messagesIterator.next());
+                }
             }
 
             // clientId / SearchExpression case
-            UIComponent forComponent = SearchExpressionFacade.resolveComponent(
-            		context, uiMessages, _for, SearchExpressionHint.IGNORE_NO_RESULT);
-            if (forComponent != null) {
-                String forComponentClientId = forComponent.getClientId(context);
-                if (!_for.equals(forComponentClientId)) {
-                    messagesIterator = context.getMessages(forComponentClientId);
-                    while (messagesIterator.hasNext()) {
-                        FacesMessage next = messagesIterator.next();
-                        if (!messages.contains(next)) {
-                            messages.add(next);
+            if (forType == null || forType.equals("expression")) {
+                UIComponent forComponent = SearchExpressionFacade.resolveComponent(
+                        context, uiMessages, _for, SearchExpressionHint.IGNORE_NO_RESULT);
+                if (forComponent != null) {
+                    String forComponentClientId = forComponent.getClientId(context);
+                    if (!_for.equals(forComponentClientId)) {
+                        messagesIterator = context.getMessages(forComponentClientId);
+                        while (messagesIterator.hasNext()) {
+                            FacesMessage next = messagesIterator.next();
+                            if (!messages.contains(next)) {
+                                messages.add(next);
+                            }
                         }
                     }
                 }
@@ -80,27 +86,31 @@ public class MessagesRenderer extends UINotificationRenderer {
         for (FacesMessage message : messages) {
             FacesMessage.Severity severity = message.getSeverity();
 
-            if(severity.equals(FacesMessage.SEVERITY_INFO))
+            if (severity.equals(FacesMessage.SEVERITY_INFO)) {
                 addMessage(uiMessages, message, messagesMap, "info");
-            else if(severity.equals(FacesMessage.SEVERITY_WARN))
+            }
+            else if (severity.equals(FacesMessage.SEVERITY_WARN)) {
                 addMessage(uiMessages, message, messagesMap, "warn");
-            else if(severity.equals(FacesMessage.SEVERITY_ERROR))
+            }
+            else if (severity.equals(FacesMessage.SEVERITY_ERROR)) {
                 addMessage(uiMessages, message, messagesMap, "error");
-            else if(severity.equals(FacesMessage.SEVERITY_FATAL))
+            }
+            else if (severity.equals(FacesMessage.SEVERITY_FATAL)) {
                 addMessage(uiMessages, message, messagesMap, "fatal");
+            }
         }
 
         writer.startElement("div", uiMessages);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, null);
 
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, null);
         }
 
         writer.writeAttribute("aria-live", "polite", null);
 
-        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("data-global", String.valueOf(globalOnly), null);
             writer.writeAttribute("data-summary", uiMessages.isShowSummary(), null);
             writer.writeAttribute("data-detail", uiMessages.isShowDetail(), null);
@@ -108,10 +118,10 @@ public class MessagesRenderer extends UINotificationRenderer {
             writer.writeAttribute("data-redisplay", String.valueOf(uiMessages.isRedisplay()), null);
         }
 
-        for(String severity : messagesMap.keySet()) {
+        for (String severity : messagesMap.keySet()) {
             List<FacesMessage> severityMessages = messagesMap.get(severity);
 
-            if(severityMessages.size() > 0) {
+            if (severityMessages.size() > 0) {
                 encodeSeverityMessages(context, uiMessages, severity, severityMessages);
             }
         }
@@ -120,10 +130,10 @@ public class MessagesRenderer extends UINotificationRenderer {
     }
 
     protected void addMessage(Messages uiMessages, FacesMessage message, Map<String, List<FacesMessage>> messagesMap, String severity) {
-        if(shouldRender(uiMessages, message, severity)) {
+        if (shouldRender(uiMessages, message, severity)) {
             List<FacesMessage> severityMessages = messagesMap.get(severity);
 
-            if(severityMessages == null) {
+            if (severityMessages == null) {
                 severityMessages = new ArrayList<FacesMessage>();
                 messagesMap.put(severity, severityMessages);
             }
@@ -140,11 +150,11 @@ public class MessagesRenderer extends UINotificationRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClassPrefix + " ui-corner-all", null);
 
-        if(uiMessages.isClosable()) {
+        if (uiMessages.isClosable()) {
             encodeCloseIcon(context, uiMessages);
         }
 
-        if(uiMessages.isShowIcon()) {
+        if (uiMessages.isShowIcon()) {
             writer.startElement("span", null);
             writer.writeAttribute("class", styleClassPrefix + "-icon", null);
             writer.endElement("span");
@@ -152,37 +162,41 @@ public class MessagesRenderer extends UINotificationRenderer {
 
         writer.startElement("ul", null);
 
-        for(FacesMessage msg : messages) {
+        for (FacesMessage msg : messages) {
             writer.startElement("li", null);
-            
+
             writer.writeAttribute("role", "alert", null);
             writer.writeAttribute("aria-atomic", "true", null);
 
             String summary = msg.getSummary() != null ? msg.getSummary() : "";
             String detail = msg.getDetail() != null ? msg.getDetail() : summary;
 
-            if(uiMessages.isShowSummary()) {
+            if (uiMessages.isShowSummary()) {
                 writer.startElement("span", null);
                 writer.writeAttribute("class", styleClassPrefix + "-summary", null);
 
-                if(escape)
+                if (escape) {
                     writer.writeText(summary, null);
-                else
+                }
+                else {
                     writer.write(summary);
+                }
 
-	            writer.endElement("span");
+                writer.endElement("span");
             }
 
-            if(uiMessages.isShowDetail()) {
-            	writer.startElement("span", null);
-            	writer.writeAttribute("class", styleClassPrefix + "-detail", null);
+            if (uiMessages.isShowDetail()) {
+                writer.startElement("span", null);
+                writer.writeAttribute("class", styleClassPrefix + "-detail", null);
 
-                if(escape)
+                if (escape) {
                     writer.writeText(detail, null);
-                else
+                }
+                else {
                     writer.write(detail);
+                }
 
-            	writer.endElement("span");
+                writer.endElement("span");
             }
 
             writer.endElement("li");

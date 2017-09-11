@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,6 @@ import java.util.Map;
 import javax.faces.event.BehaviorEvent;
 
 public interface PrimeClientBehaviorHolder {
-    
+
     Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping();
 }

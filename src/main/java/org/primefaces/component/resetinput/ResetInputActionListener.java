@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,6 @@ import org.primefaces.visit.ResetInputVisitCallback;
 public class ResetInputActionListener implements ActionListener, Serializable {
 
     private ValueExpression target;
-
     private ValueExpression clearModel;
 
     /**
@@ -45,25 +44,31 @@ public class ResetInputActionListener implements ActionListener, Serializable {
     }
 
     public ResetInputActionListener(ValueExpression target, ValueExpression clearModel) {
-		this.target = target;
+        this.target = target;
         this.clearModel = clearModel;
-	}
+    }
 
+    @Override
     public void processAction(ActionEvent event) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
-		ELContext elContext = context.getELContext();
+        ELContext elContext = context.getELContext();
         VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
 
         String expressions = (String) target.getValue(elContext);
         boolean resetModel = false;
-        if(clearModel != null) {
-            resetModel = clearModel.isLiteralText() ? Boolean.valueOf(clearModel.getValue(context.getELContext()).toString()) : (Boolean) clearModel.getValue(context.getELContext());
+        if (clearModel != null) {
+            resetModel = clearModel.isLiteralText()
+                    ? Boolean.valueOf(clearModel.getValue(context.getELContext()).toString())
+                    : (Boolean) clearModel.getValue(context.getELContext());
         }
-        UIComponent source = event.getComponent();
+        
+        ResetInputVisitCallback visitCallback = resetModel
+                ? ResetInputVisitCallback.INSTANCE_CLEAR_MODEL
+                : ResetInputVisitCallback.INSTANCE;
 
-        List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, source, expressions);
+        List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), expressions);
         for (UIComponent component : components) {
-            component.visitTree(visitContext, new ResetInputVisitCallback(resetModel));
+            component.visitTree(visitContext, visitCallback);
         }
     }
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,25 +17,30 @@ package org.primefaces.component.media.player;
 
 public class PDFPlayer implements MediaPlayer {
 
-	private final static String[] supportedTypes = new String[]{"pdf"};
-	
-	public String getClassId() {
-		return null;
-	}
+    private final static String[] SUPPORTED_TYPES = new String[] { "pdf" };
 
-	public String getCodebase() {
-		return null;
-	}
-	
-	public String getSourceParam() {
-		return null;
-	}
+    @Override
+    public String getClassId() {
+        return null;
+    }
 
-	public String getType() {
-		return "application/pdf";
-	}
+    @Override
+    public String getCodebase() {
+        return null;
+    }
 
+    @Override
+    public String getSourceParam() {
+        return null;
+    }
+
+    @Override
+    public String getType() {
+        return "application/pdf";
+    }
+
+    @Override
     public String[] getSupportedTypes() {
-        return supportedTypes;
+        return SUPPORTED_TYPES;
     }
 }

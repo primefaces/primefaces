@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,16 +33,18 @@ import org.primefaces.util.XMLUtils;
 public class XMLExporter extends Exporter {
 
     @Override
-	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
-		ExternalContext externalContext = context.getExternalContext();
+    public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly,
+            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+        
+        ExternalContext externalContext = context.getExternalContext();
         configureResponse(externalContext, filename);
-		OutputStream os = externalContext.getResponseOutputStream();
-		OutputStreamWriter osw = new OutputStreamWriter(os, encodingType);
-		PrintWriter writer = new PrintWriter(osw);	
-		
-    	writer.write("<?xml version=\"1.0\"?>\n");
-    	writer.write("<" + table.getId() + ">\n");
-    	
+        OutputStream os = externalContext.getResponseOutputStream();
+        OutputStreamWriter osw = new OutputStreamWriter(os, encodingType);
+        PrintWriter writer = new PrintWriter(osw);
+
+        writer.write("<?xml version=\"1.0\"?>\n");
+        writer.write("<" + table.getId() + ">\n");
+
         if (pageOnly) {
             exportPageOnly(context, table, writer);
         }
@@ -52,35 +54,39 @@ public class XMLExporter extends Exporter {
         else {
             exportAll(context, table, writer);
         }
-    	
-    	writer.write("</" + table.getId() + ">");
-    	
-    	table.setRowIndex(-1);
-            	
+
+        writer.write("</" + table.getId() + ">");
+
+        table.setRowIndex(-1);
+
         writer.flush();
         writer.close();
-	}
-    
+    }
+
     @Override
-    public void export(FacesContext facesContext, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+    public void export(FacesContext facesContext, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly,
+            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+        
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
     @Override
-    public void export(FacesContext facesContext, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+    public void export(FacesContext facesContext, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
+            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+        
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
     @Override
     protected void preRowExport(DataTable table, Object document) {
         ((PrintWriter) document).write("\t<" + table.getVar() + ">\n");
     }
-    
+
     @Override
     protected void postRowExport(DataTable table, Object document) {
         ((PrintWriter) document).write("\t</" + table.getVar() + ">\n");
     }
-    
+
     @Override
     protected void exportCells(DataTable table, Object document) {
         PrintWriter writer = (PrintWriter) document;
@@ -88,66 +94,67 @@ public class XMLExporter extends Exporter {
             if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyStatelessModel();
             }
-                        
+
             if (col.isRendered() && col.isExportable()) {
                 String columnTag = getColumnTag(col);
                 try {
                     addColumnValue(writer, col.getChildren(), columnTag, col);
-                } 
+                }
                 catch (IOException ex) {
                     throw new FacesException(ex);
-                };
+                }
             }
         }
     }
-    
+
     protected String getColumnTag(UIColumn column) {
         String headerText = column.getHeaderText();
         UIComponent facet = column.getFacet("header");
         String columnTag;
-        
+
         if (headerText != null) {
             columnTag = headerText.toLowerCase();
         }
         else if (facet != null) {
-            columnTag = exportValue(FacesContext.getCurrentInstance(), facet).toLowerCase();            
+            columnTag = exportValue(FacesContext.getCurrentInstance(), facet).toLowerCase();
         }
         else {
             throw new FacesException("No suitable xml tag found for " + column);
         }
-        
+
         // #459 return columnTag.replaceAll(" ", "_");
         return XMLUtils.escapeTag(columnTag);
     }
-    		
-	protected void addColumnValue(Writer writer, List<UIComponent> components, String tag, UIColumn column) throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
-        
-		writer.write("\t\t<" + tag + ">");
 
-        if(column.getExportFunction() != null) {
-            writer.write(exportColumnByFunction(context, column));
+    protected void addColumnValue(Writer writer, List<UIComponent> components, String tag, UIColumn column) throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        writer.write("\t\t<" + tag + ">");
+
+        if (column.getExportFunction() != null) {
+            writer.write(XMLUtils.escapeXml(exportColumnByFunction(context, column)));
         }
         else {
             for (UIComponent component : components) {
-                if(component.isRendered()) {
+                if (component.isRendered()) {
                     String value = exportValue(context, component);
-
-                    writer.write(value);
+                    if (value != null) {
+                        writer.write(XMLUtils.escapeXml(value));
+                    }
                 }
             }
         }
 
-		writer.write("</" + tag + ">\n");
-	}
-	    
+        writer.write("</" + tag + ">\n");
+    }
+
     protected void configureResponse(ExternalContext externalContext, String filename) {
         externalContext.setResponseContentType("text/xml");
-		externalContext.setResponseHeader("Expires", "0");
-		externalContext.setResponseHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
-		externalContext.setResponseHeader("Pragma", "public");
-		externalContext.setResponseHeader("Content-disposition", ComponentUtils.createContentDisposition("attachment", filename+".xml"));
-		externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
+        externalContext.setResponseHeader("Expires", "0");
+        externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+        externalContext.setResponseHeader("Pragma", "public");
+        externalContext.setResponseHeader("Content-disposition", ComponentUtils.createContentDisposition("attachment", filename + ".xml"));
+        externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
     }
-	
+
 }

@@ -1,3 +1,18 @@
+/**
+ * Copyright 2009-2017 PrimeTek.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.primefaces.application.resource;
 
 import java.util.ArrayList;
@@ -12,7 +27,7 @@ import org.primefaces.util.ResourceUtils;
 public class DynamicResourcesPhaseListener implements PhaseListener {
 
     private static final String INITIAL_RESOURCES = DynamicResourcesPhaseListener.class.getName() + ".INITIAL_RESOURCES";
-   
+
     @Override
     public void beforePhase(PhaseEvent event) {
 
@@ -27,12 +42,12 @@ public class DynamicResourcesPhaseListener implements PhaseListener {
         if (context.getViewRoot() == null || !context.getPartialViewContext().isAjaxRequest()) {
             return;
         }
-        
+
         // we can also skip non-postback ajax requests, which occurs e.g. without a form
         if (!context.isPostback()) {
             return;
         }
-        
+
         // skip update=@all as the head will all resources will already be rendered
         if (context.getPartialViewContext().isRenderAll()) {
             return;
@@ -53,13 +68,13 @@ public class DynamicResourcesPhaseListener implements PhaseListener {
     public PhaseId getPhaseId() {
         return PhaseId.RESTORE_VIEW;
     }
-    
+
     public static void putInitialResources(FacesContext context, ArrayList<ResourceUtils.ResourceInfo> resources) {
         context.getAttributes().put(INITIAL_RESOURCES, resources);
     }
-    
+
     public static ArrayList<ResourceUtils.ResourceInfo> getInitialResources(FacesContext context) {
         return (ArrayList<ResourceUtils.ResourceInfo>) context.getAttributes().get(INITIAL_RESOURCES);
     }
-    
+
 }

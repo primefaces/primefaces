@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,20 +20,20 @@ import javax.faces.component.behavior.Behavior;
 
 public class ResizeEvent extends AbstractAjaxBehaviorEvent {
 
-	private int width;
-	private int height;
-	
-	public ResizeEvent(UIComponent component, Behavior behavior, int width, int height) {
-		super(component, behavior);
-		this.width = width;
-		this.height = height;
-	}
-	
-	public int getWidth() {
-		return width;
-	}
+    private int width;
+    private int height;
 
-	public int getHeight() {
-		return height;
-	}
+    public ResizeEvent(UIComponent component, Behavior behavior, int width, int height) {
+        super(component, behavior);
+        this.width = width;
+        this.height = height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2015 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,9 @@ import org.primefaces.util.ComponentTraversalUtils;
 
 public abstract class AbstractClosestExpressionResolver implements SearchExpressionResolver {
 
-	public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
         return (UIComponent) ComponentTraversalUtils.closest(getType(), last);
-	}
+    }
 
     public abstract Class<?> getType();
 }

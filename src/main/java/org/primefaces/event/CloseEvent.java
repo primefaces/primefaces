@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ import javax.faces.component.behavior.Behavior;
 
 public class CloseEvent extends AbstractAjaxBehaviorEvent {
 
-	public CloseEvent(UIComponent component, Behavior behavior) {
-		super(component, behavior);
-	}
+    public CloseEvent(UIComponent component, Behavior behavior) {
+        super(component, behavior);
+    }
 
 }

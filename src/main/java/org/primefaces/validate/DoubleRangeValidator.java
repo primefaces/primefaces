@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,34 +21,36 @@ import org.primefaces.util.HTML;
 
 public class DoubleRangeValidator extends javax.faces.validator.DoubleRangeValidator implements ClientValidator {
 
-    private Map<String,Object> metadata;
+    private Map<String, Object> metadata;
     private boolean minimumSet;
     private boolean maximumSet;
-    
+
     public Map<String, Object> getMetadata() {
         metadata = new HashMap<String, Object>();
         double min = this.getMinimum();
         double max = this.getMaximum();
-        
-        if(minimumSet)
+
+        if (minimumSet) {
             metadata.put(HTML.VALIDATION_METADATA.MIN_VALUE, min);
-            
-        if(maximumSet)
+        }
+
+        if (maximumSet) {
             metadata.put(HTML.VALIDATION_METADATA.MAX_VALUE, max);
-        
+        }
+
         return metadata;
     }
 
     public String getValidatorId() {
         return DoubleRangeValidator.VALIDATOR_ID;
     }
-    
+
     @Override
     public void setMaximum(double maximum) {
         super.setMaximum(maximum);
         this.maximumSet = true;
     }
-    
+
     @Override
     public void setMinimum(double minimum) {
         super.setMinimum(minimum);

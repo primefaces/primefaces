@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,16 +52,16 @@ public class HeadRenderer extends Renderer {
         PrimeConfiguration cc = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
         ProjectStage projectStage = context.getApplication().getProjectStage();
         boolean csvEnabled = cc.isClientSideValidationEnabled();
-                
+
         writer.startElement("head", component);
         writer.writeAttribute("id", component.getClientId(context), "id");
-        
+
         //First facet
         UIComponent first = component.getFacet("first");
         if (first != null) {
             first.encodeAll(context);
         }
-        
+
         //Theme
         String theme;
         String themeParamValue = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().getTheme();
@@ -72,7 +72,7 @@ public class HeadRenderer extends Renderer {
             ValueExpression ve = expressionFactory.createValueExpression(elContext, themeParamValue, String.class);
 
             theme = (String) ve.getValue(elContext);
-        } 
+        }
         else {
             theme = "aristo";   //default
         }
@@ -80,42 +80,42 @@ public class HeadRenderer extends Renderer {
         if (theme != null && !theme.equals("none")) {
             encodeCSS(context, "primefaces-" + theme, "theme.css");
         }
-        
+
         if (cc.isFontAwesomeEnabled()) {
             encodeCSS(context, "primefaces", "fa/font-awesome.css");
         }
-        
+
         //Middle facet
         UIComponent middle = component.getFacet("middle");
         if (middle != null) {
             middle.encodeAll(context);
         }
-                
+
         //Registered Resources
         UIViewRoot viewRoot = context.getViewRoot();
         for (UIComponent resource : viewRoot.getComponentResources(context, "head")) {
             resource.encodeAll(context);
         }
-        
-        if(csvEnabled) {
+
+        if (csvEnabled) {
             encodeValidationResources(context, cc.isBeanValidationAvailable());
         }
 
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("if(window.PrimeFaces){");
-        
+
         writer.write("PrimeFaces.settings.locale='" + context.getViewRoot().getLocale() + "';");
 
         if (csvEnabled) {
             writer.write("PrimeFaces.settings.validateEmptyFields=" + cc.isValidateEmptyFields() + ";");
             writer.write("PrimeFaces.settings.considerEmptyStringNull=" + cc.isInterpretEmptyStringAsNull() + ";");
         }
-        
+
         if (cc.isLegacyWidgetNamespace()) {
             writer.write("PrimeFaces.settings.legacyWidgetNamespace=true;");
         }
-        
+
         if (cc.isEarlyPostParamEvaluation()) {
             writer.write("PrimeFaces.settings.earlyPostParamEvaluation=true;");
         }
@@ -131,13 +131,13 @@ public class HeadRenderer extends Renderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
         //Last facet
         UIComponent last = component.getFacet("last");
         if (last != null) {
             last.encodeAll(context);
         }
-        
+
         writer.endElement("head");
     }
 
@@ -156,22 +156,22 @@ public class HeadRenderer extends Renderer {
             writer.endElement("link");
         }
     }
-    
+
     protected void encodeValidationResources(FacesContext context, boolean beanValidationEnabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Resource resource = context.getApplication().getResourceHandler().createResource("validation/validation.js", "primefaces");
-        
-        if(resource != null) {
+
+        if (resource != null) {
             writer.startElement("script", null);
             writer.writeAttribute("type", "text/javascript", null);
             writer.writeAttribute("src", resource.getRequestPath(), null);
             writer.endElement("script");
         }
-        
-        if(beanValidationEnabled) {
+
+        if (beanValidationEnabled) {
             resource = context.getApplication().getResourceHandler().createResource("validation/beanvalidation.js", "primefaces");
-        
-            if(resource != null) {
+
+            if (resource != null) {
                 writer.startElement("script", null);
                 writer.writeAttribute("type", "text/javascript", null);
                 writer.writeAttribute("src", resource.getRequestPath(), null);

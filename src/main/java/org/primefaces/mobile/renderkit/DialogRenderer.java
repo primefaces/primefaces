@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.WidgetBuilder;
 
 public class DialogRenderer extends org.primefaces.component.dialog.DialogRenderer {
-    
+
     @Override
     protected void encodeScript(FacesContext context, Dialog dialog) throws IOException {
         String clientId = dialog.getClientId(context);
@@ -32,21 +32,21 @@ public class DialogRenderer extends org.primefaces.component.dialog.DialogRender
         wb.initWithDomReady("Dialog", dialog.resolveWidgetVar(), clientId);
 
         wb.attr("visible", dialog.isVisible(), false)
-            .attr("modal", dialog.isModal(), false)
-            .attr("dynamic", dialog.isDynamic(), false)
-            .attr("showEffect", dialog.getShowEffect(), null)
-            .attr("closeOnEscape", dialog.isCloseOnEscape(), false)  
-            .callback("onHide", "function()", dialog.getOnHide())
-            .callback("onShow", "function()", dialog.getOnShow());
-        
+                .attr("modal", dialog.isModal(), false)
+                .attr("dynamic", dialog.isDynamic(), false)
+                .attr("showEffect", dialog.getShowEffect(), null)
+                .attr("closeOnEscape", dialog.isCloseOnEscape(), false)
+                .callback("onHide", "function()", dialog.getOnHide())
+                .callback("onShow", "function()", dialog.getOnShow());
+
         String focusExpressions = SearchExpressionFacade.resolveClientIds(
-        		context, dialog, dialog.getFocus());
+                context, dialog, dialog.getFocus());
         if (focusExpressions != null) {
-        	wb.attr("focus", focusExpressions);
+            wb.attr("focus", focusExpressions);
         }
 
         encodeClientBehaviors(context, dialog);
-         
+
         wb.finish();
     }
 
@@ -62,74 +62,76 @@ public class DialogRenderer extends org.primefaces.component.dialog.DialogRender
         writer.writeAttribute("id", clientId + "_mask", null);
         writer.writeAttribute("class", Dialog.MOBILE_MASK_CLASS, null);
         writer.endElement("div");
-        
+
         writer.startElement("div", dialog);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, null);
         }
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("class", Dialog.MOBILE_POPUP_CLASS, null);
-        
-        if(dialog.isShowHeader()) {
+
+        if (dialog.isShowHeader()) {
             encodeHeader(context, dialog);
         }
-        
+
         renderDynamicPassThruAttributes(context, dialog);
-        
+
         encodeContent(context, dialog);
-        
+
         writer.endElement("div");
 
         writer.endElement("div");
     }
-    
+
     @Override
     protected void encodeHeader(FacesContext context, Dialog dialog) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String header = dialog.getHeader();
         UIComponent headerFacet = dialog.getFacet("header");
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("class", Dialog.MOBILE_TITLE_BAR_CLASS, null);
-        
+
         //close
-        if(dialog.isClosable()) {
+        if (dialog.isClosable()) {
             writer.startElement("a", null);
             writer.writeAttribute("href", "#", null);
             writer.writeAttribute("class", Dialog.MOBILE_CLOSE_ICON_CLASS, null);
             writer.endElement("a");
         }
-        
+
         //title
         writer.startElement("h1", null);
         writer.writeAttribute("class", Dialog.MOBILE_TITLE_CLASS, null);
         writer.writeAttribute("role", "heading", null);
-        
-        if(headerFacet != null)
+
+        if (headerFacet != null) {
             headerFacet.encodeAll(context);
-        else if(header != null)
+        }
+        else if (header != null) {
             writer.write(header);
-        
+        }
+
         writer.endElement("h1");
-        
+
         writer.endElement("div");
     }
-    
+
     @Override
     protected void encodeContent(FacesContext context, Dialog dialog) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-content", null);
         writer.writeAttribute("role", "main", null);
-        
-        if(!dialog.isDynamic()) {
+
+        if (!dialog.isDynamic()) {
             renderChildren(context, dialog);
         }
-        
+
         writer.endElement("div");
     }
 }

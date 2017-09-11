@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.primefaces.component.datatable.DataTable;
 
 public class ExcelExportVisitCallback implements VisitCallback {
-	
+
     private ExcelExporter exporter;
     private boolean pageOnly;
     private boolean selectionOnly;
@@ -42,13 +42,13 @@ public class ExcelExportVisitCallback implements VisitCallback {
         DataTable dt = (DataTable) target;
         FacesContext facesContext = context.getFacesContext();
         String sheetName = exporter.getSheetName(facesContext, dt);
-        if(sheetName == null) {
+        if (sheetName == null) {
             sheetName = dt.getClientId().replaceAll(":", "_");
         }
-        
+
         Sheet sheet = workbook.createSheet(sheetName);
         exporter.exportTable(facesContext, dt, sheet, pageOnly, selectionOnly);
         return VisitResult.ACCEPT;
     }
-    
+
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +21,12 @@ import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
 public class PageEvent extends AbstractAjaxBehaviorEvent {
 
-	private int page;
-	
-	public PageEvent(UIComponent component, Behavior behavior, int page) {
-		super(component, behavior);
-		this.page = page;
-	}
+    private int page;
+
+    public PageEvent(UIComponent component, Behavior behavior, int page) {
+        super(component, behavior);
+        this.page = page;
+    }
 
     public int getPage() {
         return page;

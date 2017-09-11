@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,30 +32,31 @@ import org.primefaces.util.HTML;
 public class GraphicImageRenderer extends CoreRenderer {
 
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		GraphicImage image = (GraphicImage) component;
-		String clientId = image.getClientId(context);
-		String imageSrc;
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        GraphicImage image = (GraphicImage) component;
+        String clientId = image.getClientId(context);
+        String imageSrc;
         try {
             imageSrc = getImageSrc(context, image);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             throw new IOException(ex);
         }
 
-		writer.startElement("img", image);
-		writer.writeAttribute("id", clientId, "id");
-		writer.writeAttribute("src", imageSrc, null);
+        writer.startElement("img", image);
+        writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("src", imageSrc, null);
 
-		if(image.getAlt() == null) writer.writeAttribute("alt", "", null);
-		if(image.getStyleClass() != null) writer.writeAttribute("class", image.getStyleClass(), "styleClass");
+        if (image.getAlt() == null) writer.writeAttribute("alt", "", null);
+        if (image.getStyleClass() != null) writer.writeAttribute("class", image.getStyleClass(), "styleClass");
 
-		renderPassThruAttributes(context, image, HTML.IMG_ATTRS);
+        renderPassThruAttributes(context, image, HTML.IMG_ATTRS);
 
-		writer.endElement("img");
-	}
+        writer.endElement("img");
+    }
 
-	protected String getImageSrc(FacesContext context, GraphicImage image) throws Exception {
+    protected String getImageSrc(FacesContext context, GraphicImage image) throws Exception {
         String name = image.getName();
 
         if (name != null) {
@@ -67,12 +68,12 @@ public class GraphicImageRenderer extends CoreRenderer {
                 return "RES_NOT_FOUND";
             }
             else {
-            	String requestPath = res.getRequestPath();
-            	return context.getExternalContext().encodeResourceURL(requestPath);
+                String requestPath = res.getRequestPath();
+                return context.getExternalContext().encodeResourceURL(requestPath);
             }
         }
         else {
             return DynamicContentSrcBuilder.build(context, image.getValue(), image, image.isCache(), DynamicContentType.STREAMED_CONTENT, image.isStream());
         }
-	}
+    }
 }

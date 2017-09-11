@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,16 +24,16 @@ public class TransferEvent extends AbstractAjaxBehaviorEvent {
     private List<?> items;
     private boolean add;
 
-	public TransferEvent(UIComponent component, Behavior behavior, List<?> items, boolean add) {
-		super(component, behavior);
+    public TransferEvent(UIComponent component, Behavior behavior, List<?> items, boolean add) {
+        super(component, behavior);
         this.items = items;
         this.add = add;
-	}
+    }
 
     public boolean isAdd() {
         return add;
     }
-    
+
     public boolean isRemove() {
         return !add;
     }

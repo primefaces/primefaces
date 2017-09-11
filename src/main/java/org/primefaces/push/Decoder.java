@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,12 +37,14 @@ package org.primefaces.push;
      }
  * </pre></blockquote>
  * You can chain Decoders. They will be invoked in the order they are defined and the last decoded value will be used to invoke the
+ *
  * @Message annotated method.
  * @param <U>
  * @param <T>
  */
-public interface Decoder<U, T> extends org.atmosphere.config.managed.Decoder<U, T>{
-  // Atmosphere Proxy
+public interface Decoder<U, T> extends org.atmosphere.config.managed.Decoder<U, T> {
+    // Atmosphere Proxy
+
     /**
      * Decode the specified object of type U into object of type T
      *

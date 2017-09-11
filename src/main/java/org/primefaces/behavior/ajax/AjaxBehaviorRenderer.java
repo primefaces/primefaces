@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
     public void decode(FacesContext context, UIComponent component, ClientBehavior behavior) {
         AjaxBehavior ajaxBehavior = (AjaxBehavior) behavior;
 
-        if(!ajaxBehavior.isDisabled()) {
+        if (!ajaxBehavior.isDisabled()) {
             AjaxBehaviorEvent event = new AjaxBehaviorEvent(component, behavior);
 
             PhaseId phaseId = isImmediate(component, ajaxBehavior) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION;
@@ -78,25 +78,25 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
         AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
 
         String request = builder.init()
-                        .source(source)
-                        .event(behaviorContext.getEventName())
-                        .form(SearchExpressionFacade.resolveClientId(behaviorContext.getFacesContext(), component, ajaxBehavior.getForm()))
-                        .process(component, process)
-                        .update(component, ajaxBehavior.getUpdate())
-                        .async(ajaxBehavior.isAsync())
-                        .global(ajaxBehavior.isGlobal())
-                        .delay(ajaxBehavior.getDelay())
-                        .timeout(ajaxBehavior.getTimeout())
-                        .partialSubmit(ajaxBehavior.isPartialSubmit(), ajaxBehavior.isPartialSubmitSet(), ajaxBehavior.getPartialSubmitFilter())
-                        .resetValues(ajaxBehavior.isResetValues(), ajaxBehavior.isResetValuesSet())
-                        .ignoreAutoUpdate(ajaxBehavior.isIgnoreAutoUpdate())
-                        .skipChildren(ajaxBehavior.isSkipChildren())
-                        .onstart(ajaxBehavior.getOnstart())
-                        .onerror(ajaxBehavior.getOnerror())
-                        .onsuccess(ajaxBehavior.getOnsuccess())
-                        .oncomplete(ajaxBehavior.getOncomplete())
-                        .params(component)
-                        .buildBehavior(renderingMode);
+                .source(source)
+                .event(behaviorContext.getEventName())
+                .form(SearchExpressionFacade.resolveClientId(behaviorContext.getFacesContext(), component, ajaxBehavior.getForm()))
+                .process(component, process)
+                .update(component, ajaxBehavior.getUpdate())
+                .async(ajaxBehavior.isAsync())
+                .global(ajaxBehavior.isGlobal())
+                .delay(ajaxBehavior.getDelay())
+                .timeout(ajaxBehavior.getTimeout())
+                .partialSubmit(ajaxBehavior.isPartialSubmit(), ajaxBehavior.isPartialSubmitSet(), ajaxBehavior.getPartialSubmitFilter())
+                .resetValues(ajaxBehavior.isResetValues(), ajaxBehavior.isResetValuesSet())
+                .ignoreAutoUpdate(ajaxBehavior.isIgnoreAutoUpdate())
+                .skipChildren(ajaxBehavior.isSkipChildren())
+                .onstart(ajaxBehavior.getOnstart())
+                .onerror(ajaxBehavior.getOnerror())
+                .onsuccess(ajaxBehavior.getOnsuccess())
+                .oncomplete(ajaxBehavior.getOncomplete())
+                .params(component)
+                .buildBehavior(renderingMode);
 
         return request;
     }
@@ -104,12 +104,14 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
     private boolean isImmediate(UIComponent component, AjaxBehavior ajaxBehavior) {
         boolean immediate = false;
 
-        if(ajaxBehavior.isImmediateSet()) {
+        if (ajaxBehavior.isImmediateSet()) {
             immediate = ajaxBehavior.isImmediate();
-        } else if(component instanceof EditableValueHolder) {
-            immediate = ((EditableValueHolder)component).isImmediate();
-        } else if(component instanceof ActionSource) {
-            immediate = ((ActionSource)component).isImmediate();
+        }
+        else if (component instanceof EditableValueHolder) {
+            immediate = ((EditableValueHolder) component).isImmediate();
+        }
+        else if (component instanceof ActionSource) {
+            immediate = ((ActionSource) component).isImmediate();
         }
 
         return immediate;

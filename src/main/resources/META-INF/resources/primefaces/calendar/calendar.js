@@ -16,6 +16,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         //events
         this.bindDateSelectListener();
         this.bindViewChangeListener();
+        this.bindCloseListener();
 
         //disabled dates
         this.cfg.beforeShowDay = function(date) {
@@ -75,16 +76,14 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //Initialize calendar
-        if(!this.cfg.disabled) {
-            if(hasTimePicker) {
-                if(this.cfg.timeOnly)
-                    this.jqEl.timepicker(this.cfg);
-                else
-                    this.jqEl.datetimepicker(this.cfg);
-            }
-            else {
-                this.jqEl.datepicker(this.cfg);
-            }
+        if(hasTimePicker) {
+            if(this.cfg.timeOnly)
+                this.jqEl.timepicker(this.cfg);
+            else
+                this.jqEl.datetimepicker(this.cfg);
+        }
+        else {
+            this.jqEl.datepicker(this.cfg);
         }
 
         //extensions
@@ -96,6 +95,10 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             var title = this.jqEl.attr('title');
             if(title) {
                 triggerButton.attr('title', title);
+            }
+            
+            if(this.cfg.disabled) {
+                triggerButton.addClass('ui-state-disabled');
             }
             
             var buttonIndex = this.cfg.buttonTabindex||this.jqEl.attr('tabindex');
@@ -153,6 +156,10 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.onSelect = function() {
             if(_self.cfg.popup) {
                 _self.fireDateSelectEvent();
+                
+                if(_self.cfg.focusOnSelect) {
+                    _self.jqEl.focus();
+                }
             }
             else {
                 var newDate = $.datepicker.formatDate(_self.cfg.dateFormat, _self.getDate());
@@ -195,6 +202,24 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 };
 
                 viewChangeBehavior.call(this, ext);
+            }
+        }
+    },
+
+    bindCloseListener: function() {
+        if(this.hasBehavior('close')) {
+            var $this = this;
+            this.cfg.onClose = function() {
+                $this.fireCloseEvent();
+            };
+        }
+    },
+
+    fireCloseEvent: function() {
+        if(this.cfg.behaviors) {
+            var closeBehavior = this.cfg.behaviors['close'];
+            if(closeBehavior) {
+                closeBehavior.call(this);
             }
         }
     },

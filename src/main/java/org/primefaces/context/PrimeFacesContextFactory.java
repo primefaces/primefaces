@@ -1,3 +1,18 @@
+/**
+ * Copyright 2009-2017 PrimeTek.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.primefaces.context;
 
 import javax.faces.FacesException;
@@ -10,20 +25,20 @@ import javax.faces.lifecycle.Lifecycle;
  */
 public class PrimeFacesContextFactory extends FacesContextFactory {
 
-	private FacesContextFactory wrapped;
-	
-	// #6212 - don't remove it 
-	public PrimeFacesContextFactory() {
-		
-	}
-	
-	public PrimeFacesContextFactory(FacesContextFactory wrapped) {
-		this.wrapped = wrapped;
-	}
-	
-	@Override
-	public FacesContext getFacesContext(Object context, Object request, Object response, Lifecycle lifecycle)
-			throws FacesException {
+    private FacesContextFactory wrapped;
+
+    // #6212 - don't remove it 
+    public PrimeFacesContextFactory() {
+
+    }
+
+    public PrimeFacesContextFactory(FacesContextFactory wrapped) {
+        this.wrapped = wrapped;
+    }
+
+    @Override
+    public FacesContext getFacesContext(Object context, Object request, Object response, Lifecycle lifecycle)
+            throws FacesException {
 
         FacesContext wrappedContext = wrapped.getFacesContext(context, request, response, lifecycle);
 
@@ -31,8 +46,8 @@ public class PrimeFacesContextFactory extends FacesContextFactory {
             return wrappedContext;
         }
 
-		return new PrimeFacesContext(wrappedContext);
-	}
+        return new PrimeFacesContext(wrappedContext);
+    }
 
     public FacesContextFactory getWrapped() {
         return wrapped;

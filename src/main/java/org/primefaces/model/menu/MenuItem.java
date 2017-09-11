@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2012 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,57 +20,57 @@ import java.util.Map;
 import org.primefaces.component.api.Confirmable;
 
 public interface MenuItem extends MenuElement, Confirmable {
-        
+
     public String getIcon();
-    
+
     public String getIconPos();
-    
+
     public String getTitle();
-    
+
     public boolean shouldRenderChildren();
-    
+
     public boolean isDisabled();
-    
+
     public String getOnclick();
-    
+
     public String getStyle();
-    
+
     public String getStyleClass();
-    
+
     public String getUrl();
-    
+
     public String getTarget();
-    
+
     public String getOutcome();
-    
+
     public String getFragment();
 
     public boolean isIncludeViewParams();
-    
+
     public boolean isAjax();
-    
+
     public Object getValue();
-    
+
     public void setStyleClass(String styleClass);
-    
+
     public Map<String, List<String>> getParams();
-    
+
     public void setParam(String key, Object value);
-    
+
     public boolean isDynamic();
-    
+
     public String getCommand();
-    
+
     public boolean isImmediate();
-    
+
     public String getClientId();
-    
+
     public String getContainerStyle();
-    
+
     public String getContainerStyleClass();
-    
+
     public boolean isEscape();
-    
+
     public String getRel();
-    
+
 }

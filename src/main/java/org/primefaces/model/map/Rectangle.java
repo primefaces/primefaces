@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,15 +18,15 @@ package org.primefaces.model.map;
 public class Rectangle extends Overlay {
 
     private LatLngBounds bounds;
-    
+
     private String strokeColor;
-    
+
     private double strokeOpacity = 1.0;
-    
+
     private int strokeWeight = 1;
-    
+
     private String fillColor;
-    
+
     private double fillOpacity = 1.0;
 
     public Rectangle(LatLngBounds bounds) {

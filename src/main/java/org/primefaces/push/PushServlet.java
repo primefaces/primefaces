@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ import javax.servlet.ServletException;
  * the PrimeFaces runtime with Atmosphere's components.
  */
 public class PushServlet extends AtmosphereServlet {
+
     private final Logger logger = LoggerFactory.getLogger(PushServlet.class.getName());
 
     /**
@@ -55,13 +56,12 @@ public class PushServlet extends AtmosphereServlet {
     /**
      * Create an Atmosphere Servlet.
      *
-     * @param isFilter           true if this instance is used as an {@link org.atmosphere.cpr.AtmosphereFilter}
+     * @param isFilter true if this instance is used as an {@link org.atmosphere.cpr.AtmosphereFilter}
      * @param autoDetectHandlers
      */
     public PushServlet(boolean isFilter, boolean autoDetectHandlers) {
         super(isFilter, autoDetectHandlers);
     }
-
 
     protected PushServlet configureFramework(ServletConfig sc) throws ServletException {
         super.configureFramework(sc, false);
@@ -90,8 +90,9 @@ public class PushServlet extends AtmosphereServlet {
         }
 
         try {
-            framework().newClassInstance(EventBusFactory.class,EventBusFactory.class);
-        } catch (Exception ex) {
+            framework().newClassInstance(EventBusFactory.class, EventBusFactory.class);
+        }
+        catch (Exception ex) {
             logger.warn("", ex);
         }
 
@@ -102,7 +103,7 @@ public class PushServlet extends AtmosphereServlet {
         return this;
     }
 
-    protected void configureMetaBroadcasterCache(AtmosphereFramework framework){
+    protected void configureMetaBroadcasterCache(AtmosphereFramework framework) {
         MetaBroadcaster m = framework.metaBroadcaster();
         m.cache(new MetaBroadcaster.ThirtySecondsCache(m, framework.getAtmosphereConfig()));
     }

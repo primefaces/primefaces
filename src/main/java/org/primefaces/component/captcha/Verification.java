@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,23 +19,23 @@ import java.io.Serializable;
 
 class Verification implements Serializable {
 
-	private String challenge;
-	private String answer;
-	
-	public Verification() {
-		//NoOp
-	}
-	
-	public Verification(String challenge, String answer) {
-		this.challenge = challenge;
-		this.answer = answer;
-	}
-	
-	public String getChallenge() {
-		return challenge;
-	}
-	
-	public String getAnswer() {
-		return answer;
-	}
+    private String challenge;
+    private String answer;
+
+    public Verification() {
+        //NoOp
+    }
+
+    public Verification(String challenge, String answer) {
+        this.challenge = challenge;
+        this.answer = answer;
+    }
+
+    public String getChallenge() {
+        return challenge;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
 }

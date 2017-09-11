@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import org.primefaces.mobile.util.MobileUtils;
 import org.primefaces.util.HTML;
 
 public class LinkRenderer extends org.primefaces.component.link.LinkRenderer {
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -32,17 +32,17 @@ public class LinkRenderer extends org.primefaces.component.link.LinkRenderer {
         boolean shouldWriteId = shouldWriteId(link);
         boolean disabled = link.isDisabled();
         String style = link.getStyle();
-        String defaultStyleClass = disabled ? Link.MOBILE_DISABLED_STYLE_CLASS: Link.MOBILE_STYLE_CLASS;
+        String defaultStyleClass = disabled ? Link.MOBILE_DISABLED_STYLE_CLASS : Link.MOBILE_STYLE_CLASS;
         String styleClass = link.getStyleClass();
         styleClass = (styleClass == null) ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
-        if(disabled) {
+        if (disabled) {
             writer.startElement("span", link);
-            if(shouldWriteId) {
+            if (shouldWriteId) {
                 writer.writeAttribute("id", link.getClientId(context), "id");
             }
             writer.writeAttribute("class", styleClass, "styleClass");
-            if(style != null) {
+            if (style != null) {
                 writer.writeAttribute("style", style, "style");
             }
 
@@ -51,28 +51,28 @@ public class LinkRenderer extends org.primefaces.component.link.LinkRenderer {
         }
         else {
             String outcome = link.getOutcome();
-            
+
             writer.startElement("a", link);
-            if(shouldWriteId) {
+            if (shouldWriteId) {
                 writer.writeAttribute("id", link.getClientId(context), "id");
             }
             writer.writeAttribute("class", styleClass, "styleClass");
 
-            if(outcome != null && outcome.startsWith("pm:")) {
+            if (outcome != null && outcome.startsWith("pm:")) {
                 String command = MobileUtils.buildNavigation(outcome) + "return false;";
                 writer.writeAttribute("href", "#", null);
-                
+
                 renderPassThruAttributes(context, link, HTML.LINK_ATTRS_WITHOUT_EVENTS);
                 renderDomEvents(context, link, HTML.OUTPUT_EVENTS_WITHOUT_CLICK);
                 renderOnclick(context, component, command);
             }
             else {
                 String targetURL = getTargetURL(context, link);
-                if(targetURL == null) {
+                if (targetURL == null) {
                     targetURL = "#";
                 }
                 writer.writeAttribute("href", targetURL, null);
-                
+
                 renderPassThruAttributes(context, link, HTML.LINK_ATTRS_WITHOUT_EVENTS);
                 renderDomEvents(context, link, HTML.OUTPUT_EVENTS);
             }
@@ -81,6 +81,5 @@ public class LinkRenderer extends org.primefaces.component.link.LinkRenderer {
             writer.endElement("a");
         }
     }
-            
 
 }

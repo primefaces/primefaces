@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,34 +23,34 @@ import org.primefaces.component.growl.Growl;
 import org.primefaces.util.WidgetBuilder;
 
 public class GrowlRenderer extends org.primefaces.component.growl.GrowlRenderer {
-    
+
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		Growl growl = (Growl) component;
-        
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        Growl growl = (Growl) component;
+
         encodeMarkup(context, growl);
         encodeScript(context, growl);
-	}
-    
+    }
+
     protected void encodeMarkup(FacesContext context, Growl growl) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = growl.getClientId(context);
-        
+
         writer.startElement("div", growl);
-		writer.writeAttribute("id", clientId, "id");
-        
+        writer.writeAttribute("id", clientId, "id");
+
         renderDynamicPassThruAttributes(context, growl);
-        
-		writer.endElement("div");
+
+        writer.endElement("div");
     }
-    
+
     protected void encodeScript(FacesContext context, Growl growl) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("Growl", growl.resolveWidgetVar(), growl.getClientId(context));
         wb.attr("sticky", growl.isSticky(), false)
-            .attr("life", growl.getLife(), 6000)
-            .attr("escape", growl.isEscape(), true)
-            .append(",msgs:");
+                .attr("life", growl.getLife(), 6000)
+                .attr("escape", growl.isEscape(), true)
+                .append(",msgs:");
         encodeMessages(context, growl);
         wb.finish();
     }

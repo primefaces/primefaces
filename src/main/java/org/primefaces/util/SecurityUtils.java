@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,63 +21,66 @@ import javax.faces.context.FacesContext;
 
 public class SecurityUtils {
 
-	private SecurityUtils() {}
-	
-	public static boolean ifGranted(String role) {
-		return FacesContext.getCurrentInstance().getExternalContext().isUserInRole(role);
-	}
-	
-	public static boolean ifAllGranted(String value) {
-		String[] roles = value.split(",");
-		boolean isAuthorized = false;
-		
-		for(String role : roles) {
-			if(ifGranted(role.trim())) {
-				isAuthorized = true;
-			} else {
-				isAuthorized = false;
-				break;
-			}
-		}
-		
-		return isAuthorized;
-	}
-	
-	public static boolean ifAnyGranted(String value) {
-		String[] roles = value.split(",");
-		boolean isAuthorized = false;
-		
-		for(String role : roles) {
-			if(ifGranted(role.trim())) {
-				isAuthorized = true;
-				break;
-			}
-		}
-		
-		return isAuthorized;
-	}
+    private SecurityUtils() {
+    }
 
-	public static boolean ifNoneGranted(String value) {
-		String[] roles = value.split(",");
-		boolean isAuthorized = false;
-		
-		for(String role : roles) {
-			if(ifGranted(role.trim())) {
-				isAuthorized = false;
-				break;
-			} else {
-				isAuthorized = true;
-			}
-		}
-		
-		return isAuthorized;
-	}
-	
-	public static String remoteUser() {
-		return FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
-	}
-	
-	public static Principal userPrincipal() {
-		return FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal();
-	}
+    public static boolean ifGranted(String role) {
+        return FacesContext.getCurrentInstance().getExternalContext().isUserInRole(role);
+    }
+
+    public static boolean ifAllGranted(String value) {
+        String[] roles = value.split(",");
+        boolean isAuthorized = false;
+
+        for (String role : roles) {
+            if (ifGranted(role.trim())) {
+                isAuthorized = true;
+            }
+            else {
+                isAuthorized = false;
+                break;
+            }
+        }
+
+        return isAuthorized;
+    }
+
+    public static boolean ifAnyGranted(String value) {
+        String[] roles = value.split(",");
+        boolean isAuthorized = false;
+
+        for (String role : roles) {
+            if (ifGranted(role.trim())) {
+                isAuthorized = true;
+                break;
+            }
+        }
+
+        return isAuthorized;
+    }
+
+    public static boolean ifNoneGranted(String value) {
+        String[] roles = value.split(",");
+        boolean isAuthorized = false;
+
+        for (String role : roles) {
+            if (ifGranted(role.trim())) {
+                isAuthorized = false;
+                break;
+            }
+            else {
+                isAuthorized = true;
+            }
+        }
+
+        return isAuthorized;
+    }
+
+    public static String remoteUser() {
+        return FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
+    }
+
+    public static Principal userPrincipal() {
+        return FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal();
+    }
 }

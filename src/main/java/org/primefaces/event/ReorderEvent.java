@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,11 +23,11 @@ public class ReorderEvent extends AbstractAjaxBehaviorEvent {
     private int fromIndex;
     private int toIndex;
 
-	public ReorderEvent(UIComponent component, Behavior behavior, int fromIndex, int toIndex) {
-		super(component, behavior);
+    public ReorderEvent(UIComponent component, Behavior behavior, int fromIndex, int toIndex) {
+        super(component, behavior);
         this.fromIndex = fromIndex;
         this.toIndex = toIndex;
-	}
+    }
 
     public int getFromIndex() {
         return fromIndex;

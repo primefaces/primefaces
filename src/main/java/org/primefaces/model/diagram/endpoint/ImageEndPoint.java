@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ public class ImageEndPoint extends EndPoint {
     public String getType() {
         return "Image";
     }
-    
+
     @Override
     public String toJS(StringBuilder sb) {
         return sb.append("['Image', {src:'").append(path).append("'}]").toString();

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,12 @@
  */
 package org.primefaces.application.resource.barcode;
 
-import java.io.IOException;
 import org.krysalis.barcode4j.impl.code128.Code128Bean;
-import org.krysalis.barcode4j.output.CanvasProvider;
 
-public class Code128Generator implements BarcodeGenerator {
+public class Code128Generator extends BarcodeGenerator {
 
-    public void generate(CanvasProvider canvasProvider, String value) throws IOException {
-        Code128Bean bean = new Code128Bean();
-        bean.generateBarcode(canvasProvider, value);
+    public Code128Generator() {
+        super(new Code128Bean());
     }
-    
+
 }

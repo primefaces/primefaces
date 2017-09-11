@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,84 +29,84 @@ import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class InputMaskRenderer extends InputRenderer {
-	
-    private final static Logger logger = Logger.getLogger(InputMaskRenderer.class.getName());
-    
-	@Override
-	public void decode(FacesContext context, UIComponent component) {
-		InputMask inputMask = (InputMask) component;
 
-        if(inputMask.isDisabled() || inputMask.isReadonly()) {
+    private final static Logger logger = Logger.getLogger(InputMaskRenderer.class.getName());
+
+    @Override
+    public void decode(FacesContext context, UIComponent component) {
+        InputMask inputMask = (InputMask) component;
+
+        if (inputMask.isDisabled() || inputMask.isReadonly()) {
             return;
         }
 
         decodeBehaviors(context, inputMask);
 
-		String clientId = inputMask.getClientId(context);
-		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
+        String clientId = inputMask.getClientId(context);
+        String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
 
-        if(submittedValue != null) {
+        if (submittedValue != null) {
             inputMask.setSubmittedValue(submittedValue);
         }
-	}
-	
-	@Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		InputMask inputMask = (InputMask) component;
-		
-		encodeMarkup(context, inputMask);
-		encodeScript(context, inputMask);
-	}
-	
-	protected void encodeScript(FacesContext context, InputMask inputMask) throws IOException {
-		String clientId = inputMask.getClientId(context);
+    }
+
+    @Override
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        InputMask inputMask = (InputMask) component;
+
+        encodeMarkup(context, inputMask);
+        encodeScript(context, inputMask);
+    }
+
+    protected void encodeScript(FacesContext context, InputMask inputMask) throws IOException {
+        String clientId = inputMask.getClientId(context);
         String mask = inputMask.getMask();
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("InputMask", inputMask.resolveWidgetVar(), clientId);
         String slotChar = inputMask.getSlotChar();
-                
-        if(mask != null) {
+
+        if (mask != null) {
             wb.attr("mask", mask)
-                .attr("placeholder", slotChar, null)
-                .attr("autoclear", inputMask.isAutoClear(), true);
+                    .attr("placeholder", slotChar, null)
+                    .attr("autoclear", inputMask.isAutoClear(), true);
         }
 
         wb.finish();
-	}
-	
-	protected void encodeMarkup(FacesContext context, InputMask inputMask) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		String clientId = inputMask.getClientId(context);
+    }
+
+    protected void encodeMarkup(FacesContext context, InputMask inputMask) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = inputMask.getClientId(context);
         String styleClass = inputMask.getStyleClass();
         String defaultClass = InputMask.STYLE_CLASS;
         defaultClass = !inputMask.isValid() ? defaultClass + " ui-state-error" : defaultClass;
         defaultClass = inputMask.isDisabled() ? defaultClass + " ui-state-disabled" : defaultClass;
         styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
-		
-		writer.startElement("input", null);
-		writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("name", clientId, null);
-		writer.writeAttribute("type", inputMask.getType(), "text");
-		
-		String valueToRender = ComponentUtils.getValueToRender(context, inputMask);
-		if(valueToRender != null) {
-			writer.writeAttribute("value", valueToRender , null);
-		}
-		
+
+        writer.startElement("input", null);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("name", clientId, null);
+        writer.writeAttribute("type", inputMask.getType(), "text");
+
+        String valueToRender = ComponentUtils.getValueToRender(context, inputMask);
+        if (valueToRender != null) {
+            writer.writeAttribute("value", valueToRender, null);
+        }
+
         renderPassThruAttributes(context, inputMask, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, inputMask, HTML.INPUT_TEXT_EVENTS);
 
-        if(inputMask.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
-        if(inputMask.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
-        if(inputMask.getStyle() != null) writer.writeAttribute("style", inputMask.getStyle(), "style");
-		if(inputMask.isRequired()) writer.writeAttribute("aria-required", "true", null);
-        
+        if (inputMask.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+        if (inputMask.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
+        if (inputMask.getStyle() != null) writer.writeAttribute("style", inputMask.getStyle(), "style");
+        if (inputMask.isRequired()) writer.writeAttribute("aria-required", "true", null);
+
         writer.writeAttribute("class", styleClass, "styleClass");
-        
-        if(RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+
+        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, inputMask);
         }
 
         writer.endElement("input");
-	}
+    }
 }

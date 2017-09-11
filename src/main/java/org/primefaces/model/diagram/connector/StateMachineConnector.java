@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +16,22 @@
 package org.primefaces.model.diagram.connector;
 
 public class StateMachineConnector extends Connector {
-    
+
     private int curviness = 10;
-    
+
     private int margin = 5;
-    
+
     private int proximityLimit = 80;
-    
+
     private int loopbackRadius = 25;
-    
+
     private boolean showLoopback = true;
-    
+
     private Orientation orientation = Orientation.CLOCKWISE;
 
     public StateMachineConnector() {
     }
-    
+
     public StateMachineConnector(int curviness, int margin, int proximityLimit, int loopbackRadius, boolean showLoopback, Orientation orientation) {
         this.curviness = curviness;
         this.margin = margin;
@@ -39,7 +39,7 @@ public class StateMachineConnector extends Connector {
         this.loopbackRadius = loopbackRadius;
         this.showLoopback = showLoopback;
         this.orientation = orientation;
-    } 
+    }
 
     public int getCurviness() {
         return curviness;
@@ -105,9 +105,9 @@ public class StateMachineConnector extends Connector {
     public enum Orientation {
         CLOCKWISE("clockwise"),
         ANTICLOCKWISE("anticlockwise");
-        
+
         private final String text;
-    
+
         private Orientation(final String text) {
             this.text = text;
         }
@@ -116,5 +116,5 @@ public class StateMachineConnector extends Connector {
         public String toString() {
             return this.text;
         }
-    } 
+    }
 }

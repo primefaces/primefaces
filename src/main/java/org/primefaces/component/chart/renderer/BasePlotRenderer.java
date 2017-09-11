@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,14 +24,14 @@ import org.primefaces.model.chart.LegendPlacement;
 import org.primefaces.util.ComponentUtils;
 
 public abstract class BasePlotRenderer {
-    
+
     public void render(FacesContext context, Chart chart) throws IOException {
         encodeData(context, chart);
         encodeOptions(context, chart);
     }
-    
+
     protected abstract void encodeData(FacesContext context, Chart chart) throws IOException;
-    
+
     protected void encodeOptions(FacesContext context, Chart chart) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ChartModel model = chart.getModel();
@@ -41,42 +41,53 @@ public abstract class BasePlotRenderer {
         String negativeSeriesColors = model.getNegativeSeriesColors();
         String extender = model.getExtender();
 
-        if(title != null)
+        if (title != null) {
             writer.write(",title:\"" + ComponentUtils.escapeText(title) + "\"");
-        
-        if(!model.isShadow())
+        }
+
+        if (!model.isShadow()) {
             writer.write(",shadow:false");
-        
-        if(seriesColors != null)
-            writer.write(",seriesColors:[\"#" +  seriesColors.replaceAll("[ ]*,[ ]*", "\",\"#") + "\"]");
-        
-        if(negativeSeriesColors != null)
-            writer.write(",negativeSeriesColors:[\"#" +  negativeSeriesColors.replaceAll("[ ]*,[ ]*", "\",\"#") + "\"]");
-        
-        if(legendPosition != null) {
+        }
+
+        if (seriesColors != null) {
+            writer.write(",seriesColors:[\"#" + seriesColors.replaceAll("[ ]*,[ ]*", "\",\"#") + "\"]");
+        }
+
+        if (negativeSeriesColors != null) {
+            writer.write(",negativeSeriesColors:[\"#" + negativeSeriesColors.replaceAll("[ ]*,[ ]*", "\",\"#") + "\"]");
+        }
+
+        if (legendPosition != null) {
             LegendPlacement legendPlacement = model.getLegendPlacement();
             writer.write(",legendPosition:\"" + legendPosition + "\"");
-            
-            if(model.getLegendCols() != 0)
+
+            if (model.getLegendCols() != 0) {
                 writer.write(",legendCols:" + model.getLegendCols());
-            
-            if(model.getLegendRows() != 0)
+            }
+
+            if (model.getLegendRows() != 0) {
                 writer.write(",legendRows:" + model.getLegendRows());
-            
-            if(legendPlacement != null)
+            }
+
+            if (legendPlacement != null) {
                 writer.write(",legendPlacement:\"" + legendPlacement + "\"");
-            
-            if(model.isLegendEscapeHtml())
+            }
+
+            if (model.isLegendEscapeHtml()) {
                 writer.write(",escapeHtml:true");
+            }
         }
-        
-        if(!model.isMouseoverHighlight())
+
+        if (!model.isMouseoverHighlight()) {
             writer.write(",highlightMouseOver:" + false);
-        
-        if(extender != null)
+        }
+
+        if (extender != null) {
             writer.write(",extender:" + extender);
-        
-        if(!model.isResetAxesOnResize())
-            writer.write(",resetAxesOnResize:" + false);        
+        }
+
+        if (!model.isResetAxesOnResize()) {
+            writer.write(",resetAxesOnResize:" + false);
+        }
     }
 }

@@ -94,7 +94,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
 
         //for Screen Readers
-        for(var i = 0; i < this.items.size(); i++) {
+        for(var i = 0; i < this.items.length; i++) {
             this.items.eq(i).attr('id', this.id + '_' + i);
         }
 
@@ -571,7 +571,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 default:
                 break;
             }
-        });
+        }).on('paste.ui-selectonemenu', function() {
+            setTimeout(function(){
+                $this.filter($this.filterInput.val());
+            },2);
+		});
     },
 
     highlightNext: function(event) {
@@ -751,7 +755,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 	        if(this.cfg.editable) {
 	            this.label.removeAttr('disabled');
 	        }
-	        
+
             this.bindEvents();
             this.bindItemEvents();
     	}

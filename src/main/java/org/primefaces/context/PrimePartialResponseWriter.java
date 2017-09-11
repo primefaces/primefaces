@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,16 +32,22 @@ import org.primefaces.application.resource.DynamicResourcesPhaseListener;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
+import org.primefaces.util.BeanUtils;
 import org.primefaces.util.CollectionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.ResourceUtils;
 
 public class PrimePartialResponseWriter extends PartialResponseWriter {
 
-    private static final Map<String, String> CALLBACK_EXTENSION_PARAMS = Collections.unmodifiableMap(new HashMap<String, String>() {{
-        put("ln", "primefaces");
-        put("type", "args");
-    }});
+    private static final Map<String, String> CALLBACK_EXTENSION_PARAMS;
+    
+    static {
+        Map<String, String> callbackExtensionParams = new HashMap<String, String>();
+        callbackExtensionParams.put("ln", "primefaces");
+        callbackExtensionParams.put("type", "args");
+
+        CALLBACK_EXTENSION_PARAMS = Collections.unmodifiableMap(callbackExtensionParams);
+    }
 
     private final PartialResponseWriter wrapped;
     private boolean metadataRendered = false;
@@ -97,7 +103,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
         wrapped.endDocument();
     }
-    
+
     @Override
     public void startDocument() throws IOException {
         wrapped.startDocument();
@@ -106,14 +112,14 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     @Override
     public void startError(String errorName) throws IOException {
         startMetadataIfNecessary();
-        
+
         wrapped.startError(errorName);
     }
 
     @Override
     public void startEval() throws IOException {
         startMetadataIfNecessary();
-        
+
         wrapped.startEval();
     }
 
@@ -134,24 +140,24 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     @Override
     public void startInsertBefore(String targetId) throws IOException {
         startMetadataIfNecessary();
-        
+
         wrapped.startInsertBefore(targetId);
     }
 
     @Override
     public void startUpdate(String targetId) throws IOException {
         startMetadataIfNecessary();
-        
+
         wrapped.startUpdate(targetId);
     }
 
     @Override
     public void updateAttributes(String targetId, Map<String, String> attributes) throws IOException {
         startMetadataIfNecessary();
-        
+
         wrapped.updateAttributes(targetId, attributes);
     }
-    
+
     @Override
     public void redirect(String url) throws IOException {
         wrapped.redirect(url);
@@ -160,22 +166,9 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     @Override
     public void delete(String targetId) throws IOException {
         startMetadataIfNecessary();
-        
+
         wrapped.delete(targetId);
     }
-
-    private boolean isBean(Object value) {
-        if (value == null) {
-            return false;
-        }
-
-        if (value instanceof Boolean || value instanceof String || value instanceof Number) {
-            return false;
-        }
-
-        return true;
-    }
-    
 
     public void encodeJSONObject(String paramName, JSONObject jsonObject) throws IOException, JSONException {
         String json = jsonObject.toString();
@@ -186,7 +179,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         getWrapped().write("\":");
         getWrapped().write(json);
     }
-    
+
     public void encodeJSONArray(String paramName, JSONArray jsonArray) throws IOException, JSONException {
         String json = jsonArray.toString();
         json = ComponentUtils.escapeXml(json);
@@ -196,7 +189,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         getWrapped().write("\":");
         getWrapped().write(json);
     }
-    
+
     public void encodeJSONValue(String paramName, Object paramValue) throws IOException, JSONException {
         String json = new JSONObject().put(paramName, paramValue).toString();
         json = ComponentUtils.escapeXml(json);
@@ -211,7 +204,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
             startExtension(CALLBACK_EXTENSION_PARAMS);
             getWrapped().write("{");
 
-            for(Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
+            for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
                 String paramName = it.next();
                 Object paramValue = params.get(paramName);
 
@@ -221,7 +214,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                 else if (paramValue instanceof JSONArray) {
                     encodeJSONArray(paramName, (JSONArray) paramValue);
                 }
-                else if (isBean(paramValue)) {
+                else if (BeanUtils.isBean(paramValue)) {
                     encodeJSONObject(paramName, new JSONObject(paramValue));
                 }
                 else {
@@ -252,15 +245,14 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         }
     }
 
-    
     protected void startMetadataIfNecessary() throws IOException {
-        
+
         if (metadataRendered) {
             return;
         }
-        
+
         metadataRendered = true;
-        
+
         FacesContext context = FacesContext.getCurrentInstance();
         RequestContext requestContext = RequestContext.getCurrentInstance(context);
 
@@ -329,5 +321,5 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
             }
         }
     }
-    
+
 }

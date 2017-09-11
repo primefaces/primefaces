@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +21,12 @@ import org.primefaces.component.api.UIColumn;
 
 public class ColumnResizeEvent extends ResizeEvent {
 
-	private UIColumn column;
-	
-	public ColumnResizeEvent(UIComponent component, Behavior behavior, int width, int height, UIColumn column) {
-		super(component, behavior, width, height);
-		this.column = column;
-	}
+    private UIColumn column;
+
+    public ColumnResizeEvent(UIComponent component, Behavior behavior, int width, int height, UIColumn column) {
+        super(component, behavior, width, height);
+        this.column = column;
+    }
 
     public UIColumn getColumn() {
         return column;

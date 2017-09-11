@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,10 +26,11 @@ public class LineChartSeries extends ChartSeries {
     private boolean showMarker = true;
     private boolean fill = false;
     private double fillAlpha = 1;
-	private boolean smoothLine = false;
+    private boolean smoothLine = false;
     private boolean disableStack;
 
-    public LineChartSeries() {}
+    public LineChartSeries() {
+    }
 
     public LineChartSeries(String title) {
         super(title);
@@ -58,11 +59,12 @@ public class LineChartSeries extends ChartSeries {
     public void setShowMarker(boolean showMarker) {
         this.showMarker = showMarker;
     }
-    
+
     @Override
     public boolean isFill() {
         return fill;
     }
+
     public void setFill(boolean fill) {
         this.fill = fill;
     }
@@ -74,7 +76,7 @@ public class LineChartSeries extends ChartSeries {
     public void setFillAlpha(double fillAlpha) {
         this.fillAlpha = fillAlpha;
     }
-    
+
     public boolean isDisableStack() {
         return disableStack;
     }
@@ -82,15 +84,14 @@ public class LineChartSeries extends ChartSeries {
     public void setDisableStack(boolean disableStack) {
         this.disableStack = disableStack;
     }
-	
-	public boolean isSmoothLine() {
+
+    public boolean isSmoothLine() {
         return smoothLine;
     }
 
     public void setSmoothLine(boolean smoothLine) {
         this.smoothLine = smoothLine;
     }
-    
 
     @Override
     public String getRenderer() {
@@ -102,23 +103,24 @@ public class LineChartSeries extends ChartSeries {
         String renderer = this.getRenderer();
         AxisType xaxis = this.getXaxis();
         AxisType yaxis = this.getYaxis();
-        
+
         writer.write("{");
         writer.write("label:\"" + ComponentUtils.escapeText(this.getLabel()) + "\"");
         writer.write(",renderer: $.jqplot." + renderer);
+
+        if (xaxis != null) writer.write(",xaxis:\"" + xaxis + "\"");
+        if (yaxis != null) writer.write(",yaxis:\"" + yaxis + "\"");
+        if (disableStack) writer.write(",disableStack:true");
         
-        if(xaxis != null) writer.write(",xaxis:\"" + xaxis + "\"");
-        if(yaxis != null) writer.write(",yaxis:\"" + yaxis + "\"");
-        if(disableStack) writer.write(",disableStack:true");
-        
-        if(fill) {
+
+        if (fill) {
             writer.write(",fill:true");
             writer.write(",fillAlpha:" + this.getFillAlpha());
         }
 
         writer.write(",showLine:" + this.isShowLine());
-        writer.write(",markerOptions:{show:" + this.isShowMarker()+ ", style:'" + this.getMarkerStyle() + "'}");
-        if(smoothLine){
+        writer.write(",markerOptions:{show:" + this.isShowMarker() + ", style:'" + this.getMarkerStyle() + "'}");
+        if (smoothLine) {
             writer.write(",rendererOptions:{smooth: true }");
         }
         writer.write("}");

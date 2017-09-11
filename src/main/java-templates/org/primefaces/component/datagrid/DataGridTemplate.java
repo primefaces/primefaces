@@ -24,7 +24,7 @@ import javax.faces.event.BehaviorEvent;
 	public static final String TABLE_CLASS = "ui-datagrid-data";
 	public static final String TABLE_ROW_CLASS = "ui-datagrid-row";
     public static final String GRID_CONTENT_CLASS = "ui-datagrid-content ui-widget-content ui-grid ui-grid-responsive";
-    public static final String GRID_ROW_CLASS = "ui-grid-row";
+    public static final String GRID_ROW_CLASS = "ui-g";
     public static final String COLUMN_CLASS = "ui-datagrid-column";
 
     public static final String MOBILE_DATAGRID_CLASS = "ui-datagrid";

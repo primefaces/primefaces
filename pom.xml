@@ -167,7 +167,7 @@
         </dependency>
 
         <!-- Atmosphere -->
-       <dependency>
+        <dependency>
             <groupId>org.atmosphere</groupId>
             <artifactId>atmosphere-runtime</artifactId>
             <version>2.4.6</version>
@@ -211,8 +211,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
@@ -270,7 +270,46 @@
                     </execution>
                 </executions>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.17</version>
+                <configuration>
+                    <consoleOutput>true</consoleOutput>
+                    <configLocation>./checkstyle.xml</configLocation>
+                    <excludes>**/UIData.java,**/Base64.java,**/UITabPanel.java,**/json/**,**/UITree.java,**/UIRepeat.java,**/AbstractBehaviorHandler.java</excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>checkstyle</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <failOnViolation>true</failOnViolation>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <header>./header.txt</header>
+                    <includes>
+                        <include>src/main/java/**</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.primefaces</groupId>
                 <artifactId>maven-jsf-plugin</artifactId>
@@ -357,7 +396,9 @@
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/components.css</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.css</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/ui/jquery-ui.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.timepicker.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.pfextensions.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/accordion/accordion.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/autocomplete/autocomplete.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/blockui/blockui.css</include>
@@ -459,7 +500,16 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/growl/growl.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inplace/inplace.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/lightbox/lightbox.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.base.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.tieredmenu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.menubar.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.slidemenu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.plainmenu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.menubutton.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.contextmenu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.megamenu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.panelmenu.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/menu/menu.tabmenu.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/messages/messages.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/notificationbar/notificationbar.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/panel/panel.js</include>
@@ -662,7 +712,7 @@
                         <version>2.10.4</version>
                         <configuration>
                             <sourcepath>${basedir}/src/main/java;${basedir}/target/generated-sources/maven-jsf-plugin</sourcepath>
-                             <additionalparam>-Xdoclint:none</additionalparam>
+                            <additionalparam>-Xdoclint:none</additionalparam>
                         </configuration>
                         <executions>
                             <execution>

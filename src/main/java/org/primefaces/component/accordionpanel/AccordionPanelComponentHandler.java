@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package org.primefaces.component.accordionpanel;
 
-
 import javax.faces.view.facelets.ComponentConfig;
 import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRule;
@@ -26,19 +25,19 @@ import org.primefaces.facelets.MethodRule;
 
 public class AccordionPanelComponentHandler extends ComponentHandler {
 
-	private static final MetaRule TABCHANGE_CONTROLLER =
-			new MethodRule("tabController", Boolean.class, new Class[]{TabEvent.class});
+    private static final MetaRule TABCHANGE_CONTROLLER
+            = new MethodRule("tabController", Boolean.class, new Class[]{TabEvent.class});
 
-	public AccordionPanelComponentHandler(ComponentConfig config) {
-		super(config);
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected MetaRuleset createMetaRuleset(Class type) { 
-		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
-		
-		metaRuleset.addRule(TABCHANGE_CONTROLLER);
-		
-		return metaRuleset; 
-	} 
+    public AccordionPanelComponentHandler(ComponentConfig config) {
+        super(config);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected MetaRuleset createMetaRuleset(Class type) {
+        MetaRuleset metaRuleset = super.createMetaRuleset(type);
+
+        metaRuleset.addRule(TABCHANGE_CONTROLLER);
+
+        return metaRuleset;
+    }
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2013 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,38 +25,32 @@ import javax.faces.component.visit.VisitResult;
 public class ResetInputVisitCallback implements VisitCallback {
 
     public static final ResetInputVisitCallback INSTANCE = new ResetInputVisitCallback();
-    
-    private boolean clearModel;
+    public static final ResetInputVisitCallback INSTANCE_CLEAR_MODEL = new ResetInputVisitCallback(true);
+
+    private final boolean clearModel;
 
     public ResetInputVisitCallback() {
+        this.clearModel = false;
     }
 
     public ResetInputVisitCallback(boolean clearModel) {
         this.clearModel = clearModel;
     }
 
-    public boolean isClearModel() {
-        return clearModel;
-    }
-
-    public void setClearModel(boolean clearModel) {
-        this.clearModel = clearModel;
-    }
-
+    @Override
     public VisitResult visit(VisitContext context, UIComponent target) {
-        if(target instanceof EditableValueHolder) {
+        if (target instanceof EditableValueHolder) {
             EditableValueHolder input = (EditableValueHolder) target;
             input.resetValue();
-            
-            if(this.clearModel) {
+
+            if (clearModel) {
                 ValueExpression ve = target.getValueExpression("value");
-                if(ve != null) {
+                if (ve != null) {
                     ve.setValue(context.getFacesContext().getELContext(), null);
                 }
             }
         }
-        
+
         return VisitResult.ACCEPT;
     }
-    
 }

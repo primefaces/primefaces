@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
     private ValueExpression value;
 
     private ValueExpression contentDisposition;
-    
+
     private ValueExpression monitorKey;
 
     public FileDownloadActionListener() {
@@ -58,26 +58,26 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
         ELContext elContext = context.getELContext();
         StreamedContent content = (StreamedContent) value.getValue(elContext);
 
-        if(content == null) {
+        if (content == null) {
             return;
         }
 
         ExternalContext externalContext = context.getExternalContext();
         String contentDispositionValue = contentDisposition != null ? (String) contentDisposition.getValue(elContext) : "attachment";
         String monitorKeyValue = monitorKey != null ? "_" + (String) monitorKey.getValue(elContext) : "";
-        
+
         InputStream inputStream = null;
 
         try {
             externalContext.setResponseContentType(content.getContentType());
             externalContext.setResponseHeader("Content-Disposition", ComponentUtils.createContentDisposition(contentDispositionValue, content.getName()));
             externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE + monitorKeyValue, "true", Collections.<String, Object>emptyMap());
-            
-            if(content.getContentLength() != null){
-            	externalContext.setResponseContentLength(content.getContentLength().intValue());
+
+            if (content.getContentLength() != null) {
+                externalContext.setResponseContentLength(content.getContentLength().intValue());
             }
 
-            if(RequestContext.getCurrentInstance(context).isSecure()) {
+            if (RequestContext.getCurrentInstance(context).isSecure()) {
                 externalContext.setResponseHeader("Cache-Control", "public");
                 externalContext.setResponseHeader("Pragma", "public");
             }

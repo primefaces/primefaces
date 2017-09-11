@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,32 +24,32 @@ import org.primefaces.model.map.LatLngBounds;
 
 public class StateChangeEvent extends AbstractAjaxBehaviorEvent {
 
-	private LatLngBounds bounds;
-	
-	private int zoomLevel;
+    private LatLngBounds bounds;
 
-	private LatLng center;
+    private int zoomLevel;
 
-	public StateChangeEvent(UIComponent component, Behavior behavior, LatLngBounds bounds, int zoomLevel, LatLng center) {
-		super(component, behavior);
-		this.bounds = bounds;
-		this.zoomLevel = zoomLevel;
+    private LatLng center;
+
+    public StateChangeEvent(UIComponent component, Behavior behavior, LatLngBounds bounds, int zoomLevel, LatLng center) {
+        super(component, behavior);
+        this.bounds = bounds;
+        this.zoomLevel = zoomLevel;
         this.center = center;
-	}
+    }
 
-	public LatLngBounds getBounds() {
-		return bounds;
-	}
-	
-	public int getZoomLevel() {
-		return zoomLevel;
-	}
-        
-        public LatLng getCenter() {
-            return center;
-        }
+    public LatLngBounds getBounds() {
+        return bounds;
+    }
 
-        public void setCenter(LatLng center) {
-            this.center = center;
-        }
+    public int getZoomLevel() {
+        return zoomLevel;
+    }
+
+    public LatLng getCenter() {
+        return center;
+    }
+
+    public void setCenter(LatLng center) {
+        this.center = center;
+    }
 }

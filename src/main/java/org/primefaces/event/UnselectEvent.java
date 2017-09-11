@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,14 @@ import javax.faces.component.behavior.Behavior;
 
 public class UnselectEvent extends AbstractAjaxBehaviorEvent {
 
-	private Object object;
+    private Object object;
 
-	public UnselectEvent(UIComponent component, Behavior behavior, Object object) {
-		super(component, behavior);
-		this.object = object;
-	}
+    public UnselectEvent(UIComponent component, Behavior behavior, Object object) {
+        super(component, behavior);
+        this.object = object;
+    }
 
-	public Object getObject() {
-		return object;
-	}
+    public Object getObject() {
+        return object;
+    }
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ public class ValueExpressionAnalyzer {
         if (expression == null) {
             return null;
         }
-        
+
         ValueReference reference = toValueReference(expression, elContext);
 
         // check for a CC expression
@@ -55,7 +55,7 @@ public class ValueExpressionAnalyzer {
         if (expression == null) {
             return null;
         }
-        
+
         // Unwrapping is required e.g. for p:graphicImage to support nested expressions in composites
         // The unwrapping requires EL 2.2
         if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastEL22()) {

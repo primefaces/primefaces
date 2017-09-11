@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,57 +30,59 @@ import javax.faces.model.DataModelListener;
  */
 public abstract class LazyDataModel<T> extends DataModel<T> implements SelectableDataModel<T>, Serializable {
 
-	private int rowIndex = -1;
+    private int rowIndex = -1;
 
-	private int rowCount;
+    private int rowCount;
 
-	private int pageSize;
+    private int pageSize;
 
-	private List<T> data;
+    private List<T> data;
 
-	public LazyDataModel() {
-		super();
-	}
-	
-	public boolean isRowAvailable() {
-		if(data == null) {
+    public LazyDataModel() {
+        super();
+    }
+
+    public boolean isRowAvailable() {
+        if (data == null) {
             return false;
         }
 
-		return rowIndex >= 0 && rowIndex < data.size();
-	}
+        return rowIndex >= 0 && rowIndex < data.size();
+    }
 
-	public int getRowCount() {
-		return rowCount;
-	}
+    public int getRowCount() {
+        return rowCount;
+    }
 
-	public T getRowData() {
+    public T getRowData() {
         return data.get(rowIndex);
-	}
+    }
 
     public int getRowIndex() {
         return this.rowIndex;
     }
-    
+
     public void setRowIndex(int rowIndex) {
         int oldIndex = this.rowIndex;
-        
-        if(rowIndex == -1 || pageSize == 0)
+
+        if (rowIndex == -1 || pageSize == 0) {
             this.rowIndex = -1;
-        else
+        }
+        else {
             this.rowIndex = (rowIndex % pageSize);
-        
-        if(data == null) {
+        }
+
+        if (data == null) {
             return;
         }
-        
+
         DataModelListener[] listeners = getDataModelListeners();
-        if(listeners != null && oldIndex != this.rowIndex) {
+        if (listeners != null && oldIndex != this.rowIndex) {
             Object rowData = null;
-            if(isRowAvailable()) {
+            if (isRowAvailable()) {
                 rowData = getRowData();
             }
-            
+
             DataModelEvent dataModelEvent = new DataModelEvent(this, rowIndex, rowData);
             for (int i = 0; i < listeners.length; i++) {
                 listeners[i].rowSelected(dataModelEvent);
@@ -88,38 +90,42 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         }
     }
 
-	public Object getWrappedData() {
-		return data;
-	}
-	public void setWrappedData(Object list) {
-		this.data = (List) list;
-	}
-	
-	public int getPageSize() {
-		return pageSize;
-	}
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
-	}
+    public List<T> getWrappedData() {
+        return data;
+    }
+
+    public void setWrappedData(Object list) {
+        this.data = (List) list;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
 
     public void setRowCount(int rowCount) {
         this.rowCount = rowCount;
     }
 
-    public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,Object> filters) {
+    public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
         throw new UnsupportedOperationException("Lazy loading is not implemented.");
     }
-    
-    public List<T> load(int first, int pageSize, List<SortMeta> multiSortMeta, Map<String,Object> filters) {
+
+    public List<T> load(int first, int pageSize, List<SortMeta> multiSortMeta, Map<String, Object> filters) {
         throw new UnsupportedOperationException("Lazy loading is not implemented.");
     }
 
     public T getRowData(String rowKey) {
-        throw new UnsupportedOperationException(getMessage("getRowData(String rowKey) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
+        throw new UnsupportedOperationException(
+                getMessage("getRowData(String rowKey) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
     public Object getRowKey(T object) {
-        throw new UnsupportedOperationException(getMessage("getRowKey(T object) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
+        throw new UnsupportedOperationException(
+                getMessage("getRowKey(T object) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
     private String getMessage(String format) {

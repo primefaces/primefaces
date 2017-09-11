@@ -776,10 +776,12 @@
                 r = this.cv == this.v;
             }
 
-            c.beginPath();
-            c.strokeStyle = r ? this.o.fgColor : this.fgColor ;
-            c.arc(this.xy, this.xy, this.radius, a.s, a.e, a.d);
-            c.stroke();
+            if(this.v) { // PrimeFaces Github #2580 
+                c.beginPath();
+                c.strokeStyle = r ? this.o.fgColor : this.fgColor ;
+                c.arc(this.xy, this.xy, this.radius, a.s, a.e, a.d);
+                c.stroke();
+            }
         };
 
         this.cancel = function () {

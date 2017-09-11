@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,6 @@ import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
 import javax.faces.application.ViewExpiredException;
 import javax.faces.application.ViewHandler;
-import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
@@ -96,10 +95,12 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
                     if (context.getPartialViewContext().isAjaxRequest()) {
                         handleAjaxException(context, rootCause, info);
-                    } else {
+                    }
+                    else {
                         handleRedirect(context, rootCause, info, false);
                     }
-                } catch (Exception ex) {
+                }
+                catch (Exception ex) {
                     LOG.log(Level.SEVERE, "Could not handle exception!", ex);
                 }
             }
@@ -112,8 +113,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         }
     }
 
-    protected void logException(Throwable rootCause)
-    {
+    protected void logException(Throwable rootCause) {
         LOG.log(Level.SEVERE, rootCause.getMessage(), rootCause);
     }
 
@@ -222,7 +222,12 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
                 writer.write("var hf=function(type,message,timestampp){");
                 writer.write(handlerComponent.getOnexception());
-                writer.write("};hf.call(this,\"" + info.getType() + "\",\"" + ComponentUtils.escapeText(info.getMessage()) + "\",\"" + info.getFormattedTimestamp() + "\");");
+                writer.write("};hf.call(this,\""
+                        + info.getType() + "\",\""
+                        + ComponentUtils.escapeText(info.getMessage())
+                        + "\",\""
+                        + info.getFormattedTimestamp()
+                        + "\");");
 
                 writer.endCDATA();
                 writer.endElement("eval");
@@ -291,8 +296,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     }
 
     /**
-     * Builds the view if not already available.
-     * This is mostly required for ViewExpiredException's.
+     * Builds the view if not already available. This is mostly required for ViewExpiredException's.
      *
      * @param context The {@link FacesContext}.
      * @param throwable The occurred {@link Throwable}.
@@ -346,13 +350,14 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         }
         else {
             // workaround for IllegalStateException from redirect of committed response
-            if(externalContext.isResponseCommitted() && !context.getPartialViewContext().isAjaxRequest()) {
+            if (externalContext.isResponseCommitted() && !context.getPartialViewContext().isAjaxRequest()) {
                 PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
                 writer.startElement("script", null);
                 writer.write("window.location.href = '" + url + "';");
                 writer.endElement("script");
                 writer.getWrapped().endDocument();
-            } else {
+            }
+            else {
                 externalContext.redirect(url);
             }
         }

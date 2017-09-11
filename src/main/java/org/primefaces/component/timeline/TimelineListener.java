@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,8 +33,8 @@ public class TimelineListener implements SystemEventListener {
         Timeline timeline = (Timeline) cse.getSource();
         String widgetVar = timeline.resolveWidgetVar();
 
-        Map<String, TimelineUpdater> map =
-                (Map<String, TimelineUpdater>) context.getAttributes().get(TimelineUpdater.class.getName());
+        Map<String, TimelineUpdater> map
+                = (Map<String, TimelineUpdater>) context.getAttributes().get(TimelineUpdater.class.getName());
         if (map == null) {
             map = new HashMap<String, TimelineUpdater>();
             context.getAttributes().put(TimelineUpdater.class.getName(), map);
@@ -44,11 +44,11 @@ public class TimelineListener implements SystemEventListener {
         for (PhaseListener listener : context.getViewRoot().getPhaseListeners()) {
             if (listener instanceof DefaultTimelineUpdater
                     && ((DefaultTimelineUpdater) listener).getWidgetVar().equals(widgetVar)) {
-                
+
                 if (!map.containsKey(widgetVar)) {
                     map.put(widgetVar, (DefaultTimelineUpdater) listener);
                 }
-                
+
                 alreadyRegistred = true;
             }
         }
@@ -57,7 +57,7 @@ public class TimelineListener implements SystemEventListener {
             DefaultTimelineUpdater timelineUpdater = new DefaultTimelineUpdater();
             timelineUpdater.setWidgetVar(widgetVar);
             map.put(widgetVar, timelineUpdater);
-            
+
             context.getViewRoot().addPhaseListener(timelineUpdater);
         }
     }

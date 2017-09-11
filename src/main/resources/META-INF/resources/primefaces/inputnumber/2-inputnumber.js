@@ -32,7 +32,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
             this.input.autoNumeric('set', this.valueToRender);
         }
 
-        this.copyValueToHiddenInput(false);
+        this.copyValueToHiddenInput();
 
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
@@ -47,7 +47,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
 
         // copy the value from the input to the hidden input
         var originalOnkeyup = this.input.prop('onkeyup');
-        this.input.removeProp('onkeyup').off('keyup').on('keyup', function (e) {
+        this.input.prop('onkeyup', null).off('keyup').on('keyup', function (e) {
 
             var oldValue;
 
@@ -57,7 +57,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
                     || (keyCode >= 96 && keyCode <= 111)
                     || (keyCode >= 186 && keyCode <= 222)) {
 
-                oldValue = $this.copyValueToHiddenInput(true);
+                oldValue = $this.copyValueToHiddenInput();
             }
 
             if (originalOnkeyup && originalOnkeyup.call(this, e) === false) {
@@ -69,9 +69,9 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         });
 
         var originalOnchange = this.input.prop('onchange');
-        this.input.removeProp('onchange').off('change').on('change', function (e) {
+        this.input.prop('onchange', null).off('change').on('change', function (e) {
 
-            var oldValue = $this.copyValueToHiddenInput(true);
+            var oldValue = $this.copyValueToHiddenInput();
             if (originalOnchange && originalOnchange.call(this, e) === false) {
                 $this.setValueToHiddenInput(oldValue);
                 return false;
@@ -79,9 +79,9 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         });
 
         var originalOnkeydown = this.input.prop('onkeydown');
-        this.input.removeProp('onkeydown').off('keydown').on('keydown', function (e) {
+        this.input.prop('onkeydown', null).off('keydown').on('keydown', function (e) {
 
-            var oldValue = $this.copyValueToHiddenInput(true);
+            var oldValue = $this.copyValueToHiddenInput();
             if (originalOnkeydown && originalOnkeydown.call(this, e) === false) {
                 $this.setValueToHiddenInput(oldValue);
                 return false;
@@ -89,21 +89,20 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
-    copyValueToHiddenInput: function(triggerEvent) {
+    copyValueToHiddenInput: function() {
         var oldVal = this.hiddenInput.val();
 
         var newVal = this.input.autoNumeric('get');
-        this.setValueToHiddenInput(newVal, triggerEvent);
+
+        if (oldVal !== newVal) {
+            this.setValueToHiddenInput(newVal);
+        }
 
         return oldVal;
     },
 
-    setValueToHiddenInput: function(value, triggerEvent) {
+    setValueToHiddenInput: function(value) {
         this.hiddenInput.val(value);
-
-        if (triggerEvent === true) {
-            this.hiddenInput.change();
-        }
     },
 
     enable: function () {

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,14 @@
 package org.primefaces.model.chart;
 
 public class LineChartModel extends CartesianChartModel {
- 
+
     private boolean stacked = false;
     private boolean breakOnNull = false;
-    
+
     public boolean isStacked() {
         return stacked;
     }
+
     public void setStacked(boolean stacked) {
         this.stacked = stacked;
     }
@@ -30,6 +31,7 @@ public class LineChartModel extends CartesianChartModel {
     public boolean isBreakOnNull() {
         return breakOnNull;
     }
+
     public void setBreakOnNull(boolean breakOnNull) {
         this.breakOnNull = breakOnNull;
     }

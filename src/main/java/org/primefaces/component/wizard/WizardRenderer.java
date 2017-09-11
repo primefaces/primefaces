@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,6 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
 public class WizardRenderer extends CoreRenderer {
@@ -38,16 +37,16 @@ public class WizardRenderer extends CoreRenderer {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Wizard wizard = (Wizard) component;
-        
-        if(wizard.isWizardRequest(context)) {
+
+        if (wizard.isWizardRequest(context)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String clientId = wizard.getClientId(context);
             String stepToGo = params.get(clientId + "_stepToGo");
             String currentStep = wizard.getStep();
-            
+
             FlowEvent event = new FlowEvent(wizard, currentStep, stepToGo);
             event.setPhaseId(PhaseId.INVOKE_APPLICATION);
-            
+
             wizard.queueEvent(event);
         }
     }
@@ -56,27 +55,27 @@ public class WizardRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Wizard wizard = (Wizard) component;
 
-        if(wizard.isWizardRequest(context)) {
+        if (wizard.isWizardRequest(context)) {
             encodeStep(context, wizard);
-        } 
+        }
         else {
             encodeMarkup(context, wizard);
             encodeScript(context, wizard);
         }
     }
-    
+
     protected void encodeStep(FacesContext context, Wizard wizard) throws IOException {
         String stepToDisplay = wizard.getStep();
-        
-        if(!isValueBlank(stepToDisplay)) {
+
+        if (!isValueBlank(stepToDisplay)) {
             UIComponent tabToDisplay = null;
-            for(UIComponent child : wizard.getChildren()) {
-                if(child.getId().equals(stepToDisplay)) {
+            for (UIComponent child : wizard.getChildren()) {
+                if (child.getId().equals(stepToDisplay)) {
                     tabToDisplay = child;
                 }
             }
 
-            if(tabToDisplay != null) {
+            if (tabToDisplay != null) {
                 tabToDisplay.encodeAll(context);
             }
 
@@ -96,16 +95,16 @@ public class WizardRenderer extends CoreRenderer {
         startScript(writer, clientId);
 
         writer.write("$(function() {");
-        
+
         writer.write("PrimeFaces.cw('Wizard','" + wizard.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
         writer.write(",showStepStatus:" + wizard.isShowStepStatus());
         writer.write(",showNavBar:" + wizard.isShowNavBar());
 
-        if(wizard.getOnback() != null) {
+        if (wizard.getOnback() != null) {
             writer.write(",onback:function(){" + wizard.getOnback() + "}");
         }
-        if(wizard.getOnnext() != null) {
+        if (wizard.getOnnext() != null) {
             writer.write(",onnext:function(){" + wizard.getOnnext() + "}");
         }
 
@@ -124,7 +123,8 @@ public class WizardRenderer extends CoreRenderer {
 
                 if (!firstStep) {
                     writer.write(",");
-                } else {
+                }
+                else {
                     firstStep = false;
                 }
 
@@ -153,17 +153,17 @@ public class WizardRenderer extends CoreRenderer {
         writer.startElement("div", wizard);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(wizard.getStyle() != null) {
+        if (wizard.getStyle() != null) {
             writer.writeAttribute("style", wizard.getStyle(), "style");
         }
 
-        if(wizard.isShowStepStatus()) {
+        if (wizard.isShowStepStatus()) {
             encodeStepStatus(facesContext, wizard);
         }
-        
+
         encodeContent(facesContext, wizard);
 
-        if(wizard.isShowNavBar()) {
+        if (wizard.isShowNavBar()) {
             encodeNavigators(facesContext, wizard);
         }
 
@@ -218,31 +218,33 @@ public class WizardRenderer extends CoreRenderer {
         writer.startElement("ul", null);
         writer.writeAttribute("class", Wizard.STEP_STATUS_CLASS, null);
 
-        for(UIComponent child : wizard.getChildren()) {
-            if(child instanceof Tab && child.isRendered()) {
+        for (UIComponent child : wizard.getChildren()) {
+            if (child instanceof Tab && child.isRendered()) {
                 Tab tab = (Tab) child;
                 String title = tab.getTitle();
                 UIComponent titleFacet = tab.getFacet("title");
                 boolean active = (!currentFound) && (currentStep == null || tab.getId().equals(currentStep));
                 String titleStyleClass = active ? Wizard.ACTIVE_STEP_CLASS : Wizard.STEP_CLASS;
-                if(tab.getTitleStyleClass() != null) {
+                if (tab.getTitleStyleClass() != null) {
                     titleStyleClass = titleStyleClass + " " + tab.getTitleStyleClass();
                 }
-                
-                if(active) {
+
+                if (active) {
                     currentFound = true;
                 }
 
                 writer.startElement("li", null);
                 writer.writeAttribute("class", titleStyleClass, null);
-                if(tab.getTitleStyle() != null) writer.writeAttribute("style", tab.getTitleStyle(), null);
-                if(tab.getTitletip() != null) writer.writeAttribute("title", tab.getTitletip(), null);
-                
-                if(titleFacet != null)
+                if (tab.getTitleStyle() != null) writer.writeAttribute("style", tab.getTitleStyle(), null);
+                if (tab.getTitletip() != null) writer.writeAttribute("title", tab.getTitletip(), null);
+
+                if (titleFacet != null) {
                     titleFacet.encodeAll(context);
-                else if(title != null)
+                }
+                else if (title != null) {
                     writer.writeText(title, null);
-                
+                }
+
                 writer.endElement("li");
             }
         }
@@ -254,9 +256,9 @@ public class WizardRenderer extends CoreRenderer {
         ResponseWriter writer = facesContext.getResponseWriter();
 
         writer.startElement("button", null);
-		writer.writeAttribute("id", id, null);
-		writer.writeAttribute("name", id, null);
-		writer.writeAttribute("type", "button", null);
+        writer.writeAttribute("id", id, null);
+        writer.writeAttribute("name", id, null);
+        writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " " + buttonClass, null);
 
         //button icon
@@ -264,14 +266,14 @@ public class WizardRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", iconClass, null);
         writer.endElement("span");
-        
+
         //text
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
         writer.writeText(label, "value");
         writer.endElement("span");
 
-		writer.endElement("button");
+        writer.endElement("button");
     }
 
     @Override

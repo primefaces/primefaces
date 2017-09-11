@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,88 +33,93 @@ import org.primefaces.util.ComponentUtils;
 public class SelectionFeature implements DataTableFeature {
 
     private final static String ALL_SELECTOR = "@all";
-    
+
     public void decode(FacesContext context, DataTable table) {
         String clientId = table.getClientId(context);
-		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-		String selection = params.get(clientId + "_selection");
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String selection = params.get(clientId + "_selection");
         Object originalValue = table.getValue();
         Object filteredValue = table.getFilteredValue();
         boolean isFiltered = (filteredValue != null);
-        
-        if(isFiltered) {
+
+        if (isFiltered) {
             table.setValue(null);
         }
-        
-		if(table.isSingleSelectionMode())
-			decodeSingleSelection(table, selection);
-		else
-			decodeMultipleSelection(context, table, selection);
-        
-        if(isFiltered) {
+
+        if (table.isSingleSelectionMode()) {
+            decodeSingleSelection(table, selection);
+        }
+        else {
+            decodeMultipleSelection(context, table, selection);
+        }
+
+        if (isFiltered) {
             table.setValue(originalValue);
         }
-        
-        if(table.isMultiViewState()) {
+
+        if (table.isMultiViewState()) {
             TableState ts = table.getTableState(true);
             table.findSelectedRowKeys();
             ts.setRowKeys(table.getSelectedRowKeys());
         }
     }
-    
-    void decodeSingleSelection(DataTable table, String selection) {
-		if(ComponentUtils.isValueBlank(selection))
-			table.setSelection(null);
-        else
-            table.setSelection(table.getRowData(selection));
-	}
 
-	void decodeMultipleSelection(FacesContext context, DataTable table, String selection) {
-		ValueExpression selectionByVE = table.getValueExpression(DataTable.PropertyKeys.selection.toString());
-		Class<?> clazz = selectionByVE == null ? null : selectionByVE.getType(context.getELContext());
+    void decodeSingleSelection(DataTable table, String selection) {
+        if (ComponentUtils.isValueBlank(selection)) {
+            table.setSelection(null);
+        }
+        else {
+            table.setSelection(table.getRowData(selection));
+        }
+    }
+
+    void decodeMultipleSelection(FacesContext context, DataTable table, String selection) {
+        ValueExpression selectionByVE = table.getValueExpression(DataTable.PropertyKeys.selection.toString());
+        Class<?> clazz = selectionByVE == null ? null : selectionByVE.getType(context.getELContext());
         boolean isArray = clazz == null ? false : clazz.isArray();
-        
-        if(clazz != null && !isArray && !List.class.isAssignableFrom(clazz)) {
+
+        if (clazz != null && !isArray && !List.class.isAssignableFrom(clazz)) {
             throw new FacesException("Multiple selection reference must be an Array or a List for datatable " + table.getClientId());
         }
-                
-		if(ComponentUtils.isValueBlank(selection)) {
-            if(isArray) {
+
+        if (ComponentUtils.isValueBlank(selection)) {
+            if (isArray) {
                 table.setSelection(Array.newInstance(clazz.getComponentType(), 0));
             }
             else {
                 table.setSelection(new ArrayList<Object>());
             }
-		}
+        }
         else {
             List selectionList = new ArrayList();
-            
-            if(selection.equals(ALL_SELECTOR)) {
-                for(int i = 0; i < table.getRowCount(); i++) {
+
+            if (selection.equals(ALL_SELECTOR)) {
+                for (int i = 0; i < table.getRowCount(); i++) {
                     table.setRowIndex(i);
                     selectionList.add(table.getRowData());
                 }
             }
             else {
                 String[] rowKeys = selection.split(",");
-                for(int i = 0; i < rowKeys.length; i++) {
+                for (int i = 0; i < rowKeys.length; i++) {
                     Object rowData = table.getRowData(rowKeys[i]);
 
-                    if(rowData != null)
+                    if (rowData != null) {
                         selectionList.add(rowData);
+                    }
                 }
             }
 
-            if(isArray) {
+            if (isArray) {
                 Object selectionArray = Array.newInstance(clazz.getComponentType(), selectionList.size());
                 table.setSelection(selectionList.toArray((Object[]) selectionArray));
             }
             else {
                 table.setSelection(selectionList);
             }
-		}
-	}
-    
+        }
+    }
+
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         throw new RuntimeException("SelectFeature should not encode.");
     }
@@ -126,5 +131,5 @@ public class SelectionFeature implements DataTableFeature {
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return false;
     }
-    
+
 }

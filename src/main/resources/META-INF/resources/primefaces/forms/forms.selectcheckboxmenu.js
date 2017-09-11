@@ -190,6 +190,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.items = this.itemContainer.children('li.ui-selectcheckboxmenu-item');
+        this.groupHeaders = this.itemContainer.children('li.ui-selectcheckboxmenu-item-group');
     },
 
     appendPanel: function() {
@@ -494,6 +495,19 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         }
 
+        var groupHeaderLength = this.groupHeaders.length;
+        for(var i = 0; i < groupHeaderLength; i++) {
+            var header = $(this.groupHeaders[i]),
+            groupedItems = header.nextUntil('li.ui-selectcheckboxmenu-item-group');
+
+            if(groupedItems.length === groupedItems.filter(':hidden').length) {
+                header.hide();
+            }
+            else {
+                header.show();
+            }
+        }
+
         if(this.cfg.scrollHeight) {
             if(this.itemContainer.height() < this.cfg.initialHeight) {
                 this.itemContainerWrapper.css('height', 'auto');
@@ -613,8 +627,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             item.removeClass('ui-selectcheckboxmenu-unchecked').addClass('ui-selectcheckboxmenu-checked');
 
             if(updateInput) {
-            	var itemGroups = item.prevAll('li.ui-selectcheckboxmenu-item-group');
-                var input = this.inputs.eq(item.index() - itemGroups);
+            	var itemGroups = item.prevAll('li.ui-selectcheckboxmenu-item-group'),
+                input = this.inputs.eq(item.index() - itemGroups.length);
                 input.prop('checked', true).attr('aria-checked', true).change();
 
                 this.updateToggler();
@@ -658,7 +672,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     },
 
     show: function() {
+        this.itemContainer.css('display', 'none');
         this.alignPanel();
+        this.itemContainer.css('display', '');
         this.keyboardTarget.attr('aria-expanded', true);
         this.panel.show();
 
@@ -815,8 +831,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             return;
         }
 
-        var itemGroups = item.prevAll('li.ui-selectcheckboxmenu-item-group');
-        var input = this.inputs.eq(item.index() - itemGroups.length),
+        var itemGroups = item.prevAll('li.ui-selectcheckboxmenu-item-group'),
+        input = this.inputs.eq(item.index() - itemGroups.length),
         escaped = input.data('escaped'),
         labelHtml = input.next().html().trim(),
         labelLength = labelHtml.length,

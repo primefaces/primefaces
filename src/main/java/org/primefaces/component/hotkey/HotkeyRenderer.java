@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,68 +28,67 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.ComponentUtils;
 
 public class HotkeyRenderer extends CoreRenderer {
 
     @Override
-	public void decode(FacesContext facesContext, UIComponent component) {
-		Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-		Hotkey hotkey = (Hotkey) component;
+    public void decode(FacesContext facesContext, UIComponent component) {
+        Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
+        Hotkey hotkey = (Hotkey) component;
 
-		if(params.containsKey(hotkey.getClientId(facesContext))) {
-			hotkey.queueEvent(new ActionEvent(hotkey));
-		}
-	}
+        if (params.containsKey(hotkey.getClientId(facesContext))) {
+            hotkey.queueEvent(new ActionEvent(hotkey));
+        }
+    }
 
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		Hotkey hotkey = (Hotkey) component;
-		String clientId = hotkey.getClientId(context);
-        
-		writer.startElement("script", null);
-		writer.writeAttribute("type", "text/javascript", null);
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        Hotkey hotkey = (Hotkey) component;
+        String clientId = hotkey.getClientId(context);
+
+        writer.startElement("script", null);
+        writer.writeAttribute("type", "text/javascript", null);
 
         writer.write("$(function() {");
-		writer.write("$(document).bind('keydown', '" + hotkey.getBind() + "', function(){");
-	
-		if(hotkey.isAjaxified()) {
-			UIComponent form = ComponentTraversalUtils.closestForm(context,hotkey);
+        writer.write("$(document).bind('keydown', '" + hotkey.getBind() + "', function(){");
 
-			if(form == null) {
-				throw new FacesException("Hotkey '"+ clientId+ "' needs to be enclosed in a form when ajax mode is enabled");
-			}
-            
+        if (hotkey.isAjaxified()) {
+            UIComponent form = ComponentTraversalUtils.closestForm(context, hotkey);
+
+            if (form == null) {
+                throw new FacesException("Hotkey '" + clientId + "' needs to be enclosed in a form when ajax mode is enabled");
+            }
+
             AjaxRequestBuilder builder = RequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
-        
+
             String request = builder.init()
-            	.source(clientId)
-                .form(form.getClientId(context))
-                .process(component, hotkey.getProcess())
-                .update(component, hotkey.getUpdate())
-                .async(hotkey.isAsync())
-                .global(hotkey.isGlobal())
-                .delay(hotkey.getDelay())
-                .timeout(hotkey.getTimeout())
-                .partialSubmit(hotkey.isPartialSubmit(), hotkey.isPartialSubmitSet(), hotkey.getPartialSubmitFilter())
-                .resetValues(hotkey.isResetValues(), hotkey.isResetValuesSet())
-                .ignoreAutoUpdate(hotkey.isIgnoreAutoUpdate())
-                .onstart(hotkey.getOnstart())
-                .onerror(hotkey.getOnerror())
-                .onsuccess(hotkey.getOnsuccess())
-                .oncomplete(hotkey.getOncomplete())
-                .params(hotkey)
-                .build();
-			
-			writer.write(request);
+                    .source(clientId)
+                    .form(form.getClientId(context))
+                    .process(component, hotkey.getProcess())
+                    .update(component, hotkey.getUpdate())
+                    .async(hotkey.isAsync())
+                    .global(hotkey.isGlobal())
+                    .delay(hotkey.getDelay())
+                    .timeout(hotkey.getTimeout())
+                    .partialSubmit(hotkey.isPartialSubmit(), hotkey.isPartialSubmitSet(), hotkey.getPartialSubmitFilter())
+                    .resetValues(hotkey.isResetValues(), hotkey.isResetValuesSet())
+                    .ignoreAutoUpdate(hotkey.isIgnoreAutoUpdate())
+                    .onstart(hotkey.getOnstart())
+                    .onerror(hotkey.getOnerror())
+                    .onsuccess(hotkey.getOnsuccess())
+                    .oncomplete(hotkey.getOncomplete())
+                    .params(hotkey)
+                    .build();
 
-		} else {
-			writer.write(hotkey.getHandler());
-		}
+            writer.write(request);
+        }
+        else {
+            writer.write(hotkey.getHandler());
+        }
 
-		writer.write(";return false;});});");
-        
-		writer.endElement("script");
-	}
+        writer.write(";return false;});});");
+
+        writer.endElement("script");
+    }
 }

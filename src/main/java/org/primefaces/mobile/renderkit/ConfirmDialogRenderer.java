@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import org.primefaces.component.confirmdialog.ConfirmDialog;
 import org.primefaces.component.dialog.Dialog;
 
 public class ConfirmDialogRenderer extends org.primefaces.component.confirmdialog.ConfirmDialogRenderer {
-    
+
     @Override
     protected void encodeMarkup(FacesContext context, ConfirmDialog dialog) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -36,81 +36,85 @@ public class ConfirmDialogRenderer extends org.primefaces.component.confirmdialo
         writer.writeAttribute("id", clientId + "_mask", null);
         writer.writeAttribute("class", Dialog.MOBILE_MASK_CLASS, null);
         writer.endElement("div");
-        
+
         writer.startElement("div", dialog);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, null);
         }
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("class", Dialog.MOBILE_POPUP_CLASS, null);
-        
+
         encodeHeader(context, dialog);
         encodeContent(context, dialog);
-        
+
         renderDynamicPassThruAttributes(context, dialog);
-        
+
         writer.endElement("div");
 
         writer.endElement("div");
     }
-    
+
     @Override
     protected void encodeHeader(FacesContext context, ConfirmDialog dialog) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String header = dialog.getHeader();
         UIComponent headerFacet = dialog.getFacet("header");
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("class", Dialog.MOBILE_TITLE_BAR_CLASS, null);
-        
+
         //close
-        if(dialog.isClosable()) {
+        if (dialog.isClosable()) {
             writer.startElement("a", null);
             writer.writeAttribute("href", "#", null);
             writer.writeAttribute("class", Dialog.MOBILE_CLOSE_ICON_CLASS, null);
             writer.endElement("a");
         }
-        
+
         //title
         writer.startElement("h1", null);
         writer.writeAttribute("class", Dialog.MOBILE_TITLE_CLASS, null);
         writer.writeAttribute("role", "heading", null);
-        
-        if(headerFacet != null)
+
+        if (headerFacet != null) {
             headerFacet.encodeAll(context);
-        else if(header != null)
+        }
+        else if (header != null) {
             writer.write(header);
-        
+        }
+
         writer.endElement("h1");
-        
+
         writer.endElement("div");
     }
-    
+
     @Override
     protected void encodeContent(FacesContext context, ConfirmDialog dialog) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String messageText = dialog.getMessage();
         UIComponent messageFacet = dialog.getFacet("message");
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-content", null);
         writer.writeAttribute("role", "main", null);
-        
+
         writer.startElement("span", null);
-		writer.writeAttribute("class", "ui-title", null);
-        
-        if(messageFacet != null)
+        writer.writeAttribute("class", "ui-title", null);
+
+        if (messageFacet != null) {
             messageFacet.encodeAll(context);
-        else if(messageText != null)
-			writer.writeText(messageText, null);
-        
+        }
+        else if (messageText != null) {
+            writer.writeText(messageText, null);
+        }
+
         writer.endElement("span");
-        
+
         renderChildren(context, dialog);
-        
+
         writer.endElement("div");
     }
 }

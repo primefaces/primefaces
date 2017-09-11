@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,19 +35,19 @@ public class ChildExpressionResolver implements SearchExpressionResolver {
     public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
 
         Matcher matcher = PATTERN.matcher(expression);
-        
+
         if (matcher.matches()) {
             int childNumber = Integer.parseInt(matcher.group(1));
 
             if (childNumber + 1 > last.getChildCount()) {
-                throw new FacesException("Component with clientId \"" +
-                    last.getClientId(context) + "\" has fewer children as \"" + childNumber + "\". Expression: \"" + expression + "\"");
+                throw new FacesException("Component with clientId \""
+                        + last.getClientId(context) + "\" has fewer children as \"" + childNumber + "\". Expression: \"" + expression + "\"");
             }
 
             List<UIComponent> list = last.getChildren();
             int count = 0;
             for (int i = 0; i < last.getChildCount(); i++) {
-                
+
                 String className = list.get(i).getClass().getName();
                 if (!className.contains("UIInstructions") && !className.contains("UILeaf")) {
                     count++;
@@ -57,15 +57,14 @@ public class ChildExpressionResolver implements SearchExpressionResolver {
                 }
             }
             if (count < childNumber) {
-                throw new FacesException("Component with clientId \"" +
-                    last.getClientId(context) + "\" has fewer children as \"" + childNumber + "\". Expression: \"" + expression + "\"");
+                throw new FacesException("Component with clientId \""
+                        + last.getClientId(context) + "\" has fewer children as \"" + childNumber + "\". Expression: \"" + expression + "\"");
             }
         }
-        else
-        {
+        else {
             throw new FacesException("Expression does not match following pattern @child(n). Expression: \"" + expression + "\"");
         }
-        
+
         return null;
     }
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * An annotation to use with {@link PushEndpoint} annotated classes. A method annotated with {@code OnClose} will be invoked
- * when a {@link org.primefaces.push.RemoteEndpoint} is disconnected. An annotated method may define zero, one or two parameters. For example
+ * An annotation to use with {@link PushEndpoint} annotated classes.
+ * A method annotated with {@code OnClose} will be invoked when a {@link org.primefaces.push.RemoteEndpoint} is disconnected.
+ * An annotated method may define zero, one or two parameters. For example
  *
  * <blockquote>
  *     @OnClose

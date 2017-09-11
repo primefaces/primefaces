@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,23 +24,23 @@ public class TabCloseEvent extends AbstractAjaxBehaviorEvent implements TabEvent
     private Tab tab;
     private Object data;
 
-	public TabCloseEvent(UIComponent component, Behavior behavior, Tab tab) {
-		super(component, behavior);
+    public TabCloseEvent(UIComponent component, Behavior behavior, Tab tab) {
+        super(component, behavior);
         this.tab = tab;
-	}
+    }
 
     public Tab getTab() {
         return tab;
     }
-    
+
     public void setTab(Tab tab) {
         this.tab = tab;
     }
-    
+
     public Object getData() {
         return data;
     }
-    
+
     public void setData(Object data) {
         this.data = data;
     }

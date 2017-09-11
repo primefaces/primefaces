@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,22 +23,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FeedInput {
-      
+
     public List parse(String url, int size) throws Exception {
         List entries = new ArrayList();
         URL feedSource = new URL(url);
         SyndFeedInput input = new SyndFeedInput();
         SyndFeed feed = input.build(new XmlReader(feedSource));
         int i = 0;
-        
-        for(Object f : feed.getEntries()) {
-            if(i == size)
+
+        for (Object f : feed.getEntries()) {
+            if (i == size) {
                 break;
+            }
 
             entries.add(f);
             i++;
         }
-        
+
         return entries;
     }
 }

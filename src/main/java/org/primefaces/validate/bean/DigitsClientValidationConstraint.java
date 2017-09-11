@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,22 +25,22 @@ public class DigitsClientValidationConstraint implements ClientValidationConstra
 
     private static final String MESSAGE_METADATA = "data-p-digits-msg";
     private static final String MESSAGE_ID = "{javax.validation.constraints.Digits.message}";
-    
+
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
-        Map<String,Object> metadata = new HashMap<String, Object>();
+        Map<String, Object> metadata = new HashMap<String, Object>();
         Map attrs = constraintDescriptor.getAttributes();
         Object message = attrs.get(ATTR_MESSAGE);
-        
+
         metadata.put(HTML.VALIDATION_METADATA.DIGITS_INTEGER, attrs.get("integer"));
         metadata.put(HTML.VALIDATION_METADATA.DIGITS_FRACTION, attrs.get("fraction"));
-        
-        if(!message.equals(MESSAGE_ID)) {
+
+        if (!message.equals(MESSAGE_ID)) {
             metadata.put(MESSAGE_METADATA, message);
         }
-        
+
         return metadata;
     }
-    
+
     public String getValidatorId() {
         return Digits.class.getSimpleName();
     }

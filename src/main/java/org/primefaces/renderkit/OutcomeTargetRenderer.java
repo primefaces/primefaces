@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,8 +62,9 @@ public class OutcomeTargetRenderer extends CoreRenderer {
     protected boolean containsEL(List<String> values) {
         if (!values.isEmpty()) {
             for (String value : values) {
-                if (isExpression(value))
+                if (isExpression(value)) {
                     return true;
+                }
             }
         }
 
@@ -99,7 +100,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
                 params = new LinkedHashMap<String, List<String>>();
             }
 
-            for (Map.Entry<String,List<String>> entry : navCaseParams.entrySet()) {
+            for (Map.Entry<String, List<String>> entry : navCaseParams.entrySet()) {
                 String key = entry.getKey();
 
                 //UIParams take precedence
@@ -107,7 +108,8 @@ public class OutcomeTargetRenderer extends CoreRenderer {
                     List<String> values = entry.getValue();
                     if (containsEL(values)) {
                         params.put(key, evaluateValueExpressions(context, values));
-                    } else {
+                    }
+                    else {
                         params.put(key, values);
                     }
                 }
@@ -151,15 +153,14 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             NavigationCase navCase = findNavigationCase(context, outcomeTarget);
 
             if (navCase == null) {
-            	throw new FacesException("Could not resolve NavigationCase for outcome: " + outcomeTarget.getOutcome());
+                throw new FacesException("Could not resolve NavigationCase for outcome: " + outcomeTarget.getOutcome());
             }
 
             String toViewId = navCase.getToViewId(context);
             boolean isIncludeViewParams = isIncludeViewParams(outcomeTarget, navCase);
             Map<String, List<String>> params = getParams(context, navCase, outcomeTarget);
 
-            if (params == null)
-            {
+            if (params == null) {
                 params = Collections.emptyMap();
             }
 
@@ -181,7 +182,8 @@ public class OutcomeTargetRenderer extends CoreRenderer {
 
                 url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, isIncludeViewParams);
 
-            } finally {
+            }
+            finally {
                 if (clientWindowRenderingModeEnabled && clientWindow != null) {
                     ((ClientWindow) clientWindow).enableClientWindowRenderMode(context);
                 }

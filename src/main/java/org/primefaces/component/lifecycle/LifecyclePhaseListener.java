@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,19 +32,19 @@ public class LifecyclePhaseListener implements PhaseListener {
         if (isGetLifecycleInfoRequest(event.getFacesContext())) {
             return;
         }
-        
+
         PhaseInfo phaseInfo = getPhaseInfo(event.getPhaseId(), event.getFacesContext());
         phaseInfo.setStart(System.currentTimeMillis());
-        
+
         if (event.getPhaseId() == PhaseId.RESTORE_VIEW) {
             PhaseInfo anyPhaseInfo = getPhaseInfo(PhaseId.ANY_PHASE, event.getFacesContext());
             anyPhaseInfo.setStart(System.currentTimeMillis());
         }
     }
-    
+
     @Override
     public void afterPhase(PhaseEvent event) {
-        
+
         if (isGetLifecycleInfoRequest(event.getFacesContext())) {
             return;
         }
@@ -52,7 +52,7 @@ public class LifecyclePhaseListener implements PhaseListener {
         PhaseInfo phaseInfo = getPhaseInfo(event.getPhaseId(), event.getFacesContext());
         phaseInfo.setEnd(System.currentTimeMillis());
         phaseInfo.setDuration(phaseInfo.getEnd() - phaseInfo.getStart());
-        
+
         if (event.getPhaseId() == PhaseId.RENDER_RESPONSE) {
             PhaseInfo anyPhaseInfo = getPhaseInfo(PhaseId.ANY_PHASE, event.getFacesContext());
             anyPhaseInfo.setEnd(System.currentTimeMillis());
@@ -61,22 +61,23 @@ public class LifecyclePhaseListener implements PhaseListener {
     }
 
     @Override
-    public PhaseId getPhaseId() {        
+    public PhaseId getPhaseId() {
         return PhaseId.ANY_PHASE;
     }
 
     public static PhaseInfo getPhaseInfo(PhaseId id, FacesContext facesContext) {
-        
-        Map<String, Object> session = facesContext.getExternalContext().getSessionMap(); 
-        Map<String, LinkedHashMap<Integer, PhaseInfo>> storePerView = (Map<String, LinkedHashMap<Integer, PhaseInfo>>) session.get(LifecyclePhaseListener.class.getName());
-        
+
+        Map<String, Object> session = facesContext.getExternalContext().getSessionMap();
+        Map<String, LinkedHashMap<Integer, PhaseInfo>> storePerView =
+                (Map<String, LinkedHashMap<Integer, PhaseInfo>>) session.get(LifecyclePhaseListener.class.getName());
+
         if (storePerView == null) {
             storePerView = new HashMap<String, LinkedHashMap<Integer, PhaseInfo>>();
             session.put(LifecyclePhaseListener.class.getName(), storePerView);
         }
 
         String viewId = ComponentUtils.calculateViewId(facesContext);
-        
+
         LinkedHashMap<Integer, PhaseInfo> store = storePerView.get(viewId);
         if (store == null) {
             store = new LinkedHashMap<Integer, PhaseInfo>();
@@ -89,20 +90,20 @@ public class LifecyclePhaseListener implements PhaseListener {
             phaseInfo.setPhase(id.getOrdinal());
             store.put(id.getOrdinal(), phaseInfo);
         }
-        
+
         return phaseInfo;
     }
-    
+
     protected boolean isGetLifecycleInfoRequest(FacesContext facesContext) {
         if (!facesContext.getPartialViewContext().isAjaxRequest()) {
             return false;
         }
-        
+
         String source = facesContext.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
         if (ComponentUtils.isValueBlank(source)) {
             return false;
         }
-        
+
         return facesContext.getExternalContext().getRequestParameterMap().containsKey(source + "_getlifecycleinfo");
     }
 }

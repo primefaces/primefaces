@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,23 +32,25 @@ public class FooterRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("data-role", "footer", null);
-        
-        if(footer.getStyle() != null) writer.writeAttribute("style", footer.getStyle(), null);
-        if(footer.getStyleClass() != null) writer.writeAttribute("class", footer.getStyleClass(), null);
-        if(swatch != null) writer.writeAttribute("data-theme", swatch, null);        
-        if(footer.isFixed()) {
+
+        if (footer.getStyle() != null) writer.writeAttribute("style", footer.getStyle(), null);
+        if (footer.getStyleClass() != null) writer.writeAttribute("class", footer.getStyleClass(), null);
+        if (swatch != null) writer.writeAttribute("data-theme", swatch, null);        
+
+        if (footer.isFixed()) {
             writer.writeAttribute("data-position", "fixed", null);
-            
-            if(!footer.isTapToggle())
+
+            if (!footer.isTapToggle()) {
                 writer.writeAttribute("data-tap-toggle", "false", null);
+            }
         }
-        
+
         renderDynamicPassThruAttributes(context, component);
-        
-        if(title != null) {
-             writer.startElement("h4", null);
-             writer.writeText(title, null);
-             writer.endElement("h4");
+
+        if (title != null) {
+            writer.startElement("h4", null);
+            writer.writeText(title, null);
+            writer.endElement("h4");
         }
     }
 

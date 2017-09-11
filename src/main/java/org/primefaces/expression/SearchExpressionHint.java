@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ public class SearchExpressionHint {
     public static final int NONE = 0x0;
 
     /**
-     * Checks if the {@link UIComponent} has a renderer or not. This check is currently only useful for the update attributes, as a component without renderer
-     * can't be updated.
+     * Checks if the {@link UIComponent} has a renderer or not. This check is currently only useful for the update attributes, as a component without
+     * renderer can't be updated.
      */
     public static final int VALIDATE_RENDERER = 0x1;
 

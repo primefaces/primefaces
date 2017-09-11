@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,56 +20,56 @@ import java.util.List;
 
 public class Polyline extends Overlay {
 
-	private List<LatLng> paths;
+    private List<LatLng> paths;
 
-	private String strokeColor;
-	
-	private double strokeOpacity = 1.0;
-	
-	private int strokeWeight = 1;
-	
-	public Polyline() {
-		paths = new ArrayList<LatLng>();
-	}
-	
-	public Polyline(List<LatLng> paths) {
-		this.paths = paths;
-	}
-	
-	public Polyline(List<LatLng> paths, Object data) {
-		super(data);
-		this.paths = paths;
-	}
-	
-	public List<LatLng> getPaths() {
-		return paths;
-	}
+    private String strokeColor;
 
-	public void setPaths(List<LatLng> paths) {
-		this.paths = paths;
-	}
-	
-	public String getStrokeColor() {
-		return strokeColor;
-	}
+    private double strokeOpacity = 1.0;
 
-	public void setStrokeColor(String strokeColor) {
-		this.strokeColor = strokeColor;
-	}
+    private int strokeWeight = 1;
 
-	public double getStrokeOpacity() {
-		return strokeOpacity;
-	}
+    public Polyline() {
+        paths = new ArrayList<LatLng>();
+    }
 
-	public void setStrokeOpacity(double strokeOpacity) {
-		this.strokeOpacity = strokeOpacity;
-	}
+    public Polyline(List<LatLng> paths) {
+        this.paths = paths;
+    }
 
-	public int getStrokeWeight() {
-		return strokeWeight;
-	}
+    public Polyline(List<LatLng> paths, Object data) {
+        super(data);
+        this.paths = paths;
+    }
 
-	public void setStrokeWeight(int strokeWeight) {
-		this.strokeWeight = strokeWeight;
-	}	
+    public List<LatLng> getPaths() {
+        return paths;
+    }
+
+    public void setPaths(List<LatLng> paths) {
+        this.paths = paths;
+    }
+
+    public String getStrokeColor() {
+        return strokeColor;
+    }
+
+    public void setStrokeColor(String strokeColor) {
+        this.strokeColor = strokeColor;
+    }
+
+    public double getStrokeOpacity() {
+        return strokeOpacity;
+    }
+
+    public void setStrokeOpacity(double strokeOpacity) {
+        this.strokeOpacity = strokeOpacity;
+    }
+
+    public int getStrokeWeight() {
+        return strokeWeight;
+    }
+
+    public void setStrokeWeight(int strokeWeight) {
+        this.strokeWeight = strokeWeight;
+    }
 }

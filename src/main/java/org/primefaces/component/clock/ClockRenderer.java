@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,26 +32,26 @@ public class ClockRenderer extends CoreRenderer {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Clock clock = (Clock) component;
-        
-        if(clock.isSyncRequest()) {
+
+        if (clock.isSyncRequest()) {
             RequestContext.getCurrentInstance(context).addCallbackParam("datetime", System.currentTimeMillis());
             context.renderResponse();
         }
     }
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Clock clock = (Clock) component;
-        
+
         encodeMarkup(context, clock);
         encodeScript(context, clock);
     }
-    
+
     protected void encodeMarkup(FacesContext context, Clock clock) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = clock.getClientId(context);
-        
-        if(clock.getDisplayMode().equals("analog")) {
+
+        if (clock.getDisplayMode().equals("analog")) {
             writer.startElement("div", clock);
             writer.writeAttribute("id", clientId, null);
             writer.writeAttribute("class", Clock.ANALOG_STYLE_CLASS, null);
@@ -72,32 +72,32 @@ public class ClockRenderer extends CoreRenderer {
 
         wb.init("Clock", clock.resolveWidgetVar(), clientId);
         wb.attr("mode", mode)
-            .attr("pattern", clock.getPattern(), null)
-            .attr("displayMode", clock.getDisplayMode())
-            .attr("locale", context.getViewRoot().getLocale().toString());
-        
-        if(mode.equals("server")) {
+                .attr("pattern", clock.getPattern(), null)
+                .attr("displayMode", clock.getDisplayMode())
+                .attr("locale", context.getViewRoot().getLocale().toString());
+
+        if (mode.equals("server")) {
             wb.attr("value", getValueWithTimeZone(context, clock));
-            
-            if(clock.isAutoSync()) {
+
+            if (clock.isAutoSync()) {
                 wb.attr("autoSync", true).attr("syncInterval", clock.getSyncInterval());
             }
         }
 
         wb.finish();
     }
-    
+
     protected String getValueWithTimeZone(FacesContext context, Clock clock) {
         Locale locale = context.getViewRoot().getLocale();
         String value = "";
-        
-        if(locale != null) {
+
+        if (locale != null) {
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", locale);
             dateFormat.setTimeZone(clock.calculateTimeZone());
-            
+
             value = dateFormat.format(new Date());
         }
-        
+
         return value;
     }
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,45 +24,45 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.WidgetBuilder;
 
 public class OverlayPanelRenderer extends org.primefaces.component.overlaypanel.OverlayPanelRenderer {
-    
+
     @Override
     protected void encodeMarkup(FacesContext context, OverlayPanel panel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = panel.getClientId(context);
         String style = panel.getStyle();
         String styleClass = panel.getStyleClass();
-        
+
         writer.startElement("div", panel);
         writer.writeAttribute("id", clientId, "id");
-        if(style != null) writer.writeAttribute("style", style, "style");
-        if(styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
-        
-        if(!panel.isDynamic()) {
+        if (style != null) writer.writeAttribute("style", style, "style");
+        if (styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
+
+        if (!panel.isDynamic()) {
             renderChildren(context, panel);
         }
-        
+
         renderDynamicPassThruAttributes(context, panel);
-        
+
         writer.endElement("div");
     }
-    
+
     @Override
     protected void encodeScript(FacesContext context, OverlayPanel panel) throws IOException {
         UIComponent target = SearchExpressionFacade.resolveComponent(context, panel, panel.getFor());
-        String targetClientId = (target == null) ? null: target.getClientId(context);
+        String targetClientId = (target == null) ? null : target.getClientId(context);
         String clientId = panel.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("OverlayPanel", panel.resolveWidgetVar(), clientId)
-            .attr("targetId", targetClientId, null)
-            .attr("showEvent", panel.getShowEvent(), null)
-            .attr("hideEvent", panel.getHideEvent(), null)
-            .attr("showEffect", panel.getShowEffect(), null)
-            .callback("onShow", "function()", panel.getOnShow())
-            .callback("onHide", "function()", panel.getOnHide())
-            .attr("at", panel.getAt(), null)
-            .attr("dynamic", panel.isDynamic(), false)
-            .attr("dismissable", panel.isDismissable(), true);
+                .attr("targetId", targetClientId, null)
+                .attr("showEvent", panel.getShowEvent(), null)
+                .attr("hideEvent", panel.getHideEvent(), null)
+                .attr("showEffect", panel.getShowEffect(), null)
+                .callback("onShow", "function()", panel.getOnShow())
+                .callback("onHide", "function()", panel.getOnHide())
+                .attr("at", panel.getAt(), null)
+                .attr("dynamic", panel.isDynamic(), false)
+                .attr("dismissable", panel.isDismissable(), true);
 
         wb.finish();
     }

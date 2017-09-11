@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,9 +41,11 @@ public class PushEndpointInterceptor extends ManagedServiceInterceptor {
         return config.framework().newClassInstance(AnnotatedProxy.class, PushEndpointHandlerProxy.class);
     }
 
-    protected ManagedAnnotation managed(AnnotatedProxy ap, final AtmosphereResource r){
+    protected ManagedAnnotation managed(AnnotatedProxy ap, final AtmosphereResource r) {
         final PushEndpoint a = ap.target().getClass().getAnnotation(PushEndpoint.class);
-        if (a == null) return null;
+        if (a == null) {
+            return null;
+        }
 
         return new ManagedAnnotation() {
             public String path() {

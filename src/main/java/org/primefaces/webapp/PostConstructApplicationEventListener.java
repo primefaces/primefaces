@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2013 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,11 +35,11 @@ public class PostConstructApplicationEventListener implements SystemEventListene
     }
 
     public void processEvent(SystemEvent event) throws AbortProcessingException {
-    	// temp manually instantiate startup config as the default config is not available yet
-    	PrimeConfiguration config = new StartupPrimeConfiguration(FacesContext.getCurrentInstance());
-    	
+        // temp manually instantiate startup config as the default config is not available yet
+        PrimeConfiguration config = new StartupPrimeConfiguration(FacesContext.getCurrentInstance());
+
         logger.log(Level.INFO,
-        		"Running on PrimeFaces {0}", 
-        		config.getBuildVersion());
+                "Running on PrimeFaces {0}",
+                config.getBuildVersion());
     }
 }

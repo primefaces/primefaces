@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,19 +20,19 @@ import javax.faces.context.ExceptionHandlerFactory;
 
 public class PrimeExceptionHandlerFactory extends ExceptionHandlerFactory {
 
-	private final ExceptionHandlerFactory wrapped;
+    private final ExceptionHandlerFactory wrapped;
 
-	public PrimeExceptionHandlerFactory(final ExceptionHandlerFactory wrapped) {
-		this.wrapped = wrapped;
-	}
+    public PrimeExceptionHandlerFactory(final ExceptionHandlerFactory wrapped) {
+        this.wrapped = wrapped;
+    }
 
-	@Override
-	public ExceptionHandler getExceptionHandler() {
-		return new PrimeExceptionHandler(wrapped.getExceptionHandler());
-	}
+    @Override
+    public ExceptionHandler getExceptionHandler() {
+        return new PrimeExceptionHandler(wrapped.getExceptionHandler());
+    }
 
-	@Override
-	public ExceptionHandlerFactory getWrapped() {
-		return wrapped;
-	}
+    @Override
+    public ExceptionHandlerFactory getWrapped() {
+        return wrapped;
+    }
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ public class MetadataTransformerExecutor implements SystemEventListener {
     private final static List<MetadataTransformer> METADATA_TRANSFORMERS = new ArrayList<MetadataTransformer>();
 
     private final static MetadataTransformer BV_INPUT_METADATA_TRANSFORMER = new BeanValidationInputMetadataTransformer();
-    
+
     @Override
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         try {
@@ -49,18 +49,18 @@ public class MetadataTransformerExecutor implements SystemEventListener {
             throw new FacesException(e);
         }
     }
-    
+
     @Override
     public boolean isListenerForSource(Object source) {
         return source instanceof UIComponent;
     }
-    
+
     public static void execute(PrimeConfiguration config, UIComponent component) throws IOException {
         if (config.isTransformMetadataEnabled()) {
 
             FacesContext context = FacesContext.getCurrentInstance();
             RequestContext requestContext = RequestContext.getCurrentInstance(context);
-            
+
             if (config.isBeanValidationAvailable()) {
                 BV_INPUT_METADATA_TRANSFORMER.transform(context, requestContext, component);
             }
@@ -73,11 +73,11 @@ public class MetadataTransformerExecutor implements SystemEventListener {
         }
     }
 
-	public static void registerMetadataTransformer(final MetadataTransformer metadataTransformer) {
+    public static void registerMetadataTransformer(final MetadataTransformer metadataTransformer) {
         METADATA_TRANSFORMERS.add(metadataTransformer);
-	}
+    }
 
-	public static MetadataTransformer removeMetadataTransformer(final Class<? extends MetadataTransformer> clazz) {
+    public static MetadataTransformer removeMetadataTransformer(final Class<? extends MetadataTransformer> clazz) {
         Iterator<MetadataTransformer> iterator = METADATA_TRANSFORMERS.iterator();
         while (iterator.hasNext()) {
             MetadataTransformer metadataTransformer = iterator.next();
@@ -88,5 +88,5 @@ public class MetadataTransformerExecutor implements SystemEventListener {
         }
 
         return null;
-	}
+    }
 }

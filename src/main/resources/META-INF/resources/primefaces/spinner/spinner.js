@@ -97,8 +97,13 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             $this.updateValue();
     
             var keyCode = $.ui.keyCode;
-            if(e.which === keyCode.UP||e.which === keyCode.DOWN) {
+            
+            /* Github #2636 */
+            var checkForIE = (PrimeFaces.env.isIE(11) || PrimeFaces.env.isLtIE(11)) && (e.which === keyCode.ENTER ||e.which === keyCode.NUMPAD_ENTER);
+            
+            if(e.which === keyCode.UP||e.which === keyCode.DOWN||checkForIE) {
                 $this.input.trigger('change');
+                $this.format();
             }
         })
         .on('blur.spinner', function(e) {

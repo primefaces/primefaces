@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,137 +47,146 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
 public class PDFExporter extends Exporter {
-    
+
     private Font cellFont;
     private Font facetFont;
     private Color facetBgColor;
     private ExporterOptions expOptions;
-       
-	@Override
-	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException { 
-		try {
-	        Document document = new Document();
-	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	        PdfWriter.getInstance(document, baos);
-	        
-	        if (preProcessor != null) {
-	    		preProcessor.invoke(context.getELContext(), new Object[]{document});
-	    	}
 
-            if (!document.isOpen()) {
-                document.open();
-            }
-            
-            if(options != null) {
-                expOptions = options;
-            }
-	        
-	    	document.add(exportPDFTable(context, table, pageOnly, selectionOnly, encodingType));
-	    	
-	    	if(postProcessor != null) {
-	    		postProcessor.invoke(context.getELContext(), new Object[]{document});
-	    	}
-	    	
-	        document.close();
-	    	
-	        writePDFToResponse(context.getExternalContext(), baos, filename);
-	        
-		} catch(DocumentException e) {
-			throw new IOException(e.getMessage());
-		}
-	}
-	    
     @Override
-    public void export(FacesContext context, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+    public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType,
+            MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+        
         try {
             Document document = new Document();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PdfWriter.getInstance(document, baos);
-            
+
             if (preProcessor != null) {
-	    		preProcessor.invoke(context.getELContext(), new Object[]{document});
-	    	}
+                preProcessor.invoke(context.getELContext(), new Object[]{document});
+            }
 
             if (!document.isOpen()) {
                 document.open();
             }
-            
-            if(options != null) {
+
+            if (options != null) {
                 expOptions = options;
             }
-            
-            VisitContext visitContext = VisitContext.createVisitContext(context, clientIds, null);
-            VisitCallback visitCallback = new PDFExportVisitCallback(this, document, pageOnly, selectionOnly, encodingType);
-            context.getViewRoot().visitTree(visitContext, visitCallback);
-            
-            if(postProcessor != null) {
-	    		postProcessor.invoke(context.getELContext(), new Object[]{document});
-	    	}
-	    	
-	        document.close();
-	    	
-	        writePDFToResponse(context.getExternalContext(), baos, outputFileName);
-            
-        } catch (DocumentException e) {
+
+            document.add(exportPDFTable(context, table, pageOnly, selectionOnly, encodingType));
+
+            if (postProcessor != null) {
+                postProcessor.invoke(context.getELContext(), new Object[]{document});
+            }
+
+            document.close();
+
+            writePDFToResponse(context.getExternalContext(), baos, filename);
+
+        }
+        catch (DocumentException e) {
             throw new IOException(e.getMessage());
         }
     }
-    
+
     @Override
-    public void export(FacesContext context, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+    public void export(FacesContext context, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly,
+            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+        
         try {
-	        Document document = new Document();
-	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	        PdfWriter.getInstance(document, baos);
-	        
-	        if (preProcessor != null) {
-	    		preProcessor.invoke(context.getELContext(), new Object[]{document});
-	    	}
+            Document document = new Document();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            PdfWriter.getInstance(document, baos);
+
+            if (preProcessor != null) {
+                preProcessor.invoke(context.getELContext(), new Object[]{document});
+            }
 
             if (!document.isOpen()) {
                 document.open();
             }
-	        
-            if(options != null) {
+
+            if (options != null) {
                 expOptions = options;
             }
-            
-            for(DataTable table : tables) {
+
+            VisitContext visitContext = VisitContext.createVisitContext(context, clientIds, null);
+            VisitCallback visitCallback = new PDFExportVisitCallback(this, document, pageOnly, selectionOnly, encodingType);
+            context.getViewRoot().visitTree(visitContext, visitCallback);
+
+            if (postProcessor != null) {
+                postProcessor.invoke(context.getELContext(), new Object[]{document});
+            }
+
+            document.close();
+
+            writePDFToResponse(context.getExternalContext(), baos, outputFileName);
+
+        }
+        catch (DocumentException e) {
+            throw new IOException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void export(FacesContext context, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
+            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+        
+        try {
+            Document document = new Document();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            PdfWriter.getInstance(document, baos);
+
+            if (preProcessor != null) {
+                preProcessor.invoke(context.getELContext(), new Object[]{document});
+            }
+
+            if (!document.isOpen()) {
+                document.open();
+            }
+
+            if (options != null) {
+                expOptions = options;
+            }
+
+            for (DataTable table : tables) {
                 document.add(exportPDFTable(context, table, pageOnly, selectionOnly, encodingType));
-                
+
                 Paragraph preface = new Paragraph();
                 addEmptyLine(preface, 3);
                 document.add(preface);
             }
-	    	
-	    	if(postProcessor != null) {
-	    		postProcessor.invoke(context.getELContext(), new Object[]{document});
-	    	}
-	    	
-	        document.close();
-	    	
-	        writePDFToResponse(context.getExternalContext(), baos, outputFileName);
-	        
-		} catch(DocumentException e) {
-			throw new IOException(e.getMessage());
-		}
+
+            if (postProcessor != null) {
+                postProcessor.invoke(context.getELContext(), new Object[]{document});
+            }
+
+            document.close();
+
+            writePDFToResponse(context.getExternalContext(), baos, outputFileName);
+
+        }
+        catch (DocumentException e) {
+            throw new IOException(e.getMessage());
+        }
     }
-    
-	protected PdfPTable exportPDFTable(FacesContext context, DataTable table, boolean pageOnly, boolean selectionOnly, String encoding) {
-    	int columnsCount = getColumnsCount(table);
-    	PdfPTable pdfTable = new PdfPTable(columnsCount);
-    	this.cellFont = FontFactory.getFont(FontFactory.TIMES, encoding);
-    	this.facetFont = FontFactory.getFont(FontFactory.TIMES, encoding, Font.DEFAULTSIZE, Font.BOLD);
-    	
-        if(this.expOptions != null) {
+
+    protected PdfPTable exportPDFTable(FacesContext context, DataTable table, boolean pageOnly, boolean selectionOnly, String encoding) {
+        int columnsCount = getColumnsCount(table);
+        PdfPTable pdfTable = new PdfPTable(columnsCount);
+        this.cellFont = FontFactory.getFont(FontFactory.TIMES, encoding);
+        this.facetFont = FontFactory.getFont(FontFactory.TIMES, encoding, Font.DEFAULTSIZE, Font.BOLD);
+
+        if (this.expOptions != null) {
             applyFacetOptions(this.expOptions);
             applyCellOptions(this.expOptions);
         }
-        
+
         addTableFacets(context, table, pdfTable, "header");
-        
-    	addColumnFacets(table, pdfTable, ColumnType.HEADER);
-        
+
+        addColumnFacets(table, pdfTable, ColumnType.HEADER);
+
         if (pageOnly) {
             exportPageOnly(context, table, pdfTable);
         }
@@ -187,31 +196,31 @@ public class PDFExporter extends Exporter {
         else {
             exportAll(context, table, pdfTable);
         }
-        
+
         if (table.hasFooterColumn()) {
             addColumnFacets(table, pdfTable, ColumnType.FOOTER);
         }
-    	
+
         addTableFacets(context, table, pdfTable, "footer");
-        
-    	table.setRowIndex(-1);
-    	
-    	return pdfTable;
-	}
-    
+
+        table.setRowIndex(-1);
+
+        return pdfTable;
+    }
+
     protected void addTableFacets(FacesContext context, DataTable table, PdfPTable pdfTable, String facetType) {
         String facetText = null;
         UIComponent facet = table.getFacet(facetType);
-        if(facet != null) {
-            if(facet instanceof UIPanel) {
-                for(UIComponent child : facet.getChildren()) {
-                    if(child.isRendered()) {
+        if (facet != null) {
+            if (facet instanceof UIPanel) {
+                for (UIComponent child : facet.getChildren()) {
+                    if (child.isRendered()) {
                         String value = ComponentUtils.getValueToRender(context, child);
 
-                        if(value != null) {
+                        if (value != null) {
                             facetText = value;
                             break;
-                        }         
+                        }
                     }
                 }
             }
@@ -219,27 +228,27 @@ public class PDFExporter extends Exporter {
                 facetText = ComponentUtils.getValueToRender(context, facet);
             }
         }
-        
-        if(facetText != null) {
+
+        if (facetText != null) {
             int colspan = 0;
-            
+
             for (UIColumn col : table.getColumns()) {
                 if (col.isRendered() && col.isExportable()) {
                     colspan++;
                 }
             }
-            
+
             PdfPCell cell = new PdfPCell(new Paragraph(facetText, this.facetFont));
             if (this.facetBgColor != null) {
                 cell.setBackgroundColor(this.facetBgColor);
             }
-            
+
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             cell.setColspan(colspan);
             pdfTable.addCell(cell);
         }
     }
-    
+
     @Override
     protected void exportCells(DataTable table, Object document) {
         PdfPTable pdfTable = (PdfPTable) document;
@@ -247,140 +256,143 @@ public class PDFExporter extends Exporter {
             if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyStatelessModel();
             }
-            
+
             if (col.isRendered() && col.isExportable()) {
                 addColumnValue(pdfTable, col.getChildren(), this.cellFont, col);
             }
         }
     }
-	
-	protected void addColumnFacets(DataTable table, PdfPTable pdfTable, ColumnType columnType) {
+
+    protected void addColumnFacets(DataTable table, PdfPTable pdfTable, ColumnType columnType) {
         for (UIColumn col : table.getColumns()) {
             if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyStatelessModel();
             }
-            
+
             if (col.isRendered() && col.isExportable()) {
                 UIComponent facet = col.getFacet(columnType.facet());
-                if(facet != null) {
+                if (facet != null) {
                     addColumnValue(pdfTable, facet, this.facetFont);
                 }
                 else {
                     String textValue;
-                    switch(columnType) {
+                    switch (columnType) {
                         case HEADER:
                             textValue = col.getHeaderText();
-                        break;
-                            
+                            break;
+
                         case FOOTER:
                             textValue = col.getFooterText();
-                        break;
-                            
+                            break;
+
                         default:
                             textValue = "";
-                        break;
+                            break;
                     }
-                    
-                    if(textValue != null) {
+
+                    if (textValue != null) {
                         PdfPCell cell = new PdfPCell(new Paragraph(textValue, this.facetFont));
                         if (this.facetBgColor != null) {
                             cell.setBackgroundColor(this.facetBgColor);
                         }
-                        
+
                         pdfTable.addCell(cell);
                     }
                 }
             }
         }
-	}
-	
+    }
+
     protected void addColumnValue(PdfPTable pdfTable, UIComponent component, Font font) {
-    	String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
-        
+        String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
+
         PdfPCell cell = new PdfPCell(new Paragraph(value, font));
         if (this.facetBgColor != null) {
             cell.setBackgroundColor(this.facetBgColor);
         }
-        
+
         pdfTable.addCell(cell);
     }
-    
+
     protected void addColumnValue(PdfPTable pdfTable, List<UIComponent> components, Font font, UIColumn column) {
         FacesContext context = FacesContext.getCurrentInstance();
-        
-        if(column.getExportFunction() != null) {            
+
+        if (column.getExportFunction() != null) {
             pdfTable.addCell(new Paragraph(exportColumnByFunction(context, column), font));
         }
         else {
             StringBuilder builder = new StringBuilder();
             for (UIComponent component : components) {
-                if(component.isRendered() ) {
+                if (component.isRendered()) {
                     String value = exportValue(context, component);
-                
-                    if (value != null)
+
+                    if (value != null) {
                         builder.append(value);
+                    }
                 }
-            }  
-        
+            }
+
             pdfTable.addCell(new Paragraph(builder.toString(), font));
         }
     }
-    
-    protected void writePDFToResponse(ExternalContext externalContext, ByteArrayOutputStream baos, String fileName) throws IOException, DocumentException {     
-    	externalContext.setResponseContentType("application/pdf");
-    	externalContext.setResponseHeader("Expires", "0");
-    	externalContext.setResponseHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
-    	externalContext.setResponseHeader("Pragma", "public");
-    	externalContext.setResponseHeader("Content-disposition", ComponentUtils.createContentDisposition("attachment", fileName+".pdf"));
-    	externalContext.setResponseContentLength(baos.size());
-    	externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
-    	OutputStream out = externalContext.getResponseOutputStream();
+
+    protected void writePDFToResponse(ExternalContext externalContext, ByteArrayOutputStream baos, String fileName)
+            throws IOException, DocumentException {
+        
+        externalContext.setResponseContentType("application/pdf");
+        externalContext.setResponseHeader("Expires", "0");
+        externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+        externalContext.setResponseHeader("Pragma", "public");
+        externalContext.setResponseHeader("Content-disposition", ComponentUtils.createContentDisposition("attachment", fileName + ".pdf"));
+        externalContext.setResponseContentLength(baos.size());
+        externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
+        OutputStream out = externalContext.getResponseOutputStream();
         baos.writeTo(out);
         externalContext.responseFlushBuffer();
     }
-        
+
     protected int getColumnsCount(DataTable table) {
         int count = 0;
-        
-        for(UIColumn col : table.getColumns()) {
-            if(col instanceof DynamicColumn) {
+
+        for (UIColumn col : table.getColumns()) {
+            if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyStatelessModel();
             }
-                        
-            if(!col.isRendered()||!col.isExportable()) {
+
+            if (!col.isRendered() || !col.isExportable()) {
                 continue;
             }
-            
+
             count++;
         }
-        
+
         return count;
     }
-    
+
     protected void addEmptyLine(Paragraph paragraph, int number) {
         for (int i = 0; i < number; i++) {
             paragraph.add(new Paragraph(" "));
         }
     }
-    
+
     protected void applyFacetOptions(ExporterOptions options) {
         String facetBackground = options.getFacetBgColor();
         if (facetBackground != null) {
             facetBgColor = Color.decode(facetBackground);
         }
-        
+
         String facetFontColor = options.getFacetFontColor();
         if (facetFontColor != null) {
             facetFont.setColor(Color.decode(facetFontColor));
         }
-        
+
         String facetFontSize = options.getFacetFontSize();
         if (facetFontSize != null) {
             facetFont.setSize(Integer.valueOf(facetFontSize));
         }
-        
+
         String facetFontStyle = options.getFacetFontStyle();
-        if(facetFontStyle != null) {
+        if (facetFontStyle != null) {
             if (facetFontStyle.equalsIgnoreCase("NORMAL")) {
                 facetFontStyle = "" + Font.NORMAL;
             }
@@ -390,11 +402,11 @@ public class PDFExporter extends Exporter {
             if (facetFontStyle.equalsIgnoreCase("ITALIC")) {
                 facetFontStyle = "" + Font.ITALIC;
             }
-            
+
             facetFont.setStyle(facetFontStyle);
         }
     }
-    
+
     protected void applyCellOptions(ExporterOptions options) {
         String cellFontColor = options.getCellFontColor();
         if (cellFontColor != null) {
@@ -405,9 +417,9 @@ public class PDFExporter extends Exporter {
         if (cellFontSize != null) {
             cellFont.setSize(Integer.valueOf(cellFontSize));
         }
-        
+
         String cellFontStyle = options.getCellFontStyle();
-        if(cellFontStyle != null) {
+        if (cellFontStyle != null) {
             if (cellFontStyle.equalsIgnoreCase("NORMAL")) {
                 cellFontStyle = "" + Font.NORMAL;
             }
@@ -417,7 +429,7 @@ public class PDFExporter extends Exporter {
             if (cellFontStyle.equalsIgnoreCase("ITALIC")) {
                 cellFontStyle = "" + Font.ITALIC;
             }
-            
+
             cellFont.setStyle(cellFontStyle);
         }
     }

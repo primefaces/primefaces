@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2015 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,10 +23,10 @@ import javax.faces.context.FacesContextWrapper;
  * Custom {@link FacesContextWrapper} to init and release our {@link RequestContext}.
  */
 public class PrimeFacesContext extends FacesContextWrapper {
-    
+
     private final FacesContext wrapped;
     private PrimeExternalContext externalContext;
-	
+
     public PrimeFacesContext(FacesContext wrapped) {
         this.wrapped = wrapped;
 
@@ -40,12 +40,12 @@ public class PrimeFacesContext extends FacesContextWrapper {
         }
         return externalContext;
     }
-    
+
     @Override
     public FacesContext getWrapped() {
         return wrapped;
     }
-	
+
     @Override
     public void release() {
         RequestContext requestContext = RequestContext.getCurrentInstance(wrapped);

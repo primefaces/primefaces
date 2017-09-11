@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ public class DroppableRenderer extends CoreRenderer {
         Droppable droppable = (Droppable) component;
 
         UIComponent target = SearchExpressionFacade.resolveComponent(
-        		context, droppable, droppable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
+                context, droppable, droppable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
 
         String clientId = droppable.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
@@ -50,7 +50,7 @@ public class DroppableRenderer extends CoreRenderer {
                 .attr("scope", droppable.getScope(), null)
                 .attr("tolerance", droppable.getTolerance(), null);
 
-        if(droppable.getOnDrop() != null) {
+        if (droppable.getOnDrop() != null) {
             wb.append(",onDrop:").append(droppable.getOnDrop());
         }
 

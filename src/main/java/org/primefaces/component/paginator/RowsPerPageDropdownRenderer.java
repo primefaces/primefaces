@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2015 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,30 +28,32 @@ import org.primefaces.util.MessageFactory;
 public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
 
     private final static Logger logger = Logger.getLogger(RowsPerPageDropdownRenderer.class.getName());
-    
-    public void render(FacesContext context, Pageable pageable) throws IOException {        
+
+    public void render(FacesContext context, Pageable pageable) throws IOException {
         String template = pageable.getRowsPerPageTemplate();
         UIViewRoot viewroot = context.getViewRoot();
         char separator = UINamingContainer.getSeparatorChar(context);
-        
-        if(template != null) {
+
+        if (template != null) {
             ResponseWriter writer = context.getResponseWriter();
             int actualRows = pageable.getRows();
             String[] options = pageable.getRowsPerPageTemplate().split("[,\\s]+");
             String label = pageable.getRowsPerPageLabel();
-            if(label != null)
+            if (label != null) {
                 logger.info("RowsPerPageLabel attribute is deprecated, use 'primefaces.paginator.aria.ROWS_PER_PAGE' key instead to override default message.");
-            else 
+            }
+            else {
                 label = MessageFactory.getMessage(UIData.ROWS_PER_PAGE_LABEL, null);
-            
+            }
+
             String clientId = pageable.getClientId(context);
             String ddId = clientId + separator + viewroot.createUniqueId();
             String ddName = clientId + "_rppDD";
             String labelId = null;
-            
-            if(label != null) {
+
+            if (label != null) {
                 labelId = clientId + "_rppLabel";
-                
+
                 writer.startElement("label", null);
                 writer.writeAttribute("id", labelId, null);
                 writer.writeAttribute("for", ddId, null);
@@ -59,29 +61,30 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
                 writer.writeText(label, null);
                 writer.endElement("label");
             }
-                    
+
             writer.startElement("select", null);
             writer.writeAttribute("id", ddId, null);
             writer.writeAttribute("name", ddName, null);
-            if(label != null) {
+            if (label != null) {
                 writer.writeAttribute("aria-labelledby", labelId, null);
             }
             writer.writeAttribute("class", UIData.PAGINATOR_RPP_OPTIONS_CLASS, null);
             writer.writeAttribute("value", pageable.getRows(), null);
             writer.writeAttribute("autocomplete", "off", null);
 
-            for( String option : options){
-            	int rows;
+            for (String option : options) {
+                int rows;
                 if (option.equalsIgnoreCase("*") || option.equalsIgnoreCase("All rows")) {
                     rows = pageable.getRowCount();
-            	} else{
+                }
+                else {
                     rows = Integer.parseInt(option);
-            	}
+                }
 
                 writer.startElement("option", null);
                 writer.writeAttribute("value", rows, null);
 
-                if(actualRows == rows){
+                if (actualRows == rows) {
                     writer.writeAttribute("selected", "selected", null);
                 }
 
@@ -91,5 +94,5 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
 
             writer.endElement("select");
         }
-    }   
+    }
 }

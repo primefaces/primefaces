@@ -1,11 +1,11 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
- * Licensed under PrimeFaces Commercial License, Version 1.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.primefaces.org/elite/license.xhtml
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,42 +33,41 @@ import org.primefaces.component.calendar.converter.TimePatternConverter;
 public class CalendarUtils {
 
     private final static List<PatternConverter> PATTERN_CONVERTERS;
-    
+
     static {
         PATTERN_CONVERTERS = new ArrayList<PatternConverter>();
         PATTERN_CONVERTERS.add(new TimePatternConverter());
         PATTERN_CONVERTERS.add(new DatePatternConverter());
     }
-    
+
     public static String getValueAsString(FacesContext context, Calendar calendar) {
         Object submittedValue = calendar.getSubmittedValue();
         if (submittedValue != null) {
             return submittedValue.toString();
         }
-        
+
         return getValueAsString(context, calendar, calendar.getValue());
     }
-    
-    public static String getValueAsString(FacesContext context, Calendar calendar, Object value) {        
+
+    public static String getValueAsString(FacesContext context, Calendar calendar, Object value) {
         if (value == null) {
             return null;
         }
-        
+
         //first ask the converter
-        if (calendar.getConverter() != null)
-        {
+        if (calendar.getConverter() != null) {
             return calendar.getConverter().getAsString(context, calendar, value);
         }
-        else if (value instanceof String){
+        else if (value instanceof String) {
             return (String) value;
         }
         //Use built-in converter
         else if (value instanceof Date) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context)); 
+            SimpleDateFormat dateFormat = new SimpleDateFormat(calendar.calculatePattern(), calendar.calculateLocale(context));
             dateFormat.setTimeZone(calendar.calculateTimeZone());
-            
+
             return dateFormat.format((Date) value);
-        } 
+        }
         else {
             //Delegate to global defined converter (e.g. joda or java8)
             ValueExpression ve = calendar.getValueExpression("value");
@@ -85,19 +84,18 @@ public class CalendarUtils {
             throw new FacesException("Value could be either String or java.util.Date");
         }
     }
-    
+
     public static String getTimeOnlyValueAsString(FacesContext context, Calendar calendar) {
         Object value = calendar.getValue();
         if (value == null) {
             return null;
         }
-        
+
         //first ask the converter
-        if (calendar.getConverter() != null)
-        {
+        if (calendar.getConverter() != null) {
             return calendar.getConverter().getAsString(context, calendar, value);
         }
-        else if (value instanceof String){
+        else if (value instanceof String) {
             return (String) value;
         }
         //Use built-in converter
@@ -123,10 +121,10 @@ public class CalendarUtils {
             throw new FacesException("Value could be either String or java.util.Date");
         }
     }
-        
+
     /**
      * Converts a java date pattern to a jquery date pattern
-     * 
+     *
      * @param pattern Pattern to be converted
      * @return converted pattern
      */
@@ -143,5 +141,5 @@ public class CalendarUtils {
             return convertedPattern;
         }
     }
-    
+
 }

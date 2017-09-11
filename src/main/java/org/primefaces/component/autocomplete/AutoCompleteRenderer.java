@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -86,11 +86,11 @@ public class AutoCompleteRenderer extends InputRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = ac.getClientId(context);
         String[] hinputValues = paramValues.get(clientId + "_hinput");
-        String[] submittedValues = (hinputValues != null) ? hinputValues : new String[] {};
+        String[] submittedValues = (hinputValues != null) ? hinputValues : new String[]{};
         String inputValue = params.get(clientId + "_input");
 
         if (!isValueBlank(inputValue)) {
-            submittedValues = ArrayUtils.concat(submittedValues, new String[] { inputValue });
+            submittedValues = ArrayUtils.concat(submittedValues, new String[]{inputValue});
         }
 
         if (submittedValues.length > 0) {
@@ -130,10 +130,12 @@ public class AutoCompleteRenderer extends InputRenderer {
     }
 
     protected void encodeMarkup(FacesContext context, AutoComplete ac) throws IOException {
-        if (ac.isMultiple())
+        if (ac.isMultiple()) {
             encodeMultipleMarkup(context, ac);
-        else
+        }
+        else {
             encodeSingleMarkup(context, ac);
+        }
     }
 
     protected void encodeSingleMarkup(FacesContext context, AutoComplete ac) throws IOException {
@@ -225,7 +227,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                         Object item = getConvertedValue(context, ac, String.valueOf(submittedValue));
                         requestMap.put(var, item);
                         itemLabel = ac.getItemLabel();
-                    } 
+                    }
                     catch (ConverterException ce) {
                         itemLabel = String.valueOf(submittedValue);
                     }
@@ -244,9 +246,15 @@ public class AutoCompleteRenderer extends InputRenderer {
             requestMap.remove(var);
         }
 
-        if(disabled) writer.writeAttribute("disabled", "disabled", null);
-        if(ac.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
-        if(ac.isRequired()) writer.writeAttribute("aria-required", "true", null);
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (ac.isReadonly()) {
+            writer.writeAttribute("readonly", "readonly", null);
+        }
+        if (ac.isRequired()) {
+            writer.writeAttribute("aria-required", "true", null);
+        }
 
         if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, ac);
@@ -438,9 +446,15 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("autocomplete", "off", null);
-        if(disabled) writer.writeAttribute("disabled", "disabled", "disabled");
-        if(ac.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
-        if(ac.isRequired()) writer.writeAttribute("aria-required", "true", null);
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", "disabled");
+        }
+        if (ac.isReadonly()) {
+            writer.writeAttribute("readonly", "readonly", null);
+        }
+        if (ac.isRequired()) {
+            writer.writeAttribute("aria-required", "true", null);
+        }
 
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, ac, HTML.INPUT_TEXT_EVENTS);
@@ -506,13 +520,16 @@ public class AutoCompleteRenderer extends InputRenderer {
                 writer.startElement("th", null);
                 writer.writeAttribute("class", styleClass, null);
 
-                if (column.getStyle() != null)
+                if (column.getStyle() != null) {
                     writer.writeAttribute("style", column.getStyle(), null);
+                }
 
-                if (headerFacet != null)
+                if (headerFacet != null) {
                     headerFacet.encodeAll(context);
-                else if (headerText != null)
+                }
+                else if (headerText != null) {
                     writer.write(headerText);
+                }
 
                 writer.endElement("th");
             }
@@ -542,8 +559,12 @@ public class AutoCompleteRenderer extends InputRenderer {
                 for (Column column : ac.getColums()) {
                     if (column.isRendered()) {
                         writer.startElement("td", null);
-                        if(column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
-                        if(column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
+                        if (column.getStyle() != null) {
+                            writer.writeAttribute("style", column.getStyle(), null);
+                        }
+                        if (column.getStyleClass() != null) {
+                            writer.writeAttribute("class", column.getStyleClass(), null);
+                        }
 
                         column.encodeAll(context);
 
@@ -636,37 +657,37 @@ public class AutoCompleteRenderer extends InputRenderer {
         wb.initWithDomReady("AutoComplete", ac.resolveWidgetVar(), clientId);
 
         wb.attr("minLength", ac.getMinQueryLength(), 1)
-            .attr("delay", ac.getQueryDelay())
-            .attr("forceSelection", ac.isForceSelection(), false)
-            .attr("scrollHeight", ac.getScrollHeight(), Integer.MAX_VALUE)
-            .attr("multiple", ac.isMultiple(), false)
-            .attr("appendTo", SearchExpressionFacade.resolveClientId(context, ac, ac.getAppendTo()), null)
-            .attr("grouping", ac.getValueExpression(AutoComplete.PropertyKeys.groupBy.toString()) != null, false)
-            .attr("queryEvent", ac.getQueryEvent(), null)
-            .attr("dropdownMode", ac.getDropdownMode(), null)
-            .attr("autoHighlight", ac.isAutoHighlight(), true)
-            .attr("myPos", ac.getMy(), null)
-            .attr("atPos", ac.getAt(), null)
-            .attr("active", ac.isActive(), true)
-            .attr("unique", ac.isUnique(), false);
+                .attr("delay", ac.getQueryDelay())
+                .attr("forceSelection", ac.isForceSelection(), false)
+                .attr("scrollHeight", ac.getScrollHeight(), Integer.MAX_VALUE)
+                .attr("multiple", ac.isMultiple(), false)
+                .attr("appendTo", SearchExpressionFacade.resolveClientId(context, ac, ac.getAppendTo()), null)
+                .attr("grouping", ac.getValueExpression(AutoComplete.PropertyKeys.groupBy.toString()) != null, false)
+                .attr("queryEvent", ac.getQueryEvent(), null)
+                .attr("dropdownMode", ac.getDropdownMode(), null)
+                .attr("autoHighlight", ac.isAutoHighlight(), true)
+                .attr("myPos", ac.getMy(), null)
+                .attr("atPos", ac.getAt(), null)
+                .attr("active", ac.isActive(), true)
+                .attr("unique", ac.isUnique(), false);
 
         if (ac.isCache()) {
             wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());
         }
 
         String effect = ac.getEffect();
-        if(effect != null) {
+        if (effect != null) {
             wb.attr("effect", effect, null)
-                .attr("effectDuration", ac.getEffectDuration(), Integer.MAX_VALUE);
+                    .attr("effectDuration", ac.getEffectDuration(), Integer.MAX_VALUE);
         }
-        
+
         wb.attr("emptyMessage", ac.getEmptyMessage(), null)
-            .attr("resultsMessage", ac.getResultsMessage(), null);
-        
-        if(ac.getFacet("itemtip") != null) {
+                .attr("resultsMessage", ac.getResultsMessage(), null);
+
+        if (ac.getFacet("itemtip") != null) {
             wb.attr("itemtip", true, false)
-                .attr("itemtipMyPosition", ac.getItemtipMyPosition(), null)
-                .attr("itemtipAtPosition", ac.getItemtipAtPosition(), null);
+                    .attr("itemtipMyPosition", ac.getItemtipMyPosition(), null)
+                    .attr("itemtipAtPosition", ac.getItemtipAtPosition(), null);
         }
 
         if (ac.isMultiple()) {
@@ -707,10 +728,12 @@ public class AutoCompleteRenderer extends InputRenderer {
             return list;
         }
         else {
-            if (converter != null)
+            if (converter != null) {
                 return converter.getAsObject(context, component, (String) submittedValue);
-            else
+            }
+            else {
                 return submittedValue;
+            }
         }
     }
 

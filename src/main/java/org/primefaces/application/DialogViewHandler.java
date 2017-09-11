@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.util.Constants;
 
 public class DialogViewHandler extends ViewHandlerWrapper {
-    
+
     private ViewHandler wrapped;
 
     public DialogViewHandler(ViewHandler wrapped) {
@@ -36,23 +36,25 @@ public class DialogViewHandler extends ViewHandlerWrapper {
 
     @Override
     public String getActionURL(FacesContext context, String viewId) {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String pfdlgcid = params.get(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM);
         String url = super.getActionURL(context, viewId);
-        
-        if(url.contains(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM)) {
+
+        if (url.contains(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM)) {
             return url;
         }
         else {
-            if(pfdlgcid == null) {
+            if (pfdlgcid == null) {
                 return url;
             }
             else {
-                if(url.indexOf('?') == -1)
+                if (url.indexOf('?') == -1) {
                     return url + "?pfdlgcid=" + pfdlgcid;
-                else
+                }
+                else {
                     return url + "&pfdlgcid=" + pfdlgcid;
+                }
             }
-        }       
+        }
     }
 }

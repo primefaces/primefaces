@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,20 +21,20 @@ import javax.el.ValueExpression;
 import org.primefaces.component.api.DynamicColumn;
 
 public class DynamicChainedPropertyComparator extends BeanPropertyComparator {
-    
+
     private DynamicColumn column;
-    
-    public DynamicChainedPropertyComparator(DynamicColumn column, ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction, 
-                                        boolean caseSensitiveSort, Locale locale, int nullSortOrder) {
+
+    public DynamicChainedPropertyComparator(DynamicColumn column, ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction,
+            boolean caseSensitiveSort, Locale locale, int nullSortOrder) {
         super(sortBy, var, sortOrder, sortFunction, caseSensitiveSort, locale, nullSortOrder);
         this.column = column;
-    } 
-    
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public int compare(Object obj1, Object obj2) {
         column.applyStatelessModel();
-        
+
         return super.compare(obj1, obj2);
     }
 }

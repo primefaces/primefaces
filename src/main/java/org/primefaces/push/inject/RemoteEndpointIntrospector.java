@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import org.atmosphere.util.ThreadLocalInvoker;
 import org.primefaces.push.RemoteEndpoint;
 import org.primefaces.push.impl.RemoteEndpointImpl;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 
@@ -40,18 +39,12 @@ public class RemoteEndpointIntrospector extends InjectIntrospectorAdapter<Remote
     }
 
     @Override
-    public RemoteEndpoint injectable(final AtmosphereResource r) {
+    public RemoteEndpoint injectable(final AtmosphereResource resource) {
+        ThreadLocalInvoker invoker = new ThreadLocalInvoker();
+        invoker.set(resource);
+  
         return (RemoteEndpoint) Proxy.newProxyInstance(this.getClass().getClassLoader(),
-                new Class[]{RemoteEndpoint.class}, new ThreadLocalInvoker() {
-                    {
-                        set(r);
-                    }
-
-                    @Override
-                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                        return method.invoke(r, args);
-                    }
-                });
+                new Class[] { RemoteEndpoint.class }, 
+                invoker);
     }
-
 }

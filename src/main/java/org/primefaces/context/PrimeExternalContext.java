@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2015 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,22 +26,22 @@ public class PrimeExternalContext extends ExternalContextWrapper {
 
     private ExternalContext wrapped;
     private HttpServletRequest httpServletRequest;
-    
+
     public PrimeExternalContext(ExternalContext wrapped) {
         this.wrapped = wrapped;
-        
+
         extractHttpServletRequest();
     }
-    
+
     @Override
     public ExternalContext getWrapped() {
         return wrapped;
     }
-    
+
     public String getRemoteAddr() {
         return httpServletRequest.getRemoteAddr();
     }
-    
+
     protected void extractHttpServletRequest() {
         Object request = wrapped.getRequest();
         if (request instanceof HttpServletRequest) {
@@ -51,15 +51,15 @@ public class PrimeExternalContext extends ExternalContextWrapper {
             try {
                 Class<?> portletRequestClass = Class.forName("javax.portlet.PortletRequest");
                 Class<?> portalUtilClass = Class.forName("com.liferay.portal.util.PortalUtil");
-                Method method = portalUtilClass.getMethod("getHttpServletRequest", new Class[] { portletRequestClass });
-                httpServletRequest = (HttpServletRequest) method.invoke(null, new Object[] { request });
+                Method method = portalUtilClass.getMethod("getHttpServletRequest", new Class[]{portletRequestClass});
+                httpServletRequest = (HttpServletRequest) method.invoke(null, new Object[]{request});
             }
             catch (Exception ex) {
                 throw new FacesException(ex);
             }
         }
     }
-    
+
     protected boolean isLiferay() {
         try {
             Class.forName("com.liferay.portal.util.PortalUtil");
@@ -69,7 +69,7 @@ public class PrimeExternalContext extends ExternalContextWrapper {
             return false;
         }
     }
-    
+
     public static PrimeExternalContext getCurrentInstance(FacesContext facesContext) {
         ExternalContext externalContext = facesContext.getExternalContext();
 
@@ -77,7 +77,7 @@ public class PrimeExternalContext extends ExternalContextWrapper {
             if (externalContext instanceof PrimeExternalContext) {
                 return (PrimeExternalContext) externalContext;
             }
-            
+
             if (externalContext instanceof ExternalContextWrapper) {
                 externalContext = ((ExternalContextWrapper) externalContext).getWrapped();
             }
@@ -85,7 +85,7 @@ public class PrimeExternalContext extends ExternalContextWrapper {
                 return null;
             }
         }
-        
+
         return null;
     }
 }

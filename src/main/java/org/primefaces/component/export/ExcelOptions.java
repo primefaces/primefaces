@@ -1,11 +1,11 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
- * Licensed under PrimeFaces Commercial License, Version 1.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * Licensed under PrimeFaces Commercial License, Version 1.0 (the "License");
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,37 +16,40 @@
 package org.primefaces.component.export;
 
 public class ExcelOptions implements ExporterOptions {
-    
+
     private String facetFontStyle;
-    
+
     private String facetFontColor;
-    
+
     private String facetBgColor;
-    
+
     private String facetFontSize;
 
     private String cellFontStyle;
-    
+
     private String cellFontColor;
-    
+
     private String cellFontSize;
-    
-    public ExcelOptions() {}
-    
+
+    public ExcelOptions() {
+    }
+
     public ExcelOptions(String facetFontStyle, String facetFontColor, String facetBgColor, String facetFontSize) {
         this.facetFontStyle = facetFontStyle;
         this.facetFontColor = facetFontColor;
         this.facetBgColor = facetBgColor;
         this.facetFontSize = facetFontSize;
     }
-    
+
     public ExcelOptions(String cellFontStyle, String cellFontColor, String cellFontSize) {
         this.cellFontStyle = cellFontStyle;
         this.cellFontColor = cellFontColor;
         this.cellFontSize = cellFontSize;
     }
-    
-    public ExcelOptions(String facetFontStyle, String facetFontColor, String facetBgColor, String facetFontSize, String cellFontStyle, String cellFontColor, String cellFontSize) {
+
+    public ExcelOptions(String facetFontStyle, String facetFontColor, String facetBgColor, String facetFontSize, String cellFontStyle,
+            String cellFontColor, String cellFontSize) {
+        
         this(facetFontStyle, facetFontColor, facetBgColor, facetFontSize);
         this.cellFontStyle = cellFontStyle;
         this.cellFontColor = cellFontColor;
@@ -108,5 +111,5 @@ public class ExcelOptions implements ExporterOptions {
     public void setCellFontSize(String cellFontSize) {
         this.cellFontSize = cellFontSize;
     }
- 
+
 }

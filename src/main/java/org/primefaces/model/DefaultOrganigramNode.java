@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import java.util.List;
 /**
  * Default implementation for the {@link OrganigramNode}.
  */
-public class DefaultOrganigramNode implements OrganigramNode, Serializable
-{
+public class DefaultOrganigramNode implements OrganigramNode, Serializable {
+
     public static final String DEFAULT_TYPE = "default";
 
     private String type;
@@ -39,157 +39,131 @@ public class DefaultOrganigramNode implements OrganigramNode, Serializable
     private boolean droppable;
     private boolean collapsible = true;
 
-    public DefaultOrganigramNode()
-    {
+    public DefaultOrganigramNode() {
         this.type = DEFAULT_TYPE;
         this.children = new ArrayList<OrganigramNode>();
     }
 
-    public DefaultOrganigramNode(Object data)
-    {
+    public DefaultOrganigramNode(Object data) {
         this();
         this.data = data;
     }
 
-    public DefaultOrganigramNode(Object data, OrganigramNode parent)
-    {
+    public DefaultOrganigramNode(Object data, OrganigramNode parent) {
         this(data);
-        if (parent != null)
-        {
+        if (parent != null) {
             this.parent = parent;
             parent.getChildren().add(this);
         }
     }
 
-    public DefaultOrganigramNode(String type, Object data, OrganigramNode parent)
-    {
+    public DefaultOrganigramNode(String type, Object data, OrganigramNode parent) {
         this(data, parent);
 
         this.type = type;
     }
 
     @Override
-    public String getType()
-    {
+    public String getType() {
         return type;
     }
 
     @Override
-    public void setType(String type)
-    {
+    public void setType(String type) {
         this.type = type;
     }
 
     @Override
-    public Object getData()
-    {
+    public Object getData() {
         return data;
     }
 
     @Override
-    public void setData(Object data)
-    {
+    public void setData(Object data) {
         this.data = data;
     }
 
     @Override
-    public List<OrganigramNode> getChildren()
-    {
+    public List<OrganigramNode> getChildren() {
         return children;
     }
 
     @Override
-    public void setChildren(List<OrganigramNode> children)
-    {
+    public void setChildren(List<OrganigramNode> children) {
         this.children = children;
     }
 
     @Override
-    public OrganigramNode getParent()
-    {
+    public OrganigramNode getParent() {
         return parent;
     }
 
     @Override
-    public void setParent(OrganigramNode parent)
-    {
-        if(parent != null){
+    public void setParent(OrganigramNode parent) {
+        if (parent != null) {
             parent.getChildren().add(this);
         }
         this.parent = parent;
     }
 
     @Override
-    public String getRowKey()
-    {
+    public String getRowKey() {
         return rowKey;
     }
 
     @Override
-    public void setRowKey(String rowKey)
-    {
+    public void setRowKey(String rowKey) {
         this.rowKey = rowKey;
     }
 
     @Override
-    public boolean isExpanded()
-    {
+    public boolean isExpanded() {
         return expanded;
     }
 
     @Override
-    public void setExpanded(boolean expanded)
-    {
+    public void setExpanded(boolean expanded) {
         this.expanded = expanded;
     }
 
     @Override
-    public boolean isSelectable()
-    {
+    public boolean isSelectable() {
         return selectable;
     }
 
     @Override
-    public void setSelectable(boolean selectable)
-    {
+    public void setSelectable(boolean selectable) {
         this.selectable = selectable;
     }
 
     @Override
-    public boolean isDraggable()
-    {
+    public boolean isDraggable() {
         return draggable;
     }
 
     @Override
-    public void setDraggable(boolean draggable)
-    {
+    public void setDraggable(boolean draggable) {
         this.draggable = draggable;
     }
 
     @Override
-    public boolean isDroppable()
-    {
+    public boolean isDroppable() {
         return droppable;
     }
 
     @Override
-    public void setDroppable(boolean droppable)
-    {
+    public void setDroppable(boolean droppable) {
         this.droppable = droppable;
     }
 
     @Override
-    public int getChildCount()
-    {
+    public int getChildCount() {
         return children.size();
     }
 
     @Override
-    public boolean isLeaf()
-    {
-        if (children == null)
-        {
+    public boolean isLeaf() {
+        if (children == null) {
             return true;
         }
 
@@ -197,14 +171,12 @@ public class DefaultOrganigramNode implements OrganigramNode, Serializable
     }
 
     @Override
-    public void clearParent()
-    {
+    public void clearParent() {
         this.parent = null;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((data == null) ? 0 : data.hashCode());
@@ -212,31 +184,24 @@ public class DefaultOrganigramNode implements OrganigramNode, Serializable
     }
 
     @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-        {
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (obj == null)
-        {
+        if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass())
-        {
+        if (getClass() != obj.getClass()) {
             return false;
         }
 
         DefaultOrganigramNode other = (DefaultOrganigramNode) obj;
-        if (data == null)
-        {
-            if (other.data != null)
-            {
+        if (data == null) {
+            if (other.data != null) {
                 return false;
             }
         }
-        else if (!data.equals(other.data))
-        {
+        else if (!data.equals(other.data)) {
             return false;
         }
 
@@ -244,14 +209,12 @@ public class DefaultOrganigramNode implements OrganigramNode, Serializable
     }
 
     @Override
-    public boolean isCollapsible()
-    {
+    public boolean isCollapsible() {
         return collapsible;
     }
 
     @Override
-    public void setCollapsible(boolean collapsible)
-    {
+    public void setCollapsible(boolean collapsible) {
         this.collapsible = collapsible;
     }
 }

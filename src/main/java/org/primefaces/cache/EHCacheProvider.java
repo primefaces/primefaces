@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,16 +22,16 @@ import net.sf.ehcache.Element;
 public class EHCacheProvider implements CacheProvider {
 
     private CacheManager cacheManager;
-    
+
     public EHCacheProvider() {
         cacheManager = CacheManager.create();
     }
-    
+
     public Object get(String region, String key) {
         Cache cacheRegion = getRegion(region);
         Element element = cacheRegion.get(key);
-        
-        if(element != null) {
+
+        if (element != null) {
             return element.getObjectValue();
         }
         else {
@@ -41,40 +41,40 @@ public class EHCacheProvider implements CacheProvider {
 
     public void put(String region, String key, Object object) {
         Cache cacheRegion = getRegion(region);
-        
+
         cacheRegion.put(new Element(key, object));
     }
 
     public void remove(String region, String key) {
         Cache cacheRegion = getRegion(region);
-        
+
         cacheRegion.remove(key);
     }
 
     public void clear() {
         String[] cacheNames = getCacheManager().getCacheNames();
-        if(cacheNames != null) {
-            for(int i = 0; i < cacheNames.length; i++) {
+        if (cacheNames != null) {
+            for (int i = 0; i < cacheNames.length; i++) {
                 Cache cache = getRegion(cacheNames[i]);
                 cache.removeAll();
             }
         }
-    } 
-    
+    }
+
     protected Cache getRegion(String regionName) {
         Cache region = getCacheManager().getCache(regionName);
-        if(region == null) {
+        if (region == null) {
             getCacheManager().addCache(regionName);
             region = getCacheManager().getCache(regionName);
         }
-        
+
         return region;
     }
-    
+
     public CacheManager getCacheManager() {
         return cacheManager;
     }
-    
+
     public void setCacheManager(CacheManager cacheManager) {
         this.cacheManager = cacheManager;
     }

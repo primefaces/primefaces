@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,13 +19,13 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 
 public class ToggleSelectEvent extends AbstractAjaxBehaviorEvent {
-	
-	private boolean selected;
-    
-	public ToggleSelectEvent(UIComponent component, Behavior behavior, boolean selected) {
-		super(component, behavior);
-		this.selected = selected;
-	}
+
+    private boolean selected;
+
+    public ToggleSelectEvent(UIComponent component, Behavior behavior, boolean selected) {
+        super(component, behavior);
+        this.selected = selected;
+    }
 
     public boolean isSelected() {
         return selected;

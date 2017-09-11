@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MeterGaugeChartModel extends ChartModel {
- 
+
     private Number value;
     private List<Number> intervals;
     private List<Number> ticks;
@@ -31,7 +31,7 @@ public class MeterGaugeChartModel extends ChartModel {
     private Integer intervalInnerRadius;
     private Integer intervalOuterRadius;
     private int labelHeightAdjust = -25;
-    
+
     public MeterGaugeChartModel() {
         intervals = new ArrayList<Number>();
     }
@@ -40,17 +40,17 @@ public class MeterGaugeChartModel extends ChartModel {
         this.value = value;
         this.intervals = intervals;
     }
-    
+
     public MeterGaugeChartModel(Number value, List<Number> intervals, List<Number> ticks) {
         this.value = value;
         this.intervals = intervals;
         this.ticks = ticks;
     }
-    
+
     public void addInterval(Number interval) {
         this.intervals.add(interval);
     }
-    
+
     public List<Number> getIntervals() {
         return intervals;
     }
@@ -70,6 +70,7 @@ public class MeterGaugeChartModel extends ChartModel {
     public List<Number> getTicks() {
         return ticks;
     }
+
     public void setTicks(List<Number> ticks) {
         this.ticks = ticks;
     }
@@ -77,6 +78,7 @@ public class MeterGaugeChartModel extends ChartModel {
     public String getGaugeLabel() {
         return gaugeLabel;
     }
+
     public void setGaugeLabel(String gaugeLabel) {
         this.gaugeLabel = gaugeLabel;
     }
@@ -92,6 +94,7 @@ public class MeterGaugeChartModel extends ChartModel {
     public double getMin() {
         return min;
     }
+
     public void setMin(double min) {
         this.min = min;
     }
@@ -99,6 +102,7 @@ public class MeterGaugeChartModel extends ChartModel {
     public double getMax() {
         return max;
     }
+
     public void setMax(double max) {
         this.max = max;
     }
@@ -106,6 +110,7 @@ public class MeterGaugeChartModel extends ChartModel {
     public boolean isShowTickLabels() {
         return showTickLabels;
     }
+
     public void setShowTickLabels(boolean showTickLabels) {
         this.showTickLabels = showTickLabels;
     }
@@ -129,6 +134,7 @@ public class MeterGaugeChartModel extends ChartModel {
     public int getLabelHeightAdjust() {
         return labelHeightAdjust;
     }
+
     public void setLabelHeightAdjust(int labelHeightAdjust) {
         this.labelHeightAdjust = labelHeightAdjust;
     }

@@ -61,10 +61,6 @@
     width: 100%;
 }
 
-.ui-orderlist.ui-grid-responsive .ui-orderlist-controls {
-    margin-right: 10px;
-}
-
 .ui-orderlist.ui-grid-responsive .ui-orderlist-list,
 .ui-orderlist.ui-grid-responsive .ui-orderlist-caption {
     width: 100%;
@@ -77,6 +73,7 @@
 @media (max-width: 640px) { 
     .ui-orderlist.ui-grid-responsive .ui-orderlist-controls {
         text-align: center;
+        padding: 0px;
     }
 
     .ui-orderlist.ui-grid-responsive .ui-orderlist-controls .ui-button {

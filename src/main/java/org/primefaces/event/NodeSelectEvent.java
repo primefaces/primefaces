@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,24 +22,24 @@ import org.primefaces.model.TreeNode;
 
 public class NodeSelectEvent extends AbstractAjaxBehaviorEvent {
 
-	private TreeNode treeNode;
-    
-    private boolean contextMenu;
-	
-    public NodeSelectEvent(UIComponent component, Behavior behavior, TreeNode treeNode) {
-		super(component, behavior);
-		this.treeNode = treeNode;
-	}
-    
-	public NodeSelectEvent(UIComponent component, Behavior behavior, TreeNode treeNode, boolean contextMenu) {
-		super(component, behavior);
-		this.treeNode = treeNode;
-        this.contextMenu = contextMenu;
-	}
+    private TreeNode treeNode;
 
-	public TreeNode getTreeNode() {
-		return treeNode;
-	}
+    private boolean contextMenu;
+
+    public NodeSelectEvent(UIComponent component, Behavior behavior, TreeNode treeNode) {
+        super(component, behavior);
+        this.treeNode = treeNode;
+    }
+
+    public NodeSelectEvent(UIComponent component, Behavior behavior, TreeNode treeNode, boolean contextMenu) {
+        super(component, behavior);
+        this.treeNode = treeNode;
+        this.contextMenu = contextMenu;
+    }
+
+    public TreeNode getTreeNode() {
+        return treeNode;
+    }
 
     public boolean isContextMenu() {
         return contextMenu;

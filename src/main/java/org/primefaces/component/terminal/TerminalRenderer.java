@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,8 @@ public class TerminalRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Terminal terminal = (Terminal) component;
-
-        if(terminal.isCommandRequest()) {
+           
+        if (terminal.isCommandRequest()) {
             handleCommand(context, terminal);
         } else if(terminal.isAutoCompleteRequest()) {
             autoCompleteCommand(context, terminal);
@@ -57,16 +57,17 @@ public class TerminalRenderer extends CoreRenderer {
         writer.startElement("div", terminal);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-
-        if(welcomeMessage != null) {
+        
+        if (welcomeMessage != null) {
             writer.startElement("div", null);
-            if(terminal.isEscape()) {
-               writer.writeText(welcomeMessage, null);
-            } else {
-               writer.write(welcomeMessage);
+            if (terminal.isEscape()) {
+                writer.writeText(welcomeMessage, null);
+            else {
+            }
+                writer.write(welcomeMessage);
             }
             writer.endElement("div");
         }
@@ -78,10 +79,11 @@ public class TerminalRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.startElement("span", null);
         writer.writeAttribute("class", Terminal.PROMPT_CLASS, null);
-        if(terminal.isEscape()) {
-           writer.writeText(prompt, null);
-        } else {
-           writer.write(prompt);
+        if (terminal.isEscape()) {
+            writer.writeText(prompt, null);
+        }
+            writer.write(prompt);
+        else {
         }
         writer.endElement("span");
 
@@ -109,11 +111,11 @@ public class TerminalRenderer extends CoreRenderer {
         String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
         String tokens[] = value.trim().split(" ");
         String command = tokens[0];
+
         String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
-
         MethodExpression commandHandler = terminal.getCommandHandler();
-        String result = (String) commandHandler.invoke(context.getELContext(), new Object[]{command, args});
 
+        String result = (String) commandHandler.invoke(context.getELContext(), new Object[]{command, args});
         ResponseWriter writer = context.getResponseWriter();
         writer.write(result);
     }
@@ -122,18 +124,18 @@ public class TerminalRenderer extends CoreRenderer {
         String clientId = terminal.getClientId(context);
         String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
         String tokens[] = value.trim().split(" ");
-        String command = tokens[0];
         String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
+        String command = tokens[0];
 
         MethodExpression commandModelHandler = terminal.getCommandModel();
         ResponseWriter writer = context.getResponseWriter();
 		
         if (commandModelHandler == null) {
-            writer.write("null");
         } else {
+            writer.write("null");
             TreeNode commandModel = (TreeNode) commandModelHandler.invoke(context.getELContext(), new Object[]{});
-            AutoCompleteMatches matches = terminal.traverseCommandModel(commandModel, command, args);
 			
+            AutoCompleteMatches matches = terminal.traverseCommandModel(commandModel, command, args);
             writer.write(matches.toString());
         }
     }

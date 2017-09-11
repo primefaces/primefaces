@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,20 +19,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GridLayoutUtils {
-    
+
     private static final Map<Integer, String> COLUMN_MAP = new HashMap<Integer, String>();
-    
+
     static {
-        COLUMN_MAP.put(1, "ui-grid-col-12");
-        COLUMN_MAP.put(2, "ui-grid-col-6");
-        COLUMN_MAP.put(3, "ui-grid-col-4");
-        COLUMN_MAP.put(4, "ui-grid-col-3");
-        COLUMN_MAP.put(6, "ui-grid-col-2");
-        COLUMN_MAP.put(12, "ui-grid-col-1");
+        COLUMN_MAP.put(1, "ui-g-12 ui-md-12");
+        COLUMN_MAP.put(2, "ui-g-12 ui-md-6");
+        COLUMN_MAP.put(3, "ui-g-12 ui-md-4");
+        COLUMN_MAP.put(4, "ui-g-12 ui-md-3");
+        COLUMN_MAP.put(6, "ui-g-12 ui-md-2");
+        COLUMN_MAP.put(12, "ui-g-12 ui-md-1");
     }
-    
-    private GridLayoutUtils() {}
-    
+
+    private GridLayoutUtils() {
+    }
+
     public static String getColumnClass(int columns) {
         return COLUMN_MAP.get(columns);
     }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,20 +18,20 @@ package org.primefaces.model;
 import java.util.List;
 
 public interface ScheduleModel {
-		
-	public void addEvent(ScheduleEvent event);
-	
-	public boolean deleteEvent(ScheduleEvent event);
-	
-	public List<ScheduleEvent> getEvents();
-	
-	public ScheduleEvent getEvent(String id);
-	
-	public void updateEvent(ScheduleEvent event);
-	
-	public int getEventCount();
-	
-	public void clear();
-    
+
+    public void addEvent(ScheduleEvent event);
+
+    public boolean deleteEvent(ScheduleEvent event);
+
+    public List<ScheduleEvent> getEvents();
+
+    public ScheduleEvent getEvent(String id);
+
+    public void updateEvent(ScheduleEvent event);
+
+    public int getEventCount();
+
+    public void clear();
+
     public boolean isEventLimit();
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,18 +28,18 @@ public class DynamicColumnsListener implements SystemEventListener {
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         Columns columns = (Columns) event.getSource();
         UIComponent parent = columns.getParent();
-        
+
         //todo: consider an interface
         if (parent instanceof DataTable) {
-        	((DataTable) parent).setDynamicColumns(columns);
+            ((DataTable) parent).setDynamicColumns(columns);
         }
         else if (parent instanceof TreeTable) {
-        	((TreeTable) parent).setDynamicColumns(columns);
+            ((TreeTable) parent).setDynamicColumns(columns);
         }
     }
 
     public boolean isListenerForSource(Object source) {
         return true;
     }
-    
+
 }

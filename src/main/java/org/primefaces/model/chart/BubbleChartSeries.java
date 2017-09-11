@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,8 @@ public class BubbleChartSeries implements Serializable {
     private int radius;
     private String label;
 
-    public BubbleChartSeries() {}
+    public BubbleChartSeries() {
+    }
 
     public BubbleChartSeries(String label) {
         this.label = label;
@@ -36,7 +37,7 @@ public class BubbleChartSeries implements Serializable {
         this.y = y;
         this.radius = radius;
     }
-    
+
     public String getLabel() {
         return label;
     }
@@ -44,7 +45,7 @@ public class BubbleChartSeries implements Serializable {
     public void setLabel(String label) {
         this.label = label;
     }
-    
+
     public int getRadius() {
         return radius;
     }

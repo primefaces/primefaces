@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ public class PanelGridBodyRowRenderer extends CoreRenderer implements HelperRowR
 
     public void encode(FacesContext context, Row row) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
         writer.startElement("tr", row);
         writer.writeAttribute("class", PanelGrid.TABLE_ROW_CLASS, null);
         writer.writeAttribute("role", "row", null);

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,26 +29,28 @@ public class CSVBuilder {
     protected FacesContext context;
 
     public CSVBuilder(FacesContext context) {
-    	this.context = context;
+        this.context = context;
         this.buffer = new StringBuilder();
     }
 
     public CSVBuilder init() {
-    	buffer.append("if(PrimeFaces.vb({");
-    	return this;
+        buffer.append("if(PrimeFaces.vb({");
+        return this;
     }
 
     public CSVBuilder source(String source) {
-        if(source == null || source.equals("this"))
+        if (source == null || source.equals("this")) {
             buffer.append("s:").append("this");
-        else
+        }
+        else {
             buffer.append("s:").append("'").append(source).append("'");
+        }
 
         return this;
     }
 
     public CSVBuilder ajax(boolean value) {
-        if(value) {
+        if (value) {
             buffer.append(",a:").append("true");
         }
 
@@ -56,7 +58,7 @@ public class CSVBuilder {
     }
 
     public CSVBuilder process(UIComponent component, String expressions) {
-        if(!ComponentUtils.isValueBlank(expressions)) {
+        if (!ComponentUtils.isValueBlank(expressions)) {
             String resolvedExpressions = SearchExpressionFacade.resolveClientIds(context, component, expressions);
             buffer.append(",p:'").append(resolvedExpressions).append("'");
         }
@@ -65,9 +67,9 @@ public class CSVBuilder {
     }
 
     public CSVBuilder update(UIComponent component, String expressions) {
-        if(!ComponentUtils.isValueBlank(expressions)) {
+        if (!ComponentUtils.isValueBlank(expressions)) {
             String resolvedExpressions = SearchExpressionFacade.resolveClientIds(
-        			context, component, expressions, SearchExpressionHint.VALIDATE_RENDERER);
+                    context, component, expressions, SearchExpressionHint.VALIDATE_RENDERER);
             buffer.append(",u:'").append(resolvedExpressions).append("'");
         }
 

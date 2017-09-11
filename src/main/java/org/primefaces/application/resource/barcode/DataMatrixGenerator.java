@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,12 @@
  */
 package org.primefaces.application.resource.barcode;
 
-import java.io.IOException;
 import org.krysalis.barcode4j.impl.datamatrix.DataMatrixBean;
-import org.krysalis.barcode4j.output.CanvasProvider;
 
-public class DataMatrixGenerator implements BarcodeGenerator {
-    
-    public void generate(CanvasProvider canvasProvider, String value) throws IOException {
-        DataMatrixBean bean = new DataMatrixBean();
-        bean.generateBarcode(canvasProvider, value);
+public class DataMatrixGenerator extends BarcodeGenerator {
+
+    public DataMatrixGenerator() {
+        super(new DataMatrixBean());
     }
+
 }

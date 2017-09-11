@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,14 +27,14 @@ import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
 
 public class CheckboxRenderer extends InputRenderer {
-    
+
     private static final String SB_BUILD_EVENT = RadioButtonRenderer.class.getName() + "#buildEvent";
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Checkbox checkbox = (Checkbox) component;
         SelectManyCheckbox selectManyCheckbox = (SelectManyCheckbox) SearchExpressionFacade.resolveComponent(
-        		context, checkbox, checkbox.getFor());
+                context, checkbox, checkbox.getFor());
 
         encodeMarkup(context, checkbox, selectManyCheckbox);
     }
@@ -53,7 +53,7 @@ public class CheckboxRenderer extends InputRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, null);
         }
 
@@ -63,10 +63,12 @@ public class CheckboxRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeOptionInput(FacesContext context, SelectManyCheckbox selectManyCheckbox, Checkbox checkbox, String id, String name, boolean disabled) throws IOException {
+    protected void encodeOptionInput(FacesContext context, SelectManyCheckbox selectManyCheckbox, Checkbox checkbox, String id, String name,
+            boolean disabled) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         String tabindex = checkbox.getTabindex();
-        if(tabindex == null) {
+        if (tabindex == null) {
             tabindex = selectManyCheckbox.getTabindex();
         }
 
@@ -80,8 +82,8 @@ public class CheckboxRenderer extends InputRenderer {
         writer.writeAttribute("class", "ui-chkbox-clone", null);
         writer.writeAttribute("data-itemindex", checkbox.getItemIndex(), null);
 
-        if(tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
-        if(disabled) writer.writeAttribute("disabled", "disabled", null);
+        if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
+        if (disabled) writer.writeAttribute("disabled", "disabled", null);
 
         String onchange = buildEvent(context, selectManyCheckbox, checkbox, "onchange", "change", "valueChange");
         if (!isValueBlank(onchange)) {
@@ -96,8 +98,8 @@ public class CheckboxRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected String buildEvent(FacesContext context, SelectManyCheckbox selectManyCheckbox, Checkbox checkbox, String domEvent, String behaviorEvent,
-            String behaviorEventAlias) {
+    protected String buildEvent(FacesContext context, SelectManyCheckbox selectManyCheckbox, Checkbox checkbox, String domEvent,
+            String behaviorEvent, String behaviorEventAlias) {
 
         String manyCheckboxEvent = buildDomEvent(context, selectManyCheckbox, domEvent, behaviorEvent, behaviorEventAlias, null);
         String checkboxEvent = buildDomEvent(context, checkbox, domEvent, behaviorEvent, behaviorEventAlias, null);

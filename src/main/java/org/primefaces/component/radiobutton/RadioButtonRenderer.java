@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ public class RadioButtonRenderer extends InputRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         RadioButton radioButton = (RadioButton) component;
         SelectOneRadio selectOneRadio = (SelectOneRadio) SearchExpressionFacade.resolveComponent(
-        		context, radioButton, radioButton.getFor());
+                context, radioButton, radioButton.getFor());
 
         encodeMarkup(context, radioButton, selectOneRadio);
     }
@@ -53,7 +53,7 @@ public class RadioButtonRenderer extends InputRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, null);
         }
 
@@ -63,10 +63,12 @@ public class RadioButtonRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeOptionInput(FacesContext context, SelectOneRadio radio, RadioButton button, String id, String name, boolean disabled) throws IOException {
+    protected void encodeOptionInput(FacesContext context, SelectOneRadio radio, RadioButton button, String id, String name,
+            boolean disabled) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         String tabindex = button.getTabindex();
-        if(tabindex == null) {
+        if (tabindex == null) {
             tabindex = radio.getTabindex();
         }
 
@@ -80,8 +82,8 @@ public class RadioButtonRenderer extends InputRenderer {
         writer.writeAttribute("class", "ui-radio-clone", null);
         writer.writeAttribute("data-itemindex", button.getItemIndex(), null);
 
-        if(tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
-        if(disabled) writer.writeAttribute("disabled", "disabled", null);
+        if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
+        if (disabled) writer.writeAttribute("disabled", "disabled", null);
 
         String onchange = buildEvent(context, radio, button, "onchange", "change", "valueChange");
         if (!isValueBlank(onchange)) {

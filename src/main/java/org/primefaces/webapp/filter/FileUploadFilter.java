@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2013 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,24 +39,24 @@ import org.primefaces.webapp.MultipartRequest;
 
 public class FileUploadFilter implements Filter {
 
-	private final static Logger logger = Logger.getLogger(FileUploadFilter.class.getName());
+    private final static Logger logger = Logger.getLogger(FileUploadFilter.class.getName());
 
-	private final static String THRESHOLD_SIZE_PARAM = "thresholdSize";
+    private final static String THRESHOLD_SIZE_PARAM = "thresholdSize";
 
-	private final static String UPLOAD_DIRECTORY_PARAM = "uploadDirectory";
+    private final static String UPLOAD_DIRECTORY_PARAM = "uploadDirectory";
 
-	private String thresholdSize;
+    private String thresholdSize;
 
-	private String uploadDir;
+    private String uploadDir;
 
     private boolean bypass;
 
-	public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) throws ServletException {
         boolean isAtLeastJSF22 = detectJSF22();
         String uploader = filterConfig.getServletContext().getInitParameter(Constants.ContextParams.UPLOADER);
-        
+
         if (uploader == null || uploader.equals("auto")) {
-            bypass = isAtLeastJSF22 ? true : false;
+            bypass = isAtLeastJSF22;
         }
         else if (uploader.equals("native")) {
             bypass = true;
@@ -65,47 +65,47 @@ public class FileUploadFilter implements Filter {
             bypass = false;
         }
 
-		thresholdSize = filterConfig.getInitParameter(THRESHOLD_SIZE_PARAM);
-		uploadDir = filterConfig.getInitParameter(UPLOAD_DIRECTORY_PARAM);
+        thresholdSize = filterConfig.getInitParameter(THRESHOLD_SIZE_PARAM);
+        uploadDir = filterConfig.getInitParameter(UPLOAD_DIRECTORY_PARAM);
 
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("FileUploadFilter initiated successfully");
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine("FileUploadFilter initiated successfully");
         }
-	}
+    }
 
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         if (bypass) {
             filterChain.doFilter(request, response);
             return;
         }
 
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-		boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
+        boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
 
-		if (isMultipart) {
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("Parsing file upload request");
+        if (isMultipart) {
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine("Parsing file upload request");
             }
 
-			ServletFileUpload servletFileUpload = new ServletFileUpload(createFileItemFactory(httpServletRequest));
-			MultipartRequest multipartRequest = new MultipartRequest(httpServletRequest, servletFileUpload);
+            ServletFileUpload servletFileUpload = new ServletFileUpload(createFileItemFactory(httpServletRequest));
+            MultipartRequest multipartRequest = new MultipartRequest(httpServletRequest, servletFileUpload);
 
-			if (logger.isLoggable(Level.FINE)) {
-				logger.fine("File upload request parsed succesfully, continuing with filter chain with a wrapped multipart request");
+            if (logger.isLoggable(Level.FINE)) {
+                logger.fine("File upload request parsed succesfully, continuing with filter chain with a wrapped multipart request");
             }
 
-			filterChain.doFilter(multipartRequest, response);
-		}
-        else {
-			filterChain.doFilter(request, response);
-		}
-	}
-
-	public void destroy() {
-		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("Destroying FileUploadFilter");
+            filterChain.doFilter(multipartRequest, response);
         }
-	}
+        else {
+            filterChain.doFilter(request, response);
+        }
+    }
+
+    public void destroy() {
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine("Destroying FileUploadFilter");
+        }
+    }
 
     private boolean detectJSF22() {
         String version = FacesContext.class.getPackage().getImplementationVersion();
@@ -125,8 +125,7 @@ public class FileUploadFilter implements Filter {
         }
     }
 
-    protected FileItemFactory createFileItemFactory(HttpServletRequest httpServletRequest)
-    {
+    protected FileItemFactory createFileItemFactory(HttpServletRequest httpServletRequest) {
         DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
         if (thresholdSize != null) {
             diskFileItemFactory.setSizeThreshold(Integer.valueOf(thresholdSize));
@@ -139,7 +138,7 @@ public class FileUploadFilter implements Filter {
         if (fileCleaningTracker != null) {
             diskFileItemFactory.setFileCleaningTracker(fileCleaningTracker);
         }
-        
+
         return diskFileItemFactory;
     }
 }
