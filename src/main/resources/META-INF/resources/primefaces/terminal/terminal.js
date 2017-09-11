@@ -95,6 +95,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
 
                             // show prompt again and focus input
                             $this.promptContainerParent.show();
+
                             $this.focus();
 
                             // add response
@@ -192,11 +193,12 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
     },
 
     focus: function() {
-    	if(PrimeFaces.env.isIE()) {
+    	if (PrimeFaces.env.isIE()) {
     		window.setTimeout(function(terminal){
     			terminal.input.trigger('focus');
-    		}, 50, this);
-    	} else {
+    		}, 50);
+    	}
+    	else {
     		this.input.trigger('focus');
     	}
     },

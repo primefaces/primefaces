@@ -133,8 +133,9 @@ public class TerminalRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         if (commandModelHandler == null) {
-        } else {
             writer.write("null");
+        }
+        else {
             TreeNode commandModel = (TreeNode) commandModelHandler.invoke(context.getELContext(), new Object[]{});
 
             AutoCompleteMatches matches = terminal.traverseCommandModel(commandModel, command, args);
