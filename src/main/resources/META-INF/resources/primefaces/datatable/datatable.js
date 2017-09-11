@@ -2728,12 +2728,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     setupResizableColumns: function() {
         this.cfg.resizeMode = this.cfg.resizeMode||'fit';
+        
+        this.fixColumnWidths();
+        
         this.hasColumnGroup = this.hasColGroup();
         if(this.hasColumnGroup) {
             this.addGhostRow();
         }
-
-        this.fixColumnWidths();
 
         if(!this.cfg.liveResize) {
             this.resizerHelper = $('<div class="ui-column-resizer-helper ui-state-highlight"></div>').appendTo(this.jq);
@@ -2827,11 +2828,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     addGhostRow: function() {
-        var dataColumnsCount = this.tbody.find('tr:first').children('td').length,
+        var columnsOfFirstRow = this.tbody.find('tr:first').children('td'),
+        dataColumnsCount = columnsOfFirstRow.length,
         columnMarkup = '';
 
         for(var i = 0; i < dataColumnsCount; i++) {
-            columnMarkup += '<th style="height:0px;border-bottom-width: 0px;border-top-width: 0px;padding-top: 0px;padding-bottom: 0px;outline: 0 none;" class="ui-resizable-column"></th>';
+            var colWidth = columnsOfFirstRow.eq(i).width() + 1 + "px";
+            columnMarkup += '<th style="height:0px;border-bottom-width: 0px;border-top-width: 0px;padding-top: 0px;padding-bottom: 0px;outline: 0 none; width:' + colWidth + '" class="ui-resizable-column"></th>';
         }
 
         this.thead.prepend('<tr>' + columnMarkup + '</tr>');
