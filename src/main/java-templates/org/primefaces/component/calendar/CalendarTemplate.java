@@ -5,6 +5,7 @@ import org.primefaces.util.HTML;
 import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LocaleUtils;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
@@ -37,19 +38,8 @@ import org.primefaces.convert.DateTimeConverter;
 	private java.util.TimeZone appropriateTimeZone;
 	
 	public java.util.Locale calculateLocale(FacesContext facesContext) {
-		if(calculatedLocale == null) {
-			Object userLocale = getLocale();
-			if(userLocale != null) {
-				if(userLocale instanceof String) {
-					calculatedLocale = ComponentUtils.toLocale((String) userLocale);
-				}
-				else if(userLocale instanceof java.util.Locale)
-					calculatedLocale = (java.util.Locale) userLocale;
-				else
-					throw new IllegalArgumentException("Type:" + userLocale.getClass() + " is not a valid locale type for calendar:" + this.getClientId(facesContext));
-			} else {
-				calculatedLocale = facesContext.getViewRoot().getLocale();
-			}
+		if (calculatedLocale == null) {
+	       calculatedLocale = LocaleUtils.resolveLocale(getLocale(), this.getClientId(facesContext));
 		}
 		
 		return calculatedLocale;
