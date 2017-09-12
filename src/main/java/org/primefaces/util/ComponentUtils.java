@@ -236,6 +236,24 @@ public class ComponentUtils {
             }
         }
     }
+    
+    /**
+     * Gets a {@link Locale} instance by the value of the component attribute "locale" which can be String or {@link Locale} or null. 
+     *
+     * @param locale given locale
+     * @return resolved Locale
+     */
+    public static Locale resolveLocale(Object locale) {
+        if (locale instanceof String) {
+            locale = toLocale((String) locale);
+        }
+
+        if (locale == null) {
+            locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        }
+
+        return (Locale) locale;
+    }
 
     public static boolean isValueBlank(String value) {
         if (value == null) {
