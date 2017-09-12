@@ -68,6 +68,7 @@ public class BarcodeRenderer extends CoreRenderer {
                     .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(dynamicContentType.toString())
                     .append("&gen=").append(type)
                     .append("&fmt=").append(barcode.getFormat())
+                    .append("&qrec=").append(barcode.getQrerrorcorrection())
                     .append("&hrp=").append(barcode.getHrp())
                     .append("&").append(Constants.DYNAMIC_CONTENT_CACHE_PARAM).append("=").append(barcode.isCache())
                     .append("&ori=").append(barcode.getOrientation())
