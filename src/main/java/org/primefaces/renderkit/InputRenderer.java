@@ -25,6 +25,7 @@ import java.util.RandomAccess;
 import javax.el.ELException;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
+import javax.faces.application.Application;
 import javax.faces.component.*;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -141,7 +142,24 @@ public abstract class InputRenderer extends CoreRenderer {
             itemLabelValue = label;
         }
 
-        String itemLabel = itemLabelValue == null ? String.valueOf(value) : String.valueOf(itemLabelValue);
+        String itemLabel;
+	final Application application = context.getApplication();
+	if (itemLabelValue == null) {
+	    final Converter converter = application.createConverter(value.getClass());
+	    if (converter != null) {
+		itemLabel = converter.getAsString(context, uiSelectItems, value);
+	    } else {
+		itemLabel = String.valueOf(value);
+	    }
+
+	} else {
+	    final Converter converter = application.createConverter(itemLabelValue.getClass());
+	    if (converter != null) {
+		itemLabel = converter.getAsString(context, uiSelectItems, itemLabelValue);
+	    } else {
+		itemLabel = String.valueOf(itemLabelValue);
+	    }
+	}
         boolean disabled = itemDisabled == null ? false : Boolean.valueOf(itemDisabled.toString());
         boolean escaped = itemEscaped == null ? true : Boolean.valueOf(itemEscaped.toString());
         boolean noSelectionOption = noSelection == null ? false : Boolean.valueOf(noSelection.toString());
