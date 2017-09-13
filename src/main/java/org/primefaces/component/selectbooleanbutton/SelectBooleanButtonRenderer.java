@@ -142,11 +142,15 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, SelectBooleanButton button) throws IOException {
+        
+        String onLabel = button.getOnLabel();
+        String offLabel = button.getOffLabel();
+        
         String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectBooleanButton", button.resolveWidgetVar(), clientId)
-                .attr("onLabel", isValueBlank(button.getOnLabel()) ? "ui-button" : escapeText(button.getOnLabel()))
-                .attr("offLabel", isValueBlank(button.getOffLabel()) ? "ui-button" : escapeText(button.getOffLabel()))
+                .attr("onLabel", isValueBlank(onLabel) ? "ui-button" : escapeText(onLabel))
+                .attr("offLabel", isValueBlank(offLabel) ? "ui-button" : escapeText(offLabel))
                 .attr("onIcon", button.getOnIcon(), null)
                 .attr("offIcon", button.getOffIcon(), null);
 
