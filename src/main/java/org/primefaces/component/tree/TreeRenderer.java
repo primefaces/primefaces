@@ -444,6 +444,8 @@ public class TreeRenderer extends CoreRenderer {
         if (nodeOrder != NodeOrder.NONE) {
             encodeConnector(context, tree, nodeOrder);
         }
+        
+        nodeClass = uiTreeNode.getStyleClass() == null ? nodeClass : nodeClass + " " + uiTreeNode.getStyleClass();
 
         //node
         writer.startElement("td", null);
