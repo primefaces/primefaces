@@ -45,7 +45,7 @@
             <description>The barcode orientation in terms of angle (0, 90, 180, 270).</description>
 		</attribute>
         <attribute>
-            <name>qrerrorcorrection</name>
+            <name>qrErrorCorrection</name>
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>L</defaultValue>
