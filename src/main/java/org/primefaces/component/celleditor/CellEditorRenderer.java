@@ -31,6 +31,11 @@ public class CellEditorRenderer extends CoreRenderer {
         UIComponent parentTable = editor.getParentTable(context);
         boolean isDataTable = (parentTable != null && parentTable instanceof DataTable);
         boolean isLazyCellEdit = false;
+        
+        if (editor.isDisabled()) {
+            editor.getFacet("output").encodeAll(context);
+            return;
+        }
 
         if (isDataTable) {
             DataTable dt = (DataTable) parentTable;

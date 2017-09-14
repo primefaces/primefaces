@@ -31,6 +31,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
@@ -1273,11 +1274,12 @@ public class DataTableRenderer extends DataRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
         boolean selectionEnabled = column.getSelectionMode() != null;
+        CellEditor editor = column.getCellEditor();
         int priority = column.getPriority();
         String style = column.getStyle();
         String styleClass = selectionEnabled
                 ? DataTable.SELECTION_COLUMN_CLASS
-                : (column.getCellEditor() != null && column.getCellEditor().isRendered()) ? DataTable.EDITABLE_COLUMN_CLASS : null;
+                : (editor != null && editor.isRendered() && !editor.isDisabled()) ? DataTable.EDITABLE_COLUMN_CLASS : null;
         styleClass = (column.isSelectRow())
                 ? styleClass
                 : (styleClass == null) ? DataTable.UNSELECTABLE_COLUMN_CLASS : styleClass + " " + DataTable.UNSELECTABLE_COLUMN_CLASS;
