@@ -140,7 +140,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             itemClass = 'ui-selectcheckboxmenu-item ui-selectcheckboxmenu-list-item ui-corner-all',
             escaped = input.data('escaped');
 
-            if(grouped && currentGroupName !== input.attr('group-label')) {
+            if(grouped.length && currentGroupName !== input.attr('group-label')) {
             	currentGroupName = input.attr('group-label');
             	var itemGroup = $('<li class="ui-selectcheckboxmenu-item-group ui-selectcheckboxmenu-group-list-item ui-corner-all"></li>');
             	itemGroup.html(currentGroupName);
