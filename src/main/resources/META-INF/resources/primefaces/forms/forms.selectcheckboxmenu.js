@@ -127,7 +127,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.itemContainer = this.itemContainerWrapper.children('ul.ui-selectcheckboxmenu-items');
 
         //check if inputs must be grouped
-        var grouped = this.inputs.find('input[group-label]');
+        var grouped = this.inputs.filter('[group-label]');
 
         var currentGroupName = null;
         for(var i = 0; i < this.inputs.length; i++) {
@@ -654,7 +654,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             uncheckedInput.prop('checked', false).attr('aria-checked', false);
 
             if(updateInput) {
-                var input = this.inputs.eq(item.index());
+                var itemGroups = item.prevAll('li.ui-selectcheckboxmenu-item-group'),
+                input = this.inputs.eq(item.index() - itemGroups.length);
                 input.prop('checked', false).attr('aria-checked', false).change();
                 uncheckedInput.trigger('focus.selectCheckboxMenu');
                 this.updateToggler();
