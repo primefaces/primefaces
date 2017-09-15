@@ -230,11 +230,12 @@ public class PanelGridRenderer extends CoreRenderer {
             int colMod = i % columns;
             if (colMod == 0) {
                 writer.startElement("div", null);
-                writer.writeAttribute("class", PanelGrid.GRID_ROW_CLASS, null);
+                String rowClass = (columnClasses.length > 0 && columnClasses[0].contains("ui-grid-col-")) ? "ui-grid-row" : PanelGrid.GRID_ROW_CLASS;
+                writer.writeAttribute("class", rowClass, null);
             }
 
             String columnClass = (colMod < columnClasses.length) ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim() : PanelGrid.CELL_CLASS;
-            if (!columnClass.contains("ui-md-") && !columnClass.contains("ui-g-")) {
+            if (!columnClass.contains("ui-md-") && !columnClass.contains("ui-g-") && !columnClass.contains("ui-grid-col-")) {
                 columnClass = columnClass + " " + GridLayoutUtils.getColumnClass(columns);
             }
 
