@@ -572,11 +572,10 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getContainerClientId(context);
 
-        String columnField = column.getField();
         ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
         ValueExpression columnFilterByVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
-        boolean sortable = ((columnField != null || columnSortByVE != null) && column.isSortable());
-        boolean filterable = ((columnField != null || columnFilterByVE != null) && column.isFilterable());
+        boolean sortable = (columnSortByVE != null && column.isSortable());
+        boolean filterable = (columnFilterByVE != null && column.isFilterable());
         String selectionMode = column.getSelectionMode();
         String sortIcon = null;
         boolean resizable = table.isResizableColumns() && column.isResizable();
