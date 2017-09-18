@@ -49,7 +49,7 @@
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>L</defaultValue>
-            <description>The QR Code error correction level. L (default) – up to 7% damage. M – up to 15% damage. Q – up to 25% damage. H – up to 30% damage</description>
+            <description>The QR Code error correction level. L (default) - up to 7% damage. M - up to 15% damage. Q - up to 25% damage. H - up to 30% damage</description>
         </attribute>
         <attribute>
 			<name>hrp</name>
