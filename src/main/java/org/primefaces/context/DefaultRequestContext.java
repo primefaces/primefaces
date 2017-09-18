@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
@@ -33,6 +34,7 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import org.primefaces.component.datatable.TableState;
+import org.primefaces.expression.ComponentNotFoundException;
 
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.AjaxRequestBuilder;
@@ -45,6 +47,8 @@ import org.primefaces.visit.ResetInputVisitCallback;
 
 public class DefaultRequestContext extends RequestContext {
 
+    private static final Logger LOG = Logger.getLogger(DefaultRequestContext.class.getName());
+    
     private final static String ATTRIBUTES_KEY = "ATTRIBUTES";
     private final static String CALLBACK_PARAMS_KEY = "CALLBACK_PARAMS";
     private final static String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
@@ -133,7 +137,12 @@ public class DefaultRequestContext extends RequestContext {
     public void update(String clientId) {
         // call SEF to validate if a component with the clientId exists
         if (context.isProjectStage(ProjectStage.Development)) {
-            SearchExpressionFacade.resolveClientId(context, context.getViewRoot(), clientId);
+            try {
+                SearchExpressionFacade.resolveClientId(context, context.getViewRoot(), clientId);
+            }
+            catch (ComponentNotFoundException e) {
+                LOG.severe(e.getMessage());
+            }
         }
 
         context.getPartialViewContext().getRenderIds().add(clientId);
@@ -146,7 +155,12 @@ public class DefaultRequestContext extends RequestContext {
         if (context.isProjectStage(ProjectStage.Development)) {
             if (clientIds != null) {
                 for (String clientId : clientIds) {
-                    SearchExpressionFacade.resolveClientId(context, context.getViewRoot(), clientId);
+                    try {
+                        SearchExpressionFacade.resolveClientId(context, context.getViewRoot(), clientId);
+                    }
+                    catch (ComponentNotFoundException e) {
+                        LOG.severe(e.getMessage());
+                    }
                 }
             }
         }
