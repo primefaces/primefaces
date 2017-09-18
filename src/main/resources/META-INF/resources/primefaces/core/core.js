@@ -383,7 +383,7 @@
                 success: callback,
                 dataType: "script",
                 cache: true,
-                async: false
+                async: true
             });
         },
 
@@ -435,7 +435,7 @@
                 el.focus();
             }
         },
-        
+
         monitorDownload: function(start, complete, monitorKey) {
             if(this.cookiesEnabled()) {
                 if(start) {
