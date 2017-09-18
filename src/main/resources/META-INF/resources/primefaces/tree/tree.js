@@ -8,13 +8,15 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.highlight = (this.cfg.highlight === false) ? false : true;
         this.focusedNode = null;
 
-        if(this.cfg.selectionMode) {
-            this.initSelection();
+        if(!this.cfg.disabled) {
+            if(this.cfg.selectionMode) {
+                this.initSelection();
+            }
+
+            this.bindEvents();
+
+            this.jq.data('widget', this);
         }
-
-        this.bindEvents();
-
-        this.jq.data('widget', this);
     },
 
     initSelection: function() {
@@ -429,12 +431,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         this.cfg.rtl = this.jq.hasClass('ui-tree-rtl');
         this.cfg.collapsedIcon = this.cfg.rtl ? 'ui-icon-triangle-1-w' : 'ui-icon-triangle-1-e';
 
-        if(this.cfg.draggable) {
-            this.initDraggable();
-        }
+        if(!this.cfg.disabled) {
+            if(this.cfg.draggable) {
+                this.initDraggable();
+            }
 
-        if(this.cfg.droppable) {
-            this.initDroppable();
+            if(this.cfg.droppable) {
+                this.initDroppable();
+            }
         }
     },
 
@@ -1406,7 +1410,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        if(PrimeFaces.env.isIE()) {
+        if(PrimeFaces.env.isIE() && !this.cfg.disabled) {
             this.drawConnectors();
         }
     },

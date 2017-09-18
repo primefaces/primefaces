@@ -251,6 +251,7 @@ public class TreeRenderer extends CoreRenderer {
                 .attr("droppable", tree.isDroppable(), false)
                 .attr("cache", tree.isCache() && dynamic)
                 .attr("dragdropScope", tree.getDragdropScope(), null)
+                .attr("disabled", tree.isDisabled(), false)
                 .callback("onNodeClick", "function(node, event)", tree.getOnNodeClick());
 
         //selection
@@ -304,6 +305,7 @@ public class TreeRenderer extends CoreRenderer {
         boolean checkbox = selectable && selectionMode.equals("checkbox");
         boolean droppable = tree.isDroppable();
         boolean filter = (tree.getValueExpression("filterBy") != null);
+        boolean isDisabled = tree.isDisabled();
 
         if (root != null && root.getRowKey() == null) {
             root.setRowKey("root");
@@ -318,6 +320,7 @@ public class TreeRenderer extends CoreRenderer {
 
         //container class
         String containerClass = tree.isRTLRendering() ? Tree.CONTAINER_RTL_CLASS : Tree.CONTAINER_CLASS;
+        containerClass = isDisabled ? containerClass + " ui-state-disabled" : containerClass;
         if (tree.getStyleClass() != null) {
             containerClass = containerClass + " " + tree.getStyleClass();
         }
@@ -329,7 +332,10 @@ public class TreeRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", containerClass, null);
         writer.writeAttribute("role", "tree", null);
-        writer.writeAttribute("tabindex", tree.getTabindex(), null);
+        if (!isDisabled) {
+            writer.writeAttribute("tabindex", tree.getTabindex(), null);
+        }
+        
         writer.writeAttribute("aria-multiselectable", String.valueOf(multiselectable), null);
         if (tree.getStyle() != null) {
             writer.writeAttribute("style", tree.getStyle(), null);
@@ -386,6 +392,7 @@ public class TreeRenderer extends CoreRenderer {
         String containerClass = tree.getStyleClass() == null
                 ? Tree.HORIZONTAL_CONTAINER_CLASS
                 : Tree.HORIZONTAL_CONTAINER_CLASS + " " + tree.getStyleClass();
+        containerClass = tree.isDisabled() ? containerClass + " ui-state-disabled" : containerClass;
         if (tree.isShowUnselectableCheckbox()) {
             containerClass = containerClass + " ui-tree-checkbox-all";
         }
@@ -676,7 +683,10 @@ public class TreeRenderer extends CoreRenderer {
 
         writer.startElement("span", null);
         writer.writeAttribute("class", nodeLabelClass, null);
-        writer.writeAttribute("tabindex", "-1", null);
+        if (!tree.isDisabled()) {
+            writer.writeAttribute("tabindex", "-1", null);
+        }
+        
         writer.writeAttribute("role", "treeitem", null);
         writer.writeAttribute("aria-label", uiTreeNode.getAriaLabel(), null);
         uiTreeNode.encodeAll(context);
