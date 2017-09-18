@@ -789,6 +789,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     $this.hinput.val('');
                 }
             }
+            else {
+                var selectedItem = $this.items.filter('[data-item-label="' + value + '"]');
+                if (selectedItem.length) {
+                    selectedItem.click();
+                }
+            }
         });
     },
 
