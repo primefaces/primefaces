@@ -21,7 +21,7 @@
 			<name>columns</name>
 			<required>false</required>
 			<type>java.lang.Integer</type>
-            <defaultValue>0</defaultValue>
+            <ignoreInComponent>true</ignoreInComponent>
             <description>Number of columns of the table.</description>
 		</attribute>
         <attribute>
