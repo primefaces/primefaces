@@ -8,3 +8,15 @@
     public static final String EVEN_ROW_CLASS = "ui-panelgrid-even";
     public static final String ODD_ROW_CLASS = "ui-panelgrid-odd";
     public final static String CELL_CLASS = "ui-panelgrid-cell";
+    
+    public int getColumns() {
+        int defaultColumns = 1;
+        if ("grid".equalsIgnoreCase(getLayout())) {
+            defaultColumns = 0;
+        }
+        return (java.lang.Integer) getStateHelper().eval("columns", defaultColumns);
+    }
+    
+    public void setColumns(int _columns) {
+        getStateHelper().put("columns", _columns);
+    }
