@@ -165,6 +165,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 if(_self.cfg.focusOnSelect) {
                     _self.refocusInput = true;
                     _self.jqEl.focus();
+                    _self.refocusInput = false;
                 }
             }
             else {
