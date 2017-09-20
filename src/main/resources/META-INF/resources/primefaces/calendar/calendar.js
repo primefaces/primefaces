@@ -46,6 +46,11 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             }
 
             this.cfg.beforeShow = function(input, inst) {
+                if(_self.refocusInput) {
+                    _self.refocusInput = false;
+                    return false;
+                }
+                
                 //display on top
                 setTimeout(function() {
                     $('#ui-datepicker-div').css('z-index', ++PrimeFaces.zindex);
@@ -158,6 +163,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 _self.fireDateSelectEvent();
                 
                 if(_self.cfg.focusOnSelect) {
+                    _self.refocusInput = true;
                     _self.jqEl.focus();
                 }
             }
