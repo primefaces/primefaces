@@ -64,5 +64,11 @@
 			<type>java.lang.String</type>
             <description>Sets default zoom value for Pdf Reader.</description>
 		</attribute>
+        <attribute>
+			<name>view</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Sets the view of the displayed page on Pdf Reader.</description>
+		</attribute>
 	</attributes>
 </component>
