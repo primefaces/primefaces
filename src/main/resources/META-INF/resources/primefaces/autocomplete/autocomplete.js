@@ -272,6 +272,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     }
                 }
             }
+            
+            $this.checkMatchedItem = true;
+            
         }).on('keydown.autoComplete', function(e) {
             var keyCode = $.ui.keyCode;
 
@@ -373,6 +376,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         }).on('paste.autoComplete', function() {
 			$this.suppressInput = false;
+            $this.checkMatchedItem = true;
 		});
     },
 
@@ -789,11 +793,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     $this.hinput.val('');
                 }
             }
-            else {
+            
+            if(valid && $this.checkMatchedItem) {   
                 var selectedItem = $this.items.filter('[data-item-label="' + value + '"]');
                 if (selectedItem.length) {
                     selectedItem.click();
                 }
+                $this.checkMatchedItem = false;
             }
         });
     },
