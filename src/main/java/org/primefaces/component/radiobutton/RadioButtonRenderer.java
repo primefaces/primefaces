@@ -22,6 +22,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.selectoneradio.SelectOneRadio;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
 
@@ -81,6 +82,7 @@ public class RadioButtonRenderer extends InputRenderer {
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("class", "ui-radio-clone", null);
         writer.writeAttribute("data-itemindex", button.getItemIndex(), null);
+        writer.writeAttribute("hidden", Constants.EMPTY_STRING, null);
 
         if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
         if (disabled) writer.writeAttribute("disabled", "disabled", null);

@@ -30,6 +30,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectManyMenuRenderer extends SelectManyRenderer {
@@ -112,6 +113,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("name", inputid, null);
         writer.writeAttribute("multiple", "multiple", null);
         writer.writeAttribute("size", "2", null);   //prevent browser to send value when no item is selected
+        writer.writeAttribute("hidden", Constants.EMPTY_STRING, null);
 
         renderDomEvents(context, menu, SelectManyMenu.DOM_EVENTS);
 

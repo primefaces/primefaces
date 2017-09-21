@@ -33,6 +33,7 @@ import org.primefaces.component.radiobutton.RadioButton;
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -316,6 +317,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("value", value, null);
+        writer.writeAttribute("hidden", Constants.EMPTY_STRING, null);
 
         renderDomEvents(context, radio, SelectOneRadio.SUPPORTED_EVENTS);
 
