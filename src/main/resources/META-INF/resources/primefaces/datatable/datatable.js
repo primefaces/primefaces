@@ -2828,7 +2828,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     addGhostRow: function() {
-        var columnsOfFirstRow = this.tbody.find('tr:first').children('td'),
+        var firstRow = this.tbody.find('tr:first');
+        if(firstRow.hasClass('ui-datatable-empty-message')) {
+            return;
+        }
+        
+        var columnsOfFirstRow = firstRow.children('td'),
         dataColumnsCount = columnsOfFirstRow.length,
         columnMarkup = '';
 
