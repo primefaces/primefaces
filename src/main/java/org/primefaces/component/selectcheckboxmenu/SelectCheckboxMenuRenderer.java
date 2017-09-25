@@ -319,7 +319,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("readonly", "readonly", null);
-        writer.writeAttribute("hidden", "true", null);
+        writer.writeAttribute("hidden", "hidden", null);
         if (tabindex != null) {
             writer.writeAttribute("tabindex", tabindex, null);
         }

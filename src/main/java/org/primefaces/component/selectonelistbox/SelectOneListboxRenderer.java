@@ -109,7 +109,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         writer.writeAttribute("id", inputid, "id");
         writer.writeAttribute("name", inputid, null);
         writer.writeAttribute("size", "2", null);   //prevent browser to send value when no item is selected
-        writer.writeAttribute("hidden", "true", null);
+        writer.writeAttribute("hidden", "hidden", null);
 
         renderDomEvents(context, listbox, SelectOneListbox.DOM_EVENTS);
 
