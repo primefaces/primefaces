@@ -33,7 +33,6 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -135,7 +134,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
         //for keyboard accessibility and ScreenReader
-        writer.writeAttribute("hidden", Constants.EMPTY_STRING, null);
+        writer.writeAttribute("hidden", "true", null);
         writer.writeAttribute("role", "combobox", null);
         writer.writeAttribute("aria-haspopup", "true", null);
         writer.writeAttribute("aria-expanded", "false", null);

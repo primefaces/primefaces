@@ -28,7 +28,6 @@ import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -138,7 +137,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         writer.writeAttribute("value", itemValueAsString, null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
         writer.writeAttribute("tabindex", "-1", null);
-        writer.writeAttribute("hidden", Constants.EMPTY_STRING, null);
+        writer.writeAttribute("hidden", "true", null);
 
         if (selected) writer.writeAttribute("checked", "checked", null);
         if (disabled) writer.writeAttribute("disabled", "disabled", null);

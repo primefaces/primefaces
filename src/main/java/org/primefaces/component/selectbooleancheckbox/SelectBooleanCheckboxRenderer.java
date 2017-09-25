@@ -23,7 +23,6 @@ import javax.faces.convert.ConverterException;
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -103,7 +102,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute("hidden", Constants.EMPTY_STRING, null);
+        writer.writeAttribute("hidden", "true", null);
 
         if (labelledBy != null) {
             writer.writeAttribute("aria-labelledby", labelledBy, null);

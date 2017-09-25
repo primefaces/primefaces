@@ -31,7 +31,6 @@ import javax.faces.render.Renderer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
@@ -320,7 +319,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("readonly", "readonly", null);
-        writer.writeAttribute("hidden", Constants.EMPTY_STRING, null);
+        writer.writeAttribute("hidden", "true", null);
         if (tabindex != null) {
             writer.writeAttribute("tabindex", tabindex, null);
         }

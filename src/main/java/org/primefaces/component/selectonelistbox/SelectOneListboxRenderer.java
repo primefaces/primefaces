@@ -29,7 +29,6 @@ import org.primefaces.component.column.Column;
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneListboxRenderer extends SelectOneRenderer {
@@ -110,7 +109,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         writer.writeAttribute("id", inputid, "id");
         writer.writeAttribute("name", inputid, null);
         writer.writeAttribute("size", "2", null);   //prevent browser to send value when no item is selected
-        writer.writeAttribute("hidden", Constants.EMPTY_STRING, null);
+        writer.writeAttribute("hidden", "true", null);
 
         renderDomEvents(context, listbox, SelectOneListbox.DOM_EVENTS);
 
