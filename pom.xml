@@ -366,9 +366,15 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
+                <version>3.0.2</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
+                    <nonFilteredFileExtensions>
+                       <nonFilteredFileExtension>eot</nonFilteredFileExtension>
+                       <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+                       <nonFilteredFileExtension>woff</nonFilteredFileExtension>
+                       <nonFilteredFileExtension>woff2</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
                 </configuration>
             </plugin>
 
