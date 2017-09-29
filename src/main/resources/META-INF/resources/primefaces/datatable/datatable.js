@@ -2107,7 +2107,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     collapseRow: function(row) {
-        row.removeClass('ui-expanded-row').next('.ui-expanded-row-content').remove();
+        row.removeClass('ui-expanded-row').next('.ui-expanded-row-content').hide();
     },
 
     collapseAllRows: function() {
