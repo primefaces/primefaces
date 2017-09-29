@@ -61,6 +61,12 @@
             <type>java.lang.String</type>
             <description>Callback executed when the captcha response expires and the user needs to solve a new captcha.</description>
         </attribute>
+        <attribute>
+            <name>size</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>The size of the widget.</description>
+        </attribute>
 	</attributes>
     <resources>
 		<resource>
