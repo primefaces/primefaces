@@ -165,6 +165,12 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 if(_self.cfg.focusOnSelect) {
                     _self.refocusInput = true;
                     _self.jqEl.focus();
+                    if(!(_self.cfg.showOn && _self.cfg.showOn === 'button')) {
+                        _self.jqEl.off('click.calendar').on('click.calendar', function() {
+                            $(this).datepicker("show");
+                        });
+                    }
+                    
                     setTimeout(function() {
                         _self.refocusInput = false;
                     }, 10);
