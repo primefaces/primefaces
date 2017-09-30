@@ -53,6 +53,7 @@ public class FieldsetRenderer extends CoreRenderer {
         String clientId = fieldset.getClientId(context);
         String widgetVar = fieldset.resolveWidgetVar();
         boolean toggleable = fieldset.isToggleable();
+        String title = fieldset.getTitle();
 
         String styleClass = toggleable ? Fieldset.TOGGLEABLE_FIELDSET_CLASS : Fieldset.FIELDSET_CLASS;
         if (fieldset.isCollapsed()) {
@@ -63,6 +64,9 @@ public class FieldsetRenderer extends CoreRenderer {
         }
 
         writer.startElement("fieldset", fieldset);
+        if (title != null) {
+            writer.writeAttribute("title", fieldset.getTitle(), null);
+        }
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (fieldset.getStyle() != null) {

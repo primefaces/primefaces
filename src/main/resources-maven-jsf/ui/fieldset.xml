@@ -80,6 +80,12 @@
             <defaultValue>true</defaultValue>
             <description>Defines whether value would be escaped or not, defaults to true.</description>
 		</attribute>
+		<attribute>
+			<name>title</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+		    <description>Advisory tooltip information.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>
