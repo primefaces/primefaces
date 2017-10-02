@@ -56,6 +56,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.bindToggleRowGroupEvents();
         }
 
+        this.updateEmptyColspan();
         this.renderDeferred();
     },
 
@@ -3543,8 +3544,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
            e.preventDefault();
         });
-    }
+    },
 
+    updateEmptyColspan: function() {
+        var emptyRow = this.tbody.children('tr:first');
+        if(emptyRow && emptyRow.hasClass('ui-datatable-empty-message')) {
+            emptyRow.children('td').attr('colspan', this.thead.find('th:visible').length);
+        }
+    }
+    
 });
 
 /**
