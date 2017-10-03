@@ -34,7 +34,7 @@ public class SearchExpressionUtils {
         return (hints & hint) != 0;
     }
     
-     // used by p:resolveClientIds
+     // used by p:resolveClientId
     public String resolveClientId(UIComponent source, String expression) {
         return SearchExpressionFacade.resolveClientId(
                 FacesContext.getCurrentInstance(),
