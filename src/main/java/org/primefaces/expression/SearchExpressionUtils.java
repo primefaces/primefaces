@@ -15,9 +15,11 @@
  */
 package org.primefaces.expression;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 public class SearchExpressionUtils {
@@ -35,7 +37,7 @@ public class SearchExpressionUtils {
     }
     
      // used by p:resolveClientId
-    public String resolveClientId(UIComponent source, String expression) {
+    public String resolveClientId(String expression, UIComponent source) {
         return SearchExpressionFacade.resolveClientId(
                 FacesContext.getCurrentInstance(),
                 source,
@@ -43,10 +45,25 @@ public class SearchExpressionUtils {
     }
     
     // used by p:resolveClientIds
-    public String resolveClientIds(UIComponent source, String expressions) {
+    public String resolveClientIds(String expressions, UIComponent source) {
         return SearchExpressionFacade.resolveClientIds(
                 FacesContext.getCurrentInstance(),
                 source,
                 expressions);
+    }
+    
+    // used by p:resolveWidgetVar
+    public static String resolveWidgetVar(String expression, UIComponent component) {
+        UIComponent resolvedComponent = SearchExpressionFacade.resolveComponent(
+                FacesContext.getCurrentInstance(),
+                component,
+                expression);
+
+        if (resolvedComponent instanceof Widget) {
+            return "PF('" + ((Widget) resolvedComponent).resolveWidgetVar() + "')";
+        }
+        else {
+            throw new FacesException("Component with clientId " + resolvedComponent.getClientId() + " is not a Widget");
+        }
     }
 }

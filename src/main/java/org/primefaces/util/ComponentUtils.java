@@ -43,6 +43,7 @@ import org.primefaces.component.api.Widget;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 
 public class ComponentUtils {
 
@@ -176,22 +177,14 @@ public class ComponentUtils {
         return selector.replaceAll(":", "\\\\\\\\:");
     }
 
+    @Deprecated
     public static String resolveWidgetVar(String expression) {
         return resolveWidgetVar(expression, FacesContext.getCurrentInstance().getViewRoot());
     }
 
+    @Deprecated
     public static String resolveWidgetVar(String expression, UIComponent component) {
-        UIComponent resolvedComponent = SearchExpressionFacade.resolveComponent(
-                FacesContext.getCurrentInstance(),
-                component,
-                expression);
-
-        if (resolvedComponent instanceof Widget) {
-            return "PF('" + ((Widget) resolvedComponent).resolveWidgetVar() + "')";
-        }
-        else {
-            throw new FacesException("Component with clientId " + resolvedComponent.getClientId() + " is not a Widget");
-        }
+        return SearchExpressionUtils.resolveWidgetVar(expression, component);
     }
 
     
