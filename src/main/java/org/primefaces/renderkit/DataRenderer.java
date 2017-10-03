@@ -18,9 +18,11 @@ package org.primefaces.renderkit;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIData;
 import org.primefaces.component.paginator.CurrentPageReportRenderer;
@@ -94,6 +96,8 @@ public class DataRenderer extends CoreRenderer {
             else {
                 UIComponent elementFacet = pageable.getFacet(element);
                 if (elementFacet != null) {
+                    String facetName = element.replaceAll("[\\W+]", "_").toLowerCase();
+                    elementFacet.setId(pageable.getId() + facetName + position);
                     elementFacet.encodeAll(context);
                 }
                 else {
