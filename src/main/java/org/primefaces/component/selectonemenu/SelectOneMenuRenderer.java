@@ -134,6 +134,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
         //for keyboard accessibility and ScreenReader
+        writer.writeAttribute("hidden", "hidden", null);
         writer.writeAttribute("role", "combobox", null);
         writer.writeAttribute("aria-haspopup", "true", null);
         writer.writeAttribute("aria-expanded", "false", null);

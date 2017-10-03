@@ -316,6 +316,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("value", value, null);
+        writer.writeAttribute("hidden", "hidden", null);
 
         renderDomEvents(context, radio, SelectOneRadio.SUPPORTED_EVENTS);
 

@@ -81,6 +81,7 @@ public class CheckboxRenderer extends InputRenderer {
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("class", "ui-chkbox-clone", null);
         writer.writeAttribute("data-itemindex", checkbox.getItemIndex(), null);
+        writer.writeAttribute("hidden", "hidden", null);
 
         if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
         if (disabled) writer.writeAttribute("disabled", "disabled", null);

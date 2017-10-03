@@ -121,6 +121,7 @@ public class InputSwitchRenderer extends InputRenderer {
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
+        writer.writeAttribute("hidden", "hidden", null);
 
         if (checked) writer.writeAttribute("checked", "checked", null);
         if (disabled) writer.writeAttribute("disabled", "disabled", null);
