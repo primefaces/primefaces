@@ -54,7 +54,7 @@ About the code you contribute
     codebase should not render it unstable in any way.
   - All your code should be easy to read and understand by a human.
   - There should be no compilation warnings at all.
-  - Checkstyle must be pass without errors or warnings. Currently this is embedded into the maven build.
+  - Checkstyle must pass without errors or warnings. Currently this is embedded into the maven build.
 
 ### Detailed Java code quality standards:
   
