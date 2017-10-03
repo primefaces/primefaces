@@ -314,24 +314,22 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     nodeRightClick: function(event, nodeContent) {
         PrimeFaces.clearSelection();
 
-        if($(event.target).is(':not(.ui-tree-toggler)')) {
-            var node = nodeContent.parent(),
-            selectable = nodeContent.hasClass('ui-tree-selectable');
+        var node = nodeContent.parent(),
+        selectable = nodeContent.hasClass('ui-tree-selectable');
 
-            if(selectable && this.cfg.selectionMode) {
-                var selected = this.isNodeSelected(node);
-                if(!selected) {
-                    if(this.isCheckboxSelection()) {
-                        this.toggleCheckboxNode(node);
-                    }
-                    else {
-                        this.unselectAllNodes();
-                        this.selectNode(node, true);
-                    }
+        if(selectable && this.cfg.selectionMode) {
+            var selected = this.isNodeSelected(node);
+            if(!selected) {
+                if(this.isCheckboxSelection()) {
+                    this.toggleCheckboxNode(node);
                 }
-
-                this.fireContextMenuEvent(node);
+                else {
+                    this.unselectAllNodes();
+                    this.selectNode(node, true);
+                }
             }
+
+            this.fireContextMenuEvent(node);
         }
     },
 
