@@ -2042,6 +2042,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     loadExpandedRowContent: function(row) {
+        // To check whether or not any hidden expansion content exists to avoid reloading multiple duplicate nodes in DOM
+        var expansionContent = row.next('.ui-expanded-row-content');
+        var reloadContentThroughAjax = true;
+        if(expansionContent.length > 0) {
+            reloadContentThroughAjax = false;
+            row.addClass('ui-expanded-row');
+            expansionContent.show();
+        }
+        
         var $this = this,
         rowIndex = this.getRowMeta(row).index,
         options = {
@@ -2054,7 +2063,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                      {name: this.id + '_encodeFeature', value: true},
                      {name: this.id + '_skipChildren', value: true}],
             onsuccess: function(responseXML, status, xhr) {
-                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                if(reloadContentThroughAjax) {
+                    PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
                             if(content && $.trim(content).length) {
@@ -2063,6 +2073,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             }
                         }
                     });
+                }
 
                 return true;
             },
@@ -2107,6 +2118,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     collapseRow: function(row) {
+        // #942: need to use "hide" instead of "remove" to avoid incorrect form mapping when a row is collapsed
         row.removeClass('ui-expanded-row').next('.ui-expanded-row-content').hide();
     },
 
