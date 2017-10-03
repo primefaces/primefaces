@@ -15,6 +15,7 @@
  */
 package org.primefaces.expression;
 
+import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import org.primefaces.util.ComponentUtils;
@@ -31,5 +32,21 @@ public class SearchExpressionUtils {
 
     public static boolean isHintSet(int hints, int hint) {
         return (hints & hint) != 0;
+    }
+    
+     // used by p:resolveClientIds
+    public String resolveClientId(UIComponent source, String expression) {
+        return SearchExpressionFacade.resolveClientId(
+                FacesContext.getCurrentInstance(),
+                source,
+                expression);
+    }
+    
+    // used by p:resolveClientIds
+    public String resolveClientIds(UIComponent source, String expressions) {
+        return SearchExpressionFacade.resolveClientIds(
+                FacesContext.getCurrentInstance(),
+                source,
+                expressions);
     }
 }

@@ -3,6 +3,17 @@
 		<function-class>org.primefaces.util.ComponentUtils</function-class>
 		<function-signature>java.lang.String findComponentClientId(java.lang.String)</function-signature>
 	</function>
+        
+	<function>
+		<function-name>resolveClientId</function-name>
+		<function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
+		<function-signature>java.lang.String resolveClientId(javax.faces.component.UIComponent, java.lang.String)</function-signature>
+	</function>
+	<function>
+		<function-name>resolveClientIds</function-name>
+		<function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
+		<function-signature>java.lang.String resolveClientIds(javax.faces.component.UIComponent, java.lang.String)</function-signature>
+	</function>
 
     <function>
 		<function-name>widgetVar</function-name>
