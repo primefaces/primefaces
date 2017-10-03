@@ -503,6 +503,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 $this.search(value);
             }, delay);
         }
+        else if(value.length === 0) {
+            if($this.timeout) {
+                $this.deleteTimeout();
+            }
+        }
     },
 
     showItemtip: function(item) {
