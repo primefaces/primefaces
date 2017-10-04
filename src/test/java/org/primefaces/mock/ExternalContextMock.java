@@ -200,5 +200,10 @@ public class ExternalContextMock extends ExternalContext {
     public void redirect(String url) throws IOException {
         
     }
+
+    @Override
+    public String encodeWebsocketURL(String url) {
+        return url;
+    }
     
 }
