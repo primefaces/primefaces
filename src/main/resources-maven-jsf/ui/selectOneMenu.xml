@@ -202,13 +202,6 @@
             <defaultValue>false</defaultValue>
             <description>Defines if lazy loading is enabled for the element. If the value is "true", the overlay is not rendered on window load to improve performance.</description>
 		</attribute>
-        <attribute>
-            <name>customContent</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>Defines if custom content is displayed in the overlay for the element. If the value is "true", custom content is displayed in the overlay using p:column objects.</description>
-        </attribute>
 	</attributes>
     <resources>
         <resource>
