@@ -1029,7 +1029,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             var header = $(this);
             header.attr('id', header.attr('id') + '_clone');
         });
-        this.theadClone.removeAttr('id').addClass('ui-treetable-scrollable-theadclone').height(0).prependTo(this.bodyTable);
+        this.theadClone.removeAttr('id').addClass('ui-treetable-scrollable-theadclone').hide().prependTo(this.bodyTable);
     },
     
      fixColumnWidths: function() {
