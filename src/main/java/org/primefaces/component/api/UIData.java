@@ -65,6 +65,7 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.model.CollectionDataModel;
+import org.primefaces.model.IterableDataModel;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.SharedStringBuilder;
 
@@ -778,6 +779,12 @@ public class UIData extends javax.faces.component.UIData {
         }
         else if (current instanceof Collection) {
             setDataModel(new CollectionDataModel((Collection) current));
+        }
+        else if (current instanceof Iterable) {
+            setDataModel(new IterableDataModel((Iterable<?>) current));
+        }
+        else if (current instanceof Map) {
+            setDataModel(new IterableDataModel(((Map<?, ?>) current).entrySet()));
         }
         else {
             setDataModel(new ScalarDataModel(current));

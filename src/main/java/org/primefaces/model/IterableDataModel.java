@@ -15,45 +15,47 @@
  */
 package org.primefaces.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import javax.faces.model.DataModel;
 import javax.faces.model.DataModelEvent;
 import javax.faces.model.DataModelListener;
 
-public class CollectionDataModel<E> extends DataModel<E> {
+public class IterableDataModel<E> extends DataModel<E> {
 
     private int index = -1;
-    private Collection<E> wrapped;
-    private E[] wrappedArray;
+    private Iterable<E> wrapped;
+    private List<E> wrappedList;
 
-    public CollectionDataModel() {
+    public IterableDataModel() {
         this(null);
     }
 
-    public CollectionDataModel(Collection<E> collection) {
-        super();
-        setWrappedData(collection);
+    public IterableDataModel(Iterable<E> iterable) {
+        setWrappedData(iterable);
     }
 
     @Override
     public int getRowCount() {
-        if (wrappedArray == null) {
+        if (wrappedList == null) {
             return -1;
         }
 
-        return wrappedArray.length;
+        return wrappedList.size();
     }
 
     @Override
     public E getRowData() {
-        if (wrappedArray == null) {
+        if (wrappedList == null) {
             return null;
         }
-        else if (!isRowAvailable()) {
-            throw new IllegalArgumentException("No next row available!");
+        if (!isRowAvailable()) {
+            throw new IllegalArgumentException();
         }
 
-        return wrappedArray[index];
+        return wrappedList.get(index);
     }
 
     @Override
@@ -70,20 +72,20 @@ public class CollectionDataModel<E> extends DataModel<E> {
         int oldIndex = index;
         index = rowIndex;
 
-        if (wrappedArray == null) {
+        if (wrappedList == null) {
             return;
         }
 
-        DataModelListener[] listeners = getDataModelListeners();
-        if (oldIndex != index && listeners != null) {
+        DataModelListener[] dataModelListeners = getDataModelListeners();
+        if (oldIndex != index && dataModelListeners != null) {
 
             Object rowData = null;
             if (isRowAvailable()) {
                 rowData = getRowData();
             }
-
+            
             DataModelEvent event = new DataModelEvent(this, index, rowData);
-            for (DataModelListener listener : listeners) {
+            for (DataModelListener listener : dataModelListeners) {
                 if (listener != null) {
                     listener.rowSelected(event);
                 }
@@ -100,23 +102,34 @@ public class CollectionDataModel<E> extends DataModel<E> {
     public void setWrappedData(Object data) {
         if (data == null) {
             wrapped = null;
-            wrappedArray = null;
+            wrappedList = null;
             setRowIndex(-1);
         }
         else {
-            wrapped = (Collection<E>) data;
-            wrappedArray = (E[]) new Object[wrapped.size()];
-            wrapped.toArray(wrappedArray);
+            wrapped = (Iterable<E>) data;
+            if (wrapped instanceof List) {
+                wrappedList = (List<E>) wrapped;
+            }
+            else if (wrapped instanceof Collection) {
+                wrappedList = new ArrayList((Collection<E>) wrapped);
+            }
+            else {
+                wrappedList = new ArrayList();
+                Iterator<E> iterator = wrapped.iterator();
+                while (iterator.hasNext()) {
+                    wrappedList.add(iterator.next());
+                }
+            }
             setRowIndex(0);
         }
     }
 
     @Override
     public boolean isRowAvailable() {
-        if (wrappedArray == null) {
+        if (wrappedList == null) {
             return false;
         }
-        else if (index >= 0 && index < wrappedArray.length) {
+        else if (index >= 0 && index < wrappedList.size()) {
             return true;
         }
 
