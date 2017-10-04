@@ -16,9 +16,6 @@
 package org.primefaces.renderkit;
 
 import java.io.IOException;
-import java.util.Map;
-import javax.el.ValueExpression;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.util.HTML;
@@ -78,32 +75,4 @@ public class RendererUtils {
         writer.endElement("div");
     }
 
-    public static void renderPassThroughAttributes(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        Map<String, Object> passthroughAttributes = component.getPassThroughAttributes(false);
-
-        if (passthroughAttributes != null && !passthroughAttributes.isEmpty()) {
-            for (Map.Entry<String, Object> attribute : passthroughAttributes.entrySet()) {
-
-                Object attributeValue = attribute.getValue();
-                if (attributeValue != null) {
-                    String value = null;
-
-                    if (attributeValue instanceof ValueExpression) {
-                        Object expressionValue = ((ValueExpression) attributeValue).getValue(context.getELContext());
-                        if (expressionValue != null) {
-                            value = expressionValue.toString();
-                        }
-                    }
-                    else {
-                        value = attributeValue.toString();
-                    }
-
-                    if (value != null) {
-                        writer.writeAttribute(attribute.getKey(), value, null);
-                    }
-                }
-            }
-        }
-    }
 }
