@@ -2420,6 +2420,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     saveCell: function(cell) {
         var inputs = cell.find('div.ui-cell-editor-input :input:enabled'),
         changed = false,
+        valid = cell.data('valid'),
         $this = this;
 
         if(cell.data('multi-edit')) {
@@ -2435,7 +2436,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             changed = (inputs.eq(0).val() != cell.data('old-value'));
         }
 
-        if(changed)
+        if(changed || !valid)
             $this.doCellEditRequest(cell);
         else
             $this.viewMode(cell);
@@ -2494,10 +2495,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 return true;
             },
             oncomplete: function(xhr, status, args) {
-                if(args.validationFailed)
+                if(args.validationFailed){
+                    cell.data('valid', false);
                     cell.addClass('ui-state-error');
-                else
+                }
+                else{
+                    cell.data('valid', true);
                     $this.viewMode(cell);
+                }
 
                 if($this.cfg.clientCache) {
                     $this.clearCacheMap();
