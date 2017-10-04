@@ -31,7 +31,7 @@ public class Jsf23WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
     
     @Override
     public boolean isResolverForKeyword(SearchExpressionContext searchExpressionContext, String keyword) {
-        return "widgetVar".equals(keyword);
+        return keyword != null && keyword.startsWith("widgetVar(");
     }
  
     @Override
