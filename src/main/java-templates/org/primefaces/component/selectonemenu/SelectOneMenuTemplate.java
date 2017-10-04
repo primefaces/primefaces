@@ -48,7 +48,7 @@ import javax.faces.render.Renderer;
         return "valueChange";    
     }
 
-    public List<Column> getColums() {
+    public List<Column> getColumns() {
         List<Column> columns = new ArrayList<Column>();
         
         for(UIComponent kid : this.getChildren()) {
