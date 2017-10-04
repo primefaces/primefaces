@@ -30,7 +30,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     },
 
     bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
-        var nodeContentSelector = targetId + ' .ui-tree-selectable',
+        var nodeContentSelector = targetId + ' .ui-tree-selectable' + ' > span:not(.ui-tree-toggler)',
         nodeEvent = cfg.nodeType ? cfg.event + '.treenode.' + cfg.nodeType : cfg.event + '.treenode',
         containerEvent = cfg.event + '.tree';
 
