@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,8 @@ import org.primefaces.util.Constants;
 
 public class DefaultApplicationContext extends ApplicationContext {
 
-	private PrimeConfiguration config;
-	private ValidatorFactory validatorFactory;
+    private PrimeConfiguration config;
+    private ValidatorFactory validatorFactory;
     private Validator validator;
     private CacheProvider cacheProvider;
     private Map<Class<?>, Map<String, Object>> enumCacheMap;
@@ -40,23 +40,23 @@ public class DefaultApplicationContext extends ApplicationContext {
     public DefaultApplicationContext(FacesContext context) {
         this(context, new PrimeConfiguration(context));
     }
-    
+
     public DefaultApplicationContext(FacesContext context, PrimeConfiguration config) {
-    	this.config = config;
-    	
-    	if (this.config.isBeanValidationAvailable()) {
-    	    this.validatorFactory = Validation.buildDefaultValidatorFactory();
+        this.config = config;
+
+        if (this.config.isBeanValidationAvailable()) {
+            this.validatorFactory = Validation.buildDefaultValidatorFactory();
             this.validator = validatorFactory.getValidator();
-    	}
-        
+        }
+
         enumCacheMap = new ConcurrentHashMap<Class<?>, Map<String, Object>>();
         constantsCacheMap = new ConcurrentHashMap<Class<?>, Map<String, Object>>();
     }
 
-	@Override
-	public PrimeConfiguration getConfig() {
-		return config;
-	}
+    @Override
+    public PrimeConfiguration getConfig() {
+        return config;
+    }
 
     @Override
     public ValidatorFactory getValidatorFactory() {
@@ -65,33 +65,33 @@ public class DefaultApplicationContext extends ApplicationContext {
 
     @Override
     public CacheProvider getCacheProvider() {
-        
+
         if (cacheProvider == null) {
             initCacheProvider();
         }
-        
+
         return cacheProvider;
     }
-    
+
     /**
      * Lazy init cache provider. Not required if no cache component is used in the application.
      */
     protected synchronized void initCacheProvider() {
         if (cacheProvider == null) {
             String cacheProviderConfigValue = FacesContext.getCurrentInstance().getExternalContext().getInitParameter(Constants.ContextParams.CACHE_PROVIDER);
-            if(cacheProviderConfigValue == null) {
+            if (cacheProviderConfigValue == null) {
                 cacheProvider = new DefaultCacheProvider();
             }
             else {
                 try {
                     cacheProvider = (CacheProvider) Class.forName(cacheProviderConfigValue).newInstance();
-                } 
+                }
                 catch (ClassNotFoundException ex) {
                     throw new FacesException(ex);
-                } 
+                }
                 catch (InstantiationException ex) {
                     throw new FacesException(ex);
-                } 
+                }
                 catch (IllegalAccessException ex) {
                     throw new FacesException(ex);
                 }

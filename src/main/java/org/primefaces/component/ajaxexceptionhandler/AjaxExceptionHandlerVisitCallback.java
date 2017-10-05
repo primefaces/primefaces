@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,16 +30,17 @@ import org.primefaces.util.ComponentUtils;
 public class AjaxExceptionHandlerVisitCallback implements VisitCallback {
 
     private final Throwable throwable;
-    
+
     private Map<String, AjaxExceptionHandler> handlers;
 
     public AjaxExceptionHandlerVisitCallback(Throwable throwable) {
         this.throwable = throwable;
-        
+
         this.handlers = new HashMap<String, AjaxExceptionHandler>();
     }
-    
-    public VisitResult visit(VisitContext context, UIComponent target) {;
+
+    @Override
+    public VisitResult visit(VisitContext context, UIComponent target) {
 
         if (target instanceof AjaxExceptionHandler) {
             AjaxExceptionHandler currentHandler = (AjaxExceptionHandler) target;
@@ -49,7 +50,7 @@ public class AjaxExceptionHandlerVisitCallback implements VisitCallback {
             }
             else {
                 handlers.put(currentHandler.getType(), currentHandler);
-                
+
                 // exact type matched - we don't need to search more generic handlers
                 if (throwable.getClass().getName().equals(currentHandler.getType())) {
                     return VisitResult.COMPLETE;
@@ -59,10 +60,10 @@ public class AjaxExceptionHandlerVisitCallback implements VisitCallback {
         else if (target instanceof UIData) {
             return VisitResult.REJECT;
         }
-        
+
         return VisitResult.ACCEPT;
     }
-    
+
     public Map<String, AjaxExceptionHandler> getHandlers() {
         return handlers;
     }

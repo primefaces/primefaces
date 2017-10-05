@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.primefaces.model.timeline;
 
 import java.io.Serializable;
@@ -367,13 +366,14 @@ public class TimelineModel implements Serializable {
         for (TimelineEvent e : orderedEvents) {
             if (endDate == null && e.getEndDate() != null) {
                 endDate = e.getEndDate();
-            } else if (endDate != null && e.getEndDate() != null && endDate.before(e.getEndDate())) {
+            }
+            else if (endDate != null && e.getEndDate() != null && endDate.before(e.getEndDate())) {
                 endDate = e.getEndDate();
             }
         }
 
-        TimelineEvent mergedEvent =
-                new TimelineEvent(event.getData(), orderedEvents.first().getStartDate(), endDate, event.isEditable(),
+        TimelineEvent mergedEvent
+                = new TimelineEvent(event.getData(), orderedEvents.first().getStartDate(), endDate, event.isEditable(),
                         event.getGroup(), event.getStyleClass());
 
         // merge...
@@ -468,22 +468,24 @@ public class TimelineModel implements Serializable {
     private boolean isOverlapping(TimelineEvent event1, TimelineEvent event2) {
         if (event1.getEndDate() == null && event2.getEndDate() == null) {
             return event1.getStartDate().equals(event2.getStartDate());
-        } else if (event1.getEndDate() == null && event2.getEndDate() != null) {
+        }
+        else if (event1.getEndDate() == null && event2.getEndDate() != null) {
             return (event1.getStartDate().equals(event2.getStartDate()) || event1.getStartDate().equals(event2.getEndDate())
                     || (event1.getStartDate().after(event2.getStartDate()) && event1.getStartDate().before(event2.getEndDate())));
-        } else if (event1.getEndDate() != null && event2.getEndDate() == null) {
+        }
+        else if (event1.getEndDate() != null && event2.getEndDate() == null) {
             return (event2.getStartDate().equals(event1.getStartDate()) || event2.getStartDate().equals(event1.getEndDate())
                     || (event2.getStartDate().after(event1.getStartDate()) && event2.getStartDate().before(event1.getEndDate())));
-        } else {
+        }
+        else {
             // check with ODER if
             // 1. start date of the event 1 is within the event 2
             // 2. end date of the event 1 is within the event 2
             // 3. event 2 is completely strong within the event 1
             return (event1.getStartDate().equals(event2.getStartDate()) || event1.getStartDate().equals(event2.getEndDate())
                     || (event1.getStartDate().after(event2.getStartDate()) && event1.getStartDate().before(event2.getEndDate())))
-                    ||
-                    (event1.getEndDate().equals(event2.getStartDate()) || event1.getEndDate().equals(event2.getEndDate())
-                            || (event1.getEndDate().after(event2.getStartDate()) && event1.getEndDate().before(event2.getEndDate())))
+                    || (event1.getEndDate().equals(event2.getStartDate()) || event1.getEndDate().equals(event2.getEndDate())
+                    || (event1.getEndDate().after(event2.getStartDate()) && event1.getEndDate().before(event2.getEndDate())))
                     || (event1.getStartDate().before(event2.getStartDate()) && event1.getEndDate().after(event2.getEndDate()));
         }
     }

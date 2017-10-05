@@ -108,6 +108,12 @@
 			<defaultValue>true</defaultValue>
             <description>Defines if severity icons would be displayed. Default is true.</description>
 		</attribute>
+        <attribute>
+			<name>forType</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description>Type of the "for" attribute. Valid values are "key" and "expression".</description>
+		</attribute>
 	</attributes>
 	<resources>
 		<resource>

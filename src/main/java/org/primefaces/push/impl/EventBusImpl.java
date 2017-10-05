@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,9 +27,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class EventBusImpl implements EventBus {
-    
-    private final MetaBroadcaster metaBroadcaster; 
-    
+
+    private final MetaBroadcaster metaBroadcaster;
+
     public EventBusImpl(MetaBroadcaster metaBroadcaster) {
         this.metaBroadcaster = metaBroadcaster;
     }
@@ -42,7 +42,9 @@ public class EventBusImpl implements EventBus {
 
     //@Override
     public EventBus publish(String path, Object o) {
-        if (!path.startsWith("/")) path = "/" + path;
+        if (!path.startsWith("/")) {
+            path = "/" + path;
+        }
 
         metaBroadcaster.broadcastTo(path, o);
         return this;
@@ -54,7 +56,8 @@ public class EventBusImpl implements EventBus {
             public void onComplete(Broadcaster b) {
                 try {
                     r.completed(b.getID());
-                } finally {
+                }
+                finally {
                     metaBroadcaster.removeBroadcasterListener(this);
                 }
             }

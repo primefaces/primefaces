@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,13 +32,18 @@ public class CellEditorRenderer extends CoreRenderer {
         boolean isDataTable = (parentTable != null && parentTable instanceof DataTable);
         boolean isLazyCellEdit = false;
         
-        if(isDataTable) {
-            DataTable dt = (DataTable)parentTable;
+        if (editor.isDisabled()) {
+            editor.getFacet("output").encodeAll(context);
+            return;
+        }
+
+        if (isDataTable) {
+            DataTable dt = (DataTable) parentTable;
             String editMode = dt.getEditMode();
             String cellEditMode = dt.getCellEditMode();
             isLazyCellEdit = (editMode != null && editMode.equals("cell") && cellEditMode.equals("lazy"));
         }
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("id", component.getClientId(context), null);
         writer.writeAttribute("class", DataTable.CELL_EDITOR_CLASS, null);
@@ -49,9 +54,9 @@ public class CellEditorRenderer extends CoreRenderer {
         writer.endElement("div");
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", DataTable.CELL_EDITOR_INPUT_CLASS, null);  
-        
-        if(!isLazyCellEdit) {
+        writer.writeAttribute("class", DataTable.CELL_EDITOR_INPUT_CLASS, null);
+
+        if (!isLazyCellEdit) {
             editor.getFacet("input").encodeAll(context);
         }
         writer.endElement("div");
@@ -60,13 +65,13 @@ public class CellEditorRenderer extends CoreRenderer {
     }
 
     @Override
-	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-		//Rendering happens on encodeEnd
-	}
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Rendering happens on encodeEnd
+    }
 
     @Override
-	public boolean getRendersChildren() {
-		return true;
-	}
+    public boolean getRendersChildren() {
+        return true;
+    }
 
 }

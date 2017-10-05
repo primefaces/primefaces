@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,19 +25,19 @@ import org.primefaces.facelets.MethodRule;
 
 public class WizardHandler extends ComponentHandler {
 
-	private static final MetaRule FLOW_LISTENER =
-			new MethodRule("flowListener", String.class, new Class[]{FlowEvent.class});
-	
-	public WizardHandler(ComponentConfig config) {
-		super(config);
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected MetaRuleset createMetaRuleset(Class type) { 
-		MetaRuleset metaRuleset = super.createMetaRuleset(type);
+    private static final MetaRule FLOW_LISTENER
+            = new MethodRule("flowListener", String.class, new Class[]{FlowEvent.class});
 
-		metaRuleset.addRule(FLOW_LISTENER);
-		
-		return metaRuleset;
-	} 
+    public WizardHandler(ComponentConfig config) {
+        super(config);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected MetaRuleset createMetaRuleset(Class type) {
+        MetaRuleset metaRuleset = super.createMetaRuleset(type);
+
+        metaRuleset.addRule(FLOW_LISTENER);
+
+        return metaRuleset;
+    }
 }

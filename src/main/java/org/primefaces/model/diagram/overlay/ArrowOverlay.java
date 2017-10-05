@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,23 +18,23 @@ package org.primefaces.model.diagram.overlay;
 import java.io.Serializable;
 
 public class ArrowOverlay implements Overlay, Serializable {
-    
+
     private int width = 20;
-    
+
     private int length = 20;
-    
+
     private double location = 0.5;
-    
+
     private int direction = 1;
-    
+
     private double foldback = 0.623;
-    
+
     private String paintStyle;
 
     public ArrowOverlay() {
-        
+
     }
-    
+
     public ArrowOverlay(int width, int length, double location, int direction) {
         this.width = width;
         this.length = length;
@@ -96,15 +96,15 @@ public class ArrowOverlay implements Overlay, Serializable {
 
     public String toJS(StringBuilder sb) {
         sb.append("['Arrow',{location:").append(location);
-        
-        if(width != 20) sb.append(",width:").append(width);
-        if(length != 20) sb.append(",length:").append(length);
-        if(direction != 1) sb.append(",direction:").append(direction);
-        if(foldback != 0.623) sb.append(",foldback:").append(foldback);
-        if(paintStyle != null) sb.append(",paintStyle:{").append(paintStyle).append("}");
-        
+
+        if (width != 20) sb.append(",width:").append(width);
+        if (length != 20) sb.append(",length:").append(length);
+        if (direction != 1) sb.append(",direction:").append(direction);
+        if (foldback != 0.623) sb.append(",foldback:").append(foldback);
+        if (paintStyle != null) sb.append(",paintStyle:{").append(paintStyle).append("}");
+
         sb.append("}]");
-        
+
         return sb.toString();
-    }    
+    }
 }

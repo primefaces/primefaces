@@ -22,8 +22,9 @@ PrimeFaces.widget.Captcha = PrimeFaces.widget.BaseWidget.extend({
             'sitekey' : this.cfg.sitekey,
             'tabindex': this.cfg.tabindex,
             'theme': this.cfg.theme,
-            'callback': new Function($this.cfg.callback),
-            'expired-callback': new Function($this.cfg.expired) 
+            'callback': $this.cfg.callback,
+            'expired-callback': $this.cfg.expired,
+            'size': this.cfg.size 
         });
         
         window[this.cfg.widgetVar + '_initCallback'] = undefined;

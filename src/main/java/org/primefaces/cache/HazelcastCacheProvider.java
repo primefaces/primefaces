@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,44 +23,44 @@ import com.hazelcast.core.IMap;
 public class HazelcastCacheProvider implements CacheProvider {
 
     private HazelcastInstance hazelcastInstance;
-    
+
     public HazelcastCacheProvider() {
         Config config = new Config();
         hazelcastInstance = Hazelcast.newHazelcastInstance(config);
     }
-    
+
     public Object get(String region, String key) {
-        IMap<String,Object> cacheRegion = getRegion(region);
-        
+        IMap<String, Object> cacheRegion = getRegion(region);
+
         return cacheRegion.get(key);
     }
 
     public void put(String region, String key, Object object) {
-        IMap<String,Object> cacheRegion = getRegion(region);
-        
+        IMap<String, Object> cacheRegion = getRegion(region);
+
         cacheRegion.put(key, object);
     }
 
     public void remove(String region, String key) {
-        IMap<String,Object> cacheRegion = getRegion(region);
-        
+        IMap<String, Object> cacheRegion = getRegion(region);
+
         cacheRegion.remove(key);
     }
 
     public void clear() {
-        
+
     }
-    
-    protected IMap<String,Object> getRegion(String name) {
-        IMap<String,Object> region = getHazelcastInstance().getMap(name);   
-        
+
+    protected IMap<String, Object> getRegion(String name) {
+        IMap<String, Object> region = getHazelcastInstance().getMap(name);
+
         return region;
     }
 
     public HazelcastInstance getHazelcastInstance() {
         return hazelcastInstance;
     }
-    
+
     public void setHazelcastInstance(HazelcastInstance hazelcastInstance) {
         this.hazelcastInstance = hazelcastInstance;
     }

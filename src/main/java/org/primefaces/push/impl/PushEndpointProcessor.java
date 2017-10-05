@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import static org.atmosphere.annotation.AnnotationUtil.broadcaster;
 @AtmosphereAnnotation(PushEndpoint.class)
 public class PushEndpointProcessor implements Processor<Object> {
 
-    private static final Logger logger = LoggerFactory.getLogger(PushEndpointProcessor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PushEndpointProcessor.class);
 
     //@Override
     public void handle(AtmosphereFramework framework, Class<Object> annotatedClass) {
@@ -44,14 +44,17 @@ public class PushEndpointProcessor implements Processor<Object> {
             List<AtmosphereInterceptor> l = new ArrayList<AtmosphereInterceptor>();
 
             Object c = framework.newClassInstance(Object.class, aClass);
-            AtmosphereHandler handler = framework.newClassInstance(PushEndpointHandlerProxy.class, PushEndpointHandlerProxy.class).configure(framework.getAtmosphereConfig(), c);
+            AtmosphereHandler handler = framework.newClassInstance(
+                    PushEndpointHandlerProxy.class, PushEndpointHandlerProxy.class).configure(framework.getAtmosphereConfig(), c);
             l.add(framework.newClassInstance(AtmosphereInterceptor.class, PushEndpointInterceptor.class));
 
-            Class<? extends Broadcaster> b = (Class<? extends Broadcaster>) IOUtils.loadClass(this.getClass(), framework.getDefaultBroadcasterClassName());
+            Class<? extends Broadcaster> b = (Class<? extends Broadcaster>) IOUtils.loadClass(
+                    this.getClass(), framework.getDefaultBroadcasterClassName());
 
             framework.addAtmosphereHandler(a.value(), handler, broadcaster(framework, b, a.value()), l);
-        } catch (Throwable e) {
-            logger.warn("", e);
+        }
+        catch (Throwable e) {
+            LOG.warn("", e);
         }
     }
 

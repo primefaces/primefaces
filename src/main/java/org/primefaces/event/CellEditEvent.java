@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,13 +31,13 @@ import org.primefaces.component.treetable.TreeTable;
 public class CellEditEvent extends AbstractAjaxBehaviorEvent {
 
     private Object oldValue;
-    
+
     private Object newValue;
-    
+
     private int rowIndex;
-    
+
     private UIColumn column;
-    
+
     private String rowKey;
 
     public CellEditEvent(UIComponent component, Behavior behavior, int rowIndex, UIColumn column) {
@@ -46,25 +46,25 @@ public class CellEditEvent extends AbstractAjaxBehaviorEvent {
         this.column = column;
         this.oldValue = resolveValue();
     }
-    
+
     public CellEditEvent(UIComponent component, Behavior behavior, int rowIndex, UIColumn column, String rowKey) {
         this(component, behavior, rowIndex, column);
         this.rowKey = rowKey;
     }
-    
+
     public CellEditEvent(UIComponent component, Behavior behavior, UIColumn column, String rowKey) {
         super(component, behavior);
         this.rowKey = rowKey;
         this.column = column;
         this.oldValue = resolveValue();
     }
-    
+
     public Object getOldValue() {
         return this.oldValue;
     }
 
     public Object getNewValue() {
-        if(newValue == null) {
+        if (newValue == null) {
             newValue = resolveValue();
         }
         return newValue;
@@ -83,40 +83,40 @@ public class CellEditEvent extends AbstractAjaxBehaviorEvent {
     }
 
     private Object resolveValue() {
-        if(source instanceof UIData) {
+        if (source instanceof UIData) {
             DataTable data = (DataTable) source;
             data.setRowModel(rowIndex);
         }
-        else if(source instanceof UITree) {
+        else if (source instanceof UITree) {
             TreeTable data = (TreeTable) source;
             data.setRowKey(rowKey);
         }
-        
+
         Object value = null;
-        
-        for(UIComponent child : column.getChildren()) {
-            if(child instanceof CellEditor) {
+
+        for (UIComponent child : column.getChildren()) {
+            if (child instanceof CellEditor) {
                 UIComponent inputFacet = child.getFacet("input");
-                
+
                 //multiple
-                if(inputFacet instanceof UIPanel) {
+                if (inputFacet instanceof UIPanel) {
                     List<Object> values = new ArrayList<Object>();
-                    for(UIComponent kid : inputFacet.getChildren()) {
-                        if(kid instanceof ValueHolder) {
+                    for (UIComponent kid : inputFacet.getChildren()) {
+                        if (kid instanceof ValueHolder) {
                             values.add(((ValueHolder) kid).getValue());
                         }
                     }
-                    
+
                     value = values;
-                } 
-                //single
+                }
+//single
                 else {
                     value = ((ValueHolder) inputFacet).getValue();
                 }
-                
+
             }
         }
-        
+
         return value;
     }
 }

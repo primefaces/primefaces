@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,15 @@ import org.primefaces.model.diagram.Element;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 
 public class DisconnectEvent extends AbstractAjaxBehaviorEvent {
-    
+
     private final Element sourceElement;
     private final Element targetElement;
     private final EndPoint sourceEndPoint;
     private final EndPoint targetEndPoint;
 
-    public DisconnectEvent(UIComponent component, Behavior behavior, Element sourceElement, Element targetElement, EndPoint sourceEndPoint, EndPoint targetEndPoint) {
+    public DisconnectEvent(UIComponent component, Behavior behavior, Element sourceElement, Element targetElement, EndPoint sourceEndPoint,
+            EndPoint targetEndPoint) {
+        
         super(component, behavior);
         this.sourceElement = sourceElement;
         this.targetElement = targetElement;

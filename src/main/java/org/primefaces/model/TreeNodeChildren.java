@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,22 +22,22 @@ import java.util.Iterator;
 public class TreeNodeChildren extends TreeNodeList {
 
     private TreeNode parent;
-    
+
     public TreeNodeChildren(TreeNode parent) {
         this.parent = parent;
     }
-    
+
     private void eraseParent(TreeNode node) {
         TreeNode parentNode = node.getParent();
-        if(parentNode != null) {
+        if (parentNode != null) {
             parentNode.getChildren().remove(node);
             node.setParent(null);
         }
     }
-    
+
     @Override
     public boolean add(TreeNode node) {
-        if(node == null) {
+        if (node == null) {
             throw new NullPointerException();
         }
         else {
@@ -51,12 +51,12 @@ public class TreeNodeChildren extends TreeNodeList {
 
     @Override
     public void add(int index, TreeNode node) {
-        if(node == null) {
+        if (node == null) {
             throw new NullPointerException();
         }
-        else if((index < 0) || (index > size())) {
+        else if ((index < 0) || (index > size())) {
             throw new IndexOutOfBoundsException();
-        } 
+        }
         else {
             eraseParent(node);
             super.add(index, node);
@@ -64,16 +64,16 @@ public class TreeNodeChildren extends TreeNodeList {
             updateRowKeys(parent);
         }
     }
-    
+
     @Override
     public boolean addAll(Collection<? extends TreeNode> collection) {
         Iterator<TreeNode> elements = (new ArrayList<TreeNode>(collection)).iterator();
         boolean changed = false;
-        while(elements.hasNext()) {
+        while (elements.hasNext()) {
             TreeNode node = elements.next();
-            if(node == null) {
+            if (node == null) {
                 throw new NullPointerException();
-            } 
+            }
             else {
                 eraseParent(node);
                 super.add(node);
@@ -81,23 +81,23 @@ public class TreeNodeChildren extends TreeNodeList {
                 changed = true;
             }
         }
-        
-        if(changed) {
+
+        if (changed) {
             updateRowKeys(parent);
         }
-        
+
         return (changed);
     }
-    
+
     @Override
     public boolean addAll(int index, Collection<? extends TreeNode> collection) {
         Iterator<TreeNode> elements = (new ArrayList<TreeNode>(collection)).iterator();
         boolean changed = false;
-        while(elements.hasNext()) {
+        while (elements.hasNext()) {
             TreeNode node = elements.next();
-            if(node == null) {
+            if (node == null) {
                 throw new NullPointerException();
-            } 
+            }
             else {
                 eraseParent(node);
                 super.add(index++, node);
@@ -105,27 +105,27 @@ public class TreeNodeChildren extends TreeNodeList {
                 changed = true;
             }
         }
-        
-        if(changed) {
+
+        if (changed) {
             updateRowKeys(parent);
         }
-        
+
         return (changed);
     }
-    
+
     @Override
     public TreeNode set(int index, TreeNode node) {
-        if(node == null) {
+        if (node == null) {
             throw new NullPointerException();
         }
         else if ((index < 0) || (index >= size())) {
             throw new IndexOutOfBoundsException();
-        } 
+        }
         else {
-            if(!parent.equals(node.getParent())) {
+            if (!parent.equals(node.getParent())) {
                 eraseParent(node);
             }
-            
+
             TreeNode previous = get(index);
             super.set(index, node);
             previous.setParent(null);
@@ -134,25 +134,26 @@ public class TreeNodeChildren extends TreeNodeList {
             return previous;
         }
     }
-    
+
     /**
      * Optimized set implementation to be used in sorting
+     *
      * @param index index of the element to replace
      * @param node node to be stored at the specified position
      * @return the node previously at the specified position
      */
     public TreeNode setSibling(int index, TreeNode node) {
-        if(node == null) {
+        if (node == null) {
             throw new NullPointerException();
         }
         else if ((index < 0) || (index >= size())) {
             throw new IndexOutOfBoundsException();
-        } 
+        }
         else {
-            if(!parent.equals(node.getParent())) {
+            if (!parent.equals(node.getParent())) {
                 eraseParent(node);
             }
-            
+
             TreeNode previous = get(index);
             super.set(index, node);
             node.setParent(parent);
@@ -173,26 +174,27 @@ public class TreeNodeChildren extends TreeNodeList {
     @Override
     public boolean remove(Object object) {
         TreeNode node = (TreeNode) object;
-        if(node == null) {
+        if (node == null) {
             throw new NullPointerException();
         }
-        
-        if(super.indexOf(node) != -1) {
+
+        if (super.indexOf(node) != -1) {
             node.clearParent();
         }
-        
-        if(super.remove(node)) {
+
+        if (super.remove(node)) {
             updateRowKeys(parent);
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }
-    
+
     private void updateRowKeys(TreeNode node) {
         int childCount = node.getChildCount();
-        if(childCount > 0) {
-            for(int i = 0; i < childCount; i++) {
+        if (childCount > 0) {
+            for (int i = 0; i < childCount; i++) {
                 TreeNode childNode = node.getChildren().get(i);
 
                 String childRowKey = (node.getParent() == null) ? String.valueOf(i) : node.getRowKey() + "_" + i;

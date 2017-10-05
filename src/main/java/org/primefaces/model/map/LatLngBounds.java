@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,29 +16,29 @@
 package org.primefaces.model.map;
 
 public class LatLngBounds {
-	
-	private LatLng northEast;
-	
-	private LatLng southWest;
-	
-	public LatLngBounds(LatLng northEast, LatLng southWest) {
-		this.northEast = northEast;
-		this.southWest = southWest;
-	}
 
-	public LatLng getNorthEast() {
-		return northEast;
-	}
+    private LatLng northEast;
 
-	public void setNorthEast(LatLng northEast) {
-		this.northEast = northEast;
-	}
+    private LatLng southWest;
 
-	public LatLng getSouthWest() {
-		return southWest;
-	}
+    public LatLngBounds(LatLng northEast, LatLng southWest) {
+        this.northEast = northEast;
+        this.southWest = southWest;
+    }
 
-	public void setSouthWest(LatLng southWest) {
-		this.southWest = southWest;
-	}
+    public LatLng getNorthEast() {
+        return northEast;
+    }
+
+    public void setNorthEast(LatLng northEast) {
+        this.northEast = northEast;
+    }
+
+    public LatLng getSouthWest() {
+        return southWest;
+    }
+
+    public void setSouthWest(LatLng southWest) {
+        this.southWest = southWest;
+    }
 }

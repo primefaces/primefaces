@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 package org.primefaces.model.diagram.connector;
 
 public class StraightConnector extends Connector {
-    
+
     private int stub = 0;
-    
+
     private int gap = 0;
 
     public StraightConnector() {
     }
-    
+
     public StraightConnector(int stub, int gap) {
         this.stub = stub;
         this.gap = gap;
@@ -44,7 +44,7 @@ public class StraightConnector extends Connector {
     public void setGap(int gap) {
         this.gap = gap;
     }
-    
+
     public String getType() {
         return "Straight";
     }

@@ -343,14 +343,5 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
     checkResize: function() {
         google.maps.event.trigger(this.map, 'resize');
         this.map.setZoom(this.map.getZoom());
-    },
-    
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
-
-        return false;
     }
- 
 });

@@ -35,6 +35,7 @@ import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.data.SortEvent;
 import org.primefaces.model.SortOrder;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LocaleUtils;
 import javax.faces.event.BehaviorEvent;
 import org.primefaces.component.api.UIData;
 import org.primefaces.model.filter.ContainsFilterConstraint;
@@ -140,10 +141,6 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
         return EVENT_NAMES;
     }
 
-    private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
-    }
-
     public boolean isSelectionRequest(FacesContext context) {
 		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_instantSelection");
 	}
@@ -172,7 +169,7 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(isRequestSource(context) && (event instanceof AjaxBehaviorEvent)) {
+        if(ComponentUtils.isRequestSource(this, context) && (event instanceof AjaxBehaviorEvent)) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = this.getClientId(context);
@@ -368,19 +365,7 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
 
     public Locale resolveDataLocale() {
         FacesContext context = this.getFacesContext();
-        Object userLocale = this.getDataLocale();
-        
-        if(userLocale != null) {
-            if(userLocale instanceof String)
-                return ComponentUtils.toLocale((String) userLocale);
-            else if(userLocale instanceof java.util.Locale)
-                return (java.util.Locale) userLocale;
-            else
-                throw new IllegalArgumentException("Type:" + userLocale.getClass() + " is not a valid locale type for datatable:" + this.getClientId(context));
-        } 
-        else {
-            return context.getViewRoot().getLocale();
-        }
+        return LocaleUtils.resolveLocale(this.getDataLocale(), this.getClientId(context));
     }
 
     public ColumnGroup getColumnGroup(String target) {

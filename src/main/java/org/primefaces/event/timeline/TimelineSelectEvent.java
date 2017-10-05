@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,14 +23,14 @@ import org.primefaces.model.timeline.TimelineEvent;
 
 public class TimelineSelectEvent extends AbstractAjaxBehaviorEvent {
 
-	private TimelineEvent timelineEvent;
+    private TimelineEvent timelineEvent;
 
-	public TimelineSelectEvent(UIComponent component, Behavior behavior, TimelineEvent timelineEvent) {
-		super(component, behavior);
-		this.timelineEvent = timelineEvent;
-	}
+    public TimelineSelectEvent(UIComponent component, Behavior behavior, TimelineEvent timelineEvent) {
+        super(component, behavior);
+        this.timelineEvent = timelineEvent;
+    }
 
-	public TimelineEvent getTimelineEvent() {
-		return timelineEvent;
-	}
+    public TimelineEvent getTimelineEvent() {
+        return timelineEvent;
+    }
 }

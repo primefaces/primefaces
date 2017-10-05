@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2015 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,20 +18,19 @@ package org.primefaces.expression;
 import javax.faces.FacesException;
 
 public class ComponentNotFoundException extends FacesException {
-    
-    public ComponentNotFoundException()
-    {
+
+    public ComponentNotFoundException() {
         super();
     }
-    
+
     public ComponentNotFoundException(String message) {
         super(message);
     }
-    
+
     public ComponentNotFoundException(Throwable cause) {
         super(cause);
     }
-    
+
     public ComponentNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }

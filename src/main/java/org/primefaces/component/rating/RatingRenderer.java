@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ public class RatingRenderer extends InputRenderer {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Rating rating = (Rating) component;
-        if(rating.isDisabled()||rating.isReadonly()) {
+        if (rating.isDisabled() || rating.isReadonly()) {
             return;
         }
 
@@ -53,10 +53,10 @@ public class RatingRenderer extends InputRenderer {
         String clientId = rating.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("Rating", rating.resolveWidgetVar(), clientId)
-            .callback("onRate", "function(value)", rating.getOnRate())
-            .attr("readonly", rating.isReadonly(), false)
-            .attr("disabled", rating.isDisabled(), false);
-        
+                .callback("onRate", "function(value)", rating.getOnRate())
+                .attr("readonly", rating.isReadonly(), false)
+                .attr("disabled", rating.isDisabled(), false);
+
         encodeClientBehaviors(context, rating);
 
         wb.finish();
@@ -73,35 +73,35 @@ public class RatingRenderer extends InputRenderer {
         String style = rating.getStyle();
         String styleClass = rating.getStyleClass();
         styleClass = styleClass == null ? Rating.CONTAINER_CLASS : Rating.CONTAINER_CLASS + " " + styleClass;
-        
-        if(disabled) {
-            styleClass = styleClass + " ui-state-disabled"; 
+
+        if (disabled) {
+            styleClass = styleClass + " ui-state-disabled";
         }
 
         writer.startElement("div", rating);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, null);
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, null);
         }
-        
-        if(rating.isCancel() && !disabled && !readonly) {
+
+        if (rating.isCancel() && !disabled && !readonly) {
             encodeIcon(context, Rating.CANCEL_CLASS);
         }
 
-        for(int i = 0; i < stars; i++) {
+        for (int i = 0; i < stars; i++) {
             String starClass = (value != null && i < value.intValue()) ? Rating.STAR_ON_CLASS : Rating.STAR_CLASS;
             encodeIcon(context, starClass);
         }
-        
+
         encodeInput(context, clientId + "_input", valueToRender);
 
         writer.endElement("div");
     }
-    
+
     protected void encodeIcon(FacesContext context, String styleClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
 
@@ -110,18 +110,18 @@ public class RatingRenderer extends InputRenderer {
 
         writer.endElement("div");
     }
-    
+
     protected void encodeInput(FacesContext context, String id, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-		writer.startElement("input", null);
-		writer.writeAttribute("type", "hidden", null);
-		writer.writeAttribute("id", id, null);
-		writer.writeAttribute("name", id, null);
+        writer.startElement("input", null);
+        writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("id", id, null);
+        writer.writeAttribute("name", id, null);
         writer.writeAttribute("autocomplete", "off", null);
-        if(value != null) {
+        if (value != null) {
             writer.writeAttribute("value", value, null);
         }
-		writer.endElement("input");
+        writer.endElement("input");
     }
 }

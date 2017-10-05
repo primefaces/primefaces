@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,49 +32,34 @@ import org.primefaces.util.WidgetBuilder;
  * RequestContext is thread-safe and scope is same as FacesContext.
  * Current instance can be retrieved as;
  * <blockquote>
- *  RequestContext.getCurrentInstance();
+ *  RequestContext.getCurrentInstance(context);
  * </blockquote>
  */
 public abstract class RequestContext {
 
-	private static final ThreadLocal<RequestContext> INSTANCE = new ThreadLocal<RequestContext>();
-
-    public static final String INSTANCE_KEY = RequestContext.class.getName();
+    private static final String INSTANCE_KEY = RequestContext.class.getName();
 
     public static RequestContext getCurrentInstance() {
+        return getCurrentInstance(FacesContext.getCurrentInstance());
+    }
 
-        RequestContext context = INSTANCE.get();
+    public static RequestContext getCurrentInstance(FacesContext facesContext) {
+        if (facesContext != null && !facesContext.isReleased()) {
+            return (RequestContext) facesContext.getAttributes().get(INSTANCE_KEY);
+        }
 
-        // #6503 - it's valid that a FacesContext can be released during the request
-        // Our PrimeFacesContext therefore will only release our ThreadLocal cache
-        // The RequestContext will be destroyed automatically if the FacesContext and it's attributes will be destroyed
+        return null;
+    }
+
+    public static void setCurrentInstance(RequestContext context, FacesContext facesContext) {
         if (context == null) {
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            if (facesContext != null && !facesContext.isReleased()) {
-                context = (RequestContext) facesContext.getAttributes().get(INSTANCE_KEY);
-                if (context != null) {
-                    INSTANCE.set(context);
-                }
+            if (facesContext != null) {
+                facesContext.getAttributes().remove(INSTANCE_KEY);
             }
         }
-
-        return INSTANCE.get();
-    }
-
-    public static void setCurrentInstance(final RequestContext context, final FacesContext facesContext) {
-        if (context == null) {
-        	INSTANCE.remove();
-                if (facesContext != null) {
-            facesContext.getAttributes().remove(INSTANCE_KEY);
-                }
-        } else {
-        	INSTANCE.set(context);
+        else {
             facesContext.getAttributes().put(INSTANCE_KEY, context);
         }
-    }
-
-    public static void releaseThreadLocalCache() {
-        INSTANCE.remove();
     }
 
     /**
@@ -103,36 +88,42 @@ public abstract class RequestContext {
 
     /**
      * Execute a javascript after current ajax request is completed.
+     *
      * @param script Javascript statement to execute.
      */
     public abstract void execute(String script);
 
     /**
      * Scroll to a component after ajax request is completed.
+     *
      * @param clientId Client side identifier of the component.
      */
     public abstract void scrollTo(String clientId);
 
     /**
      * Update a component with ajax.
+     *
      * @param name Client side identifier of the component.
      */
     public abstract void update(String name);
 
     /**
      * Update components with ajax.
+     *
      * @param collection Client side identifiers of the components.
      */
     public abstract void update(Collection<String> collection);
 
     /**
      * Reset an editableValueHolder.
+     *
      * @param expressions A string with one or multiple search expression to resolve the components.
      */
     public abstract void reset(String expressions);
 
     /**
      * Reset a collection of editableValueHolders.
+     *
      * @param expressions A list with with one or multiple search expression to resolve the components.
      */
     public abstract void reset(Collection<String> expressions);
@@ -155,30 +146,34 @@ public abstract class RequestContext {
     /**
      * @return Attributes map in RequestContext scope
      */
-    public abstract Map<Object,Object> getAttributes();
+    public abstract Map<Object, Object> getAttributes();
 
     /**
      * Open a view in dialog.
+     *
      * @param outcome The logical outcome used to resolve a navigation case.
      */
     public abstract void openDialog(String outcome);
 
     /**
      * Open a view in dialog.
+     *
      * @param outcome The logical outcome used to resolve a navigation case.
      * @param options Configuration options for the dialog.
      * @param params Parameters to send to the view displayed in a dialog.
      */
-    public abstract void openDialog(String outcome, Map<String,Object> options, Map<String,List<String>> params);
+    public abstract void openDialog(String outcome, Map<String, Object> options, Map<String, List<String>> params);
 
     /**
      * Close a dialog.
+     *
      * @param data Optional data to pass back to a dialogReturn event.
      */
     public abstract void closeDialog(Object data);
 
     /**
      * Displays a message in a dialog.
+     *
      * @param message FacesMessage to be displayed.
      */
     public abstract void showMessageInDialog(FacesMessage message);
@@ -191,7 +186,7 @@ public abstract class RequestContext {
     /**
      * @return StringEncrypter used to encode and decode a string.
      */
-	public abstract StringEncrypter getEncrypter();
+    public abstract StringEncrypter getEncrypter();
 
     /**
      * Clear resources.
@@ -209,8 +204,8 @@ public abstract class RequestContext {
     public abstract boolean isIgnoreAutoUpdate();
 
     public abstract boolean isRTL();
-    
+
     public abstract void clearTableStates();
-    
+
     public abstract void clearTableState(String clientId);
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,16 @@ import java.io.Serializable;
 public class TimelineGroup implements Serializable {
 
     private static final long serialVersionUID = 20140413L;
-    
-    /** unique group's id */
+
+    /**
+     * unique group's id
+     */
     private String id;
-   
-   	/** any custom data object (required to show content of the group) */
-   	private Object data;
+
+    /**
+     * any custom data object (required to show content of the group)
+     */
+    private Object data;
 
     public TimelineGroup() {
     }

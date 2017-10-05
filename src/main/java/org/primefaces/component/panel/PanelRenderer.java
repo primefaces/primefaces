@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,13 +38,13 @@ public class PanelRenderer extends CoreRenderer {
 
         //Restore toggle state
         String collapsedParam = params.get(clientId + "_collapsed");
-        if(collapsedParam != null) {
+        if (collapsedParam != null) {
             panel.setCollapsed(Boolean.valueOf(collapsedParam));
         }
 
         //Restore visibility state
         String visibleParam = params.get(clientId + "_visible");
-        if(visibleParam != null) {
+        if (visibleParam != null) {
             panel.setVisible(Boolean.valueOf(visibleParam));
         }
 
@@ -63,23 +63,23 @@ public class PanelRenderer extends CoreRenderer {
         String clientId = panel.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Panel", panel.resolveWidgetVar(), clientId);
-        
-        if(panel.isToggleable()) {
+
+        if (panel.isToggleable()) {
             wb.attr("toggleable", true)
-                .attr("toggleSpeed", panel.getToggleSpeed())
-                .attr("collapsed", panel.isCollapsed())
-                .attr("toggleOrientation", panel.getToggleOrientation());
+                    .attr("toggleSpeed", panel.getToggleSpeed())
+                    .attr("collapsed", panel.isCollapsed())
+                    .attr("toggleOrientation", panel.getToggleOrientation());
         }
-        
-        if(panel.isClosable()) {
+
+        if (panel.isClosable()) {
             wb.attr("closable", true)
-                .attr("closeSpeed", panel.getCloseSpeed());
+                    .attr("closeSpeed", panel.getCloseSpeed());
         }
-        
-        if(panel.getOptionsMenu() != null) {
+
+        if (panel.getOptionsMenu() != null) {
             wb.attr("hasMenu", true);
         }
-        
+
         encodeClientBehaviors(context, panel);
 
         wb.finish();
@@ -92,48 +92,48 @@ public class PanelRenderer extends CoreRenderer {
         Menu optionsMenu = panel.getOptionsMenu();
         boolean collapsed = panel.isCollapsed();
         boolean visible = panel.isVisible();
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        String styleClass = panel.getStyleClass() == null ? Panel.PANEL_CLASS : Panel.PANEL_CLASS + " " + panel.getStyleClass(); 
-        
-        if(collapsed) {
+        String styleClass = panel.getStyleClass() == null ? Panel.PANEL_CLASS : Panel.PANEL_CLASS + " " + panel.getStyleClass();
+
+        if (collapsed) {
             styleClass += " ui-hidden-container";
-            
-            if(panel.getToggleOrientation().equals("horizontal")) {
+
+            if (panel.getToggleOrientation().equals("horizontal")) {
                 styleClass += " ui-panel-collapsed-h";
             }
         }
-        
-        if(!visible) {
+
+        if (!visible) {
             styleClass += " ui-helper-hidden";
         }
-            
+
         writer.writeAttribute("class", styleClass, "styleClass");
-        
-        if(panel.getStyle() != null) {
+
+        if (panel.getStyle() != null) {
             writer.writeAttribute("style", panel.getStyle(), "style");
         }
-        
+
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
-        
+
         renderDynamicPassThruAttributes(context, panel);
 
         encodeHeader(context, panel);
         encodeContent(context, panel);
         encodeFooter(context, panel);
 
-        if(panel.isToggleable()) {
+        if (panel.isToggleable()) {
             encodeStateHolder(context, panel, clientId + "_collapsed", String.valueOf(collapsed));
         }
 
-        if(panel.isClosable()) {
+        if (panel.isClosable()) {
             encodeStateHolder(context, panel, clientId + "_visible", String.valueOf(visible));
         }
 
         if (optionsMenu != null) {
             optionsMenu.setOverlay(true);
-            optionsMenu.setTrigger("@(" + ComponentUtils.escapeJQueryId(clientId) + "_menu)");
+            optionsMenu.setTrigger("@(#" + ComponentUtils.escapeSelector(clientId) + "_menu)");
             optionsMenu.setMy("left top");
             optionsMenu.setAt("left bottom");
 
@@ -149,7 +149,7 @@ public class PanelRenderer extends CoreRenderer {
         String headerText = panel.getHeader();
         String clientId = panel.getClientId(context);
 
-        if(headerText == null && header == null) {
+        if (headerText == null && header == null) {
             return;
         }
 
@@ -161,33 +161,36 @@ public class PanelRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", Panel.PANEL_TITLE_CLASS, null);
 
-        if(header != null) {
+        if (header != null) {
             renderChild(context, header);
-        } 
-        else if(headerText != null) {
+        }
+        else if (headerText != null) {
             writer.writeText(headerText, null);
         }
 
         writer.endElement("span");
 
         //Options
-        if(panel.isClosable()) {
+        if (panel.isClosable()) {
             encodeIcon(context, panel, "ui-icon-closethick", clientId + "_closer", panel.getCloseTitle());
         }
 
-        if(panel.isToggleable()) {
+        if (panel.isToggleable()) {
             String icon = panel.isCollapsed() ? "ui-icon-plusthick" : "ui-icon-minusthick";
             encodeIcon(context, panel, icon, clientId + "_toggler", panel.getToggleTitle());
         }
 
-        if(panel.getOptionsMenu() != null) {
+        if (panel.getOptionsMenu() != null) {
             encodeIcon(context, panel, "ui-icon-gear", clientId + "_menu", panel.getMenuTitle());
         }
-        
+
         //Actions
         UIComponent actionsFacet = panel.getFacet("actions");
-        if(actionsFacet != null) {
+        if (actionsFacet != null) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", Panel.PANEL_ACTIONS_CLASS, null);
             actionsFacet.encodeAll(context);
+            writer.endElement("div");
         }
 
         writer.endElement("div");
@@ -220,7 +223,8 @@ public class PanelRenderer extends CoreRenderer {
 
             if (footer != null) {
                 renderChild(context, footer);
-            } else if (footerText != null) {
+            }
+            else if (footerText != null) {
                 writer.writeText(footerText, null);
             }
 
@@ -232,12 +236,12 @@ public class PanelRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("a", null);
-        if(id != null) {
+        if (id != null) {
             writer.writeAttribute("id", id, null);
         }
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", Panel.PANEL_TITLE_ICON_CLASS, null);
-        if(title != null) {
+        if (title != null) {
             writer.writeAttribute("title", title, null);
         }
 

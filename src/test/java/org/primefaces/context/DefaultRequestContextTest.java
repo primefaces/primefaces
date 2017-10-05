@@ -76,9 +76,9 @@ public class DefaultRequestContextTest {
 
 		try {
 			newRequestContext().update("doesnTExist");
-			Assert.fail("This should actually raise an exception");
+			
 		} catch (Exception e) {
-			assertEquals(ComponentNotFoundException.class, e.getClass());
+			Assert.fail("This should actually NOT raise an exception");
 		}
     }
     
@@ -107,9 +107,8 @@ public class DefaultRequestContextTest {
 
 		try {
 			newRequestContext().update(new ArrayList<String>() {{ this.add("doesnTExist"); }});
-			Assert.fail("This should actually raise an exception");
 		} catch (Exception e) {
-			assertEquals(ComponentNotFoundException.class, e.getClass());
+			Assert.fail("This should actually NOT raise an exception");
 		}
     }
 }

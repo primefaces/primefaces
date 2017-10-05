@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,37 +20,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultMindmapNode implements MindmapNode, Serializable {
-    
+
     private MindmapNode parent;
-    
+
     private List<MindmapNode> children;
-    
+
     private String label;
-    
+
     private Object data;
-    
+
     private String fill;
-    
+
     private boolean selectable;
-   
-    public DefaultMindmapNode() {}
-    
+
+    public DefaultMindmapNode() {
+    }
+
     public DefaultMindmapNode(String label) {
         this.label = label;
         this.children = new ArrayList<MindmapNode>();
         this.selectable = true;
     }
-    
+
     public DefaultMindmapNode(String label, Object data) {
         this(label);
         this.data = data;
     }
-    
+
     public DefaultMindmapNode(String label, Object data, String fill) {
         this(label, data);
         this.fill = fill;
     }
-    
+
     public DefaultMindmapNode(String label, Object data, String fill, boolean selectable) {
         this(label, data, fill);
         this.selectable = selectable;
@@ -63,7 +64,7 @@ public class DefaultMindmapNode implements MindmapNode, Serializable {
     public void setLabel(String label) {
         this.label = label;
     }
-    
+
     public MindmapNode getParent() {
         return this.parent;
     }
@@ -71,20 +72,19 @@ public class DefaultMindmapNode implements MindmapNode, Serializable {
     public Object getData() {
         return this.data;
     }
-    
+
     public void setData(Object data) {
         this.data = data;
     }
 
-    
     public void setParent(MindmapNode parent) {
-        if(this.parent != null) {
+        if (this.parent != null) {
             this.parent.getChildren().remove(this);
         }
-        
+
         this.parent = parent;
-        
-        if(this.parent != null) {
+
+        if (this.parent != null) {
             this.parent.getChildren().add(this);
         }
     }
@@ -92,7 +92,7 @@ public class DefaultMindmapNode implements MindmapNode, Serializable {
     public String getFill() {
         return this.fill;
     }
-    
+
     public void setFill(String fill) {
         this.fill = fill;
     }
@@ -108,7 +108,7 @@ public class DefaultMindmapNode implements MindmapNode, Serializable {
     public void setSelectable(boolean selectable) {
         this.selectable = selectable;
     }
-    
+
     public List<MindmapNode> getChildren() {
         return this.children;
     }

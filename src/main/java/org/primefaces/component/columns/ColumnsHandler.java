@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,27 +25,27 @@ import org.primefaces.facelets.MethodRule;
 
 public class ColumnsHandler extends ComponentHandler {
 
-	private static final MetaRule SORT_FUNCTION =
-			new MethodRule("sortFunction", Integer.class, new Class[]{Object.class, Object.class});
-    
-    private static final MetaRule FILTER_FUNCTION =
-			new MethodRule("filterFunction", Integer.class, new Class[]{Object.class, Object.class, Locale.class});
-    
-    private static final MetaRule EXPORT_FUNCTION =
-			new MethodRule("exportFunction", Integer.class, new Class[]{UIColumn.class});
-	
-	public ColumnsHandler(ComponentConfig config) {
-		super(config);
-	}
-	
+    private static final MetaRule SORT_FUNCTION
+            = new MethodRule("sortFunction", Integer.class, new Class[]{Object.class, Object.class});
+
+    private static final MetaRule FILTER_FUNCTION
+            = new MethodRule("filterFunction", Integer.class, new Class[]{Object.class, Object.class, Locale.class});
+
+    private static final MetaRule EXPORT_FUNCTION
+            = new MethodRule("exportFunction", Integer.class, new Class[]{UIColumn.class});
+
+    public ColumnsHandler(ComponentConfig config) {
+        super(config);
+    }
+
     @Override
-	protected MetaRuleset createMetaRuleset(Class type) { 
-		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
- 
-		metaRuleset.addRule(SORT_FUNCTION);
+    protected MetaRuleset createMetaRuleset(Class type) {
+        MetaRuleset metaRuleset = super.createMetaRuleset(type);
+
+        metaRuleset.addRule(SORT_FUNCTION);
         metaRuleset.addRule(FILTER_FUNCTION);
         metaRuleset.addRule(EXPORT_FUNCTION);
-		
-		return metaRuleset; 
-	} 
+
+        return metaRuleset;
+    }
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,36 +31,36 @@ public class RowEditorRenderer extends CoreRenderer {
         String style = rowEditor.getStyle();
         String styleClass = rowEditor.getStyleClass();
         styleClass = (styleClass == null) ? DataTable.ROW_EDITOR_CLASS : DataTable.ROW_EDITOR_CLASS + " " + styleClass;
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("id", component.getClientId(context), null);
         writer.writeAttribute("class", styleClass, null);
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, null);
         }
 
         encodeIcon(writer, "pencil", rowEditor.getEditTitle());
         encodeIcon(writer, "check", rowEditor.getSaveTitle());
         encodeIcon(writer, "close", rowEditor.getCancelTitle());
-        
+
         writer.endElement("div");
     }
-    
+
     protected void encodeIcon(ResponseWriter writer, String type, String title) throws IOException {
         String iconClass = "ui-icon ui-icon-" + type;
-        iconClass = (type == "pencil") ? iconClass : iconClass + " ui-c";
-        
+        iconClass = ("pencil".equals(type)) ? iconClass : iconClass + " ui-c";
+
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", "ui-row-editor-" + type, null);
-        
+
         writer.startElement("span", null);
-        if(title != null) {
+        if (title != null) {
             writer.writeAttribute("title", title, null);
         }
         writer.writeAttribute("class", iconClass, null);
         writer.endElement("span");
-        
+
         writer.endElement("a");
     }
 }

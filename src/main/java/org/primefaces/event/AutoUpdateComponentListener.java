@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,11 +31,11 @@ public class AutoUpdateComponentListener implements SystemEventListener {
         AutoUpdatable component = (AutoUpdatable) cse.getSource();
         FacesContext context = FacesContext.getCurrentInstance();
 
-        if(component.isAutoUpdate() && context.isPostback()) {
-            
-            if (!RequestContext.getCurrentInstance().isIgnoreAutoUpdate()) {
-        		context.getPartialViewContext().getRenderIds().add(component.getClientId(context));
-        	}
+        if (component.isAutoUpdate() && context.isPostback()) {
+
+            if (!RequestContext.getCurrentInstance(context).isIgnoreAutoUpdate()) {
+                context.getPartialViewContext().getRenderIds().add(component.getClientId(context));
+            }
         }
     }
 

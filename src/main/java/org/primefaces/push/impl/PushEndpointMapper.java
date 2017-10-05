@@ -1,17 +1,17 @@
-/*
- * Copyright 2013 Jeanfrancois Arcand
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.primefaces.push.impl;
 
@@ -34,11 +34,13 @@ import java.util.Map;
 
 @EndpointMapperService
 public class PushEndpointMapper<U> extends DefaultEndpointMapper<U> {
-    private final Logger logger = LoggerFactory.getLogger(PushEndpointMapper.class.getName());
+
+    public final static String RULES = "org.primefaces.push.rules";
+    private final static Logger LOGER = LoggerFactory.getLogger(PushEndpointMapper.class.getName());
 
     private String servletPath = "";
     private AtmosphereConfig config;
-    public final static String RULES = "org.primefaces.push.rules";
+    
 
     @Override
     public void configure(AtmosphereConfig config) {
@@ -61,7 +63,7 @@ public class PushEndpointMapper<U> extends DefaultEndpointMapper<U> {
         U handler = super.map(req, handlers);
         if (handler == null) {
             synchronized (config) {
-                logger.trace("Preserving backward PrimeFaces behavior");
+                LOGER.trace("Preserving backward PrimeFaces behavior");
                 PrimeAtmosphereHandler pah = new PrimeAtmosphereHandler(configureRules(config.getServletConfig()));
                 String path = computePath(req);
                 config.framework().addAtmosphereHandler(path, pah);
@@ -82,9 +84,10 @@ public class PushEndpointMapper<U> extends DefaultEndpointMapper<U> {
             for (String rule : r) {
                 try {
                     rules.add(((Class<PushRule>) IOUtils.loadClass(getClass(), rule)).newInstance());
-                    logger.info("PushRule {} loaded", rule);
-                } catch (Throwable t) {
-                    logger.info("Unable to load PushRule {}", rule, t);
+                    LOGER.info("PushRule {} loaded", rule);
+                }
+                catch (Throwable t) {
+                    LOGER.info("Unable to load PushRule {}", rule, t);
                 }
             }
         }

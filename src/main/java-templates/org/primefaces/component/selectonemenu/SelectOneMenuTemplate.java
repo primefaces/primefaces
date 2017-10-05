@@ -48,7 +48,7 @@ import javax.faces.render.Renderer;
         return "valueChange";    
     }
 
-    public List<Column> getColums() {
+    public List<Column> getColumns() {
         List<Column> columns = new ArrayList<Column>();
         
         for(UIComponent kid : this.getChildren()) {
@@ -107,7 +107,7 @@ import javax.faces.render.Renderer;
                 setValid(false);
             }
 
-            PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+            PrimeConfiguration config = RequestContext.getCurrentInstance(getFacesContext()).getApplicationContext().getConfig();
             
             //other validators
             if(isValid() && (!isEmpty(value) || config.isValidateEmptyFields())) {

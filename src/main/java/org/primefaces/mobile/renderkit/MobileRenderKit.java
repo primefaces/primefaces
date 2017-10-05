@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,9 +36,9 @@ import javax.faces.render.ResponseStateManager;
 public class MobileRenderKit extends RenderKit {
 
     public final static String RENDER_KIT_ID = "PRIMEFACES_MOBILE";
-        
+
     private RenderKit defaultRenderKit = null;
-      
+
     private ConcurrentHashMap<String, HashMap<String, Renderer>> rendererFamilies;
 
     public MobileRenderKit() {
@@ -47,9 +47,9 @@ public class MobileRenderKit extends RenderKit {
 
     @Override
     public void addRenderer(String family, String rendererType, Renderer renderer) {
-        HashMap<String,Renderer> renderers = rendererFamilies.get(family);
-        if(renderers == null) {
-            renderers = new HashMap<String,Renderer>();
+        HashMap<String, Renderer> renderers = rendererFamilies.get(family);
+        if (renderers == null) {
+            renderers = new HashMap<String, Renderer>();
             rendererFamilies.put(family, renderers);
         }
 
@@ -59,28 +59,28 @@ public class MobileRenderKit extends RenderKit {
     @Override
     public Renderer getRenderer(String family, String rendererType) {
         Renderer renderer = null;
-        HashMap<String,Renderer> renderers = rendererFamilies.get(family);
-        
+        HashMap<String, Renderer> renderers = rendererFamilies.get(family);
+
         //Look in our renderers first
-        if(renderers != null) {
+        if (renderers != null) {
             renderer = renderers.get(rendererType);
         }
-        
+
         //Then default renderers
-        if(renderer == null) {
+        if (renderer == null) {
             renderer = getDefaultRenderKit().getRenderer(family, rendererType);
         }
-        
+
         return renderer;
     }
-    
+
     @Override
     public Iterator<String> getRendererTypes(String componentFamily) {
-        Map<String,Renderer> family = rendererFamilies.get(componentFamily);
-        
-        if(family != null) {
+        Map<String, Renderer> family = rendererFamilies.get(componentFamily);
+
+        if (family != null) {
             return family.keySet().iterator();
-        } 
+        }
         else {
             Set<String> empty = Collections.emptySet();
             return empty.iterator();
@@ -121,12 +121,12 @@ public class MobileRenderKit extends RenderKit {
     public ResponseStream createResponseStream(OutputStream out) {
         return getDefaultRenderKit().createResponseStream(out);
     }
-    
+
     private RenderKit getDefaultRenderKit() {
-        if(defaultRenderKit == null) {
+        if (defaultRenderKit == null) {
             RenderKitFactory renderKitFactory = (RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
             FacesContext facesContext = FacesContext.getCurrentInstance();
-            
+
             defaultRenderKit = renderKitFactory.getRenderKit(facesContext, RenderKitFactory.HTML_BASIC_RENDER_KIT);
         }
 

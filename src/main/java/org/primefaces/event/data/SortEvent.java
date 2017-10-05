@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,18 +23,18 @@ import org.primefaces.model.SortOrder;
 
 public class SortEvent extends AbstractAjaxBehaviorEvent {
 
-	private UIColumn sortColumn;
-    
+    private UIColumn sortColumn;
+
     private boolean ascending;
 
     private int sortColumnIndex;
-	
-	public SortEvent(UIComponent component, Behavior behavior, UIColumn sortColumn, SortOrder order, int sortColumnIndex) {
-		super(component, behavior);
-		this.sortColumn = sortColumn;
+
+    public SortEvent(UIComponent component, Behavior behavior, UIColumn sortColumn, SortOrder order, int sortColumnIndex) {
+        super(component, behavior);
+        this.sortColumn = sortColumn;
         this.ascending = order.equals(SortOrder.ASCENDING);
         this.sortColumnIndex = sortColumnIndex;
-	}
+    }
 
     public boolean isAscending() {
         return ascending;

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2015 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,9 @@ public class FirstPageLinkRenderer extends PageLinkRenderer implements Paginator
 
     public void render(FacesContext context, Pageable pageable) throws IOException {
         boolean disabled = pageable.getPage() == 0;
-        
+
         String ariaMessage = MessageFactory.getMessage(UIData.ARIA_FIRST_PAGE_LABEL, new Object[]{});
-       
+
         super.render(context, pageable, UIData.PAGINATOR_FIRST_PAGE_LINK_CLASS, UIData.PAGINATOR_FIRST_PAGE_ICON_CLASS, disabled, ariaMessage);
     }
 }

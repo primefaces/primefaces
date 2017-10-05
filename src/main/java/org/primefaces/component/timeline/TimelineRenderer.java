@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -142,7 +142,8 @@ public class TimelineRenderer extends CoreRenderer {
 
         if (timeline.getPreloadFactor() < 0) {
             writer.write(",preloadFactor:0");
-        } else {
+        }
+        else {
             writer.write(",preloadFactor:" + timeline.getPreloadFactor());
         }
 
@@ -191,8 +192,8 @@ public class TimelineRenderer extends CoreRenderer {
         if (timeline.getDropScope() != null) {
             writer.write(",scope:'" + timeline.getDropScope() + "'");
         }
-        
-        writer.write(",animate:" + timeline.isAnimate());        
+
+        writer.write(",animate:" + timeline.isAnimate());
         writer.write(",animateZoom:" + timeline.isAnimateZoom());
 
         writer.write("}");
@@ -202,21 +203,23 @@ public class TimelineRenderer extends CoreRenderer {
     }
 
     public String encodeEvent(FacesContext context, FastStringWriter fsw, FastStringWriter fswHtml, Timeline timeline,
-                              TimeZone browserTZ, TimeZone targetTZ, List<TimelineGroup> groups, UIComponent groupFacet,
-                              Map<String, String> groupsContent, TimelineEvent event) throws IOException {
+            TimeZone browserTZ, TimeZone targetTZ, List<TimelineGroup> groups, UIComponent groupFacet,
+            Map<String, String> groupsContent, TimelineEvent event) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         fsw.write("{\"start\":" + encodeDate(browserTZ, targetTZ, event.getStartDate()));
 
         if (event.getEndDate() != null) {
             fsw.write(",\"end\":" + encodeDate(browserTZ, targetTZ, event.getEndDate()));
-        } else {
+        }
+        else {
             fsw.write(",\"end\":null");
         }
 
         if (event.isEditable() != null) {
             fsw.write(",\"editable\":" + event.isEditable());
-        } else {
+        }
+        else {
             fsw.write(",\"editable\":null");
         }
 
@@ -240,10 +243,11 @@ public class TimelineRenderer extends CoreRenderer {
                     // https://groups.google.com/forum/?fromgroups=#!topic/chap-links-library/Bk2fb99LUh4
                     // http://stackoverflow.com/questions/2236385/how-to-convert-java-longs-as-strings-while-keeping-natural-order
                     // we must also pass the order of the group as workaround (extracted in queueEvent(), Timeline.java).
-                    prefix =
-                            "<span style='display:none;'>" + String.format("%016x", groupOrder - Long.MIN_VALUE) + "#" +
-                                    groupOrder + "</span>";
-                } else {
+                    prefix
+                            = "<span style='display:none;'>" + String.format("%016x", groupOrder - Long.MIN_VALUE) + "#"
+                            + groupOrder + "</span>";
+                }
+                else {
                     prefix = "<span style='display:none;'>#" + groupOrder + "</span>";
                 }
 
@@ -252,7 +256,8 @@ public class TimelineRenderer extends CoreRenderer {
                     if (groupContent != null) {
                         // content of this group was already rendered ==> reuse it
                         fsw.write(",\"group\":\"" + groupContent + "\"");
-                    } else {
+                    }
+                    else {
                         Object data = foundGroup.getData();
                         if (!ComponentUtils.isValueBlank(timeline.getVarGroup()) && data != null) {
                             context.getExternalContext().getRequestMap().put(timeline.getVarGroup(), data);
@@ -270,18 +275,22 @@ public class TimelineRenderer extends CoreRenderer {
                         fsw.write(",\"group\":\"" + groupsContent.get(foundGroup.getId()) + "\"");
                         fswHtml.reset();
                     }
-                } else if (foundGroup.getData() != null) {
+                }
+                else if (foundGroup.getData() != null) {
                     fsw.write(",\"group\":\"" + prefix + foundGroup.getData().toString() + "\"");
                 }
-            } else {
+            }
+            else {
                 // no group for the event
                 fsw.write(",\"group\":null");
             }
-        } else {
+        }
+        else {
             // group's content is coded in the event self
             if (event.getGroup() != null) {
                 fsw.write(",\"group\":\"" + event.getGroup() + "\"");
-            } else {
+            }
+            else {
                 // no group for the event
                 fsw.write(",\"group\":null");
             }
@@ -289,7 +298,8 @@ public class TimelineRenderer extends CoreRenderer {
 
         if (!ComponentUtils.isValueBlank(event.getStyleClass())) {
             fsw.write(",\"className\":\"" + event.getStyleClass() + "\"");
-        } else {
+        }
+        else {
             fsw.write(",\"className\":null");
         }
 
@@ -310,7 +320,8 @@ public class TimelineRenderer extends CoreRenderer {
             // extract the content of the event
             fsw.write(escapeText(fswHtml.toString()));
             fswHtml.reset();
-        } else if (event.getData() != null) {
+        }
+        else if (event.getData() != null) {
             fsw.write(event.getData().toString());
         }
 

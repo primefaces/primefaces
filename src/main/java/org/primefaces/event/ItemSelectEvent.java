@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,22 +19,22 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
 
 public class ItemSelectEvent extends AbstractAjaxBehaviorEvent {
-	
-	private int itemIndex;
-	
-	private int seriesIndex;
 
-	public ItemSelectEvent(UIComponent source, Behavior behavior, int itemIndex, int seriesIndex) {
-		super(source, behavior);
-		this.itemIndex = itemIndex;
-		this.seriesIndex = seriesIndex;
-	}
+    private int itemIndex;
 
-	public int getItemIndex() {
-		return itemIndex;
-	}
+    private int seriesIndex;
 
-	public int getSeriesIndex() {
-		return seriesIndex;
-	}
+    public ItemSelectEvent(UIComponent source, Behavior behavior, int itemIndex, int seriesIndex) {
+        super(source, behavior);
+        this.itemIndex = itemIndex;
+        this.seriesIndex = seriesIndex;
+    }
+
+    public int getItemIndex() {
+        return itemIndex;
+    }
+
+    public int getSeriesIndex() {
+        return seriesIndex;
+    }
 }

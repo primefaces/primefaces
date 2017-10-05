@@ -1,3 +1,18 @@
+/**
+ * Copyright 2009-2017 PrimeTek.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.primefaces.expression.impl;
 
 import java.util.List;
@@ -22,8 +37,8 @@ public class RowExpressionResolver implements SearchExpressionResolver, ClientId
     private static final Pattern PATTERN = Pattern.compile("@row\\((\\d+)\\)");
 
     public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
-        throw new FacesException("@row likely returns multiple components, therefore it's not supported in #resolveComponent... expression \"" + expression
-                + "\" referenced from \"" + source.getClientId(context) + "\".");
+        throw new FacesException("@row likely returns multiple components, therefore it's not supported in #resolveComponent... expression \""
+                + expression + "\" referenced from \"" + source.getClientId(context) + "\".");
     }
 
     public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
@@ -35,23 +50,24 @@ public class RowExpressionResolver implements SearchExpressionResolver, ClientId
         String clientIds = "";
 
         for (UIComponent column : data.getChildren()) {
-        	// handle dynamic columns
-			if (column instanceof Columns) {
+            // handle dynamic columns
+            if (column instanceof Columns) {
 
                 List<DynamicColumn> dynamicColumns = ((Columns) column).getDynamicColumns();
                 for (int i = 0; i < dynamicColumns.size(); i++) {
                     DynamicColumn dynamicColumn = dynamicColumns.get(i);
-					for (UIComponent comp : column.getChildren()) {
+                    for (UIComponent comp : column.getChildren()) {
 
-						if (clientIds.length() > 0) {
-							clientIds += " ";
-						}
+                        if (clientIds.length() > 0) {
+                            clientIds += " ";
+                        }
 
-						clientIds += data.getClientId(context) + seperatorChar + row + seperatorChar + dynamicColumn.getId() + seperatorChar + i + seperatorChar + comp.getId();
-					}
-				}
-			}
-			else if (column instanceof UIColumn) {
+                        clientIds += data.getClientId(context) + seperatorChar + row + seperatorChar
+                                + dynamicColumn.getId() + seperatorChar + i + seperatorChar + comp.getId();
+                    }
+                }
+            }
+            else if (column instanceof UIColumn) {
                 for (UIComponent cell : column.getChildren()) {
 
                     if (clientIds.length() > 0) {
@@ -90,11 +106,13 @@ public class RowExpressionResolver implements SearchExpressionResolver, ClientId
 
                 return row;
 
-            } else {
+            }
+            else {
                 throw new FacesException("Expression does not match following pattern @row(n). Expression: \"" + expression + "\"");
             }
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new FacesException("Expression does not match following pattern @row(n). Expression: \"" + expression + "\"", e);
         }
     }

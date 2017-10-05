@@ -20,19 +20,19 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class ComponentUtilsTest {
-	
-	@Test
-	public void shouldEscapeJQueryId() {
-		String id = "test";
-		
-		assertEquals("#test", ComponentUtils.escapeJQueryId(id));
-		
-		id="form:test";
-		assertEquals("#form\\:test", ComponentUtils.escapeJQueryId(id));
-	}
-	
-	@Test
-   public void createContentDisposition() {
-	   assertEquals("attachment;filename=\"Test%20Spaces.txt\"; filename*=UTF-8''Test%20Spaces.txt", ComponentUtils.createContentDisposition("attachment", "Test Spaces.txt"));
-   }
+
+    @Test
+    public void escapeSelector() {
+        String id = "test";
+
+        assertEquals("test", ComponentUtils.escapeSelector(id));
+
+        id = "form:test";
+        assertEquals("form\\\\:test", ComponentUtils.escapeSelector(id));
+    }
+
+    @Test
+    public void createContentDisposition() {
+        assertEquals("attachment;filename=\"Test%20Spaces.txt\"; filename*=UTF-8''Test%20Spaces.txt", ComponentUtils.createContentDisposition("attachment", "Test Spaces.txt"));
+    }
 }

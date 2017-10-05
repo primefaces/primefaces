@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,16 +28,16 @@ public class CurrentPageReportRenderer implements PaginatorElementRenderer {
         String template = pageable.getCurrentPageReportTemplate();
         int currentPage = pageable.getPage() + 1;
         int pageCount = pageable.getPageCount();
-        if(pageCount == 0) {
+        if (pageCount == 0) {
             pageCount = 1;
         }
-                
+
         String output = template.replaceAll("\\{currentPage\\}", Integer.toString(currentPage))
-        .replaceAll("\\{totalPages\\}", Integer.toString(pageCount))
-        .replaceAll("\\{totalRecords\\}", Integer.toString(pageable.getRowCount()))
-        .replaceAll("\\{startRecord\\}", Integer.toString(Math.min(pageable.getFirst() + 1, pageable.getRowCount())))
-        .replaceAll("\\{endRecord}", Integer.toString(Math.min(pageable.getFirst() + pageable.getRowsToRender(), pageable.getRowCount())));
-        
+                .replaceAll("\\{totalPages\\}", Integer.toString(pageCount))
+                .replaceAll("\\{totalRecords\\}", Integer.toString(pageable.getRowCount()))
+                .replaceAll("\\{startRecord\\}", Integer.toString(Math.min(pageable.getFirst() + 1, pageable.getRowCount())))
+                .replaceAll("\\{endRecord}", Integer.toString(Math.min(pageable.getFirst() + pageable.getRowsToRender(), pageable.getRowCount())));
+
         writer.startElement("span", null);
         writer.writeAttribute("class", UIData.PAGINATOR_CURRENT_CLASS, null);
         writer.writeText(output, null);

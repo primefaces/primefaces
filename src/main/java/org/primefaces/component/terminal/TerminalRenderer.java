@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ public class TerminalRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Terminal terminal = (Terminal) component;
            
-        if(terminal.isCommandRequest()) {
+        if (terminal.isCommandRequest()) {
             handleCommand(context, terminal);
         }
         else {
@@ -52,16 +52,18 @@ public class TerminalRenderer extends CoreRenderer {
         writer.startElement("div", terminal);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
         
-        if(welcomeMessage != null) {
+        if (welcomeMessage != null) {
             writer.startElement("div", null);
-            if(terminal.isEscape())
-               writer.writeText(welcomeMessage, null);
-            else
-               writer.write(welcomeMessage);
+            if (terminal.isEscape()) {
+                writer.writeText(welcomeMessage, null);
+            }
+            else {
+                writer.write(welcomeMessage);
+            }
             writer.endElement("div");
         }
         
@@ -72,10 +74,12 @@ public class TerminalRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.startElement("span", null);
         writer.writeAttribute("class", Terminal.PROMPT_CLASS, null);
-        if(terminal.isEscape())
-           writer.writeText(prompt, null);
-        else
-           writer.write(prompt);
+        if (terminal.isEscape()) {
+            writer.writeText(prompt, null);
+        }
+        else {
+            writer.write(prompt);
+        }
         writer.endElement("span");
         
         writer.startElement("input", null);
@@ -98,18 +102,17 @@ public class TerminalRenderer extends CoreRenderer {
     }
     
     protected void handleCommand(FacesContext context, Terminal terminal) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
+        ResponseWriter writer = context.getResponseWriter();
         String clientId = terminal.getClientId(context);
-		String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
-		String tokens[] = value.split(" ");
-		String command = tokens[0];
-		String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
-		
-		MethodExpression commandHandler = terminal.getCommandHandler();
-		String result = (String) commandHandler.invoke(context.getELContext(), new Object[]{command, args});
-		
-		writer.write(result);
-	}
-    
-    
+        String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
+        String tokens[] = value.split(" ");
+        String command = tokens[0];
+        String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
+
+        MethodExpression commandHandler = terminal.getCommandHandler();
+        String result = (String) commandHandler.invoke(context.getELContext(), new Object[]{command, args});
+
+        writer.write(result);
+    }
+
 }

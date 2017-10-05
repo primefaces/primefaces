@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,10 @@ class ElementList extends ArrayList<Element> {
 
     @Override
     public boolean add(Element e) {
-        if(e.getId() == null) {
+        if (e.getId() == null) {
             e.setId(UUID.randomUUID().toString());
         }
-        
+
         return super.add(e);
     }
 }

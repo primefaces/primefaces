@@ -44,6 +44,20 @@
             <defaultValue>0</defaultValue>
             <description>The barcode orientation in terms of angle (0, 90, 180, 270).</description>
 		</attribute>
+        <attribute>
+            <name>qrErrorCorrection</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>L</defaultValue>
+            <description>The QR Code error correction level. L (default) - up to 7% damage. M - up to 15% damage. Q - up to 25% damage. H - up to 30% damage</description>
+        </attribute>
+        <attribute>
+			<name>hrp</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+			<defaultValue>bottom</defaultValue>
+			<description>The barcode human readable placement of text either "none", "top", or "bottom".</description>
+		</attribute>
 		<attribute>
 			<name>value</name>
 			<required>false</required>

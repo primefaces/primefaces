@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,16 +29,16 @@ import org.primefaces.util.HTML;
 public class GrowlRenderer extends UINotificationRenderer {
 
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		Growl growl = (Growl) component;
-		String clientId = growl.getClientId(context);
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        Growl growl = (Growl) component;
+        String clientId = growl.getClientId(context);
         String widgetVar = growl.resolveWidgetVar();
-        
+
         writer.startElement("span", growl);
-		writer.writeAttribute("id", clientId, "id");
-        
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        writer.writeAttribute("id", clientId, "id");
+
+        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("class", "ui-growl-pl", null);
             writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
             writer.writeAttribute("data-global", growl.isGlobalOnly(), null);
@@ -47,9 +47,9 @@ public class GrowlRenderer extends UINotificationRenderer {
             writer.writeAttribute("data-severity", getClientSideSeverity(growl.getSeverity()), null);
             writer.writeAttribute("data-redisplay", String.valueOf(growl.isRedisplay()), null);
         }
-        
-		writer.endElement("span");
-				
+
+        writer.endElement("span");
+
         startScript(writer, clientId);
 
         writer.write("$(function(){");
@@ -63,43 +63,50 @@ public class GrowlRenderer extends UINotificationRenderer {
         encodeMessages(context, growl);
 
         writer.write("});});");
-	
-		endScript(writer);
-	}
+
+        endScript(writer);
+    }
 
     protected void encodeMessages(FacesContext context, Growl growl) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String _for = growl.getFor();
         boolean first = true;
         Iterator<FacesMessage> messages;
-        if(_for != null)
+        if (_for != null) {
             messages = context.getMessages(_for);
-        else
+        }
+        else {
             messages = growl.isGlobalOnly() ? context.getMessages(null) : context.getMessages();
-        
+        }
+
         writer.write("[");
 
-		while(messages.hasNext()) {
-			FacesMessage message = messages.next();      
+        while (messages.hasNext()) {
+            FacesMessage message = messages.next();
             String severityName = getSeverityName(message);
-            
-            if(shouldRender(growl, message, severityName)) {
-                if(!first)
+
+            if (shouldRender(growl, message, severityName)) {
+                if (!first) {
                     writer.write(",");
-                else
+                }
+                else {
                     first = false;
-                
+                }
+
                 String summary = escapeText(message.getSummary());
                 String detail = escapeText(message.getDetail());
-            
+
                 writer.write("{");
 
-                if(growl.isShowSummary() && growl.isShowDetail())
+                if (growl.isShowSummary() && growl.isShowDetail()) {
                     writer.writeText("summary:\"" + summary + "\",detail:\"" + detail + "\"", null);
-                else if(growl.isShowSummary() && !growl.isShowDetail())
+                }
+                else if (growl.isShowSummary() && !growl.isShowDetail()) {
                     writer.writeText("summary:\"" + summary + "\",detail:\"\"", null);
-                else if(!growl.isShowSummary() && growl.isShowDetail())
+                }
+                else if (!growl.isShowSummary() && growl.isShowDetail()) {
                     writer.writeText("summary:\"\",detail:\"" + detail + "\"", null);
+                }
 
                 writer.write(",severity:'" + severityName + "'");
 
@@ -107,7 +114,7 @@ public class GrowlRenderer extends UINotificationRenderer {
 
                 message.rendered();
             }
-		}
+        }
 
         writer.write("]");
     }

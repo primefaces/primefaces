@@ -118,7 +118,16 @@ if (!PrimeFaces.widget) {
          */
         removeScriptElement: function(clientId) {
             $(PrimeFaces.escapeClientId(clientId) + '_s').remove();
-        }
+        },
+        
+        hasBehavior: function(event) {
+            if(this.cfg.behaviors) {
+                return this.cfg.behaviors[event] != undefined;
+            }
+
+            return false;
+        },
+
     });
 
     /**

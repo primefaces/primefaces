@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,17 +31,17 @@ public class LinkRenderer extends OutcomeTargetRenderer {
         boolean shouldWriteId = shouldWriteId(link);
         boolean disabled = link.isDisabled();
         String style = link.getStyle();
-        String defaultStyleClass = disabled ? Link.DISABLED_STYLE_CLASS: Link.STYLE_CLASS;
+        String defaultStyleClass = disabled ? Link.DISABLED_STYLE_CLASS : Link.STYLE_CLASS;
         String styleClass = link.getStyleClass();
         styleClass = (styleClass == null) ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
-        if(disabled) {
+        if (disabled) {
             writer.startElement("span", link);
-            if(shouldWriteId) {
+            if (shouldWriteId) {
                 writer.writeAttribute("id", link.getClientId(context), "id");
             }
             writer.writeAttribute("class", styleClass, "styleClass");
-            if(style != null) {
+            if (style != null) {
                 writer.writeAttribute("style", style, "style");
             }
 
@@ -50,12 +50,12 @@ public class LinkRenderer extends OutcomeTargetRenderer {
         }
         else {
             String targetURL = getTargetURL(context, link);
-            if(targetURL == null) {
+            if (targetURL == null) {
                 targetURL = "#";
             }
 
             writer.startElement("a", link);
-            if(shouldWriteId) {
+            if (shouldWriteId) {
                 writer.writeAttribute("id", link.getClientId(context), "id");
             }
             writer.writeAttribute("href", targetURL, null);
@@ -71,11 +71,13 @@ public class LinkRenderer extends OutcomeTargetRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Object value = link.getValue();
 
-        if(value != null) {
-            if(link.isEscape())
+        if (value != null) {
+            if (link.isEscape()) {
                 writer.writeText(value, "value");
-            else
+            }
+            else {
                 writer.write(value.toString());
+            }
         }
         else {
             renderChildren(context, link);

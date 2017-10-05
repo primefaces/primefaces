@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,8 +37,7 @@ import org.primefaces.expression.impl.ThisExpressionResolver;
 import org.primefaces.expression.impl.WidgetVarExpressionResolver;
 
 /**
- * Factory for providing different {@link SearchExpressionResolver} for
- * expressions.
+ * Factory for providing different {@link SearchExpressionResolver} for expressions.
  */
 public class SearchExpressionResolverFactory {
 
@@ -64,6 +63,13 @@ public class SearchExpressionResolverFactory {
         RESOLVER_MAPPING.put(SearchExpressionConstants.ROOT_KEYWORD, new RootExpressionResolver());
     }
 
+    /*
+     * Prevent instantiation.
+     */
+    private SearchExpressionResolverFactory() {
+
+    }
+    
     /**
      * Finds a {@link SearchExpressionResolver} for the given expression.
      *
@@ -79,10 +85,12 @@ public class SearchExpressionResolverFactory {
             if (parenthesisPosition > 0) {
                 String expressionWithoutParam = expression.substring(0, parenthesisPosition);
                 resolver = RESOLVER_MAPPING.get(expressionWithoutParam);
-            } else {
+            }
+            else {
                 resolver = RESOLVER_MAPPING.get(expression);
             }
-        } else {
+        }
+        else {
             // if it's not a keyword, just delegate it to JSF
             resolver = FIND_COMPONENT_EXPRESSION_RESOLVER;
         }
@@ -100,12 +108,5 @@ public class SearchExpressionResolverFactory {
 
     public static SearchExpressionResolver removeResolver(final String keyword) {
         return RESOLVER_MAPPING.remove(keyword);
-    }
-
-    /**
-     * Prevent instantiation.
-     */
-    private SearchExpressionResolverFactory() {
-
     }
 }

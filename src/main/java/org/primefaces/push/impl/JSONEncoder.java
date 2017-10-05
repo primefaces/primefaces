@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,26 +24,28 @@ import org.primefaces.util.BeanUtils;
 public class JSONEncoder implements Encoder<Object, String> {
 
     private final static String PRIMITIVE_DATA = "pfpd";
-    
+
+    @Override
     public String encode(Object object) {
-        if(object == null) {
+        if (object == null) {
             return null;
         }
-        
+
         try {
             String json;
-            
-            if(object instanceof Map) {
+
+            if (object instanceof Map) {
                 json = new JSONObject((Map) object).toString();
             }
             else if (BeanUtils.isBean(object.getClass())) {
                 json = new JSONObject(object).toString();
-            }  else {
+            }
+            else {
                 json = new JSONObject().put(PRIMITIVE_DATA, object).toString();
             }
 
             return json;
-        } 
+        }
         catch (JSONException e) {
             throw new RuntimeException(e);
         }

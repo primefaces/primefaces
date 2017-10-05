@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,35 +20,35 @@ import javax.faces.component.behavior.Behavior;
 
 public class DashboardReorderEvent extends AbstractAjaxBehaviorEvent {
 
-	private String widgetId;
+    private String widgetId;
 
-	private Integer itemIndex;
-	
-	private Integer columnIndex;
-	
-	private Integer senderColumnIndex;
+    private Integer itemIndex;
+
+    private Integer columnIndex;
+
+    private Integer senderColumnIndex;
 
     public DashboardReorderEvent(UIComponent component, Behavior behavior, String widgetId, Integer itemIndex, Integer columnIndex, Integer senderColumnIndex) {
-		super(component, behavior);
-		this.widgetId = widgetId;
-		this.itemIndex = itemIndex;
-		this.columnIndex = columnIndex;
-		this.senderColumnIndex = senderColumnIndex;
-	}
+        super(component, behavior);
+        this.widgetId = widgetId;
+        this.itemIndex = itemIndex;
+        this.columnIndex = columnIndex;
+        this.senderColumnIndex = senderColumnIndex;
+    }
 
-	public String getWidgetId() {
-		return widgetId;
-	}
-	
-	public Integer getItemIndex() {
-		return itemIndex;
-	}
-	
-	public Integer getColumnIndex() {
-		return columnIndex;
-	}
+    public String getWidgetId() {
+        return widgetId;
+    }
 
-	public Integer getSenderColumnIndex() {
-		return senderColumnIndex;
-	}
+    public Integer getItemIndex() {
+        return itemIndex;
+    }
+
+    public Integer getColumnIndex() {
+        return columnIndex;
+    }
+
+    public Integer getSenderColumnIndex() {
+        return senderColumnIndex;
+    }
 }

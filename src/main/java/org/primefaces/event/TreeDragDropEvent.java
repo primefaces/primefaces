@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,18 +21,18 @@ import org.primefaces.model.TreeNode;
 
 public class TreeDragDropEvent extends AbstractAjaxBehaviorEvent {
 
-	private TreeNode dragNode;
-    
+    private TreeNode dragNode;
+
     private TreeNode dropNode;
-    
+
     private int dropIndex;
-    
-	public TreeDragDropEvent(UIComponent component, Behavior behavior, TreeNode dragNode, TreeNode dropNode, int dropIndex) {
-		super(component, behavior);
-		this.dragNode = dragNode;
+
+    public TreeDragDropEvent(UIComponent component, Behavior behavior, TreeNode dragNode, TreeNode dropNode, int dropIndex) {
+        super(component, behavior);
+        this.dragNode = dragNode;
         this.dropNode = dropNode;
         this.dropIndex = dropIndex;
-	}
+    }
 
     public TreeNode getDragNode() {
         return dragNode;

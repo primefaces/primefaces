@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,16 +20,16 @@ import java.io.InputStream;
 
 public interface UploadedFile {
 
-	public String getFileName();
-	
-	public InputStream getInputstream() throws IOException;
-	
-	public long getSize();
-	
-	public byte[] getContents();
-	
-	public String getContentType();
-    
+    public String getFileName();
+
+    public InputStream getInputstream() throws IOException;
+
+    public long getSize();
+
+    public byte[] getContents();
+
+    public String getContentType();
+
     /**
      * Writes the uploaded file to the given file path.
      *

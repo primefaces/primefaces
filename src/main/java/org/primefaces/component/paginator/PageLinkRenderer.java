@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2015 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,12 +34,12 @@ public class PageLinkRenderer {
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("aria-label", ariaLabel, null);
         writer.writeAttribute("tabindex", tabindex, null);
-        
+
         writer.startElement("span", null);
         writer.writeAttribute("class", iconClass, null);
         writer.writeText(text, null);
         writer.endElement("span");
-        
+
         writer.endElement("a");
-    }    
+    }
 }

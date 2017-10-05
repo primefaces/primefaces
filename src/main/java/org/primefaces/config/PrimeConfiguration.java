@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.validation.Validation;
 
-
 import org.primefaces.util.Constants;
 
 /**
@@ -44,13 +43,13 @@ public class PrimeConfiguration {
     private boolean partialSubmitEnabled = false;
     private boolean resetValuesEnabled = false;
     private boolean interpretEmptyStringAsNull = false;
-    private String  secretKey = null;
-    private String  pushServerURL = null;
-    private String  theme = null;
-    private String  mobileTheme = null;
+    private String secretKey = null;
+    private String pushServerURL = null;
+    private String theme = null;
+    private String mobileTheme = null;
     private boolean fontAwesomeEnabled = false;
     private boolean clientSideValidationEnabled = false;
-    private String  uploader = null;
+    private String uploader = null;
     private boolean transformMetadataEnabled = false;
     private boolean legacyWidgetNamespace = false;
     private boolean beanValidationDisabled = false;
@@ -92,11 +91,13 @@ public class PrimeConfiguration {
         if (jsf23) {
             jsf22 = true;
             jsf21 = true;
-        } else {
+        }
+        else {
             jsf22 = detectJSF22();
             if (jsf22) {
                 jsf21 = true;
-            } else {
+            }
+            else {
                 jsf21 = detectJSF21();
             }
         }
@@ -191,7 +192,8 @@ public class PrimeConfiguration {
             is = getClass().getResourceAsStream("/META-INF/maven/org.primefaces/primefaces/pom.properties");
             buildProperties.load(is);
             buildVersion = buildProperties.getProperty("version");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.log(Level.SEVERE, "Could not load pom.properties", e);
         }
 
@@ -199,17 +201,19 @@ public class PrimeConfiguration {
             try {
                 is.close();
             }
-            catch (IOException e) { }
+            catch (IOException e) {
+            }
         }
     }
 
     private boolean checkIfBeanValidationIsAvailable() {
-    	boolean available = false;
+        boolean available = false;
 
-    	// check if class is available
+        // check if class is available
         try {
             available = Class.forName("javax.validation.Validation") != null;
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e) {
             available = false;
         }
 
@@ -218,10 +222,11 @@ public class PrimeConfiguration {
             // If any Exception occurs here, we assume that Bean Validation is not available.
             // The cause may be anything, i.e. NoClassDef, config error...
             try {
-            	Validation.buildDefaultValidatorFactory().getValidator();
-            } catch (Throwable t) {
-            	LOG.log(Level.FINE, "BV not available - Could not build default ValidatorFactory.");
-            	available = false;
+                Validation.buildDefaultValidatorFactory().getValidator();
+            }
+            catch (Throwable t) {
+                LOG.log(Level.FINE, "BV not available - Could not build default ValidatorFactory.");
+                available = false;
             }
         }
 
@@ -229,11 +234,12 @@ public class PrimeConfiguration {
     }
 
     private boolean checkIfEL22IsAvailable() {
-    	boolean available;
+        boolean available;
 
         try {
             available = Class.forName("javax.el.ValueReference") != null;
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e) {
             available = false;
         }
 
@@ -243,7 +249,7 @@ public class PrimeConfiguration {
     private boolean detectJSF23() {
         String version = FacesContext.class.getPackage().getImplementationVersion();
 
-        if(version != null) {
+        if (version != null) {
             return version.startsWith("2.3");
         }
         else {
@@ -261,7 +267,7 @@ public class PrimeConfiguration {
     private boolean detectJSF22() {
         String version = FacesContext.class.getPackage().getImplementationVersion();
 
-        if(version != null) {
+        if (version != null) {
             return version.startsWith("2.2");
         }
         else {
@@ -279,7 +285,7 @@ public class PrimeConfiguration {
     private boolean detectJSF21() {
         String version = FacesContext.class.getPackage().getImplementationVersion();
 
-        if(version != null) {
+        if (version != null) {
             return version.startsWith("2.1");
         }
         else {
@@ -294,8 +300,7 @@ public class PrimeConfiguration {
         }
     }
 
-    private boolean detectBV11()
-    {
+    private boolean detectBV11() {
         try {
             Class.forName("javax.validation.executable.ExecutableValidator");
             return true;
@@ -353,7 +358,7 @@ public class PrimeConfiguration {
     }
 
     public boolean isResetValuesEnabled() {
-    	return resetValuesEnabled;
+        return resetValuesEnabled;
     }
 
     public boolean isClientSideValidationEnabled() {

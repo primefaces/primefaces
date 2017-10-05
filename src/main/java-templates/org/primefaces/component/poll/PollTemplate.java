@@ -17,7 +17,7 @@ import org.primefaces.context.RequestContext;
         	
         	if (Boolean.TRUE.equals(stop)) {
         		String widgetVar = resolveWidgetVar();
-        		RequestContext requestContext = RequestContext.getCurrentInstance();
+        		RequestContext requestContext = RequestContext.getCurrentInstance(getFacesContext());
         		requestContext.execute("PF('" + widgetVar + "').stop();");
         	}
         }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,8 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
-public class TreeNodeComparator implements Comparator{
+public class TreeNodeComparator implements Comparator {
+
     private ValueExpression sortBy;
     private boolean asc;
     private String var;
@@ -30,7 +31,8 @@ public class TreeNodeComparator implements Comparator{
     private boolean caseSensitive = false;
     private Locale locale;
 
-    public TreeNodeComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction, boolean caseSensitive, Locale locale) {
+    public TreeNodeComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction, boolean caseSensitive,
+            Locale locale) {
         this.sortBy = sortBy;
         this.var = var;
         this.asc = sortOrder.equals(SortOrder.ASCENDING);
@@ -50,28 +52,34 @@ public class TreeNodeComparator implements Comparator{
             Object value2 = sortBy.getValue(context.getELContext());
 
             int result;
-            
+
             //Empty check
             if (value1 == null && value2 == null) {
-            	return 0;
-            } else if (value1 == null) {
-            	result = 1;
-            } else if (value2 == null) {
-            	result = -1;
-            } else if (sortFunction == null) {
-                if(value1 instanceof String && value2 instanceof String) {
-                    result = this.caseSensitive ? ((Comparable) value1).compareTo(value2):
-                                        (((String) value1).toLowerCase(locale)).compareTo(((String) value2).toLowerCase(locale));
-                } else {
+                return 0;
+            }
+            else if (value1 == null) {
+                result = 1;
+            }
+            else if (value2 == null) {
+                result = -1;
+            }
+            else if (sortFunction == null) {
+                if (value1 instanceof String && value2 instanceof String) {
+                    result = this.caseSensitive ? ((Comparable) value1).compareTo(value2)
+                            : (((String) value1).toLowerCase(locale)).compareTo(((String) value2).toLowerCase(locale));
+                }
+                else {
                     result = ((Comparable) value1).compareTo(value2);
                 }
-            } else {
+            }
+            else {
                 result = (Integer) sortFunction.invoke(context.getELContext(), new Object[]{value1, value2});
             }
 
             return asc ? result : -1 * result;
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new FacesException(e);
         }
     }

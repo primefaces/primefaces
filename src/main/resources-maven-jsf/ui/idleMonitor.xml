@@ -44,7 +44,14 @@
             <name>onactive</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Client side callback to execute when user goes idle.</description>
+            <description>Client side callback to execute when user is active again.</description>
+        </attribute>
+        <attribute>
+            <name>multiWindowSupport</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When set to true, the lastAccessed state will be shared between all browser windows for the same servlet context.</description>
         </attribute>
     </attributes>
     <resources>

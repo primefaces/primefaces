@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,32 +20,33 @@ import java.util.Map;
 import org.primefaces.util.HTML;
 
 public class NumberConverter extends javax.faces.convert.NumberConverter implements ClientConverter {
-    
-    private Map<String,Object> metadata;
-    
+
+    private Map<String, Object> metadata;
+
     public Map<String, Object> getMetadata() {
-        if(metadata == null) {
+        if (metadata == null) {
             String type = this.getType();
             int maxIntegerDigits = this.getMaxIntegerDigits();
             int minFractionDigits = this.getMinFractionDigits();
             boolean integerOnly = this.isIntegerOnly();
 
             metadata = new HashMap<String, Object>();
-            
+
             metadata.put(HTML.VALIDATION_METADATA.NUMBER_TYPE, type);
-            
-            if(maxIntegerDigits != 0) metadata.put(HTML.VALIDATION_METADATA.MAX_INTEGER_DIGITS, maxIntegerDigits);
-            if(minFractionDigits != 0) metadata.put(HTML.VALIDATION_METADATA.MIN_FRACTION_DIGITS, minFractionDigits);
-            if(integerOnly) metadata.put(HTML.VALIDATION_METADATA.INTEGER_ONLY, "true");
-            
-            if(type.equals("currency")) {
+
+            if (maxIntegerDigits != 0) metadata.put(HTML.VALIDATION_METADATA.MAX_INTEGER_DIGITS, maxIntegerDigits);
+            if (minFractionDigits != 0) metadata.put(HTML.VALIDATION_METADATA.MIN_FRACTION_DIGITS, minFractionDigits);
+            if (integerOnly) metadata.put(HTML.VALIDATION_METADATA.INTEGER_ONLY, "true");
+
+            if (type.equals("currency")) {
                 String currencySymbol = this.getCurrencySymbol();
-                
-                if(currencySymbol != null) 
+
+                if (currencySymbol != null) {
                     metadata.put(HTML.VALIDATION_METADATA.CURRENCY_SYMBOL, currencySymbol);
+                }
             }
         }
-        
+
         return metadata;
     }
 

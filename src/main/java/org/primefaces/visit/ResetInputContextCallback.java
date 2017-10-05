@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2013 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,17 +22,17 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 
 public class ResetInputContextCallback implements ContextCallback {
-    
+
     private VisitContext visitContext;
-    
+
     public ResetInputContextCallback(VisitContext visitContext) {
         this.visitContext = visitContext;
     }
-    
+
     public void invokeContextCallback(FacesContext fc, UIComponent component) {
         if (component instanceof EditableValueHolder) {
-            ((EditableValueHolder)component).resetValue();
-        } 
+            ((EditableValueHolder) component).resetValue();
+        }
         else {
             component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
         }

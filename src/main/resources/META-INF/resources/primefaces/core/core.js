@@ -69,11 +69,11 @@
             this.nonAjaxPosted = true;
             this.abortXHRs();
         },
-        
+
         abortXHRs : function() {
             PrimeFaces.ajax.Queue.abortAll();
         },
-        
+
         attachBehaviors : function(element, behaviors) {
             $.each(behaviors, function(event, fn) {
                 element.bind(event, function(e) {
@@ -182,11 +182,6 @@
             });
 
             return this;
-        },
-
-        //Deprecated, use PrimeFaces.env.isIE instead
-        isIE: function(version) {
-            return PrimeFaces.env.isIE(version);
         },
 
         info: function(log) {
@@ -342,13 +337,13 @@
          * @returns {string} The resource URL.
          */
         getFacesResource : function(name, library, version) {
-            
+
             // just get sure - name shoudln't start with a slash
             if (name.indexOf('/') === 0)
             {
                 name = name.substring(1, name.length);
             }
-            
+
             var scriptURI = $('script[src*="/' + PrimeFaces.RESOURCE_IDENTIFIER + '/core.js"]').attr('src');
             // portlet
             if (!scriptURI) {
@@ -388,7 +383,7 @@
                 success: callback,
                 dataType: "script",
                 cache: true,
-                async: false
+                async: true
             });
         },
 
@@ -403,11 +398,13 @@
                         jq.focus();
                     }
                     else {
-                        jq.find(selector).eq(0).focus();
+                        var firstElement = jq.find(selector).eq(0);
+                        PrimeFaces.focusElement(firstElement);
                     }
                 }
                 else if(context) {
-                    $(PrimeFaces.escapeClientId(context)).find(selector).eq(0).focus();
+                    var firstElement = $(PrimeFaces.escapeClientId(context)).find(selector).eq(0);
+                    PrimeFaces.focusElement(firstElement);
                 }
                 else {
                     var elements = $(selector),
@@ -415,9 +412,9 @@
                     if(firstElement.is(':radio')) {
                         var checkedRadio = $(':radio[name="' + firstElement.attr('name') + '"]').filter(':checked');
                         if(checkedRadio.length)
-                            checkedRadio.focus();
+                            PrimeFaces.focusElement(checkedRadio);
                         else
-                            firstElement.focus();
+                            PrimeFaces.focusElement(firstElement);
                     }
                     else {
                         firstElement.focus();
@@ -428,6 +425,15 @@
             // remember that a custom focus has been rendered
             // this avoids to retain the last focus after ajax update
             PrimeFaces.customFocus = true;
+        },
+
+        focusElement: function(el) {
+            if(el.is(':radio') && el.hasClass('ui-helper-hidden-accessible')) {
+                el.parent().focus();
+            }
+            else {
+                el.focus();
+            }
         },
 
         monitorDownload: function(start, complete, monitorKey) {
@@ -609,12 +615,12 @@
 
             return this.localeSettings;
         },
-        
+
         getAriaLabel: function(key) {
             var ariaLocaleSettings = this.getLocaleSettings()['aria'];
             return (ariaLocaleSettings&&ariaLocaleSettings[key]) ? ariaLocaleSettings[key] : PrimeFaces.locales['en_US']['aria'][key];
         },
-        
+
         zindex : 1000,
 
         customFocus : false,
@@ -636,7 +642,7 @@
         RESET_VALUES_PARAM : "primefaces.resetvalues",
 
         IGNORE_AUTO_UPDATE_PARAM : "primefaces.ignoreautoupdate",
-        
+
         SKIP_CHILDREN_PARAM : "primefaces.skipchildren",
 
         VIEW_STATE : "javax.faces.ViewState",
@@ -699,7 +705,7 @@
         }
 
     };
-    
+
     PrimeFaces.locales['en'] = PrimeFaces.locales['en_US'];
 
     PF = function(widgetVar) {

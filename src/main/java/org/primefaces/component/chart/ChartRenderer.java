@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,17 +32,17 @@ import org.primefaces.component.chart.renderer.MeterGaugeRenderer;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class ChartRenderer extends CoreRenderer {
-    
-    private final static String TYPE_PIE = "pie";
-    private final static String TYPE_LINE = "line";
-    private final static String TYPE_BAR = "bar";
-    private final static String TYPE_OHLC = "ohlc";
-    private final static String TYPE_DONUT = "donut";
-    private final static String TYPE_BUBBLE = "bubble";
-    private final static String TYPE_METERGAUGE = "metergauge";
-    
-    final static Map<String,org.primefaces.component.chart.renderer.BasePlotRenderer> CHART_RENDERERS;
-    
+
+    private static final String TYPE_PIE = "pie";
+    private static final String TYPE_LINE = "line";
+    private static final String TYPE_BAR = "bar";
+    private static final String TYPE_OHLC = "ohlc";
+    private static final String TYPE_DONUT = "donut";
+    private static final String TYPE_BUBBLE = "bubble";
+    private static final String TYPE_METERGAUGE = "metergauge";
+
+    private static final Map<String, org.primefaces.component.chart.renderer.BasePlotRenderer> CHART_RENDERERS;
+
     static {
         CHART_RENDERERS = new HashMap<String, org.primefaces.component.chart.renderer.BasePlotRenderer>();
         CHART_RENDERERS.put(TYPE_PIE, new PieRenderer());
@@ -53,52 +53,52 @@ public class ChartRenderer extends CoreRenderer {
         CHART_RENDERERS.put(TYPE_BUBBLE, new BubbleRenderer());
         CHART_RENDERERS.put(TYPE_METERGAUGE, new MeterGaugeRenderer());
     }
-    
+
     @Override
-	public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, UIComponent component) {
         super.decodeBehaviors(context, component);
-	}
-    
+    }
+
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException{
-		Chart chart = (Chart) component;
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        Chart chart = (Chart) component;
 
         encodeMarkup(context, chart);
         encodeScript(context, chart);
-	}
-		
-	protected void encodeMarkup(FacesContext context, Chart chart) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
+    }
+
+    protected void encodeMarkup(FacesContext context, Chart chart) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         String style = chart.getStyle();
         String styleClass = chart.getStyleClass();
 
-		writer.startElement("div", null);
-		writer.writeAttribute("id", chart.getClientId(context), null);
-        if(style != null) writer.writeAttribute("style", style, "style");
-		if(styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
-		
-		writer.endElement("div");
-	}
-    
-    protected void encodeScript(FacesContext context, Chart chart) throws IOException{
-		ResponseWriter writer = context.getResponseWriter();
+        writer.startElement("div", null);
+        writer.writeAttribute("id", chart.getClientId(context), null);
+        if (style != null) writer.writeAttribute("style", style, "style");
+        if (styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
+
+        writer.endElement("div");
+    }
+
+    protected void encodeScript(FacesContext context, Chart chart) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         String type = chart.getType();
         BasePlotRenderer plotRenderer = CHART_RENDERERS.get(type);
-		String clientId = chart.getClientId(context);
-				
+        String clientId = chart.getClientId(context);
+
         startScript(writer, clientId);
-		
-		writer.write("$(function(){");
+
+        writer.write("$(function(){");
         writer.write("PrimeFaces.cw('Chart','" + chart.resolveWidgetVar() + "',{");
         writer.write("id:'" + clientId + "'");
         writer.write(",type:'" + type + "'");
-        
-        if(chart.isResponsive()) writer.write(",responsive:true");
-        
+
+        if (chart.isResponsive()) writer.write(",responsive:true");
+
         plotRenderer.render(context, chart);
         encodeClientBehaviors(context, chart);
-		writer.write("},'charts');});");
-        
-		endScript(writer);
-	}
+        writer.write("},'charts');});");
+
+        endScript(writer);
+    }
 }

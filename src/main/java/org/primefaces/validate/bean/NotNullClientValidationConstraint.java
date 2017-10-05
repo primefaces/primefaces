@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,18 +21,19 @@ import javax.validation.constraints.NotNull;
 import javax.validation.metadata.ConstraintDescriptor;
 
 public class NotNullClientValidationConstraint implements ClientValidationConstraint {
+
     private static final String MESSAGE_METADATA = "data-p-notnull-msg";
     private static final String MESSAGE_ID = "{javax.validation.constraints.NotNull.message}";
-    
-    public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {      
-        Map<String,Object> metadata = new HashMap<String, Object>();
+
+    public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
+        Map<String, Object> metadata = new HashMap<String, Object>();
         Map attrs = constraintDescriptor.getAttributes();
         Object message = attrs.get(ATTR_MESSAGE);
-        
-        if(!message.equals(MESSAGE_ID)) {
+
+        if (!message.equals(MESSAGE_ID)) {
             metadata.put(MESSAGE_METADATA, message);
         }
-        
+
         return metadata;
     }
 

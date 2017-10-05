@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,8 @@ public class OrganigramNodeDragDropEvent extends AbstractOrganigramNodeEvent {
     private final OrganigramNode targetOrganigramNode;
     private final OrganigramNode sourceOrganigramNode;
 
-    public OrganigramNodeDragDropEvent(UIComponent component, Behavior behavior, OrganigramNode organigramNode, OrganigramNode targetOrganigramNode, OrganigramNode sourceOrganigramNode) {
+    public OrganigramNodeDragDropEvent(UIComponent component, Behavior behavior, OrganigramNode organigramNode,
+            OrganigramNode targetOrganigramNode, OrganigramNode sourceOrganigramNode) {
         super(component, behavior, organigramNode);
         this.targetOrganigramNode = targetOrganigramNode;
         this.sourceOrganigramNode = sourceOrganigramNode;

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,40 +37,40 @@ import org.primefaces.util.WidgetBuilder;
 public class ScheduleRenderer extends CoreRenderer {
 
     private final static Logger LOG = Logger.getLogger(ScheduleRenderer.class.getName());
-    
+
     @Override
-	public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, UIComponent component) {
         Schedule schedule = (Schedule) component;
         String clientId = schedule.getClientId(context);
         String viewId = clientId + "_view";
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        
-        if(params.containsKey(viewId)) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+
+        if (params.containsKey(viewId)) {
             schedule.setView(params.get(viewId));
         }
-        
+
         decodeBehaviors(context, component);
-	}
+    }
 
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		Schedule schedule = (Schedule) component;
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        Schedule schedule = (Schedule) component;
 
-        if(context.getExternalContext().getRequestParameterMap().containsKey(schedule.getClientId(context))) {
+        if (context.getExternalContext().getRequestParameterMap().containsKey(schedule.getClientId(context))) {
             encodeEvents(context, schedule);
-        } 
+        }
         else {
             encodeMarkup(context, schedule);
             encodeScript(context, schedule);
         }
-	}
-	
-	protected void encodeEvents(FacesContext context, Schedule schedule) throws IOException {
-		String clientId = schedule.getClientId(context);
-		ScheduleModel model = (ScheduleModel) schedule.getValue();
-		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-		
-        if(model instanceof LazyScheduleModel) {
+    }
+
+    protected void encodeEvents(FacesContext context, Schedule schedule) throws IOException {
+        String clientId = schedule.getClientId(context);
+        ScheduleModel model = (ScheduleModel) schedule.getValue();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+
+        if (model instanceof LazyScheduleModel) {
             String startDateParam = params.get(clientId + "_start");
             String endDateParam = params.get(clientId + "_end");
 
@@ -78,206 +78,208 @@ public class ScheduleRenderer extends CoreRenderer {
             Date endDate = new Date(Long.valueOf(endDateParam));
 
             LazyScheduleModel lazyModel = ((LazyScheduleModel) model);
-            lazyModel.clear();							//Clear old events
-            lazyModel.loadEvents(startDate, endDate);	//Lazy load events
+            lazyModel.clear(); //Clear old events
+            lazyModel.loadEvents(startDate, endDate); //Lazy load events
         }
-		
-		encodeEventsAsJSON(context, schedule, model);
-	}
-	
-	protected void encodeEventsAsJSON(FacesContext context, Schedule schedule, ScheduleModel model) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
+
+        encodeEventsAsJSON(context, schedule, model);
+    }
+
+    protected void encodeEventsAsJSON(FacesContext context, Schedule schedule, ScheduleModel model) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         TimeZone timeZone = schedule.calculateTimeZone();
 
         SimpleDateFormat iso = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
         iso.setTimeZone(timeZone);
         writer.write("{");
         writer.write("\"events\" : [");
-		
-        if(model != null) {
-            for(Iterator<ScheduleEvent> iterator = model.getEvents().iterator(); iterator.hasNext();) {
+
+        if (model != null) {
+            for (Iterator<ScheduleEvent> iterator = model.getEvents().iterator(); iterator.hasNext();) {
                 ScheduleEvent event = iterator.next();
                 String className = event.getStyleClass();
                 String description = event.getDescription();
                 String url = event.getUrl();
-               
+
                 writer.write("{");
-                writer.write("\"id\": \"" + event.getId() + "\"");	
+                writer.write("\"id\": \"" + event.getId() + "\"");
                 writer.write(",\"title\": \"" + escapeText(event.getTitle()) + "\"");
-                writer.write(",\"start\": \"" + iso.format(event.getStartDate()) + "\"");	
+                writer.write(",\"start\": \"" + iso.format(event.getStartDate()) + "\"");
                 writer.write(",\"end\": \"" + iso.format(event.getEndDate()) + "\"");
                 writer.write(",\"allDay\":" + event.isAllDay());
                 writer.write(",\"editable\":" + event.isEditable());
-                if(className != null) {
+                if (className != null) {
                     writer.write(",\"className\":\"" + className + "\"");
                 }
-                if(description != null) {
+                if (description != null) {
                     writer.write(",\"description\":\"" + escapeText(description) + "\"");
                 }
-                if(url != null) {
+                if (url != null) {
                     writer.write(",\"url\":\"" + escapeText(url) + "\"");
                 }
-                
+
                 writer.write("}");
 
-                if(iterator.hasNext()) {
+                if (iterator.hasNext()) {
                     writer.write(",");
                 }
             }
         }
-		
-		writer.write("]}");	
-	}
 
-	protected void encodeScript(FacesContext context, Schedule schedule) throws IOException {
-		String clientId = schedule.getClientId(context);
+        writer.write("]}");
+    }
+
+    protected void encodeScript(FacesContext context, Schedule schedule) throws IOException {
+        String clientId = schedule.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("Schedule", schedule.resolveWidgetVar(), clientId)
-            .attr("defaultView", schedule.getView())
-            .attr("locale", schedule.calculateLocale(context).toString())
-            .attr("tooltip", schedule.isTooltip(), false)
-            .attr("eventLimit", ((ScheduleModel) schedule.getValue()).isEventLimit(), false)
-            .attr("lazyFetching", false);
-        
+                .attr("defaultView", schedule.getView())
+                .attr("locale", schedule.calculateLocale(context).toString())
+                .attr("tooltip", schedule.isTooltip(), false)
+                .attr("eventLimit", ((ScheduleModel) schedule.getValue()).isEventLimit(), false)
+                .attr("lazyFetching", false);
+
         Object initialDate = schedule.getInitialDate();
-        if(initialDate != null) {
+        if (initialDate != null) {
             DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-            
-            wb.attr("defaultDate",fmt.format((Date) initialDate), null);
-		}
-        
-        if(schedule.isShowHeader()) {
+
+            wb.attr("defaultDate", fmt.format((Date) initialDate), null);
+        }
+
+        if (schedule.isShowHeader()) {
             wb.append(",header:{left:'")
-                .append(schedule.getLeftHeaderTemplate()).append("'")
-                .attr("center", schedule.getCenterHeaderTemplate())
-                .attr("right", schedule.getRightHeaderTemplate())
-                .append("}");
-		} 
+                    .append(schedule.getLeftHeaderTemplate()).append("'")
+                    .attr("center", schedule.getCenterHeaderTemplate())
+                    .attr("right", schedule.getRightHeaderTemplate())
+                    .append("}");
+        }
         else {
             wb.attr("header", false);
-		}
-        
+        }
+
         //deprecated options
         String slotDuration = schedule.getSlotDuration();
         int slotMinutes = schedule.getSlotMinutes();
-        if(slotMinutes != 30) {
+        if (slotMinutes != 30) {
             LOG.warning("slotMinutes is deprecated, use slotDuration instead.");
             slotDuration = "00:" + slotMinutes + ":00";
         }
-        
+
         String scrollTime = schedule.getScrollTime();
         int firstHour = schedule.getFirstHour();
-        if(firstHour != 6) {
+        if (firstHour != 6) {
             LOG.warning("firstHour is deprecated, use scrollTime instead.");
             scrollTime = firstHour + ":00:00";
         }
-        
+
         String clientTimezone = schedule.getClientTimeZone();
         boolean ignoreTimezone = schedule.isIgnoreTimezone();
-        if(!ignoreTimezone) {
+        if (!ignoreTimezone) {
             LOG.warning("ignoreTimezone is deprecated, use clientTimezone instead with 'local' setting.");
             clientTimezone = "local";
         }
-        
+
         boolean isShowWeekNumbers = schedule.isShowWeekNumbers();
-        
+
         wb.attr("allDaySlot", schedule.isAllDaySlot(), true)
-            .attr("slotDuration", slotDuration, "00:30:00")
-            .attr("scrollTime", scrollTime, "06:00:00")
-            .attr("timezone", clientTimezone, null)
-            .attr("minTime", schedule.getMinTime(), null)
-            .attr("maxTime", schedule.getMaxTime(), null)
-            .attr("aspectRatio", schedule.getAspectRatio(), Double.MIN_VALUE)
-            .attr("weekends", schedule.isShowWeekends(), true)
-            .attr("eventStartEditable", schedule.isDraggable(), true)
-            .attr("eventDurationEditable", schedule.isResizable(), true)    
-            .attr("axisFormat", schedule.getAxisFormat(), null)
-            .attr("timeFormat", schedule.getTimeFormat(), null)
-            .attr("weekNumbers", isShowWeekNumbers, false)
-            .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00")
-            .attr("slotEventOverlap", schedule.isSlotEventOverlap(), true)
-            .attr("urlTarget", schedule.getUrlTarget(), "_blank");
-                
+                .attr("slotDuration", slotDuration, "00:30:00")
+                .attr("scrollTime", scrollTime, "06:00:00")
+                .attr("timezone", clientTimezone, null)
+                .attr("minTime", schedule.getMinTime(), null)
+                .attr("maxTime", schedule.getMaxTime(), null)
+                .attr("aspectRatio", schedule.getAspectRatio(), Double.MIN_VALUE)
+                .attr("weekends", schedule.isShowWeekends(), true)
+                .attr("eventStartEditable", schedule.isDraggable(), true)
+                .attr("eventDurationEditable", schedule.isResizable(), true)
+                .attr("axisFormat", schedule.getAxisFormat(), null)
+                .attr("timeFormat", schedule.getTimeFormat(), null)
+                .attr("weekNumbers", isShowWeekNumbers, false)
+                .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00")
+                .attr("slotEventOverlap", schedule.isSlotEventOverlap(), true)
+                .attr("urlTarget", schedule.getUrlTarget(), "_blank");
+
         String columnFormat = schedule.getColumnFormat();
-        if(columnFormat != null) {
+        if (columnFormat != null) {
             wb.append(",columnFormatOptions:{" + columnFormat + "}");
         }
-        
+
         String displayEventEnd = schedule.getDisplayEventEnd();
-        if(displayEventEnd != null) {
-            if(displayEventEnd.equals("true")||displayEventEnd.equals("false"))
+        if (displayEventEnd != null) {
+            if (displayEventEnd.equals("true") || displayEventEnd.equals("false")) {
                 wb.nativeAttr("displayEventEnd", displayEventEnd);
-            else
+            }
+            else {
                 wb.nativeAttr("displayEventEnd", "{" + displayEventEnd + "}");
+            }
         }
-        
+
         String extender = schedule.getExtender();
-        if(extender != null) {
+        if (extender != null) {
             wb.nativeAttr("extender", extender);
         }
-        
-        if(isShowWeekNumbers) {
+
+        if (isShowWeekNumbers) {
             String weekNumCalculation = schedule.getWeekNumberCalculation();
             String weekNumCalculator = schedule.getWeekNumberCalculator();
-            
-            if(weekNumCalculation.equals("custom")) {
-                if(weekNumCalculator != null) {
+
+            if (weekNumCalculation.equals("custom")) {
+                if (weekNumCalculator != null) {
                     wb.append(",weekNumberCalculation: function(){ return ")
-                        .append(schedule.getWeekNumberCalculator())
-                        .append("}");
+                            .append(schedule.getWeekNumberCalculator())
+                            .append("}");
                 }
             }
             else {
                 wb.attr("weekNumberCalculation", weekNumCalculation, "local");
             }
         }
-        
+
         encodeClientBehaviors(context, schedule);
 
-        wb.finish();	
-	}
+        wb.finish();
+    }
 
-	protected void encodeMarkup(FacesContext context, Schedule schedule) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		String clientId = schedule.getClientId(context);
+    protected void encodeMarkup(FacesContext context, Schedule schedule) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = schedule.getClientId(context);
 
-		writer.startElement("div", null);
-		writer.writeAttribute("id", clientId, null);
-		if(schedule.getStyle() != null) writer.writeAttribute("style", schedule.getStyle(), "style");
-		if(schedule.getStyleClass() != null) writer.writeAttribute("class", schedule.getStyleClass(), "style");
-		
-		writer.startElement("div", null);
-		writer.writeAttribute("id", clientId + "_container", null);
-		writer.endElement("div");
-        
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId, null);
+        if (schedule.getStyle() != null) writer.writeAttribute("style", schedule.getStyle(), "style");
+        if (schedule.getStyleClass() != null) writer.writeAttribute("class", schedule.getStyleClass(), "style");
+
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId + "_container", null);
+        writer.endElement("div");
+
         encodeStateParam(context, schedule);
-		
-		writer.endElement("div");
-	}
-	
-    @Override
-	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-		//Do nothing
-	}
+
+        writer.endElement("div");
+    }
 
     @Override
-	public boolean getRendersChildren() {
-		return true;
-	}
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Do nothing
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
+    }
 
     protected void encodeStateParam(FacesContext context, Schedule schedule) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String id = schedule.getClientId(context) + "_view";
         String view = schedule.getView();
-        
-		writer.startElement("input", null);
-		writer.writeAttribute("type", "hidden", null);
-		writer.writeAttribute("id", id, null);
-		writer.writeAttribute("name", id, null);
+
+        writer.startElement("input", null);
+        writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("id", id, null);
+        writer.writeAttribute("name", id, null);
         writer.writeAttribute("autocomplete", "off", null);
-        if(view != null) {
+        if (view != null) {
             writer.writeAttribute("value", view, null);
         }
-		writer.endElement("input");
+        writer.endElement("input");
     }
 }

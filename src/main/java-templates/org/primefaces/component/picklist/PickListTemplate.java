@@ -152,7 +152,7 @@ import javax.faces.event.BehaviorEvent;
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
+        if(ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
             Map<String,String[]> paramValues = context.getExternalContext().getRequestParameterValuesMap();
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
 
@@ -184,10 +184,6 @@ import javax.faces.event.BehaviorEvent;
         else {
             super.queueEvent(event);
         }
-    }
-
-    private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
 
     @SuppressWarnings("unchecked")

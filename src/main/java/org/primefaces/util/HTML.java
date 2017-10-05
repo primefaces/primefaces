@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,166 +16,168 @@
 package org.primefaces.util;
 
 public class HTML {
-	
-	public static final String[] CLICK_EVENT = {"onclick"};
 
-	public static final String[] BLUR_FOCUS_EVENTS = {
-		"onblur",
-		"onfocus"
-	};
-	
-	public static final String[] CHANGE_SELECT_EVENTS = {
-		"onchange",
-		"onselect"
-	};
-	    
+    public static final String[] CLICK_EVENT = {"onclick"};
+
+    public static final String[] BLUR_FOCUS_EVENTS = {
+        "onblur",
+        "onfocus"
+    };
+
+    public static final String[] CHANGE_SELECT_EVENTS = {
+        "onchange",
+        "onselect"
+    };
+
     public static final String[] COMMON_EVENTS_WITHOUT_CLICK = {
-		"ondblclick",
-		"onkeydown",
-		"onkeypress",
-		"onkeyup",
-		"onmousedown",
-		"onmousemove",
-		"onmouseout",
-		"onmouseover",
-		"onmouseup"
-	};
-	
-	//StyleClass is omitted
-	public static final String[] IMG_ATTRS_WITHOUT_EVENTS = {
-		"alt",
-		"width",
-		"height",
-		"title",
-		"dir",
-		"lang",
-		"ismap",
-		"usemap",
-		"style"
-	};
-	
-	//StyleClass is omitted
-	public static final String[] LINK_ATTRS_WITHOUT_EVENTS = {
-		"accesskey",
-		"charset",
-		"coords",
-		"dir",
-		"disabled",
-		"hreflang",
-		"rel",
-		"rev",
-		"shape",
-		"tabindex",
-		"style",
-		"target",
-		"title",
-		"type"
-	};
-	
-	//StyleClass is omitted
-	public static final String[] BUTTON_ATTRS_WITHOUT_EVENTS = {
-		"accesskey",
-		"alt",
-		"dir",
-		"label",
-		"lang",
-		"style",
-		"tabindex",
-		"title",
-		"type"
-	};
-	
-	//StyleClass is omitted
-	public static final String[] MEDIA_ATTRS = {
-		"height",
-		"width",
-		"style"
-	};
+        "ondblclick",
+        "onkeydown",
+        "onkeypress",
+        "onkeyup",
+        "onmousedown",
+        "onmousemove",
+        "onmouseout",
+        "onmouseover",
+        "onmouseup"
+    };
+
+    //StyleClass is omitted
+    public static final String[] IMG_ATTRS_WITHOUT_EVENTS = {
+        "alt",
+        "width",
+        "height",
+        "title",
+        "dir",
+        "lang",
+        "ismap",
+        "usemap",
+        "style"
+    };
+
+    //StyleClass is omitted
+    public static final String[] LINK_ATTRS_WITHOUT_EVENTS = {
+        "accesskey",
+        "charset",
+        "coords",
+        "dir",
+        "disabled",
+        "hreflang",
+        "rel",
+        "rev",
+        "shape",
+        "tabindex",
+        "style",
+        "target",
+        "title",
+        "type"
+    };
+
+    //StyleClass is omitted
+    public static final String[] BUTTON_ATTRS_WITHOUT_EVENTS = {
+        "accesskey",
+        "alt",
+        "dir",
+        "label",
+        "lang",
+        "style",
+        "tabindex",
+        "title",
+        "type"
+    };
+
+    //StyleClass is omitted
+    public static final String[] MEDIA_ATTRS = {
+        "height",
+        "width",
+        "style"
+    };
 
     //disabled, readonly, style, styleClass handles by component renderer
-	public static final String[] INPUT_TEXT_ATTRS_WITHOUT_EVENTS = {
-		"accesskey",
-		"alt",
+    public static final String[] INPUT_TEXT_ATTRS_WITHOUT_EVENTS = {
+        "accesskey",
+        "alt",
         "autocomplete",
-		"dir",
-		"lang",
-		"maxlength",
+        "dir",
+        "lang",
+        "maxlength",
         "placeholder",
-		"size",
-		"tabindex",
-		"title"
-	};
+        "size",
+        "tabindex",
+        "title"
+    };
 
     public static final String[] SELECT_ATTRS_WITHOUT_EVENTS = {
-		"accesskey",
-		"dir",
-		"disabled",
-		"lang",
-		"readonly",
-		"style",
-		"tabindex",
-		"title"
-	};
-
-	public static final String[] TEXTAREA_ATTRS_WITHOUT_EVENTS = {
-		"cols",
-		"rows",
         "accesskey",
-		"alt",
+        "dir",
+        "disabled",
+        "lang",
+        "readonly",
+        "style",
+        "tabindex",
+        "title"
+    };
+
+    public static final String[] TEXTAREA_ATTRS_WITHOUT_EVENTS = {
+        "cols",
+        "rows",
+        "accesskey",
+        "alt",
         "autocomplete",
         "placeholder",
-		"dir",
-		"lang",
-		"size",
-		"tabindex",
-		"title",
-        "maxlength"
-	};
-    
-    //StyleClass is omitted
-	public static final String[] LABEL_ATTRS_WITHOUT_EVENTS = {
-		"accesskey",
-		"dir",
-		"lang",
-		"style",
-		"tabindex",
-		"title"
-	};
-    
-    public static final String[] BODY_ATTRS = ArrayUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, CLICK_EVENT, new String[] {
-		"dir",
-		"lang",
-		"style",
+        "dir",
+        "lang",
+        "size",
+        "tabindex",
         "title",
-		"onload",
-		"onunload"
-	});
-    
+        "maxlength"
+    };
+
+    //StyleClass is omitted
+    public static final String[] LABEL_ATTRS_WITHOUT_EVENTS = {
+        "accesskey",
+        "dir",
+        "lang",
+        "style",
+        "tabindex",
+        "title"
+    };
+
+    public static final String[] BODY_ATTRS = ArrayUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, CLICK_EVENT, new String[]{
+        "dir",
+        "lang",
+        "style",
+        "title",
+        "onload",
+        "onunload"
+    });
+
     public static final String[] COMMON_EVENTS = ArrayUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, CLICK_EVENT);
-    
+
     public static final String[] OUTPUT_EVENTS = ArrayUtils.concat(COMMON_EVENTS, BLUR_FOCUS_EVENTS);
-    
+
     public static final String[] OUTPUT_EVENTS_WITHOUT_CLICK = ArrayUtils.concat(COMMON_EVENTS_WITHOUT_CLICK, BLUR_FOCUS_EVENTS);
-	
-	public static final String[] BUTTON_EVENTS = ArrayUtils.concat(OUTPUT_EVENTS, CHANGE_SELECT_EVENTS);
-    
+
+    public static final String[] BUTTON_EVENTS = ArrayUtils.concat(OUTPUT_EVENTS, CHANGE_SELECT_EVENTS);
+
     public static final String[] BUTTON_EVENTS_WITHOUT_CLICK = ArrayUtils.concat(OUTPUT_EVENTS_WITHOUT_CLICK, CHANGE_SELECT_EVENTS);
-	
-	public static final String[] IMG_ATTRS = ArrayUtils.concat(IMG_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS);
-	
-	public static final String[] LINK_ATTRS = ArrayUtils.concat(LINK_ATTRS_WITHOUT_EVENTS, OUTPUT_EVENTS);
-    
+
+    public static final String[] IMG_ATTRS = ArrayUtils.concat(IMG_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS);
+
+    public static final String[] LINK_ATTRS = ArrayUtils.concat(LINK_ATTRS_WITHOUT_EVENTS, OUTPUT_EVENTS);
+
     public static final String[] LABEL_ATTRS = ArrayUtils.concat(LABEL_ATTRS_WITHOUT_EVENTS, OUTPUT_EVENTS);
-	
-	public static final String[] BUTTON_ATTRS = ArrayUtils.concat(BUTTON_ATTRS_WITHOUT_EVENTS, BUTTON_EVENTS);	
-	
+
+    public static final String[] BUTTON_ATTRS = ArrayUtils.concat(BUTTON_ATTRS_WITHOUT_EVENTS, BUTTON_EVENTS);
+
     public static final String[] INPUT_TEXT_EVENTS = ArrayUtils.concat(COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
     public static final String[] INPUT_TEXT_ATTRS = ArrayUtils.concat(INPUT_TEXT_ATTRS_WITHOUT_EVENTS, INPUT_TEXT_EVENTS);
-    
-    public static final String[] INPUT_TEXTAREA_ATTRS = ArrayUtils.concat(TEXTAREA_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
 
-    public static final String[] SELECT_ATTRS = ArrayUtils.concat(SELECT_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
-    
+    public static final String[] INPUT_TEXTAREA_ATTRS = ArrayUtils.concat(
+            TEXTAREA_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
+
+    public static final String[] SELECT_ATTRS = ArrayUtils.concat(
+            SELECT_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
+
     public static final String BUTTON_TEXT_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only";
     public static final String BUTTON_ICON_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only";
     public static final String BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left";
@@ -184,7 +186,7 @@ public class HTML {
     public static final String BUTTON_RIGHT_ICON_CLASS = "ui-button-icon-right ui-icon ui-c";
     public static final String BUTTON_TEXT_CLASS = "ui-button-text ui-c";
     public static final String BUTTON_TEXT_ONLY_BUTTON_FLAT_CLASS = "ui-button ui-widget ui-state-default ui-button-text-only";
-    
+
     public static final String CHECKBOX_ALL_CLASS = "ui-chkbox ui-chkbox-all ui-widget";
     public static final String CHECKBOX_CLASS = "ui-chkbox ui-widget";
     public static final String CHECKBOX_BOX_CLASS = "ui-chkbox-box ui-widget ui-corner-all ui-state-default";
@@ -193,17 +195,18 @@ public class HTML {
     public static final String CHECKBOX_CHECKED_ICON_CLASS = "ui-chkbox-icon ui-icon ui-icon-check ui-c";
     public static final String CHECKBOX_PARTIAL_CHECKED_ICON_CLASS = "ui-chkbox-icon ui-icon ui-icon-minus ui-c";
     public static final String CHECKBOX_LABEL_CLASS = "ui-chkbox-label";
-    
+
     public static final String RADIOBUTTON_CLASS = "ui-radiobutton ui-widget";
     public static final String RADIOBUTTON_NATIVE_CLASS = "ui-radiobutton ui-radiobutton-native ui-widget";
     public static final String RADIOBUTTON_BOX_CLASS = "ui-radiobutton-box ui-widget ui-corner-all ui-state-default";
     public static final String RADIOBUTTON_INPUT_WRAPPER_CLASS = "ui-helper-hidden";
     public static final String RADIOBUTTON_UNCHECKED_ICON_CLASS = "ui-radiobutton-icon ui-icon ui-icon-blank ui-c";
     public static final String RADIOBUTTON_CHECKED_ICON_CLASS = "ui-radiobutton-icon ui-icon ui-icon-bullet ui-c";
-    
+
     public static final String WIDGET_VAR = "data-widget";
-    
+
     public static class VALIDATION_METADATA {
+
         public static final String LABEL = "data-p-label";
         public static final String REQUIRED = "data-p-required";
         public static final String MIN_LENGTH = "data-p-minlength";

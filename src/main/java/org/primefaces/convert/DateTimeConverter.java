@@ -1,11 +1,11 @@
-/*
- * Copyright 2013 jagatai.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,61 +24,68 @@ import org.primefaces.component.calendar.CalendarUtils;
 import org.primefaces.util.HTML;
 
 public class DateTimeConverter extends javax.faces.convert.DateTimeConverter implements ClientConverter {
-    
-    private Map<String,Object> metadata;
-    
+
+    private Map<String, Object> metadata;
+
     public Map<String, Object> getMetadata() {
-        if(metadata == null) {
+        if (metadata == null) {
             String pattern = this.getPattern();
             String type = this.getType();
             String dateStyle = this.getDateStyle();
             String timeStyle = this.getTimeStyle();
-            
+
             metadata = new HashMap<String, Object>();
-            
-            if(pattern != null) {
+
+            if (pattern != null) {
                 metadata.put(HTML.VALIDATION_METADATA.PATTERN, CalendarUtils.convertPattern(pattern));
             }
-            
-            if(type != null) { 
+
+            if (type != null) {
                 metadata.put(HTML.VALIDATION_METADATA.DATETIME_TYPE, type);
-                if(pattern == null) {
-                    DateFormat df = null;                
+                if (pattern == null) {
+                    DateFormat df = null;
                     if (type.equals("both")) {
                         df = DateFormat.getDateInstance(getStyle(dateStyle), this.getLocale());
                         metadata.put(HTML.VALIDATION_METADATA.DATE_STYLE_PATTERN, CalendarUtils.convertPattern(((SimpleDateFormat) df).toPattern()));
                         df = DateFormat.getTimeInstance(getStyle(timeStyle), this.getLocale());
                         metadata.put(HTML.VALIDATION_METADATA.TIME_STYLE_PATTERN, CalendarUtils.convertPattern(((SimpleDateFormat) df).toPattern()));
-                    } else if (type.equals("date")) {
+                    }
+                    else if (type.equals("date")) {
                         df = DateFormat.getDateInstance(getStyle(dateStyle), this.getLocale());
                         metadata.put(HTML.VALIDATION_METADATA.DATE_STYLE_PATTERN, CalendarUtils.convertPattern(((SimpleDateFormat) df).toPattern()));
-                    } else if (type.equals("time")) {
+                    }
+                    else if (type.equals("time")) {
                         df = DateFormat.getTimeInstance(getStyle(timeStyle), this.getLocale());
                         metadata.put(HTML.VALIDATION_METADATA.TIME_STYLE_PATTERN, CalendarUtils.convertPattern(((SimpleDateFormat) df).toPattern()));
                     }
                 }
-            }     
+            }
         }
-        
+
         return metadata;
     }
 
     public String getConverterId() {
         return DateTimeConverter.CONVERTER_ID;
     }
-    
+
     private int getStyle(String style) {
         if ("default".equals(style)) {
             return (DateFormat.DEFAULT);
-        } else if ("short".equals(style)) {
+        }
+        else if ("short".equals(style)) {
             return (DateFormat.SHORT);
-        } else if ("medium".equals(style)) {
+        }
+        else if ("medium".equals(style)) {
             return (DateFormat.MEDIUM);
-        } else if ("long".equals(style)) {
+        }
+        else if ("long".equals(style)) {
             return (DateFormat.LONG);
-        } else if ("full".equals(style)) {
+        }
+        else if ("full".equals(style)) {
             return (DateFormat.FULL);
-        } else {
+        }
+        else {
             throw new ConverterException("Invalid style '" + style + '\'');
         }
     }

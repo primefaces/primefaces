@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,76 +28,76 @@ import org.primefaces.util.WidgetBuilder;
 public class InputTextRenderer extends InputRenderer {
 
     @Override
-	public void decode(FacesContext context, UIComponent component) {
-		InputText inputText = (InputText) component;
+    public void decode(FacesContext context, UIComponent component) {
+        InputText inputText = (InputText) component;
 
-        if(inputText.isDisabled() || inputText.isReadonly()) {
+        if (inputText.isDisabled() || inputText.isReadonly()) {
             return;
         }
 
         decodeBehaviors(context, inputText);
 
-		String clientId = inputText.getClientId(context);
-		String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
+        String clientId = inputText.getClientId(context);
+        String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
 
-        if(submittedValue != null) {
+        if (submittedValue != null) {
             inputText.setSubmittedValue(submittedValue);
         }
-	}
+    }
 
-	@Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		InputText inputText = (InputText) component;
+    @Override
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        InputText inputText = (InputText) component;
 
-		encodeMarkup(context, inputText);
-		encodeScript(context, inputText);
-	}
+        encodeMarkup(context, inputText);
+        encodeScript(context, inputText);
+    }
 
-	protected void encodeScript(FacesContext context, InputText inputText) throws IOException {
-		String clientId = inputText.getClientId(context);
+    protected void encodeScript(FacesContext context, InputText inputText) throws IOException {
+        String clientId = inputText.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("InputText", inputText.resolveWidgetVar(), clientId).finish();
-	}
+    }
 
-	protected void encodeMarkup(FacesContext context, InputText inputText) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		String clientId = inputText.getClientId(context);
+    protected void encodeMarkup(FacesContext context, InputText inputText) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = inputText.getClientId(context);
 
-		writer.startElement("input", null);
-		writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("name", clientId, null);
-		writer.writeAttribute("type", inputText.getType(), null);
+        writer.startElement("input", null);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("name", clientId, null);
+        writer.writeAttribute("type", inputText.getType(), null);
 
-		String valueToRender = ComponentUtils.getValueToRender(context, inputText);
-		if(valueToRender != null) {
-			writer.writeAttribute("value", valueToRender , null);
-		}
+        String valueToRender = ComponentUtils.getValueToRender(context, inputText);
+        if (valueToRender != null) {
+            writer.writeAttribute("value", valueToRender, null);
+        }
 
-		renderPassThruAttributes(context, inputText, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderPassThruAttributes(context, inputText, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, inputText, HTML.INPUT_TEXT_EVENTS);
 
-        if(inputText.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
-        if(inputText.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
-        if(inputText.getStyle() != null) writer.writeAttribute("style", inputText.getStyle(), null);
-        if(inputText.isRequired()) writer.writeAttribute("aria-required", "true", null);
-        
+        if (inputText.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        if (inputText.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
+        if (inputText.getStyle() != null) writer.writeAttribute("style", inputText.getStyle(), null);
+        if (inputText.isRequired()) writer.writeAttribute("aria-required", "true", null);
+
         writer.writeAttribute("class", createStyleClass(inputText), "styleClass");
-        
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+
+        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, inputText);
         }
 
         writer.endElement("input");
-	}
+    }
 
     protected String createStyleClass(InputText inputText) {
         String defaultClass = InputText.STYLE_CLASS;
         defaultClass = inputText.isValid() ? defaultClass : defaultClass + " ui-state-error";
         defaultClass = !inputText.isDisabled() ? defaultClass : defaultClass + " ui-state-disabled";
-        
+
         String styleClass = inputText.getStyleClass();
         styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
-        
+
         return styleClass;
     }
 }

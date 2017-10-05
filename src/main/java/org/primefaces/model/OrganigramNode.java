@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,7 @@ import java.util.List;
 /**
  * Model for a node in the organigram component.
  */
-public interface OrganigramNode
-{
+public interface OrganigramNode {
     // -------------- data properties --------------
 
     String getType();
@@ -45,7 +44,6 @@ public interface OrganigramNode
     String getRowKey();
 
     // -------------- state properties --------------
-
     boolean isExpanded();
 
     void setExpanded(boolean expanded);
@@ -55,7 +53,6 @@ public interface OrganigramNode
     boolean isLeaf();
 
     // -------------- option properties --------------
-
     boolean isSelectable();
 
     void setSelectable(boolean selectable);
@@ -73,6 +70,5 @@ public interface OrganigramNode
     void setCollapsible(boolean collapsible);
 
     // -------------- methods --------------
-
     void clearParent();
 }

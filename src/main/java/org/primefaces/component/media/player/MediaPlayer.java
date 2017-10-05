@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,19 +17,19 @@ package org.primefaces.component.media.player;
 
 public interface MediaPlayer {
 
-	public static final String WINDOWS = "windows";
-	public static final String QUICKTIME = "quicktime";
-	public static final String FLASH = "flash";
-	public static final String REAL = "real";
+    public static final String WINDOWS = "windows";
+    public static final String QUICKTIME = "quicktime";
+    public static final String FLASH = "flash";
+    public static final String REAL = "real";
     public static final String PDF = "pdf";
-	
-	public String getClassId();
-	
-	public String getCodebase();
-		
-	public String getSourceParam();
-	
-	public String getType();
-	
-	public String[] getSupportedTypes();
+
+    public String getClassId();
+
+    public String getCodebase();
+
+    public String getSourceParam();
+
+    public String getType();
+
+    public String[] getSupportedTypes();
 }

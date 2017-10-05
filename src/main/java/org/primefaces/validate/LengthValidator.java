@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,37 +21,39 @@ import org.primefaces.util.HTML;
 
 public class LengthValidator extends javax.faces.validator.LengthValidator implements ClientValidator {
 
-    private Map<String,Object> metadata;
+    private Map<String, Object> metadata;
     private boolean minimumSet;
     private boolean maximumSet;
-    
+
     public Map<String, Object> getMetadata() {
         int min = this.getMinimum();
         int max = this.getMaximum();
-        
-        if(metadata == null) {
+
+        if (metadata == null) {
             metadata = new HashMap<String, Object>();
-            
-            if(minimumSet)
+
+            if (minimumSet) {
                 metadata.put(HTML.VALIDATION_METADATA.MIN_LENGTH, min);
-            
-            if(maximumSet)
+            }
+
+            if (maximumSet) {
                 metadata.put(HTML.VALIDATION_METADATA.MAX_LENGTH, max);
+            }
         }
-        
+
         return metadata;
     }
 
     public String getValidatorId() {
         return LengthValidator.VALIDATOR_ID;
     }
-    
+
     @Override
     public void setMaximum(int maximum) {
         super.setMaximum(maximum);
         this.maximumSet = true;
     }
-    
+
     @Override
     public void setMinimum(int minimum) {
         super.setMinimum(minimum);

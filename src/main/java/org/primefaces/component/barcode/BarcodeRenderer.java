@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,32 +32,32 @@ import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
 
 public class BarcodeRenderer extends CoreRenderer {
-    
+
     private static final String SB_BUILD = BarcodeRenderer.class.getName() + "#build";
-    
+
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		Barcode barcode = (Barcode) component;
-		String clientId = barcode.getClientId(context);
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        Barcode barcode = (Barcode) component;
+        String clientId = barcode.getClientId(context);
         String styleClass = barcode.getStyleClass();
-		String src = null;
+        String src = null;
         Object value = barcode.getValue();
         String type = barcode.getType();
         DynamicContentType dynamicContentType = type.equals("qr") ? DynamicContentType.QR_CODE : DynamicContentType.BARCODE;
-        
-        if(value == null) {
+
+        if (value == null) {
             return;
         }
-        
+
         try {
             Resource resource = context.getApplication().getResourceHandler().createResource("dynamiccontent.properties", "primefaces", "image/png");
             String resourcePath = resource.getRequestPath();
-  
+
             String sessionKey = UUID.randomUUID().toString();
-            Map<String,Object> session = context.getExternalContext().getSessionMap();
-            Map<String,String> barcodeMapping = (Map) session.get(Constants.BARCODE_MAPPING);
-            if(barcodeMapping == null) {
+            Map<String, Object> session = context.getExternalContext().getSessionMap();
+            Map<String, String> barcodeMapping = (Map) session.get(Constants.BARCODE_MAPPING);
+            if (barcodeMapping == null) {
                 barcodeMapping = new HashMap<String, String>();
                 session.put(Constants.BARCODE_MAPPING, barcodeMapping);
             }
@@ -68,22 +68,28 @@ public class BarcodeRenderer extends CoreRenderer {
                     .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(dynamicContentType.toString())
                     .append("&gen=").append(type)
                     .append("&fmt=").append(barcode.getFormat())
+                    .append("&qrec=").append(barcode.getQrErrorCorrection())
+                    .append("&hrp=").append(barcode.getHrp())
                     .append("&").append(Constants.DYNAMIC_CONTENT_CACHE_PARAM).append("=").append(barcode.isCache())
                     .append("&ori=").append(barcode.getOrientation())
                     .toString();
-        } 
+        }
         catch (UnsupportedEncodingException ex) {
             throw new IOException(ex);
         }
-        
-		writer.startElement("img", barcode);
-        if(shouldWriteId(component)) writer.writeAttribute("id", clientId, "id");
-        if(styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
-        
+
+        writer.startElement("img", barcode);
+        if (shouldWriteId(component)) {
+            writer.writeAttribute("id", clientId, "id");
+        }
+        if (styleClass != null) {
+            writer.writeAttribute("class", styleClass, "styleClass");
+        }
+
         writer.writeAttribute("src", context.getExternalContext().encodeResourceURL(src), null);
 
         renderPassThruAttributes(context, barcode, HTML.IMG_ATTRS);
-        
-		writer.endElement("img");
-	}
+
+        writer.endElement("img");
+    }
 }

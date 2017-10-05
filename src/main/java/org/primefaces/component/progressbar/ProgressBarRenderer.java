@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,10 +34,10 @@ public class ProgressBarRenderer extends CoreRenderer {
         String clientId = progressBar.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        if(params.containsKey(clientId)) {
-            RequestContext.getCurrentInstance().addCallbackParam(progressBar.getClientId(context) + "_value", progressBar.getValue());
+        if (params.containsKey(clientId)) {
+            RequestContext.getCurrentInstance(context).addCallbackParam(progressBar.getClientId(context) + "_value", progressBar.getValue());
         }
-        
+
         decodeBehaviors(context, progressBar);
     }
 
@@ -46,8 +46,8 @@ public class ProgressBarRenderer extends CoreRenderer {
         ProgressBar progressBar = (ProgressBar) component;
 
         encodeMarkup(context, progressBar);
-        
-        if(!progressBar.isDisplayOnly()) {
+
+        if (!progressBar.isDisplayOnly()) {
             encodeScript(context, progressBar);
         }
     }
@@ -59,52 +59,52 @@ public class ProgressBarRenderer extends CoreRenderer {
         String style = progressBar.getStyle();
         String styleClass = progressBar.getStyleClass();
         styleClass = styleClass == null ? ProgressBar.CONTAINER_CLASS : ProgressBar.CONTAINER_CLASS + " " + styleClass;
-        
-        if(progressBar.isDisabled()) {
+
+        if (progressBar.isDisabled()) {
             styleClass = styleClass + " ui-state-disabled";
         }
-        
+
         writer.startElement("div", progressBar);
         writer.writeAttribute("id", progressBar.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        
+
         //value
         writer.startElement("div", progressBar);
         writer.writeAttribute("class", ProgressBar.VALUE_CLASS, null);
-        if(value != 0) {
+        if (value != 0) {
             writer.writeAttribute("style", "display:block;width:" + value + "%", style);
         }
         writer.endElement("div");
-        
+
         //label
         writer.startElement("div", progressBar);
         writer.writeAttribute("class", ProgressBar.LABEL_CLASS, null);
-        if(labelTemplate != null) {
+        if (labelTemplate != null) {
             writer.writeAttribute("style", "display:block", style);
             writer.write(labelTemplate.replaceAll("\\{value\\}", String.valueOf(value)));
         }
         writer.endElement("div");
-        
+
         writer.endElement("div");
     }
 
     protected void encodeScript(FacesContext context, ProgressBar progressBar) throws IOException {
         String clientId = progressBar.getClientId(context);
         boolean isAjax = progressBar.isAjax();
-        
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("ProgressBar", progressBar.resolveWidgetVar(), clientId)
-            .attr("initialValue", progressBar.getValue())
-            .attr("ajax", isAjax)
-            .attr("labelTemplate", progressBar.getLabelTemplate(), null)
-            .attr("global", progressBar.isGlobal(), true);
-        
-        if(isAjax) {
+                .attr("initialValue", progressBar.getValue())
+                .attr("ajax", isAjax)
+                .attr("labelTemplate", progressBar.getLabelTemplate(), null)
+                .attr("global", progressBar.isGlobal(), true);
+
+        if (isAjax) {
             wb.attr("interval", progressBar.getInterval());
-            
+
             encodeClientBehaviors(context, progressBar);
         }
 

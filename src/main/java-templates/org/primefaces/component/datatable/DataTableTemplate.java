@@ -65,6 +65,7 @@ import org.primefaces.model.SortMeta;
 import org.primefaces.component.datatable.feature.*;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.SharedStringBuilder;
 import javax.faces.event.BehaviorEvent;
 import org.primefaces.component.datatable.FilterState;
@@ -109,6 +110,7 @@ import org.primefaces.component.datatable.TableState;
     public static final String CELL_EDITOR_CLASS = "ui-cell-editor";
     public static final String CELL_EDITOR_INPUT_CLASS = "ui-cell-editor-input";
     public static final String CELL_EDITOR_OUTPUT_CLASS = "ui-cell-editor-output";
+    public static final String CELL_EDITOR_DISABLED_CLASS = "ui-cell-editor-disabled";
     public static final String ROW_EDITOR_COLUMN_CLASS = "ui-row-editor-column";
     public static final String ROW_EDITOR_CLASS = "ui-row-editor ui-helper-clearfix";
     public static final String SELECTION_COLUMN_CLASS = "ui-selection-column";
@@ -316,7 +318,7 @@ import org.primefaces.component.datatable.TableState;
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
+        if(ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
             setRowIndex(-1);
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
@@ -564,8 +566,8 @@ import org.primefaces.component.datatable.TableState;
             lazyModel.setWrappedData(data);
 
             //Update paginator/livescroller for callback
-            if(this.isRequestSource(context) && (this.isPaginator() || this.isLiveScroll() || this.isVirtualScroll())) {
-                RequestContext requestContext = RequestContext.getCurrentInstance();
+            if(ComponentUtils.isRequestSource(this, context) && (this.isPaginator() || this.isLiveScroll() || this.isVirtualScroll())) {
+                RequestContext requestContext = RequestContext.getCurrentInstance(getFacesContext());
 
                 if(requestContext != null) {
                     requestContext.addCallbackParam("totalRecords", lazyModel.getRowCount());
@@ -593,8 +595,8 @@ import org.primefaces.component.datatable.TableState;
             lazyModel.setWrappedData(data);
 
             //Update paginator/livescroller  for callback
-            if(this.isRequestSource(getFacesContext()) && (this.isPaginator() || this.isLiveScroll())) {
-                RequestContext requestContext = RequestContext.getCurrentInstance();
+            if(ComponentUtils.isRequestSource(this, getFacesContext()) && (this.isPaginator() || this.isLiveScroll())) {
+                RequestContext requestContext = RequestContext.getCurrentInstance(getFacesContext());
 
                 if(requestContext != null) {
                     requestContext.addCallbackParam("totalRecords", lazyModel.getRowCount());
@@ -775,12 +777,6 @@ import org.primefaces.component.datatable.TableState;
     @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
-    }
-
-    public boolean isRequestSource(FacesContext context) {
-        String partialSource = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
-
-        return partialSource != null && this.getClientId(context).equals(partialSource);
     }
 
     public boolean isBodyUpdate(FacesContext context) {
@@ -1261,19 +1257,7 @@ import org.primefaces.component.datatable.TableState;
     
     public Locale resolveDataLocale() {
         FacesContext context = this.getFacesContext();
-        Object userLocale = this.getDataLocale();
-        
-        if(userLocale != null) {
-            if(userLocale instanceof String)
-                return ComponentUtils.toLocale((String) userLocale);
-            else if(userLocale instanceof java.util.Locale)
-                return (java.util.Locale) userLocale;
-            else
-                throw new IllegalArgumentException("Type:" + userLocale.getClass() + " is not a valid locale type for datatable:" + this.getClientId(context));
-        } 
-        else {
-            return context.getViewRoot().getLocale();
-        }
+        return LocaleUtils.resolveLocale(this.getDataLocale(), this.getClientId(context));
     }
     
     private boolean isFilterRequest(FacesContext context) {

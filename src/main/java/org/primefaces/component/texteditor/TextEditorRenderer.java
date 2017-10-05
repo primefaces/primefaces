@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,33 +28,33 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class TextEditorRenderer extends CoreRenderer{
-    
+public class TextEditorRenderer extends CoreRenderer {
+
     @Override
-	public void decode(FacesContext context, UIComponent component) {
-		TextEditor editor = (TextEditor) component;
+    public void decode(FacesContext context, UIComponent component) {
+        TextEditor editor = (TextEditor) component;
         String inputParam = editor.getClientId(context) + "_input";
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String value = params.get(inputParam);
-        
-        if(value != null && value.equals("<br/>")) {
+
+        if (value != null && value.equals("<br/>")) {
             value = "";
         }
-        
+
         editor.setSubmittedValue(value);
-	}
+    }
 
     @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		TextEditor editor = (TextEditor) component;
+    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+        TextEditor editor = (TextEditor) component;
 
-		encodeMarkup(facesContext, editor);
-		encodeScript(facesContext, editor);
-	}
+        encodeMarkup(facesContext, editor);
+        encodeScript(facesContext, editor);
+    }
 
-	protected void encodeMarkup(FacesContext context, TextEditor editor) throws IOException{
-		ResponseWriter writer = context.getResponseWriter();
-		String clientId = editor.getClientId(context);
+    protected void encodeMarkup(FacesContext context, TextEditor editor) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = editor.getClientId(context);
         String valueToRender = ComponentUtils.getValueToRender(context, editor);
         String inputId = clientId + "_input";
         String editorId = clientId + "_editor";
@@ -65,53 +65,54 @@ public class TextEditorRenderer extends CoreRenderer{
 
         writer.startElement("div", editor);
         writer.writeAttribute("id", clientId , null);
-        if(style != null) writer.writeAttribute("style", style, null);
-        if(styleClass != null) writer.writeAttribute("class", editor.getStyleClass(), null);
-        
-        if(toolbar != null) {
+        if (style != null) writer.writeAttribute("style", style, null);
+        if (styleClass != null) writer.writeAttribute("class", editor.getStyleClass(), null);
+
+        if (toolbar != null && editor.isToolbarVisible()) {
             writer.startElement("div", editor);
-            writer.writeAttribute("id", clientId + "_toolbar" , null);
+            writer.writeAttribute("id", clientId + "_toolbar", null);
             writer.writeAttribute("class", "ui-editor-toolbar", null);
             toolbar.encodeAll(context);
             writer.endElement("div");
         }
-        
+
         writer.startElement("div", editor);
         writer.writeAttribute("id", editorId, null);
-        if(valueToRender != null) {
+        if (valueToRender != null) {
             writer.write(valueToRender);
         }
         writer.endElement("div");
-        
-		writer.startElement("input", null);
-        writer.writeAttribute("type", "hidden" , null);
-        writer.writeAttribute("name", inputId , null);
-		writer.endElement("input");
+
+        writer.startElement("input", null);
+        writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("name", inputId, null);
+        writer.endElement("input");
 
         writer.endElement("div");
-	}
-	
-	private void encodeScript(FacesContext context, TextEditor editor) throws IOException{
-		String clientId = editor.getClientId(context);
+    }
+
+    private void encodeScript(FacesContext context, TextEditor editor) throws IOException {
+        String clientId = editor.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("TextEditor", editor.resolveWidgetVar(), clientId)
+                .attr("toolbarVisible", editor.isToolbarVisible())
                 .attr("readOnly", editor.isReadonly(), false)
                 .attr("placeholder", editor.getPlaceholder(), null)
                 .attr("height", editor.getHeight(), Integer.MIN_VALUE);
         encodeClientBehaviors(context, editor);
         wb.finish();
-	}
-    
+    }
+
     @Override
-	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-		TextEditor editor = (TextEditor) component;
-		String value = (String) submittedValue;
-		Converter converter = ComponentUtils.getConverter(context, component);
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+        TextEditor editor = (TextEditor) component;
+        String value = (String) submittedValue;
+        Converter converter = ComponentUtils.getConverter(context, component);
 
-		if(converter != null) {
-			return converter.getAsObject(context, editor, value);
-		}
+        if (converter != null) {
+            return converter.getAsObject(context, editor, value);
+        }
 
-		return value;
-	}
+        return value;
+    }
 }

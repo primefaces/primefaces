@@ -1,5 +1,5 @@
-/*
- * Copyright 2009,2010 Prime Technology.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,13 +19,13 @@ import java.util.List;
 
 public interface DashboardModel {
 
-	public void addColumn(DashboardColumn column);
-	
-	public List<DashboardColumn> getColumns();
-	
-	public int getColumnCount();
-	
-	public DashboardColumn getColumn(int index);
-	
-	public void transferWidget(DashboardColumn fromColumn, DashboardColumn toColumn, String widgetId, int index);
+    public void addColumn(DashboardColumn column);
+
+    public List<DashboardColumn> getColumns();
+
+    public int getColumnCount();
+
+    public DashboardColumn getColumn(int index);
+
+    public void transferWidget(DashboardColumn fromColumn, DashboardColumn toColumn, String widgetId, int index);
 }

@@ -22,13 +22,17 @@ PrimeFaces.widget.Poll = PrimeFaces.widget.BaseWidget.extend({
     },
 
     start: function() {
-        this.timer = setInterval(this.cfg.fn, (this.cfg.frequency * 1000));
-        this.active = true;
+        if (!this.active) {
+            this.timer = setInterval(this.cfg.fn, (this.cfg.frequency * 1000));
+            this.active = true;
+        }
     },
 
     stop: function() {
-        clearInterval(this.timer);
-        this.active = false;
+        if (this.active) {
+            clearInterval(this.timer);
+            this.active = false;
+        }
     },
 
     isActive: function() {

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,23 +23,23 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 public class LogRenderer extends CoreRenderer {
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Log log = (Log) component;
-        
+
         encodeMarkup(context, log);
         encodeScript(context, log);
     }
 
     protected void encodeMarkup(FacesContext context, Log log) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
         //container
         writer.startElement("div", log);
         writer.writeAttribute("id", log.getClientId(context), "id");
         writer.writeAttribute("class", Log.CONTAINER_CLASS, null);
-        
+
         //header
         writer.startElement("div", null);
         writer.writeAttribute("class", Log.HEADER_CLASS, null);
@@ -50,7 +50,7 @@ public class LogRenderer extends CoreRenderer {
         encodeIcon(context, Log.DEBUG_BUTTON_CLASS, "ui-icon ui-icon-search", "Debug");
         encodeIcon(context, Log.ERROR_BUTTON_CLASS, "ui-icon ui-icon-alert", "Error");
         writer.endElement("div");
-        
+
         //content
         writer.startElement("div", log);
         writer.writeAttribute("class", Log.CONTENT_CLASS, null);
@@ -58,13 +58,13 @@ public class LogRenderer extends CoreRenderer {
         writer.writeAttribute("class", Log.ITEMS_CLASS, null);
         writer.endElement("ul");
         writer.endElement("div");
-        
+
         writer.endElement("div");
     }
-    
+
     protected void encodeIcon(FacesContext context, String anchorClass, String iconClass, String title) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", anchorClass, null);
@@ -76,7 +76,7 @@ public class LogRenderer extends CoreRenderer {
 
         writer.endElement("a");
     }
-    
+
     protected void encodeScript(FacesContext context, Log log) throws IOException {
         String clientId = log.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);

@@ -14,5 +14,12 @@
     <description>CellEditor is a helper component of datatable used for incell editing.</description>
 	<attributes>
 		&standard_uicomponent_attributes;
+        <attribute>
+            <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Prevents hidden content to be shown.</description>
+        </attribute>
 	</attributes>
 </component>

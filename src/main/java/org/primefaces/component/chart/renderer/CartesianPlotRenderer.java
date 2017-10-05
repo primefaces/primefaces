@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,40 +27,42 @@ import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.util.ComponentUtils;
 
 public abstract class CartesianPlotRenderer extends BasePlotRenderer {
-    
+
     @Override
     protected void encodeOptions(FacesContext context, Chart chart) throws IOException {
         super.encodeOptions(context, chart);
-        
+
         ResponseWriter writer = context.getResponseWriter();
         CartesianChartModel model = (CartesianChartModel) chart.getModel();
-        Map<AxisType,Axis> axes = model.getAxes();
-        
+        Map<AxisType, Axis> axes = model.getAxes();
+
         writer.write(",axes:{");
-        for(Iterator<AxisType> it = axes.keySet().iterator(); it.hasNext();) {
+        for (Iterator<AxisType> it = axes.keySet().iterator(); it.hasNext();) {
             AxisType axisType = it.next();
             Axis axis = model.getAxes().get(axisType);
-            
+
             encodeAxis(context, axisType, axis);
-            
-            if(it.hasNext()) {
+
+            if (it.hasNext()) {
                 writer.write(",");
             }
         }
         writer.write("}");
-        
-        if(model.isShowDatatip()) {
+
+        if (model.isShowDatatip()) {
             writer.write(",datatip:true");
-            
+
             String datatipEditor = model.getDatatipEditor();
-            if(model.getDatatipFormat() != null)
+            if (model.getDatatipFormat() != null) {
                 writer.write(",datatipFormat:\"" + model.getDatatipFormat() + "\"");
-        
-            if(datatipEditor != null)
+            }
+
+            if (datatipEditor != null) {
                 writer.write(",datatipEditor:" + datatipEditor);
+            }
         }
     }
-    
+
     protected void encodeAxis(FacesContext context, AxisType axisType, Axis axis) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String label = axis.getLabel();
@@ -71,38 +73,46 @@ public abstract class CartesianPlotRenderer extends BasePlotRenderer {
         String tickFormat = axis.getTickFormat();
         Object tickInterval = axis.getTickInterval();
         int tickCount = axis.getTickCount();
-        
-        writer.write(axisType.toString() + ": {");        
+
+        writer.write(axisType.toString() + ": {");
         writer.write("label:\"" + ComponentUtils.escapeText(label) + "\"");
-        
-        if(min != null) {
-            if(min instanceof String)
+
+        if (min != null) {
+            if (min instanceof String) {
                 writer.write(",min:\"" + min + "\"");
-            else
+            }
+            else {
                 writer.write(",min:" + min);
+            }
         }
-        
-        if(max != null) {
-            if(max instanceof String)
+
+        if (max != null) {
+            if (max instanceof String) {
                 writer.write(",max:\"" + max + "\"");
-            else
+            }
+            else {
                 writer.write(",max:" + max);
+            }
         }
-        
-        if(renderer != null) {
+
+        if (renderer != null) {
             writer.write(",renderer:$.jqplot." + renderer);
         }
-        
+
         writer.write(",tickOptions:{");
         writer.write("angle:" + tickAngle);
-        if(tickFormat != null) {
+        if (tickFormat != null) {
             writer.write(",formatString:\"" + tickFormat + "\"");
         }
         writer.write("}");
-        
-        if(tickInterval != null) writer.write(",tickInterval:\"" + tickInterval + "\"");
-        if(tickCount != 0) writer.write(",numberTicks:" + tickCount);
-                
+
+        if (tickInterval != null) {
+            writer.write(",tickInterval:\"" + tickInterval + "\"");
+        }
+        if (tickCount != 0) {
+            writer.write(",numberTicks:" + tickCount);
+        }
+
         writer.write("}");
     }
 }

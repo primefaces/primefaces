@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,12 +39,13 @@ public class NextExpressionResolver implements SearchExpressionResolver {
                 int nextIndex = -1;
                 do {
                     index++;
-                    
+
                     String className = children.get(index).getClass().getName();
                     if (!className.contains("UIInstructions") && !className.contains("UILeaf")) {
                         nextIndex = index;
                     }
-                } while (nextIndex == -1 && index < parent.getChildCount() - 1);
+                }
+                while (nextIndex == -1 && index < parent.getChildCount() - 1);
 
                 if (nextIndex != -1) {
                     return children.get(nextIndex);

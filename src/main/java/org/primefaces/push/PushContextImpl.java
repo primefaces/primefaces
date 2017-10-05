@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import org.primefaces.util.BeanUtils;
 
 /**
  * @deprecated With PrimeFaces 4.1 and up, it is recommended to use {@link EventBus}
@@ -55,8 +56,8 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
     }
 
     public <T> Future<T> schedule(final String channel, final T t, int time, TimeUnit unit) {
-        Object data = t;        
-        if(!(t instanceof Callable || t instanceof Runnable)) {
+        Object data = t;
+        if (!(t instanceof Callable || t instanceof Runnable)) {
             data = toJSON(t);
         }
 
@@ -98,9 +99,9 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
             StringBuilder jsonBuilder = new StringBuilder();
             jsonBuilder.append("{");
 
-            if(isBean(data)) {
+            if (BeanUtils.isBean(data)) {
                 jsonBuilder.append("\"").append("data").append("\":").append(new JSONObject(data).toString());
-            } 
+            }
             else {
                 String json = new JSONObject().put("data", data).toString();
 
@@ -111,25 +112,12 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
 
             return jsonBuilder.toString();
         }
-
-        catch(JSONException e) {
+        catch (JSONException e) {
             System.out.println(e.getMessage());
-            
+
             throw new RuntimeException(e);
         }
-        
-    }
-    
-    private boolean isBean(Object value) {
-        if(value == null) {
-            return false;
-        }
 
-        if(value instanceof Boolean || value instanceof String || value instanceof Number) {
-            return false;
-        }
-
-        return true;
     }
 
     @Override
@@ -137,9 +125,9 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
         for (PushContextListener l : listeners) {
             l.onDisconnect(request);
 
-        	if (l instanceof AdvancedPushContextListener) {
-        		((AdvancedPushContextListener) l).onTimeout(request, response);
-        	}
+            if (l instanceof AdvancedPushContextListener) {
+                ((AdvancedPushContextListener) l).onTimeout(request, response);
+            }
         }
     }
 
@@ -148,36 +136,36 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
         for (PushContextListener l : listeners) {
             l.onDisconnect(request);
 
-        	if (l instanceof AdvancedPushContextListener) {
-        		((AdvancedPushContextListener) l).onClose(request, response);
-        	}
+            if (l instanceof AdvancedPushContextListener) {
+                ((AdvancedPushContextListener) l).onClose(request, response);
+            }
         }
     }
-    
+
     @Override
     public void onResume(AtmosphereRequest request, AtmosphereResponse response) {
         for (PushContextListener l : listeners) {
-        	if (l instanceof AdvancedPushContextListener) {
-        		((AdvancedPushContextListener) l).onResume(request, response);
-        	}
+            if (l instanceof AdvancedPushContextListener) {
+                ((AdvancedPushContextListener) l).onResume(request, response);
+            }
         }
     }
-    
+
     @Override
     public void onDestroyed(AtmosphereRequest request, AtmosphereResponse response) {
         for (PushContextListener l : listeners) {
-        	if (l instanceof AdvancedPushContextListener) {
-        		((AdvancedPushContextListener) l).onDestroyed(request, response);
-        	}
+            if (l instanceof AdvancedPushContextListener) {
+                ((AdvancedPushContextListener) l).onDestroyed(request, response);
+            }
         }
     }
-    
+
     @Override
     public void onSuspend(AtmosphereRequest request, AtmosphereResponse response) {
         for (PushContextListener l : listeners) {
-        	if (l instanceof AdvancedPushContextListener) {
-        		((AdvancedPushContextListener) l).onSuspend(request, response);
-        	}
+            if (l instanceof AdvancedPushContextListener) {
+                ((AdvancedPushContextListener) l).onSuspend(request, response);
+            }
         }
     }
 
@@ -215,6 +203,7 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
     }
 
     private final class PushContextMetaListener<T> extends BroadcasterListenerAdapter {
+
         private final ConcurrentLinkedQueue<PushContextListener> listeners;
         private final String channel;
         private final T t;
@@ -227,14 +216,14 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
 
         public void onPostCreate(Broadcaster broadcaster) {
             for (PushContextListener l : listeners) {
-            	if (l instanceof AdvancedPushContextListener) {
-            		((AdvancedPushContextListener) l).onPostCreate(broadcaster);
-            	}
+                if (l instanceof AdvancedPushContextListener) {
+                    ((AdvancedPushContextListener) l).onPostCreate(broadcaster);
+                }
             }
         }
 
         public void onComplete(Broadcaster b) {
-            for (PushContextListener p: listeners) {
+            for (PushContextListener p : listeners) {
                 p.onComplete(channel, t);
             }
 
@@ -243,9 +232,9 @@ public class PushContextImpl extends AsyncSupportListenerAdapter implements Push
 
         public void onPreDestroy(Broadcaster broadcaster) {
             for (PushContextListener l : listeners) {
-            	if (l instanceof AdvancedPushContextListener) {
-            		((AdvancedPushContextListener) l).onPreDestroy(broadcaster);
-            	}
+                if (l instanceof AdvancedPushContextListener) {
+                    ((AdvancedPushContextListener) l).onPreDestroy(broadcaster);
+                }
             }
         }
     }

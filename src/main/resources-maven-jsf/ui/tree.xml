@@ -230,6 +230,13 @@
             <defaultValue>startsWith</defaultValue>
             <description>Match mode for filtering.</description>
 		</attribute>
+        <attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Disables tree.</description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

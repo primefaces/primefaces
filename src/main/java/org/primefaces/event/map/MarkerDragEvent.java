@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,15 +22,15 @@ import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.map.Marker;
 
 public class MarkerDragEvent extends AbstractAjaxBehaviorEvent {
-	
-	private Marker marker;
 
-	public MarkerDragEvent(UIComponent component, Behavior behavior, Marker marker) {
-		super(component, behavior);
-		this.marker = marker;
-	}
+    private Marker marker;
 
-	public Marker getMarker() {
-		return marker;
-	}
+    public MarkerDragEvent(UIComponent component, Behavior behavior, Marker marker) {
+        super(component, behavior);
+        this.marker = marker;
+    }
+
+    public Marker getMarker() {
+        return marker;
+    }
 }

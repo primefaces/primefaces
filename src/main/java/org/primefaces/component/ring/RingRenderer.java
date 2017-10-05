@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,14 +25,14 @@ import org.primefaces.util.WidgetBuilder;
 public class RingRenderer extends CoreRenderer {
 
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Ring ring = (Ring) component;
 
         encodeMarkup(context, ring);
         encodeScript(context, ring);
-	}
+    }
 
-	public void encodeMarkup(FacesContext context, Ring ring) throws IOException {
+    public void encodeMarkup(FacesContext context, Ring ring) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String style = ring.getStyle();
         String styleClass = ring.getStyleClass();
@@ -41,17 +41,17 @@ public class RingRenderer extends CoreRenderer {
         writer.startElement("ul", ring);
         writer.writeAttribute("id", ring.getClientId(context), null);
         writer.writeAttribute("class", styleClass, null);
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, null);
         }
 
-        for(int rowIndex = 0; rowIndex < ring.getRowCount(); rowIndex++) {
+        for (int rowIndex = 0; rowIndex < ring.getRowCount(); rowIndex++) {
             ring.setRowIndex(rowIndex);
 
             writer.startElement("li", ring);
             writer.writeAttribute("class", "ui-state-default ui-corner-all", null);
 
-            for(UIComponent child : ring.getChildren()) {
+            for (UIComponent child : ring.getChildren()) {
                 child.encodeAll(context);
             }
 
@@ -61,29 +61,29 @@ public class RingRenderer extends CoreRenderer {
         ring.setRowIndex(-1);
 
         writer.endElement("ul");
-	}
+    }
 
     public void encodeScript(FacesContext context, Ring ring) throws IOException {
         String clientId = ring.getClientId(context);
-        
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("Ring", ring.resolveWidgetVar(), clientId)
-            .attr("startingChild", ring.getFirst())
-            .attr("easing", ring.getEasing(), null)
-            .attr("autoplay", ring.isAutoplay(), false)
-            .attr("autoplayDuration", ring.getAutoplayDuration(), 1000)
-            .attr("autoplayPauseOnHover", ring.isAutoplayPauseOnHover(), false)
-            .attr("autoplayInitialDelay", ring.getAutoplayInitialDelay(), 0);
+                .attr("startingChild", ring.getFirst())
+                .attr("easing", ring.getEasing(), null)
+                .attr("autoplay", ring.isAutoplay(), false)
+                .attr("autoplayDuration", ring.getAutoplayDuration(), 1000)
+                .attr("autoplayPauseOnHover", ring.isAutoplayPauseOnHover(), false)
+                .attr("autoplayInitialDelay", ring.getAutoplayInitialDelay(), 0);
         wb.finish();
-	}
+    }
 
     @Override
-	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Do nothing
-	}
+    }
 
     @Override
-	public boolean getRendersChildren() {
-		return true;
-	}
+    public boolean getRendersChildren() {
+        return true;
+    }
 }

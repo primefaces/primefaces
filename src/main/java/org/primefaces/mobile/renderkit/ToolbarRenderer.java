@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.toolbar.Toolbar;
 
 public class ToolbarRenderer extends org.primefaces.component.toolbar.ToolbarRenderer {
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Toolbar toolbar = (Toolbar) component;
@@ -34,38 +34,38 @@ public class ToolbarRenderer extends org.primefaces.component.toolbar.ToolbarRen
         writer.startElement("div", toolbar);
         writer.writeAttribute("id", toolbar.getClientId(context), null);
         writer.writeAttribute("class", styleClass, null);
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, null);
         }
 
         encodeGroup(context, toolbar.getFacet("left"), Toolbar.MOBILE_LEFT_GROUP_CLASS);
-        
+
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-title", null);
         writer.endElement("span");
-        
+
         encodeGroup(context, toolbar.getFacet("right"), Toolbar.MOBILE_RIGHT_GROUP_CLASS);
-        
+
         renderDynamicPassThruAttributes(context, toolbar);
-        
+
         writer.endElement("div");
     }
-    
+
     protected void encodeGroup(FacesContext context, UIComponent group, String styleClass) throws IOException {
         if (group == null) {
             return;
         }
-        
+
         ResponseWriter writer = context.getResponseWriter();
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("class", Toolbar.MOBILE_GROUP_CONTAINER_CLASS, null);
         group.encodeAll(context);
         writer.endElement("div");
-        
+
         writer.endElement("div");
     }
 }

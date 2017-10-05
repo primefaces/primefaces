@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,27 +36,27 @@ public class ScrollPanelRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = panel.getClientId(context);
         boolean nativeMode = panel.getMode().equals("native");
-        
+
         String defaultStyleClass = nativeMode ? ScrollPanel.SCROLL_PANEL_NATIVE_CLASS : ScrollPanel.SCROLL_PANEL_CLASS;
         String style = panel.getStyle();
         String styleClass = panel.getStyleClass();
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
 
-        writer.startElement("div", panel); 
+        writer.startElement("div", panel);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        
+
         renderChildren(context, panel);
-        
+
         writer.endElement("div");
     }
-    
+
     protected void encodeScript(FacesContext context, ScrollPanel panel) throws IOException {
-        boolean nativeMode = panel.getMode().equals("native");        
-        if(!nativeMode) {
+        boolean nativeMode = panel.getMode().equals("native");
+        if (!nativeMode) {
             String clientId = panel.getClientId(context);
             WidgetBuilder wb = getWidgetBuilder(context);
             wb.init("ScrollPanel", panel.resolveWidgetVar(), clientId).finish();

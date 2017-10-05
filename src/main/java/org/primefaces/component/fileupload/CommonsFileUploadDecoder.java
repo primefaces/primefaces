@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,15 +23,15 @@ import org.primefaces.model.DefaultUploadedFile;
 import org.primefaces.model.UploadedFileWrapper;
 import org.primefaces.webapp.MultipartRequest;
 
-public class CommonsFileUploadDecoder{
+public class CommonsFileUploadDecoder {
 
     public static void decode(FacesContext context, FileUpload fileUpload, String inputToDecodeId) {
         MultipartRequest multipartRequest = null;
         Object request = context.getExternalContext().getRequest();
 
-        while(request instanceof ServletRequestWrapper) {
-            if(request instanceof MultipartRequest) {
-                    multipartRequest = (MultipartRequest) request;
+        while (request instanceof ServletRequestWrapper) {
+            if (request instanceof MultipartRequest) {
+                multipartRequest = (MultipartRequest) request;
                 break;
             }
             else {
@@ -39,8 +39,8 @@ public class CommonsFileUploadDecoder{
             }
         }
 
-        if(multipartRequest != null) {
-            if(fileUpload.getMode().equals("simple")) {
+        if (multipartRequest != null) {
+            if (fileUpload.getMode().equals("simple")) {
                 decodeSimple(context, fileUpload, multipartRequest, inputToDecodeId);
             }
             else {
@@ -52,10 +52,11 @@ public class CommonsFileUploadDecoder{
     private static void decodeSimple(FacesContext context, FileUpload fileUpload, MultipartRequest request, String inputToDecodeId) {
         FileItem file = request.getFileItem(inputToDecodeId);
 
-        if(file != null) {
-            if(file.getName().equals("")) {
+        if (file != null) {
+            if (file.getName().isEmpty()) {
                 fileUpload.setSubmittedValue("");
-            } else {
+            }
+            else {
                 fileUpload.setSubmittedValue(new UploadedFileWrapper(new DefaultUploadedFile(file)));
             }
         }
@@ -65,7 +66,7 @@ public class CommonsFileUploadDecoder{
         String clientId = fileUpload.getClientId(context);
         FileItem file = request.getFileItem(clientId);
 
-        if(file != null) {
+        if (file != null) {
             fileUpload.queueEvent(new FileUploadEvent(fileUpload, new DefaultUploadedFile(file)));
         }
     }

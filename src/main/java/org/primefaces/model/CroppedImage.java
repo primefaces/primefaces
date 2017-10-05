@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,78 +18,77 @@ package org.primefaces.model;
 import java.io.Serializable;
 
 public class CroppedImage implements Serializable {
-	
-	private String originalFilename;
-	
-	private byte[] bytes;
-	
-	private int left;
-	
-	private int top;
-	
-	private int width;
-	
-	private int height;
-	
-	public CroppedImage() {
-		//No op
-	}
 
-	public CroppedImage(String originalFilename, byte[] bytes, int left,int top, int width, int height) {
-		this.originalFilename = originalFilename;
-		this.bytes = bytes;
-		this.left = left;
-		this.top = top;
-		this.width = width;
-		this.height = height;
-	}
+    private String originalFilename;
 
-	public int getLeft() {
-		return left;
-	}
+    private byte[] bytes;
 
-	public void setLeft(int left) {
-		this.left = left;
-	}
+    private int left;
 
-	public int getTop() {
-		return top;
-	}
+    private int top;
 
-	public void setTop(int top) {
-		this.top = top;
-	}
+    private int width;
 
-	public int getWidth() {
-		return width;
-	}
+    private int height;
 
-	public void setWidth(int width) {
-		this.width = width;
-	}
+    public CroppedImage() {
+        //No op
+    }
 
-	public int getHeight() {
-		return height;
-	}
+    public CroppedImage(String originalFilename, byte[] bytes, int left, int top, int width, int height) {
+        this.originalFilename = originalFilename;
+        this.bytes = bytes;
+        this.left = left;
+        this.top = top;
+        this.width = width;
+        this.height = height;
+    }
 
-	public void setHeight(int height) {
-		this.height = height;
-	}
+    public int getLeft() {
+        return left;
+    }
 
-	
-	public String getOriginalFilename() {
-		return originalFilename;
-	}
+    public void setLeft(int left) {
+        this.left = left;
+    }
 
-	public void setOriginalFilename(String originalFilename) {
-		this.originalFilename = originalFilename;
-	}
+    public int getTop() {
+        return top;
+    }
 
-	public byte[] getBytes() {
-		return bytes;
-	}
+    public void setTop(int top) {
+        this.top = top;
+    }
 
-	public void setBytes(byte[] bytes) {
-		this.bytes = bytes;
-	}
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public String getOriginalFilename() {
+        return originalFilename;
+    }
+
+    public void setOriginalFilename(String originalFilename) {
+        this.originalFilename = originalFilename;
+    }
+
+    public byte[] getBytes() {
+        return bytes;
+    }
+
+    public void setBytes(byte[] bytes) {
+        this.bytes = bytes;
+    }
 }

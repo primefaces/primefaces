@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,35 +18,36 @@ package org.primefaces.model;
 import java.io.InputStream;
 
 public abstract class LazyDefaultStreamedContent implements StreamedContent {
-    
-	private InputStream stream;
-	
-	private String contentType;
-    
-	private String name;
-    
+
+    private InputStream stream;
+
+    private String contentType;
+
+    private String name;
+
     private String contentEncoding;
-	
-	public LazyDefaultStreamedContent() {}
-	
+
+    public LazyDefaultStreamedContent() {
+    }
+
     public LazyDefaultStreamedContent(InputStream stream) {
-		this.stream = stream;
-	}
-	
-	public LazyDefaultStreamedContent(InputStream stream, String contentType) {
+        this.stream = stream;
+    }
+
+    public LazyDefaultStreamedContent(InputStream stream, String contentType) {
         this(stream);
-		this.contentType = contentType;
-	}
-	
-	public LazyDefaultStreamedContent(InputStream stream, String contentType, String name) {
-		this(stream, contentType);
-		this.name = name;
-	}
-    
+        this.contentType = contentType;
+    }
+
+    public LazyDefaultStreamedContent(InputStream stream, String contentType, String name) {
+        this(stream, contentType);
+        this.name = name;
+    }
+
     public LazyDefaultStreamedContent(InputStream stream, String contentType, String name, String contentEncoding) {
-		this(stream, contentType, name);
+        this(stream, contentType, name);
         this.contentEncoding = contentEncoding;
-	}
+    }
 
     @Override
     public InputStream getStream() {
@@ -56,29 +57,29 @@ public abstract class LazyDefaultStreamedContent implements StreamedContent {
 
         return stream;
     }
-    
-	public void setStream(InputStream stream) {
-		this.stream = stream;
-	}
-	
-    @Override
-	public String getContentType() {
-		return contentType;
-	}
-	
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
-	}
-	
-    @Override
-	public String getName() {
-		return name;
-	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-    
+    public void setStream(InputStream stream) {
+        this.stream = stream;
+    }
+
+    @Override
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String getContentEncoding() {
         return contentEncoding;
@@ -86,7 +87,7 @@ public abstract class LazyDefaultStreamedContent implements StreamedContent {
 
     public void setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
-    }    
+    }
 
     public abstract InputStream initializeStream();
 

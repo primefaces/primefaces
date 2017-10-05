@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2013 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
 public class MultiSortState implements java.io.Serializable {
-        
+
     private String sortKey;
 
     private String sortField;
@@ -29,7 +29,8 @@ public class MultiSortState implements java.io.Serializable {
 
     private MethodExpression sortFunction;
 
-    public MultiSortState() {}
+    public MultiSortState() {
+    }
 
     public MultiSortState(SortMeta sortMeta) {
         this.sortKey = sortMeta.getColumn().getColumnKey();
@@ -68,5 +69,5 @@ public class MultiSortState implements java.io.Serializable {
 
     public void setSortFunction(MethodExpression sortFunction) {
         this.sortFunction = sortFunction;
-    } 
+    }
 }

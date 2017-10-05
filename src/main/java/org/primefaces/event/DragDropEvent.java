@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,32 +20,32 @@ import javax.faces.component.behavior.Behavior;
 
 public class DragDropEvent extends AbstractAjaxBehaviorEvent {
 
-	private String dragId;
+    private String dragId;
 
-	private String dropId;
+    private String dropId;
 
     private Object data;
-	
-	public DragDropEvent(UIComponent component, Behavior behavior, String dragId, String dropId) {
-		super(component, behavior);
-		this.dragId = dragId;
-		this.dropId = dropId;
-	}
+
+    public DragDropEvent(UIComponent component, Behavior behavior, String dragId, String dropId) {
+        super(component, behavior);
+        this.dragId = dragId;
+        this.dropId = dropId;
+    }
 
     public DragDropEvent(UIComponent component, Behavior behavior, String dragId, String dropId, Object data) {
-		super(component, behavior);
-		this.dragId = dragId;
-		this.dropId = dropId;
+        super(component, behavior);
+        this.dragId = dragId;
+        this.dropId = dropId;
         this.data = data;
-	}
+    }
 
-	public String getDragId() {
-		return dragId;
-	}
+    public String getDragId() {
+        return dragId;
+    }
 
-	public String getDropId() {
-		return dropId;
-	}
+    public String getDropId() {
+        return dropId;
+    }
 
     public Object getData() {
         return data;

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,36 +24,36 @@ import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 
 public class SelectRenderer extends InputRenderer {
-    
+
     protected boolean isSelected(FacesContext context, UIComponent component, Object itemValue, Object valueArray, Converter converter) {
-        if(itemValue == null && valueArray == null) {
+        if (itemValue == null && valueArray == null) {
             return true;
         }
-        
-        if(valueArray != null) {
-            if(!valueArray.getClass().isArray()) {
+
+        if (valueArray != null) {
+            if (!valueArray.getClass().isArray()) {
                 return valueArray.equals(itemValue);
             }
-            
+
             int length = Array.getLength(valueArray);
-            for(int i = 0; i < length; i++) {
+            for (int i = 0; i < length; i++) {
                 Object value = Array.get(valueArray, i);
-                
-                if(value == null && itemValue == null) {
+
+                if (value == null && itemValue == null) {
                     return true;
-                } 
+                }
                 else {
-                    if((value == null) ^ (itemValue == null)) {
+                    if ((value == null) ^ (itemValue == null)) {
                         continue;
                     }
-                    
+
                     Object compareValue;
                     if (converter == null) {
                         compareValue = coerceToModelType(context, itemValue, value.getClass());
-                    } 
+                    }
                     else {
                         compareValue = itemValue;
-                        
+
                         if (compareValue instanceof String && !(value instanceof String)) {
                             compareValue = converter.getAsObject(context, component, (String) compareValue);
                         }
@@ -67,7 +67,7 @@ public class SelectRenderer extends InputRenderer {
         }
         return false;
     }
-    
+
     protected int countSelectItems(List<SelectItem> selectItems) {
         if (selectItems == null) {
             return 0;
@@ -75,13 +75,13 @@ public class SelectRenderer extends InputRenderer {
 
         int count = selectItems.size();
         for (SelectItem selectItem : selectItems) {
-            if(selectItem instanceof SelectItemGroup){
+            if (selectItem instanceof SelectItemGroup) {
                 count += countSelectItems(((SelectItemGroup) selectItem).getSelectItems());
             }
         }
         return count;
     }
-    
+
     protected int countSelectItems(SelectItem[] selectItems) {
         if (selectItems == null) {
             return 0;
@@ -89,7 +89,7 @@ public class SelectRenderer extends InputRenderer {
 
         int count = selectItems.length;
         for (SelectItem selectItem : selectItems) {
-            if(selectItem instanceof SelectItemGroup){
+            if (selectItem instanceof SelectItemGroup) {
                 count += countSelectItems(((SelectItemGroup) selectItem).getSelectItems());
             }
         }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,20 +36,22 @@ public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
                 DataTable.DEFAULT_RENDERER,
                 DataTableRenderer.class);
 
-        if(type.equals("header") || type.equals("frozenHeader") || type.equals("scrollableHeader"))
+        if (type.equals("header") || type.equals("frozenHeader") || type.equals("scrollableHeader")) {
             renderer.encodeColumnHeader(context, table, column);
-        else if(type.equals("footer") || type.equals("frozenFooter") || type.equals("scrollableFooter"))
+        }
+        else if (type.equals("footer") || type.equals("frozenFooter") || type.equals("scrollableFooter")) {
             renderer.encodeColumnFooter(context, table, column);
+        }
     }
-    
+
     private ColumnGroup findGroup(Column column) {
         UIComponent parent = column.getParent();
-        
-        while(!(parent instanceof ColumnGroup)) {
+
+        while (!(parent instanceof ColumnGroup)) {
             parent = parent.getParent();
         }
-        
+
         return (ColumnGroup) parent;
     }
-    
+
 }

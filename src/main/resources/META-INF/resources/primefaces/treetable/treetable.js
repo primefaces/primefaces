@@ -38,6 +38,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     
     refresh: function(cfg) {
         this.columnWidthsFixed = false;
+        this.scrollStateVal = this.scrollStateHolder ? this.scrollStateHolder.val() : null;
         this.init(cfg);
     },
     
@@ -858,15 +859,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         
         return parent.length === 1 ? parent : null;
     },
-    
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
 
-        return false;
-    },
-            
     removeDescendantsFromSelection: function(rowKey) {
         this.selections = $.grep(this.selections, function(value) {
             return value.indexOf(rowKey + '_') !== 0;
@@ -1067,6 +1060,15 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             this.columnWidthsFixed = true;
         }
     },
+    
+    updateColumnWidths: function() {
+        this.columnWidthsFixed = false;
+        this.jq.find('> table > thead > tr > th').each(function() {
+            var col = $(this);
+            col.css('width', '');
+        });
+        this.fixColumnWidths();
+    },
 
     adjustScrollHeight: function() {
         var relativeHeight = this.jq.parent().innerHeight() * (parseInt(this.cfg.scrollHeight) / 100),
@@ -1116,11 +1118,12 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     },
             
     restoreScrollState: function() {
-        var scrollState = this.scrollStateHolder.val(),
+        var scrollState = this.scrollStateVal||this.scrollStateHolder.val(),
         scrollValues = scrollState.split(',');
 
         this.scrollBody.scrollLeft(scrollValues[0]);
         this.scrollBody.scrollTop(scrollValues[1]);
+        this.scrollStateVal = null;
     },
     
     saveScrollState: function() {

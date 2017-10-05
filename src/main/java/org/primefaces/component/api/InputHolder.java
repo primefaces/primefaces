@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,22 +19,22 @@ package org.primefaces.component.api;
  * InputHolder is implemented by input components who has an input field along with complex markup like spinner, autocomplete.
  */
 public interface InputHolder {
-    
+
     /**
      * @return Client id of the input element
      */
     public String getInputClientId();
-    
+
     /**
      * @return Client id of the validatable input element
      */
     public String getValidatableInputClientId();
-    
+
     /**
      * @return Client id of the label for aria
      */
     public String getLabelledBy();
-    
+
     /**
      * @return Sets the id of the label for aria
      */

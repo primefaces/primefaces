@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,39 +29,41 @@ import org.primefaces.util.WidgetBuilder;
 public class MenubarRenderer extends TieredMenuRenderer {
 
     @Override
-	protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException{
+    protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         Menubar menubar = (Menubar) abstractMenu;
-		String clientId = menubar.getClientId(context);
-        
+        String clientId = menubar.getClientId(context);
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Menubar", menubar.resolveWidgetVar(), clientId)
-            .attr("autoDisplay", menubar.isAutoDisplay())
-            .attr("toggleEvent", menubar.getToggleEvent(), null);
+                .attr("autoDisplay", menubar.isAutoDisplay())
+                .attr("toggleEvent", menubar.getToggleEvent(), null);
 
         wb.finish();
-	}
+    }
 
     @Override
-	protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
+    protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         Menubar menubar = (Menubar) abstractMenu;
         String style = menubar.getStyle();
         String styleClass = menubar.getStyleClass();
         styleClass = styleClass == null ? Menubar.CONTAINER_CLASS : Menubar.CONTAINER_CLASS + " " + styleClass;
 
         encodeMenu(context, menubar, style, styleClass, "menubar");
-	}
-    
+    }
+
     @Override
     protected void encodeSubmenuIcon(FacesContext context, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Object parent = submenu.getParent();
         String icon = null;
-        
-        if(parent == null)
+
+        if (parent == null) {
             icon = (submenu.getId().indexOf(BaseMenuModel.ID_SEPARATOR) == -1) ? Menu.SUBMENU_DOWN_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
-        else
+        }
+        else {
             icon = (parent instanceof Menubar) ? Menu.SUBMENU_DOWN_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
-        
+        }
+
         writer.startElement("span", null);
         writer.writeAttribute("class", icon, null);
         writer.endElement("span");

@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,20 +30,20 @@ public class PageFeature implements DataTableFeature {
 
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         table.updatePaginationData(context, table);
-        
+
         boolean isPageState = table.isPageStateRequest(context);
-        
-        if(table.isLazy() && !isPageState) {
+
+        if (table.isLazy() && !isPageState) {
             table.loadLazyData();
         }
 
-        if(!isPageState) {
+        if (!isPageState) {
             renderer.encodeTbody(context, table, true);
         }
 
         context.getApplication().publishEvent(context, PostPageEvent.class, table);
-        
-        if(table.isMultiViewState()) {
+
+        if (table.isMultiViewState()) {
             TableState ts = table.getTableState(true);
 
             ts.setFirst(table.getFirst());
@@ -58,5 +58,5 @@ public class PageFeature implements DataTableFeature {
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return table.isPaginationRequest(context);
     }
-    
+
 }

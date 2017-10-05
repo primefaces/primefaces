@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,47 +27,47 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DataListRenderer extends org.primefaces.component.datalist.DataListRenderer {
-    
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        decodeBehaviors(context, component);        
+        decodeBehaviors(context, component);
     }
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         DataList list = (DataList) component;
 
-        if(list.isPaginationRequest(context)) {
+        if (list.isPaginationRequest(context)) {
             list.updatePaginationData(context, list);
-            
-            if(list.isLazy()) {
+
+            if (list.isLazy()) {
                 list.loadLazyData();
             }
-            
+
             encodeList(context, list);
-        } 
+        }
         else {
             encodeMarkup(context, list);
             encodeScript(context, list);
         }
     }
-    
+
     @Override
     protected void encodeScript(FacesContext context, DataList list) throws IOException {
         String clientId = list.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("DataList", list.resolveWidgetVar(), clientId);
-        
-        if(list.isPaginator()) {
+
+        if (list.isPaginator()) {
             PaginatorRenderer paginatorRenderer = getPaginatorRenderer(context);
             paginatorRenderer.encodeScript(context, list, wb);
         }
-        
+
         encodeClientBehaviors(context, list);
 
         wb.finish();
     }
-    
+
     @Override
     public void encodeMarkup(FacesContext context, DataList list) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -78,33 +78,33 @@ public class DataListRenderer extends org.primefaces.component.datalist.DataList
         boolean hasPaginator = list.isPaginator();
         String paginatorPosition = list.getPaginatorPosition();
         PaginatorRenderer paginatorRenderer = getPaginatorRenderer(context);
-        
-        if(hasPaginator) {
+
+        if (hasPaginator) {
             list.calculateFirst();
         }
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        
+
         encodeFacet(context, list, "header");
-                
-        if(hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
+
+        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
             paginatorRenderer.encodeMarkup(context, list, "top");
         }
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("class", DataList.MOBILE_CONTENT_CLASS, null);
         encodeList(context, list);
         writer.endElement("div");
-        
-        if(hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
+
+        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
             paginatorRenderer.encodeMarkup(context, list, "bottom");
         }
-        
+
         encodeFacet(context, list, "footer");
 
         writer.endElement("div");
@@ -117,22 +117,25 @@ public class DataListRenderer extends org.primefaces.component.datalist.DataList
         int pageSize = first + rows;
         int rowCount = list.getRowCount();
         String varStatus = list.getVarStatus();
-        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         String listTag = list.getListTag();
         writer.startElement(listTag, null);
         writer.writeAttribute("id", list.getClientId(context) + "_list", "id");
 
-        if(list.getItemType() != null) {
+        if (list.getItemType() != null) {
             writer.writeAttribute("type", list.getItemType(), null);
         }
-        
+
         renderDynamicPassThruAttributes(context, list);
 
         for (int i = first; i < pageSize; i++) {
-            if(varStatus != null) {
-                requestMap.put(varStatus, new org.primefaces.component.datalist.DataListRenderer.VarStatus(first, (pageSize - 1), (i == 0), (i == (rowCount - 1)), i, (i % 2 == 0), (i % 2 == 1), 1));
+            if (varStatus != null) {
+                requestMap.put(
+                        varStatus, 
+                        new org.primefaces.component.datalist.DataListRenderer.VarStatus(
+                            first, (pageSize - 1), (i == 0), (i == (rowCount - 1)), i, (i % 2 == 0), (i % 2 == 1), 1));
             }
-            
+
             list.setRowIndex(i);
 
             if (list.isRowAvailable()) {
@@ -141,23 +144,21 @@ public class DataListRenderer extends org.primefaces.component.datalist.DataList
                 writer.endElement("li");
             }
         }
-        
+
         list.setRowIndex(-1);
-        
-        if(varStatus != null) {
+
+        if (varStatus != null) {
             requestMap.remove(varStatus);
         }
-        
-        
-        
+
         writer.endElement(listTag);
     }
-    
+
     public void encodeFacet(FacesContext context, UIData data, String facet) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent component = data.getFacet(facet);
-        
-        if(component != null && component.isRendered()) {
+
+        if (component != null && component.isRendered()) {
             writer.startElement("div", null);
             writer.writeAttribute("class", "ui-bar ui-bar-b", null);
             writer.writeAttribute("role", "heading", null);
@@ -165,7 +166,7 @@ public class DataListRenderer extends org.primefaces.component.datalist.DataList
             writer.endElement("div");
         }
     }
-    
+
     private PaginatorRenderer getPaginatorRenderer(FacesContext context) {
         PaginatorRenderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,39 +20,39 @@ import java.util.TimeZone;
 
 public class DateUtils {
 
-	// convert from local date to UTC
-	public static Date toUtcDate(TimeZone browserTZ, TimeZone targetTZ, String localDate) {
-		if (localDate == null) {
-			return null;
-		}
+    // convert from local date to UTC
+    public static Date toUtcDate(TimeZone browserTZ, TimeZone targetTZ, String localDate) {
+        if (localDate == null) {
+            return null;
+        }
 
-		return toUtcDate(browserTZ, targetTZ, Long.valueOf(localDate));
-	}
+        return toUtcDate(browserTZ, targetTZ, Long.valueOf(localDate));
+    }
 
-	// convert from local date to UTC
-	public static Date toUtcDate(TimeZone browserTZ, TimeZone targetTZ, long localDate) {
-		return toUtcDate(browserTZ, targetTZ, new Date(localDate));
-	}
+    // convert from local date to UTC
+    public static Date toUtcDate(TimeZone browserTZ, TimeZone targetTZ, long localDate) {
+        return toUtcDate(browserTZ, targetTZ, new Date(localDate));
+    }
 
-	// convert from local date to UTC
-	public static Date toUtcDate(TimeZone browserTZ, TimeZone targetTZ, Date localDate) {
-		if (localDate == null) {
-			return null;
-		}
+    // convert from local date to UTC
+    public static Date toUtcDate(TimeZone browserTZ, TimeZone targetTZ, Date localDate) {
+        if (localDate == null) {
+            return null;
+        }
 
-		long local = localDate.getTime();
-		int targetOffsetFromUTC = targetTZ.getOffset(local);
-		int browserOffsetFromUTC = browserTZ.getOffset(local);
+        long local = localDate.getTime();
+        int targetOffsetFromUTC = targetTZ.getOffset(local);
+        int browserOffsetFromUTC = browserTZ.getOffset(local);
 
-		return new Date(local - targetOffsetFromUTC + browserOffsetFromUTC);
-	}
+        return new Date(local - targetOffsetFromUTC + browserOffsetFromUTC);
+    }
 
-	// convert from UTC to local date
-	public static long toLocalDate(TimeZone browserTZ, TimeZone targetTZ, Date utcDate) {
-		long utc = utcDate.getTime();
-		int targetOffsetFromUTC = targetTZ.getOffset(utc);
-		int browserOffsetFromUTC = browserTZ.getOffset(utc);
+    // convert from UTC to local date
+    public static long toLocalDate(TimeZone browserTZ, TimeZone targetTZ, Date utcDate) {
+        long utc = utcDate.getTime();
+        int targetOffsetFromUTC = targetTZ.getOffset(utc);
+        int browserOffsetFromUTC = browserTZ.getOffset(utc);
 
-		return utc + targetOffsetFromUTC - browserOffsetFromUTC;
-	}
+        return utc + targetOffsetFromUTC - browserOffsetFromUTC;
+    }
 }

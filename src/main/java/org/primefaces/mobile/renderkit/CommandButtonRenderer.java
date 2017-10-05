@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,46 +23,49 @@ import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.util.HTML;
 
 public class CommandButtonRenderer extends org.primefaces.component.commandbutton.CommandButtonRenderer {
-    
+
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-		CommandButton button = (CommandButton) component;
+        CommandButton button = (CommandButton) component;
         String clientId = button.getClientId(context);
         Object value = button.getValue();
         String type = button.getType();
-        String request = (type.equals("reset")||type.equals("button")) ? null: buildRequest(context, button, clientId);        
+        String request = (type.equals("reset") || type.equals("button")) ? null : buildRequest(context, button, clientId);
         String onclick = buildDomEvent(context, button, "onclick", "click", "action", request);
-        
-		writer.startElement("button", button);
-		writer.writeAttribute("id", clientId, null);
-		writer.writeAttribute("name", clientId, null);
+
+        writer.startElement("button", button);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("class", button.resolveMobileStyleClass(), null);
-        
-		if(onclick != null) {
-            if(button.requiresConfirmation()) {
+
+        if (onclick != null) {
+            if (button.requiresConfirmation()) {
                 writer.writeAttribute("data-pfconfirmcommand", onclick, null);
                 writer.writeAttribute("onclick", button.getConfirmationScript(), "onclick");
             }
-            else
+            else {
                 writer.writeAttribute("onclick", onclick, "onclick");
-		}
-		
+            }
+        }
+
         renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
-        
+
         if (button.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
         if (button.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
-        
-        if(value == null) {
+
+        if (value == null) {
             writer.write("ui-button");
         }
         else {
-            if(button.isEscape())
+            if (button.isEscape()) {
                 writer.writeText(value, "value");
-            else
+            }
+            else {
                 writer.write(value.toString());
+            }
         }
-        
+
         writer.endElement("button");
-	}
+    }
 }

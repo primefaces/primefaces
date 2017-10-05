@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,36 +30,36 @@ public class PanelGridRenderer extends org.primefaces.component.panelgrid.PanelG
         PanelGrid grid = (PanelGrid) component;
         String clientId = grid.getClientId(context);
         int columns = grid.getColumns();
-        if(columns == 0) {
+        if (columns == 0) {
             columns = 1;
         }
         String gridClass = MobileUtils.GRID_MAP.get(columns);
         String style = grid.getStyle();
         String styleClass = grid.getStyleClass();
         styleClass = (styleClass == null) ? gridClass : gridClass + " " + styleClass;
-        
+
         writer.startElement("div", grid);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        
+
         renderDynamicPassThruAttributes(context, grid);
-        
+
         int i = 0;
-        for(UIComponent child : grid.getChildren()) {
-            if(child.isRendered()) {
+        for (UIComponent child : grid.getChildren()) {
+            if (child.isRendered()) {
                 int blockKey = (i % columns);
                 String blockClass = MobileUtils.BLOCK_MAP.get(blockKey);
                 writer.startElement("div", null);
                 writer.writeAttribute("class", blockClass, null);
                 child.encodeAll(context);
-                writer.endElement("div");                
+                writer.endElement("div");
                 i++;
             }
         }
-        
+
         writer.endElement("div");
     }
 }

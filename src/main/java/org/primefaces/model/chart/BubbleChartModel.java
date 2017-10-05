@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ public class BubbleChartModel extends CartesianChartModel {
     public BubbleChartModel(List<BubbleChartSeries> data) {
         this.data = data;
     }
-    
+
     public List<BubbleChartSeries> getData() {
         return data;
     }
@@ -40,13 +40,13 @@ public class BubbleChartModel extends CartesianChartModel {
     public void setData(List<BubbleChartSeries> data) {
         this.data = data;
     }
-    
-    public void add(BubbleChartSeries bubble){
+
+    public void add(BubbleChartSeries bubble) {
         this.data.add(bubble);
     }
-    
+
     @Deprecated
-    public void addBubble(BubbleChartSeries bubble){
+    public void addBubble(BubbleChartSeries bubble) {
         this.data.add(bubble);
     }
 
@@ -57,6 +57,7 @@ public class BubbleChartModel extends CartesianChartModel {
     public boolean isBubbleGradients() {
         return bubbleGradients;
     }
+
     public void setBubbleGradients(boolean bubbleGradients) {
         this.bubbleGradients = bubbleGradients;
     }
@@ -64,6 +65,7 @@ public class BubbleChartModel extends CartesianChartModel {
     public double getBubbleAlpha() {
         return bubbleAlpha;
     }
+
     public void setBubbleAlpha(double bubbleAlpha) {
         this.bubbleAlpha = bubbleAlpha;
     }
@@ -71,6 +73,7 @@ public class BubbleChartModel extends CartesianChartModel {
     public boolean isShowLabels() {
         return showLabels;
     }
+
     public void setShowLabels(boolean showLabels) {
         this.showLabels = showLabels;
     }

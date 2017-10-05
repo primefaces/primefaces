@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,25 +28,25 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 
 public class RowRenderer extends CoreRenderer {
-    
-    static final Map<String,HelperRowRenderer> RENDERERS;
-        
+
+    static final Map<String, HelperRowRenderer> RENDERERS;
+
     static {
-        RENDERERS = new HashMap<String,HelperRowRenderer>();
+        RENDERERS = new HashMap<String, HelperRowRenderer>();
         RENDERERS.put("columnGroup", new ColumnGroupHelperRenderer());
         RENDERERS.put("panelGridBody", new PanelGridBodyRowRenderer());
         RENDERERS.put("panelGridFacet", new PanelGridFacetRowRenderer());
     }
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Row row = (Row) component;
         String helperKey = (String) context.getAttributes().get(Constants.HELPER_RENDERER);
-        
-        if(helperKey != null) {
+
+        if (helperKey != null) {
             HelperRowRenderer renderer = RENDERERS.get(helperKey);
-            
-            if(renderer != null) {
+
+            if (renderer != null) {
                 renderer.encode(context, row);
             }
         }
@@ -54,7 +54,7 @@ public class RowRenderer extends CoreRenderer {
             renderChildren(context, row);
         }
     }
-    
+
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Do nothing

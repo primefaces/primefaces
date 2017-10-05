@@ -1,11 +1,11 @@
-/*
- * Copyright 2014 tandraschko.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,11 +30,11 @@ import javax.faces.context.FacesContext;
 
 public class ResourceUtils {
 
-    private static final Logger LOG = Logger.getLogger(ResourceUtils.class.getName());
-    
     public static final String RENDERER_SCRIPT = "javax.faces.resource.Script";
     public static final String RENDERER_STYLESHEET = "javax.faces.resource.Stylesheet";
-   
+    
+    private static final Logger LOG = Logger.getLogger(ResourceUtils.class.getName());
+    
     public static void addComponentResource(FacesContext context, String name, String library, String target) {
 
         Application application = context.getApplication();

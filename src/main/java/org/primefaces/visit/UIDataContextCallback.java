@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,23 +23,23 @@ import javax.faces.context.FacesContext;
 
 public class UIDataContextCallback implements ContextCallback {
 
-	private String dragId;
-	private Object data;
+    private String dragId;
+    private Object data;
 
-	public UIDataContextCallback(String dragId) {
-		this.dragId = dragId;
-	}
+    public UIDataContextCallback(String dragId) {
+        this.dragId = dragId;
+    }
 
-	public void invokeContextCallback(FacesContext fc, UIComponent component) {
-		UIData uiData = (UIData) component;
-		String[] idTokens = dragId.split(String.valueOf(UINamingContainer.getSeparatorChar(fc)));
-		int rowIndex = Integer.parseInt(idTokens[idTokens.length - 2]);
-		uiData.setRowIndex(rowIndex);
-		data = uiData.getRowData();
-		uiData.setRowIndex(-1);
-	}
+    public void invokeContextCallback(FacesContext fc, UIComponent component) {
+        UIData uiData = (UIData) component;
+        String[] idTokens = dragId.split(String.valueOf(UINamingContainer.getSeparatorChar(fc)));
+        int rowIndex = Integer.parseInt(idTokens[idTokens.length - 2]);
+        uiData.setRowIndex(rowIndex);
+        data = uiData.getRowData();
+        uiData.setRowIndex(-1);
+    }
 
-	public Object getData() {
-		return data;
-	}
+    public Object getData() {
+        return data;
+    }
 }

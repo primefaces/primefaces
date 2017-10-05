@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,23 +24,27 @@ import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
 public class TimelineRangeEvent extends AbstractAjaxBehaviorEvent {
 
-	/** new start time of the visible range */
-	private Date startDate;
+    /**
+     * new start time of the visible range
+     */
+    private Date startDate;
 
-	/** new end time of the visible range */
-	private Date endDate;
+    /**
+     * new end time of the visible range
+     */
+    private Date endDate;
 
-	public TimelineRangeEvent(UIComponent component, Behavior behavior, Date startDate, Date endDate) {
-		super(component, behavior);
-		this.startDate = startDate;
-		this.endDate = endDate;
-	}
+    public TimelineRangeEvent(UIComponent component, Behavior behavior, Date startDate, Date endDate) {
+        super(component, behavior);
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
-	public Date getStartDate() {
-		return startDate;
-	}
+    public Date getStartDate() {
+        return startDate;
+    }
 
-	public Date getEndDate() {
-		return endDate;
-	}
+    public Date getEndDate() {
+        return endDate;
+    }
 }

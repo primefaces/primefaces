@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,8 +29,8 @@ import org.primefaces.component.api.PrimeClientBehaviorHolder;
 
 public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
 
-    private static final Class[] EMPTY_PARAMS = new Class[] {};
-    private static final Class[] ARG_PARAMS = new Class[] { AjaxBehaviorEvent.class };
+    private static final Class[] EMPTY_PARAMS = new Class[]{};
+    private static final Class[] ARG_PARAMS = new Class[]{AjaxBehaviorEvent.class};
 
     private final TagAttribute process;
     private final TagAttribute update;
@@ -78,7 +78,7 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
     @Override
     protected AjaxBehavior createBehavior(FaceletContext ctx, String eventName, UIComponent parent) {
         Application application = ctx.getFacesContext().getApplication();
-        AjaxBehavior behavior = (AjaxBehavior)application.createBehavior(AjaxBehavior.BEHAVIOR_ID);
+        AjaxBehavior behavior = (AjaxBehavior) application.createBehavior(AjaxBehavior.BEHAVIOR_ID);
 
         setBehaviorAttribute(ctx, behavior, this.process, AjaxBehavior.PropertyKeys.process.expectedType);
         setBehaviorAttribute(ctx, behavior, this.update, AjaxBehavior.PropertyKeys.update.expectedType);
@@ -99,28 +99,28 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
         setBehaviorAttribute(ctx, behavior, this.partialSubmitFilter, AjaxBehavior.PropertyKeys.partialSubmitFilter.expectedType);
         setBehaviorAttribute(ctx, behavior, this.form, AjaxBehavior.PropertyKeys.form.expectedType);
         setBehaviorAttribute(ctx, behavior, this.skipChildren, AjaxBehavior.PropertyKeys.skipChildren.expectedType);
-        
+
         if (listener != null) {
-            
+
             Class<? extends BehaviorEvent> eventMappingClass = null;
-            
+
             if (parent instanceof PrimeClientBehaviorHolder) {
                 Map<String, Class<? extends BehaviorEvent>> mapping = ((PrimeClientBehaviorHolder) parent).getBehaviorEventMapping();
                 if (mapping != null) {
                     eventMappingClass = mapping.get(eventName);
                 }
             }
-            
+
             if (eventMappingClass == null) {
                 behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(
-                    this.listener.getMethodExpression(ctx, Void.class, EMPTY_PARAMS),
-                    this.listener.getMethodExpression(ctx, Void.class, ARG_PARAMS)));
+                        this.listener.getMethodExpression(ctx, Void.class, EMPTY_PARAMS),
+                        this.listener.getMethodExpression(ctx, Void.class, ARG_PARAMS)));
             }
             else {
                 behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(
-                    this.listener.getMethodExpression(ctx, Void.class, EMPTY_PARAMS),
-                    this.listener.getMethodExpression(ctx, Void.class, ARG_PARAMS),
-                    this.listener.getMethodExpression(ctx, Void.class, new Class[] { eventMappingClass } )));
+                        this.listener.getMethodExpression(ctx, Void.class, EMPTY_PARAMS),
+                        this.listener.getMethodExpression(ctx, Void.class, ARG_PARAMS),
+                        this.listener.getMethodExpression(ctx, Void.class, new Class[]{eventMappingClass})));
             }
         }
 

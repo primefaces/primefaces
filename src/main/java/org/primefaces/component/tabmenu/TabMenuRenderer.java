@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,65 +29,65 @@ import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.WidgetBuilder;
 
 public class TabMenuRenderer extends BaseMenuRenderer {
-    
+
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         TabMenu menu = (TabMenu) abstractMenu;
-		String clientId = menu.getClientId(context);
+        String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("TabMenu", menu.resolveWidgetVar(), clientId);
         wb.finish();
     }
-    
+
     @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu component) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
+        ResponseWriter writer = context.getResponseWriter();
         TabMenu menu = (TabMenu) component;
-	String clientId = menu.getClientId(context);
-	String styleClass = menu.getStyleClass();
-	styleClass = styleClass == null ? TabMenu.CONTAINER_CLASS : TabMenu.CONTAINER_CLASS + " " + styleClass;
+        String clientId = menu.getClientId(context);
+        String styleClass = menu.getStyleClass();
+        styleClass = styleClass == null ? TabMenu.CONTAINER_CLASS : TabMenu.CONTAINER_CLASS + " " + styleClass;
         int activeIndex = menu.getActiveIndex();
         List<MenuElement> elements = menu.getElements();
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(menu.getStyle() != null) {
+        if (menu.getStyle() != null) {
             writer.writeAttribute("style", menu.getStyle(), "style");
-        }        
-        
+        }
+
         writer.startElement("ul", null);
         writer.writeAttribute("class", TabMenu.NAVIGATOR_CLASS, null);
         writer.writeAttribute("role", "tablist", null);
 
         int i = 0;
-        if(elements != null && !elements.isEmpty()) {
-            for(MenuElement element : elements) {
-                if(element.isRendered() && (element instanceof MenuItem)) {
+        if (elements != null && !elements.isEmpty()) {
+            for (MenuElement element : elements) {
+                if (element.isRendered() && (element instanceof MenuItem)) {
                     encodeItem(context, menu, (MenuItem) element, (i == activeIndex));
                     i++;
                 }
             }
         }
-        
+
         writer.endElement("ul");
-        
+
         writer.endElement("div");
     }
-    
+
     protected void encodeItem(FacesContext context, TabMenu menu, MenuItem item, boolean active) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String containerStyle = item.getContainerStyle();
         String containerStyleClass = item.getContainerStyleClass();
         String containerClass = active ? TabMenu.ACTIVE_TAB_HEADER_CLASS : TabMenu.INACTIVE_TAB_HEADER_CLASS;
-        if(item.getIcon() != null) {
+        if (item.getIcon() != null) {
             containerClass += " ui-tabmenuitem-hasicon";
         }
-        
-        if(containerStyleClass != null) {
+
+        if (containerStyleClass != null) {
             containerClass = containerClass + " " + containerStyleClass;
         }
-        
+
         //header container
         writer.startElement("li", null);
         writer.writeAttribute("class", containerClass, null);
@@ -95,22 +95,22 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         writer.writeAttribute("aria-expanded", String.valueOf(active), null);
         writer.writeAttribute("aria-selected", String.valueOf(active), null);
 
-        if(containerStyle != null) {
+        if (containerStyle != null) {
             writer.writeAttribute("style", containerStyle, null);
         }
-        
+
         encodeMenuItem(context, menu, item);
-        
+
         writer.endElement("li");
     }
 
     @Override
-	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-		// Do nothing
-	}
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        // Do nothing
+    }
 
     @Override
-	public boolean getRendersChildren() {
-		return true;
-	}
+    public boolean getRendersChildren() {
+        return true;
+    }
 }

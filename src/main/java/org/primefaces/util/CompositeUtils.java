@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,17 +25,17 @@ import javax.faces.view.AttachedObjectTarget;
 import javax.faces.view.EditableValueHolderAttachedObjectTarget;
 
 public class CompositeUtils {
-    
+
     public static boolean isComposite(UIComponent component) {
         return UIComponent.isCompositeComponent(component);
     }
-    
+
     /**
      * Attention: This only supports cc:editableValueHolder which target a single component!
-     * 
+     *
      * @param context
      * @param composite
-     * @param callback 
+     * @param callback
      */
     public static void invokeOnDeepestEditableValueHolder(FacesContext context, UIComponent composite,
             final ContextCallback callback) {
@@ -45,20 +45,20 @@ public class CompositeUtils {
 
         for (AttachedObjectTarget target : targets) {
             if (target instanceof EditableValueHolderAttachedObjectTarget) {
-                
+
                 List<UIComponent> childs = target.getTargets(composite);
                 if (childs == null || childs.isEmpty()) {
                     throw new FacesException(
                             "Cannot not resolve editableValueHolder target in composite component with id: \""
-                                    + composite.getClientId() + "\"");
+                            + composite.getClientId() + "\"");
                 }
 
                 if (childs.size() > 1) {
                     throw new FacesException(
                             "Only a single editableValueHolder target is supported in composite component with id: \""
-                                    + composite.getClientId() + "\"");
+                            + composite.getClientId() + "\"");
                 }
-                
+
                 final UIComponent child = childs.get(0);
 
                 composite.invokeOnComponent(context, composite.getClientId(context), new ContextCallback() {

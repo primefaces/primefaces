@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,21 +36,21 @@ public class HeadRenderer extends Renderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        PrimeConfiguration cc = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+        PrimeConfiguration cc = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
         ProjectStage projectStage = context.getApplication().getProjectStage();
         writer.startElement("head", component);
         writer.writeAttribute("id", component.getClientId(context), "id");
 
         //First facet
         UIComponent first = component.getFacet("first");
-        if(first != null) {
+        if (first != null) {
             first.encodeAll(context);
         }
 
         writer.write("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/>");
 
         String theme = resolveTheme(context);
-        if(theme == null) {
+        if (theme == null) {
             renderCSS(context, "mobile/jquery-mobile.css", "primefaces");
         }
         else {
@@ -61,7 +61,7 @@ public class HeadRenderer extends Renderer {
 
         renderCSS(context, "mobile/primefaces-mobile.css", "primefaces");
 
-        if(cc.isFontAwesomeEnabled()) {
+        if (cc.isFontAwesomeEnabled()) {
             renderCSS(context, "fa/font-awesome.css", "primefaces");
         }
 
@@ -75,7 +75,7 @@ public class HeadRenderer extends Renderer {
         writer.write("$.mobile.page.prototype.options.domCache = true;");
 
         UIComponent init = component.getFacet("init");
-        if(init != null) {
+        if (init != null) {
             init.encodeAll(context);
         }
 
@@ -88,14 +88,14 @@ public class HeadRenderer extends Renderer {
 
         //Registered Resources
         UIViewRoot viewRoot = context.getViewRoot();
-        for(UIComponent resource : viewRoot.getComponentResources(context, "head")) {
+        for (UIComponent resource : viewRoot.getComponentResources(context, "head")) {
             boolean shouldRender = true;
-            Map<String,Object> attrs = resource.getAttributes();
+            Map<String, Object> attrs = resource.getAttributes();
             String library = (String) attrs.get("library");
 
-            if(library != null && library.equals("primefaces")) {
+            if (library != null && library.equals("primefaces")) {
                 String resourceName = (String) attrs.get("name");
-                if(resourceName.startsWith("jquery")
+                if (resourceName.startsWith("jquery")
                         || resourceName.startsWith("primefaces")
                         || resourceName.startsWith("components")
                         || resourceName.startsWith("core")) {
@@ -103,7 +103,7 @@ public class HeadRenderer extends Renderer {
                 }
             }
 
-            if(shouldRender) {
+            if (shouldRender) {
                 resource.encodeAll(context);
             }
         }
@@ -113,7 +113,7 @@ public class HeadRenderer extends Renderer {
             writer.writeAttribute("type", "text/javascript", null);
             writer.write("if(window.PrimeFaces){");
 
-            if(cc.isLegacyWidgetNamespace()) {
+            if (cc.isLegacyWidgetNamespace()) {
                 writer.write("PrimeFaces.settings.legacyWidgetNamespace = true;");
             }
 
@@ -132,7 +132,7 @@ public class HeadRenderer extends Renderer {
 
         //Last facet
         UIComponent last = component.getFacet("last");
-        if(last != null) {
+        if (last != null) {
             last.encodeAll(context);
         }
 
@@ -141,24 +141,24 @@ public class HeadRenderer extends Renderer {
 
     protected String resolveTheme(FacesContext context) {
         String theme = null;
-        String themeConfigValue = RequestContext.getCurrentInstance().getApplicationContext().getConfig().getMobileTheme();
+        String themeConfigValue = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().getMobileTheme();
 
-        if(themeConfigValue != null) {
+        if (themeConfigValue != null) {
             ELContext elContext = context.getELContext();
             ExpressionFactory expressionFactory = context.getApplication().getExpressionFactory();
             ValueExpression ve = expressionFactory.createValueExpression(elContext, themeConfigValue, String.class);
 
-            theme = ve.isLiteralText() ? themeConfigValue: (String) ve.getValue(elContext);
+            theme = ve.isLiteralText() ? themeConfigValue : (String) ve.getValue(elContext);
         }
 
         return theme;
     }
 
-    private void renderJS(FacesContext context, String name, String library) throws IOException  {
+    private void renderJS(FacesContext context, String name, String library) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Resource resource = context.getApplication().getResourceHandler().createResource(name, library);
 
-        if(resource != null) {
+        if (resource != null) {
             writer.startElement("script", null);
             writer.writeAttribute("type", "text/javascript", null);
             writer.writeAttribute("src", resource.getRequestPath(), null);
@@ -166,11 +166,11 @@ public class HeadRenderer extends Renderer {
         }
     }
 
-    private void renderCSS(FacesContext context, String name, String library) throws IOException  {
+    private void renderCSS(FacesContext context, String name, String library) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Resource resource = context.getApplication().getResourceHandler().createResource(name, library);
 
-        if(resource != null) {
+        if (resource != null) {
             writer.startElement("link", null);
             writer.writeAttribute("type", "text/css", null);
             writer.writeAttribute("rel", "stylesheet", null);

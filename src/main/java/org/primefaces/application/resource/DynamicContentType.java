@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ public enum DynamicContentType {
     BARCODE("barcode"),
     QR_CODE("qr");
 
-    String toString;
+    private String toString;
 
     DynamicContentType(String toString) {
         this.toString = toString;
@@ -30,6 +30,7 @@ public enum DynamicContentType {
     DynamicContentType() {
     }
 
+    @Override
     public String toString() {
         return ((this.toString != null) ? this.toString : super.toString());
     }

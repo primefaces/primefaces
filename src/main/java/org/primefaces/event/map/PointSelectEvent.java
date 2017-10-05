@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,15 +22,15 @@ import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.map.LatLng;
 
 public class PointSelectEvent extends AbstractAjaxBehaviorEvent {
-	
-	private LatLng latLng;
-	
-	public PointSelectEvent(UIComponent component, Behavior behavior, LatLng latLng) {
-		super(component, behavior);
-		this.latLng = latLng;
-	}
-	
-	public LatLng getLatLng() {
-		return latLng;
-	}
+
+    private LatLng latLng;
+
+    public PointSelectEvent(UIComponent component, Behavior behavior, LatLng latLng) {
+        super(component, behavior);
+        this.latLng = latLng;
+    }
+
+    public LatLng getLatLng() {
+        return latLng;
+    }
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,48 +16,51 @@
 package org.primefaces.util;
 
 public class ArrayUtils {
-	
-	private ArrayUtils() {}
 
-	public static boolean contains(String[] array, String searchedText) {
+    private ArrayUtils() {
+    }
 
-		if (array == null || array.length == 0)
-			return false;
+    public static boolean contains(String[] array, String searchedText) {
 
-		for (int i = 0; i < array.length; i++) {
-			if (array[i].equalsIgnoreCase(searchedText))
-				return true;
-		}
+        if (array == null || array.length == 0) {
+            return false;
+        }
 
-		return false;
-	}
-	
-	public static String[] concat(String[] array1, String[] array2) {
-		int length1 = array1.length;
-		int length2 = array2.length;
-		int length = length1 + length2;
-		
-		String[] dest = new String[length];
-		
-		System.arraycopy(array1, 0, dest, 0, length1);
-		System.arraycopy(array2, 0, dest, length1, length2);
-		
-		return dest;
-	}
-	
-	public static String[] concat(String[]... arrays) {
-		int destSize = 0;
-		for (int i = 0; i < arrays.length; i++) {
-			destSize += arrays[i].length;
-		}
-		String[] dest = new String[destSize];
-		int lastIndex = 0;
-		for (int i = 0; i < arrays.length; i++) {
-			String[] array = arrays[i];
-			System.arraycopy(array, 0, dest, lastIndex, array.length);
-			lastIndex += array.length;
-		}
-		
-		return dest;
-	}
+        for (int i = 0; i < array.length; i++) {
+            if (array[i].equalsIgnoreCase(searchedText)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static String[] concat(String[] array1, String[] array2) {
+        int length1 = array1.length;
+        int length2 = array2.length;
+        int length = length1 + length2;
+
+        String[] dest = new String[length];
+
+        System.arraycopy(array1, 0, dest, 0, length1);
+        System.arraycopy(array2, 0, dest, length1, length2);
+
+        return dest;
+    }
+
+    public static String[] concat(String[]... arrays) {
+        int destSize = 0;
+        for (int i = 0; i < arrays.length; i++) {
+            destSize += arrays[i].length;
+        }
+        String[] dest = new String[destSize];
+        int lastIndex = 0;
+        for (int i = 0; i < arrays.length; i++) {
+            String[] array = arrays[i];
+            System.arraycopy(array, 0, dest, lastIndex, array.length);
+            lastIndex += array.length;
+        }
+
+        return dest;
+    }
 }

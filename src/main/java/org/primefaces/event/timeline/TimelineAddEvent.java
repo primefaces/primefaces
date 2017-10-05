@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,26 +24,26 @@ import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
 public class TimelineAddEvent extends AbstractAjaxBehaviorEvent {
 
-	private Date startDate;
-	private Date endDate;
-	private String group;
+    private Date startDate;
+    private Date endDate;
+    private String group;
 
-	public TimelineAddEvent(UIComponent component, Behavior behavior, Date startDate, Date endDate, String group) {
-		super(component, behavior);
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.group = group;
-	}
+    public TimelineAddEvent(UIComponent component, Behavior behavior, Date startDate, Date endDate, String group) {
+        super(component, behavior);
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.group = group;
+    }
 
-	public Date getStartDate() {
-		return startDate;
-	}
+    public Date getStartDate() {
+        return startDate;
+    }
 
-	public Date getEndDate() {
-		return endDate;
-	}
+    public Date getEndDate() {
+        return endDate;
+    }
 
-	public String getGroup() {
-		return group;
-	}
+    public String getGroup() {
+        return group;
+    }
 }

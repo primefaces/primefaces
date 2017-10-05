@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,8 +46,8 @@ public class BodyRenderer extends CoreRenderer {
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        RequestContext requestContext = RequestContext.getCurrentInstance();
-        
+        RequestContext requestContext = RequestContext.getCurrentInstance(context);
+
         encodeResources(context);
 
         if (!requestContext.isAjaxRequest()) {
@@ -75,7 +75,7 @@ public class BodyRenderer extends CoreRenderer {
             writer.endElement("script");
         }
     }
-    
+
     protected void encodeResources(FacesContext context) throws IOException {
         UIViewRoot viewRoot = context.getViewRoot();
         ListIterator iter = (viewRoot.getComponentResources(context, "body")).listIterator();

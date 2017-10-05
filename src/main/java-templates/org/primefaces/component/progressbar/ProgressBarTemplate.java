@@ -42,7 +42,7 @@ import javax.faces.event.PhaseId;
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
         
-        if(isRequestSource(context)) {
+        if(ComponentUtils.isRequestSource(this, context)) {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             
             behaviorEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
@@ -54,6 +54,3 @@ import javax.faces.event.PhaseId;
         }
     }
 
-    private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
-    }

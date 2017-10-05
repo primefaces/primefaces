@@ -39,7 +39,7 @@ import javax.faces.event.BehaviorEvent;
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(isRequestSource(context)) {
+        if(ComponentUtils.isRequestSource(this, context)) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
@@ -56,8 +56,4 @@ import javax.faces.event.BehaviorEvent;
         else {
             super.queueEvent(event);
         }
-    }
-
-    private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }

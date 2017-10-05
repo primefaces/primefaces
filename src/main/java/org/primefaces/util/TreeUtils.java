@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,24 +24,24 @@ import org.primefaces.model.TreeNodeList;
  * Utilities for Tree components.
  */
 public class TreeUtils {
-    
+
     /**
      * Sorts children of a node using a comparator
-     * 
+     *
      * @param node Node instance whose children to be sorted
      * @param comparator Comparator to use in sorting
      */
     public static void sortNode(TreeNode node, Comparator comparator) {
         TreeNodeList children = (TreeNodeList) node.getChildren();
-        
-        if(children != null && !children.isEmpty()) {
+
+        if (children != null && !children.isEmpty()) {
             Object[] childrenArray = children.toArray();
             Arrays.sort(childrenArray, comparator);
-            for(int i = 0; i < childrenArray.length; i++) {
+            for (int i = 0; i < childrenArray.length; i++) {
                 children.setSibling(i, (TreeNode) childrenArray[i]);
             }
-            
-            for(int i = 0; i < children.size(); i++) {
+
+            for (int i = 0; i < children.size(); i++) {
                 sortNode(children.get(i), comparator);
             }
         }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2015 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,14 +24,14 @@ import javax.faces.context.FacesContextWrapper;
  */
 public class PrimeFacesContext extends FacesContextWrapper {
 
-	private final FacesContext wrapped;
+    private final FacesContext wrapped;
     private PrimeExternalContext externalContext;
-	
-	public PrimeFacesContext(FacesContext wrapped) {
-		this.wrapped = wrapped;
-		
-		RequestContext.setCurrentInstance(new DefaultRequestContext(wrapped), wrapped);
-	}
+
+    public PrimeFacesContext(FacesContext wrapped) {
+        this.wrapped = wrapped;
+
+        RequestContext.setCurrentInstance(new DefaultRequestContext(wrapped), wrapped);
+    }
 
     @Override
     public ExternalContext getExternalContext() {
@@ -40,16 +40,19 @@ public class PrimeFacesContext extends FacesContextWrapper {
         }
         return externalContext;
     }
-    
-	@Override
-	public FacesContext getWrapped() {
-		return wrapped;
-	}
-	
-	@Override
-	public void release() {
-		RequestContext.releaseThreadLocalCache();
 
-		wrapped.release();
-	}
+    @Override
+    public FacesContext getWrapped() {
+        return wrapped;
+    }
+
+    @Override
+    public void release() {
+        RequestContext requestContext = RequestContext.getCurrentInstance(wrapped);
+        if (requestContext != null) {
+            requestContext.release();
+        }
+
+        super.release();
+    }
 }

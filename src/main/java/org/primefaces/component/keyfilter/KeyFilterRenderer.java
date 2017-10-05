@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ public class KeyFilterRenderer extends CoreRenderer {
 
         String targetClientId = target instanceof InputHolder ? ((InputHolder) target).getInputClientId() : target.getClientId();
 
-        WidgetBuilder wb = RequestContext.getCurrentInstance().getWidgetBuilder();
+        WidgetBuilder wb = RequestContext.getCurrentInstance(context).getWidgetBuilder();
         wb.initWithDomReady(KeyFilter.class.getSimpleName(), keyFilter.resolveWidgetVar(), keyFilter.getClientId(context));
         wb.attr("target", targetClientId);
 

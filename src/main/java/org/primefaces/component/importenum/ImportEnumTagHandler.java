@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,105 +31,107 @@ import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
 import org.primefaces.context.RequestContext;
+import org.primefaces.util.SharedStringBuilder;
 
 /**
  * {@link TagHandler} for the <code>ImportEnum</code> component.
  */
 public class ImportEnumTagHandler extends TagHandler {
 
-	private static final String DEFAULT_ALL_SUFFIX = "ALL_VALUES";
+    private static final String DEFAULT_ALL_SUFFIX = "ALL_VALUES";
+    private static final String SB_VAR = ImportEnumTagHandler.class.getName() + "#var";
 
-	private final TagAttribute typeTagAttribute;
-	private final TagAttribute varTagAttribute;
-	private final TagAttribute allSuffixTagAttribute;
+    private final TagAttribute typeTagAttribute;
+    private final TagAttribute varTagAttribute;
+    private final TagAttribute allSuffixTagAttribute;
 
-	public ImportEnumTagHandler(TagConfig config) {
-		super(config);
+    public ImportEnumTagHandler(TagConfig config) {
+        super(config);
 
-		typeTagAttribute = super.getRequiredAttribute("type");
-		varTagAttribute = super.getAttribute("var");
-		allSuffixTagAttribute = super.getAttribute("allSuffix");
-	}
+        typeTagAttribute = super.getRequiredAttribute("type");
+        varTagAttribute = super.getAttribute("var");
+        allSuffixTagAttribute = super.getAttribute("allSuffix");
+    }
 
     @Override
-	public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
-        
+    public void apply(FaceletContext ctx, UIComponent parent) throws IOException {
+
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        
-		Class<?> type = getClassFromAttribute(typeTagAttribute, ctx);
-		Map<String, Object> enumValues = getEnumValues(facesContext, type,
-				allSuffixTagAttribute == null ? null : allSuffixTagAttribute.getValue(ctx));
 
-		// Create alias/var expression
-		String var;
-		if (varTagAttribute == null) {
-			var = type.getSimpleName(); // fall back to class name
-		}
+        Class<?> type = getClassFromAttribute(typeTagAttribute, ctx);
+        Map<String, Object> enumValues = getEnumValues(facesContext, type,
+                allSuffixTagAttribute == null ? null : allSuffixTagAttribute.getValue(ctx));
+
+        // Create alias/var expression
+        String var;
+        if (varTagAttribute == null) {
+            var = type.getSimpleName(); // fall back to class name
+        }
         else {
-			var = varTagAttribute.getValue(ctx);
-		}
+            var = varTagAttribute.getValue(ctx);
+        }
 
-		if (var.charAt(0) != '#') {
-			StringBuilder varBuilder = new StringBuilder();
-			varBuilder.append("#{").append(var).append("}");
+        if (var.charAt(0) != '#') {
+            StringBuilder varBuilder = SharedStringBuilder.get(facesContext, SB_VAR, var.length() + 3);
+            varBuilder.append("#{").append(var).append("}");
 
-			var = varBuilder.toString();
-		}
+            var = varBuilder.toString();
+        }
 
-		// Assign enum values to alias/var expression
-		ELContext elContext = facesContext.getELContext();
-		ExpressionFactory expressionFactory = facesContext.getApplication().getExpressionFactory();
+        // Assign enum values to alias/var expression
+        ELContext elContext = facesContext.getELContext();
+        ExpressionFactory expressionFactory = facesContext.getApplication().getExpressionFactory();
 
-		ValueExpression aliasValueExpression = expressionFactory.createValueExpression(elContext, var, Map.class);
-		aliasValueExpression.setValue(elContext, enumValues);
-	}
+        ValueExpression aliasValueExpression = expressionFactory.createValueExpression(elContext, var, Map.class);
+        aliasValueExpression.setValue(elContext, enumValues);
+    }
 
-	/**
-	 * Gets the {@link Class} from the {@link TagAttribute}.
-	 * 
-	 * @param attribute The {@link TagAttribute}.
-	 * @param ctx The {@link FaceletContext}.
-	 * @return The {@link Class}.
-	 */
-	protected Class<?> getClassFromAttribute(TagAttribute attribute, FaceletContext ctx) {
-		String type = attribute.getValue(ctx);
+    /**
+     * Gets the {@link Class} from the {@link TagAttribute}.
+     *
+     * @param attribute The {@link TagAttribute}.
+     * @param ctx The {@link FaceletContext}.
+     * @return The {@link Class}.
+     */
+    protected Class<?> getClassFromAttribute(TagAttribute attribute, FaceletContext ctx) {
+        String type = attribute.getValue(ctx);
 
-		try {
-			return Class.forName(type, true, Thread.currentThread().getContextClassLoader());
-		}
+        try {
+            return Class.forName(type, true, Thread.currentThread().getContextClassLoader());
+        }
         catch (ClassNotFoundException e) {
-			throw new FacesException("Class " + type + " not found.", e);
-		}
-	}
+            throw new FacesException("Class " + type + " not found.", e);
+        }
+    }
 
-	/**
-	 * Get all enum values of the given {@link Class}.
-	 * 
+    /**
+     * Get all enum values of the given {@link Class}.
+     *
      * @param facesContext The {@link FacesContext}.
-	 * @param type The enum class.
+     * @param type The enum class.
      * @param allSuffix The suffix to access a array with all enum values.
-	 * @return A {@link Map} with the enum values.
-	 */
-	protected Map<String, Object> getEnumValues(FacesContext facesContext, Class<?> type, String allSuffix) {
-		
+     * @return A {@link Map} with the enum values.
+     */
+    protected Map<String, Object> getEnumValues(FacesContext facesContext, Class<?> type, String allSuffix) {
+
         if (type.isEnum()) {
 
             boolean cacheEnabled = facesContext.isProjectStage(ProjectStage.Production);
-			Map<Class<?>, Map<String, Object>> cache =
-                    RequestContext.getCurrentInstance().getApplicationContext().getEnumCacheMap();
+            Map<Class<?>, Map<String, Object>> cache
+                    = RequestContext.getCurrentInstance().getApplicationContext().getEnumCacheMap();
 
-			Map<String, Object> enums;
+            Map<String, Object> enums;
 
-			if (cacheEnabled && cache.containsKey(type)) {
-				enums = cache.get(type);
-			}
+            if (cacheEnabled && cache.containsKey(type)) {
+                enums = cache.get(type);
+            }
             else {
-				enums = new EnumHashMap<String, Object>(type);
+                enums = new EnumHashMap<String, Object>(type);
 
-				for (Object value : type.getEnumConstants()) {
-					Enum<?> currentEnum = (Enum<?>) value;
-					enums.put(currentEnum.name(), currentEnum);
-				}
+                for (Object value : type.getEnumConstants()) {
+                    Enum<?> currentEnum = (Enum<?>) value;
+                    enums.put(currentEnum.name(), currentEnum);
+                }
 
                 if (allSuffix != null) {
                     enums.put(allSuffix, type.getEnumConstants());
@@ -138,16 +140,16 @@ public class ImportEnumTagHandler extends TagHandler {
                 enums.put(DEFAULT_ALL_SUFFIX, type.getEnumConstants());
 
                 enums = Collections.unmodifiableMap(enums);
-                
+
                 if (cacheEnabled) {
                     cache.put(type, enums);
                 }
-			}
+            }
 
-			return enums;
-		}
+            return enums;
+        }
         else {
-			throw new FacesException("Class '" + type + "' is not an enum.");
-		}
-	}
+            throw new FacesException("Class '" + type + "' is not an enum.");
+        }
+    }
 }
