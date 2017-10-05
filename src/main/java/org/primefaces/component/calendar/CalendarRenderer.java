@@ -245,7 +245,7 @@ public class CalendarRenderer extends InputRenderer {
 
         if (mask != null && !mask.equals("false")) {
             String patternTemplate = calendar.getPattern() == null ? pattern : calendar.getPattern();
-            String maskTemplate = (mask.equals("true")) ? patternTemplate.replaceAll("[a-zA-Z]", "9") : mask;
+            String maskTemplate = (mask.equals("true")) ? convertPattern(patternTemplate) : mask;
             wb.attr("mask", maskTemplate).attr("maskSlotChar", calendar.getMaskSlotChar(), null).attr("maskAutoClear", calendar.isMaskAutoClear(), true);
         }
 
@@ -254,6 +254,13 @@ public class CalendarRenderer extends InputRenderer {
         wb.finish();
     }
 
+    public String convertPattern(String patternTemplate) {
+        String pattern = patternTemplate.replaceAll("MMM", "###");
+        pattern = pattern.replaceAll("[a-zA-Z]", "9");
+        pattern = pattern.replaceAll("###", "aaa");
+        return pattern;
+    }
+    
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object value) throws ConverterException {
         Calendar calendar = (Calendar) component;
