@@ -247,6 +247,7 @@ public abstract class Exporter {
 
             //restore
             table.setFirst(first);
+            table.setRows(rows);
             table.setRowIndex(-1);
             table.clearLazyCache();
             table.loadLazyData();
