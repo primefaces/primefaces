@@ -342,6 +342,13 @@
             <defaultValue>false</defaultValue>
             <description>If enabled, the input is focused again after selecting a date. Default is false.</description>
         </attribute>
+        <attribute>
+			<name>oneLine</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Try to show the time dropdowns all on one line. This should be used with controlType 'select'.</description>
+		</attribute>
     </attributes>
     <resources>
         <resource>
