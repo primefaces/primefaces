@@ -40,6 +40,7 @@ public class ScriptCollectingState implements Serializable {
     public void addInline(StringBuilder content) {
         if (content.length() > 0) {
             inline.append(content.toString());
+            inline.append(';');
             savedInlineTags++;
         }
     }
