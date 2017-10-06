@@ -22,10 +22,12 @@ import javax.faces.context.ResponseWriter;
 public class ScriptCollectingFacesContext extends FacesContextWrapper {
 
     private final FacesContext wrapped;
-    private ScriptCollectingResponseWriter wrappedWriter;
+    private final ScriptCollectingState state;
 
     public ScriptCollectingFacesContext(FacesContext wrapped) {
         this.wrapped = wrapped;
+        
+        this.state = new ScriptCollectingState();
     }
 
     @Override
@@ -39,12 +41,7 @@ public class ScriptCollectingFacesContext extends FacesContextWrapper {
             getWrapped().setResponseWriter(writer);
         }
         else {
-            if (wrappedWriter == null) {
-                wrappedWriter = new ScriptCollectingResponseWriter();
-            }
-
-            wrappedWriter.setWrapped(writer);
-            getWrapped().setResponseWriter(wrappedWriter);
+            getWrapped().setResponseWriter(new ScriptCollectingResponseWriter(writer, state));
         }
     }
 }

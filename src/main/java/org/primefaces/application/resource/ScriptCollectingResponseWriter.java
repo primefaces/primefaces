@@ -19,34 +19,24 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Writer;
 
 public class ScriptCollectingResponseWriter extends ResponseWriterWrapper {
 
-    private ResponseWriter wrapped;
-
-    private List<String> collectedSrc;
-    private StringBuilder collectedContent;
-    private int collectedContentCount; // just for statictics for now
+    private final ResponseWriter wrapped;
+    private final ScriptCollectingState state;
 
     private boolean inScript;
-    private StringBuilder src;
-    private StringBuilder content;
+    private StringBuilder include;
+    private StringBuilder inline;
 
-    public ScriptCollectingResponseWriter() {
+    public ScriptCollectingResponseWriter(ResponseWriter wrapped, ScriptCollectingState state) {
+        this.wrapped = wrapped;
+        this.state = state;
         
         inScript = false;
-        src = new StringBuilder(50);
-        content = new StringBuilder(75);
-
-        collectedSrc = new ArrayList<String>(20);
-        collectedContent = new StringBuilder(750);
-        collectedContentCount = 0;
-    }
-
-    public void setWrapped(ResponseWriter wrapped) {
-        this.wrapped = wrapped;
+        include = new StringBuilder(50);
+        inline = new StringBuilder(75);
     }
 
     @Override
@@ -57,7 +47,7 @@ public class ScriptCollectingResponseWriter extends ResponseWriterWrapper {
     @Override
     public void write(String str) throws IOException {
         if (inScript) {
-            content.append(str);
+            inline.append(str);
         }
         else {
             getWrapped().write(str);
@@ -67,7 +57,7 @@ public class ScriptCollectingResponseWriter extends ResponseWriterWrapper {
     @Override
     public void writeText(Object text, String property) throws IOException {
         if (inScript) {
-            content.append(text);
+            inline.append(text);
         }
         else {
             getWrapped().writeText(text, property);
@@ -80,7 +70,7 @@ public class ScriptCollectingResponseWriter extends ResponseWriterWrapper {
             if ("src".equals(name)) {
                 String strValue = (String) value;
                 if (strValue != null && !strValue.trim().isEmpty()) {
-                    src.append(strValue);
+                    include.append(strValue);
                 }
             }
         }
@@ -95,7 +85,7 @@ public class ScriptCollectingResponseWriter extends ResponseWriterWrapper {
             if ("src".equals(name)) {
                 String strValue = (String) value;
                 if (strValue != null && !strValue.trim().isEmpty()) {
-                    src.append(strValue);
+                    include.append(strValue);
                 }
             }
         }
@@ -119,22 +109,15 @@ public class ScriptCollectingResponseWriter extends ResponseWriterWrapper {
         if ("script".equals(name)) {
             inScript = false;
 
-            if (content.length() > 0) {
-                collectedContent.append(content);
-            }
-            if (src.length() > 0) {
-                collectedSrc.add(src.toString());
-            }
-            collectedContentCount++;
+            state.addInline(inline);
+            state.addInclude(include);
 
-            src.setLength(0);
-            content.setLength(0);
+            include.setLength(0);
+            inline.setLength(0);
         }
         else if ("body".equals(name)) {
-            collectedContentCount -= collectedSrc.size();
-
-            for (int i = 0; i < collectedSrc.size(); i++) {
-                String src = collectedSrc.get(i);
+            for (int i = 0; i < state.getIncludes().size(); i++) {
+                String src = state.getIncludes().get(i);
                 if (src != null && !src.isEmpty()) {
                     getWrapped().startElement("script", null);
                     getWrapped().writeAttribute("type", "text/javascript", null);
@@ -145,7 +128,7 @@ public class ScriptCollectingResponseWriter extends ResponseWriterWrapper {
 
             getWrapped().startElement("script", null);
             getWrapped().writeAttribute("type", "text/javascript", null);
-            getWrapped().write(minimizeScript(collectedContent.toString()));
+            getWrapped().write(minimizeScript(state.getInline().toString()));
             getWrapped().endElement("script");
 
             getWrapped().endElement(name);
@@ -164,5 +147,10 @@ public class ScriptCollectingResponseWriter extends ResponseWriterWrapper {
         content = "var pf = window.PrimeFaces;" + content;
 
         return content;
+    }
+    
+    @Override
+    public ResponseWriter cloneWithWriter(Writer writer) {
+        return getWrapped().cloneWithWriter(writer);
     }
 }
