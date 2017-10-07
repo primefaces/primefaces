@@ -2044,11 +2044,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     loadExpandedRowContent: function(row) {
         // To check whether or not any hidden expansion content exists to avoid reloading multiple duplicate nodes in DOM
         var expansionContent = row.next('.ui-expanded-row-content');
-        var reloadContentThroughAjax = true;
         if(expansionContent.length > 0) {
-            reloadContentThroughAjax = false;
-            row.addClass('ui-expanded-row');
-            expansionContent.show();
+            expansionContent.remove();
         }
         
         var $this = this,
@@ -2063,17 +2060,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                      {name: this.id + '_encodeFeature', value: true},
                      {name: this.id + '_skipChildren', value: true}],
             onsuccess: function(responseXML, status, xhr) {
-                if(reloadContentThroughAjax) {
-                    PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                        widget: $this,
-                        handle: function(content) {
-                            if(content && $.trim(content).length) {
-                                row.addClass('ui-expanded-row');
-                                this.displayExpandedRow(row, content);
-                            }
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                    widget: $this,
+                    handle: function(content) {
+                        if(content && $.trim(content).length) {
+                            row.addClass('ui-expanded-row');
+                            this.displayExpandedRow(row, content);
                         }
-                    });
-                }
+                    }
+                });
 
                 return true;
             },
