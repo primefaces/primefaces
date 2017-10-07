@@ -2061,14 +2061,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                      {name: this.id + '_skipChildren', value: true}],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: $this,
-                    handle: function(content) {
-                        if(content && $.trim(content).length) {
-                            row.addClass('ui-expanded-row');
-                            this.displayExpandedRow(row, content);
+                        widget: $this,
+                        handle: function(content) {
+                            if(content && $.trim(content).length) {
+                                row.addClass('ui-expanded-row');
+                                this.displayExpandedRow(row, content);
+                            }
                         }
-                    }
-                });
+                    });
 
                 return true;
             },
