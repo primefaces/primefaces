@@ -90,4 +90,16 @@ public abstract class BasePlotRenderer {
             writer.write(",resetAxesOnResize:" + false);
         }
     }
+    
+    protected String escapeChartData(Object value) {
+        // default to "null" if null and JSON escape it
+        String result = ComponentUtils.escapeText(String.valueOf(value));
+
+        // do NOT quote numbers but quote all other objects
+        if (value instanceof Number == false) {
+            result = "\"" + result + "\"";
+        }
+
+        return result;
+    }
 }

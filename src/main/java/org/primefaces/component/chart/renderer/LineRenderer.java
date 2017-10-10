@@ -40,17 +40,11 @@ public class LineRenderer extends CartesianPlotRenderer {
             for (Iterator<Object> x = series.getData().keySet().iterator(); x.hasNext();) {
                 Object xValue = x.next();
                 Number yValue = series.getData().get(xValue);
-                String yValueAsString = ComponentUtils.escapeText((yValue != null) ? yValue.toString() : "null");
+                String yValueAsString = escapeChartData(yValue);
+                String xValueAsString = escapeChartData(xValue);
 
                 writer.write("[");
-
-                if (xValue instanceof String) {
-                    writer.write("\"" + ComponentUtils.escapeText(xValue.toString()) + "\"," + yValueAsString);
-                }
-                else {
-                    writer.write(xValue + "," + yValueAsString);
-                }
-
+                writer.write(xValueAsString + "," + yValueAsString);
                 writer.write("]");
 
                 if (x.hasNext()) {

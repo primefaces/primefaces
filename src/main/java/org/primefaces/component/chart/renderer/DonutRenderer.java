@@ -45,7 +45,7 @@ public class DonutRenderer extends BasePlotRenderer {
                 String key = it.next();
                 Number value = map.get(key);
 
-                writer.write("[\"" + ComponentUtils.escapeText(key) + "\"," + value + "]");
+                writer.write("[" + escapeChartData(key) + "," + value + "]");
 
                 if (it.hasNext()) {
                     writer.write(",");

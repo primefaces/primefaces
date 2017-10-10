@@ -31,7 +31,7 @@ public class MeterGaugeRenderer extends BasePlotRenderer {
         ResponseWriter writer = context.getResponseWriter();
         MeterGaugeChartModel model = (MeterGaugeChartModel) chart.getModel();
 
-        writer.write(",data:[[" + model.getValue() + "]]");
+        writer.write(",data:[[" + escapeChartData(model.getValue()) + "]]");
     }
 
     @Override
