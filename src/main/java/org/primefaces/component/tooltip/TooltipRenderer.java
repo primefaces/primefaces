@@ -97,7 +97,7 @@ public class TooltipRenderer extends CoreRenderer {
                 .attr("escape", tooltip.isEscape(), true)
                 .attr("trackMouse", tooltip.isTrackMouse(), false)
                 .attr("position", tooltip.getPosition(), "right")
-                .attr("delegete", tooltip.isDelegete(), false)
+                .attr("delegate", tooltip.isDelegate(), false)
                 .returnCallback("beforeShow", "function()", tooltip.getBeforeShow())
                 .callback("onShow", "function()", tooltip.getOnShow())
                 .callback("onHide", "function()", tooltip.getOnHide());

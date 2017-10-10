@@ -100,7 +100,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.target);
 
         var $this = this;
-        if(this.cfg.delegete) {
+        if(this.cfg.delegate) {
             var targetSelector = "*[id='" + this.target.attr('id') + "']";
             
             $(document).off(this.cfg.showEvent + ' ' + this.cfg.hideEvent, targetSelector)
@@ -320,7 +320,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
     },
     
     getTarget: function() {
-        if(this.cfg.delegete)
+        if(this.cfg.delegate)
             return PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.target);
         else 
             return this.target;
