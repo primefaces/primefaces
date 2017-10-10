@@ -360,6 +360,12 @@
             <defaultValue>true</defaultValue>
             <description>When enabled, click event can be added to disabled button</description>
 		</attribute>
+        <attribute>
+			<name>ariaLabel</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <description></description>
+		</attribute>
 	</attributes>
 	<resources>
         <resource>
