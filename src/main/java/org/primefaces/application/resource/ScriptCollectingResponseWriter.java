@@ -45,6 +45,26 @@ public class ScriptCollectingResponseWriter extends ResponseWriterWrapper {
     }
 
     @Override
+    public void write(char cbuf[]) throws IOException {
+        if (inScript) {
+            inline.append(cbuf);
+        }
+        else {
+            getWrapped().write(cbuf);
+        }
+    }
+    
+    @Override
+    public void write(char[] cbuf, int off, int len) throws IOException {
+        if (inScript) {
+            inline.append(cbuf, off, len);
+        }
+        else {
+            getWrapped().write(cbuf);
+        }
+    }
+    
+    @Override
     public void write(String str) throws IOException {
         if (inScript) {
             inline.append(str);
