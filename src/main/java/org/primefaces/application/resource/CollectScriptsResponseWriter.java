@@ -177,7 +177,7 @@ public class CollectScriptsResponseWriter extends ResponseWriterWrapper {
             .replace("window.PrimeFaces", "pf")
             .replace(";;", ";");
 
-        minimized = "var pf = window.PrimeFaces;" + minimized;
+        minimized = "var pf=window.PrimeFaces;" + minimized;
 
         return minimized;
     }
