@@ -21,7 +21,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.PieChartModel;
-import org.primefaces.util.ComponentUtils;
 
 public class PieRenderer extends BasePlotRenderer {
 
@@ -35,7 +34,7 @@ public class PieRenderer extends BasePlotRenderer {
             String key = it.next();
             Number value = model.getData().get(key);
 
-            writer.write("[\"" + ComponentUtils.escapeText(key) + "\"," + value + "]");
+            writer.write("[" + escapeChartData(key) + "," + value + "]");
 
             if (it.hasNext()) {
                 writer.write(",");

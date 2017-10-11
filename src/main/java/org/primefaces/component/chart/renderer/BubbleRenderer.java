@@ -23,7 +23,6 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.BubbleChartModel;
 import org.primefaces.model.chart.BubbleChartSeries;
-import org.primefaces.util.ComponentUtils;
 
 public class BubbleRenderer extends CartesianPlotRenderer {
 
@@ -37,14 +36,14 @@ public class BubbleRenderer extends CartesianPlotRenderer {
         for (Iterator<BubbleChartSeries> it = data.iterator(); it.hasNext();) {
             BubbleChartSeries s = it.next();
             writer.write("[");
-            writer.write(String.valueOf(s.getX()));
+            writer.write(escapeChartData(s.getX()));
             writer.write(",");
-            writer.write(String.valueOf(s.getY()));
+            writer.write(escapeChartData(s.getY()));
             writer.write(",");
-            writer.write(String.valueOf(s.getRadius()));
-            writer.write(",\"");
-            writer.write(ComponentUtils.escapeText(String.valueOf(s.getLabel())));
-            writer.write("\"]");
+            writer.write(escapeChartData(s.getRadius()));
+            writer.write(",");
+            writer.write(escapeChartData(s.getLabel()));
+            writer.write("]");
 
             if (it.hasNext()) {
                 writer.write(",");

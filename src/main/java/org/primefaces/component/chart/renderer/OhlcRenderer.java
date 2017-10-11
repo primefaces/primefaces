@@ -36,15 +36,15 @@ public class OhlcRenderer extends CartesianPlotRenderer {
         for (Iterator<OhlcChartSeries> it = data.iterator(); it.hasNext();) {
             OhlcChartSeries s = it.next();
             writer.write("[");
-            writer.write(String.valueOf(s.getValue()));
+            writer.write(escapeChartData(s.getValue()));
             writer.write(",");
-            writer.write(String.valueOf(s.getOpen()));
+            writer.write(escapeChartData(s.getOpen()));
             writer.write(",");
-            writer.write(String.valueOf(s.getHigh()));
+            writer.write(escapeChartData(s.getHigh()));
             writer.write(",");
-            writer.write(String.valueOf(s.getLow()));
+            writer.write(escapeChartData(s.getLow()));
             writer.write(",");
-            writer.write(String.valueOf(s.getClose()));
+            writer.write(escapeChartData(s.getClose()));
             writer.write("]");
 
             if (it.hasNext()) {
