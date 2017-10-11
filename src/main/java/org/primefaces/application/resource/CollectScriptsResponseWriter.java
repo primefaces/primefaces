@@ -21,16 +21,16 @@ import javax.faces.context.ResponseWriterWrapper;
 import java.io.IOException;
 import java.io.Writer;
 
-public class ScriptCollectingResponseWriter extends ResponseWriterWrapper {
+public class CollectScriptsResponseWriter extends ResponseWriterWrapper {
 
     private final ResponseWriter wrapped;
-    private final ScriptCollectingState state;
+    private final CollectScriptsState state;
 
     private boolean inScript;
     private StringBuilder include;
     private StringBuilder inline;
 
-    public ScriptCollectingResponseWriter(ResponseWriter wrapped, ScriptCollectingState state) {
+    public CollectScriptsResponseWriter(ResponseWriter wrapped, CollectScriptsState state) {
         this.wrapped = wrapped;
         this.state = state;
         

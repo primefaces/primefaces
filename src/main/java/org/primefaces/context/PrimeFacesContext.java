@@ -18,6 +18,9 @@ package org.primefaces.context;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextWrapper;
+import javax.faces.context.ResponseWriter;
+import org.primefaces.application.resource.CollectScriptsResponseWriter;
+import org.primefaces.application.resource.CollectScriptsState;
 
 /**
  * Custom {@link FacesContextWrapper} to init and release our {@link RequestContext}.
@@ -25,12 +28,21 @@ import javax.faces.context.FacesContextWrapper;
 public class PrimeFacesContext extends FacesContextWrapper {
 
     private final FacesContext wrapped;
+    private final boolean collectScripts;
+
+    private CollectScriptsState collectScriptsState;
     private PrimeExternalContext externalContext;
 
     public PrimeFacesContext(FacesContext wrapped) {
         this.wrapped = wrapped;
 
-        RequestContext.setCurrentInstance(new DefaultRequestContext(wrapped), wrapped);
+        RequestContext requestContext = new DefaultRequestContext(wrapped);
+        RequestContext.setCurrentInstance(requestContext, wrapped);
+        
+        collectScripts = requestContext.getApplicationContext().getConfig().isCollectScripts();
+        if (collectScripts) {
+            collectScriptsState = new CollectScriptsState();
+        }
     }
 
     @Override
@@ -41,6 +53,16 @@ public class PrimeFacesContext extends FacesContextWrapper {
         return externalContext;
     }
 
+    @Override
+    public void setResponseWriter(ResponseWriter writer) {
+        if (!getPartialViewContext().isAjaxRequest() && collectScripts) {
+            getWrapped().setResponseWriter(new CollectScriptsResponseWriter(writer, collectScriptsState));
+        }
+        else {
+            getWrapped().setResponseWriter(writer);
+        }
+    }
+    
     @Override
     public FacesContext getWrapped() {
         return wrapped;
