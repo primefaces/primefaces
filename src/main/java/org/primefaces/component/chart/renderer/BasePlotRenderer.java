@@ -92,12 +92,12 @@ public abstract class BasePlotRenderer {
     }
     
     protected String escapeChartData(Object value) {
-        // default to "null" if null and JSON escape it
-        String result = ComponentUtils.escapeText(String.valueOf(value));
+        // default to "null" if null
+        String result = String.valueOf(value);
 
         // do NOT quote numbers but quote all other objects
         if (value instanceof Number == false) {
-            result = "\"" + result + "\"";
+            result = "\"" + ComponentUtils.escapeText(result) + "\"";
         }
 
         return result;

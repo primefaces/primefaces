@@ -23,7 +23,6 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.BubbleChartModel;
 import org.primefaces.model.chart.BubbleChartSeries;
-import org.primefaces.util.ComponentUtils;
 
 public class BubbleRenderer extends CartesianPlotRenderer {
 

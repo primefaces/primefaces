@@ -23,7 +23,6 @@ import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartModel;
-import org.primefaces.util.ComponentUtils;
 
 public class LineRenderer extends CartesianPlotRenderer {
 

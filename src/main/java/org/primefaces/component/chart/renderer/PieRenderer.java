@@ -21,7 +21,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.PieChartModel;
-import org.primefaces.util.ComponentUtils;
 
 public class PieRenderer extends BasePlotRenderer {
 
