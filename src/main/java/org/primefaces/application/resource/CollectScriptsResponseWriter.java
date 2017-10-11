@@ -158,7 +158,7 @@ public class CollectScriptsResponseWriter extends ResponseWriterWrapper {
 
             getWrapped().startElement("script", null);
             getWrapped().writeAttribute("type", "text/javascript", null);
-            getWrapped().write(minimizeScript(state.getInline().toString()));
+            getWrapped().write(minimizeInlineScript(state.getInline()));
             getWrapped().endElement("script");
 
             getWrapped().endElement(name);
@@ -168,15 +168,18 @@ public class CollectScriptsResponseWriter extends ResponseWriterWrapper {
         }
     }
 
-    protected String minimizeScript(String content) {
-        content = content.replace("PrimeFaces.settings", "pf.settings")
+    protected String minimizeInlineScript(StringBuilder script) {
+        String minimized = script.toString();
+
+        minimized = minimized.replace("PrimeFaces.settings", "pf.settings")
             .replace("PrimeFaces.cw", "pf.cw")
             .replace("PrimeFaces.ab", "pf.ab")
             .replace("window.PrimeFaces", "pf")
             .replace(";;", ";");
-        content = "var pf = window.PrimeFaces;" + content;
 
-        return content;
+        minimized = "var pf = window.PrimeFaces;" + minimized;
+
+        return minimized;
     }
     
     @Override
