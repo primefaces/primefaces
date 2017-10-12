@@ -61,6 +61,12 @@
 			<type>java.lang.String</type>
             <description>Suffix of the input.</description>
 		</attribute>
+        <attribute>
+            <name>decimalPlaces</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Number of decimal places.</description>
+        </attribute>
 	</attributes>
     <resources>
         <resource>

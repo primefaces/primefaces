@@ -65,7 +65,7 @@
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>javax.faces</artifactId>
-            <version>2.2.0</version>
+            <version>2.3.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -202,6 +202,7 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <filtering>true</filtering>
             </resource>
         </resources>
 
@@ -365,9 +366,15 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
+                <version>3.0.2</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
+                    <nonFilteredFileExtensions>
+                       <nonFilteredFileExtension>eot</nonFilteredFileExtension>
+                       <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+                       <nonFilteredFileExtension>woff</nonFilteredFileExtension>
+                       <nonFilteredFileExtension>woff2</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
                 </configuration>
             </plugin>
 
@@ -438,6 +445,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/treetable/treetable.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/wizard/wizard.css</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/chips/chips.css</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/sidebar/sidebar.css</include>
                             </includes>
                         </aggregation>
                         <aggregation>
@@ -533,6 +541,7 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/wizard/wizard.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/tristatecheckbox/tristatecheckbox.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/chips/chips.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/sidebar/sidebar.js</include>
                             </includes>
                         </aggregation>
                         <aggregation>

@@ -74,6 +74,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("name", clientId, "name");
         writer.writeAttribute("class", button.resolveStyleClass(), "styleClass");
+        writer.writeAttribute("aria-label", button.getAriaLabel(), null);
 
         if (onclick != null) {
             if (button.requiresConfirmation()) {

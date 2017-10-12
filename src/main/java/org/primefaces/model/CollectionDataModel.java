@@ -35,6 +35,7 @@ public class CollectionDataModel<E> extends DataModel<E> {
         setWrappedData(collection);
     }
 
+    @Override
     public int getRowCount() {
         if (wrappedArray == null) {
             return -1;
@@ -43,6 +44,7 @@ public class CollectionDataModel<E> extends DataModel<E> {
         return wrappedArray.length;
     }
 
+    @Override
     public E getRowData() {
         if (wrappedArray == null) {
             return null;
@@ -54,10 +56,12 @@ public class CollectionDataModel<E> extends DataModel<E> {
         return wrappedArray[index];
     }
 
+    @Override
     public int getRowIndex() {
         return index;
     }
 
+    @Override
     public void setRowIndex(int rowIndex) {
         if (rowIndex < -1) {
             throw new IllegalArgumentException();
@@ -85,13 +89,14 @@ public class CollectionDataModel<E> extends DataModel<E> {
                 }
             }
         }
-
     }
 
+    @Override
     public Object getWrappedData() {
         return wrapped;
     }
 
+    @Override
     public void setWrappedData(Object data) {
         if (data == null) {
             wrapped = null;
@@ -106,6 +111,7 @@ public class CollectionDataModel<E> extends DataModel<E> {
         }
     }
 
+    @Override
     public boolean isRowAvailable() {
         if (wrappedArray == null) {
             return false;

@@ -151,6 +151,13 @@
     margin-right: 3px;
 }
 
+.ui-tree.ui-state-disabled .ui-tree-toggler,
+.ui-tree.ui-state-disabled .ui-tree-selectable .ui-treenode-label,
+.ui-tree.ui-state-disabled .ui-tree-selectable .ui-treenode-icon,
+.ui-tree.ui-state-disabled .ui-chkbox-box {
+    cursor: default;
+}
+
 /** RTL **/
 .ui-tree.ui-tree-rtl {
     direction: rtl;

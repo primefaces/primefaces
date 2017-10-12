@@ -128,6 +128,8 @@ PrimeFaces.widget.TieredMenu = PrimeFaces.widget.Menu.extend({
             }
 
             e.preventDefault();
+        }).on('mousedown.tieredMenu', function(e) {
+            e.stopPropagation();
         });
     },
 

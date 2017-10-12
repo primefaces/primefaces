@@ -38,7 +38,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     
     refresh: function(cfg) {
         this.columnWidthsFixed = false;
-        this.scrollStateVal = this.scrollStateHolder.val();
+        this.scrollStateVal = this.scrollStateHolder ? this.scrollStateHolder.val() : null;
         this.init(cfg);
     },
     
@@ -1029,7 +1029,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             var header = $(this);
             header.attr('id', header.attr('id') + '_clone');
         });
-        this.theadClone.removeAttr('id').addClass('ui-treetable-scrollable-theadclone').height(0).prependTo(this.bodyTable);
+        this.theadClone.removeAttr('id').addClass('ui-treetable-scrollable-theadclone').hide().prependTo(this.bodyTable);
     },
     
      fixColumnWidths: function() {
@@ -1454,7 +1454,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     tabCell: function(cell, forward) {
-        var targetCell = forward ? cell.next() : cell.prev();
+        var targetCell = forward ? cell.nextAll('td.ui-editable-column:first') : cell.prevAll('td.ui-editable-column:first');
         if(targetCell.length == 0) {
             var tabRow = forward ? cell.parent().next() : cell.parent().prev();
             targetCell = forward ? tabRow.children('td.ui-editable-column:first') : tabRow.children('td.ui-editable-column:last');

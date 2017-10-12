@@ -275,11 +275,13 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         boolean customContent = menu.getVar() != null;
 
         if (customContent) {
+            List<Column> columns = menu.getColumns();
+            
             writer.startElement("table", menu);
             writer.writeAttribute("class", SelectOneMenu.TABLE_CLASS, null);
-            encodeColumnsHeader(context, menu);
+            encodeColumnsHeader(context, menu, columns);
             writer.startElement("tbody", menu);
-            encodeOptionsAsTable(context, menu, selectItems);
+            encodeOptionsAsTable(context, menu, selectItems, columns);
             writer.endElement("tbody");
             writer.endElement("table");
         }
@@ -293,11 +295,14 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         }
     }
 
-    protected void encodeColumnsHeader(FacesContext context, SelectOneMenu menu) throws IOException {
+    protected void encodeColumnsHeader(FacesContext context, SelectOneMenu menu, List<Column> columns)
+            throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         boolean hasHeader = false;
 
-        for (Column column : menu.getColums()) {
+        for (int i = 0; i < columns.size(); i++) {
+            Column column = columns.get(i);
             if (column.isRendered() && (column.getHeaderText() != null || column.getFacet("header") != null)) {
                 hasHeader = true;
                 break;
@@ -306,7 +311,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         if (hasHeader) {
             writer.startElement("thead", menu);
-            for (Column column : menu.getColums()) {
+            for (int i = 0; i < columns.size(); i++) {
+                Column column = columns.get(i);
                 if (!column.isRendered()) {
                     continue;
                 }
@@ -335,16 +341,16 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         }
     }
 
-    protected void encodeOptionsAsTable(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
+    protected void encodeOptionsAsTable(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, List<Column> columns )
+            throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         String var = menu.getVar();
-        List<Column> columns = menu.getColums();
 
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
             String itemLabel = selectItem.getLabel();
             itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
-            Object itemValue = selectItem.getValue();
             String itemStyleClass = SelectOneMenu.ROW_CLASS;
             if (selectItem.isNoSelectionOption()) {
                 itemStyleClass = itemStyleClass + " ui-noselection-option";
@@ -359,24 +365,21 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 writer.writeAttribute("title", selectItem.getDescription(), null);
             }
 
-            if (itemValue == null || itemValue instanceof String) {
+            for (int j = 0; j < columns.size(); j++) {
+                Column column = columns.get(j);
+                String style = column.getStyle();
+                String styleClass = column.getStyleClass();
+
                 writer.startElement("td", null);
-                writer.writeAttribute("colspan", columns.size(), null);
-                writer.writeText(selectItem.getLabel(), null);
-                writer.endElement("td");
-            }
-            else {
-                for (Column column : columns) {
-                    String style = column.getStyle();
-                    String styleClass = column.getStyleClass();
-
-                    writer.startElement("td", null);
-                    if (style != null) writer.writeAttribute("style", style, null);
-                    if (styleClass != null) writer.writeAttribute("class", styleClass, null);
-
-                    renderChildren(context, column);
-                    writer.endElement("td");
+                if (style != null) {
+                    writer.writeAttribute("style", style, null);
                 }
+                if (styleClass != null) {
+                    writer.writeAttribute("class", styleClass, null);
+                }
+
+                renderChildren(context, column);
+                writer.endElement("td");
             }
 
             writer.endElement("tr");

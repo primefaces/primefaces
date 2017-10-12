@@ -55,6 +55,7 @@ import org.primefaces.util.WidgetBuilder;
 import org.primefaces.validate.ClientValidator;
 import org.primefaces.validate.bean.BeanValidationMetadata;
 import org.primefaces.validate.bean.BeanValidationMetadataMapper;
+import org.primefaces.util.Jsf22Helper;
 
 public abstract class CoreRenderer extends Renderer {
 
@@ -119,7 +120,7 @@ public abstract class CoreRenderer extends Renderer {
 
     protected void renderDynamicPassThruAttributes(FacesContext context, UIComponent component) throws IOException {
         if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF22()) {
-            RendererUtils.renderPassThroughAttributes(context, component);
+            Jsf22Helper.renderPassThroughAttributes(context, component);
         }
     }
 
@@ -229,7 +230,7 @@ public abstract class CoreRenderer extends Renderer {
 
         //dynamic attributes
         if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF22()) {
-            RendererUtils.renderPassThroughAttributes(context, component);
+            Jsf22Helper.renderPassThroughAttributes(context, component);
         }
     }
 

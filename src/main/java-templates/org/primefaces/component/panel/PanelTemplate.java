@@ -25,6 +25,7 @@ import javax.faces.event.BehaviorEvent;
 	public static final String PANEL_TITLE_ICON_CLASS = "ui-panel-titlebar-icon ui-corner-all ui-state-default";
 	public static final String PANEL_CONTENT_CLASS = "ui-panel-content ui-widget-content";
 	public static final String PANEL_FOOTER_CLASS = "ui-panel-footer ui-widget-content";
+    public static final String PANEL_ACTIONS_CLASS = "ui-panel-actions";
 
     public static final String MOBILE_CLASS = "ui-panel-m ui-corner-all";
     public static final String MOBILE_TITLE_CLASS = "ui-panel-m-titlebar ui-bar ui-bar-inherit";

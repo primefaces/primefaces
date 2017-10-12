@@ -286,7 +286,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("multiple", "multiple", null);
-        writer.writeAttribute("class", "ui-helper-hidden", null);
+        writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
         if (ac.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");
@@ -297,6 +297,10 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.writeAttribute("value", value, null);
             writer.writeAttribute("selected", "selected", null);
             writer.endElement("option");
+        }
+        
+        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, ac);
         }
 
         writer.endElement("select");

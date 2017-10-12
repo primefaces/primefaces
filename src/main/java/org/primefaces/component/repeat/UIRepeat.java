@@ -52,6 +52,7 @@ import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import static javax.faces.component.UINamingContainer.getSeparatorChar;
 import org.primefaces.component.api.UITabPanel;
+import org.primefaces.model.IterableDataModel;
 
 public class UIRepeat extends UINamingContainer {
 
@@ -221,6 +222,12 @@ public class UIRepeat extends UINamingContainer {
             }
             else if (val instanceof ResultSet) {
                 this.model = new ResultSetDataModel((ResultSet) val);
+            }
+            else if (val instanceof Iterable) {
+                this.model = new IterableDataModel((Iterable<?>) val);
+            }
+            else if (val instanceof Map) {
+                this.model = new IterableDataModel(((Map<?, ?>) val).entrySet());
             }
             else {
                 this.model = new ScalarDataModel<Object>(val);

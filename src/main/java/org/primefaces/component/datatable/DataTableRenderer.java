@@ -31,6 +31,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.model.SelectItem;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
@@ -571,11 +572,10 @@ public class DataTableRenderer extends DataRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = column.getContainerClientId(context);
 
-        String columnField = column.getField();
         ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
         ValueExpression columnFilterByVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
-        boolean sortable = ((columnField != null || columnSortByVE != null) && column.isSortable());
-        boolean filterable = ((columnField != null || columnFilterByVE != null) && column.isFilterable());
+        boolean sortable = (columnSortByVE != null && column.isSortable());
+        boolean filterable = (columnFilterByVE != null && column.isFilterable());
         String selectionMode = column.getSelectionMode();
         String sortIcon = null;
         boolean resizable = table.isResizableColumns() && column.isResizable();
@@ -1273,11 +1273,13 @@ public class DataTableRenderer extends DataRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
         boolean selectionEnabled = column.getSelectionMode() != null;
+        CellEditor editor = column.getCellEditor();
+        boolean editorEnabled = editor != null && editor.isRendered();
         int priority = column.getPriority();
         String style = column.getStyle();
         String styleClass = selectionEnabled
-                ? DataTable.SELECTION_COLUMN_CLASS
-                : (column.getCellEditor() != null && column.getCellEditor().isRendered()) ? DataTable.EDITABLE_COLUMN_CLASS : null;
+                ? DataTable.SELECTION_COLUMN_CLASS 
+                : (!editorEnabled) ? null : (editor.isDisabled()) ? DataTable.CELL_EDITOR_DISABLED_CLASS : DataTable.EDITABLE_COLUMN_CLASS;
         styleClass = (column.isSelectRow())
                 ? styleClass
                 : (styleClass == null) ? DataTable.UNSELECTABLE_COLUMN_CLASS : styleClass + " " + DataTable.UNSELECTABLE_COLUMN_CLASS;

@@ -21,7 +21,11 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import net.glxn.qrgen.QRCode;
 import net.glxn.qrgen.image.ImageType;
+
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 public class QRCodeHandler extends BaseDynamicContentHandler {
 
@@ -41,7 +45,14 @@ public class QRCodeHandler extends BaseDynamicContentHandler {
 
             handleCache(externalContext, cache);
 
-            QRCode.from(value).to(ImageType.PNG).withCharset("UTF-8").writeTo(externalContext.getResponseOutputStream());
+            ErrorCorrectionLevel ecl = ErrorCorrectionLevel.L;
+            String errorCorrection = params.get("qrec");
+            if (!ComponentUtils.isValueBlank(errorCorrection)) {
+                ecl = ErrorCorrectionLevel.valueOf(errorCorrection);
+            }
+
+            QRCode.from(value).to(ImageType.PNG).withErrorCorrection(ecl).withCharset("UTF-8")
+                        .writeTo(externalContext.getResponseOutputStream());
 
             externalContext.responseFlushBuffer();
             context.responseComplete();

@@ -53,7 +53,7 @@ public class OverlayPanelRenderer extends CoreRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
-        writer.startElement("div", panel);
+        writer.startElement("div", null);
         writer.writeAttribute("class", OverlayPanel.CONTENT_CLASS, "styleClass");
         if (!panel.isDynamic()) {
             renderChildren(context, panel);

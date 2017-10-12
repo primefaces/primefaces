@@ -1,3 +1,8 @@
+[![Maven](https://maven-badges.herokuapp.com/maven-central/org.primefaces/primefaces/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.primefaces/primefaces)
+[![Javadoc](http://javadoc.io/badge/org.primefaces/primefaces.svg)](http://javadoc.io/doc/org.primefaces/primefaces) 
+[![Travis](https://travis-ci.org/primefaces/primefaces.svg?branch=master)](https://travis-ci.org/primefaces/primefaces)
+[![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+
 # PrimeFaces
 
 This is an overview page, please visit [PrimeFaces.org](http://www.primefaces.org) for more information.

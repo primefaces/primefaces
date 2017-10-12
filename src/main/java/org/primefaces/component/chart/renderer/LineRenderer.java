@@ -23,7 +23,6 @@ import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartModel;
-import org.primefaces.util.ComponentUtils;
 
 public class LineRenderer extends CartesianPlotRenderer {
 
@@ -40,17 +39,11 @@ public class LineRenderer extends CartesianPlotRenderer {
             for (Iterator<Object> x = series.getData().keySet().iterator(); x.hasNext();) {
                 Object xValue = x.next();
                 Number yValue = series.getData().get(xValue);
-                String yValueAsString = ComponentUtils.escapeText((yValue != null) ? yValue.toString() : "null");
+                String yValueAsString = escapeChartData(yValue);
+                String xValueAsString = escapeChartData(xValue);
 
                 writer.write("[");
-
-                if (xValue instanceof String) {
-                    writer.write("\"" + ComponentUtils.escapeText(xValue.toString()) + "\"," + yValueAsString);
-                }
-                else {
-                    writer.write(xValue + "," + yValueAsString);
-                }
-
+                writer.write(xValueAsString + "," + yValueAsString);
                 writer.write("]");
 
                 if (x.hasNext()) {

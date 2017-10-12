@@ -1,10 +1,17 @@
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
     public final static String STYLE_CLASS = "ui-selectbooleanbutton ui-widget";
 
     public String resolveStyleClass(boolean checked, boolean disabled) {
         String icon = checked ? getOnIcon() : getOffIcon();
-        String styleClass = icon != null ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
+        String styleClass = null;
+
+        if(ComponentUtils.isValueBlank(getOnLabel()) && ComponentUtils.isValueBlank(getOffLabel())) {
+            styleClass = HTML.BUTTON_ICON_ONLY_BUTTON_CLASS;
+        } else {
+            styleClass = icon != null ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
+        }
     
         if(disabled) {
             styleClass = styleClass + " ui-state-disabled";

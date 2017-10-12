@@ -102,6 +102,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute("aria-hidden", "true", null);
 
         if (labelledBy != null) {
             writer.writeAttribute("aria-labelledby", labelledBy, null);

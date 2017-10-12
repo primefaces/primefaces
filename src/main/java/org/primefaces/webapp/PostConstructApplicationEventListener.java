@@ -15,6 +15,7 @@
  */
 package org.primefaces.webapp;
 
+import org.primefaces.util.Jsf23Helper;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,10 +31,12 @@ public class PostConstructApplicationEventListener implements SystemEventListene
 
     private final static Logger logger = Logger.getLogger(PostConstructApplicationEventListener.class.getName());
 
+    @Override
     public boolean isListenerForSource(Object source) {
         return true;
     }
 
+    @Override
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         // temp manually instantiate startup config as the default config is not available yet
         PrimeConfiguration config = new StartupPrimeConfiguration(FacesContext.getCurrentInstance());
@@ -41,5 +44,9 @@ public class PostConstructApplicationEventListener implements SystemEventListene
         logger.log(Level.INFO,
                 "Running on PrimeFaces {0}",
                 config.getBuildVersion());
+        
+        if (config.isAtLeastJSF23()) {
+            Jsf23Helper.addSearchKeywordResolvers();
+        }
     }
 }

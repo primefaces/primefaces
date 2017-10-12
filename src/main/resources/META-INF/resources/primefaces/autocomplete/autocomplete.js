@@ -272,6 +272,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     }
                 }
             }
+            
+            $this.checkMatchedItem = true;
+            
         }).on('keydown.autoComplete', function(e) {
             var keyCode = $.ui.keyCode;
 
@@ -373,6 +376,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         }).on('paste.autoComplete', function() {
 			$this.suppressInput = false;
+            $this.checkMatchedItem = true;
 		});
     },
 
@@ -498,6 +502,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 $this.timeout = null;
                 $this.search(value);
             }, delay);
+        }
+        else if(value.length === 0) {
+            if($this.timeout) {
+                $this.deleteTimeout();
+            }
         }
     },
 
@@ -788,6 +797,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 if(!$this.cfg.multiple) {
                     $this.hinput.val('');
                 }
+            }
+            
+            if(valid && $this.checkMatchedItem) {   
+                var selectedItem = $this.items.filter('[data-item-label="' + value + '"]');
+                if (selectedItem.length) {
+                    selectedItem.click();
+                }
+                $this.checkMatchedItem = false;
             }
         });
     },

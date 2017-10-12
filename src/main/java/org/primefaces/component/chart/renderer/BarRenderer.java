@@ -42,7 +42,7 @@ public class BarRenderer extends CartesianPlotRenderer {
             writer.write("[");
             for (Iterator<Object> its = series.getData().keySet().iterator(); its.hasNext();) {
                 Number value = series.getData().get(its.next());
-                String valueToRender = value != null ? value.toString() : "null";
+                String valueToRender = escapeChartData(value);
 
                 if (horizontal) {
                     writer.write("[");

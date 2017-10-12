@@ -125,6 +125,13 @@
             <defaultValue>right</defaultValue>
             <description>Position of the tooltip, valid values are right, left, top and bottom.</description>
 		</attribute>
+        <attribute>
+			<name>delegate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description></description>
+		</attribute>
 	</attributes>
     <resources>
         <resource>

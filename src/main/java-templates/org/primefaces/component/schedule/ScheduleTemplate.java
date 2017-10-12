@@ -11,6 +11,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LocaleUtils;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
@@ -45,17 +46,7 @@ import javax.faces.event.BehaviorEvent;
 	
 	java.util.Locale calculateLocale(FacesContext facesContext) {
 		if(appropriateLocale == null) {
-			Object userLocale = getLocale();
-			if(userLocale != null) {
-				if(userLocale instanceof String)
-					appropriateLocale = new java.util.Locale((String) userLocale, "");
-				else if(userLocale instanceof java.util.Locale)
-					appropriateLocale = (java.util.Locale) userLocale;
-				else
-					throw new IllegalArgumentException("Type:" + userLocale.getClass() + " is not a valid locale type for calendar:" + this.getClientId(facesContext));
-			} else {
-				appropriateLocale = facesContext.getViewRoot().getLocale();
-			}
+		    appropriateLocale = LocaleUtils.resolveLocale(getLocale(), this.getClientId(facesContext));
 		}
 		
 		return appropriateLocale;

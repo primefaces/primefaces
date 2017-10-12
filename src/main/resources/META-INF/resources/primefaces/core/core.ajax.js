@@ -581,12 +581,15 @@ if (!PrimeFaces.ajax) {
                         PrimeFaces.debug('DOM is updated.');
                     },
                     always: function(xhr, status) {
-                        if(cfg.oncomplete) {
-                            cfg.oncomplete.call(this, xhr, status, xhr.pfArgs);
-                        }
 
+                        // first call the extension callback (e.g. datatable paging)
                         if(cfg.ext && cfg.ext.oncomplete) {
                             cfg.ext.oncomplete.call(this, xhr, status, xhr.pfArgs);
+                        }
+
+                        // after that, call the endusers callback, which should be called when everything is ready
+                        if(cfg.oncomplete) {
+                            cfg.oncomplete.call(this, xhr, status, xhr.pfArgs);
                         }
 
                         if(global) {

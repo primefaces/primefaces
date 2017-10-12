@@ -75,7 +75,8 @@ public class SpinnerRenderer extends InputRenderer {
                 .attr("min", spinner.getMin(), Double.MIN_VALUE)
                 .attr("max", spinner.getMax(), Double.MAX_VALUE)
                 .attr("prefix", spinner.getPrefix(), null)
-                .attr("suffix", spinner.getSuffix(), null);
+                .attr("suffix", spinner.getSuffix(), null)
+                .attr("decimalPlaces", spinner.getDecimalPlaces(), null);
 
         wb.finish();
     }

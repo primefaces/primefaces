@@ -55,6 +55,7 @@ public class PrimeConfiguration {
     private boolean beanValidationDisabled = false;
     private boolean interpolateClientSideValidationMessages = false;
     private boolean earlyPostParamEvaluation = false;
+    private boolean collectScripts = false;
 
     // internal config
     private boolean beanValidationAvailable = false;
@@ -153,6 +154,9 @@ public class PrimeConfiguration {
 
         value = externalContext.getInitParameter(Constants.ContextParams.EARLY_POST_PARAM_EVALUATION);
         earlyPostParamEvaluation = (value == null) ? false : Boolean.valueOf(value);
+        
+        value = externalContext.getInitParameter(Constants.ContextParams.COLLECT_SCRIPTS);
+        collectScripts = (value == null) ? false : Boolean.valueOf(value);
     }
 
     protected void initValidateEmptyFields(FacesContext context) {
@@ -411,5 +415,9 @@ public class PrimeConfiguration {
 
     public boolean isEarlyPostParamEvaluation() {
         return earlyPostParamEvaluation;
+    }
+
+    public boolean isCollectScripts() {
+        return collectScripts;
     }
 }
