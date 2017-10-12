@@ -61,7 +61,7 @@ public class TerminalAutoCompleteTest {
     }
 
     @Test
-    public void GIVEN_command_is_sho_WHEN_traverseCommandModel_THEN_returns_show_as_match() {
+    public void givenShoThenReturnsShow() {
         // given
         final String command = "sho";
         final String[] args = new String[] {};
@@ -75,7 +75,7 @@ public class TerminalAutoCompleteTest {
     }
 
     @Test
-    public void GIVEN_command_is_show_WHEN_traverseCommandModel_THEN_returns_status_and_info() {
+    public void givenShowThenReturnsStatusAndInfo() {
         // given
         final String command = "show";
         final String[] args = new String[] {};
@@ -89,7 +89,7 @@ public class TerminalAutoCompleteTest {
     }
 
     @Test
-    public void GIVEN_command_is_show_sta_WHEN_traverseCommandModel_THEN_returns_status() {
+    public void givenShowStaThenReturnsStatus() {
         // given
         final String command = "show";
         final String[] args = new String[] { "sta" };
@@ -103,7 +103,7 @@ public class TerminalAutoCompleteTest {
     }
 
     @Test
-    public void GIVEN_command_is_show_s_WHEN_traverseCommandModel_THEN_returns_servers_and_status() {
+    public void givenShowThenReturnsServersAndStatus() {
         // given
         final String command = "show";
         final String[] args = new String[] { "s" };
@@ -117,7 +117,7 @@ public class TerminalAutoCompleteTest {
     }
 
     @Test
-    public void GIVEN_command_is_show_info_WHEN_traverseCommandModel_THEN_returns_info_and_date() {
+    public void givenShowInfoThenReturnsInfoAndDate() {
         // given
         final String command = "show";
         final String[] args = new String[] { "info" };
