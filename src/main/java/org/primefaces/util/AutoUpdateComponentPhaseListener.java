@@ -32,7 +32,7 @@ public class AutoUpdateComponentPhaseListener implements PhaseListener {
     @Override
     public void beforePhase(PhaseEvent event) {
         FacesContext context = event.getFacesContext();
-        if (!RequestContext.getCurrentInstance(context).isIgnoreAutoUpdate()) {
+        if (RequestContext.getCurrentInstance(context).isIgnoreAutoUpdate()) {
             return;
         }
 
