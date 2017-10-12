@@ -10,6 +10,18 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'latobold';
+    src: url("#{resource['primefaces-omega:fonts/lato-bold-webfont.eot']}");
+    src: local('Lato Bold'), local('Lato-Bold'),
+         url("#{resource['primefaces-omega:fonts/lato-bold-webfont.eot']}#iefix") format('embedded-opentype'),
+         url("#{resource['primefaces-omega:fonts/lato-bold-webfont.woff']}") format('woff'),
+         url("#{resource['primefaces-omega:fonts/lato-bold-webfont.ttf']}") format('truetype'),
+         url("#{resource['primefaces-omega:fonts/lato-bold-webfont.svg']}#latobold") format('svg');
+    font-weight: 700;
+    font-style: normal;
+}
+
 /* Component containers
 ----------------------------------*/
 .ui-widget { font-family: "latoregular", "Trebuchet MS", Arial, Helvetica, sans-serif; font-size: 1em; font-size: 1em; }
