@@ -112,7 +112,6 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("name", inputid, null);
         writer.writeAttribute("multiple", "multiple", null);
         writer.writeAttribute("size", "2", null);   //prevent browser to send value when no item is selected
-        writer.writeAttribute("hidden", "hidden", null);
 
         renderDomEvents(context, menu, SelectManyMenu.DOM_EVENTS);
 
