@@ -87,8 +87,10 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         }
 
         encodeDefaultButton(context, button, buttonId);
-        encodeMenuIcon(context, button, menuButtonId);
-        encodeMenu(context, button, menuId);
+        if (button.getChildCount() > 0) {
+            encodeMenuIcon(context, button, menuButtonId);
+            encodeMenu(context, button, menuId);
+        }
 
         writer.endElement("div");
     }
@@ -157,16 +159,19 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
 
-        //icon    
-        writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-button-icon-left ui-icon ui-icon-triangle-1-s", null);
-        writer.endElement("span");
+        
+        if (button.getChildCount() > 0) { 
+            //icon    
+            writer.startElement("span", null);
+            writer.writeAttribute("class", "ui-button-icon-left ui-icon ui-icon-triangle-1-s", null);
+            writer.endElement("span");
 
-        //text
-        writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        writer.write("ui-button");
-        writer.endElement("span");
+            //text
+            writer.startElement("span", null);
+            writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
+            writer.write("ui-button");
+            writer.endElement("span");
+        }
 
         writer.endElement("button");
     }
