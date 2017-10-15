@@ -24,7 +24,7 @@ public class AddRowFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        throw new RuntimeException("RowEditFeature should not encode.");
+        throw new RuntimeException("AddRowFeature should not encode.");
     }
 
     @Override
