@@ -967,6 +967,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         this.footerTable = this.scrollFooterBox.children('table');
         this.headerCols = this.headerTable.find('> thead > tr > th');
         this.footerCols = this.footerTable.find('> tfoot > tr > td');
+        this.percentageScrollHeight = this.cfg.scrollHeight && (this.cfg.scrollHeight.indexOf('%') !== -1);
+        this.percentageScrollWidth = this.cfg.scrollWidth && (this.cfg.scrollWidth.indexOf('%') !== -1);
         var $this = this;
         
         if(this.cfg.scrollHeight) {
