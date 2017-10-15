@@ -80,6 +80,7 @@ public class FieldsetRenderer extends CoreRenderer {
         encodeLegend(context, fieldset);
 
         encodeContent(context, fieldset);
+        renderDynamicPassThruAttributes(context, fieldset);
 
         if (toggleable) {
             encodeStateHolder(context, fieldset);
