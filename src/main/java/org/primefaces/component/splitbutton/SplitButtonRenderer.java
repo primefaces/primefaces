@@ -214,6 +214,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         writer.writeAttribute("id", menuId, null);
         writer.writeAttribute("class", menuStyleClass, "styleClass");
         writer.writeAttribute("role", "menu", null);
+        writer.writeAttribute("style", "width:max-content", null);
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
