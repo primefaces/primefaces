@@ -17,6 +17,7 @@
 .ui-tooltip .ui-tooltip-text {
    padding: 3px 10px;
    background-color: rgb(76, 76, 76);
+   background-image: none;
    color: #ffffff;
 }
 
