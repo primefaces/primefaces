@@ -257,6 +257,11 @@ public class CalendarRenderer extends InputRenderer {
 
     public String convertPattern(String patternTemplate) {
         String pattern = patternTemplate.replaceAll("MMM", "###");
+        int countM = pattern.length() - pattern.replaceAll("M","").length();
+        if (countM == 1) {
+            pattern = pattern.replaceAll("M", "mm");
+        }
+        
         pattern = pattern.replaceAll("[a-zA-Z]", "9");
         pattern = pattern.replaceAll("###", "aaa");
         return pattern;
