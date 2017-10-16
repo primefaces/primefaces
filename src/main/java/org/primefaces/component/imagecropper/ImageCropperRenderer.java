@@ -185,6 +185,16 @@ public class ImageCropperRenderer extends CoreRenderer {
 
             BufferedImage outputImage = ImageIO.read(inputStream);
             inputStream.close();
+
+            // avoid java.awt.image.RasterFormatException: (x + width) is outside of Raster
+            // see #1208
+            if (x + w > outputImage.getWidth()) {
+                w = outputImage.getWidth() - x;
+            }
+            if (y + h > outputImage.getHeight()) {
+                h = outputImage.getHeight() - y;
+            }
+            
             BufferedImage cropped = outputImage.getSubimage(x, y, w, h);
             ByteArrayOutputStream croppedOutImage = new ByteArrayOutputStream();
             String format = guessImageFormat(contentType, imagePath);
