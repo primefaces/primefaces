@@ -984,7 +984,7 @@
 				this.$input.val(formattedDateTime);
 			}
 
-			this.$input.trigger("change");
+			// this.$input.trigger("change"); https://github.com/primefaces/primefaces/issues/2811
 		},
 
 		_onFocus: function () {
