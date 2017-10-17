@@ -569,7 +569,7 @@ public class ComponentUtils {
     }
 
     /**
-     * Checks if the facet or one of the first level child's is rendered.
+     * Checks if the facet and one of the first level child's is rendered.
      * @param facet The Facet component to check
      * @return true when facet and one of the first level child's is rendered.
      */
