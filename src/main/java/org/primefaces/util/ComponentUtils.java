@@ -567,7 +567,26 @@ public class ComponentUtils {
     public static boolean isRequestSource(UIComponent component, FacesContext context) {
         return component.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
-    
+
+    /**
+     * Checks if the facet or one of the first level child's is rendered.
+     * @param facet The Facet component to check
+     * @return true when facet and one of the first level child's is rendered.
+     */
+    public static boolean shouldRenderFacet(UIComponent facet) {
+        if (!facet.isRendered()) {
+            // For any future version of JSF where the f:facet gets a rendered attribute (https://github.com/javaserverfaces/mojarra/issues/4299)
+            return false;
+        }
+        boolean result = false;
+
+        for (int i = 0; !result && i < facet.getChildren().size(); i++) {
+            // Stop when a child who is rendered is found.
+            result = facet.getChildren().get(i).isRendered();
+        }
+        return result;
+    }
+
     public static boolean equals(Object object1, Object object2) {
         if (object1 == object2) {
             return true;
