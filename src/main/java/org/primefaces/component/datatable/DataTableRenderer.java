@@ -1409,6 +1409,9 @@ public class DataTableRenderer extends DataRenderer {
             return;
         }
 
+        if (nothingToRender(facet)) {
+            return;
+        }
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
@@ -1417,6 +1420,20 @@ public class DataTableRenderer extends DataRenderer {
         facet.encodeAll(context);
 
         writer.endElement("div");
+    }
+
+    private boolean nothingToRender(UIComponent facet) {
+        if (!facet.isRendered()) {
+            // For any future version of JSF where the f:facet gets a rendered attribute (https://github.com/javaserverfaces/mojarra/issues/4299)
+            return true;
+        }
+        boolean result = false;
+        Iterator<UIComponent> iterator = facet.getChildren().iterator();
+        while (!result && iterator.hasNext()) {
+            UIComponent child = iterator.next();
+            result = !child.isRendered();
+        }
+        return result;
     }
 
     protected void encodeStateHolder(FacesContext context, DataTable table, String id, String value) throws IOException {
