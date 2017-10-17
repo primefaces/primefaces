@@ -213,7 +213,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
     protected void encodeMenu(FacesContext context, SplitButton button, String menuId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String menuStyleClass = button.getMenuStyleClass();
-        menuStyleClass = (menuStyleClass == null) ? Menu.DYNAMIC_CONTAINER_CLASS : Menu.DYNAMIC_CONTAINER_CLASS + " " + menuStyleClass;
+        menuStyleClass = (menuStyleClass == null) ? SplitButton.SPLITBUTTON_CONTAINER_CLASS : SplitButton.SPLITBUTTON_CONTAINER_CLASS + " " + menuStyleClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("id", menuId, null);
