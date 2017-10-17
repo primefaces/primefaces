@@ -578,13 +578,13 @@ public class ComponentUtils {
             // For any future version of JSF where the f:facet gets a rendered attribute (https://github.com/javaserverfaces/mojarra/issues/4299)
             return false;
         }
-        boolean result = false;
-
-        for (int i = 0; !result && i < facet.getChildren().size(); i++) {
+        for (int i = 0; i < facet.getChildren().size(); i++) {
             // Stop when a child who is rendered is found.
-            result = facet.getChildren().get(i).isRendered();
+            if (facet.getChildren().get(i).isRendered()) {
+                return true;
+            }
         }
-        return result;
+        return false;
     }
 
     public static boolean equals(Object object1, Object object2) {
