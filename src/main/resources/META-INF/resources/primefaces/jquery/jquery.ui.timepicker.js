@@ -1578,18 +1578,16 @@
 		  return;
 		}
 
-		/* PrimeFaces Customization
+		var tzoffset = $.timepicker.timezoneOffsetNumber(tp_inst.timezone);
 		var now = new Date();
 		now.setMinutes(now.getMinutes() + now.getTimezoneOffset() + parseInt(tzoffset, 10));
 		this._setTime(inst, now);
 		this._setDate(inst, now);
+		
+		/* PrimeFaces Customization
 		tp_inst._onSelectHandler();
 		*/
-	      
         // PrimeFaces custom code to handle Today button
-		var tzoffset = $.timepicker.timezoneOffsetNumber(tp_inst.timezone);
-        var now = new Date();
-        this._setTime(inst, now);
         $('.ui-datepicker-today', inst.dpDiv).click();
 	};
 
