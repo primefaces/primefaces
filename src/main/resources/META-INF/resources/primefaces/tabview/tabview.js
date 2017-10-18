@@ -17,13 +17,15 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             this.navcrollerLeft = this.navscroller.children('.ui-tabs-navscroller-btn-left');
             this.navcrollerRight = this.navscroller.children('.ui-tabs-navscroller-btn-right');
             this.navContainer = this.navscroller.children('.ui-tabs-nav');
-            this.firstTab = this.navContainer.children(':first-child');
-            this.lastTab = this.navContainer.children(':last-child');
+            this.firstTab = this.navContainer.children('li.ui-tabs-header:first-child');
+            this.lastTab = this.navContainer.children('li.ui-tabs-header:last-child');
             this.scrollStateHolder = $(this.jqId + '_scrollState');
         }
         else {
             this.navContainer = this.jq.children('.ui-tabs-nav');
         }
+
+        this.headerContainer = this.navContainer.children('li.ui-tabs-header');
 
         this.bindEvents();
 
@@ -79,7 +81,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         //Tab header events
-        this.navContainer.children('li')
+        this.headerContainer
                 .on('mouseover.tabview', function(e) {
                     var element = $(this);
                     if(!element.hasClass('ui-state-disabled')) {
@@ -96,7 +98,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                     var element = $(this);
 
                     if($(e.target).is(':not(.ui-icon-close)')) {
-                        var index = element.index();
+                        var index = $this.headerContainer.index(element);
 
                         if(!element.hasClass('ui-state-disabled') && index !== $this.cfg.selected) {
                             $this.select(index);
@@ -172,7 +174,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
     bindKeyEvents: function() {
         var $this = this,
-            tabs = this.navContainer.children('li');
+            tabs = this.headerContainer;
 
         /* For Screen Reader and Keyboard accessibility */
         tabs.attr('tabindex', this.tabindex);
@@ -232,7 +234,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     initScrolling: function() {
-        if(this.panelContainer.children().length) {
+        if(this.headerContainer.length) {
             var overflown = ((this.lastTab.position().left + this.lastTab.width()) - this.firstTab.position().left) > this.navscroller.innerWidth();
             if (overflown) {
                 this.navscroller.css('padding-left', '18px');
@@ -339,9 +341,11 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     show: function(newPanel) {
-        var headers = this.navContainer.children(),
+        var headers = this.headerContainer,
         oldHeader = headers.filter('.ui-state-active'),
+        oldActions = oldHeader.next('.ui-tabs-actions'),
         newHeader = headers.eq(newPanel.index()),
+        newActions = newHeader.next('.ui-tabs-actions'),
         oldPanel = this.panelContainer.children('.ui-tabs-panel:visible'),
         _self = this;
 
@@ -349,26 +353,45 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         oldPanel.attr('aria-hidden', true);
         oldHeader.attr('aria-expanded', false);
         oldHeader.attr('aria-selected', false);
+        if(oldActions.length != 0) {
+            oldActions.attr('aria-hidden', true);
+        }
+
         newPanel.attr('aria-hidden', false);
         newHeader.attr('aria-expanded', true);
         newHeader.attr('aria-selected', true);
+        if(newActions.length != 0) {
+            newActions.attr('aria-hidden', false);
+        }
 
         if(this.cfg.effect) {
-                oldPanel.hide(this.cfg.effect, null, this.cfg.effectDuration, function() {
+            oldPanel.hide(this.cfg.effect, null, this.cfg.effectDuration, function() {
                 oldHeader.removeClass('ui-tabs-selected ui-state-active');
+                if(oldActions.length != 0) {
+                    oldActions.hide(_self.cfg.effect, null, _self.cfg.effectDuration);
+                }
 
                 newHeader.addClass('ui-tabs-selected ui-state-active');
                 newPanel.show(_self.cfg.effect, null, _self.cfg.effectDuration, function() {
                     _self.postTabShow(newPanel);
                 });
+                if(newActions.length != 0) {
+                    newActions.show(_self.cfg.effect, null, _self.cfg.effectDuration);
+                }
             });
         }
         else {
             oldHeader.removeClass('ui-tabs-selected ui-state-active');
             oldPanel.hide();
+            if(oldActions.length != 0) {
+                oldActions.hide();
+            }
 
             newHeader.addClass('ui-tabs-selected ui-state-active');
             newPanel.show();
+            if(newActions.length != 0) {
+                newActions.show();
+            }
 
             this.postTabShow(newPanel);
         }
@@ -422,7 +445,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * Removes a tab with given index
      */
     remove: function(index) {
-        var header = this.navContainer.children().eq(index),
+        var header = this.headerContainer.eq(index),
         panel = this.panelContainer.children().eq(index);
 
         header.remove();
@@ -436,11 +459,10 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             }
             else if(index === this.cfg.selected) {
                 var newIndex = (this.cfg.selected === (length)) ? (this.cfg.selected - 1): this.cfg.selected,
-                headers = this.navContainer.children('li'),
-                newPanelHeader = headers.eq(newIndex);
+                newPanelHeader = this.headerContainer.eq(newIndex);
 
                 if(newPanelHeader.hasClass('ui-state-disabled')) {
-                    var newHeader = headers.filter(':not(.ui-state-disabled):first');
+                    var newHeader = this.headerContainer.filter(':not(.ui-state-disabled):first');
                     if(newHeader.length) {
                         this.select(newHeader.index(), true);
                     }
@@ -500,11 +522,11 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     disable: function(index) {
-        this.navContainer.children().eq(index).addClass('ui-state-disabled');
+        this.headerContainer.eq(index).addClass('ui-state-disabled');
     },
 
     enable: function(index) {
-        this.navContainer.children().eq(index).removeClass('ui-state-disabled');
+        this.headerContainer.eq(index).removeClass('ui-state-disabled');
     },
 
     postTabShow: function(newPanel) {
