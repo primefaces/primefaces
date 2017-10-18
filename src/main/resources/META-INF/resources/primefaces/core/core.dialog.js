@@ -31,7 +31,7 @@ if (!PrimeFaces.dialog) {
                 titlebar.append('<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-maximize ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-extlink"></span></a>');
             }
 
-            dialogDOM.append('<div class="ui-dialog-content ui-widget-content ui-df-content" style="height: auto;">' +
+            dialogDOM.append('<div class="ui-dialog-content ui-widget-content ui-df-content" style="height: auto; width: auto">' +
                     '<iframe style="border:0 none" frameborder="0"/>' + 
                     '</div>');
 
@@ -39,10 +39,7 @@ if (!PrimeFaces.dialog) {
 
             var dialogFrame = dialogDOM.find('iframe'),
             symbol = cfg.url.indexOf('?') === -1 ? '?' : '&',
-            frameURL = cfg.url.indexOf('pfdlgcid') === -1 ? cfg.url + symbol + 'pfdlgcid=' + cfg.pfdlgcid: cfg.url,
-            frameWidth = cfg.options.contentWidth||640;
-
-            dialogFrame.width(frameWidth);
+            frameURL = cfg.url.indexOf('pfdlgcid') === -1 ? cfg.url + symbol + 'pfdlgcid=' + cfg.pfdlgcid: cfg.url;
 
             dialogFrame.on('load', function() {
                 var $frame = $(this),
@@ -119,6 +116,15 @@ if (!PrimeFaces.dialog) {
                     frameHeight = $frame.get(0).contentWindow.document.body.scrollHeight + (PrimeFaces.env.browser.webkit ? 5 : 25);
 
                 $frame.css('height', frameHeight);
+				
+				//adjust width
+                var frameWidth = null;
+                if(cfg.options.contentWidth)
+                    frameWidth = cfg.options.contentWidth;
+                else
+                    frameWidth = $frame.get(0).contentWindow.document.body.scrollWidth + (PrimeFaces.env.browser.webkit ? 5 : 25);
+
+                $frame.css('width', frameWidth);
                 
                 // fix #1290 - dialogs are not centered vertically
                 dialogFrame.data('initialized', true);
