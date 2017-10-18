@@ -191,6 +191,7 @@
 						return tp_inst._defaults.evnts.beforeShow.call($input[0], input, dp_inst, tp_inst);
 					}
 				},
+				/* PrimeFaces Customization
 				onChangeMonthYear: function (year, month, dp_inst) {
 					// Update the time as well : this prevents the time from disappearing from the $input field.
 					// tp_inst._updateDateTime(dp_inst);
@@ -198,6 +199,7 @@
 						tp_inst._defaults.evnts.onChangeMonthYear.call($input[0], year, month, dp_inst, tp_inst);
 					}
 				},
+				*/
 				onClose: function (dateText, dp_inst) {
 					if (tp_inst.timeDefined === true && $input.val() !== '') {
 						tp_inst._updateDateTime(dp_inst);
@@ -885,7 +887,9 @@
 				if (this.$timeObj[0].setSelectionRange) {
 					var sPos = this.$timeObj[0].selectionStart;
 					var ePos = this.$timeObj[0].selectionEnd;
+					/* PrimeFaces Customization
 					//this.$timeObj[0].setSelectionRange(sPos, ePos); // Primefaces github issue; #1421
+					*/
 				}
 			}
 
@@ -1572,12 +1576,20 @@
 		  return;
 		}
 
-		var tzoffset = $.timepicker.timezoneOffsetNumber(tp_inst.timezone);
+		/* PrimeFaces Customization
+	    var tzoffset = $.timepicker.timezoneOffsetNumber(tp_inst.timezone);
 		var now = new Date();
 		now.setMinutes(now.getMinutes() + now.getTimezoneOffset() + parseInt(tzoffset, 10));
 		this._setTime(inst, now);
 		this._setDate(inst, now);
 		tp_inst._onSelectHandler();
+		*/
+	      
+        // PrimeFaces custom code to handle Today button
+        selectLocalTimezone(tp_inst); 
+        var now = new Date();
+        this._setTime(inst, now);
+        $('.ui-datepicker-today', inst.dpDiv).click();
 	};
 
 	/*
@@ -2250,10 +2262,12 @@
 	 * @return {void}
 	 */
 	$.timepicker.log = function () {
+	    /* PrimeFaces Customization
 		// Older IE (9, maybe 10) throw error on accessing `window.console.log.apply`, so check first.
 		if (window.console && window.console.log && window.console.log.apply) {
 			window.console.log.apply(window.console, Array.prototype.slice.call(arguments));
 		}
+		*/
 	};
 
 	/*
