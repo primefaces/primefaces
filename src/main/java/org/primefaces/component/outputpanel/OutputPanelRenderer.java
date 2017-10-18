@@ -22,7 +22,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class OutputPanelRenderer extends CoreRenderer {
@@ -76,17 +75,12 @@ public class OutputPanelRenderer extends CoreRenderer {
         wb.initWithDomReady("OutputPanel", panel.resolveWidgetVar(), clientId);
 
         if (panel.isDeferred()) {
-            String delay = panel.getDelay();
-
             wb.attr("deferred", true)
-                    .attr("deferredMode", panel.getDeferredMode())
-                    .attr("global", panel.isGlobal(), false);
-
-            if (!ComponentUtils.isValueBlank(delay) && !delay.equals("none")) {
-                wb.attr("delay", delay);
-            }
+                    .attr("deferredMode", panel.getDeferredMode());
         }
 
+        encodeClientBehaviors(context, panel);
+        
         wb.finish();
     }
 

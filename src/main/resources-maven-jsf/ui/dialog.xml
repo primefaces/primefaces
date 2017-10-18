@@ -14,19 +14,19 @@
     <parent>javax.faces.component.UIPanel</parent>
     <description>Dialog is a panel component overlaying other elements. Dialog avoids popup blockers, provides customization, resizing, modality, ajax interactions and more.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
         <interface>
-			<name>org.primefaces.component.api.RTLAware</name>
-		</interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
         <interface>
-			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
-		</interface>
+            <name>org.primefaces.component.api.RTLAware</name>
+        </interface>
         <interface>
-			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
-		</interface>
-	</interfaces>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
     <attributes>
         &standard_uicomponent_attributes;
         &widget_var_attribute;
@@ -164,7 +164,7 @@
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
             <description>Dynamic mode allows dialog to fetch it's contents before it's shown rather than on page load
-            which is useful to reduce initial page load times. Default is false.</description>
+                which is useful to reduce initial page load times. Default is false.</description>
         </attribute>
         <attribute>
             <name>minimizable</name>
@@ -206,7 +206,7 @@
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
             <description>Dialog size might exceeed viewport if content is bigger than viewport in terms of height. fitViewport option automatically
-            adjusts height to fit dialog within the viewport.</description>
+                adjusts height to fit dialog within the viewport.</description>
         </attribute>
         <attribute>
             <name>positionType</name>
@@ -216,28 +216,28 @@
             <description>Defines whether dialog will be kept in viewport on scroll (fixed) or keep its position (absolute). Default is fixed.</description>
         </attribute>
         <attribute>
-			<name>responsive</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
+            <name>responsive</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-			<description>In responsive mode, dialog adjusts itself based on screen width.</description>
-		</attribute>
+            <description>In responsive mode, dialog adjusts itself based on screen width.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
-			<name>components.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
+            <name>jquery/jquery.js</name>
+        </resource>
         <resource>
-			<name>core.js</name>
-		</resource>
-		<resource>
-			<name>components.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
 </component>
