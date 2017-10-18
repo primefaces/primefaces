@@ -368,7 +368,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             oldPanel.hide(this.cfg.effect, null, this.cfg.effectDuration, function() {
                 oldHeader.removeClass('ui-tabs-selected ui-state-active');
                 if(oldActions.length != 0) {
-                    oldActions.hide(this.cfg.effect, null, this.cfg.effectDuration);
+                    oldActions.hide(_self.cfg.effect, null, _self.cfg.effectDuration);
                 }
 
                 newHeader.addClass('ui-tabs-selected ui-state-active');

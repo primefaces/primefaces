@@ -54,7 +54,7 @@ public class TabViewRenderer extends CoreRenderer {
 
             if (var == null) {
                 String tabClientId = params.get(clientId + "_newTab");
-                tabToLoad = (Tab) tabView.findTab(tabClientId);
+                tabToLoad = tabView.findTab(tabClientId);
 
                 tabToLoad.encodeAll(context);
                 tabToLoad.setLoaded(true);
@@ -261,7 +261,7 @@ public class TabViewRenderer extends CoreRenderer {
         }
 
         UIComponent actions = tab.getFacet("actions");
-        if (actions != null && tab.isRendered())  {
+        if (actions != null && actions.isRendered())  {
             writer.startElement("li", null);
             writer.writeAttribute("class", "ui-tabs-actions", null);
             writer.writeAttribute("aria-hidden", String.valueOf(!active), null);
