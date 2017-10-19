@@ -885,7 +885,9 @@
 				if (this.$timeObj[0].setSelectionRange) {
 					var sPos = this.$timeObj[0].selectionStart;
 					var ePos = this.$timeObj[0].selectionEnd;
+					/* PrimeFaces Customization
 					//this.$timeObj[0].setSelectionRange(sPos, ePos); // Primefaces github issue; #1421
+					*/
 				}
 			}
 
@@ -984,7 +986,9 @@
 				this.$input.val(formattedDateTime);
 			}
 
-			this.$input.trigger("change");
+			/* PrimeFaces Customization
+			// this.$input.trigger("change"); https://github.com/primefaces/primefaces/issues/2811
+			*/
 		},
 
 		_onFocus: function () {
@@ -1577,7 +1581,12 @@
 		now.setMinutes(now.getMinutes() + now.getTimezoneOffset() + parseInt(tzoffset, 10));
 		this._setTime(inst, now);
 		this._setDate(inst, now);
+		
+		/* PrimeFaces Customization
 		tp_inst._onSelectHandler();
+		*/
+        // PrimeFaces custom code to handle Today button
+        $('.ui-datepicker-today', inst.dpDiv).click();
 	};
 
 	/*
