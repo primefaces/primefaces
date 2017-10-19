@@ -19,7 +19,9 @@ jquery.autosize.js:
 - Added fix to autosize from https://github.com/jackmoore/autosize/issues/225
 
 jquery.ui.timepicker.js:
-- Added fix to timepicker from https://github.com/trentrichardson/jQuery-Timepicker-Addon/issues/848
+- Timepicker Fix https://github.com/trentrichardson/jQuery-Timepicker-Addon/issues/848
+- Timepicker Fix https://github.com/primefaces/primefaces/issues/2811
+- 
 
 jquery.maskedinput.js:
 - line 116: Added arrow keys fix to mask (https://github.com/primefaces/primefaces/issues/1481)
