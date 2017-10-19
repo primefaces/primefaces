@@ -927,11 +927,11 @@
 
 			// if a slider was changed but datepicker doesn't have a value yet, set it
 			var originalValue = dp_inst.lastVal;
-	        if (originalValue === "") {
-                dp_inst.currentYear = dp_inst.selectedYear;
-                dp_inst.currentMonth = dp_inst.selectedMonth;
-                dp_inst.currentDay = dp_inst.selectedDay;
-            }
+			if (originalValue === "") {
+				dp_inst.currentYear = dp_inst.selectedYear;
+				dp_inst.currentMonth = dp_inst.selectedMonth;
+				dp_inst.currentDay = dp_inst.selectedDay;
+			}
 
 			/*
 			* remove following lines to force every changes in date picker to change the input value
@@ -985,9 +985,9 @@
 				this.$input.val(formattedDateTime);
 			}
 
-	        if (originalValue != formattedDateTime) {
-	            this.$input.trigger("change"); // PrimeFaces https://github.com/primefaces/primefaces/issues/2811
-	        }
+			if (originalValue != formattedDateTime) {
+				this.$input.trigger("change"); // PrimeFaces https://github.com/primefaces/primefaces/issues/2811
+			}
 		},
 
 		_onFocus: function () {
