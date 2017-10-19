@@ -617,7 +617,6 @@ button.ui-button::-moz-focus-inner {
 }
 
 .ui-splitbutton .ui-button.ui-splitbutton-menubutton {
-    width: 32px;
     position: absolute;
     top: 0px;
     margin-left: -1px;
