@@ -576,7 +576,13 @@ public class ComponentUtils {
     public static boolean shouldRenderFacet(UIComponent facet) {
         if (!facet.isRendered()) {
             // For any future version of JSF where the f:facet gets a rendered attribute (https://github.com/javaserverfaces/mojarra/issues/4299)
+            // or there is only 1 child.
             return false;
+        }
+
+        // Facet contains only 1 child, which is rendered due to previous test.
+        if (facet.getChildren().isEmpty()) {
+            return true;
         }
         for (int i = 0; i < facet.getChildren().size(); i++) {
             // Stop when a child who is rendered is found.
