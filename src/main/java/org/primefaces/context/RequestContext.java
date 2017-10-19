@@ -21,7 +21,6 @@ import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.component.api.AutoUpdatable;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.CSVBuilder;
 import org.primefaces.util.StringEncrypter;

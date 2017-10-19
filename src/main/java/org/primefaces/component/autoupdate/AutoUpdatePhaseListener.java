@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.util;
+package org.primefaces.component.autoupdate;
 
 import java.util.ArrayList;
 import javax.faces.context.FacesContext;
@@ -22,7 +22,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import org.primefaces.context.RequestContext;
 
-public class AutoUpdateComponentPhaseListener implements PhaseListener {
+public class AutoUpdatePhaseListener implements PhaseListener {
     
     @Override
     public void afterPhase(PhaseEvent event) {
@@ -32,11 +32,11 @@ public class AutoUpdateComponentPhaseListener implements PhaseListener {
     @Override
     public void beforePhase(PhaseEvent event) {
         FacesContext context = event.getFacesContext();
-        if (RequestContext.getCurrentInstance(context).isIgnoreAutoUpdate()) {
+        if (!context.isPostback() || RequestContext.getCurrentInstance(context).isIgnoreAutoUpdate()) {
             return;
         }
 
-        ArrayList<String> clientIds = AutoUpdateComponentListener.getAutoUpdateComponentClientIds(context);
+        ArrayList<String> clientIds = AutoUpdateListener.getAutoUpdateComponentClientIds(context);
         if (clientIds != null && !clientIds.isEmpty()) {
             for (int i = 0; i < clientIds.size(); i++) {
                 String clientId = clientIds.get(i);

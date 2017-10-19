@@ -17,9 +17,6 @@
             <name>org.primefaces.component.api.Widget</name>
         </interface>
         <interface>
-            <name>org.primefaces.component.api.AutoUpdatable</name>
-        </interface>
-        <interface>
             <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
         </interface>
         <interface>
@@ -39,13 +36,6 @@
             <required>false</required>
             <type>java.lang.String</type>
             <description>StyleClass of the html container element.</description>
-        </attribute>
-        <attribute>
-            <name>autoUpdate</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>Updates outputPanel after each ajax request implicity.</description>
         </attribute>
         <attribute>
             <name>deferred</name>

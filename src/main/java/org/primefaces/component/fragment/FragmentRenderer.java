@@ -34,10 +34,6 @@ public class FragmentRenderer extends CoreRenderer {
         Map<Object, Object> attrs = RequestContext.getCurrentInstance(context).getAttributes();
         attrs.put(Constants.FRAGMENT_ID, clientId);
 
-        if (fragment.isAutoUpdate()) {
-            attrs.put(Constants.FRAGMENT_AUTO_RENDERED, true);
-        }
-
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
     }
