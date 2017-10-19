@@ -73,6 +73,12 @@
     <handler-class>
         org.primefaces.component.autoupdate.AutoUpdateTagHandler
     </handler-class>
+    <attribute>
+        <description>If autoUpdate should be disabled. Default = false.</description>
+        <name>disabled</name>
+        <required>false</required>
+        <type>java.lang.Boolean</type>
+    </attribute>
 </tag>
 
 <tag>

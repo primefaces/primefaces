@@ -23,26 +23,38 @@ import javax.faces.event.PostAddToViewEvent;
 import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.FaceletException;
+import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
 
 public class AutoUpdateTagHandler extends TagHandler {
     
-    private static final AutoUpdateListener LISTENER = new AutoUpdateListener();
+    private static final AutoUpdateListener LISTENER = new AutoUpdateListener(false);
+    private static final AutoUpdateListener LISTENER_DISABLED = new AutoUpdateListener(true);
 
+    private final TagAttribute disabledAttribute;
+    
     public AutoUpdateTagHandler(TagConfig tagConfig) {
         super(tagConfig);
+        
+        disabledAttribute = getAttribute("disabled");
     }
 
     @Override
     public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
+        
+        boolean disabled = false;
+        if (disabledAttribute != null) {
+            disabled = disabledAttribute.getBoolean(faceletContext);
+        }
+        
         // PostAddToViewEvent should work for stateless views
         //                  but fails for MyFaces ViewPooling
         //                  and sometimes on postbacks as PostAddToViewEvent should actually ony be called once
-        parent.subscribeToEvent(PostAddToViewEvent.class, LISTENER);
+        parent.subscribeToEvent(PostAddToViewEvent.class, disabled ? LISTENER_DISABLED : LISTENER);
         
         // PreRenderComponentEvent should work for normal cases and MyFaces ViewPooling
         //                      but likely fails for stateless view as we save the clientIds in the viewRoot
-        parent.subscribeToEvent(PreRenderComponentEvent.class, LISTENER);
+        parent.subscribeToEvent(PreRenderComponentEvent.class, disabled ? LISTENER_DISABLED : LISTENER);
     }
 }
