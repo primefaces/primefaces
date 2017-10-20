@@ -507,6 +507,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             if($this.timeout) {
                 $this.deleteTimeout();
             }
+            $this.fireClearEvent();
         }
     },
 
@@ -944,6 +945,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     deleteTimeout: function() {
         clearTimeout(this.timeout);
         this.timeout = null;
+    },
+    
+    fireClearEvent: function() {
+        if(this.hasBehavior('clear')) {
+            var clearBehavior = this.cfg.behaviors['clear'];
+            
+            clearBehavior.call(this);
+        }
     }
 
 });
