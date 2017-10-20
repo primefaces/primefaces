@@ -1,4 +1,6 @@
 /* Primefaces Extensions */
+
+/** DatePicker */
 (function () {
     var original_gotoToday = $.datepicker._gotoToday;
 
@@ -134,9 +136,197 @@
     };
 })();
 
+/** TimePicker */
+(function () {
+    $.timepicker._updateDateTime = function (dp_inst) {
+        dp_inst = this.inst || dp_inst;
+        var dtTmp = (dp_inst.currentYear > 0?
+                        new Date(dp_inst.currentYear, dp_inst.currentMonth, dp_inst.currentDay) :
+                        new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay)),
+            dt = $.datepicker._daylightSavingAdjust(dtTmp),
+            dateFmt = $.datepicker._get(dp_inst, 'dateFormat'),
+            formatCfg = $.datepicker._getFormatConfig(dp_inst),
+            timeAvailable = dt !== null && this.timeDefined;
+        this.formattedDate = $.datepicker.formatDate(dateFmt, (dt === null ? new Date() : dt), formatCfg);
+        var formattedDateTime = this.formattedDate;
 
+        // if a slider was changed but datepicker doesn't have a value yet, set it
+        var originalValue = dp_inst.lastVal;
+        if (originalValue === "") {
+            dp_inst.currentYear = dp_inst.selectedYear;
+            dp_inst.currentMonth = dp_inst.selectedMonth;
+            dp_inst.currentDay = dp_inst.selectedDay;
+        }
 
+        if (this._defaults.timeOnly === true && this._defaults.timeOnlyShowDate === false) {
+            formattedDateTime = this.formattedTime;
+        } else if ((this._defaults.timeOnly !== true && (this._defaults.alwaysSetTime || timeAvailable)) || (this._defaults.timeOnly === true && this._defaults.timeOnlyShowDate === true)) {
+            formattedDateTime += this._defaults.separator + this.formattedTime + this._defaults.timeSuffix;
+        }
 
+        this.formattedDateTime = formattedDateTime;
+
+        if (!this._defaults.showTimepicker) {
+            this.$input.val(this.formattedDate);
+        } else if (this.$altInput && this._defaults.timeOnly === false && this._defaults.altFieldTimeOnly === true) {
+            this.$altInput.val(this.formattedTime);
+            this.$input.val(this.formattedDate);
+        } else if (this.$altInput) {
+            this.$input.val(formattedDateTime);
+            var altFormattedDateTime = '',
+                altSeparator = this._defaults.altSeparator !== null ? this._defaults.altSeparator : this._defaults.separator,
+                altTimeSuffix = this._defaults.altTimeSuffix !== null ? this._defaults.altTimeSuffix : this._defaults.timeSuffix;
+
+            if (!this._defaults.timeOnly) {
+                if (this._defaults.altFormat) {
+                    altFormattedDateTime = $.datepicker.formatDate(this._defaults.altFormat, (dt === null ? new Date() : dt), formatCfg);
+                }
+                else {
+                    altFormattedDateTime = this.formattedDate;
+                }
+
+                if (altFormattedDateTime) {
+                    altFormattedDateTime += altSeparator;
+                }
+            }
+
+            if (this._defaults.altTimeFormat !== null) {
+                altFormattedDateTime += $.datepicker.formatTime(this._defaults.altTimeFormat, this, this._defaults) + altTimeSuffix;
+            }
+            else {
+                altFormattedDateTime += this.formattedTime + altTimeSuffix;
+            }
+            this.$altInput.val(altFormattedDateTime);
+        } else {
+            this.$input.val(formattedDateTime);
+        }
+
+        if (originalValue != formattedDateTime) {
+            this.$input.trigger("change"); // PrimeFaces https://github.com/primefaces/primefaces/issues/2811
+        }
+    };
+    
+    $.timepicker._onTimeChange = function () {
+        if (!this._defaults.showTimepicker) {
+                            return;
+        }
+        var hour = (this.hour_slider) ? this.control.value(this, this.hour_slider, 'hour') : false,
+            minute = (this.minute_slider) ? this.control.value(this, this.minute_slider, 'minute') : false,
+            second = (this.second_slider) ? this.control.value(this, this.second_slider, 'second') : false,
+            millisec = (this.millisec_slider) ? this.control.value(this, this.millisec_slider, 'millisec') : false,
+            microsec = (this.microsec_slider) ? this.control.value(this, this.microsec_slider, 'microsec') : false,
+            timezone = (this.timezone_select) ? this.timezone_select.val() : false,
+            o = this._defaults,
+            pickerTimeFormat = o.pickerTimeFormat || o.timeFormat,
+            pickerTimeSuffix = o.pickerTimeSuffix || o.timeSuffix;
+
+        if (typeof(hour) === 'object') {
+            hour = false;
+        }
+        if (typeof(minute) === 'object') {
+            minute = false;
+        }
+        if (typeof(second) === 'object') {
+            second = false;
+        }
+        if (typeof(millisec) === 'object') {
+            millisec = false;
+        }
+        if (typeof(microsec) === 'object') {
+            microsec = false;
+        }
+        if (typeof(timezone) === 'object') {
+            timezone = false;
+        }
+
+        if (hour !== false) {
+            hour = parseInt(hour, 10);
+        }
+        if (minute !== false) {
+            minute = parseInt(minute, 10);
+        }
+        if (second !== false) {
+            second = parseInt(second, 10);
+        }
+        if (millisec !== false) {
+            millisec = parseInt(millisec, 10);
+        }
+        if (microsec !== false) {
+            microsec = parseInt(microsec, 10);
+        }
+        if (timezone !== false) {
+            timezone = timezone.toString();
+        }
+
+        var ampm = o[hour < 12 ? 'amNames' : 'pmNames'][0];
+
+        // If the update was done in the input field, the input field should not be updated.
+        // If the update was done using the sliders, update the input field.
+        var hasChanged = (
+                    hour !== parseInt(this.hour,10) || // sliders should all be numeric
+                    minute !== parseInt(this.minute,10) ||
+                    second !== parseInt(this.second,10) ||
+                    millisec !== parseInt(this.millisec,10) ||
+                    microsec !== parseInt(this.microsec,10) ||
+                    (this.ampm.length > 0 && (hour < 12) !== ($.inArray(this.ampm.toUpperCase(), this.amNames) !== -1)) ||
+                    (this.timezone !== null && timezone !== this.timezone.toString()) // could be numeric or "EST" format, so use toString()
+                );
+
+        if (hasChanged) {
+
+            if (hour !== false) {
+                this.hour = hour;
+            }
+            if (minute !== false) {
+                this.minute = minute;
+            }
+            if (second !== false) {
+                this.second = second;
+            }
+            if (millisec !== false) {
+                this.millisec = millisec;
+            }
+            if (microsec !== false) {
+                this.microsec = microsec;
+            }
+            if (timezone !== false) {
+                this.timezone = timezone;
+            }
+
+            if (!this.inst) {
+                this.inst = $.datepicker._getInst(this.$input[0]);
+            }
+
+            this._limitMinMaxDateTime(this.inst, true);
+        }
+        if (this.support.ampm) {
+            this.ampm = ampm;
+        }
+
+        // Updates the time within the timepicker
+        this.formattedTime = $.datepicker.formatTime(o.timeFormat, this, o);
+        if (this.$timeObj) {
+            if (pickerTimeFormat === o.timeFormat) {
+                this.$timeObj.val(this.formattedTime + pickerTimeSuffix);
+            }
+            else {
+                this.$timeObj.val($.datepicker.formatTime(pickerTimeFormat, this, o) + pickerTimeSuffix);
+            }
+            if (this.$timeObj[0].setSelectionRange) {
+                var sPos = this.$timeObj[0].selectionStart;
+                var ePos = this.$timeObj[0].selectionEnd;
+                //this.$timeObj[0].setSelectionRange(sPos, ePos); // Primefaces github issue; #1421
+            }
+        }
+
+        this.timeDefined = true;
+        if (hasChanged) {
+            this._updateDateTime();
+        }
+    };
+})();
+
+/** General */
 (function () {
     $.extend($.ui.keyCode, {
         NUMPAD_ENTER: 108

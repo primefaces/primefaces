@@ -223,6 +223,10 @@
 			tp_inst.pmNames = $.map(tp_inst._defaults.pmNames, function (val) {
 				return val.toUpperCase();
 			});
+			
+	         /* PrimeFaces Hooks */
+            tp_inst._updateDateTime = $.timepicker._updateDateTime;
+            tp_inst._onTimeChange = $.timepicker._onTimeChange;
 
 			// detect which units are supported
 			tp_inst.support = detectSupport(
@@ -885,7 +889,7 @@
 				if (this.$timeObj[0].setSelectionRange) {
 					var sPos = this.$timeObj[0].selectionStart;
 					var ePos = this.$timeObj[0].selectionEnd;
-					//this.$timeObj[0].setSelectionRange(sPos, ePos); // Primefaces github issue; #1421
+					this.$timeObj[0].setSelectionRange(sPos, ePos);
 				}
 			}
 
@@ -926,12 +930,11 @@
 			var formattedDateTime = this.formattedDate;
 
 			// if a slider was changed but datepicker doesn't have a value yet, set it
-			var originalValue = dp_inst.lastVal;
-			if (originalValue === "") {
-				dp_inst.currentYear = dp_inst.selectedYear;
-				dp_inst.currentMonth = dp_inst.selectedMonth;
-				dp_inst.currentDay = dp_inst.selectedDay;
-			}
+			if (dp_inst.lastVal === "") {
+                dp_inst.currentYear = dp_inst.selectedYear;
+                dp_inst.currentMonth = dp_inst.selectedMonth;
+                dp_inst.currentDay = dp_inst.selectedDay;
+            }
 
 			/*
 			* remove following lines to force every changes in date picker to change the input value
@@ -985,9 +988,7 @@
 				this.$input.val(formattedDateTime);
 			}
 
-			if (originalValue != formattedDateTime) {
-				this.$input.trigger("change"); // PrimeFaces https://github.com/primefaces/primefaces/issues/2811
-			}
+			this.$input.trigger("change");
 		},
 
 		_onFocus: function () {
