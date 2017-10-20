@@ -3569,7 +3569,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     updateEmptyColspan: function() {
         var emptyRow = this.tbody.children('tr:first');
         if(emptyRow && emptyRow.hasClass('ui-datatable-empty-message')) {
-            emptyRow.children('td').attr('colspan', this.thead.find('th:visible').length);
+            emptyRow.children('td').attr('colspan', this.thead.find('th:not(.ui-helper-hidden)').length);
         }
     }
     
