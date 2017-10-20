@@ -140,7 +140,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
 
         writer.startElement("div", listbox);
         writer.writeAttribute("class", SelectOneListbox.LIST_CONTAINER_CLASS, null);
-        writer.writeAttribute("style", "height:" + calculateWrapperHeight(listbox, countSelectItems(selectItems)), null);
+        writer.writeAttribute("style", "max-height:" + listbox.getScrollHeight() + "px", null);
 
         if (customContent) {
             writer.startElement("table", null);
@@ -302,19 +302,6 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         writer.endElement("input");
 
         writer.endElement("div");
-    }
-
-    protected String calculateWrapperHeight(SelectOneListbox listbox, int itemSize) {
-        int height = listbox.getScrollHeight();
-
-        if (height != Integer.MAX_VALUE) {
-            return height + "px";
-        }
-        else if (itemSize > 10) {
-            return 200 + "px";
-        }
-
-        return "auto";
     }
 
     @Override

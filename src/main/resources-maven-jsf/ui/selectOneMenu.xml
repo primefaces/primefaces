@@ -84,7 +84,7 @@
             <name>height</name>
             <required>false</required>
             <type>java.lang.Integer</type>
-            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <defaultValue>200</defaultValue>
         </attribute>
         <attribute>
             <name>tabindex</name>

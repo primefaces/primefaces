@@ -144,7 +144,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
         writer.startElement("div", menu);
         writer.writeAttribute("class", SelectManyMenu.LIST_CONTAINER_CLASS, null);
-        writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, countSelectItems(selectItems)), null);
+        writer.writeAttribute("style", "max-height:" + menu.getScrollHeight() + "px", null);
 
         if (customContent) {
             writer.startElement("table", null);
@@ -321,19 +321,6 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.endElement("input");
 
         writer.endElement("div");
-    }
-
-    protected String calculateWrapperHeight(SelectManyMenu menu, int itemSize) {
-        int height = menu.getScrollHeight();
-
-        if (height != Integer.MAX_VALUE) {
-            return height + "px";
-        }
-        else if (itemSize > 10) {
-            return 200 + "px";
-        }
-
-        return "auto";
     }
 
     @Override
