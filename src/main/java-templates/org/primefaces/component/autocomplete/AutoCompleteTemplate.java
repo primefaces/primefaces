@@ -22,8 +22,8 @@ import javax.el.ValueExpression;
 import javax.faces.convert.Converter;
 import javax.faces.component.behavior.Behavior;
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select", "itemSelect", "itemUnselect", "query", "moreText"));
-    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("itemSelect", "itemUnselect", "query", "moreText"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select", "itemSelect", "itemUnselect", "query", "moreText", "clear"));
+    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("itemSelect", "itemUnselect", "query", "moreText", "clear"));
     
     public final static String STYLE_CLASS = "ui-autocomplete";
     public final static String MULTIPLE_STYLE_CLASS = "ui-autocomplete ui-autocomplete-multiple";
@@ -87,7 +87,7 @@ import javax.faces.component.behavior.Behavior;
                 unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(unselectEvent);
             }
-            else if(eventName.equals("moreText")) {
+            else if(eventName.equals("moreText") || eventName.equals("clear")) {
                 ajaxBehaviorEvent.setPhaseId(event.getPhaseId());
                 super.queueEvent(ajaxBehaviorEvent);
             }

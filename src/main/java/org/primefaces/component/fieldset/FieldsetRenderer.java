@@ -75,6 +75,8 @@ public class FieldsetRenderer extends CoreRenderer {
 
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
+        renderDynamicPassThruAttributes(context, fieldset);
+        
         encodeLegend(context, fieldset);
 
         encodeContent(context, fieldset);

@@ -277,7 +277,8 @@ public class PanelGridRenderer extends CoreRenderer {
                 writer.startElement("td", null);
                 writer.writeAttribute("colspan", columns, null);
                 writer.writeAttribute("role", "columnheader", null);
-
+                writer.writeAttribute("class", PanelGrid.CELL_CLASS + " ui-widget-header", null);
+                
                 component.encodeAll(context);
 
                 writer.endElement("td");

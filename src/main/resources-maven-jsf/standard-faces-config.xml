@@ -7,7 +7,7 @@
 
     <lifecycle>
         <phase-listener>org.primefaces.application.resource.DynamicResourcesPhaseListener</phase-listener>
-        <phase-listener>org.primefaces.util.AutoUpdateComponentPhaseListener</phase-listener>
+        <phase-listener>org.primefaces.component.autoupdate.AutoUpdatePhaseListener</phase-listener>
     </lifecycle>
 
     <application>
@@ -25,25 +25,6 @@
             <system-event-listener-class>org.primefaces.webapp.PreDestroyApplicationEventListener</system-event-listener-class>
             <system-event-class>javax.faces.event.PreDestroyApplicationEvent</system-event-class>
             <source-class>javax.faces.application.Application</source-class>
-        </system-event-listener>
-        <system-event-listener>
-            <system-event-listener-class>org.primefaces.util.AutoUpdateComponentListener</system-event-listener-class>
-            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
-            <source-class>org.primefaces.component.messages.Messages</source-class>
-        </system-event-listener>
-        <system-event-listener>
-            <system-event-listener-class>org.primefaces.util.AutoUpdateComponentListener</system-event-listener-class>
-            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
-            <source-class>org.primefaces.component.growl.Growl</source-class>
-        </system-event-listener>
-        <system-event-listener>
-            <system-event-listener-class>org.primefaces.util.AutoUpdateComponentListener</system-event-listener-class>
-            <system-event-class>javax.faces.event.PostAddToViewEvent</system-event-class>
-            <source-class>org.primefaces.component.outputpanel.OutputPanel</source-class>
-        </system-event-listener>
-        <system-event-listener>
-            <system-event-listener-class>org.primefaces.util.AutoUpdateComponentListener</system-event-listener-class>
-            <system-event-class>javax.faces.event.PreRenderComponentEvent</system-event-class>
         </system-event-listener>
         <system-event-listener>
             <system-event-listener-class>org.primefaces.event.system.DynamicColumnsListener</system-event-listener-class>

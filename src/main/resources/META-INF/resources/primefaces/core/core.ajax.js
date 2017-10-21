@@ -19,7 +19,6 @@ if (!PrimeFaces.ajax) {
         'psf': 'partialSubmitFilter',
         'rv': 'resetValues',
         'fi': 'fragmentId',
-        'fu': 'fragmentUpdate',
         'pa': 'params',
         'onst': 'onstart',
         'oner': 'onerror',
@@ -424,9 +423,6 @@ if (!PrimeFaces.ajax) {
 
                 //update
                 var updateArray = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall(cfg, 'update');
-                if(cfg.fragmentId && cfg.fragmentUpdate) {
-                    updateArray.push(cfg.fragmentId);
-                }
                 if(updateArray.length > 0) {
                     PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_UPDATE_PARAM, updateArray.join(' '), parameterPrefix);
                 }

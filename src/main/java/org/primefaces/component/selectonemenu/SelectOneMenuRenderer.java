@@ -260,7 +260,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", SelectOneMenu.ITEMS_WRAPPER_CLASS, null);
-        writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, selectItems.size()), null);
+        writer.writeAttribute("style", "max-height:" + menu.getHeight() + "px", null);
 
         if (!menu.isLazy()) {
             encodePanelContent(context, menu, selectItems);
@@ -517,19 +517,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 writer.endElement("option");
             }
         }
-    }
-
-    protected String calculateWrapperHeight(SelectOneMenu menu, int itemSize) {
-        int height = menu.getHeight();
-
-        if (height != Integer.MAX_VALUE) {
-            return height + "px";
-        }
-        else if (itemSize > 10) {
-            return 200 + "px";
-        }
-
-        return "auto";
     }
 
     @Override

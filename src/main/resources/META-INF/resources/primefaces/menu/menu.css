@@ -326,6 +326,11 @@
     float:left;
 }
 
+/** SplitButtonMenu **/
+.ui-splitbuttonmenu {
+    width: auto;
+}
+
 /** PanelMenu **/
 .ui-panelmenu { 
     width: auto; 

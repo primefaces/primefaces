@@ -98,19 +98,19 @@
             <defaultValue>true</defaultValue>
             <description>Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus. Default is true.</description>
         </attribute>
-		<attribute>
-			<name>delay</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+        <attribute>
+            <name>delay</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>If less than delay milliseconds elapses between calls to request() only the most recent one is sent and all other requests are discarded. The default value of this option is null. If the value of delay is the literal string 'none' without the quotes or the default, no delay is used.</description>
-		</attribute>
-		<attribute>
-			<name>timeout</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-                        <defaultValue>0</defaultValue>
+        </attribute>
+        <attribute>
+            <name>timeout</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
             <description>Defines the timeout for the ajax request.</description>
-		</attribute>
+        </attribute>
         <attribute>
             <name>async</name>
             <required>false</required>
@@ -119,39 +119,39 @@
             <description>When set to true, ajax requests are not queued. Default is false.</description>
         </attribute>
         <attribute>
-			<name>partialSubmit</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
-            <description>When enabled, only values related to partially processed components would be serialized for ajax 
-            instead of whole form.</description>
-		</attribute>
+            <name>partialSubmit</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When enabled, only values related to partially processed components would be serialized for ajax
+                instead of whole form.</description>
+        </attribute>
         <attribute>
-			<name>resetValues</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
+            <name>resetValues</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
             <description>If true, indicate that this particular Ajax transaction is a value reset transaction. This will cause resetValue() to be called on any EditableValueHolder instances encountered as a result of this ajax transaction. If not specified, or the value is false, no such indication is made.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>ignoreAutoUpdate</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
+            <name>ignoreAutoUpdate</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
             <description>If true, components which autoUpdate="true" will not be updated for this request. If not specified, or the value is false, no such indication is made.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>partialSubmitFilter</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>partialSubmitFilter</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Selector to use when partial submit is on, default is ":input" to select all descendant inputs of a partially processed components.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>form</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>form</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Form to serialize for an ajax request. Default is the enclosing form.</description>
-		</attribute>
+        </attribute>
     </attributes>
     <resources>
         <resource>

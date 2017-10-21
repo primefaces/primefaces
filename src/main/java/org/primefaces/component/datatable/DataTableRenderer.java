@@ -1409,6 +1409,9 @@ public class DataTableRenderer extends DataRenderer {
             return;
         }
 
+        if (!ComponentUtils.shouldRenderFacet(facet)) {
+            return;
+        }
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);

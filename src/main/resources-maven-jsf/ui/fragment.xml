@@ -15,12 +15,6 @@
     <parent>javax.faces.component.UIPanel</parent>
     <description>Fragment component is used to define automatically partially processed and updated sections.</description>
     <attributes>
-        <attribute>
-			<name>autoUpdate</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description></description>
-		</attribute>
+
     </attributes>
 </component>

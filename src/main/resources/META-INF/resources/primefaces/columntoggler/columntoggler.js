@@ -9,6 +9,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.trigger);
         this.tableId = this.table.attr('id');
         this.hasFrozenColumn = this.table.hasClass('ui-datatable-frozencolumn');
+        this.hasStickyHeader = this.table.hasClass('ui-datatable-sticky');
         var clientId = PrimeFaces.escapeClientId(this.tableId);
         
         if(this.hasFrozenColumn) {
@@ -300,6 +301,10 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                 index += this.frozenColumnCount;
             }
         }
+        
+        if(this.hasStickyHeader) {
+            $(PrimeFaces.escapeClientId(columnHeader.attr('id'))).removeClass('ui-helper-hidden');
+        }
 
         this.fireToggleEvent(true, (index - 1));
         this.updateColspan();
@@ -333,6 +338,10 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             if(!column.hasClass('ui-frozen-column')) {
                 index += this.frozenColumnCount;
             }
+        }
+        
+        if(this.hasStickyHeader) {
+            $(PrimeFaces.escapeClientId(columnHeader.attr('id'))).addClass('ui-helper-hidden');
         }
             
         this.fireToggleEvent(false, (index - 1));
