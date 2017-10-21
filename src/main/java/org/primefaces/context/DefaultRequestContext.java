@@ -176,6 +176,19 @@ public class DefaultRequestContext extends RequestContext {
             reset(visitContext, expression);
         }
     }
+    
+    @Override
+    public void reset(String... expressions) {
+        if (expressions == null) {
+            return;
+        }
+
+        VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+
+        for (String expression : expressions) {
+            reset(visitContext, expression);
+        }
+    }
 
     @Override
     public void reset(String expressions) {
