@@ -103,7 +103,7 @@ public class TerminalAutoCompleteTest {
     }
 
     @Test
-    public void givenShowThenReturnsServersAndStatus() {
+    public void givenShowSThenReturnsServersAndStatus() {
         // given
         final String command = "show";
         final String[] args = new String[] { "s" };
