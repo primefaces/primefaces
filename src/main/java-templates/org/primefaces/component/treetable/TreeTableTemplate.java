@@ -15,6 +15,7 @@ import org.primefaces.event.NodeUnselectEvent;
 import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.ColumnResizeEvent;
+import org.primefaces.event.data.PageEvent;
 import org.primefaces.component.column.Column;
 import java.lang.StringBuilder;
 import java.util.ArrayList;
@@ -125,6 +126,7 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
         put("rowEditInit", RowEditEvent.class);
         put("rowEditCancel", RowEditEvent.class);
         put("cellEdit", CellEditEvent.class);
+        put("page", PageEvent.class);
     }});
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
@@ -248,6 +250,14 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
                 }
 
                 wrapperEvent = new CellEditEvent(this, behaviorEvent.getBehavior(), column, rowKey);
+                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
+            }
+            else if(eventName.equals("page")) {
+                int rows = this.getRowsToRender();
+                int first = Integer.parseInt(params.get(clientId + "_first"));
+                int page = rows > 0 ? (int) (first / rows) : 0;
+        
+                wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
             
