@@ -7,26 +7,26 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>knob</tag>
-	<tagClass>org.primefaces.component.knob.Knob</tagClass>
-	<componentClass>org.primefaces.component.knob.Knob</componentClass>
-	<componentType>org.primefaces.component.Knob</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.KnobRenderer</rendererType>
-	<rendererClass>org.primefaces.component.knob.KnobRenderer</rendererClass>
-	<parent>javax.faces.component.UIInput</parent>
+    <tag>knob</tag>
+    <tagClass>org.primefaces.component.knob.Knob</tagClass>
+    <componentClass>org.primefaces.component.knob.Knob</componentClass>
+    <componentType>org.primefaces.component.Knob</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.KnobRenderer</rendererType>
+    <rendererClass>org.primefaces.component.knob.KnobRenderer</rendererClass>
+    <parent>javax.faces.component.UIInput</parent>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
         <interface>
-			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
-		</interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
         <interface>
-			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
-		</interface>
-	</interfaces>
-	<attributes>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
+    <attributes>
         &input_component_attributes;
         &widget_var_attribute;
         <attribute>
@@ -126,25 +126,25 @@
             <defaultValue>butt</defaultValue>
             <description>Gauge stroke endings. Valid values are "butt" (default) and "round".</description>
         </attribute>
-	</attributes>
+    </attributes>
     <resources>
         <resource>
-			<name>components.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
+            <name>jquery/jquery.js</name>
+        </resource>
         <resource>
-			<name>core.js</name>
-		</resource>
-		<resource>
-			<name>components.js</name>
-		</resource>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
         <resource>
-			<name>knob/knob.js</name>
-		</resource>
-	</resources>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+        <resource>
+            <name>knob/knob.js</name>
+        </resource>
+    </resources>
 </component>

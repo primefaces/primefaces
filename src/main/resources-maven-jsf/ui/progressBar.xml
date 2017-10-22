@@ -14,16 +14,16 @@
     <parent>javax.faces.component.UIComponentBase</parent>
     <description>ProgressBar is a process status indicator that can either work purely on client side or interact with server side using ajax.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
         <interface>
-			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
-		</interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
         <interface>
-			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
-		</interface>
-	</interfaces>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
     <attributes>
         &standard_uicomponent_attributes;
         &widget_var_attribute;
@@ -81,25 +81,25 @@
             <description>Enables static value display mode.</description>
         </attribute>
         <attribute>
-			<name>global</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
+            <name>global</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
             <description>Defines whether to trigger ajaxStatus or not.</description>
-		</attribute>
+        </attribute>
     </attributes>
-	<resources>
-		<resource>
-			<name>components.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
-		<resource>
-			<name>core.js</name>
-		</resource>
-		<resource>
-			<name>components.js</name>
-		</resource>
-	</resources>
+    <resources>
+        <resource>
+            <name>components.css</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
 </component>

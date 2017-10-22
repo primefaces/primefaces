@@ -23,8 +23,8 @@
         </interface>
     </interfaces>
     <attributes>
-		&command_component_attributes;
-		&widget_var_attribute;
+        &command_component_attributes;
+        &widget_var_attribute;
         <attribute>
             <name>ajax</name>
             <required>false</required>

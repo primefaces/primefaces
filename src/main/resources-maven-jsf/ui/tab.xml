@@ -5,58 +5,58 @@
 <!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
 ]>
 <component>
-	<tag>tab</tag>
-	<tagClass>org.primefaces.component.tabview.TabTag</tagClass>
-	<componentClass>org.primefaces.component.tabview.Tab</componentClass>
-	<componentType>org.primefaces.component.Tab</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<parent>javax.faces.component.UIPanel</parent>
+    <tag>tab</tag>
+    <tagClass>org.primefaces.component.tabview.TabTag</tagClass>
+    <componentClass>org.primefaces.component.tabview.Tab</componentClass>
+    <componentType>org.primefaces.component.Tab</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <parent>javax.faces.component.UIPanel</parent>
     <description>Tab is a generic container component used by other PrimeFaces components such as tabView or accordionPanel.</description>
-	<attributes>
-		&standard_uicomponent_attributes;
-		<attribute>
-			<name>title</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+    <attributes>
+        &standard_uicomponent_attributes;
+        <attribute>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Title text of the tab.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>titleStyle</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>titleStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Title container inner style.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>titleStyleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>titleStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Title container style class.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>disabled</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
+            <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
             <description>Disables tab element if true.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>closable</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
+            <name>closable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
             <description>Makes the tab closable by displaying a close icon.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>titletip</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>titletip</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Tooltip of the tab header.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>ariaLabel</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description></description>
-		</attribute>
-	</attributes>
+        </attribute>
+    </attributes>
 </component>

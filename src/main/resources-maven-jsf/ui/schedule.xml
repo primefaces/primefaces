@@ -4,190 +4,190 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>schedule</tag>
-	<tagClass>org.primefaces.component.schedule.ScheduleTag</tagClass>
-	<componentClass>org.primefaces.component.schedule.Schedule</componentClass>
-	<componentType>org.primefaces.component.Schedule</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.ScheduleRenderer</rendererType>
-	<rendererClass>org.primefaces.component.schedule.ScheduleRenderer</rendererClass>
-	<parent>javax.faces.component.UIComponentBase</parent>
+    <tag>schedule</tag>
+    <tagClass>org.primefaces.component.schedule.ScheduleTag</tagClass>
+    <componentClass>org.primefaces.component.schedule.Schedule</componentClass>
+    <componentType>org.primefaces.component.Schedule</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.ScheduleRenderer</rendererType>
+    <rendererClass>org.primefaces.component.schedule.ScheduleRenderer</rendererClass>
+    <parent>javax.faces.component.UIComponentBase</parent>
     <description>
-      Schedule provides an Outlook Calendar, iCal like JSF component to manage events.
-      Schedule is highly customizable featuring various views (month, day, week), built-in I18N, drag-drop, resize, customizable event dialog and skinning.
+        Schedule provides an Outlook Calendar, iCal like JSF component to manage events.
+        Schedule is highly customizable featuring various views (month, day, week), built-in I18N, drag-drop, resize, customizable event dialog and skinning.
     </description>
-     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
+    <interfaces>
         <interface>
-			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
-		</interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
         <interface>
-			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
-		</interface>
-	</interfaces>
-	<attributes>
-		&standard_uicomponent_attributes;
-		&widget_var_attribute;
-		<attribute>
-			<name>value</name>
-			<required>false</required>
-			<type>org.primefaces.model.ScheduleModel</type>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>value</name>
+            <required>false</required>
+            <type>org.primefaces.model.ScheduleModel</type>
             <description>An org.primefaces.model.ScheduleModel instance representing the backed model.</description>
-		</attribute>
-		<attribute>
-			<name>locale</name>
-			<required>false</required>
-			<type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <name>locale</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
             <description>Locale for localization, can be String or a java.util.Locale instance.</description>
-		</attribute>
-		<attribute>
-			<name>aspectRatio</name>
-			<required>false</required>
-			<type>java.lang.Double</type>
+        </attribute>
+        <attribute>
+            <name>aspectRatio</name>
+            <required>false</required>
+            <type>java.lang.Double</type>
             <defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
             <description>Ratio of calendar width to height, higher the value shorter the height is.</description>
-		</attribute>
-		<attribute>
-			<name>view</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>month</defaultValue>
+        </attribute>
+        <attribute>
+            <name>view</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>month</defaultValue>
             <description>The view type to use, possible values are 'month', 'agendaDay', 'agendaWeek', 'basicWeek', 'basicDay'. Default is month.</description>
-		</attribute>
-		<attribute>
-			<name>initialDate</name>
-			<required>false</required>
-			<type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <name>initialDate</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
             <description>The initial date that is used when schedule loads. If ommitted, the schedule starts on the current date.</description>
-		</attribute>
-		<attribute>
-			<name>showWeekends</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
+        </attribute>
+        <attribute>
+            <name>showWeekends</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
             <description>Specifies inclusion Saturday/Sunday columns in any of the views. Default is true.</description>
-		</attribute>
-		<attribute>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Style of the main container element of schedule.</description>
-		</attribute>
-		<attribute>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Style class of the main container element of schedule.</description>
-		</attribute>
-		<attribute>
-			<name>draggable</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
+        </attribute>
+        <attribute>
+            <name>draggable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
             <description>When true, events are draggable. Default is true.</description>
-		</attribute>
-		<attribute>
-			<name>resizable</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
+        </attribute>
+        <attribute>
+            <name>resizable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
             <description>When true, events are resizable. Default is true.</description>
-		</attribute>
-		<attribute>
-			<name>showHeader</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
+        </attribute>
+        <attribute>
+            <name>showHeader</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
             <description>Specifies visibility of header content. Default is true.</description>
-		</attribute>
-		<attribute>
-			<name>leftHeaderTemplate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>prev,next today</defaultValue>
+        </attribute>
+        <attribute>
+            <name>leftHeaderTemplate</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>prev,next today</defaultValue>
             <description>Content of left side of header. Default is "prev, next today"</description>
-		</attribute>
-		<attribute>
-			<name>centerHeaderTemplate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>title</defaultValue>
+        </attribute>
+        <attribute>
+            <name>centerHeaderTemplate</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>title</defaultValue>
             <description>Content of center of header. Default is title.</description>
-		</attribute>
-		<attribute>
-			<name>rightHeaderTemplate</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>month,agendaWeek,agendaDay</defaultValue>
+        </attribute>
+        <attribute>
+            <name>rightHeaderTemplate</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>month,agendaWeek,agendaDay</defaultValue>
             <description>Content of right side of header. Default is "month, agendaWeek, agendaDay"</description>
-		</attribute>
-		<attribute>
-			<name>allDaySlot</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>true</defaultValue>
+        </attribute>
+        <attribute>
+            <name>allDaySlot</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
             <description>Determines if all-day slot will be displayed in agendaWeek or agendaDay views. Default is true.</description>
-		</attribute>
-		<attribute>
-			<name>slotDuration</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>00:30:00</defaultValue>
+        </attribute>
+        <attribute>
+            <name>slotDuration</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>00:30:00</defaultValue>
             <description>The frequency for displaying time slots. Default is 00:30:00.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>slotMinutes</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>30</defaultValue>
+            <name>slotMinutes</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>30</defaultValue>
             <description>Interval in minutes in an hour to create a slot. Default is 30.</description>
-		</attribute>
-		<attribute>
-			<name>scrollTime</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>06:00:00</defaultValue>
+        </attribute>
+        <attribute>
+            <name>scrollTime</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>06:00:00</defaultValue>
             <description>Determines how far down the scroll pane is initially scrolled down. Default is 06:00:00.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>firstHour</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>6</defaultValue>
+            <name>firstHour</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>6</defaultValue>
             <description>First hour to display in day view. Default is 6.</description>
-		</attribute>
-		<attribute>
-			<name>minTime</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>minTime</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Minimum time to display in a day view. Default is 00:00:00.</description>
-		</attribute>
-		<attribute>
-			<name>maxTime</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>maxTime</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Maximum time to display in a day view. Default is 24:00:00.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>axisFormat</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>axisFormat</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Determines the time-text that will be displayed on the vertical axis of the agenda views.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>timeFormat</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>timeFormat</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Determines the time-text that will be displayed on each event.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>columnFormat</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>columnFormat</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Format for column headers.</description>
-		</attribute>
+        </attribute>
         <attribute>
             <name>timeZone</name>
             <required>false</required>
@@ -200,7 +200,7 @@
             <type>java.lang.String</type>
             <description>Timezone to define how to interpret the dates at browser. Valid values are "false", "local", "UTC" and ids like "America/Chicago".</description>
         </attribute>
-         <attribute>
+        <attribute>
             <name>ignoreTimezone</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
@@ -222,77 +222,77 @@
             <description>Display week numbers in schedule.</description>
         </attribute>
         <attribute>
-			<name>extender</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Name of javascript function to extend the options of the underlying fullcalendar plugin.</description>
-		</attribute>
+            <name>extender</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Name of javascript function to extend the options of the underlying fullcalendar plugin.</description>
+        </attribute>
         <attribute>
-			<name>displayEventEnd</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Whether or not to display an event's end time text when it is rendered on the calendar. Value can be a boolean to globally configure for
-            all views or a comma separated list such as "month:false,basicWeek:true" to configure per view.</description>
-		</attribute>
+            <name>displayEventEnd</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Whether or not to display an event's end time text when it is rendered on the calendar. Value can be a boolean to globally configure for
+                all views or a comma separated list such as "month:false,basicWeek:true" to configure per view.</description>
+        </attribute>
         <attribute>
-			<name>weekNumberCalculation</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>weekNumberCalculation</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <defaultValue>local</defaultValue>
-			<description>The method for calculating week numbers that are displayed. Valid values are "local" (default), "ISO" and "custom".</description>
-		</attribute>
+            <description>The method for calculating week numbers that are displayed. Valid values are "local" (default), "ISO" and "custom".</description>
+        </attribute>
         <attribute>
-			<name>weekNumberCalculator</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<description>Client side function to use in custom weekNumberCalculation.</description>
-		</attribute>
+            <name>weekNumberCalculator</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side function to use in custom weekNumberCalculation.</description>
+        </attribute>
         <attribute>
-			<name>nextDayThreshold</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<defaultValue>09:00:00</defaultValue>
+            <name>nextDayThreshold</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>09:00:00</defaultValue>
             <description>When an event's end time spans into another day, the minimum time it must be in order for it to render as if it were on that day. Default is 09:00:00.</description>
-		</attribute>
-		<attribute>
-			<name>slotEventOverlap</name>
-			<required>false</required>
-			<defaultValue>true</defaultValue>
-			<type>java.lang.Boolean</type>
-			<description>If true contemporary events will be rendered one overlapping the other, else they will be rendered side by side.</description>
-		</attribute>
+        </attribute>
+        <attribute>
+            <name>slotEventOverlap</name>
+            <required>false</required>
+            <defaultValue>true</defaultValue>
+            <type>java.lang.Boolean</type>
+            <description>If true contemporary events will be rendered one overlapping the other, else they will be rendered side by side.</description>
+        </attribute>
         <attribute>
             <name>urlTarget</name>
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>_blank</defaultValue>
             <description>Target for events with urls. Clicking on such events in the schedule will not trigger the selectEvent but open the url using this target instead. Default is "_blank".</description>
-</attribute>
-	</attributes>
-	<resources>
+        </attribute>
+    </attributes>
+    <resources>
         <resource>
-			<name>schedule/schedule.css</name>
-		</resource>
+            <name>schedule/schedule.css</name>
+        </resource>
         <resource>
-			<name>components.css</name>
-		</resource>
-		<resource>
-			<name>moment/moment.js</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
-		<resource>
-			<name>core.js</name>
-		</resource>
+            <name>moment/moment.js</name>
+        </resource>
         <resource>
-			<name>components.js</name>
-		</resource>
+            <name>jquery/jquery.js</name>
+        </resource>
         <resource>
-			<name>schedule/schedule.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+        <resource>
+            <name>schedule/schedule.js</name>
+        </resource>
+    </resources>
 </component>

@@ -3,28 +3,28 @@
 <!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
 ]>
 <component>
-	<tag>row</tag>
-	<tagClass>org.primefaces.component.row.RowTag</tagClass>
-	<componentClass>org.primefaces.component.row.Row</componentClass>
-	<componentType>org.primefaces.component.Row</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
+    <tag>row</tag>
+    <tagClass>org.primefaces.component.row.RowTag</tagClass>
+    <componentClass>org.primefaces.component.row.Row</componentClass>
+    <componentType>org.primefaces.component.Row</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.RowRenderer</rendererType>
-	<rendererClass>org.primefaces.component.row.RowRenderer</rendererClass>
-	<parent>javax.faces.component.UIComponentBase</parent>
+    <rendererClass>org.primefaces.component.row.RowRenderer</rendererClass>
+    <parent>javax.faces.component.UIComponentBase</parent>
     <description>Row is a helper component for datatable.</description>
-	<attributes>
-		&standard_uicomponent_attributes;
+    <attributes>
+        &standard_uicomponent_attributes;
         <attribute>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Inline style of the row.</description>
-		</attribute>
-		<attribute>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Style class of the row.</description>
-		</attribute>
-	</attributes>
+        </attribute>
+    </attributes>
 </component>

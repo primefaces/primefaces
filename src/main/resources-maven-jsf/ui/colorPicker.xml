@@ -26,8 +26,8 @@
         </interface>
     </interfaces>
     <attributes>
-		&input_component_attributes;
-		&widget_var_attribute;
+        &input_component_attributes;
+        &widget_var_attribute;
         <attribute>
             <name>mode</name>
             <required>false</required>
