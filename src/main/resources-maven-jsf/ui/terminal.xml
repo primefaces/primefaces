@@ -56,8 +56,8 @@
         <attribute>
             <name>commandModel</name>
             <required>false</required>
-            <type>javax.el.MethodExpression</type>
-            <description>Method that returns the command model used for autocompletion.</description>
+            <type>org.primefaces.model.TreeNode</type>
+            <description>TreeNode that represents the command model used for autocompletion.</description>
         </attribute>
         <attribute>
             <name>escape</name>

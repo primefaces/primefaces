@@ -114,11 +114,11 @@ public class TerminalRenderer extends CoreRenderer {
         String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
         String tokens[] = value.trim().split(" ");
         String command = tokens[0];
-
         String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
-        MethodExpression commandHandler = terminal.getCommandHandler();
 
+        MethodExpression commandHandler = terminal.getCommandHandler();
         String result = (String) commandHandler.invoke(context.getELContext(), new Object[]{command, args});
+
         ResponseWriter writer = context.getResponseWriter();
         writer.write(result);
     }
@@ -127,18 +127,15 @@ public class TerminalRenderer extends CoreRenderer {
         String clientId = terminal.getClientId(context);
         String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
         String tokens[] = value.trim().split(" ");
-        String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
+        TreeNode commandModel = terminal.getCommandModel();
         String command = tokens[0];
+        String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
 
-        MethodExpression commandModelHandler = terminal.getCommandModel();
         ResponseWriter writer = context.getResponseWriter();
-
-        if (commandModelHandler == null) {
+        if (commandModel == null) {
             writer.write("null");
         }
         else {
-            TreeNode commandModel = (TreeNode) commandModelHandler.invoke(context.getELContext(), new Object[]{});
-
             AutoCompleteMatches matches = terminal.traverseCommandModel(commandModel, command, args);
             writer.write(matches.toString());
         }
