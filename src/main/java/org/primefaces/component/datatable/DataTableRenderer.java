@@ -340,8 +340,6 @@ public class DataTableRenderer extends DataRenderer {
             encodeSortableHeaderOnReflow(context, table);
         }
 
-        encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS);
-
         if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
             encodePaginatorMarkup(context, table, "top");
         }
@@ -381,6 +379,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", DataTable.TABLE_WRAPPER_CLASS, null);
 
         writer.startElement("table", null);
+        encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS);
         writer.writeAttribute("role", "grid", null);
         if (table.getTableStyle() != null) writer.writeAttribute("style", table.getTableStyle(), null);
         if (table.getTableStyleClass() != null) writer.writeAttribute("class", table.getTableStyleClass(), null);
@@ -406,6 +405,7 @@ public class DataTableRenderer extends DataRenderer {
 
         if (hasFrozenColumns) {
             writer.startElement("table", null);
+            encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS);
             writer.writeAttribute("class", "ui-datatable-fs", null);
             writer.startElement("tbody", null);
             writer.startElement("tr", null);
@@ -496,6 +496,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", containerBoxClass, null);
 
         writer.startElement("table", null);
+        encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS);
         writer.writeAttribute("role", "grid", null);
         if (tableStyle != null) writer.writeAttribute("style", tableStyle, null);
         if (tableStyleClass != null) writer.writeAttribute("class", tableStyleClass, null);        
@@ -522,6 +523,7 @@ public class DataTableRenderer extends DataRenderer {
             writer.writeAttribute("style", "height:" + scrollHeight + "px", null);
         }
         writer.startElement("table", null);
+        encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS);
         writer.writeAttribute("role", "grid", null);
 
         if (tableStyle != null) writer.writeAttribute("style", tableStyle, null);
@@ -551,6 +553,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", DataTable.VIRTUALSCROLL_WRAPPER_CLASS, null);
 
         writer.startElement("table", null);
+        encodeFacet(context, table, table.getHeader(), DataTable.HEADER_CLASS);
         writer.writeAttribute("role", "grid", null);
         writer.writeAttribute("class", tableStyleClass, null);
 
@@ -1413,13 +1416,14 @@ public class DataTableRenderer extends DataRenderer {
             return;
         }
         ResponseWriter writer = context.getResponseWriter();
+        boolean isHeaderFacet = facet.equals(table.getHeader()); 
 
-        writer.startElement("div", null);
+        writer.startElement(isHeaderFacet ? "caption" : "div", null);
         writer.writeAttribute("class", styleClass, null);
 
         facet.encodeAll(context);
 
-        writer.endElement("div");
+        writer.endElement(isHeaderFacet ? "caption" : "div");
     }
 
     protected void encodeStateHolder(FacesContext context, DataTable table, String id, String value) throws IOException {
