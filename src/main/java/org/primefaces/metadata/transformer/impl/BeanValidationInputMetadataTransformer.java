@@ -41,6 +41,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
 
     private static final Logger LOG = Logger.getLogger(BeanValidationInputMetadataTransformer.class.getName());
 
+    @Override
     public void transformInput(FacesContext context, RequestContext requestContext, UIInput input) throws IOException {
 
         EditableValueHolder editableValueHolder = (EditableValueHolder) input;

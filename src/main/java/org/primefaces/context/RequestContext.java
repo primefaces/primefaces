@@ -126,6 +126,13 @@ public abstract class RequestContext {
      * @param expressions A list with with one or multiple search expression to resolve the components.
      */
     public abstract void reset(Collection<String> expressions);
+    
+    /**
+     * Reset a collection of editableValueHolders.
+     *
+     * @param expressions A array with with one or multiple search expression to resolve the components.
+     */
+    public abstract void reset(String... expressions);
 
     /**
      * @return Shared WidgetBuilder instance of the current request

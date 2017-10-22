@@ -29,7 +29,7 @@
         </interface>
     </interfaces>
     <attributes>
-		&command_component_attributes;
+        &command_component_attributes;
         <attribute>
             <name>ajax</name>
             <required>false</required>

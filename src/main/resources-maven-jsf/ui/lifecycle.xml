@@ -6,39 +6,39 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>lifecycle</tag>
+    <tag>lifecycle</tag>
     <tagClass>org.primefaces.component.lifecycle.LifecycleTag</tagClass>
-	<componentClass>org.primefaces.component.lifecycle.Lifecycle</componentClass>
-	<componentType>org.primefaces.component.Lifecycle</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.LifecycleRenderer</rendererType>
-	<rendererClass>org.primefaces.component.lifecycle.LifecycleRenderer</rendererClass>
-	<parent>javax.faces.component.UIComponentBase</parent>
+    <componentClass>org.primefaces.component.lifecycle.Lifecycle</componentClass>
+    <componentType>org.primefaces.component.Lifecycle</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.LifecycleRenderer</rendererType>
+    <rendererClass>org.primefaces.component.lifecycle.LifecycleRenderer</rendererClass>
+    <parent>javax.faces.component.UIComponentBase</parent>
     <description></description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
-	</interfaces>
-	<attributes>
-		&standard_uicomponent_attributes;
-		&widget_var_attribute;
-	</attributes>
-	<resources>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
+    </attributes>
+    <resources>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
-		<resource>
-			<name>core.js</name>
-		</resource>
-		<resource>
-			<name>lifecycle/lifecycle.js</name>
-		</resource>
-		<resource>
-			<name>lifecycle/lifecycle.css</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>lifecycle/lifecycle.js</name>
+        </resource>
+        <resource>
+            <name>lifecycle/lifecycle.css</name>
+        </resource>
+    </resources>
 </component>

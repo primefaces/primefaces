@@ -64,6 +64,8 @@ public class OutputLabelRenderer extends CoreRenderer {
 
         final EditableValueHolderState state = new EditableValueHolderState();
 
+        final String indicateRequired = label.getIndicateRequired();
+
         String _for = label.getFor();
         if (!isValueBlank(_for)) {
             ContextCallback callback = new ContextCallback() {
@@ -104,7 +106,8 @@ public class OutputLabelRenderer extends CoreRenderer {
                             styleClass.append(" ui-state-error");
                         }
 
-                        if (label.isIndicateRequired()) {
+                        
+                        if ("auto".equals(indicateRequired)) {
                             state.setRequired(input.isRequired());
 
                             // fallback if required=false
@@ -149,7 +152,7 @@ public class OutputLabelRenderer extends CoreRenderer {
 
         renderChildren(context, label);
 
-        if (!isValueBlank(_for) && label.isIndicateRequired() && state.isRequired()) {
+        if ("true".equals(indicateRequired) || ("auto".equals(indicateRequired) && !isValueBlank(_for) && state.isRequired())) {
             encodeRequiredIndicator(writer, label);
         }
 

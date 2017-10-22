@@ -4,43 +4,43 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>timeline</tag>
-	<tagClass>org.primefaces.component.timeline.Timeline</tagClass>
-	<componentClass>org.primefaces.component.timeline.Timeline</componentClass>
-	<componentType>org.primefaces.component.Timeline</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.TimelineRenderer</rendererType>
-	<rendererClass>org.primefaces.component.timeline.TimelineRenderer</rendererClass>
-	<parent>javax.faces.component.UIComponentBase</parent>
+    <tag>timeline</tag>
+    <tagClass>org.primefaces.component.timeline.Timeline</tagClass>
+    <componentClass>org.primefaces.component.timeline.Timeline</componentClass>
+    <componentType>org.primefaces.component.Timeline</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.TimelineRenderer</rendererType>
+    <rendererClass>org.primefaces.component.timeline.TimelineRenderer</rendererClass>
+    <parent>javax.faces.component.UIComponentBase</parent>
     <description>
         Timeline is an interactive visualization chart to visualize events in time.
     </description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
         <interface>
-			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
-		</interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
         <interface>
-			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
-		</interface>
-	</interfaces>
-	<attributes>
-		&standard_uicomponent_attributes;
-		&widget_var_attribute;
-		<attribute>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Inline style of the container element.</description>
-		</attribute>
-		<attribute>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Style class of the container element.</description>
-		</attribute>
+        </attribute>
         <attribute>
             <name>var</name>
             <required>false</required>
@@ -380,28 +380,28 @@
             <defaultValue>true</defaultValue>
             <description>When true, events are moved animated when zooming the Timeline. This looks cool, but does require more computational power. Default is true.</description>
         </attribute>
-	</attributes>
-	<resources>
+    </attributes>
+    <resources>
         <resource>
-			<name>components.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
-		<resource>
-			<name>core.js</name>
-		</resource>
+            <name>jquery/jquery.js</name>
+        </resource>
         <resource>
-			<name>components.js</name>
-		</resource>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
         <resource>
-			<name>timeline/timeline.css</name>
-		</resource>
+            <name>core.js</name>
+        </resource>
         <resource>
-			<name>timeline/timeline.js</name>
-		</resource>
-	</resources>
+            <name>components.js</name>
+        </resource>
+        <resource>
+            <name>timeline/timeline.css</name>
+        </resource>
+        <resource>
+            <name>timeline/timeline.js</name>
+        </resource>
+    </resources>
 </component>

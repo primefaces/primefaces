@@ -19,8 +19,8 @@
         </interface>
     </interfaces>
     <attributes>
-		&standard_uicomponent_attributes;
-		&widget_var_attribute;
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
         <attribute>
             <name>model</name>
             <required>false</required>

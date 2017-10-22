@@ -18,16 +18,16 @@
     <parent>javax.faces.component.html.HtmlInputText</parent>
     <description>AutoComplete provides live suggestions while an input is being typed.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
         <interface>
-			<name>org.primefaces.component.api.InputHolder</name>
-		</interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
         <interface>
-			<name>org.primefaces.component.api.MixedClientBehaviorHolder</name>
-		</interface>
-	</interfaces>
+            <name>org.primefaces.component.api.InputHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.MixedClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
     <attributes>
         &input_component_attributes;
         &html_input_text_attributes;
@@ -192,7 +192,7 @@
             <required>false</required>
             <type>java.lang.String</type>
             <description>Specifies the behavior dropdown button. Default "blank" mode
-            sends an empty string and "current" mode sends the input value.</description>
+                sends an empty string and "current" mode sends the input value.</description>
         </attribute>
         <attribute>
             <name>autoHighlight</name>
@@ -269,19 +269,19 @@
     </attributes>
     <resources>
         <resource>
-			<name>components.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
+            <name>jquery/jquery.js</name>
+        </resource>
         <resource>
-			<name>core.js</name>
-		</resource>
-		<resource>
-			<name>components.js</name>
-		</resource>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
     </resources>
 </component>

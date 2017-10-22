@@ -7,26 +7,26 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>inputNumber</tag>
-	<tagClass>org.primefaces.component.inputnumber.InputNumber</tagClass>
-	<componentClass>org.primefaces.component.inputnumber.InputNumber</componentClass>
-	<componentType>org.primefaces.component.InputNumber</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.InputNumberRenderer</rendererType>
-	<rendererClass>org.primefaces.component.inputnumber.InputNumberRenderer</rendererClass>
-	<parent>javax.faces.component.html.HtmlInputText</parent>
+    <tag>inputNumber</tag>
+    <tagClass>org.primefaces.component.inputnumber.InputNumber</tagClass>
+    <componentClass>org.primefaces.component.inputnumber.InputNumber</componentClass>
+    <componentType>org.primefaces.component.InputNumber</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.InputNumberRenderer</rendererType>
+    <rendererClass>org.primefaces.component.inputnumber.InputNumberRenderer</rendererClass>
+    <parent>javax.faces.component.html.HtmlInputText</parent>
     <description>InputNumber is an extension to the inputText with optimized handling for numbers.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
         <interface>
-			<name>org.primefaces.component.api.InputHolder</name>
-		</interface>
-	</interfaces>
-	<attributes>
-		&input_component_attributes;
-		&html_input_text_attributes;
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.InputHolder</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &input_component_attributes;
+        &html_input_text_attributes;
         &widget_var_attribute;
         <attribute>
             <name>type</name>
@@ -111,38 +111,38 @@
             <description>Style class of the input element.</description>
         </attribute>
         <attribute>
-			<name>padControl</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
+            <name>padControl</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
             <description>Controls padding of the decimal places. If true, always pads the decimal with zeros.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>leadingZero</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>leadingZero</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <defaultValue>allow</defaultValue>
             <description>Controls leading zero behavior. Valid values are "allow"(default), "deny" and "keep".</description>
-		</attribute>
-	</attributes>
-	<resources>
+        </attribute>
+    </attributes>
+    <resources>
         <resource>
-			<name>components.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
-		<resource>
-			<name>core.js</name>
-		</resource>
-		<resource>
-			<name>components.js</name>
-		</resource>
-		<resource>
-			<name>inputnumber/inputnumber.js</name>
-		</resource>
-		<resource>
-			<name>inputnumber/inputnumber.css</name>
-		</resource>
-	</resources>
+            <name>components.css</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+        <resource>
+            <name>inputnumber/inputnumber.js</name>
+        </resource>
+        <resource>
+            <name>inputnumber/inputnumber.css</name>
+        </resource>
+    </resources>
 </component>
