@@ -14,7 +14,7 @@
     <parent>javax.faces.component.html.HtmlOutputLabel</parent>
     <description>OutputLabel is an extension to the standard outputLabel.</description>
     <attributes>
-		&standard_uicomponent_attributes;
+        &standard_uicomponent_attributes;
         <attribute>
             <name>value</name>
             <required>false</required>
@@ -172,9 +172,9 @@
         <attribute>
             <name>indicateRequired</name>
             <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>true</defaultValue>
-            <description>Displays * symbol if the input is required, default value is true.</description>
+            <type>java.lang.String</type>
+            <defaultValue>auto</defaultValue>
+            <description>Controls the required (*) indicator. Auto = displayed based on the required attribute OR if @NotNull is present. false = never displayed. true = always displayed.</description>
         </attribute>
         <attribute>
             <name>converter</name>

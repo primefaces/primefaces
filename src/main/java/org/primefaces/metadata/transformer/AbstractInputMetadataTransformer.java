@@ -27,6 +27,7 @@ import org.primefaces.context.RequestContext;
 
 public abstract class AbstractInputMetadataTransformer implements MetadataTransformer {
 
+    @Override
     public void transform(FacesContext context, RequestContext requestContext, UIComponent component) throws IOException {
         if (component instanceof EditableValueHolder && component instanceof UIInput) {
             transformInput(context, requestContext, (UIInput) component);
