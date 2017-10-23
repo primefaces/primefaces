@@ -25,8 +25,9 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
 
     refresh: function(cfg) {
         if(cfg.target) {
-            if($(PrimeFaces.escapeClientId(cfg.id)).length > 1)
-                $(document.body).children(PrimeFaces.escapeClientId(cfg.id)).remove();
+            var targetTooltip = $(document.body).children(PrimeFaces.escapeClientId(cfg.id));
+            if(targetTooltip.length) 
+                targetTooltip.remove();
         }
         else {
             $(document.body).children('.ui-tooltip-global').remove();
