@@ -2,6 +2,7 @@
     padding: 0;
     margin: 0;
     position: absolute;
+    overflow: auto;
 }
 
 .ui-overlaypanel-content {
