@@ -5,6 +5,8 @@
 
 # PrimeFaces
 
+[![Join the chat at https://gitter.im/primefaces/primefaces](https://badges.gitter.im/primefaces/primefaces.svg)](https://gitter.im/primefaces/primefaces?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This is an overview page, please visit [PrimeFaces.org](http://www.primefaces.org) for more information.
 
 ![PrimeFaces icon](https://www.primefaces.org/wp-content/uploads/2016/10/prime_logo.png)
