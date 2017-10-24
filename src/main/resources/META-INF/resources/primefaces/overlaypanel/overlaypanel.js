@@ -192,7 +192,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         this.targetZindex = this.targetElement.zIndex();
 
         this.align(target);
-        this._fitViewPort();
+        this.fitViewPort();
 
         //replace visibility hidden with display none for effect support, toggle marker class
         this.jq.removeClass('ui-overlay-hidden').addClass('ui-overlay-visible').css({
@@ -215,7 +215,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
-    _fitViewPort: function() {
+    fitViewPort: function() {
         var originalHeight = this.jq.data("overlayOriginalHeight");
         var originalWidth = this.jq.data("overlayOriginalWidth");
         var windowHeight = $(window).height();
