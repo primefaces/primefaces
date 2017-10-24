@@ -59,8 +59,8 @@
 
 .ui-datatable .ui-column-filter {
     display: block;
-    width:100px;
-    max-width: calc(100% - 10px);
+    box-sizing: border-box;
+    width: 100%;
     margin:auto;
 }
 
