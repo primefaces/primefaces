@@ -185,7 +185,7 @@ public abstract class RequestContext {
     public abstract void openDialog(String outcome, Map<String, Object> options, Map<String, List<String>> params);
 
     /**
-     * Use PrimeFaces.dialog().pfdlgcid
+     * Use PrimeFaces.dialog().closeDynamic
      * 
      * @deprecated
      */
@@ -193,7 +193,7 @@ public abstract class RequestContext {
     public abstract void closeDialog(Object data);
 
     /**
-     * Use PrimeFaces.dialog().pfdlgcid
+     * Use PrimeFaces.dialog().showMessageDynamic
      * 
      * @deprecated
      */
