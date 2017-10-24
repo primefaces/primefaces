@@ -24,7 +24,7 @@ import java.util.UUID;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
 import javax.faces.context.FacesContext;
-import org.primefaces.context.RequestContext;
+import org.primefaces.PrimeFaces;
 import org.primefaces.util.Constants;
 
 public class DialogNavigationHandler extends ConfigurableNavigationHandler {
@@ -37,8 +37,7 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
 
     @Override
     public void handleNavigation(FacesContext context, String fromAction, String outcome) {
-        RequestContext requestContext = RequestContext.getCurrentInstance(context);
-        Map<Object, Object> attrs = requestContext.getAttributes();
+        Map<Object, Object> attrs = context.getAttributes();
         String dialogOutcome = (String) attrs.get(Constants.DIALOG_FRAMEWORK.OUTCOME);
 
         if (dialogOutcome != null) {
@@ -95,7 +94,7 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
             }
             sb.append("}});");
 
-            requestContext.execute(sb.toString());
+            PrimeFaces.current().executeScript(sb.toString());
             sb.setLength(0);
         }
         else {

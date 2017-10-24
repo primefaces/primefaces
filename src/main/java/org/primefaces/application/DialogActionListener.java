@@ -21,7 +21,6 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 import org.primefaces.component.api.Widget;
-import org.primefaces.context.RequestContext;
 import org.primefaces.util.Constants;
 
 public class DialogActionListener implements ActionListener {
@@ -32,10 +31,10 @@ public class DialogActionListener implements ActionListener {
         this.base = base;
     }
 
+    @Override
     public void processAction(ActionEvent event) throws AbortProcessingException {
         UIComponent source = event.getComponent();
-        RequestContext context = RequestContext.getCurrentInstance();
-        Map<Object, Object> attrs = context.getAttributes();
+        Map<Object, Object> attrs = event.getFacesContext().getAttributes();
         if (source instanceof Widget) {
             attrs.put(Constants.DIALOG_FRAMEWORK.SOURCE_WIDGET, ((Widget) source).resolveWidgetVar());
         }

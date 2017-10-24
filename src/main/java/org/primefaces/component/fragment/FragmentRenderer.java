@@ -20,7 +20,6 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 
@@ -31,7 +30,7 @@ public class FragmentRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         Fragment fragment = (Fragment) component;
         String clientId = fragment.getClientId(context);
-        Map<Object, Object> attrs = RequestContext.getCurrentInstance(context).getAttributes();
+        Map<Object, Object> attrs = context.getAttributes();
         attrs.put(Constants.FRAGMENT_ID, clientId);
 
         writer.startElement("div", component);
@@ -42,6 +41,6 @@ public class FragmentRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         context.getResponseWriter().endElement("div");
 
-        RequestContext.getCurrentInstance(context).getAttributes().remove(Constants.FRAGMENT_ID);
+        context.getAttributes().remove(Constants.FRAGMENT_ID);
     }
 }

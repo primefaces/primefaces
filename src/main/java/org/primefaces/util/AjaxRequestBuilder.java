@@ -352,7 +352,7 @@ public class AjaxRequestBuilder {
     }
 
     private void addFragmentConfig() {
-        Map<Object, Object> attrs = RequestContext.getCurrentInstance(context).getAttributes();
+        Map<Object, Object> attrs = context.getAttributes();
         Object fragmentId = attrs.get(Constants.FRAGMENT_ID);
         if (fragmentId != null) {
             buffer.append(",fi:\"").append(fragmentId).append("\"");

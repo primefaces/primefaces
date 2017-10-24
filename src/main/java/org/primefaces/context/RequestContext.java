@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import org.primefaces.PrimeFaces;
 
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.CSVBuilder;
@@ -62,17 +63,20 @@ public abstract class RequestContext {
     }
 
     /**
-     * @return true if request is an ajax request, otherwise return false.
+     * Use {@link PrimeFaces#isAjaxRequest()}
+     * 
+     * @return
+     * @deprecated
      */
+    @Deprecated
     public abstract boolean isAjaxRequest();
 
     /**
-     * Add a parameter for ajax oncomplete client side callbacks. Value would be serialized to json.
-     * Currently supported values are plain objects, primitives, JSONObject and JSONArray.
-     *
-     * @param name name of the parameter.
-     * @param value value of the parameter.
+     * Use PrimeFaces.ajax().addCallbackParam
+     * 
+     * @deprecated
      */
+    @Deprecated
     public abstract void addCallbackParam(String name, Object value);
 
     /**
@@ -86,52 +90,61 @@ public abstract class RequestContext {
     public abstract List<String> getScriptsToExecute();
 
     /**
-     * Execute a javascript after current ajax request is completed.
-     *
-     * @param script Javascript statement to execute.
+     * Use {@link PrimeFaces#executeScript(java.lang.String)}
+     * 
+     * @param script
+     * @deprecated
      */
+    @Deprecated
     public abstract void execute(String script);
 
     /**
-     * Scroll to a component after ajax request is completed.
-     *
-     * @param clientId Client side identifier of the component.
+     * Use {@link PrimeFaces#scrollTo(java.lang.String)}
+     * 
+     * @param clientId
+     * @deprecated
      */
+    @Deprecated
     public abstract void scrollTo(String clientId);
 
     /**
-     * Update a component with ajax.
-     *
-     * @param name Client side identifier of the component.
+     * Use PrimeFaces.ajax().update
+     * 
+     * @deprecated
      */
+    @Deprecated
     public abstract void update(String name);
 
     /**
-     * Update components with ajax.
-     *
-     * @param collection Client side identifiers of the components.
+     * Use PrimeFaces.ajax().update
+     * 
+     * @deprecated
      */
+    @Deprecated
     public abstract void update(Collection<String> collection);
 
     /**
-     * Reset an editableValueHolder.
-     *
-     * @param expressions A string with one or multiple search expression to resolve the components.
+     * Use {@link PrimeFaces#resetInputs(java.lang.String...)}
+     * @param expressions
+     * @deprecated
      */
+    @Deprecated
     public abstract void reset(String expressions);
 
     /**
-     * Reset a collection of editableValueHolders.
-     *
-     * @param expressions A list with with one or multiple search expression to resolve the components.
+     * Use {@link PrimeFaces#resetInputs(java.lang.String...)}
+     * @param expressions
+     * @deprecated
      */
+    @Deprecated
     public abstract void reset(Collection<String> expressions);
-    
+
     /**
-     * Reset a collection of editableValueHolders.
-     *
-     * @param expressions A array with with one or multiple search expression to resolve the components.
+     * Use {@link PrimeFaces#resetInputs(java.lang.String...)}
+     * @param expressions
+     * @deprecated
      */
+    @Deprecated
     public abstract void reset(String... expressions);
 
     /**
@@ -150,38 +163,41 @@ public abstract class RequestContext {
     public abstract CSVBuilder getCSVBuilder();
 
     /**
-     * @return Attributes map in RequestContext scope
+     * Use FacesContext#getAttributes()
      */
+    @Deprecated
     public abstract Map<Object, Object> getAttributes();
 
     /**
-     * Open a view in dialog.
-     *
-     * @param outcome The logical outcome used to resolve a navigation case.
+     * Use PrimeFaces.dialog().openDynamic
+     * 
+     * @deprecated
      */
+    @Deprecated
     public abstract void openDialog(String outcome);
 
     /**
-     * Open a view in dialog.
-     *
-     * @param outcome The logical outcome used to resolve a navigation case.
-     * @param options Configuration options for the dialog.
-     * @param params Parameters to send to the view displayed in a dialog.
+     * Use PrimeFaces.dialog().openDynamic
+     * 
+     * @deprecated
      */
+    @Deprecated
     public abstract void openDialog(String outcome, Map<String, Object> options, Map<String, List<String>> params);
 
     /**
-     * Close a dialog.
-     *
-     * @param data Optional data to pass back to a dialogReturn event.
+     * Use PrimeFaces.dialog().pfdlgcid
+     * 
+     * @deprecated
      */
+    @Deprecated
     public abstract void closeDialog(Object data);
 
     /**
-     * Displays a message in a dialog.
-     *
-     * @param message FacesMessage to be displayed.
+     * Use PrimeFaces.dialog().pfdlgcid
+     * 
+     * @deprecated
      */
+    @Deprecated
     public abstract void showMessageInDialog(FacesMessage message);
 
     /**
@@ -211,7 +227,18 @@ public abstract class RequestContext {
 
     public abstract boolean isRTL();
 
+    /**
+     * Use {@link PrimeFaces#clearTableState()}
+     * @deprecated
+     */
+    @Deprecated
     public abstract void clearTableStates();
 
+    /**
+     * Use {@link PrimeFaces#clearTableState(java.lang.String)}
+     * @param clientId
+     * @deprecated
+     */
+    @Deprecated
     public abstract void clearTableState(String clientId);
 }
