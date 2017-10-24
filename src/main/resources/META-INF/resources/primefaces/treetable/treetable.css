@@ -1,4 +1,4 @@
-fi.ui-treetable table {
+.ui-treetable table {
 	border-collapse:collapse;
     width: 100%;
     table-layout: fixed;
@@ -165,9 +165,9 @@ fi.ui-treetable table {
 /** Filter **/
 .ui-treetable .ui-column-filter {
     display: block;
-    margin:auto;
     box-sizing: border-box;
     width: 100%;
+    margin:auto;
 }
 
 /** Reflow **/
