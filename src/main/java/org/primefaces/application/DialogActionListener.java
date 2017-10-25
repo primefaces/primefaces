@@ -17,6 +17,7 @@ package org.primefaces.application;
 
 import java.util.Map;
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
@@ -34,7 +35,8 @@ public class DialogActionListener implements ActionListener {
     @Override
     public void processAction(ActionEvent event) throws AbortProcessingException {
         UIComponent source = event.getComponent();
-        Map<Object, Object> attrs = event.getFacesContext().getAttributes();
+        // don't use event#getFacesContext() - it's only available in JSF 2.3
+        Map<Object, Object> attrs = FacesContext.getCurrentInstance().getAttributes();
         if (source instanceof Widget) {
             attrs.put(Constants.DIALOG_FRAMEWORK.SOURCE_WIDGET, ((Widget) source).resolveWidgetVar());
         }
