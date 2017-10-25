@@ -66,7 +66,7 @@ public abstract class RequestContext {
      * Use {@link PrimeFaces#isAjaxRequest()}
      * 
      * @return
-     * @deprecated
+     * @deprecated Use {@link PrimeFaces#isAjaxRequest()}
      */
     @Deprecated
     public abstract boolean isAjaxRequest();
@@ -74,7 +74,7 @@ public abstract class RequestContext {
     /**
      * Use PrimeFaces.ajax().addCallbackParam
      * 
-     * @deprecated
+     * @deprecated Use PrimeFaces.ajax().addCallbackParam
      */
     @Deprecated
     public abstract void addCallbackParam(String name, Object value);
@@ -93,7 +93,7 @@ public abstract class RequestContext {
      * Use {@link PrimeFaces#executeScript(java.lang.String)}
      * 
      * @param script
-     * @deprecated
+     * @deprecated  Use {@link PrimeFaces#executeScript(java.lang.String)}
      */
     @Deprecated
     public abstract void execute(String script);
@@ -102,7 +102,7 @@ public abstract class RequestContext {
      * Use {@link PrimeFaces#scrollTo(java.lang.String)}
      * 
      * @param clientId
-     * @deprecated
+     * @deprecated Use {@link PrimeFaces#scrollTo(java.lang.String)}
      */
     @Deprecated
     public abstract void scrollTo(String clientId);
@@ -110,7 +110,7 @@ public abstract class RequestContext {
     /**
      * Use PrimeFaces.ajax().update
      * 
-     * @deprecated
+     * @deprecated Use PrimeFaces.ajax().update()
      */
     @Deprecated
     public abstract void update(String name);
@@ -118,7 +118,7 @@ public abstract class RequestContext {
     /**
      * Use PrimeFaces.ajax().update
      * 
-     * @deprecated
+     * @deprecated Use PrimeFaces.ajax().update()
      */
     @Deprecated
     public abstract void update(Collection<String> collection);
@@ -126,7 +126,7 @@ public abstract class RequestContext {
     /**
      * Use {@link PrimeFaces#resetInputs(java.lang.String...)}
      * @param expressions
-     * @deprecated
+     * @deprecated Use {@link PrimeFaces#resetInputs(java.lang.String...)}
      */
     @Deprecated
     public abstract void reset(String expressions);
@@ -134,7 +134,7 @@ public abstract class RequestContext {
     /**
      * Use {@link PrimeFaces#resetInputs(java.lang.String...)}
      * @param expressions
-     * @deprecated
+     * @deprecated Use {@link PrimeFaces#resetInputs(java.lang.String...)}
      */
     @Deprecated
     public abstract void reset(Collection<String> expressions);
@@ -142,7 +142,7 @@ public abstract class RequestContext {
     /**
      * Use {@link PrimeFaces#resetInputs(java.lang.String...)}
      * @param expressions
-     * @deprecated
+     * @deprecated Use {@link PrimeFaces#resetInputs(java.lang.String...)}
      */
     @Deprecated
     public abstract void reset(String... expressions);
@@ -169,9 +169,9 @@ public abstract class RequestContext {
     public abstract Map<Object, Object> getAttributes();
 
     /**
-     * Use PrimeFaces.dialog().openDynamic
+     * Use PrimeFaces.dialog().openDynamic()
      * 
-     * @deprecated
+     * @deprecated Use PrimeFaces.dialog().openDynamic()
      */
     @Deprecated
     public abstract void openDialog(String outcome);
@@ -179,7 +179,7 @@ public abstract class RequestContext {
     /**
      * Use PrimeFaces.dialog().openDynamic
      * 
-     * @deprecated
+     * @deprecated Use PrimeFaces.dialog().openDynamic()
      */
     @Deprecated
     public abstract void openDialog(String outcome, Map<String, Object> options, Map<String, List<String>> params);
@@ -187,7 +187,7 @@ public abstract class RequestContext {
     /**
      * Use PrimeFaces.dialog().closeDynamic
      * 
-     * @deprecated
+     * @deprecated Use PrimeFaces.dialog().closeDynamic
      */
     @Deprecated
     public abstract void closeDialog(Object data);
@@ -195,7 +195,7 @@ public abstract class RequestContext {
     /**
      * Use PrimeFaces.dialog().showMessageDynamic
      * 
-     * @deprecated
+     * @deprecated Use PrimeFaces.dialog().showMessageDynamic
      */
     @Deprecated
     public abstract void showMessageInDialog(FacesMessage message);
@@ -229,7 +229,7 @@ public abstract class RequestContext {
 
     /**
      * Use {@link PrimeFaces#clearTableState()}
-     * @deprecated
+     * @deprecated  Use {@link PrimeFaces#clearTableState()}
      */
     @Deprecated
     public abstract void clearTableStates();
@@ -237,7 +237,7 @@ public abstract class RequestContext {
     /**
      * Use {@link PrimeFaces#clearTableState(java.lang.String)}
      * @param clientId
-     * @deprecated
+     * @deprecated Use {@link PrimeFaces#clearTableState(java.lang.String)}
      */
     @Deprecated
     public abstract void clearTableState(String clientId);
