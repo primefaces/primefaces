@@ -698,6 +698,11 @@ div.ui-button, .ui-splitbutton {
     width: 100%;
 }
 
+/** InputNumber **/
+.ui-fluid .ui-inputnumber {
+    width: 100%;
+}
+
 /** InputTextarea **/
 .ui-fluid .ui-inputtextarea {
     width: 100%;
