@@ -63,7 +63,7 @@ public class InputTextRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = inputText.getClientId(context);
 
-        writer.startElement("input", null);
+        writer.startElement("input", inputText);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("type", inputText.getType(), null);
