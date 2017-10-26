@@ -216,31 +216,20 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
     },
 
     fitViewPort: function() {
-        var originalHeight = this.jq.data("overlayOriginalHeight");
-        var originalWidth = this.jq.data("overlayOriginalWidth");
         var windowHeight = $(window).height();
         var windowWidth = $(window).width();
+        var innerContentHeight = this.jq.find('.ui-overlaypanel-content').height();
+        var innerContentWidth = this.jq.find('.ui-overlaypanel-content').width();
+        var overlayHeight = this.jq.height();
+        var overlayWidth = this.jq.width();
+        var heightOffset = overlayHeight - innerContentHeight;
+        var widthOffset = overlayWidth - innerContentWidth;
 
-        var overlaypanelHeight = this.jq.height();
-        var overlaypanelWidth = this.jq.width();
-        if (!originalHeight) {
-            this.jq.data("overlayOriginalHeight", overlaypanelHeight);
-            originalHeight = overlaypanelHeight;
+        if (windowHeight < overlayHeight) {
+            this.jq.css('max-height', windowHeight - heightOffset + 'px');
         }
-        if (!originalWidth) {
-            this.jq.data("overlayOriginalWidth", overlaypanelWidth);
-            originalWidth = overlaypanelWidth;
-        }
-
-        if (windowHeight < originalHeight) {
-            this.jq.height(windowHeight);
-        } else {
-            this.jq.height(originalHeight);
-        }
-        if (windowWidth < originalWidth) {
-            this.jq.width(windowWidth);
-        } else {
-            this.jq.width(originalWidth);
+        if (windowWidth < overlayWidth) {
+            this.jq.css('max-width', windowWidth - widthOffset + 'px');
         }
     },
 
