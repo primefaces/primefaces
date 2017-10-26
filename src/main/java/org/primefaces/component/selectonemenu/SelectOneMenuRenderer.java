@@ -547,6 +547,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
+        
+        if (menu.getFilterPlaceholder() != null) {
+            writer.writeAttribute("placeholder", menu.getFilterPlaceholder(), null);
+        }
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-icon ui-icon-search", id);
