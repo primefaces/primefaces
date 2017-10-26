@@ -703,7 +703,8 @@ div.ui-button, .ui-splitbutton {
     width: 100%;
 }
 
-.ui-fluid .ui-inputtext[size] {
+.ui-fluid .ui-inputtext[size],
+.ui-fluid .ui-inputfield[size] {
     width: auto;
 }
 
