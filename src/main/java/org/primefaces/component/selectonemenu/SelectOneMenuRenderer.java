@@ -48,7 +48,19 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         if (menu.isEditable()) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-            menu.setSubmittedValue(params.get(menu.getClientId(context) + "_editableInput"));
+            // default to user entered input
+            String editorInput = params.get(menu.getClientId(context) + "_editableInput");
+            menu.setSubmittedValue(editorInput);
+
+            // #2862 check if it matches a label and if so use the value
+            List<SelectItem> selectItems = getSelectItems(context, menu);
+            for (int i = 0; i < selectItems.size(); i++) {
+                SelectItem item = selectItems.get(i);
+                if (item.getLabel().equalsIgnoreCase(editorInput)) {
+                    menu.setSubmittedValue(item.getValue());
+                    break;
+                }
+            }
 
             decodeBehaviors(context, menu);
         }
