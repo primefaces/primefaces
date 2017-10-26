@@ -218,8 +218,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
     fitViewPort: function() {
         var windowHeight = $(window).height();
         var windowWidth = $(window).width();
-        var innerContentHeight = this.jq.find('.ui-overlaypanel-content').height();
-        var innerContentWidth = this.jq.find('.ui-overlaypanel-content').width();
+        var overlayInnerContent = this.jq.find('.ui-overlaypanel-content');
+        var innerContentHeight = overlayInnerContent.height();
+        var innerContentWidth = overlayInnerContent.width();
         var overlayHeight = this.jq.height();
         var overlayWidth = this.jq.width();
         var heightOffset = overlayHeight - innerContentHeight;
