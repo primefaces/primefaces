@@ -51,6 +51,8 @@ public class SignatureRenderer extends CoreRenderer {
         String clientId = signature.getClientId(context);
         String style = signature.getStyle();
         String styleClass = signature.getStyleClass();
+        String defaultStyle = signature.resolveStyleClass();
+        styleClass = styleClass == null ? defaultStyle : defaultStyle + " " + styleClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
