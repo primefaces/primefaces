@@ -311,8 +311,9 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
     },
 
     unfollowMouse: function() {
-        if (this.getTarget()) {
-            this.getTarget().off('mousemove.tooltip-track');
+        var target = this.getTarget();
+        if(target) {
+            target.off('mousemove.tooltip-track'); 
         }
     },
 
