@@ -796,8 +796,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if (value === '&nbsp;') {
-                this.label.addClass('ui-state-disabled');
                 this.label.html(labelText);
+                if (labelText != '&nbsp;') {
+                   this.label.addClass('ui-state-disabled');
+                }
             }
             else {
                 this.label.removeClass('ui-state-disabled');
