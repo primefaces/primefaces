@@ -1237,6 +1237,12 @@ a {
     background: none repeat scroll 0 0 #F2F5F9;
 }
 
+.ui-datatable tr.ui-datatable-selectable.ui-state-hover {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+     box-shadow: none;
+}
+
 /** Liferay Support **/
 .aui .ui-helper-hidden {
     display: none;
