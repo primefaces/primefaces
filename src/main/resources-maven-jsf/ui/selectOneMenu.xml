@@ -83,8 +83,9 @@
         <attribute>
             <name>height</name>
             <required>false</required>
-            <type>java.lang.Integer</type>
+            <type>java.lang.String</type>
             <defaultValue>200</defaultValue>
+            <description>Defines the height of the scrollable area.</description>
         </attribute>
         <attribute>
             <name>tabindex</name>

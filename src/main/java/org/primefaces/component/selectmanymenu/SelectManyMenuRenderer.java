@@ -141,10 +141,18 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         Object submittedValues = getSubmittedValues(menu);
         boolean customContent = menu.getVar() != null;
         boolean showCheckbox = menu.isShowCheckbox();
+        
+        String scrollHeight = null;
+        try { 
+            scrollHeight = Integer.parseInt(menu.getScrollHeight()) + "px"; 
+        } 
+        catch (NumberFormatException e) { 
+            scrollHeight = menu.getScrollHeight();
+        }
 
         writer.startElement("div", menu);
         writer.writeAttribute("class", SelectManyMenu.LIST_CONTAINER_CLASS, null);
-        writer.writeAttribute("style", "max-height:" + menu.getScrollHeight() + "px", null);
+        writer.writeAttribute("style", "max-height:" + scrollHeight, null);
 
         if (customContent) {
             writer.startElement("table", null);

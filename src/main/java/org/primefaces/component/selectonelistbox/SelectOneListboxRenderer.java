@@ -137,10 +137,18 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         Object values = getValues(listbox);
         Object submittedValues = getSubmittedValues(listbox);
         boolean customContent = listbox.getVar() != null;
+        
+        String scrollHeight = null;
+        try { 
+            scrollHeight = Integer.parseInt(listbox.getScrollHeight()) + "px"; 
+        } 
+        catch (NumberFormatException e) { 
+            scrollHeight = listbox.getScrollHeight();
+        }
 
         writer.startElement("div", listbox);
         writer.writeAttribute("class", SelectOneListbox.LIST_CONTAINER_CLASS, null);
-        writer.writeAttribute("style", "max-height:" + listbox.getScrollHeight() + "px", null);
+        writer.writeAttribute("style", "max-height:" + scrollHeight, null);
 
         if (customContent) {
             writer.startElement("table", null);

@@ -258,6 +258,14 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         String panelStyle = menu.getPanelStyle();
         String panelStyleClass = menu.getPanelStyleClass();
         panelStyleClass = panelStyleClass == null ? SelectOneMenu.PANEL_CLASS : SelectOneMenu.PANEL_CLASS + " " + panelStyleClass;
+        
+        String height = null;
+        try { 
+            height = Integer.parseInt(menu.getHeight()) + "px"; 
+        } 
+        catch (NumberFormatException e) { 
+            height = menu.getHeight();
+        }
 
         writer.startElement("div", null);
         writer.writeAttribute("id", menu.getClientId(context) + "_panel", null);
@@ -272,7 +280,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", SelectOneMenu.ITEMS_WRAPPER_CLASS, null);
-        writer.writeAttribute("style", "max-height:" + menu.getHeight() + "px", null);
+        writer.writeAttribute("style", "max-height:" + height, null);
 
         if (!menu.isLazy()) {
             encodePanelContent(context, menu, selectItems);
