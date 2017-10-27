@@ -25,11 +25,13 @@
     border-left: 0 none;
 }
 
-.ui-inputgroup .ui-inputtext {
+.ui-inputgroup .ui-inputtext,
+.ui-inputgroup .ui-password {
     padding-left: .5em;
 }
 
 .ui-inputgroup > .ui-inputtext:not(:first-child),
+.ui-inputgroup > .ui-password:not(:first-child),
 .ui-inputgroup > .ui-inputnumber:not(:first-child) > .ui-inputtext,
 .ui-inputgroup > .ui-selectonemenu:not(:first-child),
 .ui-inputgroup > .ui-selectonebutton:not(:first-child) > .ui-button {
@@ -39,6 +41,7 @@
 }
 
 .ui-inputgroup > .ui-inputtext:not(:last-child),
+.ui-inputgroup > .ui-password:not(:last-child),
 .ui-inputgroup > .ui-inputnumber:not(:last-child) > .ui-inputtext,
 .ui-inputgroup > .ui-selectonemenu:not(:last-child),
 .ui-inputgroup > .ui-selectonebutton:not(:last-child) > .ui-button {
