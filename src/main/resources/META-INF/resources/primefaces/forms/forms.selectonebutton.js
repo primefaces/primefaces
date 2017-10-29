@@ -99,6 +99,15 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
                 changeBehavior.call(this);
             }
         }
+    },
+    
+    disable: function() {
+        this.buttons.removeClass('ui-state-hover ui-state-focus ui-state-active')
+                .addClass('ui-state-disabled').attr('disabled', 'disabled');
+    },
+
+    enable: function() {
+        this.buttons.removeClass('ui-state-disabled').removeAttr('disabled');
     }
 
 });
