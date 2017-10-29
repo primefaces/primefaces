@@ -224,6 +224,7 @@
     zoom: 1;
     cursor: pointer;
     padding-right: 2em;
+    vertical-align: top;
 }
 
 .ui-selectonemenu .ui-selectonemenu-trigger {
