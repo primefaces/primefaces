@@ -207,6 +207,7 @@ public class GMapRenderer extends CoreRenderer {
 
             if (polyline.getStrokeColor() != null) writer.write(",strokeColor:'" + polyline.getStrokeColor() + "'");
             if (polyline.getZindex() > Integer.MIN_VALUE) writer.write(",zIndex:" + polyline.getZindex());
+            if (polyline.getIcons() != null) writer.write(", icons:" + polyline.getIcons());
 
             writer.write("})");
 
