@@ -55,7 +55,7 @@ public class PrimeFacesContext extends FacesContextWrapper {
 
     @Override
     public void setResponseWriter(ResponseWriter writer) {
-        if (!getPartialViewContext().isAjaxRequest() && collectScripts) {
+        if (!getPartialViewContext().isAjaxRequest() && collectScripts && !(writer instanceof CollectScriptsResponseWriter)) {
             getWrapped().setResponseWriter(new CollectScriptsResponseWriter(writer, collectScriptsState));
         }
         else {
