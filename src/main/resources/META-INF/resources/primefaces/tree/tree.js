@@ -298,8 +298,28 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                             this.unselectAllNodes();
                         }
 
-                        this.selectNode(node);
-                        this.cursorNode = node;
+                        if(this.isMultipleSelection() && shiftKey && this.cursorNode && (this.cursorNode.parent().is(node.parent()))) {
+                            var parentList = node.parent(),
+                            treenodes = parentList.children('li.ui-treenode'),
+                            currentNodeIndex = treenodes.index(node),
+                            cursorNodeIndex = treenodes.index(this.cursorNode),
+                            startIndex = (currentNodeIndex > cursorNodeIndex) ? cursorNodeIndex : currentNodeIndex,
+                            endIndex = (currentNodeIndex > cursorNodeIndex) ? (currentNodeIndex + 1) : (cursorNodeIndex + 1);
+                    
+                            for(var i = startIndex; i < endIndex; i++) {
+                                var treenode = treenodes.eq(i);
+                                if(treenode.is(':visible')) {
+                                    if(i === (endIndex - 1))
+                                        this.selectNode(treenode);
+                                    else
+                                        this.selectNode(treenode, true);
+                                }
+                            }
+                        }
+                        else {
+                            this.selectNode(node);
+                            this.cursorNode = node;
+                        }
                     }
                 }
 
