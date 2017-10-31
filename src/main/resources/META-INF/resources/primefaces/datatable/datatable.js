@@ -401,6 +401,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 e.preventDefault();
             }
         })
+        .on("input", function() { 
+            // #89 IE clear "x" button
+            if (this.value == ""){
+                $this.filter();
+            }
+        })
         .on(this.cfg.filterEvent + '.dataTable', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode,
