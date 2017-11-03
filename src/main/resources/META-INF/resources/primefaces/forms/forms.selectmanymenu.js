@@ -27,7 +27,7 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
                 unchanged = (!metaKey && selectedItems.length === 1 && selectedItems.index() === item.index());
 
                 if(!e.shiftKey) {
-                    if(!metaKey) {
+                    if(!metaKey && !$this.cfg.showCheckbox) {
                         $this.unselectAll();
                     }
 
