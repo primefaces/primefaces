@@ -99,6 +99,12 @@ PrimeFaces.widget.SelectManyMenu = PrimeFaces.widget.SelectListbox.extend({
         }
     },
 
+    selectAll: function() {
+        for(var i = 0; i < this.items.length; i++) {
+            this.selectItem(this.items.eq(i));
+        }
+    },
+
     unselectAll: function() {
         for(var i = 0; i < this.items.length; i++) {
             this.unselectItem(this.items.eq(i));
