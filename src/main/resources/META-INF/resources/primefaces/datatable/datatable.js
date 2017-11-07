@@ -3830,8 +3830,17 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             frozenRow = this.copyRow(row),
             scrollableRow = this.copyRow(row);
 
-            frozenRow.append(columns.slice(0, frozenColumnCount));
-            scrollableRow.append(columns.slice(frozenColumnCount));
+            if(row.hasClass('ui-datatable-empty-message')) {
+                var colspan = columns.attr('colspan'),
+                cloneColumns = columns.clone();
+
+                frozenRow.append(columns.attr('colspan', this.cfg.frozenColumns));
+                scrollableRow.append(cloneColumns.attr('colspan', (colspan - this.cfg.frozenColumns)));
+            }
+            else {
+                frozenRow.append(columns.slice(0, frozenColumnCount));
+                scrollableRow.append(columns.slice(frozenColumnCount));
+            }
 
             this.frozenTbody.append(frozenRow);
             this.scrollTbody.append(scrollableRow);
