@@ -84,7 +84,7 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
 
                     sb.append(optionName).append(":");
                     if (optionValue instanceof String) {
-                        sb.append("'").append(optionValue).append("'");
+                        sb.append("'").append(ComponentUtils.escapeEcmaScriptText((String) optionValue)).append("'");
                     }
                     else {
                         sb.append(optionValue);
