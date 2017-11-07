@@ -54,11 +54,13 @@ public class ProgressBarRenderer extends CoreRenderer {
 
     protected void encodeMarkup(FacesContext context, ProgressBar progressBar) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String mode = progressBar.getMode();
         int value = progressBar.getValue();
         String labelTemplate = progressBar.getLabelTemplate();
         String style = progressBar.getStyle();
         String styleClass = progressBar.getStyleClass();
-        styleClass = styleClass == null ? ProgressBar.CONTAINER_CLASS : ProgressBar.CONTAINER_CLASS + " " + styleClass;
+        String modeClass = mode.equals("determinate") ? ProgressBar.DETERMINATE_CLASS : ProgressBar.INDETERMINATE_CLASS;
+        styleClass = styleClass == null ? ProgressBar.CONTAINER_CLASS  + " " +  modeClass : ProgressBar.CONTAINER_CLASS  + " " +  modeClass + " " + styleClass;
 
         if (progressBar.isDisabled()) {
             styleClass = styleClass + " ui-state-disabled";

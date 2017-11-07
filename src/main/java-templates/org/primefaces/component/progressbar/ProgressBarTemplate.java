@@ -12,6 +12,8 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.PhaseId;
 
     public final static String CONTAINER_CLASS = "ui-progressbar ui-widget ui-widget-content ui-corner-all";
+    public final static String DETERMINATE_CLASS = "ui-progressbar-determinate";
+    public final static String INDETERMINATE_CLASS = "ui-progressbar-indeterminate";
     public final static String VALUE_CLASS = "ui-progressbar-value ui-widget-header ui-corner-all";
     public final static String LABEL_CLASS = "ui-progressbar-label";
 
