@@ -88,7 +88,7 @@ public class TextEditorRenderer extends CoreRenderer {
         writer.writeAttribute("name", inputId, null);
         // #2905
         if (valueToRender != null) {
-            writer.writeAttribute("value", "<p>" + valueToRender + "</p>", null);
+            writer.writeAttribute("value", valueToRender, null);
         }
         writer.endElement("input");
 
