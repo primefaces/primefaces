@@ -657,6 +657,15 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/colorpicker/1-colorpicker.js</include>
                             </includes>
                         </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/fileupload.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/0-jquery.transport.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/1-fileupload.js</include>
+                            </includes>
+                        </aggregation>
                     </aggregations>
                 </configuration>
             </plugin>
