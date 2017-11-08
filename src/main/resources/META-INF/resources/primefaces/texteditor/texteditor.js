@@ -139,7 +139,7 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
 
     getEditorValue: function() {
         var html = $(this.editorContainer[0]).find('p').text();
-        value = (html == '<p><br></p>') ? '' : html;
+        var value = (html == '<p><br></p>') ? '' : html;
 
         return value;
     },
