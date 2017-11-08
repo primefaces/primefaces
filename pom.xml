@@ -662,8 +662,9 @@
                             <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/fileupload.js</output>
                             <includes>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/0-jquery.transport.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/1-fileupload.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/0-jquery.iframe-transport.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/1-jquery.fileupload.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/2-fileupload.js</include>
                             </includes>
                         </aggregation>
                     </aggregations>
