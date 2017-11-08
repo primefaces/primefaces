@@ -127,7 +127,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
                                 imageCanvas.attr({width:imgWidth, height: imgHeight});
                                 context.drawImage(img, 0, 0, imgWidth, imgHeight);
-                            }
+                            };
 
                             img.src = url;
                         }
