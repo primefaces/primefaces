@@ -25,6 +25,7 @@ import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
 import javax.faces.context.FacesContext;
 import org.primefaces.PrimeFaces;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
 public class DialogNavigationHandler extends ConfigurableNavigationHandler {
@@ -57,6 +58,7 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
             }
 
             String url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, includeViewParams);
+            url = ComponentUtils.escapeEcmaScriptText(url);
 
             StringBuilder sb = new StringBuilder();
             String sourceComponentId = (String) attrs.get(Constants.DIALOG_FRAMEWORK.SOURCE_COMPONENT);
@@ -65,6 +67,7 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
             if (pfdlgcid == null) {
                 pfdlgcid = UUID.randomUUID().toString();
             }
+            pfdlgcid = ComponentUtils.escapeEcmaScriptText(pfdlgcid);
 
             sb.append("PrimeFaces.openDialog({url:'").append(url).append("',pfdlgcid:'").append(pfdlgcid)
                     .append("',sourceComponentId:'").append(sourceComponentId).append("'");
@@ -81,7 +84,7 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
 
                     sb.append(optionName).append(":");
                     if (optionValue instanceof String) {
-                        sb.append("'").append(optionValue).append("'");
+                        sb.append("'").append(ComponentUtils.escapeEcmaScriptText((String) optionValue)).append("'");
                     }
                     else {
                         sb.append(optionValue);
