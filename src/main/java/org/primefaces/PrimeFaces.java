@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
@@ -227,7 +228,9 @@ public class PrimeFaces {
     
     public Ajax ajax() {
         if (!isAjaxRequest()) {
-            throw new FacesException("ajax() can only be used in AJAX requests!");
+            LOG.warning("PrimeFaces.current().ajax() called inside an non-AJAX request! "
+                    + "All further calls on sub-methods will absolutely do nothing...");
+            //throw new FacesException("ajax() can only be used in AJAX requests!");
         }
         
         return ajax;
@@ -264,7 +267,7 @@ public class PrimeFaces {
                         SearchExpressionFacade.resolveClientId(facesContext, facesContext.getViewRoot(), clientId);
                     }
                     catch (ComponentNotFoundException e) {
-                        LOG.severe(e.getMessage());
+                        LOG.log(Level.WARNING, "PrimeFaces.current().ajax().update() called but component can't be resolved!", e);
                     }
                 }
             }
