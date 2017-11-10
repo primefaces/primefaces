@@ -715,16 +715,13 @@ public class DataTableRenderer extends DataRenderer {
                 tableSortByExpression = tableSortByVE.getExpressionString();
             }
         }
+        
         String columnSortByExpression = null;
-        if (column.getField() != null && column.isSortable()) {
-            columnSortByExpression = column.getField();
+        ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
+        if (columnSortByVE != null) {
+            columnSortByExpression = columnSortByVE.getExpressionString();
         }
-        if (columnSortByExpression == null) {
-            ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
-            if (columnSortByVE != null) {
-                columnSortByExpression = columnSortByVE.getExpressionString();
-            }
-        }
+        
         String field = column.getField();
         String sortField = table.getSortField();
         String sortIcon = null;

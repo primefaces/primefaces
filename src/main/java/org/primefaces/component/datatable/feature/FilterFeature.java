@@ -338,17 +338,7 @@ public class FilterFeature implements DataTableFeature {
                     if (headerRowChild instanceof Column) {
                         Column column = (Column) headerRowChild;
                         if (column.isRendered()) {
-                            ValueExpression filterVE;
-                            String columnField = column.getField();
-                            if (columnField != null) {
-                                filterVE = context.getApplication()
-                                        .getExpressionFactory()
-                                        .createValueExpression("#{'" + columnField + "'}",
-                                                String.class);
-                            }
-                            else {
-                                filterVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
-                            }
+                            ValueExpression filterVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
                             if (filterVE != null) {
                                 UIComponent filterFacet = column.getFacet("filter");
                                 Object filterValue = (filterFacet == null)
@@ -366,17 +356,7 @@ public class FilterFeature implements DataTableFeature {
                         for (DynamicColumn dynaColumn : dynamicColumns) {
                             dynaColumn.applyStatelessModel();
                             if (dynaColumn.isRendered()) {
-                                ValueExpression filterVE;
-                                String columnField = dynaColumn.getField();
-                                if (columnField != null) {
-                                    filterVE = context.getApplication()
-                                            .getExpressionFactory()
-                                            .createValueExpression("#{'" + columnField + "'}",
-                                                    String.class);
-                                }
-                                else {
-                                    filterVE = dynaColumn.getValueExpression(Column.PropertyKeys.filterBy.toString());
-                                }
+                                ValueExpression filterVE = dynaColumn.getValueExpression(Column.PropertyKeys.filterBy.toString());
                                 if (filterVE != null) {
                                     String filterId = dynaColumn.getContainerClientId(context) + separator + "filter";
                                     UIComponent filterFacet = dynaColumn.getFacet("filter");
@@ -396,17 +376,7 @@ public class FilterFeature implements DataTableFeature {
             Map<String, String> params, String separator) {
         
         for (UIColumn column : table.getColumns()) {
-            ValueExpression filterVE;
-            String columnField = column.getField();
-            if (columnField != null) {
-                filterVE = context.getApplication()
-                        .getExpressionFactory()
-                        .createValueExpression("#{'" + columnField + "'}",
-                                String.class);
-            }
-            else {
-                filterVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
-            }
+            ValueExpression filterVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
             if (filterVE != null) {
                 UIComponent filterFacet = column.getFacet("filter");
                 Object filterValue = null;
