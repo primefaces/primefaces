@@ -62,7 +62,7 @@ if (!PrimeFaces.dialog) {
                 if(!$frame.data('initialized')) {
                     PrimeFaces.cw.call(rootWindow.PrimeFaces, 'DynamicDialog', dialogWidgetVar, {
                         id: dialogId,
-                        position: 'center',
+                        position: cfg.options.position||'center',
                         sourceComponentId: cfg.sourceComponentId,
                         sourceWidgetVar: cfg.sourceWidgetVar,
                         onHide: function() {
