@@ -94,7 +94,8 @@ if (!PrimeFaces.dialog) {
                         minimizable: cfg.options.minimizable,
                         maximizable: cfg.options.maximizable,
                         headerElement: cfg.options.headerElement,
-                        responsive: cfg.options.responsive
+                        responsive: cfg.options.responsive,
+                        closeOnEscape: cfg.options.closeOnEscape
                     });
                 }
 
