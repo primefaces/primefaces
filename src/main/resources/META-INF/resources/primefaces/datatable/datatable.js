@@ -1602,6 +1602,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 if(this.isMultipleSelection() && event && event.shiftKey) {
                     this.selectRowsInRange(row);
                 }
+                else if(this.cfg.rowSelectMode === 'add' && selected) {
+                    this.unselectRow(row, silent);
+                }
                 //select current row
                 else {
                     this.originRowIndex = row.index();
