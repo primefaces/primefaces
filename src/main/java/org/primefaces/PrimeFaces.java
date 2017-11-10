@@ -226,8 +226,8 @@ public class PrimeFaces {
     }
     
     public Ajax ajax() {
-        if (!isAjaxRequest()) {
-            LOG.warning("PrimeFaces.current().ajax() called inside an non-AJAX request! "
+        if (getFacesContext().isProjectStage(ProjectStage.Development) && !isAjaxRequest()) {
+            LOG.info("PrimeFaces.current().ajax() called inside an non-AJAX request! "
                     + "All further calls on sub-methods will absolutely do nothing...");
             //throw new FacesException("ajax() can only be used in AJAX requests!");
         }
