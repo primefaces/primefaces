@@ -1238,9 +1238,9 @@ a {
 }
 
 .ui-datatable tr.ui-datatable-selectable.ui-state-hover {
+    box-shadow: none;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
-     box-shadow: none;
 }
 
 /** Liferay Support **/
