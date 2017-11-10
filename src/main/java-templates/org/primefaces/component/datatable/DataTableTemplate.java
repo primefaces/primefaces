@@ -541,7 +541,7 @@ import org.primefaces.component.datatable.TableState;
             
             if(this.isClientCacheRequest(context)) {
                 Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-                first = Integer.valueOf(params.get(getClientId(context) + "_first")) + getRows();
+                first = Integer.parseInt(params.get(getClientId(context) + "_first")) + getRows();
             }           
             
             if(this.isMultiViewState()) {
