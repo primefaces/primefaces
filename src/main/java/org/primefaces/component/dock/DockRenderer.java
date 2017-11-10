@@ -56,6 +56,7 @@ public class DockRenderer extends BaseMenuRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", "ui-dock-" + position + " ui-widget", "styleClass");
+        renderPassThruAttributes(context, dock, null);
 
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-dock-container-" + position + " ui-widget-header", null);
