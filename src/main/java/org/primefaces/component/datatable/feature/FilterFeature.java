@@ -128,8 +128,7 @@ public class FilterFeature implements DataTableFeature {
             filter(context, table, table.getFilterMetadata(), globalFilterValue);
 
             //sort new filtered data to restore sort state
-            boolean sorted = table.getSortField() != null
-                    || table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null
+            boolean sorted = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null
                     || table.getSortBy() != null;
             if (sorted) {
                 SortFeature sortFeature = (SortFeature) table.getFeature(DataTableFeatureKey.SORT);

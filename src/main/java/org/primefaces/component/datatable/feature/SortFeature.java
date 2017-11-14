@@ -145,17 +145,7 @@ public class SortFeature implements DataTableFeature {
         renderer.encodeTbody(context, table, true);
 
         if (table.isMultiViewState()) {
-            ValueExpression sortVE;
-            String sortField = table.getSortField();
-            if (sortField != null) {
-                sortVE = context.getApplication()
-                        .getExpressionFactory()
-                        .createValueExpression("#{'" + sortField + "'}",
-                                String.class);
-            }
-            else {
-                sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-            }
+            ValueExpression sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             List<SortMeta> multiSortMeta = table.isMultiSort() ? table.getMultiSortMeta() : null;
             if (sortVE != null || multiSortMeta != null) {
                 TableState ts = table.getTableState(true);
@@ -179,17 +169,7 @@ public class SortFeature implements DataTableFeature {
             return;
         }
 
-        ValueExpression sortVE;
-        String sortField = table.getSortField();
-        if (sortField != null) {
-            sortVE = context.getApplication()
-                    .getExpressionFactory()
-                    .createValueExpression("#{'" + sortField + "'}",
-                            String.class);
-        }
-        else {
-            sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-        }
+        ValueExpression sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
         SortOrder sortOrder = SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH));
         MethodExpression sortFunction = table.getSortFunction();
         List list = null;

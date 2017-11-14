@@ -103,24 +103,12 @@ public class DataTableRenderer extends DataRenderer {
             table.restoreTableState();
         }
 
-        boolean defaultSorted = (table.getSortField() != null
-                || table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null
+        boolean defaultSorted = (table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null
                 || table.getSortBy() != null
                 || table.getMultiSortMeta() != null);
 
         if (defaultSorted && table.isDefaultSort()) {
-            ValueExpression sortVE;
-            String sortField = table.getSortField();
-            if (sortField != null) {
-                sortVE = context.getApplication()
-                        .getExpressionFactory()
-                        .createValueExpression("#{'" + sortField + "'}",
-                                String.class);
-            }
-            else {
-                sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-            }
-            table.setDefaultSortByVE(sortVE);
+            table.setDefaultSortByVE(table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()));
             table.setDefaultSortOrder(table.getSortOrder());
             table.setDefaultSortFunction(table.getSortFunction());
         }
@@ -594,10 +582,9 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (sortable) {
-            String tableSortField = table.getSortField();
             ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             Object tableSortBy = table.getSortBy();
-            boolean defaultSorted = (tableSortField != null || tableSortByVE != null || tableSortBy != null || table.getMultiSortMeta() != null);
+            boolean defaultSorted = (tableSortByVE != null || tableSortBy != null || table.getMultiSortMeta() != null);
 
             if (defaultSorted) {
                 if (table.isMultiSort()) {
@@ -708,20 +695,10 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected String resolveDefaultSortIcon(DataTable table, UIColumn column, String sortOrder) {
-        String tableSortByExpression = table.getSortField();
-        if (tableSortByExpression == null) {
-            ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-            if (tableSortByVE != null) {
-                tableSortByExpression = tableSortByVE.getExpressionString();
-            }
-        }
-        
-        String columnSortByExpression = null;
-        ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
-        if (columnSortByVE != null) {
-            columnSortByExpression = columnSortByVE.getExpressionString();
-        }
-        
+        ValueExpression tableSortByVE = table.getValueExpression("sortBy");
+        ValueExpression columnSortByVE = column.getValueExpression("sortBy");
+        String columnSortByExpression = columnSortByVE.getExpressionString();
+        String tableSortByExpression = tableSortByVE.getExpressionString();
         String field = column.getField();
         String sortField = table.getSortField();
         String sortIcon = null;
