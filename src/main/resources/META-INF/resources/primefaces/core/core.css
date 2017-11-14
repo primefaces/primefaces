@@ -18,6 +18,10 @@ ui-overlay-visible * {
     visibility: hidden !important;;
 }
 
+.ui-overflow-hidden {
+    overflow: hidden;
+}
+
 .ui-datepicker .ui-datepicker-current.ui-priority-secondary {
     opacity: 1;
 }

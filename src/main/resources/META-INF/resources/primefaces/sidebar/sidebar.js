@@ -148,7 +148,7 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.BaseWidget.extend({
             this.mask.off('click.sidebar-mask');
             this.mask.remove();
             
-            if(this.blockScroll) {
+            if(this.cfg.blockScroll) {
                 docBody.removeClass('ui-overflow-hidden');
             }
             this.mask = null;
