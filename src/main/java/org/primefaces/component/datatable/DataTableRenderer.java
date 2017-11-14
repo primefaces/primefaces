@@ -695,16 +695,11 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected String resolveDefaultSortIcon(DataTable table, UIColumn column, String sortOrder) {
-        ValueExpression tableSortByVE = table.getValueExpression("sortBy");
-        ValueExpression columnSortByVE = column.getValueExpression("sortBy");
-        String columnSortByExpression = columnSortByVE.getExpressionString();
-        String tableSortByExpression = tableSortByVE.getExpressionString();
-        String field = column.getField();
+        String field = table.resolveColumnField(column);
         String sortField = table.getSortField();
         String sortIcon = null;
 
-        if ((sortField != null && field != null && sortField.equals(field))
-                || (tableSortByExpression != null && tableSortByExpression.equals(columnSortByExpression))) {
+        if (sortField != null && field != null && sortField.equals(field)) {
             if (sortOrder.equalsIgnoreCase("ASCENDING")) {
                 sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
             }

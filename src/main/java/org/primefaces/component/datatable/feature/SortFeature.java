@@ -63,28 +63,7 @@ public class SortFeature implements DataTableFeature {
 
             for (int i = 0; i < sortKeys.length; i++) {
                 UIColumn sortColumn = table.findColumn(sortKeys[i]);
-                ValueExpression columnSortByVE = sortColumn.getValueExpression(Column.PropertyKeys.sortBy.toString());
-                String sortField;
-
-                if (sortColumn.isDynamic()) {
-                    ((DynamicColumn) sortColumn).applyStatelessModel();
-                    String field = sortColumn.getField();
-                    if (field == null) {
-                        sortField = table.resolveDynamicField(columnSortByVE);
-                    }
-                    else {
-                        sortField = field;
-                    }
-                }
-                else {
-                    String field = sortColumn.getField();
-                    if (field == null) {
-                        sortField = table.resolveStaticField(columnSortByVE);
-                    }
-                    else {
-                        sortField = field;
-                    }
-                }
+                String sortField = table.resolveColumnField(sortColumn);
 
                 multiSortMeta.add(
                         new SortMeta(
@@ -103,7 +82,7 @@ public class SortFeature implements DataTableFeature {
             table.setSortColumn(sortColumn);
             table.setSortFunction(sortColumn.getSortFunction());
             table.setSortOrder(convertSortOrderParam(sortDir));
-            table.setSortField(sortColumn.getField());
+            table.setSortField(table.resolveColumnField(sortColumn));
         }
     }
 

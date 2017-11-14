@@ -642,6 +642,29 @@ import org.primefaces.component.datatable.TableState;
         return sortField;
     }
 
+    public String resolveColumnField(UIColumn column) {
+        ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
+        String columnField;
+        
+        if(column.isDynamic()) {
+            ((DynamicColumn) column).applyStatelessModel();
+            String field = column.getField();
+            if(field == null)
+                columnField = this.resolveDynamicField(columnSortByVE);
+            else
+                columnField = field;
+        }
+        else {
+            String field = column.getField();
+            if(field == null)
+                columnField = this.resolveStaticField(columnSortByVE);
+            else
+                columnField = field;
+        }
+        
+        return columnField;
+    }
+
     public SortOrder convertSortOrder() {
         String sortOrder = getSortOrder();
         
