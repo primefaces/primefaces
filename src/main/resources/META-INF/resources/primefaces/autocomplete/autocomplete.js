@@ -805,8 +805,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 if (selectedItem.length) {
                     selectedItem.click();
                 }
-                $this.checkMatchedItem = false;
             }
+            
+            $this.checkMatchedItem = false;
         });
     },
 
