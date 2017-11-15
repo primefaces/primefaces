@@ -458,7 +458,7 @@ public abstract class CoreRenderer extends Renderer {
 
             for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
                 String key = it.next();
-                Object value = params.get(key);
+                String value = ComponentUtils.escapeText(String.valueOf(params.get(key))) ;
 
                 request.append("'").append(key).append("':'").append(value).append("'");
 
