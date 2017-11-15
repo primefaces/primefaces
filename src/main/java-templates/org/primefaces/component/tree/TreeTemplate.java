@@ -181,7 +181,10 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
             else if(eventName.equals("dragdrop")) {
                 int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
 
-                wrapperEvent = new TreeDragDropEvent(this, behaviorEvent.getBehavior(), dragNode, dropNode, dndIndex);
+                if(this.isMultipleDrag()) 
+                    wrapperEvent = new TreeDragDropEvent(this, behaviorEvent.getBehavior(), dragNodes, dropNode, dndIndex);
+                else
+                    wrapperEvent = new TreeDragDropEvent(this, behaviorEvent.getBehavior(), dragNode, dropNode, dndIndex);
             }
             else if(eventName.equals("contextMenu")) {
                 setRowKey(params.get(clientId + "_contextMenuNode"));
