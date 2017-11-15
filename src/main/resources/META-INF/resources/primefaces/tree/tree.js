@@ -963,7 +963,8 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             appendTo: document.body,
             zIndex: ++PrimeFaces.zindex,
             revert: true,
-            scope: dragdropScope
+            scope: dragdropScope,
+            containment: 'document'
         })
         .data({
             'dragsourceid': this.jqId,
