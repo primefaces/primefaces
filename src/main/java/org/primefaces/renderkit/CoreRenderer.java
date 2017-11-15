@@ -460,7 +460,14 @@ public abstract class CoreRenderer extends Renderer {
                 String key = it.next();
                 Object value = params.get(key);
 
-                request.append("'").append(key).append("':'").append(value).append("'");
+                appendValueQuotedAndEscapedToBuilder(request, key);
+                request.append(":");
+                if (value == null) {
+                    request.append("''");
+                }
+                else {
+                    appendValueQuotedAndEscapedToBuilder(request, value.toString());
+                }
 
                 if (it.hasNext()) {
                     request.append(",");
@@ -488,6 +495,19 @@ public abstract class CoreRenderer extends Renderer {
         request.append("PrimeFaces.onPost();");
 
         return request.toString();
+    }
+
+    private void appendValueQuotedAndEscapedToBuilder(StringBuilder builder, String value) {
+        builder.append("'");
+        int length = value.length();
+        for (int index = 0; index < length; ++index) {
+            char character = value.charAt(index);
+            if (character == '\'' || character == '\\') {
+                builder.append('\\');
+            }
+            builder.append(character);
+        }
+        builder.append("'");
     }
 
     protected void encodeClientBehaviors(FacesContext context, ClientBehaviorHolder component) throws IOException {
