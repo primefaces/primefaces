@@ -351,6 +351,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                     else {
                         this.unselectAllNodes();
                         this.selectNode(node, true);
+                        this.cursorNode = node;
                     }
                 }
 
