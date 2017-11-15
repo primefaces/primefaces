@@ -59,8 +59,8 @@ public class ProgressBarRenderer extends CoreRenderer {
         String labelTemplate = progressBar.getLabelTemplate();
         String style = progressBar.getStyle();
         String styleClass = progressBar.getStyleClass();
-        String modeClass = mode.equals("determinate") ? ProgressBar.DETERMINATE_CLASS : ProgressBar.INDETERMINATE_CLASS;
-        styleClass = styleClass == null ? ProgressBar.CONTAINER_CLASS  + " " +  modeClass : ProgressBar.CONTAINER_CLASS  + " " +  modeClass + " " + styleClass;
+        styleClass = styleClass == null ? ProgressBar.CONTAINER_CLASS : ProgressBar.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass + " " + (mode.equals("determinate") ? ProgressBar.DETERMINATE_CLASS : ProgressBar.INDETERMINATE_CLASS);
 
         if (progressBar.isDisabled()) {
             styleClass = styleClass + " ui-state-disabled";
