@@ -133,19 +133,22 @@ public class TreeRenderer extends CoreRenderer {
         String dropNodeRowKey = params.get(clientId + "_dropNode");
         String dragSource = params.get(clientId + "_dragSource");
         int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
-        TreeNode dragNode;
+        String[] dragNodeRowKeyArr = dragNodeRowKey.split(",");
+        List<TreeNode> dragNodeList = new ArrayList<TreeNode>();
         TreeNode dropNode;
-
-        if (dragSource.equals(clientId)) {
-            tree.setRowKey(dragNodeRowKey);
-            dragNode = tree.getRowNode();
+        
+        for (String rowKey : dragNodeRowKeyArr) {
+            if (dragSource.equals(clientId)) {
+                tree.setRowKey(rowKey);
+                dragNodeList.add(tree.getRowNode());
+            }
+            else {
+                Tree otherTree = (Tree) tree.findComponent(":" + dragSource);
+                otherTree.setRowKey(rowKey);
+                dragNodeList.add(otherTree.getRowNode());
+            }
         }
-        else {
-            Tree otherTree = (Tree) tree.findComponent(":" + dragSource);
-            otherTree.setRowKey(dragNodeRowKey);
-            dragNode = otherTree.getRowNode();
-        }
-
+        
         if (isValueBlank(dropNodeRowKey)) {
             dropNode = tree.getValue();
         }
@@ -153,15 +156,26 @@ public class TreeRenderer extends CoreRenderer {
             tree.setRowKey(dropNodeRowKey);
             dropNode = tree.getRowNode();
         }
-
-        tree.setDragNode(dragNode);
+        
         tree.setDropNode(dropNode);
-
-        if (dndIndex >= 0 && dndIndex < dropNode.getChildCount()) {
-            dropNode.getChildren().add(dndIndex, dragNode);
+        
+        TreeNode[] dragNodes = new TreeNode[dragNodeList.size()];
+        dragNodes = dragNodeList.toArray(dragNodes);
+        if (tree.isMultipleDrag()) {
+            tree.setDragNodes(dragNodes);
         }
         else {
-            dropNode.getChildren().add(dragNode);
+            tree.setDragNode(dragNodes[0]);
+        }
+        
+        for (TreeNode dragNode : dragNodes) {
+            if (dndIndex >= 0 && dndIndex < dropNode.getChildCount()) {
+                dropNode.getChildren().add(dndIndex, dragNode);
+                dndIndex++;
+            }
+            else {
+                dropNode.getChildren().add(dragNode);
+            }
         }
     }
 
@@ -264,7 +278,8 @@ public class TreeRenderer extends CoreRenderer {
         if (tree.isDraggable()) {
             wb.attr("draggable", true)
                     .attr("dragMode", tree.getDragMode())
-                    .attr("dropRestrict", tree.getDropRestrict());
+                    .attr("dropRestrict", tree.getDropRestrict())
+                    .attr("multipleDrag", tree.isMultipleDrag());
         }
 
         if (filter) {

@@ -257,6 +257,7 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
     }
 
     private TreeNode dragNode;
+    private TreeNode[] dragNodes;
     private TreeNode dropNode;
 
     TreeNode getDragNode() {
@@ -264,6 +265,13 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
     }
     void setDragNode(TreeNode dragNode) {
         this.dragNode = dragNode;
+    }
+
+    TreeNode[] getDragNodes() {
+        return dragNodes;
+    }
+    void setDragNodes(TreeNode[] dragNodes) {
+        this.dragNodes = dragNodes;
     }
 
     TreeNode getDropNode() {
