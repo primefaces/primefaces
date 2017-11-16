@@ -535,6 +535,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             }
             else {
                 this.dock(dockingZone);
+                this.jq.addClass('ui-dialog-minimized');
             }
         }
     },
