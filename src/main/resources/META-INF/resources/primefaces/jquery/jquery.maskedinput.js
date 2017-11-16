@@ -100,7 +100,6 @@
                         for (checkVal(!0); pos.begin < len && !tests[pos.begin]; ) pos.begin++;
                         setTimeout(function() { proxy(); tryFireCompleted(); }, 0);
                     }
-                    tryFireCompleted();
                 }
                 function blurEvent() {
                     checkVal(), input.val() != focusText && input.change();
