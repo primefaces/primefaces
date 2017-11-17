@@ -1180,7 +1180,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         });
     },
     
-    findSelectedParentKeys(arr) {       
+    findSelectedParentKeys: function(arr) {       
         for(var i = 0; i < arr.length; i++) {
             var key = arr[i];
             for(var j = 0; j < arr.length && key !== -1; j++) {
