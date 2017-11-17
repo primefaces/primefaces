@@ -68,7 +68,7 @@ public class DataRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         boolean isTop = position.equals("top");
         UIComponent leftContent = pageable.getFacet("paginatorLeft");
-        UIComponent rightContent = pageable.getFacet("paginatorLeft");
+        UIComponent rightContent = pageable.getFacet("paginatorRight");
 
         String styleClass = isTop ? UIData.PAGINATOR_TOP_CONTAINER_CLASS : UIData.PAGINATOR_BOTTOM_CONTAINER_CLASS;
         String id = pageable.getClientId(context) + "_paginator_" + position;
@@ -90,7 +90,10 @@ public class DataRenderer extends CoreRenderer {
         writer.writeAttribute("aria-label", ariaMessage, null);
 
         if (leftContent != null) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", UIData.PAGINATOR_LEFT_CONTENT_CLASS, null);
             renderChild(context, leftContent);
+            writer.endElement("div");
         }
 
         String[] elements = pageable.getPaginatorTemplate().split(" ");
@@ -113,7 +116,10 @@ public class DataRenderer extends CoreRenderer {
         }
 
         if (rightContent != null) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", UIData.PAGINATOR_RIGHT_CONTENT_CLASS, null);
             renderChild(context, rightContent);
+            writer.endElement("div");
         }
 
         writer.endElement("div");
