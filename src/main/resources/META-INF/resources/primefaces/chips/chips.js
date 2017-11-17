@@ -86,7 +86,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
     
     removeItem: function(item) {
         var itemIndex = this.itemContainer.children('li.ui-chips-token').index(item);
-        var itemValue = item.find('span.ui-autocomplete-token-label').html()
+        var itemValue = item.find('span.ui-chips-token-label').html()
         $this = this;
 
         //remove from options
