@@ -19,6 +19,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
         this.cfg.autoWidth = this.cfg.autoWidth === false ? false : true;
         this.cfg.lazy = this.cfg.lazy === true ? true : false;
+        this.isLazyLoaded = false;
 
         if(this.cfg.lazy) {
             var selectedOption = this.options.filter(':selected'),
