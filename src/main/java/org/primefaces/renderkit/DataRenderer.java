@@ -67,8 +67,10 @@ public class DataRenderer extends CoreRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
         boolean isTop = position.equals("top");
-        UIComponent leftContent = pageable.getFacet("paginatorLeft");
-        UIComponent rightContent = pageable.getFacet("paginatorRight");
+        UIComponent leftTopContent = pageable.getFacet("paginatorTopLeft");
+        UIComponent rightTopContent = pageable.getFacet("paginatorTopRight");
+        UIComponent leftBottomContent = pageable.getFacet("paginatorBottomLeft");
+        UIComponent rightBottomContent = pageable.getFacet("paginatorBottomRight");
 
         String styleClass = isTop ? UIData.PAGINATOR_TOP_CONTAINER_CLASS : UIData.PAGINATOR_BOTTOM_CONTAINER_CLASS;
         String id = pageable.getClientId(context) + "_paginator_" + position;
@@ -89,10 +91,17 @@ public class DataRenderer extends CoreRenderer {
         writer.writeAttribute("role", "navigation", null);
         writer.writeAttribute("aria-label", ariaMessage, null);
 
-        if (leftContent != null) {
+        if (leftTopContent != null && isTop) {
             writer.startElement("div", null);
-            writer.writeAttribute("class", UIData.PAGINATOR_LEFT_CONTENT_CLASS, null);
-            renderChild(context, leftContent);
+            writer.writeAttribute("class", UIData.PAGINATOR_TOP_LEFT_CONTENT_CLASS, null);
+            renderChild(context, leftTopContent);
+            writer.endElement("div");
+        }
+
+        if (rightTopContent != null && isTop) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", UIData.PAGINATOR_TOP_RIGHT_CONTENT_CLASS, null);
+            renderChild(context, rightTopContent);
             writer.endElement("div");
         }
 
@@ -114,11 +123,16 @@ public class DataRenderer extends CoreRenderer {
                 }
             }
         }
-
-        if (rightContent != null) {
+        if (leftBottomContent != null && !isTop) {
             writer.startElement("div", null);
-            writer.writeAttribute("class", UIData.PAGINATOR_RIGHT_CONTENT_CLASS, null);
-            renderChild(context, rightContent);
+            writer.writeAttribute("class", UIData.PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS, null);
+            renderChild(context, leftBottomContent);
+            writer.endElement("div");
+        }
+        if (rightBottomContent != null && !isTop) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", UIData.PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS, null);
+            renderChild(context, rightBottomContent);
             writer.endElement("div");
         }
 
