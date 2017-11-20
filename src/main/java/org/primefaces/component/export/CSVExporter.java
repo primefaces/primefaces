@@ -43,7 +43,7 @@ public class CSVExporter extends Exporter {
         StringBuilder builder = new StringBuilder();
 
         if(preProcessor != null) {
-        	preProcessor.invoke(context.getELContext(), new Object[]{builder});
+            preProcessor.invoke(context.getELContext(), new Object[]{builder});
         }
 
         addColumnFacets(builder, table, ColumnType.HEADER);
@@ -63,7 +63,7 @@ public class CSVExporter extends Exporter {
         }
 
         if(postProcessor != null) {
-        	postProcessor.invoke(context.getELContext(), new Object[]{builder});
+            postProcessor.invoke(context.getELContext(), new Object[]{builder});
         }
 
         Writer writer = externalContext.getResponseOutputWriter();
@@ -130,7 +130,7 @@ public class CSVExporter extends Exporter {
 
     @Override
     protected void exportCells(DataTable table, Object document) {
-    	StringBuilder builder = (StringBuilder) document;
+        StringBuilder builder = (StringBuilder) document;
         boolean firstCellWritten = false;
 
         for (UIColumn col : table.getColumns()) {
