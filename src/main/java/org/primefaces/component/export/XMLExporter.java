@@ -40,7 +40,7 @@ public class XMLExporter extends Exporter {
         configureResponse(externalContext, filename);
         StringBuilder builder = new StringBuilder();
 
-        if(preProcessor != null) {
+        if (preProcessor != null) {
             preProcessor.invoke(context.getELContext(), new Object[]{builder});
         }
 
@@ -61,7 +61,7 @@ public class XMLExporter extends Exporter {
 
         table.setRowIndex(-1);
 
-        if(postProcessor != null) {
+        if (postProcessor != null) {
             postProcessor.invoke(context.getELContext(), new Object[]{builder});
         }
 
