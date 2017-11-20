@@ -42,7 +42,7 @@ public class CSVExporter extends Exporter {
         configureResponse(externalContext, filename, encodingType);
         StringBuilder builder = new StringBuilder();
 
-        if(preProcessor != null) {
+        if (preProcessor != null) {
             preProcessor.invoke(context.getELContext(), new Object[]{builder});
         }
 
@@ -62,7 +62,7 @@ public class CSVExporter extends Exporter {
             addColumnFacets(builder, table, ColumnType.FOOTER);
         }
 
-        if(postProcessor != null) {
+        if (postProcessor != null) {
             postProcessor.invoke(context.getELContext(), new Object[]{builder});
         }
 
