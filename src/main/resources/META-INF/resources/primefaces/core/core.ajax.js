@@ -550,30 +550,35 @@ if (!PrimeFaces.ajax) {
                     done: function(data, status, xhr) {
                         PrimeFaces.debug('Response received succesfully.');
 
-                        var parsed;
+                        try {
+                            var parsed;
 
-                        //call user callback
-                        if(cfg.onsuccess) {
-                            parsed = cfg.onsuccess.call(this, data, status, xhr);
-                        }
+                            //call user callback
+                            if(cfg.onsuccess) {
+                                parsed = cfg.onsuccess.call(this, data, status, xhr);
+                            }
 
-                        //extension callback that might parse response
-                        if(cfg.ext && cfg.ext.onsuccess && !parsed) {
-                            parsed = cfg.ext.onsuccess.call(this, data, status, xhr);
-                        }
+                            //extension callback that might parse response
+                            if(cfg.ext && cfg.ext.onsuccess && !parsed) {
+                                parsed = cfg.ext.onsuccess.call(this, data, status, xhr);
+                            }
 
-                        if(global) {
-                            $(document).trigger('pfAjaxSuccess', [xhr, this]);
-                        }
+                            if(global) {
+                                $(document).trigger('pfAjaxSuccess', [xhr, this]);
+                            }
 
-                        //do not execute default handler as response already has been parsed
-                        if(parsed) {
-                            return;
+                            //do not execute default handler as response already has been parsed
+                            if(parsed) {
+                                return;
+                            }
+                            else {
+                                PrimeFaces.ajax.Response.handle(data, status, xhr);
+                            }
                         }
-                        else {
-                            PrimeFaces.ajax.Response.handle(data, status, xhr);
+                        catch(err) { 
+                            PrimeFaces.error(err);
                         }
-
+                        
                         PrimeFaces.debug('DOM is updated.');
                     },
                     always: function(xhr, status) {

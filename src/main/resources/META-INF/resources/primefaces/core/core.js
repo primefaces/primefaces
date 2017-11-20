@@ -212,7 +212,7 @@
             }
 
             if (PrimeFaces.isDevelopmentProjectStage() && window.console) {
-                console.log(log);
+                console.error(log);
             }
         },
 
