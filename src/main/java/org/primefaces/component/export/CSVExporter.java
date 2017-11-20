@@ -67,7 +67,7 @@ public class CSVExporter extends Exporter {
         }
 
         Writer writer = externalContext.getResponseOutputWriter();
-        builder.append(builder.toString());
+        writer.write(builder.toString());
         writer.flush();
         writer.close();
     }
