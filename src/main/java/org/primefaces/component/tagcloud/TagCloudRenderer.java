@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ public class TagCloudRenderer extends CoreRenderer {
         TagCloud tagCloud = (TagCloud) component;
 
         encodeMarkup(context, tagCloud);
-		encodeScript(context, tagCloud);
+        encodeScript(context, tagCloud);
     }
 
     protected void encodeMarkup(FacesContext context, TagCloud tagCloud) throws IOException {
@@ -49,17 +49,16 @@ public class TagCloudRenderer extends CoreRenderer {
         writer.startElement("div", tagCloud);
         writer.writeAttribute("id", tagCloud.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
 
-
         writer.startElement("ul", null);
 
-        for(TagCloudItem item : model.getTags()) {
+        for (TagCloudItem item : model.getTags()) {
             String url = item.getUrl();
-            String href = url == null ? "#" :  getResourceURL(context, item.getUrl());
-            
+            String href = url == null ? "#" : getResourceURL(context, item.getUrl());
+
             writer.startElement("li", null);
             writer.writeAttribute("class", "ui-tagcloud-strength-" + item.getStrength(), null);
 
@@ -80,7 +79,7 @@ public class TagCloudRenderer extends CoreRenderer {
         String clientId = tagCloud.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("TagCloud", tagCloud.resolveWidgetVar(), clientId);
-        
+
         encodeClientBehaviors(context, tagCloud);
 
         wb.finish();

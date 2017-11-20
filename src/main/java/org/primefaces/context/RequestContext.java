@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import org.primefaces.PrimeFaces;
 
-import org.primefaces.component.api.AutoUpdatable;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.CSVBuilder;
 import org.primefaces.util.StringEncrypter;
@@ -32,61 +32,53 @@ import org.primefaces.util.WidgetBuilder;
  * RequestContext is thread-safe and scope is same as FacesContext.
  * Current instance can be retrieved as;
  * <blockquote>
- *  RequestContext.getCurrentInstance();
+ *  RequestContext.getCurrentInstance(context);
  * </blockquote>
  */
 public abstract class RequestContext {
 
-	private static final ThreadLocal<RequestContext> INSTANCE = new ThreadLocal<RequestContext>();
-
     private static final String INSTANCE_KEY = RequestContext.class.getName();
-    
-    public static RequestContext getCurrentInstance() {
-        
-        RequestContext context = INSTANCE.get();
 
-        // #6503 - it's valid that a FacesContext can be released during the request
-        // Our PrimeFacesContext therefore will only release our ThreadLocal cache
-        // The RequestContext will be destroyed automatically if the FacesContext and it's attributes will be destroyed
-        if (context == null) {
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            if (facesContext != null && !facesContext.isReleased()) {
-                context = (RequestContext) facesContext.getAttributes().get(INSTANCE_KEY);
-                if (context != null) {
-                    INSTANCE.set(context);
+    public static RequestContext getCurrentInstance() {
+        return getCurrentInstance(FacesContext.getCurrentInstance());
+    }
+
+    public static RequestContext getCurrentInstance(FacesContext facesContext) {
+        if (facesContext != null) {
+            RequestContext context = (RequestContext) facesContext.getAttributes().get(INSTANCE_KEY);
+            if (context != null) {
+                boolean isAtLeastJSF21 = context.getApplicationContext().getConfig().isAtLeastJSF21();
+                if ((isAtLeastJSF21 && !facesContext.isReleased()) || !isAtLeastJSF21) {
+                    return context;
                 }
             }
         }
 
-        return INSTANCE.get();
+        return null;
     }
 
-    public static void setCurrentInstance(final RequestContext context, final FacesContext facesContext) {
+    public static void setCurrentInstance(RequestContext context, FacesContext facesContext) {
         if (context == null) {
-        	INSTANCE.remove();
-            facesContext.getAttributes().remove(INSTANCE_KEY);
-        } else {
-        	INSTANCE.set(context);
+            if (facesContext != null) {
+                facesContext.getAttributes().remove(INSTANCE_KEY);
+            }
+        }
+        else {
             facesContext.getAttributes().put(INSTANCE_KEY, context);
         }
     }
 
-    public static void releaseThreadLocalCache() {
-        INSTANCE.remove();
-    }
-    
     /**
-     * @return true if request is an ajax request, otherwise return false.
+     * @return
+     * @deprecated Use {@link PrimeFaces#isAjaxRequest()} instead
      */
+    @Deprecated
     public abstract boolean isAjaxRequest();
 
     /**
-     * Add a parameter for ajax oncomplete client side callbacks. Value would be serialized to json.
-     * Currently supported values are plain objects, primitives, JSONObject and JSONArray.
-     * 
-     * @param name name of the parameter.
-     * @param object value of the parameter.
+     * @deprecated Use PrimeFaces.ajax().addCallbackParam instead
      */
+    @Deprecated
     public abstract void addCallbackParam(String name, Object value);
 
     /**
@@ -100,40 +92,53 @@ public abstract class RequestContext {
     public abstract List<String> getScriptsToExecute();
 
     /**
-     * Execute a javascript after current ajax request is completed.
-     * @param script Javascript statement to execute.
+     * Use {@link PrimeFaces#executeScript(java.lang.String)}
+     * 
+     * @param script
+     * @deprecated  Use {@link PrimeFaces#executeScript(java.lang.String)}
      */
+    @Deprecated
     public abstract void execute(String script);
 
     /**
-     * Scroll to a component after ajax request is completed.
-     * @param clientId Client side identifier of the component.
+     * @param clientId
+     * @deprecated Use {@link PrimeFaces#scrollTo(java.lang.String)} instead
      */
+    @Deprecated
     public abstract void scrollTo(String clientId);
 
     /**
-     * Update a component with ajax.
-     * @param name Client side identifier of the component.
+     * @deprecated Use PrimeFaces.ajax().update() instead
      */
+    @Deprecated
     public abstract void update(String name);
 
     /**
-     * Update components with ajax.
-     * @param collection Client side identifiers of the components.
+     * @deprecated Use PrimeFaces.ajax().update() instead
      */
+    @Deprecated
     public abstract void update(Collection<String> collection);
 
     /**
-     * Reset an editableValueHolder.
-     * @param expressions A string with one or multiple search expression to resolve the components.
+     * @param expressions
+     * @deprecated Use {@link PrimeFaces#resetInputs(java.lang.String...)} instead
      */
+    @Deprecated
     public abstract void reset(String expressions);
 
     /**
-     * Reset a collection of editableValueHolders.
-     * @param expressions A list with with one or multiple search expression to resolve the components.
+     * @param expressions
+     * @deprecated Use {@link PrimeFaces#resetInputs(java.lang.String...)} instead
      */
+    @Deprecated
     public abstract void reset(Collection<String> expressions);
+
+    /**
+     * @param expressions
+     * @deprecated Use {@link PrimeFaces#resetInputs(java.lang.String...)} instead
+     */
+    @Deprecated
+    public abstract void reset(String... expressions);
 
     /**
      * @return Shared WidgetBuilder instance of the current request
@@ -144,41 +149,40 @@ public abstract class RequestContext {
      * @return Shared AjaxRequestBuilder instance of the current request
      */
     public abstract AjaxRequestBuilder getAjaxRequestBuilder();
-    
+
     /**
      * @return Shared Client Side Validation builder instance of the current request
      */
     public abstract CSVBuilder getCSVBuilder();
-    
-    /**
-     * @return Attributes map in RequestContext scope
-     */
-    public abstract Map<Object,Object> getAttributes();
 
     /**
-     * Open a view in dialog.
-     * @param outcome The logical outcome used to resolve a navigation case.
+     * Use FacesContext#getAttributes()
      */
+    @Deprecated
+    public abstract Map<Object, Object> getAttributes();
+
+    /**
+     * @deprecated Use PrimeFaces.dialog().openDynamic() instead
+     */
+    @Deprecated
     public abstract void openDialog(String outcome);
-    
+
     /**
-     * Open a view in dialog.
-     * @param outcome The logical outcome used to resolve a navigation case.
-     * @param options Configuration options for the dialog.
-     * @param params Parameters to send to the view displayed in a dialog.
+     * @deprecated Use PrimeFaces.dialog().openDynamic() instead
      */
-    public abstract void openDialog(String outcome, Map<String,Object> options, Map<String,List<String>> params);
-    
+    @Deprecated
+    public abstract void openDialog(String outcome, Map<String, Object> options, Map<String, List<String>> params);
+
     /**
-     * Close a dialog.
-     * @param data Optional data to pass back to a dialogReturn event.
+     * @deprecated Use PrimeFaces.dialog().closeDynamic instead
      */
+    @Deprecated
     public abstract void closeDialog(Object data);
-    
+
     /**
-     * Displays a message in a dialog.
-     * @param message FacesMessage to be displayed.
+     * @deprecated Use PrimeFaces.dialog().showMessageDynamic instead
      */
+    @Deprecated
     public abstract void showMessageInDialog(FacesMessage message);
 
     /**
@@ -189,13 +193,13 @@ public abstract class RequestContext {
     /**
      * @return StringEncrypter used to encode and decode a string.
      */
-	public abstract StringEncrypter getEncrypter();
-    
+    public abstract StringEncrypter getEncrypter();
+
     /**
      * Clear resources.
      */
     public abstract void release();
-    
+
     /**
      * Returns a boolean indicating whether this request was made using a secure channel, such as HTTPS.
      */
@@ -207,4 +211,17 @@ public abstract class RequestContext {
     public abstract boolean isIgnoreAutoUpdate();
 
     public abstract boolean isRTL();
+
+    /**
+     * @deprecated  Use {@link PrimeFaces#clearTableState()} instead
+     */
+    @Deprecated
+    public abstract void clearTableStates();
+
+    /**
+     * @param clientId
+     * @deprecated Use {@link PrimeFaces#clearTableState(java.lang.String)} instead
+     */
+    @Deprecated
+    public abstract void clearTableState(String clientId);
 }

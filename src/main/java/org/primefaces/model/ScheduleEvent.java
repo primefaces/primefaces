@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,22 +20,24 @@ import java.util.Date;
 public interface ScheduleEvent {
 
     public String getId();
-    
+
     public void setId(String id);
-    
+
     public Object getData();
-    
+
     public String getTitle();
-    
+
     public Date getStartDate();
-    
+
     public Date getEndDate();
-    
+
     public boolean isAllDay();
-    
+
     public String getStyleClass();
-    
+
     public boolean isEditable();
-        
+
     public String getDescription();
+
+    public String getUrl();
 }

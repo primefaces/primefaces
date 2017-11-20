@@ -1,8 +1,14 @@
+[![Maven](https://maven-badges.herokuapp.com/maven-central/org.primefaces/primefaces/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.primefaces/primefaces)
+[![Javadoc](http://javadoc.io/badge/org.primefaces/primefaces.svg)](http://javadoc.io/doc/org.primefaces/primefaces) 
+[![Travis](https://travis-ci.org/primefaces/primefaces.svg?branch=master)](https://travis-ci.org/primefaces/primefaces)
+[![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+[![Join the chat at https://gitter.im/primefaces/primefaces](https://badges.gitter.im/primefaces/primefaces.svg)](https://gitter.im/primefaces/primefaces?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 # PrimeFaces
 
 This is an overview page, please visit [PrimeFaces.org](http://www.primefaces.org) for more information.
 
-![PrimeFaces icon](http://blog.primefaces.org/wp-content/uploads/2011/08/bloglogo.png)
+![PrimeFaces icon](https://www.primefaces.org/wp-content/uploads/2016/10/prime_logo.png)
 
 ### Overview
 ***
@@ -18,6 +24,8 @@ This is an overview page, please visit [PrimeFaces.org](http://www.primefaces.or
 
 Version | Binary | Source
 ------------ | -------------  | ------------- 
+6.1| [primefaces-6.1.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.1/primefaces-6.1.jar)  | [primefaces-6.1-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.1/primefaces-6.1-sources.jar)
+6.0| [primefaces-6.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.0/primefaces-6.0.jar)  | [primefaces-6.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.0/primefaces-6.0-sources.jar)
 5.3| [primefaces-5.3.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.3/primefaces-5.3.jar)  | [primefaces-5.3-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.3/primefaces-5.3-sources.jar)
 5.2| [primefaces-5.2.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.2/primefaces-5.2.jar)  | [primefaces-5.2-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.2/primefaces-5.2-sources.jar)
 5.1| [primefaces-5.1.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.1/primefaces-5.1.jar)  | [primefaces-5.1-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.1/primefaces-5.1-sources.jar)
@@ -30,7 +38,7 @@ For a full list of the available downloads, please visit the [download page](htt
 <dependency>  
     <groupId>org.primefaces</groupId>  
     <artifactId>primefaces</artifactId>  
-    <version>5.3</version>  
+    <version>6.1</version>  
 </dependency>  
 ```
 

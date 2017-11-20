@@ -6,29 +6,29 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>themeSwitcher</tag>
-	<tagClass>org.primefaces.component.themeswitcher.ThemeSwitcherTag</tagClass>
-	<componentClass>org.primefaces.component.themeswitcher.ThemeSwitcher</componentClass>
-	<componentType>org.primefaces.component.ThemeSwitcher</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.ThemeSwitcherRenderer</rendererType>
-	<rendererClass>org.primefaces.component.themeswitcher.ThemeSwitcherRenderer</rendererClass>
-	<parent>org.primefaces.component.selectonemenu.SelectOneMenu</parent>
+    <tag>themeSwitcher</tag>
+    <tagClass>org.primefaces.component.themeswitcher.ThemeSwitcherTag</tagClass>
+    <componentClass>org.primefaces.component.themeswitcher.ThemeSwitcher</componentClass>
+    <componentType>org.primefaces.component.ThemeSwitcher</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.ThemeSwitcherRenderer</rendererType>
+    <rendererClass>org.primefaces.component.themeswitcher.ThemeSwitcherRenderer</rendererClass>
+    <parent>org.primefaces.component.selectonemenu.SelectOneMenu</parent>
     <description>ThemeSwitcher enables switching PrimeFaces themes on the fly with no page refresh.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
-	</interfaces>
-	<attributes>
-		&input_component_attributes;
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &input_component_attributes;
         &widget_var_attribute;
-		<attribute>
-			<name>buttonPreText</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+        <attribute>
+            <name>buttonPreText</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Prefix text displayed on button.</description>
-		</attribute>
+        </attribute>
         <attribute>
             <name>effect</name>
             <required>false</required>
@@ -90,19 +90,22 @@
             <type>java.lang.String</type>
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
-	</attributes>
-	<resources>
+    </attributes>
+    <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
-		<resource>
-			<name>primefaces.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
 </component>

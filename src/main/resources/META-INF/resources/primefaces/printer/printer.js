@@ -49,7 +49,19 @@
         doc.close();
 
         (opt.operaSupport && $.browser.opera ? tab : $iframe[0].contentWindow).focus();
-        setTimeout( function() { (opt.operaSupport && $.browser.opera ? tab : $iframe[0].contentWindow).print(); if (tab) { tab.close(); } }, 1000);
+        setTimeout(function() { 
+            var frameWindow = (opt.operaSupport && $.browser.opera ? tab : $iframe[0].contentWindow);
+            try {
+                // fix for IE; http://stackoverflow.com/a/21336448/937891
+                if(!frameWindow.document.execCommand('print', false, null)) { 
+                    frameWindow.print();
+                }
+            }
+            catch(e) {
+                frameWindow.print();
+            }
+            if (tab) { tab.close(); } 
+        }, 1000);
     }
 
     $.fn.jqprint.defaults = {

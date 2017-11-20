@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,32 +17,20 @@ package org.primefaces.event.map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
+import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
 import org.primefaces.model.map.Overlay;
 
-public class OverlaySelectEvent extends AjaxBehaviorEvent {
-	
-	private Overlay overlay;
+public class OverlaySelectEvent extends AbstractAjaxBehaviorEvent {
 
-	public OverlaySelectEvent(UIComponent component, Behavior behavior, Overlay overlay) {
-		super(component, behavior);
-		this.overlay = overlay;
-	}
+    private Overlay overlay;
 
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
+    public OverlaySelectEvent(UIComponent component, Behavior behavior, Overlay overlay) {
+        super(component, behavior);
+        this.overlay = overlay;
+    }
 
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
-	}
-	
-	public Overlay getOverlay() {
-		return overlay;
-	}
+    public Overlay getOverlay() {
+        return overlay;
+    }
 }

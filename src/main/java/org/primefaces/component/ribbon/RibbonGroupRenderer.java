@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,25 +31,25 @@ public class RibbonGroupRenderer extends CoreRenderer {
         String groupClass = group.getStyleClass();
         groupClass = (groupClass == null) ? Ribbon.GROUP_CLASS : Ribbon.GROUP_CLASS + " " + groupClass;
         String style = group.getStyle();
-        
+
         writer.startElement("li", null);
         writer.writeAttribute("class", groupClass, null);
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, null);
         }
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("class", Ribbon.GROUP_CONTENT_CLASS, null);
         renderChildren(context, group);
         writer.endElement("div");
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("class", Ribbon.GROUP_LABEL_CLASS, null);
-        if(label != null) {
+        if (label != null) {
             writer.writeText(label, null);
         }
         writer.endElement("div");
-        
+
         writer.endElement("li");
     }
 

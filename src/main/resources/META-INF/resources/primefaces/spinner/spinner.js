@@ -11,7 +11,11 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         this.downButton = this.jq.children('a.ui-spinner-down');
         this.cfg.step = this.cfg.step||1;
         this.cursorOffset = this.cfg.prefix ? this.cfg.prefix.length: 0;
-        if(parseInt(this.cfg.step) === 0) {
+        
+        if(this.input.val().indexOf('.') > 0 && this.cfg.decimalPlaces) {
+            this.cfg.precision = this.cfg.decimalPlaces;
+        }
+        else if(!(typeof this.cfg.step === 'number' && this.cfg.step % 1 === 0)) {
             this.cfg.precision = this.cfg.step.toString().split(/[,]|[.]/)[1].length;
         }
         
@@ -21,6 +25,8 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         }
         
         this.updateValue();
+        
+        this.format();
 
         this.addARIA();
 
@@ -97,8 +103,13 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             $this.updateValue();
     
             var keyCode = $.ui.keyCode;
-            if(e.which === keyCode.UP||e.which === keyCode.DOWN) {
+            
+            /* Github #2636 */
+            var checkForIE = (PrimeFaces.env.isIE(11) || PrimeFaces.env.isLtIE(11)) && (e.which === keyCode.ENTER ||e.which === keyCode.NUMPAD_ENTER);
+            
+            if(e.which === keyCode.UP||e.which === keyCode.DOWN||checkForIE) {
                 $this.input.trigger('change');
+                $this.format();
             }
         })
         .on('blur.spinner', function(e) {
@@ -157,7 +168,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
 
         this.value = newValue;
         this.format();
-        this.input.attr('aria-valuenow', newValue);        
+        this.input.attr('aria-valuenow', this.getValue());        
     },
     
     updateValue: function() {
@@ -172,8 +183,11 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         else {
             if(this.cfg.prefix && value.indexOf(this.cfg.prefix) === 0) {
                 value = value.substring(this.cfg.prefix.length, value.length);
-            }  else if(this.cfg.suffix && value.indexOf(this.cfg.suffix) === (value.length - this.cfg.suffix.length)) {
-                value = value.substring(0, value.length - this.cfg.suffix.length);
+            }  else {
+                var ix = value.indexOf(this.cfg.suffix);
+                if(this.cfg.suffix && ix > -1 && ix === (value.length - this.cfg.suffix.length)) {
+                    value = value.substring(0, value.length - this.cfg.suffix.length);
+                }
             }
             
             if(this.cfg.precision)
@@ -197,7 +211,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
        
     format: function() {
         if(this.value !== null) {
-            var value = this.value;
+            var value = this.getValue();
 
             if(this.cfg.prefix)
                 value = this.cfg.prefix + value;
@@ -213,7 +227,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
     addARIA: function() {
         this.input.attr('role', 'spinner');
         this.input.attr('aria-multiline', false);
-        this.input.attr('aria-valuenow', this.value);
+        this.input.attr('aria-valuenow', this.getValue());
 
         if(this.cfg.min !== undefined) 
             this.input.attr('aria-valuemin', this.cfg.min);
@@ -226,6 +240,15 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
 
         if(this.input.prop('readonly'))
             this.input.attr('aria-readonly', true);
+    },
+    
+    getValue: function() {
+        if(this.cfg.precision) {
+            return parseFloat(this.value).toFixed(this.cfg.precision);
+        }
+        else {
+            return this.value;
+        }
     }
     
 });

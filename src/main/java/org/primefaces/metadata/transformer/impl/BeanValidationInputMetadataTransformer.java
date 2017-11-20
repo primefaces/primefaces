@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.primefaces.metadata.transformer.impl;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.util.Date;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,11 +25,13 @@ import javax.el.PropertyNotFoundException;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
+import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.spinner.Spinner;
 import org.primefaces.context.RequestContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
@@ -37,36 +40,37 @@ import org.primefaces.metadata.transformer.AbstractInputMetadataTransformer;
 public class BeanValidationInputMetadataTransformer extends AbstractInputMetadataTransformer {
 
     private static final Logger LOG = Logger.getLogger(BeanValidationInputMetadataTransformer.class.getName());
-    
+
+    @Override
     public void transformInput(FacesContext context, RequestContext requestContext, UIInput input) throws IOException {
 
         EditableValueHolder editableValueHolder = (EditableValueHolder) input;
-       
+
         if (editableValueHolder.isRequired() && isMaxlenghtSet(input)) {
             return;
         }
-         
+
         try {
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
                     context, requestContext, input.getValueExpression("value"));
-            if (constraints != null && !constraints.isEmpty()) {    
+            if (constraints != null && !constraints.isEmpty()) {
                 for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
                     applyConstraint(constraintDescriptor, input, editableValueHolder);
                 }
             }
         }
-        catch (PropertyNotFoundException e)  {
+        catch (PropertyNotFoundException e) {
             String message = "Skip transform metadata for component \"" + input.getClientId(context) + "\" because"
                     + " the ValueExpression of the \"value\" attribute"
                     + " isn't resolvable completely (e.g. a sub-expression returns null)";
             LOG.log(Level.FINE, message);
         }
     }
-    
+
     protected void applyConstraint(ConstraintDescriptor constraintDescriptor, UIInput input, EditableValueHolder editableValueHolder) {
-        
+
         Annotation constraint = constraintDescriptor.getAnnotation();
-        
+
         if (!isMaxlenghtSet(input)) {
             if (constraint.annotationType().equals(Size.class)) {
                 Size size = (Size) constraint;
@@ -75,15 +79,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
                 }
             }
         }
-        
-        if (!editableValueHolder.isRequired()) {
-            if (constraint.annotationType().equals(NotNull.class)
-                    // see GitHub #14
-                    && RequestContext.getCurrentInstance().getApplicationContext().getConfig().isInterpretEmptyStringAsNull()) {
-                markAsRequired(input, true);
-            }
-        }
-        
+
         if (input instanceof Spinner) {
             Spinner spinner = (Spinner) input;
 
@@ -94,6 +90,17 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
             if (constraint.annotationType().equals(Min.class) && spinner.getMin() == Double.MIN_VALUE) {
                 Min min = (Min) constraint;
                 spinner.setMin(min.value());
+            }
+        }
+
+        if (input instanceof Calendar) {
+            Calendar calendar = (Calendar) input;
+
+            if (constraint.annotationType().equals(Past.class) && calendar.getMaxdate() == null) {
+                calendar.setMaxdate(new Date());
+            }
+            if (constraint.annotationType().equals(Future.class) && calendar.getMindate() == null) {
+                calendar.setMindate(new Date());
             }
         }
     }

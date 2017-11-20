@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,9 @@ public class BeanPropertyComparator implements Comparator {
     private Collator collator;
     private int nullSortOrder;
 
-    public BeanPropertyComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction, boolean caseSensitive, Locale locale, int nullSortOrder) {
+    public BeanPropertyComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction,
+            boolean caseSensitive, Locale locale, int nullSortOrder) {
+        
         this.sortBy = sortBy;
         this.var = var;
         this.asc = sortOrder.equals(SortOrder.ASCENDING);
@@ -60,35 +62,41 @@ public class BeanPropertyComparator implements Comparator {
             Object value2 = sortBy.getValue(context.getELContext());
 
             int result;
-            
+
             //Empty check
             if (value1 == null && value2 == null) {
-            	return 0;
-            } else if (value1 == null) {
-            	result = 1 * nullSortOrder;
-            } else if (value2 == null) {
-            	result = -1 * nullSortOrder;
-            } else if (sortFunction == null) {
-                if(value1 instanceof String && value2 instanceof String) {
-                    if(this.caseSensitive) {
+                return 0;
+            }
+            else if (value1 == null) {
+                result = 1 * nullSortOrder;
+            }
+            else if (value2 == null) {
+                result = -1 * nullSortOrder;
+            }
+            else if (sortFunction == null) {
+                if (value1 instanceof String && value2 instanceof String) {
+                    if (this.caseSensitive) {
                         result = collator.compare(value1, value2);
                     }
                     else {
                         String str1 = (((String) value1).toLowerCase(locale));
                         String str2 = (((String) value2).toLowerCase(locale));
-                        
+
                         result = collator.compare(str1, str2);
                     }
-                } else {
+                }
+                else {
                     result = ((Comparable) value1).compareTo(value2);
                 }
-            } else {
+            }
+            else {
                 result = (Integer) sortFunction.invoke(context.getELContext(), new Object[]{value1, value2});
             }
 
             return asc ? result : -1 * result;
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new FacesException(e);
         }
     }

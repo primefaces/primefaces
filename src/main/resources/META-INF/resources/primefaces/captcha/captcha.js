@@ -17,10 +17,14 @@ PrimeFaces.widget.Captcha = PrimeFaces.widget.BaseWidget.extend({
     },
     
     render: function() {
+        $this = this;
         grecaptcha.render(this.jq.get(0), {
             'sitekey' : this.cfg.sitekey,
             'tabindex': this.cfg.tabindex,
-            'theme': this.cfg.theme
+            'theme': this.cfg.theme,
+            'callback': $this.cfg.callback,
+            'expired-callback': $this.cfg.expired,
+            'size': this.cfg.size 
         });
         
         window[this.cfg.widgetVar + '_initCallback'] = undefined;

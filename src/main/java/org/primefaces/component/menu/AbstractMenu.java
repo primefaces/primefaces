@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import org.primefaces.model.menu.MenuModel;
 import org.primefaces.model.menu.MenuItem;
 
 public abstract class AbstractMenu extends UIPanel {
-		
+
     public static final String LIST_CLASS = "ui-menu-list ui-helper-reset";
     public static final String MENUITEM_CLASS = "ui-menuitem ui-widget ui-corner-all";
     public static final String MENUITEM_LINK_CLASS = "ui-menuitem-link ui-corner-all";
@@ -43,82 +43,85 @@ public abstract class AbstractMenu extends UIPanel {
     public static final String SUBMENU_LINK_CLASS = "ui-menuitem-link ui-submenu-link ui-corner-all";
     public static final String SEPARATOR_CLASS = "ui-separator ui-state-default";
     public static final String OPTIONS_CLASS = "ui-menuitem ui-menubar-options ui-widget ui-corner-all";
-    
+
     public static final String MOBILE_MENUITEM_LINK_CLASS = "ui-link ui-btn";
-    
-    protected enum PropertyKeys {
+
+    public enum PropertyKeys {
         tabindex
     }
-        
+
     public String getTabindex() {
-		return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
-	}
-	public void setTabindex(String tabindex) {
-		getStateHelper().put(PropertyKeys.tabindex, tabindex);
-	}
-    
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
+    }
+
+    public void setTabindex(String tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
+    }
+
     public List getElements() {
         MenuModel model = getModel();
-        if(model != null)
+        if (model != null) {
             return model.getElements();
-        else
+        }
+        else {
             return getChildren();
+        }
     }
-    
+
     public int getElementsCount() {
         List elements = getElements();
-        
+
         return (elements == null) ? 0 : elements.size();
     }
-    
-	public abstract MenuModel getModel();
-	
-	public boolean isDynamic() {
-		return this.getValueExpression("model") != null;
-	}
+
+    public abstract MenuModel getModel();
+
+    public boolean isDynamic() {
+        return this.getValueExpression("model") != null;
+    }
 
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
-        if(event instanceof MenuActionEvent) {
+        if (event instanceof MenuActionEvent) {
             FacesContext facesContext = getFacesContext();
             ELContext eLContext = facesContext.getELContext();
             MenuActionEvent menuActionEvent = (MenuActionEvent) event;
             MenuItem menuItem = menuActionEvent.getMenuItem();
             String command = menuItem.getCommand();
-            
-            if(command != null) {
+
+            if (command != null) {
                 String actionExpressionString = menuItem.getCommand();
                 MethodExpression noArgExpr = facesContext.getApplication().getExpressionFactory().
-                                createMethodExpression(eLContext,actionExpressionString, 
-                                                            String.class, new Class[0]);
-                Object outcome = null;
+                        createMethodExpression(eLContext, actionExpressionString,
+                                String.class, new Class[0]);
+                Object invokeResult = null;
 
                 try {
-                    outcome = noArgExpr.invoke(eLContext, null);
-                } 
-                catch(MethodNotFoundException methodNotFoundException) {
+                    invokeResult = noArgExpr.invoke(eLContext, null);
+                }
+                catch (MethodNotFoundException methodNotFoundException) {
                     try {
                         MethodExpression argExpr = facesContext.getApplication().getExpressionFactory().
-                                createMethodExpression(eLContext, actionExpressionString, 
-                                                            String.class, new Class[]{ActionEvent.class});
-                        
-                        outcome = argExpr.invoke(eLContext, new Object[]{event});
+                                createMethodExpression(eLContext, actionExpressionString,
+                                        String.class, new Class[]{ActionEvent.class});
+
+                        invokeResult = argExpr.invoke(eLContext, new Object[]{event});
                     }
-                    catch(MethodNotFoundException methodNotFoundException2) {
+                    catch (MethodNotFoundException methodNotFoundException2) {
                         MethodExpression argExpr = facesContext.getApplication().getExpressionFactory().
-                                createMethodExpression(eLContext, actionExpressionString, 
-                                                            String.class, new Class[]{MenuActionEvent.class});
-                        
-                        outcome = argExpr.invoke(eLContext, new Object[]{event});
+                                createMethodExpression(eLContext, actionExpressionString,
+                                        String.class, new Class[]{MenuActionEvent.class});
+
+                        invokeResult = argExpr.invoke(eLContext, new Object[]{event});
                     }
                 }
                 finally {
-                    if(outcome != null) {
-                        facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, actionExpressionString, outcome.toString());
-                    }
+                    String outcome = (invokeResult != null) ? invokeResult.toString() : null;
+
+                    facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, actionExpressionString, outcome);
                 }
             }
-            
+
         }
         else {
             super.broadcast(event);

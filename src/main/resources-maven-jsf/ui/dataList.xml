@@ -14,17 +14,23 @@
     <rendererClass>org.primefaces.component.datalist.DataListRenderer</rendererClass>
     <parent>org.primefaces.component.api.UIData</parent>
     <description>
-      DataList presents a collection of data in list layout with several display types.
-      Ajax Pagination is a built-in feature and paginator UI is fully customizable via various options like paginatorTemplate, rowsPerPageOptions, pageLinks and more.
+        DataList presents a collection of data in list layout with several display types.
+        Ajax Pagination is a built-in feature and paginator UI is fully customizable via various options like paginatorTemplate, rowsPerPageOptions, pageLinks and more.
     </description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
         <interface>
-			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
-		</interface>
-	</interfaces>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.Pageable</name>
+        </interface>
+    </interfaces>
     <attributes>
         &data_component_attributes;
         &widget_var_attribute;
@@ -64,12 +70,12 @@
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
-			<name>rowsPerPageLabel</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>rowsPerPageLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Label for rowsPerPage dropdown.</description>
             <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
+        </attribute>
         <attribute>
             <name>currentPageReportTemplate</name>
             <required>false</required>
@@ -127,12 +133,12 @@
             <description>Name of the exported request scoped variable for the status of the iteration.</description>
         </attribute>
         <attribute>
-			<name>lazy</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
+            <name>lazy</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
             <description>Defines if lazy loading is enabled for the data component.</description>
             <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
+        </attribute>
         <attribute>
             <name>emptyMessage</name>
             <required>false</required>
@@ -147,26 +153,29 @@
             <description>Style class of an item in list. This option is useful to assign specific styles to certain items using an EL expression.</description>
         </attribute>
         <attribute>
-			<name>rowStatePreserved</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
+            <name>rowStatePreserved</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
             <description>Keeps state of its children on a per-row basis. Default is false.</description>
             <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
+        </attribute>
     </attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
-		<resource>
-			<name>primefaces.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
 </component>

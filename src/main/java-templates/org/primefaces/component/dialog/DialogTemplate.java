@@ -2,6 +2,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.HashMap;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.MoveEvent;
 import org.primefaces.util.Constants;
@@ -9,6 +10,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
 import javax.el.ELContext;
+import javax.faces.event.BehaviorEvent;
 
     public static final String CONTAINER_CLASS = "ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container";
     public static final String TITLE_BAR_CLASS = "ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top";
@@ -34,7 +36,23 @@ import javax.el.ELContext;
 
     private final static String DEFAULT_EVENT = "close";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("close","minimize","maximize","move","restoreMinimize","restoreMaximize"));
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("close", CloseEvent.class);
+        put("minimize", null);
+        put("maximize", null);
+        put("move", MoveEvent.class);
+        put("restoreMinimize", null);
+        put("restoreMaximize", null);
+        put("open", null);
+        put("loadContent", null);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
 
     @Override
     public Collection<String> getEventNames() {
@@ -50,7 +68,7 @@ import javax.el.ELContext;
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
+        if(ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
@@ -80,7 +98,7 @@ import javax.el.ELContext;
 
     @Override
     public void processDecodes(FacesContext context) {
-        if(isRequestSource(context)) {
+        if(ComponentUtils.isRequestSource(this, context)) {
             this.decode(context);
         }
         else {
@@ -90,18 +108,18 @@ import javax.el.ELContext;
 
     @Override
     public void processValidators(FacesContext context) {
-        if(!isRequestSource(context)) {
+        if(!ComponentUtils.isRequestSource(this, context)) {
             super.processValidators(context);
         }
     }
 
     @Override
     public void processUpdates(FacesContext context) {
-        if(!isRequestSource(context)) {
+        if(!ComponentUtils.isRequestSource(this, context)) {
             super.processUpdates(context);
         }
         else {
-            ValueExpression visibleVE = this.getValueExpression("visible");
+            ValueExpression visibleVE = this.getValueExpression(PropertyKeys.visible.toString());
             if(visibleVE != null) {
                 FacesContext facesContext = getFacesContext();
                 ELContext eLContext = facesContext.getELContext();
@@ -114,9 +132,6 @@ import javax.el.ELContext;
         }
     }
 
-    private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
-    }
 
     public boolean isContentLoadRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_contentLoad");

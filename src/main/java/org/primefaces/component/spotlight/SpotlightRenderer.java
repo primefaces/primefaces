@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,18 +24,18 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 public class SpotlightRenderer extends CoreRenderer {
-    
+
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		Spotlight spotlight = (Spotlight) component;
-        
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        Spotlight spotlight = (Spotlight) component;
+
         encodeMarkup(context, spotlight);
         encodeScript(context, spotlight);
-	}
+    }
 
-    private void encodeMarkup(FacesContext context, Spotlight spotlight) throws IOException{
+    private void encodeMarkup(FacesContext context, Spotlight spotlight) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
         writer.startElement("span", spotlight);
         writer.writeAttribute("id", spotlight.getClientId(context), null);
         writer.endElement("span");
@@ -43,13 +43,13 @@ public class SpotlightRenderer extends CoreRenderer {
 
     private void encodeScript(FacesContext context, Spotlight spotlight) throws IOException {
         String clientId = spotlight.getClientId(context);
-        
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("Spotlight", spotlight.resolveWidgetVar(), clientId);
-        
+
         wb.attr("target", SearchExpressionFacade.resolveClientIds(context, spotlight, spotlight.getTarget()));
         wb.attr("active", spotlight.isActive(), false);
-        
+
         wb.finish();
     }
 }

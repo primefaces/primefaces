@@ -7,73 +7,82 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>spinner</tag>
-	<tagClass>org.primefaces.component.spinner.SpinnerTag</tagClass>
-	<componentClass>org.primefaces.component.spinner.Spinner</componentClass>
-	<componentType>org.primefaces.component.Spinner</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.SpinnerRenderer</rendererType>
-	<rendererClass>org.primefaces.component.spinner.SpinnerRenderer</rendererClass>
-	<parent>javax.faces.component.html.HtmlInputText</parent>
+    <tag>spinner</tag>
+    <tagClass>org.primefaces.component.spinner.SpinnerTag</tagClass>
+    <componentClass>org.primefaces.component.spinner.Spinner</componentClass>
+    <componentType>org.primefaces.component.Spinner</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.SpinnerRenderer</rendererType>
+    <rendererClass>org.primefaces.component.spinner.SpinnerRenderer</rendererClass>
+    <parent>javax.faces.component.html.HtmlInputText</parent>
     <description>Spinner is an input component to provide a numerical input via increment and decrement buttons.</description>
-     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
+    <interfaces>
         <interface>
-			<name>org.primefaces.component.api.InputHolder</name>
-		</interface>
-	</interfaces>
-	<attributes>
-		&input_component_attributes;
-		&html_input_text_attributes;
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.InputHolder</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &input_component_attributes;
+        &html_input_text_attributes;
         &widget_var_attribute;
-		<attribute>
-			<name>stepFactor</name>
-			<required>false</required>
-			<type>java.lang.Double</type>
-			<defaultValue>1.0</defaultValue>
+        <attribute>
+            <name>stepFactor</name>
+            <required>false</required>
+            <type>java.lang.Double</type>
+            <defaultValue>1.0</defaultValue>
             <description>Stepping factor for each increment and decrement. Default is 1.0.</description>
-		</attribute>
-		<attribute>
-			<name>min</name>
-			<required>false</required>
-			<type>java.lang.Double</type>
-			<defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
+        </attribute>
+        <attribute>
+            <name>min</name>
+            <required>false</required>
+            <type>java.lang.Double</type>
+            <defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
             <description>Minimum boundary value. Default is min double value.</description>
-		</attribute>
-		<attribute>
-			<name>max</name>
-			<required>false</required>
-			<type>java.lang.Double</type>
-			<defaultValue>java.lang.Double.MAX_VALUE</defaultValue>
+        </attribute>
+        <attribute>
+            <name>max</name>
+            <required>false</required>
+            <type>java.lang.Double</type>
+            <defaultValue>java.lang.Double.MAX_VALUE</defaultValue>
             <description>Maximum boundary value. Default is max double value.</description>
-		</attribute>
-		<attribute>
-			<name>prefix</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>prefix</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Prefix of the input.</description>
-		</attribute>
-		<attribute>
-			<name>suffix</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>suffix</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Suffix of the input.</description>
-		</attribute>
-	</attributes>
+        </attribute>
+        <attribute>
+            <name>decimalPlaces</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Number of decimal places.</description>
+        </attribute>
+    </attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
+            <name>jquery/jquery.js</name>
+        </resource>
         <resource>
-			<name>primefaces.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
 </component>

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import org.atmosphere.cpr.MetaBroadcaster;
 
 /**
  * Factory for retrieving {@link PushContext}
+ *
  * @deprecated With PrimeFaces 4.1 and up, it is recommended to use {@link EventBus}
  */
 public class PushContextFactory {
@@ -35,6 +36,7 @@ public class PushContextFactory {
 
     /**
      * Return the default factory
+     *
      * @return the default factory
      */
     public final static PushContextFactory getDefault() {
@@ -43,9 +45,10 @@ public class PushContextFactory {
 
     /**
      * Retrieve a {@link PushContext}
+     *
      * @return
      */
-    public PushContext getPushContext(){
+    public PushContext getPushContext() {
         return pushContext;
     }
 

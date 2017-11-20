@@ -12,10 +12,11 @@ import org.primefaces.util.Constants;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+import javax.faces.event.BehaviorEvent;
 
     public static final String CONTAINER_CLASS = "ui-orderlist ui-grid ui-widget";
     public static final String LIST_CLASS = "ui-widget-content ui-orderlist-list";
-    public static final String CONTROLS_CLASS = "ui-orderlist-controls ui-grid-col-2";
+    public static final String CONTROLS_CLASS = "ui-orderlist-controls ui-g-12 ui-md-2";
     public static final String CAPTION_CLASS = "ui-orderlist-caption ui-widget-header ui-corner-top";
     public static final String ITEM_CLASS = "ui-orderlist-item ui-corner-all";
     public static final String MOVE_UP_BUTTON_CLASS = "ui-orderlist-button-move-up";
@@ -27,10 +28,21 @@ import javax.faces.event.PhaseId;
     public static final String MOVE_TOP_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-n";
     public static final String MOVE_BOTTOM_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-s";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect","reorder"));
-
     private Map<String,AjaxBehaviorEvent> customEvents = new HashMap<String,AjaxBehaviorEvent>();
     
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("select", SelectEvent.class);
+        put("unselect", UnselectEvent.class);
+        put("reorder", null);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
+
     @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
@@ -48,7 +60,7 @@ import javax.faces.event.PhaseId;
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(isRequestSource(context) && (event instanceof AjaxBehaviorEvent)) {
+        if(ComponentUtils.isRequestSource(this, context) && (event instanceof AjaxBehaviorEvent)) {
             String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             customEvents.put(eventName, (AjaxBehaviorEvent) event);
         } 
@@ -91,6 +103,3 @@ import javax.faces.event.PhaseId;
         }
     }
 
-    private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
-    }

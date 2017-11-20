@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,36 +17,23 @@ package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
 
-public class ResizeEvent extends AjaxBehaviorEvent {
+public class ResizeEvent extends AbstractAjaxBehaviorEvent {
 
-	private int width;
-	private int height;
-	
-	public ResizeEvent(UIComponent component, Behavior behavior, int width, int height) {
-		super(component, behavior);
-		this.width = width;
-		this.height = height;
-	}
+    private int width;
+    private int height;
 
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
+    public ResizeEvent(UIComponent component, Behavior behavior, int width, int height) {
+        super(component, behavior);
+        this.width = width;
+        this.height = height;
+    }
 
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
-	}
-	
-	public int getWidth() {
-		return width;
-	}
+    public int getWidth() {
+        return width;
+    }
 
-	public int getHeight() {
-		return height;
-	}
+    public int getHeight() {
+        return height;
+    }
 }

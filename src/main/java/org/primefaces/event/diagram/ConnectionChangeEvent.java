@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,12 @@ package org.primefaces.event.diagram;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
+import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.diagram.Element;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 
-public class ConnectionChangeEvent extends AjaxBehaviorEvent {
-    
+public class ConnectionChangeEvent extends AbstractAjaxBehaviorEvent {
+
     private Element originalSourceElement;
     private Element newSourceElement;
     private Element originalTargetElement;
@@ -34,7 +32,9 @@ public class ConnectionChangeEvent extends AjaxBehaviorEvent {
     private EndPoint originalTargetEndPoint;
     private EndPoint newTargetEndPoint;
 
-    public ConnectionChangeEvent(UIComponent component, Behavior behavior, Element originalSourceElement, Element newSourceElement, Element originalTargetElement, Element newTargetElement, EndPoint originalSourceEndPoint, EndPoint newSourceEndPoint, EndPoint originalTargetEndPoint, EndPoint newTargetEndPoint) {
+    public ConnectionChangeEvent(UIComponent component, Behavior behavior, Element originalSourceElement, Element newSourceElement,
+            Element originalTargetElement, Element newTargetElement, EndPoint originalSourceEndPoint, EndPoint newSourceEndPoint,
+            EndPoint originalTargetEndPoint, EndPoint newTargetEndPoint) {
         super(component, behavior);
         this.originalSourceElement = originalSourceElement;
         this.newSourceElement = newSourceElement;
@@ -45,16 +45,6 @@ public class ConnectionChangeEvent extends AjaxBehaviorEvent {
         this.originalTargetEndPoint = originalTargetEndPoint;
         this.newTargetEndPoint = newTargetEndPoint;
     }
-    
-    @Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
-	}
 
     public Element getOriginalSourceElement() {
         return originalSourceElement;

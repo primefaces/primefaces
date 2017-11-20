@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,13 +26,13 @@ import org.primefaces.component.selectoneradio.SelectOneRadio;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneRadioRenderer extends org.primefaces.component.selectoneradio.SelectOneRadioRenderer {
-    
+
     @Override
     protected void encodeScript(FacesContext context, SelectOneRadio radio) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectOneRadio", radio.resolveWidgetVar(), radio.getClientId(context)).finish();
     }
-    
+
     @Override
     protected void encodeMarkup(FacesContext context, SelectOneRadio radio) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -41,37 +41,38 @@ public class SelectOneRadioRenderer extends org.primefaces.component.selectonera
         String style = radio.getStyle();
         String styleClass = radio.getStyleClass();
         Converter converter = radio.getConverter();
-        
+
         writer.startElement("div", radio);
         writer.writeAttribute("id", clientId, "id");
-        
+
         if (style != null) writer.writeAttribute("style", style, "style");
-        if (styleClass != null) writer.writeAttribute("class", style, "styleClass");
-        
+        if (styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
+
         if (selectItems != null && !selectItems.isEmpty()) {
             Object value = radio.getSubmittedValue();
-            if(value == null) {
+            if (value == null) {
                 value = radio.getValue();
             }
             Class type = value == null ? String.class : value.getClass();
-        
-            int idx = 0;
-            for (SelectItem selectItem : selectItems) {
+
+            for (int i = 0; i < selectItems.size(); i++) {
+                SelectItem selectItem = selectItems.get(i);
                 boolean disabled = selectItem.isDisabled() || radio.isDisabled();
-                String id = clientId + UINamingContainer.getSeparatorChar(context) + idx;
+                String id = clientId + UINamingContainer.getSeparatorChar(context) + i;
                 Object coercedItemValue = coerceToModelType(context, selectItem.getValue(), type);
                 boolean selected = (coercedItemValue != null) && coercedItemValue.equals(value);
- 
-                encodeOption(context, radio, selectItem, id, clientId, converter, selected, disabled); 
-                idx++;
+
+                encodeOption(context, radio, selectItem, id, clientId, converter, selected, disabled);
             }
         }
-        
+
         writer.endElement("div");
     }
-    
+
     @Override
-    protected void encodeOption(FacesContext context, SelectOneRadio radio, SelectItem option, String id, String name, Converter converter, boolean selected, boolean disabled) throws IOException {
+    protected void encodeOption(FacesContext context, SelectOneRadio radio, SelectItem option, String id, String name,
+            Converter converter, boolean selected, boolean disabled) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, radio, converter, option.getValue());
 
@@ -84,22 +85,24 @@ public class SelectOneRadioRenderer extends org.primefaces.component.selectonera
 
         renderOnchange(context, radio);
         renderDynamicPassThruAttributes(context, radio);
-        
+
         if (radio.getTabindex() != null) writer.writeAttribute("tabindex", radio.getTabindex(), null);
         if (selected) writer.writeAttribute("checked", "checked", null);
         if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        
+
         writer.endElement("input");
 
         //label
         writer.startElement("label", null);
         writer.writeAttribute("for", id, null);
-        
-        if (option.isEscape())
-            writer.writeText(option.getLabel(),null);
-        else
+
+        if (option.isEscape()) {
+            writer.writeText(option.getLabel(), null);
+        }
+        else {
             writer.write(option.getLabel());
-        
+        }
+
         writer.endElement("label");
     }
 }

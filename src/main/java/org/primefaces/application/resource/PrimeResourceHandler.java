@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,23 +28,23 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
 public class PrimeResourceHandler extends ResourceHandlerWrapper {
-    
+
     private static final Logger LOG = Logger.getLogger(PrimeResourceHandler.class.getName());
-    
-    private final Map<String,DynamicContentHandler> handlers;
-    
+
+    private final Map<String, DynamicContentHandler> handlers;
+
     private final ResourceHandler wrapped;
-    
+
     public PrimeResourceHandler(ResourceHandler wrapped) {
         this.wrapped = wrapped;
-        handlers = new HashMap<String,DynamicContentHandler>();
+        handlers = new HashMap<String, DynamicContentHandler>();
         handlers.put(DynamicContentType.STREAMED_CONTENT.toString(), new StreamedContentHandler());
-        
-        if(isBarcodeHandlerAvailable()) {
+
+        if (isBarcodeHandlerAvailable()) {
             handlers.put(DynamicContentType.BARCODE.toString(), new BarcodeHandler());
         }
-        
-        if(isQRCodeHandlerAvailable()) {
+
+        if (isQRCodeHandlerAvailable()) {
             handlers.put(DynamicContentType.QR_CODE.toString(), new QRCodeHandler());
         }
     }
@@ -57,8 +57,8 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
     @Override
     public Resource createResource(String resourceName, String libraryName) {
         Resource resource = super.createResource(resourceName, libraryName);
-        
-        if(resource != null && libraryName != null && libraryName.equalsIgnoreCase(Constants.LIBRARY)) {
+
+        if (resource != null && libraryName != null && libraryName.equalsIgnoreCase(Constants.LIBRARY)) {
             return new PrimeResource(resource);
         }
         else {
@@ -69,20 +69,20 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
     @Override
     public Resource createResource(String resourceName, String libraryName, String contentType) {
         Resource resource = super.createResource(resourceName, libraryName, contentType);
-        
-        if(resource != null && libraryName != null && libraryName.equalsIgnoreCase(Constants.LIBRARY)) {
+
+        if (resource != null && libraryName != null && libraryName.equalsIgnoreCase(Constants.LIBRARY)) {
             return new PrimeResource(resource);
         }
         else {
             return resource;
         }
     }
-    
+
     @Override
     public void handleResourceRequest(FacesContext context) throws IOException {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String handlerType = params.get(Constants.DYNAMIC_CONTENT_TYPE_PARAM);
-        
+
         if (ComponentUtils.isValueBlank(handlerType)) {
             super.handleResourceRequest(context);
         }
@@ -91,12 +91,13 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
             if (handler == null) {
                 LOG.warning("No dynamic resource handler registered for: " + handlerType + ". Do you miss a dependency?");
                 super.handleResourceRequest(context);
-            } else {
+            }
+            else {
                 handler.handle(context);
             }
         }
     }
-    
+
     private boolean isBarcodeHandlerAvailable() {
         try {
             Class.forName("org.krysalis.barcode4j.output.AbstractCanvasProvider");
@@ -106,7 +107,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
             return false;
         }
     }
-    
+
     private boolean isQRCodeHandlerAvailable() {
         try {
             Class.forName("net.glxn.qrgen.QRCode");

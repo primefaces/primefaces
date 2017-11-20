@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,5 +26,6 @@ public enum DataTableFeatureKey {
     ROW_EXPAND,
     SCROLL,
     SELECT,
-    DRAGGABLE_ROWS;
+    DRAGGABLE_ROWS,
+    ADD_ROW;
 }

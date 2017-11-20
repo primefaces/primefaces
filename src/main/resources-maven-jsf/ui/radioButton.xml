@@ -4,21 +4,21 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>radioButton</tag>
-	<tagClass>org.primefaces.component.radiobutton.RadioButtonTag</tagClass>
-	<componentClass>org.primefaces.component.radiobutton.RadioButton</componentClass>
-	<componentType>org.primefaces.component.RadioButton</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.RadioButtonRenderer</rendererType>
-	<rendererClass>org.primefaces.component.radiobutton.RadioButtonRenderer</rendererClass>
-	<parent>javax.faces.component.UIComponentBase</parent>
+    <tag>radioButton</tag>
+    <tagClass>org.primefaces.component.radiobutton.RadioButtonTag</tagClass>
+    <componentClass>org.primefaces.component.radiobutton.RadioButton</componentClass>
+    <componentType>org.primefaces.component.RadioButton</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.RadioButtonRenderer</rendererType>
+    <rendererClass>org.primefaces.component.radiobutton.RadioButtonRenderer</rendererClass>
+    <parent>javax.faces.component.UIComponentBase</parent>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
-	</interfaces>
-	<attributes>
-		&standard_uicomponent_attributes;
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
         &widget_var_attribute;
         <attribute>
             <name>disabled</name>
@@ -32,6 +32,7 @@
             <required>false</required>
             <type>java.lang.Integer</type>
             <description>Index of the selectItem of the selectOneRadio.</description>
+            <defaultValue>0</defaultValue>
         </attribute>
         <attribute>
             <name>onchange</name>
@@ -63,16 +64,19 @@
             <type>java.lang.String</type>
             <description>The tabindex attribute specifies the tab order of an element when the "tab" button is used for navigating.</description>
         </attribute>
-	</attributes>
+    </attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>primefaces.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
 </component>

@@ -110,8 +110,3 @@
     border: 0 none;
 }
 
-/* Yuk! CSS Hack for IE6 3 pixel bug :( */
-* html .ui-scrollpanel-corner
-{
-	margin: 0 -3px 0 0;
-}

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,51 +17,38 @@ package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
 
-public class DashboardReorderEvent extends AjaxBehaviorEvent {
+public class DashboardReorderEvent extends AbstractAjaxBehaviorEvent {
 
-	private String widgetId;
+    private String widgetId;
 
-	private Integer itemIndex;
-	
-	private Integer columnIndex;
-	
-	private Integer senderColumnIndex;
+    private Integer itemIndex;
+
+    private Integer columnIndex;
+
+    private Integer senderColumnIndex;
 
     public DashboardReorderEvent(UIComponent component, Behavior behavior, String widgetId, Integer itemIndex, Integer columnIndex, Integer senderColumnIndex) {
-		super(component, behavior);
-		this.widgetId = widgetId;
-		this.itemIndex = itemIndex;
-		this.columnIndex = columnIndex;
-		this.senderColumnIndex = senderColumnIndex;
-	}
+        super(component, behavior);
+        this.widgetId = widgetId;
+        this.itemIndex = itemIndex;
+        this.columnIndex = columnIndex;
+        this.senderColumnIndex = senderColumnIndex;
+    }
 
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-        return (faceslistener instanceof AjaxBehaviorListener);
-	}
+    public String getWidgetId() {
+        return widgetId;
+    }
 
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
-	}
-	
-	public String getWidgetId() {
-		return widgetId;
-	}
-	
-	public Integer getItemIndex() {
-		return itemIndex;
-	}
-	
-	public Integer getColumnIndex() {
-		return columnIndex;
-	}
+    public Integer getItemIndex() {
+        return itemIndex;
+    }
 
-	public Integer getSenderColumnIndex() {
-		return senderColumnIndex;
-	}
+    public Integer getColumnIndex() {
+        return columnIndex;
+    }
+
+    public Integer getSenderColumnIndex() {
+        return senderColumnIndex;
+    }
 }

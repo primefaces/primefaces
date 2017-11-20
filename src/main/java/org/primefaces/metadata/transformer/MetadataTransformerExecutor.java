@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,10 +24,10 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
-import javax.faces.event.PostAddToViewEvent;
+import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-import org.primefaces.config.ConfigContainer;
+import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.RequestContext;
 
 public class MetadataTransformerExecutor implements SystemEventListener {
@@ -36,30 +36,13 @@ public class MetadataTransformerExecutor implements SystemEventListener {
 
     private final static MetadataTransformer BV_INPUT_METADATA_TRANSFORMER = new BeanValidationInputMetadataTransformer();
 
-    static {
-
-    }
-
+    @Override
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         try {
-            if (event instanceof PostAddToViewEvent) {
-                PostAddToViewEvent postAddToViewEvent = (PostAddToViewEvent) event;
+            if (event instanceof PreRenderComponentEvent) {
+                PreRenderComponentEvent preRenderComponentEvent = (PreRenderComponentEvent) event;
 
-                FacesContext context = FacesContext.getCurrentInstance();
-                RequestContext requestContext = RequestContext.getCurrentInstance();
-                ConfigContainer config = requestContext.getApplicationContext().getConfig();
-
-                if (config.isTransformMetadataEnabled()) {
-                    if (config.isBeanValidationAvailable()) {
-                        BV_INPUT_METADATA_TRANSFORMER.transform(context, requestContext, postAddToViewEvent.getComponent());
-                    }
-
-                    if (METADATA_TRANSFORMERS.size() > 0) {
-                        for (int i = 0; i < METADATA_TRANSFORMERS.size(); i++) {
-                            METADATA_TRANSFORMERS.get(i).transform(context, requestContext, postAddToViewEvent.getComponent());
-                        }
-                    }
-                }
+                execute(RequestContext.getCurrentInstance().getApplicationContext().getConfig(), preRenderComponentEvent.getComponent());
             }
         }
         catch (IOException e) {
@@ -67,15 +50,34 @@ public class MetadataTransformerExecutor implements SystemEventListener {
         }
     }
 
+    @Override
     public boolean isListenerForSource(Object source) {
         return source instanceof UIComponent;
     }
 
-	public static void registerMetadataTransformer(final MetadataTransformer metadataTransformer) {
-        METADATA_TRANSFORMERS.add(metadataTransformer);
-	}
+    public static void execute(PrimeConfiguration config, UIComponent component) throws IOException {
+        if (config.isTransformMetadataEnabled()) {
 
-	public static MetadataTransformer removeMetadataTransformer(final Class<? extends MetadataTransformer> clazz) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            RequestContext requestContext = RequestContext.getCurrentInstance(context);
+
+            if (config.isBeanValidationAvailable()) {
+                BV_INPUT_METADATA_TRANSFORMER.transform(context, requestContext, component);
+            }
+
+            if (METADATA_TRANSFORMERS.size() > 0) {
+                for (int i = 0; i < METADATA_TRANSFORMERS.size(); i++) {
+                    METADATA_TRANSFORMERS.get(i).transform(context, requestContext, component);
+                }
+            }
+        }
+    }
+
+    public static void registerMetadataTransformer(final MetadataTransformer metadataTransformer) {
+        METADATA_TRANSFORMERS.add(metadataTransformer);
+    }
+
+    public static MetadataTransformer removeMetadataTransformer(final Class<? extends MetadataTransformer> clazz) {
         Iterator<MetadataTransformer> iterator = METADATA_TRANSFORMERS.iterator();
         while (iterator.hasNext()) {
             MetadataTransformer metadataTransformer = iterator.next();
@@ -86,5 +88,5 @@ public class MetadataTransformerExecutor implements SystemEventListener {
         }
 
         return null;
-	}
+    }
 }

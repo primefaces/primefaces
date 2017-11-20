@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2013 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.primefaces.webapp;
 
+import org.primefaces.util.Jsf23Helper;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,23 +24,29 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
-import org.primefaces.config.ConfigContainer;
-import org.primefaces.config.StartupConfigContainer;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.config.StartupPrimeConfiguration;
 
 public class PostConstructApplicationEventListener implements SystemEventListener {
 
     private final static Logger logger = Logger.getLogger(PostConstructApplicationEventListener.class.getName());
 
+    @Override
     public boolean isListenerForSource(Object source) {
         return true;
     }
 
+    @Override
     public void processEvent(SystemEvent event) throws AbortProcessingException {
-    	// temp manually instantiate startup config as the default config is not available yet
-    	ConfigContainer config = new StartupConfigContainer(FacesContext.getCurrentInstance());
-    	
+        // temp manually instantiate startup config as the default config is not available yet
+        PrimeConfiguration config = new StartupPrimeConfiguration(FacesContext.getCurrentInstance());
+
         logger.log(Level.INFO,
-        		"Running on PrimeFaces {0}", 
-        		config.getBuildVersion());
+                "Running on PrimeFaces {0}",
+                config.getBuildVersion());
+        
+        if (config.isAtLeastJSF23()) {
+            Jsf23Helper.addSearchKeywordResolvers();
+        }
     }
 }

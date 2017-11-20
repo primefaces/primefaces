@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,25 +17,30 @@ package org.primefaces.component.media.player;
 
 public class FlashPlayer implements MediaPlayer {
 
-	private final static String[] supportedTypes = new String[]{"flv", "mp3", "swf"};
-	
-	public String getClassId() {
-		return "clsid:d27cdb6e-ae6d-11cf-96b8-444553540000";
-	}
+    private final static String[] SUPPORTED_TYPES = new String[] { "flv", "mp3", "swf" };
 
-	public String getCodebase() {
-		return "http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7";
-	}
-	
-	public String getSourceParam() {
-		return "movie";
-	}
+    @Override
+    public String getClassId() {
+        return "clsid:d27cdb6e-ae6d-11cf-96b8-444553540000";
+    }
 
-	public String getType() {
-		return "application/x-shockwave-flash";
-	}
+    @Override
+    public String getCodebase() {
+        return "http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7";
+    }
 
+    @Override
+    public String getSourceParam() {
+        return "movie";
+    }
+
+    @Override
+    public String getType() {
+        return "application/x-shockwave-flash";
+    }
+
+    @Override
     public String[] getSupportedTypes() {
-        return supportedTypes;
+        return SUPPORTED_TYPES;
     }
 }

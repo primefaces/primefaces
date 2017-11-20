@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package org.primefaces.event;
 
-import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
@@ -24,24 +23,24 @@ import org.primefaces.model.UploadedFile;
 
 public class FileUploadEvent extends FacesEvent {
 
-	private UploadedFile file;
+    private UploadedFile file;
 
-	public FileUploadEvent(UIComponent component, UploadedFile file) {
-		super(component);
-		this.file = file;
-	}
+    public FileUploadEvent(UIComponent component, UploadedFile file) {
+        super(component);
+        this.file = file;
+    }
 
-	@Override
-	public boolean isAppropriateListener(FacesListener listener) {
-		return false;
-	}
+    @Override
+    public boolean isAppropriateListener(FacesListener listener) {
+        return false;
+    }
 
-	@Override
-	public void processListener(FacesListener listener) {
-		throw new UnsupportedOperationException();
-	}
-	
-	public UploadedFile getFile() {
-		return file;
-	}
+    @Override
+    public void processListener(FacesListener listener) {
+        throw new UnsupportedOperationException();
+    }
+
+    public UploadedFile getFile() {
+        return file;
+    }
 }

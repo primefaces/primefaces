@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 package org.primefaces.model.diagram.connector;
 
 public class FlowChartConnector extends Connector {
-    
+
     private int stub = 30;
-    
+
     private int gap = 0;
-    
+
     private double cornerRadius = 0;
-    
+
     private boolean alwaysRespectStubs;
 
     public FlowChartConnector() {
@@ -73,6 +73,6 @@ public class FlowChartConnector extends Connector {
 
     public String toJS(StringBuilder sb) {
         return sb.append("['Flowchart',{stub:").append(stub).append(",gap:").append(gap).append(",cornerRadius:").append(cornerRadius)
-                        .append(",alwaysRespectStubs:").append(alwaysRespectStubs).append("}]").toString();
+                .append(",alwaysRespectStubs:").append(alwaysRespectStubs).append("}]").toString();
     }
 }

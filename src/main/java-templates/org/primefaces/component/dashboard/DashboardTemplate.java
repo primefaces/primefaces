@@ -12,17 +12,32 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
 import javax.faces.event.PhaseId;
+import javax.faces.event.BehaviorEvent;
 
     public static final String CONTAINER_CLASS = "ui-dashboard";
 	public static final String COLUMN_CLASS = "ui-dashboard-column";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("reorder"));
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("reorder", DashboardReorderEvent.class);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
 
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
         
-        if(isRequestSource(context)) {
+        if(ComponentUtils.isRequestSource(this, context)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = this.getClientId(context);
@@ -69,14 +84,10 @@ import javax.faces.event.PhaseId;
 		}
 	}
 
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
 
     @Override
     public void processDecodes(FacesContext context) {
-        if(isRequestSource(context)) {
+        if(ComponentUtils.isRequestSource(this, context)) {
             this.decode(context);
         }
         else {
@@ -86,18 +97,14 @@ import javax.faces.event.PhaseId;
 
     @Override
     public void processValidators(FacesContext context) {
-        if(!isRequestSource(context)) {
+        if(!ComponentUtils.isRequestSource(this, context)) {
             super.processValidators(context);
         }
     }
 
     @Override
     public void processUpdates(FacesContext context) {
-        if(!isRequestSource(context)) {
+        if(!ComponentUtils.isRequestSource(this, context)) {
             super.processUpdates(context);
         }
-    }
-
-    private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }

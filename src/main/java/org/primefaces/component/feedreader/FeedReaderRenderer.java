@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,36 +20,36 @@ import java.util.List;
 import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class FeedReaderRenderer extends CoreRenderer {
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         FeedReader reader = (FeedReader) component;
-        Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         String var = reader.getVar();
         int size = reader.getSize();
-        
+
         try {
             List entries = new FeedInput().parse(reader.getValue(), size);
-            
-            for(Object f : entries) {
+
+            for (Object f : entries) {
                 requestMap.put(var, f);
                 renderChildren(context, reader);
             }
-            
+
             requestMap.remove(var);
-            
-        } catch(Exception e) {
+
+        }
+        catch (Exception e) {
             UIComponent errorFacet = reader.getFacet("error");
-            if(errorFacet != null) {
+            if (errorFacet != null) {
                 errorFacet.encodeAll(context);
             }
         }
     }
-    
+
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Do nothing

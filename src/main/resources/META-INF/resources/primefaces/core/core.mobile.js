@@ -6,10 +6,6 @@ $(document).on('pfAjaxComplete', function() {
     $.mobile.loading('hide');
 });
 
-PrimeFaces.getCoreScriptName = function() {
-    return 'primefaces-mobile.js';
-};
-
 PrimeFaces.confirm = function(msg) {
     if(PrimeFaces.confirmDialog) {
         PrimeFaces.confirmSource = (typeof(msg.source) === 'string') ? $(PrimeFaces.escapeClientId(msg.source)) : $(msg.source);

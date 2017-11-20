@@ -14,14 +14,14 @@
     <rendererClass>org.primefaces.component.wizard.WizardRenderer</rendererClass>
     <parent>javax.faces.component.UIComponentBase</parent>
     <description>
-      Wizard provides an ajax enhanced UI to implement a workflow easily in a single page. 
-      Wizard consists of several child tab components where each tab represents a step in the process.
+        Wizard provides an ajax enhanced UI to implement a workflow easily in a single page. 
+        Wizard consists of several child tab components where each tab represents a step in the process.
     </description>
-     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
-	</interfaces>
+    <interfaces>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
     <attributes>
         &standard_uicomponent_attributes;
         &widget_var_attribute;
@@ -93,13 +93,16 @@
     </attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>primefaces.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
 </component>

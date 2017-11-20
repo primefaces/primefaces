@@ -15,6 +15,10 @@
  */
 package org.primefaces.json;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -40,6 +44,26 @@ public class JSONObjectTest {
 		assertEquals("Civici", json.get("lastname"));
         assertEquals(2, json.length());
 	}
+    
+    @Test
+    public void testListToJSONArray() throws JSONException {
+        List<String> myList = new ArrayList<String>();
+        for (int i = 0; i < 5; i++) {
+            myList.add("item" + i);
+        }
+
+        assertEquals(5, new JSONArray(myList).length());
+    }
+    
+    @Test
+    public void testMapToJSONObject() throws JSONException {
+        Map<String, String> myMap = new HashMap<String, String>();
+        for (int j = 0; j < 5; j++) {
+            myMap.put("key" + j, "value" + j);
+        }
+
+        assertEquals(5, new JSONObject(myMap).length());
+    }
 	
 	static public class Person {
 		

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,15 +21,16 @@ import org.primefaces.util.HTML;
 
 public class RegexValidator extends javax.faces.validator.RegexValidator implements ClientValidator {
 
-    private Map<String,Object> metadata;
-    
+    private Map<String, Object> metadata;
+
     public Map<String, Object> getMetadata() {
         metadata = new HashMap<String, Object>();
         String regex = this.getPattern();
-        
-        if(regex != null)
+
+        if (regex != null) {
             metadata.put(HTML.VALIDATION_METADATA.REGEX, regex);
-        
+        }
+
         return metadata;
     }
 

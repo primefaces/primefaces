@@ -7,6 +7,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         this._super(cfg);        
         this.thead = $(this.jqId + '_head');
         this.tbody = $(this.jqId + '_data');
+        this.cfg.expandMode = this.cfg.expandMode||"children";
 
         this.renderDeferred();
     },
@@ -15,9 +16,21 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.scrollable) {
             this.setupScrolling();
         }
-
+        
+        if(this.cfg.filter) {
+            this.setupFiltering();
+        }
+        
         if(this.cfg.resizableColumns) {
             this.setupResizableColumns();
+        }
+        
+        if(this.cfg.stickyHeader) {
+            this.setupStickyHeader();
+        }
+        
+        if(this.cfg.editable) {
+            this.bindEditEvents();
         }
         
         this.bindEvents();
@@ -25,6 +38,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     
     refresh: function(cfg) {
         this.columnWidthsFixed = false;
+        this.scrollStateVal = this.scrollStateHolder ? this.scrollStateHolder.val() : null;
         this.init(cfg);
     },
     
@@ -53,12 +67,188 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             this.jqSelection = $(this.jqId + '_selection');
             var selectionValue = this.jqSelection.val();
             this.selections = selectionValue === "" ? [] : selectionValue.split(',');
+            this.cfg.disabledTextSelection = this.cfg.disabledTextSelection === false ? false : true;
 
             this.bindSelectionEvents();
         }
         
         //sorting
         this.bindSortEvents();
+        
+        if(this.cfg.paginator) {
+            this.cfg.paginator.paginate = function(newState) {
+                $this.handlePagination(newState);
+            };
+
+            this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
+        }
+    },
+    
+    /**
+     * Binds filter events to standard filters
+     */
+    setupFiltering: function() {
+        var $this = this,
+        filterColumns = this.thead.find('> tr > th.ui-filter-column');
+        this.cfg.filterEvent = this.cfg.filterEvent||'keyup';
+        this.cfg.filterDelay = this.cfg.filterDelay||300;
+
+        filterColumns.children('.ui-column-filter').each(function() {
+            var filter = $(this);
+
+            if(filter.is('input:text')) {
+                PrimeFaces.skinInput(filter);
+                $this.bindTextFilter(filter);
+            } 
+            else {
+                PrimeFaces.skinSelect(filter);
+                $this.bindChangeFilter(filter);
+            }
+        });
+    },
+    
+    bindTextFilter: function(filter) {
+        if(this.cfg.filterEvent === 'enter')
+            this.bindEnterKeyFilter(filter);
+        else
+            this.bindFilterEvent(filter);
+    },
+    
+    bindChangeFilter: function(filter) {
+        var $this = this;
+        
+        filter.change(function() {
+            $this.filter();
+        });
+    },
+    
+    bindEnterKeyFilter: function(filter) {
+        var $this = this;
+    
+        filter.bind('keydown', function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                e.preventDefault();
+            }
+        }).bind('keyup', function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                $this.filter();
+
+                e.preventDefault();
+            }
+        });
+    },
+    
+    bindFilterEvent: function(filter) {
+        var $this = this;
+        
+        //prevent form submit on enter key
+        filter.on('keydown.treeTable-blockenter', function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                e.preventDefault();
+            }
+        })
+        .on(this.cfg.filterEvent + '.treeTable', function(e) {
+            if($this.filterTimeout) {
+                clearTimeout($this.filterTimeout);
+            }
+
+            $this.filterTimeout = setTimeout(function() {
+                $this.filter();
+                $this.filterTimeout = null;
+            },
+            $this.cfg.filterDelay);
+        });
+    },
+    
+    /**
+     * Ajax filter
+     */
+    filter: function() {
+        var $this = this,
+        options = {
+            source: this.id,
+            update: this.id,
+            process: this.id,
+            formId: this.cfg.formId,
+            params: [{name: this.id + '_filtering', value: true},
+                     {name: this.id + '_encodeFeature', value: true}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.tbody.html(content);
+                        }
+                    });
+
+                return true;
+            },
+            oncomplete: function(xhr, status, args) {
+                var paginator = $this.getPaginator();
+                if(args && args.totalRecords) {                    
+                    if(paginator) {
+                        paginator.setTotalRecords(args.totalRecords);
+                    }
+                }
+            }
+        };
+
+        if(this.hasBehavior('filter')) {
+            var filterBehavior = this.cfg.behaviors['filter'];
+
+            filterBehavior.call(this, options);
+        } 
+        else {
+            PrimeFaces.ajax.AjaxRequest(options); 
+        }
+    },
+    
+    handlePagination: function(newState) {
+        var $this = this,
+        options = {
+            source: this.id,
+            update: this.id,
+            process: this.id,
+            params: [
+                {name: this.id + '_pagination', value: true},
+                {name: this.id + '_first', value: newState.first},
+                {name: this.id + '_rows', value: newState.rows}
+            ],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.tbody.html(content);
+                        }
+                    });
+
+                return true;
+            },
+            oncomplete: function() {
+                $this.paginator.cfg.page = newState.page;
+                $this.paginator.updateUI();
+            }
+        };
+
+        if(this.hasBehavior('page')) {
+            var pageBehavior = this.cfg.behaviors['page'];
+            pageBehavior.call(this, options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
+    },
+    
+    getPaginator: function() {
+        return this.paginator;
     },
     
     bindSelectionEvents: function() {
@@ -155,6 +345,136 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         });
     },
     
+    bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
+        var targetSelector = targetId + ' .ui-treetable-data > ' + (cfg.nodeType ? 'tr.ui-treetable-selectable-node.' + cfg.nodeType : 'tr.ui-treetable-selectable-node');
+        var targetEvent = cfg.event + '.treetable';
+        
+        $(document).off(targetEvent, targetSelector).on(targetEvent, targetSelector, null, function(e) {
+            targetWidget.onRowRightClick(e, $(this));
+            menuWidget.show(e);
+        });
+    },
+    
+    setupStickyHeader: function() {
+        var table = this.thead.parent(),
+        offset = table.offset(),
+        win = $(window),
+        $this = this,
+        stickyNS = 'scroll.' + this.id,
+        resizeNS = 'resize.sticky-' + this.id; 
+
+        this.stickyContainer = $('<div class="ui-treetable ui-treetable-sticky ui-widget"><table></table></div>');
+        this.clone = this.thead.clone(false);
+        this.stickyContainer.children('table').append(this.thead);
+        table.append(this.clone);
+        
+        this.stickyContainer.css({
+            position: 'absolute',
+            width: table.outerWidth(),
+            top: offset.top,
+            left: offset.left,
+            'z-index': ++PrimeFaces.zindex
+        });
+        
+        this.jq.prepend(this.stickyContainer);
+
+        if(this.cfg.resizableColumns) {
+            this.relativeHeight = 0;
+        }
+        
+        win.off(stickyNS).on(stickyNS, function() {
+            var scrollTop = win.scrollTop(),
+            tableOffset = table.offset();
+            
+            if(scrollTop > tableOffset.top) {
+                $this.stickyContainer.css({
+                                        'position': 'fixed',
+                                        'top': '0px'
+                                    })
+                                    .addClass('ui-shadow ui-sticky');
+                
+                if($this.cfg.resizableColumns) {
+                    $this.relativeHeight = scrollTop - tableOffset.top;
+                }
+                
+                if(scrollTop >= (tableOffset.top + $this.tbody.height()))
+                    $this.stickyContainer.hide();
+                else
+                    $this.stickyContainer.show();
+            }
+            else {
+                $this.stickyContainer.css({
+                                        'position': 'absolute',
+                                        'top': tableOffset.top
+                                    })
+                                    .removeClass('ui-shadow ui-sticky');
+                
+                if($this.stickyContainer.is(':hidden')) {
+                    $this.stickyContainer.show(); 
+                }
+                
+                if($this.cfg.resizableColumns) {
+                    $this.relativeHeight = 0;
+                }
+            }
+        })
+        .off(resizeNS).on(resizeNS, function() {
+            $this.stickyContainer.width(table.outerWidth());
+        });
+    },
+    
+    bindEditEvents: function() {
+        var $this = this;
+        this.cfg.cellSeparator = this.cfg.cellSeparator||' ';
+        
+        if(this.cfg.editMode === 'row') {
+            var rowEditorSelector = '> tr > td > div.ui-row-editor';
+            this.tbody.off('click.treetable', rowEditorSelector)
+                        .on('click.treetable', rowEditorSelector, null, function(e) {
+                            var element = $(e.target),
+                            row = element.closest('tr');
+
+                            if(element.hasClass('ui-icon-pencil')) {
+                                $this.switchToRowEdit(row);
+                                element.hide().siblings().show();
+                            }
+                            else if(element.hasClass('ui-icon-check')) {
+                                $this.saveRowEdit(row);
+                            }
+                            else if(element.hasClass('ui-icon-close')) {
+                                $this.cancelRowEdit(row);
+                            }
+                            
+                            e.preventDefault();
+                        });
+        }
+        else if(this.cfg.editMode === 'cell') {
+            var cellSelector = '> tr > td.ui-editable-column';
+            
+            this.tbody.off('click.treetable-cell', cellSelector)
+                        .on('click.treetable-cell', cellSelector, null, function(e) {
+                            if(!$(e.target).is('span.ui-treetable-toggler.ui-c')) {
+                                $this.incellClick = true;
+                                
+                                var cell = $(this);
+                                if(!cell.hasClass('ui-cell-editing')) {
+                                    $this.showCellEditor($(this));
+                                }
+                            }
+                        });
+                        
+            $(document).off('click.treetable-cell-blur' + this.id)
+                        .on('click.treetable-cell-blur' + this.id, function(e) {
+                            if((!$this.incellClick && $this.currentCell && !$this.contextMenuClick)) {
+                                $this.saveCell($this.currentCell);
+                            }
+                            
+                            $this.incellClick = false;
+                            $this.contextMenuClick = false;
+                        });
+        }
+    },
+    
     sort: function(columnHeader, order) {  
         var $this = this,
         options = {
@@ -218,8 +538,11 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            var nextRow = node.next();
-                            node.after(content);
+                            if($this.cfg.expandMode === "self")
+                                node.replaceWith(content);
+                            else
+                                node.after(content);
+                            
                             node.find('.ui-treetable-toggler:first').addClass('ui-icon-triangle-1-s').removeClass('ui-icon-triangle-1-e');
                             node.attr('aria-expanded', true);
                             $this.indeterminateNodes($this.tbody.children('tr.ui-treetable-partialselected'));
@@ -311,7 +634,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
             
-            PrimeFaces.clearSelection();
+            if(this.cfg.disabledTextSelection) {
+                PrimeFaces.clearSelection();
+            }
         }
     },
             
@@ -330,7 +655,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             this.selectNode(node);
         }
  
-        PrimeFaces.clearSelection();        
+        if(this.cfg.disabledTextSelection) {
+            PrimeFaces.clearSelection();
+        }        
     },
     
     selectNode: function(node, silent) {
@@ -532,15 +859,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         
         return parent.length === 1 ? parent : null;
     },
-    
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
 
-        return false;
-    },
-            
     removeDescendantsFromSelection: function(rowKey) {
         this.selections = $.grep(this.selections, function(value) {
             return value.indexOf(rowKey + '_') !== 0;
@@ -648,6 +967,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         this.footerTable = this.scrollFooterBox.children('table');
         this.headerCols = this.headerTable.find('> thead > tr > th');
         this.footerCols = this.footerTable.find('> tfoot > tr > td');
+        this.percentageScrollHeight = this.cfg.scrollHeight && (this.cfg.scrollHeight.indexOf('%') !== -1);
+        this.percentageScrollWidth = this.cfg.scrollWidth && (this.cfg.scrollWidth.indexOf('%') !== -1);
         var $this = this;
         
         if(this.cfg.scrollHeight) {
@@ -655,7 +976,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 this.adjustScrollHeight();
             }
         
-            var marginRight = this.getScrollbarWidth();
+            var marginRight = this.getScrollbarWidth() + 'px';
             this.scrollHeaderBox.css('margin-right', marginRight);
             this.scrollFooterBox.css('margin-right', marginRight);
             this.alignScrollBody();
@@ -710,7 +1031,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             var header = $(this);
             header.attr('id', header.attr('id') + '_clone');
         });
-        this.theadClone.removeAttr('id').addClass('ui-treetable-scrollable-theadclone').height(0).prependTo(this.bodyTable);
+        this.theadClone.removeAttr('id').addClass('ui-treetable-scrollable-theadclone').hide().prependTo(this.bodyTable);
     },
     
      fixColumnWidths: function() {
@@ -740,6 +1061,15 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             
             this.columnWidthsFixed = true;
         }
+    },
+    
+    updateColumnWidths: function() {
+        this.columnWidthsFixed = false;
+        this.jq.find('> table > thead > tr > th').each(function() {
+            var col = $(this);
+            col.css('width', '');
+        });
+        this.fixColumnWidths();
     },
 
     adjustScrollHeight: function() {
@@ -790,11 +1120,12 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     },
             
     restoreScrollState: function() {
-        var scrollState = this.scrollStateHolder.val(),
+        var scrollState = this.scrollStateVal||this.scrollStateHolder.val(),
         scrollValues = scrollState.split(',');
 
         this.scrollBody.scrollLeft(scrollValues[0]);
         this.scrollBody.scrollTop(scrollValues[1]);
+        this.scrollStateVal = null;
     },
     
     saveScrollState: function() {
@@ -821,7 +1152,13 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                     $this.jq.css('cursor', 'col-resize');
                 }
                 else {
-                    var height = $this.cfg.scrollable ? $this.scrollBody.height() : $this.thead.parent().height() - $this.thead.height() - 1;
+                    var header = $this.cfg.stickyHeader ? $this.clone : $this.thead,
+                        height = $this.cfg.scrollable ? $this.scrollBody.height() : header.parent().height() - header.height() - 1;
+                
+                    if($this.cfg.stickyHeader) {
+                        height = height - $this.relativeHeight;
+                    }
+                    
                     $this.resizerHelper.height(height);
                     $this.resizerHelper.show();
                 }
@@ -862,6 +1199,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 if($this.hasBehavior('colResize')) {
                     $this.cfg.behaviors['colResize'].call($this, options);
                 }
+                
+                if($this.cfg.stickyHeader) {
+                    $this.reclone();
+                }
             },
             containment: this.jq
         });
@@ -901,5 +1242,302 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
         }
+    },
+    
+    reclone: function() {
+        this.clone.remove();
+        this.clone = this.thead.clone(false);
+        this.jq.children('table').append(this.clone);
+    },
+    
+    switchToRowEdit: function(row) {
+        this.showRowEditors(row);
+        
+        if(this.hasBehavior('rowEditInit')) {
+            var rowEditInitBehavior = this.cfg.behaviors['rowEditInit'],
+            rowIndex = row.data('rk');
+            
+            var ext = {
+                params: [{name: this.id + '_rowEditIndex', value: rowIndex}]
+            };
+
+            rowEditInitBehavior.call(this, ext);
+        }
+    },
+    
+    showRowEditors: function(row) {
+        row.addClass('ui-state-highlight ui-row-editing').children('td.ui-editable-column').each(function() {
+            var column = $(this);
+
+            column.find('.ui-cell-editor-output').hide();
+            column.find('.ui-cell-editor-input').show();
+        });
+    },
+    
+    /**
+     * Saves the edited row
+     */
+    saveRowEdit: function(rowEditor) {
+        this.doRowEditRequest(rowEditor, 'save');
+    },
+    
+    /**
+     * Cancels row editing
+     */
+    cancelRowEdit: function(rowEditor) {
+        this.doRowEditRequest(rowEditor, 'cancel');
+    },
+    
+    /**
+     * Sends an ajax request to handle row save or cancel
+     */
+    doRowEditRequest: function(rowEditor, action) {
+        var row = rowEditor.closest('tr'),
+        rowIndex = row.data('rk'),
+        expanded = row.hasClass('ui-expanded-row'),
+        $this = this,
+        options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            formId: this.cfg.formId,
+            params: [{name: this.id + '_rowEditIndex', value: rowIndex},
+                     {name: this.id + '_rowEditAction', value: action}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            if(expanded) {
+                                this.collapseRow(row);
+                            }
+
+                            this.updateRows(row, content);
+                        }
+                    });
+
+                return true;
+            },
+            oncomplete: function(xhr, status, args) {
+                if(args && args.validationFailed) {
+                    $this.invalidateRow(rowIndex);
+                }
+            }
+        };
+        
+        if(action === 'save') {
+            this.getRowEditors(row).each(function() {
+                options.params.push({name: this.id, value: this.id});
+            });
+        }
+
+        if(action === 'save' && this.hasBehavior('rowEdit')) {
+            this.cfg.behaviors['rowEdit'].call(this, options);
+        }
+        else if(action === 'cancel' && this.hasBehavior('rowEditCancel')) {
+            this.cfg.behaviors['rowEditCancel'].call(this, options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options); 
+        }
+    },
+    
+    /*
+     * Updates rows with given content
+     */
+    updateRows: function(row, content) {
+        this.tbody.children('tr').filter('[data-prk^="'+ row.data('rk') +'"]').remove();
+        row.replaceWith(content);
+    },
+    
+    /**
+     * Displays row editors in invalid format
+     */
+    invalidateRow: function(index) {
+        this.tbody.children('tr').eq(index).addClass('ui-widget-content ui-row-editing ui-state-error');
+    },
+    
+    /**
+     * Finds all editors of a row
+     */
+    getRowEditors: function(row) {
+        return row.find('div.ui-cell-editor');
+    },
+    
+    collapseRow: function(row) {
+        row.removeClass('ui-expanded-row').next('.ui-expanded-row-content').remove();
+    },
+    
+    showCellEditor: function(c) {
+        this.incellClick = true;
+        
+        var cell = null,
+        $this = this;
+                    
+        if(c) {
+            cell = c;
+                        
+            //remove contextmenu selection highlight
+            if(this.contextMenuCell) {
+                this.contextMenuCell.parent().removeClass('ui-state-highlight');
+            }
+        }
+        else {
+            cell = this.contextMenuCell;
+        }
+        
+        if(this.currentCell) {
+            $this.saveCell(this.currentCell);
+        }
+        
+        this.currentCell = cell;
+                
+        var cellEditor = cell.children('div.ui-cell-editor'),
+        displayContainer = cellEditor.children('div.ui-cell-editor-output'),
+        inputContainer = cellEditor.children('div.ui-cell-editor-input'),
+        inputs = inputContainer.find(':input:enabled'),
+        multi = inputs.length > 1;
+                                        
+        cell.addClass('ui-state-highlight ui-cell-editing');
+        displayContainer.hide();
+        inputContainer.show();
+        inputs.eq(0).focus().select();
+        
+        //metadata
+        if(multi) {
+            var oldValues = [];
+            for(var i = 0; i < inputs.length; i++) {
+                oldValues.push(inputs.eq(i).val());
+            }
+            
+            cell.data('multi-edit', true);
+            cell.data('old-value', oldValues);
+        } 
+        else {
+            cell.data('multi-edit', false);
+            cell.data('old-value', inputs.eq(0).val());
+        }
+        
+        //bind events on demand
+        if(!cell.data('edit-events-bound')) {
+            cell.data('edit-events-bound', true);
+            
+            inputs.on('keydown.treetable-cell', function(e) {
+                    var keyCode = $.ui.keyCode,
+                    shiftKey = e.shiftKey,
+                    key = e.which,
+                    input = $(this);
+
+                    if(key === keyCode.ENTER || key == keyCode.NUMPAD_ENTER) {
+                        $this.saveCell(cell);
+
+                        e.preventDefault();
+                    }
+                    else if(key === keyCode.TAB) {
+                        if(multi) {
+                            var focusIndex = shiftKey ? input.index() - 1 : input.index() + 1;
+
+                            if(focusIndex < 0 || (focusIndex === inputs.length)) {
+                                $this.tabCell(cell, !shiftKey);                                
+                            } else {
+                                inputs.eq(focusIndex).focus();
+                            }
+                        }
+                        else {
+                            $this.tabCell(cell, !shiftKey);
+                        }
+                        
+                        e.preventDefault();
+                    }
+                })
+                .on('focus.treetable-cell click.treetable-cell', function(e) {
+                    $this.currentCell = cell;
+                });
+        }        
+    },
+    
+    tabCell: function(cell, forward) {
+        var targetCell = forward ? cell.nextAll('td.ui-editable-column:first') : cell.prevAll('td.ui-editable-column:first');
+        if(targetCell.length == 0) {
+            var tabRow = forward ? cell.parent().next() : cell.parent().prev();
+            targetCell = forward ? tabRow.children('td.ui-editable-column:first') : tabRow.children('td.ui-editable-column:last');
+        }
+
+        this.showCellEditor(targetCell);
+    },
+    
+    saveCell: function(cell) {
+        var inputs = cell.find('div.ui-cell-editor-input :input:enabled'),
+        changed = false,
+        $this = this;
+        
+        if(cell.data('multi-edit')) {
+            var oldValues = cell.data('old-value');
+            for(var i = 0; i < inputs.length; i++) {
+                if(inputs.eq(i).val() != oldValues[i]) {
+                    changed = true;
+                    break;
+                }
+            }
+        } 
+        else {
+            changed = (inputs.eq(0).val() != cell.data('old-value'));
+        }
+
+        if(changed)
+            $this.doCellEditRequest(cell);
+        else
+            $this.viewMode(cell);
+        
+        this.currentCell = null;
+    },
+        
+    viewMode: function(cell) {
+        var cellEditor = cell.children('div.ui-cell-editor'),
+        editableContainer = cellEditor.children('div.ui-cell-editor-input'),
+        displayContainer = cellEditor.children('div.ui-cell-editor-output');
+        
+        cell.removeClass('ui-cell-editing ui-state-error ui-state-highlight');
+        displayContainer.show();
+        editableContainer.hide();
+        cell.removeData('old-value').removeData('multi-edit');
+    },
+    
+    doCellEditRequest: function(cell) {
+        var cellEditor = cell.children('.ui-cell-editor'),
+        cellEditorId = cellEditor.attr('id'),
+        cellIndex = cell.index(),
+        cellInfo = cell.closest('tr').data('rk') + ',' + cellIndex,
+        $this = this;
+
+        var options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            params: [{name: this.id + '_cellInfo', value: cellInfo},
+                     {name: cellEditorId, value: cellEditorId}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            cellEditor.children('.ui-cell-editor-output').html(content);
+                        }
+                    });
+
+                return true;
+            },
+            oncomplete: function(xhr, status, args) {                            
+                if(args.validationFailed)
+                    cell.addClass('ui-state-error');
+                else
+                    $this.viewMode(cell);
+            }
+        };
+
+        if(this.hasBehavior('cellEdit')) {
+            this.cfg.behaviors['cellEdit'].call(this, options);
+        } 
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
     }
-});
+});            

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2015 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,19 +17,20 @@ package org.primefaces.component.paginator;
 
 import java.io.IOException;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIData;
 import org.primefaces.util.MessageFactory;
 
 public class LastPageLinkRenderer extends PageLinkRenderer implements PaginatorElementRenderer {
 
-    public void render(FacesContext context, UIData uidata) throws IOException {
-        int currentPage = uidata.getPage();
-        int pageCount = uidata.getPageCount();
-        
+    public void render(FacesContext context, Pageable pageable) throws IOException {
+        int currentPage = pageable.getPage();
+        int pageCount = pageable.getPageCount();
+
         boolean disabled = (currentPage == (pageCount - 1)) || (currentPage == 0 && pageCount == 0);
-        
+
         String ariaMessage = MessageFactory.getMessage(UIData.ARIA_LAST_PAGE_LABEL, new Object[]{});
-       
-        super.render(context, uidata, UIData.PAGINATOR_LAST_PAGE_LINK_CLASS, UIData.PAGINATOR_LAST_PAGE_ICON_CLASS, disabled, ariaMessage);
-    }   
+
+        super.render(context, pageable, UIData.PAGINATOR_LAST_PAGE_LINK_CLASS, UIData.PAGINATOR_LAST_PAGE_ICON_CLASS, disabled, ariaMessage);
+    }
 }

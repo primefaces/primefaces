@@ -31,7 +31,10 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.cfg.showFilmstrip) {
             this.renderStrip();
-            this.bindEvents();
+            
+            if(this.panels.length) {
+                this.bindEvents();
+            }
         }
 
         if(this.cfg.custom) {
@@ -52,7 +55,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
 
         this.jq.css('visibility', 'visible');
 
-        if(this.cfg.autoPlay) {
+        if(this.cfg.autoPlay && this.panels.length) {
             this.startSlideshow();
         }
     },
@@ -66,7 +69,7 @@ PrimeFaces.widget.Galleria = PrimeFaces.widget.DeferredWidget.extend({
                 .height(this.cfg.frameHeight)
                 .appendTo(this.jq);
                 
-        this.strip = $('<ul class="ui-galleria-filmstrip"></div>').appendTo(this.stripWrapper);
+        this.strip = $('<ul class="ui-galleria-filmstrip"></ul>').appendTo(this.stripWrapper);
                     
         for(var i = 0; i < this.panels.length; i++) {
             var image = this.panels.eq(i).children('img'),

@@ -17,6 +17,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.resizeNS = 'resize.' + this.id;
         this.cfg.absolutePositioned = this.jq.hasClass('ui-dialog-absolute');
 
+        this.positionInitialized = false;
+
         //configuration
         this.cfg.width = this.cfg.width||'auto';
         this.cfg.height = this.cfg.height||'auto';
@@ -40,17 +42,21 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             this.setupResizable();
         }
 
-        if(this.cfg.modal) {
-            this.syncWindowResize();
-        }
-
         if(this.cfg.appendTo) {
-        	this.jq.appendTo(PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo));
+            this.parent = this.jq.parent();
+            this.targetParent = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo);
+
+            // skip when the parent currently is already the same
+            // this likely happens when the dialog is updated directly instead of a container
+            // as our ajax update mechanism just updates by id
+            if (!this.parent.is(this.targetParent)) {
+                this.jq.appendTo(this.targetParent);
+            }
         }
 
         //docking zone
         if($(document.body).children('.ui-dialog-docking-zone').length === 0) {
-            $(document.body).append('<div class="ui-dialog-docking-zone"></div>')
+            $(document.body).append('<div class="ui-dialog-docking-zone"></div>');
         }
 
         //remove related modality if there is one
@@ -65,9 +71,13 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.visible){
             this.show();
         }
+
+        if(this.cfg.responsive) {
+            this.bindResizeListener();
+        }
     },
 
-    //override
+    //@Override
     refresh: function(cfg) {
         this.positionInitialized = false;
         this.loaded = false;
@@ -84,6 +94,15 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.init(cfg);
     },
 
+    //@Override
+    destroy: function() {
+        this._super();
+
+        if (this.cfg.responsive) {
+            this.unbindResizeListener();
+        }
+    },
+
     initSize: function() {
         this.jq.css({
             'width': this.cfg.width,
@@ -95,39 +114,34 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.fitViewport) {
             this.fitViewport();
         }
-
-        //ie7 width auto width bug workaround
-        if(this.cfg.width === 'auto' && PrimeFaces.isIE(7)) {
-            this.jq.width(this.content.outerWidth());
-        }
     },
 
     fitViewport: function() {
-        var winHeight = $(window).height(),
-        contentPadding = this.content.innerHeight() - this.content.height();
+        var windowHeight = $(window).height();
 
-        if(this.jq.innerHeight() > winHeight) {
-            this.content.height(winHeight - this.titlebar.innerHeight() - contentPadding);
-        }
+        var margin = this.jq.outerHeight(true) - this.jq.outerHeight();
+        var headerHeight = this.titlebar.outerHeight(true);
+        var contentPadding = this.content.innerHeight() - this.content.height();;
+        var footerHeight = this.footer.outerHeight(true);
+
+        var maxHeight = windowHeight - (margin + headerHeight + contentPadding + footerHeight);
+
+        this.content.css('max-height', maxHeight + 'px');
     },
 
     enableModality: function() {
         var $this = this,
         doc = $(document);
 
-        $(document.body).append('<div id="' + this.id + '_modal" class="ui-widget-overlay"></div>')
-                        .children(this.jqId + '_modal').css({
-                            'width' : doc.width(),
-                            'height' : doc.height(),
-                            'z-index' : this.jq.css('z-index') - 1
-                        });
+        $(document.body).append('<div id="' + this.id + '_modal" class="ui-widget-overlay ui-dialog-mask"></div>')
+                        .children(this.jqId + '_modal').css('z-index' , this.jq.css('z-index') - 1);
 
         //Disable tabbing out of modal dialog and stop events from targets outside of dialog
         doc.on('keydown.' + this.id,
                 function(event) {
                     var target = $(event.target);
 
-                    if(event.keyCode === $.ui.keyCode.TAB) {
+                    if(event.which === $.ui.keyCode.TAB) {
                         var tabbables = $this.jq.find(':tabbable').add($this.footer.find(':tabbable'));
                         if(tabbables.length) {
                             var first = tabbables.filter(':first'),
@@ -178,15 +192,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         $(document).off(this.blockEvents).off('keydown.' + this.id);
     },
 
-    syncWindowResize: function() {
-        $(window).resize(function() {
-            $(document.body).children('.ui-widget-overlay').css({
-                'width': $(document).width()
-                ,'height': $(document).height()
-            });
-        });
-    },
-
     show: function() {
         if(this.isVisible()) {
             return;
@@ -196,7 +201,11 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             this.loadContents();
         }
         else {
-            if(!this.positionInitialized) {
+            if (this.cfg.fitViewport) {
+                this.fitViewport();
+            }
+
+            if (this.positionInitialized === false) {
                 this.initPosition();
             }
 
@@ -206,7 +215,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
 
     _show: function() {
         this.moveToTop();
-        
+
         //offset
         if(this.cfg.absolutePositioned) {
             var winScrollTop = $(window).scrollTop();
@@ -234,8 +243,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     },
 
     postShow: function() {
+        this.fireBehaviorEvent('open');
+
         PrimeFaces.invokeDeferredRenders(this.id);
-        
+
         //execute user defined callback
         if(this.cfg.onShow) {
             this.cfg.onShow.call(this);
@@ -247,10 +258,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         });
 
         this.applyFocus();
-        
-        if(this.cfg.responsive) {
-            this.bindResizeListener();
-        }
     },
 
     hide: function() {
@@ -337,7 +344,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.jq.draggable({
             cancel: '.ui-dialog-content, .ui-dialog-titlebar-close',
             handle: '.ui-dialog-titlebar',
-            containment : 'document',
+            containment : $this.cfg.absolutePositioned ? 'document' : 'window',
             stop: function( event, ui ) {
                 if($this.hasBehavior('move')) {
                     var move = $this.cfg.behaviors['move'];
@@ -386,7 +393,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
 
     initPosition: function() {
         var $this = this;
-        
+
         //reset
         this.jq.css({left:0,top:0});
 
@@ -403,13 +410,13 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
                             var l = pos.left < 0 ? 0 : pos.left,
                             t = pos.top < 0 ? 0 : pos.top,
                             scrollTop = $(window).scrollTop();
-                    
+
                             //offset
                             if($this.cfg.absolutePositioned) {
                                 t += scrollTop;
                                 $this.lastScrollTop = scrollTop;
                             }
-                            
+
                             $(this).css({
                                 left: l
                                 ,top: t
@@ -442,10 +449,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.onHide) {
             this.cfg.onHide.call(this, event, ui);
         }
-        
-        if(this.cfg.responsive) {
-            this.unbindResizeListener();
-        }
     },
 
     moveToTop: function() {
@@ -463,13 +466,13 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
 
             this.maximizeIcon.children('.ui-icon').removeClass('ui-icon-newwin').addClass('ui-icon-extlink');
             this.maximized = false;
-            
+
             this.fireBehaviorEvent('restoreMaximize');
         }
         else {
             this.saveState();
- 
-           var win = $(window);
+
+            var win = $(window);
 
             this.jq.addClass('ui-dialog-maximized').css({
                 'width': win.width() - 6
@@ -480,9 +483,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             });
 
             //maximize content
+            var contentPadding = this.content.innerHeight() - this.content.height();
             this.content.css({
                 width: 'auto',
-                height: 'auto'
+                height: this.jq.height() - this.titlebar.outerHeight() - contentPadding
             });
 
             this.maximizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-extlink').addClass('ui-icon-newwin');
@@ -513,7 +517,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             if(this.cfg.resizable) {
                 this.resizers.show();
             }
-            
+
             this.fireBehaviorEvent('restoreMinimize');
         }
         else {
@@ -531,6 +535,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             }
             else {
                 this.dock(dockingZone);
+                this.jq.addClass('ui-dialog-minimized');
             }
         }
     },
@@ -600,7 +605,13 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             }
         };
 
-        PrimeFaces.ajax.Request.handle(options);
+        if(this.hasBehavior('loadContent')) {
+            var loadContentBehavior = this.cfg.behaviors['loadContent'];
+            loadContentBehavior.call(this, options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
 
     applyARIA: function() {
@@ -613,29 +624,32 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.titlebar.children('a.ui-dialog-titlebar-icon').attr('role', 'button');
     },
 
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
-
-        return false;
-    },
-    
     isVisible: function() {
         return this.jq.is(':visible');
     },
-    
+
     bindResizeListener: function() {
         var $this = this;
         $(window).on(this.resizeNS, function() {
-            $this.initPosition();
+            if ($this.cfg.fitViewport) {
+                $this.fitViewport();
+            }
+
+            if ($this.isVisible()) {
+                // instant reinit position
+                $this.initPosition();
+            }
+            else {
+                // reset, so the dialog will be positioned again when showing the dialog next time
+                $this.positionInitialized = false;
+            }
         });
     },
-    
+
     unbindResizeListener: function() {
         $(window).off(this.resizeNS);
     },
-    
+
     fireBehaviorEvent: function(event) {
         if(this.cfg.behaviors) {
             var behavior = this.cfg.behaviors[event];
@@ -699,7 +713,7 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
     showMessage: function(msg) {
         var icon = (msg.icon === 'null') ? 'ui-icon-alert' : msg.icon;
         this.icon.removeClass().addClass('ui-icon ui-confirm-dialog-severity ' + icon);
-        
+
         if(msg.header)
             this.title.text(msg.header);
 
@@ -713,22 +727,22 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
 
 /**
  * PrimeFaces Dynamic Dialog Widget for Dialog Framework
- */ 
+ */
 PrimeFaces.widget.DynamicDialog = PrimeFaces.widget.Dialog.extend({
-      
+
     //@Override
     show: function() {
         if(this.jq.hasClass('ui-overlay-visible')) {
             return;
         }
 
-        if(!this.positionInitialized) {
+        if(this.positionInitialized === false) {
             this.initPosition();
         }
 
         this._show();
     },
-    
+
     //@Override
     _show: function() {
         //replace visibility hidden with display none for effect support, toggle marker class
@@ -736,9 +750,9 @@ PrimeFaces.widget.DynamicDialog = PrimeFaces.widget.Dialog.extend({
             'display':'none'
             ,'visibility':'visible'
         });
-        
+
         this.moveToTop();
-        
+
         this.jq.show();
 
         this.postShow();
@@ -747,5 +761,5 @@ PrimeFaces.widget.DynamicDialog = PrimeFaces.widget.Dialog.extend({
             this.enableModality();
         }
     }
-    
+
 });

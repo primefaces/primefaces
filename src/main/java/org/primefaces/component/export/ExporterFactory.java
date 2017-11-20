@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,38 +19,42 @@ import javax.faces.FacesException;
 
 public class ExporterFactory {
 
-	public static Exporter getExporterForType(String type) {
+    public static Exporter getExporterForType(String type) {
         Exporter exporter = null;
-        
+
         try {
             ExporterType exporterType = ExporterType.valueOf(type.toUpperCase());
 
-            switch(exporterType) {
+            switch (exporterType) {
                 case XLS:
                     exporter = new ExcelExporter();
-                break;
-                
+                    break;
+
                 case PDF:
                     exporter = new PDFExporter();
-                break; 
-                
+                    break;
+
                 case CSV:
                     exporter = new CSVExporter();
-                break; 
-                
+                    break;
+
                 case XML:
                     exporter = new XMLExporter();
-                break;
-                    
+                    break;
+
                 case XLSX:
                     exporter = new ExcelXExporter();
-                break;
+                    break;
+                case XLSXSTREAM:
+                    exporter = new ExcelXStreamExporter();
+                    break;
+
             }
         }
-        catch(IllegalArgumentException e) {
+        catch (IllegalArgumentException e) {
             throw new FacesException(e);
-        } 
-        
+        }
+
         return exporter;
-	}
+    }
 }

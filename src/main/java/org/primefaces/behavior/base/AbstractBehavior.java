@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,37 +38,37 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
     }
 
     public void setLiteral(String attr, Object val) {
-    	if (val == null && literals.containsKey(attr)) {
+        if (val == null && literals.containsKey(attr)) {
             literals.remove(attr);
-    	}
+        }
         else {
             literals.put(attr, val);
-    	}
+        }
     }
 
     public void setLiteral(Enum<?> property, Object val) {
-    	String attr = property.name();
-    	setLiteral(attr, val);
+        String attr = property.name();
+        setLiteral(attr, val);
     }
 
     public void setValueExpression(String attr, ValueExpression ve) {
-    	if (ve == null && bindings.containsKey(attr)) {
+        if (ve == null && bindings.containsKey(attr)) {
             bindings.remove(attr);
-    	}
+        }
         else {
             bindings.put(attr, ve);
-    	}
+        }
     }
 
     public void setValueExpression(Enum<?> property, ValueExpression ve) {
-    	String attr = property.name();
-    	setValueExpression(attr, ve);
+        String attr = property.name();
+        setValueExpression(attr, ve);
     }
 
     public <T> T eval(String attr, T unspecifiedValue) {
         if (literals.containsKey(attr)) {
             Object val = literals.get(attr);
-            if (val == null){
+            if (val == null) {
                 return unspecifiedValue;
             }
             else {
@@ -85,18 +85,17 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
         return unspecifiedValue;
     }
 
-
     protected <T> T eval(Enum<?> property, T unspecifiedValue) {
-    	return eval(property.name(), unspecifiedValue);
+        return eval(property.name(), unspecifiedValue);
     }
 
     protected boolean isAttributeSet(String attr) {
-    	return literals.containsKey(attr) || bindings.containsKey(attr);
+        return literals.containsKey(attr) || bindings.containsKey(attr);
     }
 
     protected boolean isAttributeSet(Enum<?> property) {
-    	String attr = property.name();
-    	return isAttributeSet(attr);
+        String attr = property.name();
+        return isAttributeSet(attr);
     }
 
     @Override
@@ -116,7 +115,8 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
             else {
                 values = new Object[] { superState };
             }
-        } else {
+        }
+        else {
             values = new Object[3];
 
             values[0] = superState;

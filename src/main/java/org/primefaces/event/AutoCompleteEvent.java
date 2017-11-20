@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 
 public class AutoCompleteEvent extends FacesEvent {
-    
+
     private String query;
 
     public AutoCompleteEvent(UIComponent component, String query) {

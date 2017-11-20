@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartModel;
-import org.primefaces.util.ComponentUtils;
 
 public class LineRenderer extends CartesianPlotRenderer {
 
@@ -31,68 +30,65 @@ public class LineRenderer extends CartesianPlotRenderer {
     protected void encodeData(FacesContext context, Chart chart) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         CartesianChartModel model = (CartesianChartModel) chart.getModel();
-        
-		writer.write(",data:[" );
-        for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
+
+        writer.write(",data:[");
+        for (Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
             ChartSeries series = it.next();
 
             writer.write("[");
-            for(Iterator<Object> x = series.getData().keySet().iterator(); x.hasNext();) {
+            for (Iterator<Object> x = series.getData().keySet().iterator(); x.hasNext();) {
                 Object xValue = x.next();
                 Number yValue = series.getData().get(xValue);
-                String yValueAsString = (yValue != null) ? yValue.toString() : "null";
+                String yValueAsString = escapeChartData(yValue);
+                String xValueAsString = escapeChartData(xValue);
 
                 writer.write("[");
-                
-                if(xValue instanceof String)
-                    writer.write("\"" + ComponentUtils.escapeText(xValue.toString()) + "\"," + yValueAsString);
-                else
-                    writer.write(xValue + "," + yValueAsString);
-                
+                writer.write(xValueAsString + "," + yValueAsString);
                 writer.write("]");
 
-                if(x.hasNext()) {
+                if (x.hasNext()) {
                     writer.write(",");
                 }
             }
             writer.write("]");
 
-            if(it.hasNext()) {
+            if (it.hasNext()) {
                 writer.write(",");
             }
         }
         writer.write("]");
     }
-    
+
     @Override
     protected void encodeOptions(FacesContext context, Chart chart) throws IOException {
         super.encodeOptions(context, chart);
-        
+
         ResponseWriter writer = context.getResponseWriter();
         LineChartModel model = (LineChartModel) chart.getModel();
-        
+
         writer.write(",series:[");
-        for(Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
+        for (Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
             ChartSeries series = (ChartSeries) it.next();
             series.encode(writer);
 
-            if(it.hasNext()) {
+            if (it.hasNext()) {
                 writer.write(",");
             }
         }
 
         writer.write("]");
-        
-        if(model.isStacked()) writer.write(",stackSeries:true");
-        if(model.isBreakOnNull()) writer.write(",breakOnNull:true");
-        if(model.isZoom()) writer.write(",zoom:true");
-        if(model.isAnimate()) writer.write(",animate:true");
-        if(model.isShowPointLabels()) writer.write(",showPointLabels:true");
-        
-        if(model.isShowDatatip()) {
+
+        if (model.isStacked()) writer.write(",stackSeries:true");
+        if (model.isBreakOnNull()) writer.write(",breakOnNull:true");
+        if (model.isZoom()) writer.write(",zoom:true");
+        if (model.isAnimate()) writer.write(",animate:true");
+        if (model.isShowPointLabels()) writer.write(",showPointLabels:true");
+
+        if (model.isShowDatatip()) {
             writer.write(",datatip:true");
-            if(model.getDatatipFormat() != null)
+            if (model.getDatatipFormat() != null) {
                 writer.write(",datatipFormat:\"" + model.getDatatipFormat() + "\"");
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,16 +19,18 @@ import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
 import org.primefaces.push.Decoder;
 
-public class JSONDecoder implements Decoder<String,Object> {
+public class JSONDecoder implements Decoder<String, Object> {
 
+    @Override
     public Object decode(String s) {
-        if(s == null || s.trim().length() == 0 ) {
+        if (s == null || s.trim().length() == 0) {
             return null;
         }
         else {
-            try {  
+            try {
                 return new JSONObject(s);
-            } catch (JSONException ex) {
+            }
+            catch (JSONException ex) {
                 throw new RuntimeException(ex);
             }
         }

@@ -14,13 +14,16 @@
     <parent>javax.faces.component.UIPanel</parent>
     <description>Panel is a grouping component for other components, notable features are toggling, closing, built-in popup menu and ajax event listeners.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
         <interface>
-			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
-		</interface>
-	</interfaces>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
     <attributes>
         &standard_uicomponent_attributes;
         &widget_var_attribute;
@@ -118,16 +121,19 @@
     </attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>       
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
+            <name>jquery/jquery.js</name>
+        </resource>
         <resource>
-			<name>primefaces.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
 </component>

@@ -1,52 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE component SYSTEM "../misc/component.dtd" [
 <!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>columnToggler</tag>
-	<tagClass>org.primefaces.component.columntoggler.ColumnTogglerTag</tagClass>
-	<componentClass>org.primefaces.component.columntoggler.ColumnToggler</componentClass>
-	<componentType>org.primefaces.component.ColumnToggler</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
+    <tag>columnToggler</tag>
+    <tagClass>org.primefaces.component.columntoggler.ColumnTogglerTag</tagClass>
+    <componentClass>org.primefaces.component.columntoggler.ColumnToggler</componentClass>
+    <componentType>org.primefaces.component.ColumnToggler</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.ColumnTogglerRenderer</rendererType>
-	<rendererClass>org.primefaces.component.columntoggler.ColumnTogglerRenderer</rendererClass>
-	<parent>javax.faces.component.UIComponentBase</parent>
+    <rendererClass>org.primefaces.component.columntoggler.ColumnTogglerRenderer</rendererClass>
+    <parent>javax.faces.component.UIComponentBase</parent>
     <description>ColumnToggler is a helper component for datatable to toggle visibility of columns.</description>
     <interfaces>
         <interface>
             <name>org.primefaces.component.api.Widget</name>
         </interface>
         <interface>
-			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
-		</interface>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+        </interface>
     </interfaces>
-	<attributes>
-		&standard_uicomponent_attributes;
+    <attributes>
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
         <attribute>
-			<name>trigger</name>
-			<required>true</required>
-			<type>java.lang.String</type>
+            <name>trigger</name>
+            <required>true</required>
+            <type>java.lang.String</type>
             <description>A search expression resolving to a component to get attached to.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>datasource</name>
-			<required>true</required>
-			<type>java.lang.String</type>
+            <name>datasource</name>
+            <required>true</required>
+            <type>java.lang.String</type>
             <description>A search expression resolving to a DataTable component whose columns to be toggled.</description>
-		</attribute>
-	</attributes>
-	<resources>
+        </attribute>
+    </attributes>
+    <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
-		<resource>
-			<name>primefaces.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
 </component>

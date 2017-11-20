@@ -1,7 +1,6 @@
 .ui-rating-star,
 .ui-rating-cancel {
-    float: left;
-    display: block;
+    display: inline-block;
     overflow: hidden;
     text-indent: -999em;
     cursor: pointer;

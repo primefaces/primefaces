@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,14 +27,14 @@ import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectManyCheckboxRenderer extends org.primefaces.component.selectmanycheckbox.SelectManyCheckboxRenderer {
-    
-    @Override    
+
+    @Override
     protected void encodeScript(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
         String clientId = checkbox.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectManyCheckbox", checkbox.resolveWidgetVar(), clientId).finish();
     }
-    
+
     @Override
     protected void encodeMarkup(FacesContext context, SelectManyCheckbox checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -42,30 +42,31 @@ public class SelectManyCheckboxRenderer extends org.primefaces.component.selectm
         List<SelectItem> selectItems = getSelectItems(context, checkbox);
         String style = checkbox.getStyle();
         String styleClass = checkbox.getStyleClass();
-     
+
         writer.startElement("div", checkbox);
         writer.writeAttribute("id", clientId, "id");
-        
+
         if (style != null) writer.writeAttribute("style", style, "style");
-        if (styleClass != null) writer.writeAttribute("class", style, "styleClass");
-        
+        if (styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
+
         if (selectItems != null && !selectItems.isEmpty()) {
             Converter converter = checkbox.getConverter();
             Object values = getValues(checkbox);
             Object submittedValues = getSubmittedValues(checkbox);
 
-            int idx = 0;
-            for (SelectItem selectItem : selectItems) {
-                encodeOption(context, checkbox, values, submittedValues, converter, selectItem, idx);
-                idx++;        
-            }           
+            for (int i = 0; i < selectItems.size(); i++) {
+                SelectItem selectItem = selectItems.get(i);
+                encodeOption(context, checkbox, values, submittedValues, converter, selectItem, i);
+            }
         }
-        
+
         writer.endElement("div");
     }
-    
+
     @Override
-    protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter, SelectItem option, int idx) throws IOException {
+    protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter,
+            SelectItem option, int idx) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         SelectManyCheckbox checkbox = (SelectManyCheckbox) component;
         String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
@@ -75,19 +76,20 @@ public class SelectManyCheckboxRenderer extends org.primefaces.component.selectm
 
         Object valuesArray;
         Object itemValue;
-        if(submittedValues != null) {
+        if (submittedValues != null) {
             valuesArray = submittedValues;
             itemValue = itemValueAsString;
-        } else {
+        }
+        else {
             valuesArray = values;
             itemValue = option.getValue();
         }
-        
+
         boolean selected = isSelected(context, component, itemValue, valuesArray, converter);
-        if(option.isNoSelectionOption() && values != null && !selected) {
+        if (option.isNoSelectionOption() && values != null && !selected) {
             return;
         }
-        
+
         writer.startElement("input", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", name, null);
@@ -96,22 +98,24 @@ public class SelectManyCheckboxRenderer extends org.primefaces.component.selectm
 
         renderOnchange(context, checkbox);
         renderDynamicPassThruAttributes(context, checkbox);
-        
+
         if (checkbox.getTabindex() != null) writer.writeAttribute("tabindex", checkbox.getTabindex(), null);
         if (selected) writer.writeAttribute("checked", "checked", null);
         if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        
+
         writer.endElement("input");
 
         //label
         writer.startElement("label", null);
         writer.writeAttribute("for", id, null);
-        
-        if (option.isEscape())
-            writer.writeText(option.getLabel(),null);
-        else
+
+        if (option.isEscape()) {
+            writer.writeText(option.getLabel(), null);
+        }
+        else {
             writer.write(option.getLabel());
-        
+        }
+
         writer.endElement("label");
     }
 }

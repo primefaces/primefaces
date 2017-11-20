@@ -6,23 +6,26 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>inputSwitch</tag>
+    <tag>inputSwitch</tag>
     <tagClass>org.primefaces.component.inputswitch.InputSwitchTag</tagClass>
-	<componentClass>org.primefaces.component.inputswitch.InputSwitch</componentClass>
-	<componentType>org.primefaces.InputSwitch</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.InputSwitchRenderer</rendererType>
-	<rendererClass>org.primefaces.component.inputswitch.InputSwitchRenderer</rendererClass>
-	<parent>javax.faces.component.UIInput</parent>
+    <componentClass>org.primefaces.component.inputswitch.InputSwitch</componentClass>
+    <componentType>org.primefaces.InputSwitch</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.InputSwitchRenderer</rendererType>
+    <rendererClass>org.primefaces.component.inputswitch.InputSwitchRenderer</rendererClass>
+    <parent>javax.faces.component.UIInput</parent>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
         <interface>
-			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
-		</interface>
-	</interfaces>
-	<attributes>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
+    <attributes>
 		&input_component_attributes;
         &widget_var_attribute;
         <attribute>
@@ -40,18 +43,18 @@
             <description>Custom label for off state.</description>
         </attribute>
         <attribute>
-			<name>label</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>label</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>User presentable name.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>disabled</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
+            <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
             <description>Disables or enables the switch.</description>
-		</attribute>
+        </attribute>
         <attribute>
             <name>onchange</name>
             <required>false</required>
@@ -83,22 +86,37 @@
             <defaultValue>true</defaultValue>
             <description>Controls the visibility of the labels, defaults to true.</description>
         </attribute>
-	</attributes>
+        <attribute>
+            <name>onfocus</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when component receives focus.</description>
+        </attribute>
+        <attribute>
+            <name>onblur</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when component loses focus.</description>
+        </attribute>
+    </attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>inputswitch/inputswitch.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>inputswitch/inputswitch.css</name>
+        </resource>
         <resource>
-			<name>primefaces.js</name>
-		</resource>
+            <name>jquery/jquery.js</name>
+        </resource>
         <resource>
-			<name>inputswitch/inputswitch.js</name>
-		</resource>
-	</resources>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+        <resource>
+            <name>inputswitch/inputswitch.js</name>
+        </resource>
+    </resources>
 </component>

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,10 +55,11 @@ import javax.faces.render.Renderer;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.SharedStringBuilder;
 
 /**
- * UITabPanel is a specialized version of UIRepeat focusing on components that repeat tabs like tabView and accordionPanel. Most of the code is
- * copied from MyFaces.
+ * UITabPanel is a specialized version of UIRepeat focusing on components that repeat tabs like tabView and accordionPanel.
+ * Most of the code is copied from MyFaces.
  */
 public class UITabPanel extends UIPanel implements NamingContainer {
 
@@ -67,8 +68,10 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     private static final Class<Object[]> OBJECT_ARRAY_CLASS = Object[].class;
 
     private static final Object[] LEAF_NO_STATE = new Object[]{null, null};
+    
+    private static final String SB_ID = UITabPanel.class.getName() + "#id";
 
-    protected enum PropertyKeys {
+    public enum PropertyKeys {
         value,
         var,
         size,
@@ -102,7 +105,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     private int _index = -1;
 
-    private transient StringBuilder _clientIdBuffer;
     private transient Object _origValue;
     private transient Object _origVarStatus;
 
@@ -149,18 +151,20 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     }
 
     public boolean isDynamic() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
-	}
-	public void setDynamic(boolean _dynamic) {
-		getStateHelper().put(PropertyKeys.dynamic, _dynamic);
-	}
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
+    }
+
+    public void setDynamic(boolean _dynamic) {
+        getStateHelper().put(PropertyKeys.dynamic, _dynamic);
+    }
 
     public boolean isPrependId() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.prependId, true);
-	}
-	public void setPrependId(boolean _prependId) {
-		getStateHelper().put(PropertyKeys.prependId, _prependId);
-	}
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.prependId, true);
+    }
+
+    public void setPrependId(boolean _prependId) {
+        getStateHelper().put(PropertyKeys.prependId, _prependId);
+    }
 
     protected DataModel getDataModel() {
         DataModel dataModel;
@@ -221,7 +225,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     @Override
     public String getContainerClientId(FacesContext context) {
-        if(this.isPrependId() || this.isRepeating()) {
+        if (this.isPrependId() || this.isRepeating()) {
             String clientId = super.getContainerClientId(context);
 
             int index = getIndex();
@@ -229,10 +233,9 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                 return clientId;
             }
 
-            StringBuilder bld = _getBuffer(); //SharedStringBuilder(context);
-            return bld.append(clientId).append(UINamingContainer.getSeparatorChar(context)).append(index).toString();
-        }
-        else {
+            StringBuilder sb = SharedStringBuilder.get(getFacesContext(), SB_ID, clientId.length() + 4);
+            return sb.append(clientId).append(UINamingContainer.getSeparatorChar(context)).append(index).toString();
+        } else {
             UIComponent parent = this.getParent();
             while (parent != null) {
                 if (parent instanceof NamingContainer) {
@@ -259,16 +262,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         if (varStatus != null) {
             _origVarStatus = getFacesContext().getExternalContext().getRequestMap().get(varStatus);
         }
-    }
-
-    private StringBuilder _getBuffer() {
-        if (_clientIdBuffer == null) {
-            _clientIdBuffer = new StringBuilder();
-        }
-
-        _clientIdBuffer.setLength(0);
-
-        return _clientIdBuffer;
     }
 
     private boolean _isIndexAvailable() {
@@ -377,8 +370,8 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     }
 
     /**
-     * Just call component.setId(component.getId()) to reset all client ids and ensure they will be calculated for the current row, but do not waste time
-     * dealing with row state code.
+     * Just call component.setId(component.getId()) to reset all client ids and ensure they will be calculated for the current row, but do not waste
+     * time dealing with row state code.
      *
      * @param parent
      * @param iterateFacets
@@ -572,8 +565,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
      * @return
      */
     public Object getIndexData() {
-        if (!getDataModel().isRowAvailable())
-        {
+        if (!getDataModel().isRowAvailable()) {
             return null;
         }
 
@@ -794,7 +786,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     @Override
     public boolean invokeOnComponent(FacesContext context, String clientId, ContextCallback callback) throws FacesException {
-        if(!this.isRepeating()) {
+        if (!this.isRepeating()) {
             return super.invokeOnComponent(context, clientId, callback);
         }
         else {
@@ -916,14 +908,14 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     @Override
     public boolean visitTree(VisitContext context, VisitCallback callback) {
-        if(!this.isRepeating()) {
+        if (!this.isRepeating()) {
             return super.visitTree(context, callback);
         }
         else {
             // override the behavior from UIComponent to visit
             // all children once per "row"
 
-            if (ComponentUtils.isSkipIteration(context)) {
+            if (ComponentUtils.isSkipIteration(context, getFacesContext())) {
                 return super.visitTree(context, callback);
             }
 
@@ -956,7 +948,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
                     //accept
                     default:
-                    // determine if we need to visit our children
+                        // determine if we need to visit our children
                         // Note that we need to do this check because we are a NamingContainer
                         Collection<String> subtreeIdsToVisit = context
                                 .getSubtreeIdsToVisit(this);
@@ -1018,14 +1010,19 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
         pushComponentToEL(context, null);
 
-        if (!this.isRequestSource(context)) {
+        if (!shouldSkipChildren(context)) {
             if (this.isRepeating()) {
                 process(context, PhaseId.APPLY_REQUEST_VALUES);
             }
             else {
                 if (this.isDynamic()) {
-                    for(Tab tab : getLoadedTabs()) {
-                        tab.processDecodes(context);
+                    for (UIComponent component : getChildren()) {
+                        if (component instanceof Tab) {
+                            Tab tab = (Tab) component;
+                            if (tab.isLoaded()) {
+                                tab.processDecodes(context);
+                            }
+                        }
                     }
                 }
                 else {
@@ -1033,7 +1030,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                 }
             }
         }
-
 
         try {
             decode(context);
@@ -1051,7 +1047,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             return;
         }
 
-        if (this.isRequestSource(context)) {
+        if (shouldSkipChildren(context)) {
             return;
         }
 
@@ -1065,8 +1061,13 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
         else {
             if (this.isDynamic()) {
-                for(Tab tab : getLoadedTabs()) {
-                    tab.processValidators(context);
+                for (UIComponent component : getChildren()) {
+                    if (component instanceof Tab) {
+                        Tab tab = (Tab) component;
+                        if (tab.isLoaded()) {
+                            tab.processValidators(context);
+                        }
+                    }
                 }
             }
             else {
@@ -1089,7 +1090,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             return;
         }
 
-        if (this.isRequestSource(context)) {
+        if (shouldSkipChildren(context)) {
             return;
         }
 
@@ -1100,8 +1101,13 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
         else {
             if (this.isDynamic()) {
-                for(Tab tab : getLoadedTabs()) {
-                    tab.processUpdates(context);
+                for (UIComponent component : getChildren()) {
+                    if (component instanceof Tab) {
+                        Tab tab = (Tab) component;
+                        if (tab.isLoaded()) {
+                            tab.processUpdates(context);
+                        }
+                    }
                 }
             }
             else {
@@ -1255,7 +1261,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
-        if(!this.isRepeating()) {
+        if (!this.isRepeating()) {
             super.broadcast(event);
         }
         else {
@@ -1315,7 +1321,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        if(!this.isRepeating()) {
+        if (!this.isRepeating()) {
             super.queueEvent(event);
         }
         else {
@@ -1388,7 +1394,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             // corresponding DataModel element.
             _rowStates.clear();
         }
-        // TODO Auto-generated method stub
         super.encodeBegin(context);
     }
 
@@ -1427,25 +1432,29 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         return (this.getVar() != null);
     }
 
-    List<Tab> loadedTabs;
-    public List<Tab> getLoadedTabs() {
-        if(loadedTabs == null) {
-            loadedTabs = new ArrayList<Tab>();
-
-            for(UIComponent component : getChildren()) {
-                if(component instanceof Tab) {
-                    Tab tab =  (Tab) component;
-
-                    if(tab.isLoaded())
-                        loadedTabs.add(tab);
+    public void resetLoadedTabsState() {
+        if (!this.isRepeating() && this.isDynamic()) {
+            for (UIComponent component : getChildren()) {
+                if (component instanceof Tab) {
+                    Tab tab = (Tab) component;
+                    tab.setLoaded(false);
                 }
             }
         }
-
-        return loadedTabs;
     }
 
-    private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
+    protected boolean shouldSkipChildren(FacesContext context) {
+        if (!ComponentUtils.isRequestSource(this, context)) {
+            return false;
+        }
+        
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String paramValue = params.get(Constants.RequestParams.SKIP_CHILDREN_PARAM);
+
+        if (ComponentUtils.isValueBlank(paramValue)) {
+            return true;
+        }
+
+        return Boolean.valueOf(paramValue);
     }
 }

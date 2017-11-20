@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,32 +15,35 @@
  */
 package org.primefaces.model.diagram;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import org.primefaces.model.diagram.connector.Connector;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.overlay.Overlay;
 
-public class DefaultDiagramModel implements DiagramModel {
-    
+public class DefaultDiagramModel implements DiagramModel, Serializable {
+
     private List<Element> elements;
-    
+
     private List<Connection> connections;
-    
+
     private Connector defaultConnector;
-    
+
     private List<Overlay> defaultConnectionOverlays;
-    
+
     private boolean connectionsDetachable = true;
-    
+
     private int maxConnections = 1;
+
+    private boolean containment = true;
 
     public DefaultDiagramModel() {
         elements = new ElementList();
         connections = new ArrayList<Connection>();
         defaultConnectionOverlays = new ArrayList<Overlay>();
     }
-    
+
     public List<Element> getElements() {
         return elements;
     }
@@ -56,7 +59,7 @@ public class DefaultDiagramModel implements DiagramModel {
     public void clear() {
         elements.clear();
     }
-    
+
     public void clearElements() {
         elements.clear();
     }
@@ -72,7 +75,7 @@ public class DefaultDiagramModel implements DiagramModel {
     public void disconnect(Connection connection) {
         this.connections.remove(connection);
     }
-    
+
     public Connector getDefaultConnector() {
         return defaultConnector;
     }
@@ -100,38 +103,46 @@ public class DefaultDiagramModel implements DiagramModel {
     public void setMaxConnections(int maxConnections) {
         this.maxConnections = maxConnections;
     }
-    
+
     public Element findElement(String id) {
         Element element = null;
-        if(elements != null && !elements.isEmpty()) {
-            for(int i = 0; i < elements.size(); i++) {
+        if (elements != null && !elements.isEmpty()) {
+            for (int i = 0; i < elements.size(); i++) {
                 Element el = elements.get(i);
-                
-                if(el.getId().equals(id)) {
+
+                if (el.getId().equals(id)) {
                     element = el;
                     break;
                 }
             }
         }
-        
+
         return element;
     }
 
     public EndPoint findEndPoint(Element element, String id) {
         EndPoint endPoint = null;
         List<EndPoint> endPoints = element.getEndPoints();
-        
-        if(endPoints != null && !endPoints.isEmpty()) {
-            for(int i = 0; i < endPoints.size(); i++) {
+
+        if (endPoints != null && !endPoints.isEmpty()) {
+            for (int i = 0; i < endPoints.size(); i++) {
                 EndPoint ep = endPoints.get(i);
-                
-                if(ep.getId().equals(id)) {
+
+                if (ep.getId().equals(id)) {
                     endPoint = ep;
                     break;
                 }
             }
         }
-        
+
         return endPoint;
+    }
+
+    public boolean isContainment() {
+        return containment;
+    }
+
+    public void setContainment(boolean containment) {
+        this.containment = containment;
     }
 }

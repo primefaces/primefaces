@@ -34,12 +34,13 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     },
     
     bindTriggers: function() {
-        var $this = this,
-        triggers = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.triggers);
+        var $this = this;
         
         //listen global ajax send and complete callbacks
         $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
             var sourceId = $.type(settings.source) === 'string' ? settings.source : settings.source.name;
+            // we must evaluate it each time as the DOM might has been changed
+            var triggers = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents($this.cfg.triggers);
             
             if($.inArray(sourceId, triggers) !== -1 && !$this.cfg.blocked) {
                 $this.show();
@@ -48,6 +49,8 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
 
         $(document).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
             var sourceId = $.type(settings.source) === 'string' ? settings.source : settings.source.name;
+            // we must evaluate it each time as the DOM might has been changed
+            var triggers = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents($this.cfg.triggers);
             
             if($.inArray(sourceId, triggers) !== -1 && !$this.cfg.blocked) {
                 $this.hide();
@@ -76,7 +79,10 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             this.blocker.show();
 
         if(this.hasContent()) {
-            this.content.fadeIn();
+            if(this.cfg.animate)
+                this.content.fadeIn();
+            else
+                this.content.show();
         }
         
         this.block.attr('aria-busy', true);
@@ -89,7 +95,10 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
             this.blocker.hide();
 
         if(this.hasContent()) {
-            this.content.fadeOut();
+            if(this.cfg.animate)
+                this.content.fadeOut();
+            else
+                this.content.hide();
         }
         
         this.block.attr('aria-busy', false);

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,36 +30,41 @@ public class CellEditFeature implements DataTableFeature {
         throw new RuntimeException("CellEditFeature should not decode.");
     }
 
-    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {        
+    public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = table.getClientId(context);
         String[] cellInfo = params.get(clientId + "_cellInfo").split(",");
         int rowIndex = Integer.parseInt(cellInfo[0]);
         int cellIndex = Integer.parseInt(cellInfo[1]);
         int i = -1;
         UIColumn column = null;
-        for(UIColumn col : table.getColumns()) {
-            if(col.isRendered()) {
+        for (UIColumn col : table.getColumns()) {
+            if (col.isRendered()) {
                 i++;
 
-                if(i == cellIndex) {
+                if (i == cellIndex) {
                     column = col;
                     break;
                 }
             }
         }
-        
+
         table.setRowIndex(rowIndex);
-        
-        if(column.isDynamic()) {
+
+        if (column.isDynamic()) {
             DynamicColumn dynamicColumn = (DynamicColumn) column;
             dynamicColumn.applyStatelessModel();
         }
-        
-        column.getCellEditor().getFacet("output").encodeAll(context);
-        
-        if(column.isDynamic()) {
+
+        if (table.isCellEditCancelRequest(context) || table.isCellEditInitRequest(context)) {
+            column.getCellEditor().getFacet("input").encodeAll(context);
+        }
+        else {
+            column.getCellEditor().getFacet("output").encodeAll(context);
+        }
+
+        if (column.isDynamic()) {
             ((DynamicColumn) column).cleanStatelessModel();
         }
     }
@@ -72,4 +77,3 @@ public class CellEditFeature implements DataTableFeature {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_cellInfo");
     }
 }
-

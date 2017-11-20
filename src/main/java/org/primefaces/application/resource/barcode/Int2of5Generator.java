@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,12 @@
  */
 package org.primefaces.application.resource.barcode;
 
-import java.io.IOException;
 import org.krysalis.barcode4j.impl.int2of5.Interleaved2Of5Bean;
-import org.krysalis.barcode4j.output.CanvasProvider;
 
-public class Int2of5Generator implements BarcodeGenerator {
+public class Int2of5Generator extends BarcodeGenerator {
 
-    public void generate(CanvasProvider canvasProvider, String value) throws IOException {
-        Interleaved2Of5Bean bean = new Interleaved2Of5Bean();
-        bean.generateBarcode(canvasProvider, value);
+    public Int2of5Generator() {
+        super(new Interleaved2Of5Bean());
     }
-    
+
 }

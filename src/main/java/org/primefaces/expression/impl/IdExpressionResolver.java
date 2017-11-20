@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,48 @@
  */
 package org.primefaces.expression.impl;
 
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-
+import org.primefaces.expression.MultiSearchExpressionResolver;
 import org.primefaces.expression.SearchExpressionResolver;
+import org.primefaces.util.ComponentTraversalUtils;
 
-/**
- * {@link SearchExpressionResolver} for simple id's.
- */
-public class IdExpressionResolver implements SearchExpressionResolver {
+public class IdExpressionResolver implements SearchExpressionResolver, MultiSearchExpressionResolver {
 
-	public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression) {
-		return last.findComponent(expression);
-	}
+    private static final Pattern PATTERN = Pattern.compile("@id\\(([\\w-]+)\\)");
+
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+        throw new FacesException("@id likely returns multiple components, therefore it's not supported in #resolveComponent... expression \"" + expression
+                + "\" referenced from \"" + source.getClientId(context) + "\".");
+    }
+
+    public void resolveComponents(FacesContext context, UIComponent source, UIComponent last, String expression, List<UIComponent> components, int options) {
+        ComponentTraversalUtils.withId(
+                extractId(expression),
+                last,
+                components);
+    }
+
+    protected String extractId(String expression) {
+        try {
+            Matcher matcher = PATTERN.matcher(expression);
+
+            if (matcher.matches()) {
+
+                return matcher.group(1);
+
+            }
+            else {
+                throw new FacesException("Expression does not match following pattern @id(id). Expression: \"" + expression + "\"");
+            }
+
+        }
+        catch (Exception e) {
+            throw new FacesException("Expression does not match following pattern @id(id). Expression: \"" + expression + "\"", e);
+        }
+    }
 }

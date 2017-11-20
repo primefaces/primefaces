@@ -16,13 +16,16 @@
     <parent>javax.faces.component.UIInput</parent>
     <description>Rating component features a star based rating system. Rating can be used as a plain input component or with ajax RateListeners.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
         <interface>
-			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
-		</interface>
-	</interfaces>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
     <attributes>
         &input_component_attributes;
         &widget_var_attribute;
@@ -75,13 +78,16 @@
     </attributes>
     <resources>
         <resource>
-            <name>primefaces.css</name>
+            <name>components.css</name>
         </resource>
         <resource>
             <name>jquery/jquery.js</name>
         </resource>
         <resource>
-            <name>primefaces.js</name>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
         </resource>
     </resources>
 </component>

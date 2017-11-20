@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2013 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,14 +56,16 @@ public class MultipartRequest extends HttpServletRequestWrapper {
         try {
             List<FileItem> fileItems = servletFileUpload.parseRequest(request);
 
-            for(FileItem item : fileItems) {
-                if(item.isFormField())
+            for (FileItem item : fileItems) {
+                if (item.isFormField()) {
                     addFormParam(item);
-                else
+                }
+                else {
                     addFileParam(item);
+                }
             }
-
-        } catch (FileUploadException e) {
+        }
+        catch (FileUploadException e) {
             logger.log(Level.SEVERE, "Error in parsing fileupload request", e);
 
             throw new IOException(e.getMessage(), e);
@@ -71,7 +73,7 @@ public class MultipartRequest extends HttpServletRequestWrapper {
     }
 
     private void addFileParam(FileItem item) {
-        if(fileParams.containsKey(item.getFieldName())) {
+        if (fileParams.containsKey(item.getFieldName())) {
             fileParams.get(item.getFieldName()).add(item);
         }
         else {
@@ -82,7 +84,7 @@ public class MultipartRequest extends HttpServletRequestWrapper {
     }
 
     private void addFormParam(FileItem item) {
-        if(formParams.containsKey(item.getFieldName())) {
+        if (formParams.containsKey(item.getFieldName())) {
             formParams.get(item.getFieldName()).add(getItemString(item));
         }
         else {
@@ -96,7 +98,8 @@ public class MultipartRequest extends HttpServletRequestWrapper {
         try {
             String characterEncoding = getRequest().getCharacterEncoding();
             return (characterEncoding == null) ? item.getString() : item.getString(characterEncoding);
-        } catch (UnsupportedEncodingException e) {
+        }
+        catch (UnsupportedEncodingException e) {
             logger.log(Level.SEVERE, "Unsupported character encoding " + getRequest().getCharacterEncoding(), e);
             return item.getString();
         }
@@ -104,9 +107,9 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 
     @Override
     public String getParameter(String name) {
-        if(formParams.containsKey(name)) {
+        if (formParams.containsKey(name)) {
             List<String> values = formParams.get(name);
-            if(values.isEmpty()) {
+            if (values.isEmpty()) {
                 return "";
             }
             else {
@@ -120,10 +123,10 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 
     @Override
     public Map getParameterMap() {
-        if(parameterMap == null) {
-            Map<String,String[]> map = new LinkedHashMap<String, String[]>();
+        if (parameterMap == null) {
+            Map<String, String[]> map = new LinkedHashMap<String, String[]>();
 
-            for(String formParam : formParams.keySet()) {
+            for (String formParam : formParams.keySet()) {
                 map.put(formParam, formParams.get(formParam).toArray(new String[0]));
             }
 
@@ -141,7 +144,7 @@ public class MultipartRequest extends HttpServletRequestWrapper {
         paramNames.addAll(formParams.keySet());
 
         Enumeration<String> original = super.getParameterNames();
-        while(original.hasMoreElements()) {
+        while (original.hasMoreElements()) {
             paramNames.add(original.nextElement());
         }
 
@@ -150,9 +153,9 @@ public class MultipartRequest extends HttpServletRequestWrapper {
 
     @Override
     public String[] getParameterValues(String name) {
-        if(formParams.containsKey(name)) {
+        if (formParams.containsKey(name)) {
             List<String> values = formParams.get(name);
-            if(values.isEmpty()) {
+            if (values.isEmpty()) {
                 return new String[0];
             }
             else {
@@ -165,7 +168,7 @@ public class MultipartRequest extends HttpServletRequestWrapper {
     }
 
     public FileItem getFileItem(String name) {
-        if(fileParams.containsKey(name)) {
+        if (fileParams.containsKey(name)) {
             List<FileItem> items = fileParams.get(name);
 
             return items.get(0);

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,31 +18,19 @@ package org.primefaces.event.map;
 import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
+import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.map.GeocodeResult;
 
-public class GeocodeEvent extends AjaxBehaviorEvent {
-	
+public class GeocodeEvent extends AbstractAjaxBehaviorEvent {
+
     private final String query;
-	private final List<GeocodeResult> results;
-	
-	public GeocodeEvent(UIComponent component, Behavior behavior, String query, List<GeocodeResult> results) {
-		super(component, behavior);
+    private final List<GeocodeResult> results;
+
+    public GeocodeEvent(UIComponent component, Behavior behavior, String query, List<GeocodeResult> results) {
+        super(component, behavior);
         this.query = query;
         this.results = results;
-	}
-
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
-	}
+    }
 
     public String getQuery() {
         return query;

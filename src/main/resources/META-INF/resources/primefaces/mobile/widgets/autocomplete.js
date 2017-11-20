@@ -30,6 +30,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             if(value.length === 0) {
                 $this.hide();
+                clearTimeout($this.timeout);
             }
             else {
                 $this.showClearIcon();
@@ -154,14 +155,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             this.cfg.behaviors['itemSelect'].call(this, ext);
         }
-    },
-    
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] !== undefined;
-        }
-    
-        return false;
     },
     
     showClearIcon: function() {

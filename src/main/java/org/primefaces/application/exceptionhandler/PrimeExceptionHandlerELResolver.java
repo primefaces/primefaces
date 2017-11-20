@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,20 +24,20 @@ import javax.faces.context.FacesContext;
 public class PrimeExceptionHandlerELResolver extends ELResolver {
 
     public static final String EL_NAME = "pfExceptionHandler";
-    
+
     @Override
     public Object getValue(ELContext elContext, Object base, Object property) {
 
         if (EL_NAME.equals(property)) {
             elContext.setPropertyResolved(true);
-            
+
             FacesContext context = FacesContext.getCurrentInstance();
             ExceptionInfo info = (ExceptionInfo) context.getAttributes().get(ExceptionInfo.ATTRIBUTE_NAME);
-            
+
             if (info == null) {
                 info = (ExceptionInfo) context.getExternalContext().getSessionMap().get(ExceptionInfo.ATTRIBUTE_NAME);
             }
-            
+
             return info;
         }
 
@@ -51,7 +51,7 @@ public class PrimeExceptionHandlerELResolver extends ELResolver {
 
     @Override
     public void setValue(ELContext context, Object base, Object property, Object value) {
-        
+
     }
 
     @Override

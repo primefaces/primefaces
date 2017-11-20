@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,37 +20,64 @@ import javax.faces.context.FacesContext;
 public class SharedStringBuilder {
 
     /**
-	 * Get a shared {@link StringBuilder} instance.
-	 * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveComponentsForClient} calls would create 
-	 * 300 {@link StringBuilder} instances!
-	 *
-	 * @param context The {@link FacesContext}
-	 * @param key The key for the {@link FacesContext} attributes.
-	 * @return The shared {@link StringBuilder} instance
-	 */
-	public static StringBuilder get(FacesContext context, String key) {
-		StringBuilder builder = (StringBuilder) context.getAttributes().get(key);
+     * Get a shared {@link StringBuilder} instance.
+     * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveClientId} calls would create 
+     * 300 {@link StringBuilder} instances!
+     *
+     * @param context The {@link FacesContext}
+     * @param key The key for the {@link FacesContext} attributes.
+     * @param initialSize The initial size for the {@link StringBuilder}.
+     * @return The shared {@link StringBuilder} instance
+     */
+    public static StringBuilder get(FacesContext context, String key, int initialSize) {
+        StringBuilder builder = (StringBuilder) context.getAttributes().get(key);
 
-		if (builder == null) {
-			builder = new StringBuilder();
-			context.getAttributes().put(key, builder);
-		}
+        if (builder == null) {
+            builder = new StringBuilder(initialSize);
+            context.getAttributes().put(key, builder);
+        }
         else {
-			builder.setLength(0);
-		}
+            builder.setLength(0);
+        }
 
-		return builder;
-	}
+        return builder;
+    }
+
+    /**
+     * Get a shared {@link StringBuilder} instance.
+     * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveClientId} calls would create 
+     * 300 {@link StringBuilder} instances!
+     *
+     * @param context The {@link FacesContext}
+     * @param key The key for the {@link FacesContext} attributes.
+     * @return The shared {@link StringBuilder} instance
+     */
+    public static StringBuilder get(FacesContext context, String key) {
+        return get(context, key, 16);
+    }
     
     /**
-	 * Get a shared {@link StringBuilder} instance.
-	 * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveComponentsForClient} calls would create 
-	 * 300 {@link StringBuilder} instances!
-	 *
-	 * @param key The key for the {@link FacesContext} attributes.
-	 * @return The shared {@link StringBuilder} instance
-	 */
-	public static StringBuilder get(String key) {
+     * Get a shared {@link StringBuilder} instance.
+     * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveClientId} calls would create 
+     * 300 {@link StringBuilder} instances!
+     *
+     * @param key The key for the {@link FacesContext} attributes.
+     * @return The shared {@link StringBuilder} instance
+     */
+    public static StringBuilder get(String key) {
         return get(FacesContext.getCurrentInstance(), key);
-	}
+    }
+    
+    /**
+     * Get a shared {@link StringBuilder} instance.
+     * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveClientId} calls would create 
+     * 300 {@link StringBuilder} instances!
+     *
+     * @param key The key for the {@link FacesContext} attributes.
+     * @param initialSize The initial size for the {@link StringBuilder}.
+     * @return The shared {@link StringBuilder} instance
+     */
+    public static StringBuilder get(String key, int initialSize) {
+        return get(FacesContext.getCurrentInstance(), key, initialSize);
+    }
 }

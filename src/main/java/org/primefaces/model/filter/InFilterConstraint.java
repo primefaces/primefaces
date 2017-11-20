@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,31 +24,33 @@ import javax.faces.FacesException;
 public class InFilterConstraint implements FilterConstraint {
 
     public boolean applies(Object value, Object filter, Locale locale) {
-        if(filter == null) {
+        if (filter == null) {
             return true;
         }
-        
-        if(value == null) {
+
+        if (value == null) {
             return false;
         }
-        
+
         Collection<?> collection = null;
-        if(filter.getClass().isArray()) {
-            collection = Arrays.asList((Object[])filter);
-        } else if(filter instanceof Collection) {
+        if (filter.getClass().isArray()) {
+            collection = Arrays.asList((Object[]) filter);
+        }
+        else if (filter instanceof Collection) {
             collection = (Collection<?>) filter;
-        } else {
+        }
+        else {
             throw new FacesException("Filter value must be an array or a collection when using \"in\" filter constraint.");
         }
-        
-        if(collection != null && !collection.isEmpty()) {
+
+        if (collection != null && !collection.isEmpty()) {
             for (Iterator<? extends Object> it = collection.iterator(); it.hasNext();) {
                 Object object = it.next();
-                if(object.equals(value)) {
+                if (object.equals(value)) {
                     return true;
                 }
             }
-            
+
             return false;
         }
         else {

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2012 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
 
 public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, Serializable {
-    
+
     private String id;
     private String icon;
     private String iconPos;
@@ -67,18 +67,20 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private String confirmationScript;
     private String form;
     private boolean escape = true;
-    
-    public DefaultMenuItem() {}
-    
+    private String rel;
+
+    public DefaultMenuItem() {
+    }
+
     public DefaultMenuItem(Object value) {
         this.value = value;
     }
-    
+
     public DefaultMenuItem(Object value, String icon) {
         this.value = value;
         this.icon = icon;
     }
-        
+
     public DefaultMenuItem(Object value, String icon, String url) {
         this.value = value;
         this.icon = icon;
@@ -88,10 +90,11 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public String getId() {
         return id;
     }
+
     public void setId(String id) {
         this.id = id;
     }
-    
+
     public String getIcon() {
         return icon;
     }
@@ -127,6 +130,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public String getOnclick() {
         return onclick;
     }
+
     public void setOnclick(String onclick) {
         this.onclick = onclick;
     }
@@ -134,6 +138,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public String getStyle() {
         return style;
     }
+
     public void setStyle(String style) {
         this.style = style;
     }
@@ -141,6 +146,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public String getStyleClass() {
         return styleClass;
     }
+
     public void setStyleClass(String styleClass) {
         this.styleClass = styleClass;
     }
@@ -148,6 +154,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public String getHref() {
         return url;
     }
+
     public void setHref(String href) {
         this.url = href;
     }
@@ -155,6 +162,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public String getUrl() {
         return url;
     }
+
     public void setUrl(String url) {
         this.url = url;
     }
@@ -162,6 +170,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public String getTarget() {
         return target;
     }
+
     public void setTarget(String target) {
         this.target = target;
     }
@@ -169,6 +178,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public String getOutcome() {
         return outcome;
     }
+
     public void setOutcome(String outcome) {
         this.outcome = outcome;
     }
@@ -176,6 +186,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public boolean isAjax() {
         return ajax;
     }
+
     public void setAjax(boolean ajax) {
         this.ajax = ajax;
     }
@@ -183,6 +194,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public Object getValue() {
         return value;
     }
+
     public void setValue(Object value) {
         this.value = value;
     }
@@ -190,6 +202,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public boolean isIncludeViewParams() {
         return includeViewParams;
     }
+
     public void setIncludeViewParams(boolean includeViewParams) {
         this.includeViewParams = includeViewParams;
     }
@@ -197,6 +210,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public String getFragment() {
         return fragment;
     }
+
     public void setFragment(String fragment) {
         this.fragment = fragment;
     }
@@ -204,30 +218,31 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public Map<String, List<String>> getParams() {
         return params;
     }
+
     public void setParams(Map<String, List<String>> params) {
         this.params = params;
     }
-    
+
     public void setParam(String key, Object value) {
-        if(value == null) {
+        if (value == null) {
             throw new IllegalArgumentException("value cannot be null");
         }
-        
-        if(params == null) {
+
+        if (params == null) {
             params = new LinkedHashMap<String, List<String>>();
         }
-        
-        if(!params.containsKey(key)) {
+
+        if (!params.containsKey(key)) {
             params.put(key, new ArrayList<String>());
         }
-        
+
         params.get(key).add(value.toString());
     }
 
     public boolean shouldRenderChildren() {
         return false;
     }
-    
+
     public List<UIComponent> getChildren() {
         return null;
     }
@@ -317,7 +332,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.resetValues = resetValues;
         this.resetValuesSet = true;
     }
-    
+
     public boolean isGlobal() {
         return global;
     }
@@ -337,11 +352,11 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public boolean isPartialSubmitSet() {
         return partialSubmitSet;
     }
-    
+
     public boolean isResetValuesSet() {
         return resetValuesSet;
     }
-    
+
     public boolean isIgnoreAutoUpdate() {
         return ignoreAutoUpdate;
     }
@@ -357,23 +372,23 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public void setImmediate(boolean immediate) {
         this.immediate = immediate;
     }
-    
+
     public boolean isAjaxified() {
         return getUrl() == null && isAjax();
     }
 
-	public String getDelay() {
-		return delay;
-	}
+    public String getDelay() {
+        return delay;
+    }
 
     public void setDelay(String delay) {
         this.delay = delay;
     }
-    
+
     public boolean isDisableClientWindow() {
         return disableClientWindow;
     }
-    
+
     public void setDisableClientWindow(boolean disableClientWindow) {
         this.disableClientWindow = disableClientWindow;
     }
@@ -393,7 +408,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public void setContainerStyleClass(String containerStyleClass) {
         this.containerStyleClass = containerStyleClass;
     }
-    
+
     public String getClientId() {
         return this.id;
     }
@@ -405,7 +420,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public void setTimeout(int timeout) {
         this.timeout = timeout;
     }
-    
+
     public String getPartialSubmitFilter() {
         return partialSubmitFilter;
     }
@@ -421,14 +436,15 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public void setForm(String form) {
         this.form = form;
     }
-    
+
     public String getConfirmationScript() {
         return this.confirmationScript;
     }
+
     public void setConfirmationScript(String confirmationScript) {
         this.confirmationScript = confirmationScript;
     }
-    
+
     public boolean requiresConfirmation() {
         return this.confirmationScript != null;
     }
@@ -440,4 +456,13 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     public void setEscape(boolean escape) {
         this.escape = escape;
     }
+
+    public String getRel() {
+        return rel;
+    }
+
+    public void setRel(String rel) {
+        this.rel = rel;
+    }
+
 }

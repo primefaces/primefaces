@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,64 +21,87 @@ import java.io.InputStream;
  * Default implementation of a StreamedContent
  */
 public class DefaultStreamedContent implements StreamedContent {
-	
-	private InputStream stream;
-	
-	private String contentType;
-    
-	private String name;
-    
+
+    private InputStream stream;
+
+    private String contentType;
+
+    private String name;
+
     private String contentEncoding;
-	
-	public DefaultStreamedContent() {}
-	
+
+    private Integer contentLenght;
+
+    public DefaultStreamedContent() {
+    }
+
     public DefaultStreamedContent(InputStream stream) {
-		this.stream = stream;
-	}
-	
-	public DefaultStreamedContent(InputStream stream, String contentType) {
+        this.stream = stream;
+    }
+
+    public DefaultStreamedContent(InputStream stream, String contentType) {
         this(stream);
-		this.contentType = contentType;
-	}
-	
-	public DefaultStreamedContent(InputStream stream, String contentType, String name) {
-		this(stream, contentType);
-		this.name = name;
-	}
-    
+        this.contentType = contentType;
+    }
+
+    public DefaultStreamedContent(InputStream stream, String contentType, String name) {
+        this(stream, contentType);
+        this.name = name;
+    }
+
     public DefaultStreamedContent(InputStream stream, String contentType, String name, String contentEncoding) {
-		this(stream, contentType, name);
+        this(stream, contentType, name);
         this.contentEncoding = contentEncoding;
-	}
+    }
 
-	public InputStream getStream() {
-		return stream;
-	}
+    public DefaultStreamedContent(InputStream stream, String contentType, String name, Integer contentLenght) {
+        this(stream, contentType, name);
+        this.contentLenght = contentLenght;
+    }
 
-	public void setStream(InputStream stream) {
-		this.stream = stream;
-	}
-	
-	public String getContentType() {
-		return contentType;
-	}
-	
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
-	}
-	
-	public String getName() {
-		return name;
-	}
+    public DefaultStreamedContent(InputStream stream, String contentType, String name, String contentEncoding, Integer contentLenght) {
+        this(stream, contentType, name);
+        this.contentEncoding = contentEncoding;
+        this.contentLenght = contentLenght;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Override
+    public InputStream getStream() {
+        return stream;
+    }
+
+    public void setStream(InputStream stream) {
+        this.stream = stream;
+    }
+
+    @Override
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getContentEncoding() {
+        return contentEncoding;
+    }
 
     public void setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
-    }    
-    public String getContentEncoding() {
-        return contentEncoding;
+    }
+
+    public Integer getContentLength() {
+        return contentLenght;
     }
 }

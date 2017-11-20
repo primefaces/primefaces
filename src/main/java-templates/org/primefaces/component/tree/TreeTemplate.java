@@ -21,8 +21,19 @@ import javax.faces.event.PhaseId;
 import org.primefaces.component.tree.UITreeNode;
 import org.primefaces.util.Constants;
 import org.primefaces.model.TreeNode;
-
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "dragdrop", "contextMenu"));
+import javax.faces.event.BehaviorEvent;
+import org.primefaces.model.filter.ContainsFilterConstraint;
+import org.primefaces.model.filter.EndsWithFilterConstraint;
+import org.primefaces.model.filter.EqualsFilterConstraint;
+import org.primefaces.model.filter.ExactFilterConstraint;
+import org.primefaces.model.filter.FilterConstraint;
+import org.primefaces.model.filter.GlobalFilterConstraint;
+import org.primefaces.model.filter.GreaterThanEqualsFilterConstraint;
+import org.primefaces.model.filter.GreaterThanFilterConstraint;
+import org.primefaces.model.filter.InFilterConstraint;
+import org.primefaces.model.filter.LessThanEqualsFilterConstraint;
+import org.primefaces.model.filter.LessThanFilterConstraint;
+import org.primefaces.model.filter.StartsWithFilterConstraint;
 
 	private Map<String,UITreeNode> nodes;
 
@@ -35,9 +46,6 @@ import org.primefaces.model.TreeNode;
 			return node;
 	}
 
-    private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
-    }
 		
     public boolean isNodeExpandRequest(FacesContext context) {
 		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_expandNode");
@@ -46,6 +54,10 @@ import org.primefaces.model.TreeNode;
     public boolean isSelectionRequest(FacesContext context) {
 		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_instantSelection");
 	}
+
+    public boolean isFilterRequest(FacesContext context) {
+    	return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_filtering");
+    }
 
     public static String CONTAINER_CLASS = "ui-tree ui-widget ui-widget-content ui-corner-all";
     public static String CONTAINER_RTL_CLASS = "ui-tree ui-tree-rtl ui-widget ui-widget-content ui-corner-all";
@@ -66,6 +78,8 @@ import org.primefaces.model.TreeNode;
     public static String LEAF_ICON_CLASS = "ui-treenode-leaf-icon";
     public static String NODE_ICON_CLASS = "ui-treenode-icon ui-icon";
     public static String NODE_LABEL_CLASS = "ui-treenode-label ui-corner-all";
+    public static final String FILTER_CLASS = "ui-tree-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String FILTER_CONTAINER = "ui-tree-filter-container";
 
     public Map<String,UITreeNode> getTreeNodes() {
         if(nodes == null) {
@@ -79,6 +93,51 @@ import org.primefaces.model.TreeNode;
         return nodes;
     }
 
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("select", NodeSelectEvent.class);
+        put("unselect", NodeUnselectEvent.class);
+        put("expand", NodeExpandEvent.class);
+        put("collapse", NodeCollapseEvent.class);
+        put("dragdrop", TreeDragDropEvent.class);
+        put("contextMenu", NodeSelectEvent.class);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    private final static String STARTS_WITH_MATCH_MODE = "startsWith";
+    private final static String ENDS_WITH_MATCH_MODE = "endsWith";
+    private final static String CONTAINS_MATCH_MODE = "contains";
+    private final static String EXACT_MATCH_MODE = "exact";
+    private final static String LESS_THAN_MODE = "lt";
+    private final static String LESS_THAN_EQUALS_MODE = "lte";
+    private final static String GREATER_THAN_MODE = "gt";
+    private final static String GREATER_THAN_EQUALS_MODE = "gte";
+    private final static String EQUALS_MODE = "equals";
+    private final static String IN_MODE = "in";
+    private final static String GLOBAL_MODE = "global";
+  
+    final static Map<String,FilterConstraint> FILTER_CONSTRAINTS;
+    
+    static {
+        FILTER_CONSTRAINTS = new HashMap<String,FilterConstraint>();
+        FILTER_CONSTRAINTS.put(STARTS_WITH_MATCH_MODE, new StartsWithFilterConstraint());
+        FILTER_CONSTRAINTS.put(ENDS_WITH_MATCH_MODE, new EndsWithFilterConstraint());
+        FILTER_CONSTRAINTS.put(CONTAINS_MATCH_MODE, new ContainsFilterConstraint());
+        FILTER_CONSTRAINTS.put(EXACT_MATCH_MODE, new ExactFilterConstraint());
+        FILTER_CONSTRAINTS.put(LESS_THAN_MODE, new LessThanFilterConstraint());
+        FILTER_CONSTRAINTS.put(LESS_THAN_EQUALS_MODE, new LessThanEqualsFilterConstraint());
+        FILTER_CONSTRAINTS.put(GREATER_THAN_MODE, new GreaterThanFilterConstraint());
+        FILTER_CONSTRAINTS.put(GREATER_THAN_EQUALS_MODE, new GreaterThanEqualsFilterConstraint());
+        FILTER_CONSTRAINTS.put(EQUALS_MODE, new EqualsFilterConstraint());
+        FILTER_CONSTRAINTS.put(IN_MODE, new InFilterConstraint());
+        FILTER_CONSTRAINTS.put(GLOBAL_MODE, new GlobalFilterConstraint());
+    }
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
+
     @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
@@ -88,7 +147,7 @@ import org.primefaces.model.TreeNode;
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
+        if(ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = this.getClientId(context);
@@ -122,7 +181,10 @@ import org.primefaces.model.TreeNode;
             else if(eventName.equals("dragdrop")) {
                 int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
 
-                wrapperEvent = new TreeDragDropEvent(this, behaviorEvent.getBehavior(), dragNode, dropNode, dndIndex);
+                if(this.isMultipleDrag()) 
+                    wrapperEvent = new TreeDragDropEvent(this, behaviorEvent.getBehavior(), dragNodes, dropNode, dndIndex);
+                else
+                    wrapperEvent = new TreeDragDropEvent(this, behaviorEvent.getBehavior(), dragNode, dropNode, dndIndex);
             }
             else if(eventName.equals("contextMenu")) {
                 setRowKey(params.get(clientId + "_contextMenuNode"));
@@ -198,6 +260,7 @@ import org.primefaces.model.TreeNode;
     }
 
     private TreeNode dragNode;
+    private TreeNode[] dragNodes;
     private TreeNode dropNode;
 
     TreeNode getDragNode() {
@@ -205,6 +268,13 @@ import org.primefaces.model.TreeNode;
     }
     void setDragNode(TreeNode dragNode) {
         this.dragNode = dragNode;
+    }
+
+    TreeNode[] getDragNodes() {
+        return dragNodes;
+    }
+    void setDragNodes(TreeNode[] dragNodes) {
+        this.dragNodes = dragNodes;
     }
 
     TreeNode getDropNode() {
@@ -252,4 +322,29 @@ import org.primefaces.model.TreeNode;
             }
         }
     }
+
+    @Override
+    protected void validateSelection(FacesContext context) {
+        String selectionMode = this.getSelectionMode();
+
+        if(selectionMode != null && this.isRequired()) {
+            Object selection = this.getLocalSelectedNodes();
+            boolean isValueBlank = (selectionMode.equalsIgnoreCase("single")) ? (selection == null) : (((TreeNode[]) selection).length == 0);
+            
+            if(isValueBlank) {
+                super.updateSelection(context);
+            }
+        }
+ 
+        super.validateSelection(context);
+    }
     
+    private List<String> filteredRowKeys = new ArrayList<String>();
+    public List<String> getFilteredRowKeys() {
+        return filteredRowKeys;
+    }
+
+    public void setFilteredRowKeys(List<String> filteredRowKeys) {
+        this.filteredRowKeys = filteredRowKeys;
+    }
+

@@ -7,91 +7,94 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>editor</tag>
-	<tagClass>org.primefaces.component.editor.EditorTag</tagClass>
-	<componentClass>org.primefaces.component.editor.Editor</componentClass>
-	<componentType>org.primefaces.component.Editor</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.EditorRenderer</rendererType>
-	<rendererClass>org.primefaces.component.editor.EditorRenderer</rendererClass>
-	<parent>javax.faces.component.UIInput</parent>
+    <tag>editor</tag>
+    <tagClass>org.primefaces.component.editor.EditorTag</tagClass>
+    <componentClass>org.primefaces.component.editor.Editor</componentClass>
+    <componentType>org.primefaces.component.Editor</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.EditorRenderer</rendererType>
+    <rendererClass>org.primefaces.component.editor.EditorRenderer</rendererClass>
+    <parent>javax.faces.component.UIInput</parent>
     <description>Editor is an input component with rich text editing capabilities.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
-	</interfaces>
-	<attributes>
-		&input_component_attributes;
-		&widget_var_attribute;
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &input_component_attributes;
+        &widget_var_attribute;
         <attribute>
-			<name>controls</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>controls</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>List of controls to customize toolbar.</description>
-		</attribute>
-		<attribute>
-			<name>height</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+        </attribute>
+        <attribute>
+            <name>height</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
             <description>Height of the editor. Default is min integer value.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>width</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
+            <name>width</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MIN_VALUE</defaultValue>
             <description>Width of the editor. Default is min integer value.</description>
-		</attribute>
-		<attribute>
-			<name>disabled</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
+        </attribute>
+        <attribute>
+            <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
             <description>Disables editor.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Inline style of the editor container.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Style class of the editor container.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>onchange</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>onchange</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Client side callback to execute when editor data changes.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>maxlength</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
-			<defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
+            <name>maxlength</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
             <description>Maximum length for input.</description>
-		</attribute>
-	</attributes>
-	<resources>
-		<resource>
-			<name>editor/editor.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+        </attribute>
+    </attributes>
+    <resources>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
-		<resource>
-			<name>primefaces.js</name>
-		</resource>
-		<resource>
-			<name>editor/editor.js</name>
-		</resource>
-	</resources>
+            <name>editor/editor.css</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+        <resource>
+            <name>editor/editor.js</name>
+        </resource>
+    </resources>
 </component>

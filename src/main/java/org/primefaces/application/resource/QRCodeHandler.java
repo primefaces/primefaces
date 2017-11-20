@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,32 +21,42 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import net.glxn.qrgen.QRCode;
 import net.glxn.qrgen.image.ImageType;
-import org.primefaces.context.RequestContext;
+
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.StringEncrypter;
+
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 public class QRCodeHandler extends BaseDynamicContentHandler {
-    
+
     public void handle(FacesContext context) throws IOException {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-        String encryptedValue = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
-        
-        if(encryptedValue != null) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        ExternalContext externalContext = context.getExternalContext();
+        String sessionKey = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
+        Map<String, Object> session = externalContext.getSessionMap();
+        Map<String, String> barcodeMapping = (Map) session.get(Constants.BARCODE_MAPPING);
+        String value = barcodeMapping.get(sessionKey);
+
+        if (value != null) {
             boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
-            StringEncrypter strEn = RequestContext.getCurrentInstance().getEncrypter();
-            String value = strEn.decrypt(encryptedValue);                
-            ExternalContext externalContext = context.getExternalContext();
 
             externalContext.setResponseStatus(200);
             externalContext.setResponseContentType("image/png");
-            
+
             handleCache(externalContext, cache);
-            
-            QRCode.from(value).to(ImageType.PNG).withCharset("UTF-8").writeTo(externalContext.getResponseOutputStream());
-            
+
+            ErrorCorrectionLevel ecl = ErrorCorrectionLevel.L;
+            String errorCorrection = params.get("qrec");
+            if (!ComponentUtils.isValueBlank(errorCorrection)) {
+                ecl = ErrorCorrectionLevel.valueOf(errorCorrection);
+            }
+
+            QRCode.from(value).to(ImageType.PNG).withErrorCorrection(ecl).withCharset("UTF-8")
+                        .writeTo(externalContext.getResponseOutputStream());
+
             externalContext.responseFlushBuffer();
             context.responseComplete();
         }
     }
-    
+
 }

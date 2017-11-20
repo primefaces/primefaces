@@ -11,19 +11,22 @@
     <componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.TabViewRenderer</rendererType>
     <rendererClass>org.primefaces.component.tabview.TabViewRenderer</rendererClass>
-	<parent>org.primefaces.component.api.UITabPanel</parent>
+    <parent>org.primefaces.component.api.UITabPanel</parent>
     <description>TabView is a tabbed panel component featuring client side tabs, dynamic content loading with ajax and content transition effects.</description>
-     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
+    <interfaces>
         <interface>
-			<name>org.primefaces.component.api.RTLAware</name>
-		</interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
         <interface>
-			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
-		</interface>
-	</interfaces>
+            <name>org.primefaces.component.api.RTLAware</name>
+        </interface>
+        <interface>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
     <attributes>
         &standard_uicomponent_attributes;
         &widget_var_attribute;
@@ -61,9 +64,9 @@
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
             <description>
-              When tab contents are lazy loaded by ajax toggleMode, 
-              caching only retrieves the tab contents once and subsequent toggles of a cached tab does not communicate with server.
-              If caching is turned off, tab contents are reloaded from server each time tab is clicked. Default is true.
+                When tab contents are lazy loaded by ajax toggleMode, 
+                caching only retrieves the tab contents once and subsequent toggles of a cached tab does not communicate with server.
+                If caching is turned off, tab contents are reloaded from server each time tab is clicked. Default is true.
             </description>
         </attribute>
         <attribute>
@@ -79,38 +82,38 @@
             <description>Client side callback to execute when a tab is shown.</description>
         </attribute>
         <attribute>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Inline style of the main container.</description>
-		</attribute>
-		<attribute>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-            <description>Style class of the main container.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>var</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the main container.</description>
+        </attribute>
+        <attribute>
+            <name>var</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Name of collection iterator to use in dynamic number of tabs.</description>
             <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>value</name>
-			<required>false</required>
-			<type>java.util.List</type>
+            <name>value</name>
+            <required>false</required>
+            <type>java.util.List</type>
             <description>List to iterate to display dynamic number of tabs.</description>
             <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>orientation</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>orientation</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <defaultValue>top</defaultValue>
             <description>Orientation of the tab headers, valid values are "top" and "bottom".</description>
-		</attribute>
+        </attribute>
         <attribute>
             <name>onTabClose</name>
             <required>false</required>
@@ -140,24 +143,27 @@
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
-			<name>tabindex</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>tabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Position of the element in the tabbing order.</description>
-		</attribute>
+        </attribute>
     </attributes>
-	<resources>
+    <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
+            <name>jquery/jquery.js</name>
+        </resource>
         <resource>
-			<name>primefaces.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
 </component>

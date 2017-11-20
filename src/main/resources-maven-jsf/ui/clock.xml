@@ -47,6 +47,19 @@
             <defaultValue>60000</defaultValue>
             <description>Defines the sync interval in autoSync mode, default is 60000 milliseconds.</description>
         </attribute>
+        <attribute>
+            <name>timeZone</name>
+            <required>false</required>
+            <type>java.lang.Object</type>
+            <description>String or a java.util.TimeZone instance to specify the timezone used for date conversion, defaults to TimeZone.getDefault()</description>
+        </attribute>
+        <attribute>
+            <name>displayMode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>digital</defaultValue>
+            <description>Display mode, valid values are digital(default) and analog.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
@@ -56,7 +69,13 @@
             <name>jquery/jquery.js</name>
         </resource>
         <resource>
-            <name>primefaces.js</name>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+        <resource>
+            <name>raphael/raphael.js</name>
         </resource>
         <resource>
             <name>clock/clock.js</name>

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,31 +19,35 @@ import javax.faces.application.FacesMessage;
 import org.primefaces.component.api.UINotification;
 
 public class UINotificationRenderer extends CoreRenderer {
-    
+
     protected boolean shouldRender(UINotification component, FacesMessage message, String severityName) {
         String severityLevel = component.getSeverity();
-        
-        if((message.isRendered() && !component.isRedisplay()) || (severityLevel != null && severityLevel.indexOf(severityName) == -1)) {
+
+        if ((message.isRendered() && !component.isRedisplay()) || (severityLevel != null && severityLevel.indexOf(severityName) == -1)) {
             return false;
         }
         else {
             return true;
         }
     }
-    
+
     protected String getSeverityName(FacesMessage message) {
         int ordinal = message.getSeverity().getOrdinal();
         String severity = null;
 
-        if(ordinal == FacesMessage.SEVERITY_INFO.getOrdinal())
+        if (ordinal == FacesMessage.SEVERITY_INFO.getOrdinal()) {
             severity = "info";
-        else if(ordinal == FacesMessage.SEVERITY_ERROR.getOrdinal())
+        }
+        else if (ordinal == FacesMessage.SEVERITY_ERROR.getOrdinal()) {
             severity = "error";
-        else if(ordinal == FacesMessage.SEVERITY_WARN.getOrdinal())
+        }
+        else if (ordinal == FacesMessage.SEVERITY_WARN.getOrdinal()) {
             severity = "warn";
-        else if(ordinal == FacesMessage.SEVERITY_FATAL.getOrdinal())
+        }
+        else if (ordinal == FacesMessage.SEVERITY_FATAL.getOrdinal()) {
             severity = "fatal";
-        
+        }
+
         return severity;
     }
 

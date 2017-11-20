@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import org.primefaces.expression.impl.AllExpressionResolver;
 import org.primefaces.expression.impl.ChildExpressionResolver;
 import org.primefaces.expression.impl.CompositeExpressionResolver;
 import org.primefaces.expression.impl.FormExpressionResolver;
+import org.primefaces.expression.impl.FindComponentExpressionResolver;
 import org.primefaces.expression.impl.IdExpressionResolver;
 import org.primefaces.expression.impl.JQuerySelectorExpressionResolver;
 import org.primefaces.expression.impl.NamingContainerExpressionResolver;
@@ -30,19 +31,19 @@ import org.primefaces.expression.impl.NextExpressionResolver;
 import org.primefaces.expression.impl.NoneExpressionResolver;
 import org.primefaces.expression.impl.ParentExpressionResolver;
 import org.primefaces.expression.impl.PreviousExpressionResolver;
+import org.primefaces.expression.impl.RootExpressionResolver;
 import org.primefaces.expression.impl.RowExpressionResolver;
 import org.primefaces.expression.impl.ThisExpressionResolver;
 import org.primefaces.expression.impl.WidgetVarExpressionResolver;
 
 /**
- * Factory for providing different {@link SearchExpressionResolver} for
- * expressions.
+ * Factory for providing different {@link SearchExpressionResolver} for expressions.
  */
 public class SearchExpressionResolverFactory {
 
     private static final HashMap<String, SearchExpressionResolver> RESOLVER_MAPPING = new HashMap<String, SearchExpressionResolver>();
 
-    private static final IdExpressionResolver ID_EXPRESSION_RESOLVER = new IdExpressionResolver();
+    private static final FindComponentExpressionResolver FIND_COMPONENT_EXPRESSION_RESOLVER = new FindComponentExpressionResolver();
 
     static {
         RESOLVER_MAPPING.put(SearchExpressionConstants.THIS_KEYWORD, new ThisExpressionResolver());
@@ -58,8 +59,17 @@ public class SearchExpressionResolverFactory {
         RESOLVER_MAPPING.put(SearchExpressionConstants.WIDGETVAR_KEYWORD, new WidgetVarExpressionResolver());
         RESOLVER_MAPPING.put(SearchExpressionConstants.KEYWORD_PREFIX, new JQuerySelectorExpressionResolver());
         RESOLVER_MAPPING.put(SearchExpressionConstants.ROW_KEYWORD, new RowExpressionResolver());
+        RESOLVER_MAPPING.put(SearchExpressionConstants.ID_KEYWORD, new IdExpressionResolver());
+        RESOLVER_MAPPING.put(SearchExpressionConstants.ROOT_KEYWORD, new RootExpressionResolver());
     }
 
+    /*
+     * Prevent instantiation.
+     */
+    private SearchExpressionResolverFactory() {
+
+    }
+    
     /**
      * Finds a {@link SearchExpressionResolver} for the given expression.
      *
@@ -75,12 +85,14 @@ public class SearchExpressionResolverFactory {
             if (parenthesisPosition > 0) {
                 String expressionWithoutParam = expression.substring(0, parenthesisPosition);
                 resolver = RESOLVER_MAPPING.get(expressionWithoutParam);
-            } else {
+            }
+            else {
                 resolver = RESOLVER_MAPPING.get(expression);
             }
-        } else {
-            // if it's not a keyword, take it as id
-            resolver = ID_EXPRESSION_RESOLVER;
+        }
+        else {
+            // if it's not a keyword, just delegate it to JSF
+            resolver = FIND_COMPONENT_EXPRESSION_RESOLVER;
         }
 
         if (resolver == null) {
@@ -96,12 +108,5 @@ public class SearchExpressionResolverFactory {
 
     public static SearchExpressionResolver removeResolver(final String keyword) {
         return RESOLVER_MAPPING.remove(keyword);
-    }
-
-    /**
-     * Prevent instantiation.
-     */
-    private SearchExpressionResolverFactory() {
-
     }
 }

@@ -5,24 +5,27 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>diagram</tag>
-	<tagClass>org.primefaces.component.diagram.DiagramTag</tagClass>
-	<componentClass>org.primefaces.component.diagram.Diagram</componentClass>
-	<componentType>org.primefaces.component.Diagram</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.DiagramRenderer</rendererType>
-	<rendererClass>org.primefaces.component.diagram.DiagramRenderer</rendererClass>
-	<parent>javax.faces.component.UIOutput</parent>
+    <tag>diagram</tag>
+    <tagClass>org.primefaces.component.diagram.DiagramTag</tagClass>
+    <componentClass>org.primefaces.component.diagram.Diagram</componentClass>
+    <componentType>org.primefaces.component.Diagram</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.DiagramRenderer</rendererType>
+    <rendererClass>org.primefaces.component.diagram.DiagramRenderer</rendererClass>
+    <parent>javax.faces.component.UIOutput</parent>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
         <interface>
-			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
-		</interface>
-	</interfaces>
-	<attributes>
-		&standard_uicomponent_attributes;
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
         &output_component_attributes;
         &widget_var_attribute;
         <attribute>
@@ -43,22 +46,25 @@
             <type>java.lang.String</type>
             <description>Style class of the component.</description>
         </attribute>
-	</attributes>
+    </attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>diagram/diagram.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>diagram/diagram.css</name>
+        </resource>
         <resource>
-			<name>primefaces.js</name>
-		</resource>
+            <name>jquery/jquery.js</name>
+        </resource>
         <resource>
-			<name>diagram/diagram.js</name>
-		</resource>
-	</resources>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+        <resource>
+            <name>diagram/diagram.js</name>
+        </resource>
+    </resources>
 </component>

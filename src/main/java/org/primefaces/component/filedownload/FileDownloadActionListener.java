@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,9 +29,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
-import org.primefaces.context.RequestContext;
 
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.StreamedContent;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
 public class FileDownloadActionListener implements ActionListener, StateHolder {
@@ -40,35 +41,43 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 
     private ValueExpression contentDisposition;
 
+    private ValueExpression monitorKey;
+
     public FileDownloadActionListener() {
 
     }
 
-    public FileDownloadActionListener(ValueExpression value, ValueExpression contentDisposition) {
+    public FileDownloadActionListener(ValueExpression value, ValueExpression contentDisposition, ValueExpression monitorKey) {
         this.value = value;
         this.contentDisposition = contentDisposition;
+        this.monitorKey = monitorKey;
     }
 
     public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        ELContext elContext = facesContext.getELContext();
+        FacesContext context = FacesContext.getCurrentInstance();
+        ELContext elContext = context.getELContext();
         StreamedContent content = (StreamedContent) value.getValue(elContext);
 
-        if(content == null) {
+        if (content == null) {
             return;
         }
 
-        ExternalContext externalContext = facesContext.getExternalContext();
+        ExternalContext externalContext = context.getExternalContext();
         String contentDispositionValue = contentDisposition != null ? (String) contentDisposition.getValue(elContext) : "attachment";
+        String monitorKeyValue = monitorKey != null ? "_" + (String) monitorKey.getValue(elContext) : "";
 
         InputStream inputStream = null;
 
         try {
             externalContext.setResponseContentType(content.getContentType());
-            externalContext.setResponseHeader("Content-Disposition", contentDispositionValue + ";filename=\"" + content.getName() + "\"");
-            externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
+            externalContext.setResponseHeader("Content-Disposition", ComponentUtils.createContentDisposition(contentDispositionValue, content.getName()));
+            externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE + monitorKeyValue, "true", Collections.<String, Object>emptyMap());
 
-            if(RequestContext.getCurrentInstance().isSecure()) {
+            if (content.getContentLength() != null) {
+                externalContext.setResponseContentLength(content.getContentLength().intValue());
+            }
+
+            if (RequestContext.getCurrentInstance(context).isSecure()) {
                 externalContext.setResponseHeader("Cache-Control", "public");
                 externalContext.setResponseHeader("Pragma", "public");
             }
@@ -84,7 +93,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 
             externalContext.setResponseStatus(200);
             externalContext.responseFlushBuffer();
-            facesContext.responseComplete();
+            context.responseComplete();
         }
         catch (IOException e) {
             throw new FacesException(e);
@@ -110,13 +119,15 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 
         value = (ValueExpression) values[0];
         contentDisposition = (ValueExpression) values[1];
+        monitorKey = (ValueExpression) values[2];
     }
 
     public Object saveState(FacesContext facesContext) {
-        Object values[] = new Object[2];
+        Object values[] = new Object[3];
 
         values[0] = value;
         values[1] = contentDisposition;
+        values[2] = monitorKey;
 
         return ((Object[]) values);
     }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,28 +26,28 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 public class ContentFlowRenderer extends CoreRenderer {
-    
+
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		ContentFlow cf = (ContentFlow) component;
-		
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ContentFlow cf = (ContentFlow) component;
+
         encodeMarkup(context, cf);
-		encodeScript(context, cf);
-	}
-    
+        encodeScript(context, cf);
+    }
+
     protected void encodeMarkup(FacesContext context, ContentFlow cf) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String style = cf.getStyle();
         String styleClass = cf.getStyleClass();
         String containerClass = (styleClass == null) ? ContentFlow.CONTAINER_CLASS : ContentFlow.CONTAINER_CLASS + " " + styleClass;
-        
+
         writer.startElement("div", cf);
         writer.writeAttribute("id", cf.getClientId(context), null);
         writer.writeAttribute("class", containerClass, null);
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, null);
         }
-        
+
         //indicator
         writer.startElement("div", null);
         writer.writeAttribute("class", "loadindicator", null);
@@ -55,28 +55,28 @@ public class ContentFlowRenderer extends CoreRenderer {
         writer.writeAttribute("class", "indicator", null);
         writer.endElement("div");
         writer.endElement("div");
-        
+
         //content
         encodeContent(context, cf);
-        
+
         //caption
         writer.startElement("div", null);
         writer.writeAttribute("class", "globalCaption", null);
         writer.endElement("div");
-        
+
         writer.endElement("div");
     }
-    
+
     protected void encodeContent(FacesContext context, ContentFlow cf) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String var = cf.getVar();
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("class", "flow", null);
-        
+
         if (var == null) {
-            for(UIComponent child : cf.getChildren()) {
-                if(child.isRendered()) {
+            for (UIComponent child : cf.getChildren()) {
+                if (child.isRendered()) {
                     writer.startElement("div", null);
                     writer.writeAttribute("class", "item", null);
                     child.encodeAll(context);
@@ -85,12 +85,12 @@ public class ContentFlowRenderer extends CoreRenderer {
             }
         }
         else {
-            Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
             Collection<?> value = (Collection<?>) cf.getValue();
             if (value != null) {
                 for (Iterator<?> it = value.iterator(); it.hasNext();) {
                     requestMap.put(var, it.next());
-                    
+
                     writer.startElement("div", null);
                     writer.writeAttribute("class", "item", null);
                     renderChildren(context, cf);
@@ -98,22 +98,23 @@ public class ContentFlowRenderer extends CoreRenderer {
                 }
             }
         }
-        
+
         writer.endElement("div");
     }
 
     protected void encodeScript(FacesContext context, ContentFlow cf) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
-        
+
         if (context.isPostback()) {
-        	wb.initWithDomReady("ContentFlow", cf.resolveWidgetVar(), cf.getClientId(context), "contentflow");
-        }  else {
-        	wb.initWithWindowLoad("ContentFlow", cf.resolveWidgetVar(), cf.getClientId(context), "contentflow");
+            wb.initWithDomReady("ContentFlow", cf.resolveWidgetVar(), cf.getClientId(context));
         }
-        
+        else {
+            wb.initWithWindowLoad("ContentFlow", cf.resolveWidgetVar(), cf.getClientId(context));
+        }
+
         wb.finish();
     }
-    
+
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Do nothing

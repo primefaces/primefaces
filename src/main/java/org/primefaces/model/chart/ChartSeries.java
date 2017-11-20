@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,23 +20,25 @@ import java.io.Serializable;
 import java.io.Writer;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.primefaces.util.ComponentUtils;
 
 public class ChartSeries implements Serializable {
 
     private String label;
 
-    private Map<Object,Number> data = new LinkedHashMap<Object, Number>();
-    
+    private Map<Object, Number> data = new LinkedHashMap<Object, Number>();
+
     private AxisType xaxis;
-    
+
     private AxisType yaxis;
 
-    public ChartSeries() {}
+    public ChartSeries() {
+    }
 
     public ChartSeries(String label) {
         this.label = label;
     }
-    
+
     public String getLabel() {
         return label;
     }
@@ -44,7 +46,7 @@ public class ChartSeries implements Serializable {
     public void setLabel(String label) {
         this.label = label;
     }
-    
+
     public Map<Object, Number> getData() {
         return data;
     }
@@ -56,11 +58,11 @@ public class ChartSeries implements Serializable {
     public void set(Object x, Number y) {
         this.data.put(x, y);
     }
-    
+
     public String getRenderer() {
         return null;
     }
-    
+
     public boolean isFill() {
         return false;
     }
@@ -68,6 +70,7 @@ public class ChartSeries implements Serializable {
     public AxisType getXaxis() {
         return xaxis;
     }
+
     public void setXaxis(AxisType xaxis) {
         this.xaxis = xaxis;
     }
@@ -75,18 +78,19 @@ public class ChartSeries implements Serializable {
     public AxisType getYaxis() {
         return yaxis;
     }
+
     public void setYaxis(AxisType yaxis) {
         this.yaxis = yaxis;
     }
-    
+
     public void encode(Writer writer) throws IOException {
         String renderer = this.getRenderer();
         writer.write("{");
-        writer.write("label:'" + label + "'");
+        writer.write("label:\"" + ComponentUtils.escapeText(label) + "\"");
 
-        if(renderer != null) writer.write(",renderer: $.jqplot." + renderer);
-        if(xaxis != null) writer.write(",xaxis:\"" + xaxis + "\"");
-        if(yaxis != null) writer.write(",yaxis:\"" + yaxis + "\"");
+        if (renderer != null) writer.write(",renderer: $.jqplot." + renderer);
+        if (xaxis != null) writer.write(",xaxis:\"" + xaxis + "\"");
+        if (yaxis != null) writer.write(",yaxis:\"" + yaxis + "\"");
 
         writer.write("}");
     }

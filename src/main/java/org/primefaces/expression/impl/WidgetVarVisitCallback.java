@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,17 +22,17 @@ import javax.faces.component.visit.VisitResult;
 import org.primefaces.component.api.Widget;
 
 public class WidgetVarVisitCallback implements VisitCallback {
-    
+
     private final String widgetVar;
-    
+
     private UIComponent component;
 
     public WidgetVarVisitCallback(String widgetVar) {
         this.widgetVar = widgetVar;
-        
+
         this.component = null;
     }
-    
+
     public VisitResult visit(VisitContext context, UIComponent target) {
 
         if (target instanceof Widget) {
@@ -41,7 +41,7 @@ public class WidgetVarVisitCallback implements VisitCallback {
                 return VisitResult.COMPLETE;
             }
         }
-        
+
         return VisitResult.ACCEPT;
     }
 

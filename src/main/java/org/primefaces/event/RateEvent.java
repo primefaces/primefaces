@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,30 +17,17 @@ package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
 
-public class RateEvent extends AjaxBehaviorEvent {
+public class RateEvent extends AbstractAjaxBehaviorEvent {
 
-	private Object rating;
-	
-	public RateEvent(UIComponent component, Behavior behavior, Object rating) {
-		super(component, behavior);
-		this.rating = rating;
-	}
+    private Object rating;
 
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
+    public RateEvent(UIComponent component, Behavior behavior, Object rating) {
+        super(component, behavior);
+        this.rating = rating;
+    }
 
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
-	}
-	
-	public Object getRating() {
-		return rating;
+    public Object getRating() {
+        return rating;
     }
 }

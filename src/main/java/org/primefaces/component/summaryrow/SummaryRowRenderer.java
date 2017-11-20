@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,26 +24,26 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class SummaryRowRenderer extends CoreRenderer {
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         SummaryRow row = (SummaryRow) component;
         ResponseWriter writer = context.getResponseWriter();
-        
+
         writer.startElement("tr", null);
         writer.writeAttribute("class", DataTable.SUMMARY_ROW_CLASS, null);
 
-        for(UIComponent kid : row.getChildren()) {
-            if(kid.isRendered() && kid instanceof Column) {
+        for (UIComponent kid : row.getChildren()) {
+            if (kid.isRendered() && kid instanceof Column) {
                 Column column = (Column) kid;
                 String style = column.getStyle();
                 String styleClass = column.getStyleClass();
-        
+
                 writer.startElement("td", null);
-                if(style != null) writer.writeAttribute("style", style, null);
-                if(styleClass != null) writer.writeAttribute("class", styleClass, null);
-                if(column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
-                if(column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
+                if (style != null) writer.writeAttribute("style", style, null);
+                if (styleClass != null) writer.writeAttribute("class", styleClass, null);
+                if (column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
+                if (column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
 
                 column.encodeAll(context);
 
@@ -53,7 +53,7 @@ public class SummaryRowRenderer extends CoreRenderer {
 
         writer.endElement("tr");
     }
-    
+
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Rendering happens on encodeEnd

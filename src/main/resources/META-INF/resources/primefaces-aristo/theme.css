@@ -1233,21 +1233,14 @@ a {
     background: #c4c4c4 -moz-linear-gradient(top, rgba(255,255,255,0.8), rgba(255,255,255,0));
 }
 
-*html .ui-menu .ui-menu-list {
-    background: none;
-}
-
-*html .ui-menubar .ui-menu-child {
-    background: #ffffff;
-}
-
-*html .ui-menu .ui-menuitem-link {
-    border-color: #c4c4c4;
-    filter: chroma(color=#c4c4c4);
-}
-
 .ui-datatable-odd {
     background: none repeat scroll 0 0 #F2F5F9;
+}
+
+.ui-datatable tr.ui-datatable-selectable.ui-state-hover {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+     box-shadow: none;
 }
 
 /** Liferay Support **/
@@ -1313,4 +1306,38 @@ a {
 /*Tabs*/
 .aui .ui-tabs .ui-state-default a {
 	color: #4f4f4f;
+}
+
+/*ImageCropper*/
+.aui .jcrop-holder img {
+	max-width: none;
+}
+
+/* InputGroup */
+.ui-inputgroup .ui-inputgroup-addon,
+.ui-inputgroup .ui-inputgroup-addon-checkbox{
+    border-color: #a8a8a8;
+    background-color: #f0f0f0;
+    color: #4f4f4f;
+}
+.ui-inputgroup .ui-inputgroup-addon:first-child,
+.ui-inputgroup .ui-inputgroup-addon-checkbox:first-child {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.ui-inputgroup .ui-inputgroup-addon:last-child,
+.ui-inputgroup .ui-inputgroup-addon-checkbox:last-child {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+    
+.ui-inputgroup .ui-button:first-child {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+        
+.ui-inputgroup .ui-button:last-child {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
 }

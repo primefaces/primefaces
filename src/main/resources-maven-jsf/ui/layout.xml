@@ -14,13 +14,16 @@
     <parent>javax.faces.component.UIPanel</parent>
     <description>Layout component features a highly customizable borderLayout model making it very easy to create complex layouts even if you're not familar with web design.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
         <interface>
-			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
-		</interface>
-	</interfaces>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
     <attributes>
         &standard_uicomponent_attributes;
         &widget_var_attribute;
@@ -62,43 +65,43 @@
             <description>A server side listener to process a ToggleEvent.</description>
         </attribute>
         <attribute>
-			<name>resizeTitle</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>resizeTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Title label for the resizer element.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>collapseTitle</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>collapseTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <defaultValue>Collapse</defaultValue>
             <description>Title label for the collapse button of collapsible units. Default is "Collapse"</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>expandTitle</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>expandTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Title label for the expand button of closable units.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>closeTitle</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>closeTitle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <defaultValue>Close</defaultValue>
             <description>Title label for the close button of closable units. Default is "Close".</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>stateful</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
+            <name>stateful</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
             <description>When enabled, layout state is saved in a cookie for the session.</description>
-		</attribute>
+        </attribute>
     </attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
             <name>layout/layout.css</name>
         </resource>
@@ -109,7 +112,10 @@
             <name>jquery/jquery-plugins.js</name>
         </resource>
         <resource>
-            <name>primefaces.js</name>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
         </resource>
         <resource>
             <name>layout/layout.js</name>

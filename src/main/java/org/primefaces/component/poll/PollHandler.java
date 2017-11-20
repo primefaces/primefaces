@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,19 +24,19 @@ import org.primefaces.facelets.MethodRule;
 
 public class PollHandler extends ComponentHandler {
 
-	private static final MetaRule LISTENER =
-			new MethodRule("listener", null, new Class[0]);
-	
-	public PollHandler(ComponentConfig config) {
-		super(config);
-	}
+    private static final MetaRule LISTENER
+            = new MethodRule("listener", null, new Class[0]);
 
-	@SuppressWarnings("unchecked")
-	protected MetaRuleset createMetaRuleset(Class type) {
-		MetaRuleset metaRuleset = super.createMetaRuleset(type);
+    public PollHandler(ComponentConfig config) {
+        super(config);
+    }
 
-		metaRuleset.addRule(LISTENER);
+    @SuppressWarnings("unchecked")
+    protected MetaRuleset createMetaRuleset(Class type) {
+        MetaRuleset metaRuleset = super.createMetaRuleset(type);
 
-		return metaRuleset;
-	}
+        metaRuleset.addRule(LISTENER);
+
+        return metaRuleset;
+    }
 }

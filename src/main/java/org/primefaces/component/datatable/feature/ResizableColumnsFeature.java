@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,11 +25,11 @@ public class ResizableColumnsFeature implements DataTableFeature {
     public void decode(FacesContext context, DataTable table) {
         throw new RuntimeException("ResizableColumnsFeature should not decode.");
     }
-    
+
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         throw new RuntimeException("ResizableColumnsFeature should not encode.");
     }
-    
+
     public boolean shouldDecode(FacesContext context, DataTable table) {
         return false;
     }

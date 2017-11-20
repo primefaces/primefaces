@@ -17,16 +17,16 @@
     <parent>javax.faces.component.html.HtmlInputText</parent>
     <description>Calendar is an input component used to provide a date. Other than basic features calendar supports paging, localization, ajax selection and more.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
         <interface>
-			<name>org.primefaces.component.api.InputHolder</name>
-		</interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
         <interface>
-			<name>org.primefaces.component.api.MixedClientBehaviorHolder</name>
-		</interface>
-	</interfaces>
+            <name>org.primefaces.component.api.InputHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.MixedClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
     <attributes>
         &input_component_attributes;
         &html_input_text_attributes;
@@ -238,13 +238,14 @@
             <type>java.lang.String</type>
             <defaultValue>false</defaultValue>
             <description>Defines if a mask should be applied to the input field. Default value is "false" and valid values to enable are "true" that uses the pattern as the mask or a custom template. Refer to
-            inputMask component for more information about custom templates.</description>
+                inputMask component for more information about custom templates.</description>
         </attribute>
         <attribute>
             <name>timeControlType</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Defines the type of element to use for time picker, valid values are "slider" and "select".</description>
+            <defaultValue>slider</defaultValue>
+            <description>Defines the type of element to use for time picker, valid values are "slider" , "select" and "custom"(with "timeControlObject" attribute).</description>
         </attribute>
         <attribute>
             <name>beforeShow</name>
@@ -259,25 +260,111 @@
             <description>PlaceHolder in mask template.</description>
         </attribute>
         <attribute>
-			<name>maskAutoClear</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
+            <name>maskAutoClear</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
             <description>Clears the field on blur when incomplete input is entered.</description>
-		</attribute>
+        </attribute>
+        <attribute>
+            <name>timeControlObject</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side object to use in custom timeControlType.</description>
+        </attribute>
+        <attribute>
+            <name>timeInput</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Allows direct input in time field. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>showHour</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Whether to show the hour control, valid values are "true" and "false".</description>
+        </attribute>
+        <attribute>
+            <name>showMinute</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Whether to show the minute control, valid values are "true" and "false".</description>
+        </attribute>
+        <attribute>
+            <name>showSecond</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Whether to show the second control, valid values are "true" and "false".</description>
+        </attribute>
+        <attribute>
+            <name>showMillisec</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Whether to show the millisecond control, valid values are "true" and "false".</description>
+        </attribute>
+        <attribute>
+            <name>showTodayButton</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Whether to show the "Current Date" button if showButtonPanel is rendered. Default is "true".</description>
+        </attribute>
+        <attribute>
+            <name>buttonTabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Position of the button in the tabbing order.</description>
+        </attribute>
+        <attribute>
+            <name>inputStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the input element. Used when mode is popup.</description>
+        </attribute>
+        <attribute>
+            <name>inputStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the input element. Used when mode is popup.</description>
+        </attribute>
+        <attribute>
+            <name>type</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>text</defaultValue>
+            <description>Input field type. Default is text.</description>
+        </attribute>
+        <attribute>
+            <name>focusOnSelect</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>If enabled, the input is focused again after selecting a date. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>oneLine</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Try to show the time dropdowns all on one line. This should be used with controlType 'select'.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
-		<resource>
-			<name>primefaces.js</name>
-		</resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
     </resources>
 </component>

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,82 +20,93 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.primefaces.context.RequestContext;
+
 import org.primefaces.model.StreamedContent;
 import org.primefaces.util.Constants;
-import org.primefaces.util.StringEncrypter;
 
 public class StreamedContentHandler extends BaseDynamicContentHandler {
 
-    private final static Logger logger = Logger.getLogger(StreamedContentHandler.class.getName());
+    private final static Logger LOG = Logger.getLogger(StreamedContentHandler.class.getName());
 
     public void handle(FacesContext context) throws IOException {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String library = params.get("ln");
-        String dynamicContentId = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
-        StringEncrypter strEn = RequestContext.getCurrentInstance().getEncrypter();
+        String resourceKey = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
 
-        if(dynamicContentId != null && library != null && library.equals(Constants.LIBRARY)) {
+        if (resourceKey != null && library != null && library.equals(Constants.LIBRARY)) {
             StreamedContent streamedContent = null;
             boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
 
             try {
-                // see #6448
-                dynamicContentId = dynamicContentId.replaceAll(" ", "+");
-
-                String dynamicContentEL = strEn.decrypt(dynamicContentId);
                 ExternalContext externalContext = context.getExternalContext();
+                Map<String, Object> session = externalContext.getSessionMap();
+                Map<String, String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
 
-                if(dynamicContentEL != null) {
-                    ELContext eLContext = context.getELContext();
-                    ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(context.getELContext(), dynamicContentEL, StreamedContent.class);
-                    streamedContent = (StreamedContent) ve.getValue(eLContext);
+                if (dynamicResourcesMapping != null) {
+                    String dynamicContentEL = dynamicResourcesMapping.get(resourceKey);
 
-                    if (streamedContent == null || streamedContent.getStream() == null) {
-                        if (externalContext.getRequest() instanceof HttpServletRequest) {
-                            externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND,
-                                ((HttpServletRequest) externalContext.getRequest()).getRequestURI());
+                    if (dynamicContentEL != null) {
+                        ELContext eLContext = context.getELContext();
+                        ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(
+                                context.getELContext(), dynamicContentEL, StreamedContent.class);
+                        streamedContent = (StreamedContent) ve.getValue(eLContext);
+
+                        if (streamedContent == null || streamedContent.getStream() == null) {
+                            if (externalContext.getRequest() instanceof HttpServletRequest) {
+                                externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND,
+                                        ((HttpServletRequest) externalContext.getRequest()).getRequestURI());
+                            }
+                            else {
+                                externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND, null);
+                            }
+                            return;
                         }
-                        else {
-                            externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND, null);
+
+                        externalContext.setResponseStatus(HttpServletResponse.SC_OK);
+                        externalContext.setResponseContentType(streamedContent.getContentType());
+
+                        handleCache(externalContext, cache);
+
+                        if (streamedContent.getContentLength() != null) {
+                            externalContext.setResponseContentLength(streamedContent.getContentLength());
                         }
-                        return;
-                    }
 
-                    externalContext.setResponseStatus(HttpServletResponse.SC_OK);
-                    externalContext.setResponseContentType(streamedContent.getContentType());
+                        if (streamedContent.getContentEncoding() != null) {
+                            externalContext.setResponseHeader("Content-Encoding", streamedContent.getContentEncoding());
+                        }
 
-                    handleCache(externalContext, cache);
+                        if (streamedContent.getName() != null) {
+                            externalContext.setResponseHeader("Content-Disposition", "inline;filename=\"" + streamedContent.getName() + "\"");
+                        }
 
-                    if(streamedContent.getContentEncoding() != null) {
-                        externalContext.setResponseHeader("Content-Encoding", streamedContent.getContentEncoding());
-                    }
+                        byte[] buffer = new byte[2048];
 
-                    byte[] buffer = new byte[2048];
-
-                    int length;
-                    InputStream inputStream = streamedContent.getStream();
-                    while ((length = (inputStream.read(buffer))) >= 0) {
-                        externalContext.getResponseOutputStream().write(buffer, 0, length);
+                        int length;
+                        InputStream inputStream = streamedContent.getStream();
+                        while ((length = (inputStream.read(buffer))) >= 0) {
+                            externalContext.getResponseOutputStream().write(buffer, 0, length);
+                        }
                     }
                 }
 
                 externalContext.responseFlushBuffer();
                 context.responseComplete();
 
-            } catch(Exception e) {
-                logger.log(Level.SEVERE, "Error in streaming dynamic resource. {0}", new Object[]{e.getMessage()});
+            }
+            catch (Exception e) {
+                LOG.log(Level.SEVERE, "Error in streaming dynamic resource.", e);
                 throw new IOException(e);
             }
             finally {
                 //cleanup
-                if(streamedContent != null && streamedContent.getStream() != null) {
+                if (streamedContent != null && streamedContent.getStream() != null) {
                     streamedContent.getStream().close();
                 }
             }

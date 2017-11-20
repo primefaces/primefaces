@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,43 +17,30 @@ package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
 import org.primefaces.component.tabview.Tab;
 
-public class TabCloseEvent extends AjaxBehaviorEvent {
+public class TabCloseEvent extends AbstractAjaxBehaviorEvent implements TabEvent {
 
     private Tab tab;
     private Object data;
 
-	public TabCloseEvent(UIComponent component, Behavior behavior, Tab tab) {
-		super(component, behavior);
+    public TabCloseEvent(UIComponent component, Behavior behavior, Tab tab) {
+        super(component, behavior);
         this.tab = tab;
-	}
-
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
-	}
+    }
 
     public Tab getTab() {
         return tab;
     }
-    
+
     public void setTab(Tab tab) {
         this.tab = tab;
     }
-    
+
     public Object getData() {
         return data;
     }
-    
+
     public void setData(Object data) {
         this.data = data;
     }

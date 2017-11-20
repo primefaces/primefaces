@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,118 +29,125 @@ import org.primefaces.util.WidgetBuilder;
 public class InplaceRenderer extends CoreRenderer {
 
     @Override
-	public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, UIComponent component) {
         decodeBehaviors(context, component);
-	}
+    }
 
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		Inplace inplace = (Inplace) component;
-		
-		encodeMarkup(context, inplace);
-		encodeScript(context, inplace);
-	}
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        Inplace inplace = (Inplace) component;
 
-	protected void encodeMarkup(FacesContext context, Inplace inplace) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		String clientId = inplace.getClientId(context);
+        encodeMarkup(context, inplace);
+        encodeScript(context, inplace);
+    }
+
+    protected void encodeMarkup(FacesContext context, Inplace inplace) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = inplace.getClientId(context);
         String widgetVar = inplace.resolveWidgetVar();
-        
-		String userStyleClass = inplace.getStyleClass();
+
+        String userStyleClass = inplace.getStyleClass();
         String userStyle = inplace.getStyle();
         String styleClass = userStyleClass == null ? Inplace.CONTAINER_CLASS : Inplace.CONTAINER_CLASS + " " + userStyleClass;
         boolean disabled = inplace.isDisabled();
         String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
-        
+
         boolean validationFailed = context.isValidationFailed() && !inplace.isValid();
         String displayStyle = validationFailed ? "none" : "inline";
         String contentStyle = validationFailed ? "inline" : "none";
-        
+
         UIComponent outputFacet = inplace.getFacet("output");
         UIComponent inputFacet = inplace.getFacet("input");
 
         //container
-		writer.startElement("span", inplace);
-		writer.writeAttribute("id", clientId, "id");
-		writer.writeAttribute("class", styleClass, "id");
-        if(userStyle != null) {
+        writer.startElement("span", inplace);
+        writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("class", styleClass, "id");
+        if (userStyle != null) {
             writer.writeAttribute("style", userStyle, "id");
         }
-        
+
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
         //display
-		writer.startElement("span", null);
-		writer.writeAttribute("id", clientId + "_display", "id");
-		writer.writeAttribute("class", displayClass, null);
+        writer.startElement("span", null);
+        writer.writeAttribute("id", clientId + "_display", "id");
+        writer.writeAttribute("class", displayClass, null);
         writer.writeAttribute("style", "display:" + displayStyle, null);
-        
-        if(outputFacet != null)
+
+        if (outputFacet != null) {
             outputFacet.encodeAll(context);
-        else
+        }
+        else {
             writer.writeText(getLabelToRender(context, inplace), null);
-        
-		writer.endElement("span");
+        }
+
+        writer.endElement("span");
 
         //content
-		if(!inplace.isDisabled()) {	
-			writer.startElement("span", null);
-			writer.writeAttribute("id", clientId + "_content", "id");
-			writer.writeAttribute("class", Inplace.CONTENT_CLASS, null);
+        if (!inplace.isDisabled()) {
+            writer.startElement("span", null);
+            writer.writeAttribute("id", clientId + "_content", "id");
+            writer.writeAttribute("class", Inplace.CONTENT_CLASS, null);
             writer.writeAttribute("style", "display:" + contentStyle, null);
-            
-            if(inputFacet != null)
+
+            if (inputFacet != null) {
                 inputFacet.encodeAll(context);
-            else
+            }
+            else {
                 renderChildren(context, inplace);
+            }
 
-            if(inplace.isEditor())
+            if (inplace.isEditor()) {
                 encodeEditor(context, inplace);
+            }
 
-			writer.endElement("span");
-		}
-		
-		writer.endElement("span");
-	}
-	
-	protected String getLabelToRender(FacesContext context, Inplace inplace) {
+            writer.endElement("span");
+        }
+
+        writer.endElement("span");
+    }
+
+    protected String getLabelToRender(FacesContext context, Inplace inplace) {
         String label = inplace.getLabel();
         String emptyLabel = inplace.getEmptyLabel();
 
-		if(label != null) {
-			return label;
+        if (label != null) {
+            return label;
         }
-		else {
+        else {
             String value = ComponentUtils.getValueToRender(context, inplace.getChildren().get(0));
 
-            if(value == null || isValueBlank(value)) {
-                if(emptyLabel != null)
+            if (value == null || isValueBlank(value)) {
+                if (emptyLabel != null) {
                     return emptyLabel;
-                else
+                }
+                else {
                     return "";
+                }
             }
             else {
                 return value;
             }
         }
-	}
+    }
 
-	protected void encodeScript(FacesContext context, Inplace inplace) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		String clientId = inplace.getClientId(context);
+    protected void encodeScript(FacesContext context, Inplace inplace) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = inplace.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Inplace", inplace.resolveWidgetVar(), clientId)
-            .attr("effect", inplace.getEffect())
-            .attr("effectSpeed", inplace.getEffectSpeed())
-            .attr("event", inplace.getEvent())
-            .attr("toggleable", inplace.isToggleable(), false)
-            .attr("disabled", inplace.isDisabled(), false)
-            .attr("editor", inplace.isEditor(), false);
-        
+                .attr("effect", inplace.getEffect())
+                .attr("effectSpeed", inplace.getEffectSpeed())
+                .attr("event", inplace.getEvent())
+                .attr("toggleable", inplace.isToggleable(), false)
+                .attr("disabled", inplace.isDisabled(), false)
+                .attr("editor", inplace.isEditor(), false);
+
         encodeClientBehaviors(context, inplace);
-		
+
         wb.finish();
-	}
+    }
 
     protected void encodeEditor(FacesContext context, Inplace inplace) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -154,20 +161,20 @@ public class InplaceRenderer extends CoreRenderer {
 
         writer.endElement("span");
     }
-    
+
     protected void encodeButton(FacesContext context, String title, String styleClass, String icon) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-        
+        ResponseWriter writer = context.getResponseWriter();
+
         writer.startElement("button", null);
         writer.writeAttribute("type", "button", null);
-		writer.writeAttribute("class", HTML.BUTTON_ICON_ONLY_BUTTON_CLASS + " " + styleClass, null);
+        writer.writeAttribute("class", HTML.BUTTON_ICON_ONLY_BUTTON_CLASS + " " + styleClass, null);
         writer.writeAttribute("title", title, null);
-        
+
         //icon
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + icon, null);
         writer.endElement("span");
-        
+
         //text
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
@@ -175,15 +182,15 @@ public class InplaceRenderer extends CoreRenderer {
         writer.endElement("span");
 
         writer.endElement("button");
-	}
-    
-    @Override
-	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-		//Do Nothing
-	}
+    }
 
     @Override
-	public boolean getRendersChildren() {
-		return true;
-	}
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Do Nothing
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
+    }
 }

@@ -1,11 +1,11 @@
-/*
- * Copyright 2013 jagatai.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,13 +24,13 @@ import javax.faces.context.FacesContext;
 import org.primefaces.expression.SearchExpressionFacade;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
-	@ResourceDependency(library="primefaces", name="printer/printer.js"),
-    @ResourceDependency(library="primefaces", name="primefaces.js")
-})
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
+        @ResourceDependency(library = "primefaces", name = "printer/printer.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js")
+    })
 public class PrinterBehavior extends ClientBehaviorBase {
-    
+
     private String target;
 
     public String getTarget() {
@@ -46,8 +46,8 @@ public class PrinterBehavior extends ClientBehaviorBase {
         FacesContext context = behaviorContext.getFacesContext();
 
         String components = SearchExpressionFacade.resolveClientId(
-        		context, behaviorContext.getComponent(), target);
-        
+                context, behaviorContext.getComponent(), target);
+
         return "PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector('" + components + "').jqprint();return false;";
     }
 }

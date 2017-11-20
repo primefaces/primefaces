@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,43 +19,48 @@ import org.primefaces.model.JSObjectBuilder;
 
 public class EffectBuilder implements JSObjectBuilder {
 
-	private StringBuffer buffer;
-	
-	private boolean hasOption = false;
+    private StringBuffer buffer;
 
-	public EffectBuilder(String type, String id) {
-		buffer = new StringBuffer();
-		buffer.append("$(PrimeFaces.escapeClientId('");
+    private boolean hasOption = false;
+
+    public EffectBuilder(String type, String id, boolean queue) {
+        buffer = new StringBuffer();
+        buffer.append("$(PrimeFaces.escapeClientId('");
         buffer.append(id);
         buffer.append("'))");
-		buffer.append(".effect('");
-		buffer.append(type);
-		buffer.append("',{");
-	}
-	
-	public EffectBuilder withOption(String name, String value) {
-		if(hasOption)
-			buffer.append(",");
-		else
-			hasOption = true;
-		
-		buffer.append(name);
-		buffer.append(":");
-		buffer.append(value);
-			
-		return this;
-	}
-	
-	public EffectBuilder atSpeed(int speed) {
-		buffer.append("},");
-		buffer.append(speed);
-		
-		return this;
-	}
-	
-	public String build() {
-		buffer.append(");");
-		
-		return buffer.toString();
-	}
+        if (!queue) {
+            buffer.append(".stop(true,true)");
+        }
+        buffer.append(".effect('");
+        buffer.append(type);
+        buffer.append("',{");
+    }
+
+    public EffectBuilder withOption(String name, String value) {
+        if (hasOption) {
+            buffer.append(",");
+        }
+        else {
+            hasOption = true;
+        }
+
+        buffer.append(name);
+        buffer.append(":");
+        buffer.append(value);
+
+        return this;
+    }
+
+    public EffectBuilder atSpeed(int speed) {
+        buffer.append("},");
+        buffer.append(speed);
+
+        return this;
+    }
+
+    public String build() {
+        buffer.append(");");
+
+        return buffer.toString();
+    }
 }

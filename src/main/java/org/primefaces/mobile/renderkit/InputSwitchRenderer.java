@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class InputSwitchRenderer extends org.primefaces.component.inputswitch.InputSwitchRenderer {
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         InputSwitch inputSwitch = (InputSwitch) component;
@@ -33,7 +33,7 @@ public class InputSwitchRenderer extends org.primefaces.component.inputswitch.In
         encodeMarkup(context, inputSwitch);
         encodeScript(context, inputSwitch);
     }
-    
+
     @Override
     public void encodeMarkup(FacesContext context, InputSwitch inputSwitch) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -44,45 +44,45 @@ public class InputSwitchRenderer extends org.primefaces.component.inputswitch.In
         String offLabel = inputSwitch.getOffLabel();
         String style = inputSwitch.getStyle();
         String styleClass = inputSwitch.getStyleClass();
-        styleClass = (styleClass == null) ? UISwitch.CONTAINER_CLASS: UISwitch.CONTAINER_CLASS + " " + styleClass;
-        if(checked) {
+        styleClass = (styleClass == null) ? UISwitch.CONTAINER_CLASS : UISwitch.CONTAINER_CLASS + " " + styleClass;
+        if (checked) {
             styleClass = styleClass + "  ui-flipswitch-active";
         }
-        
+
         writer.startElement("div", inputSwitch);
         writer.writeAttribute("id", clientId, "id");
-        if(style != null) writer.writeAttribute("style", style, "style");
-        if(styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
-        
+        if (style != null) writer.writeAttribute("style", style, "style");
+        if (styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
+
         renderDynamicPassThruAttributes(context, inputSwitch);
-        
+
         writer.startElement("span", null);
         writer.writeAttribute("class", UISwitch.ON_CLASS, null);
         writer.writeText(onLabel, null);
         writer.endElement("span");
-        
+
         writer.startElement("span", null);
         writer.writeAttribute("class", UISwitch.OFF_CLASS, null);
         writer.writeText(offLabel, null);
         writer.endElement("span");
-        
+
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("data-role", "none", null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("class", UISwitch.INPUT_CLASS, null);
-        
+
         if (checked) writer.writeAttribute("checked", "checked", null);
         if (inputSwitch.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
-        
+
         renderOnchange(context, inputSwitch);
-        
+
         writer.endElement("input");
-        
+
         writer.endElement("div");
     }
-    
+
     @Override
     public void encodeScript(FacesContext context, InputSwitch inputSwitch) throws IOException {
         String clientId = inputSwitch.getClientId(context);

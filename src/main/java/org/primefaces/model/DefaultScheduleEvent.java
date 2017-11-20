@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,108 +20,110 @@ import java.util.Date;
 
 public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 
-	private String id;
-	private String title;
-	private Date startDate;
-	private Date endDate;
-	private boolean allDay = false;
-	private String styleClass;
-	private Object data;
+    private String id;
+    private String title;
+    private Date startDate;
+    private Date endDate;
+    private boolean allDay = false;
+    private String styleClass;
+    private Object data;
     private boolean editable = true;
     private String description;
+    private String url;
 
-	public DefaultScheduleEvent() {}
-	
-	public DefaultScheduleEvent(String title, Date start, Date end) {
-		this.title = title;
-		this.startDate = start;
-		this.endDate = end;
-	}
-	
-	public DefaultScheduleEvent(String title, Date start, Date end, boolean allDay) {
-		this.title = title;
-		this.startDate = start;
-		this.endDate = end;
-		this.allDay = allDay;
-	}
-	
-	public DefaultScheduleEvent(String title, Date start, Date end, String styleClass) {
-		this.title = title;
-		this.startDate = start;
-		this.endDate = end;
-		this.styleClass = styleClass;
-	}
-	
-	public DefaultScheduleEvent(String title, Date start, Date end, Object data) {
-		this.title = title;
-		this.startDate = start;
-		this.endDate = end;
-		this.data = data;
-	}
+    public DefaultScheduleEvent() {
+    }
 
-	public String getId() {
-		return id;
-	}
-	
-	public void setId(String id) {
-		this.id = id;
-	}
+    public DefaultScheduleEvent(String title, Date start, Date end) {
+        this.title = title;
+        this.startDate = start;
+        this.endDate = end;
+    }
 
-	public String getTitle() {
-		return title;
-	}
-	
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public DefaultScheduleEvent(String title, Date start, Date end, boolean allDay) {
+        this.title = title;
+        this.startDate = start;
+        this.endDate = end;
+        this.allDay = allDay;
+    }
 
-	public Date getStartDate() {
-		return startDate;
-	}
+    public DefaultScheduleEvent(String title, Date start, Date end, String styleClass) {
+        this.title = title;
+        this.startDate = start;
+        this.endDate = end;
+        this.styleClass = styleClass;
+    }
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
+    public DefaultScheduleEvent(String title, Date start, Date end, Object data) {
+        this.title = title;
+        this.startDate = start;
+        this.endDate = end;
+        this.data = data;
+    }
 
-	public Date getEndDate() {
-		return endDate;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public boolean isAllDay() {
-		return allDay;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setAllDay(boolean allDay) {
-		this.allDay = allDay;
-	}
-	
-	public void setStyleClass(String styleClass) {
-		this.styleClass = styleClass;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public String getStyleClass() {
-		return styleClass;
-	}
-	
-	public Object getData() {
-		return data;
-	}
+    public Date getStartDate() {
+        return startDate;
+    }
 
-	public void setData(Object data) {
-		this.data = data;
-	}
-    
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public boolean isAllDay() {
+        return allDay;
+    }
+
+    public void setAllDay(boolean allDay) {
+        this.allDay = allDay;
+    }
+
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
+    }
+
+    public String getStyleClass() {
+        return styleClass;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
+
     public boolean isEditable() {
         return editable;
     }
 
     public void setEditable(boolean editable) {
         this.editable = editable;
-    }   
+    }
 
     public String getDescription() {
         return description;
@@ -130,7 +132,15 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

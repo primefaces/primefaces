@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,12 +25,12 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 public class OverlayPanelRenderer extends CoreRenderer {
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         OverlayPanel panel = (OverlayPanel) component;
-        
-        if(panel.isContentLoadRequest(context)) {
+
+        if (panel.isContentLoadRequest(context)) {
             renderChildren(context, panel);
         }
         else {
@@ -45,54 +45,56 @@ public class OverlayPanelRenderer extends CoreRenderer {
         String style = panel.getStyle();
         String styleClass = panel.getStyleClass();
         styleClass = styleClass == null ? OverlayPanel.STYLE_CLASS : OverlayPanel.STYLE_CLASS + " " + styleClass;
-        
+
         writer.startElement("div", panel);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        
-        writer.startElement("div", panel);
+
+        writer.startElement("div", null);
         writer.writeAttribute("class", OverlayPanel.CONTENT_CLASS, "styleClass");
-        if(!panel.isDynamic()) {
+        if (!panel.isDynamic()) {
             renderChildren(context, panel);
         }
         writer.endElement("div");
-        
+
         writer.endElement("div");
     }
-    
+
     protected void encodeScript(FacesContext context, OverlayPanel panel) throws IOException {
         String target = SearchExpressionFacade.resolveClientId(context, panel, panel.getFor());
         String clientId = panel.getClientId(context);
-        
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("OverlayPanel", panel.resolveWidgetVar(), clientId)
-            .attr("target", target)
-            .attr("showEvent", panel.getShowEvent(), null)
-            .attr("hideEvent", panel.getHideEvent(), null)
-            .attr("showEffect", panel.getShowEffect(), null)
-            .attr("hideEffect", panel.getHideEffect(), null)
-            .callback("onShow", "function()", panel.getOnShow())
-            .callback("onHide", "function()", panel.getOnHide())
-            .attr("my", panel.getMy(), null)
-            .attr("at", panel.getAt(), null)
-            .attr("appendToBody", panel.isAppendToBody(), false)
-            .attr("dynamic", panel.isDynamic(), false)
-            .attr("dismissable", panel.isDismissable(), true)
-            .attr("showCloseIcon", panel.isShowCloseIcon(), false);
+                .attr("target", target)
+                .attr("showEvent", panel.getShowEvent(), null)
+                .attr("hideEvent", panel.getHideEvent(), null)
+                .attr("showEffect", panel.getShowEffect(), null)
+                .attr("hideEffect", panel.getHideEffect(), null)
+                .callback("onShow", "function()", panel.getOnShow())
+                .callback("onHide", "function()", panel.getOnHide())
+                .attr("my", panel.getMy(), null)
+                .attr("at", panel.getAt(), null)
+                .attr("appendToBody", panel.isAppendToBody(), false)
+                .attr("dynamic", panel.isDynamic(), false)
+                .attr("dismissable", panel.isDismissable(), true)
+                .attr("showCloseIcon", panel.isShowCloseIcon(), false)
+                .attr("modal", panel.isModal(), false)
+                .attr("showDelay", panel.getShowDelay(), 0);
 
         wb.finish();
     }
-    
-    @Override
-	public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-		//Do nothing
-	}
 
     @Override
-	public boolean getRendersChildren() {
-		return true;
-	}
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Do nothing
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
+    }
 }

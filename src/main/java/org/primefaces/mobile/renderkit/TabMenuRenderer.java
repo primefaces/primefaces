@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import org.primefaces.model.menu.MenuItem;
 import org.primefaces.util.WidgetBuilder;
 
 public class TabMenuRenderer extends BaseMenuRenderer {
-        
+
     @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -35,19 +35,19 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         String style = tabMenu.getStyle();
         String styleClass = tabMenu.getStyleClass();
         styleClass = (styleClass == null) ? TabMenu.MOBILE_CONTAINER_CLASS : TabMenu.MOBILE_CONTAINER_CLASS + " " + styleClass;
-        
+
         writer.startElement("div", tabMenu);
         writer.writeAttribute("id", tabMenu.getClientId(context), null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "navigation", null);
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, null);
         }
-        
+
         writer.startElement("ul", null);
-        if(tabMenu.getElementsCount() > 0) {
-            for(MenuElement element : elements) {
-                if(element.isRendered() && element instanceof MenuItem) {
+        if (tabMenu.getElementsCount() > 0) {
+            for (MenuElement element : elements) {
+                if (element.isRendered() && element instanceof MenuItem) {
                     writer.startElement("li", null);
                     encodeMenuItem(context, tabMenu, (MenuItem) element);
                     writer.endElement("li");
@@ -55,32 +55,32 @@ public class TabMenuRenderer extends BaseMenuRenderer {
             }
         }
         writer.endElement("ul");
-        
+
         renderDynamicPassThruAttributes(context, tabMenu);
-        
+
         writer.endElement("div");
     }
-    
+
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         TabMenu menu = (TabMenu) abstractMenu;
-		String clientId = menu.getClientId(context);
+        String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("TabMenu", menu.resolveWidgetVar(), clientId).attr("activeIndex", menu.getActiveIndex());
         wb.finish();
     }
-    
+
     @Override
     protected String getLinkStyleClass(MenuItem menuitem) {
         String icon = menuitem.getIcon();
         String iconPos = menuitem.getIconPos();
-        iconPos = (iconPos == null) ? "ui-btn-icon-top": "ui-btn-icon-" + iconPos;
-        String styleClass = (icon == null) ? AbstractMenu.MOBILE_MENUITEM_LINK_CLASS: AbstractMenu.MOBILE_MENUITEM_LINK_CLASS + " " + icon + " " + iconPos;
+        iconPos = (iconPos == null) ? "ui-btn-icon-top" : "ui-btn-icon-" + iconPos;
+        String styleClass = (icon == null) ? AbstractMenu.MOBILE_MENUITEM_LINK_CLASS : AbstractMenu.MOBILE_MENUITEM_LINK_CLASS + " " + icon + " " + iconPos;
         String userStyleClass = menuitem.getStyleClass();
-        if(userStyleClass != null) {
+        if (userStyleClass != null) {
             styleClass = styleClass + " " + userStyleClass;
         }
-        
+
         return styleClass;
     }
 }

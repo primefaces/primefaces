@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,20 +27,33 @@ import org.primefaces.expression.SearchExpressionResolver;
  */
 public class NextExpressionResolver implements SearchExpressionResolver {
 
-	public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression) {
-		UIComponent parent = last.getParent();
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+        UIComponent parent = last.getParent();
 
-		if (parent.getChildCount() > 1) {
-			List<UIComponent> children = parent.getChildren();
-			int index = children.indexOf(last);
+        if (parent.getChildCount() > 1) {
+            List<UIComponent> children = parent.getChildren();
+            int index = children.indexOf(last);
 
-			if (index < parent.getChildCount() - 1)
-			{
-				return children.get(index + 1);
-			}			
-		}
+            if (index < parent.getChildCount() - 1) {
 
-		return null;
-	}
+                int nextIndex = -1;
+                do {
+                    index++;
+
+                    String className = children.get(index).getClass().getName();
+                    if (!className.contains("UIInstructions") && !className.contains("UILeaf")) {
+                        nextIndex = index;
+                    }
+                }
+                while (nextIndex == -1 && index < parent.getChildCount() - 1);
+
+                if (nextIndex != -1) {
+                    return children.get(nextIndex);
+                }
+            }
+        }
+
+        return null;
+    }
 
 }

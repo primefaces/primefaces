@@ -104,6 +104,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         header.removeClass('ui-collapsible-heading-collapsed')
                 .children('.ui-collapsible-heading-toggle').removeClass('ui-icon-plus').addClass('ui-icon-minus');
         content.removeClass('ui-collapsible-content-collapsed').attr('aria-hidden', false).show();
+        PrimeFaces.invokeDeferredRenders(this.id);
     },
     
     close: function(tab) {
@@ -212,14 +213,6 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
 
     isLoaded: function(tab) {
         return tab.data('loaded') === true;
-    },
-    
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
-
-        return false;
     }
     
 });

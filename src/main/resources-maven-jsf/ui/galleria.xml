@@ -4,23 +4,23 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>galleria</tag>
-	<tagClass>org.primefaces.component.galleria.GalleriaTag</tagClass>
-	<componentClass>org.primefaces.component.galleria.Galleria</componentClass>
-	<componentType>org.primefaces.component.Galleria</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.GalleriaRenderer</rendererType>
-	<rendererClass>org.primefaces.component.galleria.GalleriaRenderer</rendererClass>
-	<parent>javax.faces.component.UIOutput</parent>
+    <tag>galleria</tag>
+    <tagClass>org.primefaces.component.galleria.GalleriaTag</tagClass>
+    <componentClass>org.primefaces.component.galleria.Galleria</componentClass>
+    <componentType>org.primefaces.component.Galleria</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.GalleriaRenderer</rendererType>
+    <rendererClass>org.primefaces.component.galleria.GalleriaRenderer</rendererClass>
+    <parent>javax.faces.component.UIOutput</parent>
     <description>Galleria is used to display a set of images.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
-	</interfaces>
-	<attributes>
-		&standard_uicomponent_attributes;
-		&widget_var_attribute;
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
         <attribute>
             <name>value</name>
             <required>true</required>
@@ -33,7 +33,7 @@
             <type>java.lang.String</type>
             <description>Name of the iterator to display a collection of images.</description>
         </attribute>
-         <attribute>
+        <attribute>
             <name>style</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -45,55 +45,55 @@
             <type>java.lang.String</type>
             <description>Style class of the container element.</description>
         </attribute>
-		<attribute>
-			<name>effect</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+        <attribute>
+            <name>effect</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <defaultValue>fade</defaultValue>
             <description>Name of animation to use on transitions. Default is fade.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>effectSpeed</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
+            <name>effectSpeed</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
             <defaultValue>500</defaultValue>
             <description>Duration of animation in milliseconds. Default is 500.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>frameWidth</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
+            <name>frameWidth</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
             <defaultValue>60</defaultValue>
             <description>Width of the filmstrip frames.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>frameHeight</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
+            <name>frameHeight</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
             <defaultValue>40</defaultValue>
             <description>Height of the filmstrip frames.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>showFilmstrip</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
+            <name>showFilmstrip</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
             <description>Defines visibility of filmstrip.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>autoPlay</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
+            <name>autoPlay</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
             <description>Images are displayed with a slideshow in autoPlay mode, default is true.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>transitionInterval</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
+            <name>transitionInterval</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
             <defaultValue>4000</defaultValue>
             <description>Time in milliseconds between each slide in autoPlay mode.</description>
-		</attribute>
+        </attribute>
         <attribute>
             <name>panelWidth</name>
             <required>false</required>
@@ -115,22 +115,28 @@
             <defaultValue>false</defaultValue>
             <description>Displays information retrieved from title and alt attributes of images in content caption.</description>
         </attribute>
-	</attributes>
-	<resources>
+    </attributes>
+    <resources>
         <resource>
-			<name>galleria/galleria.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
-		<resource>
-			<name>primefaces.js</name>
-		</resource>
+            <name>galleria/galleria.css</name>
+        </resource>
         <resource>
-			<name>galleria/galleria.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+        <resource>
+            <name>galleria/galleria.js</name>
+        </resource>
+    </resources>
 </component>

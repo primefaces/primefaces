@@ -1,5 +1,5 @@
-/*
- * Copyright 2009,2010 Prime Technology.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,78 +19,78 @@ import java.io.Serializable;
 import java.util.List;
 
 public class CheckboxTreeNode implements TreeNode, Serializable {
-	
-	public static final String DEFAULT_TYPE = "default";
-	
-	private String type;
-	
-	private Object data;
-	
-	private List<TreeNode> children;
-	
-	private TreeNode parent;
-	
-	private boolean expanded;
+
+    public static final String DEFAULT_TYPE = "default";
+
+    private String type;
+
+    private Object data;
+
+    private List<TreeNode> children;
+
+    private TreeNode parent;
+
+    private boolean expanded;
 
     private boolean selected;
-    
+
     private boolean selectable = true;
-    
+
     private boolean partialSelected;
-    
+
     private String rowKey;
-	
-	public CheckboxTreeNode() {
+
+    public CheckboxTreeNode() {
         this.type = DEFAULT_TYPE;
         this.children = new CheckboxTreeNodeChildren(this);
     }
-    
-    public CheckboxTreeNode(Object data) {
-		this.type = DEFAULT_TYPE;
-        this.children = new CheckboxTreeNodeChildren(this);
-		this.data = data;
-	}
 
-	public CheckboxTreeNode(Object data, TreeNode parent) {
-		this.type = DEFAULT_TYPE;
-		this.data = data;
-		this.children = new CheckboxTreeNodeChildren(this);
-		if(parent != null) { 
+    public CheckboxTreeNode(Object data) {
+        this.type = DEFAULT_TYPE;
+        this.children = new CheckboxTreeNodeChildren(this);
+        this.data = data;
+    }
+
+    public CheckboxTreeNode(Object data, TreeNode parent) {
+        this.type = DEFAULT_TYPE;
+        this.data = data;
+        this.children = new CheckboxTreeNodeChildren(this);
+        if (parent != null) {
             parent.getChildren().add(this);
         }
-	}
-	
-	public CheckboxTreeNode(String type, Object data, TreeNode parent) {
-		this.type = type;
-		this.data = data;
-		this.children = new CheckboxTreeNodeChildren(this);
-		if(parent != null) { 
+    }
+
+    public CheckboxTreeNode(String type, Object data, TreeNode parent) {
+        this.type = type;
+        this.data = data;
+        this.children = new CheckboxTreeNodeChildren(this);
+        if (parent != null) {
             parent.getChildren().add(this);
         }
-	}
-	
-	public String getType() {
-		return type;
-	}
-	
-	public void setType(String type) {
-		this.type = type;
-	}
-	
-	public Object getData() {
-		return data;
-	}
-	
-	public void setData(Object data) {
-		this.data = data;
-	}
-	
-	public List<TreeNode> getChildren() {
-		return children;
-	}
-	
-	public void setChildren(List<TreeNode> children) {
-        if(children instanceof CheckboxTreeNodeChildren) {
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
+
+    public List<TreeNode> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<TreeNode> children) {
+        if (children instanceof CheckboxTreeNodeChildren) {
             this.children = children;
         }
         else {
@@ -98,84 +98,85 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
             nodeChildren.addAll(children);
             this.children = nodeChildren;
         }
-	}
-	
-	public TreeNode getParent() {
-		return parent;
-	}
-	
-	public void setParent(TreeNode parent) {        
+    }
+
+    public TreeNode getParent() {
+        return parent;
+    }
+
+    public void setParent(TreeNode parent) {
         this.parent = parent;
-	}
-    
+    }
+
     public void clearParent() {
         this.parent = null;
     }
-	
-	public boolean isExpanded() {
-		return expanded;
-	}
 
-	public void setExpanded(boolean expanded) {
-		this.expanded = expanded;
-	}
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
 
     public boolean isSelected() {
         return this.selected;
     }
 
-    public void setSelected(boolean value, boolean propagate) {   
-        if(propagate) {
+    public void setSelected(boolean value, boolean propagate) {
+        if (propagate) {
             this.setSelected(value);
-        } else {
+        }
+        else {
             this.selected = value;
         }
     }
 
-    public void setSelected(boolean value) {     
+    public void setSelected(boolean value) {
         this.selected = value;
         this.partialSelected = false;
-        
-        if(!isLeaf()) {
-            for(TreeNode child : children) {
+
+        if (!isLeaf()) {
+            for (TreeNode child : children) {
                 ((CheckboxTreeNode) child).propagateSelectionDown(value);
             }
         }
-        
-        if(this.getParent() != null) {
+
+        if (this.getParent() != null) {
             ((CheckboxTreeNode) this.getParent()).propagateSelectionUp();
         }
     }
-    
+
     protected void propagateSelectionDown(boolean value) {
         this.selected = value;
         this.partialSelected = false;
-        
-        for(TreeNode child : children) {
+
+        for (TreeNode child : children) {
             ((CheckboxTreeNode) child).propagateSelectionDown(value);
         }
     }
-    
+
     protected void propagateSelectionUp() {
         boolean allChildrenSelected = true;
         this.partialSelected = false;
-        
-        for(int i=0; i < this.getChildren().size(); i++) {
+
+        for (int i = 0; i < this.getChildren().size(); i++) {
             TreeNode childNode = this.getChildren().get(i);
-                
+
             boolean childSelected = childNode.isSelected();
             boolean childPartialSelected = childNode.isPartialSelected();
             allChildrenSelected = allChildrenSelected && childSelected;
-            this.partialSelected = this.partialSelected||childSelected||childPartialSelected;
+            this.partialSelected = this.partialSelected || childSelected || childPartialSelected;
         }
-        
+
         this.selected = allChildrenSelected;
 
-        if(allChildrenSelected) {
+        if (allChildrenSelected) {
             this.setPartialSelected(false);
         }
 
-        if(this.getParent() != null) {
+        if (this.getParent() != null) {
             ((CheckboxTreeNode) this.getParent()).propagateSelectionUp();
         }
     }
@@ -187,10 +188,10 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
     public void setSelectable(boolean selectable) {
         this.selectable = selectable;
     }
-    
-	public int getChildCount() {
-		return children.size();
-	}
+
+    public int getChildCount() {
+        return children.size();
+    }
 
     public String getRowKey() {
         return rowKey;
@@ -199,48 +200,57 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
     public void setRowKey(String rowKey) {
         this.rowKey = rowKey;
     }
-    
-	public boolean isLeaf() {
-		if(children == null)
-			return true;
-		
-		return children.isEmpty();
-	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((data == null) ? 0 : data.hashCode());
-		return result;
-	}
+    public boolean isLeaf() {
+        if (children == null) {
+            return true;
+        }
 
-	@Override
-	public boolean equals(Object obj) {
-		if(this == obj)
-			return true;
-		if(obj == null)
-			return false;
-		if(getClass() != obj.getClass())
-			return false;
-		
-		TreeNode other = (TreeNode) obj;
-		if (data == null) {
-			if (other.getData() != null)
-				return false;
-		} else if (!data.equals(other.getData()))
-			return false;
-		
-		return true;
-	}
+        return children.isEmpty();
+    }
 
-	@Override
-	public String toString() {
-		if(data != null)
-			return data.toString();
-		else
-			return super.toString();
-	}	
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((data == null) ? 0 : data.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+
+        TreeNode other = (TreeNode) obj;
+        if (data == null) {
+            if (other.getData() != null) {
+                return false;
+            }
+        }
+        else if (!data.equals(other.getData())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        if (data != null) {
+            return data.toString();
+        }
+        else {
+            return super.toString();
+        }
+    }
 
     public boolean isPartialSelected() {
         return partialSelected;

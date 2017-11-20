@@ -5,6 +5,7 @@ import org.primefaces.util.HTML;
 import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LocaleUtils;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
@@ -16,16 +17,20 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import javax.faces.convert.Converter;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+import org.primefaces.context.RequestContext;
+import org.primefaces.convert.DateTimeConverter;
 
     public final static String CONTAINER_CLASS = "ui-calendar";
     public final static String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
     public final static String MOBILE_POPUP_CONTAINER_CLASS = "ui-calendar ui-calendar-popup";
     public final static String MOBILE_INLINE_CONTAINER_CLASS = "ui-calendar ui-calendar-inline";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select","dateSelect","viewChange"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select","dateSelect","viewChange","close"));
+    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("dateSelect","viewChange","close"));
 
     private Map<String,AjaxBehaviorEvent> customEvents = new HashMap<String,AjaxBehaviorEvent>();
 
@@ -33,19 +38,8 @@ import javax.faces.event.PhaseId;
 	private java.util.TimeZone appropriateTimeZone;
 	
 	public java.util.Locale calculateLocale(FacesContext facesContext) {
-		if(calculatedLocale == null) {
-			Object userLocale = getLocale();
-			if(userLocale != null) {
-				if(userLocale instanceof String) {
-					calculatedLocale = ComponentUtils.toLocale((String) userLocale);
-				}
-				else if(userLocale instanceof java.util.Locale)
-					calculatedLocale = (java.util.Locale) userLocale;
-				else
-					throw new IllegalArgumentException("Type:" + userLocale.getClass() + " is not a valid locale type for calendar:" + this.getClientId(facesContext));
-			} else {
-				calculatedLocale = facesContext.getViewRoot().getLocale();
-			}
+		if (calculatedLocale == null) {
+	       calculatedLocale = LocaleUtils.resolveLocale(getLocale(), this.getClientId(facesContext));
 		}
 		
 		return calculatedLocale;
@@ -76,7 +70,7 @@ import javax.faces.event.PhaseId;
     public boolean hasTime() {
         String pattern = getPattern();
 
-        return (pattern != null && pattern.indexOf(":") != -1);
+        return (pattern != null && (pattern.contains("HH") || pattern.contains("mm") || pattern.contains("ss")));
     }
 
     @Override
@@ -84,15 +78,16 @@ import javax.faces.event.PhaseId;
         return EVENT_NAMES;
     }
 
+    @Override
     public Collection<String> getUnobstrusiveEventNames() {
-        return Collections.unmodifiableCollection(Arrays.asList("dateSelect","viewChange"));
+        return UNOBSTRUSIVE_EVENT_NAMES;
     }
 
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(this.isRequestSource(context) && (event instanceof AjaxBehaviorEvent)) {
+        if(ComponentUtils.isRequestSource(this, context) && (event instanceof AjaxBehaviorEvent)) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = this.getClientId(context);
@@ -101,6 +96,9 @@ import javax.faces.event.PhaseId;
             if(eventName != null) {
                 if(eventName.equals("dateSelect")) {
                     customEvents.put("dateSelect", (AjaxBehaviorEvent) event);
+                }
+                else if(eventName.equals("close")) {
+                    customEvents.put("close", (AjaxBehaviorEvent) event);
                 }
                 else if(eventName.equals("viewChange")) {
                     int month = Integer.parseInt(params.get(clientId + "_month"));
@@ -123,7 +121,7 @@ import javax.faces.event.PhaseId;
     public void validate(FacesContext context) {
         super.validate(context);
        
-        if(isValid() && isRequestSource(context)) {
+        if(isValid() && ComponentUtils.isRequestSource(this, context)) {
             for(Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext();) {
                 AjaxBehaviorEvent behaviorEvent = customEvents.get(customEventIter.next());
                 SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getValue());
@@ -185,6 +183,19 @@ import javax.faces.event.PhaseId;
         return (String) getStateHelper().get("labelledby");
     }
 
-    private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
+    @Override
+    public Converter getConverter() {
+        Converter converter = super.getConverter();
+        
+        if(converter == null && RequestContext.getCurrentInstance(getFacesContext()).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            DateTimeConverter con = new DateTimeConverter();
+            con.setPattern(this.calculatePattern());
+            con.setTimeZone(this.calculateTimeZone());
+            con.setLocale(this.calculateLocale(getFacesContext()));
+
+            return con;
+        }
+        
+        return converter;
     }
+

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,9 +35,9 @@ public class SpacerRenderer extends CoreRenderer {
         writer.writeAttribute("alt", "", null);
         writer.writeAttribute("src", getResourceRequestPath(context, "spacer/dot_clear.gif"), null);
 
-        if(spacer.getStyle() != null) writer.writeAttribute("style", spacer.getStyle(), "style");
-        if(spacer.getStyleClass() != null) writer.writeAttribute("class", spacer.getStyleClass(), "styleClass");
-        if(spacer.getTitle() != null) writer.writeAttribute("title", spacer.getTitle(), "title");
+        if (spacer.getStyle() != null) writer.writeAttribute("style", spacer.getStyle(), "style");
+        if (spacer.getStyleClass() != null) writer.writeAttribute("class", spacer.getStyleClass(), "styleClass");
+        if (spacer.getTitle() != null) writer.writeAttribute("title", spacer.getTitle(), "title");
 
         writer.endElement("img");
     }

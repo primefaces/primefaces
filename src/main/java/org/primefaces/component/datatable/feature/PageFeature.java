@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import java.io.IOException;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
+import org.primefaces.component.datatable.TableState;
 import org.primefaces.event.data.PostPageEvent;
 
 public class PageFeature implements DataTableFeature {
@@ -29,14 +30,25 @@ public class PageFeature implements DataTableFeature {
 
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         table.updatePaginationData(context, table);
-        
-        if(table.isLazy()) {
+
+        boolean isPageState = table.isPageStateRequest(context);
+
+        if (table.isLazy() && !isPageState) {
             table.loadLazyData();
         }
-        
-        renderer.encodeTbody(context, table, true);
-        
+
+        if (!isPageState) {
+            renderer.encodeTbody(context, table, true);
+        }
+
         context.getApplication().publishEvent(context, PostPageEvent.class, table);
+
+        if (table.isMultiViewState()) {
+            TableState ts = table.getTableState(true);
+
+            ts.setFirst(table.getFirst());
+            ts.setRows(table.getRows());
+        }
     }
 
     public boolean shouldDecode(FacesContext context, DataTable table) {
@@ -46,5 +58,5 @@ public class PageFeature implements DataTableFeature {
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return table.isPaginationRequest(context);
     }
-    
+
 }

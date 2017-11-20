@@ -42,6 +42,15 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
                 saveButton.click(function(e) {$this.save(e)});
                 cancelButton.click(function(e) {$this.cancel(e)});
             }
+            
+            /* to enter space in inplace input within multi-selection dataTable */
+            this.content.find('input:text,textarea').on('keydown.inplace-text', function(e) {
+                var keyCode = $.ui.keyCode;
+
+                if(e.which === keyCode.SPACE) {
+                    e.stopPropagation();
+                }
+            });
         }
     },
     
@@ -129,14 +138,6 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
         else {
             PrimeFaces.ajax.AjaxRequest(options); 
         }
-    },
-    
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] !== undefined;
-        }
-
-        return false;
     }
     
 });

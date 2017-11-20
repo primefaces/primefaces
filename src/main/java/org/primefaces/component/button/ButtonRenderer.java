@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import org.primefaces.util.WidgetBuilder;
 public class ButtonRenderer extends OutcomeTargetRenderer {
 
     private static final String SB_BUILD_ONCLICK = ButtonRenderer.class.getName() + "#buildOnclick";
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Button button = (Button) component;
@@ -38,50 +38,53 @@ public class ButtonRenderer extends OutcomeTargetRenderer {
 
     public void encodeMarkup(FacesContext context, Button button) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-		String clientId = button.getClientId(context);
+        String clientId = button.getClientId(context);
         String value = (String) button.getValue();
         String icon = button.resolveIcon();
 
-		writer.startElement("button", button);
-		writer.writeAttribute("id", clientId, "id");
-		writer.writeAttribute("name", clientId, "name");
+        writer.startElement("button", button);
+        writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("name", clientId, "name");
         writer.writeAttribute("type", "button", null);
-		writer.writeAttribute("class", button.resolveStyleClass(), "styleClass");
+        writer.writeAttribute("class", button.resolveStyleClass(), "styleClass");
 
-		renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
+        renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
 
-        if(button.isDisabled()) 
+        if (button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");
-        
-		writer.writeAttribute("onclick", buildOnclick(context, button), null);
+        }
 
-		//icon
-        if(icon != null && !icon.trim().equals("")) {
-            String defaultIconClass = button.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS; 
+        writer.writeAttribute("onclick", buildOnclick(context, button), null);
+
+        //icon
+        if (!isValueBlank(icon)) {
+            String defaultIconClass = button.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS;
             String iconClass = defaultIconClass + " " + icon;
-            
+
             writer.startElement("span", null);
             writer.writeAttribute("class", iconClass, null);
             writer.endElement("span");
         }
-        
+
         //text
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        
-        if(value == null) {
+
+        if (value == null) {
             writer.write("ui-button");
         }
         else {
-            if(button.isEscape())
+            if (button.isEscape()) {
                 writer.writeText(value, "value");
-            else
+            }
+            else {
                 writer.write(value);
+            }
         }
-        
+
         writer.endElement("span");
-			
-		writer.endElement("button");
+
+        writer.endElement("button");
     }
 
     public void encodeScript(FacesContext context, Button button) throws IOException {
@@ -94,23 +97,22 @@ public class ButtonRenderer extends OutcomeTargetRenderer {
         String userOnclick = button.getOnclick();
         StringBuilder onclick = SharedStringBuilder.get(context, SB_BUILD_ONCLICK);
         String targetURL = getTargetURL(context, button);
-        
-        if(userOnclick != null) {
+
+        if (userOnclick != null) {
             onclick.append(userOnclick).append(";");
         }
-        
+
         String onclickBehaviors = getEventBehaviors(context, button, "click", null);
-        if(onclickBehaviors != null) {
+        if (onclickBehaviors != null) {
             onclick.append(onclickBehaviors).append(";");
         }
 
-        if(targetURL != null) {
+        if (targetURL != null) {
             onclick.append("window.open('").append(targetURL).append("','");
             onclick.append(button.getTarget()).append("')");
         }
-        
+
         return onclick.toString();
     }
 
-    
 }

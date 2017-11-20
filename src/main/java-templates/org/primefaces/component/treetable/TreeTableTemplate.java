@@ -1,4 +1,3 @@
-import org.primefaces.model.TreeTableModel;
 import org.primefaces.model.TreeNode;
 import javax.faces.model.DataModel;
 import javax.faces.event.FacesEvent;
@@ -7,6 +6,7 @@ import java.util.Collection;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Iterator;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.util.Constants;
@@ -15,11 +15,14 @@ import org.primefaces.event.NodeUnselectEvent;
 import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.ColumnResizeEvent;
+import org.primefaces.event.data.PageEvent;
 import org.primefaces.component.column.Column;
 import java.lang.StringBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import javax.el.ELContext;
+import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
@@ -28,7 +31,26 @@ import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.data.SortEvent;
+import org.primefaces.model.SortOrder;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LocaleUtils;
+import javax.faces.event.BehaviorEvent;
+import org.primefaces.component.api.UIData;
+import org.primefaces.model.filter.ContainsFilterConstraint;
+import org.primefaces.model.filter.EndsWithFilterConstraint;
+import org.primefaces.model.filter.EqualsFilterConstraint;
+import org.primefaces.model.filter.ExactFilterConstraint;
+import org.primefaces.model.filter.FilterConstraint;
+import org.primefaces.model.filter.GlobalFilterConstraint;
+import org.primefaces.model.filter.GreaterThanEqualsFilterConstraint;
+import org.primefaces.model.filter.GreaterThanFilterConstraint;
+import org.primefaces.model.filter.InFilterConstraint;
+import org.primefaces.model.filter.LessThanEqualsFilterConstraint;
+import org.primefaces.model.filter.LessThanFilterConstraint;
+import org.primefaces.model.filter.StartsWithFilterConstraint;
 
 	public final static String CONTAINER_CLASS = "ui-treetable ui-widget";
     public final static String RESIZABLE_CONTAINER_CLASS = "ui-treetable ui-treetable-resizable ui-widget";
@@ -57,18 +79,68 @@ import org.primefaces.util.ComponentUtils;
     public static final String SORTABLE_COLUMN_ASCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-n";
     public static final String SORTABLE_COLUMN_DESCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-s";
     public static final String REFLOW_CLASS = "ui-treetable-reflow";
+    public static final String FILTER_COLUMN_CLASS = "ui-filter-column";
+    public static final String COLUMN_INPUT_FILTER_CLASS = "ui-column-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String COLUMN_CUSTOM_FILTER_CLASS = "ui-column-customfilter";
     
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("select","unselect", "expand", "collapse", "colResize"));
+    public static final String EDITABLE_COLUMN_CLASS = "ui-editable-column";
+    public static final String EDITING_ROW_CLASS = "ui-row-editing";
 
+    public final static String STARTS_WITH_MATCH_MODE = "startsWith";
+    public final static String ENDS_WITH_MATCH_MODE = "endsWith";
+    public final static String CONTAINS_MATCH_MODE = "contains";
+    public final static String EXACT_MATCH_MODE = "exact";
+    public final static String LESS_THAN_MODE = "lt";
+    public final static String LESS_THAN_EQUALS_MODE = "lte";
+    public final static String GREATER_THAN_MODE = "gt";
+    public final static String GREATER_THAN_EQUALS_MODE = "gte";
+    public final static String EQUALS_MODE = "equals";
+    public final static String IN_MODE = "in";
+    public final static String GLOBAL_MODE = "global";
+  
+    final static Map<String,FilterConstraint> FILTER_CONSTRAINTS;
+    
+    static {
+        FILTER_CONSTRAINTS = new HashMap<String,FilterConstraint>();
+        FILTER_CONSTRAINTS.put(STARTS_WITH_MATCH_MODE, new StartsWithFilterConstraint());
+        FILTER_CONSTRAINTS.put(ENDS_WITH_MATCH_MODE, new EndsWithFilterConstraint());
+        FILTER_CONSTRAINTS.put(CONTAINS_MATCH_MODE, new ContainsFilterConstraint());
+        FILTER_CONSTRAINTS.put(EXACT_MATCH_MODE, new ExactFilterConstraint());
+        FILTER_CONSTRAINTS.put(LESS_THAN_MODE, new LessThanFilterConstraint());
+        FILTER_CONSTRAINTS.put(LESS_THAN_EQUALS_MODE, new LessThanEqualsFilterConstraint());
+        FILTER_CONSTRAINTS.put(GREATER_THAN_MODE, new GreaterThanFilterConstraint());
+        FILTER_CONSTRAINTS.put(GREATER_THAN_EQUALS_MODE, new GreaterThanEqualsFilterConstraint());
+        FILTER_CONSTRAINTS.put(EQUALS_MODE, new EqualsFilterConstraint());
+        FILTER_CONSTRAINTS.put(IN_MODE, new InFilterConstraint());
+        FILTER_CONSTRAINTS.put(GLOBAL_MODE, new GlobalFilterConstraint());
+    }
+
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("select", NodeSelectEvent.class);
+        put("unselect", NodeUnselectEvent.class);
+        put("expand", NodeExpandEvent.class);
+        put("collapse", NodeCollapseEvent.class);
+        put("colResize", ColumnResizeEvent.class);
+        put("sort", SortEvent.class);
+        put("rowEdit", RowEditEvent.class);
+        put("rowEditInit", RowEditEvent.class);
+        put("rowEditCancel", RowEditEvent.class);
+        put("cellEdit", CellEditEvent.class);
+        put("page", PageEvent.class);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+    
     private List<String> selectedRowKeys = new ArrayList<String>();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
 
     @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
-    }
-
-    private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
 
     public boolean isSelectionRequest(FacesContext context) {
@@ -79,11 +151,27 @@ import org.primefaces.util.ComponentUtils;
 		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_sorting");
 	}
 
+    public boolean isPaginationRequest(FacesContext context) {
+		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_pagination");
+	}
+
+    public boolean isRowEditRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_rowEditAction");
+    }
+
+    public boolean isCellEditRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_cellInfo");
+    }
+
+    public boolean isFilterRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_filtering");
+    }
+
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(isRequestSource(context) && (event instanceof AjaxBehaviorEvent)) {
+        if(ComponentUtils.isRequestSource(this, context) && (event instanceof AjaxBehaviorEvent)) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = this.getClientId(context);
@@ -130,6 +218,47 @@ import org.primefaces.util.ComponentUtils;
                 int height = Integer.parseInt(params.get(clientId + "_height"));
 
                 wrapperEvent = new ColumnResizeEvent(this, behaviorEvent.getBehavior(), width, height, findColumn(columnId));
+            }
+            else if(eventName.equals("sort")) {
+                SortOrder order = SortOrder.valueOf(params.get(clientId + "_sortDir"));
+                UIColumn sortColumn = findColumn(params.get(clientId + "_sortKey"));
+                
+                wrapperEvent = new SortEvent(this, behaviorEvent.getBehavior(), sortColumn, order, 0);
+            }
+            else if(eventName.equals("rowEdit")||eventName.equals("rowEditCancel")||eventName.equals("rowEditInit")) {
+                String nodeKey = params.get(clientId + "_rowEditIndex");
+                this.setRowKey(nodeKey);
+                wrapperEvent = new RowEditEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
+                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
+            }
+            else if(eventName.equals("cellEdit")) {
+                String[] cellInfo = params.get(clientId + "_cellInfo").split(",");
+                String rowKey = cellInfo[0];
+                int cellIndex = Integer.parseInt(cellInfo[1]);
+                int i = -1;
+                UIColumn column = null;
+             
+                for(UIColumn col : this.getColumns()) {
+                    if(col.isRendered()) {
+                        i++;
+                        
+                        if(i == cellIndex) {
+                            column = col;
+                            break;
+                        }
+                    }
+                }
+
+                wrapperEvent = new CellEditEvent(this, behaviorEvent.getBehavior(), column, rowKey);
+                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
+            }
+            else if(eventName.equals("page")) {
+                int rows = this.getRowsToRender();
+                int first = Integer.parseInt(params.get(clientId + "_first"));
+                int page = rows > 0 ? (int) (first / rows) : 0;
+        
+                wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
+                wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
             
             super.queueEvent(wrapperEvent);
@@ -246,19 +375,7 @@ import org.primefaces.util.ComponentUtils;
 
     public Locale resolveDataLocale() {
         FacesContext context = this.getFacesContext();
-        Object userLocale = this.getDataLocale();
-        
-        if(userLocale != null) {
-            if(userLocale instanceof String)
-                return ComponentUtils.toLocale((String) userLocale);
-            else if(userLocale instanceof java.util.Locale)
-                return (java.util.Locale) userLocale;
-            else
-                throw new IllegalArgumentException("Type:" + userLocale.getClass() + " is not a valid locale type for datatable:" + this.getClientId(context));
-        } 
-        else {
-            return context.getViewRoot().getLocale();
-        }
+        return LocaleUtils.resolveLocale(this.getDataLocale(), this.getClientId(context));
     }
 
     public ColumnGroup getColumnGroup(String target) {
@@ -322,3 +439,140 @@ import org.primefaces.util.ComponentUtils;
     
         return super.saveState(context);
     } 
+
+    @Override
+    protected void validateSelection(FacesContext context) {
+        String selectionMode = this.getSelectionMode();
+
+        if(selectionMode != null && this.isRequired()) {
+            Object selection = this.getLocalSelectedNodes();
+            boolean isValueBlank = (selectionMode.equalsIgnoreCase("single")) ? (selection == null) : (((TreeNode[]) selection).length == 0);
+            
+            if(isValueBlank) {
+                super.updateSelection(context);
+            }
+        }
+ 
+        super.validateSelection(context);
+    }
+
+    public int getRowCount() {
+        TreeNode root = this.getValue();
+        if (root == null) {
+            return (-1);
+        }
+        else {
+            List<TreeNode> children = root.getChildren();
+            return children == null ? -1 : children.size();
+        }
+    }
+
+    public int getPage() {
+        if(this.getRowCount() > 0) {
+            int rows = this.getRowsToRender();
+        
+            if(rows > 0) {
+                int first = this.getFirst();
+
+                return (int) (first / rows);
+            } 
+            else {
+                return 0;
+            }
+        }
+        else {
+            return 0;
+        }
+    }
+
+    public int getRowsToRender() {
+        int rows = this.getRows();
+        
+        return rows == 0 ? this.getRowCount() : rows;
+    }
+
+    public int getPageCount() {
+        return (int) Math.ceil(this.getRowCount() * 1d / this.getRowsToRender());
+    }
+
+    public UIComponent getHeader() {
+        return getFacet("header");
+
+    }
+
+    public UIComponent getFooter() {
+        return getFacet("footer");
+    }
+
+    public void calculateFirst() {
+        int rows = this.getRows();
+        
+        if(rows > 0) {
+            int first = this.getFirst();
+            int rowCount = this.getRowCount();
+            
+            if(rowCount > 0 && first >= rowCount) {
+                int numberOfPages = (int) Math.ceil(rowCount * 1d / rows);
+                
+                this.setFirst(Math.max((numberOfPages-1) * rows, 0));
+            }
+        }
+    }
+
+    public void updatePaginationData(FacesContext context) {
+        String componentClientId = this.getClientId(context);
+		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        ELContext elContext = context.getELContext();
+        
+		String firstParam = params.get(componentClientId + "_first");
+		String rowsParam = params.get(componentClientId + "_rows");
+
+		this.setFirst(Integer.valueOf(firstParam));
+		this.setRows(Integer.valueOf(rowsParam));
+        
+        ValueExpression firstVe = this.getValueExpression("first");
+        ValueExpression rowsVe = this.getValueExpression("rows");
+
+        if(firstVe != null && !firstVe.isReadOnly(elContext))
+            firstVe.setValue(context.getELContext(), this.getFirst());
+        if(rowsVe != null && !rowsVe.isReadOnly(elContext))
+            rowsVe.setValue(context.getELContext(), this.getRows());
+    }
+
+    public boolean isFilteringEnabled() {
+        Object value = getStateHelper().get("filtering");
+       
+        return value == null ? false : true;
+	}
+
+    public void enableFiltering() {
+		getStateHelper().put("filtering", true);
+	}
+
+    public void updateFilteredNode(FacesContext context,  TreeNode node) {
+        ValueExpression ve = this.getValueExpression("filteredNode");
+        
+        if(ve != null) {
+            ve.setValue(context.getELContext(), node);
+        }
+        else {            
+            this.setFilteredNode(node);
+        }
+    }
+
+    private List<String> filteredRowKeys = new ArrayList<String>();
+    public List<String> getFilteredRowKeys() {
+        return filteredRowKeys;
+    }
+    public void setFilteredRowKeys(List<String> filteredRowKeys) {
+        this.filteredRowKeys = filteredRowKeys;
+    }
+
+    private List filterMetadata;
+    public List getFilterMetadata() {
+        return filterMetadata;
+    }
+    public void setFilterMetadata(List filterMetadata) {
+        this.filterMetadata = filterMetadata;
+    }
+

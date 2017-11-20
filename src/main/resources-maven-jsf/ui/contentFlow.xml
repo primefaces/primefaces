@@ -4,23 +4,23 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>contentFlow</tag>
-	<tagClass>org.primefaces.component.contentflow.ContenFlowTag</tagClass>
-	<componentClass>org.primefaces.component.contentflow.ContentFlow</componentClass>
-	<componentType>org.primefaces.component.ContentFlow</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.ContentFlowRenderer</rendererType>
-	<rendererClass>org.primefaces.component.contentflow.ContentFlowRenderer</rendererClass>
-	<parent>javax.faces.component.UIPanel</parent>
+    <tag>contentFlow</tag>
+    <tagClass>org.primefaces.component.contentflow.ContenFlowTag</tagClass>
+    <componentClass>org.primefaces.component.contentflow.ContentFlow</componentClass>
+    <componentType>org.primefaces.component.ContentFlow</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.ContentFlowRenderer</rendererType>
+    <rendererClass>org.primefaces.component.contentflow.ContentFlowRenderer</rendererClass>
+    <parent>javax.faces.component.UIPanel</parent>
     <description>ContentFlow is used to display a collection of items.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
-	</interfaces>
-	<attributes>
-		&standard_uicomponent_attributes;
-		&widget_var_attribute;
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
         <attribute>
             <name>value</name>
             <required>true</required>
@@ -45,22 +45,25 @@
             <type>java.lang.String</type>
             <description>Style class of the container element.</description>
         </attribute>
-	</attributes>
-	<resources>
+    </attributes>
+    <resources>
         <resource>
-			<name>contentflow/contentflow.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>contentflow/contentflow.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
-		<resource>
-			<name>primefaces.js</name>
-		</resource>
+            <name>jquery/jquery.js</name>
+        </resource>
         <resource>
-			<name>contentflow/contentflow.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+        <resource>
+            <name>contentflow/contentflow.js</name>
+        </resource>
+    </resources>
 </component>

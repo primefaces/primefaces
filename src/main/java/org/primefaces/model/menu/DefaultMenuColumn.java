@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,31 +15,34 @@
  */
 package org.primefaces.model.menu;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultMenuColumn implements MenuColumn {
-    
+public class DefaultMenuColumn implements MenuColumn, Serializable {
+
     private String id;
     private String style;
     private String styleClass;
     private List<MenuElement> elements;
     private boolean rendered = true;
-    
+
     public DefaultMenuColumn() {
         elements = new ArrayList<MenuElement>();
     }
-    
+
     public String getId() {
         return id;
     }
+
     public void setId(String id) {
         this.id = id;
     }
-    
+
     public String getStyle() {
         return style;
     }
+
     public void setStyle(String style) {
         this.style = style;
     }
@@ -47,13 +50,15 @@ public class DefaultMenuColumn implements MenuColumn {
     public String getStyleClass() {
         return styleClass;
     }
+
     public void setStyleClass(String styleClass) {
         this.styleClass = styleClass;
     }
-    
+
     public boolean isRendered() {
         return rendered;
     }
+
     public void setRendered(boolean rendered) {
         this.rendered = rendered;
     }
@@ -64,12 +69,12 @@ public class DefaultMenuColumn implements MenuColumn {
 
     public void setElements(List<MenuElement> elements) {
         this.elements = elements;
-    } 
-    
+    }
+
     public int getElementsCount() {
         return (elements == null) ? 0 : elements.size();
     }
-    
+
     public void addElement(MenuElement element) {
         elements.add(element);
     }

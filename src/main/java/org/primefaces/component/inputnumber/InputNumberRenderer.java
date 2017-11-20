@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,11 +76,19 @@ public class InputNumberRenderer extends InputRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         InputNumber inputNumber = (InputNumber) component;
-        encodeMarkup(context, inputNumber);
-        encodeScript(context, inputNumber);
+
+        Object value = inputNumber.getValue();
+        String valueToRender = ComponentUtils.getValueToRender(context, inputNumber, value);
+        if (valueToRender == null) {
+            valueToRender = "";
+        }
+
+        encodeMarkup(context, inputNumber, value, valueToRender);
+        encodeScript(context, inputNumber, value, valueToRender);
     }
 
-    protected void encodeMarkup(FacesContext context, InputNumber inputNumber) throws IOException {
+    protected void encodeMarkup(FacesContext context, InputNumber inputNumber, Object value, String valueToRender)
+            throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = inputNumber.getClientId(context);
 
@@ -95,13 +103,13 @@ public class InputNumberRenderer extends InputRenderer {
             writer.writeAttribute("style", inputNumber.getStyle(), "style");
         }
 
-        encodeOutput(context, inputNumber, clientId);
-        encodeInput(context, inputNumber, clientId);
+        encodeInput(context, inputNumber, clientId, valueToRender);
+        encodeHiddenInput(context, inputNumber, clientId);
 
         writer.endElement("span");
     }
 
-    protected void encodeInput(FacesContext context, InputNumber inputNumber, String clientId) throws IOException {
+    protected void encodeHiddenInput(FacesContext context, InputNumber inputNumber, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_hinput";
 
@@ -115,23 +123,45 @@ public class InputNumberRenderer extends InputRenderer {
             writer.writeAttribute("onchange", inputNumber.getOnchange(), null);
         }
 
+        if (inputNumber.getOnkeydown() != null) {
+            writer.writeAttribute("onkeydown", inputNumber.getOnkeydown(), null);
+        }
+
+        if (inputNumber.getOnkeyup() != null) {
+            writer.writeAttribute("onkeyup", inputNumber.getOnkeyup(), null);
+        }
+
+        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, inputNumber);
+        }
+
         writer.endElement("input");
 
     }
 
-    protected void encodeOutput(FacesContext context, InputNumber inputNumber, String clientId) throws IOException {
+    protected void encodeInput(FacesContext context, InputNumber inputNumber, String clientId, String valueToRender)
+            throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
 
-        String defaultClass = InputText.STYLE_CLASS;
-        defaultClass = inputNumber.isValid() ? defaultClass : defaultClass + " ui-state-error";
-        defaultClass = !inputNumber.isDisabled() ? defaultClass : defaultClass + " ui-state-disabled";
+        String inputStyle = inputNumber.getInputStyle();
+        String inputStyleClass = inputNumber.getInputStyleClass();
+
+        String style = inputStyle;
+
+        String styleClass = InputText.STYLE_CLASS;
+        styleClass = inputNumber.isValid() ? styleClass : styleClass + " ui-state-error";
+        styleClass = !inputNumber.isDisabled() ? styleClass : styleClass + " ui-state-disabled";
+        if (!isValueBlank(inputStyleClass)) {
+            styleClass += " " + inputStyleClass;
+        }
 
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", inputNumber.getType(), null);
+        writer.writeAttribute("value", valueToRender, null);
 
         renderPassThruAttributes(context, inputNumber, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, inputNumber, HTML.INPUT_TEXT_EVENTS);
@@ -143,19 +173,22 @@ public class InputNumberRenderer extends InputRenderer {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
 
-        writer.writeAttribute("class", defaultClass, "");
+        if (!isValueBlank(style)) {
+            writer.writeAttribute("style", style, null);
+        }
+
+        writer.writeAttribute("class", styleClass, null);
+
+        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, inputNumber);
+        }
 
         writer.endElement("input");
     }
 
-    protected void encodeScript(FacesContext context, InputNumber inputNumber) throws IOException {
-        Object value = inputNumber.getValue();
-        String valueToRender = ComponentUtils.getValueToRender(context, inputNumber, value);
-        if (valueToRender == null) {
-            valueToRender = "";
-        }
-
-        WidgetBuilder wb = RequestContext.getCurrentInstance().getWidgetBuilder();
+    protected void encodeScript(FacesContext context, InputNumber inputNumber, Object value, String valueToRender)
+            throws IOException {
+        WidgetBuilder wb = RequestContext.getCurrentInstance(context).getWidgetBuilder();
         wb.initWithDomReady(InputNumber.class.getSimpleName(), inputNumber.resolveWidgetVar(), inputNumber.getClientId());
         wb.attr("disabled", inputNumber.isDisabled())
                 .attr("valueToRender", formatForPlugin(valueToRender, inputNumber, value));
@@ -168,7 +201,7 @@ public class InputNumberRenderer extends InputRenderer {
         wb.finish();
     }
 
-    private String getOptions(InputNumber inputNumber) {
+    protected String getOptions(InputNumber inputNumber) {
 
         String decimalSeparator = inputNumber.getDecimalSeparator();
         String thousandSeparator = inputNumber.getThousandSeparator();
@@ -179,6 +212,8 @@ public class InputNumberRenderer extends InputRenderer {
         String roundMethod = inputNumber.getRoundMethod();
         String decimalPlaces = inputNumber.getDecimalPlaces();
         String emptyValue = inputNumber.getEmptyValue();
+        String lZero = inputNumber.getLeadingZero();
+        boolean padControl = inputNumber.isPadControl();
 
         String options = "";
         options += isValueBlank(decimalSeparator) ? "" : "aDec:\"" + escapeText(decimalSeparator) + "\",";
@@ -191,6 +226,8 @@ public class InputNumberRenderer extends InputRenderer {
         options += isValueBlank(roundMethod) ? "" : "mRound:\"" + escapeText(roundMethod) + "\",";
         options += isValueBlank(decimalPlaces) ? "" : "mDec:\"" + escapeText(decimalPlaces) + "\",";
         options += "wEmpty:\"" + escapeText(emptyValue) + "\",";
+        options += "lZero:\"" + escapeText(lZero) + "\",";
+        options += "aPad:" + padControl + ",";
 
         //if all options are empty return empty
         if (options.isEmpty()) {
@@ -214,9 +251,10 @@ public class InputNumberRenderer extends InputRenderer {
         else {
             try {
                 Object objectToRender;
-                if (value instanceof BigDecimal) {
+                if (value instanceof BigDecimal || doubleValueCheck(valueToRender)) {
                     objectToRender = new BigDecimal(valueToRender);
-                } else {
+                }
+                else {
                     objectToRender = new Double(valueToRender);
                 }
 
@@ -236,6 +274,24 @@ public class InputNumberRenderer extends InputRenderer {
                 throw new IllegalArgumentException("Error converting  [" + valueToRender + "] to a double value;", e);
             }
         }
+    }
+
+    protected boolean doubleValueCheck(String valueToRender) {
+        int counter = 0;
+        int length = valueToRender.length();
+
+        for (int i = 0; i < length; i++) {
+            if (valueToRender.charAt(i) == '9') {
+                counter++;
+            }
+        }
+
+        return (counter > 15 || length > 15);
+    }
+
+    @Override
+    protected String getHighlighter() {
+        return "inputnumber";
     }
 
 }

@@ -1,6 +1,7 @@
 import javax.faces.component.UIComponent;
 import org.primefaces.component.layout.LayoutUnit;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -11,6 +12,7 @@ import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.Visibility;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
+import javax.faces.event.BehaviorEvent;
 
     public final static String UNIT_CLASS = "ui-layout-unit ui-widget ui-widget-content ui-corner-all";
     public final static String UNIT_HEADER_CLASS = "ui-layout-unit-header ui-widget-header ui-corner-all";
@@ -20,7 +22,23 @@ import javax.faces.event.FacesEvent;
     public final static String UNIT_FOOTER_TITLE_CLASS = "ui-layout-unit-footer-title";
     public final static String UNIT_HEADER_ICON_CLASS = "ui-layout-unit-header-icon ui-state-default ui-corner-all";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("toggle","close", "resize"));
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("toggle", ToggleEvent.class);
+        put("close", CloseEvent.class);
+        put("resize", ResizeEvent.class);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
 
 	protected LayoutUnit getLayoutUnitByPosition(String name) {
 		for(UIComponent child : getChildren()) {
@@ -41,11 +59,6 @@ import javax.faces.event.FacesEvent;
 
     public boolean isElementLayout() {
         return !isNested() && !isFullPage();
-    }
-
-    @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
     }
 
     @Override

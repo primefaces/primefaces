@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import org.primefaces.expression.ClientIdSearchExpressionResolver;
 import org.primefaces.expression.SearchExpressionResolver;
+import org.primefaces.expression.SearchExpressionUtils;
 
 /**
  * {@link SearchExpressionResolver} for the "@widgetVar" keyword.
@@ -30,32 +30,36 @@ import org.primefaces.expression.SearchExpressionResolver;
 public class WidgetVarExpressionResolver implements SearchExpressionResolver, ClientIdSearchExpressionResolver {
 
     private static final Pattern PATTERN = Pattern.compile("@widgetVar\\((\\w+)\\)");
-        
-	public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression) {
-        
+
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+
         try {
             Matcher matcher = PATTERN.matcher(expression);
 
             if (matcher.matches()) {
 
                 WidgetVarVisitCallback visitCallback = new WidgetVarVisitCallback(matcher.group(1));
-                context.getViewRoot().visitTree(VisitContext.createVisitContext(context), visitCallback);
+                context.getViewRoot().visitTree(
+                        SearchExpressionUtils.createVisitContext(context, options),
+                        visitCallback);
 
                 return visitCallback.getComponent();
 
-            } else {
+            }
+            else {
                 throw new FacesException("Expression does not match following pattern @widgetVar(var). Expression: \"" + expression + "\"");
             }
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new FacesException("Expression does not match following pattern @widgetVar(var). Expression: \"" + expression + "\"", e);
         }
-	}
+    }
 
-    
-    public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression) {
+    public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
         // just return the complete expression, the client side will take care of it
         // e.g. @widgetVar(myWidget)
         return expression;
     }
+
 }

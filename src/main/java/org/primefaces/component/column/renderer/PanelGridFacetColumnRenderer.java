@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,19 +29,19 @@ public class PanelGridFacetColumnRenderer extends CoreRenderer implements Helper
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
         String defaultStyleClass = PanelGrid.CELL_CLASS + " ui-widget-header";
-        styleClass = (styleClass == null) ? defaultStyleClass: defaultStyleClass + " " + styleClass;
-        
+        styleClass = (styleClass == null) ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+
         writer.startElement("td", null);
         writer.writeAttribute("role", "columnheader", null);
         writer.writeAttribute("class", styleClass, null);
 
-        if(style != null) writer.writeAttribute("style", style, null);
-        if(column.getColspan() > 1) writer.writeAttribute("colspan", column.getColspan(), null);
-        if(column.getRowspan() > 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
+        if (style != null) writer.writeAttribute("style", style, null);
+        if (column.getColspan() > 1) writer.writeAttribute("colspan", column.getColspan(), null);
+        if (column.getRowspan() > 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
 
         renderChildren(context, column);
 
         writer.endElement("td");
     }
-    
+
 }

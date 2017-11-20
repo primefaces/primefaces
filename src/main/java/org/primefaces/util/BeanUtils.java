@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,9 @@ import java.util.List;
  * @author jagatai
  */
 public class BeanUtils {
-    
+
     private static List<Class<?>> primitiveTypes;
-    
+
     static {
         primitiveTypes = new ArrayList<Class<?>>();
         primitiveTypes.add(Boolean.class);
@@ -37,14 +37,30 @@ public class BeanUtils {
         primitiveTypes.add(Short.class);
         primitiveTypes.add(String.class);
     }
-    
+
     public static boolean isBean(Class<?> valueClass) {
         if (valueClass.isArray()) {
             return isBean(valueClass.getComponentType());
-        } else if (valueClass.isPrimitive()) {
+        }
+        else if (valueClass.isPrimitive()) {
             return false;
-        } else {
+        }
+        else {
             return !primitiveTypes.contains(valueClass);
         }
+    }
+    
+    public static boolean isBean(Object value) {
+        if (value instanceof Boolean || value instanceof String || value instanceof Number) {
+            return false;
+        }
+        else if (value.getClass().isArray()) {
+            return isBean(value.getClass().getComponentType());
+        }
+        else if (value.getClass().isPrimitive()) {
+            return false;
+        }
+
+        return true;
     }
 }

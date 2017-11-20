@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,32 +18,33 @@ package org.primefaces.component.paginator;
 import java.io.IOException;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIData;
 
 public class JumpToPageDropdownRenderer implements PaginatorElementRenderer {
 
-    public void render(FacesContext context, UIData uidata) throws IOException {
+    public void render(FacesContext context, Pageable pageable) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        int currentPage = uidata.getPage();
-        int pageCount = uidata.getPageCount();
-        
+        int currentPage = pageable.getPage();
+        int pageCount = pageable.getPageCount();
+
         writer.startElement("select", null);
         writer.writeAttribute("class", UIData.PAGINATOR_JTP_CLASS, null);
-        writer.writeAttribute("value", uidata.getPage(), null);
-        
-        for(int i = 0; i < pageCount; i++){
+        writer.writeAttribute("value", pageable.getPage(), null);
+
+        for (int i = 0; i < pageCount; i++) {
             writer.startElement("option", null);
             writer.writeAttribute("value", i, null);
-            
-            if(i == currentPage){
+
+            if (i == currentPage) {
                 writer.writeAttribute("selected", "selected", null);
             }
-            
-            writer.writeText((i+1), null);
+
+            writer.writeText((i + 1), null);
             writer.endElement("option");
         }
-        
+
         writer.endElement("select");
     }
-    
+
 }

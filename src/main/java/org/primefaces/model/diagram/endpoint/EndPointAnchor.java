@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,9 +33,9 @@ public enum EndPointAnchor {
     TOP("Top"),
     TOP_LEFT("TopLeft"),
     TOP_RIGHT("TopRight");
-    
+
     private final String text;
-    
+
     private EndPointAnchor(final String text) {
         this.text = text;
     }
@@ -45,4 +45,3 @@ public enum EndPointAnchor {
         return this.text;
     }
 }
-

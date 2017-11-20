@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package org.primefaces.model.chart;
 import java.io.Serializable;
 
 public abstract class Axis implements Serializable {
-    
+
     private String label = "";
     private Object min;
     private Object max;
@@ -30,7 +30,7 @@ public abstract class Axis implements Serializable {
     public Axis() {
 
     }
-    
+
     public Axis(String label) {
         this.label = label;
     }
@@ -62,6 +62,7 @@ public abstract class Axis implements Serializable {
     public int getTickAngle() {
         return tickAngle;
     }
+
     public void setTickAngle(int tickAngle) {
         this.tickAngle = tickAngle;
     }
@@ -69,6 +70,7 @@ public abstract class Axis implements Serializable {
     public String getTickFormat() {
         return tickFormat;
     }
+
     public void setTickFormat(String tickFormat) {
         this.tickFormat = tickFormat;
     }
@@ -76,6 +78,7 @@ public abstract class Axis implements Serializable {
     public String getTickInterval() {
         return tickInterval;
     }
+
     public void setTickInterval(String tickInterval) {
         this.tickInterval = tickInterval;
     }
@@ -87,7 +90,7 @@ public abstract class Axis implements Serializable {
     public void setTickCount(int tickCount) {
         this.tickCount = tickCount;
     }
-    
+
     public String getRenderer() {
         return null;
     }

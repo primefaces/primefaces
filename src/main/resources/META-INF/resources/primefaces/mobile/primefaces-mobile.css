@@ -72,10 +72,22 @@
     text-align: center;
 }
 
+.ui-datatable .ui-reflow-dropdown {
+    display: none;
+}
+
+.ui-datatable-tablewrapper {
+    overflow: auto;
+}
+
 @media ( max-width: 35em ) {
     
     .ui-paginator .ui-paginator-page {
         display: none;
+    }
+    
+    .ui-datatable .ui-reflow-dropdown {
+        display: block;
     }
     
 }

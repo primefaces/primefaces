@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,26 +30,33 @@ import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
 
 public class FileDownloadTagHandler extends TagHandler {
-	
-	private final TagAttribute value;
-	private final TagAttribute contentDisposition;
 
-	public FileDownloadTagHandler(TagConfig tagConfig) {
-		super(tagConfig);
-		this.value = getRequiredAttribute("value");
-		this.contentDisposition = getAttribute("contentDisposition");
-	}
+    private final TagAttribute value;
+    private final TagAttribute contentDisposition;
+    private final TagAttribute monitorKey;
 
-	public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
-		if (ComponentHandler.isNew(parent)) {
-			ValueExpression valueVE = value.getValueExpression(faceletContext, Object.class);
-			ValueExpression contentDispositionVE = null;
-			
-			if(contentDisposition != null)
-				contentDispositionVE= contentDisposition.getValueExpression(faceletContext, String.class);
-			
-			ActionSource actionSource = (ActionSource) parent;
-			actionSource.addActionListener(new FileDownloadActionListener(valueVE, contentDispositionVE));
-		}
-	}
+    public FileDownloadTagHandler(TagConfig tagConfig) {
+        super(tagConfig);
+        this.value = getRequiredAttribute("value");
+        this.contentDisposition = getAttribute("contentDisposition");
+        this.monitorKey = getAttribute("monitorKey");
+    }
+
+    public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
+        if (ComponentHandler.isNew(parent)) {
+            ValueExpression valueVE = value.getValueExpression(faceletContext, Object.class);
+            ValueExpression contentDispositionVE = null;
+            ValueExpression monitorKeyVE = null;
+
+            if (contentDisposition != null) {
+                contentDispositionVE = contentDisposition.getValueExpression(faceletContext, String.class);
+            }
+            if (monitorKey != null) {
+                monitorKeyVE = monitorKey.getValueExpression(faceletContext, String.class);
+            }
+
+            ActionSource actionSource = (ActionSource) parent;
+            actionSource.addActionListener(new FileDownloadActionListener(valueVE, contentDispositionVE, monitorKeyVE));
+        }
+    }
 }

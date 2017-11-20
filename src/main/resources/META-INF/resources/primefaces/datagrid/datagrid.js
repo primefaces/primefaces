@@ -23,14 +23,6 @@ PrimeFaces.widget.DataGrid = PrimeFaces.widget.BaseWidget.extend({
         this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
     },
             
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] !== undefined;
-        }
-    
-        return false;
-    },
-            
     handlePagination: function(newState) {
         var $this = this,
         options = {

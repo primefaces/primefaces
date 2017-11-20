@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,32 +17,20 @@ package org.primefaces.event.map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
+import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
 import org.primefaces.model.map.Marker;
 
-public class MarkerDragEvent extends AjaxBehaviorEvent {
-	
-	private Marker marker;
+public class MarkerDragEvent extends AbstractAjaxBehaviorEvent {
 
-	public MarkerDragEvent(UIComponent component, Behavior behavior, Marker marker) {
-		super(component, behavior);
-		this.marker = marker;
-	}
+    private Marker marker;
 
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
+    public MarkerDragEvent(UIComponent component, Behavior behavior, Marker marker) {
+        super(component, behavior);
+        this.marker = marker;
+    }
 
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
-	}
-	
-	public Marker getMarker() {
-		return marker;
-	}
+    public Marker getMarker() {
+        return marker;
+    }
 }

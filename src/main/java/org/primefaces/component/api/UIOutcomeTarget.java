@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,18 +20,18 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 
 public interface UIOutcomeTarget {
- 
+
     public String getOutcome();
-    
+
     public boolean isIncludeViewParams();
-    
+
     public String getFragment();
-    
+
     public List<UIComponent> getChildren();
-    
+
     public Map<String, List<String>> getParams();
-    
+
     public String getHref();
-    
+
     public boolean isDisableClientWindow();
 }

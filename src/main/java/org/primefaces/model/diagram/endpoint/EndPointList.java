@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,11 +22,10 @@ public class EndPointList extends ArrayList<EndPoint> {
 
     @Override
     public boolean add(EndPoint e) {
-        if(e.getId() == null) {
+        if (e.getId() == null) {
             e.setId(UUID.randomUUID().toString());
         }
-        
+
         return super.add(e);
     }
 }
-

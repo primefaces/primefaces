@@ -271,7 +271,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
             var offset = $this.panel.offset(),
             pageX, pageY;
             
-            if(e.originalEvent.touches) {
+            if(e.originalEvent && e.originalEvent.touches) {
                 pageX = e.originalEvent.touches[0].pageX;
                 pageY = e.originalEvent.touches[0].pageY;
             } else {

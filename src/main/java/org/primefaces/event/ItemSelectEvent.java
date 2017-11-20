@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,37 +17,24 @@ package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
 
-public class ItemSelectEvent extends AjaxBehaviorEvent {
-	
-	private int itemIndex;
-	
-	private int seriesIndex;
+public class ItemSelectEvent extends AbstractAjaxBehaviorEvent {
 
-	public ItemSelectEvent(UIComponent source, Behavior behavior, int itemIndex, int seriesIndex) {
-		super(source, behavior);
-		this.itemIndex = itemIndex;
-		this.seriesIndex = seriesIndex;
-	}
+    private int itemIndex;
 
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-        return (faceslistener instanceof AjaxBehaviorListener);
-	}
+    private int seriesIndex;
 
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
-	}
-	
-	public int getItemIndex() {
-		return itemIndex;
-	}
+    public ItemSelectEvent(UIComponent source, Behavior behavior, int itemIndex, int seriesIndex) {
+        super(source, behavior);
+        this.itemIndex = itemIndex;
+        this.seriesIndex = seriesIndex;
+    }
 
-	public int getSeriesIndex() {
-		return seriesIndex;
-	}
+    public int getItemIndex() {
+        return itemIndex;
+    }
+
+    public int getSeriesIndex() {
+        return seriesIndex;
+    }
 }

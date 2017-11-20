@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,36 +21,38 @@ import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.endpoint.EndPointList;
 
 public class Element implements Serializable {
-    
+
     private String id;
-    
+
     private Object data;
-    
+
     private String styleClass;
-    
+
     private String x;
-    
+
     private String y;
-    
+
     private List<EndPoint> endPoints;
-    
+
     private boolean draggable = true;
+
+    private String title;
 
     public Element() {
         endPoints = new EndPointList();
     }
-    
+
     public Element(Object data) {
         this();
         this.data = data;
     }
-    
+
     public Element(Object data, String x, String y) {
         this(data);
         this.x = x;
         this.y = y;
     }
-        
+
     public String getId() {
         return id;
     }
@@ -94,15 +96,15 @@ public class Element implements Serializable {
     public List<EndPoint> getEndPoints() {
         return endPoints;
     }
-    
+
     public void addEndPoint(EndPoint endPoint) {
         this.endPoints.add(endPoint);
     }
-    
+
     public void removeEndPoint(EndPoint endPoint) {
         this.endPoints.remove(endPoint);
     }
-        
+
     public void clearEndPoints(EndPoint endPoint) {
         this.endPoints.clear();
     }
@@ -114,7 +116,15 @@ public class Element implements Serializable {
     public void setDraggable(boolean draggable) {
         this.draggable = draggable;
     }
-    
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     @Override
     public int hashCode() {
         int hash = 3;

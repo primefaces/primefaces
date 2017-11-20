@@ -12,6 +12,22 @@
     border-top:0px none;
 }
 
+.ui-paginator.ui-paginator-top .ui-paginator-top-left-content {
+    float: left;    
+}
+
+.ui-paginator.ui-paginator-top .ui-paginator-top-right-content {
+    float: right;    
+}
+
+.ui-paginator.ui-paginator-bottom .ui-paginator-bottom-left-content {
+    float: left;    
+}
+
+.ui-paginator.ui-paginator-bottom .ui-paginator-bottom-right-content {
+    float: right;    
+}
+
 .ui-paginator .ui-paginator-page,
 .ui-paginator .ui-paginator-pages,
 .ui-paginator .ui-paginator-next,

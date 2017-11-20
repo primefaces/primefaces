@@ -15,8 +15,16 @@ PrimeFaces.widget.Stack = PrimeFaces.widget.BaseWidget.extend({
                 $this.open($(this));
         });
 
+        var item = this.jq.children('img');
         if(this.cfg.expanded) {
-            this.open(this.jq.children('img'));
+            this.open(item);
+        }
+        else {
+            var nextItem = item.next();
+        
+            item.css({paddingTop: '35'});
+            nextItem.css({top: '-50px', left: '10px'}).children('li').css({top: '55px', left: '-10px'});
+            nextItem.find('li a>img').css({width: '79px', marginLeft: '0'});
         }
     },
     

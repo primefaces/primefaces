@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,30 +17,18 @@ package org.primefaces.mobile.event;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
+import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
-public class SwipeEvent extends AjaxBehaviorEvent {
+public class SwipeEvent extends AbstractAjaxBehaviorEvent {
 
-	private Object data;
-	
-	public SwipeEvent(UIComponent component, Behavior behavior, Object data) {
-		super(component, behavior);
-		this.data = data;
-	}
+    private Object data;
 
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
+    public SwipeEvent(UIComponent component, Behavior behavior, Object data) {
+        super(component, behavior);
+        this.data = data;
+    }
 
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
-	}
-	
-	public Object getData() {
-		return data;
-	}
+    public Object getData() {
+        return data;
+    }
 }

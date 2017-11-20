@@ -2,7 +2,7 @@
  * PrimeFaces Tooltip Widget
  */
 PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
-    
+
     init: function(cfg) {
         this.cfg = cfg;
         this.id = this.cfg.id;
@@ -13,60 +13,65 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.showDelay = this.cfg.showDelay||150;
         this.cfg.hideDelay = this.cfg.hideDelay||0;
         this.cfg.hideEffectDuration = this.cfg.target ? 250 : 1;
-        
+        this.cfg.position = this.cfg.position||'right';
+
         if(this.cfg.target)
             this.bindTarget();
         else
             this.bindGlobal();
-        
+
         this.removeScriptElement(this.id);
     },
-    
+
     refresh: function(cfg) {
         if(cfg.target) {
-            if($(PrimeFaces.escapeClientId(cfg.id)).length > 1) 
-                $(document.body).children(PrimeFaces.escapeClientId(cfg.id)).remove();
+            var targetTooltip = $(document.body).children(PrimeFaces.escapeClientId(cfg.id));
+            if(targetTooltip.length) 
+                targetTooltip.remove();
         }
         else {
             $(document.body).children('.ui-tooltip-global').remove();
         }
-        
+
         this._super(cfg);
     },
-    
+
     bindGlobal: function() {
-        this.jq = $('<div class="ui-tooltip ui-tooltip-global ui-widget ui-widget-content ui-corner-all ui-shadow" />').appendTo('body');
+        this.jq = $('<div class="ui-tooltip ui-tooltip-global ui-widget ui-tooltip-' + this.cfg.position + '"></div>')
+            .appendTo('body');
+        this.jq.append('<div class="ui-tooltip-arrow"></div><div class="ui-tooltip-text ui-shadow ui-corner-all"></div>');
+
         this.cfg.globalSelector = this.cfg.globalSelector||'a,:input,:button';
         this.cfg.escape = (this.cfg.escape === undefined) ? true : this.cfg.escape;
         var $this = this;
-        
+
         $(document).off(this.cfg.showEvent + ' ' + this.cfg.hideEvent, this.cfg.globalSelector)
                     .on(this.cfg.showEvent, this.cfg.globalSelector, function(e) {
                         var element = $(this);
                         if(element.prop('disabled')) {
                             return;
                         }
-                        
+
                         if($this.cfg.trackMouse) {
                             $this.mouseEvent = e;
                         }
-                
+
                         var title = element.attr('title');
                         if(title) {
                             element.data('tooltip', title).removeAttr('title');
                         }
-                        
+
                         if(element.hasClass('ui-state-error')) {
-                            $this.jq.addClass('ui-state-error');
+                            $this.jq.children('.ui-tooltip-text').addClass('ui-state-error');
                         }
 
                         var text = element.data('tooltip');
                         if(text) {
                             if($this.cfg.escape)
-                                $this.jq.text(text);
+                                $this.jq.children('.ui-tooltip-text').text(text);
                             else
-                                $this.jq.html(text);
-                                
+                                $this.jq.children('.ui-tooltip-text').html(text);
+
                             $this.globalTitle = text;
                             $this.target = element;
                             $this.show();
@@ -80,7 +85,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                             $this.jq.removeClass('ui-state-error');
                         }
                     });
-                    
+
         var resizeNS = 'resize.tooltip';
         $(window).unbind(resizeNS).bind(resizeNS, function() {
             if($this.jq.is(':visible')) {
@@ -88,37 +93,55 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             }
         });
     },
-    
+
     bindTarget: function() {
         this.id = this.cfg.id;
         this.jqId = PrimeFaces.escapeClientId(this.id);
         this.jq = $(this.jqId);
         this.target = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.target);
-        
+
         var $this = this;
-        this.target.off(this.cfg.showEvent + ' ' + this.cfg.hideEvent)
-                    .on(this.cfg.showEvent, function(e) {
-                        if($this.cfg.trackMouse) {
-                            $this.mouseEvent = e;
-                        }
-                        
-                        var text = $.trim($this.jq.text());
-                        if($this.jq.children().length > 0 || text !== '') {
-                            $this.show();
-                        }
-                    })
-                    .on(this.cfg.hideEvent + '.tooltip', function() {
-                        $this.hide();
-                    });
+        if(this.cfg.delegate) {
+            var targetSelector = "*[id='" + this.target.attr('id') + "']";
+            
+            $(document).off(this.cfg.showEvent + ' ' + this.cfg.hideEvent, targetSelector)
+                        .on(this.cfg.showEvent, targetSelector, function(e) {
+                            if($this.cfg.trackMouse) {
+                                $this.mouseEvent = e;
+                            }
+                            
+                            if($.trim($this.jq.children('.ui-tooltip-text').html()) !== '') {
+                                $this.show();
+                            }
+                        })
+                        .on(this.cfg.hideEvent + '.tooltip', function() {
+                            $this.hide();
+                        });
+        }
+        else {
+            this.target.off(this.cfg.showEvent + ' ' + this.cfg.hideEvent)
+                        .on(this.cfg.showEvent, function(e) {
+                            if($this.cfg.trackMouse) {
+                                $this.mouseEvent = e;
+                            }
+
+                            if($.trim($this.jq.children('.ui-tooltip-text').html()) !== '') {
+                                $this.show();
+                            }
+                        })
+                        .on(this.cfg.hideEvent + '.tooltip', function() {
+                            $this.hide();
+                        });
+        }
 
         this.jq.appendTo(document.body);
 
-        if($.trim(this.jq.html()) === '') {
-            this.jq.html(this.target.attr('title'));
+        if($.trim(this.jq.children('.ui-tooltip-text').html()) === '') {
+            this.jq.children('.ui-tooltip-text').html(this.target.attr('title'));
         }
 
         this.target.removeAttr('title');
-        
+
         var resizeNS = 'resize.' + this.id;
         $(window).unbind(resizeNS).bind(resizeNS, function() {
             if($this.jq.is(':visible')) {
@@ -127,35 +150,86 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         });
     },
 
+    alignUsing: function(position,feedback) {
+        this.jq.removeClass('ui-tooltip-left ui-tooltip-right ui-tooltip-top ui-tooltip-bottom');
+        switch (this.cfg.position) {
+        case "right":
+        case "left":
+            this.jq.addClass('ui-tooltip-'+
+                    (feedback['horizontal']=='left'?'right':'left'));
+            break;
+        case "top":
+        case "bottom":
+            this.jq.addClass('ui-tooltip-'+
+                    (feedback['vertical']=='top'?'bottom':'top'));
+            break;
+        }
+        this.jq.css({
+            left: position['left'],
+            top: position['top']
+        });
+    },
+
     align: function() {
+        var $this = this;
          this.jq.css({
-            left:'', 
+            left:'',
             top:'',
             'z-index': ++PrimeFaces.zindex
         });
-        
+
         if(this.cfg.trackMouse && this.mouseEvent) {
             this.jq.position({
                 my: 'left top+15',
                 at: 'right bottom',
                 of: this.mouseEvent,
-                collision: 'flipfit'
+                collision: 'flipfit',
+                using: function(p,f) {
+                    $this.alignUsing.call($this,p,f);
+                }
             });
-            
+
             this.mouseEvent = null;
         }
         else {
+            var _my, _at;
+
+            switch(this.cfg.position) {
+                case 'right':
+                    _my = 'left center';
+                    _at = 'right center';
+                break;
+
+                case 'left':
+                    _my = 'right center';
+                    _at = 'left center';
+                break;
+
+                case 'top':
+                    _my = 'center bottom';
+                    _at = 'center top';
+                break;
+
+                case 'bottom':
+                    _my = 'center top';
+                    _at = 'center bottom';
+                break;
+            }
+
             this.jq.position({
-                my: 'left top',
-                at: 'right bottom',
-                of: this.target,
-                collision: 'flipfit'
+                my: _my,
+                at: _at,
+                of: this.getTarget(),
+                collision: 'flipfit',
+                using: function(p,f) {
+                    $this.alignUsing.call($this,p,f);
+                }
             });
         }
     },
-    
+
     show: function() {
-        if(this.target) {
+        if(this.getTarget()) {
             var $this = this;
             this.clearTimeout();
 
@@ -164,17 +238,17 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             }, this.cfg.showDelay);
         }
     },
-    
+
     _show: function() {
         var $this = this;
-        
+
         if(this.cfg.beforeShow) {
             var retVal = this.cfg.beforeShow.call(this);
             if(retVal === false) {
                 return;
             }
         }
-        
+
         this.align();
         if(this.cfg.trackMouse) {
             this.followMouse();
@@ -185,7 +259,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             }
         });
     },
-    
+
     hide: function() {
         var $this = this;
         this.clearTimeout();
@@ -199,10 +273,10 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             this._hide();
         }
     },
-    
+
     _hide: function() {
         var $this = this;
-        
+
         if(this.isVisible()) {
             this.jq.hide(this.cfg.hideEffect, {}, this.cfg.hideEffectDuration, function() {
                 $(this).css('z-index', '');
@@ -216,32 +290,42 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
             });
         }
     },
-    
+
     clearTimeout: function() {
         if(this.timeout) {
             clearTimeout(this.timeout);
         }
     },
-    
+
     followMouse: function() {
         var $this = this;
-        
-        this.target.on('mousemove.tooltip-track', function(e) {
+
+        this.getTarget().on('mousemove.tooltip-track', function(e) {
             $this.jq.position({
                 my: 'left top+15',
                 at: 'right bottom',
                 of: e,
                 collision: 'flipfit'
             });
-        });       
+        });
     },
-    
+
     unfollowMouse: function() {
-        this.target.off('mousemove.tooltip-track'); 
+        var target = this.getTarget();
+        if(target) {
+            target.off('mousemove.tooltip-track'); 
+        }
     },
-    
+
     isVisible: function() {
         return this.jq.is(':visible');
-    }
+    },
     
+    getTarget: function() {
+        if(this.cfg.delegate)
+            return PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.target);
+        else 
+            return this.target;
+    }
+
 });

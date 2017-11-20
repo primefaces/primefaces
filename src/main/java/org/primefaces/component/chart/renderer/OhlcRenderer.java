@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,50 +31,54 @@ public class OhlcRenderer extends CartesianPlotRenderer {
         ResponseWriter writer = context.getResponseWriter();
         OhlcChartModel model = (OhlcChartModel) chart.getModel();
         List<OhlcChartSeries> data = model.getData();
-        
+
         writer.write(",data:[[");
-        for(Iterator<OhlcChartSeries> it = data.iterator(); it.hasNext();) {
+        for (Iterator<OhlcChartSeries> it = data.iterator(); it.hasNext();) {
             OhlcChartSeries s = it.next();
             writer.write("[");
-            writer.write(String.valueOf(s.getValue()));
+            writer.write(escapeChartData(s.getValue()));
             writer.write(",");
-            writer.write(String.valueOf(s.getOpen()));
+            writer.write(escapeChartData(s.getOpen()));
             writer.write(",");
-            writer.write(String.valueOf(s.getHigh()));
+            writer.write(escapeChartData(s.getHigh()));
             writer.write(",");
-            writer.write(String.valueOf(s.getLow()));
+            writer.write(escapeChartData(s.getLow()));
             writer.write(",");
-            writer.write(String.valueOf(s.getClose()));
+            writer.write(escapeChartData(s.getClose()));
             writer.write("]");
 
-            if(it.hasNext()) {
+            if (it.hasNext()) {
                 writer.write(",");
             }
         }
-        
+
         writer.write("]]");
     }
 
     @Override
     protected void encodeOptions(FacesContext context, Chart chart) throws IOException {
         super.encodeOptions(context, chart);
-        
+
         ResponseWriter writer = context.getResponseWriter();
         OhlcChartModel model = (OhlcChartModel) chart.getModel();
-        
-        if(model.isCandleStick())
+
+        if (model.isCandleStick()) {
             writer.write(",candleStick:true");
-        
-        if(model.isZoom())
-            writer.write(",zoom:true");
-        
-        if(model.isAnimate())
-            writer.write(",animate:true");
-        
-        if(model.isShowDatatip()) {
-            writer.write(",datatip:true");
-            if(model.getDatatipFormat() != null)
-                writer.write(",datatipFormat:\"" + model.getDatatipFormat() + "\"");
         }
-    }    
+
+        if (model.isZoom()) {
+            writer.write(",zoom:true");
+        }
+
+        if (model.isAnimate()) {
+            writer.write(",animate:true");
+        }
+
+        if (model.isShowDatatip()) {
+            writer.write(",datatip:true");
+            if (model.getDatatipFormat() != null) {
+                writer.write(",datatipFormat:\"" + model.getDatatipFormat() + "\"");
+            }
+        }
+    }
 }

@@ -23,8 +23,8 @@
     border: 0px none;
 }
 
-.ui-panelgrid.ui-noborder tr.ui-widget-content,
-.ui-panelgrid.ui-noborder tr.ui-widget-header {
+.ui-panelgrid.ui-noborder .ui-widget-content,
+.ui-panelgrid.ui-noborder .ui-widget-header {
     border: 0px none;
 }
 
@@ -52,5 +52,9 @@
     
     .ui-panelgrid .ui-grid-responsive .ui-grid-row:first-child {
         border-top: 0 none;
+    }
+    
+    .ui-panelgrid.ui-noborder .ui-grid-responsive .ui-grid-row {
+        border: 0 none;
     }
 }

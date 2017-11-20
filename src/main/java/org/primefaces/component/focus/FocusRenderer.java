@@ -1,5 +1,5 @@
-/*
- * Copyright 2009,2010 Prime Technology.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -31,85 +30,87 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class FocusRenderer extends CoreRenderer {
 
-	private final static Map<String, Integer> severityOrdinals = new HashMap<String, Integer>();
-	
-	static {
-		severityOrdinals.put("info", FacesMessage.SEVERITY_INFO.getOrdinal());
-		severityOrdinals.put("warn", FacesMessage.SEVERITY_WARN.getOrdinal());
-		severityOrdinals.put("error", FacesMessage.SEVERITY_ERROR.getOrdinal());
-		severityOrdinals.put("fatal", FacesMessage.SEVERITY_FATAL.getOrdinal());
-	}
-	
-	@Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		Focus focus = (Focus) component;
-		ResponseWriter writer = context.getResponseWriter();
-		
-		//Dummy markup for ajax update
-		writer.startElement("span", focus);
-		writer.writeAttribute("id", focus.getClientId(context), "id");
-		writer.endElement("span");
-		
-		writer.startElement("script", focus);
-		writer.writeAttribute("type", "text/javascript", null);
-		
-		if(focus.getFor() != null) {
-			encodeExplicitFocus(context, focus);
-		} else {
-			encodeImplicitFocus(context, focus);
-		}
-		
-		writer.endElement("script");
-	}
+    private static final Map<String, Integer> SEVERITY_ORDINALS = new HashMap<String, Integer>();
 
-	protected void encodeExplicitFocus(FacesContext context, Focus focus) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
-		UIComponent forComponent = SearchExpressionFacade.resolveComponent(
-				context, focus, focus.getFor());
+    static {
+        SEVERITY_ORDINALS.put("info", FacesMessage.SEVERITY_INFO.getOrdinal());
+        SEVERITY_ORDINALS.put("warn", FacesMessage.SEVERITY_WARN.getOrdinal());
+        SEVERITY_ORDINALS.put("error", FacesMessage.SEVERITY_ERROR.getOrdinal());
+        SEVERITY_ORDINALS.put("fatal", FacesMessage.SEVERITY_FATAL.getOrdinal());
+    }
 
-		String clientId = forComponent.getClientId(context);
-		
-		writer.write("$(function(){");
-		writer.write("PrimeFaces.focus('" + clientId +"');");
-		writer.write("});");
-	}
-	
-	protected void encodeImplicitFocus(FacesContext context, Focus focus) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
+    @Override
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        Focus focus = (Focus) component;
+        ResponseWriter writer = context.getResponseWriter();
+
+        //Dummy markup for ajax update
+        writer.startElement("span", focus);
+        writer.writeAttribute("id", focus.getClientId(context), "id");
+        writer.endElement("span");
+
+        writer.startElement("script", focus);
+        writer.writeAttribute("type", "text/javascript", null);
+
+        if (isValueBlank(focus.getFor())) {
+            encodeImplicitFocus(context, focus);
+        }
+        else {
+            encodeExplicitFocus(context, focus);
+        }
+
+        writer.endElement("script");
+    }
+
+    protected void encodeExplicitFocus(FacesContext context, Focus focus) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        UIComponent forComponent = SearchExpressionFacade.resolveComponent(
+                context, focus, focus.getFor());
+
+        String clientId = forComponent.getClientId(context);
+
+        writer.write("$(function(){");
+        writer.write("PrimeFaces.focus('" + clientId + "');");
+        writer.write("});");
+    }
+
+    protected void encodeImplicitFocus(FacesContext context, Focus focus) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         String invalidClientId = findFirstInvalidComponentClientId(context, focus);
 
         writer.write("$(function(){");
-		
-		if(invalidClientId != null){
-            writer.write("PrimeFaces.focus('" + invalidClientId +"');");
-		}
-        else if(focus.getContext() != null) {		
-            UIComponent focusContext = SearchExpressionFacade.resolveComponent(
-            		context, focus, focus.getContext());
 
-            writer.write("PrimeFaces.focus(null, '" + focusContext.getClientId(context) +"');");
-		} 
+        if (invalidClientId != null) {
+            writer.write("PrimeFaces.focus('" + invalidClientId + "');");
+        }
+        else if (focus.getContext() != null) {
+            UIComponent focusContext = SearchExpressionFacade.resolveComponent(
+                    context, focus, focus.getContext());
+
+            writer.write("PrimeFaces.focus(null, '" + focusContext.getClientId(context) + "');");
+        }
         else {
             writer.write("PrimeFaces.focus();");
         }
 
         writer.write("});");
-	}
-	
-	protected String findFirstInvalidComponentClientId(FacesContext context, Focus focus) {
-		int minSeverityOrdinal = severityOrdinals.get(focus.getMinSeverity());
-		
-		for(Iterator<String> iterator = context.getClientIdsWithMessages(); iterator.hasNext();) {
-			String clientId = iterator.next();
-			
-			for(Iterator<FacesMessage> messageIter = context.getMessages(clientId); messageIter.hasNext();) {
-				FacesMessage message = messageIter.next();
-				
-				if(message.getSeverity().getOrdinal() >= minSeverityOrdinal)
-					return clientId;
-			}
-		}
-		
-		return null;
-	}
+    }
+
+    protected String findFirstInvalidComponentClientId(FacesContext context, Focus focus) {
+        int minSeverityOrdinal = SEVERITY_ORDINALS.get(focus.getMinSeverity());
+
+        for (Iterator<String> iterator = context.getClientIdsWithMessages(); iterator.hasNext();) {
+            String clientId = iterator.next();
+
+            for (Iterator<FacesMessage> messageIter = context.getMessages(clientId); messageIter.hasNext();) {
+                FacesMessage message = messageIter.next();
+
+                if (message.getSeverity().getOrdinal() >= minSeverityOrdinal) {
+                    return clientId;
+                }
+            }
+        }
+
+        return null;
+    }
 }

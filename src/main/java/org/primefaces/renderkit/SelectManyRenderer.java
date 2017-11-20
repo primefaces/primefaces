@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,51 +24,55 @@ import javax.faces.component.UISelectMany;
 import javax.faces.context.FacesContext;
 
 public abstract class SelectManyRenderer extends SelectRenderer {
-    
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        if(!shouldDecode(component)) {
+        if (!shouldDecode(component)) {
             return;
         }
-                
+
         UISelectMany selectMany = (UISelectMany) component;
 
         decodeBehaviors(context, selectMany);
 
         String submitParam = getSubmitParam(context, selectMany);
-        Map<String,String[]> params = context.getExternalContext().getRequestParameterValuesMap();
-        
-        if(params.containsKey(submitParam)) {
+        Map<String, String[]> params = context.getExternalContext().getRequestParameterValuesMap();
+
+        if (params.containsKey(submitParam)) {
             selectMany.setSubmittedValue(params.get(submitParam));
-        } else {
+        }
+        else {
             selectMany.setSubmittedValue(new String[0]);
         }
     }
-    
+
     protected Object getValues(UIComponent component) {
         UISelectMany selectMany = (UISelectMany) component;
         Object value = selectMany.getValue();
 
-        if(value == null) {
+        if (value == null) {
             return null;
-        } else if (value instanceof Collection) {
+        }
+        else if (value instanceof Collection) {
             return ((Collection) value).toArray();
-        } else if(value.getClass().isArray()) {
-            if(Array.getLength(value) == 0) {
+        }
+        else if (value.getClass().isArray()) {
+            if (Array.getLength(value) == 0) {
                 return null;
             }
-        } else {
+        }
+        else {
             throw new FacesException("Value of '" + component.getClientId() + "'must be an array or a collection");
         }
 
         return value;
     }
-    
+
     protected Object getSubmittedValues(UIComponent component) {
         UISelectMany select = (UISelectMany) component;
-        
+
         return (Object[]) select.getSubmittedValue();
     }
-            
+
     protected abstract String getSubmitParam(FacesContext context, UISelectMany selectMany);
 }

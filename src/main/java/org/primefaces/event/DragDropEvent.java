@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,48 +17,35 @@ package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
 
-public class DragDropEvent extends AjaxBehaviorEvent {
+public class DragDropEvent extends AbstractAjaxBehaviorEvent {
 
-	private String dragId;
+    private String dragId;
 
-	private String dropId;
+    private String dropId;
 
     private Object data;
-	
-	public DragDropEvent(UIComponent component, Behavior behavior, String dragId, String dropId) {
-		super(component, behavior);
-		this.dragId = dragId;
-		this.dropId = dropId;
-	}
+
+    public DragDropEvent(UIComponent component, Behavior behavior, String dragId, String dropId) {
+        super(component, behavior);
+        this.dragId = dragId;
+        this.dropId = dropId;
+    }
 
     public DragDropEvent(UIComponent component, Behavior behavior, String dragId, String dropId, Object data) {
-		super(component, behavior);
-		this.dragId = dragId;
-		this.dropId = dropId;
+        super(component, behavior);
+        this.dragId = dragId;
+        this.dropId = dropId;
         this.data = data;
-	}
+    }
 
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-        return (faceslistener instanceof AjaxBehaviorListener);
-	}
+    public String getDragId() {
+        return dragId;
+    }
 
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
-	}
-	
-	public String getDragId() {
-		return dragId;
-	}
-
-	public String getDropId() {
-		return dropId;
-	}
+    public String getDropId() {
+        return dropId;
+    }
 
     public Object getData() {
         return data;

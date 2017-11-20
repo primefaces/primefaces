@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2012 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 package org.primefaces.model.menu;
 
 public interface Submenu extends MenuGroup {
-    
+
     public String getStyle();
-    
+
     public String getStyleClass();
-    
+
     public String getIcon();
-    
+
     public String getLabel();
-    
+
     public Object getParent();
-    
+
     public String getClientId();
-    
+
     public boolean isExpanded();
 }

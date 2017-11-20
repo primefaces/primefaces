@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,35 +31,35 @@ import org.primefaces.util.AgentUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class EditorRenderer extends CoreRenderer{
+public class EditorRenderer extends CoreRenderer {
 
     private final static Logger logger = Logger.getLogger(EditorRenderer.class.getName());
-    
+
     @Override
-	public void decode(FacesContext context, UIComponent component) {
-		Editor editor = (Editor) component;
+    public void decode(FacesContext context, UIComponent component) {
+        Editor editor = (Editor) component;
         String inputParam = editor.getClientId(context) + "_input";
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String value = params.get(inputParam);
-        
-        if(value != null && value.equals("<br/>")) {
+
+        if (value != null && value.equals("<br/>")) {
             value = "";
         }
-        
+
         editor.setSubmittedValue(value);
-	}
+    }
 
     @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		Editor editor = (Editor) component;
+    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+        Editor editor = (Editor) component;
 
-		encodeMarkup(facesContext, editor);
-		encodeScript(facesContext, editor);
-	}
+        encodeMarkup(facesContext, editor);
+        encodeScript(facesContext, editor);
+    }
 
-	protected void encodeMarkup(FacesContext context, Editor editor) throws IOException{
-		ResponseWriter writer = context.getResponseWriter();
-		String clientId = editor.getClientId(context);
+    protected void encodeMarkup(FacesContext context, Editor editor) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = editor.getClientId(context);
         String valueToRender = ComponentUtils.getValueToRender(context, editor);
         String inputId = clientId + "_input";
 
@@ -67,29 +67,29 @@ public class EditorRenderer extends CoreRenderer{
         style = style == null ? "visibility:hidden" : "visibility:hidden;" + style;
 
         writer.startElement("div", editor);
-        writer.writeAttribute("id", clientId , null);
+        writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("style", style, null);
-        if(editor.getStyleClass() != null) {
+        if (editor.getStyleClass() != null) {
             writer.writeAttribute("class", editor.getStyleClass(), null);
         }
-        
-		writer.startElement("textarea", null);
-		writer.writeAttribute("id", inputId , null);
-        writer.writeAttribute("name", inputId , null);
 
-        if(valueToRender != null) {
+        writer.startElement("textarea", null);
+        writer.writeAttribute("id", inputId, null);
+        writer.writeAttribute("name", inputId, null);
+
+        if (valueToRender != null) {
             writer.write(valueToRender);
         }
 
-		writer.endElement("textarea");
+        writer.endElement("textarea");
 
         writer.endElement("div");
-	}
-	
-	private void encodeScript(FacesContext context, Editor editor) throws IOException{
-		String clientId = editor.getClientId(context);
+    }
+
+    private void encodeScript(FacesContext context, Editor editor) throws IOException {
+        String clientId = editor.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Editor", editor.resolveWidgetVar(), clientId, "editor")
+        wb.initWithDomReady("Editor", editor.resolveWidgetVar(), clientId)
                 .attr("disabled", editor.isDisabled(), false)
                 .attr("invalid", editor.isValid(), true)
                 .attr("controls", editor.getControls(), null)
@@ -97,29 +97,29 @@ public class EditorRenderer extends CoreRenderer{
                 .attr("height", editor.getHeight(), Integer.MIN_VALUE)
                 .attr("maxlength", editor.getMaxlength(), Integer.MAX_VALUE)
                 .callback("change", "function(e)", editor.getOnchange());
-        
-        if(AgentUtils.isIE(context)) {
+
+        if (AgentUtils.isIE(context)) {
             Resource resource = context.getApplication().getResourceHandler().createResource("editor/editor-ie.css", "primefaces");
             wb.attr("docCSSFile", resource.getRequestPath());
         }
-        
-        if(editor.getMaxlength() != Integer.MAX_VALUE) {
+
+        if (editor.getMaxlength() != Integer.MAX_VALUE) {
             logger.info("Maxlength option is deprecated and will be removed in a future version.");
         }
 
         wb.finish();
-	}
-    
+    }
+
     @Override
-	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
-		Editor editor = (Editor) component;
-		String value = (String) submittedValue;
-		Converter converter = ComponentUtils.getConverter(context, component);
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+        Editor editor = (Editor) component;
+        String value = (String) submittedValue;
+        Converter converter = ComponentUtils.getConverter(context, component);
 
-		if(converter != null) {
-			return converter.getAsObject(context, editor, value);
-		}
+        if (converter != null) {
+            return converter.getAsObject(context, editor, value);
+        }
 
-		return value;
-	}
+        return value;
+    }
 }

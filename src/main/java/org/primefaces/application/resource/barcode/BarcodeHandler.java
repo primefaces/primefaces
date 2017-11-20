@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,23 +28,23 @@ import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+
+import org.krysalis.barcode4j.HumanReadablePlacement;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 import org.krysalis.barcode4j.output.svg.SVGCanvasProvider;
 import org.primefaces.application.resource.BaseDynamicContentHandler;
-import org.primefaces.context.RequestContext;
 import org.primefaces.util.AgentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.StringEncrypter;
 import org.w3c.dom.DocumentFragment;
 
 public class BarcodeHandler extends BaseDynamicContentHandler {
-    
-    private final static Logger logger = Logger.getLogger(BarcodeHandler.class.getName());
-    
-    private final Map<String,BarcodeGenerator> generators;
-    
+
+    private final static Logger LOG = Logger.getLogger(BarcodeHandler.class.getName());
+
+    private final Map<String, BarcodeGenerator> generators;
+
     public BarcodeHandler() {
-        generators = new HashMap<String,BarcodeGenerator>();
+        generators = new HashMap<String, BarcodeGenerator>();
         generators.put("int2of5", new Int2of5Generator());
         generators.put("codabar", new CodabarGenerator());
         generators.put("code39", new Code39Generator());
@@ -57,39 +57,44 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
         generators.put("pdf417", new PDF417Generator());
         generators.put("datamatrix", new DataMatrixGenerator());
     }
-    
+
     public void handle(FacesContext context) throws IOException {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         ExternalContext externalContext = context.getExternalContext();
-        String encryptedValue = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
-        
-        if(encryptedValue != null) {
+        String sessionKey = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
+        Map<String, Object> session = externalContext.getSessionMap();
+        Map<String, String> barcodeMapping = (Map) session.get(Constants.BARCODE_MAPPING);
+        String value = barcodeMapping.get(sessionKey);
+
+        if (value != null) {
             try {
                 BarcodeGenerator generator = generators.get(params.get("gen"));
                 String format = params.get("fmt");
+                String hrp = params.get("hrp");
                 int orientation = Integer.parseInt(params.get("ori"));
                 boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
-                StringEncrypter strEn = RequestContext.getCurrentInstance().getEncrypter();
-                String value = strEn.decrypt(encryptedValue);
-                
-                if(AgentUtils.isLessThanIE(context, 9)) {
+
+                generator.getBarcodeBean().setMsgPosition(HumanReadablePlacement.byName(hrp));
+
+                if (AgentUtils.isLessThanIE(context, 9)) {
                     format = "png";
                 }
-                
+
                 OutputStream out = externalContext.getResponseOutputStream();
-            
+
                 handleCache(externalContext, cache);
-                
-                if(format.equals("png")) {
+
+                if (format.equals("png")) {
                     externalContext.setResponseContentType("image/png");
-                    
-                    BitmapCanvasProvider bitmapCanvasProvider = new BitmapCanvasProvider(out, "image/x-png", 150, BufferedImage.TYPE_BYTE_BINARY, false, orientation);
+
+                    BitmapCanvasProvider bitmapCanvasProvider = new BitmapCanvasProvider(
+                            out, "image/x-png", 150, BufferedImage.TYPE_BYTE_BINARY, false, orientation);
                     generator.generate(bitmapCanvasProvider, value);
                     bitmapCanvasProvider.finish();
                 }
-                else if(format.equals("svg")) {
+                else if (format.equals("svg")) {
                     externalContext.setResponseContentType("image/svg+xml");
-                    
+
                     SVGCanvasProvider svgCanvasProvider = new SVGCanvasProvider(false, orientation);
                     generator.generate(svgCanvasProvider, value);
                     DocumentFragment frag = svgCanvasProvider.getDOMFragment();
@@ -103,13 +108,13 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
 
                 externalContext.setResponseStatus(200);
             }
-            catch(Exception e) {
-                logger.log(Level.SEVERE, "Error in streaming barcode resource. {0}", new Object[]{e.getMessage()});
+            catch (Exception e) {
+                LOG.log(Level.SEVERE, "Error in streaming barcode resource. {0}", new Object[]{e.getMessage()});
             }
             finally {
                 externalContext.responseFlushBuffer();
                 context.responseComplete();
-            }            
+            }
         }
     }
 }

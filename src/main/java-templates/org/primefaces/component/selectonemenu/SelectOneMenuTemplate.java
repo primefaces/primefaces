@@ -1,5 +1,5 @@
 import org.primefaces.component.column.Column;
-import org.primefaces.config.ConfigContainer;
+import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.RequestContext;
 import java.util.Collection;
 import java.util.List;
@@ -18,6 +18,7 @@ import org.primefaces.util.MessageFactory;
 import org.primefaces.util.Constants;
 import org.primefaces.event.SelectEvent;
 import java.util.Map;
+import javax.faces.render.Renderer;
 
     public final static String STYLE_CLASS = "ui-selectonemenu ui-widget ui-state-default ui-corner-all";
     public final static String LABEL_CLASS = "ui-selectonemenu-label ui-inputfield ui-corner-all";
@@ -39,12 +40,15 @@ import java.util.Map;
         return EVENT_NAMES;    
     }
 
+    public boolean isLazyloadRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_lazyload");
+    }
 
     public String getDefaultEventName() {
         return "valueChange";    
     }
 
-    public List<Column> getColums() {
+    public List<Column> getColumns() {
         List<Column> columns = new ArrayList<Column>();
         
         for(UIComponent kid : this.getChildren()) {
@@ -64,7 +68,13 @@ import java.util.Map;
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             
             if("itemSelect".equals(eventName)) {
-                Object item = context.getRenderKit().getRenderer("javax.faces.SelectOne", "javax.faces.Menu").getConvertedValue(context, this, this.getSubmittedValue());
+                Renderer renderer = ComponentUtils.getUnwrappedRenderer(
+                    context,
+                    "javax.faces.SelectOne",
+                    "javax.faces.Menu",
+                    Renderer.class);
+                
+                Object item = renderer.getConvertedValue(context, this, this.getSubmittedValue());
                 SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), item);
                 selectEvent.setPhaseId(event.getPhaseId());
                 super.queueEvent(selectEvent);
@@ -97,7 +107,7 @@ import java.util.Map;
                 setValid(false);
             }
 
-            ConfigContainer config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+            PrimeConfiguration config = RequestContext.getCurrentInstance(getFacesContext()).getApplicationContext().getConfig();
             
             //other validators
             if(isValid() && (!isEmpty(value) || config.isValidateEmptyFields())) {

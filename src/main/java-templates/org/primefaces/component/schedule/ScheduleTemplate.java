@@ -11,31 +11,42 @@ import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LocaleUtils;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.model.ScheduleModel;
 import org.primefaces.model.ScheduleEvent;
+import javax.faces.event.BehaviorEvent;
 
     private static final TimeZone DEFAULT_TIME_ZONE = TimeZone.getTimeZone("UTC");
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("dateSelect","eventSelect", "eventMove", "eventResize", "viewChange"));
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("dateSelect", SelectEvent.class);
+        put("eventSelect", SelectEvent.class);
+        put("eventMove", ScheduleEntryMoveEvent.class);
+        put("eventResize", ScheduleEntryResizeEvent.class);
+        put("viewChange", SelectEvent.class);
+    }});
+
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+
+    @Override
+    public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
+         return BEHAVIOR_EVENT_MAPPING;
+    }
+
+    @Override
+    public Collection<String> getEventNames() {
+        return EVENT_NAMES;
+    }
+
 
 	private java.util.Locale appropriateLocale;
 	
 	java.util.Locale calculateLocale(FacesContext facesContext) {
 		if(appropriateLocale == null) {
-			Object userLocale = getLocale();
-			if(userLocale != null) {
-				if(userLocale instanceof String)
-					appropriateLocale = new java.util.Locale((String) userLocale, "");
-				else if(userLocale instanceof java.util.Locale)
-					appropriateLocale = (java.util.Locale) userLocale;
-				else
-					throw new IllegalArgumentException("Type:" + userLocale.getClass() + " is not a valid locale type for calendar:" + this.getClientId(facesContext));
-			} else {
-				appropriateLocale = facesContext.getViewRoot().getLocale();
-			}
+		    appropriateLocale = LocaleUtils.resolveLocale(getLocale(), this.getClientId(facesContext));
 		}
 		
 		return appropriateLocale;
@@ -93,8 +104,8 @@ import org.primefaces.model.ScheduleEvent;
             else if(eventName.equals("eventMove")) {
                 String movedEventId = params.get(clientId + "_movedEventId");
 				ScheduleEvent movedEvent = this.getValue().getEvent(movedEventId);
-                int dayDelta = Integer.valueOf(params.get(clientId + "_dayDelta"));
-				int minuteDelta = Integer.valueOf(params.get(clientId + "_minuteDelta"));
+                int dayDelta = (int) Double.parseDouble(params.get(clientId + "_dayDelta"));
+				int minuteDelta = (int) Double.parseDouble(params.get(clientId + "_minuteDelta"));
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(movedEvent.getStartDate());
@@ -145,11 +156,6 @@ import org.primefaces.model.ScheduleEvent;
     }
 
     @Override
-    public Collection<String> getEventNames() {
-        return EVENT_NAMES;
-    }
-
-    @Override
     public void processUpdates(FacesContext context) {
         if(!isRendered()) {
             return;
@@ -157,7 +163,7 @@ import org.primefaces.model.ScheduleEvent;
 
         super.processUpdates(context);
 
-        ValueExpression expr = this.getValueExpression("view");
+        ValueExpression expr = this.getValueExpression(PropertyKeys.view.toString());
         if(expr != null) {
             expr.setValue(getFacesContext().getELContext(), this.getView());
             getStateHelper().remove(PropertyKeys.view);

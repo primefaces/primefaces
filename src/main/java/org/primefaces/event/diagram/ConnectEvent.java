@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,36 +17,25 @@ package org.primefaces.event.diagram;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
+import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.diagram.Element;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 
-public class ConnectEvent extends AjaxBehaviorEvent {
-    
+public class ConnectEvent extends AbstractAjaxBehaviorEvent {
+
     private final Element sourceElement;
     private final Element targetElement;
     private final EndPoint sourceEndPoint;
     private final EndPoint targetEndPoint;
 
-    public ConnectEvent(UIComponent component, Behavior behavior, Element sourceElement, Element targetElement, EndPoint sourceEndPoint, EndPoint targetEndPoint) {
+    public ConnectEvent(UIComponent component, Behavior behavior, Element sourceElement, Element targetElement,
+            EndPoint sourceEndPoint, EndPoint targetEndPoint) {
         super(component, behavior);
         this.sourceElement = sourceElement;
         this.targetElement = targetElement;
         this.sourceEndPoint = sourceEndPoint;
         this.targetEndPoint = targetEndPoint;
     }
-    
-    @Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
-	}
 
     public Element getSourceElement() {
         return sourceElement;

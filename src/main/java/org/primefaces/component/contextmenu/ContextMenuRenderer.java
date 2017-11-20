@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,39 +31,38 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
     @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         ContextMenu menu = (ContextMenu) abstractMenu;
-		String clientId = menu.getClientId(context);
+        String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("ContextMenu", menu.resolveWidgetVar(), clientId);
-        
+
         String _for = menu.getFor();
-        if(_for != null) {
-        	UIComponent target = SearchExpressionFacade.resolveComponent(context, menu, _for);
-        	
-            wb.attr("target", target.getClientId(context))
-                .attr("type", target.getClass().getSimpleName());
-            
-            if(target instanceof Widget) {
+        if (_for != null) {
+            UIComponent target = SearchExpressionFacade.resolveComponent(context, menu, _for);
+
+            wb.attr("target", target.getClientId(context));
+
+            if (target instanceof Widget) {
                 wb.attr("targetWidgetVar", ((Widget) target).resolveWidgetVar());
             }
         }
-        
+
         wb.attr("nodeType", menu.getNodeType(), null)
-            .attr("event", menu.getEvent(), null)
-            .attr("selectionMode", menu.getSelectionMode(), "multiple")
-            .callback("beforeShow", "function(event)", menu.getBeforeShow())
-            .attr("targetFilter", menu.getTargetFilter(), null);
+                .attr("event", menu.getEvent(), null)
+                .attr("selectionMode", menu.getSelectionMode(), "multiple")
+                .callback("beforeShow", "function(event)", menu.getBeforeShow())
+                .attr("targetFilter", menu.getTargetFilter(), null);
 
         wb.finish();
-	}
-	
+    }
+
     @Override
-    protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException{
+    protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         ContextMenu menu = (ContextMenu) abstractMenu;
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
         styleClass = styleClass == null ? ContextMenu.CONTAINER_CLASS : ContextMenu.CONTAINER_CLASS + " " + styleClass;
-        
+
         encodeMenu(context, menu, style, styleClass, "menu");
-	}
+    }
 }

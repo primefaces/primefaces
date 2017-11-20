@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,43 +26,43 @@ import java.util.logging.Logger;
 public class DefaultCacheProvider implements CacheProvider {
 
     private final static Logger logger = Logger.getLogger(DefaultCacheProvider.class.getName());
-    
-    private ConcurrentMap<String,ConcurrentMap<String,Object>> cache;
-    
+
+    private ConcurrentMap<String, ConcurrentMap<String, Object>> cache;
+
     public DefaultCacheProvider() {
         cache = new ConcurrentHashMap<String, ConcurrentMap<String, Object>>();
         logger.warning("DefaultCacheProvider is for development purposes only, prefer another provider such as EhCache and HazelCast in production.");
     }
 
     public Object get(String region, String key) {
-        Map<String,Object> cacheRegion = getRegion(region);
-        
+        Map<String, Object> cacheRegion = getRegion(region);
+
         return cacheRegion.get(key);
     }
 
     public void put(String region, String key, Object object) {
-        Map<String,Object> cacheRegion = getRegion(region);
-        
+        Map<String, Object> cacheRegion = getRegion(region);
+
         cacheRegion.put(key, object);
     }
 
     public void remove(String region, String key) {
-        Map<String,Object> cacheRegion = getRegion(region);
-        
+        Map<String, Object> cacheRegion = getRegion(region);
+
         cacheRegion.remove(key);
     }
 
     public void clear() {
         cache.clear();
     }
-    
-    private Map<String,Object> getRegion(String name) {
-        ConcurrentMap<String,Object> region = cache.get(name);
-        if(region == null) {
+
+    private Map<String, Object> getRegion(String name) {
+        ConcurrentMap<String, Object> region = cache.get(name);
+        if (region == null) {
             region = new ConcurrentHashMap<String, Object>();
             cache.put(name, region);
         }
-        
+
         return region;
     }
 }

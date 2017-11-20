@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,30 +21,32 @@ import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.overlay.Overlay;
 
 public interface DiagramModel {
-    
+
     public List<Element> getElements();
-    
+
     public List<Connection> getConnections();
-    
+
     public void addElement(Element element);
-    
+
     public void removeElement(Element element);
-    
+
     public void clearElements();
-    
+
     public void connect(Connection connection);
-    
+
     public void disconnect(Connection connection);
-    
+
     public Connector getDefaultConnector();
-    
+
     public List<Overlay> getDefaultConnectionOverlays();
-    
+
     public boolean isConnectionsDetachable();
-    
+
     public Element findElement(String id);
-    
+
     public EndPoint findEndPoint(Element element, String id);
-    
+
     public int getMaxConnections();
+
+    public boolean isContainment();
 }

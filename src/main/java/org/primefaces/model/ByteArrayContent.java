@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,60 +23,79 @@ import java.io.Serializable;
  * Byte Array based implementation of a StreamedContent
  */
 public class ByteArrayContent implements StreamedContent, Serializable {
-		
+
     private byte[] data;
-    
-	private String contentType;
-    
-	private String name;
-    
+
+    private String contentType;
+
+    private String name;
+
     private String contentEncoding;
-	
-	public ByteArrayContent() {}
-	
-	public ByteArrayContent(byte[] data) {
-		this.data = data;
-	}
-	
-	public ByteArrayContent(byte[] data, String contentType) {
-		this(data);
-		this.contentType = contentType;
-	}
-	
-	public ByteArrayContent(byte[] data, String contentType, String name) {
-		this(data, contentType);
-		this.name = name;
-	}
-    
+
+    private Integer contentLength;
+
+    public ByteArrayContent() {
+    }
+
+    public ByteArrayContent(byte[] data) {
+        this.data = data;
+    }
+
+    public ByteArrayContent(byte[] data, String contentType) {
+        this(data);
+        this.contentType = contentType;
+    }
+
+    public ByteArrayContent(byte[] data, String contentType, String name) {
+        this(data, contentType);
+        this.name = name;
+    }
+
     public ByteArrayContent(byte[] data, String contentType, String name, String contentEncoding) {
-		this(data, contentType, name);
+        this(data, contentType, name);
         this.contentEncoding = contentEncoding;
-	}
+    }
 
-	public InputStream getStream() {
-		return new ByteArrayInputStream(this.data);
-	}
-	
-	public String getContentType() {
-		return contentType;
-	}
-	
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
-	}
-	
-	public String getName() {
-		return name;
-	}
+    public ByteArrayContent(byte[] data, String contentType, String name, Integer contentLength) {
+        this(data, contentType, name);
+        this.contentLength = contentLength;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public ByteArrayContent(byte[] data, String contentType, String name, String contentEncoding, Integer contentLength) {
+        this(data, contentType, name);
+        this.contentLength = contentLength;
+        this.contentEncoding = contentEncoding;
+    }
+
+    public InputStream getStream() {
+        return new ByteArrayInputStream(this.data);
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public void setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
-    }    
+    }
+
     public String getContentEncoding() {
         return contentEncoding;
+    }
+
+    public Integer getContentLength() {
+        return contentLength;
     }
 }

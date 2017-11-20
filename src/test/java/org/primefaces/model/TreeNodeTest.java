@@ -41,4 +41,28 @@ public class TreeNodeTest {
 		assertEquals(root, child1.getParent());
 		assertEquals(child1, child11.getParent());
 	}
+
+        @Test
+        public void shouldHaveUnequalChildNodes() {
+            TreeNode root = new DefaultTreeNode(null);
+
+            TreeNode child0 = new DefaultTreeNode(null, root);
+            TreeNode child1 = new DefaultTreeNode(null, root);
+            TreeNode child2 = new DefaultTreeNode(null, root);
+
+            assertEquals(child0, root.getChildren().get(0));
+            assertEquals(child1, root.getChildren().get(1));
+            assertEquals(child2, root.getChildren().get(2));
+
+            assertEquals(0, root.getChildren().indexOf(
+                    root.getChildren().get(0)));
+            assertEquals(1, root.getChildren().indexOf(
+                    root.getChildren().get(1)));
+            assertEquals(2, root.getChildren().indexOf(
+                    root.getChildren().get(2)));
+
+            assertEquals(0, root.getChildren().indexOf(child0));
+            assertEquals(1, root.getChildren().indexOf(child1));
+            assertEquals(2, root.getChildren().indexOf(child2));
+        }
 }

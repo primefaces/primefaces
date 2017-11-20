@@ -90,3 +90,18 @@
 .ui-carousel .ui-carousel-mobiledropdown {
     display: none;
 }
+
+.ui-carousel .ui-carousel-titlebar-icon {
+    margin-left: 0.5em;
+    cursor: pointer;
+    float: right;
+}
+
+/* Vertical */
+.ui-carousel .ui-carousel-vertical-viewport .ui-carousel-items li.ui-carousel-item {
+  float: none;
+}
+
+.ui-carousel .ui-carousel-vertical-viewport ul.ui-carousel-items {
+  width: auto;
+}

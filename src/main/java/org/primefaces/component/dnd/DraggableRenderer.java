@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.component.dashboard.Dashboard;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class DraggableRenderer extends CoreRenderer {
@@ -32,11 +32,10 @@ public class DraggableRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Draggable draggable = (Draggable) component;
         String clientId = draggable.getClientId(context);
-        
+
         UIComponent target = SearchExpressionFacade.resolveComponent(
-        		context, draggable, draggable.getFor(), SearchExpressionFacade.Options.PARENT_FALLBACK);
-        
-        String dashboard = draggable.getDashboard();
+                context, draggable, draggable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("Draggable", draggable.resolveWidgetVar(), clientId)
                 .attr("target", target.getClientId(context))
@@ -51,25 +50,26 @@ public class DraggableRenderer extends CoreRenderer {
                 .attr("opacity", draggable.getOpacity(), 1.0)
                 .attr("stack", draggable.getStack(), null)
                 .attr("scope", draggable.getScope(), null);
-        
-        if(draggable.isRevert())
+
+        if (draggable.isRevert()) {
             wb.attr("revert", "invalid");
-        
-        if(draggable.getGrid() != null)
-            wb.append(",grid:[").append(draggable.getGrid()).append("]");
-        
-        if(draggable.isSnap()) {
-            wb.attr("snap", true)
-                .attr("snapTolerance", draggable.getSnapTolerance())
-                .attr("snapMode", draggable.getSnapMode(), null);
         }
-        
+
+        if (draggable.getGrid() != null) {
+            wb.append(",grid:[").append(draggable.getGrid()).append("]");
+        }
+
+        if (draggable.isSnap()) {
+            wb.attr("snap", true)
+                    .attr("snapTolerance", draggable.getSnapTolerance())
+                    .attr("snapMode", draggable.getSnapMode(), null);
+        }
+
         //Dashboard support
-        if(dashboard != null) {
+        String dashboard = draggable.getDashboard();
+        if (dashboard != null) {
             Dashboard db = (Dashboard) SearchExpressionFacade.resolveComponent(context, draggable, dashboard);
-            
-            String selector = ComponentUtils.escapeJQueryId(db.getClientId(context)) + " .ui-dashboard-column";
-            wb.attr("connectToSortable", selector);
+            wb.selectorAttr("connectToSortable", "#" + db.getClientId(context) + " .ui-dashboard-column");
         }
 
         wb.finish();

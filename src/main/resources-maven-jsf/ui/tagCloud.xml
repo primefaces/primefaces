@@ -4,30 +4,33 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>tagCloud</tag>
-	<tagClass>org.primefaces.component.tagcloud.TagCloudTag</tagClass>
-	<componentClass>org.primefaces.component.tagcloud.TagCloud</componentClass>
-	<componentType>org.primefaces.component.TagCloud</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.TagCloudRenderer</rendererType>
-	<rendererClass>org.primefaces.component.tagcloud.TagCloudRenderer</rendererClass>
-	<parent>javax.faces.component.UIOutput</parent>
+    <tag>tagCloud</tag>
+    <tagClass>org.primefaces.component.tagcloud.TagCloudTag</tagClass>
+    <componentClass>org.primefaces.component.tagcloud.TagCloud</componentClass>
+    <componentType>org.primefaces.component.TagCloud</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.TagCloudRenderer</rendererType>
+    <rendererClass>org.primefaces.component.tagcloud.TagCloudRenderer</rendererClass>
+    <parent>javax.faces.component.UIOutput</parent>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
         <interface>
-			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
-		</interface>
-	</interfaces>
-	<attributes>
-		&standard_uicomponent_attributes;
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
         &widget_var_attribute;
-		<attribute>
-			<name>model</name>
-			<required>true</required>
-			<type>org.primefaces.model.tagcloud.TagCloudModel</type>
-		</attribute>
+        <attribute>
+            <name>model</name>
+            <required>true</required>
+            <type>org.primefaces.model.tagcloud.TagCloudModel</type>
+        </attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
@@ -38,16 +41,19 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
-	</attributes>
+    </attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>primefaces.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
 </component>

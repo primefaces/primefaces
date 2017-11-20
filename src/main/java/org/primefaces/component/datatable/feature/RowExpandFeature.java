@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.rowexpansion.RowExpansion;
+import org.primefaces.model.LazyDataModel;
 
 public class RowExpandFeature implements DataTableFeature {
 
@@ -30,27 +31,31 @@ public class RowExpandFeature implements DataTableFeature {
     }
 
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         int expandedRowIndex = Integer.parseInt(params.get(table.getClientId(context) + "_expandedRowIndex"));
-        
+
+        if (table.isLazy() && ((LazyDataModel) table.getValue()).getWrappedData() == null) {
+            table.loadLazyData();
+        }
+
         encodeExpansion(context, renderer, table, expandedRowIndex);
         table.setRowIndex(-1);
     }
-    
+
     public void encodeExpansion(FacesContext context, DataTableRenderer renderer, DataTable table, int rowIndex) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String rowIndexVar = table.getRowIndexVar();
         RowExpansion rowExpansion = table.getRowExpansion();
-        
+
         String styleClass = DataTable.EXPANDED_ROW_CONTENT_CLASS + " ui-widget-content";
-        if(rowExpansion.getStyleClass() != null) {
+        if (rowExpansion.getStyleClass() != null) {
             styleClass = styleClass + " " + rowExpansion.getStyleClass();
         }
 
         table.setRowIndex(rowIndex);
-        
-        if(rowExpansion.isRendered()) {
-            if(rowIndexVar != null) {
+
+        if (rowExpansion.isRendered()) {
+            if (rowIndexVar != null) {
                 context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
             }
 
@@ -75,5 +80,5 @@ public class RowExpandFeature implements DataTableFeature {
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_rowExpansion");
     }
-    
+
 }

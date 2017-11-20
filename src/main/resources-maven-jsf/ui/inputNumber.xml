@@ -7,47 +7,47 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>inputNumber</tag>
-	<tagClass>org.primefaces.component.inputnumber.InputNumber</tagClass>
-	<componentClass>org.primefaces.component.inputnumber.InputNumber</componentClass>
-	<componentType>org.primefaces.component.InputNumber</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.InputNumberRenderer</rendererType>
-	<rendererClass>org.primefaces.component.inputnumber.InputNumberRenderer</rendererClass>
-	<parent>javax.faces.component.html.HtmlInputText</parent>
+    <tag>inputNumber</tag>
+    <tagClass>org.primefaces.component.inputnumber.InputNumber</tagClass>
+    <componentClass>org.primefaces.component.inputnumber.InputNumber</componentClass>
+    <componentType>org.primefaces.component.InputNumber</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.InputNumberRenderer</rendererType>
+    <rendererClass>org.primefaces.component.inputnumber.InputNumberRenderer</rendererClass>
+    <parent>javax.faces.component.html.HtmlInputText</parent>
     <description>InputNumber is an extension to the inputText with optimized handling for numbers.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
         <interface>
-			<name>org.primefaces.component.api.InputHolder</name>
-		</interface>
-	</interfaces>
-	<attributes>
-		&input_component_attributes;
-		&html_input_text_attributes;
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.InputHolder</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &input_component_attributes;
+        &html_input_text_attributes;
         &widget_var_attribute;
         <attribute>
             <name>type</name>
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>text</defaultValue>
-            <description>Input field type. Default is text.</description>
+            <description>Input field type. Valid values are "text"(default), "tel" and "hidden".</description>
         </attribute>
         <attribute>
             <name>decimalSeparator</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <defaultValue>.</defaultValue>
-            <description>Decimal separator char. Default is '.'.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Decimal separator char. Default is taken from the view's locale.</description>
         </attribute>
         <attribute>
             <name>thousandSeparator</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <defaultValue>,</defaultValue>
-            <description>Thousand separator char. Default is ','.</description>
+            <ignoreInComponent>true</ignoreInComponent>
+            <description>Thousand separator char. Default is taken from the view's locale.</description>
         </attribute>
         <attribute>
             <name>symbol</name>
@@ -98,22 +98,51 @@
             <defaultValue>empty</defaultValue>
             <description>Controls empty input display behavior, options are empty, zero, sign. Default is empty.</description>
         </attribute>
-	</attributes>
-	<resources>
+        <attribute>
+            <name>inputStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the input element.</description>
+        </attribute>
+        <attribute>
+            <name>inputStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the input element.</description>
+        </attribute>
+        <attribute>
+            <name>padControl</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Controls padding of the decimal places. If true, always pads the decimal with zeros.</description>
+        </attribute>
+        <attribute>
+            <name>leadingZero</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>allow</defaultValue>
+            <description>Controls leading zero behavior. Valid values are "allow"(default), "deny" and "keep".</description>
+        </attribute>
+    </attributes>
+    <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
-		<resource>
-			<name>primefaces.js</name>
-		</resource>
-		<resource>
-			<name>inputnumber/inputnumber.js</name>
-		</resource>
-		<resource>
-			<name>inputnumber/inputnumber.css</name>
-		</resource>
-	</resources>
+            <name>components.css</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+        <resource>
+            <name>inputnumber/inputnumber.js</name>
+        </resource>
+        <resource>
+            <name>inputnumber/inputnumber.css</name>
+        </resource>
+    </resources>
 </component>

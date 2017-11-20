@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,32 +18,20 @@ package org.primefaces.event.map;
 import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
+import org.primefaces.event.AbstractAjaxBehaviorEvent;
 import org.primefaces.model.map.LatLng;
 
-public class ReverseGeocodeEvent extends AjaxBehaviorEvent {
-	
+public class ReverseGeocodeEvent extends AbstractAjaxBehaviorEvent {
+
     private final LatLng latlng;
-	private final List<String> addresses;
-	
-	public ReverseGeocodeEvent(UIComponent component, Behavior behavior, LatLng latlng, List<String> addresses) {
-		super(component, behavior);
+    private final List<String> addresses;
+
+    public ReverseGeocodeEvent(UIComponent component, Behavior behavior, LatLng latlng, List<String> addresses) {
+        super(component, behavior);
         this.latlng = latlng;
-		this.addresses = addresses;
-	}
+        this.addresses = addresses;
+    }
 
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
-	}
-    
     public LatLng getLatlng() {
         return latlng;
     }
@@ -52,4 +40,3 @@ public class ReverseGeocodeEvent extends AjaxBehaviorEvent {
         return addresses;
     }
 }
-

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,11 @@ package org.primefaces.mobile.renderkit.paginator;
 import java.io.IOException;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.Pageable;
 
 public class PageLinkRenderer {
 
-    public void render(FacesContext context, UIData uidata, String styleClass, boolean disabled) throws IOException {
+    public void render(FacesContext context, Pageable pageable, String styleClass, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String buttonClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
 

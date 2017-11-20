@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2015 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,76 +28,78 @@ public class SignatureRenderer extends CoreRenderer {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Signature signature = (Signature) component;
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String value = params.get(signature.getClientId(context) + "_value");
         String base64Value = params.get(signature.getClientId(context) + "_base64");
         signature.setSubmittedValue(value);
-        
-        if(base64Value != null) {
+
+        if (base64Value != null) {
             signature.setBase64Value(base64Value);
         }
     }
 
     @Override
-	public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
-		Signature signature = (Signature) component;
+    public void encodeEnd(FacesContext facesContext, UIComponent component) throws IOException {
+        Signature signature = (Signature) component;
 
-		encodeMarkup(facesContext, signature);
-		encodeScript(facesContext, signature);
-	}
+        encodeMarkup(facesContext, signature);
+        encodeScript(facesContext, signature);
+    }
 
     protected void encodeMarkup(FacesContext context, Signature signature) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = signature.getClientId(context);
         String style = signature.getStyle();
         String styleClass = signature.getStyleClass();
-        
+        String defaultStyle = signature.resolveStyleClass();
+        styleClass = styleClass == null ? defaultStyle : defaultStyle + " " + styleClass;
+
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        if(style != null) writer.writeAttribute("style", style, null);
-        if(styleClass != null) writer.writeAttribute("class", styleClass, null);
-        
+        if (style != null) writer.writeAttribute("style", style, null);
+        if (styleClass != null) writer.writeAttribute("class", styleClass, null);
+
         encodeInputField(context, signature, clientId + "_value", signature.getValue());
-        
-        if(signature.getValueExpression("base64Value") != null) {
+
+        if (signature.getValueExpression(Signature.PropertyKeys.base64Value.toString()) != null) {
             encodeInputField(context, signature, clientId + "_base64", null);
         }
-        
+
         writer.endElement("div");
     }
 
     protected void encodeScript(FacesContext context, Signature signature) throws IOException {
         String clientId = signature.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Signature", signature.resolveWidgetVar(), clientId, "signature")
-            .attr("background", signature.getBackgroundColor(), null)
-            .attr("color", signature.getColor(), null)
-            .attr("thickness", signature.getThickness(), 2)
-            .attr("disabled", signature.isReadonly(), false)
-            .attr("guideline", signature.isGuideline(), false)
-            .attr("guidelineColor", signature.getGuidelineColor(), null)
-            .attr("guidelineOffset", signature.getGuidelineOffset(), 25)
-            .attr("guidelineIndent", signature.getGuidelineIndent(), 10)
-            .callback("onchange", "function()", signature.getOnchange());
-        
-        if(signature.getValueExpression("base64Value") != null) {
+        wb.initWithDomReady("Signature", signature.resolveWidgetVar(), clientId)
+                .attr("background", signature.getBackgroundColor(), null)
+                .attr("color", signature.getColor(), null)
+                .attr("thickness", signature.getThickness(), 2)
+                .attr("disabled", signature.isReadonly(), false)
+                .attr("guideline", signature.isGuideline(), false)
+                .attr("guidelineColor", signature.getGuidelineColor(), null)
+                .attr("guidelineOffset", signature.getGuidelineOffset(), 25)
+                .attr("guidelineIndent", signature.getGuidelineIndent(), 10)
+                .callback("onchange", "function()", signature.getOnchange());
+
+        if (signature.getValueExpression(Signature.PropertyKeys.base64Value.toString()) != null) {
             wb.attr("base64", true);
         }
-            
+
         wb.finish();
     }
-    
+
     protected void encodeInputField(FacesContext context, Signature signature, String name, Object value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-		writer.startElement("input", null);
-		writer.writeAttribute("type", "hidden", null);
-		writer.writeAttribute("id", name, null);
-		writer.writeAttribute("name", name, null);
+        writer.startElement("input", null);
+        writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("id", name, null);
+        writer.writeAttribute("name", name, null);
         writer.writeAttribute("autocomplete", "off", null);
-        if(value != null) {
+        if (value != null) {
             writer.writeAttribute("value", value, null);
         }
-		writer.endElement("input");
+        writer.endElement("input");
     }
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,15 @@ package org.primefaces.mobile.renderkit.paginator;
 
 import java.io.IOException;
 import javax.faces.context.FacesContext;
-import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.Pageable;
 import org.primefaces.component.paginator.PaginatorElementRenderer;
 
 public class PrevPageLinkRenderer extends PageLinkRenderer implements PaginatorElementRenderer {
 
-    public void render(FacesContext context, UIData uidata) throws IOException {
-        boolean disabled = uidata.getPage() == 0;
-       
-        super.render(context, uidata, "ui-paginator-prev ui-btn ui-btn-icon-notext ui-icon-back", disabled);
+    public void render(FacesContext context, Pageable pageable) throws IOException {
+        boolean disabled = pageable.getPage() == 0;
+
+        super.render(context, pageable, "ui-paginator-prev ui-btn ui-btn-icon-notext ui-icon-back", disabled);
     }
-    
+
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,62 +43,62 @@ public class GalleriaRenderer extends CoreRenderer {
         String styleClass = galleria.getStyleClass();
         styleClass = (styleClass == null) ? Galleria.CONTAINER_CLASS : Galleria.CONTAINER_CLASS + " " + styleClass;
         UIComponent content = galleria.getFacet("content");
-        
+
         writer.startElement("div", component);
         writer.writeAttribute("id", galleria.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        
+
         writer.startElement("ul", component);
         writer.writeAttribute("class", Galleria.PANEL_WRAPPER_CLASS, null);
-        
-        if(var == null) {
-            for(UIComponent child : galleria.getChildren()) {
-                if(child.isRendered()) {
+
+        if (var == null) {
+            for (UIComponent child : galleria.getChildren()) {
+                if (child.isRendered()) {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Galleria.PANEL_CLASS, null);
                     child.encodeAll(context);
-                    
-                    if(content != null) {
+
+                    if (content != null) {
                         writer.startElement("div", null);
                         writer.writeAttribute("class", Galleria.PANEL_CONTENT_CLASS, null);
                         content.encodeAll(context);
                         writer.endElement("div");
                     }
-                    
+
                     writer.endElement("li");
                 }
             }
         }
         else {
-            Map<String,Object> requestMap = context.getExternalContext().getRequestMap();
+            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
             Collection<?> value = (Collection<?>) galleria.getValue();
-            if(value != null) {
-                for(Iterator<?> it = value.iterator(); it.hasNext();) {
+            if (value != null) {
+                for (Iterator<?> it = value.iterator(); it.hasNext();) {
                     requestMap.put(var, it.next());
 
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Galleria.PANEL_CLASS, null);
                     renderChildren(context, galleria);
-                    
-                    if(content != null) {
+
+                    if (content != null) {
                         writer.startElement("div", null);
                         writer.writeAttribute("class", Galleria.PANEL_CONTENT_CLASS, null);
                         content.encodeAll(context);
                         writer.endElement("div");
                     }
-                    
+
                     writer.endElement("li");
                 }
             }
 
             requestMap.remove(var);
         }
-        
+
         writer.endElement("ul");
-                
+
         writer.endElement("div");
     }
 
@@ -106,11 +106,12 @@ public class GalleriaRenderer extends CoreRenderer {
         Galleria galleria = (Galleria) component;
         String clientId = galleria.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        
+
         if (context.isPostback()) {
-        	wb.initWithDomReady("Galleria", galleria.resolveWidgetVar(), clientId, "galleria");
-        } else {
-        	wb.initWithWindowLoad("Galleria", galleria.resolveWidgetVar(), clientId, "galleria");
+            wb.initWithDomReady("Galleria", galleria.resolveWidgetVar(), clientId);
+        }
+        else {
+            wb.initWithWindowLoad("Galleria", galleria.resolveWidgetVar(), clientId);
         }
 
         wb.attr("showFilmstrip", galleria.isShowFilmstrip(), true)

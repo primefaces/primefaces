@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,25 +37,25 @@ public class RowTogglerRenderer extends CoreRenderer {
         boolean iconOnly = (expandLabel == null && collapseLabel == null);
         String togglerClass = iconOnly ? DataTable.ROW_TOGGLER_CLASS + " " + icon : DataTable.ROW_TOGGLER_CLASS;
         String ariaLabel = MessageFactory.getMessage(RowToggler.ROW_TOGGLER, null);
-        
+
         writer.startElement("div", toggler);
         writer.writeAttribute("class", togglerClass, null);
         writer.writeAttribute("tabindex", toggler.getTabindex(), null);
         writer.writeAttribute("role", "button", null);
         writer.writeAttribute("aria-expanded", String.valueOf(expanded), null);
         writer.writeAttribute("aria-label", ariaLabel, null);
-        
-        if(!iconOnly) {
+
+        if (!iconOnly) {
             writeLabel(writer, expandLabel, !expanded);
             writeLabel(writer, collapseLabel, expanded);
         }
-        
+
         writer.endElement("div");
     }
-    
+
     protected void writeLabel(ResponseWriter writer, String label, boolean visible) throws IOException {
         writer.startElement("span", null);
-        if(!visible) {
+        if (!visible) {
             writer.writeAttribute("class", "ui-helper-hidden", null);
         }
         writer.writeText(label, null);

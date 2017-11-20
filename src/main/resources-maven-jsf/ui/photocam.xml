@@ -6,25 +6,25 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>photoCam</tag>
-	<tagClass>org.primefaces.component.photocam.PhotoCamTag</tagClass>
+    <tag>photoCam</tag>
+    <tagClass>org.primefaces.component.photocam.PhotoCamTag</tagClass>
     <componentHandlerClass>org.primefaces.component.photocam.PhotoCamHandler</componentHandlerClass>
-	<componentClass>org.primefaces.component.photocam.PhotoCam</componentClass>
-	<componentType>org.primefaces.component.PhotoCam</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.PhotoCamRenderer</rendererType>
-	<rendererClass>org.primefaces.component.photocam.PhotoCamRenderer</rendererClass>
-	<parent>javax.faces.component.UIInput</parent>
+    <componentClass>org.primefaces.component.photocam.PhotoCam</componentClass>
+    <componentType>org.primefaces.component.PhotoCam</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.PhotoCamRenderer</rendererType>
+    <rendererClass>org.primefaces.component.photocam.PhotoCamRenderer</rendererClass>
+    <parent>javax.faces.component.UIInput</parent>
     <description>.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
-	</interfaces>
-	<attributes>
-		&input_component_attributes;
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &input_component_attributes;
         &widget_var_attribute;
-		<attribute>
+        <attribute>
             <name>style</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -49,12 +49,12 @@
             <description>Identifiers of components to update after photo capture.</description>
         </attribute>
         <attribute>
-			<name>listener</name>
-			<required>false</required>
-			<type>javax.el.MethodExpression</type>
-			<method-signature>void listener(org.primefaces.event.CaptureEvent)</method-signature>
+            <name>listener</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>void listener(org.primefaces.event.CaptureEvent)</method-signature>
             <description>Method expression to listen capture events.</description>
-		</attribute>
+        </attribute>
         <attribute>
             <name>width</name>
             <required>false</required>
@@ -103,19 +103,29 @@
             <defaultValue>false</defaultValue>
             <description>Enables always using flash fallback even in an HTML5 environment.</description>
         </attribute>
-	</attributes>
+        <attribute>
+            <name>autoStart</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Disable camera start after initialize</description>
+        </attribute>
+    </attributes>
     <resources>
         <resource>
-            <name>primefaces.css</name>
+            <name>components.css</name>
         </resource>
         <resource>
             <name>jquery/jquery.js</name>
         </resource>
         <resource>
-            <name>primefaces.js</name>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
         </resource>
         <resource>
             <name>photocam/photocam.js</name>
         </resource>
-	</resources>
+    </resources>
 </component>

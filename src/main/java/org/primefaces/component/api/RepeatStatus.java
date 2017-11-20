@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 package org.primefaces.component.api;
 
 public class RepeatStatus {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     private final int count;
     private final int index;
     private final boolean first;
@@ -26,7 +26,7 @@ public class RepeatStatus {
     private final Integer begin;
     private final Integer end;
     private final Integer step;
-    
+
     public RepeatStatus(boolean first, boolean last, int count, int index, Integer begin, Integer end, Integer step) {
         this.count = count;
         this.index = index;
@@ -44,19 +44,19 @@ public class RepeatStatus {
     public boolean isLast() {
         return last;
     }
-    
+
     public boolean isEven() {
         return ((count % 2) == 0);
     }
-    
+
     public boolean isOdd() {
         return !isEven();
     }
-    
+
     public Integer getBegin() {
         return (begin == -1) ? null : begin;
     }
-    
+
     public Integer getEnd() {
         return (end == -1) ? null : end;
     }

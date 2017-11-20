@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,19 +26,19 @@ import org.primefaces.facelets.MethodRule;
 
 public class AutoCompleteHandler extends ComponentHandler {
 
-	private static final MetaRule COMPLETE_METHOD =
-			new MethodRule("completeMethod", List.class, new Class[]{String.class});
+    private static final MetaRule COMPLETE_METHOD
+            = new MethodRule("completeMethod", List.class, new Class[]{String.class});
 
-	public AutoCompleteHandler(ComponentConfig config) {
-		super(config);
-	}
-	
-	@SuppressWarnings("unchecked")
-	protected MetaRuleset createMetaRuleset(Class type) { 
-		MetaRuleset metaRuleset = super.createMetaRuleset(type); 
-		
-		metaRuleset.addRule(COMPLETE_METHOD);
-		
-		return metaRuleset; 
-	} 
+    public AutoCompleteHandler(ComponentConfig config) {
+        super(config);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected MetaRuleset createMetaRuleset(Class type) {
+        MetaRuleset metaRuleset = super.createMetaRuleset(type);
+
+        metaRuleset.addRule(COMPLETE_METHOD);
+
+        return metaRuleset;
+    }
 }

@@ -4,64 +4,70 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>dashboard</tag>
-	<tagClass>org.primefaces.component.dashboard.DashboardTag</tagClass>
-	<componentClass>org.primefaces.component.dashboard.Dashboard</componentClass>
-	<componentType>org.primefaces.component.Dashboard</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.DashboardRenderer</rendererType>
-	<rendererClass>org.primefaces.component.dashboard.DashboardRenderer</rendererClass>
-	<parent>javax.faces.component.UIPanel</parent>
+    <tag>dashboard</tag>
+    <tagClass>org.primefaces.component.dashboard.DashboardTag</tagClass>
+    <componentClass>org.primefaces.component.dashboard.Dashboard</componentClass>
+    <componentType>org.primefaces.component.Dashboard</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.DashboardRenderer</rendererType>
+    <rendererClass>org.primefaces.component.dashboard.DashboardRenderer</rendererClass>
+    <parent>javax.faces.component.UIPanel</parent>
     <description>Dashboard provides a portal like layout with drag-drop based reorder capabilities.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
         <interface>
-			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
-		</interface>
-	</interfaces>
-	<attributes>
-		&standard_uicomponent_attributes;
-		&widget_var_attribute;
-		<attribute>
-			<name>model</name>
-			<required>false</required>
-			<type>org.primefaces.model.DashboardModel</type>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>model</name>
+            <required>false</required>
+            <type>org.primefaces.model.DashboardModel</type>
             <description>Dashboard model instance representing the layout of the UI.</description>
-		</attribute>
-		<attribute>
-			<name>disabled</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-			<defaultValue>false</defaultValue>
+        </attribute>
+        <attribute>
+            <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
             <description>Disables reordering.</description>
-		</attribute>
-		<attribute>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Inline style of the dashboard container.</description>
-		</attribute>
-		<attribute>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Style class of the dashboard container.</description>
-		</attribute>
-	</attributes>
+        </attribute>
+    </attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
+            <name>jquery/jquery.js</name>
+        </resource>
         <resource>
-			<name>primefaces.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
 </component>

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,18 +29,22 @@ import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
 public class CSVExporter extends Exporter {
 
     @Override
-	public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType, MethodExpression preProcessor, MethodExpression postProcessor) throws IOException {
-		ExternalContext externalContext = context.getExternalContext();
+    public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly,
+            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options)
+            throws IOException {
+        
+        ExternalContext externalContext = context.getExternalContext();
         configureResponse(externalContext, filename, encodingType);
         Writer writer = externalContext.getResponseOutputWriter();
-    	
-    	addColumnFacets(writer, table, ColumnType.HEADER);
-    	
+
+        addColumnFacets(writer, table, ColumnType.HEADER);
+
         if (pageOnly) {
             exportPageOnly(context, table, writer);
         }
@@ -50,133 +54,157 @@ public class CSVExporter extends Exporter {
         else {
             exportAll(context, table, writer);
         }
-        
+
         if (table.hasFooterColumn()) {
             addColumnFacets(writer, table, ColumnType.FOOTER);
         }
-            	        
+
         writer.flush();
         writer.close();
-        
-        externalContext.responseFlushBuffer();
-	}
-    
+    }
+
+    @Override
+    public void export(FacesContext facesContext, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly,
+            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void export(FacesContext facesContext, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
+            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
     protected void addColumnFacets(Writer writer, DataTable table, ColumnType columnType) throws IOException {
         boolean firstCellWritten = false;
-        
+
         for (UIColumn col : table.getColumns()) {
             if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyStatelessModel();
             }
-            
+
             if (col.isRendered() && col.isExportable()) {
                 if (firstCellWritten) {
                     writer.write(",");
                 }
-                
+
                 UIComponent facet = col.getFacet(columnType.facet());
-                if(facet != null) {
+                if (facet != null) {
                     addColumnValue(writer, facet);
                 }
                 else {
                     String textValue;
-                    switch(columnType) {
+                    switch (columnType) {
                         case HEADER:
                             textValue = col.getHeaderText();
-                        break;
-                            
+                            break;
+
                         case FOOTER:
                             textValue = col.getFooterText();
-                        break;
-                            
+                            break;
+
                         default:
                             textValue = "";
-                        break;
+                            break;
                     }
-                    
+
                     addColumnValue(writer, textValue);
 
                 }
-                
+
                 firstCellWritten = true;
             }
         }
-	
-		writer.write("\n");
+
+        writer.write("\n");
     }
-    
+
     @Override
     protected void exportCells(DataTable table, Object document) {
         PrintWriter writer = (PrintWriter) document;
         boolean firstCellWritten = false;
-        
+
         for (UIColumn col : table.getColumns()) {
             if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyStatelessModel();
             }
-            
+
             if (col.isRendered() && col.isExportable()) {
                 if (firstCellWritten) {
                     writer.write(",");
                 }
-                
+
                 try {
-                    addColumnValue(writer, col.getChildren());
-                } catch (IOException ex) {
+                    addColumnValue(writer, col.getChildren(), col);
+                }
+                catch (IOException ex) {
                     throw new FacesException(ex);
                 }
-                
+
                 firstCellWritten = true;
             }
         }
     }
-    
+
     protected void configureResponse(ExternalContext externalContext, String filename, String encodingType) {
         externalContext.setResponseContentType("text/csv; charset=" + encodingType);
-		externalContext.setResponseHeader("Expires", "0");
-		externalContext.setResponseHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
-		externalContext.setResponseHeader("Pragma", "public");
-		externalContext.setResponseHeader("Content-disposition", "attachment;filename="+ filename + ".csv");
-		externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
+        externalContext.setResponseHeader("Expires", "0");
+        externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+        externalContext.setResponseHeader("Pragma", "public");
+        externalContext.setResponseHeader("Content-disposition", ComponentUtils.createContentDisposition("attachment", filename + ".csv"));
+        externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
     }
-    
-	protected void addColumnValues(Writer writer, List<UIColumn> columns) throws IOException {
-		for(Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
-            addColumnValue(writer, iterator.next().getChildren());
 
-            if (iterator.hasNext())
+    protected void addColumnValues(Writer writer, List<UIColumn> columns) throws IOException {
+        for (Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
+            UIColumn col = iterator.next();
+            addColumnValue(writer, col.getChildren(), col);
+
+            if (iterator.hasNext()) {
                 writer.write(",");
-		}
-	}
+            }
+        }
+    }
 
-	protected void addColumnValue(Writer writer, UIComponent component) throws IOException {
-		String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
-        
+    protected void addColumnValue(Writer writer, UIComponent component) throws IOException {
+        String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
+
         addColumnValue(writer, value);
-	}
-    
-    protected void addColumnValue(Writer writer, String value) throws IOException {        
-         value = (value == null) ? "" : value.replaceAll("\"", "\"\"");
-        
+    }
+
+    protected void addColumnValue(Writer writer, String value) throws IOException {
+        value = (value == null) ? "" : value.replaceAll("\"", "\"\"");
+
         writer.write("\"" + value + "\"");
-	}
-	
-	protected void addColumnValue(Writer writer, List<UIComponent> components) throws IOException {
+    }
+
+    protected void addColumnValue(Writer writer, List<UIComponent> components, UIColumn column) throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+
         writer.write("\"");
-        
-		for (UIComponent component : components) {
-			if (component.isRendered()) {
-				String value = exportValue(FacesContext.getCurrentInstance(), component);
 
-                //escape double quotes
-                value = value == null ? "" : value.replaceAll("\"", "\"\"");
-                
-				writer.write(value);
-			}
-		}
+        if (column.getExportFunction() != null) {
+            String value = exportColumnByFunction(context, column);
+            //escape double quotes
+            value = value == null ? "" : value.replaceAll("\"", "\"\"");
 
-		writer.write("\"");
-	}
+            writer.write(value);
+        }
+        else {
+            for (UIComponent component : components) {
+                if (component.isRendered()) {
+                    String value = exportValue(context, component);
+
+                    //escape double quotes
+                    value = value == null ? "" : value.replaceAll("\"", "\"\"");
+
+                    writer.write(value);
+                }
+            }
+        }
+
+        writer.write("\"");
+    }
 
     @Override
     protected void postRowExport(DataTable table, Object document) {

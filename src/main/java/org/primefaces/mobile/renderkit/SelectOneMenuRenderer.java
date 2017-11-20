@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,12 +26,12 @@ import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneMenuRenderer extends org.primefaces.component.selectonemenu.SelectOneMenuRenderer {
-    
+
     @Override
     protected String getSubmitParam(FacesContext context, UISelectOne selectOne) {
         return selectOne.getClientId(context);
     }
-        
+
     @Override
     protected void encodeMarkup(FacesContext context, SelectOneMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -41,30 +41,35 @@ public class SelectOneMenuRenderer extends org.primefaces.component.selectonemen
         Object submittedValues = getSubmittedValues(menu);
         String clientId = menu.getClientId(context);
 
-        writer.startElement("select", menu);
+        writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
+
+        writer.startElement("select", null);
+        writer.writeAttribute("id", clientId + "_input", "id");
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("data-role", "none", null);
-        
+
         if (menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
         if (menu.getOnkeydown() != null) writer.writeAttribute("onkeydown", menu.getOnkeydown(), null);
         if (menu.getOnkeyup() != null) writer.writeAttribute("onkeyup", menu.getOnkeyup(), null);
         if (menu.getStyle() != null) writer.writeAttribute("style", menu.getStyle(), null);
         if (menu.getStyleClass() != null) writer.writeAttribute("class", menu.getStyleClass(), null);
-        
+
         renderOnchange(context, menu);
         renderDynamicPassThruAttributes(context, menu);
-        
+
         encodeSelectItems(context, menu, selectItems, values, submittedValues, converter);
 
         writer.endElement("select");
+
+        writer.endElement("div");
     }
-    
+
     @Override
     protected void encodeScript(FacesContext context, SelectOneMenu menu) throws IOException {
         String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.init("SelectOneMenu", menu.resolveWidgetVar(), clientId);               
+        wb.init("SelectOneMenu", menu.resolveWidgetVar(), clientId);
         wb.finish();
     }
 }

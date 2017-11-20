@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,13 +42,15 @@ package org.primefaces.push;
  * @param <U>
  * @param <T>
  */
-public interface Encoder<U, T> extends org.atmosphere.config.managed.Encoder<U, T>{
-   // Atmosphere Proxy
+public interface Encoder<U, T> extends org.atmosphere.config.managed.Encoder<U, T> {
+    // Atmosphere Proxy
+
     /**
      * Encode the object of type U into an object of type T.
+     *
      * @param s an object that has already been encoded or returned from an @Message annotated class.
      * @return an encoded object.
      */
-    //@Override
+    @Override
     T encode(U s);
 }

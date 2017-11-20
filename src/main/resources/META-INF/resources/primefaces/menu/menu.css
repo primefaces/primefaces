@@ -55,9 +55,14 @@
     cursor: pointer;
 }
 
-.ui-menu .ui-menuitem-link .ui-menuitem-icon {
+.ui-menu .ui-menuitem-link .ui-menuitem-icon,
+.ui-menu .ui-submenu-icon {
     display:inline-block;
     float:left;
+}
+
+.ui-menu .ui-submenu-icon {
+    margin-top: 1px;
 }
 
 .ui-menu .ui-menuitem-text {
@@ -223,6 +228,14 @@
     width: 92%;
 }
 
+.ui-megamenu .ui-widget-header span {
+    display: block;
+    float: left;
+    font-size: 1em;
+    margin: 0 auto;
+    padding: 0.4em 0.3em;
+}
+
 /** Breadcrumb **/
 .ui-breadcrumb {
     margin: 0;
@@ -311,6 +324,11 @@
 
 .ui-slidemenu-backward .ui-icon {
     float:left;
+}
+
+/** SplitButtonMenu **/
+.ui-splitbuttonmenu {
+    width: auto;
 }
 
 /** PanelMenu **/

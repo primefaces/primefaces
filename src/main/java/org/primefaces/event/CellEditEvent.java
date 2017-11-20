@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,23 +21,23 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
 import javax.faces.component.ValueHolder;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
 import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.UITree;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.treetable.TreeTable;
 
-public class CellEditEvent extends AjaxBehaviorEvent {
+public class CellEditEvent extends AbstractAjaxBehaviorEvent {
 
     private Object oldValue;
-    
+
     private Object newValue;
-    
+
     private int rowIndex;
-    
+
     private UIColumn column;
-    
+
     private String rowKey;
 
     public CellEditEvent(UIComponent component, Behavior behavior, int rowIndex, UIColumn column) {
@@ -46,28 +46,25 @@ public class CellEditEvent extends AjaxBehaviorEvent {
         this.column = column;
         this.oldValue = resolveValue();
     }
-    
+
     public CellEditEvent(UIComponent component, Behavior behavior, int rowIndex, UIColumn column, String rowKey) {
         this(component, behavior, rowIndex, column);
         this.rowKey = rowKey;
     }
 
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-		return (faceslistener instanceof AjaxBehaviorListener);
-	}
+    public CellEditEvent(UIComponent component, Behavior behavior, UIColumn column, String rowKey) {
+        super(component, behavior);
+        this.rowKey = rowKey;
+        this.column = column;
+        this.oldValue = resolveValue();
+    }
 
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
-	}
-    
     public Object getOldValue() {
         return this.oldValue;
     }
 
     public Object getNewValue() {
-        if(newValue == null) {
+        if (newValue == null) {
             newValue = resolveValue();
         }
         return newValue;
@@ -86,33 +83,40 @@ public class CellEditEvent extends AjaxBehaviorEvent {
     }
 
     private Object resolveValue() {
-        DataTable data = (DataTable) source;
-        data.setRowModel(rowIndex);
+        if (source instanceof UIData) {
+            DataTable data = (DataTable) source;
+            data.setRowModel(rowIndex);
+        }
+        else if (source instanceof UITree) {
+            TreeTable data = (TreeTable) source;
+            data.setRowKey(rowKey);
+        }
+
         Object value = null;
-        
-        for(UIComponent child : column.getChildren()) {
-            if(child instanceof CellEditor) {
+
+        for (UIComponent child : column.getChildren()) {
+            if (child instanceof CellEditor) {
                 UIComponent inputFacet = child.getFacet("input");
-                
+
                 //multiple
-                if(inputFacet instanceof UIPanel) {
+                if (inputFacet instanceof UIPanel) {
                     List<Object> values = new ArrayList<Object>();
-                    for(UIComponent kid : inputFacet.getChildren()) {
-                        if(kid instanceof ValueHolder) {
+                    for (UIComponent kid : inputFacet.getChildren()) {
+                        if (kid instanceof ValueHolder) {
                             values.add(((ValueHolder) kid).getValue());
                         }
                     }
-                    
+
                     value = values;
-                } 
-                //single
+                }
+//single
                 else {
                     value = ((ValueHolder) inputFacet).getValue();
                 }
-                
+
             }
         }
-        
+
         return value;
     }
 }

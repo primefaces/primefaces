@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,35 +17,31 @@ package org.primefaces.event;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.Behavior;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
-import javax.faces.event.FacesListener;
 import org.primefaces.model.TreeNode;
 
-public class TreeDragDropEvent extends AjaxBehaviorEvent {
+public class TreeDragDropEvent extends AbstractAjaxBehaviorEvent {
 
-	private TreeNode dragNode;
+    private TreeNode dragNode;
+    
+    private TreeNode[] dragNodes;
     
     private TreeNode dropNode;
     
     private int dropIndex;
     
-	public TreeDragDropEvent(UIComponent component, Behavior behavior, TreeNode dragNode, TreeNode dropNode, int dropIndex) {
-		super(component, behavior);
-		this.dragNode = dragNode;
+    public TreeDragDropEvent(UIComponent component, Behavior behavior, TreeNode dragNode, TreeNode dropNode, int dropIndex) {
+        super(component, behavior);
+        this.dragNode = dragNode;
         this.dropNode = dropNode;
         this.dropIndex = dropIndex;
-	}
-
-	@Override
-	public boolean isAppropriateListener(FacesListener faceslistener) {
-        return (faceslistener instanceof AjaxBehaviorListener);
-	}
-
-	@Override
-	public void processListener(FacesListener faceslistener) {
-		((AjaxBehaviorListener) faceslistener).processAjaxBehavior(this);
-	}
+    }
+    
+    public TreeDragDropEvent(UIComponent component, Behavior behavior, TreeNode[] dragNodes, TreeNode dropNode, int dropIndex) {
+        super(component, behavior);
+        this.dragNodes = dragNodes;
+        this.dropNode = dropNode;
+        this.dropIndex = dropIndex;
+    }
 
     public TreeNode getDragNode() {
         return dragNode;
@@ -53,6 +49,10 @@ public class TreeDragDropEvent extends AjaxBehaviorEvent {
 
     public TreeNode getDropNode() {
         return dropNode;
+    }
+
+    public TreeNode[] getDragNodes() {
+        return dragNodes;
     }
 
     public int getDropIndex() {

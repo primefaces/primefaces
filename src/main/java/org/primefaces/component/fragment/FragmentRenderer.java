@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,32 +20,27 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 
 public class FragmentRenderer extends CoreRenderer {
-    
+
     @Override
-	public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         Fragment fragment = (Fragment) component;
         String clientId = fragment.getClientId(context);
-        Map<Object,Object> attrs = RequestContext.getCurrentInstance().getAttributes();
+        Map<Object, Object> attrs = context.getAttributes();
         attrs.put(Constants.FRAGMENT_ID, clientId);
-        
-        if(fragment.isAutoUpdate()) {
-            attrs.put(Constants.FRAGMENT_AUTO_RENDERED, true);
-        }
-        
+
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
-	}
-    
+    }
+
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		context.getResponseWriter().endElement("div");
-        
-        RequestContext.getCurrentInstance().getAttributes().remove(Constants.FRAGMENT_ID);
-	}
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        context.getResponseWriter().endElement("div");
+
+        context.getAttributes().remove(Constants.FRAGMENT_ID);
+    }
 }

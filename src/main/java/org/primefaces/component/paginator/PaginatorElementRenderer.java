@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,9 @@ package org.primefaces.component.paginator;
 
 import java.io.IOException;
 import javax.faces.context.FacesContext;
-import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.Pageable;
 
 public interface PaginatorElementRenderer {
-    
-    public void render(FacesContext context, UIData uidata) throws IOException;
+
+    public void render(FacesContext context, Pageable pageable) throws IOException;
 }

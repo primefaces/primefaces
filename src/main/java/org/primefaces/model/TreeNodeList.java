@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ public class TreeNodeList extends ArrayList<TreeNode> {
 
     /**
      * Optimized set implementation to be used in sorting
+     *
      * @param index index of the element to replace
      * @param node node to be stored at the specified position
      * @return the node previously at the specified position
@@ -29,4 +30,3 @@ public class TreeNodeList extends ArrayList<TreeNode> {
         throw new UnsupportedOperationException();
     }
 }
-

@@ -1,14 +1,3 @@
-/* ie6 */
-* html .ui-growl {
-	position:absolute; 
-}
-* html .ui-growl-item {
-	padding-bottom:0;
-}
-* html .ui-growl-icon-close {
-	top:7px;
-	right:7px;
-}
 
 .ui-growl {
 	position:fixed;

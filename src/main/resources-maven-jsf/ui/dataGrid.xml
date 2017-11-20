@@ -15,13 +15,19 @@
     <parent>org.primefaces.component.api.UIData</parent>
     <description>DataGrid displays a collection of data in grid layout. Ajax Pagination is a built-in feature and paginator UI is fully customizable via various options like paginatorTemplate, rowPerPageOptions, pageLinks and more.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
         <interface>
-			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
-		</interface>
-	</interfaces>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.Pageable</name>
+        </interface>
+    </interfaces>
     <attributes>
         &data_component_attributes;
         &widget_var_attribute;
@@ -55,12 +61,12 @@
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
         <attribute>
-			<name>rowsPerPageLabel</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>rowsPerPageLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Label for rowsPerPage dropdown.</description>
             <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
+        </attribute>
         <attribute>
             <name>currentPageReportTemplate</name>
             <required>false</required>
@@ -112,47 +118,50 @@
             <description>Name of iterator to refer each row index.</description>
         </attribute>
         <attribute>
-			<name>emptyMessage</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>emptyMessage</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <defaultValue>No records found.</defaultValue>
             <description>Text to display when there is no data to display. Default is "No records found."</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>lazy</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
+            <name>lazy</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
             <description>Defines if lazy loading is enabled for the data component.</description>
             <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>layout</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>layout</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <defaultValue>tabular</defaultValue>
             <description>Layout approach to use, valid values are "tabular" (default) and "grid" for responsive grid.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>rowStatePreserved</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
+            <name>rowStatePreserved</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
             <description>Keeps state of its children on a per-row basis. Default is false.</description>
             <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
+        </attribute>
     </attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
-		<resource>
-			<name>primefaces.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
 </component>

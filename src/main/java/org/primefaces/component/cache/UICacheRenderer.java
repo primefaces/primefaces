@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,46 +25,46 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class UICacheRenderer extends CoreRenderer {
-    
+
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         UICache uiCache = (UICache) component;
-        
-        if(!uiCache.isDisabled()) {
+
+        if (!uiCache.isDisabled()) {
             ResponseWriter writer = context.getResponseWriter();
-            CacheProvider cacheProvider = RequestContext.getCurrentInstance().getApplicationContext().getCacheProvider();
+            CacheProvider cacheProvider = RequestContext.getCurrentInstance(context).getApplicationContext().getCacheProvider();
             String key = uiCache.getKey();
             String region = uiCache.getRegion();
-           
-            if(key == null) {
+
+            if (key == null) {
                 key = uiCache.getClientId(context);
             }
-            
-            if(region == null) {
+
+            if (region == null) {
                 region = context.getViewRoot().getViewId();
             }
-            
+
             String output = (String) cacheProvider.get(region, key);
-            if(output == null) {
+            if (output == null) {
                 StringWriter stringWriter = new StringWriter();
                 ResponseWriter clonedWriter = writer.cloneWithWriter(stringWriter);
                 context.setResponseWriter(clonedWriter);
                 renderChildren(context, uiCache);
-                
+
                 output = stringWriter.getBuffer().toString();
                 cacheProvider.put(region, key, output);
                 context.setResponseWriter(writer);
-                
+
                 uiCache.setCacheSetInCurrentRequest(true);
             }
-            
+
             writer.write(output);
         }
         else {
             renderChildren(context, uiCache);
         }
     }
-    
+
     @Override
     public boolean getRendersChildren() {
         return true;

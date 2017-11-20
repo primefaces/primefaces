@@ -4,29 +4,29 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>megaMenu</tag>
-	<tagClass>org.primefaces.component.megamenu.MegaMenuTag</tagClass>
-	<componentClass>org.primefaces.component.megamenu.MegaMenu</componentClass>
-	<componentType>org.primefaces.component.MegaMenu</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.MegaMenuRenderer</rendererType>
-	<rendererClass>org.primefaces.component.megamenu.MegaMenuRenderer</rendererClass>
-	<parent>org.primefaces.component.menu.AbstractMenu</parent>
+    <tag>megaMenu</tag>
+    <tagClass>org.primefaces.component.megamenu.MegaMenuTag</tagClass>
+    <componentClass>org.primefaces.component.megamenu.MegaMenu</componentClass>
+    <componentType>org.primefaces.component.MegaMenu</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.MegaMenuRenderer</rendererType>
+    <rendererClass>org.primefaces.component.megamenu.MegaMenuRenderer</rendererClass>
+    <parent>org.primefaces.component.menu.AbstractMenu</parent>
     <description>MegaMenu is a navigation component that displays submenus together.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
-	</interfaces>
-	<attributes>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
+    <attributes>
 		&standard_uicomponent_attributes;
 		&widget_var_attribute;
-		<attribute>
-			<name>model</name>
-			<required>false</required>
-			<type>org.primefaces.model.menu.MenuModel</type>
+        <attribute>
+            <name>model</name>
+            <required>false</required>
+            <type>org.primefaces.model.menu.MenuModel</type>
             <description>MenuModel instance to create menus programmatically.</description>
-		</attribute>
+        </attribute>
         <attribute>
             <name>style</name>
             <required>false</required>
@@ -45,7 +45,7 @@
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
             <description>Defines whether submenus will be displayed on mouseover or not. When
-            set to false, click event is required to display.</description>
+                set to false, click event is required to display.</description>
         </attribute>
         <attribute>
             <name>activeIndex</name>
@@ -61,19 +61,22 @@
             <defaultValue>horizontal</defaultValue>
             <description>Defines the orientation of the root menuitems, valid values are "horizontal" (default) and "vertical".</description>
         </attribute>
-	</attributes>
-	<resources>
+    </attributes>
+    <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
+            <name>jquery/jquery.js</name>
+        </resource>
         <resource>
-			<name>primefaces.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
 </component>

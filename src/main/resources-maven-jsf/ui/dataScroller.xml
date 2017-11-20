@@ -15,10 +15,10 @@
     <parent>org.primefaces.component.api.UIData</parent>
     <description>DataScroller displays a collection of data featuring on demand loading using scroll.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
-	</interfaces>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
     <attributes>
         &data_component_attributes;
         &widget_var_attribute;
@@ -38,7 +38,7 @@
             <name>chunkSize</name>
             <required>false</required>
             <type>java.lang.Integer</type>
-			<defaultValue>0</defaultValue>
+            <defaultValue>0</defaultValue>
             <description>Number of items to fetch.</description>
         </attribute>
         <attribute>
@@ -62,30 +62,33 @@
             <description>Defines pixel height of the viewport in inline mode.</description>
         </attribute>
         <attribute>
-			<name>lazy</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
+            <name>lazy</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
             <description>Defines if lazy loading is enabled for the data component.</description>
             <ignoreInComponent>true</ignoreInComponent>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>buffer</name>
-			<required>false</required>
-			<type>java.lang.Integer</type>
+            <name>buffer</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
             <defaultValue>10</defaultValue>
             <description>Percentage height of the buffer between the bottom of the page and the scroll position to initiate
-            the load for the new chunk. Value is defined in integer and default is 10 meaning load would happen after 90% of the viewport is scrolled down.</description>
-		</attribute>
+                the load for the new chunk. Value is defined in integer and default is 10 meaning load would happen after 90% of the viewport is scrolled down.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
-			<name>primefaces.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
-		<resource>
-			<name>primefaces.js</name>
-		</resource>
-	</resources>
+            <name>components.css</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
 </component>

@@ -777,7 +777,7 @@ public class SearchExpressionFacadeTest {
 	}
 
 	@Test
-	public void resolveClientId_Root() {
+	public void resolveClientId_AbsoluteId() {
 
 		UIComponent root = new UIPanel();
         FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
@@ -1228,12 +1228,12 @@ public class SearchExpressionFacadeTest {
 	    assertEquals(
 	    		root,
 	    		SearchExpressionFacade.resolveComponent(
-	    				FacesContext.getCurrentInstance(), form, null, SearchExpressionFacade.Options.PARENT_FALLBACK));
+	    				FacesContext.getCurrentInstance(), form, null, SearchExpressionHint.PARENT_FALLBACK));
 
 	    assertEquals(
 	    		root,
 	    		SearchExpressionFacade.resolveComponent(
-	    				FacesContext.getCurrentInstance(), form, " ", SearchExpressionFacade.Options.PARENT_FALLBACK));
+	    				FacesContext.getCurrentInstance(), form, " ", SearchExpressionHint.PARENT_FALLBACK));
 	}
 
 	@Test
@@ -1249,12 +1249,12 @@ public class SearchExpressionFacadeTest {
 	    assertEquals(
 	    		"test",
 	    		SearchExpressionFacade.resolveClientIds(
-	    				FacesContext.getCurrentInstance(), form, null, SearchExpressionFacade.Options.PARENT_FALLBACK));
+	    				FacesContext.getCurrentInstance(), form, null, SearchExpressionHint.PARENT_FALLBACK));
 
 	    assertEquals(
 	    		"test",
 	    		SearchExpressionFacade.resolveClientIds(
-	    				FacesContext.getCurrentInstance(), form, " ", SearchExpressionFacade.Options.PARENT_FALLBACK));
+	    				FacesContext.getCurrentInstance(), form, " ", SearchExpressionHint.PARENT_FALLBACK));
 	}
 
 	@Test
@@ -1443,7 +1443,7 @@ public class SearchExpressionFacadeTest {
 	    root.getChildren().add(command2);
 
 	    assertSame("Failed", null,
-	    		resolveComponent(command1, " command3 ", SearchExpressionFacade.Options.IGNORE_NO_RESULT));
+	    		resolveComponent(command1, " command3 ", SearchExpressionHint.IGNORE_NO_RESULT));
 	}
 
 	@Test
@@ -1625,11 +1625,12 @@ public class SearchExpressionFacadeTest {
 		innerContainer.getChildren().add(source);
 
 		assertEquals("Failed", "outerContainer:innerContainer:source",
-                resolveClientId(source, " outerContainer:innerContainer:source ", SearchExpressionFacade.Options.SKIP_UNRENDERED));
+                resolveClientId(source, " outerContainer:innerContainer:source "));
 	}
 
-	@Test(expected = ComponentNotFoundException.class)
-	public void resolveClientId_AbsoluteWithFormPrependIdFalse_InvokeOnComponentSkipUnrendered_Unredered() {
+
+    @Test
+	public void resolveClientId_AbsoluteWithFormPrependIdFalse_InvokeOnComponentUnrendered() {
 
 		UIComponent root = new UIPanel();
         FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
@@ -1655,12 +1656,12 @@ public class SearchExpressionFacadeTest {
 		source.setId("source");
 		innerContainer.getChildren().add(source);
 
-		assertEquals("Failed", null,
-                resolveClientId(source, " outerContainer:innerContainer:source ", SearchExpressionFacade.Options.SKIP_UNRENDERED));
+		assertEquals(source.getClientId(),
+                resolveClientId(source, " outerContainer:innerContainer:source "));
 	}
 
-	@Test
-	public void resolveClientId_AbsoluteWithFormPrependIdFalse_InvokeOnComponentSkipUnrendered_IgnoreNoResult_Unredered() {
+    @Test
+	public void resolveComponent_AbsoluteWithFormPrependIdFalse_InvokeOnComponentUnrendered() {
 
 		UIComponent root = new UIPanel();
         FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
@@ -1686,10 +1687,8 @@ public class SearchExpressionFacadeTest {
 		source.setId("source");
 		innerContainer.getChildren().add(source);
 
-		assertEquals("Failed", null, resolveClientId(
-                        source,
-                        " outerContainer:innerContainer:source ",
-                        SearchExpressionFacade.Options.IGNORE_NO_RESULT | SearchExpressionFacade.Options.SKIP_UNRENDERED));
+		assertEquals(source,
+                resolveComponent(source, " outerContainer:innerContainer:source "));
 	}
 
 	@Test
@@ -1805,7 +1804,7 @@ public class SearchExpressionFacadeTest {
         components.add(root);
 
         SearchExpressionResolverFactory.registerResolver("@test", new TestMultiSearchExpressionResolver(components));
-        List<UIComponent> result = resolveComponents(root, " @test:@parent:@parent ", SearchExpressionFacade.Options.IGNORE_NO_RESULT);
+        List<UIComponent> result = resolveComponents(root, " @test:@parent:@parent ", SearchExpressionHint.IGNORE_NO_RESULT);
         assertTrue(result.size() == 1);
         assertTrue(result.contains(FacesContext.getCurrentInstance().getViewRoot()));
 
@@ -1837,4 +1836,144 @@ public class SearchExpressionFacadeTest {
         SearchExpressionResolverFactory.removeResolver("@test");
         SearchExpressionResolverFactory.removeResolver("@test2");
 	}
+
+    @Test
+    public void resolveComponent_Root() {
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		outerContainer.setId("myContainer");
+		root.getChildren().add(outerContainer);
+
+		UIForm form = new UIForm();
+		form.setId("form");
+		root.getChildren().add(form);
+
+        Assert.assertEquals(FacesContext.getCurrentInstance().getViewRoot(), resolveComponent(form, " @root "));
+    }
+
+    @Test
+    public void resolveComponents_Root() {
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		outerContainer.setId("myContainer");
+		root.getChildren().add(outerContainer);
+
+		UIForm form = new UIForm();
+		form.setId("form");
+		root.getChildren().add(form);
+
+		UINamingContainer innerContainer = new UINamingContainer();
+		innerContainer.setId("myContainer");
+		form.getChildren().add(innerContainer);
+
+		UINamingContainer innerContainer2 = new UINamingContainer();
+		innerContainer2.setId("myContainer2");
+		form.getChildren().add(innerContainer2);
+
+        List<UIComponent> result = resolveComponents(innerContainer2, " @root ");
+        assertTrue(result.size() == 1);
+        assertTrue(result.contains(FacesContext.getCurrentInstance().getViewRoot()));
+    }
+
+	@Test
+	public void resolveClientId_Root() {
+
+		UIComponent root = new UIPanel();
+
+		UIForm form = new UIForm();
+		root.getChildren().add(form);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		form.getChildren().add(outerContainer);
+
+		UINamingContainer innerContainer = new UINamingContainer();
+		outerContainer.getChildren().add(innerContainer);
+
+		UIComponent component = new UIOutput();
+		innerContainer.getChildren().add(component);
+
+		UIComponent source = new UICommand();
+		innerContainer.getChildren().add(source);
+
+		assertEquals("Failed", "@all", resolveClientId(source, "@root"));
+	}
+
+    @Test
+    public void resolveComponents_Id_FromRoot() {
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		outerContainer.setId("myContainer");
+		root.getChildren().add(outerContainer);
+
+		UIForm form = new UIForm();
+		form.setId("form");
+		root.getChildren().add(form);
+
+		UINamingContainer innerContainer = new UINamingContainer();
+		innerContainer.setId("myContainer");
+		form.getChildren().add(innerContainer);
+
+		UINamingContainer innerContainer2 = new UINamingContainer();
+		innerContainer2.setId("myContainer2");
+		form.getChildren().add(innerContainer2);
+
+        List<UIComponent> result = resolveComponents(innerContainer2, " @root:@id(myContainer) ");
+        assertTrue(result.size() == 2);
+        assertTrue(result.contains(outerContainer));
+        assertTrue(result.contains(innerContainer));
+    }
+
+    @Test(expected = FacesException.class)
+    // resolveComponent should thrown an exception cause @id likely returns multiple components
+    public void resolveComponent_Id() {
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		outerContainer.setId("myContainer");
+		root.getChildren().add(outerContainer);
+
+        resolveComponent(root, " @id(myContainer) ");
+    }
+
+    @Test
+    public void resolveComponents_Id() {
+		UIComponent root = new UIPanel();
+        FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
+
+		UINamingContainer outerContainer = new UINamingContainer();
+		outerContainer.setId("myContainer");
+		root.getChildren().add(outerContainer);
+
+		UIForm form = new UIForm();
+		form.setId("form");
+		root.getChildren().add(form);
+
+		UINamingContainer innerContainer = new UINamingContainer();
+		innerContainer.setId("myContainer");
+		form.getChildren().add(innerContainer);
+
+		UINamingContainer innerContainer2 = new UINamingContainer();
+		innerContainer2.setId("myContainer2");
+		form.getChildren().add(innerContainer2);
+
+		UINamingContainer innerContainer3 = new UINamingContainer();
+		innerContainer3.setId("myContainer3-test");
+		form.getChildren().add(innerContainer3);
+        
+        List<UIComponent> result = resolveComponents(form, " @id(myContainer) ");
+        assertTrue(result.size() == 1);
+        assertTrue(result.contains(innerContainer));
+        
+        result = resolveComponents(form, " @id(myContainer3-test) ");
+        assertTrue(result.size() == 1);
+        assertTrue(result.contains(innerContainer3));
+    }
+
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 package org.primefaces.model.diagram.overlay;
 
 public interface Overlay {
-    
+
     public String getType();
-    
+
     public String toJS(StringBuilder sb);
 }

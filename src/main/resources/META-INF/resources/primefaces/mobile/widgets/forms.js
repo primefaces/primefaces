@@ -178,8 +178,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
         
-        this.jq.selectmenu(this.cfg).removeAttr('id');
-        this.jq.closest('.ui-select').attr('id', this.id);
+        this.jq.children('select').selectmenu(this.cfg);
     }
     
 });
@@ -236,8 +235,6 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
             this.uncheck();
         else
             this.check();
-        
-        this.input.trigger('change');
     },
     
     check: function() {
@@ -258,8 +255,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
         this.cfg.nativeMenu = false;
         
-        this.jq.selectmenu(this.cfg).removeAttr('id');
-        this.jq.closest('.ui-select').attr('id', this.id);
+        this.jq.children('select').selectmenu(this.cfg);
     }
     
 });

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2017 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -33,17 +32,19 @@ public class IdleMonitorRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        IdleMonitor monitor = (IdleMonitor) component;
-        String clientId = monitor.getClientId(context);
-        
+        IdleMonitor idleMonitor = (IdleMonitor) component;
+        String clientId = idleMonitor.getClientId(context);
+
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("IdleMonitor", monitor.resolveWidgetVar(), clientId, "idlemonitor")
-            .attr("timeout", monitor.getTimeout())
-            .callback("onidle", "function()", monitor.getOnidle())
-            .callback("onactive", "function()", monitor.getOnactive());
-        
-        encodeClientBehaviors(context, monitor);
-        
+        wb.initWithDomReady("IdleMonitor", idleMonitor.resolveWidgetVar(), clientId)
+                .attr("timeout", idleMonitor.getTimeout())
+                .attr("multiWindowSupport", idleMonitor.isMultiWindowSupport())
+                .attr("contextPath", context.getExternalContext().getRequestContextPath())
+                .callback("onidle", "function()", idleMonitor.getOnidle())
+                .callback("onactive", "function()", idleMonitor.getOnactive());
+
+        encodeClientBehaviors(context, idleMonitor);
+
         wb.finish();
     }
 }

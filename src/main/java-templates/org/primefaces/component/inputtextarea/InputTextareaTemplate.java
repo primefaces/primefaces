@@ -20,6 +20,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.util.Constants;
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select", "itemSelect"));
+    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("itemSelect"));
 
     public final static String STYLE_CLASS = "ui-inputfield ui-inputtextarea ui-widget ui-state-default ui-corner-all";
     public final static String MOBILE_STYLE_CLASS = "ui-input-text ui-shadow-inset ui-body-inherit ui-corner-all";
@@ -29,8 +30,9 @@ import org.primefaces.util.Constants;
         return EVENT_NAMES;
     }
 
+    @Override
     public Collection<String> getUnobstrusiveEventNames() {
-        return Collections.unmodifiableCollection(Arrays.asList("itemSelect"));
+        return UNOBSTRUSIVE_EVENT_NAMES;
     }
 
     @Override
