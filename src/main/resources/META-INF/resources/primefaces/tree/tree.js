@@ -34,14 +34,14 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     },
 
     bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
-        var nodeContentSelector = targetId + ' .ui-tree-selectable > span:not(.ui-tree-toggler)',
+        var nodeContentSelector = targetId + ' .ui-tree-selectable',
         nodeEvent = cfg.nodeType ? cfg.event + '.treenode.' + cfg.nodeType : cfg.event + '.treenode',
         containerEvent = cfg.event + '.tree';
 
         $(document).off(nodeEvent, nodeContentSelector).on(nodeEvent, nodeContentSelector, null, function(e) {
             var nodeContent = $(this);
 
-            if(cfg.nodeType === undefined || nodeContent.parent().data('nodetype') === cfg.nodeType) {
+            if($(e.target).is(':not(.ui-tree-toggler)') && (cfg.nodeType === undefined || nodeContent.parent().data('nodetype') === cfg.nodeType)) {
                 targetWidget.nodeRightClick(e, nodeContent);
                 menuWidget.show(e);
             }
