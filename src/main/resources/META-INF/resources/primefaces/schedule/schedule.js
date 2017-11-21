@@ -13364,7 +13364,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this,
 
         this.cfg.events = function(start, end, timezone, callback) {
-            var offset = start.zone()*60000; // <-- #2977: assume start,end in same zone
+            var offset = start.utcOffset()*60000; // <-- #2977: assume start,end in same zone
             var options = {
                 source: $this.id,
                 process: $this.id,
