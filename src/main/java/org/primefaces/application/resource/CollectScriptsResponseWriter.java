@@ -175,6 +175,8 @@ public class CollectScriptsResponseWriter extends ResponseWriterWrapper {
             .replace("PrimeFaces.cw", "pf.cw")
             .replace("PrimeFaces.ab", "pf.ab")
             .replace("window.PrimeFaces", "pf")
+            .replace("<![CDATA[","")
+            .replace("]]>","")
             .replace(";;", ";");
 
         minimized = "var pf=window.PrimeFaces;" + minimized;
