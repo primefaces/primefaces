@@ -18,6 +18,9 @@ package org.primefaces.application.resource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
+
+import org.primefaces.util.Constants;
+
 import java.io.IOException;
 import java.io.Writer;
 
