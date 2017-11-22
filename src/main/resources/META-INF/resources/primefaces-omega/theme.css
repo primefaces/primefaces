@@ -537,9 +537,6 @@ td.ui-datepicker-unselectable {
 	color: #FFFFFF;
 	background: #2399e5;
 }
-.ui-button, .ui-button span, button.ui-button.ui-state-default span, .ui-button.ui-state-default span {
-	font-weight: bold;
-}
 button.ui-button.ui-state-hover, .ui-button.ui-state-hover,
 button.ui-button.ui-state-focus, .ui-button.ui-state-focus {
 	border: 1px solid #156090;
