@@ -18,6 +18,9 @@ package org.primefaces.application.resource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
+
+import org.primefaces.util.Constants;
+
 import java.io.IOException;
 import java.io.Writer;
 
@@ -47,7 +50,7 @@ public class CollectScriptsResponseWriter extends ResponseWriterWrapper {
     @Override
     public void write(int c) throws IOException {
         if (inScript) {
-            inline.append((char) c);
+            inline.append(stripComments((char) c));
         }
         else {
             getWrapped().write(c);
@@ -57,7 +60,7 @@ public class CollectScriptsResponseWriter extends ResponseWriterWrapper {
     @Override
     public void write(char cbuf[]) throws IOException {
         if (inScript) {
-            inline.append(cbuf);
+            inline.append(stripComments(cbuf));
         }
         else {
             getWrapped().write(cbuf);
@@ -67,7 +70,7 @@ public class CollectScriptsResponseWriter extends ResponseWriterWrapper {
     @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
         if (inScript) {
-            inline.append(cbuf, off, len);
+            inline.append(stripComments(cbuf), off, len);
         }
         else {
             getWrapped().write(cbuf);
@@ -77,7 +80,7 @@ public class CollectScriptsResponseWriter extends ResponseWriterWrapper {
     @Override
     public void write(String str) throws IOException {
         if (inScript) {
-            inline.append(str);
+            inline.append(stripComments(str));
         }
         else {
             getWrapped().write(str);
@@ -87,7 +90,7 @@ public class CollectScriptsResponseWriter extends ResponseWriterWrapper {
     @Override
     public void writeText(Object text, String property) throws IOException {
         if (inScript) {
-            inline.append(text);
+            inline.append(stripComments(text));
         }
         else {
             getWrapped().writeText(text, property);
@@ -175,11 +178,28 @@ public class CollectScriptsResponseWriter extends ResponseWriterWrapper {
             .replace("PrimeFaces.cw", "pf.cw")
             .replace("PrimeFaces.ab", "pf.ab")
             .replace("window.PrimeFaces", "pf")
+            .replace("<![CDATA[","")
+            .replace("]]>","")
             .replace(";;", ";");
 
         minimized = "var pf=window.PrimeFaces;" + minimized;
 
         return minimized;
+    }
+    
+    protected String stripComments(Object value) {
+        String text = String.valueOf(value);
+        
+        // comment lines are ignored
+        if (text.startsWith("//")) {
+            return Constants.EMPTY_STRING;
+        }
+        
+        // remove CDATA tags
+        text = text.replace("<![CDATA[", Constants.EMPTY_STRING)
+                   .replace("]]>", Constants.EMPTY_STRING);
+        
+        return text;
     }
     
     @Override
