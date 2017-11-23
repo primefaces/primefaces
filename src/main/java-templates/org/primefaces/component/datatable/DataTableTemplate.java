@@ -619,45 +619,29 @@ import org.primefaces.component.datatable.TableState;
                 sortField = field;
         }
         else {
-            ValueExpression columnSortByVE = column.getValueExpression(PropertyKeys.sortBy.toString());
-            
-            if(column.isDynamic()) {
-                ((DynamicColumn) sortColumn).applyStatelessModel();
-                Object sortByProperty = sortColumn.getSortBy();
-                String field = column.getField();
-                if(field == null)
-                    sortField = (sortByProperty == null) ? resolveDynamicField(columnSortByVE) : sortByProperty.toString();
-                else
-                    sortField = field;
-            }
-            else {
-                String field = column.getField();
-                if(field == null)
-                    sortField = (columnSortByVE == null) ? (String) column.getSortBy() : resolveStaticField(columnSortByVE);
-                else
-                    sortField = field;
-            }
+            sortField = resolveColumnField(sortColumn);
         }
         
         return sortField;
     }
 
     public String resolveColumnField(UIColumn column) {
-        ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
+        ValueExpression columnSortByVE = column.getValueExpression(PropertyKeys.sortBy.toString());
         String columnField;
         
         if(column.isDynamic()) {
             ((DynamicColumn) column).applyStatelessModel();
+            Object sortByProperty = column.getSortBy();
             String field = column.getField();
             if(field == null)
-                columnField = this.resolveDynamicField(columnSortByVE);
+                columnField = (sortByProperty == null) ? resolveDynamicField(columnSortByVE) : sortByProperty.toString();
             else
                 columnField = field;
         }
         else {
             String field = column.getField();
             if(field == null)
-                columnField = this.resolveStaticField(columnSortByVE);
+                columnField = (columnSortByVE == null) ? (String) column.getSortBy() : resolveStaticField(columnSortByVE);
             else
                 columnField = field;
         }
