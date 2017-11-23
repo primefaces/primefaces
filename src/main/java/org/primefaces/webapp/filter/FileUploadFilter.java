@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.context.FacesContext;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -28,12 +27,13 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.fileupload.FileItemFactory;
 
+import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.FileCleanerCleanup;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileCleaningTracker;
+import org.primefaces.config.JsfVersionDetector;
 import org.primefaces.util.Constants;
 import org.primefaces.webapp.MultipartRequest;
 
@@ -52,7 +52,7 @@ public class FileUploadFilter implements Filter {
     private boolean bypass;
 
     public void init(FilterConfig filterConfig) throws ServletException {
-        boolean isAtLeastJSF22 = detectJSF22();
+        boolean isAtLeastJSF22 = new JsfVersionDetector().isJsf22Supported();
         String uploader = filterConfig.getServletContext().getInitParameter(Constants.ContextParams.UPLOADER);
 
         if (uploader == null || uploader.equals("auto")) {
@@ -104,24 +104,6 @@ public class FileUploadFilter implements Filter {
     public void destroy() {
         if (logger.isLoggable(Level.FINE)) {
             logger.fine("Destroying FileUploadFilter");
-        }
-    }
-
-    private boolean detectJSF22() {
-        String version = FacesContext.class.getPackage().getImplementationVersion();
-
-        if (version != null) {
-            return version.startsWith("2.2");
-        }
-        else {
-            //fallback
-            try {
-                Class.forName("javax.faces.flow.Flow");
-                return true;
-            }
-            catch (ClassNotFoundException ex) {
-                return false;
-            }
         }
     }
 
