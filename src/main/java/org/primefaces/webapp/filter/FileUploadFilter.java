@@ -17,7 +17,6 @@ package org.primefaces.webapp.filter;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.Filter;
@@ -68,9 +67,7 @@ public class FileUploadFilter implements Filter {
         thresholdSize = filterConfig.getInitParameter(THRESHOLD_SIZE_PARAM);
         uploadDir = filterConfig.getInitParameter(UPLOAD_DIRECTORY_PARAM);
 
-        if (logger.isLoggable(Level.FINE)) {
-            logger.fine("FileUploadFilter initiated successfully");
-        }
+        logger.fine("FileUploadFilter initiated successfully");
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
@@ -83,16 +80,12 @@ public class FileUploadFilter implements Filter {
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
 
         if (isMultipart) {
-            if (logger.isLoggable(Level.FINE)) {
-                logger.fine("Parsing file upload request");
-            }
+            logger.fine("Parsing file upload request");
 
             ServletFileUpload servletFileUpload = new ServletFileUpload(createFileItemFactory(httpServletRequest));
             MultipartRequest multipartRequest = new MultipartRequest(httpServletRequest, servletFileUpload);
 
-            if (logger.isLoggable(Level.FINE)) {
-                logger.fine("File upload request parsed succesfully, continuing with filter chain with a wrapped multipart request");
-            }
+            logger.fine("File upload request parsed succesfully, continuing with filter chain with a wrapped multipart request");
 
             filterChain.doFilter(multipartRequest, response);
         }
@@ -102,9 +95,7 @@ public class FileUploadFilter implements Filter {
     }
 
     public void destroy() {
-        if (logger.isLoggable(Level.FINE)) {
-            logger.fine("Destroying FileUploadFilter");
-        }
+        logger.fine("Destroying FileUploadFilter");
     }
 
     protected FileItemFactory createFileItemFactory(HttpServletRequest httpServletRequest) {
