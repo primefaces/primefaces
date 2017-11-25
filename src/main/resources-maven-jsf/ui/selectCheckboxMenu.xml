@@ -33,7 +33,7 @@
         </attribute>
         <attribute>
             <name>label</name>
-            <required>true</required>
+            <required>false</required>
             <type>java.lang.String</type>
             <ignoreInComponent>true</ignoreInComponent>
         </attribute>
