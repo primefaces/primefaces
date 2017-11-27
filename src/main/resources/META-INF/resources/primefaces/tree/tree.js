@@ -1016,7 +1016,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     draggedNodes = [ui.draggable];
                 }
                 
-                for(var i = 0; i < draggedNodes.length; i++) {
+                for(var i = (draggedNodes.length - 1); i >= 0; i--) {
                     var draggedNode = $(draggedNodes[i]),
                     dragMode = ui.draggable.data('dragmode'),
                     dragNode = draggedNode.is('li.ui-treenode') ? draggedNode : draggedNode.closest('li.ui-treenode'),
@@ -1064,7 +1064,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     }
                 }
                 
-                draggedSourceKeys = (draggedSourceKeys && draggedSourceKeys.length) ? draggedSourceKeys.join(',') : dragNodeKey;
+                draggedSourceKeys = (draggedSourceKeys && draggedSourceKeys.length) ? draggedSourceKeys.reverse().join(',') : dragNodeKey;
                 
                 $this.fireDragDropEvent({
                     'dragNodeKey': draggedSourceKeys,
