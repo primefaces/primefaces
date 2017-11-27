@@ -1579,6 +1579,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     onRowClick: function(event, rowElement, silent) {
+        // check if rowclick is triggered by spacebar
+        if(event.which === 32) {
+            return;
+        }
+
         //Check if rowclick triggered this event not a clickable element in row content
         if($(event.target).is(this.rowSelectorForRowClick)) {
             var row = $(rowElement),
