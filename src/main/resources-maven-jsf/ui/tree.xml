@@ -244,6 +244,13 @@
             <defaultValue>false</defaultValue>
             <description>When enabled, the selected multiple nodes can be dragged from a tree to another tree.</description>
 		</attribute>
+        <attribute>
+			<name>dropMode</name>
+			<required>false</required>
+			<type>java.lang.String</type>
+            <defaultValue>cut</defaultValue>
+            <description>Defines drop mode, valid values are cut (default) and copy.</description>
+		</attribute>
     </attributes>
     <resources>
         <resource>

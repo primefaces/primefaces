@@ -169,6 +169,10 @@ public class TreeRenderer extends CoreRenderer {
         }
         
         for (TreeNode dragNode : dragNodes) {
+            if (tree.getDropMode().equals("copy")) {
+                dragNode = tree.createCopyOfTreeNode(dragNode);
+            }
+            
             if (dndIndex >= 0 && dndIndex < dropNode.getChildCount()) {
                 dropNode.getChildren().add(dndIndex, dragNode);
             }
@@ -278,7 +282,8 @@ public class TreeRenderer extends CoreRenderer {
             wb.attr("draggable", true)
                     .attr("dragMode", tree.getDragMode())
                     .attr("dropRestrict", tree.getDropRestrict())
-                    .attr("multipleDrag", tree.isMultipleDrag());
+                    .attr("multipleDrag", tree.isMultipleDrag())
+                    .attr("dropMode", tree.getDropMode());
         }
 
         if (filter) {

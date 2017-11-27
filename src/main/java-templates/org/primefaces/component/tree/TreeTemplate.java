@@ -22,6 +22,8 @@ import org.primefaces.component.tree.UITreeNode;
 import org.primefaces.util.Constants;
 import org.primefaces.model.TreeNode;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.model.CheckboxTreeNode;
+import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.filter.ContainsFilterConstraint;
 import org.primefaces.model.filter.EndsWithFilterConstraint;
 import org.primefaces.model.filter.EqualsFilterConstraint;
@@ -337,6 +339,25 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
         }
  
         super.validateSelection(context);
+    }
+
+    public TreeNode createCopyOfTreeNode(TreeNode node) {
+        TreeNode newNode;
+        if(node instanceof CheckboxTreeNode) {
+            newNode = new CheckboxTreeNode(node.getData());
+        }
+        else {
+            newNode = new DefaultTreeNode(node.getData());
+        }
+        
+        newNode.setSelectable(node.isSelectable());
+        newNode.setExpanded(node.isExpanded());
+        
+        for(TreeNode childNode : node.getChildren()) {
+            newNode.getChildren().add(createCopyOfTreeNode(childNode));
+        }
+        
+        return newNode;
     }
     
     private List<String> filteredRowKeys = new ArrayList<String>();

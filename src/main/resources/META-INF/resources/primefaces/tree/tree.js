@@ -1020,6 +1020,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     var draggedNode = $(draggedNodes[i]),
                     dragMode = ui.draggable.data('dragmode'),
                     dragNode = draggedNode.is('li.ui-treenode') ? draggedNode : draggedNode.closest('li.ui-treenode'),
+                    dragNode = ($this.cfg.dropMode === 'copy' && transfer) ? dragNode.clone() : dragNode,
                     targetDragNode = $this.findTargetDragNode(dragNode, dragMode),
                     dragNodeDropPoint = targetDragNode.next('li.ui-tree-droppoint'),
                     oldParentNode = targetDragNode.parent().closest('li.ui-treenode-parent');
@@ -1075,6 +1076,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 });
                 
                 dragSource.draggedSourceKeys = null;
+                
+                if($this.cfg.draggable && $this.cfg.dropMode === 'copy' && transfer) {
+                    $this.initDraggable();
+                }
             }
         });
     },
@@ -1115,6 +1120,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     var draggedNode = $(draggedNodes[i]),
                     dragMode = ui.draggable.data('dragmode'),
                     dragNode = draggedNode.is('li.ui-treenode') ? draggedNode : draggedNode.closest('li.ui-treenode'),
+                    dragNode = ($this.cfg.dropMode === 'copy' && transfer) ? dragNode.clone() : dragNode,
                     targetDragNode = $this.findTargetDragNode(dragNode, dragMode),
                     dragNodeDropPoint = targetDragNode.next('li.ui-tree-droppoint'),
                     oldParentNode = targetDragNode.parent().closest('li.ui-treenode-parent'),
@@ -1176,6 +1182,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 });
                 
                 dragSource.draggedSourceKeys = null;
+                
+                if($this.cfg.draggable && $this.cfg.dropMode === 'copy' && transfer) {
+                    $this.initDraggable();
+                }
             }
         });
     },
@@ -1230,12 +1240,16 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
         //descendant droppoints
         var subtreeDropPoints = node.find('li.ui-tree-droppoint');
-        subtreeDropPoints.droppable('destroy');
+        if(this.cfg.dropMode !== "copy") {
+            subtreeDropPoints.droppable('destroy');
+        }
         this.makeDropPoints(subtreeDropPoints);
 
         //descendant drop node contents
         var subtreeDropNodeContents = node.find('span.ui-treenode-content');
-        subtreeDropNodeContents.droppable('destroy');
+        if(this.cfg.dropMode !== "copy") {
+            subtreeDropNodeContents.droppable('destroy');
+        }
         this.makeDropNodes(subtreeDropNodeContents);
 
         if(this.cfg.draggable) {
