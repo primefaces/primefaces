@@ -557,8 +557,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     case keyCode.ENTER:
                     case keyCode.NUMPAD_ENTER:
                     case keyCode.SPACE:
-                        e.target = $this.focusedRow.children().eq(0).get(0);
-                        $this.onRowClick(e,$this.focusedRow.get(0));
                         e.preventDefault();
                     break;
 
@@ -1579,6 +1577,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     onRowClick: function(event, rowElement, silent) {
+
         //Check if rowclick triggered this event not a clickable element in row content
         if($(event.target).is(this.rowSelectorForRowClick)) {
             var row = $(rowElement),
