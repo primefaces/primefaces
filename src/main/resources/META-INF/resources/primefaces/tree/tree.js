@@ -754,6 +754,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 $this.focusedNode = null;
             }
         });
+        
+        /* For copy/paste operation on drag and drop */
+        $(document.body).on('keydown.tree', function(e) {
+            $this.shiftKey = e.shiftKey;
+        })
+        .on('keyup.tree', function() {
+            $this.shiftKey = false;
+        });
     },
 
     searchDown: function(node) {
@@ -1006,6 +1014,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 dropNodeKey = $this.getRowKey(dropNode),
                 transfer = (dragSource.id !== dropSource.id),
                 draggedSourceKeys = dragSource.draggedSourceKeys,
+                isDroppedCopyNode = ($this.cfg.dropCopyNode && $this.shiftKey && transfer),
                 draggedNodes,
                 dragNodeKey;
 
@@ -1020,7 +1029,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     var draggedNode = $(draggedNodes[i]),
                     dragMode = ui.draggable.data('dragmode'),
                     dragNode = draggedNode.is('li.ui-treenode') ? draggedNode : draggedNode.closest('li.ui-treenode'),
-                    dragNode = ($this.cfg.dropMode === 'copy' && transfer) ? dragNode.clone() : dragNode,
+                    dragNode = (isDroppedCopyNode) ? dragNode.clone() : dragNode,
                     targetDragNode = $this.findTargetDragNode(dragNode, dragMode),
                     dragNodeDropPoint = targetDragNode.next('li.ui-tree-droppoint'),
                     oldParentNode = targetDragNode.parent().closest('li.ui-treenode-parent');
@@ -1072,12 +1081,13 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     'dropNodeKey': dropNodeKey,
                     'dragSource': dragSource.id,
                     'dndIndex': dropPoint.prevAll('li.ui-treenode').length,
-                    'transfer': transfer
+                    'transfer': transfer,
+                    'isDroppedCopyNode': isDroppedCopyNode
                 });
                 
                 dragSource.draggedSourceKeys = null;
                 
-                if($this.cfg.draggable && $this.cfg.dropMode === 'copy' && transfer) {
+                if(isDroppedCopyNode) {
                     $this.initDraggable();
                 }
             }
@@ -1106,6 +1116,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 dropNodeKey = $this.getRowKey(dropNode),
                 transfer = (dragSource.id !== dropSource.id),
                 draggedSourceKeys = dragSource.draggedSourceKeys,
+                isDroppedCopyNode = ($this.cfg.dropCopyNode && $this.shiftKey && transfer),
                 draggedNodes,
                 dragNodeKey;
 
@@ -1120,7 +1131,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     var draggedNode = $(draggedNodes[i]),
                     dragMode = ui.draggable.data('dragmode'),
                     dragNode = draggedNode.is('li.ui-treenode') ? draggedNode : draggedNode.closest('li.ui-treenode'),
-                    dragNode = ($this.cfg.dropMode === 'copy' && transfer) ? dragNode.clone() : dragNode,
+                    dragNode = (isDroppedCopyNode) ? dragNode.clone() : dragNode,
                     targetDragNode = $this.findTargetDragNode(dragNode, dragMode),
                     dragNodeDropPoint = targetDragNode.next('li.ui-tree-droppoint'),
                     oldParentNode = targetDragNode.parent().closest('li.ui-treenode-parent'),
@@ -1178,12 +1189,13 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     'dropNodeKey': dropNodeKey,
                     'dragSource': dragSource.id,
                     'dndIndex': targetDragNode.prevAll('li.ui-treenode').length,
-                    'transfer': transfer
+                    'transfer': transfer,
+                    'isDroppedCopyNode': isDroppedCopyNode
                 });
                 
                 dragSource.draggedSourceKeys = null;
                 
-                if($this.cfg.draggable && $this.cfg.dropMode === 'copy' && transfer) {
+                if(isDroppedCopyNode) {
                     $this.initDraggable();
                 }
             }
@@ -1444,7 +1456,8 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             {name: this.id + '_dragNode', value: event.dragNodeKey},
             {name: this.id + '_dragSource', value: event.dragSource},
             {name: this.id + '_dropNode', value: event.dropNodeKey},
-            {name: this.id + '_dndIndex', value: event.dndIndex}
+            {name: this.id + '_dndIndex', value: event.dndIndex},
+            {name: this.id + '_isDroppedCopyNode', value: event.isDroppedCopyNode}
         ];
 
         if(this.hasBehavior('dragdrop')) {
