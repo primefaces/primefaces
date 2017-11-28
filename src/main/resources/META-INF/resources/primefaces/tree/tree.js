@@ -1252,14 +1252,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
         //descendant droppoints
         var subtreeDropPoints = node.find('li.ui-tree-droppoint');
-        if(this.cfg.dropMode !== "copy") {
+        if(!this.shiftKey && !this.cfg.dropCopyNode) {
             subtreeDropPoints.droppable('destroy');
         }
         this.makeDropPoints(subtreeDropPoints);
 
         //descendant drop node contents
         var subtreeDropNodeContents = node.find('span.ui-treenode-content');
-        if(this.cfg.dropMode !== "copy") {
+        if(!this.shiftKey && !this.cfg.dropCopyNode) {
             subtreeDropNodeContents.droppable('destroy');
         }
         this.makeDropNodes(subtreeDropNodeContents);
