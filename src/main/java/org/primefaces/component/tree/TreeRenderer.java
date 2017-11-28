@@ -284,7 +284,7 @@ public class TreeRenderer extends CoreRenderer {
                     .attr("dragMode", tree.getDragMode())
                     .attr("dropRestrict", tree.getDropRestrict())
                     .attr("multipleDrag", tree.isMultipleDrag())
-                    .attr("dropMode", tree.getDropMode());
+                    .attr("dropCopyNode", tree.isDropCopyNode());
         }
 
         if (filter) {
