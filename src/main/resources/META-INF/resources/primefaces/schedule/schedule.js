@@ -13254,6 +13254,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                                     ,week: lang.week
                                     ,day: lang.day};
             this.cfg.allDayText = lang.allDayText;
+            this.cfg.weekNumberTitle = lang.weekNumberTitle;
             if(lang.eventLimitText) {
                 this.cfg.eventLimitText = lang.eventLimitText;
             }
