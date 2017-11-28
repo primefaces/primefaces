@@ -170,7 +170,7 @@ public class TreeRenderer extends CoreRenderer {
             tree.setDragNode(dragNodes[0]);
         }
         
-        MethodExpression me = tree.getDropController();
+        MethodExpression me = tree.getOnDrop();
         if (me != null) {
             Object[] newParams = tree.isMultipleDrag() ? new Object[] {dragNodes, dropNode, dndIndex} : new Object[] {dragNodes[0], dropNode, dndIndex};
             boolean retVal = (Boolean) me.invoke(context.getELContext(), newParams);
@@ -297,10 +297,10 @@ public class TreeRenderer extends CoreRenderer {
                     .attr("dropRestrict", tree.getDropRestrict())
                     .attr("multipleDrag", tree.isMultipleDrag())
                     .attr("dropCopyNode", tree.isDropCopyNode());
-            
-            if (tree.getDropController() != null) {
-                wb.attr("controlled", true);
-            }
+        }
+        
+        if (tree.getOnDrop() != null) {
+            wb.attr("controlled", true);
         }
 
         if (filter) {

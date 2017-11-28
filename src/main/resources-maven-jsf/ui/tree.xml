@@ -253,10 +253,10 @@
             <description>When enabled, the copy of the selected nodes can be dropped from a tree to another tree using Shift key.</description>
 		</attribute>
         <attribute>
-            <name>dropController</name>
+            <name>onDrop</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
-            <method-signature>java.lang.Boolean controlDroppedNode(java.lang.Object, java.lang.Object, java.lang.Integer)</method-signature>
+            <method-signature>java.lang.Boolean onDrop(java.lang.Object, java.lang.Object, java.lang.Integer)</method-signature>
             <description>Method providing suggestions.</description>
         </attribute>
     </attributes>

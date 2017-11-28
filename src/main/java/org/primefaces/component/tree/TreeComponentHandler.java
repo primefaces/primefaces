@@ -24,8 +24,8 @@ import org.primefaces.facelets.MethodRule;
 
 public class TreeComponentHandler extends ComponentHandler {
 
-    private static final MetaRule DROP_CONTROLLER
-            = new MethodRule("dropController", Boolean.class, new Class[]{Object.class, Object.class, Integer.class});
+    private static final MetaRule DROP_LISTENER
+            = new MethodRule("onDrop", Boolean.class, new Class[]{Object.class, Object.class, Integer.class});
 
     public TreeComponentHandler(ComponentConfig config) {
         super(config);
@@ -35,7 +35,7 @@ public class TreeComponentHandler extends ComponentHandler {
     protected MetaRuleset createMetaRuleset(Class type) {
         MetaRuleset metaRuleset = super.createMetaRuleset(type);
 
-        metaRuleset.addRule(DROP_CONTROLLER);
+        metaRuleset.addRule(DROP_LISTENER);
 
         return metaRuleset;
     }
