@@ -1014,7 +1014,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 dropNodeKey = $this.getRowKey(dropNode),
                 transfer = (dragSource.id !== dropSource.id),
                 draggedSourceKeys = dragSource.draggedSourceKeys,
-                isDroppedCopyNode = ($this.cfg.dropCopyNode && $this.shiftKey && transfer),
+                isDroppedNodeCopy = ($this.cfg.dropCopyNode && $this.shiftKey && transfer),
                 draggedNodes,
                 dragNodeKey;
 
@@ -1033,7 +1033,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     var draggedNode = $(draggedNodes[i]),
                     dragMode = ui.draggable.data('dragmode'),
                     dragNode = draggedNode.is('li.ui-treenode') ? draggedNode : draggedNode.closest('li.ui-treenode'),
-                    dragNode = (isDroppedCopyNode) ? dragNode.clone() : dragNode,
+                    dragNode = (isDroppedNodeCopy) ? dragNode.clone() : dragNode,
                     targetDragNode = $this.findTargetDragNode(dragNode, dragMode);
             
                     dragNodeKey = $this.getRowKey(targetDragNode);
@@ -1062,12 +1062,12 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     'dragSource': dragSource.id,
                     'dndIndex': dropPoint.prevAll('li.ui-treenode').length,
                     'transfer': transfer,
-                    'isDroppedCopyNode': isDroppedCopyNode
+                    'isDroppedNodeCopy': isDroppedNodeCopy
                 });
                 
                 dragSource.draggedSourceKeys = null;
                 
-                if(isDroppedCopyNode) {
+                if(isDroppedNodeCopy) {
                     $this.initDraggable();
                 }
             }
@@ -1138,7 +1138,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 dropNodeKey = $this.getRowKey(dropNode),
                 transfer = (dragSource.id !== dropSource.id),
                 draggedSourceKeys = dragSource.draggedSourceKeys,
-                isDroppedCopyNode = ($this.cfg.dropCopyNode && $this.shiftKey && transfer),
+                isDroppedNodeCopy = ($this.cfg.dropCopyNode && $this.shiftKey && transfer),
                 draggedNodes,
                 dragNodeKey,
                 dndIndex;
@@ -1158,7 +1158,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     var draggedNode = $(draggedNodes[i]),
                     dragMode = ui.draggable.data('dragmode'),
                     dragNode = draggedNode.is('li.ui-treenode') ? draggedNode : draggedNode.closest('li.ui-treenode'),
-                    dragNode = (isDroppedCopyNode) ? dragNode.clone() : dragNode,
+                    dragNode = (isDroppedNodeCopy) ? dragNode.clone() : dragNode,
                     targetDragNode = $this.findTargetDragNode(dragNode, dragMode);
                     
                     if(i === 0) {
@@ -1191,12 +1191,12 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     'dragSource': dragSource.id,
                     'dndIndex': dndIndex,
                     'transfer': transfer,
-                    'isDroppedCopyNode': isDroppedCopyNode
+                    'isDroppedNodeCopy': isDroppedNodeCopy
                 });
                 
                 dragSource.draggedSourceKeys = null;
                 
-                if(isDroppedCopyNode) {
+                if(isDroppedNodeCopy) {
                     $this.initDraggable();
                 }
             }
@@ -1506,7 +1506,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             {name: this.id + '_dragSource', value: event.dragSource},
             {name: this.id + '_dropNode', value: event.dropNodeKey},
             {name: this.id + '_dndIndex', value: event.dndIndex},
-            {name: this.id + '_isDroppedCopyNode', value: event.isDroppedCopyNode}
+            {name: this.id + '_isDroppedNodeCopy', value: event.isDroppedNodeCopy}
         ];
         
         if(this.cfg.controlled) {

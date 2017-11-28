@@ -134,7 +134,7 @@ public class TreeRenderer extends CoreRenderer {
         String dropNodeRowKey = params.get(clientId + "_dropNode");
         String dragSource = params.get(clientId + "_dragSource");
         int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
-        boolean isDroppedCopyNode = Boolean.valueOf(params.get(clientId + "_isDroppedCopyNode"));
+        boolean isDroppedNodeCopy = Boolean.valueOf(params.get(clientId + "_isDroppedNodeCopy"));
         String[] dragNodeRowKeyArr = dragNodeRowKey.split(",");
         List<TreeNode> dragNodeList = new ArrayList<TreeNode>();
         TreeNode dropNode;
@@ -182,7 +182,7 @@ public class TreeRenderer extends CoreRenderer {
         }
         
         for (TreeNode dragNode : dragNodes) {
-            if (isDroppedCopyNode) {
+            if (isDroppedNodeCopy) {
                 dragNode = tree.createCopyOfTreeNode(dragNode);
             }
             
