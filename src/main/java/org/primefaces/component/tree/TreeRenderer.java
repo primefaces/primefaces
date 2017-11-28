@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import javax.el.MethodExpression;
 import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
@@ -169,6 +170,17 @@ public class TreeRenderer extends CoreRenderer {
             tree.setDragNode(dragNodes[0]);
         }
         
+        MethodExpression me = tree.getDropController();
+        if (me != null) {
+            Object[] newParams = tree.isMultipleDrag() ? new Object[] {dragNodes, dropNode, dndIndex} : new Object[] {dragNodes[0], dropNode, dndIndex};
+            boolean retVal = (Boolean) me.invoke(context.getELContext(), newParams);
+            RequestContext.getCurrentInstance().addCallbackParam("access", retVal);
+            
+            if (!retVal) {
+                return;
+            }
+        }
+        
         for (TreeNode dragNode : dragNodes) {
             if (isDroppedCopyNode) {
                 dragNode = tree.createCopyOfTreeNode(dragNode);
@@ -285,6 +297,10 @@ public class TreeRenderer extends CoreRenderer {
                     .attr("dropRestrict", tree.getDropRestrict())
                     .attr("multipleDrag", tree.isMultipleDrag())
                     .attr("dropCopyNode", tree.isDropCopyNode());
+            
+            if (tree.getDropController() != null) {
+                wb.attr("controlled", true);
+            }
         }
 
         if (filter) {

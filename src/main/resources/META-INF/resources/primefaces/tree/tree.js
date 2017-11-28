@@ -1025,52 +1025,32 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     draggedNodes = [ui.draggable];
                 }
                 
+                if($this.cfg.controlled) {
+                    $this.droppedNodeParams = [];
+                }
+                
                 for(var i = (draggedNodes.length - 1); i >= 0; i--) {
                     var draggedNode = $(draggedNodes[i]),
                     dragMode = ui.draggable.data('dragmode'),
                     dragNode = draggedNode.is('li.ui-treenode') ? draggedNode : draggedNode.closest('li.ui-treenode'),
                     dragNode = (isDroppedCopyNode) ? dragNode.clone() : dragNode,
-                    targetDragNode = $this.findTargetDragNode(dragNode, dragMode),
-                    dragNodeDropPoint = targetDragNode.next('li.ui-tree-droppoint'),
-                    oldParentNode = targetDragNode.parent().closest('li.ui-treenode-parent');
+                    targetDragNode = $this.findTargetDragNode(dragNode, dragMode);
             
                     dragNodeKey = $this.getRowKey(targetDragNode);
                     
-                    ui.helper.remove();
-                    dropPoint.removeClass('ui-state-hover');
-
-                    var validDrop = $this.validateDropPoint(dragNode, dropPoint);
-                    if(!validDrop) {
-                        return;
-                    }
-
-                    targetDragNode.hide().insertAfter(dropPoint);
-
-                    if(transfer) {
-                        if(dragSource.cfg.selectionMode) {
-                            dragSource.unselectSubtree(targetDragNode);
-                        }
-
-                        dragNodeDropPoint.remove();
-                        $this.updateDragDropBindings(targetDragNode);
+                    if($this.cfg.controlled) {
+                        $this.droppedNodeParams.push({
+                            'ui': ui, 
+                            'dragSource': dragSource, 
+                            'dragNode': dragNode, 
+                            'targetDragNode': targetDragNode, 
+                            'dropPoint': dropPoint,
+                            'dropNode': dropNode, 
+                            'transfer': transfer
+                        });
                     }
                     else {
-                        dragNodeDropPoint.insertAfter(targetDragNode);
-                    }
-
-                    if(oldParentNode.length && (oldParentNode.find('> ul.ui-treenode-children > li.ui-treenode').length === 0)) {
-                        $this.makeLeaf(oldParentNode);
-                    }
-
-                    targetDragNode.fadeIn();
-
-                    if($this.isCheckboxSelection()) {                                                
-                        $this.syncDNDCheckboxes(dragSource, oldParentNode, dropNode);
-                    }
-
-                    $this.syncDragDrop();
-                    if(transfer) {
-                        dragSource.syncDragDrop();
+                        $this.onDropPoint(ui, dragSource, dragNode, targetDragNode, dropPoint, dropNode, transfer);
                     }
                 }
                 
@@ -1093,11 +1073,53 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             }
         });
     },
+    
+    onDropPoint: function(ui, dragSource, dragNode, targetDragNode, dropPoint, dropNode, transfer) {
+        var dragNodeDropPoint = targetDragNode.next('li.ui-tree-droppoint'),
+        oldParentNode = targetDragNode.parent().closest('li.ui-treenode-parent');
+        
+        ui.helper.remove();
+        dropPoint.removeClass('ui-state-hover');
 
+        var validDrop = this.validateDropPoint(dragNode, dropPoint);
+        if(!validDrop) {
+            return;
+        }
+
+        targetDragNode.hide().insertAfter(dropPoint);
+
+        if(transfer) {
+            if(dragSource.cfg.selectionMode) {
+                dragSource.unselectSubtree(targetDragNode);
+            }
+
+            dragNodeDropPoint.remove();
+            this.updateDragDropBindings(targetDragNode);
+        }
+        else {
+            dragNodeDropPoint.insertAfter(targetDragNode);
+        }
+
+        if(oldParentNode.length && (oldParentNode.find('> ul.ui-treenode-children > li.ui-treenode').length === 0)) {
+            this.makeLeaf(oldParentNode);
+        }
+
+        targetDragNode.fadeIn();
+
+        if(this.isCheckboxSelection()) {                                                
+            this.syncDNDCheckboxes(dragSource, oldParentNode, dropNode);
+        }
+
+        this.syncDragDrop();
+        if(transfer) {
+            dragSource.syncDragDrop();
+        }
+    },
+        
     makeDropNodes: function(elements) {
         var $this = this,
         dragdropScope = this.cfg.dragdropScope||this.id;
-
+        
         elements.droppable({
             accept: '.ui-treenode-content',
             tolerance: 'pointer',
@@ -1118,7 +1140,8 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 draggedSourceKeys = dragSource.draggedSourceKeys,
                 isDroppedCopyNode = ($this.cfg.dropCopyNode && $this.shiftKey && transfer),
                 draggedNodes,
-                dragNodeKey;
+                dragNodeKey,
+                dndIndex;
 
                 if(draggedSourceKeys) {
                     draggedNodes = dragSource.findNodes(draggedSourceKeys);
@@ -1127,68 +1150,46 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     draggedNodes = [ui.draggable];
                 }
                 
+                if($this.cfg.controlled) {
+                    $this.droppedNodeParams = [];
+                }
+                
                 for(var i = 0; i < draggedNodes.length; i++) {
                     var draggedNode = $(draggedNodes[i]),
                     dragMode = ui.draggable.data('dragmode'),
                     dragNode = draggedNode.is('li.ui-treenode') ? draggedNode : draggedNode.closest('li.ui-treenode'),
                     dragNode = (isDroppedCopyNode) ? dragNode.clone() : dragNode,
-                    targetDragNode = $this.findTargetDragNode(dragNode, dragMode),
-                    dragNodeDropPoint = targetDragNode.next('li.ui-tree-droppoint'),
-                    oldParentNode = targetDragNode.parent().closest('li.ui-treenode-parent'),
-                    childrenContainer = dropNode.children('.ui-treenode-children');
-            
+                    targetDragNode = $this.findTargetDragNode(dragNode, dragMode);
+                    
+                    if(i === 0) {
+                        dndIndex = targetDragNode.prevAll('li.ui-treenode').length;
+                    }
+                    
                     dragNodeKey = $this.getRowKey(targetDragNode);
                     
-                    ui.helper.remove();
-                    droppable.children('.ui-treenode-label').removeClass('ui-state-hover');
-
-                    var validDrop = $this.validateDropNode(dragNode, dropNode, oldParentNode);  
-                    if(!validDrop) {
-                        return;
-                    }
-
-                    if(childrenContainer.children('li.ui-treenode').length === 0) {
-                        $this.makeParent(dropNode);
-                    }
-
-                    targetDragNode.hide();
-                    childrenContainer.append(targetDragNode);
-
-                    if(oldParentNode.length && (oldParentNode.find('> ul.ui-treenode-children > li.ui-treenode').length === 0)) {
-                        $this.makeLeaf(oldParentNode);
-                    }
-
-                    if(transfer) {
-                        if(dragSource.cfg.selectionMode) {
-                            dragSource.unselectSubtree(targetDragNode);
-                        }
-
-                        dragNodeDropPoint.remove();
-                        $this.updateDragDropBindings(targetDragNode);
+                    if($this.cfg.controlled) {
+                        $this.droppedNodeParams.push({
+                            'ui': ui, 
+                            'dragSource': dragSource, 
+                            'dragNode': dragNode, 
+                            'targetDragNode': targetDragNode, 
+                            'droppable': droppable,
+                            'dropNode': dropNode, 
+                            'transfer': transfer
+                        });
                     }
                     else {
-                        childrenContainer.append(dragNodeDropPoint);
-                    }
-
-                    targetDragNode.fadeIn();
-
-                    if($this.isCheckboxSelection()) {                                                
-                        $this.syncDNDCheckboxes(dragSource, oldParentNode, dropNode);
-                    }
-
-                    $this.syncDragDrop();
-                    if(transfer) {
-                        dragSource.syncDragDrop();
+                        $this.onDropNode(ui, dragSource, dragNode, targetDragNode, droppable, dropNode, transfer);
                     }
                 } 
 
-                draggedSourceKeys = (draggedSourceKeys && draggedSourceKeys.length) ? draggedSourceKeys.join(',') : dragNodeKey;
+                draggedSourceKeys = (draggedSourceKeys && draggedSourceKeys.length) ? draggedSourceKeys.reverse().join(',') : dragNodeKey;
                 
                 $this.fireDragDropEvent({
                     'dragNodeKey': draggedSourceKeys,
                     'dropNodeKey': dropNodeKey,
                     'dragSource': dragSource.id,
-                    'dndIndex': targetDragNode.prevAll('li.ui-treenode').length,
+                    'dndIndex': dndIndex,
                     'transfer': transfer,
                     'isDroppedCopyNode': isDroppedCopyNode
                 });
@@ -1200,6 +1201,54 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 }
             }
         });
+    },
+    
+    onDropNode: function(ui, dragSource, dragNode, targetDragNode, droppable, dropNode, transfer) {
+        var dragNodeDropPoint = targetDragNode.next('li.ui-tree-droppoint'),
+        oldParentNode = targetDragNode.parent().closest('li.ui-treenode-parent'),
+        childrenContainer = dropNode.children('.ui-treenode-children');
+            
+        ui.helper.remove();
+        droppable.children('.ui-treenode-label').removeClass('ui-state-hover');
+
+        var validDrop = this.validateDropNode(dragNode, dropNode, oldParentNode);  
+        if(!validDrop) {
+            return;
+        }
+
+        if(childrenContainer.children('li.ui-treenode').length === 0) {
+            this.makeParent(dropNode);
+        }
+
+        targetDragNode.hide();
+        childrenContainer.append(targetDragNode);
+
+        if(oldParentNode.length && (oldParentNode.find('> ul.ui-treenode-children > li.ui-treenode').length === 0)) {
+            this.makeLeaf(oldParentNode);
+        }
+
+        if(transfer) {
+            if(dragSource.cfg.selectionMode) {
+                dragSource.unselectSubtree(targetDragNode);
+            }
+
+            dragNodeDropPoint.remove();
+            this.updateDragDropBindings(targetDragNode);
+        }
+        else {
+            childrenContainer.append(dragNodeDropPoint);
+        }
+
+        targetDragNode.fadeIn();
+
+        if(this.isCheckboxSelection()) {                                                
+            this.syncDNDCheckboxes(dragSource, oldParentNode, dropNode);
+        }
+
+        this.syncDragDrop();
+        if(transfer) {
+            dragSource.syncDragDrop();
+        }
     },
     
     findSelectedParentKeys: function(arr) {       
@@ -1459,6 +1508,20 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             {name: this.id + '_dndIndex', value: event.dndIndex},
             {name: this.id + '_isDroppedCopyNode', value: event.isDroppedCopyNode}
         ];
+        
+        if(this.cfg.controlled) {
+            options.oncomplete = function(xhr, status, args) {
+                if(args.access) {
+                    for(var i = 0; i < $this.droppedNodeParams.length; i++) {
+                        var params = $this.droppedNodeParams[i];
+                        if(params.dropPoint)
+                            $this.onDropPoint(params.ui, params.dragSource, params.dragNode, params.targetDragNode, params.dropPoint, params.dropNode, params.transfer);
+                        else
+                            $this.onDropNode(params.ui, params.dragSource, params.dragNode, params.targetDragNode, params.droppable, params.dropNode, params.transfer);
+                    }
+                }
+            };
+        }
 
         if(this.hasBehavior('dragdrop')) {
             var dragdropBehavior = this.cfg.behaviors['dragdrop'];

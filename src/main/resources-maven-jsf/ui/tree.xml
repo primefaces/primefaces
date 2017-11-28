@@ -7,6 +7,7 @@
     <tag>tree</tag>
     <tagClass>org.primefaces.component.tree.TreeTag</tagClass>
     <componentClass>org.primefaces.component.tree.Tree</componentClass>
+    <componentHandlerClass>org.primefaces.component.tree.TreeComponentHandler</componentHandlerClass>
     <componentType>org.primefaces.component.Tree</componentType>
     <componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.TreeRenderer</rendererType>
@@ -251,6 +252,13 @@
             <defaultValue>false</defaultValue>
             <description>When enabled, the copy of the selected nodes can be dropped from a tree to another tree using Shift key.</description>
 		</attribute>
+        <attribute>
+            <name>dropController</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>java.lang.Boolean controlDroppedNode(java.lang.Object, java.lang.Object, java.lang.Integer)</method-signature>
+            <description>Method providing suggestions.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
