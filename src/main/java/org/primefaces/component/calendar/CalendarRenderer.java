@@ -236,7 +236,11 @@ public class CalendarRenderer extends InputRenderer {
                     .attr("showMinute", calendar.getShowMinute(), null)
                     .attr("showSecond", calendar.getShowSecond(), null)
                     .attr("showMillisec", calendar.getShowMillisec(), null)
-                    .attr("oneLine", calendar.isOneLine());
+                    .attr("oneLine", calendar.isOneLine())
+                    .attr("hour", calendar.getDefaultHour())
+                    .attr("minute", calendar.getDefaultMinute())
+                    .attr("second", calendar.getDefaultSecond())
+                    .attr("millisec", calendar.getDefaultMillisec());
 
             String timeControlObject = calendar.getTimeControlObject();
             if (timeControlObject != null && timeControlType.equalsIgnoreCase("custom")) {
