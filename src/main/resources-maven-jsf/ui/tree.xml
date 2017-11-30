@@ -256,7 +256,7 @@
             <name>onDrop</name>
             <required>false</required>
             <type>javax.el.MethodExpression</type>
-            <method-signature>java.lang.Boolean onDrop(java.lang.Object, java.lang.Object, java.lang.Integer)</method-signature>
+            <method-signature>java.lang.Boolean onDrop(org.primefaces.component.tree.TreeDragDropInfo)</method-signature>
             <description>Method providing suggestions.</description>
         </attribute>
     </attributes>

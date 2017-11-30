@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import javax.el.MethodExpression;
 import javax.faces.FacesException;
 
 import javax.faces.component.UIComponent;
@@ -170,15 +169,8 @@ public class TreeRenderer extends CoreRenderer {
             tree.setDragNode(dragNodes[0]);
         }
         
-        MethodExpression me = tree.getOnDrop();
-        if (me != null) {
-            Object[] newParams = tree.isMultipleDrag() ? new Object[] {dragNodes, dropNode, dndIndex} : new Object[] {dragNodes[0], dropNode, dndIndex};
-            boolean retVal = (Boolean) me.invoke(context.getELContext(), newParams);
-            RequestContext.getCurrentInstance().addCallbackParam("access", retVal);
-            
-            if (!retVal) {
-                return;
-            }
+        if (!tree.isTreeNodeDropped()) {
+            return;
         }
         
         for (TreeNode dragNode : dragNodes) {

@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.lang.StringBuilder;
+import javax.el.MethodExpression;
 import javax.faces.context.FacesContext;
 import org.primefaces.model.TreeNode;
 import javax.faces.event.FacesEvent;
@@ -22,6 +23,7 @@ import org.primefaces.component.tree.UITreeNode;
 import org.primefaces.util.Constants;
 import org.primefaces.model.TreeNode;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.CheckboxTreeNode;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.filter.ContainsFilterConstraint;
@@ -181,6 +183,10 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
                 wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
             }
             else if(eventName.equals("dragdrop")) {
+                if(!retValOnDrop) {
+                    return;
+                }
+
                 int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
                 boolean isDroppedNodeCopy = Boolean.valueOf(params.get(clientId + "_isDroppedNodeCopy"));
 
@@ -359,6 +365,30 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
         }
         
         return newNode;
+    }
+
+    private boolean retValOnDrop = true;
+
+    public boolean isTreeNodeDropped() {
+        MethodExpression me = this.getOnDrop();
+        if(me != null) {
+            FacesContext context = getFacesContext();
+            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+            String clientId = this.getClientId(context);
+            int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
+            boolean isDroppedNodeCopy = Boolean.valueOf(params.get(clientId + "_isDroppedNodeCopy"));
+            TreeDragDropInfo info;
+
+            if(this.isMultipleDrag()) 
+                info = new TreeDragDropInfo(this.getDragNodes(), this.getDropNode(), dndIndex, isDroppedNodeCopy);
+            else
+                info = new TreeDragDropInfo(this.getDragNode(), this.getDropNode(), dndIndex, isDroppedNodeCopy);
+
+            retValOnDrop = (Boolean) me.invoke(context.getELContext(), new Object[] { info });
+            RequestContext.getCurrentInstance().addCallbackParam("access", retValOnDrop);
+        }
+
+        return retValOnDrop;
     }
     
     private List<String> filteredRowKeys = new ArrayList<String>();

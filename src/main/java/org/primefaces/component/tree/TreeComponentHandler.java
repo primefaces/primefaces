@@ -25,7 +25,7 @@ import org.primefaces.facelets.MethodRule;
 public class TreeComponentHandler extends ComponentHandler {
 
     private static final MetaRule DROP_LISTENER
-            = new MethodRule("onDrop", Boolean.class, new Class[]{Object.class, Object.class, Integer.class});
+            = new MethodRule("onDrop", Boolean.class, new Class[]{TreeDragDropInfo.class});
 
     public TreeComponentHandler(ComponentConfig config) {
         super(config);
