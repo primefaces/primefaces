@@ -229,6 +229,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             $(this).removeClass('ui-state-hover');
         })
         .on('click.selectonemenu', function() {
+            $this.revert();
             $this.selectItem($(this));
             $this.changeAriaValue($(this));
         });
