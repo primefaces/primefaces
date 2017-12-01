@@ -455,6 +455,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         this.container = this.jq.children('.ui-tree-container');
         this.cfg.rtl = this.jq.hasClass('ui-tree-rtl');
         this.cfg.collapsedIcon = this.cfg.rtl ? 'ui-icon-triangle-1-w' : 'ui-icon-triangle-1-e';
+        this.scrollStateHolder = $(this.jqId + '_scrollState');
 
         if(!this.cfg.disabled) {
             if(this.cfg.draggable) {
