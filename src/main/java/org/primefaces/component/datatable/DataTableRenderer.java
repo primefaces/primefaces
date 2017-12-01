@@ -695,8 +695,10 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected String resolveDefaultSortIcon(DataTable table, UIColumn column, String sortOrder) {
+        ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
         String field = table.resolveColumnField(column);
         String sortField = table.getSortField();
+        sortField = (sortField == null && tableSortByVE != null) ? table.resolveStaticField(tableSortByVE) : sortField;
         String sortIcon = null;
 
         if (sortField != null && field != null && sortField.equals(field)) {
