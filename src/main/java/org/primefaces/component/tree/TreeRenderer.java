@@ -383,9 +383,11 @@ public class TreeRenderer extends CoreRenderer {
         writer.endElement("ul");
 
         if (selectable) {
-            encodeSelectionHolder(context, tree);
+            encodeStateHolder(context, tree, clientId + "_selection", tree.getSelectedRowKeysAsString());
         }
-
+        
+        encodeStateHolder(context, tree, clientId + "_scrollState", tree.getScrollState());
+        
         writer.endElement("div");
     }
 
@@ -435,7 +437,7 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         if (selectionMode != null) {
-            encodeSelectionHolder(context, tree);
+            encodeStateHolder(context, tree, clientId + "_selection", tree.getSelectedRowKeysAsString());
         }
 
         writer.endElement("div");
@@ -806,17 +808,15 @@ public class TreeRenderer extends CoreRenderer {
         writer.endElement("span");
     }
 
-    protected void encodeSelectionHolder(FacesContext context, Tree tree) throws IOException {
+    protected void encodeStateHolder(FacesContext context, Tree tree, String id, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-
-        String id = tree.getClientId(context) + "_selection";
 
         writer.startElement("input", null);
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
-        writer.writeAttribute("value", tree.getSelectedRowKeysAsString(), null);
         writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute("value", value, null);
         writer.endElement("input");
     }
 

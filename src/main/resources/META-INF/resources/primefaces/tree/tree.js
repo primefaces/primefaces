@@ -465,6 +465,8 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 this.initDroppable();
             }
         }
+        
+        this.restoreScrollState();
     },
 
     bindEvents: function() {
@@ -585,6 +587,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 }
             });
         }
+        
+        this.jq.on('scroll.tree', function(e) {
+            $this.saveScrollState();
+        });
 
         this.bindKeyEvents();
     },
@@ -1580,6 +1586,24 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         };
 
         PrimeFaces.ajax.Request.handle(options);
+    },
+    
+    restoreScrollState: function() {
+        var scrollState = this.scrollStateHolder.val(),
+        scrollValues = scrollState.split(',');
+
+        this.jq.scrollLeft(scrollValues[0]);
+        this.jq.scrollTop(scrollValues[1]);
+    },
+    
+    saveScrollState: function() {
+        var scrollState = this.jq.scrollLeft() + ',' + this.jq.scrollTop();
+        
+        this.scrollStateHolder.val(scrollState);
+    },
+    
+    clearScrollState: function() {
+        this.scrollStateHolder.val('0,0');
     }
 
 });

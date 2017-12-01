@@ -391,6 +391,14 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
         return retValOnDrop;
     }
     
+    public String getScrollState() {
+        Map<String,String> params = getFacesContext().getExternalContext().getRequestParameterMap();
+        String name = this.getClientId() + "_scrollState";
+        String value = params.get(name);
+        
+        return value == null ? "0,0" : value;
+    }
+
     private List<String> filteredRowKeys = new ArrayList<String>();
     public List<String> getFilteredRowKeys() {
         return filteredRowKeys;
