@@ -95,9 +95,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         if (this.maximized) {
             this.maximize();
         } else if (this.minimized) {
-        	this.positionInitialized = true;
-			this.moveToTop();
-            this.minimize();
+		this.positionInitialized = true;
+		this.moveToTop();
+		this.minimize();
         }
     },
 
