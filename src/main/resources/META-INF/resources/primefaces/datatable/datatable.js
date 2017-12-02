@@ -838,6 +838,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
         var targetSelector = targetId + ' tbody.ui-datatable-data > tr.ui-widget-content';
         var targetEvent = cfg.event + '.datatable';
+        var $this = this;
 
         $(document).off(targetEvent, targetSelector).on(targetEvent, targetSelector, null, function(e) {
             var row = $(this);
@@ -861,7 +862,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 menuWidget.show(e);
             }
-            else if(row.hasClass('ui-datatable-empty-message')) {
+            else if(row.hasClass('ui-datatable-empty-message') && $this.cfg.canShowContextMenuWhenTableIsEmpty) {
                 menuWidget.show(e);
             }
         });
