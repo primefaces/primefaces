@@ -399,32 +399,36 @@
                     }
                     else {
                         var firstElement = jq.find(selector).eq(0);
-                        PrimeFaces.focusElement(firstElement);
+                        PrimeFaces.focusFirstElement(firstElement);
                     }
                 }
                 else if(context) {
                     var firstElement = $(PrimeFaces.escapeClientId(context)).find(selector).eq(0);
-                    PrimeFaces.focusElement(firstElement);
+                    PrimeFaces.focusFirstElement(firstElement);
                 }
                 else {
                     var elements = $(selector),
                     firstElement = elements.eq(0);
-                    if(firstElement.is(':radio')) {
-                        var checkedRadio = $(':radio[name="' + firstElement.attr('name') + '"]').filter(':checked');
-                        if(checkedRadio.length)
-                            PrimeFaces.focusElement(checkedRadio);
-                        else
-                            PrimeFaces.focusElement(firstElement);
-                    }
-                    else {
-                        firstElement.focus();
-                    }
+                    PrimeFaces.focusFirstElement(firstElement);
                 }
             }, 50);
 
             // remember that a custom focus has been rendered
             // this avoids to retain the last focus after ajax update
             PrimeFaces.customFocus = true;
+        },
+
+        focusFirstElement: function(firstElement) {
+            if(firstElement.is(':radio')) {
+                var checkedRadio = $(':radio[name="' + firstElement.attr('name') + '"]').filter(':checked');
+                if(checkedRadio.length)
+                    PrimeFaces.focusElement(checkedRadio);
+                else
+                    PrimeFaces.focusElement(firstElement);
+            }
+            else {
+                firstElement.focus();
+            }
         },
 
         focusElement: function(el) {
