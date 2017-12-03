@@ -90,8 +90,16 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             	PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.appendTo).children(this.jqId).remove();
             }
         }
+	
+	//remove duplicate dialog in the dock
+	//this could happen if the dialog wasn't updated directly but via container update
+	if (this.minimized && $(this.jqId).size() > 1) {
+            $(".ui-dialog-docking-zone").children(this.jqId).remove();
+	}
 
         this.init(cfg);
+	    
+	//restore maximized/minimized state
         if (this.maximized) {
             this.maximize();
         } else if (this.minimized) {
