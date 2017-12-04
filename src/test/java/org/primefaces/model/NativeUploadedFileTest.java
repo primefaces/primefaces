@@ -63,6 +63,30 @@ public class NativeUploadedFileTest {
     }
 
     @Test
+    public void testSlashes() {
+        // Arrange
+        final String input = "form-data; name=\"XXX:XXX\"; filename=\"hello\\\\.png\"";
+
+        // Act
+        final String output = file.getContentDispositionFileName(input);
+
+        // Assert
+        Assert.assertEquals("hello\\\\.png", output);
+    }
+
+    @Test
+    public void testEscapeCharacters() {
+        // Arrange
+        final String input = "form-data; name=\"XXX:XXX\"; filename=\"hello\t\b\t\n.png\"";
+
+        // Act
+        final String output = file.getContentDispositionFileName(input);
+
+        // Assert
+        Assert.assertEquals("hello\t\b\t\n.png", output);
+    }
+
+    @Test
     public void testNoFilename() {
         // Arrange
         final String input = "form-data; name=\"XXX:XXX\"; file=\"hello.png\"";
@@ -94,19 +118,6 @@ public class NativeUploadedFileTest {
         final String input = "form-data; name=\"XXX:XXX\"; filename=hello.png\"";
         thrown.expect(FacesException.class);
         thrown.expectMessage("Content-Disposition filename property was not quoted.");
-
-        // Act
-        file.getContentDispositionFileName(input);
-
-        // Assert (expected exception)
-    }
-
-    @Test
-    public void testUnknownEscape() {
-        // Arrange
-        final String input = "form-data; name=\"XXX:XXX\"; filename=\"Test; \\hello.png\"";
-        thrown.expect(FacesException.class);
-        thrown.expectMessage("Content-Disposition filename has unknown escape character: 'h'.");
 
         // Act
         file.getContentDispositionFileName(input);

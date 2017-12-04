@@ -148,19 +148,14 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
                 }
             }
 
-            if (c != '\\') {
-                // append if not escape character
-                b.append(c);
+            // only unescape double quote, leave all others as-is
+            // only unescape double quote, leave all others as-is
+            if (c == '\\' && line.charAt(i + 1) == '"') {
+                b.append('"');
+                i++;
             }
             else {
-                final char next = line.charAt(++i);
-
-                // expect only double quotes and backslashes to be escaped
-                if (!(next == '"' || next == '\\')) {
-                    throw new FacesException("Content-Disposition filename has unknown escape character: '" + next + "'.");
-                }
-
-                b.append(next);
+                b.append(c);
             }
         }
 
