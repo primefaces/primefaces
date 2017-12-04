@@ -161,7 +161,6 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
             }
         }
 
-        // there was an opening quote, but no closing quote
         return decode(b.toString());
     }
 
