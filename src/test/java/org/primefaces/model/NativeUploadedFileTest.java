@@ -73,6 +73,18 @@ public class NativeUploadedFileTest {
         // Assert
         Assert.assertEquals("hello\\\\.png", output);
     }
+    
+    @Test
+    public void testOnlySlashes() {
+        // Arrange
+        final String input = "form-data; name=\"XXX:XXX\"; filename=\"\\\\\"";
+
+        // Act
+        final String output = file.getContentDispositionFileName(input);
+
+        // Assert
+        Assert.assertEquals("\\\\", output);
+    }
 
     @Test
     public void testEscapeCharacters() {

@@ -140,19 +140,19 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
             final char c = line.charAt(i);
 
             if (c == '"') {
-                try {
-                    return URLDecoder.decode(b.toString(), "UTF-8");
-                }
-                catch (UnsupportedEncodingException ex) {
-                    throw new FacesException(ex);
-                }
+                return decode(b.toString());
             }
 
-            // only unescape double quote, leave all others as-is
-            // only unescape double quote, leave all others as-is
-            if (c == '\\' && line.charAt(i + 1) == '"') {
-                b.append('"');
-                i++;
+            // only unescape double quote, leave all others as-is, but still skip 2 characters
+            if (c == '\\') {
+                char next = line.charAt(++i);
+                if (next == '"') {
+                    b.append('"');
+                }
+                else {
+                    b.append(c);
+                    b.append(next);
+                }
             }
             else {
                 b.append(c);
@@ -161,5 +161,14 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
 
         // there was an opening quote, but no closing quote
         throw new FacesException("Content-Disposition filename has unclosed quote.");
+    }
+
+    private String decode(String encoded) {
+        try {
+            return URLDecoder.decode(encoded, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex) {
+            throw new FacesException(ex);
+        }
     }
 }
