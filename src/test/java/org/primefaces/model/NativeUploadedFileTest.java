@@ -73,7 +73,7 @@ public class NativeUploadedFileTest {
         // Assert
         Assert.assertEquals("hello\\\\.png", output);
     }
-    
+
     @Test
     public void testOnlySlashes() {
         // Arrange
@@ -85,7 +85,7 @@ public class NativeUploadedFileTest {
         // Assert
         Assert.assertEquals("\\\\", output);
     }
-    
+
     @Test
     public void testSingleSlash() {
         // Arrange
@@ -97,7 +97,7 @@ public class NativeUploadedFileTest {
         // Assert
         Assert.assertEquals("\\", output);
     }
-    
+
     @Test
     public void testSpaces() {
         // Arrange
@@ -160,7 +160,5 @@ public class NativeUploadedFileTest {
 
         // Assert (expected exception)
     }
-
-
 
 }

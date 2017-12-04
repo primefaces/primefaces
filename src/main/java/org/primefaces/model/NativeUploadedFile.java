@@ -112,7 +112,7 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
 
         // skip past 'filename'
         i += FILENAME.length();
-        
+
         final int lineLength = line.length();
 
         // skip whitespace
@@ -146,7 +146,7 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
             }
 
             // only unescape double quote, leave all others as-is, but still skip 2 characters
-            if (c == '\\' && i+2 != lineLength) {
+            if (c == '\\' && i + 2 != lineLength) {
                 char next = line.charAt(++i);
                 if (next == '"') {
                     b.append('"');
