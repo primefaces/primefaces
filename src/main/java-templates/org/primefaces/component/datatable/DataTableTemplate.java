@@ -1383,6 +1383,7 @@ import org.primefaces.component.datatable.TableState;
 
             this.setFilterBy(ts.getFilters());
             this.setGlobalFilter(ts.getGlobalFilterValue());
+            this.setColumns(ts.getOrderedColumns());
         }
     }
 

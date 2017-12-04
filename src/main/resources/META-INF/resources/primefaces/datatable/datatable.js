@@ -3195,6 +3195,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         columnReorderBehavior.call($this);
                     }
                 }
+                else if($this.cfg.multiViewState) {
+                    $this.updateReorderState();
+                }
             }
         });
     },
@@ -3574,6 +3577,29 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(emptyRow && emptyRow.hasClass('ui-datatable-empty-message')) {
             emptyRow.children('td').attr('colspan', this.thead.find('th:not(.ui-helper-hidden)').length);
         }
+    },
+    
+    updateReorderState: function() {
+        var $this = this,
+        options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            global: false,
+            params: [{name: this.id + '_encodeFeature', value: true}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                    widget: $this,
+                    handle: function(content) {
+                        // do nothing
+                    }
+                });
+                
+                return true;
+            }    
+        };
+                
+        PrimeFaces.ajax.Request.handle(options);
     }
     
 });

@@ -48,6 +48,8 @@ public class TableState implements Serializable {
     private List<FilterState> filters;
 
     private String globalFilterValue;
+    
+    private List orderedColumns;
 
     public int getFirst() {
         return first;
@@ -151,5 +153,13 @@ public class TableState implements Serializable {
 
     public void setGlobalFilterValue(String globalFilterValue) {
         this.globalFilterValue = globalFilterValue;
+    }
+    
+    public List getOrderedColumns() {
+        return orderedColumns;
+    }
+
+    public void setOrderedColumns(List orderedColumns) {
+        this.orderedColumns = orderedColumns;
     }
 }
