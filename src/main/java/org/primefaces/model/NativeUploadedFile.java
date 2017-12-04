@@ -104,16 +104,13 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     }
 
     private String resolveFilename(Part part) {
-        ParameterParser parser = new ParameterParser();
-        Map<String, String> params = parser.parse(part.getHeader("content-disposition"), new char[] { ',', ';' });
-        return params.get(FILENAME);
+        return getContentDispositionFileName(part.getHeader("content-disposition"));
     }
 
     protected String getContentDispositionFileName(final String line) {
         ParameterParser parser = new ParameterParser();
         Map<String, String> params = parser.parse(line, new char[] { ',', ';' });
         return decode(params.get(FILENAME));
-
     }
 
     private String decode(String encoded) {
