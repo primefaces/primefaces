@@ -1,5 +1,7 @@
 package org.primefaces.model;
 
+import javax.faces.FacesException;
+
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -45,7 +47,7 @@ public class NativeUploadedFileTest {
         final String output = file.getContentDispositionFileName(input);
 
         // Assert
-        Assert.assertEquals("Test; \\\"123.txt", output);
+        Assert.assertEquals("Test; \"123.txt", output);
     }
 
     @Test
@@ -130,6 +132,33 @@ public class NativeUploadedFileTest {
 
         // Assert
         Assert.assertNull(output);
+    }
+
+    @Test
+    public void testNoEquals() {
+        // Arrange
+        final String input = "form-data; name=\"XXX:XXX\"; filename\"hello.png\"";
+
+        thrown.expect(FacesException.class);
+        thrown.expectMessage("Content-Disposition filename property did not have '='.");
+
+        // Act
+        file.getContentDispositionFileName(input);
+
+        // Assert (expected exception)
+    }
+
+    @Test
+    public void testNoStartQuote() {
+        // Arrange
+        final String input = "form-data; name=\"XXX:XXX\"; filename=hello.png\"";
+        thrown.expect(FacesException.class);
+        thrown.expectMessage("Content-Disposition filename property was not quoted.");
+
+        // Act
+        file.getContentDispositionFileName(input);
+
+        // Assert (expected exception)
     }
 
 }

@@ -21,12 +21,8 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Map;
-
 import javax.faces.FacesException;
 import javax.servlet.http.Part;
-
-import org.apache.commons.fileupload.ParameterParser;
 
 public class NativeUploadedFile implements UploadedFile, Serializable {
 
@@ -108,15 +104,67 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     }
 
     protected String getContentDispositionFileName(final String line) {
-        ParameterParser parser = new ParameterParser();
-        Map<String, String> params = parser.parse(line, new char[] { ',', ';' });
-        return decode(params.get(FILENAME));
+        // skip to 'filename'
+        int i = line.indexOf(FILENAME);
+        if (i == -1) {
+            return null; // does not contain 'filename'
+        }
+
+        // skip past 'filename'
+        i += FILENAME.length();
+
+        final int lineLength = line.length();
+
+        // skip whitespace
+        while (i < lineLength && Character.isWhitespace(line.charAt(i))) {
+            i++;
+        }
+
+        // expect '='
+        if (i == lineLength || line.charAt(i++) != '=') {
+            throw new FacesException("Content-Disposition filename property did not have '='.");
+        }
+
+        // skip whitespace again
+        while (i < lineLength && Character.isWhitespace(line.charAt(i))) {
+            i++;
+        }
+
+        // expect '"'
+        if (i == lineLength || line.charAt(i++) != '"') {
+            throw new FacesException("Content-Disposition filename property was not quoted.");
+        }
+
+        // buffer to hold the file name
+        final StringBuilder b = new StringBuilder();
+
+        for (; i < lineLength; i++) {
+            final char c = line.charAt(i);
+
+            if (c == '"') {
+                return decode(b.toString());
+            }
+
+            // only unescape double quote, leave all others as-is, but still skip 2 characters
+            if (c == '\\' && i + 2 != lineLength) {
+                char next = line.charAt(++i);
+                if (next == '"') {
+                    b.append('"');
+                }
+                else {
+                    b.append(c);
+                    b.append(next);
+                }
+            }
+            else {
+                b.append(c);
+            }
+        }
+
+        return decode(b.toString());
     }
 
     private String decode(String encoded) {
-        if (encoded == null) {
-            return null;
-        }
         try {
             return URLDecoder.decode(encoded, "UTF-8");
         }
