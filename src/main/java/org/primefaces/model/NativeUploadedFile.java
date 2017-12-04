@@ -112,31 +112,33 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
 
         // skip past 'filename'
         i += FILENAME.length();
+        
+        final int lineLength = line.length();
 
         // skip whitespace
-        while (i < line.length() && Character.isWhitespace(line.charAt(i))) {
+        while (i < lineLength && Character.isWhitespace(line.charAt(i))) {
             i++;
         }
 
         // expect '='
-        if (i == line.length() || line.charAt(i++) != '=') {
+        if (i == lineLength || line.charAt(i++) != '=') {
             throw new FacesException("Content-Disposition filename property did not have '='.");
         }
 
         // skip whitespace again
-        while (i < line.length() && Character.isWhitespace(line.charAt(i))) {
+        while (i < lineLength && Character.isWhitespace(line.charAt(i))) {
             i++;
         }
 
         // expect '"'
-        if (i == line.length() || line.charAt(i++) != '"') {
+        if (i == lineLength || line.charAt(i++) != '"') {
             throw new FacesException("Content-Disposition filename property was not quoted.");
         }
 
         // buffer to hold the file name
         final StringBuilder b = new StringBuilder();
 
-        for (; i < line.length(); i++) {
+        for (; i < lineLength; i++) {
             final char c = line.charAt(i);
 
             if (c == '"') {
@@ -144,7 +146,7 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
             }
 
             // only unescape double quote, leave all others as-is, but still skip 2 characters
-            if (c == '\\') {
+            if (c == '\\' && i+2 != lineLength) {
                 char next = line.charAt(++i);
                 if (next == '"') {
                     b.append('"');
@@ -160,7 +162,7 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
         }
 
         // there was an opening quote, but no closing quote
-        throw new FacesException("Content-Disposition filename has unclosed quote.");
+        return decode(b.toString());
     }
 
     private String decode(String encoded) {

@@ -85,6 +85,18 @@ public class NativeUploadedFileTest {
         // Assert
         Assert.assertEquals("\\\\", output);
     }
+    
+    @Test
+    public void testSingleSlash() {
+        // Arrange
+        final String input = "form-data; name=\"XXX:XXX\"; filename=\"\\\"";
+
+        // Act
+        final String output = file.getContentDispositionFileName(input);
+
+        // Assert
+        Assert.assertEquals("\\", output);
+    }
 
     @Test
     public void testEscapeCharacters() {
@@ -137,17 +149,6 @@ public class NativeUploadedFileTest {
         // Assert (expected exception)
     }
 
-    @Test
-    public void testNoEndQuote() {
-        // Arrange
-        final String input = "form-data; name=\"XXX:XXX\"; filename=\"hello.png";
-        thrown.expect(FacesException.class);
-        thrown.expectMessage("Content-Disposition filename has unclosed quote.");
 
-        // Act
-        file.getContentDispositionFileName(input);
-
-        // Assert (expected exception)
-    }
 
 }
