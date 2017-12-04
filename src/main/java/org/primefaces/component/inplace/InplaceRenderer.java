@@ -113,7 +113,7 @@ public class InplaceRenderer extends CoreRenderer {
         String label = inplace.getLabel();
         String emptyLabel = inplace.getEmptyLabel();
 
-        if (label != null && !isValueBlank(label)) {
+        if (!isValueBlank(label)) {
             return label;
         }
         else {
