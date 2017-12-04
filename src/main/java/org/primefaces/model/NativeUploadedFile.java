@@ -19,12 +19,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import javax.faces.FacesException;
 import javax.servlet.http.Part;
 
 public class NativeUploadedFile implements UploadedFile, Serializable {
 
     private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
+    private static final String FILENAME = "filename";
 
     private Part part;
     private String filename;
@@ -88,21 +91,80 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
         return part.getContentType();
     }
 
-    private String resolveFilename(Part part) {
-        for (String cd : part.getHeader("content-disposition").split(";")) {
-            if (cd.trim().startsWith("filename")) {
-                return cd.substring(cd.indexOf('=') + 1).trim().replace("\"", "");
-            }
-        }
-
-        return null;
-    }
-
     public void write(String filePath) throws Exception {
         part.write(filePath);
     }
 
     public Part getPart() {
         return part;
+    }
+
+    private String resolveFilename(Part part) {
+        return getContentDispositionFileName(part.getHeader("content-disposition"));
+    }
+
+    protected String getContentDispositionFileName(final String line) {
+        // skip to 'filename'
+        int i = line.indexOf(FILENAME);
+        if (i == -1) {
+            return null; // does not contain 'filename'
+        }
+
+        // skip past 'filename'
+        i += FILENAME.length();
+
+        // skip whitespace
+        while (i < line.length() && Character.isWhitespace(line.charAt(i))) {
+            i++;
+        }
+
+        // expect '='
+        if (i == line.length() || line.charAt(i++) != '=') {
+            throw new FacesException("Content-Disposition filename property did not have '='.");
+        }
+
+        // skip whitespace again
+        while (i < line.length() && Character.isWhitespace(line.charAt(i))) {
+            i++;
+        }
+
+        // expect '"'
+        if (i == line.length() || line.charAt(i++) != '"') {
+            throw new FacesException("Content-Disposition filename property was not quoted.");
+        }
+
+        // buffer to hold the file name
+        final StringBuilder b = new StringBuilder();
+
+        for (; i < line.length(); i++) {
+            final char c = line.charAt(i);
+
+            if (c == '"') {
+                try {
+                    return URLDecoder.decode(b.toString(), "UTF-8");
+                }
+                catch (UnsupportedEncodingException ex) {
+                    throw new FacesException(ex);
+                }
+            }
+
+            if (c != '\\') {
+                // append if not escape character
+                b.append(c);
+            }
+            else {
+                final char next = line.charAt(++i);
+
+                // expect only double quotes and backslashes to be escaped
+                if (!(next == '"' || next == '\\')) {
+                    throw new FacesException("Content-Disposition filename has unknown escape character: '" + next + "'.");
+                }
+
+                b.append(next);
+            }
+        }
+
+        // there was an opening quote, but no closing quote
+        throw new FacesException("Content-Disposition filename has unclosed quote.");
     }
 }
