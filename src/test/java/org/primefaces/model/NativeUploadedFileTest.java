@@ -97,6 +97,18 @@ public class NativeUploadedFileTest {
         // Assert
         Assert.assertEquals("\\", output);
     }
+    
+    @Test
+    public void testSpaces() {
+        // Arrange
+        final String input = "form-data; name=\"XXX:XXX\"; filename=\"%22%22\"";
+
+        // Act
+        final String output = file.getContentDispositionFileName(input);
+
+        // Assert
+        Assert.assertEquals("\"\"", output);
+    }
 
     @Test
     public void testEscapeCharacters() {
