@@ -19,6 +19,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import javax.faces.FacesException;
 import javax.servlet.http.Part;
 
@@ -89,13 +92,17 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     }
 
     private String resolveFilename(Part part) {
-        for (String cd : part.getHeader("content-disposition").split(";")) {
-            if (cd.trim().startsWith("filename")) {
-                return cd.substring(cd.indexOf('=') + 1).trim().replace("\"", "");
-            }
+        
+        String disposition = part.getHeader("content-disposition");
+        String fileName = null;
+        try {
+            fileName = URLDecoder.decode(disposition.replaceFirst("(?i)^.*filename=\"?([^\"]+)\"?.*$", "$1"), "UTF-8");
+        } 
+        catch (UnsupportedEncodingException e) {
+            throw new FacesException(e);
         }
-
-        return null;
+        
+        return fileName;
     }
 
     public void write(String filePath) throws Exception {
