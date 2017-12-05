@@ -1278,6 +1278,12 @@ import org.primefaces.component.datatable.TableState;
         if(togglableColsMap == null) {
             togglableColsMap = new HashMap<String, Boolean>();
 
+            if(togglableColumnsAsString == null) {
+                FacesContext context = getFacesContext();
+                Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+                this.setTogglableColumnsAsString(params.get(this.getClientId(context) + "_columnTogglerState"));
+            }
+
             if(togglableColumnsAsString != null) {
                 String[] colsArr = togglableColumnsAsString.split(",");
                 for(int i = 0; i < colsArr.length; i++) {
