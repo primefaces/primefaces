@@ -417,9 +417,6 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                 toggleBehavior.call(this, ext);
             }
         }
-        else if(this.isMultiViewState) {
-            this.updateTogglerState();
-        }
     },
     
     updateColspan: function() {
@@ -443,29 +440,6 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             newColState = columnId + "_" + isHidden;
             this.togglerStateHolder.val(stateVal.replace(oldColState, newColState));
         }
-    },
-    
-    updateTogglerState: function() {
-        var $this = this,
-        options = {
-            source: this.id,
-            process: this.id,
-            update: this.id,
-            global: false,
-            params: [],
-            onsuccess: function(responseXML, status, xhr) {
-                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: $this,
-                    handle: function(content) {
-                        // do nothing
-                    }
-                });
-                
-                return true;
-            }    
-        };
-                
-        PrimeFaces.ajax.Request.handle(options);
     }
-
+    
 });
