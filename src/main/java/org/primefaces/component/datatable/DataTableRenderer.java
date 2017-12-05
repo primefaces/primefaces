@@ -321,6 +321,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("div", table);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", containerClass, "styleClass");
+        writer.writeAttribute("data-multistate", String.valueOf(table.isMultiViewState()), null);
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
@@ -570,12 +571,18 @@ public class DataTableRenderer extends DataRenderer {
         boolean resizable = table.isResizableColumns() && column.isResizable();
         int priority = column.getPriority();
 
+        boolean isColVisible = column.isVisible();
+        if (table.isMultiViewState()) {
+            Map<String, Boolean> togglableColsMap = table.getTogglableColumnsMap();
+            isColVisible = togglableColsMap.get(clientId) == null ? isColVisible : togglableColsMap.get(clientId);
+        }
+        
         String columnClass = sortable ? DataTable.COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.COLUMN_HEADER_CLASS;
         columnClass = filterable ? columnClass + " " + DataTable.FILTER_COLUMN_CLASS : columnClass;
         columnClass = selectionMode != null ? columnClass + " " + DataTable.SELECTION_COLUMN_CLASS : columnClass;
         columnClass = resizable ? columnClass + " " + DataTable.RESIZABLE_COLUMN_CLASS : columnClass;
         columnClass = !column.isToggleable() ? columnClass + " " + DataTable.STATIC_COLUMN_CLASS : columnClass;
-        columnClass = !column.isVisible() ? columnClass + " " + DataTable.HIDDEN_COLUMN_CLASS : columnClass;
+        columnClass = !isColVisible ? columnClass + " " + DataTable.HIDDEN_COLUMN_CLASS : columnClass;
         columnClass = column.getStyleClass() != null ? columnClass + " " + column.getStyleClass() : columnClass;
 
         if (priority > 0) {
@@ -878,13 +885,20 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
+        String clientId = column.getContainerClientId(context);
 
         int priority = column.getPriority();
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
         styleClass = styleClass == null ? DataTable.COLUMN_FOOTER_CLASS : DataTable.COLUMN_FOOTER_CLASS + " " + styleClass;
 
-        if (!column.isVisible()) {
+        boolean isColVisible = column.isVisible();
+        if (table.isMultiViewState()) {
+            Map<String, Boolean> togglableColsMap = table.getTogglableColumnsMap();
+            isColVisible = togglableColsMap.get(clientId) == null ? isColVisible : togglableColsMap.get(clientId);
+        }
+        
+        if (!isColVisible) {
             styleClass = styleClass + " " + DataTable.HIDDEN_COLUMN_CLASS;
         }
 
@@ -1242,6 +1256,14 @@ public class DataTableRenderer extends DataRenderer {
         if (!column.isRendered()) {
             return;
         }
+        
+        boolean isColVisible = column.isVisible();
+        if (table.isMultiViewState()) {
+            Map<String, Boolean> togglableColsMap = table.getTogglableColumnsMap();
+            String colClientId = column.getContainerClientId(context);
+            String colHeaderClientId = clientId + colClientId.substring(colClientId.lastIndexOf(":"), colClientId.length());
+            isColVisible = togglableColsMap.get(colHeaderClientId) == null ? isColVisible : togglableColsMap.get(colHeaderClientId);
+        }
 
         ResponseWriter writer = context.getResponseWriter();
         boolean selectionEnabled = column.getSelectionMode() != null;
@@ -1255,7 +1277,7 @@ public class DataTableRenderer extends DataRenderer {
         styleClass = (column.isSelectRow())
                 ? styleClass
                 : (styleClass == null) ? DataTable.UNSELECTABLE_COLUMN_CLASS : styleClass + " " + DataTable.UNSELECTABLE_COLUMN_CLASS;
-        styleClass = (column.isVisible())
+        styleClass = (isColVisible)
                 ? styleClass
                 : (styleClass == null) ? DataTable.HIDDEN_COLUMN_CLASS : styleClass + " " + DataTable.HIDDEN_COLUMN_CLASS;
         String userStyleClass = column.getStyleClass();

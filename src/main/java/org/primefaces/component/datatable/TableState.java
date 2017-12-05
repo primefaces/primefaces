@@ -50,6 +50,8 @@ public class TableState implements Serializable {
     private String globalFilterValue;
     
     private List orderedColumns;
+    
+    private String togglableColumnsAsString;
 
     public int getFirst() {
         return first;
@@ -161,5 +163,13 @@ public class TableState implements Serializable {
 
     public void setOrderedColumns(List orderedColumns) {
         this.orderedColumns = orderedColumns;
+    }
+    
+    public String getTogglableColumnsAsString() {
+        return togglableColumnsAsString;
+    }
+
+    public void setTogglableColumnsAsString(String togglableColumnsAsString) {
+        this.togglableColumnsAsString = togglableColumnsAsString;
     }
 }

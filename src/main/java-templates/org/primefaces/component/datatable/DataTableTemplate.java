@@ -1261,6 +1261,35 @@ import org.primefaces.component.datatable.TableState;
         else
             return (java.lang.Boolean) value;
 	}
+
+    private String togglableColumnsAsString;
+
+    public void setTogglableColumnsAsString(String togglableColumnsAsString) {
+        this.togglableColumnsAsString = togglableColumnsAsString;
+    }
+
+    private Map<String, Boolean> togglableColsMap;
+
+    public void setTogglableColumnsMap(Map<String, Boolean> togglableColsMap) {
+        this.togglableColsMap = togglableColsMap;
+    }
+
+    public Map getTogglableColumnsMap() {
+        if(togglableColsMap == null) {
+            togglableColsMap = new HashMap<String, Boolean>();
+
+            if(togglableColumnsAsString != null) {
+                String[] colsArr = togglableColumnsAsString.split(",");
+                for(int i = 0; i < colsArr.length; i++) {
+                    String temp = colsArr[i];
+                    int sepIndex = temp.lastIndexOf("_");
+                    togglableColsMap.put(temp.substring(0, sepIndex), Boolean.valueOf(temp.substring(sepIndex + 1, temp.length())));
+                }
+            }
+        }
+        
+        return togglableColsMap;
+    }
     
     public Locale resolveDataLocale() {
         FacesContext context = this.getFacesContext();
@@ -1384,6 +1413,7 @@ import org.primefaces.component.datatable.TableState;
             this.setFilterBy(ts.getFilters());
             this.setGlobalFilter(ts.getGlobalFilterValue());
             this.setColumns(ts.getOrderedColumns());
+            this.setTogglableColumnsAsString(ts.getTogglableColumnsAsString());
         }
     }
 

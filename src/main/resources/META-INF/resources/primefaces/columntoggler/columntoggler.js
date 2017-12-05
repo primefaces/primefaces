@@ -10,6 +10,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.tableId = this.table.attr('id');
         this.hasFrozenColumn = this.table.hasClass('ui-datatable-frozencolumn');
         this.hasStickyHeader = this.table.hasClass('ui-datatable-sticky');
+        this.isMultiViewState = this.table.data('multistate');
         var clientId = PrimeFaces.escapeClientId(this.tableId);
         
         if(this.hasFrozenColumn) {
@@ -35,6 +36,13 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                 .append('<ul class="ui-columntoggler-items" role="group"></ul>').appendTo(document.body);
         this.itemContainer = this.panel.children('ul');
           
+        if(this.isMultiViewState) {
+            var stateHolderId = this.tableId + "_columnTogglerState";
+            this.togglerStateHolder = $('<input type="hidden" id="' + stateHolderId + '" name="' + stateHolderId + '" autocomplete="off" />');
+            this.table.append(this.togglerStateHolder);
+            this.togglerState = [];
+        }
+        
         //items
         for(var i = 0; i < this.columns.length; i++) {
             var column = this.columns.eq(i),
@@ -68,6 +76,14 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             }
             
             item.appendTo(this.itemContainer);
+            
+            if(this.isMultiViewState) {
+                this.togglerState.push(column.attr('id') + '_' + !hidden);
+            }
+        }
+        
+        if(this.isMultiViewState) {
+            this.togglerStateHolder.val(this.togglerState.join(','));
         }
         
         //close icon
@@ -306,6 +322,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             $(PrimeFaces.escapeClientId(columnHeader.attr('id'))).removeClass('ui-helper-hidden');
         }
 
+        this.changeTogglerState(column, true);
         this.fireToggleEvent(true, (index - 1));
         this.updateColspan();
     },
@@ -343,7 +360,8 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         if(this.hasStickyHeader) {
             $(PrimeFaces.escapeClientId(columnHeader.attr('id'))).addClass('ui-helper-hidden');
         }
-            
+           
+        this.changeTogglerState(column, false);
         this.fireToggleEvent(false, (index - 1));
         this.updateColspan();
     },
@@ -399,6 +417,9 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                 toggleBehavior.call(this, ext);
             }
         }
+        else if(this.isMultiViewState) {
+            this.updateTogglerState();
+        }
     },
     
     updateColspan: function() {
@@ -412,6 +433,39 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                 emptyRow.children('td').addClass('ui-helper-hidden');
             }
         }
+    },
+    
+    changeTogglerState: function(column, isHidden) {
+        if(this.isMultiViewState && column) {
+            var stateVal = this.togglerStateHolder.val(),
+            columnId = column.attr('id'),
+            oldColState = columnId + "_" + !isHidden,
+            newColState = columnId + "_" + isHidden;
+            this.togglerStateHolder.val(stateVal.replace(oldColState, newColState));
+        }
+    },
+    
+    updateTogglerState: function() {
+        var $this = this,
+        options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            global: false,
+            params: [],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                    widget: $this,
+                    handle: function(content) {
+                        // do nothing
+                    }
+                });
+                
+                return true;
+            }    
+        };
+                
+        PrimeFaces.ajax.Request.handle(options);
     }
 
 });
