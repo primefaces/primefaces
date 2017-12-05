@@ -3210,12 +3210,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 if($this.cfg.behaviors) {
                     var columnReorderBehavior = $this.cfg.behaviors['colReorder'];
 
-                    if(columnReorderBehavior) {
-                        columnReorderBehavior.call($this);
+                    if(columnReorderBehavior) {     
+                        var ext = null;
+                        
+                        if($this.cfg.multiViewState) {
+                            ext = {
+                                params: [{name: this.id + '_encodeFeature', value: true}]
+                            };
+                        }
+                        
+                        columnReorderBehavior.call($this, ext);
                     }
-                }
-                else if($this.cfg.multiViewState) {
-                    $this.updateReorderState();
                 }
             }
         });
@@ -3596,29 +3601,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(emptyRow && emptyRow.hasClass('ui-datatable-empty-message')) {
             emptyRow.children('td').attr('colspan', this.thead.find('th:not(.ui-helper-hidden)').length);
         }
-    },
-    
-    updateReorderState: function() {
-        var $this = this,
-        options = {
-            source: this.id,
-            process: this.id,
-            update: this.id,
-            global: false,
-            params: [{name: this.id + '_encodeFeature', value: true}],
-            onsuccess: function(responseXML, status, xhr) {
-                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                    widget: $this,
-                    handle: function(content) {
-                        // do nothing
-                    }
-                });
-                
-                return true;
-            }    
-        };
-                
-        PrimeFaces.ajax.Request.handle(options);
     },
     
     changeResizableState: function(columnHeader) {
