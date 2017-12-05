@@ -1297,6 +1297,41 @@ import org.primefaces.component.datatable.TableState;
         return togglableColsMap;
     }
     
+    private String resizableColumnsAsString;
+
+    public void setResizableColumnsAsString(String resizableColumnsAsString) {
+        this.resizableColumnsAsString = resizableColumnsAsString;
+    }
+
+    private Map<String, String> resizableColsMap;
+
+    public void setResizableColumnsMap(Map<String, String> resizableColsMap) {
+        this.resizableColsMap = resizableColsMap;
+    }
+
+    public Map getResizableColumnsMap() {
+        if(resizableColsMap == null) {
+            resizableColsMap = new HashMap<String, String>();
+
+            if(resizableColumnsAsString == null) {
+                FacesContext context = getFacesContext();
+                Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+                this.setResizableColumnsAsString(params.get(this.getClientId(context) + "_resizableColumnState"));
+            }
+
+            if(resizableColumnsAsString != null) {
+                String[] colsArr = resizableColumnsAsString.split(",");
+                for(int i = 0; i < colsArr.length; i++) {
+                    String temp = colsArr[i];
+                    int sepIndex = temp.lastIndexOf("_");
+                    resizableColsMap.put(temp.substring(0, sepIndex), temp.substring(sepIndex + 1, temp.length()));
+                }
+            }
+        }
+        
+        return resizableColsMap;
+    }
+
     public Locale resolveDataLocale() {
         FacesContext context = this.getFacesContext();
         return LocaleUtils.resolveLocale(this.getDataLocale(), this.getClientId(context));
@@ -1420,6 +1455,7 @@ import org.primefaces.component.datatable.TableState;
             this.setGlobalFilter(ts.getGlobalFilterValue());
             this.setColumns(ts.getOrderedColumns());
             this.setTogglableColumnsAsString(ts.getTogglableColumnsAsString());
+            this.setResizableColumnsAsString(ts.getResizableColumnsAsString());
         }
     }
 

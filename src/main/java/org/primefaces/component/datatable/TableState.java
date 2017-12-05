@@ -52,6 +52,8 @@ public class TableState implements Serializable {
     private List orderedColumns;
     
     private String togglableColumnsAsString;
+    
+    private String resizableColumnsAsString;
 
     public int getFirst() {
         return first;
@@ -171,5 +173,13 @@ public class TableState implements Serializable {
 
     public void setTogglableColumnsAsString(String togglableColumnsAsString) {
         this.togglableColumnsAsString = togglableColumnsAsString;
+    }
+    
+    public String getResizableColumnsAsString() {
+        return resizableColumnsAsString;
+    }
+
+    public void setResizableColumnsAsString(String resizableColumnsAsString) {
+        this.resizableColumnsAsString = resizableColumnsAsString;
     }
 }

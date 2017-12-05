@@ -304,6 +304,7 @@ public class DataTableRenderer extends DataRenderer {
         String clientId = table.getClientId(context);
         boolean scrollable = table.isScrollable();
         boolean hasPaginator = table.isPaginator();
+        boolean resizable = table.isResizableColumns();
         String style = table.getStyle();
         String paginatorPosition = table.getPaginatorPosition();
         int frozenColumns = table.getFrozenColumns();
@@ -312,7 +313,7 @@ public class DataTableRenderer extends DataRenderer {
         //style class
         String containerClass = scrollable ? DataTable.CONTAINER_CLASS + " " + DataTable.SCROLLABLE_CONTAINER_CLASS : DataTable.CONTAINER_CLASS;
         containerClass = table.getStyleClass() != null ? containerClass + " " + table.getStyleClass() : containerClass;
-        if (table.isResizableColumns()) containerClass = containerClass + " " + DataTable.RESIZABLE_CONTAINER_CLASS;
+        if (resizable) containerClass = containerClass + " " + DataTable.RESIZABLE_CONTAINER_CLASS;
         if (table.isStickyHeader()) containerClass = containerClass + " " + DataTable.STICKY_HEADER_CLASS;
         if (ComponentUtils.isRTL(context, table)) containerClass = containerClass + " " + DataTable.RTL_CLASS;
         if (table.isReflow()) containerClass = containerClass + " " + DataTable.REFLOW_CLASS;
@@ -359,6 +360,10 @@ public class DataTableRenderer extends DataRenderer {
 
         if (scrollable) {
             encodeStateHolder(context, table, table.getClientId(context) + "_scrollState", table.getScrollState());
+        }
+        
+        if (resizable) {
+            encodeStateHolder(context, table, table.getClientId(context) + "_resizableColumnState", null);
         }
 
         writer.endElement("div");
@@ -623,6 +628,12 @@ public class DataTableRenderer extends DataRenderer {
 
         String style = column.getStyle();
         String width = column.getWidth();
+        
+        if (table.isMultiViewState()) {
+            Map<String, String> resizableColsMap = table.getResizableColumnsMap();
+            width = resizableColsMap.get(clientId) == null ? width : resizableColsMap.get(clientId);
+        }
+        
         if (width != null) {
             String unit = width.endsWith("%") ? "" : "px";
             if (style != null) {
