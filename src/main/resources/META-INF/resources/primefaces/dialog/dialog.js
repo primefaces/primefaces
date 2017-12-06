@@ -81,6 +81,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     refresh: function(cfg) {
         this.positionInitialized = false;
         this.loaded = false;
+        this.minimized = false;
+        this.maximized = false;
 
         $(document).off('keydown.dialog_' + cfg.id);
 
