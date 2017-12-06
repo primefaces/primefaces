@@ -55,6 +55,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.groupRows();
             this.bindToggleRowGroupEvents();
         }
+        
+        if(this.cfg.multiViewState && this.cfg.resizableColumns) {
+            this.resizableStateHolder = $(this.jqId + '_resizableColumnState');
+            this.resizableState = [];
+            
+            if(this.resizableStateHolder.attr('value')) {
+                this.resizableState = this.resizableStateHolder.val().split(',');
+            }
+        }
 
         this.updateEmptyColspan();
         this.renderDeferred();
@@ -1125,22 +1134,22 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         if(!this.columnWidthsFixed) {
-            this.resizableState = [];
-            
             if(this.cfg.scrollable) {
                 this.scrollHeader.find('> .ui-datatable-scrollable-header-box > table > thead > tr > th').each(function() {
                     var headerCol = $(this),
                     colIndex = headerCol.index(),
                     width = headerCol.width();
 
+                    if($this.cfg.multiViewState && $this.resizableStateHolder && $this.resizableStateHolder.attr('value')) {
+                        width = ($this.findColWidthInResizableState(headerCol.attr('id')) || width);
+                    }
+                    
                     headerCol.width(width);
 
                     if($this.footerCols.length > 0) {
                         var footerCol = $this.footerCols.eq(colIndex);
                         footerCol.width(width);
                     }
-                    
-                    $this.resizableState.push(headerCol.attr('id') + '_' + width);
                 });
             }
             else {
@@ -1165,9 +1174,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 var col = $(this),
                 width = col.width();
                 
-                col.width(width);
+                if($this.cfg.multiViewState && $this.resizableStateHolder && $this.resizableStateHolder.attr('value')) {
+                    width = ($this.findColWidthInResizableState(col.attr('id')) || width);
+                }
                 
-                $this.resizableState.push(col.attr('id') + '_' + width);
+                col.width(width);
             });
         }
     },
@@ -2764,12 +2775,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.resizeMode = this.cfg.resizeMode||'fit';
         
         this.fixColumnWidths();
-        
-        if(this.cfg.multiViewState) {
-            this.resizableStateHolder = $(this.jqId + '_resizableColumnState');
-            this.resizableStateHolder.val(this.resizableState.join(','));
-        }
-        
+
         this.hasColumnGroup = this.hasColGroup();
         if(this.hasColumnGroup) {
             this.addGhostRow();
@@ -2828,17 +2834,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     $this.resizerHelper.hide();
                 }
 
-                var columnHeader = ui.helper.parent();
-                
                 if($this.cfg.resizeMode === 'expand') { 
                     setTimeout(function() {
-                        $this.changeResizableState(columnHeader);
-                        $this.fireColumnResizeEvent(columnHeader);
+                        $this.fireColumnResizeEvent(ui.helper.parent());
                     }, 5);
                 }
                 else {
-                    $this.changeResizableState(columnHeader);
-                    $this.fireColumnResizeEvent(columnHeader);
+                    $this.fireColumnResizeEvent(ui.helper.parent());
                 }
 
                 if($this.cfg.stickyHeader) {
@@ -2881,8 +2883,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         columnMarkup = '';
 
         for(var i = 0; i < dataColumnsCount; i++) {
-            var colWidth = columnsOfFirstRow.eq(i).width() + 1 + "px";
-            columnMarkup += '<th style="height:0px;border-bottom-width: 0px;border-top-width: 0px;padding-top: 0px;padding-bottom: 0px;outline: 0 none; width:' + colWidth + '" class="ui-resizable-column"></th>';
+            var colWidth = columnsOfFirstRow.eq(i).width() + 1,
+            id = this.id + '_ghost_' + i;
+
+            if(this.cfg.multiViewState && this.resizableStateHolder.attr('value')) {
+                colWidth = (this.findColWidthInResizableState(id) || colWidth);
+            }
+            
+            columnMarkup += '<th id="' + id + '" style="height:0px;border-bottom-width: 0px;border-top-width: 0px;padding-top: 0px;padding-bottom: 0px;outline: 0 none; width:' + colWidth + 'px" class="ui-resizable-column"></th>';
         }
 
         this.thead.prepend('<tr>' + columnMarkup + '</tr>');
@@ -2920,7 +2928,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     resize: function(event, ui) {
         var columnHeader, nextColumnHeader, change = null, newWidth = null, nextColumnWidth = null,
         expandMode = (this.cfg.resizeMode === 'expand'),
-        table = this.thead.parent();
+        table = this.thead.parent(),
+        $this = this;
 
         if(this.hasColumnGroup) {
             var groupResizer = this.findGroupResizer(ui);
@@ -2964,11 +2973,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 table.width(table.width() + change);
                 setTimeout(function() {
                     columnHeader.width(newWidth);
+                    $this.updateResizableState(columnHeader, nextColumnHeader, table, newWidth, null);
                 }, 1);
             }
             else {
                 columnHeader.width(newWidth);
                 nextColumnHeader.width(nextColumnWidth);
+                this.updateResizableState(columnHeader, nextColumnHeader, table, newWidth, nextColumnWidth);
             }
 
             if(this.cfg.scrollable) {
@@ -2976,8 +2987,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 colIndex = columnHeader.index();
 
                 if(expandMode) {
-                    var $this = this;
-
                     //body
                     cloneTable.width(cloneTable.width() + change);
 
@@ -3603,23 +3612,57 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
     
-    changeResizableState: function(columnHeader) {
-        if(this.cfg.multiViewState && columnHeader) {
-            var currentColumnId = columnHeader.attr('id'),
-            nextColumnHeader = columnHeader.nextAll('th:visible:first'),
-            nextColumnId = nextColumnHeader.attr('id');
-            
+    updateResizableState: function(columnHeader, nextColumnHeader, table, newWidth, nextColumnWidth) {
+        if(this.cfg.multiViewState) {
+            var expandMode = (this.cfg.resizeMode === 'expand'),
+            currentColumnId = columnHeader.attr('id'),
+            nextColumnId = nextColumnHeader.attr('id'),
+            tableId = this.id + "_tableWidthState",
+            currentColumnState = currentColumnId + '_' + newWidth,
+            nextColumnState = nextColumnId + '_' + nextColumnWidth,
+            tableState = tableId + '_' + parseInt(table.css('width')),
+            currentColumnMatch = false,
+            nextColumnMatch = false,
+            tableMatch = false;
+
             for(var i = 0; i < this.resizableState.length; i++) {
                 var state = this.resizableState[i];
                 if(state.indexOf(currentColumnId) === 0) {
-                    this.resizableState[i] = currentColumnId + '_' + parseInt(columnHeader.css('width')); 
+                    this.resizableState[i] = currentColumnState; 
+                    currentColumnMatch = true;
                 }
-                else if(state.indexOf(nextColumnId) === 0) {
-                    this.resizableState[i] = nextColumnId + '_' + parseInt(nextColumnHeader.css('width'));
+                else if(!expandMode && state.indexOf(nextColumnId) === 0) {
+                    this.resizableState[i] = nextColumnState;
+                    nextColumnMatch = true;
+                }
+                else if(expandMode && state.indexOf(tableId) === 0) {
+                    this.resizableState[i] = tableState;
+                    tableMatch = true;
                 }
             }
             
+            if(!currentColumnMatch) {
+                this.resizableState.push(currentColumnState);
+            }
+            
+            if(!expandMode && !nextColumnMatch) {
+                this.resizableState.push(nextColumnState);
+            }
+                
+            if(expandMode && !tableMatch) {
+                this.resizableState.push(tableState);
+            }
+
             this.resizableStateHolder.val(this.resizableState.join(','));
+        }
+    },
+    
+    findColWidthInResizableState: function(id) {
+        for(var i = 0; i < this.resizableState.length; i++) {
+            var state = this.resizableState[i];
+            if(state.indexOf(id) === 0) {
+                return state.substring(state.lastIndexOf('_') + 1, state.length);
+            }
         }
     }
     

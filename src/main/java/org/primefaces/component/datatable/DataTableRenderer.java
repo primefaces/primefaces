@@ -362,8 +362,8 @@ public class DataTableRenderer extends DataRenderer {
             encodeStateHolder(context, table, table.getClientId(context) + "_scrollState", table.getScrollState());
         }
         
-        if (resizable) {
-            encodeStateHolder(context, table, table.getClientId(context) + "_resizableColumnState", null);
+        if (resizable && table.isMultiViewState()) {
+            encodeStateHolder(context, table, table.getClientId(context) + "_resizableColumnState", table.getResizableColumnsAsString());
         }
 
         writer.endElement("div");
@@ -375,9 +375,25 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.TABLE_WRAPPER_CLASS, null);
 
+        String tableStyle = table.getTableStyle();
+
+        if (table.isMultiViewState() && table.isResizableColumns()) {
+            Map<String, String> resizableColsMap = table.getResizableColumnsMap();
+            String width = resizableColsMap.get(table.getClientId(context) + "_tableWidthState");
+            
+            if (width != null) {
+                if (tableStyle != null) {
+                    tableStyle = tableStyle + ";width:" + width + "px";
+                }
+                else {
+                    tableStyle = "width:" + width + "px";
+                }
+            }
+        }
+        
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
-        if (table.getTableStyle() != null) writer.writeAttribute("style", table.getTableStyle(), null);
+        if (tableStyle != null) writer.writeAttribute("style", tableStyle, null);
         if (table.getTableStyleClass() != null) writer.writeAttribute("class", table.getTableStyleClass(), null);
         if (table.getSummary() != null) writer.writeAttribute("summary", table.getSummary(), null);
 
@@ -629,7 +645,7 @@ public class DataTableRenderer extends DataRenderer {
         String style = column.getStyle();
         String width = column.getWidth();
         
-        if (table.isMultiViewState()) {
+        if (table.isMultiViewState() && resizable) {
             Map<String, String> resizableColsMap = table.getResizableColumnsMap();
             width = resizableColsMap.get(clientId) == null ? width : resizableColsMap.get(clientId);
         }

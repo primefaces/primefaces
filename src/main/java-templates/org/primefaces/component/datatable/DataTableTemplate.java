@@ -1277,14 +1277,15 @@ import org.primefaces.component.datatable.TableState;
     public Map getTogglableColumnsMap() {
         if(togglableColsMap == null) {
             togglableColsMap = new HashMap<String, Boolean>();
+            boolean isValueBlank = ComponentUtils.isValueBlank(togglableColumnsAsString);
 
-            if(togglableColumnsAsString == null) {
+            if(isValueBlank) {
                 FacesContext context = getFacesContext();
                 Map<String,String> params = context.getExternalContext().getRequestParameterMap();
                 this.setTogglableColumnsAsString(params.get(this.getClientId(context) + "_columnTogglerState"));
             }
 
-            if(togglableColumnsAsString != null) {
+            if(!isValueBlank) {
                 String[] colsArr = togglableColumnsAsString.split(",");
                 for(int i = 0; i < colsArr.length; i++) {
                     String temp = colsArr[i];
@@ -1303,6 +1304,10 @@ import org.primefaces.component.datatable.TableState;
         this.resizableColumnsAsString = resizableColumnsAsString;
     }
 
+    public String getResizableColumnsAsString() {
+        return resizableColumnsAsString;
+    }
+
     private Map<String, String> resizableColsMap;
 
     public void setResizableColumnsMap(Map<String, String> resizableColsMap) {
@@ -1312,14 +1317,15 @@ import org.primefaces.component.datatable.TableState;
     public Map getResizableColumnsMap() {
         if(resizableColsMap == null) {
             resizableColsMap = new HashMap<String, String>();
+            boolean isValueBlank = ComponentUtils.isValueBlank(resizableColumnsAsString);
 
-            if(resizableColumnsAsString == null) {
+            if(isValueBlank) {
                 FacesContext context = getFacesContext();
                 Map<String,String> params = context.getExternalContext().getRequestParameterMap();
                 this.setResizableColumnsAsString(params.get(this.getClientId(context) + "_resizableColumnState"));
             }
 
-            if(resizableColumnsAsString != null) {
+            if(!isValueBlank) {
                 String[] colsArr = resizableColumnsAsString.split(",");
                 for(int i = 0; i < colsArr.length; i++) {
                     String temp = colsArr[i];
