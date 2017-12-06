@@ -92,8 +92,23 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             	PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.appendTo).children(this.jqId).remove();
             }
         }
+	
+	//remove duplicate dialog in the dock
+	//this could happen if the dialog wasn't updated directly but via container update
+	if (this.minimized && $(this.jqId).size() > 1) {
+            $(".ui-dialog-docking-zone").children(this.jqId).remove();
+	}
 
         this.init(cfg);
+	    
+	//restore maximized/minimized state
+        if (this.maximized) {
+            this.maximize();
+        } else if (this.minimized) {
+		this.positionInitialized = true;
+		this.moveToTop();
+		this.minimize();
+        }
     },
 
     //@Override
@@ -473,7 +488,16 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             this.saveState();
+            
+            this.maximize();
+            
+            this.maximized = true;
 
+            this.fireBehaviorEvent('maximize');
+        }
+    },
+    
+    maximize: function() {
             var win = $(window);
 
             this.jq.addClass('ui-dialog-maximized').css({
@@ -492,10 +516,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             });
 
             this.maximizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-extlink').addClass('ui-icon-newwin');
-            this.maximized = true;
-
-            this.fireBehaviorEvent('maximize');
-        }
     },
 
     toggleMinimize: function() {
@@ -531,15 +551,20 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
                                 ,className: 'ui-dialog-minimizing'
                                 }, 500,
                                 function() {
-                                    $this.dock(dockingZone);
-                                    $this.jq.addClass('ui-dialog-minimized');
+                                    $this.minimize();
                                 });
             }
             else {
-                this.dock(dockingZone);
-                this.jq.addClass('ui-dialog-minimized');
+                this.minimize();
             }
+            this.fireBehaviorEvent('minimize');
         }
+    },
+    
+    minimize: function() {
+        dockingZone = $(document.body).children('.ui-dialog-docking-zone');
+        this.dock(dockingZone);
+        this.jq.addClass('ui-dialog-minimized');
     },
 
     dock: function(zone) {
@@ -553,8 +578,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.resizable) {
             this.resizers.hide();
         }
-
-        this.fireBehaviorEvent('minimize');
     },
 
     saveState: function() {
