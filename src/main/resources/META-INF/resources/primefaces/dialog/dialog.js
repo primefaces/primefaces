@@ -81,9 +81,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     refresh: function(cfg) {
         this.positionInitialized = false;
         this.loaded = false;
-        this.minimized = false;
-        this.maximized = false;
-
+        
         $(document).off('keydown.dialog_' + cfg.id);
 
         if(cfg.appendTo) {
@@ -92,6 +90,18 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             	PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.appendTo).children(this.jqId).remove();
             }
         }
+        
+        if(this.minimized) {
+            this.parent.children(this.jqId).remove();
+        }
+        
+        var dockingZone = $(document.body).children('.ui-dialog-docking-zone');
+        if(dockingZone.length) {
+            dockingZone.children(this.jqId).remove();
+        }
+        
+        this.minimized = false;
+        this.maximized = false;
 
         this.init(cfg);
     },
