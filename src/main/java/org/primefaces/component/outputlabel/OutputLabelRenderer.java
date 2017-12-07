@@ -17,6 +17,7 @@ package org.primefaces.component.outputlabel;
 
 import org.primefaces.util.EditableValueHolderState;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -174,12 +175,13 @@ public class OutputLabelRenderer extends CoreRenderer {
                 return false;
             }
             for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
-                String annotationClassName = constraintDescriptor.getAnnotation().annotationType().getSimpleName();
-                if (constraintDescriptor.getAnnotation().annotationType().equals(NotNull.class)) {
-                    // GitHub #14 skip @NotNull check
+                Class<? extends Annotation> annotationType = constraintDescriptor.getAnnotation().annotationType();
+                // GitHub #14 skip @NotNull check
+                if (annotationType.equals(NotNull.class)) {
                     return RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isInterpretEmptyStringAsNull();
                 }
                 // GitHub #3052 @NotBlank,@NotEmpty Hibernate and BeanValidator 2.0
+                String annotationClassName = annotationType.getSimpleName();
                 if ("NotBlank".equals(annotationClassName) || "NotEmpty".equals(annotationClassName)) {
                     return true;
                 }
@@ -197,7 +199,7 @@ public class OutputLabelRenderer extends CoreRenderer {
 
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //Do nothing
+        // Do nothing
     }
 
     @Override
