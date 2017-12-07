@@ -106,14 +106,13 @@ public class OutputLabelRenderer extends CoreRenderer {
                             styleClass.append(" ui-state-error");
                         }
 
-                        
                         if ("auto".equals(indicateRequired)) {
                             state.setRequired(input.isRequired());
 
                             // fallback if required=false
                             if (!state.isRequired()) {
                                 PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
-                                if (config.isBeanValidationAvailable() && isNotNullDefined(input, context)) {
+                                if (config.isBeanValidationAvailable() && isBeanValidationDefined(input, context)) {
                                     state.setRequired(true);
                                 }
                             }
@@ -166,31 +165,30 @@ public class OutputLabelRenderer extends CoreRenderer {
         writer.endElement("span");
     }
 
-    protected boolean isNotNullDefined(UIInput input, FacesContext context) {
-
-        // skip @NotNull check
-        // see GitHub #14
-        if (!RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isInterpretEmptyStringAsNull()) {
-            return false;
-        }
-
+    protected boolean isBeanValidationDefined(UIInput input, FacesContext context) {
         try {
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
-                    context,
-                    RequestContext.getCurrentInstance(context),
-                    ValueExpressionAnalyzer.getExpression(context.getELContext(), input.getValueExpression("value")));
-            if (constraints != null && !constraints.isEmpty()) {
-                for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
-                    if (constraintDescriptor.getAnnotation().annotationType().equals(NotNull.class)) {
-                        return true;
-                    }
+                        context, RequestContext.getCurrentInstance(context),
+                        ValueExpressionAnalyzer.getExpression(context.getELContext(), input.getValueExpression("value")));
+            if (constraints == null || constraints.isEmpty()) {
+                return false;
+            }
+            for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
+                String annotationClassName = constraintDescriptor.getAnnotation().annotationType().getSimpleName();
+                if (constraintDescriptor.getAnnotation().annotationType().equals(NotNull.class)) {
+                    // GitHub #14 skip @NotNull check
+                    return RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isInterpretEmptyStringAsNull();
+                }
+                // GitHub #3052 @NotBlank,@NotEmpty Hibernate and BeanValidator 2.0
+                if ("NotBlank".equals(annotationClassName) || "NotEmpty".equals(annotationClassName)) {
+                    return true;
                 }
             }
         }
         catch (PropertyNotFoundException e) {
-            String message = "Skip evaluating @NotNull for outputLabel and referenced component \"" + input.getClientId(context) + "\" because"
-                    + " the ValueExpression of the \"value\" attribute"
-                    + " isn't resolvable completely (e.g. a sub-expression returns null)";
+            String message = "Skip evaluating [@NotNull,@NotBlank,@NotEmpty] for outputLabel and referenced component \"" + input.getClientId(context)
+                        + "\" because the ValueExpression of the \"value\" attribute"
+                        + " isn't resolvable completely (e.g. a sub-expression returns null)";
             LOG.log(Level.FINE, message);
         }
 
