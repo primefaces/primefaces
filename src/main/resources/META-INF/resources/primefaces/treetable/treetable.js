@@ -765,9 +765,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         
         this.writeSelections();
         
-        if(selected && this.hasBehavior('unselect'))
+        if(selected)
             this.fireUnselectNodeEvent(rowKey);
-        else if(!selected && this.hasBehavior('select'))
+        else
             this.fireSelectNodeEvent(rowKey);
     },
     
