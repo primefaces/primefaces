@@ -265,7 +265,7 @@ public class DefaultRequestContext extends RequestContext {
     @Override
     public ApplicationContext getApplicationContext() {
         if (this.applicationContext == null) {
-            this.applicationContext = ApplicationContext.getCurrentInstance();
+            this.applicationContext = ApplicationContext.getCurrentInstance(context);
             if (this.applicationContext == null) {
                 this.applicationContext = new DefaultApplicationContext(context);
                 ApplicationContext.setCurrentInstance(applicationContext, context);

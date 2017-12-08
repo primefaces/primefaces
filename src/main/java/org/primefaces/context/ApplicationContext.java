@@ -17,6 +17,7 @@ package org.primefaces.context;
 
 import java.util.Map;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import org.primefaces.cache.CacheProvider;
@@ -36,14 +37,20 @@ public abstract class ApplicationContext {
 
     public static final String INSTANCE_KEY = ApplicationContext.class.getName();
 
-    public static ApplicationContext getCurrentInstance() {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-
+    public static ApplicationContext getCurrentInstance(FacesContext facesContext) {
         return (ApplicationContext) facesContext.getExternalContext().getApplicationMap().get(INSTANCE_KEY);
+    }
+    
+    public static ApplicationContext getCurrentInstance(ServletContext context) {
+        return (ApplicationContext) context.getAttribute(INSTANCE_KEY);
     }
 
     public static void setCurrentInstance(final ApplicationContext context, final FacesContext facesContext) {
         facesContext.getExternalContext().getApplicationMap().put(INSTANCE_KEY, context);
+        
+        if (facesContext.getExternalContext().getContext() instanceof ServletContext) {
+            ((ServletContext) facesContext.getExternalContext().getContext()).setAttribute(INSTANCE_KEY, context);
+        }
     }
 
     public abstract PrimeConfiguration getConfig();

@@ -34,6 +34,8 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.FileCleanerCleanup;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileCleaningTracker;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.context.ApplicationContext;
 import org.primefaces.util.Constants;
 import org.primefaces.webapp.MultipartRequest;
 
@@ -51,12 +53,13 @@ public class FileUploadFilter implements Filter {
 
     private boolean bypass;
 
+    @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        boolean isAtLeastJSF22 = detectJSF22();
         String uploader = filterConfig.getServletContext().getInitParameter(Constants.ContextParams.UPLOADER);
 
         if (uploader == null || uploader.equals("auto")) {
-            bypass = isAtLeastJSF22;
+            PrimeConfiguration configuration = ApplicationContext.getCurrentInstance(filterConfig.getServletContext()).getConfig();
+            bypass = configuration.isAtLeastJSF22();
         }
         else if (uploader.equals("native")) {
             bypass = true;
@@ -73,6 +76,7 @@ public class FileUploadFilter implements Filter {
         }
     }
 
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         if (bypass) {
             filterChain.doFilter(request, response);
@@ -101,27 +105,10 @@ public class FileUploadFilter implements Filter {
         }
     }
 
+    @Override
     public void destroy() {
         if (logger.isLoggable(Level.FINE)) {
             logger.fine("Destroying FileUploadFilter");
-        }
-    }
-
-    private boolean detectJSF22() {
-        String version = FacesContext.class.getPackage().getImplementationVersion();
-
-        if (version != null) {
-            return version.startsWith("2.2");
-        }
-        else {
-            //fallback
-            try {
-                Class.forName("javax.faces.flow.Flow");
-                return true;
-            }
-            catch (ClassNotFoundException ex) {
-                return false;
-            }
         }
     }
 
