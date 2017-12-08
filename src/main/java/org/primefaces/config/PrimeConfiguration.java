@@ -80,14 +80,14 @@ public class PrimeConfiguration {
 
     public PrimeConfiguration(FacesContext context) {
         initConfigFromContextParams(context);
-        initEnvironmentConfig(context);
+        initEnvironmentConfig();
         initInternalConfig(context);
         initBuildProperties();
         initConfigFromWebXml(context);
         initValidateEmptyFields(context);
     }
 
-    protected void initEnvironmentConfig(FacesContext context) {
+    protected void initEnvironmentConfig() {
         atLeastEl22 = ClassUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
 
         atLeastJsf23 = ClassUtils.tryToLoadClassForName("javax.faces.component.UIImportConstants") != null;

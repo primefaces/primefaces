@@ -39,7 +39,7 @@ public class PostConstructApplicationEventListener implements SystemEventListene
     @Override
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         // temp manually instantiate startup config as the default config is not available yet
-        PrimeConfiguration config = new StartupPrimeConfiguration(FacesContext.getCurrentInstance());
+        PrimeConfiguration config = new StartupPrimeConfiguration();
 
         logger.log(Level.INFO,
                 "Running on PrimeFaces {0}",

@@ -58,7 +58,7 @@ public class FileUploadFilter implements Filter {
         String uploader = filterConfig.getServletContext().getInitParameter(Constants.ContextParams.UPLOADER);
 
         if (uploader == null || uploader.equals("auto")) {
-            PrimeConfiguration config = new StartupPrimeConfiguration(FacesContext.getCurrentInstance());
+            PrimeConfiguration config = new StartupPrimeConfiguration();
             bypass = config.isAtLeastJSF22();
         }
         else if (uploader.equals("native")) {
