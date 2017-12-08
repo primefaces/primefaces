@@ -20,6 +20,7 @@ import org.primefaces.util.Constants;
 
 public class EndsWithFilterConstraint implements FilterConstraint {
 
+    @Override
     public boolean applies(Object value, Object filter, Locale locale) {
         String filterText = (filter == null) ? null : filter.toString().trim().toLowerCase(locale);
 

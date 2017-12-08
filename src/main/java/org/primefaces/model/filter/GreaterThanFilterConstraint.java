@@ -19,6 +19,7 @@ import java.util.Locale;
 
 public class GreaterThanFilterConstraint implements FilterConstraint {
 
+    @Override
     public boolean applies(Object value, Object filter, Locale locale) {
         if (filter == null) {
             return true;
