@@ -22,12 +22,12 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.application.ViewHandler;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.validation.Validation;
+import org.primefaces.util.ClassUtils;
 
 import org.primefaces.util.Constants;
 
@@ -60,11 +60,11 @@ public class PrimeConfiguration {
     // internal config
     private boolean beanValidationAvailable = false;
     private boolean stringConverterAvailable = false;
-    private boolean el22Available = false;
-    private boolean jsf23 = false;
-    private boolean jsf22 = false;
-    private boolean jsf21 = false;
-    private boolean bv11 = false;
+    private boolean atLeastEl22 = false;
+    private boolean atLeastJsf23 = false;
+    private boolean atLeastJsf22 = false;
+    private boolean atLeastJsf21 = false;
+    private boolean atLeastBv11 = false;
 
     // build properties
     private String buildVersion = null;
@@ -85,25 +85,14 @@ public class PrimeConfiguration {
     }
 
     protected void initConfig(FacesContext context) {
-        el22Available = checkIfEL22IsAvailable();
+        atLeastEl22 = ClassUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
         beanValidationAvailable = checkIfBeanValidationIsAvailable();
 
-        jsf23 = detectJSF23();
-        if (jsf23) {
-            jsf22 = true;
-            jsf21 = true;
-        }
-        else {
-            jsf22 = detectJSF22();
-            if (jsf22) {
-                jsf21 = true;
-            }
-            else {
-                jsf21 = detectJSF21();
-            }
-        }
+        atLeastJsf23 = ClassUtils.tryToLoadClassForName("javax.faces.component.UIImportConstants") != null;
+        atLeastJsf22 = ClassUtils.tryToLoadClassForName("javax.faces.flow.Flow") != null;
+        atLeastJsf21 = ClassUtils.tryToLoadClassForName("javax.faces.component.TransientStateHolder") != null;
 
-        bv11 = detectBV11();
+        atLeastBv11 = ClassUtils.tryToLoadClassForName("javax.validation.executable.ExecutableValidator") != null;
 
         stringConverterAvailable = null != context.getApplication().createConverter(String.class);
     }
@@ -234,84 +223,7 @@ public class PrimeConfiguration {
             }
         }
 
-        return available && !beanValidationDisabled && el22Available;
-    }
-
-    private boolean checkIfEL22IsAvailable() {
-        boolean available;
-
-        try {
-            available = Class.forName("javax.el.ValueReference") != null;
-        }
-        catch (ClassNotFoundException e) {
-            available = false;
-        }
-
-        return available;
-    }
-
-    private boolean detectJSF23() {
-        String version = FacesContext.class.getPackage().getImplementationVersion();
-
-        if (version != null) {
-            return version.startsWith("2.3");
-        }
-        else {
-            //fallback
-            try {
-                Class.forName("javax.faces.component.UIImportConstants");
-                return true;
-            }
-            catch (ClassNotFoundException ex) {
-                return false;
-            }
-        }
-    }
-
-    private boolean detectJSF22() {
-        String version = FacesContext.class.getPackage().getImplementationVersion();
-
-        if (version != null) {
-            return version.startsWith("2.2");
-        }
-        else {
-            //fallback
-            try {
-                Class.forName("javax.faces.flow.Flow");
-                return true;
-            }
-            catch (ClassNotFoundException ex) {
-                return false;
-            }
-        }
-    }
-
-    private boolean detectJSF21() {
-        String version = FacesContext.class.getPackage().getImplementationVersion();
-
-        if (version != null) {
-            return version.startsWith("2.1");
-        }
-        else {
-            //fallback
-            try {
-                ViewHandler.class.getDeclaredMethod("deriveLogicalViewId", FacesContext.class, String.class);
-                return true;
-            }
-            catch (NoSuchMethodException ex) {
-                return false;
-            }
-        }
-    }
-
-    private boolean detectBV11() {
-        try {
-            Class.forName("javax.validation.executable.ExecutableValidator");
-            return true;
-        }
-        catch (ClassNotFoundException ex) {
-            return false;
-        }
+        return available && !beanValidationDisabled && atLeastEl22;
     }
 
     protected void initConfigFromWebXml(FacesContext context) {
@@ -330,7 +242,7 @@ public class PrimeConfiguration {
     }
 
     public boolean isAtLeastEL22() {
-        return el22Available;
+        return atLeastEl22;
     }
 
     public boolean isPartialSubmitEnabled() {
@@ -350,15 +262,15 @@ public class PrimeConfiguration {
     }
 
     public boolean isAtLeastJSF23() {
-        return jsf23;
+        return atLeastJsf23;
     }
 
     public boolean isAtLeastJSF22() {
-        return jsf22;
+        return atLeastJsf22;
     }
 
     public boolean isAtLeastJSF21() {
-        return jsf21;
+        return atLeastJsf21;
     }
 
     public boolean isResetValuesEnabled() {
@@ -410,7 +322,7 @@ public class PrimeConfiguration {
     }
 
     public boolean isAtLeastBV11() {
-        return bv11;
+        return atLeastBv11;
     }
 
     public boolean isEarlyPostParamEvaluation() {
