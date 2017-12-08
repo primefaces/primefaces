@@ -21,6 +21,6 @@ public class StartupPrimeConfiguration extends PrimeConfiguration {
 
     public StartupPrimeConfiguration(FacesContext context) {
         initBuildProperties();
-        initConfig(context);
+        initEnvironmentConfig(context);
     }
 }

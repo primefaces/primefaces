@@ -15,6 +15,7 @@
  */
 package org.primefaces.webapp;
 
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
@@ -22,12 +23,14 @@ import org.primefaces.context.ApplicationContext;
 
 public class PreDestroyApplicationEventListener implements SystemEventListener {
 
+    @Override
     public boolean isListenerForSource(Object source) {
         return true;
     }
 
+    @Override
     public void processEvent(SystemEvent event) throws AbortProcessingException {
-        ApplicationContext applicationContext = ApplicationContext.getCurrentInstance();
+        ApplicationContext applicationContext = ApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance());
         if (applicationContext != null) {
             applicationContext.release();
         }

@@ -57,15 +57,17 @@ public class PrimeConfiguration {
     private boolean earlyPostParamEvaluation = false;
     private boolean collectScripts = false;
 
-    // internal config
+    // environment config
     private boolean beanValidationAvailable = false;
-    private boolean stringConverterAvailable = false;
     private boolean atLeastEl22 = false;
     private boolean atLeastJsf23 = false;
     private boolean atLeastJsf22 = false;
     private boolean atLeastJsf21 = false;
     private boolean atLeastBv11 = false;
 
+    // internal config
+    private boolean stringConverterAvailable = false;
+    
     // build properties
     private String buildVersion = null;
 
@@ -78,23 +80,26 @@ public class PrimeConfiguration {
 
     public PrimeConfiguration(FacesContext context) {
         initConfigFromContextParams(context);
-        initConfig(context);
+        initEnvironmentConfig(context);
+        initInternalConfig(context);
         initBuildProperties();
         initConfigFromWebXml(context);
         initValidateEmptyFields(context);
     }
 
-    protected void initConfig(FacesContext context) {
+    protected void initEnvironmentConfig(FacesContext context) {
         atLeastEl22 = ClassUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
-        beanValidationAvailable = checkIfBeanValidationIsAvailable();
 
         atLeastJsf23 = ClassUtils.tryToLoadClassForName("javax.faces.component.UIImportConstants") != null;
         atLeastJsf22 = ClassUtils.tryToLoadClassForName("javax.faces.flow.Flow") != null;
         atLeastJsf21 = ClassUtils.tryToLoadClassForName("javax.faces.component.TransientStateHolder") != null;
 
         atLeastBv11 = ClassUtils.tryToLoadClassForName("javax.validation.executable.ExecutableValidator") != null;
-
+    }
+    
+    protected void initInternalConfig(FacesContext context) {
         stringConverterAvailable = null != context.getApplication().createConverter(String.class);
+        beanValidationAvailable = checkIfBeanValidationIsAvailable();
     }
 
     protected void initConfigFromContextParams(FacesContext context) {
@@ -200,15 +205,7 @@ public class PrimeConfiguration {
     }
 
     private boolean checkIfBeanValidationIsAvailable() {
-        boolean available = false;
-
-        // check if class is available
-        try {
-            available = Class.forName("javax.validation.Validation") != null;
-        }
-        catch (ClassNotFoundException e) {
-            available = false;
-        }
+        boolean available = ClassUtils.tryToLoadClassForName("javax.validation.Validation") != null;
 
         if (available) {
             // Trial-error approach to check for Bean Validation impl existence.
