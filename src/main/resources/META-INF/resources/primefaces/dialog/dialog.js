@@ -92,12 +92,11 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         }
         
         if(this.minimized) {
-            this.parent.children(this.jqId).remove();
-        }
-        
-        var dockingZone = $(document.body).children('.ui-dialog-docking-zone');
-        if(dockingZone.length) {
-            dockingZone.children(this.jqId).remove();
+            var dockingZone = $(document.body).children('.ui-dialog-docking-zone');
+            if(dockingZone.length && dockingZone.children(this.jqId).length) { 
+                this.removeMinimize();
+                dockingZone.children(this.jqId).remove();
+            }
         }
         
         this.minimized = false;
@@ -520,15 +519,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         if(this.minimized) {
-            this.jq.appendTo(this.parent).removeClass('ui-dialog-minimized').css({'position':'fixed', 'float':'none'});
-            this.restoreState();
-            this.content.show();
-            this.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-plus').addClass('ui-icon-minus');
-            this.minimized = false;
-
-            if(this.cfg.resizable) {
-                this.resizers.show();
-            }
+            this.removeMinimize();
 
             this.fireBehaviorEvent('restoreMinimize');
         }
@@ -669,6 +660,18 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             if(behavior) {
                 behavior.call(this);
             }
+        }
+    },
+    
+    removeMinimize: function() {
+        this.jq.appendTo(this.parent).removeClass('ui-dialog-minimized').css({'position':'fixed', 'float':'none'});
+        this.restoreState();
+        this.content.show();
+        this.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-plus').addClass('ui-icon-minus');
+        this.minimized = false;
+        
+        if(this.cfg.resizable) {
+            this.resizers.show();
         }
     }
 
