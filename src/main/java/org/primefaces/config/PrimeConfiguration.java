@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.application.ViewHandler;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
@@ -61,9 +60,7 @@ public class PrimeConfiguration {
     private boolean beanValidationAvailable = false;
     private boolean stringConverterAvailable = false;
     private boolean el22Available = false;
-    private boolean jsf23 = false;
-    private boolean jsf22 = false;
-    private boolean jsf21 = false;
+    private final JsfVersionDetector versionDetector = new JsfVersionDetector();
     private boolean bv11 = false;
 
     // build properties
@@ -82,29 +79,15 @@ public class PrimeConfiguration {
         initBuildProperties();
         initConfigFromWebXml(context);
         initValidateEmptyFields(context);
+        if (LOG.isLoggable(Level.INFO)) {
+            LOG.info("Detected version of the JSF implementation: " + versionDetector);
+        }
     }
 
     protected void initConfig(FacesContext context) {
         el22Available = checkIfEL22IsAvailable();
         beanValidationAvailable = checkIfBeanValidationIsAvailable();
-
-        jsf23 = detectJSF23();
-        if (jsf23) {
-            jsf22 = true;
-            jsf21 = true;
-        }
-        else {
-            jsf22 = detectJSF22();
-            if (jsf22) {
-                jsf21 = true;
-            }
-            else {
-                jsf21 = detectJSF21();
-            }
-        }
-
         bv11 = detectBV11();
-
         stringConverterAvailable = null != context.getApplication().createConverter(String.class);
     }
 
@@ -154,7 +137,7 @@ public class PrimeConfiguration {
 
         value = externalContext.getInitParameter(Constants.ContextParams.EARLY_POST_PARAM_EVALUATION);
         earlyPostParamEvaluation = (value == null) ? false : Boolean.valueOf(value);
-        
+
         value = externalContext.getInitParameter(Constants.ContextParams.COLLECT_SCRIPTS);
         collectScripts = (value == null) ? false : Boolean.valueOf(value);
     }
@@ -250,60 +233,6 @@ public class PrimeConfiguration {
         return available;
     }
 
-    private boolean detectJSF23() {
-        String version = FacesContext.class.getPackage().getImplementationVersion();
-
-        if (version != null) {
-            return version.startsWith("2.3");
-        }
-        else {
-            //fallback
-            try {
-                Class.forName("javax.faces.component.UIImportConstants");
-                return true;
-            }
-            catch (ClassNotFoundException ex) {
-                return false;
-            }
-        }
-    }
-
-    private boolean detectJSF22() {
-        String version = FacesContext.class.getPackage().getImplementationVersion();
-
-        if (version != null) {
-            return version.startsWith("2.2");
-        }
-        else {
-            //fallback
-            try {
-                Class.forName("javax.faces.flow.Flow");
-                return true;
-            }
-            catch (ClassNotFoundException ex) {
-                return false;
-            }
-        }
-    }
-
-    private boolean detectJSF21() {
-        String version = FacesContext.class.getPackage().getImplementationVersion();
-
-        if (version != null) {
-            return version.startsWith("2.1");
-        }
-        else {
-            //fallback
-            try {
-                ViewHandler.class.getDeclaredMethod("deriveLogicalViewId", FacesContext.class, String.class);
-                return true;
-            }
-            catch (NoSuchMethodException ex) {
-                return false;
-            }
-        }
-    }
-
     private boolean detectBV11() {
         try {
             Class.forName("javax.validation.executable.ExecutableValidator");
@@ -350,15 +279,15 @@ public class PrimeConfiguration {
     }
 
     public boolean isAtLeastJSF23() {
-        return jsf23;
+        return versionDetector.isJsf23Supported();
     }
 
     public boolean isAtLeastJSF22() {
-        return jsf22;
+        return versionDetector.isJsf22Supported();
     }
 
     public boolean isAtLeastJSF21() {
-        return jsf21;
+        return versionDetector.isJsf21Supported();
     }
 
     public boolean isResetValuesEnabled() {
