@@ -22,12 +22,12 @@ import java.util.List;
 public class CollectScriptsState implements Serializable {
     
     private List<String> includes;
-    private StringBuilder inline;
+    private List<String> inlines;
     private int savedInlineTags;
 
     public CollectScriptsState() {
         includes = new ArrayList<String>(20);
-        inline = new StringBuilder(750);
+        inlines = new ArrayList<String>(50);
         savedInlineTags = 0;
     }
     
@@ -39,8 +39,7 @@ public class CollectScriptsState implements Serializable {
     
     public void addInline(StringBuilder content) {
         if (content.length() > 0) {
-            inline.append(content.toString());
-            inline.append(';');
+            inlines.add(content.toString());
             savedInlineTags++;
         }
     }
@@ -49,8 +48,8 @@ public class CollectScriptsState implements Serializable {
         return includes;
     }
 
-    public StringBuilder getInline() {
-        return inline;
+    public List<String> getInlines() {
+        return inlines;
     }
 
     public int getSavedInlineTags() {
