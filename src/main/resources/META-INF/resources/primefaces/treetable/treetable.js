@@ -733,7 +733,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
     
-    toggleCheckboxNode: function(node) {;
+    toggleCheckboxNode: function(node) {
         var selected = node.hasClass('ui-state-highlight'),
         rowKey = node.data('rk');
      
