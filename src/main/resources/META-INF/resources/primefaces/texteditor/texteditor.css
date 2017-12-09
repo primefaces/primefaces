@@ -1,5 +1,5 @@
 /*!
- * Quill Editor v1.3.1
+ * Quill Editor v1.3.4
  * https://quilljs.com/
  * Copyright (c) 2014, Jason Chen
  * Copyright (c) 2013, salesforce.com
@@ -386,16 +386,14 @@
 .ql-editor .ql-align-right {
   text-align: right;
 }
-.ql-editor .ql-embed-selected {
-  border: 1px solid #777;
-  user-select: none;
-}
 .ql-editor.ql-blank::before {
   color: rgba(0,0,0,0.6);
   content: attr(data-placeholder);
   font-style: italic;
+  left: 15px;
   pointer-events: none;
   position: absolute;
+  right: 15px;
 }
 .ql-snow.ql-toolbar:after,
 .ql-snow .ql-toolbar:after {
