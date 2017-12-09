@@ -171,7 +171,7 @@ public class CollectScriptsResponseWriter extends ResponseWriterWrapper {
 
     protected String mergeAndMinimizeInlineScripts() {
             
-        StringBuilder script = new StringBuilder(state.getInlines().size() * 50);
+        StringBuilder script = new StringBuilder(state.getInlines().size() * 100);
         for (String current : state.getInlines()) {
             script.append(current);
             script.append(";\n");
