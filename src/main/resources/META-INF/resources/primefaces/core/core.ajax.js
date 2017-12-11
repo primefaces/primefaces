@@ -575,10 +575,10 @@ if (!PrimeFaces.ajax) {
                                 PrimeFaces.ajax.Response.handle(data, status, xhr);
                             }
                         }
-                        catch(err) { 
+                        catch(err) {
                             PrimeFaces.error(err);
                         }
-                        
+
                         PrimeFaces.debug('DOM is updated.');
                     },
                     always: function(xhr, status) {
@@ -607,7 +607,9 @@ if (!PrimeFaces.ajax) {
                     }
                 };
 
-                // TODO remove when updating to jQuery 3
+                // map the new events to the old event
+                // somehow jQuery3 should work with 'always' isntead of 'complete' but it doesn't
+                // so lets use both old and new ones
                 xhrOptions.success = xhrOptions.done;
                 xhrOptions.error = xhrOptions.fail;
                 xhrOptions.complete = xhrOptions.always;
