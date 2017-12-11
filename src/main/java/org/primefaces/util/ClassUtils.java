@@ -13,25 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.model.filter;
+package org.primefaces.util;
 
-import java.util.Locale;
-import org.primefaces.util.Constants;
-
-public class EndsWithFilterConstraint implements FilterConstraint {
-
-    @Override
-    public boolean applies(Object value, Object filter, Locale locale) {
-        String filterText = (filter == null) ? null : filter.toString().trim().toLowerCase(locale);
-
-        if (filterText == null || filterText.equals(Constants.EMPTY_STRING)) {
-            return true;
+public class ClassUtils {
+    
+    public static Class tryToLoadClassForName(String name) {
+        try {
+            return Class.forName(name);
         }
-
-        if (value == null) {
-            return false;
+        catch (ClassNotFoundException e) {
+            //do nothing - it's just a try
+            return null;
         }
-
-        return value.toString().toLowerCase(locale).endsWith(filterText);
     }
 }

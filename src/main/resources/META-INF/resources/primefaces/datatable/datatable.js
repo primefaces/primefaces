@@ -410,6 +410,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 e.preventDefault();
             }
         })
+        .on("input", function() { 
+            // #89 IE clear "x" button
+            if (this.value == ""){
+                $this.filter();
+            }
+        })
         .on(this.cfg.filterEvent + '.dataTable', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode,
@@ -2859,8 +2865,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 params: [
                     {name: this.id + '_colResize', value: true},
                     {name: this.id + '_columnId', value: columnHeader.attr('id')},
-                    {name: this.id + '_width', value: columnHeader.width()},
-                    {name: this.id + '_height', value: columnHeader.height()}
+                    {name: this.id + '_width', value: parseInt(columnHeader.width())},
+                    {name: this.id + '_height', value: parseInt(columnHeader.height())}
                 ]
             };
 

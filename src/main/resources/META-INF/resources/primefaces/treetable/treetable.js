@@ -733,7 +733,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
     
-    toggleCheckboxNode: function(node) {;
+    toggleCheckboxNode: function(node) {
         var selected = node.hasClass('ui-state-highlight'),
         rowKey = node.data('rk');
      
@@ -1191,8 +1191,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                     params: [
                         {name: $this.id + '_colResize', value: true},
                         {name: $this.id + '_columnId', value: columnHeader.attr('id')},
-                        {name: $this.id + '_width', value: columnHeader.width()},
-                        {name: $this.id + '_height', value: columnHeader.height()}
+                        {name: $this.id + '_width', value: parseInt(columnHeader.width())},
+                        {name: $this.id + '_height', value: parseInt(columnHeader.height())}
                     ]
                 }
                 

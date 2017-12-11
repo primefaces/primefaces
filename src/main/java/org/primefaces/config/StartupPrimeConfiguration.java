@@ -15,12 +15,10 @@
  */
 package org.primefaces.config;
 
-import javax.faces.context.FacesContext;
-
 public class StartupPrimeConfiguration extends PrimeConfiguration {
 
-    public StartupPrimeConfiguration(FacesContext context) {
+    public StartupPrimeConfiguration() {
         initBuildProperties();
-        initConfig(context);
+        initEnvironmentConfig();
     }
 }

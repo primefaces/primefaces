@@ -158,7 +158,8 @@ public class CollectScriptsResponseWriter extends ResponseWriterWrapper {
 
             getWrapped().startElement("script", null);
             getWrapped().writeAttribute("type", "text/javascript", null);
-            getWrapped().write(minimizeInlineScript(state.getInline()));
+            
+            getWrapped().write(mergeAndMinimizeInlineScripts());
             getWrapped().endElement("script");
 
             getWrapped().endElement(name);
@@ -168,9 +169,15 @@ public class CollectScriptsResponseWriter extends ResponseWriterWrapper {
         }
     }
 
-    protected String minimizeInlineScript(StringBuilder script) {
+    protected String mergeAndMinimizeInlineScripts() {
+            
+        StringBuilder script = new StringBuilder(state.getInlines().size() * 100);
+        for (String current : state.getInlines()) {
+            script.append(current);
+            script.append(";\n");
+        }
+        
         String minimized = script.toString();
-
         minimized = minimized.replace("PrimeFaces.settings", "pf.settings")
             .replace("PrimeFaces.cw", "pf.cw")
             .replace("PrimeFaces.ab", "pf.ab")
@@ -181,7 +188,7 @@ public class CollectScriptsResponseWriter extends ResponseWriterWrapper {
 
         return minimized;
     }
-    
+
     @Override
     public ResponseWriter cloneWithWriter(Writer writer) {
         return getWrapped().cloneWithWriter(writer);

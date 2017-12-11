@@ -44,6 +44,10 @@ if (!PrimeFaces.dialog) {
 
             dialogFrame.width(frameWidth);
 
+            if(cfg.options.iframeTitle) {
+               dialogFrame.attr('title', cfg.options.iframeTitle);
+            }
+
             dialogFrame.on('load', function() {
                 var $frame = $(this),
                 headerElement = $frame.contents().find('title'),
