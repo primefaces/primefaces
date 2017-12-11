@@ -31,7 +31,8 @@ public class ConfirmBehavior extends AbstractBehavior {
         header(String.class),
         message(String.class),
         icon(String.class),
-        disabled(Boolean.class);
+        disabled(Boolean.class),
+        beforeShow(String.class);
 
         public final Class<?> expectedType;
 
@@ -51,6 +52,7 @@ public class ConfirmBehavior extends AbstractBehavior {
         String source = component.getClientId(context);
         String headerText = JSONObject.quote(this.getHeader());
         String messageText = JSONObject.quote(this.getMessage());
+        String beforeShow = JSONObject.quote(this.getBeforeShow());
 
         if (component instanceof Confirmable) {
             String sourceProperty = (source == null) ? "source:this" : "source:\"" + source + "\"";
@@ -58,7 +60,8 @@ public class ConfirmBehavior extends AbstractBehavior {
                     + ",header:" + headerText
                     + ",message:" + messageText
                     + ",icon:\"" + getIcon()
-                    + "\"});return false;";
+                    + "\",beforeShow:" + beforeShow
+                    + "});return false;";
             ((Confirmable) component).setConfirmationScript(script);
 
             return null;
@@ -104,5 +107,12 @@ public class ConfirmBehavior extends AbstractBehavior {
 
     public void setDisabled(boolean disabled) {
         setLiteral(PropertyKeys.disabled, disabled);
+    }
+    
+    public String getBeforeShow() {
+        return eval(PropertyKeys.beforeShow, null);
+    }
+    public void setBeforeShow(String beforeShow) {
+        setLiteral(PropertyKeys.beforeShow, beforeShow);
     }
 }

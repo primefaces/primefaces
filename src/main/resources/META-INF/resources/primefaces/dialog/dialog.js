@@ -700,21 +700,20 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
         if(this.cfg.global) {
             PrimeFaces.confirmDialog = this;
 
-            this.jq.find('.ui-confirmdialog-yes').on('click.ui-confirmdialog', function(e) {
-                if(PrimeFaces.confirmSource) {
+            this.jq.on('click.ui-confirmdialog', '.ui-confirmdialog-yes, .ui-confirmdialog-no', null, function(e) {
+                var el = $(this);
+    
+                if(el.hasClass('ui-confirmdialog-yes') && PrimeFaces.confirmSource) {
                     var fn = new Function('event',PrimeFaces.confirmSource.data('pfconfirmcommand'));
 
                     fn.call(PrimeFaces.confirmSource.get(0),e);
                     PrimeFaces.confirmDialog.hide();
                     PrimeFaces.confirmSource = null;
                 }
-
-                e.preventDefault();
-            });
-
-            this.jq.find('.ui-confirmdialog-no').on('click.ui-confirmdialog', function(e) {
-                PrimeFaces.confirmDialog.hide();
-                PrimeFaces.confirmSource = null;
+                else if(el.hasClass('ui-confirmdialog-no')) {
+                    PrimeFaces.confirmDialog.hide();
+                    PrimeFaces.confirmSource = null;
+                }
 
                 e.preventDefault();
             });
@@ -726,6 +725,10 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
     },
 
     showMessage: function(msg) {
+        if(msg.beforeShow) {
+            eval(msg.beforeShow);
+        }
+        
         var icon = (msg.icon === 'null') ? 'ui-icon-alert' : msg.icon;
         this.icon.removeClass().addClass('ui-icon ui-confirm-dialog-severity ' + icon);
 
