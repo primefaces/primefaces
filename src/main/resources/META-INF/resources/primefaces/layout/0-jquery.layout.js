@@ -25,7 +25,6 @@
  * {*}			ALL types
  */
 /*	TODO for jQ 2.0 
- *	change .andSelf() to .addBack()
  *	$.fn.disableSelection won't work
  */
 
