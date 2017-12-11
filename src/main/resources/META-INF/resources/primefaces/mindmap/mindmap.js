@@ -281,7 +281,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            var nodeModel = $.parseJSON(content);
+                            var nodeModel = JSON.parse(content);
 
                             //update model
                             node.data('model', nodeModel);

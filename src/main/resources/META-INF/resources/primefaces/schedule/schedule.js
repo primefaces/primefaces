@@ -13378,7 +13378,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                     PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                             widget: $this,
                             handle: function(content) {
-                                callback($.parseJSON(content).events);
+                                callback(JSON.parse(content).events);
                             }
                         });
 
