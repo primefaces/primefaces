@@ -61,7 +61,7 @@ public class WidgetBuilderTest {
         builder.finish();
 
         assertEquals(
-        		"<script id=\"accoId_s\" type=\"text/javascript\">$(PrimeFaces.escapeClientId(\"test\")).load(function(){PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\"});});</script>",
+        		"<script id=\"accoId_s\" type=\"text/javascript\">$(PrimeFaces.escapeClientId(\"test\")).on(\"load\",function(){PrimeFaces.cw(\"AccordionPanel\",\"acco\",{id:\"accoId\"});});</script>",
         		writer.toString());
     }
 
