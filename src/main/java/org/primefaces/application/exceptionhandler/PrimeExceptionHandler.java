@@ -220,14 +220,14 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                 writer.startElement("eval", null);
                 writer.startCDATA();
 
-                writer.write("var hf=function(type,message,timestampp){");
+                writer.write("$(function(){var hf=function(type,message,timestampp){");
                 writer.write(handlerComponent.getOnexception());
                 writer.write("};hf.call(this,\""
                         + info.getType() + "\",\""
                         + ComponentUtils.escapeText(info.getMessage())
                         + "\",\""
                         + info.getFormattedTimestamp()
-                        + "\");");
+                        + "\");});");
 
                 writer.endCDATA();
                 writer.endElement("eval");
