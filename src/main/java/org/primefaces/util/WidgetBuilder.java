@@ -74,7 +74,7 @@ public class WidgetBuilder {
     public WidgetBuilder initWithWindowLoad(String widgetClass, String widgetVar, String id) throws IOException {
 
         this.renderScriptBlock(id);
-        context.getResponseWriter().write("$(window).load(function(){");
+        context.getResponseWriter().write("$(window).on(\"load\",function(){");
         this.init(widgetClass, widgetVar, id, true);
 
         return this;
