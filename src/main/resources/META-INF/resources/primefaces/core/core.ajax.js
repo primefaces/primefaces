@@ -845,13 +845,13 @@ if (!PrimeFaces.ajax) {
                         // the other parameters will be encoded on document end
                         // --> see PrimePartialResponseWriter
                         if (xhr.pfArgs) {
-                            var json = $.parseJSON(textContent);
+                            var json = JSON.parse(textContent);
                             for (var name in json) {
                                 xhr.pfArgs[name] = json[name];
                             }
                         }
                         else {
-                            xhr.pfArgs = $.parseJSON(textContent);
+                            xhr.pfArgs = JSON.parse(textContent);
                         }
                     }
                 }

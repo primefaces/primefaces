@@ -25,7 +25,6 @@
  * {*}			ALL types
  */
 /*	TODO for jQ 2.0 
- *	change .andSelf() to .addBack()
  *	$.fn.disableSelection won't work
  */
 
@@ -5476,10 +5475,10 @@ $.layout.state = {
 
 	/**
 	 *	Convert stringified JSON back to a hash object
-	 *	@see		$.parseJSON(), adding in jQuery 1.4.1
+	 *	@see		JSON.parse(), adding in jQuery 1.4.1
 	 */
 ,	decodeJSON: function (str) {
-		try { return $.parseJSON ? $.parseJSON(str) : window["eval"]("("+ str +")") || {}; }
+		try { return JSON.parse ? JSON.parse(str) : window["eval"]("("+ str +")") || {}; }
 		catch (e) { return {}; }
 	}
 
