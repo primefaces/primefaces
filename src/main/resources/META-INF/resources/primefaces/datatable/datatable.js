@@ -1663,6 +1663,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var row = $(rowElement),
         rowMeta = this.getRowMeta(row),
         selected = row.hasClass('ui-state-highlight');
+        
+        this.assignFocusedRow(row);
 
         if(cmSelMode === 'single' || !selected) {
             this.unselectAllRows();
