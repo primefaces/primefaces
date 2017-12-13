@@ -800,7 +800,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
             
-            if(valid && $this.checkMatchedItem) {   
+            if(valid && $this.checkMatchedItem && $this.items) {   
                 var selectedItem = $this.items.filter('[data-item-label="' + value + '"]');
                 if (selectedItem.length) {
                     selectedItem.click();
