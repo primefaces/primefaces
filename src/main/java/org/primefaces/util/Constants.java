@@ -72,6 +72,7 @@ public class Constants {
     public static final String BARCODE_MAPPING = "primefaces.barcodeMapping";
 
     public final static String FRAGMENT_ID = "primefaces.fragment";
+    public final static String FRAGMENT_AUTO_RENDERED = "primefaces.fragment.autorendered";
 
     public static class DIALOG_FRAMEWORK {
 

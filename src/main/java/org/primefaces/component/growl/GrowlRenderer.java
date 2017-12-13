@@ -17,6 +17,7 @@ package org.primefaces.component.growl;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -27,6 +28,8 @@ import org.primefaces.renderkit.UINotificationRenderer;
 import org.primefaces.util.HTML;
 
 public class GrowlRenderer extends UINotificationRenderer {
+    
+    private final static Logger logger = Logger.getLogger(GrowlRenderer.class.getName());
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -65,6 +68,10 @@ public class GrowlRenderer extends UINotificationRenderer {
         writer.write("});});");
 
         endScript(writer);
+        
+        if (growl.isAutoUpdate()) {
+            logger.info("autoUpdate attribute is deprecated and will be removed in a future version, use p:autoUpdate component instead.");
+        }
     }
 
     protected void encodeMessages(FacesContext context, Growl growl) throws IOException {

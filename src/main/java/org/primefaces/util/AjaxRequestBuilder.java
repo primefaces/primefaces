@@ -356,6 +356,10 @@ public class AjaxRequestBuilder {
         Object fragmentId = attrs.get(Constants.FRAGMENT_ID);
         if (fragmentId != null) {
             buffer.append(",fi:\"").append(fragmentId).append("\"");
+            
+            if (attrs.containsKey(Constants.FRAGMENT_AUTO_RENDERED)) {
+                buffer.append(",fu:true");
+            }
         }
     }
 }

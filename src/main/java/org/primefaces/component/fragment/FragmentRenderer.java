@@ -17,6 +17,7 @@ package org.primefaces.component.fragment;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -24,7 +25,9 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 
 public class FragmentRenderer extends CoreRenderer {
-
+    
+    private final static Logger logger = Logger.getLogger(FragmentRenderer.class.getName());
+    
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
@@ -33,6 +36,11 @@ public class FragmentRenderer extends CoreRenderer {
         Map<Object, Object> attrs = context.getAttributes();
         attrs.put(Constants.FRAGMENT_ID, clientId);
 
+        if (fragment.isAutoUpdate()) {
+            logger.info("autoUpdate attribute is deprecated and will be removed in a future version, use p:autoUpdate component instead.");
+            attrs.put(Constants.FRAGMENT_AUTO_RENDERED, true);
+        }
+        
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
     }
