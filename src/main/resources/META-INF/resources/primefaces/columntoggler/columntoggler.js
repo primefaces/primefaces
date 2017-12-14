@@ -10,7 +10,6 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.tableId = this.table.attr('id');
         this.hasFrozenColumn = this.table.hasClass('ui-datatable-frozencolumn');
         this.hasStickyHeader = this.table.hasClass('ui-datatable-sticky');
-        this.isMultiViewState = this.table.data('multistate');
         var clientId = PrimeFaces.escapeClientId(this.tableId);
         
         if(this.hasFrozenColumn) {
@@ -35,13 +34,11 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.panel = $('<div></div>').attr('id', this.cfg.id).attr('role', 'dialog').addClass('ui-columntoggler ui-widget ui-widget-content ui-shadow ui-corner-all')
                 .append('<ul class="ui-columntoggler-items" role="group"></ul>').appendTo(document.body);
         this.itemContainer = this.panel.children('ul');
-          
-        if(this.isMultiViewState) {
-            var stateHolderId = this.tableId + "_columnTogglerState";
-            this.togglerStateHolder = $('<input type="hidden" id="' + stateHolderId + '" name="' + stateHolderId + '" autocomplete="off" />');
-            this.table.append(this.togglerStateHolder);
-            this.togglerState = [];
-        }
+        
+        var stateHolderId = this.tableId + "_columnTogglerState";
+        this.togglerStateHolder = $('<input type="hidden" id="' + stateHolderId + '" name="' + stateHolderId + '" autocomplete="off" />');
+        this.table.append(this.togglerStateHolder);
+        this.togglerState = [];
         
         //items
         for(var i = 0; i < this.columns.length; i++) {
@@ -77,14 +74,10 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             
             item.appendTo(this.itemContainer);
             
-            if(this.isMultiViewState) {
-                this.togglerState.push(column.attr('id') + '_' + !hidden);
-            }
+            this.togglerState.push(column.attr('id') + '_' + !hidden);
         }
         
-        if(this.isMultiViewState) {
-            this.togglerStateHolder.val(this.togglerState.join(','));
-        }
+        this.togglerStateHolder.val(this.togglerState.join(','));
         
         //close icon
         this.closer = $('<a href="#" class="ui-columntoggler-close"><span class="ui-icon ui-icon-close"></span></a>')
@@ -433,7 +426,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     changeTogglerState: function(column, isHidden) {
-        if(this.isMultiViewState && column) {
+        if(column && column.length) {
             var stateVal = this.togglerStateHolder.val(),
             columnId = column.attr('id'),
             oldColState = columnId + "_" + !isHidden,

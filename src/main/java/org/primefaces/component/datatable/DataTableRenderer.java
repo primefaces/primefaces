@@ -322,7 +322,6 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("div", table);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", containerClass, "styleClass");
-        writer.writeAttribute("data-multistate", String.valueOf(table.isMultiViewState()), null);
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
