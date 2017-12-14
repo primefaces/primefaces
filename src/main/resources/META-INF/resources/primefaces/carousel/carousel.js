@@ -160,7 +160,8 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
                         $this.setPage($this.page - 1);
                     }
                 }
-            }
+            },
+            excludedElements: "button, input, select, textarea, a, .noSwipe"
         });
         
         if(this.pageLinks.length) {
