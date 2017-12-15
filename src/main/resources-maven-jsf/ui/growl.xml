@@ -100,6 +100,13 @@
             <type>java.lang.String</type>
             <description>Comma seperated list of severities to display only.</description>
         </attribute>
+        <attribute>
+            <name>clearPreviousMsgsOnShow</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines if previous messages should be cleared on a new message is shown. Default is true.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
