@@ -11,7 +11,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.focusInput = $(this.jqId + '_focus');
         this.label = this.jq.find('.ui-selectonemenu-label');
         this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
-        this.panel = this.jq.children(this.panelId);
+        this.panel = $(this.panelId);
         this.disabled = this.jq.hasClass('ui-state-disabled');
         this.itemsWrapper = this.panel.children('.ui-selectonemenu-items-wrapper');
         this.options = this.input.children('option');
@@ -53,8 +53,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     initContents: function() {
-        this.input = $(this.jqId + '_input');
-        this.options = this.input.children('option');
         this.itemsContainer = this.itemsWrapper.children('.ui-selectonemenu-items');
         this.items = this.itemsContainer.find('.ui-selectonemenu-item');
         this.optGroupsSize = this.itemsContainer.children('li.ui-selectonemenu-item-group').length;
