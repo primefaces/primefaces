@@ -141,18 +141,10 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         Object submittedValues = getSubmittedValues(menu);
         boolean customContent = menu.getVar() != null;
         boolean showCheckbox = menu.isShowCheckbox();
-        
-        String scrollHeight = null;
-        try { 
-            scrollHeight = Integer.parseInt(menu.getScrollHeight()) + "px"; 
-        } 
-        catch (NumberFormatException e) { 
-            scrollHeight = menu.getScrollHeight();
-        }
 
         writer.startElement("div", menu);
         writer.writeAttribute("class", SelectManyMenu.LIST_CONTAINER_CLASS, null);
-        writer.writeAttribute("style", "height:" + scrollHeight, null);
+        writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, countSelectItems(selectItems)), null);
 
         if (customContent) {
             writer.startElement("table", null);
@@ -331,6 +323,19 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
+    protected String calculateWrapperHeight(SelectManyMenu menu, int itemSize) {
+        int height = menu.getScrollHeight();
+
+        if (height != Integer.MAX_VALUE) {
+            return height + "px";
+        } 
+        else if (itemSize > 10) {
+            return 200 + "px";
+        }
+
+        return "auto";
+    }
+    
     @Override
     protected String getSubmitParam(FacesContext context, UISelectMany selectMany) {
         return selectMany.getClientId(context) + "_input";

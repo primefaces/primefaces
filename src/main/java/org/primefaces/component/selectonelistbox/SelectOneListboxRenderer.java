@@ -138,17 +138,9 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         Object submittedValues = getSubmittedValues(listbox);
         boolean customContent = listbox.getVar() != null;
         
-        String scrollHeight = null;
-        try { 
-            scrollHeight = Integer.parseInt(listbox.getScrollHeight()) + "px"; 
-        } 
-        catch (NumberFormatException e) { 
-            scrollHeight = listbox.getScrollHeight();
-        }
-
         writer.startElement("div", listbox);
         writer.writeAttribute("class", SelectOneListbox.LIST_CONTAINER_CLASS, null);
-        writer.writeAttribute("style", "height:" + scrollHeight, null);
+        writer.writeAttribute("style", "height:" + calculateWrapperHeight(listbox, countSelectItems(selectItems)), null);
 
         if (customContent) {
             writer.startElement("table", null);
@@ -312,6 +304,19 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         writer.endElement("div");
     }
 
+    protected String calculateWrapperHeight(SelectOneListbox listbox, int itemSize) {
+        int height = listbox.getScrollHeight();
+
+        if (height != Integer.MAX_VALUE) {
+            return height + "px";
+        } 
+        else if (itemSize > 10) {
+            return 200 + "px";
+        }
+
+        return "auto";
+    }
+    
     @Override
     protected String getSubmitParam(FacesContext context, UISelectOne selectOne) {
         return selectOne.getClientId(context) + "_input";
