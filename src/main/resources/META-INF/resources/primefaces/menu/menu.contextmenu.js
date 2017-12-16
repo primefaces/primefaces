@@ -127,7 +127,10 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         if((top + height ) > (win.height() + win.scrollTop())) {
             top = top - height;
         }
-
+        if(top < 0) {
+            top = e.pageY;
+        }
+        
         this.jq.css({
             'left': left,
             'top': top,
