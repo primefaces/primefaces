@@ -29,6 +29,17 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.bindEvents();
     },
     
+    refresh: function(cfg) {
+        var jqs = $('[id=' + cfg.id.replace(/:/g,"\\:") + ']');
+        if(jqs.length > 1) {
+            $(document.body).children(this.jqId).remove();
+        }
+        
+        this.widthAligned = false;
+        
+        this.init(cfg);
+    },
+    
     render: function() {
         this.columns = this.thead.find('> tr > th:not(.ui-static-column)');
         this.panel = $('<div></div>').attr('id', this.cfg.id).attr('role', 'dialog').addClass('ui-columntoggler ui-widget ui-widget-content ui-shadow ui-corner-all')
