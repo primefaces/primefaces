@@ -399,17 +399,17 @@
                     }
                     else {
                         var firstElement = jq.find(selector).eq(0);
-                        PrimeFaces.focusFirstElement(firstElement);
+                        PrimeFaces.focusElement(firstElement);
                     }
                 }
                 else if(context) {
                     var firstElement = $(PrimeFaces.escapeClientId(context)).find(selector).eq(0);
-                    PrimeFaces.focusFirstElement(firstElement);
+                    PrimeFaces.focusElement(firstElement);
                 }
                 else {
                     var elements = $(selector),
                     firstElement = elements.eq(0);
-                    PrimeFaces.focusFirstElement(firstElement);
+                    PrimeFaces.focusElement(firstElement);
                 }
             }, 50);
 
@@ -418,22 +418,19 @@
             PrimeFaces.customFocus = true;
         },
 
-        focusFirstElement: function(firstElement) {
-            if(firstElement.is(':radio')) {
-                var checkedRadio = $(':radio[name="' + firstElement.attr('name') + '"]').filter(':checked');
-                if(checkedRadio.length)
-                    PrimeFaces.focusElement(checkedRadio);
-                else
-                    PrimeFaces.focusElement(firstElement);
-            }
-            else {
-                firstElement.focus();
-            }
-        },
-
         focusElement: function(el) {
-            if(el.is(':radio') && el.hasClass('ui-helper-hidden-accessible')) {
-                el.parent().focus();
+            if(el.is(':radio')) {
+                // github issue: #2582
+                if(el.hasClass('ui-helper-hidden-accessible')) {
+                    el.parent().focus();
+                }
+                else {
+                    var checkedRadio = $(':radio[name="' + el.attr('name') + '"]').filter(':checked');
+                    if(checkedRadio.length)
+                        checkedRadio.focus();
+                    else
+                        el.focus();
+                }
             }
             else {
                 el.focus();
