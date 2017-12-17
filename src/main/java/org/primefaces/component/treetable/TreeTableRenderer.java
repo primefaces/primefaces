@@ -264,7 +264,7 @@ public class TreeTableRenderer extends DataRenderer {
         boolean hasPaginator = tt.isPaginator();
 
         if (!(root instanceof TreeNode)) {
-            throw new FacesException("value must be an instance of org.primefaces.model.TreeNode");
+            throw new FacesException("treeTable's value must be an instance of org.primefaces.model.TreeNode");
         }
 
         if (hasPaginator) {
