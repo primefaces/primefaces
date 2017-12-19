@@ -8,7 +8,36 @@ PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
         this.id = this.cfg.id;
         this.jqId = PrimeFaces.escapeClientId(this.id);
         this.jqTarget = $(PrimeFaces.escapeClientId(this.cfg.target));
+        
+        this.renderDeferred();
+    },
+    
+    //@Override
+    renderDeferred: function() { 
+        if(this.jqTarget.is(':visible')) {
+            this._render();
+        }
+        else {
+            var container = this.jqTarget.parent().closest('.ui-hidden-container'),
+            $this = this;
+            if(container.length) {
+                PrimeFaces.addDeferredRender(this.id, container.attr('id'), function() {
+                    return $this.render();
+                });
+            }
+        }
+    },
+    
+    render: function() {
+        if(this.jqTarget.is(':visible')) {
+            this._render();
+            return true;
+        }  
 
+        return false;
+    },
+    
+    _render: function() { 
         if(this.cfg.ajaxResize) {
             this.cfg.formId = $(this.target).parents('form:first').attr('id');
         }
