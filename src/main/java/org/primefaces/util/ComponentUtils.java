@@ -189,11 +189,7 @@ public class ComponentUtils {
     
 
     public static boolean isValueBlank(String value) {
-        if (value == null) {
-            return true;
-        }
-
-        return value.trim().equals("");
+        return value == null || Constants.EMPTY_STRING.equals(value.trim());
     }
 
     public static boolean isRTL(FacesContext context, RTLAware component) {
