@@ -50,7 +50,7 @@ public class MessagesRenderer extends UINotificationRenderer {
 
         String _for = uiMessages.getFor();
         List<FacesMessage> messages = new ArrayList<FacesMessage>();
-        if (_for != null) {
+        if (!isValueBlank(_for)) {
             String forType = uiMessages.getForType();
             Iterator<FacesMessage> messagesIterator = context.getMessages(_for);
             
