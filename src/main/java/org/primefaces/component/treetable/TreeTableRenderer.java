@@ -263,6 +263,10 @@ public class TreeTableRenderer extends DataRenderer {
         TreeNode root = tt.getValue();
         boolean hasPaginator = tt.isPaginator();
 
+        if (!(root instanceof TreeNode)) {
+            throw new FacesException("treeTable's value must be an instance of " + TreeNode.class.getName());
+        }
+
         if (hasPaginator) {
             tt.calculateFirst();
         }
