@@ -587,27 +587,29 @@ if (!PrimeFaces.ajax) {
                     },
                     always: function(xhr, status) {
 
-                        // first call the extension callback (e.g. datatable paging)
-                        if(cfg.ext && cfg.ext.oncomplete) {
-                            cfg.ext.oncomplete.call(this, xhr, status, xhr.pfArgs);
-                        }
+                        xhr.then(function() {
+                            // first call the extension callback (e.g. datatable paging)
+                            if(cfg.ext && cfg.ext.oncomplete) {
+                                cfg.ext.oncomplete.call(this, xhr, status, xhr.pfArgs);
+                            }
 
-                        // after that, call the endusers callback, which should be called when everything is ready
-                        if(cfg.oncomplete) {
-                            cfg.oncomplete.call(this, xhr, status, xhr.pfArgs);
-                        }
+                            // after that, call the endusers callback, which should be called when everything is ready
+                            if(cfg.oncomplete) {
+                                cfg.oncomplete.call(this, xhr, status, xhr.pfArgs);
+                            }
 
-                        if(global) {
-                            $(document).trigger('pfAjaxComplete', [xhr, this]);
-                        }
+                            if(global) {
+                                $(document).trigger('pfAjaxComplete', [xhr, this]);
+                            }
 
-                        PrimeFaces.debug('Response completed.');
+                            PrimeFaces.debug('Response completed.');
 
-                        PrimeFaces.ajax.Queue.removeXHR(xhr);
+                            PrimeFaces.ajax.Queue.removeXHR(xhr);
 
-                        if(!cfg.async && !PrimeFaces.nonAjaxPosted) {
-                            PrimeFaces.ajax.Queue.poll();
-                        }
+                            if(!cfg.async && !PrimeFaces.nonAjaxPosted) {
+                                PrimeFaces.ajax.Queue.poll();
+                            }
+                        });
                     }
                 };
 
