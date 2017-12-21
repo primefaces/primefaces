@@ -227,6 +227,11 @@
     vertical-align: top;
 }
 
+.ui-selectonemenu.ui-state-hover,
+.ui-selectonemenu.ui-state-focus {
+    background-color: transparent;
+}
+
 .ui-selectonemenu .ui-selectonemenu-trigger {
     border-right: none;
     border-top: none;
@@ -241,7 +246,12 @@
 }
 
 .ui-selectonemenu .ui-selectonemenu-trigger  .ui-icon {
-    margin-top: 3px;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .ui-selectonemenu .ui-selectonemenu-label  {
