@@ -40,8 +40,8 @@ import javax.faces.render.Renderer;
         return EVENT_NAMES;    
     }
 
-    public boolean isLazyloadRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_lazyload");
+    public boolean isDynamicLoadRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_dynamicload");
     }
 
     public String getDefaultEventName() {

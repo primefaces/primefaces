@@ -83,7 +83,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         SelectOneMenu menu = (SelectOneMenu) component;
 
-        if (menu.isLazyloadRequest(context)) {
+        if (menu.isDynamicLoadRequest(context)) {
             List<SelectItem> selectItems = getSelectItems(context, menu);
             String clientId = menu.getClientId(context);
             Converter converter = menu.getConverter();
@@ -282,7 +282,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("class", SelectOneMenu.ITEMS_WRAPPER_CLASS, null);
         writer.writeAttribute("style", "max-height:" + height, null);
 
-        if (!menu.isLazy()) {
+        if (!menu.isDynamic()) {
             encodePanelContent(context, menu, selectItems);
         }
 
@@ -479,7 +479,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 .attr("syncTooltip", menu.isSyncTooltip(), false)
                 .attr("labelTemplate", menu.getLabelTemplate(), null)
                 .attr("autoWidth", menu.isAutoWidth(), true)
-                .attr("lazy", menu.isLazy(), false);
+                .attr("dynamic", menu.isDynamic(), false);
 
         if (menu.isFilter()) {
             wb.attr("filter", true)
@@ -532,7 +532,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
             boolean selected = isSelected(context, menu, itemValue, valuesArray, converter);
 
-            if (!menu.isLazy() || (menu.isLazy() && (selected || menu.isLazyloadRequest(context) || itemIndex == 0))) {
+            if (!menu.isDynamic() || (menu.isDynamic() && (selected || menu.isDynamicLoadRequest(context) || itemIndex == 0))) {
                 writer.startElement("option", null);
                 writer.writeAttribute("value", itemValueAsString, null);
                 if (disabled) writer.writeAttribute("disabled", "disabled", null);
