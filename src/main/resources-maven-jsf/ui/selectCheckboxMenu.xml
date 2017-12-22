@@ -147,6 +147,14 @@
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
         </attribute>
+        <attribute>
+			<name>dynamic</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Defines if dynamic loading is enabled for the element's panel. 
+                If the value is "true", the overlay is not rendered on page load to improve performance. Default is false.</description>
+		</attribute>
     </attributes>
     <resources>
         <resource>
