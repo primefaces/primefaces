@@ -22,9 +22,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.myPos = this.cfg.myPos||'left top';
         this.cfg.atPos = this.cfg.atPos||'left bottom';
         this.cfg.active = (this.cfg.active === false) ? false : true;
+        this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
         this.suppressInput = true;
         this.touchToDropdownButton = false;
         this.isTabPressed = false;
+        this.isDynamicLoaded = false;
 
         if(this.cfg.cache) {
             this.initCache();
@@ -66,7 +68,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //Panel management
-        this.appendPanel();
+        if(this.panel.length) {
+            this.appendPanel();
+        }
 
         //itemtip
         if(this.cfg.itemtip) {
@@ -668,7 +672,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                     widget: $this,
                     handle: function(content) {
-                        this.panel.html(content);
+                        if(this.cfg.dynamic && !this.isDynamicLoaded) {
+                            this.panel = $(content);
+                            this.appendPanel();
+                            content = this.panel.get(0).innerHTML;
+                        }
+                        else {
+                            this.panel.html(content);
+                        }
 
                         if(this.cfg.cache) {
                             this.cache[query] = content;
@@ -682,12 +693,17 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             },
             oncomplete: function() {
                 $this.querying = false;
+                $this.isDynamicLoaded = true;
             }
         };
 
         options.params = [
           {name: this.id + '_query', value: query}
         ];
+        
+        if(this.cfg.dynamic && !this.isDynamicLoaded) {
+            options.params.push({name: this.id + '_dynamicload', value: true});
+        }
 
         if(this.hasBehavior('query')) {
             var queryBehavior = this.cfg.behaviors['query'];

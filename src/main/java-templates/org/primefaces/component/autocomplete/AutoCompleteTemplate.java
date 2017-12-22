@@ -66,6 +66,10 @@ import javax.faces.component.behavior.Behavior;
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_moreText");
     }
 
+    public boolean isDynamicLoadRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_dynamicload");
+    }
+
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
