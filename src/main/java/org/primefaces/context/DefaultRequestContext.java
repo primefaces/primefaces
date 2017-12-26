@@ -101,7 +101,7 @@ public class DefaultRequestContext extends RequestContext {
     @Override
     public WidgetBuilder getWidgetBuilder() {
         if (this.widgetBuilder == null) {
-            this.widgetBuilder = new WidgetBuilder(context);
+            this.widgetBuilder = new WidgetBuilder(context, getApplicationContext().getConfig());
         }
 
         return widgetBuilder;
