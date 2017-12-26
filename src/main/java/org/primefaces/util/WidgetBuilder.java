@@ -65,8 +65,16 @@ public class WidgetBuilder {
     public WidgetBuilder initWithDomReady(String widgetClass, String widgetVar, String id) throws IOException {
 
         this.renderScriptBlock(id);
-        context.getResponseWriter().write("$(function(){");
-        this.init(widgetClass, widgetVar, id, true);
+        
+        // since jQuery 3 document ready ($(function() {})) are executed async
+        // this would mean that our oncomplete handlers are probably called before the scripts in the update nodes
+        if (context.isPostback()) {
+            this.init(widgetClass, widgetVar, id, false);
+        }
+        else {
+            context.getResponseWriter().write("$(function(){");
+            this.init(widgetClass, widgetVar, id, true);
+        }
 
         return this;
     }
