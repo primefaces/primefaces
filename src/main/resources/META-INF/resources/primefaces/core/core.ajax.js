@@ -536,8 +536,15 @@ if (!PrimeFaces.ajax) {
                         if(global) {
                             $(document).trigger('pfAjaxSend', [xhr, this]);
                         }
-                    },
-                    fail: function(xhr, status, errorThrown) {
+                    }
+                };
+
+                if (cfg.timeout) {
+                    xhrOptions['timeout'] = cfg.timeout;
+                }
+
+                var jqXhr = $.ajax(xhrOptions)
+                    .fail(function(xhr, status, errorThrown) {
                         if(cfg.onerror) {
                             cfg.onerror.call(this, xhr, status, errorThrown);
                         }
@@ -550,8 +557,8 @@ if (!PrimeFaces.ajax) {
                         }
 
                         PrimeFaces.error('Request return with error:' + status + '.');
-                    },
-                    done: function(data, status, xhr) {
+                    })
+                    .done(function(data, status, xhr) {
                         PrimeFaces.debug('Response received succesfully.');
 
                         try {
@@ -584,47 +591,32 @@ if (!PrimeFaces.ajax) {
                         }
 
                         PrimeFaces.debug('DOM is updated.');
-                    },
-                    always: function(xhr, status) {
+                    })
+                    .always(function(xhr, status) {
+                        // first call the extension callback (e.g. datatable paging)
+                        if(cfg.ext && cfg.ext.oncomplete) {
+                            cfg.ext.oncomplete.call(this, xhr, status, xhr.pfArgs);
+                        }
 
-                        xhr.then(function() {
-                            // first call the extension callback (e.g. datatable paging)
-                            if(cfg.ext && cfg.ext.oncomplete) {
-                                cfg.ext.oncomplete.call(this, xhr, status, xhr.pfArgs);
-                            }
+                        // after that, call the endusers callback, which should be called when everything is ready
+                        if(cfg.oncomplete) {
+                            cfg.oncomplete.call(this, xhr, status, xhr.pfArgs);
+                        }
 
-                            // after that, call the endusers callback, which should be called when everything is ready
-                            if(cfg.oncomplete) {
-                                cfg.oncomplete.call(this, xhr, status, xhr.pfArgs);
-                            }
+                        if(global) {
+                            $(document).trigger('pfAjaxComplete', [xhr, this]);
+                        }
 
-                            if(global) {
-                                $(document).trigger('pfAjaxComplete', [xhr, this]);
-                            }
+                        PrimeFaces.debug('Response completed.');
 
-                            PrimeFaces.debug('Response completed.');
+                        PrimeFaces.ajax.Queue.removeXHR(xhr);
 
-                            PrimeFaces.ajax.Queue.removeXHR(xhr);
+                        if(!cfg.async && !PrimeFaces.nonAjaxPosted) {
+                            PrimeFaces.ajax.Queue.poll();
+                        }
+                    });
 
-                            if(!cfg.async && !PrimeFaces.nonAjaxPosted) {
-                                PrimeFaces.ajax.Queue.poll();
-                            }
-                        });
-                    }
-                };
-
-                // map the new events to the old event
-                // somehow jQuery3 should work with 'always' isntead of 'complete' but it doesn't
-                // so lets use both old and new ones
-                xhrOptions.success = xhrOptions.done;
-                xhrOptions.error = xhrOptions.fail;
-                xhrOptions.complete = xhrOptions.always;
-
-                if (cfg.timeout) {
-                    xhrOptions['timeout'] = cfg.timeout;
-                }
-
-                PrimeFaces.ajax.Queue.addXHR($.ajax(xhrOptions));
+                PrimeFaces.ajax.Queue.addXHR(jqXhr);
             },
 
             resolveExpressionsForAjaxCall: function(cfg, type) {
