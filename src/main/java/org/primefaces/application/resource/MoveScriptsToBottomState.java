@@ -19,13 +19,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CollectScriptsState implements Serializable {
+public class MoveScriptsToBottomState implements Serializable {
     
     private List<String> includes;
     private List<String> inlines;
     private int savedInlineTags;
 
-    public CollectScriptsState() {
+    public MoveScriptsToBottomState() {
         includes = new ArrayList<String>(20);
         inlines = new ArrayList<String>(50);
         savedInlineTags = 0;

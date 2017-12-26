@@ -18,6 +18,7 @@ package org.primefaces.util;
 import java.io.IOException;
 
 import javax.faces.context.FacesContext;
+import org.primefaces.config.PrimeConfiguration;
 
 /**
  * Helper to generate javascript code of an ajax call
@@ -26,9 +27,11 @@ public class WidgetBuilder {
 
     protected boolean endFunction = false;
     protected FacesContext context;
+    protected PrimeConfiguration configuration;
 
-    public WidgetBuilder(FacesContext context) {
+    public WidgetBuilder(FacesContext context, PrimeConfiguration configuration) {
         this.context = context;
+        this.configuration = configuration;
     }
 
     /**
@@ -65,8 +68,18 @@ public class WidgetBuilder {
     public WidgetBuilder initWithDomReady(String widgetClass, String widgetVar, String id) throws IOException {
 
         this.renderScriptBlock(id);
-        context.getResponseWriter().write("$(function(){");
-        this.init(widgetClass, widgetVar, id, true);
+        
+        // since jQuery 3 document ready ($(function() {})) are executed async
+        // this would mean that our oncomplete handlers are probably called before the scripts in the update nodes
+        // or
+        // we can also skip it when MOVE_SCRIPTS_TO_BOTTOM is enabled as the scripts are already executed when everything is ready
+        if (context.isPostback() || configuration.isMoveScriptsToBottom()) {
+            this.init(widgetClass, widgetVar, id, false);
+        }
+        else {
+            context.getResponseWriter().write("$(function(){");
+            this.init(widgetClass, widgetVar, id, true);
+        }
 
         return this;
     }
