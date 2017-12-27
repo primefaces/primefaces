@@ -289,9 +289,7 @@ public class WidgetBuilder {
     }
 
     public void finish() throws IOException {
-        context.getResponseWriter().write("}");
-
-        context.getResponseWriter().write(");");
+        context.getResponseWriter().write("});");
 
         if (endFunction) {
             context.getResponseWriter().write("});");
