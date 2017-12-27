@@ -17,20 +17,19 @@ package org.primefaces.util;
 
 import org.primefaces.mock.CollectingResponseWriter;
 import java.io.IOException;
-import java.util.HashMap;
 import javax.faces.context.FacesContext;
 
 import org.junit.Test;
 import org.primefaces.mock.FacesContextMock;
 
 import static org.junit.Assert.*;
-import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.mock.pf.PrimeConfigurationMock;
 
 public class WidgetBuilderTest {
 
     protected WidgetBuilder getWidgetBuilder(CollectingResponseWriter writer) {
         FacesContext context = new FacesContextMock(writer);
-        return new WidgetBuilder(context, new PrimeConfiguration(context));
+        return new WidgetBuilder(context, new PrimeConfigurationMock(context));
     }
     
     @Test
