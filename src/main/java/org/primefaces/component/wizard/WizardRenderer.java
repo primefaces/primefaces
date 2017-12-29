@@ -31,6 +31,7 @@ import org.primefaces.event.FlowEvent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class WizardRenderer extends CoreRenderer {
 
@@ -92,20 +93,16 @@ public class WizardRenderer extends CoreRenderer {
             throw new FacesException("Wizard : \"" + clientId + "\" must be inside a form element");
         }
 
-        startScript(writer, clientId);
-
-        writer.write("$(function() {");
-
-        writer.write("PrimeFaces.cw('Wizard','" + wizard.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",showStepStatus:" + wizard.isShowStepStatus());
-        writer.write(",showNavBar:" + wizard.isShowNavBar());
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.initWithDomReady("Wizard", wizard.resolveWidgetVar(), clientId)
+            .attr("showStepStatus", wizard.isShowStepStatus())
+            .attr("showNavBar", wizard.isShowNavBar());
 
         if (wizard.getOnback() != null) {
-            writer.write(",onback:function(){" + wizard.getOnback() + "}");
+            wb.callback("onback", "function()", wizard.getOnback());
         }
         if (wizard.getOnnext() != null) {
-            writer.write(",onnext:function(){" + wizard.getOnnext() + "}");
+            wb.callback("onnext", "function()", wizard.getOnnext());
         }
 
         //all steps
@@ -138,11 +135,9 @@ public class WizardRenderer extends CoreRenderer {
             wizard.setStep(defaultStep);
         }
 
-        writer.write(",initialStep:'" + wizard.getStep() + "'");
+        wb.attr("initialStep", wizard.getStep());
 
-        writer.write("});});");
-
-        endScript(writer);
+        wb.finish();
     }
 
     protected void encodeMarkup(FacesContext facesContext, Wizard wizard) throws IOException {
