@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.model.mindmap.MindmapNode;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class MindmapRenderer extends CoreRenderer {
 
@@ -50,23 +51,18 @@ public class MindmapRenderer extends CoreRenderer {
         String clientId = map.getClientId(context);
         MindmapNode root = map.getValue();
 
-        startScript(writer, clientId);
-
-        writer.write("$(function(){");
-        writer.write("PrimeFaces.cw('Mindmap','" + map.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.initWithDomReady("Mindmap", map.resolveWidgetVar(), clientId)
+                .attr("effectSpeed", map.getEffectSpeed());
 
         if (root != null) {
             writer.write(",model:");
             encodeNode(context, map, root, "root");
         }
 
-        writer.write(",effectSpeed:" + map.getEffectSpeed());
-
         encodeClientBehaviors(context, map);
 
-        writer.write("},'mindmap');});");
-        endScript(writer);
+        wb.finish();
     }
 
     protected void encodeMarkup(FacesContext context, Mindmap map) throws IOException {
