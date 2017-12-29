@@ -30,6 +30,7 @@ import org.primefaces.component.chart.renderer.PieRenderer;
 import org.primefaces.component.chart.renderer.BubbleRenderer;
 import org.primefaces.component.chart.renderer.MeterGaugeRenderer;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class ChartRenderer extends CoreRenderer {
 
@@ -81,24 +82,19 @@ public class ChartRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Chart chart) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String type = chart.getType();
         BasePlotRenderer plotRenderer = CHART_RENDERERS.get(type);
         String clientId = chart.getClientId(context);
 
-        startScript(writer, clientId);
-
-        writer.write("$(function(){");
-        writer.write("PrimeFaces.cw('Chart','" + chart.resolveWidgetVar() + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",type:'" + type + "'");
-
-        if (chart.isResponsive()) writer.write(",responsive:true");
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.initWithDomReady("Chart", chart.resolveWidgetVar(), clientId)
+            .attr("type", type);
+        
+        if (chart.isResponsive()) wb.attr("responsive", true);
 
         plotRenderer.render(context, chart);
         encodeClientBehaviors(context, chart);
-        writer.write("},'charts');});");
-
-        endScript(writer);
+        
+        wb.finish();
     }
 }
