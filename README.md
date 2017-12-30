@@ -6,14 +6,14 @@
 
 # PrimeFaces
 
-This is an overview page, please visit [PrimeFaces.org](http://www.primefaces.org) for more information.
+This is an overview page, please visit [PrimeFaces.org](https://www.primefaces.org) for more information.
 
 ![PrimeFaces icon](https://www.primefaces.org/wp-content/uploads/2016/10/prime_logo.png)
 
 ### Overview
 ***
 
-[PrimeFaces](http://www.primefaces.org/index) is one of the most popular UI libraries in Java EE Ecosystem and widely used by software companies, world renowned brands, banks, financial institutions, insurance companies, universities and more. Here are [some of the users](http://www.primefaces.org/whouses) who notified us or subscribed to a [PrimeFaces Support Service](http://www.primefaces.org/support).
+[PrimeFaces](https://www.primefaces.org/) is one of the most popular UI libraries in Java EE Ecosystem and widely used by software companies, world renowned brands, banks, financial institutions, insurance companies, universities and more. Here are [some of the users](https://www.primefaces.org/whouses) who notified us or subscribed to a [PrimeFaces Support Service](https://www.primefaces.org/support).
 
 ### Getting Started
 ***
@@ -30,7 +30,7 @@ Version | Binary | Source
 5.2| [primefaces-5.2.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.2/primefaces-5.2.jar)  | [primefaces-5.2-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.2/primefaces-5.2-sources.jar)
 5.1| [primefaces-5.1.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.1/primefaces-5.1.jar)  | [primefaces-5.1-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/5.1/primefaces-5.1-sources.jar)
 
-For a full list of the available downloads, please visit the [download page](http://www.primefaces.org/downloads).
+For a full list of the available downloads, please visit the [download page](https://www.primefaces.org/downloads).
 
 ##### Maven
 
@@ -82,7 +82,7 @@ xmlns:pm="http://primefaces.org/mobile"
 
 ### Demo
 ***
-Please refer to the [showcase](http://www.primefaces.org/showcase) in order to see the full usage of the components. Sources of PrimeFaces showcase is available as separate [project]( https://github.com/primefaces/showcase).
+Please refer to the [showcase](https://www.primefaces.org/showcase) in order to see the full usage of the components. Sources of PrimeFaces showcase is available as separate [project]( https://github.com/primefaces/showcase).
 
 ### Documentation
 ***
