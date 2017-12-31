@@ -23,7 +23,7 @@ import java.util.Locale;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.RequestContext;
+import org.primefaces.PrimeFaces;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -34,7 +34,7 @@ public class ClockRenderer extends CoreRenderer {
         Clock clock = (Clock) component;
 
         if (clock.isSyncRequest()) {
-            RequestContext.getCurrentInstance(context).addCallbackParam("datetime", System.currentTimeMillis());
+            PrimeFaces.current().ajax().addCallbackParam("datetime", System.currentTimeMillis());
             context.renderResponse();
         }
     }

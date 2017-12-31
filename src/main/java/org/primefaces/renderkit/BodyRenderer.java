@@ -44,21 +44,21 @@ public class BodyRenderer extends CoreRenderer {
         renderPassThruAttributes(context, component, HTML.BODY_ATTRS);
     }
 
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        RequestContext requestContext = RequestContext.getCurrentInstance(context);
 
         encodeResources(context);
 
-        if (!requestContext.isAjaxRequest()) {
-            encodeOnloadScripts(writer, requestContext);
+        if (!context.getPartialViewContext().isAjaxRequest()) {
+            encodeOnloadScripts(writer);
         }
 
         writer.endElement("body");
     }
 
-    protected void encodeOnloadScripts(ResponseWriter writer, RequestContext context) throws IOException {
-        List<String> scripts = context.getScriptsToExecute();
+    protected void encodeOnloadScripts(ResponseWriter writer) throws IOException {
+        List<String> scripts = RequestContext.getCurrentInstance().getScriptsToExecute();
 
         if (!scripts.isEmpty()) {
             writer.startElement("script", null);

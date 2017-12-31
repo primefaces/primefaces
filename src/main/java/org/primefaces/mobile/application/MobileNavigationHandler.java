@@ -20,8 +20,9 @@ import java.util.Set;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
 import javax.faces.context.FacesContext;
-import org.primefaces.context.RequestContext;
+import org.primefaces.PrimeFaces;
 import org.primefaces.mobile.util.MobileUtils;
+import org.primefaces.util.ComponentUtils;
 
 public class MobileNavigationHandler extends ConfigurableNavigationHandler {
 
@@ -35,10 +36,8 @@ public class MobileNavigationHandler extends ConfigurableNavigationHandler {
     public void handleNavigation(FacesContext context, String fromAction, String outcome) {
         if (outcome != null && outcome.startsWith("pm:")) {
             String command = MobileUtils.buildNavigation(outcome);
-
-            RequestContext requestContext = RequestContext.getCurrentInstance(context);
-            if (requestContext != null) {
-                requestContext.execute(command);
+            if (!ComponentUtils.isValueBlank(command)) {
+                PrimeFaces.current().executeScript(command);
             }
         }
         else {

@@ -31,6 +31,7 @@ import javax.faces.component.ValueHolder;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITree;
@@ -43,7 +44,6 @@ import org.primefaces.component.row.Row;
 import org.primefaces.component.tree.Tree;
 import static org.primefaces.component.treetable.TreeTable.FILTER_CONSTRAINTS;
 import static org.primefaces.component.treetable.TreeTable.GLOBAL_MODE;
-import org.primefaces.context.RequestContext;
 import org.primefaces.model.CheckboxTreeNode;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.FilterMeta;
@@ -144,7 +144,7 @@ public class TreeTableRenderer extends DataRenderer {
                 }
             }
 
-            RequestContext.getCurrentInstance(context).addCallbackParam("descendantRowKeys", sb.toString());
+            PrimeFaces.current().ajax().addCallbackParam("descendantRowKeys", sb.toString());
             sb.setLength(0);
             descendantRowKeys = null;
         }
@@ -952,10 +952,9 @@ public class TreeTableRenderer extends DataRenderer {
                 tt.isCaseSensitiveSort(), tt.resolveDataLocale()));
         tt.updateRowKeys(root);
 
-        RequestContext requestContext = RequestContext.getCurrentInstance();
         String selectedRowKeys = tt.getSelectedRowKeysAsString();
         if (selectedRowKeys != null) {
-            requestContext.addCallbackParam("selection", selectedRowKeys);
+            PrimeFaces.current().ajax().addCallbackParam("selection", selectedRowKeys);
         }
     }
 
@@ -1096,16 +1095,11 @@ public class TreeTableRenderer extends DataRenderer {
         tt.setRowKey(null);
 
         //Metadata for callback
-        RequestContext requestContext = RequestContext.getCurrentInstance(context);
-
-        if (requestContext != null) {
-            if (tt.isPaginator()) {
-                requestContext.addCallbackParam("totalRecords", filteredNode.getChildren().size());
-            }
-
-            if (tt.getSelectedRowKeysAsString() != null) {
-                requestContext.addCallbackParam("selection", tt.getSelectedRowKeysAsString());
-            }
+        if (tt.isPaginator()) {
+            PrimeFaces.current().ajax().addCallbackParam("totalRecords", filteredNode.getChildren().size());
+        }
+        if (tt.getSelectedRowKeysAsString() != null) {
+            PrimeFaces.current().ajax().addCallbackParam("selection", tt.getSelectedRowKeysAsString());
         }
     }
 

@@ -21,8 +21,8 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.PrimeFaces;
 
-import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -35,7 +35,7 @@ public class ProgressBarRenderer extends CoreRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         if (params.containsKey(clientId)) {
-            RequestContext.getCurrentInstance(context).addCallbackParam(progressBar.getClientId(context) + "_value", progressBar.getValue());
+            PrimeFaces.current().ajax().addCallbackParam(progressBar.getClientId(context) + "_value", progressBar.getValue());
         }
 
         decodeBehaviors(context, progressBar);

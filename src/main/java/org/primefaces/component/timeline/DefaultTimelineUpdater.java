@@ -30,8 +30,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
+import org.primefaces.PrimeFaces;
 
-import org.primefaces.context.RequestContext;
 import org.primefaces.model.timeline.TimelineEvent;
 import org.primefaces.model.timeline.TimelineGroup;
 import org.primefaces.util.ComponentUtils;
@@ -181,7 +181,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
             }
 
             // execute JS script
-            RequestContext.getCurrentInstance().execute(sb.toString());
+            PrimeFaces.current().executeScript(sb.toString());
         }
         catch (IOException e) {
             LOG.log(Level.WARNING, "Timeline with id " + id + " could not be updated, at least one CRUD operation failed", e);

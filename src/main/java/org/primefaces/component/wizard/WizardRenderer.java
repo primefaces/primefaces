@@ -24,9 +24,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
+import org.primefaces.PrimeFaces;
 
 import org.primefaces.component.tabview.Tab;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentTraversalUtils;
@@ -80,7 +80,7 @@ public class WizardRenderer extends CoreRenderer {
                 tabToDisplay.encodeAll(context);
             }
 
-            RequestContext.getCurrentInstance(context).addCallbackParam("currentStep", wizard.getStep());
+            PrimeFaces.current().ajax().addCallbackParam("currentStep", wizard.getStep());
         }
     }
 
