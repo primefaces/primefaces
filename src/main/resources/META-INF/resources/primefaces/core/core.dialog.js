@@ -217,7 +217,11 @@ if (!PrimeFaces.dialog) {
         findRootWindow: function() {
             var w = window;
             while(w.frameElement) {
-                w = w.parent;
+                var parent = w.parent;
+                if (parent.PF === undefined) {
+                	break;
+                }
+                w = parent;
             };
 
             return w;
