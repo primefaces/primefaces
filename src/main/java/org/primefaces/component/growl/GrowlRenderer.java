@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.UINotificationRenderer;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class GrowlRenderer extends UINotificationRenderer {
     
@@ -53,21 +54,17 @@ public class GrowlRenderer extends UINotificationRenderer {
 
         writer.endElement("span");
 
-        startScript(writer, clientId);
-
-        writer.write("$(function(){");
-        writer.write("PrimeFaces.cw('Growl','" + widgetVar + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",sticky:" + growl.isSticky());
-        writer.write(",life:" + growl.getLife());
-        writer.write(",escape:" + growl.isEscape());
+        
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.initWithDomReady("Growl", growl.resolveWidgetVar(), clientId)
+            .attr("sticky", growl.isSticky())
+            .attr("life", growl.getLife())
+            .attr("escape", growl.isEscape());
 
         writer.write(",msgs:");
         encodeMessages(context, growl);
 
-        writer.write("});});");
-
-        endScript(writer);
+        wb.finish();
         
         if (growl.isAutoUpdate()) {
             logger.info("autoUpdate attribute is deprecated and will be removed in a future version, use p:autoUpdate component instead.");

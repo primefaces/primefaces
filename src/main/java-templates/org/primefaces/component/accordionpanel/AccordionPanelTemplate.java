@@ -24,6 +24,7 @@ import javax.faces.component.visit.VisitResult;
 import javax.faces.event.AbortProcessingException;
 import org.primefaces.context.RequestContext;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.PrimeFaces;
 
     public final static String CONTAINER_CLASS = "ui-accordion ui-widget ui-helper-reset ui-hidden-container";
     public final static String ACTIVE_TAB_HEADER_CLASS = "ui-accordion-header ui-helper-reset ui-state-default ui-state-active ui-corner-top";
@@ -167,7 +168,7 @@ import javax.faces.event.BehaviorEvent;
             MethodExpression me = this.getTabController();
             if(me != null) {
                 boolean retVal = (Boolean) me.invoke(getFacesContext().getELContext(), new Object[]{event});
-                RequestContext.getCurrentInstance(getFacesContext()).addCallbackParam("access", retVal);
+                PrimeFaces.current().ajax().addCallbackParam("access", retVal);
             }
         }
     }

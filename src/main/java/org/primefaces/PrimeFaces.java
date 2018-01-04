@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 package org.primefaces;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -225,13 +224,7 @@ public class PrimeFaces {
         }
     }
     
-    public Ajax ajax() {
-        if (getFacesContext().isProjectStage(ProjectStage.Development) && !isAjaxRequest()) {
-            LOG.info("PrimeFaces.current().ajax() called inside an non-AJAX request! "
-                    + "All further calls on sub-methods will absolutely do nothing...");
-            //throw new FacesException("ajax() can only be used in AJAX requests!");
-        }
-        
+    public Ajax ajax() {        
         return ajax;
     }
     
@@ -262,12 +255,7 @@ public class PrimeFaces {
             // call SEF to validate if a component with the clientId exists
             if (facesContext.isProjectStage(ProjectStage.Development)) {
                 for (String clientId : clientIds) {
-                    try {
-                        SearchExpressionFacade.resolveClientId(facesContext, facesContext.getViewRoot(), clientId);
-                    }
-                    catch (ComponentNotFoundException e) {
-                        LOG.log(Level.WARNING, "PrimeFaces.current().ajax().update() called but component can't be resolved!", e);
-                    }
+                    validateClientId(clientId, facesContext);
                 }
             }
             
@@ -284,8 +272,25 @@ public class PrimeFaces {
                 return;
             }
 
-            List<String> collection = Arrays.asList(clientIds);
-            update(collection);
+            FacesContext facesContext = getFacesContext();
+            
+            for (String clientId : clientIds) {
+                if (facesContext.isProjectStage(ProjectStage.Development)) {
+                    validateClientId(clientId, facesContext);
+                }
+
+                facesContext.getPartialViewContext().getRenderIds().add(clientId);
+            }
+        }
+        
+        protected void validateClientId(String clientId, FacesContext facesContext) {
+            // call SEF to validate if a component with the clientId exists
+            try {
+                SearchExpressionFacade.resolveClientId(facesContext, facesContext.getViewRoot(), clientId);
+            }
+            catch (ComponentNotFoundException e) {
+                LOG.log(Level.WARNING, "PrimeFaces.current().ajax().update() called but component can't be resolved!", e);
+            }
         }
     }
 }

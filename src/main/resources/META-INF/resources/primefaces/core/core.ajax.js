@@ -592,7 +592,7 @@ if (!PrimeFaces.ajax) {
 
                         PrimeFaces.debug('DOM is updated.');
                     })
-                    .always(function(xhr, status) {
+                    .always(function(data, status, xhr) {
                         // first call the extension callback (e.g. datatable paging)
                         if(cfg.ext && cfg.ext.oncomplete) {
                             cfg.ext.oncomplete.call(this, xhr, status, xhr.pfArgs);

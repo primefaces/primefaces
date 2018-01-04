@@ -22,6 +22,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import org.primefaces.event.data.PageEvent;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.PrimeFaces;
 
 	public static final String DATALIST_CLASS = "ui-datalist ui-widget";
     public static final String CONTENT_CLASS = "ui-datalist-content ui-widget-content";
@@ -86,11 +87,7 @@ import javax.faces.event.BehaviorEvent;
 
             //Update paginator for callback
             if(ComponentUtils.isRequestSource(this, getFacesContext()) && this.isPaginator()) {
-                RequestContext requestContext = RequestContext.getCurrentInstance(getFacesContext());
-
-                if(requestContext != null) {
-                    requestContext.addCallbackParam("totalRecords", lazyModel.getRowCount());
-                }
+                PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
             }
         }
     }

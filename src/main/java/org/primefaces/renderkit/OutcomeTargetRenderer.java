@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
 
     protected boolean containsEL(List<String> values) {
         if (!values.isEmpty()) {
-            // lets take a index loop, both MyFaces and Mojarra uses ArrayLists
+            // Both MyFaces and Mojarra use ArrayLists. Therefore, index loop can be used.
             for (int i = 0; i < values.size(); i++) {
                 if (isExpression(values.get(i))) {
                     return true;

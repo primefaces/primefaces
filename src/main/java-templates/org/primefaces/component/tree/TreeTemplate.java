@@ -23,6 +23,7 @@ import org.primefaces.component.tree.UITreeNode;
 import org.primefaces.util.Constants;
 import org.primefaces.model.TreeNode;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.PrimeFaces;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.CheckboxTreeNode;
 import org.primefaces.model.DefaultTreeNode;
@@ -385,7 +386,7 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
                 info = new TreeDragDropInfo(this.getDragNode(), this.getDropNode(), dndIndex, isDroppedNodeCopy);
 
             retValOnDrop = (Boolean) me.invoke(context.getELContext(), new Object[] { info });
-            RequestContext.getCurrentInstance().addCallbackParam("access", retValOnDrop);
+            PrimeFaces.current().ajax().addCallbackParam("access", retValOnDrop);
         }
 
         return retValOnDrop;
