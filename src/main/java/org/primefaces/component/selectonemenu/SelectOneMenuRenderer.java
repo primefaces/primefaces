@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
@@ -366,7 +367,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         
         ResponseWriter writer = context.getResponseWriter();
         String var = menu.getVar();
-        Class<?> valueType = menu.getValueExpression("value").getType(context.getELContext());
+        ValueExpression value = menu.getValueExpression("value");
+        Class<?> valueType = value == null ? null : value.getType(context.getELContext());
 
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
@@ -388,7 +390,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 writer.writeAttribute("title", selectItem.getDescription(), null);
             }
 
-            if (itemValue == null || !valueType.isAssignableFrom(itemValue.getClass())) {
+            if (itemValue == null || (valueType != null && !valueType.isAssignableFrom(itemValue.getClass()))) {
                 writer.startElement("td", null);
                 writer.writeAttribute("colspan", columns.size(), null);
                 writer.writeText(selectItem.getLabel(), null);
