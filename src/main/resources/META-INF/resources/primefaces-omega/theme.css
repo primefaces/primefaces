@@ -897,3 +897,13 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
 }
+
+/* Tooltip */
+.ui-tooltip .ui-tooltip-text.ui-state-error {
+    border: 0 none;
+    background-color: #ef5350;
+}
+
+.ui-tooltip .ui-tooltip-arrow.ui-state-error {
+    border-right-color: #ef5350;
+}
