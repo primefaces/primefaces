@@ -16,6 +16,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.blockEvents = 'focus.' + this.id + ' mousedown.' + this.id + ' mouseup.' + this.id;
         this.resizeNS = 'resize.' + this.id;
         this.cfg.absolutePositioned = this.jq.hasClass('ui-dialog-absolute');
+        this.jqEl = this.jq[0];
 
         this.positionInitialized = false;
 
@@ -217,7 +218,11 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             }
 
             if (this.positionInitialized === false) {
+                this.jqEl.style.visibility = "hidden";
+                this.jqEl.style.display = "block";
                 this.initPosition();
+                this.jqEl.style.display = "none";
+                this.jqEl.style.visibility = "visible";
             }
 
             this._show();
