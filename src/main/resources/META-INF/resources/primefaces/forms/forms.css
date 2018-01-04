@@ -396,7 +396,16 @@
 /* FontAwesome icon */
 .ui-button-icon-only .ui-icon.fa,
 .ui-button-text-icon-left .ui-icon.fa,
-.ui-button-text-icon-right .ui-icon.fa {
+.ui-button-text-icon-right .ui-icon.fa,
+.ui-button-icon-only .ui-icon.fab,
+.ui-button-text-icon-left .ui-icon.fab,
+.ui-button-text-icon-right .ui-icon.fab,
+.ui-button-icon-only .ui-icon.far,
+.ui-button-text-icon-left .ui-icon.far,
+.ui-button-text-icon-right .ui-icon.far,
+.ui-button-icon-only .ui-icon.fas,
+.ui-button-text-icon-left .ui-icon.fas,
+.ui-button-text-icon-right .ui-icon.fas {
     margin-top: -7px;
 }
 
