@@ -88,50 +88,67 @@ public class OutcomeTargetRenderer extends CoreRenderer {
     }
 
     /**
-     * Find all parameters to include by looking at nested uiparams and params of navigation case
+     * Find all parameters to include by looking at nested uiparams and params of outcome target.
+     * @param context
+     * @param outcomeTarget
+     * @return 
+     */
+    protected Map<String, List<String>> getParams(FacesContext context, UIOutcomeTarget outcomeTarget) {
+        return getParams(context, null, outcomeTarget);
+    }
+    
+    /**
+     * Find all parameters to include by looking at nested uiparams and params of navigation case.
+     * @param context
+     * @param navCase
+     * @param outcomeTarget
+     * @return 
      */
     protected Map<String, List<String>> getParams(FacesContext context, NavigationCase navCase, UIOutcomeTarget outcomeTarget) {
         //UI Params
         Map<String, List<String>> params = outcomeTarget.getParams();
 
-        //NavCase Params
-        Map<String, List<String>> navCaseParams = navCase.getParameters();
-        if (navCaseParams != null && !navCaseParams.isEmpty()) {
-            if (params == null) {
-                params = new LinkedHashMap<String, List<String>>();
-            }
-
-            for (Map.Entry<String, List<String>> entry : navCaseParams.entrySet()) {
-                String key = entry.getKey();
-
-                //UIParams take precedence
-                if (!params.containsKey(key)) {
-                    List<String> values = entry.getValue();
-                    if (containsEL(values)) {
-                        params.put(key, evaluateValueExpressions(context, values));
-                    }
-                    else {
-                        params.put(key, values);
-                    }
-                }
-            }
-        }
-
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF22()) {
-            String toFlowDocumentId = navCase.getToFlowDocumentId();
-            if (toFlowDocumentId != null) {
+        //Ignore in case navCase is null
+        if (navCase != null) {
+            //NavCase Params
+            Map<String, List<String>> navCaseParams = navCase.getParameters();
+            if (navCaseParams != null && !navCaseParams.isEmpty()) {
                 if (params == null) {
                     params = new LinkedHashMap<String, List<String>>();
                 }
 
-                List<String> flowDocumentIdValues = new ArrayList<String>();
-                flowDocumentIdValues.add(toFlowDocumentId);
-                params.put(FlowHandler.TO_FLOW_DOCUMENT_ID_REQUEST_PARAM_NAME, flowDocumentIdValues);
+                for (Map.Entry<String, List<String>> entry : navCaseParams.entrySet()) {
+                    String key = entry.getKey();
 
-                if (!FlowHandler.NULL_FLOW.equals(toFlowDocumentId)) {
-                    List<String> flowIdValues = new ArrayList<String>();
-                    flowIdValues.add(navCase.getFromOutcome());
-                    params.put(FlowHandler.FLOW_ID_REQUEST_PARAM_NAME, flowIdValues);
+                    //UIParams take precedence
+                    if (!params.containsKey(key)) {
+                        List<String> values = entry.getValue();
+                        if (containsEL(values)) {
+                            params.put(key, evaluateValueExpressions(context, values));
+                        }
+                        else {
+                            params.put(key, values);
+                        }
+                    }
+                }
+            }
+            
+            if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF22()) {
+                String toFlowDocumentId = navCase.getToFlowDocumentId();
+                if (toFlowDocumentId != null) {
+                    if (params == null) {
+                        params = new LinkedHashMap<String, List<String>>();
+                    }
+
+                    List<String> flowDocumentIdValues = new ArrayList<String>();
+                    flowDocumentIdValues.add(toFlowDocumentId);
+                    params.put(FlowHandler.TO_FLOW_DOCUMENT_ID_REQUEST_PARAM_NAME, flowDocumentIdValues);
+
+                    if (!FlowHandler.NULL_FLOW.equals(toFlowDocumentId)) {
+                        List<String> flowIdValues = new ArrayList<String>();
+                        flowIdValues.add(navCase.getFromOutcome());
+                        params.put(FlowHandler.FLOW_ID_REQUEST_PARAM_NAME, flowIdValues);
+                    }
                 }
             }
         }
@@ -148,7 +165,8 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         String href = outcomeTarget.getHref();
 
         if (href != null) {
-            url = getResourceURL(context, href);
+            Map<String, List<String>> params = getParams(context, outcomeTarget);
+            url = getResourceURL(context, href, params);
         }
         else {
             NavigationCase navCase = findNavigationCase(context, outcomeTarget);

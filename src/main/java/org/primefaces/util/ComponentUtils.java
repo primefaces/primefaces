@@ -18,6 +18,7 @@ package org.primefaces.util;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -282,6 +283,10 @@ public class ComponentUtils {
     }
 
     public static String getResourceURL(FacesContext context, String value) {
+        return getResourceURL(context, value, Collections.<String, List<String>>emptyMap());
+    }
+    
+    public static String getResourceURL(FacesContext context, String value, Map<String, List<String>> params) {
         if (isValueBlank(value)) {
             return Constants.EMPTY_STRING;
         }
@@ -289,9 +294,9 @@ public class ComponentUtils {
             return value;
         }
         else {
-            String url = context.getApplication().getViewHandler().getResourceURL(context, value);
+            String baseUrl = context.getApplication().getViewHandler().getResourceURL(context, value);
 
-            return context.getExternalContext().encodeResourceURL(url);
+            return context.getExternalContext().encodeBookmarkableURL(baseUrl, params);
         }
     }
 
