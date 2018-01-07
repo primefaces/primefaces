@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletResponse;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.CoreRenderer;
@@ -36,11 +37,11 @@ public class SocketRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Socket socket = (Socket) component;
         String channel = socket.getChannel();
-        String channelUrl = Constants.PUSH_PATH + channel;
-        String url = getResourceURL(context, channelUrl);
+        String channelUrl = Constants.PUSH_PATH + channel;       
         String pushServer = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().getPushServerURL();
         String clientId = socket.getClientId(context);
 
+        String url = channelUrl;
         if (pushServer != null) {
             url = pushServer + url;
         }

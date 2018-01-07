@@ -148,7 +148,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         String href = outcomeTarget.getHref();
 
         if (href != null) {
-            url = getResourceURL(context, href);
+            url = href;
         }
         else {
             NavigationCase navCase = findNavigationCase(context, outcomeTarget);
