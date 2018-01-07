@@ -19,7 +19,6 @@ import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletResponse;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.CoreRenderer;
