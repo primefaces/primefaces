@@ -128,7 +128,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
                     }
                 }
             }
-            
+
             if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF22()) {
                 String toFlowDocumentId = navCase.getToFlowDocumentId();
                 if (toFlowDocumentId != null) {
