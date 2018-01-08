@@ -166,7 +166,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
 
         if (href != null) {
             Map<String, List<String>> params = getParams(context, outcomeTarget);
-            url = getResourceURL(context, href, params);
+            url = getHrefURL(href, params);
         }
         else {
             NavigationCase navCase = findNavigationCase(context, outcomeTarget);

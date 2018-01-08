@@ -407,7 +407,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         .bind('click', function(event) {
             var item = $(this),
             itemValue = item.attr('data-item-value'),
-            isMoreText = item.hasClass('ui-autocomplete-moretext');
+            isMoreText = item.hasClass('ui-autocomplete-moretext'),
+            escapedItemValue = PrimeFaces.escapeHTML(itemValue.replace(/\"/g,"\'"));
 
             if(isMoreText) {
                 $this.input.focus();
@@ -417,12 +418,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 if($this.cfg.multiple) {
                     var found = false;
                     if($this.cfg.unique) {
-                        found = $this.multiItemContainer.children("li[data-token-value='" + itemValue + "']").length != 0;
+                        found = $this.multiItemContainer.children("li[data-token-value='" + escapedItemValue + "']").length != 0;
                     }
 
                     if(!found) {
                         var itemStyleClass = item.attr('data-item-class');
-                        var itemDisplayMarkup = '<li data-token-value="' + itemValue;
+                        var itemDisplayMarkup = '<li data-token-value="' + escapedItemValue;
                         itemDisplayMarkup += '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden';
                         itemDisplayMarkup += (itemStyleClass === '' ? '' : ' '+itemStyleClass) + '">';
                         itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close" />';
@@ -432,7 +433,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         $this.multiItemContainer.children('.ui-helper-hidden').fadeIn();
                         $this.input.val('');
 
-                        $this.hinput.append('<option value="' + itemValue + '" selected="selected"></option>');
+                        $this.hinput.append('<option value="' + escapedItemValue + '" selected="selected"></option>');
                         if($this.multiItemContainer.children('li.ui-autocomplete-token').length >= $this.cfg.selectLimit) {
                             $this.input.css('display', 'none').blur();
                             $this.disableDropdown();

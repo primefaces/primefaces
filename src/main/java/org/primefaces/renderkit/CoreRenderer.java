@@ -95,16 +95,16 @@ public abstract class CoreRenderer extends Renderer {
         return ComponentUtils.getResourceURL(context, value);
     }
     
-    protected String getResourceURL(FacesContext context, String value, Map<String, List<String>> params) {
-        return ComponentUtils.getResourceURL(context, value, params);
+    protected String getHrefURL(String baseUrl, Map<String, List<String>> params) {
+        return ComponentUtils.getHrefURL(baseUrl, params);
     }
-
+    
     protected String getResourceRequestPath(FacesContext context, String resourceName) {
         Resource resource = context.getApplication().getResourceHandler().createResource(resourceName, "primefaces");
 
         return resource.getRequestPath();
     }
-
+    
     protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 

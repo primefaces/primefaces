@@ -899,9 +899,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         
         for(var i = 0; i < headerColumns.length; i++) {
             var headerColumn = headerColumns.eq(i),
-            ariaLabelText = headerColumn.attr('aria-label'),
+            reflowHeaderText = headerColumn.find('.ui-reflow-headertext:first').text(),
             colTitleEl = headerColumn.children('.ui-column-title'),
-            title = (ariaLabelText && ariaLabelText.length) ? ariaLabelText : colTitleEl.text();
+            title = (reflowHeaderText && reflowHeaderText.length) ? reflowHeaderText : colTitleEl.text();
             this.tbody.find('> tr:not(.ui-datatable-empty-message) > td:nth-child(' + (i + 1) + ')').prepend('<span class="ui-column-title">' + title + '</span>');
         }
     },

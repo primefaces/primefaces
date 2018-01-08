@@ -37,10 +37,10 @@ public class SocketRenderer extends CoreRenderer {
         Socket socket = (Socket) component;
         String channel = socket.getChannel();
         String channelUrl = Constants.PUSH_PATH + channel;
-        String url = getResourceURL(context, channelUrl);
         String pushServer = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().getPushServerURL();
         String clientId = socket.getClientId(context);
 
+        String url = channelUrl;
         if (pushServer != null) {
             url = pushServer + url;
         }

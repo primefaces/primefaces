@@ -18,7 +18,6 @@ package org.primefaces.util;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -283,10 +282,6 @@ public class ComponentUtils {
     }
 
     public static String getResourceURL(FacesContext context, String value) {
-        return getResourceURL(context, value, Collections.<String, List<String>>emptyMap());
-    }
-    
-    public static String getResourceURL(FacesContext context, String value, Map<String, List<String>> params) {
         if (isValueBlank(value)) {
             return Constants.EMPTY_STRING;
         }
@@ -294,10 +289,87 @@ public class ComponentUtils {
             return value;
         }
         else {
-            String baseUrl = context.getApplication().getViewHandler().getResourceURL(context, value);
+            String url = context.getApplication().getViewHandler().getResourceURL(context, value);
 
-            return context.getExternalContext().encodeBookmarkableURL(baseUrl, params);
+            return context.getExternalContext().encodeResourceURL(url);
         }
+    }
+    
+    /**
+     * Generate an <code>href</code> URL considering a base URL and some other params.
+     * This method consider existing query string and fragment in the base URL.
+     * @param baseUrl
+     * @param params
+     * @return 
+     */
+    public static String getHrefURL(String baseUrl, Map<String, List<String>> params) {
+        if (params == null || params.isEmpty()) {
+            return baseUrl;
+        }
+        //Fragment
+        String fragment = null;
+        int fragmentIndex = baseUrl.indexOf("#");
+        if (fragmentIndex != -1) {
+            fragment = baseUrl.substring(fragmentIndex + 1).trim();
+            baseUrl = baseUrl.substring(0, fragmentIndex);
+        }
+
+        //Query string and path
+        String queryString, path;
+        int queryStringIndex = baseUrl.indexOf("?");
+        if (queryStringIndex != -1) {
+            queryString = baseUrl.substring(queryStringIndex + 1).trim();
+            path = baseUrl.substring(0, queryStringIndex);
+        }
+        else {
+            queryString = null;
+            path = baseUrl;
+        }
+
+        boolean hasParam = false;
+        StringBuilder url = new StringBuilder(baseUrl.length() * 2);
+        url.append(path)
+                .append("?");
+        //If has previous queryString, set that first as is
+        if (!isValueBlank(queryString)) {
+            for (String pair : queryString.split("&")) {
+                String[] nameAndValue = pair.split("=");
+                // ignore malformed pair
+                if (nameAndValue.length != 2
+                        || isValueBlank(nameAndValue[0])) {
+                    continue;
+                }
+                if (hasParam) {
+                    url.append("&");
+                }
+                url.append(nameAndValue[0])
+                        .append("=")
+                        .append(nameAndValue[1]);
+                hasParam = true;
+            }
+        }
+        //Setting params Map passed
+        for (Map.Entry<String, List<String>> entry : params.entrySet()) {
+            for (String value : entry.getValue()) {
+                if (hasParam) {
+                    url.append("&");
+                }
+                try {
+                    url.append(entry.getKey())
+                            .append("=")
+                            .append(URLEncoder.encode(value, "UTF-8"));
+                }
+                catch (UnsupportedEncodingException e) {
+                    throw new RuntimeException(e);
+                }
+                hasParam = true;
+            }
+        }
+        if (!isValueBlank(fragment)) {
+            url.append("#")
+                    .append(fragment);
+        }
+        return url.toString();
     }
 
     public static boolean isSkipIteration(VisitContext visitContext, FacesContext context) {
