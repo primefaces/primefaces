@@ -36,7 +36,7 @@ public class SocketRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Socket socket = (Socket) component;
         String channel = socket.getChannel();
-        String channelUrl = Constants.PUSH_PATH + channel;        
+        String channelUrl = Constants.PUSH_PATH + channel;       
         String pushServer = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().getPushServerURL();
         String clientId = socket.getClientId(context);
 
