@@ -98,11 +98,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
     }
     
     /**
-     * Find all parameters to include by looking at nested uiparams and params of navigation case.
-     * @param context
-     * @param navCase
-     * @param outcomeTarget
-     * @return 
+     * Find all parameters to include by looking at nested uiparams and params of navigation case
      */
     protected Map<String, List<String>> getParams(FacesContext context, NavigationCase navCase, UIOutcomeTarget outcomeTarget) {
         //UI Params

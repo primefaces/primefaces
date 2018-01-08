@@ -94,7 +94,7 @@ public abstract class CoreRenderer extends Renderer {
     protected String getResourceURL(FacesContext context, String value) {
         return ComponentUtils.getResourceURL(context, value);
     }
-    
+
     protected String getHrefURL(String baseUrl, Map<String, List<String>> params) {
         return ComponentUtils.getHrefURL(baseUrl, params);
     }
@@ -104,7 +104,7 @@ public abstract class CoreRenderer extends Renderer {
 
         return resource.getRequestPath();
     }
-    
+
     protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
