@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
+import org.primefaces.component.datatable.TableState;
 import org.primefaces.util.ComponentUtils;
 
 public class DraggableColumnsFeature implements DataTableFeature {
@@ -66,6 +67,11 @@ public class DraggableColumnsFeature implements DataTableFeature {
         }
 
         table.setColumns(orderedColumns);
+        
+        if (table.isMultiViewState()) {
+            TableState ts = table.getTableState(true);
+            ts.setOrderedColumns(orderedColumns);
+        }
     }
 
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {

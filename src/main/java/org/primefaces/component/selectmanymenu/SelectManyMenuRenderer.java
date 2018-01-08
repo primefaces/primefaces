@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -144,7 +144,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
         writer.startElement("div", menu);
         writer.writeAttribute("class", SelectManyMenu.LIST_CONTAINER_CLASS, null);
-        writer.writeAttribute("style", "max-height:" + menu.getScrollHeight() + "px", null);
+        writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, countSelectItems(selectItems)), null);
 
         if (customContent) {
             writer.startElement("table", null);
@@ -323,6 +323,19 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
+    protected String calculateWrapperHeight(SelectManyMenu menu, int itemSize) {
+        int height = menu.getScrollHeight();
+
+        if (height != Integer.MAX_VALUE) {
+            return height + "px";
+        } 
+        else if (itemSize > 10) {
+            return 200 + "px";
+        }
+
+        return "auto";
+    }
+    
     @Override
     protected String getSubmitParam(FacesContext context, UISelectMany selectMany) {
         return selectMany.getClientId(context) + "_input";

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ public class Constants {
         public static final String BEAN_VALIDATION_DISABLED = "javax.faces.validator.DISABLE_DEFAULT_BEAN_VALIDATOR";
         public static final String INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES = "primefaces.INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES";
         public static final String EARLY_POST_PARAM_EVALUATION = "primefaces.EARLY_POST_PARAM_EVALUATION";
-        public static final String COLLECT_SCRIPTS = "primefaces.COLLECT_SCRIPTS";
+        public static final String MOVE_SCRIPTS_TO_BOTTOM = "primefaces.MOVE_SCRIPTS_TO_BOTTOM";
     }
 
     public static class RequestParams {
@@ -72,6 +72,7 @@ public class Constants {
     public static final String BARCODE_MAPPING = "primefaces.barcodeMapping";
 
     public final static String FRAGMENT_ID = "primefaces.fragment";
+    public final static String FRAGMENT_AUTO_RENDERED = "primefaces.fragment.autorendered";
 
     public static class DIALOG_FRAMEWORK {
 

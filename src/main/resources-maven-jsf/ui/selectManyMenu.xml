@@ -117,7 +117,7 @@
             <name>scrollHeight</name>
             <required>false</required>
             <type>java.lang.Integer</type>
-            <defaultValue>200</defaultValue>
+            <defaultValue>java.lang.Integer.MAX_VALUE</defaultValue>
             <description>Defines the height of the scrollable area.</description>
         </attribute>
     </attributes>

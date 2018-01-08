@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.PrimeFaces;
 
-import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -35,7 +35,7 @@ public class ProgressBarRenderer extends CoreRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         if (params.containsKey(clientId)) {
-            RequestContext.getCurrentInstance(context).addCallbackParam(progressBar.getClientId(context) + "_value", progressBar.getValue());
+            PrimeFaces.current().ajax().addCallbackParam(progressBar.getClientId(context) + "_value", progressBar.getValue());
         }
 
         decodeBehaviors(context, progressBar);
@@ -54,11 +54,13 @@ public class ProgressBarRenderer extends CoreRenderer {
 
     protected void encodeMarkup(FacesContext context, ProgressBar progressBar) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+        String mode = progressBar.getMode();
         int value = progressBar.getValue();
         String labelTemplate = progressBar.getLabelTemplate();
         String style = progressBar.getStyle();
         String styleClass = progressBar.getStyleClass();
         styleClass = styleClass == null ? ProgressBar.CONTAINER_CLASS : ProgressBar.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass + " " + (mode.equals("determinate") ? ProgressBar.DETERMINATE_CLASS : ProgressBar.INDETERMINATE_CLASS);
 
         if (progressBar.isDisabled()) {
             styleClass = styleClass + " ui-state-disabled";

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@ package org.primefaces.util;
 import java.io.IOException;
 
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import org.primefaces.config.PrimeConfiguration;
 
 /**
  * Helper to generate javascript code of an ajax call
@@ -26,9 +28,11 @@ public class WidgetBuilder {
 
     protected boolean endFunction = false;
     protected FacesContext context;
+    protected PrimeConfiguration configuration;
 
-    public WidgetBuilder(FacesContext context) {
+    public WidgetBuilder(FacesContext context, PrimeConfiguration configuration) {
         this.context = context;
+        this.configuration = configuration;
     }
 
     /**
@@ -43,14 +47,14 @@ public class WidgetBuilder {
     protected WidgetBuilder init(String widgetClass, String widgetVar, String id, boolean endFunction) throws IOException {
         this.endFunction = endFunction;
 
-        context.getResponseWriter().write("PrimeFaces.cw(\"");
-        context.getResponseWriter().write(widgetClass);
-        context.getResponseWriter().write("\",\"");
-        context.getResponseWriter().write(widgetVar);
-        context.getResponseWriter().write("\",{");
-        context.getResponseWriter().write("id:\"");
-        context.getResponseWriter().write(id);
-        context.getResponseWriter().write("\"");
+        ResponseWriter rw = context.getResponseWriter();
+        rw.write("PrimeFaces.cw(\"");
+        rw.write(widgetClass);
+        rw.write("\",\"");
+        rw.write(widgetVar);
+        rw.write("\",{id:\"");
+        rw.write(id);
+        rw.write("\"");
 
         return this;
     }
@@ -65,8 +69,18 @@ public class WidgetBuilder {
     public WidgetBuilder initWithDomReady(String widgetClass, String widgetVar, String id) throws IOException {
 
         this.renderScriptBlock(id);
-        context.getResponseWriter().write("$(function(){");
-        this.init(widgetClass, widgetVar, id, true);
+        
+        // since jQuery 3 document ready ($(function() {})) are executed async
+        // this would mean that our oncomplete handlers are probably called before the scripts in the update nodes
+        // or
+        // we can also skip it when MOVE_SCRIPTS_TO_BOTTOM is enabled as the scripts are already executed when everything is ready
+        if (context.isPostback() || configuration.isMoveScriptsToBottom()) {
+            this.init(widgetClass, widgetVar, id, false);
+        }
+        else {
+            context.getResponseWriter().write("$(function(){");
+            this.init(widgetClass, widgetVar, id, true);
+        }
 
         return this;
     }
@@ -74,7 +88,7 @@ public class WidgetBuilder {
     public WidgetBuilder initWithWindowLoad(String widgetClass, String widgetVar, String id) throws IOException {
 
         this.renderScriptBlock(id);
-        context.getResponseWriter().write("$(window).load(function(){");
+        context.getResponseWriter().write("$(window).on(\"load\",function(){");
         this.init(widgetClass, widgetVar, id, true);
 
         return this;
@@ -83,16 +97,17 @@ public class WidgetBuilder {
     public WidgetBuilder initWithComponentLoad(String widgetClass, String widgetVar, String id, String targetId) throws IOException {
 
         this.renderScriptBlock(id);
-        context.getResponseWriter().write("$(PrimeFaces.escapeClientId(\"" + targetId + "\")).load(function(){");
+        context.getResponseWriter().write("$(PrimeFaces.escapeClientId(\"" + targetId + "\")).on(\"load\",function(){");
         this.init(widgetClass, widgetVar, id, true);
 
         return this;
     }
 
     private void renderScriptBlock(String id) throws IOException {
-        context.getResponseWriter().startElement("script", null);
-        context.getResponseWriter().writeAttribute("id", id + "_s", null);
-        context.getResponseWriter().writeAttribute("type", "text/javascript", null);
+        ResponseWriter rw = context.getResponseWriter();
+        rw.startElement("script", null);
+        rw.writeAttribute("id", id + "_s", null);
+        rw.writeAttribute("type", "text/javascript", null);
     }
 
     /**
@@ -107,11 +122,12 @@ public class WidgetBuilder {
      */
     public WidgetBuilder selectorAttr(String name, String value) throws IOException {
         if (value != null) {
-            context.getResponseWriter().write(",");
-            context.getResponseWriter().write(name);
-            context.getResponseWriter().write(":\"");
-            context.getResponseWriter().write(ComponentUtils.escapeSelector(value));
-            context.getResponseWriter().write("\"");
+            ResponseWriter rw = context.getResponseWriter();
+            rw.write(",");
+            rw.write(name);
+            rw.write(":\"");
+            rw.write(ComponentUtils.escapeSelector(value));
+            rw.write("\"");
         }
 
         return this;
@@ -119,11 +135,12 @@ public class WidgetBuilder {
     
     public WidgetBuilder attr(String name, String value) throws IOException {
         if (value != null) {
-            context.getResponseWriter().write(",");
-            context.getResponseWriter().write(name);
-            context.getResponseWriter().write(":\"");
-            context.getResponseWriter().write(ComponentUtils.escapeEcmaScriptText(value));
-            context.getResponseWriter().write("\"");
+            ResponseWriter rw = context.getResponseWriter();
+            rw.write(",");
+            rw.write(name);
+            rw.write(":\"");
+            rw.write(ComponentUtils.escapeEcmaScriptText(value));
+            rw.write("\"");
         }
 
         return this;
@@ -131,10 +148,11 @@ public class WidgetBuilder {
 
     public WidgetBuilder nativeAttr(String name, String value) throws IOException {
         if (value != null) {
-            context.getResponseWriter().write(",");
-            context.getResponseWriter().write(name);
-            context.getResponseWriter().write(":");
-            context.getResponseWriter().write(value);
+            ResponseWriter rw = context.getResponseWriter();
+            rw.write(",");
+            rw.write(name);
+            rw.write(":");
+            rw.write(value);
         }
 
         return this;
@@ -142,10 +160,11 @@ public class WidgetBuilder {
 
     public WidgetBuilder nativeAttr(String name, String value, String defaultValue) throws IOException {
         if (value != null && !value.equals(defaultValue)) {
-            context.getResponseWriter().write(",");
-            context.getResponseWriter().write(name);
-            context.getResponseWriter().write(":");
-            context.getResponseWriter().write(value);
+            ResponseWriter rw = context.getResponseWriter();
+            rw.write(",");
+            rw.write(name);
+            rw.write(":");
+            rw.write(value);
         }
 
         return this;
@@ -153,10 +172,11 @@ public class WidgetBuilder {
 
     public WidgetBuilder attr(String name, Boolean value) throws IOException {
         if (value != null) {
-            context.getResponseWriter().write(",");
-            context.getResponseWriter().write(name);
-            context.getResponseWriter().write(":");
-            context.getResponseWriter().write(Boolean.toString(value));
+            ResponseWriter rw = context.getResponseWriter();
+            rw.write(",");
+            rw.write(name);
+            rw.write(":");
+            rw.write(Boolean.toString(value));
         }
 
         return this;
@@ -164,10 +184,11 @@ public class WidgetBuilder {
 
     public WidgetBuilder attr(String name, Number value) throws IOException {
         if (value != null) {
-            context.getResponseWriter().write(",");
-            context.getResponseWriter().write(name);
-            context.getResponseWriter().write(":");
-            context.getResponseWriter().write(value.toString());
+            ResponseWriter rw = context.getResponseWriter();
+            rw.write(",");
+            rw.write(name);
+            rw.write(":");
+            rw.write(value.toString());
         }
 
         return this;
@@ -175,11 +196,12 @@ public class WidgetBuilder {
 
     public WidgetBuilder attr(String name, String value, String defaultValue) throws IOException {
         if (value != null && !value.equals(defaultValue)) {
-            context.getResponseWriter().write(",");
-            context.getResponseWriter().write(name);
-            context.getResponseWriter().write(":\"");
-            context.getResponseWriter().write(ComponentUtils.escapeEcmaScriptText(value));
-            context.getResponseWriter().write("\"");
+            ResponseWriter rw = context.getResponseWriter();
+            rw.write(",");
+            rw.write(name);
+            rw.write(":\"");
+            rw.write(ComponentUtils.escapeEcmaScriptText(value));
+            rw.write("\"");
         }
 
         return this;
@@ -187,10 +209,11 @@ public class WidgetBuilder {
 
     public WidgetBuilder attr(String name, double value, double defaultValue) throws IOException {
         if (value != defaultValue) {
-            context.getResponseWriter().write(",");
-            context.getResponseWriter().write(name);
-            context.getResponseWriter().write(":");
-            context.getResponseWriter().write(Double.toString(value));
+            ResponseWriter rw = context.getResponseWriter();
+            rw.write(",");
+            rw.write(name);
+            rw.write(":");
+            rw.write(Double.toString(value));
         }
 
         return this;
@@ -198,10 +221,11 @@ public class WidgetBuilder {
 
     public WidgetBuilder attr(String name, int value, int defaultValue) throws IOException {
         if (value != defaultValue) {
-            context.getResponseWriter().write(",");
-            context.getResponseWriter().write(name);
-            context.getResponseWriter().write(":");
-            context.getResponseWriter().write(Integer.toString(value));
+            ResponseWriter rw = context.getResponseWriter();
+            rw.write(",");
+            rw.write(name);
+            rw.write(":");
+            rw.write(Integer.toString(value));
         }
 
         return this;
@@ -209,10 +233,11 @@ public class WidgetBuilder {
 
     public WidgetBuilder attr(String name, boolean value, boolean defaultValue) throws IOException {
         if (value != defaultValue) {
-            context.getResponseWriter().write(",");
-            context.getResponseWriter().write(name);
-            context.getResponseWriter().write(":");
-            context.getResponseWriter().write(Boolean.toString(value));
+            ResponseWriter rw = context.getResponseWriter();
+            rw.write(",");
+            rw.write(name);
+            rw.write(":");
+            rw.write(Boolean.toString(value));
         }
 
         return this;
@@ -220,13 +245,14 @@ public class WidgetBuilder {
 
     public WidgetBuilder callback(String name, String signature, String callback) throws IOException {
         if (callback != null) {
-            context.getResponseWriter().write(",");
-            context.getResponseWriter().write(name);
-            context.getResponseWriter().write(":");
-            context.getResponseWriter().write(signature);
-            context.getResponseWriter().write("{");
-            context.getResponseWriter().write(callback);
-            context.getResponseWriter().write("}");
+            ResponseWriter rw = context.getResponseWriter();
+            rw.write(",");
+            rw.write(name);
+            rw.write(":");
+            rw.write(signature);
+            rw.write("{");
+            rw.write(callback);
+            rw.write("}");
         }
 
         return this;
@@ -234,13 +260,14 @@ public class WidgetBuilder {
 
     public WidgetBuilder returnCallback(String name, String signature, String callback) throws IOException {
         if (callback != null) {
-            context.getResponseWriter().write(",");
-            context.getResponseWriter().write(name);
-            context.getResponseWriter().write(":");
-            context.getResponseWriter().write(signature);
-            context.getResponseWriter().write("{return ");
-            context.getResponseWriter().write(callback);
-            context.getResponseWriter().write("}");
+            ResponseWriter rw = context.getResponseWriter();
+            rw.write(",");
+            rw.write(name);
+            rw.write(":");
+            rw.write(signature);
+            rw.write("{return ");
+            rw.write(callback);
+            rw.write("}");
         }
 
         return this;
@@ -248,10 +275,11 @@ public class WidgetBuilder {
 
     public WidgetBuilder callback(String name, String callback) throws IOException {
         if (callback != null) {
-            context.getResponseWriter().write(",");
-            context.getResponseWriter().write(name);
-            context.getResponseWriter().write(":");
-            context.getResponseWriter().write(callback);
+            ResponseWriter rw = context.getResponseWriter();
+            rw.write(",");
+            rw.write(name);
+            rw.write(":");
+            rw.write(callback);
         }
 
         return this;
@@ -276,14 +304,13 @@ public class WidgetBuilder {
     }
 
     public void finish() throws IOException {
-        context.getResponseWriter().write("}");
-
-        context.getResponseWriter().write(");");
+        ResponseWriter rw = context.getResponseWriter();
+        rw.write("});");
 
         if (endFunction) {
-            context.getResponseWriter().write("});");
+            rw.write("});");
         }
 
-        context.getResponseWriter().endElement("script");
+        rw.endElement("script");
     }
 }

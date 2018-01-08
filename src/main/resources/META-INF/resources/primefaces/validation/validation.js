@@ -649,6 +649,10 @@ if (window.PrimeFaces) {
                 return;
             }
         }
+        
+        if(element.parent().hasClass('ui-inputnumber')){
+            element = element.next('input');
+        }
 
         var submittedValue = vc.getSubmittedValue(element),
         valid = true,

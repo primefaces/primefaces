@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -112,7 +113,7 @@ public class InplaceRenderer extends CoreRenderer {
         String label = inplace.getLabel();
         String emptyLabel = inplace.getEmptyLabel();
 
-        if (label != null) {
+        if (!isValueBlank(label)) {
             return label;
         }
         else {
@@ -123,7 +124,7 @@ public class InplaceRenderer extends CoreRenderer {
                     return emptyLabel;
                 }
                 else {
-                    return "";
+                    return Constants.EMPTY_STRING;
                 }
             }
             else {
@@ -133,7 +134,6 @@ public class InplaceRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Inplace inplace) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = inplace.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Inplace", inplace.resolveWidgetVar(), clientId)

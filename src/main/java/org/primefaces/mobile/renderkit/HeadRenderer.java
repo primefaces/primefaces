@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ public class HeadRenderer extends Renderer {
         renderCSS(context, "mobile/primefaces-mobile.css", "primefaces");
 
         if (cc.isFontAwesomeEnabled()) {
-            renderCSS(context, "fa/font-awesome.css", "primefaces");
+            renderCSS(context, "fa/fontawesome-all.css", "primefaces");
         }
 
         renderJS(context, "jquery/jquery.js", "primefaces");

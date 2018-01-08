@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ import org.primefaces.model.map.Polygon;
 import org.primefaces.model.map.Polyline;
 import org.primefaces.model.map.Rectangle;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.WidgetBuilder;
 
 public class GMapRenderer extends CoreRenderer {
 
@@ -69,36 +70,32 @@ public class GMapRenderer extends CoreRenderer {
         String widgetVar = map.resolveWidgetVar();
         GMapInfoWindow infoWindow = map.getInfoWindow();
 
-        startScript(writer, clientId);
+        
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.initWithDomReady("GMap", map.resolveWidgetVar(), clientId)
+            .nativeAttr("mapTypeId", "google.maps.MapTypeId." + map.getType().toUpperCase())
+            .nativeAttr("center", "new google.maps.LatLng(" + map.getCenter() + ")")
+            .attr("zoom", map.getZoom());
 
-        writer.write("$(function() {");
 
-        writer.write("PrimeFaces.cw('GMap','" + widgetVar + "',{");
-        writer.write("id:'" + clientId + "'");
-
-        //Required configuration
-        writer.write(",mapTypeId:google.maps.MapTypeId." + map.getType().toUpperCase());
-        writer.write(",center:new google.maps.LatLng(" + map.getCenter() + ")");
-        writer.write(",zoom:" + map.getZoom());
-
-        if (!map.isFitBounds())writer.write(",fitBounds:false");
+        if (!map.isFitBounds()) wb.attr("fitBounds", false);
 
         //Overlays
         encodeOverlays(context, map);
 
         //Controls
-        if (map.isDisableDefaultUI()) writer.write(",disableDefaultUI:true");
-        if (!map.isNavigationControl()) writer.write(",navigationControl:false");
-        if (!map.isMapTypeControl()) writer.write(",mapTypeControl:false");
-        if (map.isStreetView()) writer.write(",streetViewControl:true");
+        if (map.isDisableDefaultUI()) wb.attr("disableDefaultUI", true);
+        if (!map.isNavigationControl()) wb.attr("navigationControl", false);
+        if (!map.isMapTypeControl()) wb.attr("mapTypeControl", false);
+        if (map.isStreetView()) wb.attr("streetViewControl", true);
 
         //Options
-        if (!map.isDraggable()) writer.write(",draggable:false");
-        if (map.isDisableDoubleClickZoom()) writer.write(",disableDoubleClickZoom:true");
-        if (!map.isScrollWheel()) writer.write(",scrollwheel:false");
+        if (!map.isDraggable()) wb.attr("draggable", false);
+        if (map.isDisableDoubleClickZoom()) wb.attr("disableDoubleClickZoom", true);
+        if (!map.isScrollWheel()) wb.attr("scrollwheel", false);
 
         //Client events
-        if (map.getOnPointClick() != null) writer.write(",onPointClick:function(event) {" + map.getOnPointClick() + ";}");
+        if (map.getOnPointClick() != null) wb.callback("onPointClick", "function(event)", map.getOnPointClick() + ";");
 
         /*
          * Behaviors
@@ -115,9 +112,7 @@ public class GMapRenderer extends CoreRenderer {
 
         encodeClientBehaviors(context, map);
 
-        writer.write("});});");
-
-        endScript(writer);
+        wb.finish();
     }
 
     protected void encodeOverlays(FacesContext context, GMap map) throws IOException {
@@ -207,6 +202,7 @@ public class GMapRenderer extends CoreRenderer {
 
             if (polyline.getStrokeColor() != null) writer.write(",strokeColor:'" + polyline.getStrokeColor() + "'");
             if (polyline.getZindex() > Integer.MIN_VALUE) writer.write(",zIndex:" + polyline.getZindex());
+            if (polyline.getIcons() != null) writer.write(", icons:" + polyline.getIcons());
 
             writer.write("})");
 

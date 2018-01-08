@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.lang.StringBuilder;
+import javax.el.MethodExpression;
 import javax.faces.context.FacesContext;
 import org.primefaces.model.TreeNode;
 import javax.faces.event.FacesEvent;
@@ -22,6 +23,10 @@ import org.primefaces.component.tree.UITreeNode;
 import org.primefaces.util.Constants;
 import org.primefaces.model.TreeNode;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.PrimeFaces;
+import org.primefaces.context.RequestContext;
+import org.primefaces.model.CheckboxTreeNode;
+import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.filter.ContainsFilterConstraint;
 import org.primefaces.model.filter.EndsWithFilterConstraint;
 import org.primefaces.model.filter.EqualsFilterConstraint;
@@ -179,9 +184,17 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
                 wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
             }
             else if(eventName.equals("dragdrop")) {
-                int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
+                if(!retValOnDrop) {
+                    return;
+                }
 
-                wrapperEvent = new TreeDragDropEvent(this, behaviorEvent.getBehavior(), dragNode, dropNode, dndIndex);
+                int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
+                boolean isDroppedNodeCopy = Boolean.valueOf(params.get(clientId + "_isDroppedNodeCopy"));
+
+                if(this.isMultipleDrag()) 
+                    wrapperEvent = new TreeDragDropEvent(this, behaviorEvent.getBehavior(), dragNodes, dropNode, dndIndex, isDroppedNodeCopy);
+                else
+                    wrapperEvent = new TreeDragDropEvent(this, behaviorEvent.getBehavior(), dragNode, dropNode, dndIndex, isDroppedNodeCopy);
             }
             else if(eventName.equals("contextMenu")) {
                 setRowKey(params.get(clientId + "_contextMenuNode"));
@@ -257,6 +270,7 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
     }
 
     private TreeNode dragNode;
+    private TreeNode[] dragNodes;
     private TreeNode dropNode;
 
     TreeNode getDragNode() {
@@ -264,6 +278,13 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
     }
     void setDragNode(TreeNode dragNode) {
         this.dragNode = dragNode;
+    }
+
+    TreeNode[] getDragNodes() {
+        return dragNodes;
+    }
+    void setDragNodes(TreeNode[] dragNodes) {
+        this.dragNodes = dragNodes;
     }
 
     TreeNode getDropNode() {
@@ -327,7 +348,58 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
  
         super.validateSelection(context);
     }
+
+    public TreeNode createCopyOfTreeNode(TreeNode node) {
+        TreeNode newNode;
+        if(node instanceof CheckboxTreeNode) {
+            newNode = new CheckboxTreeNode(node.getData());
+        }
+        else {
+            newNode = new DefaultTreeNode(node.getData());
+        }
+        
+        newNode.setSelectable(node.isSelectable());
+        newNode.setExpanded(node.isExpanded());
+        
+        for(TreeNode childNode : node.getChildren()) {
+            newNode.getChildren().add(createCopyOfTreeNode(childNode));
+        }
+        
+        return newNode;
+    }
+
+    private boolean retValOnDrop = true;
+
+    public boolean isTreeNodeDropped() {
+        MethodExpression me = this.getOnDrop();
+        if(me != null) {
+            FacesContext context = getFacesContext();
+            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+            String clientId = this.getClientId(context);
+            int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
+            boolean isDroppedNodeCopy = Boolean.valueOf(params.get(clientId + "_isDroppedNodeCopy"));
+            TreeDragDropInfo info;
+
+            if(this.isMultipleDrag()) 
+                info = new TreeDragDropInfo(this.getDragNodes(), this.getDropNode(), dndIndex, isDroppedNodeCopy);
+            else
+                info = new TreeDragDropInfo(this.getDragNode(), this.getDropNode(), dndIndex, isDroppedNodeCopy);
+
+            retValOnDrop = (Boolean) me.invoke(context.getELContext(), new Object[] { info });
+            PrimeFaces.current().ajax().addCallbackParam("access", retValOnDrop);
+        }
+
+        return retValOnDrop;
+    }
     
+    public String getScrollState() {
+        Map<String,String> params = getFacesContext().getExternalContext().getRequestParameterMap();
+        String name = this.getClientId() + "_scrollState";
+        String value = params.get(name);
+        
+        return value == null ? "0,0" : value;
+    }
+
     private List<String> filteredRowKeys = new ArrayList<String>();
     public List<String> getFilteredRowKeys() {
         return filteredRowKeys;

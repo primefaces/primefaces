@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -32,6 +33,8 @@ import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.renderkit.UINotificationRenderer;
 
 public class MessagesRenderer extends UINotificationRenderer {
+    
+    private final static Logger logger = Logger.getLogger(MessagesRenderer.class.getName());
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -47,7 +50,7 @@ public class MessagesRenderer extends UINotificationRenderer {
 
         String _for = uiMessages.getFor();
         List<FacesMessage> messages = new ArrayList<FacesMessage>();
-        if (_for != null) {
+        if (!isValueBlank(_for)) {
             String forType = uiMessages.getForType();
             Iterator<FacesMessage> messagesIterator = context.getMessages(_for);
             
@@ -127,6 +130,10 @@ public class MessagesRenderer extends UINotificationRenderer {
         }
 
         writer.endElement("div");
+        
+        if (uiMessages.isAutoUpdate()) {
+            logger.info("autoUpdate attribute is deprecated and will be removed in a future version, use p:autoUpdate component instead.");
+        }
     }
 
     protected void addMessage(Messages uiMessages, FacesMessage message, Map<String, List<FacesMessage>> messagesMap, String severity) {

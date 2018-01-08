@@ -189,7 +189,7 @@ var signatureOverrides = {
 	draw: function(sigJSON) {
 		this.clear(true);
 		if (typeof sigJSON === 'string') {
-			sigJSON = $.parseJSON(sigJSON);
+			sigJSON = JSON.parse(sigJSON);
 		}
 		this.lines = sigJSON.lines || [];
 		var ctx = this.ctx;

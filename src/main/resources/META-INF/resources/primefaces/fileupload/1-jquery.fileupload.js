@@ -1,242 +1,24 @@
 /*
- * jQuery Iframe Transport Plugin 1.8.3
- * https://github.com/blueimp/jQuery-File-Upload
- *
- * Copyright 2011, Sebastian Tschan
- * https://blueimp.net
- *
- * Licensed under the MIT license:
- * http://www.opensource.org/licenses/MIT
- */
-
-/* global define, require, window, document */
-
-(function (factory) {
-    'use strict';
-    if (typeof define === 'function' && define.amd) {
-        // Register as an anonymous AMD module:
-        define(['jquery'], factory);
-    } else if (typeof exports === 'object') {
-        // Node/CommonJS:
-        factory(require('jquery'));
-    } else {
-        // Browser globals:
-        factory(window.jQuery);
-    }
-}(function ($) {
-    'use strict';
-
-    // Helper variable to create unique names for the transport iframes:
-    var counter = 0;
-
-    // The iframe transport accepts four additional options:
-    // options.fileInput: a jQuery collection of file input fields
-    // options.paramName: the parameter name for the file form data,
-    //  overrides the name property of the file input field(s),
-    //  can be a string or an array of strings.
-    // options.formData: an array of objects with name and value properties,
-    //  equivalent to the return data of .serializeArray(), e.g.:
-    //  [{name: 'a', value: 1}, {name: 'b', value: 2}]
-    // options.initialIframeSrc: the URL of the initial iframe src,
-    //  by default set to "javascript:false;"
-    $.ajaxTransport('iframe', function (options) {
-        if (options.async) {
-            // javascript:false as initial iframe src
-            // prevents warning popups on HTTPS in IE6:
-            /*jshint scripturl: true */
-            var initialIframeSrc = options.initialIframeSrc || 'javascript:false;',
-            /*jshint scripturl: false */
-                form,
-                iframe,
-                addParamChar;
-            return {
-                send: function (_, completeCallback) {
-                    form = $('<form style="display:none;"></form>');
-                    form.attr('accept-charset', options.formAcceptCharset);
-                    addParamChar = /\?/.test(options.url) ? '&' : '?';
-                    // XDomainRequest only supports GET and POST:
-                    if (options.type === 'DELETE') {
-                        options.url = options.url + addParamChar + '_method=DELETE';
-                        options.type = 'POST';
-                    } else if (options.type === 'PUT') {
-                        options.url = options.url + addParamChar + '_method=PUT';
-                        options.type = 'POST';
-                    } else if (options.type === 'PATCH') {
-                        options.url = options.url + addParamChar + '_method=PATCH';
-                        options.type = 'POST';
-                    }
-                    // IE versions below IE8 cannot set the name property of
-                    // elements that have already been added to the DOM,
-                    // so we set the name along with the iframe HTML markup:
-                    counter += 1;
-                    iframe = $(
-                        '<iframe src="' + initialIframeSrc +
-                            '" name="iframe-transport-' + counter + '"></iframe>'
-                    ).bind('load', function () {
-                        var fileInputClones,
-                            paramNames = $.isArray(options.paramName) ?
-                                    options.paramName : [options.paramName];
-                        iframe
-                            .unbind('load')
-                            .bind('load', function () {
-                                var response;
-                                // Wrap in a try/catch block to catch exceptions thrown
-                                // when trying to access cross-domain iframe contents:
-                                try {
-                                    response = iframe.contents();
-                                    // Google Chrome and Firefox do not throw an
-                                    // exception when calling iframe.contents() on
-                                    // cross-domain requests, so we unify the response:
-                                    if (!response.length || !response[0].firstChild) {
-                                        throw new Error();
-                                    }
-                                } catch (e) {
-                                    response = undefined;
-                                }
-                                // The complete callback returns the
-                                // iframe content document as response object:
-                                completeCallback(
-                                    200,
-                                    'success',
-                                    {'iframe': response}
-                                );
-                                // Fix for IE endless progress bar activity bug
-                                // (happens on form submits to iframe targets):
-                                $('<iframe src="' + initialIframeSrc + '"></iframe>')
-                                    .appendTo(form);
-                                window.setTimeout(function () {
-                                    // Removing the form in a setTimeout call
-                                    // allows Chrome's developer tools to display
-                                    // the response result
-                                    form.remove();
-                                }, 0);
-                            });
-                        form
-                            .prop('target', iframe.prop('name'))
-                            .prop('action', options.url)
-                            .prop('method', options.type);
-                        if (options.formData) {
-                            $.each(options.formData, function (index, field) {
-                                $('<input type="hidden"/>')
-                                    .prop('name', field.name)
-                                    .val(field.value)
-                                    .appendTo(form);
-                            });
-                        }
-                        if (options.fileInput && options.fileInput.length &&
-                                options.type === 'POST') {
-                            fileInputClones = options.fileInput.clone();
-                            // Insert a clone for each file input field:
-                            options.fileInput.after(function (index) {
-                                return fileInputClones[index];
-                            });
-                            if (options.paramName) {
-                                options.fileInput.each(function (index) {
-                                    $(this).prop(
-                                        'name',
-                                        paramNames[index] || options.paramName
-                                    );
-                                });
-                            }
-                            // Appending the file input fields to the hidden form
-                            // removes them from their original location:
-                            form
-                                .append(options.fileInput)
-                                .prop('enctype', 'multipart/form-data')
-                                // enctype must be set as encoding for IE:
-                                .prop('encoding', 'multipart/form-data');
-                            // Remove the HTML5 form attribute from the input(s):
-                            options.fileInput.removeAttr('form');
-                        }
-                        form.submit();
-                        // Insert the file input fields at their original location
-                        // by replacing the clones with the originals:
-                        if (fileInputClones && fileInputClones.length) {
-                            options.fileInput.each(function (index, input) {
-                                var clone = $(fileInputClones[index]);
-                                // Restore the original name and form properties:
-                                $(input)
-                                    .prop('name', clone.prop('name'))
-                                    .attr('form', clone.attr('form'));
-                                clone.replaceWith(input);
-                            });
-                        }
-                    });
-                    form.append(iframe).appendTo(document.body);
-                },
-                abort: function () {
-                    if (iframe) {
-                        // javascript:false as iframe src aborts the request
-                        // and prevents warning popups on HTTPS in IE6.
-                        // concat is used to avoid the "Script URL" JSLint error:
-                        iframe
-                            .unbind('load')
-                            .prop('src', initialIframeSrc);
-                    }
-                    if (form) {
-                        form.remove();
-                    }
-                }
-            };
-        }
-    });
-
-    // The iframe transport returns the iframe content document as response.
-    // The following adds converters from iframe to text, json, html, xml
-    // and script.
-    // Please note that the Content-Type for JSON responses has to be text/plain
-    // or text/html, if the browser doesn't include application/json in the
-    // Accept header, else IE will show a download dialog.
-    // The Content-Type for XML responses on the other hand has to be always
-    // application/xml or text/xml, so IE properly parses the XML response.
-    // See also
-    // https://github.com/blueimp/jQuery-File-Upload/wiki/Setup#content-type-negotiation
-    $.ajaxSetup({
-        converters: {
-            'iframe text': function (iframe) {
-                return iframe && $(iframe[0].body).text();
-            },
-            'iframe json': function (iframe) {
-                return iframe && $.parseJSON($(iframe[0].body).text());
-            },
-            'iframe html': function (iframe) {
-                return iframe && $(iframe[0].body).html();
-            },
-            'iframe xml': function (iframe) {
-                var xmlDoc = iframe && iframe[0];
-                return xmlDoc && $.isXMLDoc(xmlDoc) ? xmlDoc :
-                        $.parseXML((xmlDoc.XMLDocument && xmlDoc.XMLDocument.xml) ||
-                            $(xmlDoc.body).html());
-            },
-            'iframe script': function (iframe) {
-                return iframe && $.globalEval($(iframe[0].body).text());
-            }
-        }
-    });
-
-}));
-
-/*
- * jQuery File Upload Plugin 5.42.3
+ * jQuery File Upload Plugin
  * https://github.com/blueimp/jQuery-File-Upload
  *
  * Copyright 2010, Sebastian Tschan
  * https://blueimp.net
  *
  * Licensed under the MIT license:
- * http://www.opensource.org/licenses/MIT
+ * https://opensource.org/licenses/MIT
  */
 
 /* jshint nomen:false */
 /* global define, require, window, document, location, Blob, FormData */
 
-(function (factory) {
+;(function (factory) {
     'use strict';
     if (typeof define === 'function' && define.amd) {
         // Register as an anonymous AMD module:
         define([
             'jquery',
-            'jquery.ui.widget'
+            'jquery-ui/ui/widget'
         ], factory);
     } else if (typeof exports === 'object') {
         // Node/CommonJS:
@@ -495,7 +277,8 @@
             // The following are jQuery ajax settings required for the file uploads:
             processData: false,
             contentType: false,
-            cache: false
+            cache: false,
+            timeout: 0
         },
 
         // A list of options that require reinitializing event listeners and/or
@@ -869,7 +652,7 @@
             data.process = function (resolveFunc, rejectFunc) {
                 if (resolveFunc || rejectFunc) {
                     data._processQueue = this._processQueue =
-                        (this._processQueue || getPromise([this])).pipe(
+                        (this._processQueue || getPromise([this])).then(
                             function () {
                                 if (data.errorThrown) {
                                     return $.Deferred()
@@ -877,7 +660,7 @@
                                 }
                                 return getPromise(arguments);
                             }
-                        ).pipe(resolveFunc, rejectFunc);
+                        ).then(resolveFunc, rejectFunc);
                 }
                 return this._processQueue || getPromise([this]);
             };
@@ -947,7 +730,7 @@
                 promise = dfd.promise(),
                 jqXHR,
                 upload;
-            if (!(this._isXHRUpload(options) && slice && (ub || mcs < fs)) ||
+            if (!(this._isXHRUpload(options) && slice && (ub || ($.type(mcs) === 'function' ? mcs(options) : mcs) < fs)) ||
                     options.data) {
                 return false;
             }
@@ -970,7 +753,7 @@
                 o.blob = slice.call(
                     file,
                     ub,
-                    ub + mcs,
+                    ub + ($.type(mcs) === 'function' ? mcs(o) : mcs),
                     file.type
                 );
                 // Store the current chunk size, as the blob itself
@@ -1162,9 +945,9 @@
                 if (this.options.limitConcurrentUploads > 1) {
                     slot = $.Deferred();
                     this._slots.push(slot);
-                    pipe = slot.pipe(send);
+                    pipe = slot.then(send);
                 } else {
-                    this._sequence = this._sequence.pipe(send, send);
+                    this._sequence = this._sequence.then(send, send);
                     pipe = this._sequence;
                 }
                 // Return the piped Promise object, enhanced with an abort method,
@@ -1201,7 +984,10 @@
                 fileSet,
                 i,
                 j = 0;
-            if (limitSize && (!filesLength || files[0].size === undefined)) {
+            if (!filesLength) {
+                return false;
+            }
+            if (limitSize && files[0].size === undefined) {
                 limitSize = undefined;
             }
             if (!(options.singleFileUploads || limit || limitSize) ||
@@ -1260,13 +1046,19 @@
 
         _replaceFileInput: function (data) {
             var input = data.fileInput,
-                inputClone = input.clone(true);
+                inputClone = input.clone(true),
+                restoreFocus = input.is(document.activeElement);
             // Add a reference for the new cloned file input to the data argument:
             data.fileInputClone = inputClone;
             $('<form></form>').append(inputClone)[0].reset();
             // Detaching allows to insert the fileInput on another form
             // without loosing the file input value:
             input.after(inputClone).detach();
+            // If the fileInput had focus before it was detached,
+            // restore focus to the inputClone.
+            if (restoreFocus) {
+                inputClone.focus();
+            }
             // Avoid memory leaks with the detached file input:
             $.cleanData(input.unbind('remove'));
             // Replace the original file input element in the fileInput
@@ -1288,6 +1080,8 @@
         _handleFileTreeEntry: function (entry, path) {
             var that = this,
                 dfd = $.Deferred(),
+                entries = [],
+                dirReader,
                 errorHandler = function (e) {
                     if (e && !e.entry) {
                         e.entry = entry;
@@ -1315,8 +1109,7 @@
                             readEntries();
                         }
                     }, errorHandler);
-                },
-                dirReader, entries = [];
+                };
             path = path || '';
             if (entry.isFile) {
                 if (entry._file) {
@@ -1347,7 +1140,7 @@
                 $.map(entries, function (entry) {
                     return that._handleFileTreeEntry(entry, path);
                 })
-            ).pipe(function () {
+            ).then(function () {
                 return Array.prototype.concat.apply(
                     [],
                     arguments
@@ -1416,7 +1209,7 @@
             return $.when.apply(
                 $,
                 $.map(fileInput, this._getSingleFileInputFiles)
-            ).pipe(function () {
+            ).then(function () {
                 return Array.prototype.concat.apply(
                     [],
                     arguments
@@ -1517,6 +1310,10 @@
             this._off(this.options.dropZone, 'dragenter dragleave dragover drop');
             this._off(this.options.pasteZone, 'paste');
             this._off(this.options.fileInput, 'change');
+        },
+
+        _destroy: function () {
+            this._destroyEventHandlers();
         },
 
         _setOption: function (key, value) {
@@ -1683,517 +1480,3 @@
     });
 
 }));
-
-/**
- * PrimeFaces FileUpload Widget
- */
-PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
-
-    IMAGE_TYPES: /(\.|\/)(gif|jpe?g|png)$/i,
-
-    init: function(cfg) {
-        this._super(cfg);
-        if(this.cfg.disabled) {
-            return;
-        }
-
-        this.ucfg = {};
-        this.form = this.jq.closest('form');
-        this.buttonBar = this.jq.children('.ui-fileupload-buttonbar');
-        this.chooseButton = this.buttonBar.children('.ui-fileupload-choose');
-        this.uploadButton = this.buttonBar.children('.ui-fileupload-upload');
-        this.cancelButton = this.buttonBar.children('.ui-fileupload-cancel');
-        this.content = this.jq.children('.ui-fileupload-content');
-        this.filesTbody = this.content.find('> div.ui-fileupload-files > div');
-        this.sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-        this.files = [];
-        this.fileAddIndex = 0;
-        this.cfg.invalidFileMessage = this.cfg.invalidFileMessage || 'Invalid file type';
-        this.cfg.invalidSizeMessage = this.cfg.invalidSizeMessage || 'Invalid file size';
-        this.cfg.fileLimitMessage = this.cfg.fileLimitMessage || 'Maximum number of files exceeded';
-        this.cfg.messageTemplate = this.cfg.messageTemplate || '{name} {size}';
-        this.cfg.previewWidth = this.cfg.previewWidth || 80;
-        this.uploadedFileCount = 0;
-
-        this.renderMessages();
-
-        this.bindEvents();
-
-        var $this = this,
-            postURL = this.form.attr('action'),
-            encodedURLfield = this.form.children("input[name*='javax.faces.encodedURL']");
-
-        //portlet support
-        var porletFormsSelector = null;
-        if(encodedURLfield.length > 0) {
-            porletFormsSelector = 'form[action="' + postURL + '"]';
-            postURL = encodedURLfield.val();
-        }
-
-        this.ucfg = {
-            url: postURL,
-            portletForms: porletFormsSelector,
-            paramName: this.id,
-            dataType: 'xml',
-            dropZone: (this.cfg.dnd === false) ? null : this.jq,
-            sequentialUploads: this.cfg.sequentialUploads,
-            formData: function() {
-                return $this.createPostData();
-            },
-            beforeSend: function(xhr, settings) {
-                xhr.setRequestHeader('Faces-Request', 'partial/ajax');
-                xhr.pfSettings = settings;
-                xhr.pfArgs = {}; // default should be an empty object
-            },
-            start: function(e) {
-                if($this.cfg.onstart) {
-                    $this.cfg.onstart.call($this);
-                }
-            },
-            add: function(e, data) {
-                $this.chooseButton.removeClass('ui-state-hover ui-state-focus');
-
-                if($this.fileAddIndex === 0) {
-                    $this.clearMessages();
-                }
-
-                if($this.cfg.fileLimit && ($this.uploadedFileCount + $this.files.length + 1) > $this.cfg.fileLimit) {
-                    $this.clearMessages();
-                    $this.showMessage({
-                        summary: $this.cfg.fileLimitMessage
-                    });
-
-                    return;
-                }
-
-                var file = data.files ? data.files[0] : null;
-                if(file) {
-                    var validMsg = $this.validate(file);
-
-                    if(validMsg) {
-                        $this.showMessage({
-                            summary: validMsg,
-                            filename: PrimeFaces.escapeHTML(file.name),
-                            filesize: file.size
-                        });
-                    }
-                    else {
-                        var row = $('<div class="ui-fileupload-row"></div>').append('<div class="ui-fileupload-preview"></td>')
-                                .append('<div>' + PrimeFaces.escapeHTML(file.name) + '</div>')
-                                .append('<div>' + $this.formatSize(file.size) + '</div>')
-                                .append('<div class="ui-fileupload-progress"></div>')
-                                .append('<div><button class="ui-fileupload-cancel ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-icon ui-icon ui-icon-close"></span><span class="ui-button-text">ui-button</span></button></div>')
-                                .appendTo($this.filesTbody);
-
-                        if($this.filesTbody.children('.ui-fileupload-row').length > 1) {
-                            $('<div class="ui-widget-content"></div>').prependTo(row);
-                        }
-
-                        //preview
-                        if(window.File && window.FileReader && $this.IMAGE_TYPES.test(file.name)) {
-                            var imageCanvas = $('<canvas></canvas>')
-                                                    .appendTo(row.children('div.ui-fileupload-preview')),
-                            context = imageCanvas.get(0).getContext('2d'),
-                            winURL = window.URL||window.webkitURL,
-                            url = winURL.createObjectURL(file),
-                            img = new Image();
-
-                            img.onload = function() {
-                                var imgWidth = null, imgHeight = null, scale = 1;
-
-                                if($this.cfg.previewWidth > this.width) {
-                                    imgWidth = this.width;
-                                }
-                                else {
-                                    imgWidth = $this.cfg.previewWidth;
-                                    scale = $this.cfg.previewWidth / this.width;
-                                }
-
-                                var imgHeight = parseInt(this.height * scale);
-
-                                imageCanvas.attr({width:imgWidth, height: imgHeight});
-                                context.drawImage(img, 0, 0, imgWidth, imgHeight);
-                            }
-
-                            img.src = url;
-                        }
-
-                        //progress
-                        row.children('div.ui-fileupload-progress').append('<div class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="ui-progressbar-value ui-widget-header ui-corner-left" style="display: none; width: 0%;"></div></div>');
-
-                        file.row = row;
-
-                        file.row.data('filedata', data);
-
-                        $this.files.push(file);
-
-                        if($this.cfg.auto) {
-                            $this.upload();
-                        }
-                    }
-
-                    if($this.files.length > 0) {
-                        $this.enableButton($this.uploadButton);
-                        $this.enableButton($this.cancelButton);
-                    }
-
-                    $this.fileAddIndex++;
-                    if($this.fileAddIndex === (data.originalFiles.length)) {
-                        $this.fileAddIndex = 0;
-                    }
-                }
-            },
-            send: function(e, data) {
-                if(!window.FormData) {
-                    for(var i = 0; i < data.files.length; i++) {
-                        var file = data.files[i];
-                        if(file.row) {
-                            file.row.children('.ui-fileupload-progress').find('> .ui-progressbar > .ui-progressbar-value')
-                                    .addClass('ui-progressbar-value-legacy')
-                                    .css({
-                                        width: '100%',
-                                        display: 'block'
-                                    });
-                        }
-                    }
-                }
-            },
-            fail: function(e, data) {
-                if($this.cfg.onerror) {
-                    $this.cfg.onerror.call($this);
-                }
-            },
-            progress: function(e, data) {
-                if(window.FormData) {
-                    var progress = parseInt(data.loaded / data.total * 100, 10);
-
-                    for(var i = 0; i < data.files.length; i++) {
-                        var file = data.files[i];
-                        if(file.row) {
-                            file.row.children('.ui-fileupload-progress').find('> .ui-progressbar > .ui-progressbar-value').css({
-                                width: progress + '%',
-                                display: 'block'
-                            });
-                        }
-                    }
-                }
-            },
-            done: function(e, data) {
-                $this.uploadedFileCount += data.files.length;
-                $this.removeFiles(data.files);
-
-                PrimeFaces.ajax.Response.handle(data.result, data.textStatus, data.jqXHR, null);
-            },
-            always: function(e, data) {
-                if($this.cfg.oncomplete) {
-                    $this.cfg.oncomplete.call($this, data.jqXHR.pfArgs);
-                }
-            }
-        };
-
-        this.jq.fileupload(this.ucfg);
-    },
-
-    bindEvents: function() {
-        var $this = this;
-
-        PrimeFaces.skinButton(this.buttonBar.children('button'));
-
-        this.chooseButton.on('mouseover.fileupload', function(){
-            var el = $(this);
-            if(!el.prop('disabled')) {
-                el.addClass('ui-state-hover');
-            }
-        })
-        .on('mouseout.fileupload', function() {
-            $(this).removeClass('ui-state-active ui-state-hover');
-        })
-        .on('mousedown.fileupload', function() {
-            var el = $(this);
-            if(!el.prop('disabled')) {
-                el.addClass('ui-state-active').removeClass('ui-state-hover');
-            }
-        })
-        .on('mouseup.fileupload', function() {
-            $(this).removeClass('ui-state-active').addClass('ui-state-hover');
-        });
-
-        var isChooseButtonClick = false;
-        this.chooseButton.on('focus.fileupload', function() {
-            $(this).addClass('ui-state-focus');
-        })
-        .on('blur.fileupload', function() {
-            $(this).removeClass('ui-state-focus');
-            isChooseButtonClick = false;
-        });
-
-        // For JAWS support
-        this.chooseButton.on('click.fileupload', function() {
-            $this.chooseButton.children('input').trigger('click');
-        })
-        .on('keydown.fileupload', function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
-
-            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
-                $this.chooseButton.children('input').trigger('click');
-                $(this).blur();
-                e.preventDefault();
-            }
-        });
-
-        this.chooseButton.children('input').on('click', function(e){
-            if(isChooseButtonClick) {
-                isChooseButtonClick = false;
-                e.preventDefault();
-                e.stopPropagation();
-            }
-            else {
-                isChooseButtonClick = true;
-            }
-        });
-
-        this.uploadButton.on('click.fileupload', function(e) {
-            $this.disableButton($this.uploadButton);
-            $this.disableButton($this.cancelButton);
-            $this.disableButton($this.filesTbody.find('> div > div:last-child').children('.ui-fileupload-cancel'));
-
-            $this.upload();
-
-            e.preventDefault();
-        });
-
-        this.cancelButton.on('click.fileupload', function(e) {
-            $this.clear();
-            $this.disableButton($this.uploadButton);
-            $this.disableButton($this.cancelButton);
-
-            e.preventDefault();
-        });
-
-        this.clearMessageLink.on('click.fileupload', function(e) {
-            $this.messageContainer.fadeOut(function() {
-                $this.messageList.children().remove();
-            });
-
-            e.preventDefault();
-        });
-
-        this.rowActionSelector = this.jqId + " .ui-fileupload-files button";
-        this.rowCancelActionSelector = this.jqId + " .ui-fileupload-files .ui-fileupload-cancel";
-        this.clearMessagesSelector = this.jqId + " .ui-messages .ui-messages-close";
-
-        $(document).off('mouseover.fileupload mouseout.fileupload mousedown.fileupload mouseup.fileupload focus.fileupload blur.fileupload click.fileupload ', this.rowCancelActionSelector)
-                .on('mouseover.fileupload', this.rowCancelActionSelector, null, function(e) {
-                    $(this).addClass('ui-state-hover');
-                })
-                .on('mouseout.fileupload', this.rowCancelActionSelector, null, function(e) {
-                    $(this).removeClass('ui-state-hover ui-state-active');
-                })
-                .on('mousedown.fileupload', this.rowCancelActionSelector, null, function(e) {
-                    $(this).addClass('ui-state-active').removeClass('ui-state-hover');
-                })
-                .on('mouseup.fileupload', this.rowCancelActionSelector, null, function(e) {
-                    $(this).addClass('ui-state-hover').removeClass('ui-state-active');
-                })
-                .on('focus.fileupload', this.rowCancelActionSelector, null, function(e) {
-                    $(this).addClass('ui-state-focus');
-                })
-                .on('blur.fileupload', this.rowCancelActionSelector, null, function(e) {
-                    $(this).removeClass('ui-state-focus');
-                })
-                .on('click.fileupload', this.rowCancelActionSelector, null, function(e) {
-                    var row = $(this).closest('.ui-fileupload-row'),
-                    removedFile = $this.files.splice(row.index(), 1);
-                    removedFile[0].row = null;
-
-                    $this.removeFileRow(row);
-
-                    if($this.files.length === 0) {
-                        $this.disableButton($this.uploadButton);
-                        $this.disableButton($this.cancelButton);
-                    }
-
-                    e.preventDefault();
-                });
-    },
-
-    upload: function() {
-        for(var i = 0; i < this.files.length; i++) {
-            this.files[i].row.data('filedata').submit();
-        }
-    },
-
-    createPostData: function() {
-        var process = this.cfg.process ? this.id + ' ' + PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.process).join(' ') : this.id;
-        var params = this.form.serializeArray();
-
-        var parameterPrefix = PrimeFaces.ajax.Request.extractParameterNamespace(this.form);
-
-        PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_REQUEST_PARAM, true, parameterPrefix);
-        PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_PROCESS_PARAM, process, parameterPrefix);
-        PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_SOURCE_PARAM, this.id, parameterPrefix);
-
-        if (this.cfg.update) {
-            var update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.update).join(' ');
-            PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_UPDATE_PARAM, update, parameterPrefix);
-        }
-
-        return params;
-    },
-
-    formatSize: function(bytes) {
-        if(bytes === undefined)
-            return '';
-
-        if (bytes === 0)
-            return 'N/A';
-
-        var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-        if (i === 0)
-            return bytes + ' ' + this.sizes[i];
-        else
-            return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + this.sizes[i];
-    },
-
-    removeFiles: function(files) {
-        for (var i = 0; i < files.length; i++) {
-            this.removeFile(files[i]);
-        }
-    },
-
-    removeFile: function(file) {
-        var $this = this;
-
-        this.files = $.grep(this.files, function(value) {
-            return (value.name === file.name && value.size === file.size);
-        }, true);
-
-        $this.removeFileRow(file.row);
-        file.row = null;
-    },
-
-    removeFileRow: function(row) {
-        if(row) {
-            row.fadeOut(function() {
-                $(this).remove();
-            });
-        }
-    },
-
-    clear: function() {
-        for (var i = 0; i < this.files.length; i++) {
-            this.removeFileRow(this.files[i].row);
-            this.files[i].row = null;
-        }
-
-        this.clearMessages();
-
-        this.files = [];
-    },
-
-    validate: function(file) {
-        if (this.cfg.allowTypes && !(this.cfg.allowTypes.test(file.type) || this.cfg.allowTypes.test(file.name))) {
-            return this.cfg.invalidFileMessage;
-        }
-
-        if (this.cfg.maxFileSize && file.size > this.cfg.maxFileSize) {
-            return this.cfg.invalidSizeMessage;
-        }
-
-        return null;
-    },
-
-    renderMessages: function() {
-        var markup = '<div class="ui-messages ui-widget ui-helper-hidden ui-fileupload-messages"><div class="ui-messages-error ui-corner-all">' +
-                '<a class="ui-messages-close" href="#"><span class="ui-icon ui-icon-close"></span></a>' +
-                '<span class="ui-messages-error-icon"></span>' +
-                '<ul></ul>' +
-                '</div></div>';
-
-        this.messageContainer = $(markup).prependTo(this.content);
-        this.messageList = this.messageContainer.find('> .ui-messages-error > ul');
-        this.clearMessageLink = this.messageContainer.find('> .ui-messages-error > a.ui-messages-close');
-    },
-
-    clearMessages: function() {
-        this.messageContainer.hide();
-        this.messageList.children().remove();
-    },
-
-    showMessage: function(msg) {
-        var summary = msg.summary,
-        detail = '';
-
-        if(msg.filename && msg.filesize) {
-            detail = this.cfg.messageTemplate.replace('{name}', msg.filename).replace('{size}', this.formatSize(msg.filesize));
-        }
-
-        this.messageList.append('<li><span class="ui-messages-error-summary">' + summary + '</span><span class="ui-messages-error-detail">' + detail + '</span></li>');
-        this.messageContainer.show();
-    },
-
-    disableButton: function(btn) {
-        btn.prop('disabled', true).addClass('ui-state-disabled').removeClass('ui-state-hover ui-state-active ui-state-focus');
-    },
-
-    enableButton: function(btn) {
-        btn.prop('disabled', false).removeClass('ui-state-disabled');
-    }
-});
-
-/**
- * PrimeFaces Simple FileUpload Widget
- */
-PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
-
-    init: function(cfg) {
-        this._super(cfg);
-
-        if(this.cfg.skinSimple) {
-            this.button = this.jq.children('.ui-button');
-            this.input = $(this.jqId + '_input');
-            this.display = this.jq.children('.ui-fileupload-filename');
-
-            if(!this.input.prop('disabled')) {
-                this.bindEvents();
-            }
-        }
-    },
-
-    bindEvents: function() {
-        var $this = this;
-
-        this.button.on('mouseover.fileupload', function(){
-            var el = $(this);
-            if(!el.prop('disabled')) {
-                el.addClass('ui-state-hover');
-            }
-        })
-        .on('mouseout.fileupload', function() {
-            $(this).removeClass('ui-state-active ui-state-hover');
-        })
-        .on('mousedown.fileupload', function() {
-            var el = $(this);
-            if(!el.prop('disabled')) {
-                el.addClass('ui-state-active').removeClass('ui-state-hover');
-            }
-        })
-        .on('mouseup.fileupload', function() {
-            $(this).removeClass('ui-state-active').addClass('ui-state-hover');
-        });
-
-        this.input.on('change.fileupload', function() {
-            var filename = PrimeFaces.escapeHTML($this.input.val().replace(/\\/g, '/').replace(/.*\//, ''));
-            $this.display.text(filename);
-        })
-        .on('focus.fileupload', function() {
-            $this.button.addClass('ui-state-focus');
-        })
-        .on('blur.fileupload', function() {
-            $this.button.removeClass('ui-state-focus');
-        });
-
-    }
-
-});

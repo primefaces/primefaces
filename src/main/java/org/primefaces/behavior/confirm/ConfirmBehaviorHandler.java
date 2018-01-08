@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ public class ConfirmBehaviorHandler extends AbstractBehaviorHandler<ConfirmBehav
     private final TagAttribute message;
     private final TagAttribute icon;
     private final TagAttribute disabled;
+    private final TagAttribute beforeShow;
 
     public ConfirmBehaviorHandler(BehaviorConfig config) {
         super(config);
@@ -35,6 +36,7 @@ public class ConfirmBehaviorHandler extends AbstractBehaviorHandler<ConfirmBehav
         this.message = this.getAttribute(ConfirmBehavior.PropertyKeys.message.name());
         this.icon = this.getAttribute(ConfirmBehavior.PropertyKeys.icon.name());
         this.disabled = this.getAttribute(ConfirmBehavior.PropertyKeys.disabled.name());
+        this.beforeShow = this.getAttribute(ConfirmBehavior.PropertyKeys.beforeShow.name());
     }
 
     @Override
@@ -46,6 +48,7 @@ public class ConfirmBehaviorHandler extends AbstractBehaviorHandler<ConfirmBehav
         setBehaviorAttribute(ctx, behavior, this.message, ConfirmBehavior.PropertyKeys.message.expectedType);
         setBehaviorAttribute(ctx, behavior, this.icon, ConfirmBehavior.PropertyKeys.icon.expectedType);
         setBehaviorAttribute(ctx, behavior, this.disabled, ConfirmBehavior.PropertyKeys.disabled.expectedType);
+        setBehaviorAttribute(ctx, behavior, this.beforeShow, ConfirmBehavior.PropertyKeys.beforeShow.expectedType);
 
         return behavior;
     }

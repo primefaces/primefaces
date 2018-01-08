@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.primefaces.component.export;
 
 import java.awt.Color;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -58,7 +59,7 @@ public class ExcelXExporter extends ExcelExporter {
             String facetFontStyle = options.getFacetFontStyle();
             if (facetFontStyle != null) {
                 if (facetFontStyle.equalsIgnoreCase("BOLD")) {
-                    facetFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+                    facetFont.setBold(true);
                 }
                 if (facetFontStyle.equalsIgnoreCase("ITALIC")) {
                     facetFont.setItalic(true);
@@ -69,7 +70,7 @@ public class ExcelXExporter extends ExcelExporter {
             if (facetBackground != null) {
                 XSSFColor backgroundColor = new XSSFColor(Color.decode(facetBackground));
                 ((XSSFCellStyle) facetStyle).setFillForegroundColor(backgroundColor);
-                facetStyle.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
+                facetStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
             }
 
             String facetFontColor = options.getFacetFontColor();
@@ -107,7 +108,7 @@ public class ExcelXExporter extends ExcelExporter {
             String cellFontStyle = options.getCellFontStyle();
             if (cellFontStyle != null) {
                 if (cellFontStyle.equalsIgnoreCase("BOLD")) {
-                    cellFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+                    cellFont.setBold(true);
                 }
                 if (cellFontStyle.equalsIgnoreCase("ITALIC")) {
                     cellFont.setItalic(true);

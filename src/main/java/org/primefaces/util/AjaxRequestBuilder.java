@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -352,10 +352,14 @@ public class AjaxRequestBuilder {
     }
 
     private void addFragmentConfig() {
-        Map<Object, Object> attrs = RequestContext.getCurrentInstance(context).getAttributes();
+        Map<Object, Object> attrs = context.getAttributes();
         Object fragmentId = attrs.get(Constants.FRAGMENT_ID);
         if (fragmentId != null) {
             buffer.append(",fi:\"").append(fragmentId).append("\"");
+            
+            if (attrs.containsKey(Constants.FRAGMENT_AUTO_RENDERED)) {
+                buffer.append(",fu:true");
+            }
         }
     }
 }

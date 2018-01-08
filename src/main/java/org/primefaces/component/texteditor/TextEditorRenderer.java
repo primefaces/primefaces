@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -86,6 +86,10 @@ public class TextEditorRenderer extends CoreRenderer {
         writer.startElement("input", null);
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute("name", inputId, null);
+        // #2905
+        if (valueToRender != null) {
+            writer.writeAttribute("value", valueToRender, null);
+        }
         writer.endElement("input");
 
         writer.endElement("div");

@@ -19,6 +19,7 @@ if (!PrimeFaces.ajax) {
         'psf': 'partialSubmitFilter',
         'rv': 'resetValues',
         'fi': 'fragmentId',
+        'fu': 'fragmentUpdate',
         'pa': 'params',
         'onst': 'onstart',
         'oner': 'onerror',
@@ -423,6 +424,9 @@ if (!PrimeFaces.ajax) {
 
                 //update
                 var updateArray = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall(cfg, 'update');
+                if(cfg.fragmentId && cfg.fragmentUpdate) {
+                    updateArray.push(cfg.fragmentId);
+                }
                 if(updateArray.length > 0) {
                     PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_UPDATE_PARAM, updateArray.join(' '), parameterPrefix);
                 }
@@ -532,8 +536,15 @@ if (!PrimeFaces.ajax) {
                         if(global) {
                             $(document).trigger('pfAjaxSend', [xhr, this]);
                         }
-                    },
-                    fail: function(xhr, status, errorThrown) {
+                    }
+                };
+
+                if (cfg.timeout) {
+                    xhrOptions['timeout'] = cfg.timeout;
+                }
+
+                var jqXhr = $.ajax(xhrOptions)
+                    .fail(function(xhr, status, errorThrown) {
                         if(cfg.onerror) {
                             cfg.onerror.call(this, xhr, status, errorThrown);
                         }
@@ -546,38 +557,42 @@ if (!PrimeFaces.ajax) {
                         }
 
                         PrimeFaces.error('Request return with error:' + status + '.');
-                    },
-                    done: function(data, status, xhr) {
+                    })
+                    .done(function(data, status, xhr) {
                         PrimeFaces.debug('Response received succesfully.');
 
-                        var parsed;
+                        try {
+                            var parsed;
 
-                        //call user callback
-                        if(cfg.onsuccess) {
-                            parsed = cfg.onsuccess.call(this, data, status, xhr);
-                        }
+                            //call user callback
+                            if(cfg.onsuccess) {
+                                parsed = cfg.onsuccess.call(this, data, status, xhr);
+                            }
 
-                        //extension callback that might parse response
-                        if(cfg.ext && cfg.ext.onsuccess && !parsed) {
-                            parsed = cfg.ext.onsuccess.call(this, data, status, xhr);
-                        }
+                            //extension callback that might parse response
+                            if(cfg.ext && cfg.ext.onsuccess && !parsed) {
+                                parsed = cfg.ext.onsuccess.call(this, data, status, xhr);
+                            }
 
-                        if(global) {
-                            $(document).trigger('pfAjaxSuccess', [xhr, this]);
-                        }
+                            if(global) {
+                                $(document).trigger('pfAjaxSuccess', [xhr, this]);
+                            }
 
-                        //do not execute default handler as response already has been parsed
-                        if(parsed) {
-                            return;
+                            //do not execute default handler as response already has been parsed
+                            if(parsed) {
+                                return;
+                            }
+                            else {
+                                PrimeFaces.ajax.Response.handle(data, status, xhr);
+                            }
                         }
-                        else {
-                            PrimeFaces.ajax.Response.handle(data, status, xhr);
+                        catch(err) {
+                            PrimeFaces.error(err);
                         }
 
                         PrimeFaces.debug('DOM is updated.');
-                    },
-                    always: function(xhr, status) {
-
+                    })
+                    .always(function(data, status, xhr) {
                         // first call the extension callback (e.g. datatable paging)
                         if(cfg.ext && cfg.ext.oncomplete) {
                             cfg.ext.oncomplete.call(this, xhr, status, xhr.pfArgs);
@@ -599,19 +614,9 @@ if (!PrimeFaces.ajax) {
                         if(!cfg.async && !PrimeFaces.nonAjaxPosted) {
                             PrimeFaces.ajax.Queue.poll();
                         }
-                    }
-                };
+                    });
 
-                // TODO remove when updating to jQuery 3
-                xhrOptions.success = xhrOptions.done;
-                xhrOptions.error = xhrOptions.fail;
-                xhrOptions.complete = xhrOptions.always;
-
-                if (cfg.timeout) {
-                    xhrOptions['timeout'] = cfg.timeout;
-                }
-
-                PrimeFaces.ajax.Queue.addXHR($.ajax(xhrOptions));
+                PrimeFaces.ajax.Queue.addXHR(jqXhr);
             },
 
             resolveExpressionsForAjaxCall: function(cfg, type) {
@@ -838,13 +843,13 @@ if (!PrimeFaces.ajax) {
                         // the other parameters will be encoded on document end
                         // --> see PrimePartialResponseWriter
                         if (xhr.pfArgs) {
-                            var json = $.parseJSON(textContent);
+                            var json = JSON.parse(textContent);
                             for (var name in json) {
                                 xhr.pfArgs[name] = json[name];
                             }
                         }
                         else {
-                            xhr.pfArgs = $.parseJSON(textContent);
+                            xhr.pfArgs = JSON.parse(textContent);
                         }
                     }
                 }

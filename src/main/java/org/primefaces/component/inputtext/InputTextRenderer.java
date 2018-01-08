@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,7 +63,7 @@ public class InputTextRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = inputText.getClientId(context);
 
-        writer.startElement("input", null);
+        writer.startElement("input", inputText);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("type", inputText.getType(), null);

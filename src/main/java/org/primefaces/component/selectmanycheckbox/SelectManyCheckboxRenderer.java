@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -241,6 +241,10 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         }
 
         writer.writeAttribute("for", containerClientId, null);
+        
+        if (option.getDescription() != null) {
+            writer.writeAttribute("title", option.getDescription(), null);
+        }
 
         if (option.isEscape()) {
             writer.writeText(option.getLabel(), null);

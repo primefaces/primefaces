@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.primefaces.component.outputpanel;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -28,6 +29,8 @@ public class OutputPanelRenderer extends CoreRenderer {
 
     private final static String BLOCK = "div";
     private final static String INLINE = "span";
+    
+    private final static Logger logger = Logger.getLogger(OutputPanelRenderer.class.getName());
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -41,6 +44,10 @@ public class OutputPanelRenderer extends CoreRenderer {
             if (panel.isDeferred()) {
                 encodeScript(context, panel);
             }
+        }
+        
+        if (panel.isAutoUpdate()) {
+            logger.info("autoUpdate attribute is deprecated and will be removed in a future version, use p:autoUpdate component instead.");
         }
     }
 

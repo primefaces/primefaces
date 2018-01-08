@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,15 +19,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CollectScriptsState implements Serializable {
+public class MoveScriptsToBottomState implements Serializable {
     
     private List<String> includes;
-    private StringBuilder inline;
+    private List<String> inlines;
     private int savedInlineTags;
 
-    public CollectScriptsState() {
+    public MoveScriptsToBottomState() {
         includes = new ArrayList<String>(20);
-        inline = new StringBuilder(750);
+        inlines = new ArrayList<String>(50);
         savedInlineTags = 0;
     }
     
@@ -39,8 +39,7 @@ public class CollectScriptsState implements Serializable {
     
     public void addInline(StringBuilder content) {
         if (content.length() > 0) {
-            inline.append(content.toString());
-            inline.append(';');
+            inlines.add(content.toString());
             savedInlineTags++;
         }
     }
@@ -49,8 +48,8 @@ public class CollectScriptsState implements Serializable {
         return includes;
     }
 
-    public StringBuilder getInline() {
-        return inline;
+    public List<String> getInlines() {
+        return inlines;
     }
 
     public int getSavedInlineTags() {

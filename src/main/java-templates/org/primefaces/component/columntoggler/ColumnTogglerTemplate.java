@@ -5,11 +5,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.HashMap;
+import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.util.Constants;
 import org.primefaces.component.api.UIColumn;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.expression.SearchExpressionFacade;
 
     private final static String DEFAULT_EVENT = "toggle";
 
@@ -51,3 +53,16 @@ import javax.faces.event.BehaviorEvent;
             super.queueEvent(event);
         }
     }
+
+    private UIComponent dataSourceComponent = null;
+
+    public UIComponent getDataSourceComponent() {
+        if(dataSourceComponent == null) {
+            FacesContext context = getFacesContext();
+            String tableId = SearchExpressionFacade.resolveClientIds(context, this, this.getDatasource());
+            dataSourceComponent = context.getViewRoot().findComponent(tableId);
+        }
+
+        return dataSourceComponent;
+    }
+

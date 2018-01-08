@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
@@ -48,7 +49,19 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         if (menu.isEditable()) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-            menu.setSubmittedValue(params.get(menu.getClientId(context) + "_editableInput"));
+            // default to user entered input
+            String editorInput = params.get(menu.getClientId(context) + "_editableInput");
+            menu.setSubmittedValue(editorInput);
+
+            // #2862 check if it matches a label and if so use the value
+            List<SelectItem> selectItems = getSelectItems(context, menu);
+            for (int i = 0; i < selectItems.size(); i++) {
+                SelectItem item = selectItems.get(i);
+                if (item.getLabel().equalsIgnoreCase(editorInput)) {
+                    menu.setSubmittedValue(item.getValue());
+                    break;
+                }
+            }
 
             decodeBehaviors(context, menu);
         }
@@ -71,7 +84,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         SelectOneMenu menu = (SelectOneMenu) component;
 
-        if (menu.isLazyloadRequest(context)) {
+        if (menu.isDynamicLoadRequest(context)) {
             List<SelectItem> selectItems = getSelectItems(context, menu);
             String clientId = menu.getClientId(context);
             Converter converter = menu.getConverter();
@@ -246,6 +259,14 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         String panelStyle = menu.getPanelStyle();
         String panelStyleClass = menu.getPanelStyleClass();
         panelStyleClass = panelStyleClass == null ? SelectOneMenu.PANEL_CLASS : SelectOneMenu.PANEL_CLASS + " " + panelStyleClass;
+        
+        String height = null;
+        try { 
+            height = Integer.parseInt(menu.getHeight()) + "px"; 
+        } 
+        catch (NumberFormatException e) { 
+            height = menu.getHeight();
+        }
 
         writer.startElement("div", null);
         writer.writeAttribute("id", menu.getClientId(context) + "_panel", null);
@@ -260,9 +281,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", SelectOneMenu.ITEMS_WRAPPER_CLASS, null);
-        writer.writeAttribute("style", "max-height:" + menu.getHeight() + "px", null);
+        writer.writeAttribute("style", "max-height:" + height, null);
 
-        if (!menu.isLazy()) {
+        if (!menu.isDynamic()) {
             encodePanelContent(context, menu, selectItems);
         }
 
@@ -341,22 +362,26 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         }
     }
 
-    protected void encodeOptionsAsTable(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, List<Column> columns )
+    protected void encodeOptionsAsTable(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, List<Column> columns)
             throws IOException {
         
         ResponseWriter writer = context.getResponseWriter();
         String var = menu.getVar();
+        ValueExpression value = menu.getValueExpression("value");
+        Class<?> valueType = value == null ? null : value.getType(context.getELContext());
 
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
+            Object itemValue = selectItem.getValue();
             String itemLabel = selectItem.getLabel();
             itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
+            
             String itemStyleClass = SelectOneMenu.ROW_CLASS;
             if (selectItem.isNoSelectionOption()) {
                 itemStyleClass = itemStyleClass + " ui-noselection-option";
             }
 
-            context.getExternalContext().getRequestMap().put(var, selectItem.getValue());
+            context.getExternalContext().getRequestMap().put(var, itemValue);
 
             writer.startElement("tr", null);
             writer.writeAttribute("class", itemStyleClass, null);
@@ -365,21 +390,29 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 writer.writeAttribute("title", selectItem.getDescription(), null);
             }
 
-            for (int j = 0; j < columns.size(); j++) {
-                Column column = columns.get(j);
-                String style = column.getStyle();
-                String styleClass = column.getStyleClass();
-
+            if (itemValue == null || (valueType != null && !valueType.isAssignableFrom(itemValue.getClass()))) {
                 writer.startElement("td", null);
-                if (style != null) {
-                    writer.writeAttribute("style", style, null);
-                }
-                if (styleClass != null) {
-                    writer.writeAttribute("class", styleClass, null);
-                }
-
-                renderChildren(context, column);
+                writer.writeAttribute("colspan", columns.size(), null);
+                writer.writeText(selectItem.getLabel(), null);
                 writer.endElement("td");
+            }
+            else {
+                for (int j = 0; j < columns.size(); j++) {
+                    Column column = columns.get(j);
+                    String style = column.getStyle();
+                    String styleClass = column.getStyleClass();
+
+                    writer.startElement("td", null);
+                    if (style != null) {
+                        writer.writeAttribute("style", style, null);
+                    }
+                    if (styleClass != null) {
+                        writer.writeAttribute("class", styleClass, null);
+                    }
+
+                    renderChildren(context, column);
+                    writer.endElement("td");
+                }
             }
 
             writer.endElement("tr");
@@ -448,7 +481,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 .attr("syncTooltip", menu.isSyncTooltip(), false)
                 .attr("labelTemplate", menu.getLabelTemplate(), null)
                 .attr("autoWidth", menu.isAutoWidth(), true)
-                .attr("lazy", menu.isLazy(), false);
+                .attr("dynamic", menu.isDynamic(), false);
 
         if (menu.isFilter()) {
             wb.attr("filter", true)
@@ -483,7 +516,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             }
         }
         else {
-            String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
+            String itemValueAsString = option.getValue() instanceof String
+                    ? (String) option.getValue()
+                    : getOptionAsString(context, menu, converter, option.getValue());
             boolean disabled = option.isDisabled();
 
             Object valuesArray;
@@ -499,7 +534,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
             boolean selected = isSelected(context, menu, itemValue, valuesArray, converter);
 
-            if (!menu.isLazy() || (menu.isLazy() && (selected || menu.isLazyloadRequest(context) || itemIndex == 0))) {
+            if (!menu.isDynamic() || (menu.isDynamic() && (selected || menu.isDynamicLoadRequest(context) || itemIndex == 0))) {
                 writer.startElement("option", null);
                 writer.writeAttribute("value", itemValueAsString, null);
                 if (disabled) writer.writeAttribute("disabled", "disabled", null);
@@ -547,6 +582,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
+        
+        if (menu.getFilterPlaceholder() != null) {
+            writer.writeAttribute("placeholder", menu.getFilterPlaceholder(), null);
+        }
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-icon ui-icon-search", id);

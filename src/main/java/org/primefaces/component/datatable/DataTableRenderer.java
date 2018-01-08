@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -103,24 +103,12 @@ public class DataTableRenderer extends DataRenderer {
             table.restoreTableState();
         }
 
-        boolean defaultSorted = (table.getSortField() != null
-                || table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null
+        boolean defaultSorted = (table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()) != null
                 || table.getSortBy() != null
                 || table.getMultiSortMeta() != null);
 
         if (defaultSorted && table.isDefaultSort()) {
-            ValueExpression sortVE;
-            String sortField = table.getSortField();
-            if (sortField != null) {
-                sortVE = context.getApplication()
-                        .getExpressionFactory()
-                        .createValueExpression("#{'" + sortField + "'}",
-                                String.class);
-            }
-            else {
-                sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-            }
-            table.setDefaultSortByVE(sortVE);
+            table.setDefaultSortByVE(table.getValueExpression(DataTable.PropertyKeys.sortBy.toString()));
             table.setDefaultSortOrder(table.getSortOrder());
             table.setDefaultSortFunction(table.getSortFunction());
         }
@@ -143,6 +131,14 @@ public class DataTableRenderer extends DataRenderer {
         if (table.isLazy()) {
             if (table.isLiveScroll()) {
                 table.loadLazyScrollData(0, table.getScrollRows());
+            }
+            else if (table.isVirtualScroll()) {
+                int rows = table.getRows();
+                int scrollRows = table.getScrollRows();
+                int virtualScrollRows = (scrollRows * 2);
+                scrollRows = (rows == 0) ? virtualScrollRows : ((virtualScrollRows > rows) ? rows : virtualScrollRows);
+                
+                table.loadLazyScrollData(0, scrollRows);
             }
             else {
                 table.loadLazyData();
@@ -301,6 +297,7 @@ public class DataTableRenderer extends DataRenderer {
                 .attr("reflow", table.isReflow(), false)
                 .attr("rowHover", table.isRowHover(), false)
                 .attr("clientCache", table.isClientCache(), false)
+                .attr("multiViewState", table.isMultiViewState(), false)
                 .nativeAttr("groupColumnIndexes", table.getGroupedColumnIndexes(), null)
                 .callback("onRowClick", "function(row)", table.getOnRowClick());
 
@@ -315,6 +312,7 @@ public class DataTableRenderer extends DataRenderer {
         String clientId = table.getClientId(context);
         boolean scrollable = table.isScrollable();
         boolean hasPaginator = table.isPaginator();
+        boolean resizable = table.isResizableColumns();
         String style = table.getStyle();
         String paginatorPosition = table.getPaginatorPosition();
         int frozenColumns = table.getFrozenColumns();
@@ -323,7 +321,7 @@ public class DataTableRenderer extends DataRenderer {
         //style class
         String containerClass = scrollable ? DataTable.CONTAINER_CLASS + " " + DataTable.SCROLLABLE_CONTAINER_CLASS : DataTable.CONTAINER_CLASS;
         containerClass = table.getStyleClass() != null ? containerClass + " " + table.getStyleClass() : containerClass;
-        if (table.isResizableColumns()) containerClass = containerClass + " " + DataTable.RESIZABLE_CONTAINER_CLASS;
+        if (resizable) containerClass = containerClass + " " + DataTable.RESIZABLE_CONTAINER_CLASS;
         if (table.isStickyHeader()) containerClass = containerClass + " " + DataTable.STICKY_HEADER_CLASS;
         if (ComponentUtils.isRTL(context, table)) containerClass = containerClass + " " + DataTable.RTL_CLASS;
         if (table.isReflow()) containerClass = containerClass + " " + DataTable.REFLOW_CLASS;
@@ -370,6 +368,10 @@ public class DataTableRenderer extends DataRenderer {
         if (scrollable) {
             encodeStateHolder(context, table, table.getClientId(context) + "_scrollState", table.getScrollState());
         }
+        
+        if (resizable && table.isMultiViewState()) {
+            encodeStateHolder(context, table, table.getClientId(context) + "_resizableColumnState", table.getResizableColumnsAsString());
+        }
 
         writer.endElement("div");
     }
@@ -380,9 +382,25 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.TABLE_WRAPPER_CLASS, null);
 
+        String tableStyle = table.getTableStyle();
+
+        if (table.isMultiViewState() && table.isResizableColumns()) {
+            Map<String, String> resizableColsMap = table.getResizableColumnsMap();
+            String width = resizableColsMap.get(table.getClientId(context) + "_tableWidthState");
+            
+            if (width != null) {
+                if (tableStyle != null) {
+                    tableStyle = tableStyle + ";width:" + width + "px";
+                }
+                else {
+                    tableStyle = "width:" + width + "px";
+                }
+            }
+        }
+        
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
-        if (table.getTableStyle() != null) writer.writeAttribute("style", table.getTableStyle(), null);
+        if (tableStyle != null) writer.writeAttribute("style", tableStyle, null);
         if (table.getTableStyleClass() != null) writer.writeAttribute("class", table.getTableStyleClass(), null);
         if (table.getSummary() != null) writer.writeAttribute("summary", table.getSummary(), null);
 
@@ -581,12 +599,18 @@ public class DataTableRenderer extends DataRenderer {
         boolean resizable = table.isResizableColumns() && column.isResizable();
         int priority = column.getPriority();
 
+        boolean isColVisible = column.isVisible();
+        if (table.isMultiViewState()) {
+            Map<String, Boolean> togglableColsMap = table.getTogglableColumnsMap();
+            isColVisible = togglableColsMap.get(clientId) == null ? isColVisible : togglableColsMap.get(clientId);
+        }
+        
         String columnClass = sortable ? DataTable.COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.COLUMN_HEADER_CLASS;
         columnClass = filterable ? columnClass + " " + DataTable.FILTER_COLUMN_CLASS : columnClass;
         columnClass = selectionMode != null ? columnClass + " " + DataTable.SELECTION_COLUMN_CLASS : columnClass;
         columnClass = resizable ? columnClass + " " + DataTable.RESIZABLE_COLUMN_CLASS : columnClass;
         columnClass = !column.isToggleable() ? columnClass + " " + DataTable.STATIC_COLUMN_CLASS : columnClass;
-        columnClass = !column.isVisible() ? columnClass + " " + DataTable.HIDDEN_COLUMN_CLASS : columnClass;
+        columnClass = !isColVisible ? columnClass + " " + DataTable.HIDDEN_COLUMN_CLASS : columnClass;
         columnClass = column.getStyleClass() != null ? columnClass + " " + column.getStyleClass() : columnClass;
 
         if (priority > 0) {
@@ -594,10 +618,9 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         if (sortable) {
-            String tableSortField = table.getSortField();
             ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
             Object tableSortBy = table.getSortBy();
-            boolean defaultSorted = (tableSortField != null || tableSortByVE != null || tableSortBy != null || table.getMultiSortMeta() != null);
+            boolean defaultSorted = (tableSortByVE != null || tableSortBy != null || table.getMultiSortMeta() != null);
 
             if (defaultSorted) {
                 if (table.isMultiSort()) {
@@ -628,6 +651,12 @@ public class DataTableRenderer extends DataRenderer {
 
         String style = column.getStyle();
         String width = column.getWidth();
+        
+        if (table.isMultiViewState() && resizable) {
+            Map<String, String> resizableColsMap = table.getResizableColumnsMap();
+            width = resizableColsMap.get(clientId) == null ? width : resizableColsMap.get(clientId);
+        }
+        
         if (width != null) {
             String unit = width.endsWith("%") ? "" : "px";
             if (style != null) {
@@ -708,29 +737,13 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected String resolveDefaultSortIcon(DataTable table, UIColumn column, String sortOrder) {
-        String tableSortByExpression = table.getSortField();
-        if (tableSortByExpression == null) {
-            ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-            if (tableSortByVE != null) {
-                tableSortByExpression = tableSortByVE.getExpressionString();
-            }
-        }
-        String columnSortByExpression = null;
-        if (column.getField() != null && column.isSortable()) {
-            columnSortByExpression = column.getField();
-        }
-        if (columnSortByExpression == null) {
-            ValueExpression columnSortByVE = column.getValueExpression(Column.PropertyKeys.sortBy.toString());
-            if (columnSortByVE != null) {
-                columnSortByExpression = columnSortByVE.getExpressionString();
-            }
-        }
-        String field = column.getField();
+        ValueExpression tableSortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
+        String field = table.resolveColumnField(column);
         String sortField = table.getSortField();
+        sortField = (sortField == null && tableSortByVE != null) ? table.resolveStaticField(tableSortByVE) : sortField;
         String sortIcon = null;
 
-        if ((sortField != null && field != null && sortField.equals(field))
-                || (tableSortByExpression != null && tableSortByExpression.equals(columnSortByExpression))) {
+        if (sortField != null && field != null && sortField.equals(field)) {
             if (sortOrder.equalsIgnoreCase("ASCENDING")) {
                 sortIcon = DataTable.SORTABLE_COLUMN_ASCENDING_ICON_CLASS;
             }
@@ -906,13 +919,20 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
+        String clientId = column.getContainerClientId(context);
 
         int priority = column.getPriority();
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
         styleClass = styleClass == null ? DataTable.COLUMN_FOOTER_CLASS : DataTable.COLUMN_FOOTER_CLASS + " " + styleClass;
 
-        if (!column.isVisible()) {
+        boolean isColVisible = column.isVisible();
+        if (table.isMultiViewState()) {
+            Map<String, Boolean> togglableColsMap = table.getTogglableColumnsMap();
+            isColVisible = togglableColsMap.get(clientId) == null ? isColVisible : togglableColsMap.get(clientId);
+        }
+        
+        if (!isColVisible) {
             styleClass = styleClass + " " + DataTable.HIDDEN_COLUMN_CLASS;
         }
 
@@ -1270,6 +1290,14 @@ public class DataTableRenderer extends DataRenderer {
         if (!column.isRendered()) {
             return;
         }
+        
+        boolean isColVisible = column.isVisible();
+        if (table.isMultiViewState()) {
+            Map<String, Boolean> togglableColsMap = table.getTogglableColumnsMap();
+            String colClientId = column.getContainerClientId(context);
+            String colHeaderClientId = clientId + colClientId.substring(colClientId.lastIndexOf(":"), colClientId.length());
+            isColVisible = togglableColsMap.get(colHeaderClientId) == null ? isColVisible : togglableColsMap.get(colHeaderClientId);
+        }
 
         ResponseWriter writer = context.getResponseWriter();
         boolean selectionEnabled = column.getSelectionMode() != null;
@@ -1283,7 +1311,7 @@ public class DataTableRenderer extends DataRenderer {
         styleClass = (column.isSelectRow())
                 ? styleClass
                 : (styleClass == null) ? DataTable.UNSELECTABLE_COLUMN_CLASS : styleClass + " " + DataTable.UNSELECTABLE_COLUMN_CLASS;
-        styleClass = (column.isVisible())
+        styleClass = (isColVisible)
                 ? styleClass
                 : (styleClass == null) ? DataTable.HIDDEN_COLUMN_CLASS : styleClass + " " + DataTable.HIDDEN_COLUMN_CLASS;
         String userStyleClass = column.getStyleClass();

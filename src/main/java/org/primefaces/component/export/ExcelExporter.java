@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,11 +35,14 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.PrintSetup;
 import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.primefaces.component.api.DynamicColumn;
@@ -295,13 +298,13 @@ public class ExcelExporter extends Exporter {
 
     protected void applyOptions(Workbook wb, DataTable table, Sheet sheet, ExporterOptions options) {
         facetStyle = wb.createCellStyle();
-        facetStyle.setAlignment((short) CellStyle.ALIGN_CENTER);
-        facetStyle.setVerticalAlignment((short) CellStyle.VERTICAL_CENTER);
+        facetStyle.setAlignment(HorizontalAlignment.CENTER);
+        facetStyle.setVerticalAlignment(VerticalAlignment.CENTER);
         facetStyle.setWrapText(true);
         applyFacetOptions(wb, options, facetStyle);
 
         cellStyle = wb.createCellStyle();
-        cellStyle.setAlignment((short) CellStyle.ALIGN_LEFT);
+        cellStyle.setAlignment(HorizontalAlignment.LEFT);
         applyCellOptions(wb, options, cellStyle);
 
         PrintSetup printSetup = sheet.getPrintSetup();
@@ -317,7 +320,7 @@ public class ExcelExporter extends Exporter {
             String facetFontStyle = options.getFacetFontStyle();
             if (facetFontStyle != null) {
                 if (facetFontStyle.equalsIgnoreCase("BOLD")) {
-                    facetFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+                    facetFont.setBold(true);
                 }
                 if (facetFontStyle.equalsIgnoreCase("ITALIC")) {
                     facetFont.setItalic(true);
@@ -332,7 +335,7 @@ public class ExcelExporter extends Exporter {
                 color = Color.decode(facetBackground);
                 HSSFColor backgroundColor = palette.findSimilarColor(color.getRed(), color.getGreen(), color.getBlue());
                 ((HSSFCellStyle) facetStyle).setFillForegroundColor(backgroundColor.getIndex());
-                facetStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+                facetStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
             }
 
             String facetFontColor = options.getFacetFontColor();
@@ -371,7 +374,7 @@ public class ExcelExporter extends Exporter {
             String cellFontStyle = options.getCellFontStyle();
             if (cellFontStyle != null) {
                 if (cellFontStyle.equalsIgnoreCase("BOLD")) {
-                    cellFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+                    cellFont.setBold(true);
                 }
                 if (cellFontStyle.equalsIgnoreCase("ITALIC")) {
                     cellFont.setItalic(true);

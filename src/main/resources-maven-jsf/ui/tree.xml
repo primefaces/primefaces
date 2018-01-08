@@ -7,6 +7,7 @@
     <tag>tree</tag>
     <tagClass>org.primefaces.component.tree.TreeTag</tagClass>
     <componentClass>org.primefaces.component.tree.Tree</componentClass>
+    <componentHandlerClass>org.primefaces.component.tree.TreeComponentHandler</componentHandlerClass>
     <componentType>org.primefaces.component.Tree</componentType>
     <componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.TreeRenderer</rendererType>
@@ -236,6 +237,27 @@
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
             <description>Disables tree.</description>
+        </attribute>
+        <attribute>
+            <name>multipleDrag</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When enabled, the selected multiple nodes can be dragged from a tree to another tree.</description>
+		</attribute>
+        <attribute>
+			<name>dropCopyNode</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When enabled, the copy of the selected nodes can be dropped from a tree to another tree using Shift key.</description>
+		</attribute>
+        <attribute>
+            <name>onDrop</name>
+            <required>false</required>
+            <type>javax.el.MethodExpression</type>
+            <method-signature>java.lang.Boolean onDrop(org.primefaces.component.tree.TreeDragDropInfo)</method-signature>
+            <description>Method providing suggestions.</description>
         </attribute>
     </attributes>
     <resources>

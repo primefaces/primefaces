@@ -12,6 +12,8 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
 
     initOverlay: function() {
         var $this = this;
+        
+        this.cfg.trigger = this.cfg.trigger.replace(/\\\\:/g,"\\:");
 
         this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.trigger);
 

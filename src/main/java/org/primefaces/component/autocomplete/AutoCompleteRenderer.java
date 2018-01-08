@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -108,7 +108,12 @@ public class AutoCompleteRenderer extends InputRenderer {
         String query = params.get(autoComplete.getClientId(context) + "_query");
 
         if (query != null) {
-            encodeResults(context, component, query);
+            if (autoComplete.isDynamicLoadRequest(context)) {
+                encodePanel(context, autoComplete);
+            }
+            else {
+                encodeResults(context, component, query);
+            }
         }
         else {
             encodeMarkup(context, autoComplete);
@@ -118,7 +123,7 @@ public class AutoCompleteRenderer extends InputRenderer {
 
     @SuppressWarnings("unchecked")
     public void encodeResults(FacesContext context, UIComponent component, String query) throws IOException {
-        AutoComplete ac = (AutoComplete) component;
+        AutoComplete ac = (AutoComplete) component;        
         List results = ac.getSuggestions();
         int maxResults = ac.getMaxResults();
 
@@ -162,7 +167,9 @@ public class AutoCompleteRenderer extends InputRenderer {
             encodeDropDown(context, ac);
         }
 
-        encodePanel(context, ac);
+        if (!ac.isDynamic()) {
+            encodePanel(context, ac);
+        }
 
         writer.endElement("span");
     }
@@ -348,7 +355,13 @@ public class AutoCompleteRenderer extends InputRenderer {
         if (ac.getPanelStyle() != null) {
             writer.writeAttribute("style", ac.getPanelStyle(), null);
         }
-
+        
+        if (ac.isDynamic() && ac.isDynamicLoadRequest(context)) {
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+            String query = params.get(ac.getClientId(context) + "_query");
+            encodeResults(context, ac, query);
+        }
+        
         writer.endElement("span");
     }
 
@@ -471,8 +484,10 @@ public class AutoCompleteRenderer extends InputRenderer {
         if (ac.isDropdown()) {
             encodeDropDown(context, ac);
         }
-
-        encodePanel(context, ac);
+        
+        if (!ac.isDynamic()) {
+            encodePanel(context, ac);
+        }
 
         encodeHiddenSelect(context, ac, clientId, stringValues);
 
@@ -673,7 +688,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("myPos", ac.getMy(), null)
                 .attr("atPos", ac.getAt(), null)
                 .attr("active", ac.isActive(), true)
-                .attr("unique", ac.isUnique(), false);
+                .attr("unique", ac.isUnique(), false)
+                .attr("dynamic", ac.isDynamic(), false);
 
         if (ac.isCache()) {
             wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());

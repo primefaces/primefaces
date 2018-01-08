@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import org.primefaces.util.Jsf23Helper;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
@@ -39,7 +38,7 @@ public class PostConstructApplicationEventListener implements SystemEventListene
     @Override
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         // temp manually instantiate startup config as the default config is not available yet
-        PrimeConfiguration config = new StartupPrimeConfiguration(FacesContext.getCurrentInstance());
+        PrimeConfiguration config = new StartupPrimeConfiguration();
 
         logger.log(Level.INFO,
                 "Running on PrimeFaces {0}",

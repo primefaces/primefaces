@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,6 +51,8 @@ public class SignatureRenderer extends CoreRenderer {
         String clientId = signature.getClientId(context);
         String style = signature.getStyle();
         String styleClass = signature.getStyleClass();
+        String defaultStyle = signature.resolveStyleClass();
+        styleClass = styleClass == null ? defaultStyle : defaultStyle + " " + styleClass;
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);

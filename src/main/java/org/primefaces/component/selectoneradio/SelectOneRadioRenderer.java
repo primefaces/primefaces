@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,9 +66,16 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         boolean custom = layout.equals("custom");
 
         if (custom) {
+            String style = radio.getStyle();
+            String styleClass = radio.getStyleClass();
+            String defaultStyleClass = "ui-helper-hidden";
+            styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
             writer.startElement("span", radio);
             writer.writeAttribute("id", radio.getClientId(context), "id");
-            writer.writeAttribute("class", "ui-helper-hidden", null);
+            writer.writeAttribute("class", styleClass, "styleClass");
+            if (style != null) {
+                writer.writeAttribute("style", style, "style");
+            }
             encodeCustomLayout(context, radio);
             writer.endElement("span");
         }

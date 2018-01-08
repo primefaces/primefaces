@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,12 @@ package org.primefaces.model.filter;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Locale;
 import javax.faces.FacesException;
 
 public class InFilterConstraint implements FilterConstraint {
 
+    @Override
     public boolean applies(Object value, Object filter, Locale locale) {
         if (filter == null) {
             return true;
@@ -44,9 +44,8 @@ public class InFilterConstraint implements FilterConstraint {
         }
 
         if (collection != null && !collection.isEmpty()) {
-            for (Iterator<? extends Object> it = collection.iterator(); it.hasNext();) {
-                Object object = it.next();
-                if (object.equals(value)) {
+            for (Object object : collection) {
+                if (object != null && object.equals(value)) {
                     return true;
                 }
             }

@@ -68,6 +68,7 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
 import org.primefaces.util.SharedStringBuilder;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.datatable.FilterState;
 import org.primefaces.component.datatable.TableState;
 
@@ -541,7 +542,7 @@ import org.primefaces.component.datatable.TableState;
             
             if(this.isClientCacheRequest(context)) {
                 Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-                first = Integer.valueOf(params.get(getClientId(context) + "_first")) + getRows();
+                first = Integer.parseInt(params.get(getClientId(context) + "_first")) + getRows();
             }           
             
             if(this.isMultiViewState()) {
@@ -567,11 +568,7 @@ import org.primefaces.component.datatable.TableState;
 
             //Update paginator/livescroller for callback
             if(ComponentUtils.isRequestSource(this, context) && (this.isPaginator() || this.isLiveScroll() || this.isVirtualScroll())) {
-                RequestContext requestContext = RequestContext.getCurrentInstance(getFacesContext());
-
-                if(requestContext != null) {
-                    requestContext.addCallbackParam("totalRecords", lazyModel.getRowCount());
-                }
+                PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
             }
         }
     }
@@ -596,11 +593,7 @@ import org.primefaces.component.datatable.TableState;
 
             //Update paginator/livescroller  for callback
             if(ComponentUtils.isRequestSource(this, getFacesContext()) && (this.isPaginator() || this.isLiveScroll())) {
-                RequestContext requestContext = RequestContext.getCurrentInstance(getFacesContext());
-
-                if(requestContext != null) {
-                    requestContext.addCallbackParam("totalRecords", lazyModel.getRowCount());
-                }
+                PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
             }
         }
     }
@@ -619,27 +612,34 @@ import org.primefaces.component.datatable.TableState;
                 sortField = field;
         }
         else {
-            ValueExpression columnSortByVE = column.getValueExpression(PropertyKeys.sortBy.toString());
-            
-            if(column.isDynamic()) {
-                ((DynamicColumn) sortColumn).applyStatelessModel();
-                Object sortByProperty = sortColumn.getSortBy();
-                String field = column.getField();
-                if(field == null)
-                    sortField = (sortByProperty == null) ? resolveDynamicField(columnSortByVE) : sortByProperty.toString();
-                else
-                    sortField = field;
-            }
-            else {
-                String field = column.getField();
-                if(field == null)
-                    sortField = (columnSortByVE == null) ? (String) column.getSortBy() : resolveStaticField(columnSortByVE);
-                else
-                    sortField = field;
-            }
+            sortField = resolveColumnField(sortColumn);
         }
         
         return sortField;
+    }
+
+    public String resolveColumnField(UIColumn column) {
+        ValueExpression columnSortByVE = column.getValueExpression(PropertyKeys.sortBy.toString());
+        String columnField;
+        
+        if(column.isDynamic()) {
+            ((DynamicColumn) column).applyStatelessModel();
+            Object sortByProperty = column.getSortBy();
+            String field = column.getField();
+            if(field == null)
+                columnField = (sortByProperty == null) ? resolveDynamicField(columnSortByVE) : sortByProperty.toString();
+            else
+                columnField = field;
+        }
+        else {
+            String field = column.getField();
+            if(field == null)
+                columnField = (columnSortByVE == null) ? (String) column.getSortBy() : resolveStaticField(columnSortByVE);
+            else
+                columnField = field;
+        }
+        
+        return columnField;
     }
 
     public SortOrder convertSortOrder() {
@@ -1254,7 +1254,83 @@ import org.primefaces.component.datatable.TableState;
         else
             return (java.lang.Boolean) value;
 	}
+
+    private String togglableColumnsAsString;
+
+    public void setTogglableColumnsAsString(String togglableColumnsAsString) {
+        this.togglableColumnsAsString = togglableColumnsAsString;
+    }
+
+    private Map<String, Boolean> togglableColsMap;
+
+    public void setTogglableColumnsMap(Map<String, Boolean> togglableColsMap) {
+        this.togglableColsMap = togglableColsMap;
+    }
+
+    public Map getTogglableColumnsMap() {
+        if(togglableColsMap == null) {
+            togglableColsMap = new HashMap<String, Boolean>();
+            boolean isValueBlank = ComponentUtils.isValueBlank(togglableColumnsAsString);
+
+            if(isValueBlank) {
+                FacesContext context = getFacesContext();
+                Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+                this.setTogglableColumnsAsString(params.get(this.getClientId(context) + "_columnTogglerState"));
+            }
+
+            if(!isValueBlank) {
+                String[] colsArr = togglableColumnsAsString.split(",");
+                for(int i = 0; i < colsArr.length; i++) {
+                    String temp = colsArr[i];
+                    int sepIndex = temp.lastIndexOf("_");
+                    togglableColsMap.put(temp.substring(0, sepIndex), Boolean.valueOf(temp.substring(sepIndex + 1, temp.length())));
+                }
+            }
+        }
+        
+        return togglableColsMap;
+    }
     
+    private String resizableColumnsAsString;
+
+    public void setResizableColumnsAsString(String resizableColumnsAsString) {
+        this.resizableColumnsAsString = resizableColumnsAsString;
+    }
+
+    public String getResizableColumnsAsString() {
+        return resizableColumnsAsString;
+    }
+
+    private Map<String, String> resizableColsMap;
+
+    public void setResizableColumnsMap(Map<String, String> resizableColsMap) {
+        this.resizableColsMap = resizableColsMap;
+    }
+
+    public Map getResizableColumnsMap() {
+        if(resizableColsMap == null) {
+            resizableColsMap = new HashMap<String, String>();
+            boolean isValueBlank = ComponentUtils.isValueBlank(resizableColumnsAsString);
+
+            if(isValueBlank) {
+                FacesContext context = getFacesContext();
+                Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+                this.setResizableColumnsAsString(params.get(this.getClientId(context) + "_resizableColumnState"));
+            }
+
+            if(!isValueBlank) {
+                String[] colsArr = resizableColumnsAsString.split(",");
+                for(int i = 0; i < colsArr.length; i++) {
+                    String temp = colsArr[i];
+                    int sepIndex = temp.lastIndexOf("_");
+                    resizableColsMap.put(temp.substring(0, sepIndex), temp.substring(sepIndex + 1, temp.length()));
+                }
+            }
+        }
+        
+        return resizableColsMap;
+    }
+
     public Locale resolveDataLocale() {
         FacesContext context = this.getFacesContext();
         return LocaleUtils.resolveLocale(this.getDataLocale(), this.getClientId(context));
@@ -1376,6 +1452,9 @@ import org.primefaces.component.datatable.TableState;
 
             this.setFilterBy(ts.getFilters());
             this.setGlobalFilter(ts.getGlobalFilterValue());
+            this.setColumns(ts.getOrderedColumns());
+            this.setTogglableColumnsAsString(ts.getTogglableColumnsAsString());
+            this.setResizableColumnsAsString(ts.getResizableColumnsAsString());
         }
     }
 

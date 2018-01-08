@@ -224,6 +224,12 @@
     zoom: 1;
     cursor: pointer;
     padding-right: 2em;
+    vertical-align: top;
+}
+
+.ui-selectonemenu.ui-state-hover,
+.ui-selectonemenu.ui-state-focus {
+    background-color: transparent;
 }
 
 .ui-selectonemenu .ui-selectonemenu-trigger {
@@ -240,7 +246,12 @@
 }
 
 .ui-selectonemenu .ui-selectonemenu-trigger  .ui-icon {
-    margin-top: 3px;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .ui-selectonemenu .ui-selectonemenu-label  {
@@ -385,7 +396,16 @@
 /* FontAwesome icon */
 .ui-button-icon-only .ui-icon.fa,
 .ui-button-text-icon-left .ui-icon.fa,
-.ui-button-text-icon-right .ui-icon.fa {
+.ui-button-text-icon-right .ui-icon.fa,
+.ui-button-icon-only .ui-icon.fab,
+.ui-button-text-icon-left .ui-icon.fab,
+.ui-button-text-icon-right .ui-icon.fab,
+.ui-button-icon-only .ui-icon.far,
+.ui-button-text-icon-left .ui-icon.far,
+.ui-button-text-icon-right .ui-icon.far,
+.ui-button-icon-only .ui-icon.fas,
+.ui-button-text-icon-left .ui-icon.fas,
+.ui-button-text-icon-right .ui-icon.fas {
     margin-top: -7px;
 }
 
@@ -696,6 +716,16 @@ div.ui-button, .ui-splitbutton {
 /** InputText **/
 .ui-fluid .ui-inputtext {
     width: 100%;
+}
+
+/** InputNumber **/
+.ui-fluid .ui-inputnumber {
+    width: 100%;
+}
+
+.ui-fluid .ui-inputtext[size],
+.ui-fluid .ui-inputfield[size] {
+    width: auto;
 }
 
 /** InputTextarea **/

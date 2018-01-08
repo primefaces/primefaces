@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -458,7 +458,7 @@ public abstract class CoreRenderer extends Renderer {
 
             for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
                 String key = it.next();
-                Object value = params.get(key);
+                String value = ComponentUtils.escapeText(String.valueOf(params.get(key))) ;
 
                 request.append("'").append(key).append("':'").append(value).append("'");
 

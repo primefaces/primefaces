@@ -18,6 +18,9 @@
             <name>org.primefaces.component.api.Widget</name>
         </interface>
         <interface>
+			<name>org.primefaces.component.api.AutoUpdatable</name>
+		</interface>
+        <interface>
             <name>org.primefaces.component.api.UINotification</name>
         </interface>
     </interfaces>
@@ -62,6 +65,13 @@
             <defaultValue>6000</defaultValue>
             <description>Duration in milliseconds to display non-sticky messages. Default is 800.</description>
         </attribute>
+        <attribute>
+			<name>autoUpdate</name>
+			<required>false</required>
+			<type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>When enabled, growl is updated for each ajax request implicitly.</description>
+		</attribute>
         <attribute>
             <name>redisplay</name>
             <required>false</required>

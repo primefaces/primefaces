@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,16 +21,16 @@ import javax.faces.context.ResponseWriterWrapper;
 import java.io.IOException;
 import java.io.Writer;
 
-public class CollectScriptsResponseWriter extends ResponseWriterWrapper {
+public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
     private final ResponseWriter wrapped;
-    private final CollectScriptsState state;
+    private final MoveScriptsToBottomState state;
 
     private boolean inScript;
     private StringBuilder include;
     private StringBuilder inline;
 
-    public CollectScriptsResponseWriter(ResponseWriter wrapped, CollectScriptsState state) {
+    public MoveScriptsToBottomResponseWriter(ResponseWriter wrapped, MoveScriptsToBottomState state) {
         this.wrapped = wrapped;
         this.state = state;
         
@@ -158,7 +158,8 @@ public class CollectScriptsResponseWriter extends ResponseWriterWrapper {
 
             getWrapped().startElement("script", null);
             getWrapped().writeAttribute("type", "text/javascript", null);
-            getWrapped().write(minimizeInlineScript(state.getInline()));
+            
+            getWrapped().write(mergeAndMinimizeInlineScripts());
             getWrapped().endElement("script");
 
             getWrapped().endElement(name);
@@ -168,9 +169,15 @@ public class CollectScriptsResponseWriter extends ResponseWriterWrapper {
         }
     }
 
-    protected String minimizeInlineScript(StringBuilder script) {
+    protected String mergeAndMinimizeInlineScripts() {
+            
+        StringBuilder script = new StringBuilder(state.getInlines().size() * 100);
+        for (String current : state.getInlines()) {
+            script.append(current);
+            script.append(";\n");
+        }
+        
         String minimized = script.toString();
-
         minimized = minimized.replace("PrimeFaces.settings", "pf.settings")
             .replace("PrimeFaces.cw", "pf.cw")
             .replace("PrimeFaces.ab", "pf.ab")
@@ -181,7 +188,7 @@ public class CollectScriptsResponseWriter extends ResponseWriterWrapper {
 
         return minimized;
     }
-    
+
     @Override
     public ResponseWriter cloneWithWriter(Writer writer) {
         return getWrapped().cloneWithWriter(writer);

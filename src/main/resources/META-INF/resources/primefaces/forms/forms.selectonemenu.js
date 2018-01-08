@@ -11,16 +11,17 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.focusInput = $(this.jqId + '_focus');
         this.label = this.jq.find('.ui-selectonemenu-label');
         this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
-        this.panel = this.jq.children(this.panelId);
+        this.panel = $(this.panelId);
         this.disabled = this.jq.hasClass('ui-state-disabled');
         this.itemsWrapper = this.panel.children('.ui-selectonemenu-items-wrapper');
         this.options = this.input.children('option');
         this.cfg.effect = this.cfg.effect||'fade';
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
         this.cfg.autoWidth = this.cfg.autoWidth === false ? false : true;
-        this.cfg.lazy = this.cfg.lazy === true ? true : false;
+        this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
+        this.isDynamicLoaded = false;
 
-        if(this.cfg.lazy) {
+        if(this.cfg.dynamic) {
             var selectedOption = this.options.filter(':selected'),
             labelVal = this.cfg.editable ? this.label.val() : selectedOption.text();
 
@@ -52,8 +53,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     initContents: function() {
-        this.input = $(this.jqId + '_input');
-        this.options = this.input.children('option');
         this.itemsContainer = this.itemsWrapper.children('.ui-selectonemenu-items');
         this.items = this.itemsContainer.find('.ui-selectonemenu-item');
         this.optGroupsSize = this.itemsContainer.children('li.ui-selectonemenu-item-group').length;
@@ -228,6 +227,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             $(this).removeClass('ui-state-hover');
         })
         .on('click.selectonemenu', function() {
+            $this.revert();
             $this.selectItem($(this));
             $this.changeAriaValue($(this));
         });
@@ -796,8 +796,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if (value === '&nbsp;') {
-                this.label.addClass('ui-state-disabled');
                 this.label.html(labelText);
+                if (labelText != '&nbsp;') {
+                   this.label.addClass('ui-state-disabled');
+                }
             }
             else {
                 this.label.removeClass('ui-state-disabled');
@@ -923,14 +925,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.itemsContainer.attr('aria-activedescendant', itemId);
     },
 
-    lazyLoad: function() {
+    dynamicPanelLoad: function() {
         var $this = this,
         options = {
             source: this.id,
             process: this.id,
             update: this.id,
             global: false,
-            params: [{name: this.id + '_lazyload', value: true}],
+            params: [{name: this.id + '_dynamicload', value: true}],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                     widget: $this,
@@ -945,7 +947,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 return true;
             },
             oncomplete: function(xhr, status, args) {
-                $this.isLazyLoaded = true;
+                $this.isDynamicLoaded = true;
                 $this.initContents();
                 $this.bindItemEvents();
 
@@ -957,11 +959,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     callHandleMethod: function(handleMethod, event) {
         var $this = this;
-        if(this.cfg.lazy && !this.isLazyLoaded) {
-            this.lazyLoad();
+        if(this.cfg.dynamic && !this.isDynamicLoaded) {
+            this.dynamicPanelLoad();
 
             var interval = setInterval(function() {
-                if($this.isLazyLoaded) {
+                if($this.isDynamicLoaded) {
                     handleMethod.call($this, event);
 
                     clearInterval(interval);

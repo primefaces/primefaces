@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,6 +67,10 @@ public class DataRenderer extends CoreRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
         boolean isTop = position.equals("top");
+        UIComponent leftTopContent = pageable.getFacet("paginatorTopLeft");
+        UIComponent rightTopContent = pageable.getFacet("paginatorTopRight");
+        UIComponent leftBottomContent = pageable.getFacet("paginatorBottomLeft");
+        UIComponent rightBottomContent = pageable.getFacet("paginatorBottomRight");
 
         String styleClass = isTop ? UIData.PAGINATOR_TOP_CONTAINER_CLASS : UIData.PAGINATOR_BOTTOM_CONTAINER_CLASS;
         String id = pageable.getClientId(context) + "_paginator_" + position;
@@ -87,6 +91,20 @@ public class DataRenderer extends CoreRenderer {
         writer.writeAttribute("role", "navigation", null);
         writer.writeAttribute("aria-label", ariaMessage, null);
 
+        if (leftTopContent != null && isTop) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", UIData.PAGINATOR_TOP_LEFT_CONTENT_CLASS, null);
+            renderChild(context, leftTopContent);
+            writer.endElement("div");
+        }
+
+        if (rightTopContent != null && isTop) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", UIData.PAGINATOR_TOP_RIGHT_CONTENT_CLASS, null);
+            renderChild(context, rightTopContent);
+            writer.endElement("div");
+        }
+
         String[] elements = pageable.getPaginatorTemplate().split(" ");
         for (String element : elements) {
             PaginatorElementRenderer renderer = PAGINATOR_ELEMENTS.get(element);
@@ -104,6 +122,18 @@ public class DataRenderer extends CoreRenderer {
                     writer.write(element + " ");
                 }
             }
+        }
+        if (leftBottomContent != null && !isTop) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", UIData.PAGINATOR_BOTTOM_LEFT_CONTENT_CLASS, null);
+            renderChild(context, leftBottomContent);
+            writer.endElement("div");
+        }
+        if (rightBottomContent != null && !isTop) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", UIData.PAGINATOR_BOTTOM_RIGHT_CONTENT_CLASS, null);
+            renderChild(context, rightBottomContent);
+            writer.endElement("div");
         }
 
         writer.endElement("div");

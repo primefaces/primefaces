@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextWrapper;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.application.resource.CollectScriptsResponseWriter;
-import org.primefaces.application.resource.CollectScriptsState;
+import org.primefaces.application.resource.MoveScriptsToBottomResponseWriter;
+import org.primefaces.application.resource.MoveScriptsToBottomState;
 
 /**
  * Custom {@link FacesContextWrapper} to init and release our {@link RequestContext}.
@@ -28,9 +28,9 @@ import org.primefaces.application.resource.CollectScriptsState;
 public class PrimeFacesContext extends FacesContextWrapper {
 
     private final FacesContext wrapped;
-    private final boolean collectScripts;
+    private final boolean moveScriptsToBottom;
 
-    private CollectScriptsState collectScriptsState;
+    private MoveScriptsToBottomState moveScriptsToBottomState;
     private PrimeExternalContext externalContext;
 
     public PrimeFacesContext(FacesContext wrapped) {
@@ -39,9 +39,9 @@ public class PrimeFacesContext extends FacesContextWrapper {
         RequestContext requestContext = new DefaultRequestContext(wrapped);
         RequestContext.setCurrentInstance(requestContext, wrapped);
         
-        collectScripts = requestContext.getApplicationContext().getConfig().isCollectScripts();
-        if (collectScripts) {
-            collectScriptsState = new CollectScriptsState();
+        moveScriptsToBottom = requestContext.getApplicationContext().getConfig().isMoveScriptsToBottom();
+        if (moveScriptsToBottom) {
+            moveScriptsToBottomState = new MoveScriptsToBottomState();
         }
     }
 
@@ -55,8 +55,8 @@ public class PrimeFacesContext extends FacesContextWrapper {
 
     @Override
     public void setResponseWriter(ResponseWriter writer) {
-        if (!getPartialViewContext().isAjaxRequest() && collectScripts) {
-            getWrapped().setResponseWriter(new CollectScriptsResponseWriter(writer, collectScriptsState));
+        if (!getPartialViewContext().isAjaxRequest() && moveScriptsToBottom && !(writer instanceof MoveScriptsToBottomResponseWriter)) {
+            getWrapped().setResponseWriter(new MoveScriptsToBottomResponseWriter(writer, moveScriptsToBottomState));
         }
         else {
             getWrapped().setResponseWriter(writer);

@@ -92,13 +92,13 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>3.13</version>
+            <version>3.17</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>3.13</version>
+            <version>3.17</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -216,6 +216,21 @@
                     <target>1.6</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>default-compile</id>
+                        <configuration>
+                            <showDeprecation>true</showDeprecation>
+                            <showWarnings>true</showWarnings>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>default-testCompile</id>
+                        <configuration>
+
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -588,6 +603,15 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/layout/layout.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/layout/0-jquery.layout.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/layout/1-layout.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/knob/knob.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/knob/1-jquery.knob.js</include>
@@ -646,6 +670,16 @@
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/colorpicker/0-jquery.colorpicker.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/colorpicker/1-colorpicker.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/fileupload.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/0-jquery.iframe-transport.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/1-jquery.fileupload.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/2-fileupload.js</include>
                             </includes>
                         </aggregation>
                     </aggregations>

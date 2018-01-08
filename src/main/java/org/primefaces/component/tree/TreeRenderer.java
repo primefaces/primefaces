@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -133,19 +133,23 @@ public class TreeRenderer extends CoreRenderer {
         String dropNodeRowKey = params.get(clientId + "_dropNode");
         String dragSource = params.get(clientId + "_dragSource");
         int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
-        TreeNode dragNode;
+        boolean isDroppedNodeCopy = Boolean.valueOf(params.get(clientId + "_isDroppedNodeCopy"));
+        String[] dragNodeRowKeyArr = dragNodeRowKey.split(",");
+        List<TreeNode> dragNodeList = new ArrayList<TreeNode>();
         TreeNode dropNode;
-
-        if (dragSource.equals(clientId)) {
-            tree.setRowKey(dragNodeRowKey);
-            dragNode = tree.getRowNode();
+        
+        for (String rowKey : dragNodeRowKeyArr) {
+            if (dragSource.equals(clientId)) {
+                tree.setRowKey(rowKey);
+                dragNodeList.add(tree.getRowNode());
+            }
+            else {
+                Tree otherTree = (Tree) tree.findComponent(":" + dragSource);
+                otherTree.setRowKey(rowKey);
+                dragNodeList.add(otherTree.getRowNode());
+            }
         }
-        else {
-            Tree otherTree = (Tree) tree.findComponent(":" + dragSource);
-            otherTree.setRowKey(dragNodeRowKey);
-            dragNode = otherTree.getRowNode();
-        }
-
+        
         if (isValueBlank(dropNodeRowKey)) {
             dropNode = tree.getValue();
         }
@@ -153,15 +157,33 @@ public class TreeRenderer extends CoreRenderer {
             tree.setRowKey(dropNodeRowKey);
             dropNode = tree.getRowNode();
         }
-
-        tree.setDragNode(dragNode);
+        
         tree.setDropNode(dropNode);
-
-        if (dndIndex >= 0 && dndIndex < dropNode.getChildCount()) {
-            dropNode.getChildren().add(dndIndex, dragNode);
+        
+        TreeNode[] dragNodes = new TreeNode[dragNodeList.size()];
+        dragNodes = dragNodeList.toArray(dragNodes);
+        if (tree.isMultipleDrag()) {
+            tree.setDragNodes(dragNodes);
         }
         else {
-            dropNode.getChildren().add(dragNode);
+            tree.setDragNode(dragNodes[0]);
+        }
+        
+        if (!tree.isTreeNodeDropped()) {
+            return;
+        }
+        
+        for (TreeNode dragNode : dragNodes) {
+            if (isDroppedNodeCopy) {
+                dragNode = tree.createCopyOfTreeNode(dragNode);
+            }
+            
+            if (dndIndex >= 0 && dndIndex < dropNode.getChildCount()) {
+                dropNode.getChildren().add(dndIndex, dragNode);
+            }
+            else {
+                dropNode.getChildren().add(dragNode);
+            }
         }
     }
 
@@ -264,7 +286,13 @@ public class TreeRenderer extends CoreRenderer {
         if (tree.isDraggable()) {
             wb.attr("draggable", true)
                     .attr("dragMode", tree.getDragMode())
-                    .attr("dropRestrict", tree.getDropRestrict());
+                    .attr("dropRestrict", tree.getDropRestrict())
+                    .attr("multipleDrag", tree.isMultipleDrag())
+                    .attr("dropCopyNode", tree.isDropCopyNode());
+        }
+        
+        if (tree.getOnDrop() != null) {
+            wb.attr("controlled", true);
         }
 
         if (filter) {
@@ -355,9 +383,11 @@ public class TreeRenderer extends CoreRenderer {
         writer.endElement("ul");
 
         if (selectable) {
-            encodeSelectionHolder(context, tree);
+            encodeStateHolder(context, tree, clientId + "_selection", tree.getSelectedRowKeysAsString());
         }
-
+        
+        encodeStateHolder(context, tree, clientId + "_scrollState", tree.getScrollState());
+        
         writer.endElement("div");
     }
 
@@ -407,7 +437,7 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         if (selectionMode != null) {
-            encodeSelectionHolder(context, tree);
+            encodeStateHolder(context, tree, clientId + "_selection", tree.getSelectedRowKeysAsString());
         }
 
         writer.endElement("div");
@@ -778,17 +808,15 @@ public class TreeRenderer extends CoreRenderer {
         writer.endElement("span");
     }
 
-    protected void encodeSelectionHolder(FacesContext context, Tree tree) throws IOException {
+    protected void encodeStateHolder(FacesContext context, Tree tree, String id, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-
-        String id = tree.getClientId(context) + "_selection";
 
         writer.startElement("input", null);
         writer.writeAttribute("type", "hidden", null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
-        writer.writeAttribute("value", tree.getSelectedRowKeysAsString(), null);
         writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute("value", value, null);
         writer.endElement("input");
     }
 

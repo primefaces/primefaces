@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,15 +23,28 @@ public class TreeDragDropEvent extends AbstractAjaxBehaviorEvent {
 
     private TreeNode dragNode;
 
+    private TreeNode[] dragNodes;
+
     private TreeNode dropNode;
 
     private int dropIndex;
 
-    public TreeDragDropEvent(UIComponent component, Behavior behavior, TreeNode dragNode, TreeNode dropNode, int dropIndex) {
+    private boolean droppedNodeCopy;
+
+    public TreeDragDropEvent(UIComponent component, Behavior behavior, TreeNode dragNode, TreeNode dropNode, int dropIndex, boolean droppedNodeCopy) {
         super(component, behavior);
         this.dragNode = dragNode;
         this.dropNode = dropNode;
         this.dropIndex = dropIndex;
+        this.droppedNodeCopy = droppedNodeCopy;
+    }
+
+    public TreeDragDropEvent(UIComponent component, Behavior behavior, TreeNode[] dragNodes, TreeNode dropNode, int dropIndex, boolean droppedNodeCopy) {
+        super(component, behavior);
+        this.dragNodes = dragNodes;
+        this.dropNode = dropNode;
+        this.dropIndex = dropIndex;
+        this.droppedNodeCopy = droppedNodeCopy;
     }
 
     public TreeNode getDragNode() {
@@ -42,7 +55,15 @@ public class TreeDragDropEvent extends AbstractAjaxBehaviorEvent {
         return dropNode;
     }
 
+    public TreeNode[] getDragNodes() {
+        return dragNodes;
+    }
+
     public int getDropIndex() {
         return dropIndex;
+    }
+
+    public boolean isDroppedNodeCopy() {
+        return droppedNodeCopy;
     }
 }

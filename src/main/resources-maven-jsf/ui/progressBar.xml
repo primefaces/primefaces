@@ -87,6 +87,13 @@
             <defaultValue>true</defaultValue>
             <description>Defines whether to trigger ajaxStatus or not.</description>
         </attribute>
+        <attribute>
+            <name>mode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>determinate</defaultValue>
+            <description>Defines the mode of the progress, valid values are "determinate" and "indeterminate".</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

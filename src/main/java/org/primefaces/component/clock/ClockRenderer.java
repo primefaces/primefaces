@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import java.util.Locale;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.RequestContext;
+import org.primefaces.PrimeFaces;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -34,7 +34,7 @@ public class ClockRenderer extends CoreRenderer {
         Clock clock = (Clock) component;
 
         if (clock.isSyncRequest()) {
-            RequestContext.getCurrentInstance(context).addCallbackParam("datetime", System.currentTimeMillis());
+            PrimeFaces.current().ajax().addCallbackParam("datetime", System.currentTimeMillis());
             context.renderResponse();
         }
     }

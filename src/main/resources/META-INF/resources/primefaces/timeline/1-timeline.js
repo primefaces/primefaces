@@ -555,11 +555,11 @@ PrimeFaces.widget.Timeline = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     /**
-     * Force render the timeline component 
+     * Force render the timeline component.
      * 
      * @param animate flag to animate the render action (optional)
      */
-    render: function (animate) {
+    renderTimeline: function (animate) {
         this.instance.render({'animate': animate});
     },
     

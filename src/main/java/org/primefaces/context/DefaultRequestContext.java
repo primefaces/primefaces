@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,11 +49,9 @@ public class DefaultRequestContext extends RequestContext {
 
     private static final Logger LOG = Logger.getLogger(DefaultRequestContext.class.getName());
     
-    private final static String ATTRIBUTES_KEY = "ATTRIBUTES";
     private final static String CALLBACK_PARAMS_KEY = "CALLBACK_PARAMS";
     private final static String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
 
-    private Map<Object, Object> attributes;
     private WidgetBuilder widgetBuilder;
     private AjaxRequestBuilder ajaxRequestBuilder;
     private CSVBuilder csvBuilder;
@@ -65,7 +63,6 @@ public class DefaultRequestContext extends RequestContext {
 
     public DefaultRequestContext(FacesContext context) {
         this.context = context;
-        this.attributes = new HashMap<Object, Object>();
     }
 
     @Override
@@ -86,25 +83,25 @@ public class DefaultRequestContext extends RequestContext {
     @Override
     @SuppressWarnings("unchecked")
     public Map<String, Object> getCallbackParams() {
-        if (attributes.get(CALLBACK_PARAMS_KEY) == null) {
-            attributes.put(CALLBACK_PARAMS_KEY, new HashMap<String, Object>());
+        if (getAttributes().get(CALLBACK_PARAMS_KEY) == null) {
+            getAttributes().put(CALLBACK_PARAMS_KEY, new HashMap<String, Object>());
         }
-        return (Map<String, Object>) attributes.get(CALLBACK_PARAMS_KEY);
+        return (Map<String, Object>) getAttributes().get(CALLBACK_PARAMS_KEY);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<String> getScriptsToExecute() {
-        if (attributes.get(EXECUTE_SCRIPT_KEY) == null) {
-            attributes.put(EXECUTE_SCRIPT_KEY, new ArrayList<String>());
+        if (getAttributes().get(EXECUTE_SCRIPT_KEY) == null) {
+            getAttributes().put(EXECUTE_SCRIPT_KEY, new ArrayList<String>());
         }
-        return (List<String>) attributes.get(EXECUTE_SCRIPT_KEY);
+        return (List<String>) getAttributes().get(EXECUTE_SCRIPT_KEY);
     }
 
     @Override
     public WidgetBuilder getWidgetBuilder() {
         if (this.widgetBuilder == null) {
-            this.widgetBuilder = new WidgetBuilder(context);
+            this.widgetBuilder = new WidgetBuilder(context, getApplicationContext().getConfig());
         }
 
         return widgetBuilder;
@@ -208,19 +205,19 @@ public class DefaultRequestContext extends RequestContext {
 
     @Override
     public void openDialog(String outcome) {
-        this.getAttributes().put(Constants.DIALOG_FRAMEWORK.OUTCOME, outcome);
+        context.getAttributes().put(Constants.DIALOG_FRAMEWORK.OUTCOME, outcome);
     }
 
     @Override
     public void openDialog(String outcome, Map<String, Object> options, Map<String, List<String>> params) {
-        this.getAttributes().put(Constants.DIALOG_FRAMEWORK.OUTCOME, outcome);
+        context.getAttributes().put(Constants.DIALOG_FRAMEWORK.OUTCOME, outcome);
 
         if (options != null) {
-            this.getAttributes().put(Constants.DIALOG_FRAMEWORK.OPTIONS, options);
+            context.getAttributes().put(Constants.DIALOG_FRAMEWORK.OPTIONS, options);
         }
 
         if (params != null) {
-            this.getAttributes().put(Constants.DIALOG_FRAMEWORK.PARAMS, params);
+            context.getAttributes().put(Constants.DIALOG_FRAMEWORK.PARAMS, params);
         }
     }
 
@@ -253,7 +250,6 @@ public class DefaultRequestContext extends RequestContext {
 
     @Override
     public void release() {
-        attributes = null;
         widgetBuilder = null;
         ajaxRequestBuilder = null;
         context = null;
@@ -263,16 +259,13 @@ public class DefaultRequestContext extends RequestContext {
 
     @Override
     public Map<Object, Object> getAttributes() {
-        if (attributes.get(ATTRIBUTES_KEY) == null) {
-            attributes.put(ATTRIBUTES_KEY, new HashMap<Object, Object>());
-        }
-        return (Map<Object, Object>) attributes.get(ATTRIBUTES_KEY);
+        return context.getAttributes();
     }
 
     @Override
     public ApplicationContext getApplicationContext() {
         if (this.applicationContext == null) {
-            this.applicationContext = ApplicationContext.getCurrentInstance();
+            this.applicationContext = ApplicationContext.getCurrentInstance(context);
             if (this.applicationContext == null) {
                 this.applicationContext = new DefaultApplicationContext(context);
                 ApplicationContext.setCurrentInstance(applicationContext, context);
@@ -341,10 +334,12 @@ public class DefaultRequestContext extends RequestContext {
         return rtl;
     }
 
+    @Override
     public void clearTableStates() {
         this.context.getExternalContext().getSessionMap().remove(Constants.TABLE_STATE);
     }
 
+    @Override
     public void clearTableState(String key) {
         Map<String, Object> sessionMap = this.context.getExternalContext().getSessionMap();
         Map<String, TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);

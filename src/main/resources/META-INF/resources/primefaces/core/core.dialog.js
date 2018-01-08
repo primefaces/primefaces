@@ -44,6 +44,10 @@ if (!PrimeFaces.dialog) {
 
             dialogFrame.width(frameWidth);
 
+            if(cfg.options.iframeTitle) {
+               dialogFrame.attr('title', cfg.options.iframeTitle);
+            }
+
             dialogFrame.on('load', function() {
                 var $frame = $(this),
                 headerElement = $frame.contents().find('title'),
@@ -62,7 +66,7 @@ if (!PrimeFaces.dialog) {
                 if(!$frame.data('initialized')) {
                     PrimeFaces.cw.call(rootWindow.PrimeFaces, 'DynamicDialog', dialogWidgetVar, {
                         id: dialogId,
-                        position: 'center',
+                        position: cfg.options.position||'center',
                         sourceComponentId: cfg.sourceComponentId,
                         sourceWidgetVar: cfg.sourceWidgetVar,
                         onHide: function() {
@@ -94,7 +98,8 @@ if (!PrimeFaces.dialog) {
                         minimizable: cfg.options.minimizable,
                         maximizable: cfg.options.maximizable,
                         headerElement: cfg.options.headerElement,
-                        responsive: cfg.options.responsive
+                        responsive: cfg.options.responsive,
+                        closeOnEscape: cfg.options.closeOnEscape
                     });
                 }
 
@@ -212,7 +217,11 @@ if (!PrimeFaces.dialog) {
         findRootWindow: function() {
             var w = window;
             while(w.frameElement) {
-                w = w.parent;
+                var parent = w.parent;
+                if (parent.PF === undefined) {
+                	break;
+                }
+                w = parent;
             };
 
             return w;

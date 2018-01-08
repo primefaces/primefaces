@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,11 +36,11 @@ public class SocketRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Socket socket = (Socket) component;
         String channel = socket.getChannel();
-        String channelUrl = Constants.PUSH_PATH + channel;
-        String url = getResourceURL(context, channelUrl);
+        String channelUrl = Constants.PUSH_PATH + channel;       
         String pushServer = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().getPushServerURL();
         String clientId = socket.getClientId(context);
 
+        String url = channelUrl;
         if (pushServer != null) {
             url = pushServer + url;
         }

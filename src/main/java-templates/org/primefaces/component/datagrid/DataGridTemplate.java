@@ -15,6 +15,7 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.Constants;
 import java.util.HashMap;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.PrimeFaces;
 
 	public static final String DATAGRID_CLASS = "ui-datagrid ui-widget";
     public static final String HEADER_CLASS = "ui-datagrid-header ui-widget-header ui-corner-top";
@@ -62,11 +63,7 @@ import javax.faces.event.BehaviorEvent;
 
             //Update paginator for callback
             if(ComponentUtils.isRequestSource(this, getFacesContext()) && this.isPaginator()) {
-                RequestContext requestContext = RequestContext.getCurrentInstance(getFacesContext());
-
-                if(requestContext != null) {
-                    requestContext.addCallbackParam("totalRecords", lazyModel.getRowCount());
-                }
+                PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
             }
         }
     }

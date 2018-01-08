@@ -55,7 +55,7 @@ PrimeFaces.widget.Socket = PrimeFaces.widget.BaseWidget.extend({
     },
 
     onMessage: function (response) {
-        var value = $.parseJSON(response.responseBody);
+        var value = JSON.parse(response.responseBody);
 
         if(value.hasOwnProperty('pfpd')) {
             value = value['pfpd'];
