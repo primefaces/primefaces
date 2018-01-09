@@ -296,11 +296,11 @@ public class ComponentUtils {
     }
     
     /**
-     * Generate an <code>href</code> URL considering a base URL and some other params.
+     * Generate an <code>href</code> URL considering a base URL and some other parameters.
      * This method consider existing query string and fragment in the base URL.
-     * @param baseUrl
-     * @param params
-     * @return 
+     * @param baseUrl An URL that may have query string and/or fragment.
+     * @param params A map with parameters for adding to <code>baseUrl</code>.
+     * @return An URL resulting in <code>params</code> added to <code>baseUrl</code> for using as <code>href</code> attribute.
      */
     public static String getHrefURL(String baseUrl, Map<String, List<String>> params) {
         if (params == null || params.isEmpty()) {
