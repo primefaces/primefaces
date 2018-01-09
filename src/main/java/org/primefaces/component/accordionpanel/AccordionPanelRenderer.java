@@ -41,7 +41,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         if (active != null) {
             if (isValueBlank(active)) {
-                // set a empty string instead of null - other the stateHelper will re-evaluate to the default value
+                // set a empty string instead of null - otherwise the stateHelper will re-evaluate to the default value
                 // see GitHub #3140
                 acco.setActiveIndex("");
             }
