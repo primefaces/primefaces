@@ -38,8 +38,8 @@ public abstract class InputRenderer extends CoreRenderer {
     }
 
     public static boolean shouldDecode(UIComponent component) {
-        boolean disabled = Boolean.valueOf(String.valueOf(component.getAttributes().get("disabled")));
-        boolean readonly = Boolean.valueOf(String.valueOf(component.getAttributes().get("readonly")));
+        boolean disabled = Boolean.parseBoolean(String.valueOf(component.getAttributes().get("disabled")));
+        boolean readonly = Boolean.parseBoolean(String.valueOf(component.getAttributes().get("readonly")));
 
         return !disabled && !readonly;
     }
