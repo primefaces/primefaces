@@ -15,7 +15,6 @@
  */
 package org.primefaces.util;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -602,11 +601,5 @@ public class ComponentUtils {
             return false;
         }
         return object1.equals(object2);
-    }
-    
-    public static <T extends UIComponent & RTLAware> void encodeDirection(FacesContext context, T component) throws IOException {
-        if (isRTL(context, component)) {
-            context.getResponseWriter().writeAttribute("dir", "rtl", null);
-        }
     }
 }
