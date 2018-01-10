@@ -57,7 +57,7 @@ public class TagCloudRenderer extends CoreRenderer {
 
         for (TagCloudItem item : model.getTags()) {
             String url = item.getUrl();
-            String href = url == null ? "#" : getResourceURL(context, item.getUrl());
+            String href = url == null ? "#" : item.getUrl();
 
             writer.startElement("li", null);
             writer.writeAttribute("class", "ui-tagcloud-strength-" + item.getStrength(), null);
