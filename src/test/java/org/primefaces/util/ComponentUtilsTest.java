@@ -41,7 +41,7 @@ public class ComponentUtilsTest {
     }
     
     @Test
-    public void getHrefURLWithExternalLinks() {
+    public void getHrefURL() {
         Map<String, List<String>> params = new LinkedHashMap<String, List<String>>();
                 
         params.put("param1", Arrays.asList("value1"));
