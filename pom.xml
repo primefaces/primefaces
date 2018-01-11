@@ -8,10 +8,12 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
     <version>6.2.RC2-SNAPSHOT</version>
+
     <name>primefaces</name>
     <url>http://www.primefaces.org</url>
 
