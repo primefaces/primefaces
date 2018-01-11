@@ -13,8 +13,16 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
     },
 
     bindEvents: function() {
+        var $this = this;
+
         if(this.cfg.toggleable) {
             this.bindToggler();
+
+            if(this.cfg.toggleOnHeaderClick) {
+                this.header.on('click', function() {
+                    $this.toggle();
+                });
+            }
         }
 
         if(this.cfg.closable) {
@@ -37,6 +45,8 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
             if(!href || href == '#') {
                 e.preventDefault();
             }
+
+            return false;
         });
     },
 
@@ -167,9 +177,11 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
 
         this.toggler.click(function() {
             $this.toggle();
+
+            return false;
         });
     },
-    
+
     bindCloser: function() {
         var $this = this;
 
@@ -179,6 +191,8 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         this.closer.click(function(e) {
             $this.close();
             e.preventDefault();
+
+            return false;
         });
     }
 
