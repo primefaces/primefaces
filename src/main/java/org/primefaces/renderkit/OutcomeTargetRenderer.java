@@ -143,7 +143,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         return outcomeTarget.isIncludeViewParams() || navCase.isIncludeViewParams();
     }
 
-    protected String prependContextPathNecessary(FacesContext facesContext, String path) {
+    protected String prependContextPathIfNecessary(FacesContext facesContext, String path) {
         if (path.length() > 0 && path.charAt(0) == '/') {
             String contextPath = facesContext.getExternalContext().getRequestContextPath();
             if (contextPath == null) {
@@ -165,7 +165,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         
         String href = outcomeTarget.getHref();
         if (href != null) {
-            url = prependContextPathNecessary(context, href);
+            url = prependContextPathIfNecessary(context, href);
         }
         else {
             NavigationCase navCase = findNavigationCase(context, outcomeTarget);
