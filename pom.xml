@@ -8,10 +8,12 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
-    <version>6.2.RC1</version>
+    <version>6.2.RC2-SNAPSHOT</version>
+
     <name>primefaces</name>
     <url>http://www.primefaces.org</url>
 
@@ -692,7 +694,7 @@
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ssh</artifactId>
-                <version>1.0</version>
+                <version>3.0.0</version>
             </extension>
         </extensions>
     </build>
@@ -806,6 +808,7 @@
                     <plugin>
                         <groupId>net.alchim31.maven</groupId>
                         <artifactId>yuicompressor-maven-plugin</artifactId>
+                        <version>1.4.0</version>
                         <configuration>
                             <jswarn>false</jswarn>
                             <excludes>

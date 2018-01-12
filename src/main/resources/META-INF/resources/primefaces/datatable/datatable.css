@@ -324,7 +324,7 @@
         display: none;
     }
 
-    .ui-datatable-reflow .ui-datatable-data td[role="gridcell"] { 
+    .ui-datatable-reflow .ui-datatable-data td[role="gridcell"]:not(.ui-helper-hidden) { 
         text-align: left;
         display: block;
         border: 0px none;
