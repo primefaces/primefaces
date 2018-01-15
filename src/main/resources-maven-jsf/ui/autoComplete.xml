@@ -267,13 +267,21 @@
             <description>Ensures uniqueness of selected items.</description>
         </attribute>
         <attribute>
-			<name>dynamic</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
+            <name>dynamic</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
             <description>Defines if dynamic loading is enabled for the element's panel. 
                 If the value is "true", the overlay is not rendered on page load to improve performance. Default is false.</description>
-		</attribute>
+        </attribute>
+        <attribute>
+            <name>autoSelection</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines if auto selection of items that are equal to the typed input is enabled.
+                If true, an item that is equal to the typed input is selected. Default is true.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
