@@ -2404,7 +2404,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(multi) {
             var oldValues = [];
             for(var i = 0; i < inputs.length; i++) {
-                oldValues.push(inputs.eq(i).val());
+                var input = inputs.eq(i);
+                
+                if(input.is(':checkbox')) {
+                    oldValues.push(input.val() + "_" + input.is(':checked'));
+                }
+                else {
+                    oldValues.push(input.val());
+                }
             }
 
             cell.data('multi-edit', true);
@@ -2489,7 +2496,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(cell.data('multi-edit')) {
             var oldValues = cell.data('old-value');
             for(var i = 0; i < inputs.length; i++) {
-                if(inputs.eq(i).val() != oldValues[i]) {
+                var input = inputs.eq(i),
+                inputVal = input.val();
+                
+                if(input.is(':checkbox')) {
+                    var checkboxVal = inputVal + "_" + input.is(':checked');
+                    if(checkboxVal != oldValues[i]) {
+                        changed = true;
+                        break;
+                    }
+                }
+                else if(inputVal != oldValues[i]) {
                     changed = true;
                     break;
                 }
