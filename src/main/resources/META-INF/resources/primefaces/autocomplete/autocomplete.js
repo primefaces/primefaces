@@ -23,6 +23,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.atPos = this.cfg.atPos||'left bottom';
         this.cfg.active = (this.cfg.active === false) ? false : true;
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
+        this.cfg.autoSelection = this.cfg.autoSelection === false ? false : true;
         this.suppressInput = true;
         this.touchToDropdownButton = false;
         this.isTabPressed = false;
@@ -809,9 +810,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
             for(var i = 0; i < $this.currentItems.length; i++) {
                 var stripedItem = $this.currentItems[i];
-				if (stripedItem) {
-					stripedItem = stripedItem.replace(/\r?\n/g, '');
-				}
+                if (stripedItem) {
+                    stripedItem = stripedItem.replace(/\r?\n/g, '');
+                }
                 if(stripedItem === value) {
                     valid = true;
                     break;
@@ -825,7 +826,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
             
-            if(valid && $this.checkMatchedItem && $this.items && !$this.isTabPressed && !$this.itemSelectedWithEnter) {   
+            if($this.cfg.autoSelection && valid && $this.checkMatchedItem && $this.items && !$this.isTabPressed && !$this.itemSelectedWithEnter) {
                 var selectedItem = $this.items.filter('[data-item-label="' + value + '"]');
                 if (selectedItem.length) {
                     selectedItem.click();
