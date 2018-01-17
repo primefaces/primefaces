@@ -70,7 +70,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         var _self = this;
 
         //hide menu on item click
-        this.links.bind('click', function(e) {
+        this.links.on('click', function(e) {
             var target = $(e.target),
                 submenuLink = target.hasClass('ui-submenu-link') ? target : target.closest('.ui-submenu-link');
 
@@ -137,6 +137,9 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
             'z-index': ++PrimeFaces.zindex
         }).show();
 
+        this.bindWindowResizeEvent();
+        this.bindDocumentHandler();
+        
         e.preventDefault();
         e.stopPropagation();
     },
@@ -150,6 +153,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         });
 
         this.jq.fadeOut('fast');
+        this.unbindEvents();
     },
 
     isVisible: function() {
@@ -158,6 +162,11 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
     getTarget: function() {
         return this.jqTarget;
+    },
+    
+    unbindEvents: function() {
+        $(window).off('resize.' + this.id);
+        $(document.body).off('click.' + this.id);
     }
 
 });
