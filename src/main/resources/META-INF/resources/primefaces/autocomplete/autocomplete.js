@@ -392,7 +392,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         //visuals and click handler for items
-        this.items.bind('mouseover', function() {
+        this.items.on('mouseover', function() {
             var item = $(this);
 
             if(!item.hasClass('ui-state-highlight')) {
@@ -404,7 +404,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
         })
-        .bind('click', function(event) {
+        .on('click', function(event) {
             var item = $(this),
             itemValue = item.attr('data-item-value'),
             isMoreText = item.hasClass('ui-autocomplete-moretext'),
@@ -466,6 +466,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
 
             $this.hide();
+        })
+        .on('mousedown', function() {
+            $this.checkMatchedItem = false;
         });
 
         if(PrimeFaces.env.browser.mobile) {
