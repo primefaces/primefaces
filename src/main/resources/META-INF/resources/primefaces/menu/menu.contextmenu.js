@@ -54,13 +54,11 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     },
 
     refresh: function(cfg) {
-        var jqId = PrimeFaces.escapeClientId(cfg.id),
-        instances = $(jqId);
-
-        if(instances.length > 1) {
-            $(document.body).children(jqId).remove();
+        var jqs = $('[id=' + cfg.id.replace(/:/g,"\\:") + ']');
+        if(jqs.length > 1) {
+            $(document.body).children(this.jqId).remove();
         }
-
+        
         this.init(cfg);
     },
 
