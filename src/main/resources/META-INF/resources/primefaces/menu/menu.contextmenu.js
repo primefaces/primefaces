@@ -164,6 +164,18 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         return this.jqTarget;
     },
     
+    bindWindowResizeEvent: function() {
+        //Hide contextMenu on resize
+        var $this = this,
+        resizeNS = 'resize.' + this.id;
+
+        $(window).off(resizeNS).on(resizeNS, function() {
+            if($this.jq.is(':visible')) {
+                $this.hide();
+            }
+        });
+    },
+    
     unbindEvents: function() {
         $(window).off('resize.' + this.id);
         $(document.body).off('click.' + this.id);
