@@ -29,6 +29,7 @@ public class ConfirmBehaviorHandler extends AbstractBehaviorHandler<ConfirmBehav
     private final TagAttribute icon;
     private final TagAttribute disabled;
     private final TagAttribute beforeShow;
+    private final TagAttribute escape;
 
     public ConfirmBehaviorHandler(BehaviorConfig config) {
         super(config);
@@ -37,6 +38,7 @@ public class ConfirmBehaviorHandler extends AbstractBehaviorHandler<ConfirmBehav
         this.icon = this.getAttribute(ConfirmBehavior.PropertyKeys.icon.name());
         this.disabled = this.getAttribute(ConfirmBehavior.PropertyKeys.disabled.name());
         this.beforeShow = this.getAttribute(ConfirmBehavior.PropertyKeys.beforeShow.name());
+        this.escape = this.getAttribute(ConfirmBehavior.PropertyKeys.escape.name());
     }
 
     @Override
@@ -49,6 +51,7 @@ public class ConfirmBehaviorHandler extends AbstractBehaviorHandler<ConfirmBehav
         setBehaviorAttribute(ctx, behavior, this.icon, ConfirmBehavior.PropertyKeys.icon.expectedType);
         setBehaviorAttribute(ctx, behavior, this.disabled, ConfirmBehavior.PropertyKeys.disabled.expectedType);
         setBehaviorAttribute(ctx, behavior, this.beforeShow, ConfirmBehavior.PropertyKeys.beforeShow.expectedType);
+        setBehaviorAttribute(ctx, behavior, this.escape, ConfirmBehavior.PropertyKeys.escape.expectedType);
 
         return behavior;
     }
