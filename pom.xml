@@ -715,7 +715,7 @@
                     <plugin>
                         <groupId>org.apache.felix</groupId>
                         <artifactId>maven-bundle-plugin</artifactId>
-                        <version>2.3.5</version>
+                        <version>2.5.4</version>
                         <extensions>true</extensions>
                         <configuration>
                             <supportedProjectTypes>
@@ -723,7 +723,18 @@
                             </supportedProjectTypes>
                             <instructions>
                                 <Export-Package>org.primefaces.*;version="${project.version}</Export-Package>
-                                <Import-Package>javax.*,*;resolution:=optional</Import-Package>
+                                <Import-Package>
+                                    javax.faces.component.search;resolution:=optional,
+                                    javax.faces.component.search.*;resolution:=optional,
+                                    javax.faces;version="[2.0.0,3.0.0)",
+                                    javax.faces.*;version="[2.0.0,3.0.0)",
+                                    javax.inject;resolution:=optional,
+                                    javax.inject.*;resolution:=optional,
+                                    javax.enterprise;resolution:=optional,
+                                    javax.enterprise.*;resolution:=optional,
+                                    javax.*,
+                                    *;resolution:=optional
+                                </Import-Package>
                             </instructions>
                         </configuration>
                         <executions>
