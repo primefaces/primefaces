@@ -37,7 +37,7 @@ public class SearchExpressionUtils {
     }
     
      // used by p:resolveClientId
-    public String resolveClientId(String expression, UIComponent source) {
+    public static String resolveClientId(String expression, UIComponent source) {
         return SearchExpressionFacade.resolveClientId(
                 FacesContext.getCurrentInstance(),
                 source,
@@ -45,7 +45,7 @@ public class SearchExpressionUtils {
     }
     
     // used by p:resolveClientIds
-    public String resolveClientIds(String expressions, UIComponent source) {
+    public static String resolveClientIds(String expressions, UIComponent source) {
         return SearchExpressionFacade.resolveClientIds(
                 FacesContext.getCurrentInstance(),
                 source,
