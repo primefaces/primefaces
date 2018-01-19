@@ -740,8 +740,13 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
         if(msg.header)
             this.title.text(msg.header);
 
-        if(msg.message)
-            this.message.text(msg.message);
+        if(msg.message){
+            if (msg.escape == "false"){
+            	this.message.html(msg.message);
+            }else{
+            	this.message.text(msg.message);
+            }
+        }
 
         this.show();
     }
