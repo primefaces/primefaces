@@ -88,7 +88,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                             $this.hide();
                             $this.globalTitle = null;
                             $this.target = null;
-                            $this.jq.removeClass('ui-state-error');
+                            $this.jq.children('.ui-tooltip-text').removeClass('ui-state-error');
                         }
                     });
 
