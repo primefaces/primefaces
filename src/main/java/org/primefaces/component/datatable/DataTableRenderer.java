@@ -1295,7 +1295,8 @@ public class DataTableRenderer extends DataRenderer {
         if (table.isMultiViewState()) {
             Map<String, Boolean> togglableColsMap = table.getTogglableColumnsMap();
             String colClientId = column.getContainerClientId(context);
-            String colHeaderClientId = clientId + colClientId.substring(colClientId.lastIndexOf(":"), colClientId.length());
+            char separatorChar = UINamingContainer.getSeparatorChar(context);
+            String colHeaderClientId = clientId + colClientId.substring(colClientId.lastIndexOf(separatorChar), colClientId.length());
             isColVisible = togglableColsMap.get(colHeaderClientId) == null ? isColVisible : togglableColsMap.get(colHeaderClientId);
         }
 

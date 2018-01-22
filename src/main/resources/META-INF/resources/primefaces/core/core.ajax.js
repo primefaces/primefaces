@@ -552,9 +552,7 @@ if (!PrimeFaces.ajax) {
                             cfg.ext.onerror.call(this, xhr, status, errorThrown);
                         }
 
-                        if(global) {
-                            $(document).trigger('pfAjaxError', [xhr, this, errorThrown]);
-                        }
+                        $(document).trigger('pfAjaxError', [xhr, this, errorThrown]);
 
                         PrimeFaces.error('Request return with error:' + status + '.');
                     })

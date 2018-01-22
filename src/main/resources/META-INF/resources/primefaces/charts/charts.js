@@ -801,10 +801,10 @@
                         }
                     }
                     else {
-                        if ((d[j][minyidx] != null && d[j][minyidx] < db.min) || db.min == null) {
+                        if (d[j][minyidx] != '-' && ((d[j][minyidx] != null && d[j][minyidx] < db.min) || db.min == null)) {
                             db.min = d[j][minyidx];
                         }
-                        if ((d[j][maxyidx] != null && d[j][maxyidx] > db.max) || db.max == null) {
+                        if (d[j][maxyidx] != '-' && ((d[j][maxyidx] != null && d[j][maxyidx] > db.max) || db.max == null)) {
                             db.max = d[j][maxyidx];
                         }
                     }
@@ -20772,6 +20772,15 @@ PrimeFaces.widget.ChartUtils = {
                     }
                     else {
                         chart.cfg.axes.xaxis.ticks = chart.cfg.ticks;
+                    }
+                    
+                    if(chart.cfg.dataRenderMode === 'key') {
+                        chart.cfg.data = [chart.cfg.data];
+                        chart.cfg.axes = {
+                            xaxis: {
+                               renderer: $.jqplot.CategoryAxisRenderer
+                            }
+                        };
                     }
                 }
             }

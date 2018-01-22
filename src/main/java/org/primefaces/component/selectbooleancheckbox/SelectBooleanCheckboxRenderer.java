@@ -71,6 +71,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         String style = checkbox.getStyle();
         String styleClass = checkbox.getStyleClass();
         styleClass = styleClass == null ? HTML.CHECKBOX_CLASS : HTML.CHECKBOX_CLASS + " " + styleClass;
+        styleClass = "ui-selectbooleancheckbox " + styleClass;
 
         writer.startElement("div", checkbox);
         writer.writeAttribute("id", clientId, "id");

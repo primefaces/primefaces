@@ -118,6 +118,13 @@
             <defaultValue>vertical</defaultValue>
             <description>Defines the orientation of the toggle animation, valid values are "vertical" and "horizontal".</description>
         </attribute>
+        <attribute>
+            <name>toggleOnHeaderClick</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Defines if the panel is toggable by clicking on the panel header. Default is false.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

@@ -47,7 +47,7 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         String styleClass = menu.getStyleClass();
         styleClass = styleClass == null ? TabMenu.CONTAINER_CLASS : TabMenu.CONTAINER_CLASS + " " + styleClass;
         int activeIndex = menu.getActiveIndex();
-        List<MenuElement> elements = menu.getElements();
+        List<?> elements = menu.getElements();
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, null);
@@ -62,10 +62,12 @@ public class TabMenuRenderer extends BaseMenuRenderer {
 
         int i = 0;
         if (elements != null && !elements.isEmpty()) {
-            for (MenuElement element : elements) {
-                if (element.isRendered() && (element instanceof MenuItem)) {
-                    encodeItem(context, menu, (MenuItem) element, (i == activeIndex));
-                    i++;
+            for (Object element : elements) {
+                if (element instanceof MenuElement) {
+                    if (((MenuElement) element).isRendered() && (element instanceof MenuItem)) {
+                        encodeItem(context, menu, (MenuItem) element, (i == activeIndex));
+                        i++;
+                    }
                 }
             }
         }
