@@ -20773,6 +20773,15 @@ PrimeFaces.widget.ChartUtils = {
                     else {
                         chart.cfg.axes.xaxis.ticks = chart.cfg.ticks;
                     }
+                    
+                    if(chart.cfg.dataRenderMode === 'key') {
+                        chart.cfg.data = [chart.cfg.data];
+                        chart.cfg.axes = {
+                            xaxis: {
+                               renderer: $.jqplot.CategoryAxisRenderer
+                            }
+                        };
+                    }
                 }
             }
 

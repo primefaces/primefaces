@@ -89,6 +89,8 @@ public abstract class BasePlotRenderer {
         if (!model.isResetAxesOnResize()) {
             writer.write(",resetAxesOnResize:" + false);
         }
+        
+        writer.write(",dataRenderMode:\"" + model.getDataRenderMode() + "\"");
     }
     
     protected String escapeChartData(Object value) {
