@@ -3649,7 +3649,20 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     updateEmptyColspan: function() {
         var emptyRow = this.tbody.children('tr:first');
         if(emptyRow && emptyRow.hasClass('ui-datatable-empty-message')) {
-            emptyRow.children('td').attr('colspan', this.thead.find('th:not(.ui-helper-hidden)').length);
+            var visibleHeaderColumns = this.thead.find('> tr:first th:not(.ui-helper-hidden)'),
+            colSpanValue = 0;
+    
+            for(var i = 0; i < visibleHeaderColumns.length; i++) {
+                var column = visibleHeaderColumns.eq(i);
+                if(column.is('[colspan]')) {
+                    colSpanValue += parseInt(column.attr('colspan')); 
+                }
+                else {
+                    colSpanValue++;
+                }
+            }
+            
+            emptyRow.children('td').attr('colspan', colSpanValue);
         }
     },
     
