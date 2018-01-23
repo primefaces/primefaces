@@ -69,7 +69,7 @@ public class PanelRenderer extends CoreRenderer {
                     .attr("toggleSpeed", panel.getToggleSpeed())
                     .attr("collapsed", panel.isCollapsed())
                     .attr("toggleOrientation", panel.getToggleOrientation())
-                    .attr("toggleOnHeaderClick", panel.isToggleOnHeaderClick());
+                    .attr("toggleableHeader", panel.isToggleableHeader());
         }
 
         if (panel.isClosable()) {
