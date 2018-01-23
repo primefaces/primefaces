@@ -105,8 +105,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         var highlightedItemId = highlightedItem.attr('id');
+        this.jq.attr('aria-owns', this.itemsContainer.attr('id'));
         this.focusInput.attr('aria-autocomplete', 'list')
-            .attr('aria-owns', this.itemsContainer.attr('id'))
             .attr('aria-activedescendant', highlightedItemId)
             .attr('aria-describedby', highlightedItemId)
             .attr('aria-disabled', this.disabled);
@@ -708,6 +708,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         //value before panel is shown
         this.preShowValue = this.options.filter(':selected');
         this.focusInput.attr('aria-expanded', true);
+        this.jq.attr('aria-expanded', true);
     },
 
     hide: function() {
@@ -717,6 +718,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         this.panel.css('z-index', '').hide();
         this.focusInput.attr('aria-expanded', false);
+        this.jq.attr('aria-expanded', false);
     },
 
     focus: function() {
