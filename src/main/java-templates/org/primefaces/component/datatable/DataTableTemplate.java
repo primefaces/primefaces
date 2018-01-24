@@ -1331,6 +1331,38 @@ import org.primefaces.component.datatable.TableState;
         return resizableColsMap;
     }
 
+    public List findOrderedColumns(String columnOrder) {
+        FacesContext context = getFacesContext();
+        String[] order = columnOrder.split(",");
+        List orderedColumns = new ArrayList();
+        String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
+        
+        for(String columnId : order) {
+            
+            for(UIComponent child : this.getChildren()) {
+                if(child instanceof Column && child.getClientId(context).equals(columnId)) {
+                    orderedColumns.add(child);
+                    break;
+                }
+                else if(child instanceof Columns) {
+                    String columnsClientId =  child.getClientId(context);
+                    
+                    if(columnId.startsWith(columnsClientId)) {
+                        String[] ids = columnId.split(separator);
+                        int index = Integer.parseInt(ids[ids.length - 1]);
+
+                        orderedColumns.add(new DynamicColumn(index, (Columns) child, (columnsClientId + separator + index)));
+                        break;
+                    }
+                    
+                }
+            }
+                        
+        }
+        
+        return orderedColumns;
+    }
+
     public Locale resolveDataLocale() {
         FacesContext context = this.getFacesContext();
         return LocaleUtils.resolveLocale(this.getDataLocale(), this.getClientId(context));
@@ -1452,7 +1484,7 @@ import org.primefaces.component.datatable.TableState;
 
             this.setFilterBy(ts.getFilters());
             this.setGlobalFilter(ts.getGlobalFilterValue());
-            this.setColumns(ts.getOrderedColumns());
+            this.setColumns(this.findOrderedColumns(ts.getOrderedColumnsAsString()));
             this.setTogglableColumnsAsString(ts.getTogglableColumnsAsString());
             this.setResizableColumnsAsString(ts.getResizableColumnsAsString());
         }
