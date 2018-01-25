@@ -138,8 +138,16 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     getEditorValue: function() {
-        var html = $(this.editorContainer[0]).find('p')[0].innerHTML;
-        var value = (html == '<p><br></p>') ? '' : html;
+
+        // github issue: #2907
+        // textEditor generates <p></p> as a content wrapper automatically that will contaminate the original value on form submit & update.
+        // However, the content wrapper will be head element instead of p when Headline is in use.
+        // We only remove the content wrapper when it is a p element
+        var htmlWithPWrapper = $(this.editorContainer[0]).find('p')[0];
+        var html = htmlWithPWrapper ? htmlWithPWrapper.innerHTML : this.editorContainer.get(0).children[0].innerHTML;
+
+        // textEditor generates <p><br></p> when there is no content. After the outer p element is removed, we can safely treat <br> as an empty value
+        var value = (html == '<br>') ? '' : html;
 
         return value;
     },
