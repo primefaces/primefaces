@@ -20,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
@@ -108,8 +109,8 @@ public class ButtonRenderer extends OutcomeTargetRenderer {
         }
 
         if (targetURL != null) {
-            onclick.append("window.open('").append(targetURL).append("','");
-            onclick.append(button.getTarget()).append("')");
+            onclick.append("window.open('").append(ComponentUtils.escapeText(targetURL)).append("','");
+            onclick.append(ComponentUtils.escapeText(button.getTarget())).append("')");
         }
 
         return onclick.toString();
