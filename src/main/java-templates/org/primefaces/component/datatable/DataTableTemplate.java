@@ -1333,31 +1333,34 @@ import org.primefaces.component.datatable.TableState;
 
     public List findOrderedColumns(String columnOrder) {
         FacesContext context = getFacesContext();
-        String[] order = columnOrder.split(",");
         List orderedColumns = new ArrayList();
-        String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
-        
-        for(String columnId : order) {
-            
-            for(UIComponent child : this.getChildren()) {
-                if(child instanceof Column && child.getClientId(context).equals(columnId)) {
-                    orderedColumns.add(child);
-                    break;
-                }
-                else if(child instanceof Columns) {
-                    String columnsClientId =  child.getClientId(context);
-                    
-                    if(columnId.startsWith(columnsClientId)) {
-                        String[] ids = columnId.split(separator);
-                        int index = Integer.parseInt(ids[ids.length - 1]);
 
-                        orderedColumns.add(new DynamicColumn(index, (Columns) child, (columnsClientId + separator + index)));
+        if(columnOrder != null) {
+            String[] order = columnOrder.split(",");
+            String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
+
+            for(String columnId : order) {
+
+                for(UIComponent child : this.getChildren()) {
+                    if(child instanceof Column && child.getClientId(context).equals(columnId)) {
+                        orderedColumns.add(child);
                         break;
                     }
-                    
+                    else if(child instanceof Columns) {
+                        String columnsClientId =  child.getClientId(context);
+
+                        if(columnId.startsWith(columnsClientId)) {
+                            String[] ids = columnId.split(separator);
+                            int index = Integer.parseInt(ids[ids.length - 1]);
+
+                            orderedColumns.add(new DynamicColumn(index, (Columns) child, (columnsClientId + separator + index)));
+                            break;
+                        }
+
+                    }
                 }
+
             }
-                        
         }
         
         return orderedColumns;
