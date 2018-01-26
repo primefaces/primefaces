@@ -50,11 +50,11 @@ public class SpinnerRenderer extends InputRenderer {
                 submittedValue = submittedValue.substring(0, (submittedValue.length() - suffix.length()));
             }
 
-            double submittedValueDbl = Double.parseDouble(submittedValue);
-            if (submittedValueDbl < spinner.getMin()) {
+            double parsedSubmittedValue = Double.parseDouble(submittedValue);
+            if (parsedSubmittedValue < spinner.getMin()) {
                 submittedValue = String.valueOf(spinner.getMin());
             }
-            else if (submittedValueDbl > spinner.getMax()) {
+            else if (parsedSubmittedValue > spinner.getMax()) {
                 submittedValue = String.valueOf(spinner.getMax());
             }
         }
