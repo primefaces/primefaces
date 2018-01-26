@@ -1333,9 +1333,11 @@ import org.primefaces.component.datatable.TableState;
 
     public List findOrderedColumns(String columnOrder) {
         FacesContext context = getFacesContext();
-        List orderedColumns = new ArrayList();
+        List orderedColumns = null;
 
         if(columnOrder != null) {
+            orderedColumns = new ArrayList();
+
             String[] order = columnOrder.split(",");
             String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
 
