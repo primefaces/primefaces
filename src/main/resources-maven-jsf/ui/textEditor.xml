@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE component SYSTEM "../misc/component.dtd" [
-<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
-<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
-<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
-<!ENTITY html_input_textarea_attributes			SYSTEM "../entities/html_input_textarea_attributes.xml">
-<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
-]>
+        <!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+        <!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+        <!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+        <!ENTITY html_input_textarea_attributes			SYSTEM "../entities/html_input_textarea_attributes.xml">
+        <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+        ]>
 <component>
     <tag>textEditor</tag>
     <tagClass>org.primefaces.component.texteditor.TextEditorTag</tagClass>
@@ -26,7 +26,7 @@
     </interfaces>
     <attributes>
         &input_component_attributes;
-        &widget_var_attribute;		
+        &widget_var_attribute;
         <attribute>
             <name>height</name>
             <required>false</required>
@@ -65,6 +65,41 @@
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
             <description>show / hide the editor toolbar visibility.</description>
+        </attribute>
+        <attribute>
+            <name>allowFormatting</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Whether to allow formatting to be included.</description>
+        </attribute>
+        <attribute>
+            <name>allowBlocks</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Whether to allow blocks to be included.</description>
+        </attribute>
+        <attribute>
+            <name>allowStyles</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Whether to allow styles to be included.</description>
+        </attribute>
+        <attribute>
+            <name>allowLinks</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Whether to allow links to be included.</description>
+        </attribute>
+        <attribute>
+            <name>allowImages</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Whether to allow images to be included.</description>
         </attribute>
     </attributes>
     <resources>
