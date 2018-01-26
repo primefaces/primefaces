@@ -16,15 +16,8 @@
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.column.Column;
-import org.primefaces.component.columns.Columns;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.TableState;
@@ -39,38 +32,11 @@ public class DraggableColumnsFeature implements DataTableFeature {
             return;
         }
 
-        String[] order = columnOrderParam.split(",");
-        List orderedColumns = new ArrayList();
-        String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
-
-        for (String columnId : order) {
-
-            for (UIComponent child : table.getChildren()) {
-                if (child instanceof Column && child.getClientId(context).equals(columnId)) {
-                    orderedColumns.add(child);
-                    break;
-                }
-                else if (child instanceof Columns) {
-                    String columnsClientId = child.getClientId(context);
-
-                    if (columnId.startsWith(columnsClientId)) {
-                        String[] ids = columnId.split(separator);
-                        int index = Integer.parseInt(ids[ids.length - 1]);
-
-                        orderedColumns.add(new DynamicColumn(index, (Columns) child, (columnsClientId + separator + index)));
-                        break;
-                    }
-
-                }
-            }
-
-        }
-
-        table.setColumns(orderedColumns);
+        table.setColumns(table.findOrderedColumns(columnOrderParam));
         
         if (table.isMultiViewState()) {
             TableState ts = table.getTableState(true);
-            ts.setOrderedColumns(orderedColumns);
+            ts.setOrderedColumnsAsString(columnOrderParam);
         }
     }
 

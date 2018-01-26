@@ -18,7 +18,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.toggleable) {
             this.bindToggler();
 
-            if(this.cfg.toggleOnHeaderClick) {
+            if(this.cfg.toggleableHeader) {
                 this.header.on('click', function() {
                     $this.toggle();
                 });

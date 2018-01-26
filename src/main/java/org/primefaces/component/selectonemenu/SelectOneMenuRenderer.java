@@ -119,6 +119,9 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleclass");
+        writer.writeAttribute("role", "combobox", null);
+        writer.writeAttribute("aria-haspopup", "true", null);
+        writer.writeAttribute("aria-expanded", "false", null);
         if (style != null) writer.writeAttribute("style", style, "style");
         if (title != null) writer.writeAttribute("title", title, "title");
 
@@ -147,8 +150,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
         //for keyboard accessibility and ScreenReader
-        writer.writeAttribute("role", "combobox", null);
-        writer.writeAttribute("aria-haspopup", "true", null);
         writer.writeAttribute("aria-expanded", "false", null);
         if (labelledBy != null) writer.writeAttribute("aria-labelledby", labelledBy, null);
         if (menu.getTabindex() != null) writer.writeAttribute("tabindex", menu.getTabindex(), null);

@@ -393,10 +393,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
                 }
             },
             stop: function(event, ui) {
-                var offset = $this.jq.data('offset');
-
                 $this.jq.css('position', 'fixed');
-                $this.jq.offset(offset);
 
                 if($this.cfg.hasIframe) {
                     $this.iframeFix.remove();
