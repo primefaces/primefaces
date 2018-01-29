@@ -381,9 +381,9 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
             TreeDragDropInfo info;
 
             if(this.isMultipleDrag()) 
-                info = new TreeDragDropInfo(this.getDragNodes(), this.getDropNode(), dndIndex, isDroppedNodeCopy);
+                info = new TreeDragDropInfo(this, this.getDragNodes(), this.getDropNode(), dndIndex, isDroppedNodeCopy);
             else
-                info = new TreeDragDropInfo(this.getDragNode(), this.getDropNode(), dndIndex, isDroppedNodeCopy);
+                info = new TreeDragDropInfo(this, this.getDragNode(), this.getDropNode(), dndIndex, isDroppedNodeCopy);
 
             retValOnDrop = (Boolean) me.invoke(context.getELContext(), new Object[] { info });
             PrimeFaces.current().ajax().addCallbackParam("access", retValOnDrop);
