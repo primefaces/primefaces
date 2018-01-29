@@ -222,7 +222,7 @@ public class TabViewRenderer extends CoreRenderer {
         String tabindex = tab.isDisabled() ? "-1" : tabView.getTabindex();
 
         //header container
-        writer.startElement("li", null);
+        writer.startElement("li", tab);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "tab", null);
         writer.writeAttribute("aria-expanded", String.valueOf(active), null);
