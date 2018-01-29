@@ -431,6 +431,11 @@ PrimeFaces.widget.Signature = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.render();
+
+        //disable the signature
+        if(this.cfg.readonly){
+            this.jq.signature("disable");
+        }
     },
 
     clear: function() {
