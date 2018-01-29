@@ -59,7 +59,7 @@ public class GrowlRenderer extends UINotificationRenderer {
             .attr("sticky", growl.isSticky())
             .attr("life", growl.getLife())
             .attr("escape", growl.isEscape())
-            .attr("keepMessages", growl.isKeepMessages());
+            .attr("keepAlive", growl.isKeepAlive());
 
         writer.write(",msgs:");
         encodeMessages(context, growl);

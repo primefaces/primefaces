@@ -101,7 +101,7 @@
             <description>Comma seperated list of severities to display only.</description>
         </attribute>
         <attribute>
-            <name>keepMessages</name>
+            <name>keepAlive</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
