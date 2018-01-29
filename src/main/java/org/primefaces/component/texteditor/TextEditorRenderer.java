@@ -34,13 +34,25 @@ import org.primefaces.util.WidgetBuilder;
 
 public class TextEditorRenderer extends CoreRenderer {
 
-    private static final PolicyFactory HTML_IMAGE_SANITIZER = new HtmlPolicyBuilder()
+    private static final PolicyFactory HTML_IMAGES_SANITIZER = new HtmlPolicyBuilder()
             .allowUrlProtocols("data", "http", "https")
             .allowElements("img")
             .allowAttributes("src")
             .matching(Pattern.compile("^(data:image/(gif|png|jpeg)[,;]|http|https|mailto|//).+", Pattern.CASE_INSENSITIVE))
             .onElements("img")
             .toFactory();
+    private static final PolicyFactory HTML_LINKS_SANITIZER = Sanitizers.LINKS
+            .and(new HtmlPolicyBuilder()
+            .allowElements("a")
+            .allowAttributes("target")
+            .onElements("a")
+            .toFactory());
+    private static final PolicyFactory HTML_STYLES_SANITIZER = Sanitizers.STYLES
+            .and(new HtmlPolicyBuilder()
+            .allowElements("span")
+            .allowAttributes("class")
+            .onElements("span")
+            .toFactory());
     private static final PolicyFactory HTML_DENY_ALL_SANITIZER = new HtmlPolicyBuilder().toFactory();
 
     protected String sanitizeHtml(String value, TextEditor editor) {
@@ -52,13 +64,13 @@ public class TextEditorRenderer extends CoreRenderer {
             sanitizer = sanitizer.and(Sanitizers.FORMATTING);
         }
         if (editor.isAllowLinks()) {
-            sanitizer = sanitizer.and(Sanitizers.LINKS);
+            sanitizer = sanitizer.and(HTML_LINKS_SANITIZER);
         }
         if (editor.isAllowStyles()) {
-            sanitizer = sanitizer.and(Sanitizers.STYLES);
+            sanitizer = sanitizer.and(HTML_STYLES_SANITIZER);
         }
         if (editor.isAllowImages()) {
-            sanitizer = sanitizer.and(HTML_IMAGE_SANITIZER);
+            sanitizer = sanitizer.and(HTML_IMAGES_SANITIZER);
         }
         return value == null ? null : sanitizer.sanitize(value);
     }

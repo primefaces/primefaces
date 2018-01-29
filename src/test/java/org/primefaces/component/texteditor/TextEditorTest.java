@@ -20,13 +20,17 @@ public class TextEditorTest {
 		renderer = null;
 	}
 
-	//TODO must be elaborated on to cover all supported tags
 	@Test
 	public void htmlSupportedByComponentShouldBeAllowedPerDefault() {
 		TextEditor editor = new TextEditor();
-		String value = "<u>Test</u><img src=\"data:image/png;base64,COFFEE\" />";
+		String value = "<p><a href=\"https://www.primefaces.org\" target=\"_blank\">Link</a> <strong>bold </strong><span class=\"ql-font-monospace\">monospace</span> <span class=\"ql-size-huge\">huge </span><span class=\"ql-font-serif ql-size-small\">small serif </span><span style=\"color: rgb(230, 0, 0);\">red </span><span style=\"background-color: rgb(255, 255, 0);\">yellow </span>x<sup>2</sup> <img src=\"data:image/png;base64,COFFEE\" /></p>";
 		String sanitized = renderer.sanitizeHtml(value, editor);
-		Assert.assertEquals(value, sanitized);
+		Assert.assertTrue(sanitized.contains("<a href") && sanitized.contains("target="));
+		Assert.assertTrue(sanitized.contains("<strong>bold"));
+		Assert.assertTrue(sanitized.contains("<span class=\"ql-font-monospace"));
+		Assert.assertTrue(sanitized.contains("<span style=\"background"));
+		Assert.assertTrue(sanitized.contains("<sup>2"));
+		Assert.assertTrue(sanitized.contains("<img") && sanitized.contains("COFFEE"));
 	}
 
 	@Test
