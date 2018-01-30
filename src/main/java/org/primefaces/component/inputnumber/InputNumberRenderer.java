@@ -68,6 +68,21 @@ public class InputNumberRenderer extends InputRenderer {
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(inputId);
 
         if (submittedValue != null) {
+
+            BigDecimal value = new BigDecimal(submittedValue);
+            if (!ComponentUtils.isValueBlank(inputNumber.getMinValue())) {
+                BigDecimal min = new BigDecimal(inputNumber.getMinValue());
+                if (value.compareTo(min) < 0) {
+                    submittedValue = String.valueOf(min.doubleValue());
+                }
+            }
+            if (!ComponentUtils.isValueBlank(inputNumber.getMaxValue())) {
+                BigDecimal max = new BigDecimal(inputNumber.getMaxValue());
+                if (value.compareTo(max) > 0) {
+                    submittedValue = String.valueOf(max.doubleValue());
+                }
+            }
+            
             inputNumber.setSubmittedValue(submittedValue);
         }
 
