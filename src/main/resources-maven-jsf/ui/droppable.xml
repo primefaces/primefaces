@@ -85,7 +85,7 @@
             <name>greedy</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <description>Greedy attribute of the droppable element.</description>
+            <description>Avoids parent droppable elements receiving the drop event. Default value: false</description>
         </attribute>         
     </attributes>
     <resources>
