@@ -39,35 +39,19 @@ public class ImageCompareRenderer extends CoreRenderer {
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("ImageCompare", compare.resolveWidgetVar(), clientId)
-                .attr("handle", getResourceRequestPath(context, "imagecompare/handle.gif"))
-                .attr("lt", getResourceRequestPath(context, "imagecompare/lt-small.png"))
-                .attr("rt", getResourceRequestPath(context, "imagecompare/rt-small.png"));
-
+                .attr("leftimage", compare.getLeftImage())
+                .attr("rightimage", compare.getRightImage());
         wb.finish();
     }
 
     protected void encodeMarkup(FacesContext context, ImageCompare compare) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-
         writer.startElement("div", compare);
+        writer.writeAttribute("style", "width: " + compare.getWidth() + "px;" + "height: " + compare.getHeight() + "px;", null);
         writer.writeAttribute("id", compare.getClientId(context), "id");
-        renderImage(context, compare, "before", compare.getLeftImage());
-        renderImage(context, compare, "fter", compare.getRightImage());
+        renderDynamicPassThruAttributes(context, compare);
         writer.endElement("div");
     }
 
-    private void renderImage(FacesContext context, ImageCompare compare, String type, String src) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
 
-        writer.startElement("div", compare);
-
-        writer.startElement("img", null);
-        writer.writeAttribute("alt", type, null);
-        writer.writeAttribute("src", getResourceURL(context, src), null);
-        writer.writeAttribute("width", compare.getWidth(), null);
-        writer.writeAttribute("height", compare.getHeight(), null);
-        writer.endElement("img");
-
-        writer.endElement("div");
-    }
 }
