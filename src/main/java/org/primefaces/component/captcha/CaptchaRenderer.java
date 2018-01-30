@@ -62,11 +62,12 @@ public class CaptchaRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, Captcha captcha, String publicKey) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = captcha.getClientId(context);
-
         captcha.setRequired(true);
-
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
+
+        renderDynamicPassThruAttributes(context, captcha);
+
         writer.endElement("div");
     }
 

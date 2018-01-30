@@ -668,8 +668,9 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         String ariaHeaderLabel = getHeaderLabel(context, column);
-
-        writer.startElement("th", null);
+        UIComponent component = (column instanceof UIComponent) ? (UIComponent) column : null;
+        
+        writer.startElement("th", component);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", columnClass, null);
         writer.writeAttribute("role", "columnheader", null);

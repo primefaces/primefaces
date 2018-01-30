@@ -20,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.button.Button;
 import org.primefaces.mobile.util.MobileUtils;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
 public class ButtonRenderer extends org.primefaces.component.button.ButtonRenderer {
@@ -77,7 +78,7 @@ public class ButtonRenderer extends org.primefaces.component.button.ButtonRender
         else {
             String targetURL = getTargetURL(context, button);
             if (targetURL != null) {
-                command = "window.open('" + targetURL + "','" + button.getTarget() + "')";
+                command = "window.open('" + ComponentUtils.escapeText(targetURL) + "','" + ComponentUtils.escapeText(button.getTarget()) + "')";
             }
         }
 
