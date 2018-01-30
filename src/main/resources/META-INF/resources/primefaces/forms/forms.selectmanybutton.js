@@ -34,8 +34,8 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
                 button.addClass('ui-state-hover');
             else
                 button.removeClass('ui-state-hover');
-
-            input.trigger('click');
+            
+            input.trigger('focus').trigger('click');
         });
 
         /* Keyboard support */
@@ -43,19 +43,11 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
             var input = $(this),
             button = input.parent();
 
-            if(input.prop('checked')) {
-                button.removeClass('ui-state-active');
-            }
-
             button.addClass('ui-state-focus');
         })
         .on('blur', function() {
             var input = $(this),
             button = input.parent();
-
-            if(input.prop('checked')) {
-                button.addClass('ui-state-active');
-            }
 
             button.removeClass('ui-state-focus');
         })
@@ -70,7 +62,7 @@ PrimeFaces.widget.SelectManyButton = PrimeFaces.widget.BaseWidget.extend({
         })
         .on('click', function(e) {
             e.stopPropagation();
-        })
+        });
     },
 
     select: function(button) {
