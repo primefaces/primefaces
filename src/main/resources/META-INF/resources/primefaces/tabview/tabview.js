@@ -323,7 +323,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         shouldLoad = this.cfg.dynamic && !this.isLoaded(newPanel);
 
         //update state
-        this.stateHolder.val(index);
+        this.stateHolder.val(newPanel.data('index'));
         this.cfg.selected = index;
 
         if(shouldLoad) {
@@ -402,7 +402,6 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      */
     loadDynamicTab: function(newPanel) {
         var $this = this,
-        tabindex = newPanel.index(),
         options = {
             source: this.id,
             process: this.id,
@@ -410,7 +409,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             params: [
                 {name: this.id + '_contentLoad', value: true},
                 {name: this.id + '_newTab', value: newPanel.attr('id')},
-                {name: this.id + '_tabindex', value: tabindex}
+                {name: this.id + '_tabindex', value: newPanel.data('index')}
             ],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
