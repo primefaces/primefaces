@@ -180,7 +180,7 @@ public class TabViewRenderer extends CoreRenderer {
             int i = 0;
             for (UIComponent kid : tabView.getChildren()) {
                 if (kid.isRendered() && kid instanceof Tab) {
-                    encodeTabHeader(context, tabView, (Tab) kid, (i == activeIndex));
+                    encodeTabHeader(context, tabView, (Tab) kid, i, (i == activeIndex));
                     i++;
                 }
             }
@@ -196,7 +196,7 @@ public class TabViewRenderer extends CoreRenderer {
             for (int i = 0; i < dataCount; i++) {
                 tabView.setIndex(i);
 
-                encodeTabHeader(context, tabView, tab, (i == activeIndex));
+                encodeTabHeader(context, tabView, tab, i, (i == activeIndex));
             }
 
             tabView.setIndex(-1);
@@ -209,7 +209,8 @@ public class TabViewRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeTabHeader(FacesContext context, TabView tabView, Tab tab, boolean active) throws IOException {
+    protected void encodeTabHeader(FacesContext context, TabView tabView, Tab tab, int index, boolean active)
+            throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String defaultStyleClass = active ? TabView.ACTIVE_TAB_HEADER_CLASS : TabView.INACTIVE_TAB_HEADER_CLASS;
         defaultStyleClass = defaultStyleClass + " ui-corner-" + tabView.getOrientation();   //cornering
@@ -228,6 +229,7 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("aria-expanded", String.valueOf(active), null);
         writer.writeAttribute("aria-selected", String.valueOf(active), null);
         writer.writeAttribute("aria-label", tab.getAriaLabel(), null);
+        writer.writeAttribute("data-index", index, null);
         if (tab.getTitleStyle() != null) {
             writer.writeAttribute("style", tab.getTitleStyle(), null);
         }
@@ -285,7 +287,7 @@ public class TabViewRenderer extends CoreRenderer {
             int i = 0;
             for (UIComponent kid : tabView.getChildren()) {
                 if (kid.isRendered() && kid instanceof Tab) {
-                    encodeTabContent(context, (Tab) kid, (i == activeIndex), dynamic);
+                    encodeTabContent(context, (Tab) kid, i, (i == activeIndex), dynamic);
                     i++;
                 }
             }
@@ -301,7 +303,7 @@ public class TabViewRenderer extends CoreRenderer {
             for (int i = 0; i < dataCount; i++) {
                 tabView.setIndex(i);
 
-                encodeTabContent(context, tab, (i == activeIndex), dynamic);
+                encodeTabContent(context, tab, i, (i == activeIndex), dynamic);
             }
 
             tabView.setIndex(-1);
@@ -310,7 +312,8 @@ public class TabViewRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeTabContent(FacesContext context, Tab tab, boolean active, boolean dynamic) throws IOException {
+    protected void encodeTabContent(FacesContext context, Tab tab, int index, boolean active, boolean dynamic)
+            throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = active ? TabView.ACTIVE_TAB_CONTENT_CLASS : TabView.INACTIVE_TAB_CONTENT_CLASS;
 
@@ -319,6 +322,7 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "tabpanel", null);
         writer.writeAttribute("aria-hidden", String.valueOf(!active), null);
+        writer.writeAttribute("data-index", index, null);
 
         if (dynamic) {
             if (active) {

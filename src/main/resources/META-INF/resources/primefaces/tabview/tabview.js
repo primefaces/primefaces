@@ -445,14 +445,19 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * Removes a tab with given index
      */
     remove: function(index) {
+        // remove old header and content
         var header = this.headerContainer.eq(index),
         panel = this.panelContainer.children().eq(index);
 
         header.remove();
         panel.remove();
 
-        var length = this.getLength();
+        // refresh "chached" selectors
+        this.headerContainer = this.navContainer.children('li.ui-tabs-header');
+        this.panelContainer = this.jq.children('.ui-tabs-panels');
 
+        // select next tab
+        var length = this.getLength();
         if(length > 0) {
             if(index < this.cfg.selected) {
                 this.cfg.selected--;
@@ -492,7 +497,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         ext = {
             params: [
                 {name: this.id + '_newTab', value: panel.attr('id')},
-                {name: this.id + '_tabindex', value: panel.index()}
+                {name: this.id + '_tabindex', value: panel.data('index')}
             ]
         };
 
