@@ -110,7 +110,7 @@ public class InputNumberRenderer extends InputRenderer {
         String styleClass = inputNumber.getStyleClass();
         styleClass = styleClass == null ? InputNumber.STYLE_CLASS : InputNumber.STYLE_CLASS + " " + styleClass;
 
-        writer.startElement("span", null);
+        writer.startElement("span", inputNumber);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, "styleClass");
 
