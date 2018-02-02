@@ -162,6 +162,14 @@
   height: 0px;
 }
 
+/** Filter **/
+.ui-treetable .ui-column-filter {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin:auto;
+}
+
 /** Reflow **/
 .ui-treetable-reflow .ui-treetable-data td .ui-column-title {
     display: none;

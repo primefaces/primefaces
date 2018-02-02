@@ -1,6 +1,7 @@
 .ui-tooltip {
     position:absolute;
     display:none;
+    pointer-events: none;
 }
 
 .ui-tooltip.ui-tooltip-right,
@@ -16,6 +17,7 @@
 .ui-tooltip .ui-tooltip-text {
    padding: 3px 10px;
    background-color: rgb(76, 76, 76);
+   background-image: none;
    color: #ffffff;
 }
 

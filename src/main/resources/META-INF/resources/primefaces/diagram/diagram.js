@@ -158,14 +158,6 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
         else {
             PrimeFaces.ajax.Request.handle(options); 
         }
-    },
-    
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
-    
-        return false;
     }
 
 });

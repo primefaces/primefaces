@@ -16,7 +16,11 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.scrollable) {
             this.setupScrolling();
         }
-
+        
+        if(this.cfg.filter) {
+            this.setupFiltering();
+        }
+        
         if(this.cfg.resizableColumns) {
             this.setupResizableColumns();
         }
@@ -34,6 +38,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     
     refresh: function(cfg) {
         this.columnWidthsFixed = false;
+        this.scrollStateVal = this.scrollStateHolder ? this.scrollStateHolder.val() : null;
         this.init(cfg);
     },
     
@@ -76,6 +81,133 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             };
 
             this.paginator = new PrimeFaces.widget.Paginator(this.cfg.paginator);
+        }
+    },
+    
+    /**
+     * Binds filter events to standard filters
+     */
+    setupFiltering: function() {
+        var $this = this,
+        filterColumns = this.thead.find('> tr > th.ui-filter-column');
+        this.cfg.filterEvent = this.cfg.filterEvent||'keyup';
+        this.cfg.filterDelay = this.cfg.filterDelay||300;
+
+        filterColumns.children('.ui-column-filter').each(function() {
+            var filter = $(this);
+
+            if(filter.is('input:text')) {
+                PrimeFaces.skinInput(filter);
+                $this.bindTextFilter(filter);
+            } 
+            else {
+                PrimeFaces.skinSelect(filter);
+                $this.bindChangeFilter(filter);
+            }
+        });
+    },
+    
+    bindTextFilter: function(filter) {
+        if(this.cfg.filterEvent === 'enter')
+            this.bindEnterKeyFilter(filter);
+        else
+            this.bindFilterEvent(filter);
+    },
+    
+    bindChangeFilter: function(filter) {
+        var $this = this;
+        
+        filter.change(function() {
+            $this.filter();
+        });
+    },
+    
+    bindEnterKeyFilter: function(filter) {
+        var $this = this;
+    
+        filter.bind('keydown', function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                e.preventDefault();
+            }
+        }).bind('keyup', function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                $this.filter();
+
+                e.preventDefault();
+            }
+        });
+    },
+    
+    bindFilterEvent: function(filter) {
+        var $this = this;
+        
+        //prevent form submit on enter key
+        filter.on('keydown.treeTable-blockenter', function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                e.preventDefault();
+            }
+        })
+        .on(this.cfg.filterEvent + '.treeTable', function(e) {
+            if($this.filterTimeout) {
+                clearTimeout($this.filterTimeout);
+            }
+
+            $this.filterTimeout = setTimeout(function() {
+                $this.filter();
+                $this.filterTimeout = null;
+            },
+            $this.cfg.filterDelay);
+        });
+    },
+    
+    /**
+     * Ajax filter
+     */
+    filter: function() {
+        var $this = this,
+        options = {
+            source: this.id,
+            update: this.id,
+            process: this.id,
+            formId: this.cfg.formId,
+            params: [{name: this.id + '_filtering', value: true},
+                     {name: this.id + '_encodeFeature', value: true}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            this.tbody.html(content);
+                        }
+                    });
+
+                return true;
+            },
+            oncomplete: function(xhr, status, args) {
+                var paginator = $this.getPaginator();
+                if(args && args.totalRecords) {                    
+                    if(paginator) {
+                        paginator.setTotalRecords(args.totalRecords);
+                    }
+                }
+            }
+        };
+
+        if(this.hasBehavior('filter')) {
+            var filterBehavior = this.cfg.behaviors['filter'];
+
+            filterBehavior.call(this, options);
+        } 
+        else {
+            PrimeFaces.ajax.AjaxRequest(options); 
         }
     },
     
@@ -321,7 +453,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             
             this.tbody.off('click.treetable-cell', cellSelector)
                         .on('click.treetable-cell', cellSelector, null, function(e) {
-                            if(!$(e.target).is('span.ui-c')) {
+                            if(!$(e.target).is('span.ui-treetable-toggler.ui-c')) {
                                 $this.incellClick = true;
                                 
                                 var cell = $(this);
@@ -601,7 +733,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
     
-    toggleCheckboxNode: function(node) {;
+    toggleCheckboxNode: function(node) {
         var selected = node.hasClass('ui-state-highlight'),
         rowKey = node.data('rk');
      
@@ -727,15 +859,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         
         return parent.length === 1 ? parent : null;
     },
-    
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
 
-        return false;
-    },
-            
     removeDescendantsFromSelection: function(rowKey) {
         this.selections = $.grep(this.selections, function(value) {
             return value.indexOf(rowKey + '_') !== 0;
@@ -843,6 +967,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         this.footerTable = this.scrollFooterBox.children('table');
         this.headerCols = this.headerTable.find('> thead > tr > th');
         this.footerCols = this.footerTable.find('> tfoot > tr > td');
+        this.percentageScrollHeight = this.cfg.scrollHeight && (this.cfg.scrollHeight.indexOf('%') !== -1);
+        this.percentageScrollWidth = this.cfg.scrollWidth && (this.cfg.scrollWidth.indexOf('%') !== -1);
         var $this = this;
         
         if(this.cfg.scrollHeight) {
@@ -905,7 +1031,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             var header = $(this);
             header.attr('id', header.attr('id') + '_clone');
         });
-        this.theadClone.removeAttr('id').addClass('ui-treetable-scrollable-theadclone').height(0).prependTo(this.bodyTable);
+        this.theadClone.removeAttr('id').addClass('ui-treetable-scrollable-theadclone').hide().prependTo(this.bodyTable);
     },
     
      fixColumnWidths: function() {
@@ -935,6 +1061,15 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             
             this.columnWidthsFixed = true;
         }
+    },
+    
+    updateColumnWidths: function() {
+        this.columnWidthsFixed = false;
+        this.jq.find('> table > thead > tr > th').each(function() {
+            var col = $(this);
+            col.css('width', '');
+        });
+        this.fixColumnWidths();
     },
 
     adjustScrollHeight: function() {
@@ -985,11 +1120,12 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     },
             
     restoreScrollState: function() {
-        var scrollState = this.scrollStateHolder.val(),
+        var scrollState = this.scrollStateVal||this.scrollStateHolder.val(),
         scrollValues = scrollState.split(',');
 
         this.scrollBody.scrollLeft(scrollValues[0]);
         this.scrollBody.scrollTop(scrollValues[1]);
+        this.scrollStateVal = null;
     },
     
     saveScrollState: function() {
@@ -1055,8 +1191,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                     params: [
                         {name: $this.id + '_colResize', value: true},
                         {name: $this.id + '_columnId', value: columnHeader.attr('id')},
-                        {name: $this.id + '_width', value: columnHeader.width()},
-                        {name: $this.id + '_height', value: columnHeader.height()}
+                        {name: $this.id + '_width', value: parseInt(columnHeader.width())},
+                        {name: $this.id + '_height', value: parseInt(columnHeader.height())}
                     ]
                 }
                 
@@ -1320,7 +1456,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     
     tabCell: function(cell, forward) {
-        var targetCell = forward ? cell.next() : cell.prev();
+        var targetCell = forward ? cell.nextAll('td.ui-editable-column:first') : cell.prevAll('td.ui-editable-column:first');
         if(targetCell.length == 0) {
             var tabRow = forward ? cell.parent().next() : cell.parent().prev();
             targetCell = forward ? tabRow.children('td.ui-editable-column:first') : tabRow.children('td.ui-editable-column:last');

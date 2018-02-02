@@ -13,7 +13,8 @@ if (!PrimeFaces.dialog) {
             }
 
             var dialogWidgetVar = cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget',
-            dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container ui-overlay-hidden"' + 
+            styleClass = cfg.options.styleClass||'',
+            dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container ui-overlay-hidden ' + styleClass + '"' +
                     ' data-pfdlgcid="' + cfg.pfdlgcid + '" data-widgetvar="' + dialogWidgetVar + '"></div>')
                     .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span class="ui-dialog-title"></span></div>');
 
@@ -43,6 +44,10 @@ if (!PrimeFaces.dialog) {
 
             dialogFrame.width(frameWidth);
 
+            if(cfg.options.iframeTitle) {
+               dialogFrame.attr('title', cfg.options.iframeTitle);
+            }
+
             dialogFrame.on('load', function() {
                 var $frame = $(this),
                 headerElement = $frame.contents().find('title'),
@@ -61,7 +66,7 @@ if (!PrimeFaces.dialog) {
                 if(!$frame.data('initialized')) {
                     PrimeFaces.cw.call(rootWindow.PrimeFaces, 'DynamicDialog', dialogWidgetVar, {
                         id: dialogId,
-                        position: 'center',
+                        position: cfg.options.position||'center',
                         sourceComponentId: cfg.sourceComponentId,
                         sourceWidgetVar: cfg.sourceWidgetVar,
                         onHide: function() {
@@ -92,7 +97,9 @@ if (!PrimeFaces.dialog) {
                         height: cfg.options.height,
                         minimizable: cfg.options.minimizable,
                         maximizable: cfg.options.maximizable,
-                        headerElement: cfg.options.headerElement
+                        headerElement: cfg.options.headerElement,
+                        responsive: cfg.options.responsive,
+                        closeOnEscape: cfg.options.closeOnEscape
                     });
                 }
 
@@ -109,10 +116,6 @@ if (!PrimeFaces.dialog) {
                     dialogFrame.attr('title', title.text());
                 }
 
-                dialogFrame.data('initialized', true);
-
-                rootWindow.PF(dialogWidgetVar).show();
-
                 //adjust height
                 var frameHeight = null;
                 if(cfg.options.contentHeight)
@@ -121,6 +124,10 @@ if (!PrimeFaces.dialog) {
                     frameHeight = $frame.get(0).contentWindow.document.body.scrollHeight + (PrimeFaces.env.browser.webkit ? 5 : 25);
 
                 $frame.css('height', frameHeight);
+                
+                // fix #1290 - dialogs are not centered vertically
+                dialogFrame.data('initialized', true);
+                rootWindow.PF(dialogWidgetVar).show();
             })
             .attr('src', frameURL);
         },
@@ -210,7 +217,11 @@ if (!PrimeFaces.dialog) {
         findRootWindow: function() {
             var w = window;
             while(w.frameElement) {
-                w = w.parent;
+                var parent = w.parent;
+                if (parent.PF === undefined) {
+                	break;
+                }
+                w = parent;
             };
 
             return w;

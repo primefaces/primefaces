@@ -12,12 +12,6 @@ a {
     outline: none;
 }
 
-.ui-icon {
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-}
-
 /*
  * jQuery UI CSS Framework @VERSION
  *
@@ -1233,19 +1227,6 @@ a {
     background: #c4c4c4 -moz-linear-gradient(top, rgba(255,255,255,0.8), rgba(255,255,255,0));
 }
 
-*html .ui-menu .ui-menu-list {
-    background: none;
-}
-
-*html .ui-menubar .ui-menu-child {
-    background: #ffffff;
-}
-
-*html .ui-menu .ui-menuitem-link {
-    border-color: #c4c4c4;
-    filter: chroma(color=#c4c4c4);
-}
-
 .ui-datatable-odd {
     background: none repeat scroll 0 0 #F2F5F9;
 }
@@ -1318,4 +1299,45 @@ a {
 /*ImageCropper*/
 .aui .jcrop-holder img {
 	max-width: none;
+}
+
+/* InputGroup */
+.ui-inputgroup .ui-inputgroup-addon,
+.ui-inputgroup .ui-inputgroup-addon-checkbox{
+    border-color: #a8a8a8;
+    background-color: #f0f0f0;
+    color: #4f4f4f;
+}
+.ui-inputgroup .ui-inputgroup-addon:first-child,
+.ui-inputgroup .ui-inputgroup-addon-checkbox:first-child {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.ui-inputgroup .ui-inputgroup-addon:last-child,
+.ui-inputgroup .ui-inputgroup-addon-checkbox:last-child {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+    
+.ui-inputgroup .ui-button:first-child {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+        
+.ui-inputgroup .ui-button:last-child {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+/* Tooltip */
+.ui-tooltip .ui-tooltip-text.ui-state-error {
+    border: 0 none;
+    background-color: #f2dede;
+    color: #cd0a0a;
+}
+
+.ui-tooltip .ui-tooltip-arrow.ui-state-error {
+    background: none;
+    border-right-color: #cd0a0a;
 }

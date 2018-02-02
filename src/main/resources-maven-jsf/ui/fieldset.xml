@@ -4,48 +4,48 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>fieldset</tag>
-	<tagClass>org.primefaces.component.fieldset.FieldsetTag</tagClass>
-	<componentClass>org.primefaces.component.fieldset.Fieldset</componentClass>
-	<componentType>org.primefaces.component.Fieldset</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.FieldsetRenderer</rendererType>
-	<rendererClass>org.primefaces.component.fieldset.FieldsetRenderer</rendererClass>
-	<parent>javax.faces.component.UIPanel</parent>
+    <tag>fieldset</tag>
+    <tagClass>org.primefaces.component.fieldset.FieldsetTag</tagClass>
+    <componentClass>org.primefaces.component.fieldset.Fieldset</componentClass>
+    <componentType>org.primefaces.component.Fieldset</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.FieldsetRenderer</rendererType>
+    <rendererClass>org.primefaces.component.fieldset.FieldsetRenderer</rendererClass>
+    <parent>javax.faces.component.UIPanel</parent>
     <description>Fieldset is a grouping component with a title and content.</description>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
         <interface>
-			<name>javax.faces.component.behavior.ClientBehaviorHolder</name>
-		</interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
         <interface>
-			<name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
-		</interface>
-	</interfaces>
-	<attributes>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+        </interface>
+    </interfaces>
+    <attributes>
 		&standard_uicomponent_attributes;
         &widget_var_attribute;
         <attribute>
-			<name>legend</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+            <name>legend</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Title text.</description>
-		</attribute>
-		<attribute>
-			<name>style</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Inline style of the fieldset.</description>
-		</attribute>
-		<attribute>
-			<name>styleClass</name>
-			<required>false</required>
-			<type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
             <description>Style class of the fieldset.</description>
-		</attribute>
-         <attribute>
+        </attribute>
+        <attribute>
             <name>toggleable</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
@@ -74,28 +74,34 @@
             <description>Position of the element in the tabbing order.</description>
         </attribute>
         <attribute>
-			<name>escape</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
+            <name>escape</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
             <description>Defines whether value would be escaped or not, defaults to true.</description>
-		</attribute>
-	</attributes>
+        </attribute>
+        <attribute>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Advisory tooltip information.</description>
+        </attribute>
+    </attributes>
     <resources>
         <resource>
-			<name>components.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
+            <name>jquery/jquery.js</name>
+        </resource>
         <resource>
-			<name>core.js</name>
-		</resource>
-		<resource>
-			<name>components.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
 </component>

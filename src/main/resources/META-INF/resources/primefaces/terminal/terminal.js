@@ -2,10 +2,10 @@
  * PrimeFaces Terminal Widget
  */
 PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
-    
+
     init: function(cfg) {
         this._super(cfg);
-        
+
         this.promptContainer = this.jq.find('> div:last-child > span.ui-terminal-prompt');
         this.cfg.prompt = this.promptContainer.text();
         this.content = this.jq.children('.ui-terminal-content');
@@ -13,22 +13,22 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
         this.commands = [];
         this.commandIndex = 0;
         this.promptContainerParent = this.promptContainer.parent();
-        
+
         this.bindEvents();
     },
-            
+
     bindEvents: function() {
         var $this = this;
-        
+
         this.input.on('keydown.terminal', function(e) {
             var keyCode = $.ui.keyCode;
-            
+
             switch(e.which) {
                 case keyCode.UP:
                     if($this.commandIndex > 0) {
                         $this.input.val($this.commands[--$this.commandIndex]);
                     }
-                    
+
                     e.preventDefault();
                 break;
 
@@ -40,7 +40,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                         $this.commandIndex = $this.commands.length;
                         $this.input.val('');
                     }
-                    
+
                     e.preventDefault();
                 break;
 
@@ -52,12 +52,12 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                 break;
             }
         });
-        
+
         this.jq.on('click', function() {
             $this.focus();
         });
     },
-            
+
     processCommand: function() {
         this.commands.push(this.input.val());
         this.commandIndex++;
@@ -84,11 +84,11 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                         handle: function(content) {
                             // clear input
                             $this.input.val('');
-                            
+
                             // show promt again and focus input
                             $this.promptContainerParent.show();
-                            
-                            if(PrimeFaces.isIE()) {
+
+                            if(PrimeFaces.env.isIE()) {
                             	window.setTimeout(function(){
                             		$this.focus();
                              	}, 50);
@@ -104,14 +104,14 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                 return true;
             }
         };
-        
+
         PrimeFaces.ajax.Request.handle(options);
     },
-            
+
     focus: function() {
         this.input.trigger('focus');
     },
-            
+
     clear: function() {
         this.content.html('');
         this.input.val('');
@@ -120,11 +120,11 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
     /**
      * Internally used to add the content from the ajax response to the terminal.
      * Can also be used e.g. by a websocket.
-     * 
+     *
      * @param {string} content
      */
     processResponse: function(content) {
-        $('<div>' + content + "</div>").appendTo(this.content.children().last());
+        $('<div></div>').text(content).appendTo(this.content.children().last());
 
         // always scroll down to the last item
         this.jq.scrollTop(this.jq[0].scrollHeight);

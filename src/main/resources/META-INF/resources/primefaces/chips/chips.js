@@ -45,9 +45,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
                     if(value.length === 0 && $this.hinput.children('option') && $this.hinput.children('option').length > 0) {
                         var lastOption = $this.hinput.children('option:last'),
                         index = lastOption.index();
-                        
-                        $($this.itemContainer.children('li.ui-chips-token').get(index)).remove();
-                        lastOption.remove();
+                        $this.removeItem($($this.itemContainer.children('li.ui-chips-token').get(index)));
                     }
                 break;
 
@@ -69,27 +67,69 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         
         var closeSelector = '> li.ui-chips-token > .ui-chips-token-icon';
         this.itemContainer.off('click', closeSelector).on('click', closeSelector, null, function(event) {
-            $this.removeItem(event, $(this).parent());
+            $this.removeItem($(this).parent());
         });
     },
     
     addItem : function(value) {
+        var escapedValue = PrimeFaces.escapeHTML(value);
         var itemDisplayMarkup = '<li class="ui-chips-token ui-state-active ui-corner-all">';
         itemDisplayMarkup += '<span class="ui-chips-token-icon ui-icon ui-icon-close" />';
-        itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + value + '</span></li>';
+        itemDisplayMarkup += '<span class="ui-chips-token-label">' + escapedValue + '</span></li>';
 
         this.inputContainer.before(itemDisplayMarkup);
         this.input.val('').focus();
 
-        this.hinput.append('<option value="' + value + '" selected="selected"></option>');
+        this.hinput.append('<option value="' + escapedValue + '" selected="selected"></option>');
+        this.invokeItemSelectBehavior(escapedValue);
     },
     
-    removeItem: function(event, item) {
+    removeItem: function(item) {
         var itemIndex = this.itemContainer.children('li.ui-chips-token').index(item);
+        var itemValue = item.find('span.ui-chips-token-label').html()
+        $this = this;
 
         //remove from options
         this.hinput.children('option').eq(itemIndex).remove();
-        item.remove();
-    }
+
+        item.fadeOut('fast', function() {
+            var token = $(this);
+
+            token.remove();
+
+            $this.invokeItemUnselectBehavior(itemValue);
+        });
+    },
     
+    invokeItemSelectBehavior: function(itemValue) {
+        if(this.cfg.behaviors) {
+            var itemSelectBehavior = this.cfg.behaviors['itemSelect'];
+
+            if(itemSelectBehavior) {
+                var ext = {
+                    params : [
+                        {name: this.id + '_itemSelect', value: itemValue}
+                    ]
+                };
+
+                itemSelectBehavior.call(this, ext);
+            }
+        }
+    },
+
+    invokeItemUnselectBehavior: function(itemValue) {
+        if(this.cfg.behaviors) {
+            var itemUnselectBehavior = this.cfg.behaviors['itemUnselect'];
+
+            if(itemUnselectBehavior) {
+                var ext = {
+                    params : [
+                        {name: this.id + '_itemUnselect', value: itemValue}
+                    ]
+                };
+
+                itemUnselectBehavior.call(this, ext);
+            }
+        }
+    }
 });

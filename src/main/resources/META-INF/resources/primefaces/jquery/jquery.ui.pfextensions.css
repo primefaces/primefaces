@@ -1,0 +1,10 @@
+/* PrimeFaces Extensions */
+.ui-datepicker-trigger.ui-button-icon-only .ui-button-text {
+    padding: 0.3em;
+}
+
+.ui-icon { 
+    display: block; 
+    vertical-align: baseline;
+    margin-top: 0px;
+}

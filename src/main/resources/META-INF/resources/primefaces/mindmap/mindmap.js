@@ -215,14 +215,6 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
         }
   
     },
-
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
-    
-        return false;
-    },
     
     handleNodeClick: function(node) {
         if(node.dragged) {
@@ -289,7 +281,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
                         handle: function(content) {
-                            var nodeModel = $.parseJSON(content);
+                            var nodeModel = JSON.parse(content);
 
                             //update model
                             node.data('model', nodeModel);

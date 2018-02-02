@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,10 @@ package org.primefaces.util;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.UUID;
 import javax.el.ValueExpression;
@@ -29,7 +32,6 @@ import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.xml.bind.DatatypeConverter;
 import org.primefaces.application.resource.DynamicContentType;
-import org.primefaces.context.RequestContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.StreamedContent;
 
@@ -52,22 +54,24 @@ public class DynamicContentSrcBuilder {
             StreamedContent streamedContent = (StreamedContent) value;
 
             if (stream) {
-                Resource resource = context.getApplication().getResourceHandler().createResource("dynamiccontent.properties", "primefaces", streamedContent.getContentType());
+                Resource resource = context.getApplication().getResourceHandler().createResource(
+                        "dynamiccontent.properties", "primefaces", streamedContent.getContentType());
                 String resourcePath = resource.getRequestPath();
 
                 Map<String,Object> session = context.getExternalContext().getSessionMap();
                 Map<String,String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
-                if(dynamicResourcesMapping == null) {
+                if (dynamicResourcesMapping == null) {
                     dynamicResourcesMapping = new LimitedSizeHashMap<String, String>(200);
                     session.put(Constants.DYNAMIC_RESOURCES_MAPPING, dynamicResourcesMapping);
                 }
                 
-                String resourceKey = RequestContext.getCurrentInstance().getEncrypter().encrypt(
-                        context.getViewRoot().getViewId() + component.getClientId(context));
                 ValueExpression expression = ValueExpressionAnalyzer.getExpression(
                         context.getELContext(), component.getValueExpression("value"));
                 
-                dynamicResourcesMapping.put(resourceKey, expression.getExpressionString());
+                String expressionString = expression.getExpressionString();
+                String resourceKey = md5(expressionString);
+                
+                dynamicResourcesMapping.put(resourceKey, expressionString);
                 
                 StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD);
                 builder.append(resourcePath)
@@ -118,7 +122,7 @@ public class DynamicContentSrcBuilder {
             byte[] data = new byte[16384];
 
             while ((nRead = stream.read(data, 0, data.length)) != -1) {
-              buffer.write(data, 0, nRead);
+                buffer.write(data, 0, nRead);
             }
 
             buffer.flush();
@@ -128,5 +132,20 @@ public class DynamicContentSrcBuilder {
         catch (Exception e) {
             throw new FacesException("Could not read InputStream to byte[]", e);
         }
+    }
+    
+    private static String md5(String input) {
+
+        MessageDigest messageDigest;
+        try {
+            messageDigest = MessageDigest.getInstance("MD5");
+        }
+        catch (NoSuchAlgorithmException ex) {
+            throw new FacesException(ex);
+        }
+
+        byte[] bytes = messageDigest.digest(input.getBytes());
+
+        return new BigInteger(1, bytes).toString(16);
     }
 }

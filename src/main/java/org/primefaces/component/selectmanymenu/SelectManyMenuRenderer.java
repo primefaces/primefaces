@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,16 +33,16 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectManyMenuRenderer extends SelectManyRenderer {
-    
+
     @Override
-	public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectMany",
                 "javax.faces.Menu",
                 Renderer.class);
         return renderer.getConvertedValue(context, component, submittedValue);
-	}
+    }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -56,22 +56,21 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = menu.getClientId(context);
         List<SelectItem> selectItems = getSelectItems(context, menu);
-        
+
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
         styleClass = styleClass == null ? SelectManyMenu.CONTAINER_CLASS : SelectManyMenu.CONTAINER_CLASS + " " + styleClass;
         styleClass = menu.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
         styleClass = !menu.isValid() ? styleClass + " ui-state-error" : styleClass;
-        
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        
-        if(menu.isFilter()) {
+
+        if (menu.isFilter()) {
             encodeFilter(context, menu);
         }
 
@@ -85,47 +84,53 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectManyMenu", menu.resolveWidgetVar(), clientId)
-            .attr("disabled", menu.isDisabled(), false)
-            .attr("showCheckbox", menu.isShowCheckbox(), false);
-        
-        if(menu.isFilter()) {
+                .attr("disabled", menu.isDisabled(), false)
+                .attr("showCheckbox", menu.isShowCheckbox(), false);
+
+        if (menu.isFilter()) {
             wb.attr("filter", true)
-                .attr("filterMatchMode", menu.getFilterMatchMode(), null)
-                .nativeAttr("filterFunction", menu.getFilterFunction(), null)
-                .attr("caseSensitive", menu.isCaseSensitive(), false);
+                    .attr("filterMatchMode", menu.getFilterMatchMode(), null)
+                    .nativeAttr("filterFunction", menu.getFilterFunction(), null)
+                    .attr("caseSensitive", menu.isCaseSensitive(), false);
         }
-        
+
         wb.finish();
     }
 
-    protected void encodeInput(FacesContext context, SelectManyMenu menu, String clientId, List<SelectItem> selectItems) throws IOException {
+    protected void encodeInput(FacesContext context, SelectManyMenu menu, String clientId, List<SelectItem> selectItems)
+            throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         String inputid = clientId + "_input";
         String labelledBy = menu.getLabelledBy();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
-        
+
         writer.startElement("select", null);
         writer.writeAttribute("id", inputid, "id");
         writer.writeAttribute("name", inputid, null);
         writer.writeAttribute("multiple", "multiple", null);
         writer.writeAttribute("size", "2", null);   //prevent browser to send value when no item is selected
-        
+
         renderDomEvents(context, menu, SelectManyMenu.DOM_EVENTS);
-        
-        if(labelledBy != null) {
+
+        if (labelledBy != null) {
             writer.writeAttribute("aria-labelledby", labelledBy, null);
         }
-        
-        if(menu.getTabindex() != null) {
+
+        if (menu.getTabindex() != null) {
             writer.writeAttribute("tabindex", menu.getTabindex(), null);
         }
         
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (menu.isDisabled()) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+
+        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, menu);
         }
-        
+
         encodeSelectItems(context, menu, selectItems);
 
         writer.endElement("select");
@@ -140,16 +145,17 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         Object submittedValues = getSubmittedValues(menu);
         boolean customContent = menu.getVar() != null;
         boolean showCheckbox = menu.isShowCheckbox();
-        
+
         writer.startElement("div", menu);
         writer.writeAttribute("class", SelectManyMenu.LIST_CONTAINER_CLASS, null);
         writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, countSelectItems(selectItems)), null);
 
-        if(customContent) {
+        if (customContent) {
             writer.startElement("table", null);
             writer.writeAttribute("class", SelectManyMenu.LIST_CLASS, null);
             writer.startElement("tbody", null);
-            for(SelectItem selectItem : selectItems) {
+            for (int i = 0; i < selectItems.size(); i++) {
+                SelectItem selectItem = selectItems.get(i);
                 encodeItem(context, menu, selectItem, values, submittedValues, converter, customContent, showCheckbox);
             }
             writer.endElement("tbody");
@@ -158,17 +164,18 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         else {
             writer.startElement("ul", null);
             writer.writeAttribute("class", SelectManyMenu.LIST_CLASS, null);
-            for(SelectItem selectItem : selectItems) {
+            for (int i = 0; i < selectItems.size(); i++) {
+                SelectItem selectItem = selectItems.get(i);
                 encodeItem(context, menu, selectItem, values, submittedValues, converter, customContent, showCheckbox);
             }
             writer.endElement("ul");
         }
-        
+
         writer.endElement("div");
     }
-    
-    protected void encodeItem(FacesContext context, SelectManyMenu menu, SelectItem option, Object values, Object submittedValues, 
-                        Converter converter, boolean customContent, boolean showCheckbox) throws IOException {
+
+    protected void encodeItem(FacesContext context, SelectManyMenu menu, SelectItem option, Object values, Object submittedValues,
+            Converter converter, boolean customContent, boolean showCheckbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
         boolean disabled = option.isDisabled() || menu.isDisabled();
@@ -176,165 +183,178 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
         Object valuesArray;
         Object itemValue;
-        if(submittedValues != null) {
+        if (submittedValues != null) {
             valuesArray = submittedValues;
             itemValue = itemValueAsString;
-        } else {
+        }
+        else {
             valuesArray = values;
             itemValue = option.getValue();
         }
 
         boolean selected = isSelected(context, menu, itemValue, valuesArray, converter);
-        if(option.isNoSelectionOption() && values != null && !selected) {
+        if (option.isNoSelectionOption() && values != null && !selected) {
             return;
         }
-        
-        if(selected) {
+
+        if (selected) {
             itemClass = itemClass + " ui-state-highlight";
         }
 
-        if(customContent) {
+        if (customContent) {
             String var = menu.getVar();
             context.getExternalContext().getRequestMap().put(var, option.getValue());
-            
+
             writer.startElement("tr", null);
             writer.writeAttribute("class", itemClass, null);
-            if(option.getDescription() != null) {
+            if (option.getDescription() != null) {
                 writer.writeAttribute("title", option.getDescription(), null);
             }
-            
-            if(showCheckbox) {
+
+            if (showCheckbox) {
                 writer.startElement("td", null);
                 RendererUtils.encodeCheckbox(context, selected);
                 writer.endElement("td");
             }
 
-            for(UIComponent child : menu.getChildren()) {
-                if(child instanceof Column && child.isRendered()) {
+            for (UIComponent child : menu.getChildren()) {
+                if (child instanceof Column && child.isRendered()) {
+                    String style = ((Column) child).getStyle();
+                    String styleClass = ((Column) child).getStyleClass();
+
                     writer.startElement("td", null);
+                    if (styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
+                    if (style != null) writer.writeAttribute("style", style, "style");
+
                     renderChildren(context, child);
                     writer.endElement("td");
                 }
             }
 
             writer.endElement("tr");
-        } 
+        }
         else {
             writer.startElement("li", null);
             writer.writeAttribute("class", itemClass, null);
-            
-            if(showCheckbox) {
+
+            if (showCheckbox) {
                 RendererUtils.encodeCheckbox(context, selected);
             }
-            
-            if(option.isEscape()) {
+
+            if (option.isEscape()) {
                 writer.writeText(option.getLabel(), null);
-            } else {
+            }
+            else {
                 writer.write(option.getLabel());
             }
 
             writer.endElement("li");
         }
-        
+
     }
 
     protected void encodeSelectItems(FacesContext context, SelectManyMenu menu, List<SelectItem> selectItems) throws IOException {
         Converter converter = menu.getConverter();
         Object values = getValues(menu);
         Object submittedValues = getSubmittedValues(menu);
-        
-        for(SelectItem selectItem : selectItems) {
+
+        for (SelectItem selectItem : selectItems) {
             encodeOption(context, menu, selectItem, values, submittedValues, converter);
         }
     }
-    
-    protected void encodeOption(FacesContext context, SelectManyMenu menu, SelectItem option, Object values, Object submittedValues, Converter converter) throws IOException {
+
+    protected void encodeOption(FacesContext context, SelectManyMenu menu, SelectItem option, Object values, Object submittedValues,
+            Converter converter) throws IOException {
+        
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
         boolean disabled = option.isDisabled() || menu.isDisabled();
 
         Object valuesArray;
         Object itemValue;
-        if(submittedValues != null) {
+        if (submittedValues != null) {
             valuesArray = submittedValues;
             itemValue = itemValueAsString;
-        } else {
+        }
+        else {
             valuesArray = values;
             itemValue = option.getValue();
         }
 
         boolean selected = isSelected(context, menu, itemValue, valuesArray, converter);
-        if(option.isNoSelectionOption() && values != null && !selected) {
+        if (option.isNoSelectionOption() && values != null && !selected) {
             return;
         }
 
         writer.startElement("option", null);
         writer.writeAttribute("value", itemValueAsString, null);
-        if(disabled) writer.writeAttribute("disabled", "disabled", null);
-        if(selected) writer.writeAttribute("selected", "selected", null);
+        if (disabled) writer.writeAttribute("disabled", "disabled", null);
+        if (selected) writer.writeAttribute("selected", "selected", null);
 
-        if(option.isEscape()) {
+        if (option.isEscape()) {
             writer.writeText(option.getLabel(), null);
-        } else {
+        }
+        else {
             writer.write(option.getLabel());
         }
 
         writer.endElement("option");
     }
-    
+
     protected void encodeFilter(FacesContext context, SelectManyMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String id = menu.getClientId(context) + "_filter";
         boolean disabled = menu.isDisabled();
         String filterClass = disabled ? SelectManyMenu.FILTER_CLASS + " ui-state-disabled" : SelectManyMenu.FILTER_CLASS;
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("class", SelectManyMenu.FILTER_CONTAINER_CLASS, null);
-        
+
         writer.startElement("span", null);
         writer.writeAttribute("class", SelectManyMenu.FILTER_ICON_CLASS, id);
         writer.endElement("span");
-        
+
         writer.startElement("input", null);
         writer.writeAttribute("class", filterClass, null);
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        if(disabled) writer.writeAttribute("disabled", "disabled", null);
+        if (disabled) writer.writeAttribute("disabled", "disabled", null);
 
         writer.endElement("input");
-        
+
         writer.endElement("div");
     }
-    
+
     protected String calculateWrapperHeight(SelectManyMenu menu, int itemSize) {
         int height = menu.getScrollHeight();
-        
-        if(height != Integer.MAX_VALUE) {
+
+        if (height != Integer.MAX_VALUE) {
             return height + "px";
-        } else if(itemSize > 10) {
+        } 
+        else if (itemSize > 10) {
             return 200 + "px";
         }
-        
+
         return "auto";
     }
-
+    
     @Override
     protected String getSubmitParam(FacesContext context, UISelectMany selectMany) {
         return selectMany.getClientId(context) + "_input";
     }
-    
-    @Override
-    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-		//Rendering happens on encodeEnd
-	}
 
     @Override
-	public boolean getRendersChildren() {
-		return true;
-	}
-    
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Rendering happens on encodeEnd
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
+    }
+
     @Override
     public String getHighlighter() {
         return "listbox";

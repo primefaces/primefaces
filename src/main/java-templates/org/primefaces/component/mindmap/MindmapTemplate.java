@@ -10,6 +10,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import org.primefaces.util.Constants;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.util.ComponentUtils;
 
     public final static String STYLE_CLASS = "ui-mindmap ui-widget ui-widget-content ui-corner-all";
 
@@ -77,5 +78,10 @@ import javax.faces.event.BehaviorEvent;
 	}
 
     public boolean isNodeSelectRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_nodeKey");
+        if (!ComponentUtils.isRequestSource(this, context)) {
+            return false;
+        }
+        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
+        return eventName.equals("select");
     }

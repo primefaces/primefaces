@@ -15,20 +15,20 @@
     resize:none;
 }
 
-.ui-selectonelistbox, 
+.ui-selectonelistbox,
 .ui-selectmanymenu,
 .ui-multiselectlistbox-listcontainer {
     padding: 2px;
     width: 150px;
 }
 
-.ui-selectonelistbox .ui-selectlistbox-listcontainer, 
+.ui-selectonelistbox .ui-selectlistbox-listcontainer,
 .ui-selectmanymenu .ui-selectlistbox-listcontainer,
 .ui-multiselectlistbox-listcontainer {
     overflow:auto;
 }
 
-.ui-selectonelistbox.ui-state-disabled .ui-selectlistbox-listcontainer, 
+.ui-selectonelistbox.ui-state-disabled .ui-selectlistbox-listcontainer,
 .ui-selectmanymenu.ui-state-disabled .ui-selectlistbox-listcontainer {
     overflow:hidden;
 }
@@ -36,7 +36,7 @@
 .ui-selectonelistbox .ui-selectlistbox-list,
 .ui-selectmanymenu .ui-selectlistbox-list,
 .ui-multiselectlistbox .ui-multiselectlistbox-list {
-    list-style-type: none; 
+    list-style-type: none;
     margin: 0;
     padding: 0;
 }
@@ -165,6 +165,10 @@
     font-weight: bold;
 }
 
+.ui-selectmanycheckbox .ui-selectmanycheckbox-responsive-group {
+    padding: .5em .5em .5em 0px;
+}
+
 /** RadioButton **/
 .ui-radiobutton {
     margin: 3px 0;
@@ -220,6 +224,12 @@
     zoom: 1;
     cursor: pointer;
     padding-right: 2em;
+    vertical-align: top;
+}
+
+.ui-selectonemenu.ui-state-hover,
+.ui-selectonemenu.ui-state-focus {
+    background-color: transparent;
 }
 
 .ui-selectonemenu .ui-selectonemenu-trigger {
@@ -236,7 +246,12 @@
 }
 
 .ui-selectonemenu .ui-selectonemenu-trigger  .ui-icon {
-    margin-top: 3px;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .ui-selectonemenu .ui-selectonemenu-label  {
@@ -302,7 +317,7 @@
     border-color: inherit;
 }
 
-.ui-selectonemenu-panel .ui-selectonemenu-table th, 
+.ui-selectonemenu-panel .ui-selectonemenu-table th,
 .ui-selectonemenu-panel .ui-selectonemenu-table td {
     border-width: 1px;
     border-style: solid;
@@ -330,85 +345,94 @@
 .ui-state-disabled a{outline: none;}
 
 /* Button */
-.ui-button { 
-    display: inline-block; 
-    position: relative; 
-    padding: 0; 
-    margin-right: .1em; 
-    text-decoration: none !important; 
-    cursor: pointer; 
-    text-align: center; 
-    zoom: 1; 
+.ui-button {
+    display: inline-block;
+    position: relative;
+    padding: 0;
+    margin-right: .1em;
+    text-decoration: none !important;
+    cursor: pointer;
+    text-align: center;
+    zoom: 1;
     overflow: visible; /* the overflow property removes extra width in IE */
-} 
+}
 
-.ui-button-icon-only { 
+.ui-button-icon-only {
     width: 2.4em;
-} 
+}
 
 /*button text element */
-.ui-button .ui-button-text { 
-    display: block; 
+.ui-button .ui-button-text {
+    display: block;
     line-height: normal;
 }
 
-.ui-button-text-only .ui-button-text { 
-    padding: .3em 1em; 
+.ui-button-text-only .ui-button-text {
+    padding: .3em 1em;
 }
 
-.ui-button-icon-only .ui-button-text { 
-    padding: .3em; 
-    text-indent: -9999999px; 
+.ui-button-icon-only .ui-button-text {
+    padding: .3em;
+    text-indent: -9999999px;
 }
 
-.ui-button-text-icon-left .ui-button-text { 
-    padding: .3em 1em .3em 2.1em; 
+.ui-button-text-icon-left .ui-button-text {
+    padding: .3em 1em .3em 2.1em;
 }
 
-.ui-button-text-icon-right .ui-button-text { 
-    padding: .3em 2.1em .3em 1em; 
+.ui-button-text-icon-right .ui-button-text {
+    padding: .3em 2.1em .3em 1em;
 }
 
 /*button icon element(s) */
-.ui-button-icon-only .ui-icon, 
-.ui-button-text-icon-left .ui-icon, 
-.ui-button-text-icon-right .ui-icon { 
-    position: absolute; 
-    top: 50%; 
-    margin-top: -8px; 
+.ui-button-icon-only .ui-icon,
+.ui-button-text-icon-left .ui-icon,
+.ui-button-text-icon-right .ui-icon {
+    position: absolute;
+    top: 50%;
+    margin-top: -8px;
 }
 
 /* FontAwesome icon */
-.ui-button-icon-only .ui-icon.fa, 
-.ui-button-text-icon-left .ui-icon.fa, 
-.ui-button-text-icon-right .ui-icon.fa {  
-    margin-top: -7px; 
+.ui-button-icon-only .ui-icon.fa,
+.ui-button-text-icon-left .ui-icon.fa,
+.ui-button-text-icon-right .ui-icon.fa,
+.ui-button-icon-only .ui-icon.fab,
+.ui-button-text-icon-left .ui-icon.fab,
+.ui-button-text-icon-right .ui-icon.fab,
+.ui-button-icon-only .ui-icon.far,
+.ui-button-text-icon-left .ui-icon.far,
+.ui-button-text-icon-right .ui-icon.far,
+.ui-button-icon-only .ui-icon.fas,
+.ui-button-text-icon-left .ui-icon.fas,
+.ui-button-text-icon-right .ui-icon.fas {
+    margin-top: -7px;
 }
 
-.ui-button-icon-only .ui-icon { 
-    left: 50%; 
-    margin-left: -8px; 
+.ui-button-icon-only .ui-icon {
+    left: 50%;
+    margin-left: -8px;
 }
 
 .ui-button-icon-left {
-    left: .5em; 
+    left: .5em;
 }
 
 .ui-button-icon-right {
-    right: .5em; 
+    right: .5em;
 }
 
 /*button sets*/
-.ui-buttonset { 
-    margin-right: 7px; 
+.ui-buttonset {
+    margin-right: 7px;
 }
-.ui-buttonset .ui-button { 
-    margin-left: 0; 
+.ui-buttonset .ui-button {
+    margin-left: 0;
     margin-right: 0;
 }
 
 /* workarounds */
-button.ui-button::-moz-focus-inner { 
+button.ui-button::-moz-focus-inner {
     border: 0; padding: 0; /* reset extra padding in Firefox */
 }
 
@@ -496,6 +520,10 @@ button.ui-button::-moz-focus-inner {
     padding-left: 2em;
 }
 
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-item-group {
+    font-weight: bold;
+}
+
 .ui-selectcheckboxmenu-header {
     margin-bottom: 0.3em;
     padding: 0.3em 0 0.3em 0.4em
@@ -517,7 +545,7 @@ button.ui-button::-moz-focus-inner {
     right: 5px;
     top: 2px;
 }
-            
+
 .ui-selectcheckboxmenu-header .ui-inputfield {
     padding: 1px 20px 1px 2px;
 }
@@ -597,7 +625,7 @@ button.ui-button::-moz-focus-inner {
     margin:2px;
 }
 
-.ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger  .ui-icon {
+.ui-selectcheckboxmenu-multiple .ui-selectcheckboxmenu-trigger  .ui-icon {
     position: relative;
     top: 50%;
     margin-top: -8px;
@@ -609,7 +637,6 @@ button.ui-button::-moz-focus-inner {
 }
 
 .ui-splitbutton .ui-button.ui-splitbutton-menubutton {
-    width: 32px;
     position: absolute;
     top: 0px;
     margin-left: -1px;
@@ -629,19 +656,19 @@ div.ui-button, .ui-splitbutton {
     margin-top: 2px;
 }
 
-.ui-password-panel .ui-password-meter { 
-    height: 10px; 
-    background:transparent url("#{resource['primefaces:forms/password-meter.png']}") no-repeat left top; 
+.ui-password-panel .ui-password-meter {
+    height: 10px;
+    background:transparent url("#{resource['primefaces:forms/password-meter.png']}") no-repeat left top;
     padding: 0;
     margin: 0;
 }
 
-.ui-password-info { 
+.ui-password-info {
     margin-top: 4px;
 }
 
-.ui-password-panel-overlay { 
-    position: absolute; 
+.ui-password-panel-overlay {
+    position: absolute;
 }
 
 /* OutputLabel */
@@ -657,7 +684,7 @@ div.ui-button, .ui-splitbutton {
     display: inline-block;
     padding:1px;
 }
-            
+
 .ui-selectonebutton.ui-state-error{
     padding:0px;
 }
@@ -670,7 +697,7 @@ div.ui-button, .ui-splitbutton {
     display: inline-block;
     padding:1px;
 }
-            
+
 .ui-selectmanybutton.ui-state-error{
     padding:0px;
 }
@@ -689,6 +716,16 @@ div.ui-button, .ui-splitbutton {
 /** InputText **/
 .ui-fluid .ui-inputtext {
     width: 100%;
+}
+
+/** InputNumber **/
+.ui-fluid .ui-inputnumber {
+    width: 100%;
+}
+
+.ui-fluid .ui-inputtext[size],
+.ui-fluid .ui-inputfield[size] {
+    width: auto;
 }
 
 /** InputTextarea **/

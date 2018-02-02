@@ -16,7 +16,7 @@ import javax.faces.event.BehaviorEvent;
 
     public static final String CONTAINER_CLASS = "ui-orderlist ui-grid ui-widget";
     public static final String LIST_CLASS = "ui-widget-content ui-orderlist-list";
-    public static final String CONTROLS_CLASS = "ui-orderlist-controls ui-grid-col-2";
+    public static final String CONTROLS_CLASS = "ui-orderlist-controls ui-g-12 ui-md-2";
     public static final String CAPTION_CLASS = "ui-orderlist-caption ui-widget-header ui-corner-top";
     public static final String ITEM_CLASS = "ui-orderlist-item ui-corner-all";
     public static final String MOVE_UP_BUTTON_CLASS = "ui-orderlist-button-move-up";
@@ -60,7 +60,7 @@ import javax.faces.event.BehaviorEvent;
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(isRequestSource(context) && (event instanceof AjaxBehaviorEvent)) {
+        if(ComponentUtils.isRequestSource(this, context) && (event instanceof AjaxBehaviorEvent)) {
             String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             customEvents.put(eventName, (AjaxBehaviorEvent) event);
         } 
@@ -103,6 +103,3 @@ import javax.faces.event.BehaviorEvent;
         }
     }
 
-    private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
-    }

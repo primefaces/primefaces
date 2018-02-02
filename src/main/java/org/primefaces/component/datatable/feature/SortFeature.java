@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,18 +21,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
+import org.primefaces.PrimeFaces;
+
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.TableState;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.data.PostSortEvent;
 import org.primefaces.model.BeanPropertyComparator;
 import org.primefaces.model.ChainedBeanPropertyComparator;
@@ -45,43 +47,32 @@ public class SortFeature implements DataTableFeature {
     private boolean isSortRequest(FacesContext context, DataTable table) {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_sorting");
     }
-    
+
+    @Override
     public void decode(FacesContext context, DataTable table) {
         table.setRowIndex(-1);
         String clientId = table.getClientId(context);
-		Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-		String sortKey = params.get(clientId + "_sortKey");
-		String sortDir = params.get(clientId + "_sortDir");
-         
-        if(table.isMultiSort()) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String sortKey = params.get(clientId + "_sortKey");
+        String sortDir = params.get(clientId + "_sortDir");
+
+        if (table.isMultiSort()) {
             List<SortMeta> multiSortMeta = new ArrayList<SortMeta>();
             String[] sortKeys = sortKey.split(",");
             String[] sortOrders = sortDir.split(",");
-            
-            for(int i = 0; i < sortKeys.length; i++) {
+
+            for (int i = 0; i < sortKeys.length; i++) {
                 UIColumn sortColumn = table.findColumn(sortKeys[i]);
-                ValueExpression columnSortByVE = sortColumn.getValueExpression(Column.PropertyKeys.sortBy.toString());
-                String sortField;
-            
-                if(sortColumn.isDynamic()) {
-                    ((DynamicColumn) sortColumn).applyStatelessModel();
-                    String field = sortColumn.getField();
-                    if(field == null)
-                        sortField = table.resolveDynamicField(columnSortByVE);
-                    else
-                        sortField = field;
-                }
-                else {
-                    String field = sortColumn.getField();
-                    if(field == null)
-                        sortField = table.resolveStaticField(columnSortByVE);
-                    else
-                        sortField = field;
-                }
-                
-                multiSortMeta.add(new SortMeta(sortColumn, sortField, SortOrder.valueOf(convertSortOrderParam(sortOrders[i])), sortColumn.getSortFunction()));
+                String sortField = table.resolveColumnField(sortColumn);
+
+                multiSortMeta.add(
+                        new SortMeta(
+                                sortColumn,
+                                sortField,
+                                SortOrder.valueOf(convertSortOrderParam(sortOrders[i])),
+                                sortColumn.getSortFunction()));
             }
-            
+
             table.setMultiSortMeta(multiSortMeta);
         }
         else {
@@ -91,85 +82,94 @@ public class SortFeature implements DataTableFeature {
             table.setSortColumn(sortColumn);
             table.setSortFunction(sortColumn.getSortFunction());
             table.setSortOrder(convertSortOrderParam(sortDir));
-            table.setSortField(sortColumn.getField());
+            table.setSortField(table.resolveColumnField(sortColumn));
         }
     }
-    
+
+    @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-		table.setFirst(0);
-        
-        if(table.isLazy()) {
-            table.loadLazyData();
+        table.setFirst(0);
+
+        if (table.isLazy()) {
+            if (table.isLiveScroll()) {
+                table.loadLazyScrollData(0, table.getScrollRows());
+            }
+            else {
+                table.loadLazyData();
+            }
         }
         else {
-            if(table.isMultiSort())
+            if (table.isMultiSort()) {
                 multiSort(context, table);
-            else
-                singleSort(context, table);
-            
-            if(table.isPaginator()) {
-                RequestContext requestContext = RequestContext.getCurrentInstance();
-
-                if(requestContext != null) {
-                    requestContext.addCallbackParam("totalRecords", table.getRowCount());
-                }
             }
-            
+            else {
+                singleSort(context, table);
+            }
+
+            if (table.isPaginator()) {
+                PrimeFaces.current().ajax().addCallbackParam("totalRecords", table.getRowCount());
+            }
+
             //save state
             Object filteredValue = table.getFilteredValue();
-            if(!table.isLazy() && table.isFilteringEnabled() && filteredValue != null) {
+            if (!table.isLazy() && table.isFilteringEnabled() && filteredValue != null) {
                 table.updateFilteredValue(context, (List) filteredValue);
             }
         }
 
         renderer.encodeTbody(context, table, true);
-        
-        if(table.isMultiViewState()) {
-            ValueExpression sortByVE = table.getValueExpression("sortBy");
-            List<SortMeta> multiSortMeta = table.getMultiSortMeta();
-            if(sortByVE != null || multiSortMeta != null) {
+
+        if (table.isMultiViewState()) {
+            ValueExpression sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
+            List<SortMeta> multiSortMeta = table.isMultiSort() ? table.getMultiSortMeta() : null;
+            if (sortVE != null || multiSortMeta != null) {
                 TableState ts = table.getTableState(true);
-                ts.setSortBy(sortByVE);
+                ts.setSortBy(sortVE);
                 ts.setMultiSortMeta(multiSortMeta);
                 ts.setSortOrder(table.getSortOrder());
                 ts.setSortField(table.getSortField());
                 ts.setSortFunction(table.getSortFunction());
-                
-                if(table.isPaginator()) {
+
+                if (table.isPaginator()) {
                     ts.setFirst(table.getFirst());
                     ts.setRows(table.getRows());
                 }
             }
         }
     }
-            
+
     public void singleSort(FacesContext context, DataTable table) {
         Object value = table.getValue();
-        if(value == null)
+        if (value == null) {
             return;
-        
-        ValueExpression sortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());        
+        }
+
+        ValueExpression sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
         SortOrder sortOrder = SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH));
         MethodExpression sortFunction = table.getSortFunction();
         List list = null;
-        
+
         UIColumn sortColumn = table.getSortColumn();
-        if(sortColumn != null && sortColumn.isDynamic()) {
+        if (sortColumn != null && sortColumn.isDynamic()) {
             ((DynamicColumn) sortColumn).applyStatelessModel();
         }
-        
-        if(value instanceof List)
+
+        if (value instanceof List) {
             list = (List) value;
-        else if(value instanceof ListDataModel)
+        }
+        else if (value instanceof ListDataModel) {
             list = (List) ((ListDataModel) value).getWrappedData();
-        else
+        }
+        else {
             throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
-        
-        Collections.sort(list, new BeanPropertyComparator(sortByVE, table.getVar(), sortOrder, sortFunction, table.isCaseSensitiveSort(), table.resolveDataLocale(), table.getNullSortOrder()));
-    
+        }
+
+        Collections.sort(list, new BeanPropertyComparator(
+                sortVE, table.getVar(), sortOrder, sortFunction, table.isCaseSensitiveSort(), table.resolveDataLocale(), table.getNullSortOrder()));
+
         context.getApplication().publishEvent(context, PostSortEvent.class, table);
     }
-    
+
     public void multiSort(FacesContext context, DataTable table) {
         Object value = table.getValue();
         List<SortMeta> sortMeta = table.getMultiSortMeta();
@@ -177,66 +177,74 @@ public class SortFeature implements DataTableFeature {
         boolean caseSensitiveSort = table.isCaseSensitiveSort();
         Locale locale = table.resolveDataLocale();
         int nullSortOrder = table.getNullSortOrder();
-        
-        if(value == null) {
+
+        if (value == null) {
             return;
         }
 
-        if(value instanceof List)
+        if (value instanceof List) {
             list = (List) value;
-        else if(value instanceof ListDataModel)
+        }
+        else if (value instanceof ListDataModel) {
             list = (List) ((ListDataModel) value).getWrappedData();
-        else
+        }
+        else {
             throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
+        }
 
         ChainedBeanPropertyComparator chainedComparator = new ChainedBeanPropertyComparator();
-        for(SortMeta meta : sortMeta) { 
+        for (SortMeta meta : sortMeta) {
             BeanPropertyComparator comparator;
             UIColumn sortColumn = meta.getColumn();
             ValueExpression sortByVE = sortColumn.getValueExpression(Column.PropertyKeys.sortBy.toString());
-            
-            if(sortColumn.isDynamic()) {
-                ((DynamicColumn) sortColumn).applyStatelessModel();                
-                comparator = new DynamicChainedPropertyComparator((DynamicColumn) sortColumn, sortByVE, table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction(), caseSensitiveSort, locale, nullSortOrder);
+
+            if (sortColumn.isDynamic()) {
+                ((DynamicColumn) sortColumn).applyStatelessModel();
+                comparator = new DynamicChainedPropertyComparator(
+                        (DynamicColumn) sortColumn, sortByVE, table.getVar(),
+                        meta.getSortOrder(), sortColumn.getSortFunction(), caseSensitiveSort, locale, nullSortOrder);
             }
             else {
-                comparator = new BeanPropertyComparator(sortByVE, table.getVar(), meta.getSortOrder(), sortColumn.getSortFunction(), caseSensitiveSort, locale, nullSortOrder);
+                comparator = new BeanPropertyComparator(sortByVE, table.getVar(),
+                        meta.getSortOrder(), sortColumn.getSortFunction(), caseSensitiveSort, locale, nullSortOrder);
             }
-                 
+
             chainedComparator.addComparator(comparator);
         }
-        
+
         Collections.sort(list, chainedComparator);
-        
+
         context.getApplication().publishEvent(context, PostSortEvent.class, table);
     }
 
+    @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
         return isSortRequest(context, table);
     }
 
+    @Override
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return isSortRequest(context, table);
-    }    
-    
+    }
+
     public String convertSortOrderParam(String order) {
         String sortOrder = null;
         int orderNumber = Integer.parseInt(order);
-        
+
         switch (orderNumber) {
             case 0:
                 sortOrder = "UNSORTED";
-            break;
-                
+                break;
+
             case 1:
                 sortOrder = "ASCENDING";
-            break;
-                    
+                break;
+
             case -1:
                 sortOrder = "DESCENDING";
-            break;
+                break;
         }
-        
+
         return sortOrder;
-    } 
+    }
 }

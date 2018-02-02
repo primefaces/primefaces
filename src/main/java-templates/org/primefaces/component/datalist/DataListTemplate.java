@@ -22,6 +22,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import org.primefaces.event.data.PageEvent;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.PrimeFaces;
 
 	public static final String DATALIST_CLASS = "ui-datalist ui-widget";
     public static final String CONTENT_CLASS = "ui-datalist-content ui-widget-content";
@@ -85,27 +86,17 @@ import javax.faces.event.BehaviorEvent;
             lazyModel.setWrappedData(data);
 
             //Update paginator for callback
-            if(isRequestSource(getFacesContext()) && this.isPaginator()) {
-                RequestContext requestContext = RequestContext.getCurrentInstance();
-
-                if(requestContext != null) {
-                    requestContext.addCallbackParam("totalRecords", lazyModel.getRowCount());
-                }
+            if(ComponentUtils.isRequestSource(this, getFacesContext()) && this.isPaginator()) {
+                PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
             }
         }
-    }
-
-    public boolean isRequestSource(FacesContext context) {
-        String partialSource = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
-
-        return partialSource != null && this.getClientId(context).equals(partialSource);
     }
 
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
+        if(ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
             setRowIndex(-1);
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();

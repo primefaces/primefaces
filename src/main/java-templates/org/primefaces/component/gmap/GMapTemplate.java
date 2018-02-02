@@ -21,6 +21,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.util.Constants;
 import org.primefaces.context.RequestContext;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.PrimeFaces;
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("overlaySelect", OverlaySelectEvent.class);
@@ -61,7 +62,7 @@ import javax.faces.event.BehaviorEvent;
                 //if there is info window, update and show it
                 GMapInfoWindow infoWindow = getInfoWindow();
                 if(infoWindow != null) {
-                    RequestContext.getCurrentInstance().update(infoWindow.getClientId(context));
+                    PrimeFaces.current().ajax().update(infoWindow.getClientId(context));
                 }
             }
             else if(eventName.equals("stateChange")) {

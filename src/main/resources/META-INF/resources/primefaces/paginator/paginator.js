@@ -1,5 +1,5 @@
 PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
-    
+
     init: function(cfg) {
         this.cfg = cfg;
         this.jq = $();
@@ -26,14 +26,14 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.pageCount = Math.ceil(this.cfg.rowCount / this.cfg.rows)||1;
         this.cfg.pageLinks = this.cfg.pageLinks||10;
         this.cfg.currentPageTemplate = this.cfg.currentPageTemplate||'({currentPage} of {totalPages})';
-        
+
         //aria message
         this.cfg.ariaPageLabel = PrimeFaces.getAriaLabel('paginator.PAGE');
 
         //event bindings
         this.bindEvents();
     },
-            
+
     bindEvents: function(){
         var $this = this;
 
@@ -92,7 +92,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             if(!$(this).hasClass("ui-state-disabled")){
                 $this.setPage(0);
             }
-            
+
             e.preventDefault();
         });
 
@@ -103,7 +103,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             if(!$(this).hasClass("ui-state-disabled")){
                 $this.setPage($this.cfg.page - 1);
             }
-            
+
             e.preventDefault();
         });
 
@@ -114,7 +114,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             if(!$(this).hasClass("ui-state-disabled")){
                 $this.setPage($this.cfg.page + 1);
             }
-            
+
             e.preventDefault();
         });
 
@@ -125,11 +125,11 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             if(!$(this).hasClass("ui-state-disabled")){
                 $this.setPage($this.cfg.pageCount - 1);
             }
-            
+
             e.preventDefault();
         });
     },
-            
+
     bindPageLinkEvents: function(){
         var $this = this,
         pageLinks = this.pagesContainer.children('.ui-paginator-page');
@@ -137,7 +137,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         pageLinks.each(function() {
             var link = $(this),
             pageNumber = parseInt(link.text());
-            
+
             link.attr('aria-label', $this.cfg.ariaPageLabel.replace('{0}', (pageNumber)));
         });
 
@@ -148,7 +148,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             if(!link.hasClass('ui-state-disabled')&&!link.hasClass('ui-state-active')) {
                 $this.setPage(pageNumber - 1);
             }
-            
+
             e.preventDefault();
         })
         .on('mouseover.paginator', function() {
@@ -176,8 +176,8 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             }
         });
     },
-    
-    updateUI: function() {  
+
+    updateUI: function() {
         //boundaries
         if(this.cfg.page === 0) {
             this.disableElement(this.firstLink);
@@ -231,7 +231,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         //page links
         this.updatePageLinks();
     },
-            
+
     updatePageLinks: function() {
         var start, end, delta,
         focusedElement = $(document.activeElement),
@@ -262,23 +262,23 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         for(var i = start; i <= end; i++) {
             var styleClass = 'ui-paginator-page ui-state-default ui-corner-all',
             ariaLabel = this.cfg.ariaPageLabel.replace('{0}', (i+1));
-            
+
             if(this.cfg.page == i) {
                 styleClass += " ui-state-active";
             }
 
-            this.pagesContainer.append('<a class="' + styleClass + '" aria-label="' + ariaLabel + '" tabindex="0" href="#">' + (i + 1) + '</a>');   
+            this.pagesContainer.append('<a class="' + styleClass + '" aria-label="' + ariaLabel + '" tabindex="0" href="#">' + (i + 1) + '</a>');
         }
-        
+
         if(focusContainer) {
             focusContainer.children().eq(tabindex).trigger('focus');
         }
 
         this.bindPageLinkEvents();
     },
-            
+
     setPage: function(p, silent) {
-        if(p >= 0 && p < this.cfg.pageCount && this.cfg.page != p){        
+        if(p >= 0 && p < this.cfg.pageCount && this.cfg.page != p){
             var newState = {
                 first: this.cfg.rows * p,
                 rows: this.cfg.rows,
@@ -294,7 +294,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             }
         }
     },
-            
+
     setRowsPerPage: function(rpp) {
         var first = this.cfg.rows * this.cfg.page,
         page = parseInt(first / rpp);
@@ -306,55 +306,55 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.page = -1;
         this.setPage(page);
     },
-            
+
     setTotalRecords: function(value) {
         this.cfg.rowCount = value;
         this.cfg.pageCount = Math.ceil(value / this.cfg.rows)||1;
         this.cfg.page = 0;
         this.updateUI();
     },
-    
+
     updateTotalRecords: function(value) {
         this.cfg.rowCount = value;
         this.cfg.pageCount = Math.ceil(value / this.cfg.rows)||1;
         this.updateUI();
     },
-            
+
     getCurrentPage: function() {
         return this.cfg.page;
     },
-    
+
     getFirst: function() {
         return (this.cfg.rows * this.cfg.page);
     },
-    
+
     getRows: function() {
         return this.cfg.rows;
     },
-            
+
     getContainerHeight: function(margin) {
         var height = 0;
-        
+
         for(var i = 0; i < this.jq.length; i++) {
             height += this.jq.eq(i).outerHeight(margin);
         }
-        
+
         return height;
     },
-            
+
     disableElement: function(element) {
         element.removeClass('ui-state-hover ui-state-focus ui-state-active').addClass('ui-state-disabled').attr('tabindex', -1);
         element.removeClass('ui-state-hover ui-state-focus ui-state-active').addClass('ui-state-disabled').attr('tabindex', -1);
     },
-            
+
     enableElement: function(element) {
         element.removeClass('ui-state-disabled').attr('tabindex', 0);
     },
-    
+
     next: function() {
         this.setPage(this.cfg.page + 1);
     },
-    
+
     prev: function() {
         this.setPage(this.cfg.page - 1);
     }

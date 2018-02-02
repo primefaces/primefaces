@@ -6,21 +6,21 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>selectBooleanButton</tag>
-	<tagClass>org.primefaces.component.selectbooleanbutton.SelectBooleanButtonTag</tagClass>
-	<componentClass>org.primefaces.component.selectbooleanbutton.SelectBooleanButton</componentClass>
-	<componentType>org.primefaces.component.SelectBooleanButton</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.SelectBooleanButtonRenderer</rendererType>
-	<rendererClass>org.primefaces.component.selectbooleanbutton.SelectBooleanButtonRenderer</rendererClass>
-	<parent>javax.faces.component.html.HtmlSelectBooleanCheckbox</parent>
+    <tag>selectBooleanButton</tag>
+    <tagClass>org.primefaces.component.selectbooleanbutton.SelectBooleanButtonTag</tagClass>
+    <componentClass>org.primefaces.component.selectbooleanbutton.SelectBooleanButton</componentClass>
+    <componentType>org.primefaces.component.SelectBooleanButton</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.SelectBooleanButtonRenderer</rendererType>
+    <rendererClass>org.primefaces.component.selectbooleanbutton.SelectBooleanButtonRenderer</rendererClass>
+    <parent>javax.faces.component.html.HtmlSelectBooleanCheckbox</parent>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
-	</interfaces>
-	<attributes>
-		&input_component_attributes;
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &input_component_attributes;
         &widget_var_attribute;
         <attribute>
             <name>disabled</name>
@@ -72,14 +72,14 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
-		<attribute>
-			<name>tabindex</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<ignoreInComponent>true</ignoreInComponent>
+        <attribute>
+            <name>tabindex</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
             <description>Position of the button element in the tabbing order.</description>
-		</attribute>
-		<attribute>
+        </attribute>
+        <attribute>
             <name>title</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -87,32 +87,32 @@
             <description>Advisory tooltip information.</description>
         </attribute>
         <attribute>
-			<name>onfocus</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<ignoreInComponent>true</ignoreInComponent>
+            <name>onfocus</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
             <description>Client side callback to execute when button receives focus.</description>
-		</attribute>
+        </attribute>
         <attribute>
-			<name>onblur</name>
-			<required>false</required>
-			<type>java.lang.String</type>
-			<ignoreInComponent>true</ignoreInComponent>
+            <name>onblur</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <ignoreInComponent>true</ignoreInComponent>
             <description>Client side callback to execute when button loses focus.</description>
-		</attribute>
-	</attributes>
+        </attribute>
+    </attributes>
     <resources>
         <resource>
-			<name>components.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>core.js</name>
-		</resource>
+            <name>jquery/jquery.js</name>
+        </resource>
         <resource>
-			<name>components.js</name>
-		</resource>
-	</resources>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
 </component>

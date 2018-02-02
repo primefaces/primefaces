@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,38 +43,33 @@ public class AjaxRequestBuilder {
     private boolean preventDefault = false;
 
     public AjaxRequestBuilder(FacesContext context) {
-    	this.context = context;
+        this.context = context;
         this.buffer = new StringBuilder();
     }
 
     public AjaxRequestBuilder init() {
-    	buffer.append("PrimeFaces.ab({");
-    	return this;
-    }
-
-    public AjaxRequestBuilder source(String source) {
-        if(source != null)
-            buffer.append("s:").append("\"").append(source).append("\"");
-        else
-            buffer.append("s:").append("this");
-
+        buffer.append("PrimeFaces.ab({");
         return this;
     }
 
-    public AjaxRequestBuilder form(String form) {
-        if(form != null) {
-            buffer.append(",f:\"").append(form).append("\"");
+    public AjaxRequestBuilder source(String source) {
+        if (source != null) {
+            buffer.append("s:").append("\"").append(source).append("\"");
+        }
+        else {
+            buffer.append("s:").append("this");
         }
 
         return this;
     }
 
-    private boolean isValueBlank(String value) {
-		if(value == null)
-			return true;
+    public AjaxRequestBuilder form(String form) {
+        if (form != null) {
+            buffer.append(",f:\"").append(form).append("\"");
+        }
 
-		return value.trim().equals("");
-	}
+        return this;
+    }
 
     public AjaxRequestBuilder process(UIComponent component, String expressions) {
         addExpressions(component, expressions, "p", SearchExpressionHint.NONE);
@@ -89,8 +84,8 @@ public class AjaxRequestBuilder {
     }
 
     private AjaxRequestBuilder addExpressions(UIComponent component, String expressions, String key, int options) {
-        if(!isValueBlank(expressions)) {
-        	String resolvedExpressions = SearchExpressionFacade.resolveClientIds(context, component, expressions, options);
+        if (!ComponentUtils.isValueBlank(expressions)) {
+            String resolvedExpressions = SearchExpressionFacade.resolveClientIds(context, component, expressions, options);
             buffer.append(",").append(key).append(":\"").append(resolvedExpressions).append("\"");
         }
 
@@ -104,7 +99,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder async(boolean async) {
-        if(async) {
+        if (async) {
             buffer.append(",a:true");
         }
 
@@ -112,7 +107,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder skipChildren(boolean skipChildren) {
-        if(!skipChildren) {
+        if (!skipChildren) {
             buffer.append(",sc:false");
         }
 
@@ -120,7 +115,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder global(boolean global) {
-        if(!global) {
+        if (!global) {
             buffer.append(",g:false");
         }
 
@@ -128,15 +123,16 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder delay(String delay) {
-        if(!ComponentUtils.isValueBlank(delay) && !delay.equals("none")) {
+        if (!ComponentUtils.isValueBlank(delay) && !delay.equals("none")) {
             buffer.append(",d:").append(delay);
 
             if (context.isProjectStage(ProjectStage.Development)) {
-            	try {
-            		Integer.parseInt(delay);
-            	} catch (NumberFormatException e) {
-            		throw new FaceletException("Delay attribute should only take numbers or \"none\"");
-            	}
+                try {
+                    Integer.parseInt(delay);
+                }
+                catch (NumberFormatException e) {
+                    throw new FaceletException("Delay attribute should only take numbers or \"none\"");
+                }
             }
         }
 
@@ -152,7 +148,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder ignoreAutoUpdate(boolean ignoreAutoUpdate) {
-        if(ignoreAutoUpdate) {
+        if (ignoreAutoUpdate) {
             buffer.append(",iau:true");
         }
 
@@ -161,12 +157,12 @@ public class AjaxRequestBuilder {
 
     @Deprecated
     public AjaxRequestBuilder partialSubmit(boolean value, boolean partialSubmitSet) {
-        PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+        PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
 
-    	//component can override global setting
+        //component can override global setting
         boolean partialSubmit = partialSubmitSet ? value : config.isPartialSubmitEnabled();
 
-        if(partialSubmit) {
+        if (partialSubmit) {
             buffer.append(",ps:true");
         }
 
@@ -174,15 +170,15 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder partialSubmit(boolean value, boolean partialSubmitSet, String partialSubmitFilter) {
-        PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+        PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
 
-    	//component can override global setting
+        //component can override global setting
         boolean partialSubmit = partialSubmitSet ? value : config.isPartialSubmitEnabled();
 
-        if(partialSubmit) {
+        if (partialSubmit) {
             buffer.append(",ps:true");
 
-            if(partialSubmitFilter != null) {
+            if (partialSubmitFilter != null) {
                 buffer.append(",psf:\"").append(partialSubmitFilter).append("\"");
             }
         }
@@ -191,12 +187,12 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder resetValues(boolean value, boolean resetValuesSet) {
-        PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+        PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
 
-    	//component can override global setting
+        //component can override global setting
         boolean resetValues = resetValuesSet ? value : config.isResetValuesEnabled();
 
-        if(resetValues) {
+        if (resetValues) {
             buffer.append(",rv:true");
         }
 
@@ -204,7 +200,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder onstart(String onstart) {
-        if(onstart != null) {
+        if (onstart != null) {
             buffer.append(",onst:function(cfg){").append(onstart).append(";}");
         }
 
@@ -212,7 +208,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder onerror(String onerror) {
-        if(onerror != null) {
+        if (onerror != null) {
             buffer.append(",oner:function(xhr,status,error){").append(onerror).append(";}");
         }
 
@@ -220,7 +216,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder onsuccess(String onsuccess) {
-        if(onsuccess != null) {
+        if (onsuccess != null) {
             buffer.append(",onsu:function(data,status,xhr){").append(onsuccess).append(";}");
         }
 
@@ -228,7 +224,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder oncomplete(String oncomplete) {
-        if(oncomplete != null) {
+        if (oncomplete != null) {
             buffer.append(",onco:function(xhr,status,args){").append(oncomplete).append(";}");
         }
 
@@ -238,8 +234,8 @@ public class AjaxRequestBuilder {
     public AjaxRequestBuilder params(UIComponent component) {
         boolean paramWritten = false;
 
-        for(UIComponent child : component.getChildren()) {
-            if(child instanceof UIParameter) {
+        for (UIComponent child : component.getChildren()) {
+            if (child instanceof UIParameter) {
                 UIParameter parameter = (UIParameter) child;
                 Object paramValue = parameter.getValue();
 
@@ -247,10 +243,11 @@ public class AjaxRequestBuilder {
                     continue;
                 }
 
-                if(!paramWritten) {
+                if (!paramWritten) {
                     paramWritten = true;
                     buffer.append(",pa:[");
-                } else {
+                }
+                else {
                     buffer.append(",");
                 }
 
@@ -258,34 +255,34 @@ public class AjaxRequestBuilder {
             }
         }
 
-        if(paramWritten) {
+        if (paramWritten) {
             buffer.append("]");
         }
 
         return this;
     }
 
-    public AjaxRequestBuilder params(Map<String,List<String>> params) {
-        if(params != null && !params.isEmpty()) {
+    public AjaxRequestBuilder params(Map<String, List<String>> params) {
+        if (params != null && !params.isEmpty()) {
             buffer.append(",pa:[");
 
-            for(Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
+            for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
                 String name = it.next();
                 List<String> paramValues = params.get(name);
                 int size = paramValues.size();
-                for(int i = 0; i < size; i++) {
+                for (int i = 0; i < size; i++) {
                     String paramValue = paramValues.get(i);
                     if (paramValue == null) {
                         paramValue = "";
                     }
                     buffer.append("{name:").append("\"").append(name).append("\",value:\"").append(paramValue).append("\"}");
 
-                    if(i < (size - 1)) {
+                    if (i < (size - 1)) {
                         buffer.append(",");
                     }
                 }
 
-                if(it.hasNext()) {
+                if (it.hasNext()) {
                     buffer.append(",");
                 }
             }
@@ -317,7 +314,7 @@ public class AjaxRequestBuilder {
 
         buffer.append("});");
 
-        if(preventDefault) {
+        if (preventDefault) {
             buffer.append("return false;");
         }
 
@@ -331,12 +328,14 @@ public class AjaxRequestBuilder {
     public String buildBehavior(ClientBehaviorRenderingMode mode) {
         addFragmentConfig();
 
-        if(mode.equals(ClientBehaviorRenderingMode.UNOBSTRUSIVE))
+        if (mode.equals(ClientBehaviorRenderingMode.UNOBSTRUSIVE)) {
             buffer.append("},ext);");
-        else if(mode.equals(ClientBehaviorRenderingMode.OBSTRUSIVE))
+        }
+        else if (mode.equals(ClientBehaviorRenderingMode.OBSTRUSIVE)) {
             buffer.append("});");
+        }
 
-        if(preventDefault) {
+        if (preventDefault) {
             buffer.append("return false;");
         }
 
@@ -353,13 +352,14 @@ public class AjaxRequestBuilder {
     }
 
     private void addFragmentConfig() {
-        Map<Object,Object> attrs = RequestContext.getCurrentInstance().getAttributes();
+        Map<Object, Object> attrs = context.getAttributes();
         Object fragmentId = attrs.get(Constants.FRAGMENT_ID);
-        if(fragmentId != null) {
+        if (fragmentId != null) {
             buffer.append(",fi:\"").append(fragmentId).append("\"");
-
-            if(attrs.containsKey(Constants.FRAGMENT_AUTO_RENDERED))
+            
+            if (attrs.containsKey(Constants.FRAGMENT_AUTO_RENDERED)) {
                 buffer.append(",fu:true");
+            }
         }
     }
 }

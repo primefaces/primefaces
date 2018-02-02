@@ -616,7 +616,11 @@ if (window.PrimeFaces) {
             //focus first element
             for(var key in vc.messages) {
                 if(vc.messages.hasOwnProperty(key)) {
-                    $(PrimeFaces.escapeClientId(key)).focus();
+                    var el = $(PrimeFaces.escapeClientId(key));
+                    if(!el.is(':focusable'))
+                        el.find(':focusable:first').focus();
+                    else
+                        el.focus();
                     break;
                 }
             }
@@ -644,6 +648,10 @@ if (window.PrimeFaces) {
             } else {
                 return;
             }
+        }
+        
+        if(element.parent().hasClass('ui-inputnumber')){
+            element = element.next('input');
         }
 
         var submittedValue = vc.getSubmittedValue(element),

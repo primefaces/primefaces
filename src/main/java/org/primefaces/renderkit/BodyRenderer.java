@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,21 +44,21 @@ public class BodyRenderer extends CoreRenderer {
         renderPassThruAttributes(context, component, HTML.BODY_ATTRS);
     }
 
+    @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        RequestContext requestContext = RequestContext.getCurrentInstance();
-        
+
         encodeResources(context);
 
-        if (!requestContext.isAjaxRequest()) {
-            encodeOnloadScripts(writer, requestContext);
+        if (!context.getPartialViewContext().isAjaxRequest()) {
+            encodeOnloadScripts(writer);
         }
 
         writer.endElement("body");
     }
 
-    protected void encodeOnloadScripts(ResponseWriter writer, RequestContext context) throws IOException {
-        List<String> scripts = context.getScriptsToExecute();
+    protected void encodeOnloadScripts(ResponseWriter writer) throws IOException {
+        List<String> scripts = RequestContext.getCurrentInstance().getScriptsToExecute();
 
         if (!scripts.isEmpty()) {
             writer.startElement("script", null);
@@ -75,7 +75,7 @@ public class BodyRenderer extends CoreRenderer {
             writer.endElement("script");
         }
     }
-    
+
     protected void encodeResources(FacesContext context) throws IOException {
         UIViewRoot viewRoot = context.getViewRoot();
         ListIterator iter = (viewRoot.getComponentResources(context, "body")).listIterator();

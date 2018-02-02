@@ -34,12 +34,13 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
     },
     
     bindTriggers: function() {
-        var $this = this,
-        triggers = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.cfg.triggers);
+        var $this = this;
         
         //listen global ajax send and complete callbacks
         $(document).on('pfAjaxSend.' + this.id, function(e, xhr, settings) {
             var sourceId = $.type(settings.source) === 'string' ? settings.source : settings.source.name;
+            // we must evaluate it each time as the DOM might has been changed
+            var triggers = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents($this.cfg.triggers);
             
             if($.inArray(sourceId, triggers) !== -1 && !$this.cfg.blocked) {
                 $this.show();
@@ -48,6 +49,8 @@ PrimeFaces.widget.BlockUI = PrimeFaces.widget.BaseWidget.extend({
 
         $(document).on('pfAjaxComplete.' + this.id, function(e, xhr, settings) {
             var sourceId = $.type(settings.source) === 'string' ? settings.source : settings.source.name;
+            // we must evaluate it each time as the DOM might has been changed
+            var triggers = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents($this.cfg.triggers);
             
             if($.inArray(sourceId, triggers) !== -1 && !$this.cfg.blocked) {
                 $this.hide();

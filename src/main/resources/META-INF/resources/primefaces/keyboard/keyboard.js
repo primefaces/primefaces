@@ -512,9 +512,9 @@ $.extend(Keypad.prototype, {
 			return;
 		}
 		var target = $(event.target);
-		if (!target.parents().andSelf().is('#' + $.keypad._mainDivId) &&
+		if (!target.parents().addBack().is('#' + $.keypad._mainDivId) &&
 				!target.hasClass($.keypad.markerClassName) &&
-				!target.parents().andSelf().hasClass($.keypad._triggerClass) &&
+				!target.parents().addBack().hasClass($.keypad._triggerClass) &&
 				$.keypad._keypadShowing) {
 			$.keypad._hideKeypad(null, '');
 		}
@@ -903,7 +903,7 @@ $(function() {
             this.cfg.layout = PrimeFaces.widget.KeyboardUtils.getPresetLayout(this.cfg.layoutName);
 
         this.cfg.beforeShow = function(div, inst) {
-            $(div).css('z-index', ++PrimeFaces.zindex);
+            $(div).addClass('ui-input-overlay').css('z-index', ++PrimeFaces.zindex);
         };
 
         this.jq.keypad(this.cfg);

@@ -54,10 +54,11 @@ About the code you contribute
     codebase should not render it unstable in any way.
   - All your code should be easy to read and understand by a human.
   - There should be no compilation warnings at all.
+  - Checkstyle must pass without errors or warnings. Currently this is embedded into the maven build.
 
 ### Detailed Java code quality standards:
   
-  - All your code should compile and run in **Java 5.0**.
+  - All your code should compile and run in **Java 6.0**.
   - All comments, names of classes and variables, log messages, etc. must be **in English**.
   - All `.java` files must include the standard PrimeFaces copyright header.
   - All your code should follow the Java Code Conventions regarding variable/method/class naming.
@@ -71,6 +72,7 @@ About the code you contribute
     of complexity"* usually means you had to take some design decisions in order to write it the way you did. Do 
     not write obvious comments.
   - All public methods and classes directly available to users (i.e. public) should have comprehensive javadoc.
+  - We also have some defined checkstyle rules in checkstyle.xml
   
 ### Detailed HTML/XML code quality standards:
 

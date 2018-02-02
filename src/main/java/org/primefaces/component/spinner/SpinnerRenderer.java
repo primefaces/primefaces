@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,11 @@
 package org.primefaces.component.spinner;
 
 import java.io.IOException;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.RequestContext;
 
+import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -33,7 +32,7 @@ public class SpinnerRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         Spinner spinner = (Spinner) component;
 
-        if(spinner.isDisabled() || spinner.isReadonly()) {
+        if (spinner.isDisabled() || spinner.isReadonly()) {
             return;
         }
 
@@ -50,9 +49,17 @@ public class SpinnerRenderer extends InputRenderer {
             if (suffix != null && submittedValue.endsWith(suffix)) {
                 submittedValue = submittedValue.substring(0, (submittedValue.length() - suffix.length()));
             }
-        }
-        catch(Exception e) {
 
+            double parsedSubmittedValue = Double.parseDouble(submittedValue);
+            if (parsedSubmittedValue < spinner.getMin()) {
+                submittedValue = String.valueOf(spinner.getMin());
+            }
+            else if (parsedSubmittedValue > spinner.getMax()) {
+                submittedValue = String.valueOf(spinner.getMax());
+            }
+        }
+        catch (Exception e) {
+            submittedValue = String.valueOf(spinner.getMin());
         }
         finally {
             spinner.setSubmittedValue(submittedValue);
@@ -71,11 +78,12 @@ public class SpinnerRenderer extends InputRenderer {
         String clientId = spinner.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Spinner", spinner.resolveWidgetVar(), clientId)
-            .attr("step", spinner.getStepFactor(), 1.0)
-            .attr("min", spinner.getMin(), Double.MIN_VALUE)
-            .attr("max", spinner.getMax(), Double.MAX_VALUE)
-            .attr("prefix", spinner.getPrefix(), null)
-            .attr("suffix", spinner.getSuffix(), null);
+                .attr("step", spinner.getStepFactor(), 1.0)
+                .attr("min", spinner.getMin(), Double.MIN_VALUE)
+                .attr("max", spinner.getMax(), Double.MAX_VALUE)
+                .attr("prefix", spinner.getPrefix(), null)
+                .attr("suffix", spinner.getSuffix(), null)
+                .attr("decimalPlaces", spinner.getDecimalPlaces(), null);
 
         wb.finish();
     }
@@ -94,7 +102,7 @@ public class SpinnerRenderer extends InputRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-        if(spinner.getStyle() != null) {
+        if (spinner.getStyle() != null) {
             writer.writeAttribute("style", spinner.getStyle(), null);
         }
 
@@ -111,7 +119,7 @@ public class SpinnerRenderer extends InputRenderer {
         String inputId = spinner.getClientId(context) + "_input";
         String inputClass = spinner.isValid() ? Spinner.INPUT_CLASS : Spinner.INPUT_CLASS + " ui-state-error";
         String labelledBy = spinner.getLabelledBy();
-        
+
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
@@ -120,21 +128,21 @@ public class SpinnerRenderer extends InputRenderer {
         writer.writeAttribute("autocomplete", "off", null);
 
         String valueToRender = ComponentUtils.getValueToRender(context, spinner);
-        if(valueToRender != null) {
+        if (valueToRender != null) {
             valueToRender = spinner.getPrefix() != null ? spinner.getPrefix() + valueToRender : valueToRender;
-            valueToRender = spinner.getSuffix() != null ? valueToRender + spinner.getSuffix(): valueToRender;
+            valueToRender = spinner.getSuffix() != null ? valueToRender + spinner.getSuffix() : valueToRender;
             writer.writeAttribute("value", valueToRender, null);
         }
 
         renderPassThruAttributes(context, spinner, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, spinner, HTML.INPUT_TEXT_EVENTS);
 
-        if(spinner.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
-        if(spinner.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
-        if(spinner.isRequired()) writer.writeAttribute("aria-required", "true", null);
-        if(labelledBy != null) writer.writeAttribute("aria-labelledby", labelledBy, null);
-        
-        if(RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (spinner.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        if (spinner.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
+        if (spinner.isRequired()) writer.writeAttribute("aria-required", "true", null);
+        if (labelledBy != null) writer.writeAttribute("aria-labelledby", labelledBy, null);
+
+        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, spinner);
         }
 

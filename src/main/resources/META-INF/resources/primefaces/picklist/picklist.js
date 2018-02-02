@@ -2,10 +2,10 @@
  * PrimeFaces PickList Widget
  */
 PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
-    
+
     init: function(cfg) {
         this._super(cfg);
-        
+
         this.sourceList = this.jq.find('ul.ui-picklist-source');
         this.targetList = this.jq.find('ul.ui-picklist-target');
         this.sourceInput = $(this.jqId + '_source');
@@ -16,26 +16,26 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         }
         this.focusedItem = null;
         this.ariaRegion = $(this.jqId + '_ariaRegion');
-        
+
         var sourceCaption = this.sourceList.prev('.ui-picklist-caption'),
             targetCaption = this.targetList.prev('.ui-picklist-caption');
-    
+
         if(sourceCaption.length) {
             var captionText = sourceCaption.text();
-            
+
             this.sourceList.attr('aria-label', captionText);
             this.sourceInput.attr('title', captionText);
         }
-        
+
         if(targetCaption.length) {
             var captionText = targetCaption.text();
-            
+
             this.targetList.attr('aria-label', captionText);
             this.targetInput.attr('title', captionText);
         }
-        
+
         this.setTabIndex();
-                
+
         //generate input options
         this.generateItems(this.sourceList, this.sourceInput);
         this.generateItems(this.targetList, this.targetInput);
@@ -66,16 +66,16 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 receive: function(event, ui) {
                     $this.fireTransferEvent(ui.item, ui.sender, ui.item.parents('ul.ui-picklist-list:first'), 'dragdrop');
                 },
-                
+
                 start: function(event, ui) {
                     $this.itemListName = $this.getListName(ui.item);
                     $this.dragging = true;
                 },
-                
+
                 stop: function(event, ui) {
                     $this.dragging = false;
                 },
-                
+
                 beforeStop:function(event, ui) {
                     if($this.itemListName !== $this.getListName(ui.item)) {
                         reordered = false;
@@ -85,20 +85,20 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                     }
                 }
             });
-            
+
             this.bindItemEvents();
 
             this.bindButtonEvents();
-            
+
             this.bindFilterEvents();
-            
+
             this.bindKeyEvents();
         }
     },
-    
+
     bindItemEvents: function() {
         var $this = this;
-        
+
         this.items.on('mouseover.pickList', function(e) {
             var element = $(this);
 
@@ -115,11 +115,11 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 $this.checkboxClick = false;
                 return;
             }
-            
+
             var item = $(this),
             parentList = item.parent(),
             metaKey = (e.metaKey||e.ctrlKey);
-            
+
             if(!e.shiftKey) {
                 if(!metaKey) {
                     $this.unselectAll();
@@ -127,7 +127,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
                 if(metaKey && item.hasClass('ui-state-highlight')) {
                     $this.unselectItem(item, true);
-                } 
+                }
                 else {
                     $this.selectItem(item, true);
                     $this.cursorItem = item;
@@ -135,16 +135,16 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             }
             else {
                 $this.unselectAll();
-                
+
                 if($this.cursorItem && ($this.cursorItem.parent().is(item.parent()))) {
                     var currentItemIndex = item.index(),
                     cursorItemIndex = $this.cursorItem.index(),
                     startIndex = (currentItemIndex > cursorItemIndex) ? cursorItemIndex : currentItemIndex,
                     endIndex = (currentItemIndex > cursorItemIndex) ? (currentItemIndex + 1) : (cursorItemIndex + 1);
-                    
+
                     for(var i = startIndex ; i < endIndex; i++) {
                         var it = parentList.children('li.ui-picklist-item').eq(i);
-                        
+
                         if(it.is(':visible')) {
                             if(i === (endIndex - 1))
                                 $this.selectItem(it, true);
@@ -152,13 +152,13 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                                 $this.selectItem(it);
                         }
                     }
-                } 
+                }
                 else {
                     $this.selectItem(item, true);
                     $this.cursorItem = item;
                 }
             }
-            
+
             /* For keyboard navigation */
             $this.removeOutline();
             $this.focusedItem = item;
@@ -175,14 +175,14 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             /* For keyboard navigation */
             $this.removeOutline();
             $this.focusedItem = null;
-            
+
             PrimeFaces.clearSelection();
         });
-        
+
         if(this.cfg.showCheckbox) {
             this.checkboxes.on('mouseover.pickList', function(e) {
                 var chkbox = $(this);
-                
+
                 if(!chkbox.hasClass('ui-state-active'))
                     chkbox.addClass('ui-state-hover');
             })
@@ -191,7 +191,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             })
             .on('click.pickList', function(e) {
                 $this.checkboxClick = true;
-                
+
                 var item = $(this).closest('li.ui-picklist-item');
                 if(item.hasClass('ui-state-highlight')) {
                     $this.unselectItem(item, true);
@@ -203,7 +203,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             });
         }
     },
-    
+
     bindKeyEvents: function() {
         var $this = this,
             listSelector = 'ul.ui-picklist-source, ul.ui-picklist-target';
@@ -226,21 +226,21 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             $this.focusedItem = null;
         })
         .on('keydown.pickList', listSelector, null, function(e) {
-            
+
             if(!$this.focusedItem) {
                 return;
             }
-            
-            var list = $(this), 
+
+            var list = $(this),
                 keyCode = $.ui.keyCode,
                 key = e.which;
-    
+
             switch(key) {
                 case keyCode.UP:
                     $this.removeOutline();
-                    
+
                     if(!$this.focusedItem.hasClass('ui-state-highlight')) {
-                        $this.selectItem($this.focusedItem); 
+                        $this.selectItem($this.focusedItem);
                     }
                     else {
                         var prevItem = $this.focusedItem.prevAll('.ui-picklist-item:visible:first');
@@ -258,9 +258,9 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
                 case keyCode.DOWN:
                     $this.removeOutline();
-                    
+
                     if(!$this.focusedItem.hasClass('ui-state-highlight')) {
-                        $this.selectItem($this.focusedItem); 
+                        $this.selectItem($this.focusedItem);
                     }
                     else {
                         var nextItem = $this.focusedItem.nextAll('.ui-picklist-item:visible:first');
@@ -268,14 +268,14 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                             $this.unselectAll();
                             $this.selectItem(nextItem);
                             $this.focusedItem = nextItem;
-                            
+
                             PrimeFaces.scrollInView(list, $this.focusedItem);
                         }
                     }
                     $this.ariaRegion.text($this.focusedItem.data('item-label'));
                     e.preventDefault();
                 break;
-                
+
                 case keyCode.ENTER:
                 case keyCode.NUMPAD_ENTER:
                 case keyCode.SPACE:
@@ -284,62 +284,58 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                         $this.focusedItem = null;
                     }
                     e.preventDefault();
-                break;    
+                break;
             };
-        }); 
-        
+        });
+
     },
-    
+
     removeOutline: function() {
         if(this.focusedItem && this.focusedItem.hasClass('ui-picklist-outline')) {
             this.focusedItem.removeClass('ui-picklist-outline');
         }
     },
-    
+
     selectItem: function(item, silent) {
         item.removeClass('ui-state-hover').addClass('ui-state-highlight');
-        
+
         if(this.cfg.showCheckbox) {
             this.selectCheckbox(item.find('div.ui-chkbox-box'));
         }
-        
+
         if(silent) {
             this.fireItemSelectEvent(item);
         }
     },
-    
+
     unselectItem: function(item, silent) {
         item.removeClass('ui-state-hover ui-state-highlight');
-        
-        if(PrimeFaces.isIE(8)) {
-            item.css('filter','');
-        }
-        
+
         if(this.cfg.showCheckbox) {
             this.unselectCheckbox(item.find('div.ui-chkbox-box'));
         }
-        
+
         if(silent) {
             this.fireItemUnselectEvent(item);
         }
     },
-    
+
     unselectAll: function() {
         var selectedItems = this.items.filter('.ui-state-highlight');
         for(var i = 0; i < selectedItems.length; i++) {
             this.unselectItem(selectedItems.eq(i));
         }
     },
-   
+
     selectCheckbox: function(chkbox) {
         chkbox.removeClass('ui-state-hover').addClass('ui-state-active').children('span.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
     },
-    
+
     unselectCheckbox: function(chkbox) {
         chkbox.removeClass('ui-state-active').children('span.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
     },
-        
-    generateItems: function(list, input) {   
+
+    generateItems: function(list, input) {
         list.children('.ui-picklist-item').each(function() {
             var item = $(this),
             itemValue = PrimeFaces.escapeHTML(item.attr('data-item-value')),
@@ -351,7 +347,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             input.append(option);
         });
     },
-    
+
     bindButtonEvents: function() {
         var _self = this;
 
@@ -378,28 +374,28 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             $(this.jqId + ' .ui-picklist-target-controls .ui-picklist-button-move-bottom').click(function() {_self.moveBottom(_self.targetList);});
         }
     },
-        
+
     bindFilterEvents: function() {
         this.setupFilterMatcher();
-        
+
         this.sourceFilter = $(this.jqId + '_source_filter');
         this.targetFilter = $(this.jqId + '_target_filter');
         var _self = this;
-        
+
         PrimeFaces.skinInput(this.sourceFilter);
         PrimeFaces.skinInput(this.targetFilter);
-        
+
         this.sourceFilter.on('keyup', function(e) {
             _self.filter(this.value, _self.sourceList);
         })
         .on('keydown', this.blockEnterKey);
-        
+
         this.targetFilter.on('keyup', function(e) {
             _self.filter(this.value, _self.targetList);
         })
         .on('keydown', this.blockEnterKey);
     },
-    
+
     blockEnterKey: function(e) {
         var key = e.which,
         keyCode = $.ui.keyCode;
@@ -408,7 +404,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             e.preventDefault();
         }
     },
-    
+
     setupFilterMatcher: function() {
         this.cfg.filterMatchMode = this.cfg.filterMatchMode||'startsWith';
         this.filterMatchers = {
@@ -417,15 +413,15 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             ,'endsWith': this.endsWithFilter
             ,'custom': this.cfg.filterFunction
         };
-                
+
         this.filterMatcher = this.filterMatchers[this.cfg.filterMatchMode];
     },
-    
+
     filter: function(value, list) {
         var filterValue = $.trim(value).toLowerCase(),
         items = list.children('li.ui-picklist-item'),
         animated = this.isAnimated();
-        
+
         if(filterValue === '') {
             items.filter(':hidden').show();
         }
@@ -450,51 +446,51 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             }
         }
     },
-    
+
     startsWithFilter: function(value, filter) {
         return value.toLowerCase().indexOf(filter) === 0;
     },
-    
+
     containsFilter: function(value, filter) {
         return value.toLowerCase().indexOf(filter) !== -1;
     },
-    
+
     endsWithFilter: function(value, filter) {
         return value.indexOf(filter, value.length - filter.length) !== -1;
     },
-    
+
     add: function() {
         var items = this.sourceList.children('li.ui-picklist-item.ui-state-highlight')
-        
+
         this.transfer(items, this.sourceList, this.targetList, 'command');
     },
-    
+
     addAll: function() {
         var items = this.sourceList.children('li.ui-picklist-item:visible:not(.ui-state-disabled)');
-        
+
         this.transfer(items, this.sourceList, this.targetList, 'command');
     },
-    
+
     remove: function() {
         var items = this.targetList.children('li.ui-picklist-item.ui-state-highlight');
-        
+
         this.transfer(items, this.targetList, this.sourceList, 'command');
     },
-    
+
     removeAll: function() {
         var items = this.targetList.children('li.ui-picklist-item:visible:not(.ui-state-disabled)');
-        
+
         this.transfer(items, this.targetList, this.sourceList, 'command');
     },
-    
+
     moveUp: function(list) {
         var _self = this,
         animated = _self.isAnimated(),
         items = list.children('.ui-state-highlight'),
         itemsCount = items.length,
         movedCount = 0;
-            
-        if(itemsCount) {    
+
+        if(itemsCount) {
             items.each(function() {
                 var item = $(this);
 
@@ -524,9 +520,9 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 this.fireReorderEvent();
             }
         }
-        
+
     },
-    
+
     moveTop: function(list) {
         var _self = this,
         animated = _self.isAnimated(),
@@ -564,7 +560,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             }
         }
     },
-    
+
     moveDown: function(list) {
         var _self = this,
         animated = _self.isAnimated(),
@@ -602,7 +598,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             }
         }
     },
-    
+
     moveBottom: function(list) {
         var _self = this,
         animated = _self.isAnimated(),
@@ -641,10 +637,10 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             }
         }
     },
-    
+
     /**
-     * Clear inputs and repopulate them from the list states 
-     */ 
+     * Clear inputs and repopulate them from the list states
+     */
     saveState: function() {
         this.sourceInput.children().remove();
         this.targetInput.children().remove();
@@ -653,12 +649,12 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         this.generateItems(this.targetList, this.targetInput);
         this.cursorItem = null;
     },
-    
-    transfer: function(items, from, to, type) {  
+
+    transfer: function(items, from, to, type) {
         var $this = this,
         itemsCount = items.length,
         transferCount = 0;
-        
+
         if(this.isAnimated()) {
             items.hide(this.cfg.effect, {}, this.cfg.effectSpeed, function() {
                 var item = $(this);
@@ -677,20 +673,20 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             items.hide();
-            
+
             if(this.cfg.showCheckbox) {
                 items.each(function() {
                     $this.unselectItem($(this));
                 });
             }
-            
+
             items.appendTo(to).show();
-            
+
             this.saveState();
             this.fireTransferEvent(items, from, to, type);
         }
     },
-    
+
     /**
      * Fire transfer ajax behavior event
      */
@@ -704,7 +700,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
             this.cfg.onTransfer.call(this, obj);
         }
-        
+
         if(this.cfg.behaviors) {
             var transferBehavior = this.cfg.behaviors['transfer'];
 
@@ -714,30 +710,22 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 },
                 paramName = this.id + '_transferred',
                 isAdd = from.hasClass('ui-picklist-source');
-                
+
                 items.each(function(index, item) {
                     ext.params.push({name:paramName, value:$(item).attr('data-item-value')});
                 });
-                
+
                 ext.params.push({name:this.id + '_add', value:isAdd});
 
                 transferBehavior.call(this, ext);
             }
         }
     },
-    
+
     getListName: function(element){
         return element.parent().hasClass("ui-picklist-source") ? "source" : "target";
     },
-            
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
-    
-        return false;
-    },
-    
+
     fireItemSelectEvent: function(item) {
         if(this.hasBehavior('select')) {
             var itemSelectBehavior = this.cfg.behaviors['select'],
@@ -758,7 +746,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             itemSelectBehavior.call(this, ext);
         }
     },
-    
+
     fireItemUnselectEvent: function(item) {
         if(this.hasBehavior('unselect')) {
             var itemUnselectBehavior = this.cfg.behaviors['unselect'],
@@ -772,17 +760,17 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             itemUnselectBehavior.call(this, ext);
         }
     },
-    
+
     fireReorderEvent: function() {
         if(this.hasBehavior('reorder')) {
             this.cfg.behaviors['reorder'].call(this);
         }
     },
-            
+
     isAnimated: function() {
         return (this.cfg.effect && this.cfg.effect != 'none');
     },
-    
+
     setTabIndex: function() {
         var tabindex = (this.cfg.disabled) ? "-1" : (this.cfg.tabindex||'0');
         this.sourceList.attr('tabindex', tabindex);

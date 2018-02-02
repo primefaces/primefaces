@@ -2,7 +2,7 @@
  * autoNumeric.js
  * @author: Bob Knothe
  * @author: Sokolov Yura
- * @version: 1.9.43 - 2015-12-19 GMT 4:00 PM / 16:00
+ * @version: 1.9.45 - 2015-06-13 GMT 5:00 PM / 19:00
  *
  * Created by Robert J. Knothe on 2010-10-25. Please report any bugs to https://github.com/BobKnothe/autoNumeric
  * Contributor by Sokolov Yura on 2010-11-07
@@ -614,6 +614,14 @@
                 parts = this.normalizeParts(left, right),
                 new_value = parts.join(''),
                 position = parts[0].length;
+
+            /**** PrimeFaces Github #2973 ****/
+                if(settingsClone.vMin > (new_value*1)) {
+                    new_value = settingsClone.vMin.toString();
+                    position = new_value.length;
+                }
+            /**************************/
+        
             if (autoCheck(new_value, settingsClone)) {
                 new_value = truncateDecimal(new_value, settingsClone, paste);
                 if (position > new_value.length) {
@@ -1113,8 +1121,8 @@
         destroy: function () {
             return $(this).each(function () {
                 var $this = $(this);
-                $this.off('.autoNumeric');
                 $this.removeData('autoNumeric');
+                $this.off('autoNumeric');
             });
         },
 
@@ -1151,7 +1159,7 @@
          * must contain only numbers and one decimal (period) character
          */
         set: function (valueIn) {
-            if (valueIn === null) {
+            if (valueIn === null || isNaN(valueIn)) {
                 return;
             }
             return $(this).each(function () {
@@ -1163,6 +1171,13 @@
                 if (typeof settings !== 'object') {
                     $.error("You must initialize autoNumeric('init', {options}) prior to calling the 'set' method");
                 }
+                
+                /**** PrimeFaces Github #2973 ****/
+                    if(settings.vMin > valueIn) {
+                        value = settings.vMin.toString();
+                    }
+                /**************************/
+                
                 /** allows locale decimal separator to be a comma */
                 if ((testValue === $this.attr('value') || testValue === $this.text()) && settings.runOnce === false) {
                     value = value.replace(',', '.');

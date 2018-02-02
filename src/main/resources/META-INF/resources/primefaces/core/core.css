@@ -18,20 +18,16 @@ ui-overlay-visible * {
     visibility: hidden !important;;
 }
 
-/* IE7 Fixes */
-.ui-overlay-visible table {
-    *border-collapse: collapse !important;
-}
-.ui-overlay-hidden table {
-    *border-collapse: separate !important;
+.ui-overflow-hidden {
+    overflow: hidden;
 }
 
 .ui-datepicker .ui-datepicker-current.ui-priority-secondary {
     opacity: 1;
 }
 
-.ui-icon-blank { 
-    background-position: 16px 16px; 
+.ui-icon-blank {
+    background-position: 16px 16px;
 }
 
 /* Column Priorities */

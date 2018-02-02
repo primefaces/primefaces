@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ import javax.faces.context.FacesContext;
  * For Components that support auto updating
  */
 public interface AutoUpdatable {
-    
+
     public boolean isAutoUpdate();
-    
+
     public String getClientId(FacesContext context);
 }

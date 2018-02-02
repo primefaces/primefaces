@@ -3333,8 +3333,10 @@ var dataPropertyName = "virtualMouseBindings",
 	touchTargetPropertyName = "virtualTouchID",
 	virtualEventNames = "vmouseover vmousedown vmousemove vmouseup vclick vmouseout vmousecancel".split( " " ),
 	touchEventProps = "clientX clientY pageX pageY screenX screenY".split( " " ),
+    generalProps = ( "altKey bubbles cancelable ctrlKey currentTarget detail eventPhase " +
+		"metaKey relatedTarget shiftKey target timeStamp view which" ).split( " " ),
 	mouseHookProps = $.event.mouseHooks ? $.event.mouseHooks.props : [],
-	mouseEventProps = $.event.props.concat( mouseHookProps ),
+	mouseEventProps = generalProps.concat( mouseHookProps ),
 	activeDocHandlers = {},
 	resetTimerID = 0,
 	startX = 0,
@@ -3372,7 +3374,7 @@ function createVirtualEvent( event, eventType ) {
 	event.type = eventType;
 
 	oe = event.originalEvent;
-	props = $.event.props;
+	props = generalProps;
 
 	// addresses separation of $.event.props in to $.event.mouseHook.props and Issue 3280
 	// https://github.com/jquery/jquery-mobile/issues/3280
@@ -6173,7 +6175,7 @@ $.widget( "mobile.page", {
 	if ( document.readyState === "complete" ) {
 		pageIsFullyLoaded();
 	} else {
-		$.mobile.window.load( pageIsFullyLoaded );
+		$.mobile.window.on('load', pageIsFullyLoaded );
 	}
 
 	$.when( domreadyDeferred, $.mobile.navreadyDeferred ).done( function() { $.mobile._registerInternalEvents(); } );
@@ -14473,7 +14475,7 @@ $.widget( "ui.tabs", {
 		// Take disabling tabs via class attribute from HTML
 		// into account and update option properly.
 		if ( $.isArray( options.disabled ) ) {
-			options.disabled = $.unique( options.disabled.concat(
+			options.disabled = $.uniqueSort( options.disabled.concat(
 				$.map( this.tabs.filter( ".ui-state-disabled" ), function( li ) {
 					return that.tabs.index( li );
 				})
@@ -15430,7 +15432,7 @@ $.widget( "ui.tabs", {
 		// window load event
 		// hide iOS browser chrome on load if hideUrlBar is true this is as fall back incase we were too early before
 		if ( $.mobile.hideUrlBar ) {
-			$window.load( $.mobile.silentScroll );
+			$window.on('load', $.mobile.silentScroll );
 		}
 
 		if ( !$.support.cssPointerEvents ) {

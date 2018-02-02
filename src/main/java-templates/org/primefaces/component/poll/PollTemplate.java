@@ -1,4 +1,5 @@
 import javax.el.ValueExpression;
+import org.primefaces.PrimeFaces;
 import org.primefaces.context.RequestContext;
 
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
@@ -17,8 +18,7 @@ import org.primefaces.context.RequestContext;
         	
         	if (Boolean.TRUE.equals(stop)) {
         		String widgetVar = resolveWidgetVar();
-        		RequestContext requestContext = RequestContext.getCurrentInstance();
-        		requestContext.execute("PF('" + widgetVar + "').stop();");
+        		PrimeFaces.current().executeScript("PF('" + widgetVar + "').stop();");
         	}
         }
 	}

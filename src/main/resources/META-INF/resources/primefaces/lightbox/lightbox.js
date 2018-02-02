@@ -67,7 +67,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         this.imageDisplay = this.content.children('img');
         this.navigators = this.contentWrapper.children('a');
         
-        this.imageDisplay.load(function() { 
+        this.imageDisplay.on('load', function() {
             var image = $(this);
             
             _self.scaleImage(image);

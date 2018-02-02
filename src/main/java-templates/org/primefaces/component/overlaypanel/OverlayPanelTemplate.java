@@ -5,7 +5,7 @@ import org.primefaces.util.Constants;
 
     @Override
     public void processDecodes(FacesContext context) {
-        if(isRequestSource(context)) {
+        if(ComponentUtils.isRequestSource(this, context)) {
             this.decode(context);
         }
         else {
@@ -15,20 +15,16 @@ import org.primefaces.util.Constants;
 
     @Override
     public void processValidators(FacesContext context) {
-        if(!isRequestSource(context)) {
+        if(!ComponentUtils.isRequestSource(this, context)) {
             super.processValidators(context);
         }
     }
 
     @Override
     public void processUpdates(FacesContext context) {
-        if(!isRequestSource(context)) {
+        if(!ComponentUtils.isRequestSource(this, context)) {
             super.processUpdates(context);
         }
-    }
-
-    private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
 
     public boolean isContentLoadRequest(FacesContext context) {

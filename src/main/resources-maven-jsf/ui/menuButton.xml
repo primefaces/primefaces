@@ -19,8 +19,8 @@
         </interface>
     </interfaces>
     <attributes>
-		&standard_uicomponent_attributes;
-		&widget_var_attribute;
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
         <attribute>
             <name>model</name>
             <required>false</required>
@@ -76,6 +76,12 @@
             <required>false</required>
             <type>java.lang.String</type>
             <description>Style class of the overlay menu element.</description>
+        </attribute>
+        <attribute>
+            <name>title</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Advisory tooltip information.</description>
         </attribute>
     </attributes>
     <resources>

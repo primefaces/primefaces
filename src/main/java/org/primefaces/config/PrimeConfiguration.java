@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,12 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.application.ViewHandler;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.validation.Validation;
-
+import org.primefaces.util.ClassUtils;
 
 import org.primefaces.util.Constants;
 
@@ -44,28 +43,31 @@ public class PrimeConfiguration {
     private boolean partialSubmitEnabled = false;
     private boolean resetValuesEnabled = false;
     private boolean interpretEmptyStringAsNull = false;
-    private String  secretKey = null;
-    private String  pushServerURL = null;
-    private String  theme = null;
-    private String  mobileTheme = null;
+    private String secretKey = null;
+    private String pushServerURL = null;
+    private String theme = null;
+    private String mobileTheme = null;
     private boolean fontAwesomeEnabled = false;
     private boolean clientSideValidationEnabled = false;
-    private String  uploader = null;
+    private String uploader = null;
     private boolean transformMetadataEnabled = false;
     private boolean legacyWidgetNamespace = false;
     private boolean beanValidationDisabled = false;
     private boolean interpolateClientSideValidationMessages = false;
     private boolean earlyPostParamEvaluation = false;
+    private boolean moveScriptsToBottom = false;
+
+    // environment config
+    private boolean beanValidationAvailable = false;
+    private boolean atLeastEl22 = false;
+    private boolean atLeastJsf23 = false;
+    private boolean atLeastJsf22 = false;
+    private boolean atLeastJsf21 = false;
+    private boolean atLeastBv11 = false;
 
     // internal config
-    private boolean beanValidationAvailable = false;
     private boolean stringConverterAvailable = false;
-    private boolean el22Available = false;
-    private boolean jsf23 = false;
-    private boolean jsf22 = false;
-    private boolean jsf21 = false;
-    private boolean bv11 = false;
-
+    
     // build properties
     private String buildVersion = null;
 
@@ -78,32 +80,26 @@ public class PrimeConfiguration {
 
     public PrimeConfiguration(FacesContext context) {
         initConfigFromContextParams(context);
-        initConfig(context);
+        initEnvironmentConfig();
+        initInternalConfig(context);
         initBuildProperties();
         initConfigFromWebXml(context);
         initValidateEmptyFields(context);
     }
 
-    protected void initConfig(FacesContext context) {
-        el22Available = checkIfEL22IsAvailable();
-        beanValidationAvailable = checkIfBeanValidationIsAvailable();
+    protected void initEnvironmentConfig() {
+        atLeastEl22 = ClassUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
 
-        jsf23 = detectJSF23();
-        if (jsf23) {
-            jsf22 = true;
-            jsf21 = true;
-        } else {
-            jsf22 = detectJSF22();
-            if (jsf22) {
-                jsf21 = true;
-            } else {
-                jsf21 = detectJSF21();
-            }
-        }
+        atLeastJsf23 = ClassUtils.tryToLoadClassForName("javax.faces.component.UIImportConstants") != null;
+        atLeastJsf22 = ClassUtils.tryToLoadClassForName("javax.faces.flow.Flow") != null;
+        atLeastJsf21 = ClassUtils.tryToLoadClassForName("javax.faces.component.TransientStateHolder") != null;
 
-        bv11 = detectBV11();
-
+        atLeastBv11 = ClassUtils.tryToLoadClassForName("javax.validation.executable.ExecutableValidator") != null;
+    }
+    
+    protected void initInternalConfig(FacesContext context) {
         stringConverterAvailable = null != context.getApplication().createConverter(String.class);
+        beanValidationAvailable = checkIfBeanValidationIsAvailable();
     }
 
     protected void initConfigFromContextParams(FacesContext context) {
@@ -152,6 +148,9 @@ public class PrimeConfiguration {
 
         value = externalContext.getInitParameter(Constants.ContextParams.EARLY_POST_PARAM_EVALUATION);
         earlyPostParamEvaluation = (value == null) ? false : Boolean.valueOf(value);
+        
+        value = externalContext.getInitParameter(Constants.ContextParams.MOVE_SCRIPTS_TO_BOTTOM);
+        moveScriptsToBottom = (value == null) ? false : Boolean.valueOf(value);
     }
 
     protected void initValidateEmptyFields(FacesContext context) {
@@ -191,7 +190,8 @@ public class PrimeConfiguration {
             is = getClass().getResourceAsStream("/META-INF/maven/org.primefaces/primefaces/pom.properties");
             buildProperties.load(is);
             buildVersion = buildProperties.getProperty("version");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.log(Level.SEVERE, "Could not load pom.properties", e);
         }
 
@@ -199,110 +199,28 @@ public class PrimeConfiguration {
             try {
                 is.close();
             }
-            catch (IOException e) { }
+            catch (IOException e) {
+            }
         }
     }
 
     private boolean checkIfBeanValidationIsAvailable() {
-    	boolean available = false;
-
-    	// check if class is available
-        try {
-            available = Class.forName("javax.validation.Validation") != null;
-        } catch (ClassNotFoundException e) {
-            available = false;
-        }
+        boolean available = ClassUtils.tryToLoadClassForName("javax.validation.Validation") != null;
 
         if (available) {
             // Trial-error approach to check for Bean Validation impl existence.
             // If any Exception occurs here, we assume that Bean Validation is not available.
             // The cause may be anything, i.e. NoClassDef, config error...
             try {
-            	Validation.buildDefaultValidatorFactory().getValidator();
-            } catch (Throwable t) {
-            	LOG.log(Level.FINE, "BV not available - Could not build default ValidatorFactory.");
-            	available = false;
+                Validation.buildDefaultValidatorFactory().getValidator();
+            }
+            catch (Throwable t) {
+                LOG.log(Level.FINE, "BV not available - Could not build default ValidatorFactory.");
+                available = false;
             }
         }
 
-        return available && !beanValidationDisabled && el22Available;
-    }
-
-    private boolean checkIfEL22IsAvailable() {
-    	boolean available;
-
-        try {
-            available = Class.forName("javax.el.ValueReference") != null;
-        } catch (ClassNotFoundException e) {
-            available = false;
-        }
-
-        return available;
-    }
-
-    private boolean detectJSF23() {
-        String version = FacesContext.class.getPackage().getImplementationVersion();
-
-        if(version != null) {
-            return version.startsWith("2.3");
-        }
-        else {
-            //fallback
-            try {
-                Class.forName("javax.faces.component.UIImportConstant");
-                return true;
-            }
-            catch (ClassNotFoundException ex) {
-                return false;
-            }
-        }
-    }
-
-    private boolean detectJSF22() {
-        String version = FacesContext.class.getPackage().getImplementationVersion();
-
-        if(version != null) {
-            return version.startsWith("2.2");
-        }
-        else {
-            //fallback
-            try {
-                Class.forName("javax.faces.flow.Flow");
-                return true;
-            }
-            catch (ClassNotFoundException ex) {
-                return false;
-            }
-        }
-    }
-
-    private boolean detectJSF21() {
-        String version = FacesContext.class.getPackage().getImplementationVersion();
-
-        if(version != null) {
-            return version.startsWith("2.1");
-        }
-        else {
-            //fallback
-            try {
-                ViewHandler.class.getDeclaredMethod("deriveLogicalViewId", FacesContext.class, String.class);
-                return true;
-            }
-            catch (NoSuchMethodException ex) {
-                return false;
-            }
-        }
-    }
-
-    private boolean detectBV11()
-    {
-        try {
-            Class.forName("javax.validation.executable.ExecutableValidator");
-            return true;
-        }
-        catch (ClassNotFoundException ex) {
-            return false;
-        }
+        return available && !beanValidationDisabled && atLeastEl22;
     }
 
     protected void initConfigFromWebXml(FacesContext context) {
@@ -321,7 +239,7 @@ public class PrimeConfiguration {
     }
 
     public boolean isAtLeastEL22() {
-        return el22Available;
+        return atLeastEl22;
     }
 
     public boolean isPartialSubmitEnabled() {
@@ -341,19 +259,19 @@ public class PrimeConfiguration {
     }
 
     public boolean isAtLeastJSF23() {
-        return jsf23;
+        return atLeastJsf23;
     }
 
     public boolean isAtLeastJSF22() {
-        return jsf22;
+        return atLeastJsf22;
     }
 
     public boolean isAtLeastJSF21() {
-        return jsf21;
+        return atLeastJsf21;
     }
 
     public boolean isResetValuesEnabled() {
-    	return resetValuesEnabled;
+        return resetValuesEnabled;
     }
 
     public boolean isClientSideValidationEnabled() {
@@ -401,10 +319,14 @@ public class PrimeConfiguration {
     }
 
     public boolean isAtLeastBV11() {
-        return bv11;
+        return atLeastBv11;
     }
 
     public boolean isEarlyPostParamEvaluation() {
         return earlyPostParamEvaluation;
+    }
+
+    public boolean isMoveScriptsToBottom() {
+        return moveScriptsToBottom;
     }
 }

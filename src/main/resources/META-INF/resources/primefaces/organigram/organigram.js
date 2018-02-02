@@ -457,14 +457,6 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
-    hasBehavior: function(event) {
-        if (this.cfg.behaviors) {
-            return this.cfg.behaviors[event] !== undefined;
-        }
-
-        return false;
-    },
-
     // contextMenu integration
     bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
         var selector = targetId + " .ui-organigram-node.selectable",

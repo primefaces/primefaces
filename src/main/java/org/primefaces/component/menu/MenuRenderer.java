@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package org.primefaces.component.menu;
 
 import java.io.IOException;
 import java.util.List;
-import javax.faces.component.UIComponent;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -32,81 +31,80 @@ public class MenuRenderer extends BaseMenuRenderer {
 
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         Menu menu = (Menu) abstractMenu;
-		String clientId = menu.getClientId(context);
-        
+        String clientId = menu.getClientId(context);
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithDomReady("PlainMenu", menu.resolveWidgetVar(), clientId)
-            .attr("toggleable", menu.isToggleable(), false);
-        
-        if(menu.isOverlay()) {
+                .attr("toggleable", menu.isToggleable(), false);
+
+        if (menu.isOverlay()) {
             encodeOverlayConfig(context, menu, wb);
         }
 
         wb.finish();
-	}
+    }
 
-	protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
-		ResponseWriter writer = context.getResponseWriter();
+    protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         Menu menu = (Menu) abstractMenu;
-		String clientId = menu.getClientId(context);
+        String clientId = menu.getClientId(context);
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
         String defaultStyleClass = menu.isOverlay() ? Menu.DYNAMIC_CONTAINER_CLASS : Menu.STATIC_CONTAINER_CLASS;
-        if(menu.isToggleable()) {
+        if (menu.isToggleable()) {
             defaultStyleClass = defaultStyleClass + " " + Menu.TOGGLEABLE_MENU_CLASS;
         }
         styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
-        
+
         writer.startElement("div", menu);
-		writer.writeAttribute("id", clientId, "id");
+        writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
         writer.writeAttribute("role", "menu", null);
-        
+
         encodeKeyboardTarget(context, menu);
 
-        if(menu.getElementsCount() > 0) {
+        if (menu.getElementsCount() > 0) {
             writer.startElement("ul", null);
             writer.writeAttribute("class", Menu.LIST_CLASS, null);
-            encodeElements(context, menu, menu.getElements());
+            encodeElements(context, menu, menu.getElements(), false);
             writer.endElement("ul");
         }
 
         writer.endElement("div");
-	}
+    }
 
-    protected void encodeElements(FacesContext context, Menu menu, List<MenuElement> elements) throws IOException{
-		ResponseWriter writer = context.getResponseWriter();
+    protected void encodeElements(FacesContext context, Menu menu, List<MenuElement> elements, boolean isSubmenu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         boolean toggleable = menu.isToggleable();
-        
-        for(MenuElement element : elements) {
-            if(element.isRendered()) {
-                if(element instanceof MenuItem) {
+
+        for (MenuElement element : elements) {
+            if (element.isRendered()) {
+                if (element instanceof MenuItem) {
                     MenuItem menuItem = (MenuItem) element;
                     String containerStyle = menuItem.getContainerStyle();
                     String containerStyleClass = menuItem.getContainerStyleClass();
-                    containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS: Menu.MENUITEM_CLASS + " " + containerStyleClass; 
-                            
-                    if(toggleable) {
-                        UIComponent parent = ((UIComponent)menuItem).getParent();
-                        containerStyleClass = (parent instanceof Submenu) ? containerStyleClass + " " + Menu.SUBMENU_CHILD_CLASS: containerStyleClass; 
+                    containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : Menu.MENUITEM_CLASS + " " + containerStyleClass;
+
+                    if (toggleable && isSubmenu) {
+                        containerStyleClass = containerStyleClass + " " + Menu.SUBMENU_CHILD_CLASS;
                     }
-                    
+
                     writer.startElement("li", null);
                     writer.writeAttribute("class", containerStyleClass, null);
                     writer.writeAttribute("role", "menuitem", null);
-                    if(containerStyle != null) {
+                    if (containerStyle != null) {
                         writer.writeAttribute("style", containerStyle, null);
                     }
                     encodeMenuItem(context, menu, menuItem);
                     writer.endElement("li");
                 }
-                else if(element instanceof Submenu) {
+                else if (element instanceof Submenu) {
                     encodeSubmenu(context, menu, (Submenu) element);
                 }
-                else if(element instanceof Separator) {
+                else if (element instanceof Separator) {
                     encodeSeparator(context, (Separator) element);
                 }
             }
@@ -124,38 +122,38 @@ public class MenuRenderer extends BaseMenuRenderer {
 
         //title
         writer.startElement("li", null);
-        if(toggleable) {
+        if (toggleable) {
             writer.writeAttribute("id", submenu.getClientId(), null);
         }
         writer.writeAttribute("class", styleClass, null);
-        if(style != null) {
+        if (style != null) {
             writer.writeAttribute("style", style, null);
         }
-        
+
         writer.startElement("h3", null);
-        
-        if(menu.isToggleable()) {
+
+        if (menu.isToggleable()) {
             encodeIcon(context, label, Menu.EXPANDED_SUBMENU_HEADER_ICON_CLASS);
         }
-        
-        if(icon != null) {
+
+        if (icon != null) {
             encodeIcon(context, label, "ui-submenu-icon ui-icon " + icon);
         }
-        
-        if(label != null) {
+
+        if (label != null) {
             writer.writeText(label, "value");
         }
-        
+
         writer.endElement("h3");
-        
+
         writer.endElement("li");
 
-        encodeElements(context, menu, submenu.getElements());          
-	}
-    
+        encodeElements(context, menu, submenu.getElements(), true);
+    }
+
     protected void encodeIcon(FacesContext context, String label, String styleClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
         writer.startElement("span", null);
         writer.writeAttribute("class", styleClass, null);
         writer.endElement("span");

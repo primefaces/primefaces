@@ -59,7 +59,8 @@
 
 .ui-datatable .ui-column-filter {
     display: block;
-    width:100px;
+    box-sizing: border-box;
+    width: 100%;
     margin:auto;
 }
 
@@ -150,6 +151,16 @@
 .ui-datatable .ui-paginator {
     padding: 2px;
 }
+
+.ui-datatable .ui-datatable-virtualscroll-wrapper {
+    position: relative;
+}
+
+.ui-datatable .ui-datatable-virtualscroll-table {
+    top: 0px;
+    left: 0px;
+    position: absolute;
+} 
 
 /* InCell Editing */
 .ui-datatable .ui-cell-editor-input {
@@ -276,6 +287,10 @@
 }
 
 .ui-datatable-frozenlayout-right .ui-datatable-empty-message td {
+    text-indent: -9999px;
+}
+
+.ui-datatable-frozenlayout-right .ui-datatable-empty-message td > * {
     visibility: hidden;
 }
 
@@ -309,7 +324,7 @@
         display: none;
     }
 
-    .ui-datatable-reflow .ui-datatable-data td[role="gridcell"] { 
+    .ui-datatable-reflow .ui-datatable-data td[role="gridcell"]:not(.ui-helper-hidden) { 
         text-align: left;
         display: block;
         border: 0px none;

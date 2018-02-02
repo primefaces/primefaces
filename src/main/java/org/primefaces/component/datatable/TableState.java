@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2017 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,26 +22,38 @@ import javax.el.ValueExpression;
 import org.primefaces.model.SortMeta;
 
 public class TableState implements Serializable {
- 
+
     private int first;
-    
+
     private int rows;
-    
+
     private List<SortMeta> multiSortMeta;
-    
+
     private ValueExpression sortBy;
-    
+
     private String sortOrder;
-    
+
     private String sortField;
-    
+
     private MethodExpression sortFunction;
-    
+
+    private ValueExpression defaultSortBy;
+
+    private String defaultSortOrder;
+
+    private MethodExpression defaultSortFunction;
+
     private List<Object> rowKeys;
-    
+
     private List<FilterState> filters;
-    
+
     private String globalFilterValue;
+    
+    private String orderedColumnsAsString;
+    
+    private String togglableColumnsAsString;
+    
+    private String resizableColumnsAsString;
 
     public int getFirst() {
         return first;
@@ -99,6 +111,30 @@ public class TableState implements Serializable {
         this.sortFunction = sortFunction;
     }
 
+    public ValueExpression getDefaultSortBy() {
+        return defaultSortBy;
+    }
+
+    public void setDefaultSortBy(ValueExpression defaultSortBy) {
+        this.defaultSortBy = defaultSortBy;
+    }
+
+    public String getDefaultSortOrder() {
+        return defaultSortOrder;
+    }
+
+    public void setDefaultSortOrder(String defaultSortOrder) {
+        this.defaultSortOrder = defaultSortOrder;
+    }
+
+    public MethodExpression getDefaultSortFunction() {
+        return defaultSortFunction;
+    }
+
+    public void setDefaultSortFunction(MethodExpression defaultSortFunction) {
+        this.defaultSortFunction = defaultSortFunction;
+    }
+
     public List<Object> getRowKeys() {
         return rowKeys;
     }
@@ -121,5 +157,29 @@ public class TableState implements Serializable {
 
     public void setGlobalFilterValue(String globalFilterValue) {
         this.globalFilterValue = globalFilterValue;
+    }
+    
+    public String getOrderedColumnsAsString() {
+        return orderedColumnsAsString;
+    }
+
+    public void setOrderedColumnsAsString(String orderedColumnsAsString) {
+        this.orderedColumnsAsString = orderedColumnsAsString;
+    }
+    
+    public String getTogglableColumnsAsString() {
+        return togglableColumnsAsString;
+    }
+
+    public void setTogglableColumnsAsString(String togglableColumnsAsString) {
+        this.togglableColumnsAsString = togglableColumnsAsString;
+    }
+    
+    public String getResizableColumnsAsString() {
+        return resizableColumnsAsString;
+    }
+
+    public void setResizableColumnsAsString(String resizableColumnsAsString) {
+        this.resizableColumnsAsString = resizableColumnsAsString;
     }
 }
