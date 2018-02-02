@@ -136,7 +136,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         String rel = menuitem.getRel();
 
         writer.startElement("a", null);
-        writer.writeAttribute("tabindex", "-1", null);
+        writer.writeAttribute("tabindex", "0", null);
         if (shouldRenderId(menuitem)) {
             writer.writeAttribute("id", menuitem.getClientId(), null);
         }
