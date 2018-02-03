@@ -115,6 +115,10 @@ import javax.faces.event.BehaviorEvent;
      * @param oldEntries old/former entries of model source/target list
      */
     protected void checkDisabled(FacesContext facesContext, String label, List<?> newEntries, List<?> oldEntries) {
+        if (!isValid()) {
+            return;
+        }
+        
         String varName = getVar();
         String clientId = this.getClientId(facesContext);
         for (int i = 0; i < newEntries.size(); i++) {
