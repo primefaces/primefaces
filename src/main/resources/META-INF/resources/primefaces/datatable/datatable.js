@@ -899,9 +899,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         
         for(var i = 0; i < headerColumns.length; i++) {
             var headerColumn = headerColumns.eq(i),
-            ariaLabelText = headerColumn.attr('aria-label'),
+            reflowHeaderText = headerColumn.find('.ui-reflow-headertext:first').text(),
             colTitleEl = headerColumn.children('.ui-column-title'),
-            title = (ariaLabelText && ariaLabelText.length) ? ariaLabelText : colTitleEl.text();
+            title = (reflowHeaderText && reflowHeaderText.length) ? reflowHeaderText : colTitleEl.text();
             this.tbody.find('> tr:not(.ui-datatable-empty-message) > td:nth-child(' + (i + 1) + ')').prepend('<span class="ui-column-title">' + title + '</span>');
         }
     },
@@ -2262,7 +2262,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             $(document).off('click.datatable-cell-blur' + this.id)
                         .on('click.datatable-cell-blur' + this.id, function(e) {
                             var target = $(e.target);
-                            if(!$this.incellClick && (target.is('.ui-selectonemenu-panel') || target.closest('.ui-selectonemenu-panel').length || target.closest('.ui-datepicker-buttonpane').length)) {
+                            if(!$this.incellClick && (target.is('.ui-input-overlay') || target.closest('.ui-input-overlay').length || target.closest('.ui-datepicker-buttonpane').length)) {
                                 $this.incellClick = true;
                             }
                             
@@ -2404,7 +2404,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(multi) {
             var oldValues = [];
             for(var i = 0; i < inputs.length; i++) {
-                oldValues.push(inputs.eq(i).val());
+                var input = inputs.eq(i);
+                
+                if(input.is(':checkbox')) {
+                    oldValues.push(input.val() + "_" + input.is(':checked'));
+                }
+                else {
+                    oldValues.push(input.val());
+                }
             }
 
             cell.data('multi-edit', true);
@@ -2489,7 +2496,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(cell.data('multi-edit')) {
             var oldValues = cell.data('old-value');
             for(var i = 0; i < inputs.length; i++) {
-                if(inputs.eq(i).val() != oldValues[i]) {
+                var input = inputs.eq(i),
+                inputVal = input.val();
+                
+                if(input.is(':checkbox')) {
+                    var checkboxVal = inputVal + "_" + input.is(':checked');
+                    if(checkboxVal != oldValues[i]) {
+                        changed = true;
+                        break;
+                    }
+                }
+                else if(inputVal != oldValues[i]) {
                     changed = true;
                     break;
                 }
@@ -3632,7 +3649,20 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     updateEmptyColspan: function() {
         var emptyRow = this.tbody.children('tr:first');
         if(emptyRow && emptyRow.hasClass('ui-datatable-empty-message')) {
-            emptyRow.children('td').attr('colspan', this.thead.find('th:not(.ui-helper-hidden)').length);
+            var visibleHeaderColumns = this.thead.find('> tr:first th:not(.ui-helper-hidden)'),
+            colSpanValue = 0;
+    
+            for(var i = 0; i < visibleHeaderColumns.length; i++) {
+                var column = visibleHeaderColumns.eq(i);
+                if(column.is('[colspan]')) {
+                    colSpanValue += parseInt(column.attr('colspan')); 
+                }
+                else {
+                    colSpanValue++;
+                }
+            }
+            
+            emptyRow.children('td').attr('colspan', colSpanValue);
         }
     },
     

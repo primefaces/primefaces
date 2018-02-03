@@ -668,8 +668,9 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         String ariaHeaderLabel = getHeaderLabel(context, column);
-
-        writer.startElement("th", null);
+        UIComponent component = (column instanceof UIComponent) ? (UIComponent) column : null;
+        
+        writer.startElement("th", component);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", columnClass, null);
         writer.writeAttribute("role", "columnheader", null);
@@ -1295,7 +1296,8 @@ public class DataTableRenderer extends DataRenderer {
         if (table.isMultiViewState()) {
             Map<String, Boolean> togglableColsMap = table.getTogglableColumnsMap();
             String colClientId = column.getContainerClientId(context);
-            String colHeaderClientId = clientId + colClientId.substring(colClientId.lastIndexOf(":"), colClientId.length());
+            char separatorChar = UINamingContainer.getSeparatorChar(context);
+            String colHeaderClientId = clientId + colClientId.substring(colClientId.lastIndexOf(separatorChar), colClientId.length());
             isColVisible = togglableColsMap.get(colHeaderClientId) == null ? isColVisible : togglableColsMap.get(colHeaderClientId);
         }
 

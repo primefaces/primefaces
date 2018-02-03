@@ -323,7 +323,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         shouldLoad = this.cfg.dynamic && !this.isLoaded(newPanel);
 
         //update state
-        this.stateHolder.val(index);
+        this.stateHolder.val(newPanel.data('index'));
         this.cfg.selected = index;
 
         if(shouldLoad) {
@@ -402,7 +402,6 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      */
     loadDynamicTab: function(newPanel) {
         var $this = this,
-        tabindex = newPanel.index(),
         options = {
             source: this.id,
             process: this.id,
@@ -410,7 +409,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             params: [
                 {name: this.id + '_contentLoad', value: true},
                 {name: this.id + '_newTab', value: newPanel.attr('id')},
-                {name: this.id + '_tabindex', value: tabindex}
+                {name: this.id + '_tabindex', value: newPanel.data('index')}
             ],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
@@ -445,14 +444,19 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * Removes a tab with given index
      */
     remove: function(index) {
+        // remove old header and content
         var header = this.headerContainer.eq(index),
         panel = this.panelContainer.children().eq(index);
 
         header.remove();
         panel.remove();
 
-        var length = this.getLength();
+        // refresh "chached" selectors
+        this.headerContainer = this.navContainer.children('li.ui-tabs-header');
+        this.panelContainer = this.jq.children('.ui-tabs-panels');
 
+        // select next tab
+        var length = this.getLength();
         if(length > 0) {
             if(index < this.cfg.selected) {
                 this.cfg.selected--;
@@ -492,7 +496,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         ext = {
             params: [
                 {name: this.id + '_newTab', value: panel.attr('id')},
-                {name: this.id + '_tabindex', value: panel.index()}
+                {name: this.id + '_tabindex', value: panel.data('index')}
             ]
         };
 

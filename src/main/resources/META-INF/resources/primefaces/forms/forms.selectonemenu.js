@@ -11,6 +11,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.focusInput = $(this.jqId + '_focus');
         this.label = this.jq.find('.ui-selectonemenu-label');
         this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
+	    
+        this.panelParent = this.cfg.appendTo
+            ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo) : $(document.body);
+        if(!this.panelParent.is(this.jq)) {
+            this.panelParent.children(this.panelId).remove();
+        }
+	    
         this.panel = $(this.panelId);
         this.disabled = this.jq.hasClass('ui-state-disabled');
         this.itemsWrapper = this.panel.children('.ui-selectonemenu-items-wrapper');
@@ -98,8 +105,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         var highlightedItemId = highlightedItem.attr('id');
+        this.jq.attr('aria-owns', this.itemsContainer.attr('id'));
         this.focusInput.attr('aria-autocomplete', 'list')
-            .attr('aria-owns', this.itemsContainer.attr('id'))
             .attr('aria-activedescendant', highlightedItemId)
             .attr('aria-describedby', highlightedItemId)
             .attr('aria-disabled', this.disabled);
@@ -122,11 +129,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     appendPanel: function() {
-        var container = this.cfg.appendTo ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo): $(document.body);
-
-        if(!container.is(this.jq)) {
-            container.children(this.panelId).remove();
-            this.panel.appendTo(container);
+        if(!this.panelParent.is(this.jq)) {
+            this.panel.appendTo(this.panelParent);
         }
     },
 
@@ -704,6 +708,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         //value before panel is shown
         this.preShowValue = this.options.filter(':selected');
         this.focusInput.attr('aria-expanded', true);
+        this.jq.attr('aria-expanded', true);
     },
 
     hide: function() {
@@ -713,6 +718,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         this.panel.css('z-index', '').hide();
         this.focusInput.attr('aria-expanded', false);
+        this.jq.attr('aria-expanded', false);
     },
 
     focus: function() {

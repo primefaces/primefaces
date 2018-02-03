@@ -62,7 +62,7 @@ public class HeadRenderer extends Renderer {
         renderCSS(context, "mobile/primefaces-mobile.css", "primefaces");
 
         if (cc.isFontAwesomeEnabled()) {
-            renderCSS(context, "fa/fontawesome-all.css", "primefaces");
+            renderCSS(context, "fa/font-awesome.css", "primefaces");
         }
 
         renderJS(context, "jquery/jquery.js", "primefaces");

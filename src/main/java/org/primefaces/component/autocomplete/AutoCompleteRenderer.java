@@ -351,6 +351,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("id", ac.getClientId(context) + "_panel", null);
         writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("role", "listbox", null);
 
         if (ac.getPanelStyle() != null) {
             writer.writeAttribute("style", ac.getPanelStyle(), null);
@@ -689,7 +690,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                 .attr("atPos", ac.getAt(), null)
                 .attr("active", ac.isActive(), true)
                 .attr("unique", ac.isUnique(), false)
-                .attr("dynamic", ac.isDynamic(), false);
+                .attr("dynamic", ac.isDynamic(), false)
+                .attr("autoSelection", ac.isAutoSelection(), true);
 
         if (ac.isCache()) {
             wb.attr("cache", true).attr("cacheTimeout", ac.getCacheTimeout());

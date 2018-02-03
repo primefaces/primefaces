@@ -89,7 +89,7 @@ public class TabViewRenderer extends org.primefaces.component.tabview.TabViewRen
             int i = 0;
             for (UIComponent kid : tabView.getChildren()) {
                 if (kid.isRendered() && kid instanceof Tab) {
-                    encodeTabHeader(context, tabView, (Tab) kid, (i == activeIndex));
+                    encodeTabHeader(context, tabView, (Tab) kid, i, (i == activeIndex));
                     i++;
                 }
             }
@@ -101,7 +101,7 @@ public class TabViewRenderer extends org.primefaces.component.tabview.TabViewRen
 
             for (int i = 0; i < dataCount; i++) {
                 tabView.setIndex(i);
-                encodeTabHeader(context, tabView, tab, (i == activeIndex));
+                encodeTabHeader(context, tabView, tab, i, (i == activeIndex));
             }
 
             tabView.setIndex(-1);
@@ -112,7 +112,8 @@ public class TabViewRenderer extends org.primefaces.component.tabview.TabViewRen
     }
 
     @Override
-    protected void encodeTabHeader(FacesContext context, TabView tabView, Tab tab, boolean active) throws IOException {
+    protected void encodeTabHeader(FacesContext context, TabView tabView, Tab tab, int index, boolean active)
+            throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String headerClass = active ? TabView.MOBILE_ACTIVE_TAB_HEADER_CLASS : TabView.MOBILE_INACTIVE_TAB_HEADER_CLASS;
         String titleClass = active ? TabView.MOBILE_ACTIVE_TAB_HEADER_TITLE_CLASS : TabView.MOBILE_INACTIVE_TAB_HEADER_TITLE_CLASS;
@@ -161,7 +162,7 @@ public class TabViewRenderer extends org.primefaces.component.tabview.TabViewRen
             int i = 0;
             for (UIComponent kid : tabView.getChildren()) {
                 if (kid.isRendered() && kid instanceof Tab) {
-                    encodeTabContent(context, (Tab) kid, (i == activeIndex), dynamic);
+                    encodeTabContent(context, (Tab) kid, i, (i == activeIndex), dynamic);
                     i++;
                 }
             }
@@ -173,7 +174,7 @@ public class TabViewRenderer extends org.primefaces.component.tabview.TabViewRen
 
             for (int i = 0; i < dataCount; i++) {
                 tabView.setIndex(i);
-                encodeTabContent(context, tab, (i == activeIndex), dynamic);
+                encodeTabContent(context, tab, i, (i == activeIndex), dynamic);
             }
 
             tabView.setIndex(-1);
@@ -183,7 +184,8 @@ public class TabViewRenderer extends org.primefaces.component.tabview.TabViewRen
     }
 
     @Override
-    protected void encodeTabContent(FacesContext context, Tab tab, boolean active, boolean dynamic) throws IOException {
+    protected void encodeTabContent(FacesContext context, Tab tab, int index, boolean active, boolean dynamic)
+            throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String visibility = active ? "display:block" : "display:none";
 

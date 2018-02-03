@@ -68,7 +68,8 @@ public class PanelRenderer extends CoreRenderer {
             wb.attr("toggleable", true)
                     .attr("toggleSpeed", panel.getToggleSpeed())
                     .attr("collapsed", panel.isCollapsed())
-                    .attr("toggleOrientation", panel.getToggleOrientation());
+                    .attr("toggleOrientation", panel.getToggleOrientation())
+                    .attr("toggleableHeader", panel.isToggleableHeader());
         }
 
         if (panel.isClosable()) {

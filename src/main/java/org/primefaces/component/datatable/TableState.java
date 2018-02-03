@@ -49,7 +49,7 @@ public class TableState implements Serializable {
 
     private String globalFilterValue;
     
-    private List orderedColumns;
+    private String orderedColumnsAsString;
     
     private String togglableColumnsAsString;
     
@@ -159,12 +159,12 @@ public class TableState implements Serializable {
         this.globalFilterValue = globalFilterValue;
     }
     
-    public List getOrderedColumns() {
-        return orderedColumns;
+    public String getOrderedColumnsAsString() {
+        return orderedColumnsAsString;
     }
 
-    public void setOrderedColumns(List orderedColumns) {
-        this.orderedColumns = orderedColumns;
+    public void setOrderedColumnsAsString(String orderedColumnsAsString) {
+        this.orderedColumnsAsString = orderedColumnsAsString;
     }
     
     public String getTogglableColumnsAsString() {
