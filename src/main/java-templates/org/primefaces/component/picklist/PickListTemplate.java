@@ -77,6 +77,7 @@ import javax.faces.event.BehaviorEvent;
         return EVENT_NAMES;
     }
     
+    @Override
     protected void validateValue(FacesContext facesContext, Object newValue) {
         super.validateValue(facesContext, newValue);
 
