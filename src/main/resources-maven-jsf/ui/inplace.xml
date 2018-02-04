@@ -81,21 +81,21 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Specifies the editor mode.</description>
+            <description>Displays "Save" and "Cancel" buttons when content is displayed. Default is "false".</description>
         </attribute>
         <attribute>
             <name>saveLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>Save</defaultValue>
-            <description>Tooltip text of save buttin in editor mode. Default is "Save"</description>
+            <description>Tooltip text of save button in editor mode. Default is "Save"</description>
         </attribute>
         <attribute>
             <name>cancelLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>Cancel</defaultValue>
-            <description>Tooltip text of cancel buttin in editor mode. Default is "Cancel"</description>
+            <description>Tooltip text of cancel button in editor mode. Default is "Cancel"</description>
         </attribute>
         <attribute>
             <name>event</name>
