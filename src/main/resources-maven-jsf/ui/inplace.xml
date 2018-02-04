@@ -116,7 +116,7 @@
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>display</defaultValue>
-            <description>Defines in which mode inplace should displayed first ("display" or "content"). Default is "display"</description>
+            <description>Defines in which mode inplace should be displayed first ("display" or "content"). Default is "display"</description>
         </attribute>
     </attributes>
     <resources>
