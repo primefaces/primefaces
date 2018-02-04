@@ -22,16 +22,16 @@ import java.util.ArrayList;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONObject;
 
-public class AutoCompleteMatches extends JSONObject {
+public class TerminalAutoCompleteMatches extends JSONObject {
 
     private static final String BASECOMMAND = "baseCommand";
     private static final String MATCHES = "matches";
 
-    public AutoCompleteMatches() {
+    public TerminalAutoCompleteMatches() {
         this("");
     }
 
-    public AutoCompleteMatches(String baseCommand) {
+    public TerminalAutoCompleteMatches(String baseCommand) {
         super();
         setBaseCommand(baseCommand);
         put(MATCHES, new JSONArray());
@@ -43,6 +43,23 @@ public class AutoCompleteMatches extends JSONObject {
 
     public void setBaseCommand(String baseCommand) {
         put(BASECOMMAND, baseCommand);
+    }
+
+    public void extendBaseCommand(TerminalCommand argument) {
+        extendBaseCommand(argument.getText());
+    }
+
+    public void extendBaseCommand(String argument) {
+        String baseCommand = getBaseCommand();
+        
+        if (baseCommand.isEmpty()) {
+            baseCommand = argument;
+        }
+        else {
+            baseCommand = baseCommand + " " + argument;
+        }
+        
+        setBaseCommand(baseCommand);
     }
 
     public Collection<String> getMatches() {
@@ -69,6 +86,10 @@ public class AutoCompleteMatches extends JSONObject {
         }
 
         put(MATCHES, arr);
+    }
+
+    public void addMatch(TerminalCommand match) {
+        this.addMatch(match.getText());
     }
 
     public void addMatch(String match) {

@@ -17,124 +17,160 @@ package org.primefaces.component.terminal;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.primefaces.model.DefaultTreeNode;
-import org.primefaces.model.terminal.AutoCompleteMatches;
+import org.primefaces.model.terminal.TerminalCommand;
+import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
+import org.primefaces.model.terminal.TerminalAutoCompleteModel;
 
 public class TerminalAutoCompleteTest {
 
     private Terminal terminal;
-
-    private DefaultTreeNode rootNode;
+    private TerminalAutoCompleteModel model;
 
     @Before
     public void setup() {
         terminal = new Terminal();
+        
+        model = new TerminalAutoCompleteModel();
 
-        rootNode = new DefaultTreeNode("Root");
-
-        DefaultTreeNode show = new DefaultTreeNode("show");
-
-        DefaultTreeNode servers = new DefaultTreeNode("servers");
-        DefaultTreeNode status = new DefaultTreeNode("status");
-        DefaultTreeNode info = new DefaultTreeNode("info");
-
-        DefaultTreeNode version = new DefaultTreeNode("version");
-        DefaultTreeNode date = new DefaultTreeNode("date");
-
-        info.getChildren().add(version);
-        info.getChildren().add(date);
-
-        show.getChildren().addAll(Arrays.asList(servers, status, info));
-        rootNode.getChildren().add(show);
+        TerminalCommand git = model.addCommand("git");
+        
+        git.addArgument("checkout");
+        git.addArgument("commit");
+        git.addArgument("rebase");
+        git.addArgument("squash");
+        git.addArgument("status");
+        git.addArgument("pull");
+        git.addArgument("push").addArgument("origin").addArgument("master");
     }
 
     @After
     public void teardown() {
         terminal = null;
-        rootNode = null;
+        model = null;
     }
 
     @Test
-    public void givenShoThenReturnsShow() {
+    public void givenGThenReturnsGit() {
         // given
-        final String command = "sho";
-        final String[] args = new String[] {};
+        final String input = "g";
+        final String[] args = {};
 
         // when
-        AutoCompleteMatches autoCompleteMatches = terminal.traverseCommandModel(rootNode, command, args);
+        TerminalAutoCompleteMatches TerminalAutoCompleteMatches = terminal.traverseAutoCompleteModel(model, input, args);
 
         // then
-        assertBaseCommand(autoCompleteMatches, "");
-        assertMatches(autoCompleteMatches, "show");
+        assertBaseCommand(TerminalAutoCompleteMatches, "");
+        assertMatches(TerminalAutoCompleteMatches, "git");
     }
 
     @Test
-    public void givenShowThenReturnsStatusAndInfo() {
+    public void givenGitThenReturnsAllSecondLevelArguments() {
         // given
-        final String command = "show";
-        final String[] args = new String[] {};
+        final String input = "git";
+        final String[] args = {};
 
         // when
-        AutoCompleteMatches autoCompleteMatches = terminal.traverseCommandModel(rootNode, command, args);
+        TerminalAutoCompleteMatches TerminalAutoCompleteMatches = terminal.traverseAutoCompleteModel(model, input, args);
 
         // then
-        assertBaseCommand(autoCompleteMatches, "show");
-        assertMatches(autoCompleteMatches, "servers", "status", "info");
+        assertBaseCommand(TerminalAutoCompleteMatches, "git");
+        assertMatches(TerminalAutoCompleteMatches, "pull", "push","checkout", "commit", "rebase", "squash", "status");
     }
 
     @Test
-    public void givenShowStaThenReturnsStatus() {
+    public void givenGitCThenReturnsCommitAndCheckout() {
         // given
-        final String command = "show";
-        final String[] args = new String[] { "sta" };
+        final String input = "git";
+        final String[] args = { "c" };
 
         // when
-        AutoCompleteMatches autoCompleteMatches = terminal.traverseCommandModel(rootNode, command, args);
+        TerminalAutoCompleteMatches TerminalAutoCompleteMatches = terminal.traverseAutoCompleteModel(model, input, args);
 
         // then
-        assertBaseCommand(autoCompleteMatches, "show");
-        assertMatches(autoCompleteMatches, "status");
+        assertBaseCommand(TerminalAutoCompleteMatches, "git");
+        assertMatches(TerminalAutoCompleteMatches, "commit", "checkout");
     }
-
+    
     @Test
-    public void givenShowSThenReturnsServersAndStatus() {
+    public void givenGitCThenReturnsCommit() {
         // given
-        final String command = "show";
-        final String[] args = new String[] { "s" };
+        final String input = "git";
+        final String[] args = { "co" };
 
         // when
-        AutoCompleteMatches autoCompleteMatches = terminal.traverseCommandModel(rootNode, command, args);
+        TerminalAutoCompleteMatches TerminalAutoCompleteMatches = terminal.traverseAutoCompleteModel(model, input, args);
 
         // then
-        assertBaseCommand(autoCompleteMatches, "show");
-        assertMatches(autoCompleteMatches, "servers", "status");
+        assertBaseCommand(TerminalAutoCompleteMatches, "git");
+        assertMatches(TerminalAutoCompleteMatches, "commit");
+    }
+    
+    @Test
+    public void givenGitPThenReturnsPullAndPush() {
+        // given
+        final String input = "git";
+        final String[] args = { "p" };
+
+        // when
+        TerminalAutoCompleteMatches TerminalAutoCompleteMatches = terminal.traverseAutoCompleteModel(model, input, args);
+
+        // then
+        assertBaseCommand(TerminalAutoCompleteMatches, "git");
+        assertMatches(TerminalAutoCompleteMatches, "pull", "push");
+    }
+    
+    @Test
+    public void givenGitRThenReturnsRebase() {
+        // given
+        final String input = "git";
+        final String[] args = { "r" };
+
+        // when
+        TerminalAutoCompleteMatches TerminalAutoCompleteMatches = terminal.traverseAutoCompleteModel(model, input, args);
+
+        // then
+        assertBaseCommand(TerminalAutoCompleteMatches, "git");
+        assertMatches(TerminalAutoCompleteMatches, "rebase");
     }
 
     @Test
-    public void givenShowInfoThenReturnsInfoAndDate() {
+    public void givenGitPushOThenReturnsGitPushOrigin() {
         // given
-        final String command = "show";
-        final String[] args = new String[] { "info" };
+        final String input = "git";
+        final String[] args = { "push", "o" };
 
         // when
-        AutoCompleteMatches autoCompleteMatches = terminal.traverseCommandModel(rootNode, command, args);
+        TerminalAutoCompleteMatches TerminalAutoCompleteMatches = terminal.traverseAutoCompleteModel(model, input, args);
 
-        // then,
-        assertBaseCommand(autoCompleteMatches, "show info");
-        assertMatches(autoCompleteMatches, "date", "version");
+        // then
+        assertBaseCommand(TerminalAutoCompleteMatches, "git push");
+        assertMatches(TerminalAutoCompleteMatches, "origin");
+    }
+    
+    @Test
+    public void givenGitPushOriginThenReturnsGitPushOriginMaster() {
+        // given
+        final String input = "git";
+        final String[] args = { "push", "origin" };
+
+        // when
+        TerminalAutoCompleteMatches TerminalAutoCompleteMatches = terminal.traverseAutoCompleteModel(model, input, args);
+
+        // then
+        assertBaseCommand(TerminalAutoCompleteMatches, "git push origin");
+        assertMatches(TerminalAutoCompleteMatches, "master");
     }
 
-    private void assertBaseCommand(AutoCompleteMatches autoCompleteMatches, String expectedBaseCommand) {
-        assertEquals(autoCompleteMatches.getBaseCommand(), expectedBaseCommand);
+    private void assertBaseCommand(TerminalAutoCompleteMatches autoCompleteMatches, String expectedBaseCommand) {
+        assertEquals(expectedBaseCommand, autoCompleteMatches.getBaseCommand());
     }
 
-    private void assertMatches(AutoCompleteMatches autoCompleteMatches, String... elements) {
+    private void assertMatches(TerminalAutoCompleteMatches autoCompleteMatches, String... elements) {
         Collection<String> matches = autoCompleteMatches.getMatches();
 
         assertEquals(elements.length, matches.size());

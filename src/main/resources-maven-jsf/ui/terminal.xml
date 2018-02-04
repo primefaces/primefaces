@@ -54,10 +54,10 @@
             <description>Method to execute by passing command and the arguments.</description>
         </attribute>
         <attribute>
-            <name>commandModel</name>
+            <name>autoCompleteModel</name>
             <required>false</required>
-            <type>org.primefaces.model.TreeNode</type>
-            <description>TreeNode that represents the command model used for autocompletion.</description>
+            <type>org.primefaces.model.terminal.TerminalAutoCompleteModel</type>
+            <description>TerminalAutoCompleteModel instance that represents the commands and arguments used for autocompletion.</description>
         </attribute>
         <attribute>
             <name>escape</name>

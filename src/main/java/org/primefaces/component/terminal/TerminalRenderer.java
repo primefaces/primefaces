@@ -23,8 +23,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.model.TreeNode;
-import org.primefaces.model.terminal.AutoCompleteMatches;
+import org.primefaces.model.terminal.TerminalAutoCompleteModel;
+import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -110,9 +110,7 @@ public class TerminalRenderer extends CoreRenderer {
     }
     
     protected void handleCommand(FacesContext context, Terminal terminal) throws IOException {
-        String clientId = terminal.getClientId(context);
-        String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
-        String tokens[] = value.trim().split(" ");
+        String tokens[] = getValueTokens(context, terminal);
         String command = tokens[0];
         String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
 
@@ -124,21 +122,27 @@ public class TerminalRenderer extends CoreRenderer {
     }
 
     protected void autoCompleteCommand(FacesContext context, Terminal terminal) throws IOException {
-        String clientId = terminal.getClientId(context);
-        String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
-        String tokens[] = value.trim().split(" ");
-        TreeNode commandModel = terminal.getCommandModel();
+        String tokens[] = getValueTokens(context, terminal);
         String command = tokens[0];
         String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
 
+        TerminalAutoCompleteModel autoCompleteModel = terminal.getAutoCompleteModel();
         ResponseWriter writer = context.getResponseWriter();
-        if (commandModel == null) {
+        if (autoCompleteModel == null) {
             writer.write("null");
         }
         else {
-            AutoCompleteMatches matches = terminal.traverseCommandModel(commandModel, command, args);
+            TerminalAutoCompleteMatches matches = terminal.traverseAutoCompleteModel(autoCompleteModel, command, args);
             writer.write(matches.toString());
         }
+    }
+
+    private String[] getValueTokens(FacesContext context, Terminal terminal) {
+        String clientId = terminal.getClientId(context);
+        String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
+        String tokens[] = value.trim().split(" ");
+
+        return tokens;
     }
 
 }

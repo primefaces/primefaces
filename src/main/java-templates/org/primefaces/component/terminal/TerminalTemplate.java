@@ -1,5 +1,8 @@
-import org.primefaces.model.TreeNode;
-import org.primefaces.model.terminal.AutoCompleteMatches;
+import org.primefaces.model.terminal.TerminalAutoCompleteModel;
+import org.primefaces.model.terminal.TerminalCommand;
+import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
+import java.util.Arrays;
+import java.util.ArrayDeque;
 
     public static final String CONTAINER_CLASS = "ui-terminal ui-widget ui-widget-content ui-corner-all";
     public static final String WELCOME_MESSAGE_CLASS = "ui-terminal-welcome";
@@ -11,64 +14,63 @@ import org.primefaces.model.terminal.AutoCompleteMatches;
         FacesContext context = getFacesContext();
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_command");
     }
-    
+
     public boolean isAutoCompleteRequest() {
         FacesContext context = getFacesContext();
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_autocomplete");
     }
 
-    AutoCompleteMatches traverseCommandModel(TreeNode commandModel, String baseCommand, String[] args) {
-        AutoCompleteMatches matches = new AutoCompleteMatches();
+    TerminalAutoCompleteMatches traverseAutoCompleteModel(TerminalAutoCompleteModel commandModel, String input, String[] args) {
+        ArrayDeque argumentQueue = new ArrayDeque(Arrays.asList(args));
+        return traverseAutoCompleteModel(commandModel, input, argumentQueue);
+    }
 
-        for (TreeNode commandNode : commandModel.getChildren()) {
-            String currentCommand = (String) commandNode.getData();
+    private TerminalAutoCompleteMatches traverseAutoCompleteModel(TerminalAutoCompleteModel commandModel, String input, ArrayDeque<String> inputArguments) {
+        TerminalAutoCompleteMatches matches = new TerminalAutoCompleteMatches();
 
-            if (isPartialMatch(currentCommand, baseCommand)) {
-                if (isExactMatch(currentCommand, baseCommand) && (commandNode.getChildCount() > 0)) {
-                    return traverseSubCommands(commandNode, baseCommand, args);
+        for (TerminalCommand command : commandModel.getCommands()) {
+            if (isPartialMatch(command, input)) {
+                if (isExactMatch(command, input) && command.hasArguments()) {
+                    matches.extendBaseCommand(input);
+                    return traverseArguments(command, matches, inputArguments);
                 }
 
-                matches.addMatch(currentCommand);
+                matches.addMatch(command);
             }
         }
 
         return matches;
     }
 
-    private AutoCompleteMatches traverseSubCommands(TreeNode commandNode, String baseCommand, String[] args) {
-        return traverseSubCommands(commandNode, baseCommand, args, 0);
-    }
+    private TerminalAutoCompleteMatches traverseArguments(TerminalCommand command, TerminalAutoCompleteMatches matches, ArrayDeque<String> inputArguments) {
+        if (command.getArguments() != null) {
+            for (TerminalCommand argument : command.getArguments()) {
+                if (!inputArguments.isEmpty()) {
+                    String inputArgument = inputArguments.peek();
 
-    private AutoCompleteMatches traverseSubCommands(TreeNode commandNode, String baseCommand, String[] args, int level) {
-        AutoCompleteMatches matches = new AutoCompleteMatches(baseCommand);
+                    if (isPartialMatch(argument, inputArgument)) {
+                        if (isExactMatch(argument, inputArgument) && argument.hasArguments()) {
+                            matches.extendBaseCommand(argument);
+                            inputArguments.removeFirst();
+                            return traverseArguments(argument, matches, inputArguments);
+                        }
 
-        for (TreeNode subCommandNode : commandNode.getChildren()) {
-            String currentSubCommand = (String) subCommandNode.getData();
-
-            if (args.length > level) {
-                String currentArgument = args[level];
-                
-                if (isPartialMatch(currentSubCommand, currentArgument)) {
-                    if (isExactMatch(currentSubCommand, currentArgument) && (commandNode.getChildCount() > 0)) {
-                        String baseCommandToTraverse = baseCommand + " " + currentSubCommand;
-                        return traverseSubCommands(subCommandNode, baseCommandToTraverse, args, (level + 1));
+                        matches.addMatch(argument);
                     }
-
-                    matches.addMatch(currentSubCommand);
                 }
-            }
-            else {
-                matches.addMatch(currentSubCommand);
+                else {
+                    matches.addMatch(argument);
+                }
             }
         }
 
         return matches;
     }
 
-    private boolean isPartialMatch(String command, String argument) {
-        return command.startsWith(argument);
+    private boolean isPartialMatch(TerminalCommand command, String input) {
+        return command.getText().startsWith(input);
     }
 
-    private boolean isExactMatch(String command, String argument) {
-        return command.equalsIgnoreCase(argument);
+    private boolean isExactMatch(TerminalCommand command, String input) {
+        return command.getText().equalsIgnoreCase(input);
     }
