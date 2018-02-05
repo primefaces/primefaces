@@ -120,12 +120,14 @@ import javax.faces.event.BehaviorEvent;
             return;
         }
         
+        Map<String, Object> requestMap = facesContext.getExternalContext().getRequestMap();
         String varName = getVar();
         String clientId = this.getClientId(facesContext);
+        Object originalItem = requestMap.get(varName);
         for (int i = 0; i < newEntries.size(); i++) {
             Object item = newEntries.get(i);
             // Set the current item in request map to get its properties via stateHelper().eval() call
-            facesContext.getExternalContext().getRequestMap().put(varName, item);
+            requestMap.put(varName, item);
             boolean itemDisabled = isItemDisabled();
             // Check if disabled item has been moved from its former/original list
             if (itemDisabled && !oldEntries.contains(item)) {
@@ -135,6 +137,9 @@ import javax.faces.event.BehaviorEvent;
                 break;
             }
         }
+        
+        // put the original value back
+        requestMap.put(varName, originalItem);
     }
 
     @Override
