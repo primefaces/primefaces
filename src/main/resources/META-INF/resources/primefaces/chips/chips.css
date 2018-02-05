@@ -56,3 +56,8 @@
     outline: medium none;
     width: 140px;
 }
+
+.ui-fluid .ui-chips, 
+.ui-fluid .ui-chips .ui-chips-container {
+    width: 100%;
+}
