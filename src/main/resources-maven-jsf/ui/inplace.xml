@@ -112,7 +112,7 @@
             <description></description>
         </attribute>
         <attribute>
-            <name>defaultMode</name>
+            <name>initialMode</name>
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>display</defaultValue>
