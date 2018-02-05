@@ -134,7 +134,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         var margin = this.jq.outerHeight(true) - this.jq.outerHeight();
         var headerHeight = this.titlebar.outerHeight(true);
         var contentPadding = this.content.innerHeight() - this.content.height();;
-        var footerHeight = this.footer.outerHeight(true);
+        var footerHeight = this.footer.outerHeight(true) || 0;
 
         var maxHeight = windowHeight - (margin + headerHeight + contentPadding + footerHeight);
 
