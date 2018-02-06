@@ -54,8 +54,9 @@ public class InplaceRenderer extends CoreRenderer {
         String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
 
         boolean validationFailed = context.isValidationFailed() && !inplace.isValid();
-        String displayStyle = validationFailed ? "none" : "inline";
-        String contentStyle = validationFailed ? "inline" : "none";
+        boolean contentMode = "content".equals(inplace.getInitialMode());
+        String displayStyle = validationFailed || contentMode ? "none" : "inline";
+        String contentStyle = validationFailed || contentMode ? "inline" : "none";
 
         UIComponent outputFacet = inplace.getFacet("output");
         UIComponent inputFacet = inplace.getFacet("input");
