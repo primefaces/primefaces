@@ -21,6 +21,8 @@ import java.io.InputStream;
 import java.io.Serializable;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.input.BoundedInputStream;
+import org.primefaces.component.fileupload.FileUpload;
 
 /**
  *
@@ -29,12 +31,14 @@ import org.apache.commons.fileupload.FileItem;
 public class DefaultUploadedFile implements UploadedFile, Serializable {
 
     private FileItem fileItem;
-
+    private Long sizeLimit;
+    
     public DefaultUploadedFile() {
     }
 
-    public DefaultUploadedFile(FileItem fileItem) {
+    public DefaultUploadedFile(FileItem fileItem, FileUpload fileUpload) {
         this.fileItem = fileItem;
+        this.sizeLimit = fileUpload.getSizeLimit();
     }
 
     public String getFileName() {
@@ -42,7 +46,7 @@ public class DefaultUploadedFile implements UploadedFile, Serializable {
     }
 
     public InputStream getInputstream() throws IOException {
-        return fileItem.getInputStream();
+        return sizeLimit == null ? fileItem.getInputStream() : new BoundedInputStream(fileItem.getInputStream(), sizeLimit);
     }
 
     public long getSize() {

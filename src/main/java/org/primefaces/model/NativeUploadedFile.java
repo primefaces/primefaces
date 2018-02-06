@@ -15,6 +15,9 @@
  */
 package org.primefaces.model;
 
+import org.apache.commons.io.input.BoundedInputStream;
+import org.primefaces.component.fileupload.FileUpload;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,13 +35,15 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     private Part part;
     private String filename;
     private byte[] cachedContent;
+    private Long sizeLimit;
 
     public NativeUploadedFile() {
     }
 
-    public NativeUploadedFile(Part part) {
+    public NativeUploadedFile(Part part, FileUpload fileUpload) {
         this.part = part;
         this.filename = resolveFilename(part);
+        this.sizeLimit = fileUpload.getSizeLimit();
     }
 
     public String getFileName() {
@@ -46,7 +51,7 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     }
 
     public InputStream getInputstream() throws IOException {
-        return part.getInputStream();
+        return sizeLimit == null ? part.getInputStream() : new BoundedInputStream(part.getInputStream(), sizeLimit);
     }
 
     public long getSize() {
