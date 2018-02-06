@@ -705,9 +705,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     },
 
     show: function() {
-        this.itemContainer.css('display', 'none');
         this.alignPanel();
-        this.itemContainer.css('display', '');
         this.keyboardTarget.attr('aria-expanded', true);
         this.panel.show();
 
@@ -767,6 +765,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                                 ,at: 'left bottom'
                                 ,of: this.jq
                                 ,offset : positionOffset
+                                ,collision: 'flipfit'
                             });
         }
 
