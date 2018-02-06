@@ -36,6 +36,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 import javax.imageio.ImageIO;
 
+import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.model.CroppedImage;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -183,6 +184,11 @@ public class ImageCropperRenderer extends CoreRenderer {
                 }
             }
 
+            // wrap input stream by BoundedInputStream to prevent uncontrolled resource consumption (#3286)
+            if (cropper.getSizeLimit() != null) {
+                inputStream = new BoundedInputStream(inputStream, cropper.getSizeLimit());
+            }
+            
             BufferedImage outputImage = ImageIO.read(inputStream);
             inputStream.close();
 
