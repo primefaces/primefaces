@@ -330,6 +330,9 @@
                     <includes>
                         <include>src/main/java/**</include>
                     </includes>
+                    <excludes>
+                        <exclude>**/BoundedInputStream.java</exclude>
+                    </excludes>
                 </configuration>
                 <executions>
                     <execution>

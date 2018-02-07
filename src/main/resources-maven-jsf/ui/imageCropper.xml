@@ -87,6 +87,13 @@
             <defaultValue>0</defaultValue>
             <description>Maximum box height of the cropping area.</description>
         </attribute>
+        <attribute>
+            <name>sizeLimit</name>
+            <required>false</required>
+            <type>java.lang.Long</type>
+            <defaultValue>10485760</defaultValue>
+            <description>Maximum number of bytes the image may consist of. Default is 10MB.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

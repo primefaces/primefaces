@@ -159,9 +159,9 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             //hide the panel and remove focus from label
             var offset = $this.panel.offset();
             if(e.pageX < offset.left ||
-                e.pageX > offset.left + $this.panel.width() ||
+                e.pageX > offset.left + $this.panel[0].offsetWidth ||
                 e.pageY < offset.top ||
-                e.pageY > offset.top + $this.panel.height()) {
+                e.pageY > offset.top + $this.panel[0].offsetHeight) {
 
                 $this.hide();
             }
