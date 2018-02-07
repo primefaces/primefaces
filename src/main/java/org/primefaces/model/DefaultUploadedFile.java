@@ -41,26 +41,32 @@ public class DefaultUploadedFile implements UploadedFile, Serializable {
         this.sizeLimit = fileUpload.getSizeLimit();
     }
 
+    @Override
     public String getFileName() {
         return fileItem.getName();
     }
 
+    @Override
     public InputStream getInputstream() throws IOException {
         return sizeLimit == null ? fileItem.getInputStream() : new BoundedInputStream(fileItem.getInputStream(), sizeLimit);
     }
 
+    @Override
     public long getSize() {
         return fileItem.getSize();
     }
 
+    @Override
     public byte[] getContents() {
         return fileItem.get();
     }
 
+    @Override
     public String getContentType() {
         return fileItem.getContentType();
     }
 
+    @Override
     public void write(String filePath) throws Exception {
         fileItem.write(new File(filePath));
     }
