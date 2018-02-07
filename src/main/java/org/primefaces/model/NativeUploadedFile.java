@@ -15,8 +15,8 @@
  */
 package org.primefaces.model;
 
-import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.util.BoundedInputStream;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
