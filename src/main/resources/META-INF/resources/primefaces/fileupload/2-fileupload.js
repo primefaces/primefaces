@@ -464,6 +464,9 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
+        this.cfg.invalidSizeMessage = this.cfg.invalidSizeMessage || 'Invalid file size';
+        this.maxFileSize = this.cfg.maxFileSize;
+        
         if(this.cfg.skinSimple) {
             this.button = this.jq.children('.ui-button');
             this.input = $(this.jqId + '_input');
@@ -498,8 +501,14 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
         });
 
         this.input.on('change.fileupload', function() {
-            var filename = PrimeFaces.escapeHTML($this.input.val().replace(/\\/g, '/').replace(/.*\//, ''));
-            $this.display.text(filename);
+            var files = $this.input[0].files;
+            var file = files.length > 0 ? files[files.length - 1] : null;
+            var validMsg = $this.validate($this.input[0], file); 
+            if(validMsg) {
+                $this.display.text(PrimeFaces.escapeHTML(validMsg));
+            } else {
+                $this.display.text(PrimeFaces.escapeHTML($this.input.val().replace(/\\/g, '/').replace(/.*\//, '')));
+            }
         })
         .on('focus.fileupload', function() {
             $this.button.addClass('ui-state-focus');
@@ -508,6 +517,16 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
             $this.button.removeClass('ui-state-focus');
         });
 
+    },
+    
+    validate: function(input, file) {
+        var $this = this;
+        
+        if(file && $this.cfg.maxFileSize && file.size > $this.cfg.maxFileSize) {
+            $(input).replaceWith($(input).val('').clone(true));
+            return $this.cfg.invalidSizeMessage;
+        }
+        return null;
     }
 
 });

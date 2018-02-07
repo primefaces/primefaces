@@ -207,7 +207,11 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
             for (UIComponent child : listbox.getChildren()) {
                 if (child instanceof Column && child.isRendered()) {
                     writer.startElement("td", null);
+                    
+                    writer.startElement("span", null);
                     renderChildren(context, child);
+                    writer.endElement("span");
+                    
                     writer.endElement("td");
                 }
             }
@@ -217,12 +221,15 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         else {
             writer.startElement("li", null);
             writer.writeAttribute("class", itemClass, null);
+            
+            writer.startElement("span", null);
             if (option.isEscape()) {
                 writer.writeText(option.getLabel(), null);
             }
             else {
                 writer.write(option.getLabel());
             }
+            writer.endElement("span");
 
             writer.endElement("li");
         }

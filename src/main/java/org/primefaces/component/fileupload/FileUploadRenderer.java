@@ -90,10 +90,10 @@ public class FileUploadRenderer extends CoreRenderer {
                     .attr("process", SearchExpressionFacade.resolveClientIds(context, fileUpload, process), null)
                     .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
                     .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
-                    .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
-                    .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
-                    .attr("fileLimitMessage", fileUpload.getFileLimitMessage(), null)
-                    .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
+                    .attr("invalidFileMessage", escapeText(fileUpload.getInvalidFileMessage()), null)
+                    .attr("invalidSizeMessage", escapeText(fileUpload.getInvalidSizeMessage()), null)
+                    .attr("fileLimitMessage", escapeText(fileUpload.getFileLimitMessage()), null)
+                    .attr("messageTemplate", escapeText(fileUpload.getMessageTemplate()), null)
                     .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
                     .attr("disabled", fileUpload.isDisabled(), false)
                     .attr("sequentialUploads", fileUpload.isSequential(), false)
@@ -109,7 +109,9 @@ public class FileUploadRenderer extends CoreRenderer {
         }
         else {
             wb.init("SimpleFileUpload", fileUpload.resolveWidgetVar(), clientId)
-                    .attr("skinSimple", fileUpload.isSkinSimple(), false);
+                    .attr("skinSimple", fileUpload.isSkinSimple(), false)
+                    .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
+                    .attr("invalidSizeMessage", escapeText(fileUpload.getInvalidSizeMessage()), null);
         }
 
         wb.finish();

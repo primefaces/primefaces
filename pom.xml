@@ -17,6 +17,10 @@
     <name>primefaces</name>
     <url>http://www.primefaces.org</url>
 
+    <description>
+        <![CDATA[PrimeFaces is one of the most popular UI libraries in Java EE Ecosystem and widely used by software companies, world renowned brands, banks, financial institutions, insurance companies, universities and more.]]>
+    </description>
+
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -319,6 +323,9 @@
                     <includes>
                         <include>src/main/java/**</include>
                     </includes>
+                    <excludes>
+                        <exclude>**/BoundedInputStream.java</exclude>
+                    </excludes>
                 </configuration>
                 <executions>
                     <execution>

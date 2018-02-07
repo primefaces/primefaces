@@ -86,14 +86,22 @@ public class BarRenderer extends CartesianPlotRenderer {
         int barMargin = model.getBarMargin();
         int barWidth = model.getBarWidth();
         List<String> ticks = model.getTicks();
+        String legendLabel = model.getLegendLabel();
 
         writer.write(",series:[");
-        for (Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
-            ChartSeries series = (ChartSeries) it.next();
-            series.encode(writer);
+        if (model.getDataRenderMode().equals("key") && legendLabel != null) {
+            writer.write("{");
+            writer.write("label:\"" + ComponentUtils.escapeText(legendLabel) + "\"");
+            writer.write("}");
+        }
+        else {
+            for (Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
+                ChartSeries series = (ChartSeries) it.next();
+                series.encode(writer);
 
-            if (it.hasNext()) {
-                writer.write(",");
+                if (it.hasNext()) {
+                    writer.write(",");
+                }
             }
         }
         writer.write("]");
