@@ -1002,6 +1002,19 @@ html .ui-alt-icon .ui-btn.ui-checkbox-on:after { content: '\e670'; }
     background: #c4c4c4 -moz-linear-gradient(top, rgba(255,255,255,0.8), rgba(255,255,255,0));
 }
 
+/* Why? - because paginator items not only render the icon but also F, P, N, L inline */
+.ui-paginator .ui-paginator-next .ui-icon,
+.ui-paginator .ui-paginator-prev .ui-icon,
+.ui-paginator .ui-paginator-first .ui-icon,
+.ui-paginator .ui-paginator-last .ui-icon {
+    color: transparent;
+}
+
+.ui-paginator a span:after{
+    margin-left: -8px;
+    color: #38667f;
+}
+
 .ui-datatable-odd {
     background: none repeat scroll 0 0 #F2F5F9;
 }
