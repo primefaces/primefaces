@@ -74,5 +74,8 @@
         <resource>
             <name>imagecompare/imagecompare.js</name>
         </resource>
+        <resource>
+            <name>imagecompare/imagecompare.css</name>
+        </resource>
     </resources>
 </component>
