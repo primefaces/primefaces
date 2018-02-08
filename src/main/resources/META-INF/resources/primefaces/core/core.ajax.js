@@ -289,18 +289,11 @@ if (!PrimeFaces.ajax) {
                     earlyPostParams = [];
                     earlyPostParams.push({
                         name: sourceElement.attr('name'),
-                        value: sourceElement.is(':checkbox') ? sourceElement.is(':checked') : sourceElement.val()
+                        value: sourceElement.val()
                     });
                 }
                 else {
                     earlyPostParams = sourceElement.find(':input').serializeArray();
-                    // jQuery doesn't add unchecked checkboxes
-                    earlyPostParams = earlyPostParams.concat(
-                        sourceElement.find('input[type=checkbox]:not(:checked)').map(function() {
-                            var $this = $(this);
-                            return { 'name': $this.attr('name'), 'value': $this.is(':checked') };
-                        }).get()
-                    );
                 }
 
                 return earlyPostParams;
