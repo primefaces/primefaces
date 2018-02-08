@@ -82,7 +82,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
     refresh: function(cfg) {
         this.positionInitialized = false;
         this.loaded = false;
-        
+
         $(document).off('keydown.dialog_' + cfg.id);
 
         if(cfg.appendTo) {
@@ -91,15 +91,15 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             	PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.appendTo).children(this.jqId).remove();
             }
         }
-        
+
         if(this.minimized) {
             var dockingZone = $(document.body).children('.ui-dialog-docking-zone');
-            if(dockingZone.length && dockingZone.children(this.jqId).length) { 
+            if(dockingZone.length && dockingZone.children(this.jqId).length) {
                 this.removeMinimize();
                 dockingZone.children(this.jqId).remove();
             }
         }
-        
+
         this.minimized = false;
         this.maximized = false;
 
@@ -664,14 +664,14 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             }
         }
     },
-    
+
     removeMinimize: function() {
         this.jq.appendTo(this.parent).removeClass('ui-dialog-minimized').css({'position':'fixed', 'float':'none'});
         this.restoreState();
         this.content.show();
         this.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-plus').addClass('ui-icon-minus');
         this.minimized = false;
-        
+
         if(this.cfg.resizable) {
             this.resizers.show();
         }
@@ -704,7 +704,7 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
 
             this.jq.on('click.ui-confirmdialog', '.ui-confirmdialog-yes, .ui-confirmdialog-no', null, function(e) {
                 var el = $(this);
-    
+
                 if(el.hasClass('ui-confirmdialog-yes') && PrimeFaces.confirmSource) {
                     var fn = new Function('event',PrimeFaces.confirmSource.data('pfconfirmcommand'));
 
@@ -730,7 +730,7 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
         if(msg.beforeShow) {
             eval(msg.beforeShow);
         }
-        
+
         var icon = (msg.icon === 'null') ? 'ui-icon-alert' : msg.icon;
         this.icon.removeClass().addClass('ui-icon ui-confirm-dialog-severity ' + icon);
 
@@ -738,10 +738,11 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
             this.title.text(msg.header);
 
         if(msg.message){
-            if (msg.escape == "false"){
+            if (msg.escape){
+                this.message.text(msg.message);
+            }
+            else {
             	this.message.html(msg.message);
-            }else{
-            	this.message.text(msg.message);
             }
         }
 

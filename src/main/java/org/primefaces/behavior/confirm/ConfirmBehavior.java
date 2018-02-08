@@ -54,12 +54,11 @@ public class ConfirmBehavior extends AbstractBehavior {
         String headerText = JSONObject.quote(this.getHeader());
         String messageText = JSONObject.quote(this.getMessage());
         String beforeShow = JSONObject.quote(this.getBeforeShow());
-        String escape = JSONObject.quote(String.valueOf(this.isEscape()));
         
         if (component instanceof Confirmable) {
             String sourceProperty = (source == null) ? "source:this" : "source:\"" + source + "\"";
             String script = "PrimeFaces.confirm({" + sourceProperty
-                                                   + ",escape:" + escape
+                                                   + ",escape:" + this.isEscape()
                                                    + ",header:" + headerText
                                                    + ",message:" + messageText
                                                    + ",icon:\"" + getIcon()
@@ -121,7 +120,7 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     public boolean isEscape() {
-        return eval(PropertyKeys.escape, Boolean.FALSE);
+        return eval(PropertyKeys.escape, Boolean.TRUE);
     }
 
     public void setEscape(boolean escape) {
