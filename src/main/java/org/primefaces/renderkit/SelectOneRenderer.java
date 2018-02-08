@@ -34,9 +34,7 @@ public abstract class SelectOneRenderer extends SelectRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         if (params.containsKey(clientId)) {
             String submittedValue = params.get(clientId);
-            if (isDisabledSelectItemSubmitted(context, selectOne, (Object[]) getValues(selectOne), submittedValue)) {
-                return;
-            }
+            checkDisabledSelectItemSubmitted(context, selectOne, (Object[]) getValues(selectOne), submittedValue);
             selectOne.setSubmittedValue(params.get(clientId));
         }
         else {

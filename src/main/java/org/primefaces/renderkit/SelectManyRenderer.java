@@ -40,9 +40,7 @@ public abstract class SelectManyRenderer extends SelectRenderer {
 
         if (params.containsKey(submitParam)) {
             String[] submittedValues = params.get(submitParam);
-            if (isDisabledSelectItemSubmitted(context, selectMany, (Object[]) getValues(selectMany), submittedValues)) {
-                return;
-            }
+            checkDisabledSelectItemSubmitted(context, selectMany, (Object[]) getValues(selectMany), submittedValues);
             selectMany.setSubmittedValue(submittedValues);
         }
         else {
