@@ -854,6 +854,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
         var targetSelector = targetId + ' tbody.ui-datatable-data > tr.ui-widget-content';
         var targetEvent = cfg.event + '.datatable';
+        this.contextMenuWidget = menuWidget;
 
         $(document).off(targetEvent, targetSelector).on(targetEvent, targetSelector, null, function(e) {
             var row = $(this);
@@ -881,6 +882,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 menuWidget.show(e);
             }
         });
+        
+        if(this.cfg.scrollable) {
+            var $this = this;
+            this.scrollBody.off('scroll.dataTable-contextmenu').on('scroll.dataTable-contextmenu', function() {
+                if($this.contextMenuWidget.jq.is(':visible')) {
+                    $this.contextMenuWidget.hide();
+                }
+            });
+        }
     },
     
     bindRowClick: function() {
