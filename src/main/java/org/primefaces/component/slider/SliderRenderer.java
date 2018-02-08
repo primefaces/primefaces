@@ -63,6 +63,7 @@ public class SliderRenderer extends CoreRenderer {
             }
             Object valueStr = context.getExternalContext().getRequestParameterMap().get(inputClientId);
             double value = Double.valueOf(valueStr.toString());
+            value = Math.min(Math.max(value, slider.getMinValue()), slider.getMaxValue());
             // TODO how to re-apply request value for input ?
         }
     }
