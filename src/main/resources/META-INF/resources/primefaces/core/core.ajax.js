@@ -287,13 +287,21 @@ if (!PrimeFaces.ajax) {
                 }
                 if (sourceElement.is(':input') && sourceElement.is(':not(:button)')) {
                     earlyPostParams = [];
-                    earlyPostParams.push({
-                        name: sourceElement.attr('name'),
-                        value: sourceElement.val()
-                    });
+
+                    if (sourceElement.is(':checkbox')) {
+                        var checkboxPostParams = $("input[name='" + sourceElement.attr('name') + "']")
+                                .filter(':checked').serializeArray();
+                        $.merge(earlyPostParams, checkboxPostParams);
+                    }
+                    else {
+                        earlyPostParams.push({
+                            name: sourceElement.attr('name'),
+                            value: sourceElement.val()
+                        });
+                    }
                 }
                 else {
-                    earlyPostParams = sourceElement.find(':input').serializeArray();
+                    earlyPostParams = sourceElement.serializeArray();
                 }
 
                 return earlyPostParams;
