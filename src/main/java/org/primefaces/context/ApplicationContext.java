@@ -38,6 +38,10 @@ public abstract class ApplicationContext {
     public static final String INSTANCE_KEY = ApplicationContext.class.getName();
 
     public static ApplicationContext getCurrentInstance(FacesContext facesContext) {
+        if (facesContext == null || facesContext.getExternalContext() == null) {
+            return null;
+        }
+
         return (ApplicationContext) facesContext.getExternalContext().getApplicationMap().get(INSTANCE_KEY);
     }
     
