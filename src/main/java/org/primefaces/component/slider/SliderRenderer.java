@@ -22,51 +22,11 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
 public class SliderRenderer extends CoreRenderer {
-
-    @Override
-    public void decode(FacesContext context, UIComponent component) {
-        decodeBehaviors(context, component);
-        
-        Slider slider = (Slider) component;
-        
-        String[] inputIds = slider.getFor().split(",");
-        if (slider.isRange()) {
-            UIInput inputFrom = (UIInput) getTarget(context, slider, inputIds[0].trim());
-            UIInput inputTo = (UIInput) getTarget(context, slider, inputIds[1].trim());
-            String inputFromClientId = inputFrom.getClientId(context);
-            String inputToClientId = inputTo.getClientId(context);
-            String valueFromStr = context.getExternalContext().getRequestParameterMap().get(inputFromClientId);
-            String valueToStr = context.getExternalContext().getRequestParameterMap().get(inputToClientId);
-            double valueFrom = Double.valueOf(valueFromStr.toString());
-            double valueTo = Double.valueOf(valueToStr.toString());
-            if (valueFrom < slider.getMinValue() || valueFrom > slider.getMaxValue()) {
-                valueFrom = slider.getMinValue();
-            }
-            if (valueTo > slider.getMaxValue() || valueTo < slider.getMinValue()) {
-                valueTo = slider.getMaxValue();
-            }
-            valueFrom = Math.min(valueFrom, valueTo);
-            valueTo = Math.max(valueFrom, valueTo);
-            // TODO how to re-apply request values for inputFrom and inputTo ?
-        } 
-        else {
-            UIInput input = (UIInput) getTarget(context, slider, inputIds[0].trim());
-            String inputClientId = input.getClientId(context);
-            if (input instanceof InputHolder) {
-                inputClientId += "_hinput";
-            }
-            Object valueStr = context.getExternalContext().getRequestParameterMap().get(inputClientId);
-            double value = Double.valueOf(valueStr.toString());
-            value = Math.min(Math.max(value, slider.getMinValue()), slider.getMaxValue());
-            // TODO how to re-apply request value for input ?
-        }
-    }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
