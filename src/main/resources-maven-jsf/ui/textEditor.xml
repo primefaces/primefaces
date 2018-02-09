@@ -66,6 +66,41 @@
             <defaultValue>true</defaultValue>
             <description>show / hide the editor toolbar visibility.</description>
         </attribute>
+        <attribute>
+            <name>allowFormatting</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Whether to allow formatting to be included.</description>
+        </attribute>
+        <attribute>
+            <name>allowBlocks</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Whether to allow blocks to be included.</description>
+        </attribute>
+        <attribute>
+            <name>allowStyles</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Whether to allow styles to be included.</description>
+        </attribute>
+        <attribute>
+            <name>allowLinks</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Whether to allow links to be included.</description>
+        </attribute>
+        <attribute>
+            <name>allowImages</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Whether to allow images to be included.</description>
+        </attribute>        
     </attributes>
     <resources>
         <resource>

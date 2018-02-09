@@ -126,7 +126,7 @@
         <dependency>
             <groupId>com.rometools</groupId>
             <artifactId>rome</artifactId>
-            <version>1.7.3</version>
+            <version>1.9.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -191,7 +191,7 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
-            <version>2.6.5</version>
+            <version>3.9.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -200,6 +200,13 @@
             <version>2.7.4</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- Text Editor -->
+        <dependency>
+            <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+            <artifactId>owasp-java-html-sanitizer</artifactId>
+            <version>20171016.1</version>
+        </dependency>        
     </dependencies>
 
     <build>
