@@ -12,7 +12,7 @@
     <componentFamily>org.primefaces.component</componentFamily>
     <rendererType>org.primefaces.component.SliderRenderer</rendererType>
     <rendererClass>org.primefaces.component.slider.SliderRenderer</rendererClass>
-    <parent>javax.faces.component.UIComponentBase</parent>
+    <parent>javax.faces.component.UIInput</parent>
     <description>Slider is used to provide input with various customization options like orientation, display modes and skinning.</description>
     <interfaces>
         <interface>
