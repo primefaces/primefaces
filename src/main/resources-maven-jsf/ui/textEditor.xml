@@ -81,6 +81,9 @@
             <name>core.js</name>
         </resource>
         <resource>
+            <name>components.js</name>
+        </resource>
+        <resource>
             <name>texteditor/texteditor.js</name>
         </resource>
     </resources>
