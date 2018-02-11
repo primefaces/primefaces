@@ -465,7 +465,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                         break;
                     }
 
-                    var text = $(this).val(),
+                    var text = String.fromCharCode(key).toLowerCase();
                     matchedOptions = null,
                     metaKey = e.metaKey||e.ctrlKey||e.shiftKey;
 
@@ -474,19 +474,25 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
                         matchedOptions = $this.options.filter(function() {
                             var option = $(this);
-                            return (option.is(':not(:disabled)') && (option.text().toLowerCase().indexOf(text.toLowerCase()) === 0));
+                            return (option.is(':not(:disabled)') && (option.text().toLowerCase().indexOf(text) === 0));
                         });
 
-                        if(matchedOptions.length) {
-                            var highlightItem = $this.items.eq(matchedOptions.index());
-                            if($this.panel.is(':hidden')) {
-                                $this.selectItem(highlightItem);
+                        matchedOptions.each(function() {
+                            var option = $(this);
+                            var highlightItem = $this.items.eq(option.index());
+
+                            // we don't care about the already selected item
+                            if (!highlightItem.hasClass('ui-state-highlight')) {
+                                if($this.panel.is(':hidden')) {
+                                    $this.selectItem(highlightItem);
+                                }
+                                else {
+                                    $this.highlightItem(highlightItem);
+                                    PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
+                                }
+                                return false;
                             }
-                            else {
-                                $this.highlightItem(highlightItem);
-                                PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
-                            }
-                        }
+                        });
 
                         $this.searchTimer = setTimeout(function(){
                             $this.focusInput.val('');
