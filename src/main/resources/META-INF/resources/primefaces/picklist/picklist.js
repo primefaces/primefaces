@@ -287,11 +287,11 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 break;
                 default:
                     // #3304 find first item matching the character typed
-                    var keyChar = String.fromCharCode(key);
+                    var keyChar = String.fromCharCode(key).toLowerCase();
                     list.children('.ui-picklist-item').each(function() {
                         var item = $(this), 
                             itemLabel = item.attr('data-item-label');
-                        if (itemLabel.startsWith(keyChar)) {
+                        if (itemLabel.toLowerCase().startsWith(keyChar)) {
                             $this.removeOutline();
                             $this.unselectAll();
                             $this.selectItem(item);
