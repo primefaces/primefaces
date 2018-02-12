@@ -39,9 +39,12 @@ public class SpinnerRenderer extends InputRenderer {
         decodeBehaviors(context, spinner);
 
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(spinner.getClientId(context) + "_input");
+        if (submittedValue == null || submittedValue.isEmpty()) {
+            return;
+        }
         String prefix = spinner.getPrefix();
         String suffix = spinner.getSuffix();
-
+        double parsedSubmittedValue = spinner.getMin();
         try {
             if (prefix != null && submittedValue.startsWith(prefix)) {
                 submittedValue = submittedValue.substring(prefix.length());
@@ -50,19 +53,19 @@ public class SpinnerRenderer extends InputRenderer {
                 submittedValue = submittedValue.substring(0, (submittedValue.length() - suffix.length()));
             }
 
-            double parsedSubmittedValue = Double.parseDouble(submittedValue);
+            parsedSubmittedValue = Double.parseDouble(submittedValue);
             if (parsedSubmittedValue < spinner.getMin()) {
-                submittedValue = String.valueOf(spinner.getMin());
+                parsedSubmittedValue = spinner.getMin();
             }
             else if (parsedSubmittedValue > spinner.getMax()) {
-                submittedValue = String.valueOf(spinner.getMax());
+                parsedSubmittedValue = spinner.getMax();
             }
         }
         catch (Exception e) {
-            submittedValue = String.valueOf(spinner.getMin());
+            parsedSubmittedValue = spinner.getMin();
         }
         finally {
-            spinner.setSubmittedValue(submittedValue);
+            spinner.setSubmittedValue(ComponentUtils.getConverter(context, spinner).getAsString(context, spinner, parsedSubmittedValue));
         }
     }
 
@@ -79,7 +82,7 @@ public class SpinnerRenderer extends InputRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Spinner", spinner.resolveWidgetVar(), clientId)
                 .attr("step", spinner.getStepFactor(), 1.0)
-                .attr("min", spinner.getMin(), Double.MIN_VALUE)
+                .attr("min", spinner.getMin(), -Double.MIN_VALUE)
                 .attr("max", spinner.getMax(), Double.MAX_VALUE)
                 .attr("prefix", spinner.getPrefix(), null)
                 .attr("suffix", spinner.getSuffix(), null)

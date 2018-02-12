@@ -39,7 +39,7 @@
             <name>min</name>
             <required>false</required>
             <type>java.lang.Double</type>
-            <defaultValue>java.lang.Double.MIN_VALUE</defaultValue>
+            <defaultValue>-java.lang.Double.MIN_VALUE</defaultValue>
             <description>Minimum boundary value. Default is min double value.</description>
         </attribute>
         <attribute>
