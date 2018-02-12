@@ -472,27 +472,44 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                     if(!metaKey) {
                         clearTimeout($this.searchTimer);
 
+                        // find all options with the same first letter
                         matchedOptions = $this.options.filter(function() {
                             var option = $(this);
                             return (option.is(':not(:disabled)') && (option.text().toLowerCase().indexOf(text) === 0));
                         });
 
-                        matchedOptions.each(function() {
-                            var option = $(this);
-                            var highlightItem = $this.items.eq(option.index());
+                        if(matchedOptions.length) {
+                            var selectedIndex = -1;
 
-                            // we don't care about the already selected item
-                            if (!highlightItem.hasClass('ui-state-highlight')) {
-                                if($this.panel.is(':hidden')) {
-                                    $this.selectItem(highlightItem);
+                            // is current selection one of our matches?
+                            matchedOptions.each(function() {
+                                var option = $(this);
+                                var currentIndex = option.index();
+                                var currentItem = $this.items.eq(currentIndex);
+                                if (currentItem.hasClass('ui-state-highlight')) {
+                                    selectedIndex = currentIndex;
+                                    return false;
                                 }
-                                else {
-                                    $this.highlightItem(highlightItem);
-                                    PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
+                            });
+
+                            matchedOptions.each(function() {
+                                var option = $(this);
+                                var currentIndex = option.index();
+                                var currentItem = $this.items.eq(currentIndex);
+
+                                // select next item after the current selection
+                                if (currentIndex > selectedIndex) {
+                                    if($this.panel.is(':hidden')) {
+                                        $this.selectItem(currentItem);
+                                    }
+                                    else {
+                                        $this.highlightItem(currentItem);
+                                        PrimeFaces.scrollInView($this.itemsWrapper, currentItem);
+                                    }
+                                    return false;
                                 }
-                                return false;
-                            }
-                        });
+                            });
+                        }
 
                         $this.searchTimer = setTimeout(function(){
                             $this.focusInput.val('');
