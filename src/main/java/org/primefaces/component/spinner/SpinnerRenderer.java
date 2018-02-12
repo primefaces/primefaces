@@ -82,7 +82,7 @@ public class SpinnerRenderer extends InputRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Spinner", spinner.resolveWidgetVar(), clientId)
                 .attr("step", spinner.getStepFactor(), 1.0)
-                .attr("min", spinner.getMin(), Double.MIN_VALUE)
+                .attr("min", spinner.getMin(), -Double.MIN_VALUE)
                 .attr("max", spinner.getMax(), Double.MAX_VALUE)
                 .attr("prefix", spinner.getPrefix(), null)
                 .attr("suffix", spinner.getSuffix(), null)
