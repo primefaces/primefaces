@@ -255,9 +255,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if (e.pageX < offset.left ||
-                e.pageX > offset.left + $this.panel.width() ||
+                e.pageX > offset.left + $this.panel[0].offsetWidth ||
                 e.pageY < offset.top ||
-                e.pageY > offset.top + $this.panel.height()) {
+                e.pageY > offset.top + $this.panel[0].offsetHeight) {
 
                 $this.hide();
 
