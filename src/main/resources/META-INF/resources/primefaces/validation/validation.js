@@ -651,7 +651,7 @@ if (window.PrimeFaces) {
         }
         
         if(element.parent().hasClass('ui-inputnumber')){
-            element = element.next('input');
+            element = element.prev('input');
         }
 
         var submittedValue = vc.getSubmittedValue(element),
