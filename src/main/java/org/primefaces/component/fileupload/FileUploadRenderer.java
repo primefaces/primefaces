@@ -149,8 +149,8 @@ public class FileUploadRenderer extends CoreRenderer {
         encodeChooseButton(context, fileUpload, disabled);
 
         if (!fileUpload.isAuto()) {
-            encodeButton(context, fileUpload.getUploadLabel(), FileUpload.UPLOAD_BUTTON_CLASS, "ui-icon-arrowreturnthick-1-n");
-            encodeButton(context, fileUpload.getCancelLabel(), FileUpload.CANCEL_BUTTON_CLASS, "ui-icon-cancel");
+            encodeButton(context, fileUpload.getUploadLabel(), FileUpload.UPLOAD_BUTTON_CLASS," " + fileUpload.getUploadIcon());
+            encodeButton(context, fileUpload.getCancelLabel(), FileUpload.CANCEL_BUTTON_CLASS," " + fileUpload.getCancelIcon());
         }
 
         writer.endElement("div");
@@ -249,7 +249,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
         //button icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " ui-icon-plusthick", null);
+        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + fileUpload.getChooseIcon(), null);
         writer.endElement("span");
 
         //text
