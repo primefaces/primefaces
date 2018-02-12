@@ -53,7 +53,7 @@ public class SpinnerRenderer extends InputRenderer {
                 submittedValue = submittedValue.substring(0, (submittedValue.length() - suffix.length()));
             }
 
-            parsedSubmittedValue = Double.valueOf(submittedValue);
+            parsedSubmittedValue = Double.parseDouble(submittedValue);
             if (parsedSubmittedValue < spinner.getMin()) {
                 parsedSubmittedValue = spinner.getMin();
             }
