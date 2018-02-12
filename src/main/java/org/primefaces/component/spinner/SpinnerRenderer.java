@@ -16,11 +16,12 @@
 package org.primefaces.component.spinner;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.context.RequestContext;
+
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -39,12 +40,9 @@ public class SpinnerRenderer extends InputRenderer {
         decodeBehaviors(context, spinner);
 
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(spinner.getClientId(context) + "_input");
-        if (submittedValue == null || submittedValue.isEmpty()) {
-            return;
-        }
         String prefix = spinner.getPrefix();
         String suffix = spinner.getSuffix();
-        double parsedSubmittedValue = spinner.getMin();
+
         try {
             if (prefix != null && submittedValue.startsWith(prefix)) {
                 submittedValue = submittedValue.substring(prefix.length());
@@ -52,20 +50,12 @@ public class SpinnerRenderer extends InputRenderer {
             if (suffix != null && submittedValue.endsWith(suffix)) {
                 submittedValue = submittedValue.substring(0, (submittedValue.length() - suffix.length()));
             }
-
-            parsedSubmittedValue = Double.parseDouble(submittedValue);
-            if (parsedSubmittedValue < spinner.getMin()) {
-                parsedSubmittedValue = spinner.getMin();
-            }
-            else if (parsedSubmittedValue > spinner.getMax()) {
-                parsedSubmittedValue = spinner.getMax();
-            }
         }
         catch (Exception e) {
-            parsedSubmittedValue = spinner.getMin();
+
         }
         finally {
-            spinner.setSubmittedValue(ComponentUtils.getConverter(context, spinner).getAsString(context, spinner, parsedSubmittedValue));
+            spinner.setSubmittedValue(submittedValue);
         }
     }
 
@@ -82,7 +72,7 @@ public class SpinnerRenderer extends InputRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Spinner", spinner.resolveWidgetVar(), clientId)
                 .attr("step", spinner.getStepFactor(), 1.0)
-                .attr("min", spinner.getMin(), -Double.MIN_VALUE)
+                .attr("min", spinner.getMin(), Double.MIN_VALUE)
                 .attr("max", spinner.getMax(), Double.MAX_VALUE)
                 .attr("prefix", spinner.getPrefix(), null)
                 .attr("suffix", spinner.getSuffix(), null)
