@@ -802,9 +802,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if (value === '&nbsp;') {
-                this.label.text(labelText);
                 if (labelText != '&nbsp;') {
+                   this.label.text(labelText);
                    this.label.addClass('ui-state-disabled');
+                } else {
+                    this.label.html(labelText);
                 }
             }
             else {
