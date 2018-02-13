@@ -650,10 +650,6 @@ if (window.PrimeFaces) {
             }
         }
         
-        if(element.parent().hasClass('ui-inputnumber')){
-            element = element.prev('input');
-        }
-
         var submittedValue = vc.getSubmittedValue(element),
         valid = true,
         converterId = element.data('p-con');
