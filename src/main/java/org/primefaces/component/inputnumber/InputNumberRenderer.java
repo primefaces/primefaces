@@ -72,13 +72,15 @@ public class InputNumberRenderer extends InputRenderer {
         try {
             if (ComponentUtils.isValueBlank(submittedValue)) {
                 ValueExpression valueExpression = inputNumber.getValueExpression("value");
-                Class<?> type = valueExpression.getType(context.getELContext());
-                if (type != null && type.isPrimitive()) {
-                    // avoid coercion of null or empty string to 0 which may be out of [minValue, maxValue] range
-                    submittedValue = String.valueOf(new BigDecimal(inputNumber.getMinValue()).doubleValue());
-                }
-                else {
-                    submittedValue = "";
+                if (valueExpression != null) {
+	                Class<?> type = valueExpression.getType(context.getELContext());
+	                if (type != null && type.isPrimitive() && !ComponentUtils.isValueBlank(inputNumber.getMinValue())) {
+		                // avoid coercion of null or empty string to 0 which may be out of [minValue, maxValue] range
+		                submittedValue = String.valueOf(new BigDecimal(inputNumber.getMinValue()).doubleValue());
+	                }
+	                else {
+		                submittedValue = "";
+	                }
                 }
             }
             else {
