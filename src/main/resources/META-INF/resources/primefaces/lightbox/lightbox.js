@@ -280,9 +280,9 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
             }
             
             if(pageX < offset.left ||
-                pageX > offset.left + $this.panel.width() ||
+                pageX > offset.left + $this.panel[0].offsetWidth ||
                 pageY < offset.top ||
-                pageY > offset.top + $this.panel.height()) {
+                pageY > offset.top + $this.panel[0].offsetHeight) {
 
                 e.preventDefault();
                 $this.hide();
