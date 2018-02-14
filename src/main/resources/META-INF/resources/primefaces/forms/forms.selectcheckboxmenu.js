@@ -222,10 +222,12 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         //Events to show/hide the panel
         this.triggers.on('mouseover.selectCheckboxMenu', function() {
             if(!$this.disabled&&!$this.triggers.hasClass('ui-state-focus')) {
+                $this.jq.addClass('ui-state-hover');
                 $this.triggers.addClass('ui-state-hover');
             }
         }).on('mouseout.selectCheckboxMenu', function() {
             if(!$this.disabled) {
+                $this.jq.removeClass('ui-state-hover');
                 $this.triggers.removeClass('ui-state-hover');
             }
         }).on('mousedown.selectCheckboxMenu', function(e) {
@@ -246,6 +248,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
         }).on('click.selectCheckboxMenu', function(e) {
+            $this.jq.removeClass('ui-state-hover');
+            $this.triggers.removeClass('ui-state-hover');
             $this.keyboardTarget.trigger('focus');
             e.preventDefault();
         });
