@@ -73,14 +73,14 @@ public class InputNumberRenderer extends InputRenderer {
             if (ComponentUtils.isValueBlank(submittedValue)) {
                 ValueExpression valueExpression = inputNumber.getValueExpression("value");
                 if (valueExpression != null) {
-	                Class<?> type = valueExpression.getType(context.getELContext());
-	                if (type != null && type.isPrimitive() && !ComponentUtils.isValueBlank(inputNumber.getMinValue())) {
-		                // avoid coercion of null or empty string to 0 which may be out of [minValue, maxValue] range
-		                submittedValue = String.valueOf(new BigDecimal(inputNumber.getMinValue()).doubleValue());
-	                }
-	                else {
-		                submittedValue = "";
-	                }
+                    Class<?> type = valueExpression.getType(context.getELContext());
+                    if (type != null && type.isPrimitive() && !ComponentUtils.isValueBlank(inputNumber.getMinValue())) {
+                        // avoid coercion of null or empty string to 0 which may be out of [minValue, maxValue] range
+                        submittedValue = String.valueOf(new BigDecimal(inputNumber.getMinValue()).doubleValue());
+                    }
+                    else {
+                        submittedValue = "";
+                    }
                 }
             }
             else {
@@ -99,10 +99,10 @@ public class InputNumberRenderer extends InputRenderer {
                 }
             }
         }
-        catch (NumberFormatException ex) { 
+        catch (NumberFormatException ex) {
             throw new FacesException("Invalid number", ex);
         }
-        
+
         inputNumber.setSubmittedValue(submittedValue);
     }
 
