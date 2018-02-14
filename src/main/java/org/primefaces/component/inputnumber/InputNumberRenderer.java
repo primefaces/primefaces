@@ -21,6 +21,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -68,11 +69,19 @@ public class InputNumberRenderer extends InputRenderer {
         String inputId = inputNumber.getClientId(context) + "_hinput";
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(inputId);
 
-        if (submittedValue == null || submittedValue.trim().isEmpty()) {
-            submittedValue = "";
-        }
-        else {
-            try {
+        try {
+            if (submittedValue == null || submittedValue.trim().isEmpty()) {
+                ValueExpression valueExpression = inputNumber.getValueExpression("value");
+                Class<?> type = valueExpression.getType(context.getELContext());
+                if (type != null && type.isPrimitive()) {
+                    // avoid coercion of null or empty string to 0 which may be out of [minValue, maxValue] range
+                    submittedValue = String.valueOf(new BigDecimal(inputNumber.getMinValue()).doubleValue());
+                }
+                else {
+                    submittedValue = "";
+                }
+            }
+            else {
                 BigDecimal value = new BigDecimal(submittedValue);
                 if (!ComponentUtils.isValueBlank(inputNumber.getMinValue())) {
                     BigDecimal min = new BigDecimal(inputNumber.getMinValue());
@@ -86,13 +95,13 @@ public class InputNumberRenderer extends InputRenderer {
                         submittedValue = String.valueOf(max.doubleValue());
                     }
                 }
-            } 
-            catch (NumberFormatException ex) {
-                throw new FacesException("Invalid number", ex);
             }
         }
+        catch (NumberFormatException ex) { 
+            throw new FacesException("Invalid number", ex);
+        }
+        
         inputNumber.setSubmittedValue(submittedValue);
-
     }
 
     @Override
