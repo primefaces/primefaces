@@ -945,10 +945,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                     widget: $this,
                     handle: function(content) {
-                        var index = content.indexOf('</select>') + 9,
-                        selectTag = content.substring(0, index);
-                        $this.input.replaceWith(selectTag);
-                        $this.itemsWrapper.append(content.substring(index, content.length));
+                        var	optionsStartIndex = content.indexOf('<option'),
+                        optionsEndIndex = content.indexOf('</select>'),
+                        selectEndIndex = optionsEndIndex + 9,
+                        optionsList = content.substring(optionsStartIndex, optionsEndIndex);
+						
+                        $(this.input).html(optionsList);
+                        $this.options = $this.input.children('option');
+                        $this.itemsWrapper.append(content.substring(selectEndIndex, content.length));
                     }
                 });
 
