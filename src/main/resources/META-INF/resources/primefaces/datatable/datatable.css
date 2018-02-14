@@ -79,6 +79,10 @@
     height: 16px;
 }
 
+.ui-datatable-summary {
+    display: none;
+}
+
 /* Scrollable */
 .ui-datatable-scrollable table,
 .ui-datatable-sticky table{
