@@ -21,6 +21,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -67,24 +68,30 @@ public class InputNumberRenderer extends InputRenderer {
         String inputId = inputNumber.getClientId(context) + "_hinput";
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(inputId);
 
-        if (submittedValue != null) {
-
-            BigDecimal value = new BigDecimal(submittedValue);
-            if (!ComponentUtils.isValueBlank(inputNumber.getMinValue())) {
-                BigDecimal min = new BigDecimal(inputNumber.getMinValue());
-                if (value.compareTo(min) < 0) {
-                    submittedValue = String.valueOf(min.doubleValue());
-                }
-            }
-            if (!ComponentUtils.isValueBlank(inputNumber.getMaxValue())) {
-                BigDecimal max = new BigDecimal(inputNumber.getMaxValue());
-                if (value.compareTo(max) > 0) {
-                    submittedValue = String.valueOf(max.doubleValue());
-                }
-            }
-            
-            inputNumber.setSubmittedValue(submittedValue);
+        if (submittedValue == null || submittedValue.trim().isEmpty()) {
+            submittedValue = "";
         }
+        else {
+            try {
+                BigDecimal value = new BigDecimal(submittedValue);
+                if (!ComponentUtils.isValueBlank(inputNumber.getMinValue())) {
+                    BigDecimal min = new BigDecimal(inputNumber.getMinValue());
+                    if (value.compareTo(min) < 0) {
+                        submittedValue = String.valueOf(min.doubleValue());
+                    }
+                }
+                if (!ComponentUtils.isValueBlank(inputNumber.getMaxValue())) {
+                    BigDecimal max = new BigDecimal(inputNumber.getMaxValue());
+                    if (value.compareTo(max) > 0) {
+                        submittedValue = String.valueOf(max.doubleValue());
+                    }
+                }
+            } 
+            catch (NumberFormatException ex) {
+                throw new FacesException("Invalid number", ex);
+            }
+        }
+        inputNumber.setSubmittedValue(submittedValue);
 
     }
 
