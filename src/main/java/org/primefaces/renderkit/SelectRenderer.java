@@ -15,10 +15,6 @@
  */
 package org.primefaces.renderkit;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -26,6 +22,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class SelectRenderer extends InputRenderer {
 
@@ -101,28 +102,35 @@ public class SelectRenderer extends InputRenderer {
     }
 
     /**
-     * Checks if at least one disabled select item has been submitted - this may occur with client side manipulation (#3264)
+     * Restores checked, disabled select items (#3296) and checks if at least one disabled select item has been submitted - 
+     * this may occur with client side manipulation (#3264)
+     * @return <code>newSubmittedValues</code> merged with checked, disabled <code>oldValues</code>
      * @throws javax.faces.FacesException if client side manipulation has been detected, in order to reject the submission
      */
-    protected void checkDisabledSelectItemSubmitted(FacesContext context, UIInput component, Object[] oldValues, String... newSubmittedValues) 
+    protected String[] restoreAndCheckDisabledSelectItems(FacesContext context, UIInput component, Object[] oldValues, String... newSubmittedValues) 
             throws FacesException {
+        List<String> restoredSubmittedValues = new ArrayList<String>();
         String msg = "Disabled select item has been submitted";
         List<Object> oldVals = oldValues == null ? Collections.emptyList() : Arrays.asList(oldValues);
         List<String> newSubmittedValsStr = newSubmittedValues == null ? Collections.<String>emptyList() : Arrays.asList(newSubmittedValues);
         for (SelectItem selectItem : getSelectItems(context, component)) {
+            String selectItemValStr = getOptionAsString(context, component, component.getConverter(), selectItem.getValue());
             if (selectItem.isDisabled()) {
-                String selectItemValStr = getOptionAsString(context, component, component.getConverter(), selectItem.getValue());
-                if (oldVals.contains(selectItemValStr) && !newSubmittedValsStr.contains(selectItemValStr)) {
-                    // disabled select item has been unselected
-                    throw new FacesException(msg);
-                }
                 if (newSubmittedValsStr.contains(selectItemValStr) && !oldVals.contains(selectItemValStr)) {
                     // disabled select item has been selected
                     throw new FacesException(msg);
                 }
+                if (oldVals.contains(selectItemValStr)) {
+                    restoredSubmittedValues.add(selectItemValStr);
+                }
+            } 
+            else {
+                if (newSubmittedValsStr.contains(selectItemValStr)) {
+                    restoredSubmittedValues.add(selectItemValStr);
+                }
             }
         }
+        return restoredSubmittedValues.toArray(new String[restoredSubmittedValues.size()]);
     }
-    
     
 }
