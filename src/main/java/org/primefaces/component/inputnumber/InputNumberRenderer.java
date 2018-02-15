@@ -78,6 +78,10 @@ public class InputNumberRenderer extends InputRenderer {
                         // avoid coercion of null or empty string to 0 which may be out of [minValue, maxValue] range
                         submittedValue = String.valueOf(new BigDecimal(inputNumber.getMinValue()).doubleValue());
                     }
+                    else if (type != null && type.isPrimitive() && !ComponentUtils.isValueBlank(inputNumber.getMaxValue())) {
+                        // avoid coercion of null or empty string to 0 which may be out of [minValue, maxValue] range
+                        submittedValue = String.valueOf(new BigDecimal(inputNumber.getMaxValue()).doubleValue());
+                    }
                     else {
                         submittedValue = "";
                     }
