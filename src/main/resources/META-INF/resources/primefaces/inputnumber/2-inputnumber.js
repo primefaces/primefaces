@@ -36,6 +36,7 @@ PrimeFaces.widget.InputNumber = PrimeFaces.widget.BaseWidget.extend({
 
         //pfs metadata
         this.input.data(PrimeFaces.CLIENT_ID_DATA, this.id);
+        this.hiddenInput.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
 
     /**
