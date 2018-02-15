@@ -65,6 +65,7 @@ public class InputSwitchRenderer extends InputRenderer {
         String style = inputSwitch.getStyle();
         String styleClass = inputSwitch.getStyleClass();
         styleClass = (styleClass == null) ? InputSwitch.CONTAINER_CLASS : InputSwitch.CONTAINER_CLASS + " " + styleClass;
+        styleClass = (checked) ? styleClass + " " + InputSwitch.CHECKED_CLASS : styleClass;
         if (inputSwitch.isDisabled()) {
             styleClass = styleClass + " ui-state-disabled";
         }

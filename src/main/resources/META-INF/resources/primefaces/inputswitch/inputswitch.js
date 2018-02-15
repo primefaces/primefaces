@@ -111,10 +111,12 @@ PrimeFaces.widget.InputSwitch = PrimeFaces.widget.DeferredWidget.extend({
 
     check: function() {
         this.input.prop('checked', true).trigger('change');
+        this.jq.addClass('ui-inputswitch-checked');
     },
 
     uncheck: function() {
         this.input.prop('checked', false).trigger('change');
+        this.jq.removeClass('ui-inputswitch-checked');
     },
 
     _checkUI: function() {
