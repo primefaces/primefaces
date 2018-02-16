@@ -453,7 +453,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.rowSelectMode = this.cfg.rowSelectMode||'new';
         this.rowSelector = '> tr.ui-widget-content.ui-datatable-selectable';
         this.cfg.disabledTextSelection = this.cfg.disabledTextSelection === false ? false : true;
-        this.rowSelectorForRowClick = this.cfg.rowSelector||'td:not(.ui-column-unselectable),span:not(.ui-c)';
+        this.rowSelectorForRowClick = this.cfg.rowSelector||'td:not(.ui-column-unselectable),(td *div.ui-widget, td *div.ui-widget *).not()';
 
         var preselection = $(this.selectionHolder).val();
         this.selection = (preselection === "") ? [] : preselection.split(',');

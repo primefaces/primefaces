@@ -90,7 +90,6 @@ public class InputSwitchRenderer extends InputRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-c", null);
 
         if (showLabels) {
             writer.writeText(label, null);
