@@ -21,44 +21,41 @@ import org.junit.rules.ExpectedException;
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
-import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 public class InputNumberTest {
 
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
-	
+
 	private InputNumberRenderer renderer;
 	private FacesContext context;
 	private ExternalContext externalContext;
 	private ELContext elContext;
 	private InputNumber inputNumber;
 	private ValueExpression valueExpression;
-	
+
 	@Before
 	public void setup() {
 		renderer = new InputNumberRenderer();
-		context = niceMock(FacesContext.class);
-		externalContext = niceMock(ExternalContext.class);
-		elContext = niceMock(ELContext.class);
-		expect(context.getExternalContext()).andReturn(externalContext).anyTimes();
-		expect(context.getELContext()).andReturn(elContext).anyTimes();
-		inputNumber = partialMockBuilder(InputNumber.class)
-				.addMockedMethods("getClientId", "getClientBehaviors", "isDisabled", "isReadonly", "getMinValue", "getMaxValue", "getValueExpression", "isValid").createMock();
-		expect(inputNumber.getClientId(context)).andReturn("").anyTimes();
-		expect(inputNumber.getClientBehaviors()).andReturn(new HashMap<String, List<ClientBehavior>>()).anyTimes();
-		expect(inputNumber.isValid()).andReturn(true).anyTimes();
-		replay(context);
+		context = mock(FacesContext.class);
+		externalContext = mock(ExternalContext.class);
+		elContext = mock(ELContext.class);
+		when(context.getExternalContext()).thenReturn(externalContext);
+		when(context.getELContext()).thenReturn(elContext);
+		inputNumber = mock(InputNumber.class);
+		when(inputNumber.getClientId(context)).thenReturn("");
+		when(inputNumber.isValid()).thenReturn(true);
+		when(inputNumber.getSubmittedValue()).thenCallRealMethod();
+		doCallRealMethod().when(inputNumber).setSubmittedValue(anyString());
 	}
-	
+
 	@After
 	public void teardown() {
 		valueExpression = null;
@@ -68,23 +65,22 @@ public class InputNumberTest {
 		context = null;
 		renderer = null;
 	}
-	
+
 	private void setupValues(String submittedValue, boolean disabled, String minValue, String maxValue, boolean primitiveValueBinding) {
 		Map<String, String> requestParams = new HashMap<String, String>();
 		requestParams.put("_hinput", submittedValue);
-		expect(externalContext.getRequestParameterMap()).andReturn(requestParams).anyTimes();
-		expect(inputNumber.isDisabled()).andReturn(disabled).anyTimes();
-		expect(inputNumber.isReadonly()).andReturn(disabled).anyTimes();
-		expect(inputNumber.getMinValue()).andReturn(minValue).anyTimes();
-		expect(inputNumber.getMaxValue()).andReturn(maxValue).anyTimes();
-		valueExpression = niceMock(ValueExpression.class);
-		expect(inputNumber.getValueExpression(anyObject(String.class))).andReturn(valueExpression).anyTimes();
+		when(externalContext.getRequestParameterMap()).thenReturn(requestParams);
+		when(inputNumber.isDisabled()).thenReturn(disabled);
+		when(inputNumber.isReadonly()).thenReturn(disabled);
+		when(inputNumber.getMinValue()).thenReturn(minValue);
+		when(inputNumber.getMaxValue()).thenReturn(maxValue);
+		valueExpression = mock(ValueExpression.class);
+		when(inputNumber.getValueExpression(anyString())).thenReturn(valueExpression);
 		if (primitiveValueBinding) {
-			expect(valueExpression.getType(elContext)).andReturn((Class) double.class).anyTimes();
+			when(valueExpression.getType(elContext)).thenReturn((Class) double.class);
 		}
-		replay(externalContext, valueExpression, inputNumber);
 	}
-	
+
 	@Test
 	public void testDecodeNegativeWithinDefaultRange() {
 		setupValues("-999999999.99", false, null, null, false);
@@ -112,10 +108,10 @@ public class InputNumberTest {
 		renderer.decode(context, inputNumber);
 		Assert.assertEquals("3.14", inputNumber.getSubmittedValue());
 	}
-	
+
 	@Test
 	public void testDecodeBelowRange() {
-		
+
 		setupValues("-1", false, "0.0", null, false);
 		renderer.decode(context, inputNumber);
 		Assert.assertEquals("0.0", inputNumber.getSubmittedValue());
@@ -135,7 +131,7 @@ public class InputNumberTest {
 		setupValues("crash", false, null, null, false);
 		renderer.decode(context, inputNumber);
 	}
-	
+
 	@Test
 	public void testDecodeEmptyNonPrimitive() {
 		setupValues("", false, "1", "10", false);
@@ -158,12 +154,12 @@ public class InputNumberTest {
 		double submittedValue = Double.parseDouble(inputNumber.getSubmittedValue().toString());
 		Assert.assertEquals("10.0", inputNumber.getSubmittedValue());
 	}
-	
+
 	@Test
 	public void testDecodeDisabled() {
 		setupValues("1", true, "0", "2", false);
 		renderer.decode(context, inputNumber);
 		Assert.assertEquals(null, inputNumber.getSubmittedValue());
 	}
-	
+
 }
