@@ -16,11 +16,12 @@
 package org.primefaces.component.spinner;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.context.RequestContext;
+
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -49,17 +50,9 @@ public class SpinnerRenderer extends InputRenderer {
             if (suffix != null && submittedValue.endsWith(suffix)) {
                 submittedValue = submittedValue.substring(0, (submittedValue.length() - suffix.length()));
             }
-
-            double parsedSubmittedValue = Double.parseDouble(submittedValue);
-            if (parsedSubmittedValue < spinner.getMin()) {
-                submittedValue = String.valueOf(spinner.getMin());
-            }
-            else if (parsedSubmittedValue > spinner.getMax()) {
-                submittedValue = String.valueOf(spinner.getMax());
-            }
         }
         catch (Exception e) {
-            submittedValue = String.valueOf(spinner.getMin());
+
         }
         finally {
             spinner.setSubmittedValue(submittedValue);

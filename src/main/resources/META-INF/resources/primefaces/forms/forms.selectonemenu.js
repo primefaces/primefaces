@@ -11,13 +11,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.focusInput = $(this.jqId + '_focus');
         this.label = this.jq.find('.ui-selectonemenu-label');
         this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
-	    
+
         this.panelParent = this.cfg.appendTo
             ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo) : $(document.body);
         if(!this.panelParent.is(this.jq)) {
             this.panelParent.children(this.panelId).remove();
         }
-	    
+
         this.panel = $(this.panelId);
         this.disabled = this.jq.hasClass('ui-state-disabled');
         this.itemsWrapper = this.panel.children('.ui-selectonemenu-items-wrapper');
@@ -802,9 +802,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if (value === '&nbsp;') {
-                this.label.text(labelText);
                 if (labelText != '&nbsp;') {
+                   this.label.text(labelText);
                    this.label.addClass('ui-state-disabled');
+                } else {
+                    this.label.html(labelText);
                 }
             }
             else {
@@ -943,10 +945,14 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                     widget: $this,
                     handle: function(content) {
-                        var index = content.indexOf('</select>') + 9,
-                        selectTag = content.substring(0, index);
-                        $this.input.replaceWith(selectTag);
-                        $this.itemsWrapper.append(content.substring(index, content.length));
+                        var $content = $($.parseHTML(content));
+
+                        var $ul = $content.filter('ul');
+                        $this.itemsWrapper.empty();
+                        $this.itemsWrapper.append($ul);
+
+                        var $select = $content.filter('select');
+                        $this.input.replaceWith($select);
                     }
                 });
 
@@ -954,9 +960,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             },
             oncomplete: function(xhr, status, args) {
                 $this.isDynamicLoaded = true;
+                $this.input = $($this.jqId + '_input');
+                $this.options = $this.input.children('option');
                 $this.initContents();
                 $this.bindItemEvents();
-
             }
         };
 

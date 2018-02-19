@@ -141,10 +141,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         String labelledBy = menu.getLabelledBy();
 
         //input for accessibility
-        writer.startElement("div", menu);
+        writer.startElement("div", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
-        writer.startElement("input", menu);
+        writer.startElement("input", null);
         writer.writeAttribute("id", focusId, null);
         writer.writeAttribute("name", focusId, null);
         writer.writeAttribute("type", "text", null);
@@ -162,7 +162,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.endElement("div");
 
         //hidden select
-        writer.startElement("div", menu);
+        writer.startElement("div", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
         encodeHiddenSelect(context, menu, clientId, selectItems, values, submittedValues, converter);
@@ -177,7 +177,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
 
-        writer.startElement("select", menu);
+        writer.startElement("select", null);
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("tabindex", "-1", null);
@@ -245,10 +245,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String iconClass = valid ? SelectOneMenu.TRIGGER_CLASS : SelectOneMenu.TRIGGER_CLASS + " ui-state-error";
 
-        writer.startElement("div", menu);
+        writer.startElement("div", null);
         writer.writeAttribute("class", iconClass, null);
 
-        writer.startElement("span", menu);
+        writer.startElement("span", null);
         writer.writeAttribute("class", "ui-icon ui-icon-triangle-1-s ui-c", null);
         writer.endElement("span");
 
@@ -299,16 +299,16 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         if (customContent) {
             List<Column> columns = menu.getColumns();
             
-            writer.startElement("table", menu);
+            writer.startElement("table", null);
             writer.writeAttribute("class", SelectOneMenu.TABLE_CLASS, null);
             encodeColumnsHeader(context, menu, columns);
-            writer.startElement("tbody", menu);
+            writer.startElement("tbody", null);
             encodeOptionsAsTable(context, menu, selectItems, columns);
             writer.endElement("tbody");
             writer.endElement("table");
         }
         else {
-            writer.startElement("ul", menu);
+            writer.startElement("ul", null);
             writer.writeAttribute("id", menu.getClientId(context) + "_items", null);
             writer.writeAttribute("class", SelectOneMenu.LIST_CLASS, null);
             writer.writeAttribute("role", "listbox", null);
@@ -332,7 +332,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         }
 
         if (hasHeader) {
-            writer.startElement("thead", menu);
+            writer.startElement("thead", null);
             for (int i = 0; i < columns.size(); i++) {
                 Column column = columns.get(i);
                 if (!column.isRendered()) {

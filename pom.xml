@@ -12,7 +12,7 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
-    <version>6.2.RC2</version>
+    <version>6.2-SNAPSHOT</version>
 
     <name>primefaces</name>
     <url>http://www.primefaces.org</url>
@@ -162,7 +162,7 @@
         <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
-            <version>2.4</version>
+            <version>3.5.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>

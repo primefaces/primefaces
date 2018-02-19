@@ -650,10 +650,6 @@ if (window.PrimeFaces) {
             }
         }
         
-        if(element.parent().hasClass('ui-inputnumber')){
-            element = element.next('input');
-        }
-
         var submittedValue = vc.getSubmittedValue(element),
         valid = true,
         converterId = element.data('p-con');
@@ -1152,14 +1148,15 @@ if (window.PrimeFaces) {
             'inputnumber': {
 
                 highlight: function(element) {
-                    element.addClass('ui-state-error');
-                    PrimeFaces.validator.Highlighter.highlightLabel(element);
+                    var orginalInput = element.prev('input');
+                    orginalInput.addClass('ui-state-error');
+                    PrimeFaces.validator.Highlighter.highlightLabel(orginalInput);
                 },
 
                 unhighlight: function(element) {
-                    element.removeClass('ui-state-error');
-                    PrimeFaces.validator.Highlighter.unhighlightLabel(element);
-
+                    var orginalInput = element.prev('input');
+                    orginalInput.removeClass('ui-state-error');
+                    PrimeFaces.validator.Highlighter.unhighlightLabel(orginalInput);
                 }
 
             }

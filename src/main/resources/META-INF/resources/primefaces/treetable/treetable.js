@@ -1370,8 +1370,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     showCellEditor: function(c) {
         this.incellClick = true;
         
-        var cell = null,
-        $this = this;
+        var cell = null;
                     
         if(c) {
             cell = c;
@@ -1384,6 +1383,19 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         else {
             cell = this.contextMenuCell;
         }
+        
+        var editorInput = cell.find('> .ui-cell-editor > .ui-cell-editor-input');
+        if(editorInput.length !== 0 && editorInput.children().length === 0 && this.cfg.editMode === 'cell') {
+            // for lazy cellEditMode
+            this.cellEditInit(cell);
+        }
+        else {
+            this.showCurrentCell(cell);
+        }
+    },
+        
+    showCurrentCell: function(cell) {
+        var $this = this;
         
         if(this.currentCell) {
             $this.saveCell(this.currentCell);
@@ -1448,6 +1460,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                         
                         e.preventDefault();
                     }
+                    else if(key === keyCode.ESCAPE) {
+                        $this.doCellEditCancelRequest(cell);
+                        e.preventDefault();
+                    }
                 })
                 .on('focus.treetable-cell click.treetable-cell', function(e) {
                     $this.currentCell = cell;
@@ -1500,6 +1516,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         displayContainer.show();
         editableContainer.hide();
         cell.removeData('old-value').removeData('multi-edit');
+        
+        if(this.cfg.cellEditMode === "lazy") {
+            editableContainer.children().remove();
+        }
     },
     
     doCellEditRequest: function(cell) {
@@ -1535,6 +1555,81 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.hasBehavior('cellEdit')) {
             this.cfg.behaviors['cellEdit'].call(this, options);
+        } 
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
+    },
+    
+    doCellEditCancelRequest: function(cell) {
+        var cellEditor = cell.children('.ui-cell-editor'),
+        cellIndex = cell.index(),
+        cellInfo = cell.closest('tr').data('rk') + ',' + cellIndex,
+        $this = this;
+        
+        this.currentCell = null;
+
+        var options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            params: [{name: this.id + '_cellEditCancel', value: true},
+                     {name: this.id + '_cellInfo', value: cellInfo}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            cellEditor.children('.ui-cell-editor-input').html(content);
+                        }
+                    });
+
+                return true;
+            },
+            oncomplete: function(xhr, status, args) {                            
+                $this.viewMode(cell);
+                cell.data('edit-events-bound', false);
+            }
+        };
+        
+        if(this.hasBehavior('cellEditCancel')) {
+            this.cfg.behaviors['cellEditCancel'].call(this, options);
+        } 
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
+    },
+    
+    cellEditInit: function(cell) {
+        var cellEditor = cell.children('.ui-cell-editor'),
+        cellIndex = cell.index(),
+        cellInfo = cell.closest('tr').data('rk') + ',' + cellIndex,
+        $this = this;
+        
+        var options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            global: false,
+            params: [{name: this.id + '_cellEditInit', value: true},
+                     {name: this.id + '_cellInfo', value: cellInfo}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            cellEditor.children('.ui-cell-editor-input').html(content);
+                        }
+                    });
+
+                return true;
+            },
+            oncomplete: function(xhr, status, args) {
+                cell.data('edit-events-bound', false);
+                $this.showCurrentCell(cell);
+            }
+        };
+
+        if(this.hasBehavior('cellEditInit')) {
+            this.cfg.behaviors['cellEditInit'].call(this, options);
         } 
         else {
             PrimeFaces.ajax.Request.handle(options);
