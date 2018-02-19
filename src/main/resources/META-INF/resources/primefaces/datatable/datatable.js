@@ -3311,7 +3311,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             },
             helper: function(event, ui) {
                 var cells = ui.children(),
-                helper = $('<div class="ui-datatable ui-widget"><table><tbody></tbody></table></div>'),
+                helper = $('<div class="ui-datatable ui-widget"><table><tbody class="ui-datatable-data"></tbody></table></div>'),
                 helperRow = ui.clone(),
                 helperCells = helperRow.children();
 
