@@ -592,7 +592,7 @@ import org.primefaces.component.datatable.TableState;
             lazyModel.setWrappedData(data);
 
             //Update paginator/livescroller  for callback
-            if(ComponentUtils.isRequestSource(this, getFacesContext()) && (this.isPaginator() || this.isLiveScroll())) {
+            if(ComponentUtils.isRequestSource(this, getFacesContext()) && (this.isPaginator() || this.isLiveScroll() || this.isVirtualScroll())) {
                 PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
             }
         }
