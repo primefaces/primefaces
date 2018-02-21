@@ -16,9 +16,11 @@
 package org.primefaces.component.inputtext;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -73,6 +75,7 @@ public class InputTextRenderer extends InputRenderer {
             writer.writeAttribute("value", valueToRender, null);
         }
 
+        renderRTLDirection(context, inputText);
         renderPassThruAttributes(context, inputText, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, inputText, HTML.INPUT_TEXT_EVENTS);
 
