@@ -46,17 +46,7 @@ public abstract class RequestContext {
     public static RequestContext getCurrentInstance(FacesContext facesContext) {
         if (facesContext != null) {
             RequestContext context = (RequestContext) facesContext.getAttributes().get(INSTANCE_KEY);
-            if (context != null) {
-                ApplicationContext applicationContext = context.getApplicationContext();
-                if (applicationContext == null) {
-                    return null;
-                }
-
-                boolean isAtLeastJSF21 = applicationContext.getConfig().isAtLeastJSF21();
-                if ((isAtLeastJSF21 && !facesContext.isReleased()) || !isAtLeastJSF21) {
-                    return context;
-                }
-            }
+            return context;
         }
 
         return null;
