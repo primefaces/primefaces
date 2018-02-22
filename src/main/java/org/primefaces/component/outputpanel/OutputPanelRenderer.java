@@ -36,7 +36,7 @@ public class OutputPanelRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         OutputPanel panel = (OutputPanel) component;
 
-        if (panel.isContentLoad(context)) {
+        if (panel.isContentLoadRequest(context)) {
             renderChildren(context, panel);
         }
         else {
