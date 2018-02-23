@@ -13,6 +13,8 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
     initOverlay: function() {
         var $this = this;
         
+        this.jq.addClass('ui-menu-overlay');
+        
         this.cfg.trigger = this.cfg.trigger.replace(/\\\\:/g,"\\:");
 
         this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.trigger);
@@ -27,13 +29,13 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
             this.jq = $(this.jqId);
             this.jq.appendTo(document.body);
         }
-	else {
-            // this is required if the id does NOT contain a ':' - See #2485
-	    $(document.body).children("[id='" + this.id + "']").not(this.jq).remove();
-	    if(this.jq.parent().is(':not(body)')) {
-		this.jq.appendTo(document.body);
-	    }
-	}
+        else {
+                // this is required if the id does NOT contain a ':' - See #2485
+            $(document.body).children("[id='" + this.id + "']").not(this.jq).remove();
+            if(this.jq.parent().is(':not(body)')) {
+            this.jq.appendTo(document.body);
+            }
+        }
 
         this.cfg.pos = {
             my: this.cfg.my
