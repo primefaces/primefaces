@@ -16,8 +16,7 @@
 package org.primefaces.model;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -134,5 +133,63 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         UIComponent component = UIComponent.getCurrentComponent(facesContext);
         String clientId = component == null ? "<unknown>" : component.getClientId(facesContext);
         return String.format(format, getClass().getName(), clientId, viewId);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new LazyDataModelIterator<T>(this);
+    }
+
+    private static final class LazyDataModelIterator<T> implements Iterator<T> {
+
+        private LazyDataModel<T> model;
+        private int index;
+        private Map<Integer, List<T>> pages;
+        
+        LazyDataModelIterator(LazyDataModel<T> model) {
+            this.model = model;
+            this.index = -1;
+            this.pages = new HashMap<Integer, List<T>>();
+        }
+
+        @Override
+        public boolean hasNext() {
+            int nextIndex = index + 1;
+            int pageNo = nextIndex / model.getPageSize();
+            
+            if (!pages.containsKey(pageNo)) {
+                List<T> page = model.load(nextIndex, model.getPageSize(), null, null);
+                if (page == null || page.isEmpty()) {
+                    return false;
+                }
+                pages.remove(pageNo - 1);
+                pages.put(pageNo, page);
+            }
+            
+            int pageIndex = nextIndex % model.getPageSize();
+            if (pageIndex < pages.get(pageNo).size()) {
+                return true;
+            }
+            
+            return false;
+        }
+
+        @Override
+        public T next() {
+            index++;
+            int pageNo = index / model.getPageSize();
+            int pageIndex = index % model.getPageSize();
+            List<T> page = pages.get(pageNo);
+            if (pageIndex >= page.size()) {
+                throw new NoSuchElementException();
+            }
+            return page.get(pageIndex);
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
     }
 }
