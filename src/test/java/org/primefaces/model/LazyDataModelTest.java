@@ -5,7 +5,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import javax.faces.FacesException;
 import java.util.*;
 
 public class LazyDataModelTest {
@@ -25,7 +24,7 @@ public class LazyDataModelTest {
 			items.add(item);
 		}
 		Assert.assertEquals(10, items.size());
-		Assert.assertEquals(4, dataModel.loadCounter);
+		Assert.assertEquals(4, dataModel.getLoadCount());
 	}
 
 	@Test
@@ -40,7 +39,7 @@ public class LazyDataModelTest {
 			items.add(item);
 		}
 		Assert.assertEquals(20, items.size());
-		Assert.assertEquals(2, dataModel.loadCounter);
+		Assert.assertEquals(2, dataModel.getLoadCount());
 	}
 
 	@Test
@@ -55,7 +54,7 @@ public class LazyDataModelTest {
 			items.add(item);
 		}
 		Assert.assertEquals(9, items.size());
-		Assert.assertEquals(1, dataModel.loadCounter);
+		Assert.assertEquals(1, dataModel.getLoadCount());
 	}
 
 	@Test
@@ -70,7 +69,7 @@ public class LazyDataModelTest {
 			items.add(item);
 		}
 		Assert.assertEquals(0, items.size());
-		Assert.assertEquals(1, dataModel.loadCounter);
+		Assert.assertEquals(1, dataModel.getLoadCount());
 	}
 
 	@Test
@@ -87,7 +86,7 @@ public class LazyDataModelTest {
 			items.add(item);			
 		}
 		Assert.assertEquals(5, items.size());
-		Assert.assertEquals(1, dataModel.loadCounter);
+		Assert.assertEquals(1, dataModel.getLoadCount());
 	}
 
 	@Test
@@ -99,19 +98,75 @@ public class LazyDataModelTest {
 		dataModel.totalItems = 2;
 		dataModel.iterator().next();
 	}
+
+	@Test
+	public void testIteratorWhileRemoveUnsupportedOperationException() {
+		System.out.println("\ntestIteratorWhileRemoveUnsupportedOperationException");
+		expectedException.expect(UnsupportedOperationException.class);
+		LazyDataModelImpl dataModel = new LazyDataModelImpl();
+		dataModel.setPageSize(2);
+		dataModel.totalItems = 2;
+		Iterator<Integer> it = dataModel.iterator();
+		while (it.hasNext()) {
+			it.remove();
+		}
+	}
+	
+	@Test
+	public void testOverloadedIteratorSingleSorting() {
+		System.out.println("\ntestOverloadedIteratorSingleSorting");
+		LazyDataModelImpl dataModel = new LazyDataModelImpl();
+		dataModel.setPageSize(2);
+		dataModel.totalItems = 1;
+		Iterator<Integer> it = dataModel.iterator("foo", SortOrder.ASCENDING, Collections.singletonMap("foo", (Object) "bar"));
+		while (it.hasNext()) {
+			Integer item = it.next();
+		}
+		Assert.assertEquals(1, dataModel.singleSortingLoadCounter);
+	}
+
+	@Test
+	public void testOverloadedIteratorMultiSorting() {
+		System.out.println("\ntestOverloadedIteratorMultiSorting");
+		LazyDataModelImpl dataModel = new LazyDataModelImpl();
+		dataModel.setPageSize(2);
+		dataModel.totalItems = 1;
+		Iterator<Integer> it = dataModel.iterator(Arrays.asList(new SortMeta()), Collections.singletonMap("foo", (Object) "bar"));
+		while (it.hasNext()) {
+			Integer item = it.next();
+		}
+		Assert.assertEquals(1, dataModel.multiSortingLoadCounter);
+	}	
 	
 	private static class LazyDataModelImpl extends LazyDataModel<Integer> {
 		int totalItems;
-		int loadCounter;
+		int multiSortingLoadCounter;
+		int singleSortingLoadCounter;
+
+		int getLoadCount() {
+			return multiSortingLoadCounter + singleSortingLoadCounter;
+		}
+		
 		@Override
 		public List<Integer> load(int first, int pageSize, List<SortMeta> multiSortMeta, Map<String, Object> filters) {
 			System.out.println(String.format("Loading %d items from offset %d", pageSize, first));
-			loadCounter++;
+			multiSortingLoadCounter++;
 			List<Integer> page = new ArrayList<Integer>();
 			for(int i = first; i < first + pageSize && i < totalItems; i++) {
 				page.add(i);
 			}
 			return page; 
+		}
+
+		@Override
+		public List<Integer> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+			System.out.println(String.format("Loading %d items from offset %d", pageSize, first));
+			singleSortingLoadCounter++;
+			List<Integer> page = new ArrayList<Integer>();
+			for(int i = first; i < first + pageSize && i < totalItems; i++) {
+				page.add(i);
+			}
+			return page;
 		}
 	}
 	
