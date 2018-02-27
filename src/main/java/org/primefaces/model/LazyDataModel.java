@@ -180,7 +180,7 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
             int pageNo = index / model.getPageSize();
             int pageIndex = index % model.getPageSize();
             List<T> page = pages.get(pageNo);
-            if (pageIndex >= page.size()) {
+            if (page == null || pageIndex >= page.size()) {
                 throw new NoSuchElementException();
             }
             return page.get(pageIndex);
