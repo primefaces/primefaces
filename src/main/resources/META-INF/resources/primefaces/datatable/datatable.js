@@ -1500,7 +1500,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     }
                 }
 
-                if($this.cfg.liveScroll) {
+                if($this.cfg.virtualScroll) {
+                    $this.bodyTable.css('top', '0px');
+                    $this.scrollBody.scrollTop(0);
+                    $this.clearScrollState();
+                }
+                else if($this.cfg.liveScroll) {
                     $this.scrollOffset = 0;
                     $this.liveScrollActive = false;
                     $this.shouldLiveScroll = true;
@@ -1599,11 +1604,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     if(row) {
                         var hasEmptyMessage = row.eq(0).hasClass('ui-datatable-empty-message'),
                         scrollLimit = $this.cfg.scrollLimit;
-                
+                        
                         if(hasEmptyMessage) {
                             scrollLimit = 1;
-                            $this.bodyTable.css('top', '0px');
                         }
+     
+                        $this.bodyTable.css('top', '0px');
+                        $this.scrollBody.scrollTop(0);
+                        $this.clearScrollState();
                         
                         $this.rowHeight = row.outerHeight();
                         $this.scrollBody.children('div').css({'height': parseFloat((scrollLimit * $this.rowHeight + 1) + 'px')});

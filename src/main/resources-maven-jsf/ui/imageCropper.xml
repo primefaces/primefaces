@@ -91,7 +91,7 @@
             <name>sizeLimit</name>
             <required>false</required>
             <type>java.lang.Long</type>
-            <defaultValue>10485760</defaultValue>
+            <defaultValue>10485760L</defaultValue>
             <description>Maximum number of bytes the image may consist of. Default is 10MB.</description>
         </attribute>
     </attributes>
