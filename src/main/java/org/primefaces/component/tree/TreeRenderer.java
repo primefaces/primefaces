@@ -498,7 +498,7 @@ public class TreeRenderer extends CoreRenderer {
             writer.writeAttribute("data-rowkey", "root", null);
         }
 
-        String nodeContentClass = node.isSelectable() ? Tree.SELECTABLE_NODE_CONTENT_CLASS_H : Tree.NODE_CONTENT_CLASS_H;
+        String nodeContentClass = (tree.getSelectionMode() != null && node.isSelectable()) ? Tree.SELECTABLE_NODE_CONTENT_CLASS_H : Tree.NODE_CONTENT_CLASS_H;
         if (selected) {
             nodeContentClass += " ui-state-highlight";
         }
@@ -647,7 +647,7 @@ public class TreeRenderer extends CoreRenderer {
         tree.setRowKey(rowKey);
         boolean isLeaf = node.isLeaf();
         boolean expanded = node.isExpanded();
-        boolean selectable = node.isSelectable();
+        boolean selectable = tree.getSelectionMode() != null && node.isSelectable();
         String toggleIcon = expanded
                 ? Tree.EXPANDED_ICON_CLASS_V
                 : (tree.isRTLRendering() ? Tree.COLLAPSED_ICON_RTL_CLASS_V : Tree.COLLAPSED_ICON_CLASS_V);
