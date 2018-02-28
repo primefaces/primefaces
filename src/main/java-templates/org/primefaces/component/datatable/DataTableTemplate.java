@@ -1089,13 +1089,16 @@ import org.primefaces.component.datatable.TableState;
             multiSortMeta = new ArrayList<SortMeta>();
             for(int i = 0; i < multiSortStateList.size(); i++) {
                 MultiSortState multiSortState = multiSortStateList.get(i);
-                SortMeta sortMeta = new SortMeta();
-                sortMeta.setSortBy(this.findColumn(multiSortState.getSortKey()));
-                sortMeta.setSortField(multiSortState.getSortField());
-                sortMeta.setSortOrder(multiSortState.getSortOrder());
-                sortMeta.setSortFunction(multiSortState.getSortFunction());
+                UIColumn column = this.findColumn(multiSortState.getSortKey());
+                if (column != null) {
+                    SortMeta sortMeta = new SortMeta();
+                    sortMeta.setSortBy(column);
+                    sortMeta.setSortField(multiSortState.getSortField());
+                    sortMeta.setSortOrder(multiSortState.getSortOrder());
+                    sortMeta.setSortFunction(multiSortState.getSortFunction());
 
-                multiSortMeta.add(sortMeta);
+                    multiSortMeta.add(sortMeta);
+                }
             }
         }
         else {
