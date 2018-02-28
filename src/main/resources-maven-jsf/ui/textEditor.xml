@@ -26,7 +26,7 @@
     </interfaces>
     <attributes>
         &input_component_attributes;
-        &widget_var_attribute;		
+        &widget_var_attribute;
         <attribute>
             <name>height</name>
             <required>false</required>
@@ -64,7 +64,7 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
-            <description>show / hide the editor toolbar visibility.</description>
+            <description>Whether the toolbar of the editor is visible.</description>
         </attribute>
     </attributes>
     <resources>
