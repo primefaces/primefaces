@@ -1,3 +1,6 @@
+//PF settings
+$(document).on('mobileinit', function(){$.mobile.ajaxEnabled = false;$.mobile.pushStateEnabled = false;$.mobile.page.prototype.options.domCache = true;});
+
 /*!
 * jQuery Mobile 1.4.5
 * Git HEAD hash: 68e55e78b292634d3991c795f06f5e37a512decc <> Date: Fri Oct 31 2014 17:33:30 UTC
@@ -3029,10 +3032,9 @@ if ( !$.support.boxShadow ) {
 
 			if ( isPopStateEvent ) {
 				popstateEvent = new $.Event( "popstate" );
-				popstateEvent.originalEvent = {
-					type: "popstate",
-					state: null
-				};
+				popstateEvent.originalEvent = new $.Event( "popstate" );
+				popstateEvent.originalEvent.type = "popstate";
+				popstateEvent.originalEvent.state = null;
 
 				this.squash( url, state );
 
