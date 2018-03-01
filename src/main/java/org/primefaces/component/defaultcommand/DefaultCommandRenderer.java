@@ -33,7 +33,7 @@ public class DefaultCommandRenderer extends CoreRenderer {
 
         String clientId = command.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("DefaultCommand", command.resolveWidgetVar(), clientId)
+        wb.init("DefaultCommand", command.resolveWidgetVar(), clientId)
                 .attr("target", target.getClientId(context));
 
         String scope = command.getScope();

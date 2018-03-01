@@ -93,7 +93,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         boolean custom = layout != null && layout.equals("custom");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("SelectOneRadio", radio.resolveWidgetVar(), clientId)
+        wb.init("SelectOneRadio", radio.resolveWidgetVar(), clientId)
                 .attr("custom", custom, false).finish();
     }
 

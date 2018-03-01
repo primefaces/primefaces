@@ -98,7 +98,7 @@ public class TextEditorRenderer extends CoreRenderer {
     private void encodeScript(FacesContext context, TextEditor editor) throws IOException {
         String clientId = editor.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("TextEditor", editor.resolveWidgetVar(), clientId)
+        wb.init("TextEditor", editor.resolveWidgetVar(), clientId)
                 .attr("toolbarVisible", editor.isToolbarVisible())
                 .attr("readOnly", editor.isReadonly(), false)
                 .attr("placeholder", editor.getPlaceholder(), null)

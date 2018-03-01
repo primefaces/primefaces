@@ -218,7 +218,7 @@ public class DataTableRenderer extends DataRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (initMode.equals("load")) {
-            wb.initWithDomReady(widgetClass, table.resolveWidgetVar(), clientId);
+            wb.init(widgetClass, table.resolveWidgetVar(), clientId);
         }
         else if (initMode.equals("immediate")) {
             wb.init(widgetClass, table.resolveWidgetVar(), clientId);

@@ -36,6 +36,7 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
     private boolean beanValidationDisabled = false;
     private boolean interpolateClientSideValidationMessages = false;
     private boolean earlyPostParamEvaluation = false;
+    private boolean moveScriptsToBottom = false;
 
     // internal config
     private boolean beanValidationAvailable = false;
@@ -252,4 +253,14 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
     public boolean isAtLeastEL22() {
         return el22Available;
     }
+
+    @Override
+    public boolean isMoveScriptsToBottom() {
+        return moveScriptsToBottom;
+    }
+
+    public void setMoveScriptsToBottom(boolean moveScriptsToBottom) {
+        this.moveScriptsToBottom = moveScriptsToBottom;
+    }
+
 }

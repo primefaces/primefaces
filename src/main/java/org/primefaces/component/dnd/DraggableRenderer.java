@@ -37,7 +37,7 @@ public class DraggableRenderer extends CoreRenderer {
                 context, draggable, draggable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Draggable", draggable.resolveWidgetVar(), clientId)
+        wb.init("Draggable", draggable.resolveWidgetVar(), clientId)
                 .attr("target", target.getClientId(context))
                 .attr("cursor", draggable.getCursor())
                 .attr("disabled", draggable.isDisabled(), false)

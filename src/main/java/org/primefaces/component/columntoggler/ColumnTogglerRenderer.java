@@ -67,7 +67,7 @@ public class ColumnTogglerRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, ColumnToggler columnToggler) throws IOException {
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.initWithDomReady("ColumnToggler", columnToggler.resolveWidgetVar(), columnToggler.getClientId(context));
+        wb.init("ColumnToggler", columnToggler.resolveWidgetVar(), columnToggler.getClientId(context));
         wb.attr("trigger", SearchExpressionFacade.resolveClientIds(context, columnToggler, columnToggler.getTrigger()))
                 .attr("datasource", SearchExpressionFacade.resolveClientIds(context, columnToggler, columnToggler.getDatasource()));
 

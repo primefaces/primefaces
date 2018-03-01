@@ -85,7 +85,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         String layout = checkbox.getLayout();
         boolean custom = (layout != null && layout.equals("custom"));
 
-        wb.initWithDomReady("SelectManyCheckbox", checkbox.resolveWidgetVar(), clientId)
+        wb.init("SelectManyCheckbox", checkbox.resolveWidgetVar(), clientId)
                 .attr("custom", custom, false).finish();
     }
 

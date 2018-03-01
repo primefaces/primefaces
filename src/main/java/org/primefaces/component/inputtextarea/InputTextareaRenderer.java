@@ -99,7 +99,7 @@ public class InputTextareaRenderer extends InputRenderer {
         String counter = inputTextarea.getCounter();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("InputTextarea", inputTextarea.resolveWidgetVar(), clientId)
+        wb.init("InputTextarea", inputTextarea.resolveWidgetVar(), clientId)
                 .attr("autoResize", autoResize)
                 .attr("maxlength", inputTextarea.getMaxlength(), Integer.MAX_VALUE);
 

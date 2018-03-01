@@ -158,7 +158,7 @@ public class CalendarRenderer extends InputRenderer {
         String pattern = calendar.isTimeOnly() ? calendar.calculateTimeOnlyPattern() : calendar.calculatePattern();
         String mask = calendar.getMask();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Calendar", calendar.resolveWidgetVar(), clientId);
+        wb.init("Calendar", calendar.resolveWidgetVar(), clientId);
 
         wb.attr("popup", calendar.isPopup())
                 .attr("locale", locale.toString())

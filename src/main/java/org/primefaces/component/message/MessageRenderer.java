@@ -158,7 +158,7 @@ public class MessageRenderer extends UINotificationRenderer {
             String targetClientId = (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
             WidgetBuilder wb = getWidgetBuilder(context);
 
-            wb.initWithDomReady("Message", uiMessage.resolveWidgetVar(), clientId)
+            wb.init("Message", uiMessage.resolveWidgetVar(), clientId)
                     .attr("target", targetClientId)
                     .finish();
         }

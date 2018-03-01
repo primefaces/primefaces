@@ -92,7 +92,7 @@ public class KnobRenderer extends CoreRenderer {
 
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.initWithDomReady("Knob", widgetVar, clientId);
+        wb.init("Knob", widgetVar, clientId);
         wb.attr("labelTemplate", knob.getLabelTemplate())
                 .attr("colorTheme", knob.getColorTheme())
                 .callback("onchange", "function(value)", knob.getOnchange());
