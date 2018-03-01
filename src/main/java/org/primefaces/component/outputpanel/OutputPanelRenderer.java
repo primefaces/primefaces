@@ -45,10 +45,6 @@ public class OutputPanelRenderer extends CoreRenderer {
                 encodeScript(context, panel);
             }
         }
-        
-        if (panel.isAutoUpdate()) {
-            logger.info("autoUpdate attribute is deprecated and will be removed in a future version, use p:autoUpdate component instead.");
-        }
     }
 
     public void encodeMarkup(FacesContext context, OutputPanel panel) throws IOException {

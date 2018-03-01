@@ -22,9 +22,6 @@
         <interface>
             <name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
         </interface>
-        <interface>
-			<name>org.primefaces.component.api.AutoUpdatable</name>
-		</interface>
     </interfaces>
     <attributes>
         &standard_uicomponent_attributes;
@@ -40,13 +37,6 @@
             <type>java.lang.String</type>
             <description>StyleClass of the html container element.</description>
         </attribute>
-        <attribute>
-			<name>autoUpdate</name>
-			<required>false</required>
-			<type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>Updates outputPanel after each ajax request implicity.</description>
-		</attribute>
         <attribute>
             <name>deferred</name>
             <required>false</required>

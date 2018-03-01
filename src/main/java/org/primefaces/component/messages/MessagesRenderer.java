@@ -130,10 +130,6 @@ public class MessagesRenderer extends UINotificationRenderer {
         }
 
         writer.endElement("div");
-        
-        if (uiMessages.isAutoUpdate()) {
-            logger.info("autoUpdate attribute is deprecated and will be removed in a future version, use p:autoUpdate component instead.");
-        }
     }
 
     protected void addMessage(Messages uiMessages, FacesMessage message, Map<String, List<FacesMessage>> messagesMap, String severity) {

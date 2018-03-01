@@ -65,10 +65,6 @@ public class GrowlRenderer extends UINotificationRenderer {
         encodeMessages(context, growl);
 
         wb.finish();
-        
-        if (growl.isAutoUpdate()) {
-            logger.info("autoUpdate attribute is deprecated and will be removed in a future version, use p:autoUpdate component instead.");
-        }
     }
 
     protected void encodeMessages(FacesContext context, Growl growl) throws IOException {
