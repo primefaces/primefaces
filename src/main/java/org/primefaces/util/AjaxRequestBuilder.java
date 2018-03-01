@@ -28,7 +28,7 @@ import javax.faces.view.facelets.FaceletException;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 
 import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.ApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionHint;
 
@@ -155,22 +155,8 @@ public class AjaxRequestBuilder {
         return this;
     }
 
-    @Deprecated
-    public AjaxRequestBuilder partialSubmit(boolean value, boolean partialSubmitSet) {
-        PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
-
-        //component can override global setting
-        boolean partialSubmit = partialSubmitSet ? value : config.isPartialSubmitEnabled();
-
-        if (partialSubmit) {
-            buffer.append(",ps:true");
-        }
-
-        return this;
-    }
-
     public AjaxRequestBuilder partialSubmit(boolean value, boolean partialSubmitSet, String partialSubmitFilter) {
-        PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
+        PrimeConfiguration config = ApplicationContext.getCurrentInstance(context).getConfig();
 
         //component can override global setting
         boolean partialSubmit = partialSubmitSet ? value : config.isPartialSubmitEnabled();
@@ -187,7 +173,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder resetValues(boolean value, boolean resetValuesSet) {
-        PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
+        PrimeConfiguration config = ApplicationContext.getCurrentInstance(context).getConfig();
 
         //component can override global setting
         boolean resetValues = resetValuesSet ? value : config.isResetValuesEnabled();

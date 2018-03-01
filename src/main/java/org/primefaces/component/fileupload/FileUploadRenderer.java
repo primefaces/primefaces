@@ -23,7 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.ApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
@@ -41,7 +41,7 @@ public class FileUploadRenderer extends CoreRenderer {
         FileUpload fileUpload = (FileUpload) component;
 
         if (!fileUpload.isDisabled()) {
-            PrimeConfiguration cc = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
+            PrimeConfiguration cc = ApplicationContext.getCurrentInstance(context).getConfig();
             String uploader = cc.getUploader();
             boolean isAtLeastJSF22 = cc.isAtLeastJSF22();
             String inputToDecodeId = getSimpleInputDecodeId(fileUpload, context);

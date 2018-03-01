@@ -20,7 +20,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.ApplicationContext;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -114,7 +114,7 @@ public class KeyboardRenderer extends InputRenderer {
         if (keyboard.getStyle() != null) writer.writeAttribute("style", keyboard.getStyle(), "style");
         if (keyboard.isRequired()) writer.writeAttribute("aria-required", "true", null);
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (ApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, keyboard);
         }
 

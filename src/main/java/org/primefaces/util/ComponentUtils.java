@@ -41,6 +41,7 @@ import javax.faces.render.Renderer;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.context.ApplicationContext;
 import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionUtils;
 
@@ -78,7 +79,7 @@ public class ComponentUtils {
             if (component instanceof EditableValueHolder) {
                 EditableValueHolder input = (EditableValueHolder) component;
                 Object submittedValue = input.getSubmittedValue();
-                PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
+                PrimeConfiguration config = ApplicationContext.getCurrentInstance(context).getConfig();
 
                 if (config.isInterpretEmptyStringAsNull()
                         && submittedValue == null
@@ -103,7 +104,7 @@ public class ComponentUtils {
                 if (converter == null) {
                     Class valueType = value.getClass();
                     if (valueType == String.class
-                            && !RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isStringConverterAvailable()) {
+                            && !ApplicationContext.getCurrentInstance(context).getConfig().isStringConverterAvailable()) {
                         return (String) value;
                     }
 
@@ -156,7 +157,7 @@ public class ComponentUtils {
         }
 
         if (converterType == String.class
-                && !RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isStringConverterAvailable()) {
+                && !ApplicationContext.getCurrentInstance(context).getConfig().isStringConverterAvailable()) {
             return null;
         }
 
@@ -292,7 +293,7 @@ public class ComponentUtils {
     }
 
     public static boolean isSkipIteration(VisitContext visitContext, FacesContext context) {
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF21()) {
+        if (ApplicationContext.getCurrentInstance(context).getConfig().isAtLeastJSF21()) {
             return visitContext.getHints().contains(VisitHint.SKIP_ITERATION);
         }
         else {

@@ -24,7 +24,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.InputHolder;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.ApplicationContext;
 
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.UINotificationRenderer;
@@ -63,7 +63,7 @@ public class MessageRenderer extends UINotificationRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (ApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("data-display", display, null);
             writer.writeAttribute("data-target", targetClientId, null);
             writer.writeAttribute("data-redisplay", String.valueOf(uiMessage.isRedisplay()), null);

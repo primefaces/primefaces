@@ -29,7 +29,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.ApplicationContext;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
@@ -221,7 +221,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         if (checked) writer.writeAttribute("checked", "checked", null);
         if (disabled) writer.writeAttribute("disabled", "disabled", null);
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (ApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, checkbox);
         }
 

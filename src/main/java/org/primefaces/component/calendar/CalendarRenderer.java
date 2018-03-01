@@ -28,7 +28,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.ApplicationContext;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
@@ -145,7 +145,7 @@ public class CalendarRenderer extends InputRenderer {
             writer.writeAttribute("aria-labelledby", labelledBy, null);
         }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (ApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, calendar);
         }
 

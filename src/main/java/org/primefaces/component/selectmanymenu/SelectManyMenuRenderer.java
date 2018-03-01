@@ -26,7 +26,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
 import org.primefaces.component.column.Column;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.ApplicationContext;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -127,7 +127,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
             writer.writeAttribute("disabled", "disabled", null);
         }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (ApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, menu);
         }
 

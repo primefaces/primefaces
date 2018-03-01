@@ -18,9 +18,9 @@ package org.primefaces.metadata.transformer;
 import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.ApplicationContext;
 
 public interface MetadataTransformer {
 
-    void transform(FacesContext context, RequestContext requestContext, UIComponent component) throws IOException;
+    void transform(FacesContext context, ApplicationContext applicationContext, UIComponent component) throws IOException;
 }

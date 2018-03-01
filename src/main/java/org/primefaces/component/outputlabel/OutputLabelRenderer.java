@@ -33,6 +33,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.context.ApplicationContext;
 import org.primefaces.context.RequestContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.expression.SearchExpressionFacade;
@@ -169,7 +170,7 @@ public class OutputLabelRenderer extends CoreRenderer {
     protected boolean isBeanValidationDefined(UIInput input, FacesContext context) {
         try {
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
-                        context, RequestContext.getCurrentInstance(context),
+                        context, ApplicationContext.getCurrentInstance(context),
                         ValueExpressionAnalyzer.getExpression(context.getELContext(), input.getValueExpression("value")));
             if (constraints == null || constraints.isEmpty()) {
                 return false;
@@ -178,7 +179,7 @@ public class OutputLabelRenderer extends CoreRenderer {
                 Class<? extends Annotation> annotationType = constraintDescriptor.getAnnotation().annotationType();
                 // GitHub #14 skip @NotNull check
                 if (annotationType.equals(NotNull.class)) {
-                    return RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isInterpretEmptyStringAsNull();
+                    return ApplicationContext.getCurrentInstance(context).getConfig().isInterpretEmptyStringAsNull();
                 }
                 // GitHub #3052 @NotBlank,@NotEmpty Hibernate and BeanValidator 2.0
                 String annotationClassName = annotationType.getSimpleName();

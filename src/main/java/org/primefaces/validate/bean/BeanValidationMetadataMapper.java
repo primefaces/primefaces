@@ -44,8 +44,7 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
-
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.ApplicationContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
 
 public class BeanValidationMetadataMapper {
@@ -71,7 +70,7 @@ public class BeanValidationMetadataMapper {
         CONSTRAINT_MAPPING.put(Pattern.class, new PatternClientValidationConstraint());
     }
 
-    public static BeanValidationMetadata resolveValidationMetadata(FacesContext context, UIComponent component, RequestContext requestContext)
+    public static BeanValidationMetadata resolveValidationMetadata(FacesContext context, UIComponent component, ApplicationContext applicationContext)
             throws IOException {
 
         Map<String, Object> metadata = null;
@@ -80,16 +79,16 @@ public class BeanValidationMetadataMapper {
         try {
             // get BV ConstraintDescriptors
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractAllConstraintDescriptors(
-                    context, requestContext, component.getValueExpression("value"));
+                    context, applicationContext, component.getValueExpression("value"));
 
             if (constraints != null && !constraints.isEmpty()) {
 
                 boolean interpolateClientSideValidationMessages =
-                        requestContext.getApplicationContext().getConfig().isInterpolateClientSideValidationMessages();
+                        applicationContext.getConfig().isInterpolateClientSideValidationMessages();
 
                 MessageInterpolator messageInterpolator = null;
                 if (interpolateClientSideValidationMessages) {
-                    messageInterpolator = requestContext.getApplicationContext().getValidatorFactory().getMessageInterpolator();
+                    messageInterpolator = applicationContext.getValidatorFactory().getMessageInterpolator();
                 }
 
                 // loop BV ConstraintDescriptors

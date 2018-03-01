@@ -43,7 +43,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.view.ViewDeclarationLanguage;
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler;
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerVisitCallback;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.ApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 
@@ -329,7 +329,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         ExternalContext externalContext = context.getExternalContext();
         externalContext.getSessionMap().put(ExceptionInfo.ATTRIBUTE_NAME, info);
 
-        Map<String, String> errorPages = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().getErrorPages();
+        Map<String, String> errorPages = ApplicationContext.getCurrentInstance(context).getConfig().getErrorPages();
         String errorPage = evaluateErrorPage(errorPages, rootCause);
 
         String url = externalContext.getRequestContextPath() + errorPage;

@@ -43,6 +43,7 @@ import javax.faces.validator.Validator;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
+import org.primefaces.context.ApplicationContext;
 import org.primefaces.context.RequestContext;
 import org.primefaces.convert.ClientConverter;
 import org.primefaces.expression.SearchExpressionFacade;
@@ -119,7 +120,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected void renderDynamicPassThruAttributes(FacesContext context, UIComponent component) throws IOException {
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF22()) {
+        if (ApplicationContext.getCurrentInstance(context).getConfig().isAtLeastJSF22()) {
             Jsf22Helper.renderPassThroughAttributes(context, component);
         }
     }
@@ -229,7 +230,7 @@ public abstract class CoreRenderer extends Renderer {
         }
 
         //dynamic attributes
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF22()) {
+        if (ApplicationContext.getCurrentInstance(context).getConfig().isAtLeastJSF22()) {
             Jsf22Helper.renderPassThroughAttributes(context, component);
         }
     }
@@ -674,7 +675,6 @@ public abstract class CoreRenderer extends Renderer {
         List<String> validatorIds = null;
         String highlighter = getHighlighter();
 
-        RequestContext requestContext = RequestContext.getCurrentInstance(context);
 
         //messages
         if (label != null) writer.writeAttribute(HTML.VALIDATION_METADATA.LABEL, label, null);
@@ -695,8 +695,9 @@ public abstract class CoreRenderer extends Renderer {
         }
 
         //bean validation
-        if (requestContext.getApplicationContext().getConfig().isBeanValidationAvailable()) {
-            BeanValidationMetadata beanValidationMetadata = BeanValidationMetadataMapper.resolveValidationMetadata(context, comp, requestContext);
+        ApplicationContext applicationContext = ApplicationContext.getCurrentInstance(context);
+        if (applicationContext.getConfig().isBeanValidationAvailable()) {
+            BeanValidationMetadata beanValidationMetadata = BeanValidationMetadataMapper.resolveValidationMetadata(context, comp, applicationContext);
             if (beanValidationMetadata != null) {
                 if (beanValidationMetadata.getAttributes() != null) {
                     renderValidationMetadataMap(context, beanValidationMetadata.getAttributes());
