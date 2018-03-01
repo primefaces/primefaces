@@ -16,8 +16,7 @@
 package org.primefaces.model;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -135,4 +134,18 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         String clientId = component == null ? "<unknown>" : component.getClientId(facesContext);
         return String.format(format, getClass().getName(), clientId, viewId);
     }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new LazyDataModelIterator<T>(this);
+    }
+
+    public Iterator<T> iterator(String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+        return new LazyDataModelIterator<T>(this, sortField, sortOrder, filters);
+    }
+
+    public Iterator<T> iterator(List<SortMeta> multiSortMeta, Map<String, Object> filters) {
+        return new LazyDataModelIterator<T>(this, multiSortMeta, filters);
+    }
+
 }
