@@ -43,7 +43,6 @@ import org.primefaces.event.ColumnResizeEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.event.ReorderEvent;
-import org.primefaces.mobile.event.SwipeEvent;
 import org.primefaces.model.Visibility;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.SelectableDataModel;
@@ -174,8 +173,6 @@ import org.primefaces.component.datatable.TableState;
         put("cellEditInit", CellEditEvent.class);
         put("cellEdit", CellEditEvent.class);
         put("rowReorder", ReorderEvent.class);
-        put("swipeleft", SwipeEvent.class);
-        put("swiperight", SwipeEvent.class);
         put("tap", SelectEvent.class);
         put("taphold", SelectEvent.class);
         put("cellEditCancel", CellEditEvent.class);
@@ -424,10 +421,6 @@ import org.primefaces.component.datatable.TableState;
                 int toIndex = Integer.parseInt(params.get(clientId + "_toIndex"));
                 
                 wrapperEvent = new ReorderEvent(this, behaviorEvent.getBehavior(), fromIndex, toIndex);
-            }
-            else if(eventName.equals("swipeleft")||eventName.equals("swiperight")) {
-                String rowkey = params.get(clientId + "_rowkey");
-                wrapperEvent = new SwipeEvent(this, behaviorEvent.getBehavior(), this.getRowData(rowkey));
             }
             else if(eventName.equals("tap")||eventName.equals("taphold")) {
                 String rowkey = params.get(clientId + "_rowkey");

@@ -1,5 +1,5 @@
 [![Maven](https://maven-badges.herokuapp.com/maven-central/org.primefaces/primefaces/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.primefaces/primefaces)
-[![Javadoc](http://javadoc.io/badge/org.primefaces/primefaces.svg)](http://javadoc.io/doc/org.primefaces/primefaces) 
+[![Javadoc](http://javadoc.io/badge/org.primefaces/primefaces.svg)](http://javadoc.io/doc/org.primefaces/primefaces)
 [![Travis](https://travis-ci.org/primefaces/primefaces.svg?branch=master)](https://travis-ci.org/primefaces/primefaces)
 [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![Join the chat at https://gitter.im/primefaces/primefaces](https://badges.gitter.im/primefaces/primefaces.svg)](https://gitter.im/primefaces/primefaces?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -18,12 +18,12 @@ This is an overview page, please visit [PrimeFaces.org](https://www.primefaces.o
 ### Getting Started
 ***
 
-**PrimeFaces** can be downloaded manually or via maven.  
+**PrimeFaces** can be downloaded manually or via maven.
 
 ##### Latest Downloads
 
 Version | Binary | Source
------------- | -------------  | ------------- 
+------------ | -------------  | -------------
 6.2| [primefaces-6.2.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.2/primefaces-6.2.jar)  | [primefaces-6.2-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.2/primefaces-6.2-sources.jar)
 6.1| [primefaces-6.1.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.1/primefaces-6.1.jar)  | [primefaces-6.1-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.1/primefaces-6.1-sources.jar)
 6.0| [primefaces-6.0.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.0/primefaces-6.0.jar)  | [primefaces-6.0-sources.jar](http://search.maven.org/remotecontent?filepath=org/primefaces/primefaces/6.0/primefaces-6.0-sources.jar)
@@ -36,11 +36,11 @@ For a full list of the available downloads, please visit the [download page](htt
 ##### Maven
 
 ```xml
-<dependency>  
-    <groupId>org.primefaces</groupId>  
-    <artifactId>primefaces</artifactId>  
-    <version>6.2</version>  
-</dependency>  
+<dependency>
+    <groupId>org.primefaces</groupId>
+    <artifactId>primefaces</artifactId>
+    <version>6.2</version>
+</dependency>
 ```
 
 ### Usage
@@ -54,12 +54,6 @@ PrimeFaces namespace is necessary to add PrimeFaces components to your pages.
 xmlns:p="http://primefaces.org/ui"
 ```
 
-For PrimeFaces **Mobile**, the namespace would be:
-
-```xml
-xmlns:pm="http://primefaces.org/mobile"  
-```
-
 ##### Test Run
 
 ```xml
@@ -71,11 +65,11 @@ xmlns:pm="http://primefaces.org/mobile"
 	<h:head>
 
 	</h:head>
-	
+
 	<h:body>
-	
+
 		<p:spinner />
-		
+
 	</h:body>
 </html>
 

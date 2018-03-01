@@ -28,7 +28,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
     private boolean interpretEmptyStringAsNull = false;
     private String  secretKey = null;
     private String  theme = null;
-    private String  mobileTheme = null;
     private boolean fontAwesomeEnabled = false;
     private boolean clientSideValidationEnabled = false;
     private String  uploader = null;
@@ -108,15 +107,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
 
     public void setTheme(String theme) {
         this.theme = theme;
-    }
-
-    @Override
-    public String getMobileTheme() {
-        return mobileTheme;
-    }
-
-    public void setMobileTheme(String mobileTheme) {
-        this.mobileTheme = mobileTheme;
     }
 
     @Override
