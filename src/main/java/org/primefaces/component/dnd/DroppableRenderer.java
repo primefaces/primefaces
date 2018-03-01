@@ -48,7 +48,8 @@ public class DroppableRenderer extends CoreRenderer {
                 .attr("activeClass", droppable.getActiveStyleClass(), null)
                 .attr("accept", droppable.getAccept(), null)
                 .attr("scope", droppable.getScope(), null)
-                .attr("tolerance", droppable.getTolerance(), null);
+                .attr("tolerance", droppable.getTolerance(), null)
+                .attr("greedy", droppable.isGreedy(), false);
 
         if (droppable.getOnDrop() != null) {
             wb.append(",onDrop:").append(droppable.getOnDrop());

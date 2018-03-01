@@ -81,6 +81,12 @@
             <type>java.lang.String</type>
             <description>Id of a UIData component to connect with.</description>
         </attribute>
+        <attribute>
+            <name>greedy</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <description>Avoids parent droppable elements receiving the drop event. Default value: false</description>
+        </attribute>         
     </attributes>
     <resources>
         <resource>
