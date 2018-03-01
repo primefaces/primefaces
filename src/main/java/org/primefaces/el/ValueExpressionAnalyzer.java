@@ -20,7 +20,7 @@ import javax.el.ValueExpression;
 import javax.el.ValueReference;
 import javax.faces.context.FacesContext;
 import javax.faces.el.CompositeComponentExpressionHolder;
-import org.primefaces.context.ApplicationContext;
+import org.primefaces.context.PrimeApplicationContext;
 
 public class ValueExpressionAnalyzer {
 
@@ -59,7 +59,7 @@ public class ValueExpressionAnalyzer {
 
         // Unwrapping is required e.g. for p:graphicImage to support nested expressions in composites
         // The unwrapping requires EL 2.2
-        if (ApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().isAtLeastEL22()) {
+        if (PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().isAtLeastEL22()) {
             ValueReference reference = toValueReference(expression, elContext);
 
             // check for a CC expression

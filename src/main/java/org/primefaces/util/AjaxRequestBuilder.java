@@ -28,7 +28,7 @@ import javax.faces.view.facelets.FaceletException;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 
 import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.ApplicationContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionHint;
 
@@ -156,7 +156,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder partialSubmit(boolean value, boolean partialSubmitSet, String partialSubmitFilter) {
-        PrimeConfiguration config = ApplicationContext.getCurrentInstance(context).getConfig();
+        PrimeConfiguration config = PrimeApplicationContext.getCurrentInstance(context).getConfig();
 
         //component can override global setting
         boolean partialSubmit = partialSubmitSet ? value : config.isPartialSubmitEnabled();
@@ -173,7 +173,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder resetValues(boolean value, boolean resetValuesSet) {
-        PrimeConfiguration config = ApplicationContext.getCurrentInstance(context).getConfig();
+        PrimeConfiguration config = PrimeApplicationContext.getCurrentInstance(context).getConfig();
 
         //component can override global setting
         boolean resetValues = resetValuesSet ? value : config.isResetValuesEnabled();

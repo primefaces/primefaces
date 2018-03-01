@@ -29,7 +29,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.ApplicationContext;
+import org.primefaces.context.PrimeApplicationContext;
 
 /**
  * Renders head content based on the following order
@@ -48,7 +48,7 @@ public class HeadRenderer extends Renderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        PrimeConfiguration cc = ApplicationContext.getCurrentInstance(context).getConfig();
+        PrimeConfiguration cc = PrimeApplicationContext.getCurrentInstance(context).getConfig();
         ProjectStage projectStage = context.getApplication().getProjectStage();
         boolean csvEnabled = cc.isClientSideValidationEnabled();
 

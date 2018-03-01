@@ -19,7 +19,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.ApplicationContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -127,7 +127,7 @@ public class InputSwitchRenderer extends InputRenderer {
         if (disabled) writer.writeAttribute("disabled", "disabled", null);
         if (inputSwitch.getTabindex() != null) writer.writeAttribute("tabindex", inputSwitch.getTabindex(), null);
 
-        if (ApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, inputSwitch);
         }
 

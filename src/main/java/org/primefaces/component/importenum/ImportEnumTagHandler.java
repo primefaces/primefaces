@@ -30,7 +30,7 @@ import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
-import org.primefaces.context.ApplicationContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.util.SharedStringBuilder;
 
 /**
@@ -118,7 +118,7 @@ public class ImportEnumTagHandler extends TagHandler {
 
             boolean cacheEnabled = facesContext.isProjectStage(ProjectStage.Production);
             Map<Class<?>, Map<String, Object>> cache
-                    = ApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnumCacheMap();
+                    = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnumCacheMap();
 
             Map<String, Object> enums;
 

@@ -22,7 +22,6 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.event.AbortProcessingException;
-import org.primefaces.context.RequestContext;
 import javax.faces.event.BehaviorEvent;
 import org.primefaces.PrimeFaces;
 

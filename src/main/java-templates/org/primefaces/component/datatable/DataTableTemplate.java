@@ -7,7 +7,6 @@ import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.contextmenu.ContextMenu;
 import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.component.headerrow.HeaderRow;
-import org.primefaces.context.RequestContext;
 import org.primefaces.util.Constants;
 import java.util.List;
 import java.util.ArrayList;

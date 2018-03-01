@@ -25,12 +25,12 @@ import javax.validation.groups.Default;
 import javax.validation.metadata.BeanDescriptor;
 import javax.validation.metadata.ConstraintDescriptor;
 import javax.validation.metadata.PropertyDescriptor;
-import org.primefaces.context.ApplicationContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 
 public class BeanValidationMetadataExtractor {
 
-    public static Set<ConstraintDescriptor<?>> extractAllConstraintDescriptors(FacesContext context, ApplicationContext applicationContext,
+    public static Set<ConstraintDescriptor<?>> extractAllConstraintDescriptors(FacesContext context, PrimeApplicationContext applicationContext,
             ValueExpression ve) {
 
         PropertyDescriptor propertyDescriptor = extractPropertyDescriptor(context, applicationContext, ve);
@@ -42,13 +42,13 @@ public class BeanValidationMetadataExtractor {
         return null;
     }
 
-    public static Set<ConstraintDescriptor<?>> extractDefaultConstraintDescriptors(FacesContext context, ApplicationContext applicationContext,
+    public static Set<ConstraintDescriptor<?>> extractDefaultConstraintDescriptors(FacesContext context, PrimeApplicationContext applicationContext,
             ValueExpression ve) {
 
         return extractConstraintDescriptors(context, applicationContext, ve, Default.class);
     }
 
-    public static Set<ConstraintDescriptor<?>> extractConstraintDescriptors(FacesContext context, ApplicationContext applicationContext,
+    public static Set<ConstraintDescriptor<?>> extractConstraintDescriptors(FacesContext context, PrimeApplicationContext applicationContext,
             ValueExpression ve, Class... groups) {
 
         PropertyDescriptor propertyDescriptor = extractPropertyDescriptor(context, applicationContext, ve);
@@ -60,7 +60,7 @@ public class BeanValidationMetadataExtractor {
         return null;
     }
 
-    public static PropertyDescriptor extractPropertyDescriptor(FacesContext context, ApplicationContext applicationContext, ValueExpression ve) {
+    public static PropertyDescriptor extractPropertyDescriptor(FacesContext context, PrimeApplicationContext applicationContext, ValueExpression ve) {
 
         if (ve != null) {
             ELContext elContext = context.getELContext();

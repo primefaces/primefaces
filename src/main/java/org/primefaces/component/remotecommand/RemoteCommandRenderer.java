@@ -25,7 +25,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
 import org.primefaces.component.api.AjaxSource;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeRequestContext;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
@@ -62,7 +62,7 @@ public class RemoteCommandRenderer extends CoreRenderer {
             throw new FacesException("RemoteCommand '" + name + "'must be inside a form.");
         }
 
-        AjaxRequestBuilder builder = RequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
+        AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
 
         String request = builder.init()
                 .source(clientId)

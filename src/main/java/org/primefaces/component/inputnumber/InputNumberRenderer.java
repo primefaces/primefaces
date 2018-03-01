@@ -30,7 +30,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
 import org.primefaces.component.inputtext.InputText;
-import org.primefaces.context.ApplicationContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -168,7 +168,7 @@ public class InputNumberRenderer extends InputRenderer {
             writer.writeAttribute("onkeyup", inputNumber.getOnkeyup(), null);
         }
 
-        if (ApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, inputNumber);
         }
 
@@ -216,7 +216,7 @@ public class InputNumberRenderer extends InputRenderer {
 
         writer.writeAttribute("class", styleClass, null);
 
-        if (ApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, inputNumber);
         }
 

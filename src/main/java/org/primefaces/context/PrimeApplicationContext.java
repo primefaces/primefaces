@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
@@ -28,7 +29,17 @@ import org.primefaces.cache.DefaultCacheProvider;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.util.Constants;
 
-public class DefaultApplicationContext extends ApplicationContext {
+/**
+ * A {@link PrimeApplicationContext} is a contextual store for the current application.
+ *
+ * It can be accessed via:
+ * <blockquote>
+ * PrimeApplicationContext.getCurrentInstance(context)
+ * </blockquote>
+ */
+public class PrimeApplicationContext {
+
+    public static final String INSTANCE_KEY = PrimeApplicationContext.class.getName();
 
     private PrimeConfiguration config;
     private ValidatorFactory validatorFactory;
@@ -37,11 +48,11 @@ public class DefaultApplicationContext extends ApplicationContext {
     private Map<Class<?>, Map<String, Object>> enumCacheMap;
     private Map<Class<?>, Map<String, Object>> constantsCacheMap;
 
-    public DefaultApplicationContext(FacesContext context) {
+    public PrimeApplicationContext(FacesContext context) {
         this(context, new PrimeConfiguration(context));
     }
 
-    public DefaultApplicationContext(FacesContext context, PrimeConfiguration config) {
+    public PrimeApplicationContext(FacesContext context, PrimeConfiguration config) {
         this.config = config;
 
         if (this.config.isBeanValidationAvailable()) {
@@ -53,17 +64,42 @@ public class DefaultApplicationContext extends ApplicationContext {
         constantsCacheMap = new ConcurrentHashMap<Class<?>, Map<String, Object>>();
     }
 
-    @Override
+    public static PrimeApplicationContext getCurrentInstance(FacesContext facesContext) {
+        if (facesContext == null || facesContext.getExternalContext() == null) {
+            return null;
+        }
+
+        PrimeApplicationContext applicationContext =
+                (PrimeApplicationContext) facesContext.getExternalContext().getApplicationMap().get(INSTANCE_KEY);
+        
+        if (applicationContext == null) {
+            applicationContext = new PrimeApplicationContext(facesContext);
+            setCurrentInstance(applicationContext, facesContext);
+        }
+        
+        return applicationContext;
+    }
+    
+    public static PrimeApplicationContext getCurrentInstance(ServletContext context) {
+        return (PrimeApplicationContext) context.getAttribute(INSTANCE_KEY);
+    }
+
+    public static void setCurrentInstance(final PrimeApplicationContext context, final FacesContext facesContext) {
+        facesContext.getExternalContext().getApplicationMap().put(INSTANCE_KEY, context);
+        
+        if (facesContext.getExternalContext().getContext() instanceof ServletContext) {
+            ((ServletContext) facesContext.getExternalContext().getContext()).setAttribute(INSTANCE_KEY, context);
+        }
+    }
+    
     public PrimeConfiguration getConfig() {
         return config;
     }
 
-    @Override
     public ValidatorFactory getValidatorFactory() {
         return validatorFactory;
     }
 
-    @Override
     public CacheProvider getCacheProvider() {
 
         if (cacheProvider == null) {
@@ -99,26 +135,21 @@ public class DefaultApplicationContext extends ApplicationContext {
         }
     }
 
-    @Override
     public Map<Class<?>, Map<String, Object>> getEnumCacheMap() {
         return enumCacheMap;
     }
 
-    @Override
     public Map<Class<?>, Map<String, Object>> getConstantsCacheMap() {
         return constantsCacheMap;
     }
 
-    @Override
     public Validator getValidator() {
         return validator;
     }
 
-    @Override
     public void release() {
         if (validatorFactory != null && config != null && config.isAtLeastBV11()) {
             validatorFactory.close();
         }
     }
-
 }

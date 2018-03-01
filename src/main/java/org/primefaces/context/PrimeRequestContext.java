@@ -20,22 +20,29 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
-
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.CSVBuilder;
 import org.primefaces.util.Constants;
 import org.primefaces.util.WidgetBuilder;
 
-public class DefaultRequestContext extends RequestContext {
+/**
+ * A {@link PrimeRequestContext} is a contextual store for the current request.
+ *
+ * It can be accessed via:
+ * <blockquote>
+ * PrimeRequestContext.getCurrentInstance(context)
+ * </blockquote>
+ */
+public class PrimeRequestContext {
 
-    private static final Logger LOG = Logger.getLogger(DefaultRequestContext.class.getName());
-    
+    public static final String INSTANCE_KEY = PrimeRequestContext.class.getName();
+        
     private final static String CALLBACK_PARAMS_KEY = "CALLBACK_PARAMS";
     private final static String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
 
@@ -43,15 +50,47 @@ public class DefaultRequestContext extends RequestContext {
     private AjaxRequestBuilder ajaxRequestBuilder;
     private CSVBuilder csvBuilder;
     private FacesContext context;
-    private ApplicationContext applicationContext;
+    private PrimeApplicationContext applicationContext;
     private Boolean ignoreAutoUpdate;
     private Boolean rtl;
 
-    public DefaultRequestContext(FacesContext context) {
+    public PrimeRequestContext(FacesContext context) {
         this.context = context;
     }
+    
+    public static PrimeRequestContext getCurrentInstance() {
+        return getCurrentInstance(FacesContext.getCurrentInstance());
+    }
 
-    @Override
+    public static PrimeRequestContext getCurrentInstance(FacesContext facesContext) {
+        if (facesContext == null) {
+            return null;
+        }
+        
+        PrimeRequestContext context = (PrimeRequestContext) facesContext.getAttributes().get(INSTANCE_KEY);
+
+        if (context == null) {
+            context = new PrimeRequestContext(facesContext);
+            setCurrentInstance(context, facesContext);
+        }
+        
+        return context;
+    }
+
+    public static void setCurrentInstance(PrimeRequestContext context, FacesContext facesContext) {
+        if (context == null) {
+            if (facesContext != null) {
+                facesContext.getAttributes().remove(INSTANCE_KEY);
+            }
+        }
+        else {
+            facesContext.getAttributes().put(INSTANCE_KEY, context);
+        }
+    }
+    
+    /**
+     * @return all callback parameters added in the current request.
+     */
     @SuppressWarnings("unchecked")
     public Map<String, Object> getCallbackParams() {
         Map<String, Object> callbackParams =
@@ -65,7 +104,9 @@ public class DefaultRequestContext extends RequestContext {
         return callbackParams;
     }
 
-    @Override
+    /**
+     * @return all scripts added in the current request.
+     */
     @SuppressWarnings("unchecked")
     public List<String> getScriptsToExecute() {
         List<String> scriptsToExecute =
@@ -79,7 +120,9 @@ public class DefaultRequestContext extends RequestContext {
         return scriptsToExecute;
     }
 
-    @Override
+    /**
+     * @return Shared WidgetBuilder instance of the current request
+     */
     public WidgetBuilder getWidgetBuilder() {
         if (this.widgetBuilder == null) {
             this.widgetBuilder = new WidgetBuilder(context, getApplicationContext().getConfig());
@@ -88,7 +131,9 @@ public class DefaultRequestContext extends RequestContext {
         return widgetBuilder;
     }
 
-    @Override
+    /**
+     * @return Shared AjaxRequestBuilder instance of the current request
+     */
     public AjaxRequestBuilder getAjaxRequestBuilder() {
         if (this.ajaxRequestBuilder == null) {
             this.ajaxRequestBuilder = new AjaxRequestBuilder(context);
@@ -97,7 +142,9 @@ public class DefaultRequestContext extends RequestContext {
         return ajaxRequestBuilder;
     }
 
-    @Override
+    /**
+     * @return Shared Client Side Validation builder instance of the current request
+     */
     public CSVBuilder getCSVBuilder() {
         if (this.csvBuilder == null) {
             this.csvBuilder = new CSVBuilder(context);
@@ -106,7 +153,20 @@ public class DefaultRequestContext extends RequestContext {
         return csvBuilder;
     }
 
-    @Override
+    /**
+     * @return ApplicationContext instance.
+     */
+    public PrimeApplicationContext getApplicationContext() {
+        if (this.applicationContext == null) {
+            this.applicationContext = PrimeApplicationContext.getCurrentInstance(context);
+        }
+
+        return applicationContext;
+    }
+
+    /**
+     * Clear resources.
+     */
     public void release() {
         widgetBuilder = null;
         ajaxRequestBuilder = null;
@@ -114,20 +174,9 @@ public class DefaultRequestContext extends RequestContext {
         applicationContext = null;
     }
 
-    @Override
-    public ApplicationContext getApplicationContext() {
-        if (this.applicationContext == null) {
-            this.applicationContext = ApplicationContext.getCurrentInstance(context);
-            if (this.applicationContext == null) {
-                this.applicationContext = new DefaultApplicationContext(context);
-                ApplicationContext.setCurrentInstance(applicationContext, context);
-            }
-        }
-
-        return applicationContext;
-    }
-
-    @Override
+    /**
+     * Returns a boolean indicating whether this request was made using a secure channel, such as HTTPS.
+     */
     public boolean isSecure() {
         Object request = context.getExternalContext().getRequest();
 
@@ -145,7 +194,9 @@ public class DefaultRequestContext extends RequestContext {
         }
     }
 
-    @Override
+    /**
+     * @return <code>true</code> if {@link AutoUpdatable} components should not be updated automatically in this request.
+     */
     public boolean isIgnoreAutoUpdate() {
         if (ignoreAutoUpdate == null) {
             Object ignoreAutoUpdateObject = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.IGNORE_AUTO_UPDATE_PARAM);
@@ -155,7 +206,6 @@ public class DefaultRequestContext extends RequestContext {
         return ignoreAutoUpdate;
     }
 
-    @Override
     public boolean isRTL() {
         if (rtl == null) {
             String param = context.getExternalContext().getInitParameter(Constants.ContextParams.DIRECTION);

@@ -21,7 +21,7 @@ import javax.faces.convert.Converter;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.convert.DateTimeConverter;
 
     public final static String CONTAINER_CLASS = "ui-calendar";
@@ -187,7 +187,7 @@ import org.primefaces.convert.DateTimeConverter;
     public Converter getConverter() {
         Converter converter = super.getConverter();
         
-        if(converter == null && RequestContext.getCurrentInstance(getFacesContext()).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if(converter == null && PrimeApplicationContext.getCurrentInstance(getFacesContext()).getConfig().isClientSideValidationEnabled()) {
             DateTimeConverter con = new DateTimeConverter();
             con.setPattern(this.calculatePattern());
             con.setTimeZone(this.calculateTimeZone());

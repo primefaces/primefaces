@@ -31,7 +31,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.event.PhaseId;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.context.ApplicationContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
@@ -263,7 +263,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.writeAttribute("aria-required", "true", null);
         }
 
-        if (ApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, ac);
         }
 
@@ -306,7 +306,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.endElement("option");
         }
         
-        if (ApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, ac);
         }
 

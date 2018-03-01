@@ -27,7 +27,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.ApplicationContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.renderkit.UINotificationRenderer;
@@ -113,7 +113,7 @@ public class MessagesRenderer extends UINotificationRenderer {
 
         writer.writeAttribute("aria-live", "polite", null);
 
-        if (ApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("data-global", String.valueOf(globalOnly), null);
             writer.writeAttribute("data-summary", uiMessages.isShowSummary(), null);
             writer.writeAttribute("data-detail", uiMessages.isShowDetail(), null);

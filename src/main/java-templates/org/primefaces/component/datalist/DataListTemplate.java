@@ -6,7 +6,6 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 import javax.faces.model.DataModel;
-import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.event.SelectEvent;
 import java.util.Arrays;

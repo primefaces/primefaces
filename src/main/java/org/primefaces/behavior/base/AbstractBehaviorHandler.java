@@ -43,8 +43,8 @@ import javax.faces.view.facelets.TagException;
 import javax.faces.view.facelets.TagHandler;
 
 import org.primefaces.behavior.ajax.AjaxBehaviorHandler;
-import org.primefaces.context.ApplicationContext;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 
 public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         extends TagHandler implements BehaviorHolderAttachedObjectHandler {
@@ -204,7 +204,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
     protected void addAttachedObjectHandlerToMojarra(UIComponent component) {
 
         String key = MOJARRA_ATTACHED_OBJECT_HANDLERS_KEY;
-        if (ApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().isAtLeastJSF22()) {
+        if (PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().isAtLeastJSF22()) {
             key = MOJARRA_22_ATTACHED_OBJECT_HANDLERS_KEY;
         }
 

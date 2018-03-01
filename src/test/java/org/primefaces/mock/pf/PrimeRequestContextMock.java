@@ -16,17 +16,21 @@
 package org.primefaces.mock.pf;
 
 import javax.faces.context.FacesContext;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.DefaultApplicationContext;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 
-public class ApplicationContextMock extends DefaultApplicationContext {
+public class PrimeRequestContextMock extends PrimeRequestContext {
 
-    public ApplicationContextMock(FacesContext context) {
-        super(context);
-    }
+    private final PrimeApplicationContext applicationContext;
     
-    public ApplicationContextMock(FacesContext context, PrimeConfiguration config) {
-        super(context, config);
+    public PrimeRequestContextMock(FacesContext context, PrimeApplicationContext applicationContext) {
+        super(context);
+        
+        this.applicationContext = applicationContext;
     }
 
+	@Override
+	public PrimeApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
 }

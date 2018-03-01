@@ -23,7 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 import org.primefaces.component.autocomplete.AutoComplete;
-import org.primefaces.context.ApplicationContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
@@ -138,7 +138,7 @@ public class InputTextareaRenderer extends InputRenderer {
 
         writer.writeAttribute("class", createStyleClass(inputTextarea), "styleClass");
 
-        if (ApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, inputTextarea);
         }
 

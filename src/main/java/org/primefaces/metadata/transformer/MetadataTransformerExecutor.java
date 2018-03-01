@@ -27,7 +27,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-import org.primefaces.context.ApplicationContext;
+import org.primefaces.context.PrimeApplicationContext;
 
 public class MetadataTransformerExecutor implements SystemEventListener {
 
@@ -41,7 +41,7 @@ public class MetadataTransformerExecutor implements SystemEventListener {
             if (event instanceof PreRenderComponentEvent) {
                 PreRenderComponentEvent preRenderComponentEvent = (PreRenderComponentEvent) event;
 
-                execute(ApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()),
+                execute(PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()),
                         preRenderComponentEvent.getComponent());
             }
         }
@@ -55,7 +55,7 @@ public class MetadataTransformerExecutor implements SystemEventListener {
         return source instanceof UIComponent;
     }
 
-    public static void execute(ApplicationContext applicationContext, UIComponent component) throws IOException {
+    public static void execute(PrimeApplicationContext applicationContext, UIComponent component) throws IOException {
         if (applicationContext.getConfig().isTransformMetadataEnabled()) {
 
             FacesContext context = FacesContext.getCurrentInstance();

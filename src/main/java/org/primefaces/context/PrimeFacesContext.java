@@ -23,7 +23,7 @@ import org.primefaces.application.resource.MoveScriptsToBottomResponseWriter;
 import org.primefaces.application.resource.MoveScriptsToBottomState;
 
 /**
- * Custom {@link FacesContextWrapper} to init and release our {@link RequestContext}.
+ * Custom {@link FacesContextWrapper} to init and release our {@link PrimeRequestContext}.
  */
 public class PrimeFacesContext extends FacesContextWrapper {
 
@@ -36,8 +36,8 @@ public class PrimeFacesContext extends FacesContextWrapper {
     public PrimeFacesContext(FacesContext wrapped) {
         this.wrapped = wrapped;
 
-        RequestContext requestContext = new DefaultRequestContext(wrapped);
-        RequestContext.setCurrentInstance(requestContext, wrapped);
+        PrimeRequestContext requestContext = new PrimeRequestContext(wrapped);
+        PrimeRequestContext.setCurrentInstance(requestContext, wrapped);
         
         moveScriptsToBottom = requestContext.getApplicationContext().getConfig().isMoveScriptsToBottom();
         if (moveScriptsToBottom) {
@@ -70,7 +70,7 @@ public class PrimeFacesContext extends FacesContextWrapper {
 
     @Override
     public void release() {
-        RequestContext requestContext = RequestContext.getCurrentInstance(wrapped);
+        PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(wrapped);
         if (requestContext != null) {
             requestContext.release();
         }

@@ -44,7 +44,7 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
-import org.primefaces.context.ApplicationContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
 
 public class BeanValidationMetadataMapper {
@@ -70,7 +70,7 @@ public class BeanValidationMetadataMapper {
         CONSTRAINT_MAPPING.put(Pattern.class, new PatternClientValidationConstraint());
     }
 
-    public static BeanValidationMetadata resolveValidationMetadata(FacesContext context, UIComponent component, ApplicationContext applicationContext)
+    public static BeanValidationMetadata resolveValidationMetadata(FacesContext context, UIComponent component, PrimeApplicationContext applicationContext)
             throws IOException {
 
         Map<String, Object> metadata = null;

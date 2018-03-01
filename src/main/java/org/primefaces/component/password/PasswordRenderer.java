@@ -20,7 +20,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.ApplicationContext;
+import org.primefaces.context.PrimeApplicationContext;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -103,7 +103,7 @@ public class PasswordRenderer extends InputRenderer {
         if (password.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
         if (password.isRequired()) writer.writeAttribute("aria-required", "true", null);
 
-        if (ApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, password);
         }
 

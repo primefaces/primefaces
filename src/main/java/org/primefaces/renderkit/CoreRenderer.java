@@ -43,8 +43,8 @@ import javax.faces.validator.Validator;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
-import org.primefaces.context.ApplicationContext;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.convert.ClientConverter;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.AjaxRequestBuilder;
@@ -120,7 +120,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected void renderDynamicPassThruAttributes(FacesContext context, UIComponent component) throws IOException {
-        if (ApplicationContext.getCurrentInstance(context).getConfig().isAtLeastJSF22()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isAtLeastJSF22()) {
             Jsf22Helper.renderPassThroughAttributes(context, component);
         }
     }
@@ -230,7 +230,7 @@ public abstract class CoreRenderer extends Renderer {
         }
 
         //dynamic attributes
-        if (ApplicationContext.getCurrentInstance(context).getConfig().isAtLeastJSF22()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isAtLeastJSF22()) {
             Jsf22Helper.renderPassThroughAttributes(context, component);
         }
     }
@@ -407,7 +407,7 @@ public abstract class CoreRenderer extends Renderer {
         UIComponent component = (UIComponent) source;
         String clientId = component.getClientId(context);
 
-        AjaxRequestBuilder builder = RequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
+        AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
 
         builder.init()
                 .source(clientId)
@@ -647,7 +647,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected WidgetBuilder getWidgetBuilder(FacesContext context) {
-        return RequestContext.getCurrentInstance(context).getWidgetBuilder();
+        return PrimeRequestContext.getCurrentInstance(context).getWidgetBuilder();
     }
 
     protected void renderValidationMetadata(FacesContext context, EditableValueHolder component) throws IOException {
@@ -695,7 +695,7 @@ public abstract class CoreRenderer extends Renderer {
         }
 
         //bean validation
-        ApplicationContext applicationContext = ApplicationContext.getCurrentInstance(context);
+        PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
         if (applicationContext.getConfig().isBeanValidationAvailable()) {
             BeanValidationMetadata beanValidationMetadata = BeanValidationMetadataMapper.resolveValidationMetadata(context, comp, applicationContext);
             if (beanValidationMetadata != null) {

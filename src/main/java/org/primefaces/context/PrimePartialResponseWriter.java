@@ -85,7 +85,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     @Override
     public void endDocument() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
-        RequestContext requestContext = RequestContext.getCurrentInstance(context);
+        PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
 
         if (requestContext != null) {
             try {
@@ -231,7 +231,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         }
     }
 
-    protected void encodeScripts(RequestContext requestContext) throws IOException {
+    protected void encodeScripts(PrimeRequestContext requestContext) throws IOException {
         List<String> scripts = requestContext.getScriptsToExecute();
         if (!scripts.isEmpty()) {
             startEval();
@@ -254,7 +254,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         metadataRendered = true;
 
         FacesContext context = FacesContext.getCurrentInstance();
-        ApplicationContext applicationContext = ApplicationContext.getCurrentInstance(context);
+        PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
 
         if (applicationContext != null) {
             try {
