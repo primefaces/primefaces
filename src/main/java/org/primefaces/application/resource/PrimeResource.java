@@ -31,7 +31,7 @@ public class PrimeResource extends ResourceWrapper {
     public PrimeResource(final Resource resource) {
         super();
         wrapped = resource;
-        version = "&v=" + PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().getBuildVersion();
+        version = "&v=" + PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment().getBuildVersion();
     }
 
     @Override

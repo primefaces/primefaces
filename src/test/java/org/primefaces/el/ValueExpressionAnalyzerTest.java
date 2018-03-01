@@ -28,7 +28,6 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.mock.FacesContextMock;
 import org.primefaces.mock.pf.PrimeApplicationContextMock;
-import org.primefaces.mock.pf.PrimeConfigurationMock;
 import org.primefaces.mock.pf.PrimeRequestContextMock;
 
 public class ValueExpressionAnalyzerTest
@@ -37,10 +36,7 @@ public class ValueExpressionAnalyzerTest
     public void init() {
         FacesContext facesContext = new FacesContextMock();
         
-        PrimeConfigurationMock config = new PrimeConfigurationMock(facesContext);
-        config.setEl22Available(true);
-        
-        PrimeApplicationContext applicationContext = new PrimeApplicationContextMock(facesContext, config);
+        PrimeApplicationContextMock applicationContext = new PrimeApplicationContextMock(facesContext);
         PrimeApplicationContext.setCurrentInstance(applicationContext, facesContext);
         
         PrimeRequestContext requestContext = new PrimeRequestContextMock(facesContext, applicationContext);

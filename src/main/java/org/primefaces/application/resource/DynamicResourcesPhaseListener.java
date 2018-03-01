@@ -54,7 +54,7 @@ public class DynamicResourcesPhaseListener implements PhaseListener {
         }
 
         // JSF 2.3 contains a own dynamic resource handling
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isAtLeastJSF23()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf23()) {
             return;
         }
 

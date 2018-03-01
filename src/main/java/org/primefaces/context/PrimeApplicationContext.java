@@ -27,6 +27,7 @@ import org.primefaces.cache.CacheProvider;
 import org.primefaces.cache.DefaultCacheProvider;
 
 import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.util.Constants;
 
 /**
@@ -41,6 +42,7 @@ public class PrimeApplicationContext {
 
     public static final String INSTANCE_KEY = PrimeApplicationContext.class.getName();
 
+    private PrimeEnvironment environment;
     private PrimeConfiguration config;
     private ValidatorFactory validatorFactory;
     private Validator validator;
@@ -49,13 +51,10 @@ public class PrimeApplicationContext {
     private Map<Class<?>, Map<String, Object>> constantsCacheMap;
 
     public PrimeApplicationContext(FacesContext context) {
-        this(context, new PrimeConfiguration(context));
-    }
-
-    public PrimeApplicationContext(FacesContext context, PrimeConfiguration config) {
-        this.config = config;
-
-        if (this.config.isBeanValidationAvailable()) {
+        this.environment = new PrimeEnvironment();
+        this.config = new PrimeConfiguration(context, environment);
+        
+        if (this.config.isBeanValidationEnabled()) {
             this.validatorFactory = Validation.buildDefaultValidatorFactory();
             this.validator = validatorFactory.getValidator();
         }
@@ -90,6 +89,10 @@ public class PrimeApplicationContext {
         if (facesContext.getExternalContext().getContext() instanceof ServletContext) {
             ((ServletContext) facesContext.getExternalContext().getContext()).setAttribute(INSTANCE_KEY, context);
         }
+    }
+    
+    public PrimeEnvironment getEnvironment() {
+        return environment;
     }
     
     public PrimeConfiguration getConfig() {
@@ -148,7 +151,7 @@ public class PrimeApplicationContext {
     }
 
     public void release() {
-        if (validatorFactory != null && config != null && config.isAtLeastBV11()) {
+        if (validatorFactory != null && environment != null && environment.isAtLeastBv11()) {
             validatorFactory.close();
         }
     }

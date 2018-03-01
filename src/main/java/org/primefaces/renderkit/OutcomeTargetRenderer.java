@@ -42,7 +42,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             outcome = context.getViewRoot().getViewId();
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isAtLeastJSF22()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
             if (outcomeTarget instanceof UIComponent) {
                 String toFlowDocumentId = (String) ((UIComponent) outcomeTarget).getAttributes().get(ActionListener.TO_FLOW_DOCUMENT_ID_ATTR_NAME);
 
@@ -117,7 +117,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             }
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isAtLeastJSF22()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
             String toFlowDocumentId = navCase.getToFlowDocumentId();
             if (toFlowDocumentId != null) {
                 if (params == null) {
@@ -186,7 +186,9 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             Object clientWindow = null;
 
             try {
-                if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isAtLeastJSF22() && outcomeTarget.isDisableClientWindow()) {
+                if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()
+                        && outcomeTarget.isDisableClientWindow()) {
+
                     clientWindow = context.getExternalContext().getClientWindow();
 
                     if (clientWindow != null) {

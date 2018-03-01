@@ -59,7 +59,7 @@ public class ValueExpressionAnalyzer {
 
         // Unwrapping is required e.g. for p:graphicImage to support nested expressions in composites
         // The unwrapping requires EL 2.2
-        if (PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().isAtLeastEL22()) {
+        if (PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment().isAtLeastEl22()) {
             ValueReference reference = toValueReference(expression, elContext);
 
             // check for a CC expression

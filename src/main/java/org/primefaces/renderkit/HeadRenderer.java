@@ -28,7 +28,6 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
-import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 
 /**
@@ -48,9 +47,9 @@ public class HeadRenderer extends Renderer {
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        PrimeConfiguration cc = PrimeApplicationContext.getCurrentInstance(context).getConfig();
+        PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
         ProjectStage projectStage = context.getApplication().getProjectStage();
-        boolean csvEnabled = cc.isClientSideValidationEnabled();
+        boolean csvEnabled = applicationContext.getConfig().isClientSideValidationEnabled();
 
         writer.startElement("head", component);
         writer.writeAttribute("id", component.getClientId(context), "id");
@@ -63,7 +62,7 @@ public class HeadRenderer extends Renderer {
 
         //Theme
         String theme;
-        String themeParamValue = cc.getTheme();
+        String themeParamValue = applicationContext.getConfig().getTheme();
 
         if (themeParamValue != null) {
             ELContext elContext = context.getELContext();
@@ -80,7 +79,7 @@ public class HeadRenderer extends Renderer {
             encodeCSS(context, "primefaces-" + theme, "theme.css");
         }
 
-        if (cc.isFontAwesomeEnabled()) {
+        if (applicationContext.getConfig().isFontAwesomeEnabled()) {
             encodeCSS(context, "primefaces", "fa/font-awesome.css");
         }
 
@@ -97,7 +96,7 @@ public class HeadRenderer extends Renderer {
         }
 
         if (csvEnabled) {
-            encodeValidationResources(context, cc.isBeanValidationAvailable());
+            encodeValidationResources(context, applicationContext.getConfig().isBeanValidationEnabled());
         }
 
         writer.startElement("script", null);
@@ -107,15 +106,15 @@ public class HeadRenderer extends Renderer {
         writer.write("PrimeFaces.settings.locale='" + context.getViewRoot().getLocale() + "';");
 
         if (csvEnabled) {
-            writer.write("PrimeFaces.settings.validateEmptyFields=" + cc.isValidateEmptyFields() + ";");
-            writer.write("PrimeFaces.settings.considerEmptyStringNull=" + cc.isInterpretEmptyStringAsNull() + ";");
+            writer.write("PrimeFaces.settings.validateEmptyFields=" + applicationContext.getConfig().isValidateEmptyFields() + ";");
+            writer.write("PrimeFaces.settings.considerEmptyStringNull=" + applicationContext.getConfig().isInterpretEmptyStringAsNull() + ";");
         }
 
-        if (cc.isLegacyWidgetNamespace()) {
+        if (applicationContext.getConfig().isLegacyWidgetNamespace()) {
             writer.write("PrimeFaces.settings.legacyWidgetNamespace=true;");
         }
 
-        if (cc.isEarlyPostParamEvaluation()) {
+        if (applicationContext.getConfig().isEarlyPostParamEvaluation()) {
             writer.write("PrimeFaces.settings.earlyPostParamEvaluation=true;");
         }
 

@@ -26,7 +26,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
     private boolean partialSubmitEnabled = false;
     private boolean resetValuesEnabled = false;
     private boolean interpretEmptyStringAsNull = false;
-    private String  secretKey = null;
     private String  theme = null;
     private boolean fontAwesomeEnabled = false;
     private boolean clientSideValidationEnabled = false;
@@ -38,16 +37,7 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
     private boolean earlyPostParamEvaluation = false;
     private boolean moveScriptsToBottom = false;
 
-    // internal config
-    private boolean beanValidationAvailable = false;
     private boolean stringConverterAvailable = false;
-    private boolean el22Available = false;
-    private boolean jsf22 = false;
-    private boolean jsf21 = false;
-    private boolean bv11 = false;
-
-    // build properties
-    private String buildVersion = null;
 
     // web.xml
     private Map<String, String> errorPages = null;
@@ -90,15 +80,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
 
     public void setInterpretEmptyStringAsNull(boolean interpretEmptyStringAsNull) {
         this.interpretEmptyStringAsNull = interpretEmptyStringAsNull;
-    }
-
-    @Override
-    public String getSecretKey() {
-        return secretKey;
-    }
-
-    public void setSecretKey(String secretKey) {
-        this.secretKey = secretKey;
     }
 
     @Override
@@ -182,62 +163,12 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
     }
 
     @Override
-    public boolean isBeanValidationAvailable() {
-        return beanValidationAvailable;
-    }
-
-    public void setBeanValidationAvailable(boolean beanValidationAvailable) {
-        this.beanValidationAvailable = beanValidationAvailable;
-    }
-
-    @Override
     public boolean isStringConverterAvailable() {
         return stringConverterAvailable;
     }
 
     public void setStringConverterAvailable(boolean stringConverterAvailable) {
         this.stringConverterAvailable = stringConverterAvailable;
-    }
-
-    public boolean isEl22Available() {
-        return el22Available;
-    }
-
-    public void setEl22Available(boolean el22Available) {
-        this.el22Available = el22Available;
-    }
-
-    public boolean isJsf22() {
-        return jsf22;
-    }
-
-    public void setJsf22(boolean jsf22) {
-        this.jsf22 = jsf22;
-    }
-
-    public boolean isJsf21() {
-        return jsf21;
-    }
-
-    public void setJsf21(boolean jsf21) {
-        this.jsf21 = jsf21;
-    }
-
-    public boolean isBv11() {
-        return bv11;
-    }
-
-    public void setBv11(boolean bv11) {
-        this.bv11 = bv11;
-    }
-
-    @Override
-    public String getBuildVersion() {
-        return buildVersion;
-    }
-
-    public void setBuildVersion(String buildVersion) {
-        this.buildVersion = buildVersion;
     }
 
     @Override
@@ -247,11 +178,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
 
     public void setErrorPages(Map<String, String> errorPages) {
         this.errorPages = errorPages;
-    }
-
-    @Override
-    public boolean isAtLeastEL22() {
-        return el22Available;
     }
 
     @Override

@@ -293,7 +293,7 @@ public class ComponentUtils {
     }
 
     public static boolean isSkipIteration(VisitContext visitContext, FacesContext context) {
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isAtLeastJSF21()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf21()) {
             return visitContext.getHints().contains(VisitHint.SKIP_ITERATION);
         }
         else {

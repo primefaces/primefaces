@@ -204,7 +204,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
     protected void addAttachedObjectHandlerToMojarra(UIComponent component) {
 
         String key = MOJARRA_ATTACHED_OBJECT_HANDLERS_KEY;
-        if (PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConfig().isAtLeastJSF22()) {
+        if (PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment().isAtLeastJsf22()) {
             key = MOJARRA_22_ATTACHED_OBJECT_HANDLERS_KEY;
         }
 

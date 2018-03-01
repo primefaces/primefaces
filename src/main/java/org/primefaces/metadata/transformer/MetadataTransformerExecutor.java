@@ -60,7 +60,7 @@ public class MetadataTransformerExecutor implements SystemEventListener {
 
             FacesContext context = FacesContext.getCurrentInstance();
 
-            if (applicationContext.getConfig().isBeanValidationAvailable()) {
+            if (applicationContext.getConfig().isBeanValidationEnabled()) {
                 BV_INPUT_METADATA_TRANSFORMER.transform(context, applicationContext, component);
             }
 

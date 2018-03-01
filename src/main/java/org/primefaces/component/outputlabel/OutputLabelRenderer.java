@@ -32,7 +32,6 @@ import javax.faces.context.ResponseWriter;
 import javax.validation.constraints.NotNull;
 import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.component.api.InputHolder;
-import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.expression.SearchExpressionFacade;
@@ -112,8 +111,8 @@ public class OutputLabelRenderer extends CoreRenderer {
 
                             // fallback if required=false
                             if (!state.isRequired()) {
-                                PrimeConfiguration config = PrimeApplicationContext.getCurrentInstance(context).getConfig();
-                                if (config.isBeanValidationAvailable() && isBeanValidationDefined(input, context)) {
+                                PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
+                                if (applicationContext.getConfig().isBeanValidationEnabled() && isBeanValidationDefined(input, context)) {
                                     state.setRequired(true);
                                 }
                             }

@@ -24,9 +24,5 @@ public class PrimeApplicationContextMock extends PrimeApplicationContext {
     public PrimeApplicationContextMock(FacesContext context) {
         super(context);
     }
-    
-    public PrimeApplicationContextMock(FacesContext context, PrimeConfiguration config) {
-        super(context, config);
-    }
 
 }

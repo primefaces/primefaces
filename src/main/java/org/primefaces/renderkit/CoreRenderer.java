@@ -120,7 +120,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected void renderDynamicPassThruAttributes(FacesContext context, UIComponent component) throws IOException {
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isAtLeastJSF22()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
             Jsf22Helper.renderPassThroughAttributes(context, component);
         }
     }
@@ -230,7 +230,7 @@ public abstract class CoreRenderer extends Renderer {
         }
 
         //dynamic attributes
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isAtLeastJSF22()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
             Jsf22Helper.renderPassThroughAttributes(context, component);
         }
     }
@@ -696,7 +696,7 @@ public abstract class CoreRenderer extends Renderer {
 
         //bean validation
         PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
-        if (applicationContext.getConfig().isBeanValidationAvailable()) {
+        if (applicationContext.getConfig().isBeanValidationEnabled()) {
             BeanValidationMetadata beanValidationMetadata = BeanValidationMetadataMapper.resolveValidationMetadata(context, comp, applicationContext);
             if (beanValidationMetadata != null) {
                 if (beanValidationMetadata.getAttributes() != null) {
