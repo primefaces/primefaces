@@ -164,20 +164,12 @@
             <artifactId>mockito-core</artifactId>
             <version>2.15.0</version>
             <scope>test</scope>
-        </dependency>        
+        </dependency>
         <dependency>
             <groupId>de.odysseus.juel</groupId>
             <artifactId>juel-impl</artifactId>
             <version>2.2.7</version>
             <scope>test</scope>
-        </dependency>
-
-        <!-- Atmosphere -->
-        <dependency>
-            <groupId>org.atmosphere</groupId>
-            <artifactId>atmosphere-runtime</artifactId>
-            <version>2.4.6</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -634,15 +626,6 @@
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/0-timeline.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/1-timeline.js</include>
-                            </includes>
-                        </aggregation>
-                        <aggregation>
-                            <insertNewLine>true</insertNewLine>
-                            <removeIncluded>true</removeIncluded>
-                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/socket/socket.js</output>
-                            <includes>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/socket/0-atmosphere.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/socket/1-socket.js</include>
                             </includes>
                         </aggregation>
                         <aggregation>

@@ -44,7 +44,6 @@ public class PrimeConfiguration {
     private boolean resetValuesEnabled = false;
     private boolean interpretEmptyStringAsNull = false;
     private String secretKey = null;
-    private String pushServerURL = null;
     private String theme = null;
     private String mobileTheme = null;
     private boolean fontAwesomeEnabled = false;
@@ -124,8 +123,6 @@ public class PrimeConfiguration {
 
         value = externalContext.getInitParameter(Constants.ContextParams.UPLOADER);
         uploader = (value == null) ? "auto" : value;
-
-        pushServerURL = externalContext.getInitParameter(Constants.ContextParams.PUSH_SERVER_URL);
 
         theme = externalContext.getInitParameter(Constants.ContextParams.THEME);
 
@@ -280,10 +277,6 @@ public class PrimeConfiguration {
 
     public String getUploader() {
         return uploader;
-    }
-
-    public String getPushServerURL() {
-        return pushServerURL;
     }
 
     public String getTheme() {

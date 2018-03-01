@@ -27,7 +27,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
     private boolean resetValuesEnabled = false;
     private boolean interpretEmptyStringAsNull = false;
     private String  secretKey = null;
-    private String  pushServerURL = null;
     private String  theme = null;
     private String  mobileTheme = null;
     private boolean fontAwesomeEnabled = false;
@@ -100,15 +99,6 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
 
     public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;
-    }
-
-    @Override
-    public String getPushServerURL() {
-        return pushServerURL;
-    }
-
-    public void setPushServerURL(String pushServerURL) {
-        this.pushServerURL = pushServerURL;
     }
 
     @Override
