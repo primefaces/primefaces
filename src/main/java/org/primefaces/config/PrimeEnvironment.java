@@ -18,6 +18,7 @@ package org.primefaces.config;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.validation.Validation;
@@ -51,6 +52,11 @@ public class PrimeEnvironment {
         beanValidationAvailable = checkIfBeanValidationIsAvailable();
         
         buildVersion = resolveBuildVersion();
+        // This should only happen if PF + the webapp is openend and started in the same netbeans instance
+        // Fallback to a UID to void a empty version in the resourceUrls
+        if (buildVersion == null || buildVersion.trim().isEmpty()) {
+            buildVersion = UUID.randomUUID().toString().replace("-", "").substring(0, 10);
+        }
     }
     
     protected boolean checkIfBeanValidationIsAvailable() {
