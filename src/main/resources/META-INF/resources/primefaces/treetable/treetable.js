@@ -106,6 +106,19 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         });
     },
+
+    /**
+     * Clears table filters
+     */
+    clearFilters: function() {
+        var columnFilters = this.thead.find('> tr > th.ui-filter-column > .ui-column-filter');
+
+        if (columnFilters.length !== 0) {
+            columnFilters.val('');
+            $(this.jqId + '\\:globalFilter').val('');
+            this.filter();
+        }
+    },
     
     bindTextFilter: function(filter) {
         if(this.cfg.filterEvent === 'enter')
