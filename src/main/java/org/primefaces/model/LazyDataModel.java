@@ -16,7 +16,10 @@
 package org.primefaces.model;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -41,6 +44,7 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         super();
     }
 
+    @Override
     public boolean isRowAvailable() {
         if (data == null) {
             return false;
@@ -49,18 +53,22 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         return rowIndex >= 0 && rowIndex < data.size();
     }
 
+    @Override
     public int getRowCount() {
         return rowCount;
     }
 
+    @Override
     public T getRowData() {
         return data.get(rowIndex);
     }
 
+    @Override
     public int getRowIndex() {
         return this.rowIndex;
     }
 
+    @Override
     public void setRowIndex(int rowIndex) {
         int oldIndex = this.rowIndex;
 
@@ -89,10 +97,12 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         }
     }
 
+    @Override
     public List<T> getWrappedData() {
         return data;
     }
 
+    @Override
     public void setWrappedData(Object list) {
         this.data = (List) list;
     }
@@ -117,11 +127,13 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         throw new UnsupportedOperationException("Lazy loading is not implemented.");
     }
 
+    @Override
     public T getRowData(String rowKey) {
         throw new UnsupportedOperationException(
                 getMessage("getRowData(String rowKey) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
     }
 
+    @Override
     public Object getRowKey(T object) {
         throw new UnsupportedOperationException(
                 getMessage("getRowKey(T object) must be implemented by %s when basic rowKey algorithm is not used [component=%s,view=%s]."));
