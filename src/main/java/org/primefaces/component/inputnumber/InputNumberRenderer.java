@@ -31,7 +31,6 @@ import javax.faces.convert.ConverterException;
 
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.context.ApplicationContext;
-import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -226,7 +225,7 @@ public class InputNumberRenderer extends InputRenderer {
 
     protected void encodeScript(FacesContext context, InputNumber inputNumber, Object value, String valueToRender)
             throws IOException {
-        WidgetBuilder wb = RequestContext.getCurrentInstance(context).getWidgetBuilder();
+        WidgetBuilder wb = getWidgetBuilder(context);
         wb.init(InputNumber.class.getSimpleName(), inputNumber.resolveWidgetVar(), inputNumber.getClientId());
         wb.attr("disabled", inputNumber.isDisabled())
                 .attr("valueToRender", formatForPlugin(valueToRender, inputNumber, value));

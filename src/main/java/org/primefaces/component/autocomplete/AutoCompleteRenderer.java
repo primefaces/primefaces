@@ -32,7 +32,6 @@ import javax.faces.event.PhaseId;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.context.ApplicationContext;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
@@ -307,7 +306,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.endElement("option");
         }
         
-        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (ApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, ac);
         }
 

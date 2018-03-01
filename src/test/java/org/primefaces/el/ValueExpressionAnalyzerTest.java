@@ -41,6 +41,7 @@ public class ValueExpressionAnalyzerTest
         config.setEl22Available(true);
         
         ApplicationContext applicationContext = new ApplicationContextMock(facesContext, config);
+        ApplicationContext.setCurrentInstance(applicationContext, facesContext);
         
         RequestContext requestContext = new RequestContextMock(facesContext, applicationContext);
         RequestContext.setCurrentInstance(requestContext, facesContext);

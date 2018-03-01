@@ -34,7 +34,6 @@ import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.ApplicationContext;
-import org.primefaces.context.RequestContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
@@ -113,7 +112,7 @@ public class OutputLabelRenderer extends CoreRenderer {
 
                             // fallback if required=false
                             if (!state.isRequired()) {
-                                PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
+                                PrimeConfiguration config = ApplicationContext.getCurrentInstance(context).getConfig();
                                 if (config.isBeanValidationAvailable() && isBeanValidationDefined(input, context)) {
                                     state.setRequired(true);
                                 }
