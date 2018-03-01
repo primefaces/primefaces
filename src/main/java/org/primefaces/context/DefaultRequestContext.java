@@ -17,7 +17,6 @@ package org.primefaces.context;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,24 +25,12 @@ import java.util.logging.Logger;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
-import javax.faces.application.FacesMessage;
-import javax.faces.application.ProjectStage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import org.primefaces.component.datatable.TableState;
-import org.primefaces.expression.ComponentNotFoundException;
-
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.CSVBuilder;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.util.StringEncrypter;
 import org.primefaces.util.WidgetBuilder;
-import org.primefaces.visit.ResetInputVisitCallback;
 
 public class DefaultRequestContext extends RequestContext {
 
@@ -56,7 +43,6 @@ public class DefaultRequestContext extends RequestContext {
     private AjaxRequestBuilder ajaxRequestBuilder;
     private CSVBuilder csvBuilder;
     private FacesContext context;
-    private StringEncrypter encrypter;
     private ApplicationContext applicationContext;
     private Boolean ignoreAutoUpdate;
     private Boolean rtl;
@@ -66,36 +52,31 @@ public class DefaultRequestContext extends RequestContext {
     }
 
     @Override
-    public boolean isAjaxRequest() {
-        return context.getPartialViewContext().isAjaxRequest();
-    }
-
-    @Override
-    public void addCallbackParam(String name, Object value) {
-        getCallbackParams().put(name, value);
-    }
-
-    @Override
-    public void execute(String script) {
-        getScriptsToExecute().add(script);
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
     public Map<String, Object> getCallbackParams() {
-        if (getAttributes().get(CALLBACK_PARAMS_KEY) == null) {
-            getAttributes().put(CALLBACK_PARAMS_KEY, new HashMap<String, Object>());
+        Map<String, Object> callbackParams =
+            (Map<String, Object>) context.getAttributes().get(CALLBACK_PARAMS_KEY);
+        
+        if (callbackParams == null) {
+            callbackParams = new HashMap<String, Object>();
+            context.getAttributes().put(CALLBACK_PARAMS_KEY, callbackParams);
         }
-        return (Map<String, Object>) getAttributes().get(CALLBACK_PARAMS_KEY);
+        
+        return callbackParams;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<String> getScriptsToExecute() {
-        if (getAttributes().get(EXECUTE_SCRIPT_KEY) == null) {
-            getAttributes().put(EXECUTE_SCRIPT_KEY, new ArrayList<String>());
+        List<String> scriptsToExecute =
+            (List<String>) context.getAttributes().get(EXECUTE_SCRIPT_KEY);
+        
+        if (scriptsToExecute == null) {
+            scriptsToExecute = new ArrayList<String>();
+            context.getAttributes().put(EXECUTE_SCRIPT_KEY, scriptsToExecute);
         }
-        return (List<String>) getAttributes().get(EXECUTE_SCRIPT_KEY);
+        
+        return scriptsToExecute;
     }
 
     @Override
@@ -126,140 +107,11 @@ public class DefaultRequestContext extends RequestContext {
     }
 
     @Override
-    public void scrollTo(String clientId) {
-        this.execute("PrimeFaces.scrollTo('" + clientId + "');");
-    }
-
-    @Override
-    public void update(String clientId) {
-        // call SEF to validate if a component with the clientId exists
-        if (context.isProjectStage(ProjectStage.Development)) {
-            try {
-                SearchExpressionFacade.resolveClientId(context, context.getViewRoot(), clientId);
-            }
-            catch (ComponentNotFoundException e) {
-                LOG.severe(e.getMessage());
-            }
-        }
-
-        context.getPartialViewContext().getRenderIds().add(clientId);
-    }
-
-    @Override
-    public void update(Collection<String> clientIds) {
-
-        // call SEF to validate if a component with the clientId exists
-        if (context.isProjectStage(ProjectStage.Development)) {
-            if (clientIds != null) {
-                for (String clientId : clientIds) {
-                    try {
-                        SearchExpressionFacade.resolveClientId(context, context.getViewRoot(), clientId);
-                    }
-                    catch (ComponentNotFoundException e) {
-                        LOG.severe(e.getMessage());
-                    }
-                }
-            }
-        }
-
-        context.getPartialViewContext().getRenderIds().addAll(clientIds);
-    }
-
-    @Override
-    public void reset(Collection<String> expressions) {
-        VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
-
-        for (String expression : expressions) {
-            reset(visitContext, expression);
-        }
-    }
-    
-    @Override
-    public void reset(String... expressions) {
-        if (expressions == null) {
-            return;
-        }
-
-        VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
-
-        for (String expression : expressions) {
-            reset(visitContext, expression);
-        }
-    }
-
-    @Override
-    public void reset(String expressions) {
-        VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
-
-        reset(visitContext, expressions);
-    }
-
-    private void reset(VisitContext visitContext, String expressions) {
-        UIViewRoot root = context.getViewRoot();
-
-        List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, root, expressions);
-        for (UIComponent component : components) {
-            component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
-        }
-    }
-
-    @Override
-    public void openDialog(String outcome) {
-        context.getAttributes().put(Constants.DIALOG_FRAMEWORK.OUTCOME, outcome);
-    }
-
-    @Override
-    public void openDialog(String outcome, Map<String, Object> options, Map<String, List<String>> params) {
-        context.getAttributes().put(Constants.DIALOG_FRAMEWORK.OUTCOME, outcome);
-
-        if (options != null) {
-            context.getAttributes().put(Constants.DIALOG_FRAMEWORK.OPTIONS, options);
-        }
-
-        if (params != null) {
-            context.getAttributes().put(Constants.DIALOG_FRAMEWORK.PARAMS, params);
-        }
-    }
-
-    @Override
-    public void closeDialog(Object data) {
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String pfdlgcid = params.get(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM);
-
-        if (data != null) {
-            Map<String, Object> session = context.getExternalContext().getSessionMap();
-            session.put(pfdlgcid, data);
-        }
-
-        this.execute("PrimeFaces.closeDialog({pfdlgcid:'" + pfdlgcid + "'});");
-    }
-
-    @Override
-    public void showMessageInDialog(FacesMessage message) {
-
-        String summary = ComponentUtils.escapeText(message.getSummary());
-        summary = ComponentUtils.replaceNewLineWithHtml(summary);
-
-        String detail = ComponentUtils.escapeText(message.getDetail());
-        detail = ComponentUtils.replaceNewLineWithHtml(detail);
-
-        this.execute("PrimeFaces.showMessageInDialog({severity:\"" + message.getSeverity()
-                + "\",summary:\"" + summary
-                + "\",detail:\"" + detail + "\"});");
-    }
-
-    @Override
     public void release() {
         widgetBuilder = null;
         ajaxRequestBuilder = null;
         context = null;
         applicationContext = null;
-        encrypter = null;
-    }
-
-    @Override
-    public Map<Object, Object> getAttributes() {
-        return context.getAttributes();
     }
 
     @Override
@@ -273,17 +125,6 @@ public class DefaultRequestContext extends RequestContext {
         }
 
         return applicationContext;
-    }
-
-    @Override
-    public StringEncrypter getEncrypter() {
-        // lazy init, it's not required for all pages
-        if (encrypter == null) {
-            // we can't store it in the ApplicationMap, as Cipher isn't thread safe
-            encrypter = new StringEncrypter(getApplicationContext().getConfig().getSecretKey());
-        }
-
-        return encrypter;
     }
 
     @Override
@@ -332,19 +173,5 @@ public class DefaultRequestContext extends RequestContext {
         }
 
         return rtl;
-    }
-
-    @Override
-    public void clearTableStates() {
-        this.context.getExternalContext().getSessionMap().remove(Constants.TABLE_STATE);
-    }
-
-    @Override
-    public void clearTableState(String key) {
-        Map<String, Object> sessionMap = this.context.getExternalContext().getSessionMap();
-        Map<String, TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);
-        if (dtState != null) {
-            dtState.remove(key);
-        }
     }
 }

@@ -15,16 +15,12 @@
  */
 package org.primefaces.context;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import org.primefaces.PrimeFaces;
 
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.CSVBuilder;
-import org.primefaces.util.StringEncrypter;
 import org.primefaces.util.WidgetBuilder;
 
 /**
@@ -64,19 +60,6 @@ public abstract class RequestContext {
     }
 
     /**
-     * @return
-     * @deprecated Use {@link PrimeFaces#isAjaxRequest()} instead
-     */
-    @Deprecated
-    public abstract boolean isAjaxRequest();
-
-    /**
-     * @deprecated Use PrimeFaces.ajax().addCallbackParam instead
-     */
-    @Deprecated
-    public abstract void addCallbackParam(String name, Object value);
-
-    /**
      * @return all callback parameters added in the current request.
      */
     public abstract Map<String, Object> getCallbackParams();
@@ -85,55 +68,6 @@ public abstract class RequestContext {
      * @return all scripts added in the current request.
      */
     public abstract List<String> getScriptsToExecute();
-
-    /**
-     * Use {@link PrimeFaces#executeScript(java.lang.String)}
-     * 
-     * @param script
-     * @deprecated  Use {@link PrimeFaces#executeScript(java.lang.String)}
-     */
-    @Deprecated
-    public abstract void execute(String script);
-
-    /**
-     * @param clientId
-     * @deprecated Use {@link PrimeFaces#scrollTo(java.lang.String)} instead
-     */
-    @Deprecated
-    public abstract void scrollTo(String clientId);
-
-    /**
-     * @deprecated Use PrimeFaces.ajax().update() instead
-     */
-    @Deprecated
-    public abstract void update(String name);
-
-    /**
-     * @deprecated Use PrimeFaces.ajax().update() instead
-     */
-    @Deprecated
-    public abstract void update(Collection<String> collection);
-
-    /**
-     * @param expressions
-     * @deprecated Use {@link PrimeFaces#resetInputs(java.lang.String...)} instead
-     */
-    @Deprecated
-    public abstract void reset(String expressions);
-
-    /**
-     * @param expressions
-     * @deprecated Use {@link PrimeFaces#resetInputs(java.lang.String...)} instead
-     */
-    @Deprecated
-    public abstract void reset(Collection<String> expressions);
-
-    /**
-     * @param expressions
-     * @deprecated Use {@link PrimeFaces#resetInputs(java.lang.String...)} instead
-     */
-    @Deprecated
-    public abstract void reset(String... expressions);
 
     /**
      * @return Shared WidgetBuilder instance of the current request
@@ -151,44 +85,9 @@ public abstract class RequestContext {
     public abstract CSVBuilder getCSVBuilder();
 
     /**
-     * Use FacesContext#getAttributes()
-     */
-    @Deprecated
-    public abstract Map<Object, Object> getAttributes();
-
-    /**
-     * @deprecated Use PrimeFaces.dialog().openDynamic() instead
-     */
-    @Deprecated
-    public abstract void openDialog(String outcome);
-
-    /**
-     * @deprecated Use PrimeFaces.dialog().openDynamic() instead
-     */
-    @Deprecated
-    public abstract void openDialog(String outcome, Map<String, Object> options, Map<String, List<String>> params);
-
-    /**
-     * @deprecated Use PrimeFaces.dialog().closeDynamic instead
-     */
-    @Deprecated
-    public abstract void closeDialog(Object data);
-
-    /**
-     * @deprecated Use PrimeFaces.dialog().showMessageDynamic instead
-     */
-    @Deprecated
-    public abstract void showMessageInDialog(FacesMessage message);
-
-    /**
      * @return ApplicationContext instance.
      */
     public abstract ApplicationContext getApplicationContext();
-
-    /**
-     * @return StringEncrypter used to encode and decode a string.
-     */
-    public abstract StringEncrypter getEncrypter();
 
     /**
      * Clear resources.
@@ -207,16 +106,4 @@ public abstract class RequestContext {
 
     public abstract boolean isRTL();
 
-    /**
-     * @deprecated  Use {@link PrimeFaces#clearTableState()} instead
-     */
-    @Deprecated
-    public abstract void clearTableStates();
-
-    /**
-     * @param clientId
-     * @deprecated Use {@link PrimeFaces#clearTableState(java.lang.String)} instead
-     */
-    @Deprecated
-    public abstract void clearTableState(String clientId);
 }

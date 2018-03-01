@@ -27,8 +27,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UITree;
-import org.primefaces.context.RequestContext;
 
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.filter.FilterConstraint;
@@ -120,7 +120,7 @@ public class TreeRenderer extends CoreRenderer {
                 }
             }
 
-            RequestContext.getCurrentInstance(context).addCallbackParam("descendantRowKeys", sb.toString());
+            PrimeFaces.current().ajax().addCallbackParam("descendantRowKeys", sb.toString());
             sb.setLength(0);
             descendantRowKeys = null;
         }

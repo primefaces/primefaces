@@ -90,7 +90,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         if (requestContext != null) {
             try {
                 if (context.isValidationFailed()) {
-                    requestContext.addCallbackParam("validationFailed", true);
+                    requestContext.getCallbackParams().put("validationFailed", true);
                 }
 
                 encodeCallbackParams(requestContext.getCallbackParams());
