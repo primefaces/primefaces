@@ -178,7 +178,7 @@ public class TabViewRenderer extends CoreRenderer {
 
         if (var == null) {
             int j = 0;
-            for (int i = 0; i < tabView.getChildren().size(); i++) {
+            for (int i = 0; i < tabView.getChildCount(); i++) {
                 UIComponent child = tabView.getChildren().get(i);
                 if (child.isRendered() && child instanceof Tab) {
                     encodeTabHeader(context, tabView, (Tab) child, j, (j == activeIndex));
@@ -286,7 +286,7 @@ public class TabViewRenderer extends CoreRenderer {
 
         if (var == null) {
             int j = 0;
-            for (int i = 0; i < tabView.getChildren().size(); i++) {
+            for (int i = 0; i < tabView.getChildCount(); i++) {
                 UIComponent child = tabView.getChildren().get(i);
                 if (child.isRendered() && child instanceof Tab) {
                     encodeTabContent(context, (Tab) child, j, (j == activeIndex), dynamic);
