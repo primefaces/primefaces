@@ -516,7 +516,8 @@ public class AutoCompleteRenderer extends InputRenderer {
         boolean hasHeader = false;
         boolean hasGroupByTooltip = (ac.getValueExpression(AutoComplete.PropertyKeys.groupByTooltip.toString()) != null);
 
-        for (Column column : ac.getColums()) {
+        for (int i = 0; i < ac.getColums().size(); i++) {
+            Column column = ac.getColums().get(i);
             if (column.isRendered() && (column.getHeaderText() != null || column.getFacet("header") != null)) {
                 hasHeader = true;
                 break;
@@ -528,7 +529,8 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         if (hasHeader) {
             writer.startElement("thead", ac);
-            for (Column column : ac.getColums()) {
+            for (int i = 0; i < ac.getColums().size(); i++) {
+                Column column = ac.getColums().get(i);
                 if (!column.isRendered()) {
                     continue;
                 }
@@ -576,7 +578,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                     }
                 }
 
-                for (Column column : ac.getColums()) {
+                for (int i = 0; i < ac.getColums().size(); i++) {
+                    Column column = ac.getColums().get(i);
                     if (column.isRendered()) {
                         writer.startElement("td", null);
                         if (column.getStyle() != null) {
