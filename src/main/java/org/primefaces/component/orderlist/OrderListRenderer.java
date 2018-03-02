@@ -154,8 +154,7 @@ public class OrderListRenderer extends CoreRenderer {
         String var = old.getVar();
         Converter converter = old.getConverter();
 
-        for (Iterator it = model.iterator(); it.hasNext();) {
-            Object item = it.next();
+        for (Object item : model) {
             context.getExternalContext().getRequestMap().put(var, item);
             String value = converter != null ? converter.getAsString(context, old, old.getItemValue()) : old.getItemValue().toString();
 

@@ -15,6 +15,7 @@
  */
 package org.primefaces.behavior.ajax;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.faces.component.ActionSource;
 import javax.faces.component.EditableValueHolder;
@@ -61,10 +62,23 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
 
         Collection<ClientBehaviorContext.Parameter> behaviorParameters = behaviorContext.getParameters();
         if (behaviorParameters != null && !behaviorParameters.isEmpty()) {
-            for (ClientBehaviorContext.Parameter behaviorParameter : behaviorParameters) {
-                if (behaviorParameter.getValue() != null && behaviorParameter.getValue() instanceof ClientBehaviorRenderingMode) {
-                    renderingMode = (ClientBehaviorRenderingMode) behaviorParameter.getValue();
-                    break;
+            // perf optimzation
+            if (behaviorParameters instanceof ArrayList) {
+                for (int i = 0; i < behaviorParameters.size(); i++) {
+                    ClientBehaviorContext.Parameter behaviorParameter = 
+                            ((ArrayList<ClientBehaviorContext.Parameter>) behaviorParameters).get(i);
+                    if (behaviorParameter.getValue() != null && behaviorParameter.getValue() instanceof ClientBehaviorRenderingMode) {
+                        renderingMode = (ClientBehaviorRenderingMode) behaviorParameter.getValue();
+                        break;
+                    }
+                }
+            }
+            else {
+                for (ClientBehaviorContext.Parameter behaviorParameter : behaviorParameters) {
+                    if (behaviorParameter.getValue() != null && behaviorParameter.getValue() instanceof ClientBehaviorRenderingMode) {
+                        renderingMode = (ClientBehaviorRenderingMode) behaviorParameter.getValue();
+                        break;
+                    }
                 }
             }
         }
