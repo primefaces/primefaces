@@ -1194,6 +1194,7 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         newNode.setSelected(node.isSelected());
+        newNode.setExpanded(node.isExpanded());
 
         return newNode;
     }
