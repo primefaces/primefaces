@@ -37,9 +37,10 @@ public class HeaderRowRenderer extends CoreRenderer {
         writer.writeAttribute("class", DataTable.HEADER_ROW_CLASS, null);
 
         boolean isFirstColumn = true;
-        for (UIComponent kid : row.getChildren()) {
-            if (kid.isRendered() && kid instanceof Column) {
-                Column column = (Column) kid;
+        for (int i = 0; i < row.getChildCount(); i++) {
+            UIComponent child = row.getChildren().get(i);
+            if (child.isRendered() && child instanceof Column) {
+                Column column = (Column) child;
                 String style = column.getStyle();
                 String styleClass = column.getStyleClass();
 

@@ -252,25 +252,25 @@ public class ComponentUtils {
     }
 
     public static Map<String, List<String>> getUIParams(UIComponent component) {
-        List<UIComponent> children = component.getChildren();
         Map<String, List<String>> params = null;
 
-        if (children != null && children.size() > 0) {
-            params = new LinkedHashMap<String, List<String>>();
+        for (int i = 0; i < component.getChildCount(); i++) {
+            UIComponent child = component.getChildren().get(i);
+            if (child.isRendered() && (child instanceof UIParameter)) {
+                UIParameter uiParam = (UIParameter) child;
 
-            for (UIComponent child : children) {
-                if (child.isRendered() && (child instanceof UIParameter)) {
-                    UIParameter uiParam = (UIParameter) child;
-
-                    if (!uiParam.isDisable()) {
-                        List<String> paramValues = params.get(uiParam.getName());
-                        if (paramValues == null) {
-                            paramValues = new ArrayList<String>();
-                            params.put(uiParam.getName(), paramValues);
-                        }
-
-                        paramValues.add(String.valueOf(uiParam.getValue()));
+                if (!uiParam.isDisable()) {
+                    if (params == null) {
+                        params = new LinkedHashMap<String, List<String>>();
                     }
+
+                    List<String> paramValues = params.get(uiParam.getName());
+                    if (paramValues == null) {
+                        paramValues = new ArrayList<String>();
+                        params.put(uiParam.getName(), paramValues);
+                    }
+
+                    paramValues.add(String.valueOf(uiParam.getValue()));
                 }
             }
         }

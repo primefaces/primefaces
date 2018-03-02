@@ -220,7 +220,8 @@ public class AjaxRequestBuilder {
     public AjaxRequestBuilder params(UIComponent component) {
         boolean paramWritten = false;
 
-        for (UIComponent child : component.getChildren()) {
+        for (int i = 0; i < component.getChildCount(); i++) {
+            UIComponent child = component.getChildren().get(i);
             if (child instanceof UIParameter) {
                 UIParameter parameter = (UIParameter) child;
                 Object paramValue = parameter.getValue();

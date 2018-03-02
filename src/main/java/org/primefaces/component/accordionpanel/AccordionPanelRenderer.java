@@ -162,15 +162,16 @@ public class AccordionPanelRenderer extends CoreRenderer {
                 : Arrays.asList(activeIndex.split(","));        
 
         if (var == null) {
-            int i = 0;
+            int j = 0;
 
-            for (UIComponent child : acco.getChildren()) {
+            for (int i = 0; i < acco.getChildCount(); i++) {
+                UIComponent child = acco.getChildren().get(i);
                 if (child.isRendered() && child instanceof Tab) {
-                    boolean active = activeIndexes.indexOf(Integer.toString(i)) != -1;
+                    boolean active = activeIndexes.indexOf(Integer.toString(j)) != -1;
 
                     encodeTab(context, acco, (Tab) child, active, dynamic, rtl);
 
-                    i++;
+                    j++;
                 }
             }
         }

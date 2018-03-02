@@ -42,7 +42,8 @@ public class SelectRenderer extends InputRenderer {
     protected List<SelectItem> getSelectItems(FacesContext context, UIInput component) {
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
 
-        for (UIComponent child : component.getChildren()) {
+        for (int i = 0; i < component.getChildCount(); i++) {
+            UIComponent child = component.getChildren().get(i);
             if (child instanceof UISelectItem) {
                 UISelectItem uiSelectItem = (UISelectItem) child;
                 Object selectItemValue = uiSelectItem.getValue();
@@ -68,8 +69,8 @@ public class SelectRenderer extends InputRenderer {
                         selectItems.add((SelectItem) value);
                     }
                     else if (value.getClass().isArray()) {
-                        for (int i = 0; i < Array.getLength(value); i++) {
-                            Object item = Array.get(value, i);
+                        for (int j = 0; j < Array.getLength(value); j++) {
+                            Object item = Array.get(value, j);
 
                             if (item instanceof SelectItem) {
                                 selectItems.add((SelectItem) item);
@@ -91,8 +92,8 @@ public class SelectRenderer extends InputRenderer {
                     else if (value instanceof List && value instanceof RandomAccess) {
                         List list = (List) value;
 
-                        for (int i = 0; i < list.size(); i++) {
-                            Object item = list.get(i);
+                        for (int j = 0; j < list.size(); j++) {
+                            Object item = list.get(j);
                             if (item instanceof SelectItem) {
                                 selectItems.add((SelectItem) item);
                             }
@@ -263,7 +264,8 @@ public class SelectRenderer extends InputRenderer {
         }
 
         int count = selectItems.size();
-        for (SelectItem selectItem : selectItems) {
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
             if (selectItem instanceof SelectItemGroup) {
                 count += countSelectItems(((SelectItemGroup) selectItem).getSelectItems());
             }

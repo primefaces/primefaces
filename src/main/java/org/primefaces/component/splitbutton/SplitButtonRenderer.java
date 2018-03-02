@@ -223,7 +223,8 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         writer.startElement("ul", null);
         writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
 
-        for (UIComponent child : button.getChildren()) {
+        for (int i = 0; i < button.getChildCount(); i++) {
+            UIComponent child = button.getChildren().get(i);
             if (child.isRendered()) {
                 if (child instanceof UIMenuItem) {
                     UIMenuItem item = (UIMenuItem) child;

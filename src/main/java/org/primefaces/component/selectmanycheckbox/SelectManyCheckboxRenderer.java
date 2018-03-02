@@ -378,7 +378,8 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
         if (columns != 0) {
             int idx = 0, colMod;
-            for (SelectItem selectItem : selectItems) {
+            for (int i = 0; i < selectItems.size(); i++) {
+                SelectItem selectItem = selectItems.get(i);
                 colMod = idx % columns;
                 if (colMod == 0) {
                     writer.startElement("tr", null);
@@ -408,7 +409,8 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         Object submittedValues = getSubmittedValues(checkbox);
 
         int idx = 0;
-        for (SelectItem selectItem : selectItems) {
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
             String itemValueAsString = getOptionAsString(context, checkbox, converter, selectItem.getValue());
             String name = checkbox.getClientId(context);
             String id = name + UINamingContainer.getSeparatorChar(context) + idx;

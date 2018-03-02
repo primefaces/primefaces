@@ -78,9 +78,10 @@ public class DynamicContentSrcBuilder {
                         .append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(resourceKey, "UTF-8"))
                         .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(type.toString());
 
-                for (UIComponent kid : component.getChildren()) {
-                    if (kid instanceof UIParameter) {
-                        UIParameter param = (UIParameter) kid;
+                for (int i = 0; i < component.getChildCount(); i++) {
+                    UIComponent child = component.getChildren().get(i);
+                    if (child instanceof UIParameter) {
+                        UIParameter param = (UIParameter) child;
                         if (!param.isDisable()) {
                             Object paramValue = param.getValue();
 

@@ -16,6 +16,7 @@
 package org.primefaces.renderkit;
 
 import java.io.IOException;
+import java.util.List;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
@@ -91,7 +92,9 @@ public class HeadRenderer extends Renderer {
 
         //Registered Resources
         UIViewRoot viewRoot = context.getViewRoot();
-        for (UIComponent resource : viewRoot.getComponentResources(context, "head")) {
+        List<UIComponent> resources = viewRoot.getComponentResources(context, "head");
+        for (int i = 0; i < resources.size(); i++) {
+            UIComponent resource = resources.get(i);
             resource.encodeAll(context);
         }
 

@@ -449,7 +449,8 @@ public abstract class CoreRenderer extends Renderer {
             params.put(decodeParam, decodeParam);
         }
 
-        for (UIComponent child : component.getChildren()) {
+        for (int i = 0; i < component.getChildCount(); i++) {
+            UIComponent child = component.getChildren().get(i);
             if (child instanceof UIParameter) {
                 UIParameter param = (UIParameter) child;
 
