@@ -75,7 +75,7 @@ public class OutputPanelRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, OutputPanel panel) throws IOException {
         String clientId = panel.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("OutputPanel", panel.resolveWidgetVar(), clientId);
+        wb.init("OutputPanel", panel.resolveWidgetVar(), clientId);
 
         if (panel.isDeferred()) {
             wb.attr("deferred", true)

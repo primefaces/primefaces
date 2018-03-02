@@ -82,7 +82,7 @@ public class TimelineRenderer extends CoreRenderer {
         FastStringWriter fswHtml = new FastStringWriter();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Timeline", timeline.resolveWidgetVar(), clientId);
+        wb.init("Timeline", timeline.resolveWidgetVar(), clientId);
 
         writer.write(",data:[");
 

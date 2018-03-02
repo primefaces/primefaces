@@ -1,5 +1,5 @@
-/**
- * Copyright 2009-2018 PrimeTek.
+/*
+ * Copyright 2009-2016 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.metadata.transformer;
+package org.primefaces.mock.pf;
 
-import java.io.IOException;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 
-public interface MetadataTransformer {
+public class PrimeRequestContextMock extends PrimeRequestContext {
 
-    void transform(FacesContext context, PrimeApplicationContext applicationContext, UIComponent component) throws IOException;
+    private final PrimeApplicationContext applicationContext;
+    
+    public PrimeRequestContextMock(FacesContext context, PrimeApplicationContext applicationContext) {
+        super(context);
+        
+        this.applicationContext = applicationContext;
+    }
+
+	@Override
+	public PrimeApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
 }

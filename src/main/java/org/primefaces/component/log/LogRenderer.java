@@ -80,7 +80,7 @@ public class LogRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Log log) throws IOException {
         String clientId = log.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Log", log.resolveWidgetVar(), clientId);
+        wb.init("Log", log.resolveWidgetVar(), clientId);
         wb.finish();
     }
 }

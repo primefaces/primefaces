@@ -31,7 +31,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.event.PhaseId;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
@@ -263,7 +263,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.writeAttribute("aria-required", "true", null);
         }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, ac);
         }
 
@@ -306,7 +306,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.endElement("option");
         }
         
-        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, ac);
         }
 
@@ -674,7 +674,7 @@ public class AutoCompleteRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, AutoComplete ac) throws IOException {
         String clientId = ac.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("AutoComplete", ac.resolveWidgetVar(), clientId);
+        wb.init("AutoComplete", ac.resolveWidgetVar(), clientId);
 
         wb.attr("minLength", ac.getMinQueryLength(), 1)
                 .attr("delay", ac.getQueryDelay())

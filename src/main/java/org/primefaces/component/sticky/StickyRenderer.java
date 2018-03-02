@@ -43,7 +43,7 @@ public class StickyRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Sticky sticky) throws IOException {
         String target = sticky.getTarget();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Sticky", sticky.resolveWidgetVar(), sticky.getClientId(context))
+        wb.init("Sticky", sticky.resolveWidgetVar(), sticky.getClientId(context))
                 .attr("target", SearchExpressionFacade.resolveClientIds(context, sticky, target))
                 .attr("margin", sticky.getMargin(), 0)
                 .finish();

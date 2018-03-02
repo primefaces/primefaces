@@ -69,7 +69,7 @@ public class LightBoxRenderer extends CoreRenderer {
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("LightBox", lb.resolveWidgetVar(), clientId)
+        wb.init("LightBox", lb.resolveWidgetVar(), clientId)
                 .attr("mode", mode)
                 .attr("width", lb.getWidth(), null)
                 .attr("height", lb.getHeight(), null)

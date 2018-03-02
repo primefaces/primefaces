@@ -26,7 +26,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeRequestContext;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CSVBuilder;
@@ -67,7 +67,7 @@ public class CommandLinkRenderer extends CoreRenderer {
             boolean ajax = link.isAjax();
             String styleClass = link.getStyleClass();
             styleClass = styleClass == null ? CommandLink.STYLE_CLASS : CommandLink.STYLE_CLASS + " " + styleClass;
-            RequestContext requestContext = RequestContext.getCurrentInstance(context);
+            PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
             boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled() && link.isValidateClient();
 
             StringBuilder onclick = SharedStringBuilder.get(context, SB_BUILD_ONCLICK);

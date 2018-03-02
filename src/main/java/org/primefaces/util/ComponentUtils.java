@@ -41,7 +41,8 @@ import javax.faces.render.Renderer;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.expression.SearchExpressionUtils;
 
 public class ComponentUtils {
@@ -78,7 +79,7 @@ public class ComponentUtils {
             if (component instanceof EditableValueHolder) {
                 EditableValueHolder input = (EditableValueHolder) component;
                 Object submittedValue = input.getSubmittedValue();
-                PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
+                PrimeConfiguration config = PrimeApplicationContext.getCurrentInstance(context).getConfig();
 
                 if (config.isInterpretEmptyStringAsNull()
                         && submittedValue == null
@@ -103,7 +104,7 @@ public class ComponentUtils {
                 if (converter == null) {
                     Class valueType = value.getClass();
                     if (valueType == String.class
-                            && !RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isStringConverterAvailable()) {
+                            && !PrimeApplicationContext.getCurrentInstance(context).getConfig().isStringConverterAvailable()) {
                         return (String) value;
                     }
 
@@ -156,7 +157,7 @@ public class ComponentUtils {
         }
 
         if (converterType == String.class
-                && !RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isStringConverterAvailable()) {
+                && !PrimeApplicationContext.getCurrentInstance(context).getConfig().isStringConverterAvailable()) {
             return null;
         }
 
@@ -193,7 +194,7 @@ public class ComponentUtils {
     }
 
     public static boolean isRTL(FacesContext context, RTLAware component) {
-        boolean globalValue = RequestContext.getCurrentInstance(context).isRTL();
+        boolean globalValue = PrimeRequestContext.getCurrentInstance(context).isRTL();
 
         return globalValue || component.isRTL();
     }
@@ -292,7 +293,7 @@ public class ComponentUtils {
     }
 
     public static boolean isSkipIteration(VisitContext visitContext, FacesContext context) {
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF21()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf21()) {
             return visitContext.getHints().contains(VisitHint.SKIP_ITERATION);
         }
         else {

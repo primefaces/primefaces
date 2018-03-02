@@ -71,7 +71,7 @@ public class SignatureRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Signature signature) throws IOException {
         String clientId = signature.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Signature", signature.resolveWidgetVar(), clientId)
+        wb.init("Signature", signature.resolveWidgetVar(), clientId)
                 .attr("background", signature.getBackgroundColor(), null)
                 .attr("color", signature.getColor(), null)
                 .attr("thickness", signature.getThickness(), 2)

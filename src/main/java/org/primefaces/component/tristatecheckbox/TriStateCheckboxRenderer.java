@@ -19,7 +19,6 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.RequestContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -187,8 +186,8 @@ public class TriStateCheckboxRenderer extends InputRenderer {
     }
 
     protected void encodeScript(final FacesContext context, final TriStateCheckbox checkbox) throws IOException {
-        WidgetBuilder wb = RequestContext.getCurrentInstance(context).getWidgetBuilder();
-        wb.initWithDomReady("TriStateCheckbox", checkbox.resolveWidgetVar(), checkbox.getClientId());
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init("TriStateCheckbox", checkbox.resolveWidgetVar(), checkbox.getClientId());
         encodeClientBehaviors(context, checkbox);
         wb.finish();
     }

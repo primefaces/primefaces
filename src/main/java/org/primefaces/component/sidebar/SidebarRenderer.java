@@ -72,7 +72,7 @@ public class SidebarRenderer extends CoreRenderer {
     private void encodeScript(FacesContext context, Sidebar bar) throws IOException {
         String clientId = bar.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Sidebar", bar.resolveWidgetVar(), clientId)
+        wb.init("Sidebar", bar.resolveWidgetVar(), clientId)
                 .attr("visible", bar.isVisible(), false)
                 .attr("blockScroll", bar.isBlockScroll(), false)
                 .attr("baseZIndex", bar.getBaseZIndex(), 0)

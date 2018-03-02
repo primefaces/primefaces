@@ -41,7 +41,7 @@ public class DroppableRenderer extends CoreRenderer {
 
         String clientId = droppable.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Droppable", droppable.resolveWidgetVar(), clientId)
+        wb.init("Droppable", droppable.resolveWidgetVar(), clientId)
                 .attr("target", target.getClientId(context))
                 .attr("disabled", droppable.isDisabled(), false)
                 .attr("hoverClass", droppable.getHoverStyleClass(), null)

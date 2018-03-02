@@ -32,7 +32,7 @@ import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.util.SharedStringBuilder;
 
 /**
@@ -112,7 +112,7 @@ public class ImportConstantsTagHandler extends TagHandler {
     protected Map<String, Object> getConstants(FacesContext facesContext, Class<?> type) {
         boolean cacheEnabled = facesContext.isProjectStage(ProjectStage.Production);
         Map<Class<?>, Map<String, Object>> cache
-                = RequestContext.getCurrentInstance().getApplicationContext().getConstantsCacheMap();
+                = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConstantsCacheMap();
 
         Map<String, Object> constants;
 

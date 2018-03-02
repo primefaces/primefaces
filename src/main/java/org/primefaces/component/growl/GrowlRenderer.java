@@ -23,7 +23,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.UINotificationRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
@@ -42,7 +42,7 @@ public class GrowlRenderer extends UINotificationRenderer {
         writer.startElement("span", growl);
         writer.writeAttribute("id", clientId, "id");
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("class", "ui-growl-pl", null);
             writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
             writer.writeAttribute("data-global", growl.isGlobalOnly(), null);
@@ -55,7 +55,7 @@ public class GrowlRenderer extends UINotificationRenderer {
         writer.endElement("span");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Growl", growl.resolveWidgetVar(), clientId)
+        wb.init("Growl", growl.resolveWidgetVar(), clientId)
             .attr("sticky", growl.isSticky())
             .attr("life", growl.getLife())
             .attr("escape", growl.isEscape())

@@ -27,7 +27,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.render.ClientBehaviorRenderer;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.AjaxRequestBuilder;
 
@@ -75,7 +75,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
             process = "@this";
         }
 
-        AjaxRequestBuilder builder = RequestContext.getCurrentInstance().getAjaxRequestBuilder();
+        AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance().getAjaxRequestBuilder();
 
         String request = builder.init()
                 .source(source)

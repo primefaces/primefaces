@@ -1,6 +1,6 @@
 import org.primefaces.component.column.Column;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.RequestContext;
 import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
@@ -107,7 +107,7 @@ import javax.faces.render.Renderer;
                 setValid(false);
             }
 
-            PrimeConfiguration config = RequestContext.getCurrentInstance(getFacesContext()).getApplicationContext().getConfig();
+            PrimeConfiguration config = PrimeApplicationContext.getCurrentInstance(getFacesContext()).getConfig();
             
             //other validators
             if(isValid() && (!isEmpty(value) || config.isValidateEmptyFields())) {

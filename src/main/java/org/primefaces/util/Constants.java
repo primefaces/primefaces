@@ -24,12 +24,10 @@ public class Constants {
 
         // PF context params
         public static final String THEME = "primefaces.THEME";
-        public static final String MOBILE_THEME = "primefaces.mobile.THEME";
         public static final String FONT_AWESOME = "primefaces.FONT_AWESOME";
         public static final String SUBMIT = "primefaces.SUBMIT";
         public static final String DIRECTION = "primefaces.DIR";
         public static final String RESET_VALUES = "primefaces.RESET_VALUES";
-        public static final String SECRET_KEY = "primefaces.SECRET";
         public static final String PFV_KEY = "primefaces.CLIENT_SIDE_VALIDATION";
         public static final String UPLOADER = "primefaces.UPLOADER";
         public static final String CACHE_PROVIDER = "primefaces.CACHE_PROVIDER";

@@ -23,18 +23,18 @@ import javax.faces.component.html.HtmlInputSecret;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.inputtextarea.InputTextarea;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 
 public abstract class AbstractInputMetadataTransformer implements MetadataTransformer {
 
     @Override
-    public void transform(FacesContext context, RequestContext requestContext, UIComponent component) throws IOException {
+    public void transform(FacesContext context, PrimeApplicationContext applicationContext, UIComponent component) throws IOException {
         if (component instanceof EditableValueHolder && component instanceof UIInput) {
-            transformInput(context, requestContext, (UIInput) component);
+            transformInput(context, applicationContext, (UIInput) component);
         }
     }
 
-    protected abstract void transformInput(FacesContext context, RequestContext requestContext, UIInput component) throws IOException;
+    protected abstract void transformInput(FacesContext context, PrimeApplicationContext applicationContext, UIInput component) throws IOException;
 
     protected void setMaxlength(UIInput input, int maxlength) {
         if (input instanceof HtmlInputText) {

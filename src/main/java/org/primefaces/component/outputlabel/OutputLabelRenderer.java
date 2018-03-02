@@ -32,8 +32,7 @@ import javax.faces.context.ResponseWriter;
 import javax.validation.constraints.NotNull;
 import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.component.api.InputHolder;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
@@ -112,8 +111,8 @@ public class OutputLabelRenderer extends CoreRenderer {
 
                             // fallback if required=false
                             if (!state.isRequired()) {
-                                PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
-                                if (config.isBeanValidationAvailable() && isBeanValidationDefined(input, context)) {
+                                PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
+                                if (applicationContext.getConfig().isBeanValidationEnabled() && isBeanValidationDefined(input, context)) {
                                     state.setRequired(true);
                                 }
                             }
@@ -168,9 +167,10 @@ public class OutputLabelRenderer extends CoreRenderer {
 
     protected boolean isBeanValidationDefined(UIInput input, FacesContext context) {
         try {
-            Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
-                        context, RequestContext.getCurrentInstance(context),
-                        ValueExpressionAnalyzer.getExpression(context.getELContext(), input.getValueExpression("value")));
+            PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
+            Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(context,
+                    applicationContext,
+                    ValueExpressionAnalyzer.getExpression(context.getELContext(), input.getValueExpression("value")));
             if (constraints == null || constraints.isEmpty()) {
                 return false;
             }
@@ -178,7 +178,7 @@ public class OutputLabelRenderer extends CoreRenderer {
                 Class<? extends Annotation> annotationType = constraintDescriptor.getAnnotation().annotationType();
                 // GitHub #14 skip @NotNull check
                 if (annotationType.equals(NotNull.class)) {
-                    return RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isInterpretEmptyStringAsNull();
+                    return applicationContext.getConfig().isInterpretEmptyStringAsNull();
                 }
                 // GitHub #3052 @NotBlank,@NotEmpty Hibernate and BeanValidator 2.0
                 String annotationClassName = annotationType.getSimpleName();
