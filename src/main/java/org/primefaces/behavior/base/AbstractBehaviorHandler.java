@@ -88,14 +88,16 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
             }
 
             boolean supportedEvent = false;
-            for (int i = 0; i < targetList.size(); i++) {
-                AttachedObjectTarget target = targetList.get(i);
-                if (target instanceof BehaviorHolderAttachedObjectTarget) {
-                    BehaviorHolderAttachedObjectTarget behaviorTarget = (BehaviorHolderAttachedObjectTarget) target;
-                    if ((null != eventName && eventName.equals(behaviorTarget.getName()))
-                            || (null == eventName && behaviorTarget.isDefaultEvent())) {
-                        supportedEvent = true;
-                        break;
+            if (targetList != null) {
+                for (int i = 0; i < targetList.size(); i++) {
+                    AttachedObjectTarget target = targetList.get(i);
+                    if (target instanceof BehaviorHolderAttachedObjectTarget) {
+                        BehaviorHolderAttachedObjectTarget behaviorTarget = (BehaviorHolderAttachedObjectTarget) target;
+                        if ((null != eventName && eventName.equals(behaviorTarget.getName()))
+                                || (null == eventName && behaviorTarget.isDefaultEvent())) {
+                            supportedEvent = true;
+                            break;
+                        }
                     }
                 }
             }
