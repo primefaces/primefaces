@@ -2534,7 +2534,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             changed = (inputs.eq(0).val() != cell.data('old-value'));
         }
 
-        if(changed || !valid)
+        if(changed || valid == false)
             $this.doCellEditRequest(cell);
         else
             $this.viewMode(cell);
