@@ -186,13 +186,14 @@ public class AutoCompleteRenderer extends InputRenderer {
         String inputStyleClass = ac.getInputStyleClass();
         inputStyleClass = (inputStyleClass == null) ? styleClass : styleClass + " " + inputStyleClass;
         String labelledBy = ac.getLabelledBy();
+        String autocompleteProp = (ac.getAutocomplete() != null) ? ac.getAutocomplete() : "off";
 
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_input", null);
         writer.writeAttribute("name", clientId + "_input", null);
         writer.writeAttribute("type", ac.getType(), null);
         writer.writeAttribute("class", inputStyleClass, null);
-        writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute("autocomplete", autocompleteProp, null);
 
         if (labelledBy != null) {
             writer.writeAttribute("aria-labelledby", labelledBy, null);
@@ -396,6 +397,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         String listClass = ac.isDropdown() ? AutoComplete.MULTIPLE_CONTAINER_WITH_DROPDOWN_CLASS : AutoComplete.MULTIPLE_CONTAINER_CLASS;
         listClass = disabled ? listClass + " ui-state-disabled" : listClass;
         listClass = ac.isValid() ? listClass : listClass + " ui-state-error";
+        String autocompleteProp = (ac.getAutocomplete() != null) ? ac.getAutocomplete() : "off";
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
@@ -464,7 +466,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
-        writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute("autocomplete", autocompleteProp, null);
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
