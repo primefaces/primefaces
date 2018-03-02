@@ -165,7 +165,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         
         String href = outcomeTarget.getHref();
         if (href != null) {
-            url = prependContextPathIfNecessary(context, href);
+            url = getHrefURL(prependContextPathIfNecessary(context, href), outcomeTarget.getParams());
         }
         else {
             NavigationCase navCase = findNavigationCase(context, outcomeTarget);
