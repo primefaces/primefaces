@@ -975,6 +975,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             if(this.cfg.scrollHeight.indexOf('%') !== -1) {
                 this.adjustScrollHeight();
             }
+
+            if(this.cfg.scrollHeight.indexOf('vh') !== -1)  {
+                this.applyViewPortScrollHeight();
+            }
         
             var marginRight = this.getScrollbarWidth() + 'px';
             this.scrollHeaderBox.css('margin-right', marginRight);
@@ -1080,6 +1084,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         height = (relativeHeight - (scrollersHeight + tableHeaderHeight + tableFooterHeight));
         
         this.scrollBody.height(height);
+    },
+
+    applyViewPortScrollHeight: function() { 
+        this.scrollBody.height(this.cfg.scrollHeight);
     },
             
     adjustScrollWidth: function() {
