@@ -21,8 +21,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import javax.faces.FacesException;
 
+import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
@@ -245,15 +246,24 @@ public class TreeRenderer extends CoreRenderer {
 
     protected void encodeFilteredNodes(FacesContext context, Tree tree, TreeNode node, String filteredValue, Locale filterLocale)
             throws IOException {
-        
         int childCount = node.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            TreeNode childNode = node.getChildren().get(i);
-            FilterConstraint filterConstraint = this.getFilterConstraint(tree);
-            if (filterConstraint.applies(childNode.getData(), filteredValue, filterLocale)) {
-                tree.getFilteredRowKeys().add(childNode.getRowKey());
+        if (childCount > 0) { 
+            String var = tree.getVar();
+            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+            ValueExpression filterByVE = tree.getValueExpression(Tree.PropertyKeys.filterBy.toString());
+            FilterConstraint filterConstraint = getFilterConstraint(tree);
+
+            for (int i = 0; i < childCount; i++) {
+                TreeNode childNode = node.getChildren().get(i);
+                requestMap.put(var, childNode.getData());
+
+                if (filterConstraint.applies(filterByVE.getValue(context.getELContext()), filteredValue, filterLocale)) {
+                    tree.getFilteredRowKeys().add(childNode.getRowKey());
+                }
+                encodeFilteredNodes(context, tree, childNode, filteredValue, filterLocale);
             }
-            encodeFilteredNodes(context, tree, childNode, filteredValue, filterLocale);
+
+            requestMap.remove(var);
         }
     }
 
