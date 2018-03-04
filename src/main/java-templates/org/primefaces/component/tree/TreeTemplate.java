@@ -86,13 +86,15 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
     public static final String FILTER_CONTAINER = "ui-tree-filter-container";
 
     public Map<String,UITreeNode> getTreeNodes() {
-        if(nodes == null) {
-			nodes = new HashMap<String,UITreeNode>();
-			for(UIComponent child : getChildren()) {
-                UITreeNode node = (UITreeNode) child;
-				nodes.put(node.getType(), node);
-			}
-		}
+        if (nodes == null) {
+            nodes = new HashMap<String, UITreeNode>();
+            for (UIComponent child : getChildren()) {
+                if (child instanceof UITreeNode) {
+                    UITreeNode node = (UITreeNode) child;
+                    nodes.put(node.getType(), node);
+                }
+            }
+        }
 
         return nodes;
     }
