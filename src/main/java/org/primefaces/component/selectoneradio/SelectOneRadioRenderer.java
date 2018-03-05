@@ -30,7 +30,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
 import org.primefaces.component.radiobutton.RadioButton;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
@@ -93,7 +93,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         boolean custom = layout != null && layout.equals("custom");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("SelectOneRadio", radio.resolveWidgetVar(), clientId)
+        wb.init("SelectOneRadio", radio.resolveWidgetVar(), clientId)
                 .attr("custom", custom, false).finish();
     }
 
@@ -336,7 +336,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             writer.writeAttribute("disabled", "disabled", null);
         }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, radio);
         }
 

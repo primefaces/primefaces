@@ -226,7 +226,7 @@ public class TreeTableRenderer extends DataRenderer {
         String clientId = tt.getClientId(context);
         String selectionMode = tt.getSelectionMode();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("TreeTable", tt.resolveWidgetVar(), clientId)
+        wb.init("TreeTable", tt.resolveWidgetVar(), clientId)
                 .attr("selectionMode", selectionMode, null)
                 .attr("resizableColumns", tt.isResizableColumns(), false)
                 .attr("liveResize", tt.isLiveResize(), false)
@@ -243,7 +243,10 @@ public class TreeTableRenderer extends DataRenderer {
 
         //Editing
         if (tt.isEditable()) {
-            wb.attr("editable", true).attr("editMode", tt.getEditMode()).attr("cellSeparator", tt.getCellSeparator(), null);
+            wb.attr("editable", true)
+                    .attr("editMode", tt.getEditMode())
+                    .attr("cellEditMode", tt.getCellEditMode(), "eager")
+                    .attr("cellSeparator", tt.getCellSeparator(), null);
         }
 
         //Filtering
@@ -1035,8 +1038,13 @@ public class TreeTableRenderer extends DataRenderer {
             DynamicColumn dynamicColumn = (DynamicColumn) column;
             dynamicColumn.applyStatelessModel();
         }
-
-        column.getCellEditor().getFacet("output").encodeAll(context);
+        
+        if (tt.isCellEditCancelRequest(context) || tt.isCellEditInitRequest(context)) {
+            column.getCellEditor().getFacet("input").encodeAll(context);
+        } 
+        else {
+            column.getCellEditor().getFacet("output").encodeAll(context);
+        }
 
         if (column.isDynamic()) {
             ((DynamicColumn) column).cleanStatelessModel();

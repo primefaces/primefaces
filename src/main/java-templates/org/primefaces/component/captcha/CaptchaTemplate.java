@@ -9,7 +9,6 @@ import java.io.UnsupportedEncodingException;
 import javax.faces.application.FacesMessage;
 import javax.faces.FacesException;
 import org.primefaces.PrimeFaces;
-import org.primefaces.context.RequestContext;
 import org.primefaces.component.captcha.Captcha;
 import org.primefaces.context.PrimeExternalContext;
 import org.primefaces.json.JSONObject;

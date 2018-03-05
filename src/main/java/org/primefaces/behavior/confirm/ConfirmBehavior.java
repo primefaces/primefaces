@@ -32,7 +32,8 @@ public class ConfirmBehavior extends AbstractBehavior {
         message(String.class),
         icon(String.class),
         disabled(Boolean.class),
-        beforeShow(String.class);
+        beforeShow(String.class),
+        escape(Boolean.class);
 
         public final Class<?> expectedType;
 
@@ -53,15 +54,16 @@ public class ConfirmBehavior extends AbstractBehavior {
         String headerText = JSONObject.quote(this.getHeader());
         String messageText = JSONObject.quote(this.getMessage());
         String beforeShow = JSONObject.quote(this.getBeforeShow());
-
+        
         if (component instanceof Confirmable) {
             String sourceProperty = (source == null) ? "source:this" : "source:\"" + source + "\"";
             String script = "PrimeFaces.confirm({" + sourceProperty
-                    + ",header:" + headerText
-                    + ",message:" + messageText
-                    + ",icon:\"" + getIcon()
-                    + "\",beforeShow:" + beforeShow
-                    + "});return false;";
+                                                   + ",escape:" + this.isEscape()
+                                                   + ",header:" + headerText
+                                                   + ",message:" + messageText
+                                                   + ",icon:\"" + getIcon()
+                                                   + "\",beforeShow:" + beforeShow
+                                                   + "});return false;";
             ((Confirmable) component).setConfirmationScript(script);
 
             return null;
@@ -112,7 +114,16 @@ public class ConfirmBehavior extends AbstractBehavior {
     public String getBeforeShow() {
         return eval(PropertyKeys.beforeShow, null);
     }
+
     public void setBeforeShow(String beforeShow) {
         setLiteral(PropertyKeys.beforeShow, beforeShow);
+    }
+
+    public boolean isEscape() {
+        return eval(PropertyKeys.escape, Boolean.TRUE);
+    }
+
+    public void setEscape(boolean escape) {
+        setLiteral(PropertyKeys.escape, escape);
     }
 }

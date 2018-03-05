@@ -23,7 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 import org.primefaces.component.autocomplete.AutoComplete;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
@@ -99,7 +99,7 @@ public class InputTextareaRenderer extends InputRenderer {
         String counter = inputTextarea.getCounter();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("InputTextarea", inputTextarea.resolveWidgetVar(), clientId)
+        wb.init("InputTextarea", inputTextarea.resolveWidgetVar(), clientId)
                 .attr("autoResize", autoResize)
                 .attr("maxlength", inputTextarea.getMaxlength(), Integer.MAX_VALUE);
 
@@ -138,7 +138,7 @@ public class InputTextareaRenderer extends InputRenderer {
 
         writer.writeAttribute("class", createStyleClass(inputTextarea), "styleClass");
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, inputTextarea);
         }
 

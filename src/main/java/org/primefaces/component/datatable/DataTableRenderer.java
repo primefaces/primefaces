@@ -218,7 +218,7 @@ public class DataTableRenderer extends DataRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (initMode.equals("load")) {
-            wb.initWithDomReady(widgetClass, table.resolveWidgetVar(), clientId);
+            wb.init(widgetClass, table.resolveWidgetVar(), clientId);
         }
         else if (initMode.equals("immediate")) {
             wb.init(widgetClass, table.resolveWidgetVar(), clientId);
@@ -317,6 +317,7 @@ public class DataTableRenderer extends DataRenderer {
         String paginatorPosition = table.getPaginatorPosition();
         int frozenColumns = table.getFrozenColumns();
         boolean hasFrozenColumns = (frozenColumns != 0);
+        String summary = table.getSummary();
 
         //style class
         String containerClass = scrollable ? DataTable.CONTAINER_CLASS + " " + DataTable.SCROLLABLE_CONTAINER_CLASS : DataTable.CONTAINER_CLASS;
@@ -327,6 +328,15 @@ public class DataTableRenderer extends DataRenderer {
         if (table.isReflow()) containerClass = containerClass + " " + DataTable.REFLOW_CLASS;
         if (hasFrozenColumns) containerClass = containerClass + " ui-datatable-frozencolumn";
 
+        //aria
+        if (summary != null) {
+            writer.startElement("span", null);
+            writer.writeAttribute("id", clientId + "_summary", null);
+            writer.writeAttribute("class", "ui-datatable-summary", null);
+            writer.writeText(summary, null);
+            writer.endElement("span");
+        }
+        
         writer.startElement("div", table);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", containerClass, "styleClass");
@@ -402,7 +412,14 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("role", "grid", null);
         if (tableStyle != null) writer.writeAttribute("style", tableStyle, null);
         if (table.getTableStyleClass() != null) writer.writeAttribute("class", table.getTableStyleClass(), null);
-        if (table.getSummary() != null) writer.writeAttribute("summary", table.getSummary(), null);
+        
+        String summary = table.getSummary();
+        String clientId = table.getClientId(context);
+        
+        if (summary != null) {
+            writer.writeAttribute("summary", summary, null);
+            writer.writeAttribute("aria-describedby", clientId + "_summary", null);
+        }
 
         encodeThead(context, table);
         encodeTFoot(context, table);

@@ -126,6 +126,8 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
         put("rowEditInit", RowEditEvent.class);
         put("rowEditCancel", RowEditEvent.class);
         put("cellEdit", CellEditEvent.class);
+        put("cellEditInit", CellEditEvent.class);
+        put("cellEditCancel", CellEditEvent.class);
         put("page", PageEvent.class);
     }});
 
@@ -161,6 +163,14 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
 
     public boolean isCellEditRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_cellInfo");
+    }
+
+    public boolean isCellEditCancelRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_cellEditCancel");
+    }
+
+    public boolean isCellEditInitRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_cellEditInit");
     }
 
     public boolean isFilterRequest(FacesContext context) {
@@ -231,7 +241,7 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
                 wrapperEvent = new RowEditEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
             }
-            else if(eventName.equals("cellEdit")) {
+            else if(eventName.equals("cellEdit")||eventName.equals("cellEditCancel")||eventName.equals("cellEditInit")) {
                 String[] cellInfo = params.get(clientId + "_cellInfo").split(",");
                 String rowKey = cellInfo[0];
                 int cellIndex = Integer.parseInt(cellInfo[1]);

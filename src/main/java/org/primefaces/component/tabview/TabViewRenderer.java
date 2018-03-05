@@ -177,11 +177,12 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("role", "tablist", null);
 
         if (var == null) {
-            int i = 0;
-            for (UIComponent kid : tabView.getChildren()) {
-                if (kid.isRendered() && kid instanceof Tab) {
-                    encodeTabHeader(context, tabView, (Tab) kid, i, (i == activeIndex));
-                    i++;
+            int j = 0;
+            for (int i = 0; i < tabView.getChildCount(); i++) {
+                UIComponent child = tabView.getChildren().get(i);
+                if (child.isRendered() && child instanceof Tab) {
+                    encodeTabHeader(context, tabView, (Tab) child, j, (j == activeIndex));
+                    j++;
                 }
             }
         }
@@ -284,11 +285,12 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("class", TabView.PANELS_CLASS, null);
 
         if (var == null) {
-            int i = 0;
-            for (UIComponent kid : tabView.getChildren()) {
-                if (kid.isRendered() && kid instanceof Tab) {
-                    encodeTabContent(context, (Tab) kid, i, (i == activeIndex), dynamic);
-                    i++;
+            int j = 0;
+            for (int i = 0; i < tabView.getChildCount(); i++) {
+                UIComponent child = tabView.getChildren().get(i);
+                if (child.isRendered() && child instanceof Tab) {
+                    encodeTabContent(context, (Tab) child, j, (j == activeIndex), dynamic);
+                    j++;
                 }
             }
         }

@@ -172,8 +172,8 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     protected String mergeAndMinimizeInlineScripts() {
             
         StringBuilder script = new StringBuilder(state.getInlines().size() * 100);
-        for (String current : state.getInlines()) {
-            script.append(current);
+        for (int i = 0; i < state.getInlines().size(); i++) {
+            script.append(state.getInlines().get(i));
             script.append(";\n");
         }
         

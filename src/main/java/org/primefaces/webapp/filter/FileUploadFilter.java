@@ -33,8 +33,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.FileCleanerCleanup;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileCleaningTracker;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.config.StartupPrimeConfiguration;
+import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.util.Constants;
 import org.primefaces.webapp.MultipartRequest;
 
@@ -57,8 +56,8 @@ public class FileUploadFilter implements Filter {
         String uploader = filterConfig.getServletContext().getInitParameter(Constants.ContextParams.UPLOADER);
 
         if (uploader == null || uploader.equals("auto")) {
-            PrimeConfiguration config = new StartupPrimeConfiguration();
-            bypass = config.isAtLeastJSF22();
+            PrimeEnvironment environment = new PrimeEnvironment();
+            bypass = environment.isAtLeastJsf22();
         }
         else if (uploader.equals("native")) {
             bypass = true;

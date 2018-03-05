@@ -12,7 +12,7 @@
     <groupId>org.primefaces</groupId>
     <artifactId>primefaces</artifactId>
     <packaging>jar</packaging>
-    <version>6.2.RC2-SNAPSHOT</version>
+    <version>6.3-SNAPSHOT</version>
 
     <name>primefaces</name>
     <url>http://www.primefaces.org</url>
@@ -126,7 +126,7 @@
         <dependency>
             <groupId>com.rometools</groupId>
             <artifactId>rome</artifactId>
-            <version>1.7.3</version>
+            <version>1.9.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -160,9 +160,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymock</artifactId>
-            <version>2.4</version>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>2.15.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -170,14 +170,6 @@
             <artifactId>juel-impl</artifactId>
             <version>2.2.7</version>
             <scope>test</scope>
-        </dependency>
-
-        <!-- Atmosphere -->
-        <dependency>
-            <groupId>org.atmosphere</groupId>
-            <artifactId>atmosphere-runtime</artifactId>
-            <version>2.4.6</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -191,7 +183,7 @@
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
-            <version>2.6.5</version>
+            <version>3.9.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -257,19 +249,6 @@
                             <goal>transform</goal>
                         </goals>
                     </execution>
-                    <execution>
-                        <id>generate-ui-metadata-mobile</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <xslFile>src/main/resources-maven-jsf/misc/resolve_entities.xsl</xslFile>
-                            <srcIncludes>**/*.xml</srcIncludes>
-                            <srcDir>src/main/resources-maven-jsf/mobile</srcDir>
-                            <destDir>target/resources-maven-jsf/mobile</destDir>
-                        </configuration>
-                        <goals>
-                            <goal>transform</goal>
-                        </goals>
-                    </execution>
                 </executions>
             </plugin>
 
@@ -323,6 +302,9 @@
                     <includes>
                         <include>src/main/java/**</include>
                     </includes>
+                    <excludes>
+                        <exclude>**/BoundedInputStream.java</exclude>
+                    </excludes>
                 </configuration>
                 <executions>
                     <execution>
@@ -348,20 +330,6 @@
                             <standardFacesConfig>src/main/resources-maven-jsf/standard-faces-config.xml</standardFacesConfig>
                             <standardFaceletsTaglib>src/main/resources-maven-jsf/standard-facelets-taglib.xml</standardFaceletsTaglib>
                             <standardTLD>src/main/resources-maven-jsf/standard-tld.xml</standardTLD>
-                        </configuration>
-                        <goals>
-                            <goal>generate-components</goal>
-                            <goal>generate-facelets-taglib</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>generate-ui-mobile</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <uri>http://primefaces.org/mobile</uri>
-                            <shortName>pm</shortName>
-                            <templatesDir>src/main/java-templates</templatesDir>
-                            <componentConfigsDir>target/resources-maven-jsf/mobile</componentConfigsDir>
                         </configuration>
                         <goals>
                             <goal>generate-components</goal>
@@ -568,28 +536,6 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
-                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/components-mobile.js</output>
-                            <includes>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/core/core.mobile.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/accordion.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/autocomplete.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/calendar.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/datalist.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/datagrid.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/datatable.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/dialog.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/forms.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/growl.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/menu.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/paginator.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/overlaypanel.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/panel.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/mobile/widgets/tabview.js</include>
-                            </includes>
-                        </aggregation>
-                        <aggregation>
-                            <insertNewLine>true</insertNewLine>
-                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/inputnumber/inputnumber.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/inputnumber/0-autoNumeric.js</include>
@@ -631,15 +577,6 @@
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/0-timeline.js</include>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/timeline/1-timeline.js</include>
-                            </includes>
-                        </aggregation>
-                        <aggregation>
-                            <insertNewLine>true</insertNewLine>
-                            <removeIncluded>true</removeIncluded>
-                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/socket/socket.js</output>
-                            <includes>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/socket/0-atmosphere.js</include>
-                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/socket/1-socket.js</include>
                             </includes>
                         </aggregation>
                         <aggregation>
@@ -691,25 +628,8 @@
                     </aggregations>
                 </configuration>
             </plugin>
-
         </plugins>
-
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ssh</artifactId>
-                <version>3.0.0</version>
-            </extension>
-        </extensions>
     </build>
-
-    <distributionManagement>
-        <repository>
-            <id>prime-repo</id>
-            <name>PrimeFaces Maven Repository</name>
-            <url>sftp://primefaces.org/var/www/repository</url>
-        </repository>
-    </distributionManagement>
 
     <profiles>
         <profile>
@@ -719,7 +639,7 @@
                     <plugin>
                         <groupId>org.apache.felix</groupId>
                         <artifactId>maven-bundle-plugin</artifactId>
-                        <version>2.5.4</version>
+                        <version>3.5.0</version>
                         <extensions>true</extensions>
                         <configuration>
                             <supportedProjectTypes>
@@ -755,7 +675,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-jar-plugin</artifactId>
-                        <version>2.3.1</version>
+                        <version>3.0.2</version>
                         <configuration>
                             <archive>
                                 <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>

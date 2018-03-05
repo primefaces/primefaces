@@ -23,7 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
 
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentTraversalUtils;
@@ -58,7 +58,7 @@ public class PollRenderer extends CoreRenderer {
             throw new FacesException("Poll:" + clientId + " needs to be enclosed in a form component");
         }
 
-        AjaxRequestBuilder builder = RequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
+        AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
 
         String request = builder.init()
                 .source(clientId)
@@ -80,7 +80,7 @@ public class PollRenderer extends CoreRenderer {
                 .build();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Poll", poll.resolveWidgetVar(), clientId)
+        wb.init("Poll", poll.resolveWidgetVar(), clientId)
                 .attr("frequency", poll.getInterval())
                 .attr("autoStart", poll.isAutoStart())
                 .callback("fn", "function()", request);

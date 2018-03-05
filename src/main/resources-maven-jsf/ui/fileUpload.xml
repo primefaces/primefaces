@@ -203,6 +203,24 @@
             <defaultValue>false</defaultValue>
             <description>Uploads are concurrent by default set this option to true for sequential uploads.</description>
         </attribute>
+        <attribute>
+            <name>chooseIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>ui-icon-plusthick</defaultValue>
+        </attribute>
+        <attribute>
+            <name>uploadIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>ui-icon-arrowreturnthick-1-n</defaultValue>
+        </attribute>
+        <attribute>
+            <name>cancelIcon</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>ui-icon-cancel</defaultValue>
+        </attribute>
     </attributes>
     <resources>
         <resource>

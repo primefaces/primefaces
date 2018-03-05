@@ -19,7 +19,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import org.primefaces.util.Constants;
-import org.primefaces.context.RequestContext;
 import javax.faces.event.BehaviorEvent;
 import org.primefaces.PrimeFaces;
 

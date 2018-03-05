@@ -1825,9 +1825,10 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
 
     drawConnectors: function() {
         this.jq.find('table.ui-treenode-connector-table').each(function() {
-            var table = $(this);
+            var table = $(this),
+            row = table.closest('tr');
 
-            table.height(0).height(table.parent().height());
+            table.height(0).height(row.height());
         });
     },
 

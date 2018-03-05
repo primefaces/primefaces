@@ -130,7 +130,7 @@ public class PickListRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, PickList pickList) throws IOException {
         String clientId = pickList.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("PickList", pickList.resolveWidgetVar(), clientId)
+        wb.init("PickList", pickList.resolveWidgetVar(), clientId)
                 .attr("effect", pickList.getEffect())
                 .attr("effectSpeed", pickList.getEffectSpeed())
                 .attr("showSourceControls", pickList.isShowSourceControls(), false)

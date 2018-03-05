@@ -61,14 +61,6 @@ public class WidgetBuilder {
 
     public WidgetBuilder init(String widgetClass, String widgetVar, String id) throws IOException {
         this.renderScriptBlock(id);
-        this.init(widgetClass, widgetVar, id, false);
-
-        return this;
-    }
-
-    public WidgetBuilder initWithDomReady(String widgetClass, String widgetVar, String id) throws IOException {
-
-        this.renderScriptBlock(id);
         
         // since jQuery 3 document ready ($(function() {})) are executed async
         // this would mean that our oncomplete handlers are probably called before the scripts in the update nodes

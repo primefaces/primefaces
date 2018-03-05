@@ -72,7 +72,7 @@ public class GMapRenderer extends CoreRenderer {
 
         
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("GMap", map.resolveWidgetVar(), clientId)
+        wb.init("GMap", map.resolveWidgetVar(), clientId)
             .nativeAttr("mapTypeId", "google.maps.MapTypeId." + map.getType().toUpperCase())
             .nativeAttr("center", "new google.maps.LatLng(" + map.getCenter() + ")")
             .attr("zoom", map.getZoom());

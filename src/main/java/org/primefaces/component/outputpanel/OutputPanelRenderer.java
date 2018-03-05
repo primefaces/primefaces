@@ -36,7 +36,7 @@ public class OutputPanelRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         OutputPanel panel = (OutputPanel) component;
 
-        if (panel.isContentLoad(context)) {
+        if (panel.isContentLoadRequest(context)) {
             renderChildren(context, panel);
         }
         else {
@@ -44,10 +44,6 @@ public class OutputPanelRenderer extends CoreRenderer {
             if (panel.isDeferred()) {
                 encodeScript(context, panel);
             }
-        }
-        
-        if (panel.isAutoUpdate()) {
-            logger.info("autoUpdate attribute is deprecated and will be removed in a future version, use p:autoUpdate component instead.");
         }
     }
 
@@ -79,7 +75,7 @@ public class OutputPanelRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, OutputPanel panel) throws IOException {
         String clientId = panel.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("OutputPanel", panel.resolveWidgetVar(), clientId);
+        wb.init("OutputPanel", panel.resolveWidgetVar(), clientId);
 
         if (panel.isDeferred()) {
             wb.attr("deferred", true)

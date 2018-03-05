@@ -27,7 +27,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.renderkit.UINotificationRenderer;
@@ -86,7 +86,8 @@ public class MessagesRenderer extends UINotificationRenderer {
             }
         }
 
-        for (FacesMessage message : messages) {
+        for (int i = 0; i < messages.size(); i++) {
+            FacesMessage message = messages.get(i);
             FacesMessage.Severity severity = message.getSeverity();
 
             if (severity.equals(FacesMessage.SEVERITY_INFO)) {
@@ -113,7 +114,7 @@ public class MessagesRenderer extends UINotificationRenderer {
 
         writer.writeAttribute("aria-live", "polite", null);
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("data-global", String.valueOf(globalOnly), null);
             writer.writeAttribute("data-summary", uiMessages.isShowSummary(), null);
             writer.writeAttribute("data-detail", uiMessages.isShowDetail(), null);
@@ -130,10 +131,6 @@ public class MessagesRenderer extends UINotificationRenderer {
         }
 
         writer.endElement("div");
-        
-        if (uiMessages.isAutoUpdate()) {
-            logger.info("autoUpdate attribute is deprecated and will be removed in a future version, use p:autoUpdate component instead.");
-        }
     }
 
     protected void addMessage(Messages uiMessages, FacesMessage message, Map<String, List<FacesMessage>> messagesMap, String severity) {
@@ -169,14 +166,15 @@ public class MessagesRenderer extends UINotificationRenderer {
 
         writer.startElement("ul", null);
 
-        for (FacesMessage msg : messages) {
+        for (int i = 0; i < messages.size(); i++) {
+            FacesMessage message = messages.get(i);
             writer.startElement("li", null);
 
             writer.writeAttribute("role", "alert", null);
             writer.writeAttribute("aria-atomic", "true", null);
 
-            String summary = msg.getSummary() != null ? msg.getSummary() : "";
-            String detail = msg.getDetail() != null ? msg.getDetail() : summary;
+            String summary = message.getSummary() != null ? message.getSummary() : "";
+            String detail = message.getDetail() != null ? message.getDetail() : summary;
 
             if (uiMessages.isShowSummary()) {
                 writer.startElement("span", null);
@@ -208,7 +206,7 @@ public class MessagesRenderer extends UINotificationRenderer {
 
             writer.endElement("li");
 
-            msg.rendered();
+            message.rendered();
         }
 
         writer.endElement("ul");

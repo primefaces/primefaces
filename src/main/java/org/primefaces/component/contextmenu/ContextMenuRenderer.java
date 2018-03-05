@@ -34,7 +34,7 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("ContextMenu", menu.resolveWidgetVar(), clientId);
+        wb.init("ContextMenu", menu.resolveWidgetVar(), clientId);
 
         String _for = menu.getFor();
         if (_for != null) {

@@ -19,7 +19,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -65,6 +65,7 @@ public class InputSwitchRenderer extends InputRenderer {
         String style = inputSwitch.getStyle();
         String styleClass = inputSwitch.getStyleClass();
         styleClass = (styleClass == null) ? InputSwitch.CONTAINER_CLASS : InputSwitch.CONTAINER_CLASS + " " + styleClass;
+        styleClass = (checked) ? styleClass + " " + InputSwitch.CHECKED_CLASS : styleClass;
         if (inputSwitch.isDisabled()) {
             styleClass = styleClass + " ui-state-disabled";
         }
@@ -126,7 +127,7 @@ public class InputSwitchRenderer extends InputRenderer {
         if (disabled) writer.writeAttribute("disabled", "disabled", null);
         if (inputSwitch.getTabindex() != null) writer.writeAttribute("tabindex", inputSwitch.getTabindex(), null);
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, inputSwitch);
         }
 

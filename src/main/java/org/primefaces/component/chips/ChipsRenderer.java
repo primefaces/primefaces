@@ -184,7 +184,7 @@ public class ChipsRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, Chips chips) throws IOException {
         String clientId = chips.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Chips", chips.resolveWidgetVar(), clientId)
+        wb.init("Chips", chips.resolveWidgetVar(), clientId)
                 .attr("max", chips.getMax(), Integer.MAX_VALUE);
 
         encodeClientBehaviors(context, chips);

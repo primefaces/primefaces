@@ -23,8 +23,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.config.StartupPrimeConfiguration;
+import org.primefaces.config.PrimeEnvironment;
 
 public class PostConstructApplicationEventListener implements SystemEventListener {
 
@@ -37,14 +36,14 @@ public class PostConstructApplicationEventListener implements SystemEventListene
 
     @Override
     public void processEvent(SystemEvent event) throws AbortProcessingException {
-        // temp manually instantiate startup config as the default config is not available yet
-        PrimeConfiguration config = new StartupPrimeConfiguration();
+        // temp manually instantiate as the ApplicationContext is not available yet
+        PrimeEnvironment environment = new PrimeEnvironment();
 
         logger.log(Level.INFO,
                 "Running on PrimeFaces {0}",
-                config.getBuildVersion());
+                environment.getBuildVersion());
         
-        if (config.isAtLeastJSF23()) {
+        if (environment.isAtLeastJsf23()) {
             Jsf23Helper.addSearchKeywordResolvers();
         }
     }

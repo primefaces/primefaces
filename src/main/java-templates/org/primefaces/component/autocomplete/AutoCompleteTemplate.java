@@ -128,9 +128,10 @@ import javax.faces.component.behavior.Behavior;
     public List<Column> getColums() {
         List<Column> columns = new ArrayList<Column>();
         
-        for(UIComponent kid : this.getChildren()) {
-            if(kid instanceof Column)
-                columns.add((Column) kid);
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
+            if(child instanceof Column)
+                columns.add((Column) child);
         }
 
         return columns;

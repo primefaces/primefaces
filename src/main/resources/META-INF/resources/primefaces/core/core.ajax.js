@@ -19,7 +19,6 @@ if (!PrimeFaces.ajax) {
         'psf': 'partialSubmitFilter',
         'rv': 'resetValues',
         'fi': 'fragmentId',
-        'fu': 'fragmentUpdate',
         'pa': 'params',
         'onst': 'onstart',
         'oner': 'onerror',
@@ -287,20 +286,21 @@ if (!PrimeFaces.ajax) {
                 }
                 if (sourceElement.is(':input') && sourceElement.is(':not(:button)')) {
                     earlyPostParams = [];
-                    earlyPostParams.push({
-                        name: sourceElement.attr('name'),
-                        value: sourceElement.is(':checkbox') ? sourceElement.is(':checked') : sourceElement.val()
-                    });
+
+                    if (sourceElement.is(':checkbox')) {
+                        var checkboxPostParams = $("input[name='" + sourceElement.attr('name') + "']")
+                                .filter(':checked').serializeArray();
+                        $.merge(earlyPostParams, checkboxPostParams);
+                    }
+                    else {
+                        earlyPostParams.push({
+                            name: sourceElement.attr('name'),
+                            value: sourceElement.val()
+                        });
+                    }
                 }
                 else {
-                    earlyPostParams = sourceElement.find(':input').serializeArray();
-                    // jQuery doesn't add unchecked checkboxes
-                    earlyPostParams = earlyPostParams.concat(
-                        sourceElement.find('input[type=checkbox]:not(:checked)').map(function() {
-                            var $this = $(this);
-                            return { 'name': $this.attr('name'), 'value': $this.is(':checked') };
-                        }).get()
-                    );
+                    earlyPostParams = sourceElement.serializeArray();
                 }
 
                 return earlyPostParams;
@@ -424,9 +424,6 @@ if (!PrimeFaces.ajax) {
 
                 //update
                 var updateArray = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall(cfg, 'update');
-                if(cfg.fragmentId && cfg.fragmentUpdate) {
-                    updateArray.push(cfg.fragmentId);
-                }
                 if(updateArray.length > 0) {
                     PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_UPDATE_PARAM, updateArray.join(' '), parameterPrefix);
                 }

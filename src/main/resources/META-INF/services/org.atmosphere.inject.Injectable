@@ -1,4 +1,0 @@
-org.primefaces.push.inject.EventBusInjectable
-org.primefaces.push.inject.ServletContextInjectable
-org.primefaces.push.inject.PathParamIntrospector
-org.primefaces.push.inject.RemoteEndpointIntrospector

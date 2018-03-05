@@ -36,11 +36,6 @@ public class FragmentRenderer extends CoreRenderer {
         Map<Object, Object> attrs = context.getAttributes();
         attrs.put(Constants.FRAGMENT_ID, clientId);
 
-        if (fragment.isAutoUpdate()) {
-            logger.info("autoUpdate attribute is deprecated and will be removed in a future version, use p:autoUpdate component instead.");
-            attrs.put(Constants.FRAGMENT_AUTO_RENDERED, true);
-        }
-        
         writer.startElement("div", component);
         writer.writeAttribute("id", clientId, "id");
     }

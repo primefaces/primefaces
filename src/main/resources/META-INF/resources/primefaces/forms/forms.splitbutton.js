@@ -119,12 +119,6 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
                 return;
             }
 
-            //do nothing if mouse is on button
-            var target = $(e.target);
-            if(target.is($this.button)||$this.button.has(target).length > 0) {
-                return;
-            }
-
             //hide overlay if mouse is outside of overlay except button
             var offset = $this.menu.offset();
             if(e.pageX < offset.left ||

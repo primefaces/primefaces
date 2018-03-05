@@ -41,14 +41,15 @@ public class DroppableRenderer extends CoreRenderer {
 
         String clientId = droppable.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Droppable", droppable.resolveWidgetVar(), clientId)
+        wb.init("Droppable", droppable.resolveWidgetVar(), clientId)
                 .attr("target", target.getClientId(context))
                 .attr("disabled", droppable.isDisabled(), false)
                 .attr("hoverClass", droppable.getHoverStyleClass(), null)
                 .attr("activeClass", droppable.getActiveStyleClass(), null)
                 .attr("accept", droppable.getAccept(), null)
                 .attr("scope", droppable.getScope(), null)
-                .attr("tolerance", droppable.getTolerance(), null);
+                .attr("tolerance", droppable.getTolerance(), null)
+                .attr("greedy", droppable.isGreedy(), false);
 
         if (droppable.getOnDrop() != null) {
             wb.append(",onDrop:").append(droppable.getOnDrop());

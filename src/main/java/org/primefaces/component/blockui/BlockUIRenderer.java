@@ -38,7 +38,7 @@ public class BlockUIRenderer extends CoreRenderer {
         String clientId = blockUI.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("BlockUI", blockUI.resolveWidgetVar(), clientId);
+        wb.init("BlockUI", blockUI.resolveWidgetVar(), clientId);
 
         wb.attr("block", SearchExpressionFacade.resolveClientIds(context, blockUI, blockUI.getBlock()));
         wb.attr("triggers", SearchExpressionFacade.resolveClientIds(context, blockUI, blockUI.getTrigger()), null);

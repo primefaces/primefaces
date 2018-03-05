@@ -74,7 +74,7 @@ public class CaptchaRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Captcha captcha, String publicKey) throws IOException {
         String clientId = captcha.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Captcha", captcha.resolveWidgetVar(), clientId);
+        wb.init("Captcha", captcha.resolveWidgetVar(), clientId);
 
         wb.attr("sitekey", publicKey)
                 .attr("theme", captcha.getTheme(), "light")

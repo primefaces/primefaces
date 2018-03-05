@@ -30,7 +30,7 @@ import javax.faces.event.ActionListener;
 import javax.faces.flow.FlowHandler;
 import javax.faces.lifecycle.ClientWindow;
 import org.primefaces.component.api.UIOutcomeTarget;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 
 public class OutcomeTargetRenderer extends CoreRenderer {
 
@@ -42,7 +42,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             outcome = context.getViewRoot().getViewId();
         }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF22()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
             if (outcomeTarget instanceof UIComponent) {
                 String toFlowDocumentId = (String) ((UIComponent) outcomeTarget).getAttributes().get(ActionListener.TO_FLOW_DOCUMENT_ID_ATTR_NAME);
 
@@ -117,7 +117,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             }
         }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF22()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
             String toFlowDocumentId = navCase.getToFlowDocumentId();
             if (toFlowDocumentId != null) {
                 if (params == null) {
@@ -165,7 +165,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         
         String href = outcomeTarget.getHref();
         if (href != null) {
-            url = prependContextPathIfNecessary(context, href);
+            url = getHrefURL(prependContextPathIfNecessary(context, href), outcomeTarget.getParams());
         }
         else {
             NavigationCase navCase = findNavigationCase(context, outcomeTarget);
@@ -186,7 +186,9 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             Object clientWindow = null;
 
             try {
-                if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF22() && outcomeTarget.isDisableClientWindow()) {
+                if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()
+                        && outcomeTarget.isDisableClientWindow()) {
+
                     clientWindow = context.getExternalContext().getClientWindow();
 
                     if (clientWindow != null) {

@@ -38,8 +38,36 @@ import javax.faces.event.BehaviorEvent;
         return DEFAULT_EVENT;
     }
 
-    public boolean isContentLoad(FacesContext context) {
+    public boolean isContentLoadRequest(FacesContext context) {
         String clientId = this.getClientId(context);
 
         return context.getExternalContext().getRequestParameterMap().containsKey(clientId + "_load");
+    }
+
+    @Override
+    public void processDecodes(FacesContext context) {
+        if (shouldSkipChildren(context)) {
+            this.decode(context);
+        }
+        else {
+            super.processDecodes(context);
+        }
+    }
+
+    @Override
+    public void processValidators(FacesContext context) {
+        if (!shouldSkipChildren(context)) {
+            super.processValidators(context);
+        }
+    }
+
+    @Override
+    public void processUpdates(FacesContext context) {
+        if (!shouldSkipChildren(context)) {
+            super.processUpdates(context);
+        }
+    }
+
+    private boolean shouldSkipChildren(FacesContext context) {
+        return isContentLoadRequest(context);
     }

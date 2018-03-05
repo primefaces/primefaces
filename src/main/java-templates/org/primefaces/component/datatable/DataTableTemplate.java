@@ -7,7 +7,6 @@ import org.primefaces.component.subtable.SubTable;
 import org.primefaces.component.contextmenu.ContextMenu;
 import org.primefaces.component.summaryrow.SummaryRow;
 import org.primefaces.component.headerrow.HeaderRow;
-import org.primefaces.context.RequestContext;
 import org.primefaces.util.Constants;
 import java.util.List;
 import java.util.ArrayList;
@@ -43,7 +42,6 @@ import org.primefaces.event.ColumnResizeEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.event.ReorderEvent;
-import org.primefaces.mobile.event.SwipeEvent;
 import org.primefaces.model.Visibility;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.SelectableDataModel;
@@ -174,8 +172,6 @@ import org.primefaces.component.datatable.TableState;
         put("cellEditInit", CellEditEvent.class);
         put("cellEdit", CellEditEvent.class);
         put("rowReorder", ReorderEvent.class);
-        put("swipeleft", SwipeEvent.class);
-        put("swiperight", SwipeEvent.class);
         put("tap", SelectEvent.class);
         put("taphold", SelectEvent.class);
         put("cellEditCancel", CellEditEvent.class);
@@ -425,10 +421,6 @@ import org.primefaces.component.datatable.TableState;
                 
                 wrapperEvent = new ReorderEvent(this, behaviorEvent.getBehavior(), fromIndex, toIndex);
             }
-            else if(eventName.equals("swipeleft")||eventName.equals("swiperight")) {
-                String rowkey = params.get(clientId + "_rowkey");
-                wrapperEvent = new SwipeEvent(this, behaviorEvent.getBehavior(), this.getRowData(rowkey));
-            }
             else if(eventName.equals("tap")||eventName.equals("taphold")) {
                 String rowkey = params.get(clientId + "_rowkey");
                 wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getRowData(rowkey));
@@ -567,7 +559,7 @@ import org.primefaces.component.datatable.TableState;
             lazyModel.setWrappedData(data);
 
             //Update paginator/livescroller for callback
-            if(ComponentUtils.isRequestSource(this, context) && (this.isPaginator() || this.isLiveScroll() || this.isVirtualScroll())) {
+            if(ComponentUtils.isRequestSource(this, context) && (this.isPaginator() || isLiveScroll() || isVirtualScroll())) {
                 PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
             }
         }
@@ -592,7 +584,7 @@ import org.primefaces.component.datatable.TableState;
             lazyModel.setWrappedData(data);
 
             //Update paginator/livescroller  for callback
-            if(ComponentUtils.isRequestSource(this, getFacesContext()) && (this.isPaginator() || this.isLiveScroll())) {
+            if(ComponentUtils.isRequestSource(this, getFacesContext()) && (this.isPaginator() || isLiveScroll() || isVirtualScroll())) {
                 PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
             }
         }
@@ -1089,13 +1081,16 @@ import org.primefaces.component.datatable.TableState;
             multiSortMeta = new ArrayList<SortMeta>();
             for(int i = 0; i < multiSortStateList.size(); i++) {
                 MultiSortState multiSortState = multiSortStateList.get(i);
-                SortMeta sortMeta = new SortMeta();
-                sortMeta.setSortBy(this.findColumn(multiSortState.getSortKey()));
-                sortMeta.setSortField(multiSortState.getSortField());
-                sortMeta.setSortOrder(multiSortState.getSortOrder());
-                sortMeta.setSortFunction(multiSortState.getSortFunction());
+                UIColumn column = this.findColumn(multiSortState.getSortKey());
+                if (column != null) {
+                    SortMeta sortMeta = new SortMeta();
+                    sortMeta.setSortBy(column);
+                    sortMeta.setSortField(multiSortState.getSortField());
+                    sortMeta.setSortOrder(multiSortState.getSortOrder());
+                    sortMeta.setSortFunction(multiSortState.getSortFunction());
 
-                multiSortMeta.add(sortMeta);
+                    multiSortMeta.add(sortMeta);
+                }
             }
         }
         else {

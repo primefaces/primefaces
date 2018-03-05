@@ -69,7 +69,8 @@ public class ResourceUtils {
         
         List<UIComponent> resources = context.getViewRoot().getComponentResources(context, "head");
         if (resources != null) {
-            for (UIComponent resource : resources) {
+            for (int i = 0; i < resources.size(); i++) {
+                UIComponent resource = resources.get(i);
                 ResourceUtils.ResourceInfo resourceInfo = newResourceInfo(resource);
                 if (resourceInfo != null && !resourceInfos.contains(resourceInfo)) {
                     resourceInfos.add(resourceInfo);
@@ -88,7 +89,8 @@ public class ResourceUtils {
         ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
         
         ArrayList<String> stylesheets = new ArrayList<String>();
-        for (ResourceInfo resourceInfo : resourceInfos) {
+        for (int i = 0; i < resourceInfos.size(); i++) {
+            ResourceInfo resourceInfo = resourceInfos.get(i);
             if (isStylesheet(resourceInfo.getResource()) && !isInline(resourceInfo)) {
                 Resource resource;
                 if (ComponentUtils.isValueBlank(resourceInfo.getLibrary())) {
@@ -117,7 +119,8 @@ public class ResourceUtils {
         ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
         
         ArrayList<String> scripts = new ArrayList<String>();
-        for (ResourceInfo resourceInfo : resourceInfos) {
+        for (int i = 0; i < resourceInfos.size(); i++) {
+            ResourceInfo resourceInfo = resourceInfos.get(i);
             if (isScript(resourceInfo.getResource()) && !isInline(resourceInfo)) {
                 Resource resource;
                 if (ComponentUtils.isValueBlank(resourceInfo.getLibrary())) {

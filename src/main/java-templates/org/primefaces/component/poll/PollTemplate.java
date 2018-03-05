@@ -1,6 +1,5 @@
 import javax.el.ValueExpression;
 import org.primefaces.PrimeFaces;
-import org.primefaces.context.RequestContext;
 
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
 		super.broadcast(event); //backward compatibility

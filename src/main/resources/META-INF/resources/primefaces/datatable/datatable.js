@@ -854,6 +854,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     bindContextMenu : function(menuWidget, targetWidget, targetId, cfg) {
         var targetSelector = targetId + ' tbody.ui-datatable-data > tr.ui-widget-content';
         var targetEvent = cfg.event + '.datatable';
+        this.contextMenuWidget = menuWidget;
 
         $(document).off(targetEvent, targetSelector).on(targetEvent, targetSelector, null, function(e) {
             var row = $(this);
@@ -881,6 +882,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 menuWidget.show(e);
             }
         });
+        
+        if(this.cfg.scrollable) {
+            var $this = this;
+            this.scrollBody.off('scroll.dataTable-contextmenu').on('scroll.dataTable-contextmenu', function() {
+                if($this.contextMenuWidget.jq.is(':visible')) {
+                    $this.contextMenuWidget.hide();
+                }
+            });
+        }
     },
     
     bindRowClick: function() {
@@ -1490,7 +1500,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     }
                 }
 
-                if($this.cfg.liveScroll) {
+                if($this.cfg.virtualScroll) {
+                    $this.bodyTable.css('top', '0px');
+                    $this.scrollBody.scrollTop(0);
+                    $this.clearScrollState();
+                }
+                else if($this.cfg.liveScroll) {
                     $this.scrollOffset = 0;
                     $this.liveScrollActive = false;
                     $this.shouldLiveScroll = true;
@@ -1589,11 +1604,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     if(row) {
                         var hasEmptyMessage = row.eq(0).hasClass('ui-datatable-empty-message'),
                         scrollLimit = $this.cfg.scrollLimit;
-                
+                        
                         if(hasEmptyMessage) {
                             scrollLimit = 1;
-                            $this.bodyTable.css('top', '0px');
                         }
+     
+                        $this.bodyTable.css('top', '0px');
+                        $this.scrollBody.scrollTop(0);
+                        $this.clearScrollState();
                         
                         $this.rowHeight = row.outerHeight();
                         $this.scrollBody.children('div').css({'height': parseFloat((scrollLimit * $this.rowHeight + 1) + 'px')});
@@ -2516,7 +2534,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             changed = (inputs.eq(0).val() != cell.data('old-value'));
         }
 
-        if(changed || !valid)
+        if(changed || valid == false)
             $this.doCellEditRequest(cell);
         else
             $this.viewMode(cell);
@@ -3301,7 +3319,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             },
             helper: function(event, ui) {
                 var cells = ui.children(),
-                helper = $('<div class="ui-datatable ui-widget"><table><tbody></tbody></table></div>'),
+                helper = $('<div class="ui-datatable ui-widget"><table><tbody class="ui-datatable-data"></tbody></table></div>'),
                 helperRow = ui.clone(),
                 helperCells = helperRow.children();
 

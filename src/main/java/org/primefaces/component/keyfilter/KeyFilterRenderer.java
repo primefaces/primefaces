@@ -20,7 +20,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.InputHolder;
-import org.primefaces.context.RequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -47,8 +46,8 @@ public class KeyFilterRenderer extends CoreRenderer {
 
         String targetClientId = target instanceof InputHolder ? ((InputHolder) target).getInputClientId() : target.getClientId();
 
-        WidgetBuilder wb = RequestContext.getCurrentInstance(context).getWidgetBuilder();
-        wb.initWithDomReady(KeyFilter.class.getSimpleName(), keyFilter.resolveWidgetVar(), keyFilter.getClientId(context));
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init(KeyFilter.class.getSimpleName(), keyFilter.resolveWidgetVar(), keyFilter.getClientId(context));
         wb.attr("target", targetClientId);
 
         if (keyFilter.getRegEx() != null) {

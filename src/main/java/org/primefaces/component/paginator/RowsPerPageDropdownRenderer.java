@@ -52,7 +52,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
             String labelId = null;
 
             if (label != null) {
-                labelId = clientId + "_rppLabel";
+                labelId = ddId + "_rppLabel";
 
                 writer.startElement("label", null);
                 writer.writeAttribute("id", labelId, null);

@@ -28,7 +28,7 @@ import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialViewContext;
 import org.primefaces.component.datatable.TableState;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.expression.ComponentNotFoundException;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
@@ -60,8 +60,8 @@ public class PrimeFaces {
         return FacesContext.getCurrentInstance();
     }
     
-    protected RequestContext getRequestContext() {
-        return RequestContext.getCurrentInstance();
+    protected PrimeRequestContext getRequestContext() {
+        return PrimeRequestContext.getCurrentInstance();
     }
     
     /**
