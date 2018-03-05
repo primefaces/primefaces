@@ -15,6 +15,7 @@
  */
 package org.primefaces;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
@@ -92,7 +94,35 @@ public class PrimeFaces {
     }
     
     /**
-     * Resets the resolved inputs.
+     * Resolves the search expression, starting from the viewroot, and focus the resolved component.
+     *
+     * @param expression The search expression.
+     */
+    public void focus(String expression) {
+        focus(expression, FacesContext.getCurrentInstance().getViewRoot());
+    }
+    
+    /**
+     * Resolves the search expression and focus the resolved component.
+     *
+     * @param expression the search expression.
+     * @param base the base component from which we will start to resolve the search expression.
+     */
+    public void focus(String expression, UIComponent base) {
+        if (expression == null || expression.trim().isEmpty()) {
+            return;
+        }
+
+        FacesContext facesContext = getFacesContext();
+
+        String clientId = SearchExpressionFacade.resolveClientId(facesContext,
+                base,
+                expression);
+        executeScript("PrimeFaces.focus('" + clientId + "');");
+    }
+    
+    /**
+     * Resolves the search expressions, starting from the viewroot and resets all found {@link UIInput} components.
      *
      * @param expressions a list of search expressions.
      */
@@ -104,13 +134,18 @@ public class PrimeFaces {
         FacesContext facesContext = getFacesContext();
         VisitContext visitContext = VisitContext.createVisitContext(facesContext, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
 
+        
+        UIViewRoot root = facesContext.getViewRoot();
         for (String expression : expressions) {
-            reset(facesContext, visitContext, expression);
+            List<UIComponent> components = SearchExpressionFacade.resolveComponents(facesContext, root, expression);
+            for (UIComponent component : components) {
+                component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
+            }
         }
     }
 
     /**
-     * Resets the resolved inputs.
+     * Resolves the search expressions, starting from the viewroot and resets all found {@link UIInput} components.
      *
      * @param expressions a list of search expressions.
      */
@@ -119,21 +154,7 @@ public class PrimeFaces {
             return;
         }
 
-        FacesContext facesContext = getFacesContext();
-        VisitContext visitContext = VisitContext.createVisitContext(facesContext, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
-
-        for (String expression : expressions) {
-            reset(facesContext, visitContext, expression);
-        }
-    }
-    
-    private void reset(FacesContext facesContext, VisitContext visitContext, String expressions) {
-        UIViewRoot root = facesContext.getViewRoot();
-
-        List<UIComponent> components = SearchExpressionFacade.resolveComponents(facesContext, root, expressions);
-        for (UIComponent component : components) {
-            component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
-        }
+        resetInputs(Arrays.asList(expressions));
     }
     
     public void clearTableStates() {
@@ -255,7 +276,12 @@ public class PrimeFaces {
             // call SEF to validate if a component with the clientId exists
             if (facesContext.isProjectStage(ProjectStage.Development)) {
                 for (String clientId : clientIds) {
-                    validateClientId(clientId, facesContext);
+                    try {
+                        SearchExpressionFacade.resolveClientId(facesContext, facesContext.getViewRoot(), clientId);
+                    }
+                    catch (ComponentNotFoundException e) {
+                        LOG.log(Level.WARNING, "PrimeFaces.current().ajax().update() called but component can't be resolved!", e);
+                    }
                 }
             }
             
@@ -272,25 +298,7 @@ public class PrimeFaces {
                 return;
             }
 
-            FacesContext facesContext = getFacesContext();
-            
-            for (String clientId : clientIds) {
-                if (facesContext.isProjectStage(ProjectStage.Development)) {
-                    validateClientId(clientId, facesContext);
-                }
-
-                facesContext.getPartialViewContext().getRenderIds().add(clientId);
-            }
-        }
-        
-        protected void validateClientId(String clientId, FacesContext facesContext) {
-            // call SEF to validate if a component with the clientId exists
-            try {
-                SearchExpressionFacade.resolveClientId(facesContext, facesContext.getViewRoot(), clientId);
-            }
-            catch (ComponentNotFoundException e) {
-                LOG.log(Level.WARNING, "PrimeFaces.current().ajax().update() called but component can't be resolved!", e);
-            }
+            update(Arrays.asList(clientIds));
         }
     }
 }
