@@ -76,18 +76,20 @@ import org.primefaces.util.MessageFactory;
                 String valueToStr = getSubmittedValue(inputTo).toString();
                 double valueFrom = Double.valueOf(valueFromStr);
                 double valueTo = Double.valueOf(valueToStr);
-                if (valueFrom < this.getMinValue() || valueFrom > this.getMaxValue()) {
-                    this.setValid(false);
-                    inputFrom.setValid(false);
-                }
-                if (valueTo > this.getMaxValue() || valueTo < this.getMinValue()) {
-                    this.setValid(false);
-                    inputTo.setValid(false);
-                }
                 if (valueTo < valueFrom) {
                     this.setValid(false);
                     inputFrom.setValid(false);
                     inputTo.setValid(false);
+                }
+                else {
+                    if (valueFrom < this.getMinValue() || valueFrom > this.getMaxValue()) {
+                        this.setValid(false);
+                        inputFrom.setValid(false);
+                    }
+                    if (valueTo > this.getMaxValue() || valueTo < this.getMinValue()) {
+                        this.setValid(false);
+                        inputTo.setValid(false);
+                    }
                 }
             }
             else {
