@@ -97,7 +97,7 @@ public class PrimeRequestContext {
             (Map<String, Object>) context.getAttributes().get(CALLBACK_PARAMS_KEY);
         
         if (callbackParams == null) {
-            callbackParams = new HashMap<String, Object>();
+            callbackParams = new HashMap<>();
             context.getAttributes().put(CALLBACK_PARAMS_KEY, callbackParams);
         }
         
@@ -113,7 +113,7 @@ public class PrimeRequestContext {
             (List<String>) context.getAttributes().get(EXECUTE_SCRIPT_KEY);
         
         if (scriptsToExecute == null) {
-            scriptsToExecute = new ArrayList<String>();
+            scriptsToExecute = new ArrayList<>();
             context.getAttributes().put(EXECUTE_SCRIPT_KEY, scriptsToExecute);
         }
         

@@ -177,7 +177,7 @@ public class WebXmlParser {
 
     private static Map<String, String> parseErrorPages(Element webXml) throws Exception {
 
-        Map<String, String> errorPages = new HashMap<String, String>();
+        Map<String, String> errorPages = new HashMap<>();
 
         XPath xpath = XPathFactory.newInstance().newXPath();
 

@@ -29,6 +29,7 @@ public class ResetInputContextCallback implements ContextCallback {
         this.visitContext = visitContext;
     }
 
+    @Override
     public void invokeContextCallback(FacesContext fc, UIComponent component) {
         if (component instanceof EditableValueHolder) {
             ((EditableValueHolder) component).resetValue();

@@ -38,7 +38,7 @@ public class MessageInterpolatingConstraintWrapper extends ConstraintDescriptorW
         Map<String, Object> attributes = super.getAttributes();
 
         // wrap it - could be unmodifiable
-        attributes = new HashMap<String, Object>(attributes);
+        attributes = new HashMap<>(attributes);
 
         Object message = attributes.remove(ClientValidationConstraint.ATTR_MESSAGE);
         if (message != null) {
@@ -64,10 +64,12 @@ public class MessageInterpolatingConstraintWrapper extends ConstraintDescriptorW
             this.validatedValue = validatedValue;
         }
 
+        @Override
         public ConstraintDescriptor<?> getConstraintDescriptor() {
             return constraintDescriptor;
         }
 
+        @Override
         public Object getValidatedValue() {
             return validatedValue;
         }

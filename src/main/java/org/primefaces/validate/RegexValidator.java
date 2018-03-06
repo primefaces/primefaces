@@ -23,8 +23,9 @@ public class RegexValidator extends javax.faces.validator.RegexValidator impleme
 
     private Map<String, Object> metadata;
 
+    @Override
     public Map<String, Object> getMetadata() {
-        metadata = new HashMap<String, Object>();
+        metadata = new HashMap<>();
         String regex = this.getPattern();
 
         if (regex != null) {
@@ -34,6 +35,7 @@ public class RegexValidator extends javax.faces.validator.RegexValidator impleme
         return metadata;
     }
 
+    @Override
     public String getValidatorId() {
         return RegexValidator.VALIDATOR_ID;
     }

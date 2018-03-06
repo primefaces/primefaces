@@ -59,8 +59,8 @@ public class PrimeApplicationContext {
             this.validator = validatorFactory.getValidator();
         }
 
-        enumCacheMap = new ConcurrentHashMap<Class<?>, Map<String, Object>>();
-        constantsCacheMap = new ConcurrentHashMap<Class<?>, Map<String, Object>>();
+        enumCacheMap = new ConcurrentHashMap<>();
+        constantsCacheMap = new ConcurrentHashMap<>();
     }
 
     public static PrimeApplicationContext getCurrentInstance(FacesContext facesContext) {

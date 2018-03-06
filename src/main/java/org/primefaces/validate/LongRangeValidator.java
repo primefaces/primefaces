@@ -25,8 +25,9 @@ public class LongRangeValidator extends javax.faces.validator.LongRangeValidator
     private boolean minimumSet;
     private boolean maximumSet;
 
+    @Override
     public Map<String, Object> getMetadata() {
-        metadata = new HashMap<String, Object>();
+        metadata = new HashMap<>();
         long min = this.getMinimum();
         long max = this.getMaximum();
 
@@ -41,6 +42,7 @@ public class LongRangeValidator extends javax.faces.validator.LongRangeValidator
         return metadata;
     }
 
+    @Override
     public String getValidatorId() {
         return LongRangeValidator.VALIDATOR_ID;
     }

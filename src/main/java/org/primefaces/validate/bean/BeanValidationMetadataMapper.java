@@ -136,14 +136,14 @@ public class BeanValidationMetadataMapper {
 
                         if (constraintMetadata != null) {
                             if (metadata == null) {
-                                metadata = new HashMap<String, Object>();
+                                metadata = new HashMap<>();
                             }
                             metadata.putAll(constraintMetadata);
                         }
 
                         if (validatorId != null) {
                             if (validatorIds == null) {
-                                validatorIds = new ArrayList<String>();
+                                validatorIds = new ArrayList<>();
                             }
                             validatorIds.add(validatorId);
                         }
