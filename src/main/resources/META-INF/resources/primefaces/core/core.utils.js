@@ -37,7 +37,8 @@ if (!PrimeFaces.utils) {
         addDynamicOverlayModal: function(element, id) {
             var modalId = id + '_modal';
 
-            var modalOverlay = $(document.body).append('<div id="' + modalId + '" class="ui-widget-overlay ui-dialog-mask"></div>');
+            var modalOverlay = $('<div id="' + modalId + '" class="ui-widget-overlay ui-dialog-mask"></div>');
+            modalOverlay.appendTo($(document.body));
             modalOverlay.css('z-index' , element.css('z-index') - 1);
 
             return modalOverlay;
@@ -52,9 +53,6 @@ if (!PrimeFaces.utils) {
             // if the id does NOT contain a ':'
             $(document.body).children("[id='" + modalId + "']").remove();
         }
-
-
-
 
     };
 
