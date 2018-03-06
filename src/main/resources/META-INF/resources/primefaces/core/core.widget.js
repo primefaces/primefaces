@@ -151,6 +151,8 @@ if (!PrimeFaces.widget) {
             }
             PrimeFaces.utils.removeDynamicOverlayModal(this.id);
 
+            this.appendTo = null;
+            this.modalOverlay = null;
         },
 
         //@Override
@@ -161,14 +163,18 @@ if (!PrimeFaces.widget) {
                 PrimeFaces.utils.removeDynamicOverlay(this, this.jq, this.id, this.appendTo);
             }
             PrimeFaces.utils.removeDynamicOverlayModal(this.id);
+
+            this.appendTo = null;
+            this.modalOverlay = null;
         },
 
         enableModality: function() {
-            PrimeFaces.utils.addDynamicOverlayModal(this.jq, this.id);
+            this.modalOverlay = PrimeFaces.utils.addDynamicOverlayModal(this.jq, this.id);
         },
 
         disableModality: function(){
             PrimeFaces.utils.removeDynamicOverlayModal(this.id);
+            this.modalOverlay = null;
         }
     });
 

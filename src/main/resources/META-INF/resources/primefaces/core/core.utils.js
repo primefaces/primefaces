@@ -37,8 +37,10 @@ if (!PrimeFaces.utils) {
         addDynamicOverlayModal: function(element, id) {
             var modalId = id + '_modal';
 
-            $(document.body).append('<div id="' + modalId + '" class="ui-widget-overlay ui-dialog-mask"></div>');
-            $(document.body).children(PrimeFaces.escapeClientId(modalId)).css('z-index' , element.css('z-index') - 1);
+            var modalOverlay = $(document.body).append('<div id="' + modalId + '" class="ui-widget-overlay ui-dialog-mask"></div>');
+            modalOverlay.css('z-index' , element.css('z-index') - 1);
+
+            return modalOverlay;
         },
 
         removeDynamicOverlayModal: function(id) {
