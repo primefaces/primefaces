@@ -274,12 +274,13 @@ public class AutoCompleteRenderer extends InputRenderer {
     protected void encodeHiddenInput(FacesContext context, AutoComplete ac, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String valueToRender = ComponentUtils.getValueToRender(context, ac);
+        String autocompleteProp = (ac.getAutocomplete() != null) ? ac.getAutocomplete() : "off";
 
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_hinput", null);
         writer.writeAttribute("name", clientId + "_hinput", null);
         writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute("autocomplete", autocompleteProp, null);
         if (valueToRender != null) {
             writer.writeAttribute("value", valueToRender, null);
         }
