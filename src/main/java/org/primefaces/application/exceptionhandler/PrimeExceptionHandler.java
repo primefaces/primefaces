@@ -249,12 +249,12 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         info.setTimestamp(new Date());
         info.setType(rootCause.getClass().getName());
 
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        rootCause.printStackTrace(pw);
-        info.setFormattedStackTrace(ComponentUtils.escapeXml(sw.toString()).replaceAll("(\r\n|\n)", "<br/>"));
-        pw.close();
-        sw.close();
+        try (StringWriter sw = new StringWriter()) {
+            PrintWriter pw = new PrintWriter(sw);
+            rootCause.printStackTrace(pw);
+            info.setFormattedStackTrace(ComponentUtils.escapeXml(sw.toString()).replaceAll("(\r\n|\n)", "<br/>"));
+            pw.close();
+        }
 
         SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_PATTERN);
         info.setFormattedTimestamp(format.format(info.getTimestamp()));

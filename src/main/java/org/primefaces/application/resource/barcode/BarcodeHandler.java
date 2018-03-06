@@ -44,7 +44,7 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
     private final Map<String, BarcodeGenerator> generators;
 
     public BarcodeHandler() {
-        generators = new HashMap<String, BarcodeGenerator>();
+        generators = new HashMap<>();
         generators.put("int2of5", new Int2of5Generator());
         generators.put("codabar", new CodabarGenerator());
         generators.put("code39", new Code39Generator());
@@ -58,6 +58,7 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
         generators.put("datamatrix", new DataMatrixGenerator());
     }
 
+    @Override
     public void handle(FacesContext context) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         ExternalContext externalContext = context.getExternalContext();

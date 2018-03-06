@@ -261,12 +261,12 @@ public class ComponentUtils {
 
                 if (!uiParam.isDisable()) {
                     if (params == null) {
-                        params = new LinkedHashMap<String, List<String>>();
+                        params = new LinkedHashMap<>();
                     }
 
                     List<String> paramValues = params.get(uiParam.getName());
                     if (paramValues == null) {
-                        paramValues = new ArrayList<String>();
+                        paramValues = new ArrayList<>();
                         params.put(uiParam.getName(), paramValues);
                     }
 

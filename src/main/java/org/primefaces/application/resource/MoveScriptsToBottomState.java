@@ -26,8 +26,8 @@ public class MoveScriptsToBottomState implements Serializable {
     private int savedInlineTags;
 
     public MoveScriptsToBottomState() {
-        includes = new ArrayList<String>(20);
-        inlines = new ArrayList<String>(50);
+        includes = new ArrayList<>(20);
+        inlines = new ArrayList<>(50);
         savedInlineTags = 0;
     }
     
