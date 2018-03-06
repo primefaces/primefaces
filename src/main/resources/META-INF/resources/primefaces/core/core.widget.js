@@ -137,7 +137,8 @@ if (!PrimeFaces.widget) {
             this._super(cfg);
 
             if (this.cfg.appendTo) {
-                PrimeFaces.utils.appendDynamicOverlay(this, this.jq, this.id);
+                this.appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(this);
+                PrimeFaces.utils.appendDynamicOverlay(this, this.jq, this.id, this.appendTo);
             }
         },
 
@@ -145,8 +146,8 @@ if (!PrimeFaces.widget) {
         refresh: function() {
             this._super();
 
-            if (this.cfg.appendTo) {
-                PrimeFaces.utils.removeDynamicOverlay(this, this.jq, this.id);
+            if (this.appendTo) {
+                PrimeFaces.utils.removeDynamicOverlay(this, this.jq, this.id, this.appendTo);
             }
             PrimeFaces.utils.removeDynamicOverlayModal(this.id);
 
@@ -156,8 +157,8 @@ if (!PrimeFaces.widget) {
         destroy: function() {
             this._super();
 
-            if (this.cfg.appendTo) {
-                PrimeFaces.utils.removeDynamicOverlay(this, this.jq, this.id);
+            if (this.appendTo) {
+                PrimeFaces.utils.removeDynamicOverlay(this, this.jq, this.id, this.appendTo);
             }
             PrimeFaces.utils.removeDynamicOverlayModal(this.id);
         },

@@ -9,16 +9,29 @@ if (!PrimeFaces.utils) {
         },
 
         /**
-         * Removes the overlay from the overlay container (in general cfg.appendTo or document.body).
+         * Removes the overlay from the appendTo overlay container.
          */
-        removeDynamicOverlay: function(widget, element, id) {
-            var container = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
-
+        removeDynamicOverlay: function(widget, element, id, appendTo) {
             // if the id contains a ':'
-            container.children(PrimeFaces.escapeClientId(id)).not(element).remove();
+            appendTo.children(PrimeFaces.escapeClientId(id)).not(element).remove();
 
             // if the id does NOT contain a ':'
-            container.children("[id='" + id + "']").not(element).remove();
+            appendTo.children("[id='" + id + "']").not(element).remove();
+        },
+
+        appendDynamicOverlay: function(widget, element, id, appendTo) {
+            var elementParent = element.parent();
+
+            // skip when the parent currently is already the same
+            // this likely happens when the dialog is updated directly instead of a container
+            // as our ajax update mechanism just updates by id
+            if (!elementParent.is(appendTo)
+                    && !appendTo.is(element)) {
+
+                PrimeFaces.utils.removeDynamicOverlay(widget, element, id, appendTo);
+
+                element.appendTo(appendTo);
+            }
         },
 
         addDynamicOverlayModal: function(element, id) {
@@ -36,23 +49,9 @@ if (!PrimeFaces.utils) {
 
             // if the id does NOT contain a ':'
             $(document.body).children("[id='" + modalId + "']").remove();
-        },
-
-        appendDynamicOverlay: function(widget, element, id) {
-            var elementParent = element.parent();
-            var container = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
-
-            // skip when the parent currently is already the same
-            // this likely happens when the dialog is updated directly instead of a container
-            // as our ajax update mechanism just updates by id
-            if (!elementParent.is(container)
-                    && !container.is(element)) {
-
-                PrimeFaces.utils.removeDynamicOverlay(widget, element, id);
-
-                element.appendTo(container);
-            }
         }
+
+
 
 
     };
