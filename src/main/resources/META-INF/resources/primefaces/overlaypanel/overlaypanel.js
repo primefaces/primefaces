@@ -38,7 +38,8 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if(this.cfg.appendToBody) {
-            this.jq.appendTo(document.body);
+            var appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo);;
+            this.jq.appendTo(appendTo);
         }
 
         this.bindCommonEvents();
@@ -277,7 +278,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
             this.jq.css('position', 'fixed');
 
             //append to body if not already appended by user choice
-            if(!this.cfg.appendToBody) {
+            if(!this.cfg.appendTo) {
                 this.jq.appendTo(document.body);
             }
         }
