@@ -34,17 +34,17 @@ if (!PrimeFaces.utils) {
             }
         },
 
-        addDynamicOverlayModal: function(element, id) {
+        addModal: function(id, zIndex) {
             var modalId = id + '_modal';
 
             var modalOverlay = $('<div id="' + modalId + '" class="ui-widget-overlay ui-dialog-mask"></div>');
             modalOverlay.appendTo($(document.body));
-            modalOverlay.css('z-index' , element.css('z-index') - 1);
+            modalOverlay.css('z-index' , zIndex);
 
             return modalOverlay;
         },
 
-        removeDynamicOverlayModal: function(id) {
+        removeModal: function(id) {
             var modalId = id + '_modal';
 
             // if the id contains a ':'
@@ -52,6 +52,13 @@ if (!PrimeFaces.utils) {
 
             // if the id does NOT contain a ':'
             $(document.body).children("[id='" + modalId + "']").remove();
+        },
+
+        isModalActive: function(id) {
+            var modalId = id + '_modal';
+
+            return $(PrimeFaces.escapeClientId(modalId)).length === 1
+                || $(document.body).children("[id='" + modalId + "']").length === 1;
         }
 
     };

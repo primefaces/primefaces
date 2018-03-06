@@ -27,30 +27,31 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         this.links.data('primefaces-lightbox-trigger', true).find('*').data('primefaces-lightbox-trigger', true);
     },
 
+    //@override
     refresh: function(cfg) {
-        $(PrimeFaces.escapeClientId(cfg.id) + '_panel').remove();
+        PrimeFaces.utils.removeDynamicOverlay(this, this.panel, this.id + '_panel', $(document.body));
 
         this.init(cfg);
     },
 
+    //@override
     destroy: function() {
-        this.panel.remove();
+        PrimeFaces.utils.removeDynamicOverlay(this, this.panel, this.id + '_panel', $(document.body));
     },
 
     createPanel: function() {
-        var dom = '<div id="' + this.id + '_panel" class="ui-lightbox ui-widget ui-helper-hidden ui-corner-all ui-shadow">';
-        dom += '<div class="ui-lightbox-content-wrapper">';
-        dom += '<a class="ui-state-default ui-lightbox-nav-left ui-corner-right ui-helper-hidden"><span class="ui-icon ui-icon-carat-1-w">go</span></a>';
-        dom += '<div class="ui-lightbox-content ui-corner-all"></div>';
-        dom += '<a class="ui-state-default ui-lightbox-nav-right ui-corner-left ui-helper-hidden"><span class="ui-icon ui-icon-carat-1-e">go</span></a>';
-        dom += '</div>';
-        dom += '<div class="ui-lightbox-caption ui-widget-header"><span class="ui-lightbox-caption-text"></span>';
-        dom += '<a class="ui-lightbox-close ui-corner-all" href="#"><span class="ui-icon ui-icon-closethick"></span></a><div style="clear:both" /></div>';
-        dom += '</div>';
+        this.panel = $('<div id="' + this.id + '_panel" class="ui-lightbox ui-widget ui-helper-hidden ui-corner-all ui-shadow">'
+            + '<div class="ui-lightbox-content-wrapper">'
+            + '<a class="ui-state-default ui-lightbox-nav-left ui-corner-right ui-helper-hidden"><span class="ui-icon ui-icon-carat-1-w">go</span></a>'
+            + '<div class="ui-lightbox-content ui-corner-all"></div>'
+            + '<a class="ui-state-default ui-lightbox-nav-right ui-corner-left ui-helper-hidden"><span class="ui-icon ui-icon-carat-1-e">go</span></a>'
+            + '</div>'
+            + '<div class="ui-lightbox-caption ui-widget-header"><span class="ui-lightbox-caption-text"></span>'
+            + '<a class="ui-lightbox-close ui-corner-all" href="#"><span class="ui-icon ui-icon-closethick"></span></a><div style="clear:both" /></div>'
+            + '</div>');
 
-        $(document.body).append(dom);
+        this.panel.appendTo($(document.body));
 
-        this.panel = $(this.jqId + '_panel');
         this.contentWrapper = this.panel.children('.ui-lightbox-content-wrapper');
         this.content = this.contentWrapper.children('.ui-lightbox-content');
         this.caption = this.panel.children('.ui-lightbox-caption');
@@ -304,7 +305,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
 
         this.panel.css('z-index', ++PrimeFaces.zindex).show();
 
-        if(!this.isModalActive()) {
+        if(!PrimeFaces.utils.isModalActive(this.id)) {
             this.enableModality();
         }
 
@@ -340,20 +341,11 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
     },
 
     enableModality: function() {
-        $(document.body).append('<div id="' + this.id + '_modal" class="ui-widget-overlay"></div>').
-            children(this.jqId + '_modal').css({
-                'width': $(document).width()
-                ,'height': $(document).height()
-                ,'z-index': this.panel.css('z-index') - 1
-            });
+        PrimeFaces.utils.addModal(this.id, this.panel.css('z-index') - 1);
     },
 
     disableModality: function() {
-        $(document.body).children(this.jqId + '_modal').remove();
-    },
-
-    isModalActive: function() {
-        return $(document.body).children(this.jqId + '_modal').length === 1;
+        PrimeFaces.utils.removeModal(this.id);
     },
 
     showNavigators: function() {

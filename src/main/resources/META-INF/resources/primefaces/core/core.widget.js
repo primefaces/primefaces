@@ -149,7 +149,7 @@ if (!PrimeFaces.widget) {
             if (this.appendTo) {
                 PrimeFaces.utils.removeDynamicOverlay(this, this.jq, this.id, this.appendTo);
             }
-            PrimeFaces.utils.removeDynamicOverlayModal(this.id);
+            PrimeFaces.utils.removeModal(this.id);
 
             this.appendTo = null;
             this.modalOverlay = null;
@@ -162,18 +162,18 @@ if (!PrimeFaces.widget) {
             if (this.appendTo) {
                 PrimeFaces.utils.removeDynamicOverlay(this, this.jq, this.id, this.appendTo);
             }
-            PrimeFaces.utils.removeDynamicOverlayModal(this.id);
+            PrimeFaces.utils.removeModal(this.id);
 
             this.appendTo = null;
             this.modalOverlay = null;
         },
 
         enableModality: function() {
-            this.modalOverlay = PrimeFaces.utils.addDynamicOverlayModal(this.jq, this.id);
+            this.modalOverlay = PrimeFaces.utils.addModal(this.id, this.jq.css('z-index') - 1);
         },
 
         disableModality: function(){
-            PrimeFaces.utils.removeDynamicOverlayModal(this.id);
+            PrimeFaces.utils.removeModal(this.id);
             this.modalOverlay = null;
         }
     });
