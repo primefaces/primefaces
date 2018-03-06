@@ -75,7 +75,7 @@ public class SignatureRenderer extends CoreRenderer {
                 .attr("background", signature.getBackgroundColor(), null)
                 .attr("color", signature.getColor(), null)
                 .attr("thickness", signature.getThickness(), 2)
-                .attr("disabled", signature.isReadonly(), false)
+                .attr("readonly", signature.isReadonly(), false)
                 .attr("guideline", signature.isGuideline(), false)
                 .attr("guidelineColor", signature.getGuidelineColor(), null)
                 .attr("guidelineOffset", signature.getGuidelineOffset(), 25)
