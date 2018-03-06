@@ -35,9 +35,10 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
 
     private final ResourceHandler wrapped;
 
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeResourceHandler(ResourceHandler wrapped) {
         this.wrapped = wrapped;
-        handlers = new HashMap<String, DynamicContentHandler>();
+        handlers = new HashMap<>();
         handlers.put(DynamicContentType.STREAMED_CONTENT.toString(), new StreamedContentHandler());
 
         if (isBarcodeHandlerAvailable()) {

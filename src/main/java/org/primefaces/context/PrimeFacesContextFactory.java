@@ -28,10 +28,12 @@ public class PrimeFacesContextFactory extends FacesContextFactory {
     private FacesContextFactory wrapped;
 
     // #6212 - don't remove it 
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeFacesContextFactory() {
 
     }
 
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeFacesContextFactory(FacesContextFactory wrapped) {
         this.wrapped = wrapped;
     }

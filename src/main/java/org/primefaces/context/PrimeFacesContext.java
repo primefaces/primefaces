@@ -33,6 +33,7 @@ public class PrimeFacesContext extends FacesContextWrapper {
     private MoveScriptsToBottomState moveScriptsToBottomState;
     private PrimeExternalContext externalContext;
 
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeFacesContext(FacesContext wrapped) {
         this.wrapped = wrapped;
 

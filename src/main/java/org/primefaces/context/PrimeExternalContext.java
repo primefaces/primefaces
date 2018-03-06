@@ -27,6 +27,7 @@ public class PrimeExternalContext extends ExternalContextWrapper {
     private ExternalContext wrapped;
     private HttpServletRequest httpServletRequest;
 
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeExternalContext(ExternalContext wrapped) {
         this.wrapped = wrapped;
 

@@ -176,6 +176,8 @@ public class PrimeRequestContext {
 
     /**
      * Returns a boolean indicating whether this request was made using a secure channel, such as HTTPS.
+     *
+     * @return if secure or not.
      */
     public boolean isSecure() {
         Object request = context.getExternalContext().getRequest();
@@ -186,7 +188,7 @@ public class PrimeRequestContext {
         else {
             try {
                 Method method = request.getClass().getDeclaredMethod("isSecure", new Class[0]);
-                return (Boolean) method.invoke(request, null);
+                return (Boolean) method.invoke(request, (Object[]) null);
             }
             catch (Exception e) {
                 return false;

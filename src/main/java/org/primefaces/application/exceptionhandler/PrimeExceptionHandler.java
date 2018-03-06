@@ -54,6 +54,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
     private final ExceptionHandler wrapped;
 
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeExceptionHandler(ExceptionHandler wrapped) {
         this.wrapped = wrapped;
     }
