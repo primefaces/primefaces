@@ -6,7 +6,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
-        this.content = this.jq.children('div.ui-overlaypanel-content')
+        this.content = this.jq.children('div.ui-overlaypanel-content');
 
         //configuration
         this.cfg.my = this.cfg.my||'left top';
