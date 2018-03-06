@@ -67,7 +67,7 @@ import org.primefaces.util.MessageFactory;
     public void validate(FacesContext context) {
         super.validate(context);
         
-        if(!isValid()) {
+        if (!isValid()) {
             return;
         }
 
