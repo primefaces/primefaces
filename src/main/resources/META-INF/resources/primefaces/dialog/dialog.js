@@ -1,7 +1,7 @@
 /**
  * PrimeFaces Dialog Widget
  */
-PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
     init: function(cfg) {
         this._super(cfg);
@@ -43,27 +43,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             this.setupResizable();
         }
 
-        if(this.cfg.appendTo) {
-            this.parent = this.jq.parent();
-            this.targetParent = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo);
-
-            // skip when the parent currently is already the same
-            // this likely happens when the dialog is updated directly instead of a container
-            // as our ajax update mechanism just updates by id
-            if (!this.parent.is(this.targetParent)) {
-                this.jq.appendTo(this.targetParent);
-            }
-        }
-
         //docking zone
         if($(document.body).children('.ui-dialog-docking-zone').length === 0) {
             $(document.body).append('<div class="ui-dialog-docking-zone"></div>');
-        }
-
-        //remove related modality if there is one
-        var modal = $(this.jqId + '_modal');
-        if(modal.length > 0) {
-            modal.remove();
         }
 
         //aria
@@ -84,13 +66,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.loaded = false;
 
         $(document).off('keydown.dialog_' + cfg.id);
-
-        if(cfg.appendTo) {
-            var jqs = $('[id=' + cfg.id.replace(/:/g,"\\:") + ']');
-            if(jqs.length > 1) {
-            	PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.appendTo).children(this.jqId).remove();
-            }
-        }
 
         if(this.minimized) {
             var dockingZone = $(document.body).children('.ui-dialog-docking-zone');
@@ -141,12 +116,12 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.content.css('max-height', maxHeight + 'px');
     },
 
+    //@override
     enableModality: function() {
+        this._super();
+
         var $this = this,
         doc = $(document);
-
-        $(document.body).append('<div id="' + this.id + '_modal" class="ui-widget-overlay ui-dialog-mask"></div>')
-                        .children(this.jqId + '_modal').css('z-index' , this.jq.css('z-index') - 1);
 
         //Disable tabbing out of modal dialog and stop events from targets outside of dialog
         doc.on('keydown.' + this.id,
@@ -199,8 +174,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
                 });
     },
 
+    //@override
     disableModality: function(){
-        $(document.body).children(this.jqId + '_modal').remove();
+        this._super();
+
         $(document).off(this.blockEvents).off('keydown.' + this.id);
     },
 
