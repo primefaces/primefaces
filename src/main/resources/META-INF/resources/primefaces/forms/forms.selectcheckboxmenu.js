@@ -322,7 +322,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             PrimeFaces.clearSelection();
         });
 
-        PrimeFaces.utils.hideOverlay('mousedown.' + this.id, $this.panel,
+        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id, $this.panel,
             function() { return $this.triggers; },
             function(e) { $this.hide(true); });
 

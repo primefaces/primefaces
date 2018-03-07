@@ -120,14 +120,20 @@ if (!PrimeFaces.utils) {
 
 
         /**
-         * Registers the document.body handler, to execute the hideCallback when it's clicked outside of the overlay panel.
+         * Registers the document handler, to execute the hideCallback when it's clicked outside of the overlay panel.
          *
+         * @param {type} widget the widget instance
          * @param {type} hideNamespace the namespace
          * @param {type} overlay the overlay $element
          * @param {type} resolveIgnoredElementsCallback the callback which resolves the elements to ignore when clicked
          * @param {type} hideCallback will be executed when clicked outside
          */
-        hideOverlay: function(hideNamespace, overlay, resolveIgnoredElementsCallback, hideCallback) {
+        registerHideOverlayHandler: function(widget, hideNamespace, overlay, resolveIgnoredElementsCallback, hideCallback) {
+
+            widget.destroyListeners.push(function() {
+                $(document).off(hideNamespace);
+            });
+
             $(document).off(hideNamespace).on(hideNamespace, function (e) {
                 if (overlay.is(":hidden")) {
                     return;

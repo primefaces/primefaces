@@ -63,7 +63,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         //hide overlay on document click
         this.itemMouseDown = false;
 
-        PrimeFaces.utils.hideOverlay('mousedown.' + this.id, $this.jq,
+        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id, $this.jq,
             function() { return $this.trigger; },
             function(e) {
                 var $eventTarget = $(e.target);

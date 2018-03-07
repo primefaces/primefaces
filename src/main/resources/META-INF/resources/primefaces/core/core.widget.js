@@ -71,6 +71,8 @@ if (!PrimeFaces.widget) {
      */
     PrimeFaces.widget.BaseWidget = Class.extend({
 
+        destroyListeners : [],
+
         init: function(cfg) {
             this.cfg = cfg;
             this.id = cfg.id;
@@ -84,21 +86,26 @@ if (!PrimeFaces.widget) {
             if (this.widgetVar) {
                 var $this = this;
                 this.jq.on("remove", function() {
-                    if ($this.isDetached()) {
-                        PrimeFaces.detachedWidgets.push($this.widgetVar);
-                    }
+                    PrimeFaces.detachedWidgets.push($this.widgetVar);
                 });
             }
         },
 
         //used in ajax updates, reloads the widget configuration
         refresh: function(cfg) {
+            this.destroyListeners = [];
+
             return this.init(cfg);
         },
 
         //will be called when the widget after a ajax request if the widget is detached
         destroy: function() {
             PrimeFaces.debug("Destroyed detached widget: " + this.widgetVar);
+
+            for (var i = 0; i < this.destroyListeners.length; i++) {
+                var destroyListener = this.destroyListeners[i];
+                destroyListener(this);
+            }
         },
 
         //checks if the given widget is detached
