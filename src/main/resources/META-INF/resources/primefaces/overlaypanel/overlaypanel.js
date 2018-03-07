@@ -316,7 +316,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         var tabbables = this.jq.find(':tabbable');
 
         if (this.targetElement && this.targetElement.is(':tabbable')) {
-            tabbables.add(this.targetElement);
+            tabbables = tabbables.add(this.targetElement);
         }
 
         return tabbables;
