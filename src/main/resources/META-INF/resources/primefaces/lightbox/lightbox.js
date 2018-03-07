@@ -23,8 +23,6 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.visible) {
             this.links.eq(0).click();
         }
-
-        this.links.data('primefaces-lightbox-trigger', true).find('*').data('primefaces-lightbox-trigger', true);
     },
 
     //@override
@@ -57,7 +55,6 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         this.caption = this.panel.children('.ui-lightbox-caption');
         this.captionText = this.caption.children('.ui-lightbox-caption-text');
         this.closeIcon = this.caption.children('.ui-lightbox-close');
-        this.closeIcon.data('primefaces-lightbox-trigger', true).find('*').data('primefaces-lightbox-trigger', true);
     },
 
     setupImaging: function() {
@@ -240,7 +237,6 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
 
     bindCommonEvents: function() {
         var $this = this,
-        hideNS = PrimeFaces.env.ios ? 'touchstart.' + this.id: 'click.' + this.id,
         resizeNS = 'resize.' + this.id;
 
         this.closeIcon.mouseover(function() {
@@ -255,39 +251,12 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
             e.preventDefault();
         });
 
-        //hide when outside is clicked
-        $(document.body).off(hideNS).on(hideNS, function (e) {
-            if($this.isHidden()) {
-                return;
-            }
-
-            //do nothing if target is the link
-            var target = $(e.target);
-            if(target.data('primefaces-lightbox-trigger')) {
-                return;
-            }
-
-            //hide if mouse is outside of lightbox
-            var offset = $this.panel.offset(),
-            pageX, pageY;
-
-            if(e.originalEvent && e.originalEvent.touches) {
-                pageX = e.originalEvent.touches[0].pageX;
-                pageY = e.originalEvent.touches[0].pageY;
-            } else {
-                pageX = e.pageX;
-                pageY = e.pageY;
-            }
-
-            if(pageX < offset.left ||
-                pageX > offset.left + $this.panel.width() ||
-                pageY < offset.top ||
-                pageY > offset.top + $this.panel.height()) {
-
+        PrimeFaces.utils.hideOverlay(PrimeFaces.env.ios ? 'touchstart.' + this.id: 'click.' + this.id, $this.panel,
+            function() { return $this.links.add($this.closeIcon); },
+            function(e) {
                 e.preventDefault();
                 $this.hide();
-            }
-        });
+            });
 
         //sync window resize
         $(window).off(resizeNS).on(resizeNS, function() {

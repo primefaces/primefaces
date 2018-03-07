@@ -126,30 +126,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         //hide overlay when mousedown is at outside of overlay
         if(this.cfg.dismissable && !this.cfg.modal) {
-            var hideNS = 'mousedown.' + this.id;
-            $(document.body).off(hideNS).on(hideNS, function (e) {
-                if($this.jq.hasClass('ui-overlay-hidden')) {
-                    return;
-                }
-
-                //do nothing on target mousedown
-                if($this.target) {
-                    var target = $(e.target);
-                    if($this.target.is(target)||$this.target.has(target).length > 0) {
-                        return;
-                    }
-                }
-
-                //hide overlay if mousedown is on outside
-                var offset = $this.jq.offset();
-                if(e.pageX < offset.left ||
-                    e.pageX > offset.left + $this.jq.outerWidth() ||
-                    e.pageY < offset.top ||
-                    e.pageY > offset.top + $this.jq.outerHeight()) {
-
-                    $this.hide();
-                }
-            });
+            PrimeFaces.utils.hideOverlay('mousedown.' + this.id, $this.jq,
+                function() { return $this.target; },
+                function(e) { $this.hide(); });
         }
 
         //Hide overlay on resize

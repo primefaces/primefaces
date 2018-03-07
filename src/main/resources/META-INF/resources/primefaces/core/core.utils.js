@@ -132,9 +132,20 @@ if (!PrimeFaces.utils) {
                 }
 
                 // don't hide the panel when the clicked item is child of the overlay
+                // we just check if the clicked element is a children of the overlay
                 if (overlay.has($eventTarget).length == 0) {
+                    hideCallback(e);
+                }
+                // in the past we did something like:
+                /*
+                var offset = overlay.offset();
+                if(e.pageX < offset.left ||
+                    e.pageX > offset.left + overlay.width() ||
+                    e.pageY < offset.top ||
+                    e.pageY > offset.top + overlay.height()) {
                     hideCallback();
                 }
+                */
             });
         }
 

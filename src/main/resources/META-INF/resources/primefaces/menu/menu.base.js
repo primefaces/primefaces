@@ -12,9 +12,9 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
 
     initOverlay: function() {
         var $this = this;
-        
+
         this.jq.addClass('ui-menu-overlay');
-        
+
         this.cfg.trigger = this.cfg.trigger.replace(/\\\\:/g,"\\:");
 
         this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.trigger);
@@ -62,31 +62,18 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
 
         //hide overlay on document click
         this.itemMouseDown = false;
-        var hideNS = 'mousedown.' + this.id;
-        $(document.body).off(hideNS).on(hideNS, function (e) {
-            if($this.jq.is(":hidden")) {
-                return;
-            }
 
-            //do nothing if mousedown is on trigger
-            var target = $(e.target);
-            if(target.is($this.trigger.get(0))||$this.trigger.has(target).length > 0) {
-                return;
-            }
-
-            //hide if mouse is outside of overlay except trigger
-            var offset = $this.jq.offset();
-            if(e.pageX < offset.left ||
-                e.pageX > offset.left + $this.jq.width() ||
-                e.pageY < offset.top ||
-                e.pageY > offset.top + $this.jq.height()) {
-
-                if(target.is('.ui-menuitem-link') || target.closest('.ui-menuitem-link').length)
+        PrimeFaces.utils.hideOverlay('mousedown.' + this.id, $this.jq,
+            function() { return $this.trigger; },
+            function(e) {
+                var $eventTarget = $(e.target);
+                if ($eventTarget.is('.ui-menuitem-link') || $eventTarget.closest('.ui-menuitem-link').length) {
                     $this.itemMouseDown = true;
-                else
+                }
+                else {
                     $this.hide(e);
-            }
-        });
+                }
+            });
 
         var hideUpNS = 'mouseup.' + this.id;
         $(document.body).off(hideUpNS).on(hideUpNS, function (e) {

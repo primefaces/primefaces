@@ -160,7 +160,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.utils.hideOverlay('mousedown.' + this.id, $this.panel,
             function() { return $this.itemtip; },
-            function() { $this.hide(); });
+            function(e) { $this.hide(); });
 
         this.resizeNS = 'resize.' + this.id;
         $(window).off(this.resizeNS).on(this.resizeNS, function(e) {

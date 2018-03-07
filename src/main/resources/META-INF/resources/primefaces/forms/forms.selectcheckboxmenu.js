@@ -324,7 +324,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.utils.hideOverlay('mousedown.' + this.id, $this.panel,
             function() { return $this.triggers; },
-            function() { $this.hide(true); });
+            function(e) { $this.hide(true); });
 
         //Realign overlay on resize
         $(window).off(resizeNS).on(resizeNS, function() {

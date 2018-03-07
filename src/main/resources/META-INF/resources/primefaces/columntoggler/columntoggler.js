@@ -145,7 +145,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
         PrimeFaces.utils.hideOverlay('mousedown.' + this.id, $this.panel,
             null,
-            function() { $this.hide(); });
+            function(e) { $this.hide(); });
 
         //Realign overlay on resize
         $(window).off(resizeNS).on(resizeNS, function() {

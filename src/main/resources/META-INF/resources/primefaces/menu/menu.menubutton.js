@@ -113,33 +113,14 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        /**
-        * handler for document mousedown to hide the overlay
-        **/
-        var hideNS = 'mousedown.' + this.id;
-        $(document.body).off(hideNS).on(hideNS, function (e) {
-            //do nothing if hidden already
-            if($this.menu.is(":hidden") || $this.cfg.disabled) {
-                return;
-            }
-
-            //do nothing if mouse is on button
-            var target = $(e.target);
-            if(target.is($this.button)||$this.button.has(target).length > 0) {
-                return;
-            }
-
-            //hide overlay if mouse is outside of overlay except button
-            var offset = $this.menu.offset();
-            if(e.pageX < offset.left ||
-                e.pageX > offset.left + $this.menu.width() ||
-                e.pageY < offset.top ||
-                e.pageY > offset.top + $this.menu.height()) {
-
-                $this.button.removeClass('ui-state-focus ui-state-hover');
-                $this.hide();
-            }
-        });
+        if (!$this.cfg.disabled) {
+            PrimeFaces.utils.hideOverlay('mousedown.' + this.id, $this.menu,
+                function() { return $this.button; },
+                function(e) {
+                    $this.button.removeClass('ui-state-focus ui-state-hover');
+                    $this.hide();
+                });
+        }
 
         //Realign overlay on window resize
         var resizeNS = 'resize.' + this.id;

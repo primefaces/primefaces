@@ -112,24 +112,11 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        var hideNS = 'mousedown.' + this.id;
-        $(document.body).off(hideNS).on(hideNS, function (e) {
-            //do nothing if hidden already
-            if($this.menu.is(":hidden")) {
-                return;
-            }
-
-            //hide overlay if mouse is outside of overlay except button
-            var offset = $this.menu.offset();
-            if(e.pageX < offset.left ||
-                e.pageX > offset.left + $this.menu.width() ||
-                e.pageY < offset.top ||
-                e.pageY > offset.top + $this.menu.height()) {
-
+        PrimeFaces.utils.hideOverlay('mousedown.' + this.id, $this.menu, null,
+            function(e) {
                 $this.button.removeClass('ui-state-focus ui-state-hover');
                 $this.hide();
-            }
-        });
+            });
 
         var resizeNS = 'resize.' + this.id;
         $(window).off(resizeNS).on(resizeNS, function() {
