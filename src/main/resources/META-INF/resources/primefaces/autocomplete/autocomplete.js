@@ -371,6 +371,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         if($this.cfg.queryEvent === 'enter' || ($this.timeout > 0) || $this.querying) {
                             e.preventDefault();
                         }
+                        
+                        if($this.cfg.queryEvent !== 'enter') {
+                            $this.isValid($(this).val());
+                        }
                     break;
 
                     case keyCode.BACKSPACE:
@@ -809,25 +813,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         this.input.blur(function() {
             var value = $(this).val(),
-            valid = false;
-
-            for(var i = 0; i < $this.currentItems.length; i++) {
-                var stripedItem = $this.currentItems[i];
-                if (stripedItem) {
-                    stripedItem = stripedItem.replace(/\r?\n/g, '');
-                }
-                if(stripedItem === value) {
-                    valid = true;
-                    break;
-                }
-            }
-
-            if(!valid) {
-                $this.input.val('');
-                if(!$this.cfg.multiple) {
-                    $this.hinput.val('');
-                }
-            }
+            valid = $this.isValid(value);
             
             if($this.cfg.autoSelection && valid && $this.checkMatchedItem && $this.items && !$this.isTabPressed && !$this.itemSelectedWithEnter) {
                 var selectedItem = $this.items.filter('[data-item-label="' + value + '"]');
@@ -983,6 +969,35 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             
             clearBehavior.call(this);
         }
+    },
+    
+    isValid: function(value) {
+        if(!this.cfg.forceSelection) {
+            return;
+        }
+        
+        var valid = false;
+
+        for(var i = 0; i < this.currentItems.length; i++) {
+            var stripedItem = this.currentItems[i];
+            if (stripedItem) {
+                stripedItem = stripedItem.replace(/\r?\n/g, '');
+            }
+
+            if(stripedItem === value) {
+                valid = true;
+                break;
+            }
+        }
+
+        if(!valid) {
+            this.input.val('');
+            if(!this.cfg.multiple) {
+                this.hinput.val('');
+            }
+        }
+        
+        return valid;
     }
 
 });
