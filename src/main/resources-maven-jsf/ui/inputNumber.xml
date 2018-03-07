@@ -68,7 +68,7 @@
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue></defaultValue>
-            <description>Minimum values. Default is 0.00.</description>
+            <description>Minimum value. Warning: If minValue is greater than 0, then you will effectively prevent your users to entirely delete the content of their input.</description>
         </attribute>
         <attribute>
             <name>maxValue</name>

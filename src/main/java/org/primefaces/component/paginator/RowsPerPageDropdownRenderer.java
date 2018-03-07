@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
             String labelId = null;
 
             if (label != null) {
-                labelId = clientId + "_rppLabel";
+                labelId = ddId + "_rppLabel";
 
                 writer.startElement("label", null);
                 writer.writeAttribute("id", labelId, null);

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ public class PhotoCamRenderer extends CoreRenderer {
         String camera = getResourceRequestPath(context, "photocam/webcam.swf");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("PhotoCam", cam.resolveWidgetVar(), clientId)
+        wb.init("PhotoCam", cam.resolveWidgetVar(), clientId)
                 .attr("camera", camera)
                 .attr("width", cam.getWidth(), 320)
                 .attr("height", cam.getHeight(), 240)

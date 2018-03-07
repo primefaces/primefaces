@@ -12,12 +12,6 @@ a {
     outline: none;
 }
 
-.ui-icon {
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-}
-
 /*
  * jQuery UI CSS Framework @VERSION
  *
@@ -1334,4 +1328,16 @@ a {
 .ui-inputgroup .ui-button:last-child {
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
+}
+
+/* Tooltip */
+.ui-tooltip .ui-tooltip-text.ui-state-error {
+    border: 0 none;
+    background-color: #f2dede;
+    color: #cd0a0a;
+}
+
+.ui-tooltip .ui-tooltip-arrow.ui-state-error {
+    background: none;
+    border-right-color: #cd0a0a;
 }

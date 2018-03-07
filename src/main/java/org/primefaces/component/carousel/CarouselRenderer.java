@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ public class CarouselRenderer extends CoreRenderer {
     private void encodeScript(FacesContext context, Carousel carousel) throws IOException {
         String clientId = carousel.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Carousel", carousel.resolveWidgetVar(), clientId);
+        wb.init("Carousel", carousel.resolveWidgetVar(), clientId);
 
         wb.attr("firstVisible", carousel.getFirstVisible(), 0)
                 .attr("circular", carousel.isCircular(), false)

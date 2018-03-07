@@ -286,20 +286,21 @@ if (!PrimeFaces.ajax) {
                 }
                 if (sourceElement.is(':input') && sourceElement.is(':not(:button)')) {
                     earlyPostParams = [];
-                    earlyPostParams.push({
-                        name: sourceElement.attr('name'),
-                        value: sourceElement.is(':checkbox') ? sourceElement.is(':checked') : sourceElement.val()
-                    });
+
+                    if (sourceElement.is(':checkbox')) {
+                        var checkboxPostParams = $("input[name='" + sourceElement.attr('name') + "']")
+                                .filter(':checked').serializeArray();
+                        $.merge(earlyPostParams, checkboxPostParams);
+                    }
+                    else {
+                        earlyPostParams.push({
+                            name: sourceElement.attr('name'),
+                            value: sourceElement.val()
+                        });
+                    }
                 }
                 else {
-                    earlyPostParams = sourceElement.find(':input').serializeArray();
-                    // jQuery doesn't add unchecked checkboxes
-                    earlyPostParams = earlyPostParams.concat(
-                        sourceElement.find('input[type=checkbox]:not(:checked)').map(function() {
-                            var $this = $(this);
-                            return { 'name': $this.attr('name'), 'value': $this.is(':checked') };
-                        }).get()
-                    );
+                    earlyPostParams = sourceElement.serializeArray();
                 }
 
                 return earlyPostParams;
@@ -532,8 +533,15 @@ if (!PrimeFaces.ajax) {
                         if(global) {
                             $(document).trigger('pfAjaxSend', [xhr, this]);
                         }
-                    },
-                    fail: function(xhr, status, errorThrown) {
+                    }
+                };
+
+                if (cfg.timeout) {
+                    xhrOptions['timeout'] = cfg.timeout;
+                }
+
+                var jqXhr = $.ajax(xhrOptions)
+                    .fail(function(xhr, status, errorThrown) {
                         if(cfg.onerror) {
                             cfg.onerror.call(this, xhr, status, errorThrown);
                         }
@@ -541,13 +549,11 @@ if (!PrimeFaces.ajax) {
                             cfg.ext.onerror.call(this, xhr, status, errorThrown);
                         }
 
-                        if(global) {
-                            $(document).trigger('pfAjaxError', [xhr, this, errorThrown]);
-                        }
+                        $(document).trigger('pfAjaxError', [xhr, this, errorThrown]);
 
                         PrimeFaces.error('Request return with error:' + status + '.');
-                    },
-                    done: function(data, status, xhr) {
+                    })
+                    .done(function(data, status, xhr) {
                         PrimeFaces.debug('Response received succesfully.');
 
                         try {
@@ -575,14 +581,13 @@ if (!PrimeFaces.ajax) {
                                 PrimeFaces.ajax.Response.handle(data, status, xhr);
                             }
                         }
-                        catch(err) { 
+                        catch(err) {
                             PrimeFaces.error(err);
                         }
-                        
-                        PrimeFaces.debug('DOM is updated.');
-                    },
-                    always: function(xhr, status) {
 
+                        PrimeFaces.debug('DOM is updated.');
+                    })
+                    .always(function(data, status, xhr) {
                         // first call the extension callback (e.g. datatable paging)
                         if(cfg.ext && cfg.ext.oncomplete) {
                             cfg.ext.oncomplete.call(this, xhr, status, xhr.pfArgs);
@@ -604,19 +609,9 @@ if (!PrimeFaces.ajax) {
                         if(!cfg.async && !PrimeFaces.nonAjaxPosted) {
                             PrimeFaces.ajax.Queue.poll();
                         }
-                    }
-                };
+                    });
 
-                // TODO remove when updating to jQuery 3
-                xhrOptions.success = xhrOptions.done;
-                xhrOptions.error = xhrOptions.fail;
-                xhrOptions.complete = xhrOptions.always;
-
-                if (cfg.timeout) {
-                    xhrOptions['timeout'] = cfg.timeout;
-                }
-
-                PrimeFaces.ajax.Queue.addXHR($.ajax(xhrOptions));
+                PrimeFaces.ajax.Queue.addXHR(jqXhr);
             },
 
             resolveExpressionsForAjaxCall: function(cfg, type) {
@@ -843,13 +838,13 @@ if (!PrimeFaces.ajax) {
                         // the other parameters will be encoded on document end
                         // --> see PrimePartialResponseWriter
                         if (xhr.pfArgs) {
-                            var json = $.parseJSON(textContent);
+                            var json = JSON.parse(textContent);
                             for (var name in json) {
                                 xhr.pfArgs[name] = json[name];
                             }
                         }
                         else {
-                            xhr.pfArgs = $.parseJSON(textContent);
+                            xhr.pfArgs = JSON.parse(textContent);
                         }
                     }
                 }

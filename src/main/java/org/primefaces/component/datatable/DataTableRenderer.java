@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -132,6 +132,14 @@ public class DataTableRenderer extends DataRenderer {
             if (table.isLiveScroll()) {
                 table.loadLazyScrollData(0, table.getScrollRows());
             }
+            else if (table.isVirtualScroll()) {
+                int rows = table.getRows();
+                int scrollRows = table.getScrollRows();
+                int virtualScrollRows = (scrollRows * 2);
+                scrollRows = (rows == 0) ? virtualScrollRows : ((virtualScrollRows > rows) ? rows : virtualScrollRows);
+                
+                table.loadLazyScrollData(0, scrollRows);
+            }
             else {
                 table.loadLazyData();
             }
@@ -210,7 +218,7 @@ public class DataTableRenderer extends DataRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (initMode.equals("load")) {
-            wb.initWithDomReady(widgetClass, table.resolveWidgetVar(), clientId);
+            wb.init(widgetClass, table.resolveWidgetVar(), clientId);
         }
         else if (initMode.equals("immediate")) {
             wb.init(widgetClass, table.resolveWidgetVar(), clientId);
@@ -289,6 +297,7 @@ public class DataTableRenderer extends DataRenderer {
                 .attr("reflow", table.isReflow(), false)
                 .attr("rowHover", table.isRowHover(), false)
                 .attr("clientCache", table.isClientCache(), false)
+                .attr("multiViewState", table.isMultiViewState(), false)
                 .nativeAttr("groupColumnIndexes", table.getGroupedColumnIndexes(), null)
                 .callback("onRowClick", "function(row)", table.getOnRowClick());
 
@@ -305,20 +314,31 @@ public class DataTableRenderer extends DataRenderer {
         String clientId = table.getClientId(context);
         boolean scrollable = table.isScrollable();
         boolean hasPaginator = table.isPaginator();
+        boolean resizable = table.isResizableColumns();
         String style = table.getStyle();
         String paginatorPosition = table.getPaginatorPosition();
         int frozenColumns = table.getFrozenColumns();
         boolean hasFrozenColumns = (frozenColumns != 0);
+        String summary = table.getSummary();
 
         //style class
         String containerClass = scrollable ? DataTable.CONTAINER_CLASS + " " + DataTable.SCROLLABLE_CONTAINER_CLASS : DataTable.CONTAINER_CLASS;
         containerClass = table.getStyleClass() != null ? containerClass + " " + table.getStyleClass() : containerClass;
-        if (table.isResizableColumns()) containerClass = containerClass + " " + DataTable.RESIZABLE_CONTAINER_CLASS;
+        if (resizable) containerClass = containerClass + " " + DataTable.RESIZABLE_CONTAINER_CLASS;
         if (table.isStickyHeader()) containerClass = containerClass + " " + DataTable.STICKY_HEADER_CLASS;
         if (ComponentUtils.isRTL(context, table)) containerClass = containerClass + " " + DataTable.RTL_CLASS;
         if (table.isReflow()) containerClass = containerClass + " " + DataTable.REFLOW_CLASS;
         if (hasFrozenColumns) containerClass = containerClass + " ui-datatable-frozencolumn";
 
+        //aria
+        if (summary != null) {
+            writer.startElement("span", null);
+            writer.writeAttribute("id", clientId + "_summary", null);
+            writer.writeAttribute("class", "ui-datatable-summary", null);
+            writer.writeText(summary, null);
+            writer.endElement("span");
+        }
+        
         writer.startElement("div", table);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", containerClass, "styleClass");
@@ -360,6 +380,10 @@ public class DataTableRenderer extends DataRenderer {
         if (scrollable) {
             encodeStateHolder(context, table, table.getClientId(context) + "_scrollState", table.getScrollState());
         }
+        
+        if (resizable && table.isMultiViewState()) {
+            encodeStateHolder(context, table, table.getClientId(context) + "_resizableColumnState", table.getResizableColumnsAsString());
+        }
 
         writer.endElement("div");
     }
@@ -370,11 +394,34 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", DataTable.TABLE_WRAPPER_CLASS, null);
 
+        String tableStyle = table.getTableStyle();
+
+        if (table.isMultiViewState() && table.isResizableColumns()) {
+            Map<String, String> resizableColsMap = table.getResizableColumnsMap();
+            String width = resizableColsMap.get(table.getClientId(context) + "_tableWidthState");
+            
+            if (width != null) {
+                if (tableStyle != null) {
+                    tableStyle = tableStyle + ";width:" + width + "px";
+                }
+                else {
+                    tableStyle = "width:" + width + "px";
+                }
+            }
+        }
+        
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
-        if (table.getTableStyle() != null) writer.writeAttribute("style", table.getTableStyle(), null);
+        if (tableStyle != null) writer.writeAttribute("style", tableStyle, null);
         if (table.getTableStyleClass() != null) writer.writeAttribute("class", table.getTableStyleClass(), null);
-        if (table.getSummary() != null) writer.writeAttribute("summary", table.getSummary(), null);
+        
+        String summary = table.getSummary();
+        String clientId = table.getClientId(context);
+        
+        if (summary != null) {
+            writer.writeAttribute("summary", summary, null);
+            writer.writeAttribute("aria-describedby", clientId + "_summary", null);
+        }
 
         encodeThead(context, table);
         encodeTFoot(context, table);
@@ -571,12 +618,18 @@ public class DataTableRenderer extends DataRenderer {
         boolean resizable = table.isResizableColumns() && column.isResizable();
         int priority = column.getPriority();
 
+        boolean isColVisible = column.isVisible();
+        if (table.isMultiViewState()) {
+            Map<String, Boolean> togglableColsMap = table.getTogglableColumnsMap();
+            isColVisible = togglableColsMap.get(clientId) == null ? isColVisible : togglableColsMap.get(clientId);
+        }
+        
         String columnClass = sortable ? DataTable.COLUMN_HEADER_CLASS + " " + DataTable.SORTABLE_COLUMN_CLASS : DataTable.COLUMN_HEADER_CLASS;
         columnClass = filterable ? columnClass + " " + DataTable.FILTER_COLUMN_CLASS : columnClass;
         columnClass = selectionMode != null ? columnClass + " " + DataTable.SELECTION_COLUMN_CLASS : columnClass;
         columnClass = resizable ? columnClass + " " + DataTable.RESIZABLE_COLUMN_CLASS : columnClass;
         columnClass = !column.isToggleable() ? columnClass + " " + DataTable.STATIC_COLUMN_CLASS : columnClass;
-        columnClass = !column.isVisible() ? columnClass + " " + DataTable.HIDDEN_COLUMN_CLASS : columnClass;
+        columnClass = !isColVisible ? columnClass + " " + DataTable.HIDDEN_COLUMN_CLASS : columnClass;
         columnClass = column.getStyleClass() != null ? columnClass + " " + column.getStyleClass() : columnClass;
 
         if (priority > 0) {
@@ -617,6 +670,12 @@ public class DataTableRenderer extends DataRenderer {
 
         String style = column.getStyle();
         String width = column.getWidth();
+        
+        if (table.isMultiViewState() && resizable) {
+            Map<String, String> resizableColsMap = table.getResizableColumnsMap();
+            width = resizableColsMap.get(clientId) == null ? width : resizableColsMap.get(clientId);
+        }
+        
         if (width != null) {
             String unit = width.endsWith("%") ? "" : "px";
             if (style != null) {
@@ -628,8 +687,9 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         String ariaHeaderLabel = getHeaderLabel(context, column);
-
-        writer.startElement("th", null);
+        UIComponent component = (column instanceof UIComponent) ? (UIComponent) column : null;
+        
+        writer.startElement("th", component);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", columnClass, null);
         writer.writeAttribute("role", "columnheader", null);
@@ -879,13 +939,20 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
+        String clientId = column.getContainerClientId(context);
 
         int priority = column.getPriority();
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
         styleClass = styleClass == null ? DataTable.COLUMN_FOOTER_CLASS : DataTable.COLUMN_FOOTER_CLASS + " " + styleClass;
 
-        if (!column.isVisible()) {
+        boolean isColVisible = column.isVisible();
+        if (table.isMultiViewState()) {
+            Map<String, Boolean> togglableColsMap = table.getTogglableColumnsMap();
+            isColVisible = togglableColsMap.get(clientId) == null ? isColVisible : togglableColsMap.get(clientId);
+        }
+        
+        if (!isColVisible) {
             styleClass = styleClass + " " + DataTable.HIDDEN_COLUMN_CLASS;
         }
 
@@ -1243,6 +1310,15 @@ public class DataTableRenderer extends DataRenderer {
         if (!column.isRendered()) {
             return;
         }
+        
+        boolean isColVisible = column.isVisible();
+        if (table.isMultiViewState()) {
+            Map<String, Boolean> togglableColsMap = table.getTogglableColumnsMap();
+            String colClientId = column.getContainerClientId(context);
+            char separatorChar = UINamingContainer.getSeparatorChar(context);
+            String colHeaderClientId = clientId + colClientId.substring(colClientId.lastIndexOf(separatorChar), colClientId.length());
+            isColVisible = togglableColsMap.get(colHeaderClientId) == null ? isColVisible : togglableColsMap.get(colHeaderClientId);
+        }
 
         ResponseWriter writer = context.getResponseWriter();
         boolean selectionEnabled = column.getSelectionMode() != null;
@@ -1256,7 +1332,7 @@ public class DataTableRenderer extends DataRenderer {
         styleClass = (column.isSelectRow())
                 ? styleClass
                 : (styleClass == null) ? DataTable.UNSELECTABLE_COLUMN_CLASS : styleClass + " " + DataTable.UNSELECTABLE_COLUMN_CLASS;
-        styleClass = (column.isVisible())
+        styleClass = (isColVisible)
                 ? styleClass
                 : (styleClass == null) ? DataTable.HIDDEN_COLUMN_CLASS : styleClass + " " + DataTable.HIDDEN_COLUMN_CLASS;
         String userStyleClass = column.getStyleClass();

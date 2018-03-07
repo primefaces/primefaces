@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.api.InputHolder;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.UINotificationRenderer;
@@ -63,7 +63,7 @@ public class MessageRenderer extends UINotificationRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("data-display", display, null);
             writer.writeAttribute("data-target", targetClientId, null);
             writer.writeAttribute("data-redisplay", String.valueOf(uiMessage.isRedisplay()), null);
@@ -158,7 +158,7 @@ public class MessageRenderer extends UINotificationRenderer {
             String targetClientId = (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
             WidgetBuilder wb = getWidgetBuilder(context);
 
-            wb.initWithDomReady("Message", uiMessage.resolveWidgetVar(), clientId)
+            wb.init("Message", uiMessage.resolveWidgetVar(), clientId)
                     .attr("target", targetClientId)
                     .finish();
         }

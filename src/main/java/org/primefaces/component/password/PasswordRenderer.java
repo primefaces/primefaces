@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -58,7 +58,7 @@ public class PasswordRenderer extends InputRenderer {
         String clientId = password.getClientId(context);
         boolean feedback = password.isFeedback();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Password", password.resolveWidgetVar(), clientId);
+        wb.init("Password", password.resolveWidgetVar(), clientId);
 
         if (feedback) {
             wb.attr("feedback", true)
@@ -103,7 +103,7 @@ public class PasswordRenderer extends InputRenderer {
         if (password.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
         if (password.isRequired()) writer.writeAttribute("aria-required", "true", null);
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, password);
         }
 

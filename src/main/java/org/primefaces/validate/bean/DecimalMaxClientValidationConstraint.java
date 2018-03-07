@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,9 @@ public class DecimalMaxClientValidationConstraint implements ClientValidationCon
     private static final String MESSAGE_METADATA = "data-p-decimalmax-msg";
     private static final String MESSAGE_ID = "{javax.validation.constraints.DecimalMax.message}";
 
+    @Override
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
-        Map<String, Object> metadata = new HashMap<String, Object>();
+        Map<String, Object> metadata = new HashMap<>();
         Map attrs = constraintDescriptor.getAttributes();
         Object message = attrs.get(ATTR_MESSAGE);
 
@@ -40,6 +41,7 @@ public class DecimalMaxClientValidationConstraint implements ClientValidationCon
         return metadata;
     }
 
+    @Override
     public String getValidatorId() {
         return DecimalMax.class.getSimpleName();
     }

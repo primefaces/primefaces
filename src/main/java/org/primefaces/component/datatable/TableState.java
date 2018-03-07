@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,6 +48,12 @@ public class TableState implements Serializable {
     private List<FilterState> filters;
 
     private String globalFilterValue;
+    
+    private String orderedColumnsAsString;
+    
+    private String togglableColumnsAsString;
+    
+    private String resizableColumnsAsString;
 
     public int getFirst() {
         return first;
@@ -151,5 +157,29 @@ public class TableState implements Serializable {
 
     public void setGlobalFilterValue(String globalFilterValue) {
         this.globalFilterValue = globalFilterValue;
+    }
+    
+    public String getOrderedColumnsAsString() {
+        return orderedColumnsAsString;
+    }
+
+    public void setOrderedColumnsAsString(String orderedColumnsAsString) {
+        this.orderedColumnsAsString = orderedColumnsAsString;
+    }
+    
+    public String getTogglableColumnsAsString() {
+        return togglableColumnsAsString;
+    }
+
+    public void setTogglableColumnsAsString(String togglableColumnsAsString) {
+        this.togglableColumnsAsString = togglableColumnsAsString;
+    }
+    
+    public String getResizableColumnsAsString() {
+        return resizableColumnsAsString;
+    }
+
+    public void setResizableColumnsAsString(String resizableColumnsAsString) {
+        this.resizableColumnsAsString = resizableColumnsAsString;
     }
 }

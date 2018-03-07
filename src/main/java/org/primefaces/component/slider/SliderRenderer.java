@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ public class SliderRenderer extends CoreRenderer {
         UIComponent output = getTarget(context, slider, slider.getDisplay());
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Slider", slider.resolveWidgetVar(), clientId);
+        wb.init("Slider", slider.resolveWidgetVar(), clientId);
 
         if (range) {
             String[] inputIds = slider.getFor().split(",");

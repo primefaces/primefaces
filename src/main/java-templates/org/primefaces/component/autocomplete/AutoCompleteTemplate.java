@@ -30,7 +30,7 @@ import javax.faces.component.behavior.Behavior;
     public final static String INPUT_CLASS = "ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all";
     public final static String INPUT_WITH_DROPDOWN_CLASS = "ui-autocomplete-input ui-autocomplete-dd-input ui-inputfield ui-widget ui-state-default ui-corner-left";
     public final static String DROPDOWN_CLASS = "ui-autocomplete-dropdown ui-button ui-widget ui-state-default ui-corner-right ui-button-icon-only";
-    public final static String PANEL_CLASS = "ui-autocomplete-panel ui-widget-content ui-corner-all ui-helper-hidden ui-shadow";
+    public final static String PANEL_CLASS = "ui-autocomplete-panel ui-widget-content ui-corner-all ui-helper-hidden ui-shadow ui-input-overlay";
     public final static String LIST_CLASS = "ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset";
     public final static String TABLE_CLASS = "ui-autocomplete-items ui-autocomplete-table ui-widget-content ui-widget ui-corner-all ui-helper-reset";
     public final static String ITEM_CLASS = "ui-autocomplete-item ui-autocomplete-list-item ui-corner-all";
@@ -64,6 +64,10 @@ import javax.faces.component.behavior.Behavior;
 
     public boolean isMoreTextRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_moreText");
+    }
+
+    public boolean isDynamicLoadRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_dynamicload");
     }
 
     @Override
@@ -124,9 +128,10 @@ import javax.faces.component.behavior.Behavior;
     public List<Column> getColums() {
         List<Column> columns = new ArrayList<Column>();
         
-        for(UIComponent kid : this.getChildren()) {
-            if(kid instanceof Column)
-                columns.add((Column) kid);
+        for (int i = 0; i < getChildCount(); i++) {
+            UIComponent child = getChildren().get(i);
+            if(child instanceof Column)
+                columns.add((Column) child);
         }
 
         return columns;

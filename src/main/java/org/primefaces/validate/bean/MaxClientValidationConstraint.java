@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,9 @@ public class MaxClientValidationConstraint implements ClientValidationConstraint
     public static final String MESSAGE_METADATA = "data-p-max-msg";
     private static final String MESSAGE_ID = "{javax.validation.constraints.Max.message}";
 
+    @Override
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
-        Map<String, Object> metadata = new HashMap<String, Object>();
+        Map<String, Object> metadata = new HashMap<>();
         Map attrs = constraintDescriptor.getAttributes();
         Object message = attrs.get(ATTR_MESSAGE);
 
@@ -40,6 +41,7 @@ public class MaxClientValidationConstraint implements ClientValidationConstraint
         return metadata;
     }
 
+    @Override
     public String getValidatorId() {
         return Max.class.getSimpleName();
     }

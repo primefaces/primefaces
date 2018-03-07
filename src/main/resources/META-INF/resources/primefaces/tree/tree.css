@@ -88,7 +88,8 @@
     vertical-align: middle;
 }
 
-.ui-tree.ui-tree-horizontal .ui-tree-toggler {
+.ui-tree.ui-tree-horizontal .ui-tree-toggler,
+.ui-tree.ui-tree-horizontal .ui-treenode-icon {
     vertical-align: bottom;
 }
 

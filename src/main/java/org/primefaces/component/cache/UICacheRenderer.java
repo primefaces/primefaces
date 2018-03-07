@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.cache.CacheProvider;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.CoreRenderer;
 
 public class UICacheRenderer extends CoreRenderer {
@@ -32,7 +32,7 @@ public class UICacheRenderer extends CoreRenderer {
 
         if (!uiCache.isDisabled()) {
             ResponseWriter writer = context.getResponseWriter();
-            CacheProvider cacheProvider = RequestContext.getCurrentInstance(context).getApplicationContext().getCacheProvider();
+            CacheProvider cacheProvider = PrimeApplicationContext.getCurrentInstance(context).getCacheProvider();
             String key = uiCache.getKey();
             String region = uiCache.getRegion();
 

@@ -11,17 +11,24 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.focusInput = $(this.jqId + '_focus');
         this.label = this.jq.find('.ui-selectonemenu-label');
         this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
-        this.panel = this.jq.children(this.panelId);
+
+        this.panelParent = this.cfg.appendTo
+            ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo) : $(document.body);
+        if(!this.panelParent.is(this.jq)) {
+            this.panelParent.children(this.panelId).remove();
+        }
+
+        this.panel = $(this.panelId);
         this.disabled = this.jq.hasClass('ui-state-disabled');
         this.itemsWrapper = this.panel.children('.ui-selectonemenu-items-wrapper');
         this.options = this.input.children('option');
         this.cfg.effect = this.cfg.effect||'fade';
         this.cfg.effectSpeed = this.cfg.effectSpeed||'normal';
         this.cfg.autoWidth = this.cfg.autoWidth === false ? false : true;
-        this.cfg.lazy = this.cfg.lazy === true ? true : false;
-        this.isLazyLoaded = false;
+        this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
+        this.isDynamicLoaded = false;
 
-        if(this.cfg.lazy) {
+        if(this.cfg.dynamic) {
             var selectedOption = this.options.filter(':selected'),
             labelVal = this.cfg.editable ? this.label.val() : selectedOption.text();
 
@@ -53,8 +60,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     initContents: function() {
-        this.input = $(this.jqId + '_input');
-        this.options = this.input.children('option');
         this.itemsContainer = this.itemsWrapper.children('.ui-selectonemenu-items');
         this.items = this.itemsContainer.find('.ui-selectonemenu-item');
         this.optGroupsSize = this.itemsContainer.children('li.ui-selectonemenu-item-group').length;
@@ -100,8 +105,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         var highlightedItemId = highlightedItem.attr('id');
+        this.jq.attr('aria-owns', this.itemsContainer.attr('id'));
         this.focusInput.attr('aria-autocomplete', 'list')
-            .attr('aria-owns', this.itemsContainer.attr('id'))
             .attr('aria-activedescendant', highlightedItemId)
             .attr('aria-describedby', highlightedItemId)
             .attr('aria-disabled', this.disabled);
@@ -124,11 +129,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     appendPanel: function() {
-        var container = this.cfg.appendTo ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo): $(document.body);
-
-        if(!container.is(this.jq)) {
-            container.children(this.panelId).remove();
-            this.panel.appendTo(container);
+        if(!this.panelParent.is(this.jq)) {
+            this.panel.appendTo(this.panelParent);
         }
     },
 
@@ -229,6 +231,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             $(this).removeClass('ui-state-hover');
         })
         .on('click.selectonemenu', function() {
+            $this.revert();
             $this.selectItem($(this));
             $this.changeAriaValue($(this));
         });
@@ -705,6 +708,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         //value before panel is shown
         this.preShowValue = this.options.filter(':selected');
         this.focusInput.attr('aria-expanded', true);
+        this.jq.attr('aria-expanded', true);
     },
 
     hide: function() {
@@ -714,6 +718,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         this.panel.css('z-index', '').hide();
         this.focusInput.attr('aria-expanded', false);
+        this.jq.attr('aria-expanded', false);
     },
 
     focus: function() {
@@ -797,14 +802,16 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if (value === '&nbsp;') {
-                this.label.html(labelText);
                 if (labelText != '&nbsp;') {
+                   this.label.text(labelText);
                    this.label.addClass('ui-state-disabled');
+                } else {
+                    this.label.html(labelText);
                 }
             }
             else {
                 this.label.removeClass('ui-state-disabled');
-                this.label.html(displayedLabel);
+                this.label.text(displayedLabel);
             }
         }
     },
@@ -926,32 +933,37 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.itemsContainer.attr('aria-activedescendant', itemId);
     },
 
-    lazyLoad: function() {
+    dynamicPanelLoad: function() {
         var $this = this,
         options = {
             source: this.id,
             process: this.id,
             update: this.id,
             global: false,
-            params: [{name: this.id + '_lazyload', value: true}],
+            params: [{name: this.id + '_dynamicload', value: true}],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                     widget: $this,
                     handle: function(content) {
-                        var index = content.indexOf('</select>') + 9,
-                        selectTag = content.substring(0, index);
-                        $this.input.replaceWith(selectTag);
-                        $this.itemsWrapper.append(content.substring(index, content.length));
+                        var $content = $($.parseHTML(content));
+
+                        var $ul = $content.filter('ul');
+                        $this.itemsWrapper.empty();
+                        $this.itemsWrapper.append($ul);
+
+                        var $select = $content.filter('select');
+                        $this.input.replaceWith($select);
                     }
                 });
 
                 return true;
             },
             oncomplete: function(xhr, status, args) {
-                $this.isLazyLoaded = true;
+                $this.isDynamicLoaded = true;
+                $this.input = $($this.jqId + '_input');
+                $this.options = $this.input.children('option');
                 $this.initContents();
                 $this.bindItemEvents();
-
             }
         };
 
@@ -960,11 +972,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     callHandleMethod: function(handleMethod, event) {
         var $this = this;
-        if(this.cfg.lazy && !this.isLazyLoaded) {
-            this.lazyLoad();
+        if(this.cfg.dynamic && !this.isDynamicLoaded) {
+            this.dynamicPanelLoad();
 
             var interval = setInterval(function() {
-                if($this.isLazyLoaded) {
+                if($this.isDynamicLoaded) {
                     handleMethod.call($this, event);
 
                     clearInterval(interval);

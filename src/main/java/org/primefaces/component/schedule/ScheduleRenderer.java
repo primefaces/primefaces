@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -132,7 +132,7 @@ public class ScheduleRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Schedule schedule) throws IOException {
         String clientId = schedule.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Schedule", schedule.resolveWidgetVar(), clientId)
+        wb.init("Schedule", schedule.resolveWidgetVar(), clientId)
                 .attr("defaultView", schedule.getView())
                 .attr("locale", schedule.calculateLocale(context).toString())
                 .attr("tooltip", schedule.isTooltip(), false)

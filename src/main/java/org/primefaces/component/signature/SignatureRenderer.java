@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,11 +71,11 @@ public class SignatureRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Signature signature) throws IOException {
         String clientId = signature.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Signature", signature.resolveWidgetVar(), clientId)
+        wb.init("Signature", signature.resolveWidgetVar(), clientId)
                 .attr("background", signature.getBackgroundColor(), null)
                 .attr("color", signature.getColor(), null)
                 .attr("thickness", signature.getThickness(), 2)
-                .attr("disabled", signature.isReadonly(), false)
+                .attr("readonly", signature.isReadonly(), false)
                 .attr("guideline", signature.isGuideline(), false)
                 .attr("guidelineColor", signature.getGuidelineColor(), null)
                 .attr("guidelineOffset", signature.getGuidelineOffset(), 25)

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
 
     private final static Logger LOG = Logger.getLogger(StreamedContentHandler.class.getName());
 
+    @Override
     public void handle(FacesContext context) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String library = params.get("ln");

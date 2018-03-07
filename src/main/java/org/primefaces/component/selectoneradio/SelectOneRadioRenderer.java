@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
 import org.primefaces.component.radiobutton.RadioButton;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
@@ -66,9 +66,16 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         boolean custom = layout.equals("custom");
 
         if (custom) {
+            String style = radio.getStyle();
+            String styleClass = radio.getStyleClass();
+            String defaultStyleClass = "ui-helper-hidden";
+            styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
             writer.startElement("span", radio);
             writer.writeAttribute("id", radio.getClientId(context), "id");
-            writer.writeAttribute("class", "ui-helper-hidden", null);
+            writer.writeAttribute("class", styleClass, "styleClass");
+            if (style != null) {
+                writer.writeAttribute("style", style, "style");
+            }
             encodeCustomLayout(context, radio);
             writer.endElement("span");
         }
@@ -86,7 +93,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         boolean custom = layout != null && layout.equals("custom");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("SelectOneRadio", radio.resolveWidgetVar(), clientId)
+        wb.init("SelectOneRadio", radio.resolveWidgetVar(), clientId)
                 .attr("custom", custom, false).finish();
     }
 
@@ -329,7 +336,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             writer.writeAttribute("disabled", "disabled", null);
         }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, radio);
         }
 

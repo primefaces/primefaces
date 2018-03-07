@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,7 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
     private PartialViewContext wrapped;
     private PartialResponseWriter writer = null;
 
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimePartialViewContext(PartialViewContext wrapped) {
         this.wrapped = wrapped;
     }

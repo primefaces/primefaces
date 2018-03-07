@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
@@ -36,7 +37,6 @@ import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.FilterState;
 import org.primefaces.component.datatable.TableState;
 import org.primefaces.component.row.Row;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.data.PostFilterEvent;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.filter.*;
@@ -117,7 +117,15 @@ public class FilterFeature implements DataTableFeature {
         if (table.isLazy()) {
             if (table.isLiveScroll()) {
                 table.loadLazyScrollData(0, table.getScrollRows());
-            }
+            } 
+            else if (table.isVirtualScroll()) {
+                int rows = table.getRows();
+                int scrollRows = table.getScrollRows();
+                int virtualScrollRows = (scrollRows * 2);
+                scrollRows = (rows == 0) ? virtualScrollRows : ((virtualScrollRows > rows) ? rows : virtualScrollRows);
+
+                table.loadLazyScrollData(0, scrollRows);
+            } 
             else {
                 table.loadLazyData();
             }
@@ -218,11 +226,7 @@ public class FilterFeature implements DataTableFeature {
 
         //Metadata for callback
         if (table.isPaginator() || table.isVirtualScroll()) {
-            RequestContext requestContext = RequestContext.getCurrentInstance(context);
-
-            if (requestContext != null) {
-                requestContext.addCallbackParam("totalRecords", filteredData.size());
-            }
+            PrimeFaces.current().ajax().addCallbackParam("totalRecords", filteredData.size());
         }
 
         //save filtered data

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ import javax.faces.component.ValueHolder;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITree;
@@ -41,7 +42,8 @@ import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.row.Row;
 import org.primefaces.component.tree.Tree;
-import org.primefaces.context.RequestContext;
+import static org.primefaces.component.treetable.TreeTable.FILTER_CONSTRAINTS;
+import static org.primefaces.component.treetable.TreeTable.GLOBAL_MODE;
 import org.primefaces.model.CheckboxTreeNode;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.FilterMeta;
@@ -49,6 +51,7 @@ import org.primefaces.model.SortOrder;
 import org.primefaces.model.TreeNode;
 import org.primefaces.model.TreeNodeComparator;
 import org.primefaces.model.filter.FilterConstraint;
+import org.primefaces.model.filter.GlobalFilterConstraint;
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.ComponentUtils;
@@ -141,7 +144,7 @@ public class TreeTableRenderer extends DataRenderer {
                 }
             }
 
-            RequestContext.getCurrentInstance(context).addCallbackParam("descendantRowKeys", sb.toString());
+            PrimeFaces.current().ajax().addCallbackParam("descendantRowKeys", sb.toString());
             sb.setLength(0);
             descendantRowKeys = null;
         }
@@ -179,7 +182,10 @@ public class TreeTableRenderer extends DataRenderer {
                 tt.setRows(Integer.parseInt(rppValue));
             }
 
-            filter(context, tt, tt.getFilterMetadata());
+            String globalFilterParam = clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter";
+            String globalFilterValue = params.get(globalFilterParam);
+            
+            filter(context, tt, tt.getFilterMetadata(), globalFilterValue);
 
             //sort new filtered data to restore sort state
             boolean sorted = (tt.getValueExpression("sortBy") != null || tt.getSortBy() != null);
@@ -220,7 +226,7 @@ public class TreeTableRenderer extends DataRenderer {
         String clientId = tt.getClientId(context);
         String selectionMode = tt.getSelectionMode();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("TreeTable", tt.resolveWidgetVar(), clientId)
+        wb.init("TreeTable", tt.resolveWidgetVar(), clientId)
                 .attr("selectionMode", selectionMode, null)
                 .attr("resizableColumns", tt.isResizableColumns(), false)
                 .attr("liveResize", tt.isLiveResize(), false)
@@ -237,7 +243,10 @@ public class TreeTableRenderer extends DataRenderer {
 
         //Editing
         if (tt.isEditable()) {
-            wb.attr("editable", true).attr("editMode", tt.getEditMode()).attr("cellSeparator", tt.getCellSeparator(), null);
+            wb.attr("editable", true)
+                    .attr("editMode", tt.getEditMode())
+                    .attr("cellEditMode", tt.getCellEditMode(), "eager")
+                    .attr("cellSeparator", tt.getCellSeparator(), null);
         }
 
         //Filtering
@@ -262,6 +271,10 @@ public class TreeTableRenderer extends DataRenderer {
         boolean scrollable = tt.isScrollable();
         TreeNode root = tt.getValue();
         boolean hasPaginator = tt.isPaginator();
+
+        if (!(root instanceof TreeNode)) {
+            throw new FacesException("treeTable's value must be an instance of " + TreeNode.class.getName());
+        }
 
         if (hasPaginator) {
             tt.calculateFirst();
@@ -942,10 +955,9 @@ public class TreeTableRenderer extends DataRenderer {
                 tt.isCaseSensitiveSort(), tt.resolveDataLocale()));
         tt.updateRowKeys(root);
 
-        RequestContext requestContext = RequestContext.getCurrentInstance();
         String selectedRowKeys = tt.getSelectedRowKeysAsString();
         if (selectedRowKeys != null) {
-            requestContext.addCallbackParam("selection", selectedRowKeys);
+            PrimeFaces.current().ajax().addCallbackParam("selection", selectedRowKeys);
         }
     }
 
@@ -1026,8 +1038,13 @@ public class TreeTableRenderer extends DataRenderer {
             DynamicColumn dynamicColumn = (DynamicColumn) column;
             dynamicColumn.applyStatelessModel();
         }
-
-        column.getCellEditor().getFacet("output").encodeAll(context);
+        
+        if (tt.isCellEditCancelRequest(context) || tt.isCellEditInitRequest(context)) {
+            column.getCellEditor().getFacet("input").encodeAll(context);
+        } 
+        else {
+            column.getCellEditor().getFacet("output").encodeAll(context);
+        }
 
         if (column.isDynamic()) {
             ((DynamicColumn) column).cleanStatelessModel();
@@ -1067,13 +1084,13 @@ public class TreeTableRenderer extends DataRenderer {
         return filterMetadata;
     }
 
-    public void filter(FacesContext context, TreeTable tt, List<FilterMeta> filterMetadata) throws IOException {
+    public void filter(FacesContext context, TreeTable tt, List<FilterMeta> filterMetadata, String globalFilterValue) throws IOException {
         Locale filterLocale = context.getViewRoot().getLocale();
         TreeNode root = (TreeNode) tt.getValue();
         TreeNode filteredNode = null;
 
         tt.getFilteredRowKeys().clear();
-        findFilteredRowKeys(context, tt, root, filterMetadata, filterLocale);
+        findFilteredRowKeys(context, tt, root, filterMetadata, filterLocale, globalFilterValue);
 
         filteredNode = createNewNode(root, root.getParent());
 
@@ -1086,27 +1103,25 @@ public class TreeTableRenderer extends DataRenderer {
         tt.setRowKey(null);
 
         //Metadata for callback
-        RequestContext requestContext = RequestContext.getCurrentInstance(context);
-
-        if (requestContext != null) {
-            if (tt.isPaginator()) {
-                requestContext.addCallbackParam("totalRecords", filteredNode.getChildren().size());
-            }
-
-            if (tt.getSelectedRowKeysAsString() != null) {
-                requestContext.addCallbackParam("selection", tt.getSelectedRowKeysAsString());
-            }
+        if (tt.isPaginator()) {
+            PrimeFaces.current().ajax().addCallbackParam("totalRecords", filteredNode.getChildren().size());
+        }
+        if (tt.getSelectedRowKeysAsString() != null) {
+            PrimeFaces.current().ajax().addCallbackParam("selection", tt.getSelectedRowKeysAsString());
         }
     }
 
-    protected void findFilteredRowKeys(FacesContext context, TreeTable tt, TreeNode node, List<FilterMeta> filterMetadata, Locale filterLocale)
-            throws IOException {
+    protected void findFilteredRowKeys(FacesContext context, TreeTable tt, TreeNode node, List<FilterMeta> filterMetadata, Locale filterLocale,
+            String globalFilterValue) throws IOException {
         int childCount = node.getChildCount();
+        boolean hasGlobalFilter = globalFilterValue != null && globalFilterValue.trim().length() > 0;
+        GlobalFilterConstraint globalFilterConstraint = (GlobalFilterConstraint) FILTER_CONSTRAINTS.get(GLOBAL_MODE);
         ELContext elContext = context.getELContext();
 
         for (int i = 0; i < childCount; i++) {
             TreeNode childNode = node.getChildren().get(i);
             boolean localMatch = true;
+            boolean globalMatch = false;
             String rowKey = childNode.getRowKey();
             tt.setRowKey(rowKey);
 
@@ -1122,6 +1137,10 @@ public class TreeTableRenderer extends DataRenderer {
                 Object columnValue = filterByVE.getValue(elContext);
                 FilterConstraint filterConstraint = this.getFilterConstraint(column);
 
+                if (hasGlobalFilter && !globalMatch) {
+                    globalMatch = globalFilterConstraint.applies(columnValue, globalFilterValue, filterLocale);
+                }
+                
                 if (!filterConstraint.applies(columnValue, filterValue, filterLocale)) {
                     localMatch = false;
                 }
@@ -1131,11 +1150,16 @@ public class TreeTableRenderer extends DataRenderer {
                 }
             }
 
-            if (localMatch) {
+            boolean matches = localMatch;
+            if (hasGlobalFilter) {
+                matches = localMatch && globalMatch;
+            }
+            
+            if (matches) {
                 tt.getFilteredRowKeys().add(rowKey);
             }
-
-            findFilteredRowKeys(context, tt, childNode, filterMetadata, filterLocale);
+            
+            findFilteredRowKeys(context, tt, childNode, filterMetadata, filterLocale, globalFilterValue);
         }
     }
 

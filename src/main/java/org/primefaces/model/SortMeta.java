@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,13 @@
  */
 package org.primefaces.model;
 
+import java.io.Serializable;
 import javax.el.MethodExpression;
 import org.primefaces.component.api.UIColumn;
 
-public class SortMeta {
+public class SortMeta implements Serializable {
 
-    private UIColumn column;
+    private transient UIColumn column;
 
     private String sortField;
 

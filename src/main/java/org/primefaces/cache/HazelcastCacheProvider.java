@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,24 +29,28 @@ public class HazelcastCacheProvider implements CacheProvider {
         hazelcastInstance = Hazelcast.newHazelcastInstance(config);
     }
 
+    @Override
     public Object get(String region, String key) {
         IMap<String, Object> cacheRegion = getRegion(region);
 
         return cacheRegion.get(key);
     }
 
+    @Override
     public void put(String region, String key, Object object) {
         IMap<String, Object> cacheRegion = getRegion(region);
 
         cacheRegion.put(key, object);
     }
 
+    @Override
     public void remove(String region, String key) {
         IMap<String, Object> cacheRegion = getRegion(region);
 
         cacheRegion.remove(key);
     }
 
+    @Override
     public void clear() {
 
     }

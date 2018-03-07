@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ public class RatingRenderer extends InputRenderer {
     private void encodeScript(FacesContext context, Rating rating) throws IOException {
         String clientId = rating.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Rating", rating.resolveWidgetVar(), clientId)
+        wb.init("Rating", rating.resolveWidgetVar(), clientId)
                 .callback("onRate", "function(value)", rating.getOnRate())
                 .attr("readonly", rating.isReadonly(), false)
                 .attr("disabled", rating.isDisabled(), false);

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ public class LayoutRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Layout layout) throws IOException {
         String clientId = layout.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Layout", layout.resolveWidgetVar(), clientId)
+        wb.init("Layout", layout.resolveWidgetVar(), clientId)
                 .attr("full", layout.isFullPage(), false)
                 .attr("useStateCookie", layout.isStateful(), false);
 

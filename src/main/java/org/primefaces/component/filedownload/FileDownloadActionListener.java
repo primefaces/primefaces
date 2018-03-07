@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -77,7 +77,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
                 externalContext.setResponseContentLength(content.getContentLength().intValue());
             }
 
-            if (RequestContext.getCurrentInstance(context).isSecure()) {
+            if (PrimeRequestContext.getCurrentInstance(context).isSecure()) {
                 externalContext.setResponseHeader("Cache-Control", "public");
                 externalContext.setResponseHeader("Pragma", "public");
             }

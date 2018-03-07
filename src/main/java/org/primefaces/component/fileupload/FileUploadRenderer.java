@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
@@ -41,9 +40,9 @@ public class FileUploadRenderer extends CoreRenderer {
         FileUpload fileUpload = (FileUpload) component;
 
         if (!fileUpload.isDisabled()) {
-            PrimeConfiguration cc = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
-            String uploader = cc.getUploader();
-            boolean isAtLeastJSF22 = cc.isAtLeastJSF22();
+            PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
+            String uploader = applicationContext.getConfig().getUploader();
+            boolean isAtLeastJSF22 = applicationContext.getEnvironment().isAtLeastJsf22();
             String inputToDecodeId = getSimpleInputDecodeId(fileUpload, context);
 
             if (uploader.equals("auto")) {
@@ -82,7 +81,7 @@ public class FileUploadRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (fileUpload.getMode().equals("advanced")) {
-            wb.initWithDomReady("FileUpload", fileUpload.resolveWidgetVar(), clientId);
+            wb.init("FileUpload", fileUpload.resolveWidgetVar(), clientId);
 
             wb.attr("auto", fileUpload.isAuto(), false)
                     .attr("dnd", fileUpload.isDragDropSupport(), true)
@@ -90,10 +89,10 @@ public class FileUploadRenderer extends CoreRenderer {
                     .attr("process", SearchExpressionFacade.resolveClientIds(context, fileUpload, process), null)
                     .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
                     .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
-                    .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
-                    .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
-                    .attr("fileLimitMessage", fileUpload.getFileLimitMessage(), null)
-                    .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
+                    .attr("invalidFileMessage", escapeText(fileUpload.getInvalidFileMessage()), null)
+                    .attr("invalidSizeMessage", escapeText(fileUpload.getInvalidSizeMessage()), null)
+                    .attr("fileLimitMessage", escapeText(fileUpload.getFileLimitMessage()), null)
+                    .attr("messageTemplate", escapeText(fileUpload.getMessageTemplate()), null)
                     .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
                     .attr("disabled", fileUpload.isDisabled(), false)
                     .attr("sequentialUploads", fileUpload.isSequential(), false)
@@ -109,7 +108,9 @@ public class FileUploadRenderer extends CoreRenderer {
         }
         else {
             wb.init("SimpleFileUpload", fileUpload.resolveWidgetVar(), clientId)
-                    .attr("skinSimple", fileUpload.isSkinSimple(), false);
+                    .attr("skinSimple", fileUpload.isSkinSimple(), false)
+                    .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
+                    .attr("invalidSizeMessage", escapeText(fileUpload.getInvalidSizeMessage()), null);
         }
 
         wb.finish();
@@ -147,8 +148,8 @@ public class FileUploadRenderer extends CoreRenderer {
         encodeChooseButton(context, fileUpload, disabled);
 
         if (!fileUpload.isAuto()) {
-            encodeButton(context, fileUpload.getUploadLabel(), FileUpload.UPLOAD_BUTTON_CLASS, "ui-icon-arrowreturnthick-1-n");
-            encodeButton(context, fileUpload.getCancelLabel(), FileUpload.CANCEL_BUTTON_CLASS, "ui-icon-cancel");
+            encodeButton(context, fileUpload.getUploadLabel(), FileUpload.UPLOAD_BUTTON_CLASS, " " + fileUpload.getUploadIcon());
+            encodeButton(context, fileUpload.getCancelLabel(), FileUpload.CANCEL_BUTTON_CLASS, " " + fileUpload.getCancelIcon());
         }
 
         writer.endElement("div");
@@ -247,7 +248,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
         //button icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " ui-icon-plusthick", null);
+        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + fileUpload.getChooseIcon(), null);
         writer.endElement("span");
 
         //text

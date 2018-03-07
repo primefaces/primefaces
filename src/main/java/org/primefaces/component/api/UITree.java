@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.el.ValueExpression;
+import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
@@ -37,6 +38,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+import javax.faces.event.PostValidateEvent;
+import javax.faces.event.PreValidateEvent;
 
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.tree.UITreeNode;
@@ -454,8 +457,11 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
 
         pushComponentToEL(context, this);
+        Application application = context.getApplication();
+        application.publishEvent(context, PreValidateEvent.class, this);
         processNodes(context, PhaseId.PROCESS_VALIDATIONS);
         validateSelection(context);
+        application.publishEvent(context, PostValidateEvent.class, this);
         popComponentFromEL(context);
     }
 

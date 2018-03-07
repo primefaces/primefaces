@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -214,6 +214,7 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((data == null) ? 0 : data.hashCode());
+        result = prime * result + ((rowKey == null) ? 0 : rowKey.hashCode());
         return result;
     }
 
@@ -229,7 +230,7 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
             return false;
         }
 
-        TreeNode other = (TreeNode) obj;
+        CheckboxTreeNode other = (CheckboxTreeNode) obj;
         if (data == null) {
             if (other.getData() != null) {
                 return false;
@@ -239,6 +240,15 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
             return false;
         }
 
+        if (rowKey == null) {
+            if (other.rowKey != null) {
+                return false;
+            }
+        }
+        else if (!rowKey.equals(other.rowKey)) {
+            return false;
+        }
+        
         return true;
     }
 

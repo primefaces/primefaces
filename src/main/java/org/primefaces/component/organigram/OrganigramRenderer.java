@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -216,7 +216,7 @@ public class OrganigramRenderer extends CoreRenderer {
         String clientId = organigram.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Organigram", organigram.resolveWidgetVar(), clientId)
+        wb.init("Organigram", organigram.resolveWidgetVar(), clientId)
                 .attr("zoom", organigram.isZoom())
                 .attr("leafNodeConnectorHeight", organigram.getLeafNodeConnectorHeight())
                 .attr("autoScrollToSelection", organigram.isAutoScrollToSelection());
@@ -279,5 +279,15 @@ public class OrganigramRenderer extends CoreRenderer {
         }
 
         return styleClass.trim();
+    }
+    
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Do nothing
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
     }
 }

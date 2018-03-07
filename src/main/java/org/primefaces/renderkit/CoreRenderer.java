@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,8 @@ import javax.faces.validator.Validator;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.convert.ClientConverter;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.AjaxRequestBuilder;
@@ -95,6 +96,10 @@ public abstract class CoreRenderer extends Renderer {
         return ComponentUtils.getResourceURL(context, value);
     }
 
+    protected String getHrefURL(String baseUrl, Map<String, List<String>> params) {
+        return ComponentUtils.getHrefURL(baseUrl, params);
+    }
+    
     protected String getResourceRequestPath(FacesContext context, String resourceName) {
         Resource resource = context.getApplication().getResourceHandler().createResource(resourceName, "primefaces");
 
@@ -119,7 +124,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected void renderDynamicPassThruAttributes(FacesContext context, UIComponent component) throws IOException {
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF22()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
             Jsf22Helper.renderPassThroughAttributes(context, component);
         }
     }
@@ -229,7 +234,7 @@ public abstract class CoreRenderer extends Renderer {
         }
 
         //dynamic attributes
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF22()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
             Jsf22Helper.renderPassThroughAttributes(context, component);
         }
     }
@@ -406,7 +411,7 @@ public abstract class CoreRenderer extends Renderer {
         UIComponent component = (UIComponent) source;
         String clientId = component.getClientId(context);
 
-        AjaxRequestBuilder builder = RequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
+        AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
 
         builder.init()
                 .source(clientId)
@@ -444,7 +449,8 @@ public abstract class CoreRenderer extends Renderer {
             params.put(decodeParam, decodeParam);
         }
 
-        for (UIComponent child : component.getChildren()) {
+        for (int i = 0; i < component.getChildCount(); i++) {
+            UIComponent child = component.getChildren().get(i);
             if (child instanceof UIParameter) {
                 UIParameter param = (UIParameter) child;
 
@@ -646,7 +652,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected WidgetBuilder getWidgetBuilder(FacesContext context) {
-        return RequestContext.getCurrentInstance(context).getWidgetBuilder();
+        return PrimeRequestContext.getCurrentInstance(context).getWidgetBuilder();
     }
 
     protected void renderValidationMetadata(FacesContext context, EditableValueHolder component) throws IOException {
@@ -674,7 +680,6 @@ public abstract class CoreRenderer extends Renderer {
         List<String> validatorIds = null;
         String highlighter = getHighlighter();
 
-        RequestContext requestContext = RequestContext.getCurrentInstance(context);
 
         //messages
         if (label != null) writer.writeAttribute(HTML.VALIDATION_METADATA.LABEL, label, null);
@@ -695,8 +700,9 @@ public abstract class CoreRenderer extends Renderer {
         }
 
         //bean validation
-        if (requestContext.getApplicationContext().getConfig().isBeanValidationAvailable()) {
-            BeanValidationMetadata beanValidationMetadata = BeanValidationMetadataMapper.resolveValidationMetadata(context, comp, requestContext);
+        PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
+        if (applicationContext.getConfig().isBeanValidationEnabled()) {
+            BeanValidationMetadata beanValidationMetadata = BeanValidationMetadataMapper.resolveValidationMetadata(context, comp, applicationContext);
             if (beanValidationMetadata != null) {
                 if (beanValidationMetadata.getAttributes() != null) {
                     renderValidationMetadataMap(context, beanValidationMetadata.getAttributes());

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,12 +85,12 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     @Override
     public void endDocument() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
-        RequestContext requestContext = RequestContext.getCurrentInstance(context);
+        PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
 
         if (requestContext != null) {
             try {
                 if (context.isValidationFailed()) {
-                    requestContext.addCallbackParam("validationFailed", true);
+                    requestContext.getCallbackParams().put("validationFailed", true);
                 }
 
                 encodeCallbackParams(requestContext.getCallbackParams());
@@ -231,7 +231,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         }
     }
 
-    protected void encodeScripts(RequestContext requestContext) throws IOException {
+    protected void encodeScripts(PrimeRequestContext requestContext) throws IOException {
         List<String> scripts = requestContext.getScriptsToExecute();
         if (!scripts.isEmpty()) {
             startEval();
@@ -254,9 +254,9 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
         metadataRendered = true;
 
         FacesContext context = FacesContext.getCurrentInstance();
-        RequestContext requestContext = RequestContext.getCurrentInstance(context);
+        PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
 
-        if (requestContext != null) {
+        if (applicationContext != null) {
             try {
                 // catch possible ViewExpired
                 UIViewRoot viewRoot = context.getViewRoot();
@@ -269,7 +269,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
                             String parameterPrefix = parameterNamespace;
 
-                            if (requestContext.getApplicationContext().getConfig().isAtLeastJSF23()) {
+                            if (applicationContext.getEnvironment().isAtLeastJsf23()) {
 
                                 // https://java.net/jira/browse/JAVASERVERFACES_SPEC_PUBLIC-790
                                 parameterPrefix += UINamingContainer.getSeparatorChar(context);
@@ -286,7 +286,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                     // we also skip update=@all as the head will all resources will already be rendered
                     if (context.isPostback()
                             && !context.getPartialViewContext().isRenderAll()
-                            && !requestContext.getApplicationContext().getConfig().isAtLeastJSF23()) {
+                            && !applicationContext.getEnvironment().isAtLeastJsf23()) {
                         ArrayList<ResourceUtils.ResourceInfo> initialResources = DynamicResourcesPhaseListener.getInitialResources(context);
                         ArrayList<ResourceUtils.ResourceInfo> currentResources = ResourceUtils.getComponentResources(context);
                         if (initialResources != null && currentResources != null && currentResources.size() > initialResources.size()) {

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,9 @@ public class LongRangeValidator extends javax.faces.validator.LongRangeValidator
     private boolean minimumSet;
     private boolean maximumSet;
 
+    @Override
     public Map<String, Object> getMetadata() {
-        metadata = new HashMap<String, Object>();
+        metadata = new HashMap<>();
         long min = this.getMinimum();
         long max = this.getMaximum();
 
@@ -41,6 +42,7 @@ public class LongRangeValidator extends javax.faces.validator.LongRangeValidator
         return metadata;
     }
 
+    @Override
     public String getValidatorId() {
         return LongRangeValidator.VALIDATOR_ID;
     }

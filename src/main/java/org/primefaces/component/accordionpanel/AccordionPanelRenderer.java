@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,9 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         if (active != null) {
             if (isValueBlank(active)) {
-                acco.setActiveIndex(null);
+                // set an empty string instead of null - otherwise the stateHelper will re-evaluate to the default value
+                // see GitHub #3140
+                acco.setActiveIndex("");
             }
             else {
                 acco.setActiveIndex(active);
@@ -160,15 +162,16 @@ public class AccordionPanelRenderer extends CoreRenderer {
                 : Arrays.asList(activeIndex.split(","));        
 
         if (var == null) {
-            int i = 0;
+            int j = 0;
 
-            for (UIComponent child : acco.getChildren()) {
+            for (int i = 0; i < acco.getChildCount(); i++) {
+                UIComponent child = acco.getChildren().get(i);
                 if (child.isRendered() && child instanceof Tab) {
-                    boolean active = activeIndexes.indexOf(Integer.toString(i)) != -1;
+                    boolean active = activeIndexes.indexOf(Integer.toString(j)) != -1;
 
                     encodeTab(context, acco, (Tab) child, active, dynamic, rtl);
 
-                    i++;
+                    j++;
                 }
             }
         }

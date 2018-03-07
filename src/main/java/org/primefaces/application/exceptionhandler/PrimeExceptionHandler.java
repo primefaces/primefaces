@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.view.ViewDeclarationLanguage;
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler;
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerVisitCallback;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 
@@ -54,6 +54,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
     private final ExceptionHandler wrapped;
 
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeExceptionHandler(ExceptionHandler wrapped) {
         this.wrapped = wrapped;
     }
@@ -248,12 +249,12 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         info.setTimestamp(new Date());
         info.setType(rootCause.getClass().getName());
 
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        rootCause.printStackTrace(pw);
-        info.setFormattedStackTrace(ComponentUtils.escapeXml(sw.toString()).replaceAll("(\r\n|\n)", "<br/>"));
-        pw.close();
-        sw.close();
+        try (StringWriter sw = new StringWriter()) {
+            PrintWriter pw = new PrintWriter(sw);
+            rootCause.printStackTrace(pw);
+            info.setFormattedStackTrace(ComponentUtils.escapeXml(sw.toString()).replaceAll("(\r\n|\n)", "<br/>"));
+            pw.close();
+        }
 
         SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_PATTERN);
         info.setFormattedTimestamp(format.format(info.getTimestamp()));
@@ -329,7 +330,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         ExternalContext externalContext = context.getExternalContext();
         externalContext.getSessionMap().put(ExceptionInfo.ATTRIBUTE_NAME, info);
 
-        Map<String, String> errorPages = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().getErrorPages();
+        Map<String, String> errorPages = PrimeApplicationContext.getCurrentInstance(context).getConfig().getErrorPages();
         String errorPage = evaluateErrorPage(errorPages, rootCause);
 
         String url = externalContext.getRequestContextPath() + errorPage;

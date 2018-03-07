@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ public class WatermarkRenderer extends CoreRenderer {
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Watermark", watermark.resolveWidgetVar(), watermark.getClientId(context))
+        wb.init("Watermark", watermark.resolveWidgetVar(), watermark.getClientId(context))
                 .attr("value", watermark.getValue())
                 .attr("target", target);
 

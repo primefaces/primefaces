@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.util.ResourceUtils;
 
 public class DynamicResourcesPhaseListener implements PhaseListener {
@@ -54,7 +54,7 @@ public class DynamicResourcesPhaseListener implements PhaseListener {
         }
 
         // JSF 2.3 contains a own dynamic resource handling
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF23()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf23()) {
             return;
         }
 

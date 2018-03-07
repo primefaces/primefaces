@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -92,7 +92,7 @@ public class KnobRenderer extends CoreRenderer {
 
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.initWithDomReady("Knob", widgetVar, clientId);
+        wb.init("Knob", widgetVar, clientId);
         wb.attr("labelTemplate", knob.getLabelTemplate())
                 .attr("colorTheme", knob.getColorTheme())
                 .callback("onchange", "function(value)", knob.getOnchange());

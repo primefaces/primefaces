@@ -61,8 +61,14 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                             element.data('tooltip', title).removeAttr('title');
                         }
 
+                        var arrow = $this.jq.children('.ui-tooltip-arrow');
+                        
                         if(element.hasClass('ui-state-error')) {
                             $this.jq.children('.ui-tooltip-text').addClass('ui-state-error');
+                            arrow.addClass('ui-state-error');
+                        }
+                        else {
+                            arrow.removeClass('ui-state-error');
                         }
 
                         var text = element.data('tooltip');
@@ -82,7 +88,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                             $this.hide();
                             $this.globalTitle = null;
                             $this.target = null;
-                            $this.jq.removeClass('ui-state-error');
+                            $this.jq.children('.ui-tooltip-text').removeClass('ui-state-error');
                         }
                     });
 

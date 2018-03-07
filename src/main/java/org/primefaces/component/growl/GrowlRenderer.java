@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,20 @@ package org.primefaces.component.growl;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.UINotificationRenderer;
 import org.primefaces.util.HTML;
+import org.primefaces.util.WidgetBuilder;
 
 public class GrowlRenderer extends UINotificationRenderer {
+    
+    private final static Logger logger = Logger.getLogger(GrowlRenderer.class.getName());
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -38,7 +42,7 @@ public class GrowlRenderer extends UINotificationRenderer {
         writer.startElement("span", growl);
         writer.writeAttribute("id", clientId, "id");
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("class", "ui-growl-pl", null);
             writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
             writer.writeAttribute("data-global", growl.isGlobalOnly(), null);
@@ -50,21 +54,17 @@ public class GrowlRenderer extends UINotificationRenderer {
 
         writer.endElement("span");
 
-        startScript(writer, clientId);
-
-        writer.write("$(function(){");
-        writer.write("PrimeFaces.cw('Growl','" + widgetVar + "',{");
-        writer.write("id:'" + clientId + "'");
-        writer.write(",sticky:" + growl.isSticky());
-        writer.write(",life:" + growl.getLife());
-        writer.write(",escape:" + growl.isEscape());
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init("Growl", growl.resolveWidgetVar(), clientId)
+            .attr("sticky", growl.isSticky())
+            .attr("life", growl.getLife())
+            .attr("escape", growl.isEscape())
+            .attr("keepAlive", growl.isKeepAlive());
 
         writer.write(",msgs:");
         encodeMessages(context, growl);
 
-        writer.write("});});");
-
-        endScript(writer);
+        wb.finish();
     }
 
     protected void encodeMessages(FacesContext context, Growl growl) throws IOException {

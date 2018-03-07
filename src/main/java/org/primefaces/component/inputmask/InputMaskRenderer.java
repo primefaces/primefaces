@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,12 @@ package org.primefaces.component.inputmask;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -32,6 +33,9 @@ public class InputMaskRenderer extends InputRenderer {
 
     private final static Logger logger = Logger.getLogger(InputMaskRenderer.class.getName());
 
+    private final static String REGEX_METACHARS = "<([{\\^-=$!|]})?*+.>".replaceAll(".", "\\\\$0");
+    private final static Pattern REGEX_METACHARS_PATTERN = Pattern.compile("[" + REGEX_METACHARS + "]");
+    
     @Override
     public void decode(FacesContext context, UIComponent component) {
         InputMask inputMask = (InputMask) component;
@@ -46,10 +50,35 @@ public class InputMaskRenderer extends InputRenderer {
         String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if (submittedValue != null) {
+            
+            if (!translateMaskIntoRegex(inputMask).matcher(submittedValue).matches()) {
+                submittedValue = null;
+            }
+            
             inputMask.setSubmittedValue(submittedValue);
         }
     }
 
+    // https://github.com/digitalBush/jquery.maskedinput
+    // a - Represents an alpha character (A-Z,a-z)
+    // 9 - Represents a numeric character (0-9)
+    // * - Represents an alphanumeric character (A-Z,a-z,0-9)
+    // ? - Makes the following input optional
+    protected Pattern translateMaskIntoRegex(InputMask inputMask) {
+        String mask = inputMask.getMask();
+        
+        // Escape regex metacharacters first
+        String regex = REGEX_METACHARS_PATTERN.matcher(mask).replaceAll("\\\\$0");
+        
+        regex = regex.replace("a", "[A-Za-z]").replace("9", "[0-9]").replace("*", "[A-Za-z0-9]");
+        int optionalPos = regex.indexOf("\\?");
+        if (optionalPos != -1) {
+            regex = regex.substring(0, optionalPos) + "(" + regex.substring(optionalPos + 2) + ")?";
+        }
+        
+        return Pattern.compile(regex);
+    }
+    
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         InputMask inputMask = (InputMask) component;
@@ -103,7 +132,7 @@ public class InputMaskRenderer extends InputRenderer {
 
         writer.writeAttribute("class", styleClass, "styleClass");
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, inputMask);
         }
 

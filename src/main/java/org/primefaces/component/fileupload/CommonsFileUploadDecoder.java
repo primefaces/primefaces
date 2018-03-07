@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,14 @@
  */
 package org.primefaces.component.fileupload;
 
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletRequestWrapper;
 import org.apache.commons.fileupload.FileItem;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultUploadedFile;
 import org.primefaces.model.UploadedFileWrapper;
 import org.primefaces.webapp.MultipartRequest;
+
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletRequestWrapper;
 
 public class CommonsFileUploadDecoder {
 
@@ -53,11 +54,11 @@ public class CommonsFileUploadDecoder {
         FileItem file = request.getFileItem(inputToDecodeId);
 
         if (file != null) {
-            if (file.getName().isEmpty()) {
-                fileUpload.setSubmittedValue("");
+            if (!file.getName().isEmpty() && isValidFile(fileUpload, file)) {
+                fileUpload.setSubmittedValue(new UploadedFileWrapper(new DefaultUploadedFile(file, fileUpload)));
             }
             else {
-                fileUpload.setSubmittedValue(new UploadedFileWrapper(new DefaultUploadedFile(file)));
+                fileUpload.setSubmittedValue("");
             }
         }
     }
@@ -66,8 +67,14 @@ public class CommonsFileUploadDecoder {
         String clientId = fileUpload.getClientId(context);
         FileItem file = request.getFileItem(clientId);
 
-        if (file != null) {
-            fileUpload.queueEvent(new FileUploadEvent(fileUpload, new DefaultUploadedFile(file)));
+        if (file != null && isValidFile(fileUpload, file)) {
+            fileUpload.queueEvent(new FileUploadEvent(fileUpload, new DefaultUploadedFile(file, fileUpload)));
         }
     }
+
+    private static boolean isValidFile(FileUpload fileUpload, FileItem fileItem) {
+        // TODO some more checks could be performed here, e.g. allowed types
+        return fileUpload.getSizeLimit() == null || fileItem.getSize() <= fileUpload.getSizeLimit();
+    }
+
 }

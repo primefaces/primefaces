@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,38 +43,35 @@ import javax.faces.view.facelets.TagAttributeException;
  *
  * Implementation copied from Facelets 1.1.14, as it got hidden by JSF 2.0
  */
+@SuppressWarnings("deprecation")
 public class MethodRule extends MetaRule {
 
     private final String methodName;
     private final Class returnTypeClass;
     private final Class[] params;
 
-    public MethodRule(String methodName, Class returnTypeClass,
-            Class[] params) {
+    public MethodRule(String methodName, Class returnTypeClass, Class[] params) {
         this.methodName = methodName;
         this.returnTypeClass = returnTypeClass;
         this.params = params;
     }
 
+    @Override
     public Metadata applyRule(String name, TagAttribute attribute, MetadataTarget meta) {
         if (false == name.equals(this.methodName)) {
             return null;
         }
-
+        
         if (MethodBinding.class.equals(meta.getPropertyType(name))) {
             Method method = meta.getWriteMethod(name);
             if (method != null) {
-                return new MethodBindingMetadata(method, attribute,
-                        this.returnTypeClass,
-                        this.params);
+                return new MethodBindingMetadata(method, attribute, this.returnTypeClass, this.params);
             }
         }
         else if (MethodExpression.class.equals(meta.getPropertyType(name))) {
             Method method = meta.getWriteMethod(name);
             if (method != null) {
-                return new MethodExpressionMetadata(method, attribute,
-                        this.returnTypeClass,
-                        this.params);
+                return new MethodExpressionMetadata(method, attribute, this.returnTypeClass, this.params);
             }
         }
 
@@ -85,21 +82,19 @@ public class MethodRule extends MetaRule {
 
         private final Method method;
         private final TagAttribute attribute;
+        private final Class[] paramList;
+        private final Class returnType;
 
-        private Class[] paramList;
-        private Class returnType;
-
-        public MethodBindingMetadata(Method method, TagAttribute attribute,
-                Class returnType, Class[] paramList) {
+        public MethodBindingMetadata(Method method, TagAttribute attribute, Class returnType, Class[] paramList) {
             this.method = method;
             this.attribute = attribute;
             this.paramList = paramList;
             this.returnType = returnType;
         }
 
+        @Override
         public void applyMetadata(FaceletContext ctx, Object instance) {
-            MethodExpression expr
-                    = this.attribute.getMethodExpression(ctx, this.returnType, this.paramList);
+            MethodExpression expr = this.attribute.getMethodExpression(ctx, this.returnType, this.paramList);
 
             try {
                 this.method.invoke(instance, new Object[]{new LegacyMethodBinding(expr)});
@@ -117,21 +112,19 @@ public class MethodRule extends MetaRule {
 
         private final Method method;
         private final TagAttribute attribute;
+        private final Class[] paramList;
+        private final Class returnType;
 
-        private Class[] paramList;
-        private Class returnType;
-
-        public MethodExpressionMetadata(Method method, TagAttribute attribute,
-                Class returnType, Class[] paramList) {
+        public MethodExpressionMetadata(Method method, TagAttribute attribute, Class returnType, Class[] paramList) {
             this.method = method;
             this.attribute = attribute;
             this.paramList = paramList;
             this.returnType = returnType;
         }
 
+        @Override
         public void applyMetadata(FaceletContext ctx, Object instance) {
-            MethodExpression expr
-                    = this.attribute.getMethodExpression(ctx, this.returnType, this.paramList);
+            MethodExpression expr = this.attribute.getMethodExpression(ctx, this.returnType, this.paramList);
 
             try {
                 this.method.invoke(instance, new Object[]{expr});
@@ -155,6 +148,7 @@ public class MethodRule extends MetaRule {
             this.m = m;
         }
 
+        @Override
         public Class getType(FacesContext context) throws MethodNotFoundException {
             try {
                 return m.getMethodInfo(context.getELContext()).getReturnType();
@@ -167,9 +161,8 @@ public class MethodRule extends MetaRule {
             }
         }
 
-        public Object invoke(FacesContext context,
-                Object[] params) throws EvaluationException,
-                MethodNotFoundException {
+        @Override
+        public Object invoke(FacesContext context, Object[] params) throws EvaluationException, MethodNotFoundException {
             try {
                 return m.invoke(context.getELContext(), params);
             }
@@ -181,6 +174,7 @@ public class MethodRule extends MetaRule {
             }
         }
 
+        @Override
         public String getExpressionString() {
             return m.getExpressionString();
         }

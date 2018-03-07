@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeRequestContext;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CSVBuilder;
@@ -125,7 +125,7 @@ public class CommandButtonRenderer extends CoreRenderer {
     }
 
     protected String buildRequest(FacesContext context, CommandButton button, String clientId) throws FacesException {
-        RequestContext requestContext = RequestContext.getCurrentInstance(context);
+        PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
         boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled() && button.isValidateClient();
         String request = null;
         boolean ajax = button.isAjax();

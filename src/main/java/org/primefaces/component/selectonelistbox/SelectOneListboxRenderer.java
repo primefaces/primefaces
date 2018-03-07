@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
 import org.primefaces.component.column.Column;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -120,7 +120,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
             writer.writeAttribute("aria-labelledby", labelledBy, null);
         }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, listbox);
         }
 
@@ -138,17 +138,9 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         Object submittedValues = getSubmittedValues(listbox);
         boolean customContent = listbox.getVar() != null;
         
-        String scrollHeight = null;
-        try { 
-            scrollHeight = Integer.parseInt(listbox.getScrollHeight()) + "px"; 
-        } 
-        catch (NumberFormatException e) { 
-            scrollHeight = listbox.getScrollHeight();
-        }
-
         writer.startElement("div", listbox);
         writer.writeAttribute("class", SelectOneListbox.LIST_CONTAINER_CLASS, null);
-        writer.writeAttribute("style", "max-height:" + scrollHeight, null);
+        writer.writeAttribute("style", "height:" + calculateWrapperHeight(listbox, countSelectItems(selectItems)), null);
 
         if (customContent) {
             writer.startElement("table", null);
@@ -215,7 +207,11 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
             for (UIComponent child : listbox.getChildren()) {
                 if (child instanceof Column && child.isRendered()) {
                     writer.startElement("td", null);
+                    
+                    writer.startElement("span", null);
                     renderChildren(context, child);
+                    writer.endElement("span");
+                    
                     writer.endElement("td");
                 }
             }
@@ -225,12 +221,15 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         else {
             writer.startElement("li", null);
             writer.writeAttribute("class", itemClass, null);
+            
+            writer.startElement("span", null);
             if (option.isEscape()) {
                 writer.writeText(option.getLabel(), null);
             }
             else {
                 writer.write(option.getLabel());
             }
+            writer.endElement("span");
 
             writer.endElement("li");
         }
@@ -312,6 +311,19 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         writer.endElement("div");
     }
 
+    protected String calculateWrapperHeight(SelectOneListbox listbox, int itemSize) {
+        int height = listbox.getScrollHeight();
+
+        if (height != Integer.MAX_VALUE) {
+            return height + "px";
+        } 
+        else if (itemSize > 10) {
+            return 200 + "px";
+        }
+
+        return "auto";
+    }
+    
     @Override
     protected String getSubmitParam(FacesContext context, UISelectOne selectOne) {
         return selectOne.getClientId(context) + "_input";

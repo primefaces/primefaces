@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,10 +24,12 @@ public class PrimePartialViewContextFactory extends PartialViewContextFactory {
     private PartialViewContextFactory parent;
 
     // #6212 - don't remove it
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimePartialViewContextFactory() {
 
     }
 
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimePartialViewContextFactory(PartialViewContextFactory parent) {
         this.parent = parent;
     }

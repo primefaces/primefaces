@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -130,7 +130,7 @@ public class PickListRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, PickList pickList) throws IOException {
         String clientId = pickList.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("PickList", pickList.resolveWidgetVar(), clientId)
+        wb.init("PickList", pickList.resolveWidgetVar(), clientId)
                 .attr("effect", pickList.getEffect())
                 .attr("effectSpeed", pickList.getEffectSpeed())
                 .attr("showSourceControls", pickList.isShowSourceControls(), false)

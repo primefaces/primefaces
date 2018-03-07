@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -281,13 +281,14 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("SelectCheckboxMenu", menu.resolveWidgetVar(), clientId)
+        wb.init("SelectCheckboxMenu", menu.resolveWidgetVar(), clientId)
                 .callback("onShow", "function()", menu.getOnShow())
                 .callback("onHide", "function()", menu.getOnHide())
                 .attr("scrollHeight", menu.getScrollHeight(), Integer.MAX_VALUE)
                 .attr("showHeader", menu.isShowHeader(), true)
                 .attr("updateLabel", menu.isUpdateLabel(), false)
                 .attr("multiple", menu.isMultiple(), false)
+                .attr("dynamic", menu.isDynamic(), false)
                 .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo()), null);
 
         if (menu.isFilter()) {

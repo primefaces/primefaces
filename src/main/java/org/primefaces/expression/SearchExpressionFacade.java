@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ public class SearchExpressionFacade {
      */
     public static List<UIComponent> resolveComponents(FacesContext context, UIComponent source, String expressions, int hints) {
 
-        ArrayList<UIComponent> components = new ArrayList<UIComponent>();
+        ArrayList<UIComponent> components = new ArrayList<>();
 
         if (!ComponentUtils.isValueBlank(expressions)) {
             String[] splittedExpressions = splitExpressions(context, source, expressions);
@@ -212,7 +212,7 @@ public class SearchExpressionFacade {
                                 }
                             }
                             else if (resolver instanceof MultiSearchExpressionResolver) {
-                                ArrayList<UIComponent> result = new ArrayList<UIComponent>();
+                                ArrayList<UIComponent> result = new ArrayList<>();
                                 ((MultiSearchExpressionResolver) resolver).resolveComponents(context, source, source, expression, result, hints);
                                 for (int j = 0; j < result.size(); j++) {
                                     UIComponent component = result.get(j);
@@ -372,6 +372,7 @@ public class SearchExpressionFacade {
             this.expression = expression;
         }
 
+        @Override
         public void invokeContextCallback(FacesContext context, UIComponent target) {
             clientId = target.getClientId(context);
             validateRenderer(context, source, target, expression, hints);
@@ -386,6 +387,7 @@ public class SearchExpressionFacade {
 
         private UIComponent component;
 
+        @Override
         public void invokeContextCallback(FacesContext context, UIComponent target) {
             component = target;
         }
@@ -538,13 +540,13 @@ public class SearchExpressionFacade {
             expression = expression.substring(1);
         }
 
-        ArrayList<UIComponent> lastComponents = new ArrayList<UIComponent>();
+        ArrayList<UIComponent> lastComponents = new ArrayList<>();
         lastComponents.add(source);
 
         String[] subExpressions = split(context, expression, separatorChar);
         if (subExpressions != null && subExpressions.length > 0) {
 
-            ArrayList<UIComponent> tempComponents = new ArrayList<UIComponent>();
+            ArrayList<UIComponent> tempComponents = new ArrayList<>();
 
             for (int i = 0; i < subExpressions.length; i++) {
 
@@ -610,7 +612,7 @@ public class SearchExpressionFacade {
             expression = expression.substring(1);
         }
 
-        ArrayList<UIComponent> lastComponents = new ArrayList<UIComponent>();
+        ArrayList<UIComponent> lastComponents = new ArrayList<>();
         lastComponents.add(source);
 
         StringBuilder clientIdsBuilder = null;
@@ -618,7 +620,7 @@ public class SearchExpressionFacade {
         String[] subExpressions = split(context, expression, separatorChar);
         if (subExpressions != null && subExpressions.length > 0) {
 
-            ArrayList<UIComponent> tempComponents = new ArrayList<UIComponent>();
+            ArrayList<UIComponent> tempComponents = new ArrayList<>();
 
             for (int i = 0; i < subExpressions.length; i++) {
 
@@ -801,7 +803,7 @@ public class SearchExpressionFacade {
             return null;
         }
 
-        List<String> tokens = new ArrayList<String>();
+        List<String> tokens = new ArrayList<>();
         StringBuilder buffer = SharedStringBuilder.get(context, SHARED_SPLIT_BUFFER_KEY);
 
         int parenthesesCounter = 0;

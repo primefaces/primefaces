@@ -29,12 +29,28 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.bindEvents();
     },
     
+    refresh: function(cfg) {
+        var jqs = $('[id=' + cfg.id.replace(/:/g,"\\:") + ']');
+        if(jqs.length > 1) {
+            $(document.body).children(this.jqId).remove();
+        }
+        
+        this.widthAligned = false;
+        
+        this.init(cfg);
+    },
+    
     render: function() {
         this.columns = this.thead.find('> tr > th:not(.ui-static-column)');
         this.panel = $('<div></div>').attr('id', this.cfg.id).attr('role', 'dialog').addClass('ui-columntoggler ui-widget ui-widget-content ui-shadow ui-corner-all')
                 .append('<ul class="ui-columntoggler-items" role="group"></ul>').appendTo(document.body);
         this.itemContainer = this.panel.children('ul');
-          
+        
+        var stateHolderId = this.tableId + "_columnTogglerState";
+        this.togglerStateHolder = $('<input type="hidden" id="' + stateHolderId + '" name="' + stateHolderId + '" autocomplete="off" />');
+        this.table.append(this.togglerStateHolder);
+        this.togglerState = [];
+        
         //items
         for(var i = 0; i < this.columns.length; i++) {
             var column = this.columns.eq(i),
@@ -68,7 +84,11 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             }
             
             item.appendTo(this.itemContainer);
+            
+            this.togglerState.push(column.attr('id') + '_' + !hidden);
         }
+        
+        this.togglerStateHolder.val(this.togglerState.join(','));
         
         //close icon
         this.closer = $('<a href="#" class="ui-columntoggler-close"><span class="ui-icon ui-icon-close"></span></a>')
@@ -139,9 +159,9 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             //hide the panel and remove focus from label
             var offset = $this.panel.offset();
             if(e.pageX < offset.left ||
-                e.pageX > offset.left + $this.panel.width() ||
+                e.pageX > offset.left + $this.panel[0].offsetWidth ||
                 e.pageY < offset.top ||
-                e.pageY > offset.top + $this.panel.height()) {
+                e.pageY > offset.top + $this.panel[0].offsetHeight) {
 
                 $this.hide();
             }
@@ -306,6 +326,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             $(PrimeFaces.escapeClientId(columnHeader.attr('id'))).removeClass('ui-helper-hidden');
         }
 
+        this.changeTogglerState(column, true);
         this.fireToggleEvent(true, (index - 1));
         this.updateColspan();
     },
@@ -343,7 +364,8 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         if(this.hasStickyHeader) {
             $(PrimeFaces.escapeClientId(columnHeader.attr('id'))).addClass('ui-helper-hidden');
         }
-            
+           
+        this.changeTogglerState(column, false);
         this.fireToggleEvent(false, (index - 1));
         this.updateColspan();
     },
@@ -412,6 +434,16 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                 emptyRow.children('td').addClass('ui-helper-hidden');
             }
         }
+    },
+    
+    changeTogglerState: function(column, isHidden) {
+        if(column && column.length) {
+            var stateVal = this.togglerStateHolder.val(),
+            columnId = column.attr('id'),
+            oldColState = columnId + "_" + !isHidden,
+            newColState = columnId + "_" + isHidden;
+            this.togglerStateHolder.val(stateVal.replace(oldColState, newColState));
+        }
     }
-
+    
 });

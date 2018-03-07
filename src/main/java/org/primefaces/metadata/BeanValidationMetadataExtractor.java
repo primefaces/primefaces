@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,15 +25,15 @@ import javax.validation.groups.Default;
 import javax.validation.metadata.BeanDescriptor;
 import javax.validation.metadata.ConstraintDescriptor;
 import javax.validation.metadata.PropertyDescriptor;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 
 public class BeanValidationMetadataExtractor {
 
-    public static Set<ConstraintDescriptor<?>> extractAllConstraintDescriptors(FacesContext context, RequestContext requestContext,
+    public static Set<ConstraintDescriptor<?>> extractAllConstraintDescriptors(FacesContext context, PrimeApplicationContext applicationContext,
             ValueExpression ve) {
 
-        PropertyDescriptor propertyDescriptor = extractPropertyDescriptor(context, requestContext, ve);
+        PropertyDescriptor propertyDescriptor = extractPropertyDescriptor(context, applicationContext, ve);
 
         if (propertyDescriptor != null) {
             return propertyDescriptor.getConstraintDescriptors();
@@ -42,16 +42,16 @@ public class BeanValidationMetadataExtractor {
         return null;
     }
 
-    public static Set<ConstraintDescriptor<?>> extractDefaultConstraintDescriptors(FacesContext context, RequestContext requestContext,
+    public static Set<ConstraintDescriptor<?>> extractDefaultConstraintDescriptors(FacesContext context, PrimeApplicationContext applicationContext,
             ValueExpression ve) {
 
-        return extractConstraintDescriptors(context, requestContext, ve, Default.class);
+        return extractConstraintDescriptors(context, applicationContext, ve, Default.class);
     }
 
-    public static Set<ConstraintDescriptor<?>> extractConstraintDescriptors(FacesContext context, RequestContext requestContext,
+    public static Set<ConstraintDescriptor<?>> extractConstraintDescriptors(FacesContext context, PrimeApplicationContext applicationContext,
             ValueExpression ve, Class... groups) {
 
-        PropertyDescriptor propertyDescriptor = extractPropertyDescriptor(context, requestContext, ve);
+        PropertyDescriptor propertyDescriptor = extractPropertyDescriptor(context, applicationContext, ve);
 
         if (propertyDescriptor != null) {
             return propertyDescriptor.findConstraints().unorderedAndMatchingGroups(groups).getConstraintDescriptors();
@@ -60,14 +60,14 @@ public class BeanValidationMetadataExtractor {
         return null;
     }
 
-    public static PropertyDescriptor extractPropertyDescriptor(FacesContext context, RequestContext requestContext, ValueExpression ve) {
+    public static PropertyDescriptor extractPropertyDescriptor(FacesContext context, PrimeApplicationContext applicationContext, ValueExpression ve) {
 
         if (ve != null) {
             ELContext elContext = context.getELContext();
             ValueReference vr = ValueExpressionAnalyzer.getReference(elContext, ve);
 
             if (vr != null) {
-                Validator validator = requestContext.getApplicationContext().getValidator();
+                Validator validator = applicationContext.getValidator();
                 Object base = vr.getBase();
                 Object property = vr.getProperty();
 

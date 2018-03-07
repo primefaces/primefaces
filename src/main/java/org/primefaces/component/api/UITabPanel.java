@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1016,9 +1016,10 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             }
             else {
                 if (this.isDynamic()) {
-                    for (UIComponent component : getChildren()) {
-                        if (component instanceof Tab) {
-                            Tab tab = (Tab) component;
+                    for (int i = 0; i < getChildCount(); i++) {
+                        UIComponent child = getChildren().get(i);
+                        if (child instanceof Tab) {
+                            Tab tab = (Tab) child;
                             if (tab.isLoaded()) {
                                 tab.processDecodes(context);
                             }
@@ -1061,9 +1062,10 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
         else {
             if (this.isDynamic()) {
-                for (UIComponent component : getChildren()) {
-                    if (component instanceof Tab) {
-                        Tab tab = (Tab) component;
+                for (int i = 0; i < getChildCount(); i++) {
+                    UIComponent child = getChildren().get(i);
+                    if (child instanceof Tab) {
+                        Tab tab = (Tab) child;
                         if (tab.isLoaded()) {
                             tab.processValidators(context);
                         }
@@ -1101,9 +1103,10 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
         else {
             if (this.isDynamic()) {
-                for (UIComponent component : getChildren()) {
-                    if (component instanceof Tab) {
-                        Tab tab = (Tab) component;
+                for (int i = 0; i < getChildCount(); i++) {
+                    UIComponent child = getChildren().get(i);
+                    if (child instanceof Tab) {
+                        Tab tab = (Tab) child;
                         if (tab.isLoaded()) {
                             tab.processUpdates(context);
                         }
@@ -1434,9 +1437,10 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     public void resetLoadedTabsState() {
         if (!this.isRepeating() && this.isDynamic()) {
-            for (UIComponent component : getChildren()) {
-                if (component instanceof Tab) {
-                    Tab tab = (Tab) component;
+            for (int i = 0; i < getChildCount(); i++) {
+                UIComponent child = getChildren().get(i);
+                if (child instanceof Tab) {
+                    Tab tab = (Tab) child;
                     tab.setLoaded(false);
                 }
             }

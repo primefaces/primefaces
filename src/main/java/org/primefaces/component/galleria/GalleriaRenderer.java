@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -108,7 +108,7 @@ public class GalleriaRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (context.isPostback()) {
-            wb.initWithDomReady("Galleria", galleria.resolveWidgetVar(), clientId);
+            wb.init("Galleria", galleria.resolveWidgetVar(), clientId);
         }
         else {
             wb.initWithWindowLoad("Galleria", galleria.resolveWidgetVar(), clientId);

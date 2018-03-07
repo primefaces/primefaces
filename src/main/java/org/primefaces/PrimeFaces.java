@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,12 +24,13 @@ import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialViewContext;
 import org.primefaces.component.datatable.TableState;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.expression.ComponentNotFoundException;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
@@ -61,8 +62,8 @@ public class PrimeFaces {
         return FacesContext.getCurrentInstance();
     }
     
-    protected RequestContext getRequestContext() {
-        return RequestContext.getCurrentInstance();
+    protected PrimeRequestContext getRequestContext() {
+        return PrimeRequestContext.getCurrentInstance();
     }
     
     /**
@@ -93,7 +94,35 @@ public class PrimeFaces {
     }
     
     /**
-     * Resets the resolved inputs.
+     * Resolves the search expression, starting from the viewroot, and focus the resolved component.
+     *
+     * @param expression The search expression.
+     */
+    public void focus(String expression) {
+        focus(expression, FacesContext.getCurrentInstance().getViewRoot());
+    }
+    
+    /**
+     * Resolves the search expression and focus the resolved component.
+     *
+     * @param expression the search expression.
+     * @param base the base component from which we will start to resolve the search expression.
+     */
+    public void focus(String expression, UIComponent base) {
+        if (expression == null || expression.trim().isEmpty()) {
+            return;
+        }
+
+        FacesContext facesContext = getFacesContext();
+
+        String clientId = SearchExpressionFacade.resolveClientId(facesContext,
+                base,
+                expression);
+        executeScript("PrimeFaces.focus('" + clientId + "');");
+    }
+    
+    /**
+     * Resolves the search expressions, starting from the viewroot and resets all found {@link UIInput} components.
      *
      * @param expressions a list of search expressions.
      */
@@ -105,13 +134,18 @@ public class PrimeFaces {
         FacesContext facesContext = getFacesContext();
         VisitContext visitContext = VisitContext.createVisitContext(facesContext, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
 
+        
+        UIViewRoot root = facesContext.getViewRoot();
         for (String expression : expressions) {
-            reset(facesContext, visitContext, expression);
+            List<UIComponent> components = SearchExpressionFacade.resolveComponents(facesContext, root, expression);
+            for (UIComponent component : components) {
+                component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
+            }
         }
     }
 
     /**
-     * Resets the resolved inputs.
+     * Resolves the search expressions, starting from the viewroot and resets all found {@link UIInput} components.
      *
      * @param expressions a list of search expressions.
      */
@@ -120,21 +154,7 @@ public class PrimeFaces {
             return;
         }
 
-        FacesContext facesContext = getFacesContext();
-        VisitContext visitContext = VisitContext.createVisitContext(facesContext, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
-
-        for (String expression : expressions) {
-            reset(facesContext, visitContext, expression);
-        }
-    }
-    
-    private void reset(FacesContext facesContext, VisitContext visitContext, String expressions) {
-        UIViewRoot root = facesContext.getViewRoot();
-
-        List<UIComponent> components = SearchExpressionFacade.resolveComponents(facesContext, root, expressions);
-        for (UIComponent component : components) {
-            component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
-        }
+        resetInputs(Arrays.asList(expressions));
     }
     
     public void clearTableStates() {
@@ -197,7 +217,7 @@ public class PrimeFaces {
         public void closeDynamic(Object data) {
             FacesContext facesContext = getFacesContext();
             Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-            String pfdlgcid = params.get(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM);
+            String pfdlgcid = ComponentUtils.escapeEcmaScriptText(params.get(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM));
 
             if (data != null) {
                 Map<String, Object> session = facesContext.getExternalContext().getSessionMap();
@@ -225,13 +245,7 @@ public class PrimeFaces {
         }
     }
     
-    public Ajax ajax() {
-        if (getFacesContext().isProjectStage(ProjectStage.Development) && !isAjaxRequest()) {
-            LOG.info("PrimeFaces.current().ajax() called inside an non-AJAX request! "
-                    + "All further calls on sub-methods will absolutely do nothing...");
-            //throw new FacesException("ajax() can only be used in AJAX requests!");
-        }
-        
+    public Ajax ajax() {        
         return ajax;
     }
     
@@ -284,8 +298,7 @@ public class PrimeFaces {
                 return;
             }
 
-            List<String> collection = Arrays.asList(clientIds);
-            update(collection);
+            update(Arrays.asList(clientIds));
         }
     }
 }

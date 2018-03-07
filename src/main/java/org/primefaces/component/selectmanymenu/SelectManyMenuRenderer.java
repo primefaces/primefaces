@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
 import org.primefaces.component.column.Column;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -122,8 +122,12 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         if (menu.getTabindex() != null) {
             writer.writeAttribute("tabindex", menu.getTabindex(), null);
         }
+        
+        if (menu.isDisabled()) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, menu);
         }
 
@@ -141,18 +145,10 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         Object submittedValues = getSubmittedValues(menu);
         boolean customContent = menu.getVar() != null;
         boolean showCheckbox = menu.isShowCheckbox();
-        
-        String scrollHeight = null;
-        try { 
-            scrollHeight = Integer.parseInt(menu.getScrollHeight()) + "px"; 
-        } 
-        catch (NumberFormatException e) { 
-            scrollHeight = menu.getScrollHeight();
-        }
 
         writer.startElement("div", menu);
         writer.writeAttribute("class", SelectManyMenu.LIST_CONTAINER_CLASS, null);
-        writer.writeAttribute("style", "max-height:" + scrollHeight, null);
+        writer.writeAttribute("style", "height:" + calculateWrapperHeight(menu, countSelectItems(selectItems)), null);
 
         if (customContent) {
             writer.startElement("table", null);
@@ -262,7 +258,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         Object values = getValues(menu);
         Object submittedValues = getSubmittedValues(menu);
 
-        for (SelectItem selectItem : selectItems) {
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
             encodeOption(context, menu, selectItem, values, submittedValues, converter);
         }
     }
@@ -331,6 +328,19 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.endElement("div");
     }
 
+    protected String calculateWrapperHeight(SelectManyMenu menu, int itemSize) {
+        int height = menu.getScrollHeight();
+
+        if (height != Integer.MAX_VALUE) {
+            return height + "px";
+        } 
+        else if (itemSize > 10) {
+            return 200 + "px";
+        }
+
+        return "auto";
+    }
+    
     @Override
     protected String getSubmitParam(FacesContext context, UISelectMany selectMany) {
         return selectMany.getClientId(context) + "_input";

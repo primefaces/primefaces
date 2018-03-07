@@ -1,7 +1,7 @@
 /**
  * PrimeFaces Dialog Widget
  */
-PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
     init: function(cfg) {
         this._super(cfg);
@@ -16,6 +16,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         this.blockEvents = 'focus.' + this.id + ' mousedown.' + this.id + ' mouseup.' + this.id;
         this.resizeNS = 'resize.' + this.id;
         this.cfg.absolutePositioned = this.jq.hasClass('ui-dialog-absolute');
+        this.jqEl = this.jq[0];
 
         this.positionInitialized = false;
 
@@ -42,27 +43,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             this.setupResizable();
         }
 
-        if(this.cfg.appendTo) {
-            this.parent = this.jq.parent();
-            this.targetParent = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo);
-
-            // skip when the parent currently is already the same
-            // this likely happens when the dialog is updated directly instead of a container
-            // as our ajax update mechanism just updates by id
-            if (!this.parent.is(this.targetParent)) {
-                this.jq.appendTo(this.targetParent);
-            }
-        }
-
         //docking zone
         if($(document.body).children('.ui-dialog-docking-zone').length === 0) {
             $(document.body).append('<div class="ui-dialog-docking-zone"></div>');
-        }
-
-        //remove related modality if there is one
-        var modal = $(this.jqId + '_modal');
-        if(modal.length > 0) {
-            modal.remove();
         }
 
         //aria
@@ -84,12 +67,16 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
 
         $(document).off('keydown.dialog_' + cfg.id);
 
-        if(cfg.appendTo) {
-            var jqs = $('[id=' + cfg.id.replace(/:/g,"\\:") + ']');
-            if(jqs.length > 1) {
-            	PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.appendTo).children(this.jqId).remove();
+        if(this.minimized) {
+            var dockingZone = $(document.body).children('.ui-dialog-docking-zone');
+            if(dockingZone.length && dockingZone.children(this.jqId).length) {
+                this.removeMinimize();
+                dockingZone.children(this.jqId).remove();
             }
         }
+
+        this.minimized = false;
+        this.maximized = false;
 
         this.init(cfg);
     },
@@ -122,19 +109,19 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         var margin = this.jq.outerHeight(true) - this.jq.outerHeight();
         var headerHeight = this.titlebar.outerHeight(true);
         var contentPadding = this.content.innerHeight() - this.content.height();;
-        var footerHeight = this.footer.outerHeight(true);
+        var footerHeight = this.footer.outerHeight(true) || 0;
 
         var maxHeight = windowHeight - (margin + headerHeight + contentPadding + footerHeight);
 
         this.content.css('max-height', maxHeight + 'px');
     },
 
+    //@override
     enableModality: function() {
+        this._super();
+
         var $this = this,
         doc = $(document);
-
-        $(document.body).append('<div id="' + this.id + '_modal" class="ui-widget-overlay ui-dialog-mask"></div>')
-                        .children(this.jqId + '_modal').css('z-index' , this.jq.css('z-index') - 1);
 
         //Disable tabbing out of modal dialog and stop events from targets outside of dialog
         doc.on('keydown.' + this.id,
@@ -187,8 +174,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
                 });
     },
 
+    //@override
     disableModality: function(){
-        $(document.body).children(this.jqId + '_modal').remove();
+        this._super();
+
         $(document).off(this.blockEvents).off('keydown.' + this.id);
     },
 
@@ -206,7 +195,11 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
             }
 
             if (this.positionInitialized === false) {
+                this.jqEl.style.visibility = "hidden";
+                this.jqEl.style.display = "block";
                 this.initPosition();
+                this.jqEl.style.display = "none";
+                this.jqEl.style.visibility = "visible";
             }
 
             this._show();
@@ -377,10 +370,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
                 }
             },
             stop: function(event, ui) {
-                var offset = $this.jq.data('offset');
-
                 $this.jq.css('position', 'fixed');
-                $this.jq.offset(offset);
 
                 if($this.cfg.hasIframe) {
                     $this.iframeFix.remove();
@@ -508,15 +498,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         if(this.minimized) {
-            this.jq.appendTo(this.parent).removeClass('ui-dialog-minimized').css({'position':'fixed', 'float':'none'});
-            this.restoreState();
-            this.content.show();
-            this.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-plus').addClass('ui-icon-minus');
-            this.minimized = false;
-
-            if(this.cfg.resizable) {
-                this.resizers.show();
-            }
+            this.removeMinimize();
 
             this.fireBehaviorEvent('restoreMinimize');
         }
@@ -658,6 +640,18 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.BaseWidget.extend({
                 behavior.call(this);
             }
         }
+    },
+
+    removeMinimize: function() {
+        this.jq.appendTo(this.parent).removeClass('ui-dialog-minimized').css({'position':'fixed', 'float':'none'});
+        this.restoreState();
+        this.content.show();
+        this.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-plus').addClass('ui-icon-minus');
+        this.minimized = false;
+
+        if(this.cfg.resizable) {
+            this.resizers.show();
+        }
     }
 
 });
@@ -685,21 +679,20 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
         if(this.cfg.global) {
             PrimeFaces.confirmDialog = this;
 
-            this.jq.find('.ui-confirmdialog-yes').on('click.ui-confirmdialog', function(e) {
-                if(PrimeFaces.confirmSource) {
+            this.jq.on('click.ui-confirmdialog', '.ui-confirmdialog-yes, .ui-confirmdialog-no', null, function(e) {
+                var el = $(this);
+
+                if(el.hasClass('ui-confirmdialog-yes') && PrimeFaces.confirmSource) {
                     var fn = new Function('event',PrimeFaces.confirmSource.data('pfconfirmcommand'));
 
                     fn.call(PrimeFaces.confirmSource.get(0),e);
                     PrimeFaces.confirmDialog.hide();
                     PrimeFaces.confirmSource = null;
                 }
-
-                e.preventDefault();
-            });
-
-            this.jq.find('.ui-confirmdialog-no').on('click.ui-confirmdialog', function(e) {
-                PrimeFaces.confirmDialog.hide();
-                PrimeFaces.confirmSource = null;
+                else if(el.hasClass('ui-confirmdialog-no')) {
+                    PrimeFaces.confirmDialog.hide();
+                    PrimeFaces.confirmSource = null;
+                }
 
                 e.preventDefault();
             });
@@ -711,14 +704,24 @@ PrimeFaces.widget.ConfirmDialog = PrimeFaces.widget.Dialog.extend({
     },
 
     showMessage: function(msg) {
+        if(msg.beforeShow) {
+            eval(msg.beforeShow);
+        }
+
         var icon = (msg.icon === 'null') ? 'ui-icon-alert' : msg.icon;
         this.icon.removeClass().addClass('ui-icon ui-confirm-dialog-severity ' + icon);
 
         if(msg.header)
             this.title.text(msg.header);
 
-        if(msg.message)
-            this.message.text(msg.message);
+        if(msg.message){
+            if (msg.escape){
+                this.message.text(msg.message);
+            }
+            else {
+            	this.message.html(msg.message);
+            }
+        }
 
         this.show();
     }

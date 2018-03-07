@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,7 @@
 package org.primefaces.component.calendar;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -32,13 +30,8 @@ import org.primefaces.component.calendar.converter.TimePatternConverter;
  */
 public class CalendarUtils {
 
-    private final static List<PatternConverter> PATTERN_CONVERTERS;
-
-    static {
-        PATTERN_CONVERTERS = new ArrayList<PatternConverter>();
-        PATTERN_CONVERTERS.add(new TimePatternConverter());
-        PATTERN_CONVERTERS.add(new DatePatternConverter());
-    }
+    private final static PatternConverter[] PATTERN_CONVERTERS =
+            new PatternConverter[] { new TimePatternConverter(), new DatePatternConverter() };
 
     public static String getValueAsString(FacesContext context, Calendar calendar) {
         Object submittedValue = calendar.getSubmittedValue();

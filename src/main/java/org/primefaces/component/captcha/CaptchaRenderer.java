@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,18 +62,19 @@ public class CaptchaRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, Captcha captcha, String publicKey) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = captcha.getClientId(context);
-
         captcha.setRequired(true);
-
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
+
+        renderDynamicPassThruAttributes(context, captcha);
+
         writer.endElement("div");
     }
 
     protected void encodeScript(FacesContext context, Captcha captcha, String publicKey) throws IOException {
         String clientId = captcha.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Captcha", captcha.resolveWidgetVar(), clientId);
+        wb.init("Captcha", captcha.resolveWidgetVar(), clientId);
 
         wb.attr("sitekey", publicKey)
                 .attr("theme", captcha.getTheme(), "light")

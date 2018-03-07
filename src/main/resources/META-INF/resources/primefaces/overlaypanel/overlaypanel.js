@@ -1,12 +1,12 @@
 /**
  * PrimeFaces OverlayPanel Widget
  */
-PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
     init: function(cfg) {
         this._super(cfg);
 
-        this.content = this.jq.children('div.ui-overlaypanel-content')
+        this.content = this.jq.children('div.ui-overlaypanel-content');
 
         //configuration
         this.cfg.my = this.cfg.my||'left top';
@@ -20,27 +20,6 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
             this.closerIcon = $('<a href="#" class="ui-overlaypanel-close ui-state-default" href="#"><span class="ui-icon ui-icon-closethick"></span></a>').appendTo(this.jq);
         }
 
-        // prevent duplicate elements
-        // the first check is required if the id contains a ':' - See #2485
-        if(this.jq.length > 1) {
-            $(document.body).children(this.jqId).remove();
-            this.jq = $(this.jqId);
-        }
-        else {
-            // this is required if the id does NOT contain a ':' - See #2485
-            $(document.body).children("[id='" + this.id + "']").not(this.jq).remove();
-        }
-
-        //remove related modality if there is one
-        var modal = $(this.jqId + '_modal');
-        if(modal.length > 0) {
-            modal.remove();
-        }
-
-        if(this.cfg.appendToBody) {
-            this.jq.appendTo(document.body);
-        }
-
         this.bindCommonEvents();
 
         if(this.cfg.target) {
@@ -49,6 +28,26 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
 
             //dialog support
             this.setupDialogSupport();
+        }
+    },
+
+    //@Override
+    refresh: function() {
+        this._super();
+
+        // see #setupDialogSupport
+        if (!this.cfg.appendTo) {
+            PrimeFaces.utils.removeDynamicOverlay(this, this.jq, this.id, $(document.body));
+        }
+    },
+
+    //@Override
+    destroy: function() {
+        this._super();
+
+        // see #setupDialogSupport
+        if (!this.cfg.appendTo) {
+            PrimeFaces.utils.removeDynamicOverlay(this, this.jq, this.id, $(document.body));
         }
     },
 
@@ -277,7 +276,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
             this.jq.css('position', 'fixed');
 
             //append to body if not already appended by user choice
-            if(!this.cfg.appendToBody) {
+            if(!this.cfg.appendTo) {
                 this.jq.appendTo(document.body);
             }
         }
@@ -319,12 +318,12 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         this.jq.find(':not(:submit):not(:button):input:visible:enabled:first').focus();
     },
 
+    //@override
     enableModality: function() {
+        this._super();
+
         var $this = this,
         doc = $(document);
-
-        $(document.body).append('<div id="' + this.id + '_modal" class="ui-widget-overlay ui-overlaypanel-mask"></div>')
-                        .children(this.jqId + '_modal').css('z-index' , this.jq.css('z-index') - 1);
 
         this.blockEvents = 'focus.' + this.id + ' mousedown.' + this.id + ' mouseup.' + this.id;
         if(this.targetElement) {
@@ -383,12 +382,14 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
                 });
     },
 
+    //@override
     disableModality: function(){
+        this._super();
+
         if(this.targetElement) {
             this.targetElement.css('z-index', this.targetZindex);
         }
 
-        $(document.body).children(this.jqId + '_modal').remove();
         $(document).off(this.blockEvents).off('keydown.' + this.id);
     },
 

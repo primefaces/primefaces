@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ public class ImageSwitchRenderer extends CoreRenderer {
         writer.endElement("div");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("ImageSwitch", imageSwitch.resolveWidgetVar(), clientId)
+        wb.init("ImageSwitch", imageSwitch.resolveWidgetVar(), clientId)
                 .attr("fx", imageSwitch.getEffect())
                 .attr("speed", imageSwitch.getSpeed())
                 .attr("timeout", slideshowSpeed)

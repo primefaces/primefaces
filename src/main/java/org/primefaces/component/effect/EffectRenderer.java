@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ public class EffectRenderer extends CoreRenderer {
         String animation = getEffectBuilder(effect, target).build();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Effect", effect.resolveWidgetVar(), clientId)
+        wb.init("Effect", effect.resolveWidgetVar(), clientId)
                 .attr("source", source)
                 .attr("event", event)
                 .attr("delay", delay)

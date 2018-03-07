@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ public class StackRenderer extends BaseMenuRenderer {
         Stack stack = (Stack) menu;
         String clientId = stack.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Stack", stack.resolveWidgetVar(), clientId)
+        wb.init("Stack", stack.resolveWidgetVar(), clientId)
                 .attr("openSpeed", stack.getOpenSpeed())
                 .attr("closeSpeed", stack.getCloseSpeed())
                 .attr("expanded", stack.isExpanded(), false);

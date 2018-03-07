@@ -54,13 +54,11 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     },
 
     refresh: function(cfg) {
-        var jqId = PrimeFaces.escapeClientId(cfg.id),
-        instances = $(jqId);
-
-        if(instances.length > 1) {
-            $(document.body).children(jqId).remove();
+        var jqs = $('[id=' + cfg.id.replace(/:/g,"\\:") + ']');
+        if(jqs.length > 1) {
+            $(document.body).children(this.jqId).remove();
         }
-
+        
         this.init(cfg);
     },
 
@@ -70,7 +68,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         var _self = this;
 
         //hide menu on item click
-        this.links.bind('click', function(e) {
+        this.links.on('click', function(e) {
             var target = $(e.target),
                 submenuLink = target.hasClass('ui-submenu-link') ? target : target.closest('.ui-submenu-link');
 
@@ -127,13 +125,19 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         if((top + height ) > (win.height() + win.scrollTop())) {
             top = top - height;
         }
-
+        if(top < 0) {
+            top = e.pageY;
+        }
+        
         this.jq.css({
             'left': left,
             'top': top,
             'z-index': ++PrimeFaces.zindex
         }).show();
 
+        this.bindWindowResizeEvent();
+        this.bindDocumentHandler();
+        
         e.preventDefault();
         e.stopPropagation();
     },
@@ -147,6 +151,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         });
 
         this.jq.fadeOut('fast');
+        this.unbindEvents();
     },
 
     isVisible: function() {
@@ -155,6 +160,23 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
     getTarget: function() {
         return this.jqTarget;
+    },
+    
+    bindWindowResizeEvent: function() {
+        //Hide contextMenu on resize
+        var $this = this,
+        resizeNS = 'resize.' + this.id;
+
+        $(window).off(resizeNS).on(resizeNS, function() {
+            if($this.jq.is(':visible')) {
+                $this.hide();
+            }
+        });
+    },
+    
+    unbindEvents: function() {
+        $(window).off('resize.' + this.id);
+        $(document.body).off('click.' + this.id);
     }
 
 });

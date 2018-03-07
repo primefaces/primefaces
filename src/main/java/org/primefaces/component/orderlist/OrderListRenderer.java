@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package org.primefaces.component.orderlist;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.faces.component.UIComponent;
@@ -154,8 +153,7 @@ public class OrderListRenderer extends CoreRenderer {
         String var = old.getVar();
         Converter converter = old.getConverter();
 
-        for (Iterator it = model.iterator(); it.hasNext();) {
-            Object item = it.next();
+        for (Object item : model) {
             context.getExternalContext().getRequestMap().put(var, item);
             String value = converter != null ? converter.getAsString(context, old, old.getItemValue()) : old.getItemValue().toString();
 

@@ -90,6 +90,13 @@
             <type>java.lang.String</type>
             <description>Comma seperated list of severities to display only.</description>
         </attribute>
+        <attribute>
+            <name>keepAlive</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Defines if previous messages should be kept on a new message is shown. Default is false.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ public class DynamicContentSrcBuilder {
                 Map<String,Object> session = context.getExternalContext().getSessionMap();
                 Map<String,String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
                 if (dynamicResourcesMapping == null) {
-                    dynamicResourcesMapping = new LimitedSizeHashMap<String, String>(200);
+                    dynamicResourcesMapping = new LimitedSizeHashMap<>(200);
                     session.put(Constants.DYNAMIC_RESOURCES_MAPPING, dynamicResourcesMapping);
                 }
                 
@@ -78,9 +78,10 @@ public class DynamicContentSrcBuilder {
                         .append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(resourceKey, "UTF-8"))
                         .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(type.toString());
 
-                for (UIComponent kid : component.getChildren()) {
-                    if (kid instanceof UIParameter) {
-                        UIParameter param = (UIParameter) kid;
+                for (int i = 0; i < component.getChildCount(); i++) {
+                    UIComponent child = component.getChildren().get(i);
+                    if (child instanceof UIParameter) {
+                        UIParameter param = (UIParameter) child;
                         if (!param.isDisable()) {
                             Object paramValue = param.getValue();
 

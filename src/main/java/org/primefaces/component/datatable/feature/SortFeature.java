@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
+import org.primefaces.PrimeFaces;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -34,7 +35,6 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.TableState;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.data.PostSortEvent;
 import org.primefaces.model.BeanPropertyComparator;
 import org.primefaces.model.ChainedBeanPropertyComparator;
@@ -93,7 +93,15 @@ public class SortFeature implements DataTableFeature {
         if (table.isLazy()) {
             if (table.isLiveScroll()) {
                 table.loadLazyScrollData(0, table.getScrollRows());
-            }
+            } 
+            else if (table.isVirtualScroll()) {
+                int rows = table.getRows();
+                int scrollRows = table.getScrollRows();
+                int virtualScrollRows = (scrollRows * 2);
+                scrollRows = (rows == 0) ? virtualScrollRows : ((virtualScrollRows > rows) ? rows : virtualScrollRows);
+
+                table.loadLazyScrollData(0, scrollRows);
+            } 
             else {
                 table.loadLazyData();
             }
@@ -107,11 +115,7 @@ public class SortFeature implements DataTableFeature {
             }
 
             if (table.isPaginator()) {
-                RequestContext requestContext = RequestContext.getCurrentInstance(context);
-
-                if (requestContext != null) {
-                    requestContext.addCallbackParam("totalRecords", table.getRowCount());
-                }
+                PrimeFaces.current().ajax().addCallbackParam("totalRecords", table.getRowCount());
             }
 
             //save state

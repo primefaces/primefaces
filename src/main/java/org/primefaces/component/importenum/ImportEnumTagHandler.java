@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.util.SharedStringBuilder;
 
 /**
@@ -118,7 +118,7 @@ public class ImportEnumTagHandler extends TagHandler {
 
             boolean cacheEnabled = facesContext.isProjectStage(ProjectStage.Production);
             Map<Class<?>, Map<String, Object>> cache
-                    = RequestContext.getCurrentInstance().getApplicationContext().getEnumCacheMap();
+                    = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnumCacheMap();
 
             Map<String, Object> enums;
 

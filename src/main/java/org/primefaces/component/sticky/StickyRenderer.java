@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ public class StickyRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Sticky sticky) throws IOException {
         String target = sticky.getTarget();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Sticky", sticky.resolveWidgetVar(), sticky.getClientId(context))
+        wb.init("Sticky", sticky.resolveWidgetVar(), sticky.getClientId(context))
                 .attr("target", SearchExpressionFacade.resolveClientIds(context, sticky, target))
                 .attr("margin", sticky.getMargin(), 0)
                 .finish();

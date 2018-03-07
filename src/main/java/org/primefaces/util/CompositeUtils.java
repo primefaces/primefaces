@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,34 +43,39 @@ public class CompositeUtils {
         List<AttachedObjectTarget> targets = (List<AttachedObjectTarget>) info.getBeanDescriptor()
                 .getValue(AttachedObjectTarget.ATTACHED_OBJECT_TARGETS_KEY);
 
-        for (AttachedObjectTarget target : targets) {
-            if (target instanceof EditableValueHolderAttachedObjectTarget) {
+        if (targets != null) {
+            for (int i = 0; i < targets.size(); i++) {
+                AttachedObjectTarget target = targets.get(i);
+                if (target instanceof EditableValueHolderAttachedObjectTarget) {
 
-                List<UIComponent> childs = target.getTargets(composite);
-                if (childs == null || childs.isEmpty()) {
-                    throw new FacesException(
-                            "Cannot not resolve editableValueHolder target in composite component with id: \""
-                            + composite.getClientId() + "\"");
-                }
-
-                if (childs.size() > 1) {
-                    throw new FacesException(
-                            "Only a single editableValueHolder target is supported in composite component with id: \""
-                            + composite.getClientId() + "\"");
-                }
-
-                final UIComponent child = childs.get(0);
-
-                composite.invokeOnComponent(context, composite.getClientId(context), new ContextCallback() {
-                    public void invokeContextCallback(FacesContext context, UIComponent target) {
-                        if (isComposite(child)) {
-                            invokeOnDeepestEditableValueHolder(context, child, callback);
-                        }
-                        else {
-                            callback.invokeContextCallback(context, child);
-                        }
+                    List<UIComponent> childs = target.getTargets(composite);
+                    if (childs == null || childs.isEmpty()) {
+                        throw new FacesException(
+                                "Cannot not resolve editableValueHolder target in composite component with id: \""
+                                + composite.getClientId() + "\"");
                     }
-                });
+
+                    if (childs.size() > 1) {
+                        throw new FacesException(
+                                "Only a single editableValueHolder target is supported in composite component with id: \""
+                                + composite.getClientId() + "\"");
+                    }
+
+                    final UIComponent child = childs.get(0);
+
+                    composite.invokeOnComponent(context, composite.getClientId(context), new ContextCallback() {
+                        
+                        @Override
+                        public void invokeContextCallback(FacesContext context, UIComponent target) {
+                            if (isComposite(child)) {
+                                invokeOnDeepestEditableValueHolder(context, child, callback);
+                            }
+                            else {
+                                callback.invokeContextCallback(context, child);
+                            }
+                        }
+                    });
+                }
             }
         }
     }

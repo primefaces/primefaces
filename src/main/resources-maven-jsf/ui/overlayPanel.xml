@@ -64,11 +64,10 @@
             <description>Effect to display when hiding the panel.</description>
         </attribute>
         <attribute>
-            <name>appendToBody</name>
+            <name>appendTo</name>
             <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>When set true, panel is appended as a child of document body.</description>
+            <type>java.lang.String</type>
+            <description>Alternative to appendToBody. Appends the overlayPanel to the given search expression.</description>
         </attribute>
         <attribute>
             <name>onShow</name>

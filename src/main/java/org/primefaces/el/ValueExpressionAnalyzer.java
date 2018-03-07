@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,9 @@ package org.primefaces.el;
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.el.ValueReference;
+import javax.faces.context.FacesContext;
 import javax.faces.el.CompositeComponentExpressionHolder;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 
 public class ValueExpressionAnalyzer {
 
@@ -58,7 +59,7 @@ public class ValueExpressionAnalyzer {
 
         // Unwrapping is required e.g. for p:graphicImage to support nested expressions in composites
         // The unwrapping requires EL 2.2
-        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastEL22()) {
+        if (PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment().isAtLeastEl22()) {
             ValueReference reference = toValueReference(expression, elContext);
 
             // check for a CC expression

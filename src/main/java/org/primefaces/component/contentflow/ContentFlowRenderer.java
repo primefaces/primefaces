@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -106,7 +106,7 @@ public class ContentFlowRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (context.isPostback()) {
-            wb.initWithDomReady("ContentFlow", cf.resolveWidgetVar(), cf.getClientId(context));
+            wb.init("ContentFlow", cf.resolveWidgetVar(), cf.getClientId(context));
         }
         else {
             wb.initWithWindowLoad("ContentFlow", cf.resolveWidgetVar(), cf.getClientId(context));

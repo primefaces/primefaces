@@ -6,9 +6,7 @@ import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 import javax.faces.model.DataModel;
-import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.mobile.event.SwipeEvent;
 import org.primefaces.event.SelectEvent;
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,6 +20,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import org.primefaces.event.data.PageEvent;
 import javax.faces.event.BehaviorEvent;
+import org.primefaces.PrimeFaces;
 
 	public static final String DATALIST_CLASS = "ui-datalist ui-widget";
     public static final String CONTENT_CLASS = "ui-datalist-content ui-widget-content";
@@ -36,8 +35,6 @@ import javax.faces.event.BehaviorEvent;
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("page", PageEvent.class);
-        put("swipeleft", SwipeEvent.class);
-        put("swiperight", SwipeEvent.class);
         put("tap", SelectEvent.class);
         put("taphold", SelectEvent.class);
     }});
@@ -86,11 +83,7 @@ import javax.faces.event.BehaviorEvent;
 
             //Update paginator for callback
             if(ComponentUtils.isRequestSource(this, getFacesContext()) && this.isPaginator()) {
-                RequestContext requestContext = RequestContext.getCurrentInstance(getFacesContext());
-
-                if(requestContext != null) {
-                    requestContext.addCallbackParam("totalRecords", lazyModel.getRowCount());
-                }
+                PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
             }
         }
     }
@@ -115,17 +108,6 @@ import javax.faces.event.BehaviorEvent;
                 pageEvent.setPhaseId(behaviorEvent.getPhaseId());
 
                 super.queueEvent(pageEvent);
-            }
-            else if(eventName.equals("swipeleft")||eventName.equals("swiperight")) {
-                String clientId = this.getClientId(context);
-                int index = Integer.parseInt(params.get(clientId + "_item"));
-                this.setRowIndex(index);
-        
-                SwipeEvent swipeEvent = new SwipeEvent(this, behaviorEvent.getBehavior(), this.getRowData());
-                swipeEvent.setPhaseId(behaviorEvent.getPhaseId());
-
-                this.setRowIndex(-1);
-                super.queueEvent(swipeEvent);
             }
             else if(eventName.equals("tap")||eventName.equals("taphold")) {
                 String clientId = this.getClientId(context);

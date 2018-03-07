@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ public class DialogRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Dialog dialog) throws IOException {
         String clientId = dialog.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Dialog", dialog.resolveWidgetVar(), clientId);
+        wb.init("Dialog", dialog.resolveWidgetVar(), clientId);
 
         wb.attr("visible", dialog.isVisible(), false)
                 .attr("draggable", dialog.isDraggable(), true)

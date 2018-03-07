@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.primefaces.component.chart.renderer;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.chart.Chart;
@@ -40,9 +41,10 @@ public class BarRenderer extends CartesianPlotRenderer {
             int i = 1;
 
             writer.write("[");
-            for (Iterator<Object> its = series.getData().keySet().iterator(); its.hasNext();) {
-                Number value = series.getData().get(its.next());
-                String valueToRender = escapeChartData(value);
+            for (Iterator<Map.Entry<Object, Number>> its = series.getData().entrySet().iterator(); its.hasNext();) {
+                Map.Entry<Object, Number> entry = its.next();
+                Number value = entry.getValue();
+                String valueToRender = value != null ? value.toString() : "null";
 
                 if (horizontal) {
                     writer.write("[");
@@ -50,9 +52,14 @@ public class BarRenderer extends CartesianPlotRenderer {
                     writer.write("]");
 
                     i++;
-                }
+                } 
                 else {
-                    writer.write(valueToRender);
+                    if (model.getDataRenderMode().equals("key")) {
+                        writer.write("'" + (String) entry.getKey() + "'," + valueToRender);
+                    } 
+                    else {
+                        writer.write(valueToRender);
+                    }
                 }
 
                 if (its.hasNext()) {
@@ -79,14 +86,22 @@ public class BarRenderer extends CartesianPlotRenderer {
         int barMargin = model.getBarMargin();
         int barWidth = model.getBarWidth();
         List<String> ticks = model.getTicks();
+        String legendLabel = model.getLegendLabel();
 
         writer.write(",series:[");
-        for (Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
-            ChartSeries series = (ChartSeries) it.next();
-            series.encode(writer);
+        if (model.getDataRenderMode().equals("key") && legendLabel != null) {
+            writer.write("{");
+            writer.write("label:\"" + ComponentUtils.escapeText(legendLabel) + "\"");
+            writer.write("}");
+        }
+        else {
+            for (Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
+                ChartSeries series = (ChartSeries) it.next();
+                series.encode(writer);
 
-            if (it.hasNext()) {
-                writer.write(",");
+                if (it.hasNext()) {
+                    writer.write(",");
+                }
             }
         }
         writer.write("]");

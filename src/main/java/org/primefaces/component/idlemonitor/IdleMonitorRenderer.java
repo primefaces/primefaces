@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ public class IdleMonitorRenderer extends CoreRenderer {
         String clientId = idleMonitor.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("IdleMonitor", idleMonitor.resolveWidgetVar(), clientId)
+        wb.init("IdleMonitor", idleMonitor.resolveWidgetVar(), clientId)
                 .attr("timeout", idleMonitor.getTimeout())
                 .attr("multiWindowSupport", idleMonitor.isMultiWindowSupport())
                 .attr("contextPath", context.getExternalContext().getRequestContextPath())

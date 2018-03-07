@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ public class MessageInterpolatingConstraintWrapper extends ConstraintDescriptorW
         Map<String, Object> attributes = super.getAttributes();
 
         // wrap it - could be unmodifiable
-        attributes = new HashMap<String, Object>(attributes);
+        attributes = new HashMap<>(attributes);
 
         Object message = attributes.remove(ClientValidationConstraint.ATTR_MESSAGE);
         if (message != null) {
@@ -64,10 +64,12 @@ public class MessageInterpolatingConstraintWrapper extends ConstraintDescriptorW
             this.validatedValue = validatedValue;
         }
 
+        @Override
         public ConstraintDescriptor<?> getConstraintDescriptor() {
             return constraintDescriptor;
         }
 
+        @Override
         public Object getValidatedValue() {
             return validatedValue;
         }

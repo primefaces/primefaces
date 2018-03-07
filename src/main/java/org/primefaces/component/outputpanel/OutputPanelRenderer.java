@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.primefaces.component.outputpanel;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -28,12 +29,14 @@ public class OutputPanelRenderer extends CoreRenderer {
 
     private final static String BLOCK = "div";
     private final static String INLINE = "span";
+    
+    private final static Logger logger = Logger.getLogger(OutputPanelRenderer.class.getName());
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         OutputPanel panel = (OutputPanel) component;
 
-        if (panel.isContentLoad(context)) {
+        if (panel.isContentLoadRequest(context)) {
             renderChildren(context, panel);
         }
         else {
@@ -72,7 +75,7 @@ public class OutputPanelRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, OutputPanel panel) throws IOException {
         String clientId = panel.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("OutputPanel", panel.resolveWidgetVar(), clientId);
+        wb.init("OutputPanel", panel.resolveWidgetVar(), clientId);
 
         if (panel.isDeferred()) {
             wb.attr("deferred", true)

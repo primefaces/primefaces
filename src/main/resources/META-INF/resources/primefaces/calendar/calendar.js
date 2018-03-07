@@ -53,7 +53,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 
                 //display on top
                 setTimeout(function() {
-                    $('#ui-datepicker-div').css('z-index', ++PrimeFaces.zindex);
+                    $('#ui-datepicker-div').addClass('ui-input-overlay').css('z-index', ++PrimeFaces.zindex);
 
                     if (_self.cfg.showTodayButton === false) {
                         $(input).datepicker("widget").find(".ui-datepicker-current").hide();
@@ -177,7 +177,10 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
             else {
-                var newDate = $.datepicker.formatDate(_self.cfg.dateFormat, _self.getDate());
+                var newDate = _self.cfg.timeOnly ? '' : $.datepicker.formatDate(_self.cfg.dateFormat, _self.getDate());
+                if(_self.cfg.timeFormat) {
+                   newDate += ' ' + _self.jqEl.find('.ui_tpicker_time_input')[0].value;
+                }
 
                 _self.input.val(newDate);
                 _self.fireDateSelectEvent();

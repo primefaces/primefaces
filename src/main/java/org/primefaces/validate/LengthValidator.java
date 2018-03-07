@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,12 +25,13 @@ public class LengthValidator extends javax.faces.validator.LengthValidator imple
     private boolean minimumSet;
     private boolean maximumSet;
 
+    @Override
     public Map<String, Object> getMetadata() {
         int min = this.getMinimum();
         int max = this.getMaximum();
 
         if (metadata == null) {
-            metadata = new HashMap<String, Object>();
+            metadata = new HashMap<>();
 
             if (minimumSet) {
                 metadata.put(HTML.VALIDATION_METADATA.MIN_LENGTH, min);
@@ -44,6 +45,7 @@ public class LengthValidator extends javax.faces.validator.LengthValidator imple
         return metadata;
     }
 
+    @Override
     public String getValidatorId() {
         return LengthValidator.VALIDATOR_ID;
     }

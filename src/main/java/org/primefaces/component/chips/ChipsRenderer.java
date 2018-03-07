@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -184,7 +184,7 @@ public class ChipsRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, Chips chips) throws IOException {
         String clientId = chips.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Chips", chips.resolveWidgetVar(), clientId)
+        wb.init("Chips", chips.resolveWidgetVar(), clientId)
                 .attr("max", chips.getMax(), Integer.MAX_VALUE);
 
         encodeClientBehaviors(context, chips);

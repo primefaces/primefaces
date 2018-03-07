@@ -409,16 +409,7 @@
                 else {
                     var elements = $(selector),
                     firstElement = elements.eq(0);
-                    if(firstElement.is(':radio')) {
-                        var checkedRadio = $(':radio[name="' + firstElement.attr('name') + '"]').filter(':checked');
-                        if(checkedRadio.length)
-                            PrimeFaces.focusElement(checkedRadio);
-                        else
-                            PrimeFaces.focusElement(firstElement);
-                    }
-                    else {
-                        firstElement.focus();
-                    }
+                    PrimeFaces.focusElement(firstElement);
                 }
             }, 50);
 
@@ -428,8 +419,18 @@
         },
 
         focusElement: function(el) {
-            if(el.is(':radio') && el.hasClass('ui-helper-hidden-accessible')) {
-                el.parent().focus();
+            if(el.is(':radio')) {
+                // github issue: #2582
+                if(el.hasClass('ui-helper-hidden-accessible')) {
+                    el.parent().focus();
+                }
+                else {
+                    var checkedRadio = $(':radio[name="' + el.attr('name') + '"]').filter(':checked');
+                    if(checkedRadio.length)
+                        checkedRadio.focus();
+                    else
+                        el.focus();
+                }
             }
             else {
                 el.focus();

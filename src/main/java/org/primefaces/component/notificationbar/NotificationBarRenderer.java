@@ -1,5 +1,5 @@
 /**
- * Copyright 2009-2017 PrimeTek.
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ public class NotificationBarRenderer extends CoreRenderer {
     private void encodeScript(FacesContext context, NotificationBar bar) throws IOException {
         String clientId = bar.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("NotificationBar", bar.resolveWidgetVar(), clientId)
+        wb.init("NotificationBar", bar.resolveWidgetVar(), clientId)
                 .attr("position", bar.getPosition())
                 .attr("effect", bar.getEffect())
                 .attr("effectSpeed", bar.getEffectSpeed())
