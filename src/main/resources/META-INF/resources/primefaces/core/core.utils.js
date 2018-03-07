@@ -111,6 +111,31 @@ if (!PrimeFaces.utils) {
 
             return $(PrimeFaces.escapeClientId(modalId)).length === 1
                 || $(document.body).children("[id='" + modalId + "']").length === 1;
+        },
+
+
+
+        hideOverlay: function(hideNamespace, overlay, resolveIgnoredElementsCallback, hideCallback) {
+            $(document.body).off(hideNamespace).on(hideNamespace, function (e) {
+                if (overlay.is(":hidden")) {
+                    return;
+                }
+
+                var $eventTarget = $(e.target);
+
+                //do nothing when the element should be ignored
+                if (resolveIgnoredElementsCallback) {
+                    var elementsToIgnore = resolveIgnoredElementsCallback();
+                    if (elementsToIgnore.is($eventTarget) || elementsToIgnore.has($eventTarget).length > 0) {
+                        return;
+                    }
+                }
+
+                // don't hide the panel when the clicked item is child of the overlay
+                if (overlay.has($eventTarget).length == 0) {
+                    hideCallback();
+                }
+            });
         }
 
     };

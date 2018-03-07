@@ -19,7 +19,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.showHeader = (this.cfg.showHeader === undefined) ? true : this.cfg.showHeader;
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
         this.isDynamicLoaded = false;
-        
+
         if(!this.disabled) {
             if(this.cfg.multiple) {
                 this.triggers = this.jq.find('.ui-selectcheckboxmenu-trigger, .ui-selectcheckboxmenu-multiple-container');
@@ -28,7 +28,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             if(!this.cfg.dynamic) {
                 this._renderPanel();
             }
-            
+
             this.bindEvents();
             this.bindKeyEvents();
 
@@ -60,7 +60,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
         this.init(cfg);
     },
-    
+
     _renderPanel: function() {
         this.renderPanel();
 
@@ -73,7 +73,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
         this.bindPanelEvents();
         this.bindPanelKeyEvents();
-        
+
         this.isDynamicLoaded = true;
     },
 
@@ -235,11 +235,11 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 if($this.cfg.multiple && $(e.target).is('.ui-selectcheckboxmenu-token-icon')) {
                     return;
                 }
-                
+
                 if($this.cfg.dynamic && !$this.isDynamicLoaded) {
                     $this._renderPanel();
                 }
-                
+
                 if($this.panel.is(":hidden")) {
                     $this.show();
                 }
@@ -263,12 +263,11 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             PrimeFaces.attachBehaviors(this.inputs, this.cfg.behaviors);
         }
     },
-    
+
     bindPanelEvents: function() {
         var $this = this,
-        hideNS = 'mousedown.' + this.id,
         resizeNS = 'resize.' + this.id;
-        
+
         //Events for checkboxes
         this.bindCheckboxHover(this.checkboxes);
         this.checkboxes.on('click.selectCheckboxMenu', function() {
@@ -314,7 +313,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             e.preventDefault();
         });
-        
+
         //Labels
         this.labels.on('click.selectCheckboxMenu', function() {
             var checkbox = $(this).prev().children('.ui-chkbox-box');
@@ -322,29 +321,10 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             checkbox.removeClass('ui-state-hover');
             PrimeFaces.clearSelection();
         });
-        
-        //hide overlay when outside is clicked
-        $(document.body).off(hideNS).on(hideNS, function (e) {
-            if($this.panel.is(':hidden')) {
-                return;
-            }
 
-            //do nothing on trigger mousedown
-            var target = $(e.target);
-            if($this.triggers.is(target)||$this.triggers.has(target).length > 0) {
-                return;
-            }
-
-            //hide the panel and remove focus from label
-            var offset = $this.panel.offset();
-            if(e.pageX < offset.left ||
-                e.pageX > offset.left + $this.panel.width() ||
-                e.pageY < offset.top ||
-                e.pageY > offset.top + $this.panel.height()) {
-
-                $this.hide(true);
-            }
-        });
+        PrimeFaces.utils.hideOverlay('mousedown.' + this.id, $this.panel,
+            function() { return $this.triggers; },
+            function() { $this.hide(true); });
 
         //Realign overlay on resize
         $(window).off(resizeNS).on(resizeNS, function() {
@@ -366,7 +346,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         }).on('keydown.selectCheckboxMenu', function(e) {
             var keyCode = $.ui.keyCode,
             key = e.which;
-    
+
             if($this.cfg.dynamic && !$this.isDynamicLoaded) {
                 $this._renderPanel();
             }
@@ -401,10 +381,10 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             };
         });
     },
-    
+
     bindPanelKeyEvents: function() {
         var $this = this;
-        
+
         this.closer.on('focus.selectCheckboxMenu', function(e) {
             $this.closer.addClass('ui-state-focus');
         })
@@ -493,7 +473,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
                 if($this.cfg.dynamic && !$this.isDynamicLoaded) {
                     $this._renderPanel();
                 }
-                
+
                 $this.uncheck(item.children('.ui-chkbox').children('.ui-chkbox-box'), true);
             }
         });

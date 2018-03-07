@@ -238,35 +238,17 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     bindConstantEvents: function() {
-        var $this = this,
-        hideNS = 'mousedown.' + this.id;
+        var $this = this;
 
-        //hide overlay when outside is clicked
-        $(document).off(hideNS).on(hideNS, function (e) {
-            if($this.panel.is(":hidden")) {
-                return;
-            }
-
-            var offset = $this.panel.offset();
-            if (e.target === $this.label.get(0) ||
-                e.target === $this.menuIcon.get(0) ||
-                e.target === $this.menuIcon.children().get(0)) {
-                return;
-            }
-
-            if (e.pageX < offset.left ||
-                e.pageX > offset.left + $this.panel.width() ||
-                e.pageY < offset.top ||
-                e.pageY > offset.top + $this.panel.height()) {
-
+        PrimeFaces.utils.hideOverlay('mousedown.' + this.id, $this.panel,
+            function() { return  $this.label.add($this.menuIcon); },
+            function() {
                 $this.hide();
-
                 setTimeout(function() {
                     $this.revert();
                     $this.changeAriaValue($this.getActiveItem());
                 }, 2);
-            }
-        });
+            });
 
         this.resizeNS = 'resize.' + this.id;
         this.unbindResize();
