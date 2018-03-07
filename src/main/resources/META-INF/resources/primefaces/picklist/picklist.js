@@ -651,9 +651,10 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     },
 
     transfer: function(items, from, to, type) {
-        var $this = this,
-        itemsCount = items.length,
-        transferCount = 0;
+        $(this.jqId + ' ul').sortable('disable');
+        var $this = this;
+        var itemsCount = items.length;
+        var transferCount = 0;
 
         if(this.isAnimated()) {
             items.hide(this.cfg.effect, {}, this.cfg.effectSpeed, function() {
@@ -720,6 +721,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 transferBehavior.call(this, ext);
             }
         }
+        $(this.jqId + ' ul').sortable('enable');
     },
 
     getListName: function(element){
