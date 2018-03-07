@@ -35,7 +35,7 @@ if (!PrimeFaces.utils) {
         },
 
         addModal: function(id, zIndex, tabbablesCallback) {
-            console.log(tabbablesCallback);
+
             //Disable tabbing out of modal and stop events from targets outside of the overlay element
             var $document = $(document);
             $document.on('focus.' + id + ' mousedown.' + id + ' mouseup.' + id, function(event) {
