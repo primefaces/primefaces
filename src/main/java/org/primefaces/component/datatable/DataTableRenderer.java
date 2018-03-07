@@ -1235,10 +1235,10 @@ public class DataTableRenderer extends DataRenderer {
         Object rowKey = null;
         List<UIColumn> columns = table.getColumns();
 
-        if (selectionEnabled) {
-            //try rowKey attribute
-            rowKey = table.getRowKey();
+  		//try rowKey attribute
+        rowKey = table.getRowKey();
 
+        if (selectionEnabled) {
             //ask selectable datamodel
             if (rowKey == null) {
                 rowKey = table.getRowKeyFromModel(table.getRowData());
