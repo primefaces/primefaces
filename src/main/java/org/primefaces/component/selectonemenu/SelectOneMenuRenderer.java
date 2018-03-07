@@ -227,6 +227,15 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 writer.writeAttribute("placeholder", menu.getPlaceholder(), null);
             }
 
+            if (menu.getOnkeydown() != null) {
+                writer.writeAttribute("onkeydown", menu.getOnkeydown(), null);
+                this.renderDomEvent(context, menu, "onkeydown", "keydown", "keydown", null);
+            }
+            if (menu.getOnkeyup() != null) {
+                writer.writeAttribute("onkeyup", menu.getOnkeyup(), null);
+                this.renderDomEvent(context, menu, "onkeyup", "keyup", "keyup", null);
+            }
+
             writer.endElement("input");
         }
         else {
