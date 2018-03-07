@@ -32,12 +32,17 @@ import javax.faces.FacesWrapper;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
 import javax.faces.application.ResourceHandler;
-import javax.faces.component.*;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.UIParameter;
+import javax.faces.component.ValueHolder;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
+
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.config.PrimeConfiguration;
@@ -648,7 +653,7 @@ public class ComponentUtils {
      * @return true when facet and one of the first level child's is rendered.
      */
     public static boolean shouldRenderFacet(UIComponent facet) {
-        if (!facet.isRendered()) {
+        if (facet == null || !facet.isRendered()) {
             // For any future version of JSF where the f:facet gets a rendered attribute (https://github.com/javaserverfaces/mojarra/issues/4299)
             // or there is only 1 child.
             return false;
@@ -658,6 +663,7 @@ public class ComponentUtils {
         if (facet.getChildren().isEmpty()) {
             return true;
         }
+
         for (int i = 0; i < facet.getChildren().size(); i++) {
             // Stop when a child who is rendered is found.
             if (facet.getChildren().get(i).isRendered()) {
