@@ -34,7 +34,57 @@ if (!PrimeFaces.utils) {
             }
         },
 
-        addModal: function(id, zIndex) {
+        addModal: function(id, zIndex, tabbablesCallback) {
+            console.log(tabbablesCallback);
+            //Disable tabbing out of modal and stop events from targets outside of the overlay element
+            var $document = $(document);
+            $document.on('focus.' + id + ' mousedown.' + id + ' mouseup.' + id, function(event) {
+                if ($(event.target).zIndex() < zIndex) {
+                    event.preventDefault();
+                }
+            });
+            $document.on('keydown.' + id, function(event) {
+                var target = $(event.target);
+                if (event.which === $.ui.keyCode.TAB) {
+                    var tabbables = tabbablesCallback();
+                    if (tabbables.length) {
+                        var first = tabbables.filter(':first'),
+                        last = tabbables.filter(':last'),
+                        focusingRadioItem = null;
+
+                        if(first.is(':radio')) {
+                            focusingRadioItem = tabbables.filter('[name="' + first.attr('name') + '"]').filter(':checked');
+                            if(focusingRadioItem.length > 0) {
+                                first = focusingRadioItem;
+                            }
+                        }
+
+                        if(last.is(':radio')) {
+                            focusingRadioItem = tabbables.filter('[name="' + last.attr('name') + '"]').filter(':checked');
+                            if(focusingRadioItem.length > 0) {
+                                last = focusingRadioItem;
+                            }
+                        }
+
+                        if(target.is(document.body)) {
+                            first.focus(1);
+                            event.preventDefault();
+                        }
+                        else if(event.target === last[0] && !event.shiftKey) {
+                            first.focus(1);
+                            event.preventDefault();
+                        }
+                        else if (event.target === first[0] && event.shiftKey) {
+                            last.focus(1);
+                            event.preventDefault();
+                        }
+                    }
+                }
+                else if(!target.is(document.body) && (target.zIndex() < zIndex)) {
+                    event.preventDefault();
+                }
+            });
+
             var modalId = id + '_modal';
 
             var modalOverlay = $('<div id="' + modalId + '" class="ui-widget-overlay ui-dialog-mask"></div>');
@@ -52,6 +102,8 @@ if (!PrimeFaces.utils) {
 
             // if the id does NOT contain a ':'
             $(document.body).children("[id='" + modalId + "']").remove();
+
+            $(document).off('focus.' + id + ' mousedown.' + id + ' mouseup.' + id + ' keydown.' + id);
         },
 
         isModalActive: function(id) {

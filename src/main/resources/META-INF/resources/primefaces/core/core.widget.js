@@ -169,12 +169,20 @@ if (!PrimeFaces.widget) {
         },
 
         enableModality: function() {
-            this.modalOverlay = PrimeFaces.utils.addModal(this.id, this.jq.css('z-index') - 1);
+            this.modalOverlay = PrimeFaces.utils.addModal(this.id,
+                this.jq.css('z-index') - 1,
+                $.proxy(function() {
+                    return this.getModalTabbables();
+                }, this));
         },
 
         disableModality: function(){
             PrimeFaces.utils.removeModal(this.id);
             this.modalOverlay = null;
+        },
+
+        getModalTabbables: function(){
+            return null;
         }
     });
 

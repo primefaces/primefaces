@@ -322,64 +322,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
     enableModality: function() {
         this._super();
 
-        var $this = this,
-        doc = $(document);
-
-        this.blockEvents = 'focus.' + this.id + ' mousedown.' + this.id + ' mouseup.' + this.id;
         if(this.targetElement) {
             this.targetElement.css('z-index', this.jq.css('z-index'));
         }
-
-        //Disable tabbing out of modal overlaypanel and stop events from targets outside of overlaypanel
-        doc.on('keydown.' + this.id,
-                function(event) {
-                    var target = $(event.target);
-
-                    if(event.which === $.ui.keyCode.TAB) {
-                        var tabbables = $this.getTabbables();
-
-                        if(tabbables.length) {
-                            var first = tabbables.filter(':first'),
-                            last = tabbables.filter(':last'),
-                            focusingRadioItem = null;
-
-                            if(first.is(':radio')) {
-                                focusingRadioItem = tabbables.filter('[name="' + first.attr('name') + '"]').filter(':checked');
-                                if(focusingRadioItem.length > 0) {
-                                    first = focusingRadioItem;
-                                }
-                            }
-
-                            if(last.is(':radio')) {
-                                focusingRadioItem = tabbables.filter('[name="' + last.attr('name') + '"]').filter(':checked');
-                                if(focusingRadioItem.length > 0) {
-                                    last = focusingRadioItem;
-                                }
-                            }
-
-                            if(target.is(document.body)) {
-                                first.focus(1);
-                                event.preventDefault();
-                            }
-                            else if(event.target === last[0] && !event.shiftKey) {
-                                first.focus(1);
-                                event.preventDefault();
-                            }
-                            else if (event.target === first[0] && event.shiftKey) {
-                                last.focus(1);
-                                event.preventDefault();
-                            }
-                        }
-                    }
-                    else if(!target.is(document.body) && (target.zIndex() < $this.jq.zIndex())) {
-                        event.preventDefault();
-                    }
-                })
-                .on(this.blockEvents, function(event) {
-                    if ($(event.target).zIndex() < $this.jq.zIndex()) {
-                        event.preventDefault();
-                    }
-                });
     },
 
     //@override
@@ -389,17 +334,16 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if(this.targetElement) {
             this.targetElement.css('z-index', this.targetZindex);
         }
-
-        $(document).off(this.blockEvents).off('keydown.' + this.id);
     },
 
-    getTabbables: function(){
-        var tabbableTarget;
-        if(this.targetElement && this.targetElement.is(':tabbable')) {
-            tabbableTarget = this.targetElement;
+    //@override
+    getModalTabbables: function(){
+        var tabbables = this.jq.find(':tabbable');
+
+        if (this.targetElement && this.targetElement.is(':tabbable')) {
+            tabbables.add(this.targetElement);
         }
 
-        return this.jq.find(':tabbable').add(tabbableTarget);
+        return tabbables;
     }
-
 });
