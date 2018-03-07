@@ -117,6 +117,11 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         }
     },
 
+    //@override
+    getModalTabbables: function(){
+        return this.jq.find(':tabbable');
+    },
+
     applyARIA: function() {
         this.jq.attr({
             'role': 'dialog'
