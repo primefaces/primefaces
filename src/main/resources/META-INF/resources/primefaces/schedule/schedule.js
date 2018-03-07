@@ -13357,6 +13357,13 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                     $this.tip.text('');
                 }
             };
+        } else {
+            // PF #2795 default to regular tooltip
+            this.cfg.eventRender = function(event, element) {
+                if(event.description) {
+                   element.attr('title', event.description);
+                }
+            };
         }
     },
 
