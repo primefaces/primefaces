@@ -12,12 +12,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.label = this.jq.find('.ui-selectonemenu-label');
         this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
 
-        this.panelParent = this.cfg.appendTo
-            ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo) : $(document.body);
-        if(!this.panelParent.is(this.jq)) {
-            this.panelParent.children(this.panelId).remove();
-        }
-
         this.panel = $(this.panelId);
         this.disabled = this.jq.hasClass('ui-state-disabled');
         this.itemsWrapper = this.panel.children('.ui-selectonemenu-items-wrapper');
@@ -129,9 +123,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     appendPanel: function() {
-        if(!this.panelParent.is(this.jq)) {
-            this.panel.appendTo(this.panelParent);
-        }
+        var panelContainer = PrimeFaces.utils.resolveDynamicOverlayContainer(this);
+        PrimeFaces.utils.appendDynamicOverlay(this, this.panel, this.id + '_panel', panelContainer);
     },
 
     alignPanelWidth: function() {

@@ -12,6 +12,7 @@ if (!PrimeFaces.utils) {
          * Removes the overlay from the appendTo overlay container.
          */
         removeDynamicOverlay: function(widget, element, id, appendTo) {
+
             // if the id contains a ':'
             appendTo.children(PrimeFaces.escapeClientId(id)).not(element).remove();
 

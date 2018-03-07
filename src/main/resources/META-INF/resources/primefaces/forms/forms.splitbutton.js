@@ -124,12 +124,8 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
     },
 
     appendPanel: function() {
-        var container = this.cfg.appendTo ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo): $(document.body);
-
-        if(!container.is(this.jq)) {
-            container.children(this.menuId).remove();
-            this.menu.appendTo(container);
-        }
+        var panelContainer = PrimeFaces.utils.resolveDynamicOverlayContainer(this);
+        PrimeFaces.utils.appendDynamicOverlay(this, this.menu, this.id + '_menu', panelContainer);
     },
 
     show: function() {

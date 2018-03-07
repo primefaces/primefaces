@@ -208,12 +208,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     },
 
     appendPanel: function() {
-        if(this.cfg.appendTo) {
-            this.panel.appendTo(PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo));
-        }
-        else {
-            this.panel.appendTo(document.body);
-        }
+        var panelContainer = PrimeFaces.utils.resolveDynamicOverlayContainer(this);
+        PrimeFaces.utils.appendDynamicOverlay(this, this.panel, this.id + '_panel', panelContainer);
     },
 
     bindEvents: function() {
