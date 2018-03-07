@@ -36,7 +36,18 @@ if (!PrimeFaces.utils) {
         },
 
         addModal: function(id, zIndex, tabbablesCallback) {
+            PrimeFaces.utils.preventTabbing(id, zIndex, tabbablesCallback);
 
+            var modalId = id + '_modal';
+
+            var modalOverlay = $('<div id="' + modalId + '" class="ui-widget-overlay ui-dialog-mask"></div>');
+            modalOverlay.appendTo($(document.body));
+            modalOverlay.css('z-index' , zIndex);
+
+            return modalOverlay;
+        },
+
+        preventTabbing: function(id, zIndex, tabbablesCallback) {
             //Disable tabbing out of modal and stop events from targets outside of the overlay element
             var $document = $(document);
             $document.on('focus.' + id + ' mousedown.' + id + ' mouseup.' + id, function(event) {
@@ -85,14 +96,6 @@ if (!PrimeFaces.utils) {
                     event.preventDefault();
                 }
             });
-
-            var modalId = id + '_modal';
-
-            var modalOverlay = $('<div id="' + modalId + '" class="ui-widget-overlay ui-dialog-mask"></div>');
-            modalOverlay.appendTo($(document.body));
-            modalOverlay.css('z-index' , zIndex);
-
-            return modalOverlay;
         },
 
         removeModal: function(id) {
@@ -104,6 +107,10 @@ if (!PrimeFaces.utils) {
             // if the id does NOT contain a ':'
             $(document.body).children("[id='" + modalId + "']").remove();
 
+            PrimeFaces.utils.enableTabbing(id);
+        },
+
+        enableTabbing: function(id) {
             $(document).off('focus.' + id + ' mousedown.' + id + ' mouseup.' + id + ' keydown.' + id);
         },
 
@@ -184,7 +191,7 @@ if (!PrimeFaces.utils) {
                     return;
                 }
 
-                resizeCallback();
+                resizeCallback(e);
             });
         },
 
