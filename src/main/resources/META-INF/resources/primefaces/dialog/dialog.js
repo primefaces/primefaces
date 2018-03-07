@@ -13,7 +13,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.closeIcon = this.titlebar.children('.ui-dialog-titlebar-close');
         this.minimizeIcon = this.titlebar.children('.ui-dialog-titlebar-minimize');
         this.maximizeIcon = this.titlebar.children('.ui-dialog-titlebar-maximize');
-        this.resizeNS = 'resize.' + this.id;
         this.cfg.absolutePositioned = this.jq.hasClass('ui-dialog-absolute');
         this.jqEl = this.jq[0];
 
@@ -78,15 +77,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.maximized = false;
 
         this.init(cfg);
-    },
-
-    //@Override
-    destroy: function() {
-        this._super();
-
-        if (this.cfg.responsive) {
-            this.unbindResizeListener();
-        }
     },
 
     initSize: function() {
@@ -551,7 +541,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
     bindResizeListener: function() {
         var $this = this;
-        $(window).on(this.resizeNS, function() {
+
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, null, function() {
             if ($this.cfg.fitViewport) {
                 $this.fitViewport();
             }
@@ -565,10 +556,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 $this.positionInitialized = false;
             }
         });
-    },
-
-    unbindResizeListener: function() {
-        $(window).off(this.resizeNS);
     },
 
     fireBehaviorEvent: function(event) {

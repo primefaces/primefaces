@@ -131,12 +131,8 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 function(e) { $this.hide(); });
         }
 
-        //Hide overlay on resize
-        var resizeNS = 'resize.' + this.id;
-        $(window).off(resizeNS).on(resizeNS, function() {
-            if($this.jq.hasClass('ui-overlay-visible')) {
-                $this.align();
-            }
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.jq, function() {
+            $this.align();
         });
     },
 

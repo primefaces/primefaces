@@ -238,11 +238,8 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         //Hide overlay on resize
-        var resizeNS = 'resize.' + this.id;
-        $(window).unbind(resizeNS).bind(resizeNS, function() {
-            if(_self.panel.is(':visible')) {
-                _self.hide();
-            }
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, _self.panel, function() {
+            _self.hide();
         });
 
         //dialog support

@@ -198,12 +198,12 @@ $.extend(Keypad.prototype, {
 			}).bind('getData.keypad', function(event, key) {
 				return this._get(inst, key);
 			});
-        
+
         //Fix for #2399
         if(this._get(inst, 'keypadOnly')) {
             field.attr('readonly', 'readonly');
         }
-            
+
 		$.data(target, PROP_NAME, inst);
 	},
 
@@ -723,12 +723,12 @@ $.extend(Keypad.prototype, {
 			(!inst._inline && $.browser.msie && parseInt($.browser.version, 10) < 7 ?
 			'<iframe src="javascript:false;" class="' + $.keypad._coverClass + '"></iframe>' : '');
 		html = $(html);
-        
+
 		var thisInst = inst,
         buttons = html.find('button');
-        
+
         PrimeFaces.skinButton(buttons);
-        
+
 		buttons.filter('.keypad-clear').click(function() { $.keypad._clearValue(thisInst); }).end().
 			filter('.keypad-back').click(function() { $.keypad._backValue(thisInst); }).end().
 			filter('.keypad-close').click(function() {
@@ -893,10 +893,10 @@ $(function() {
  * PrimeFaces Keyboard Widget
  */
  PrimeFaces.widget.Keyboard = PrimeFaces.widget.BaseWidget.extend({
-    
+
     init: function(cfg) {
         this._super(cfg);
-        
+
         if(this.cfg.layoutTemplate)
             this.cfg.layout = PrimeFaces.widget.KeyboardUtils.createLayoutFromTemplate(this.cfg.layoutTemplate);
         else
@@ -912,30 +912,29 @@ $(function() {
         PrimeFaces.skinInput(this.jq);
 
         //Hide overlay on resize
-        var resizeNS = 'resize.' + this.id;
-        $(window).unbind(resizeNS).bind(resizeNS, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, null, function() {
             $.keypad._hideKeypad();
         });
     }
-    
+
 });
 
 PrimeFaces.widget.KeyboardUtils = {
 
 	layouts : {
-		qwertyBasic : 
-		 	[$.keypad.qwertyAlphabetic[0] + $.keypad.CLOSE,  
-			$.keypad.HALF_SPACE + $.keypad.qwertyAlphabetic[1] + 
-			$.keypad.HALF_SPACE + $.keypad.CLEAR, 
-			$.keypad.SPACE + $.keypad.qwertyAlphabetic[2] + 
+		qwertyBasic :
+		 	[$.keypad.qwertyAlphabetic[0] + $.keypad.CLOSE,
+			$.keypad.HALF_SPACE + $.keypad.qwertyAlphabetic[1] +
+			$.keypad.HALF_SPACE + $.keypad.CLEAR,
+			$.keypad.SPACE + $.keypad.qwertyAlphabetic[2] +
 			$.keypad.SHIFT + $.keypad.BACK],
-		
+
 		qwerty : $.keypad.qwertyLayout,
-		
+
 		alphabetic :
-			['abcdefghij' + $.keypad.CLOSE, 
-	        'klmnopqrst' + $.keypad.CLEAR, 
-	        'uvwxyz' + $.keypad.SPACE + $.keypad.SPACE + 
+			['abcdefghij' + $.keypad.CLOSE,
+	        'klmnopqrst' + $.keypad.CLEAR,
+	        'uvwxyz' + $.keypad.SPACE + $.keypad.SPACE +
 	        $.keypad.SHIFT + $.keypad.BACK]
 	},
 
@@ -946,17 +945,17 @@ PrimeFaces.widget.KeyboardUtils = {
 		shift : $.keypad.SHIFT,
 		spacebar : $.keypad.SPACE_BAR,
 		space : $.keypad.SPACE,
-		halfspace : $.keypad.HALF_SPACE	
+		halfspace : $.keypad.HALF_SPACE
 	},
 
 	getPresetLayout : function(name) {
 		return this.layouts[name];
 	},
-	
+
 	getPresetControl : function(name) {
 		return this.controls[name];
 	},
-	
+
 	isDefinedControl : function(key) {
 		return this.controls[key] != undefined;
 	},
@@ -964,7 +963,7 @@ PrimeFaces.widget.KeyboardUtils = {
 	createLayoutFromTemplate : function(template) {
 		var lines = template.split(','),
 		template = new Array(lines.length);
-		
+
 		for(var i = 0; i < lines.length;i++) {
 			template[i] = "";
 			var lineControls = lines[i].split('-');
@@ -976,8 +975,8 @@ PrimeFaces.widget.KeyboardUtils = {
 					template[i] = template[i] + lineControls[j];
 			}
 		}
-		
+
 		return template;
 	}
-		
-}; 
+
+};

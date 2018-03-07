@@ -89,11 +89,8 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
             this.panel.appendTo('body');
 
             //Hide overlay on resize
-            var resizeNS = 'resize.' + this.id;
-            $(window).unbind(resizeNS).bind(resizeNS, function() {
-                if(_self.panel.is(':visible')) {
-                    _self.align();
-                }
+            PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, _self.panel, function() {
+                _self.align();
             });
         }
     },

@@ -238,8 +238,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
     },
 
     bindCommonEvents: function() {
-        var $this = this,
-        resizeNS = 'resize.' + this.id;
+        var $this = this;
 
         this.closeIcon.mouseover(function() {
             $(this).addClass('ui-state-hover');
@@ -260,14 +259,11 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
                 $this.hide();
             });
 
-        //sync window resize
-        $(window).off(resizeNS).on(resizeNS, function() {
-            if(!$this.isHidden()) {
-                $(document.body).children('.ui-widget-overlay').css({
-                    'width': $(document).width()
-                    ,'height': $(document).height()
-                });
-            }
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.panel, function() {
+            $(document.body).children('.ui-widget-overlay').css({
+                'width': $(document).width()
+                ,'height': $(document).height()
+            });
         });
     },
 

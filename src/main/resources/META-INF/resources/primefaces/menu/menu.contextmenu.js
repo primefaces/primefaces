@@ -58,7 +58,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         if(jqs.length > 1) {
             $(document.body).children(this.jqId).remove();
         }
-        
+
         this.init(cfg);
     },
 
@@ -128,7 +128,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         if(top < 0) {
             top = e.pageY;
         }
-        
+
         this.jq.css({
             'left': left,
             'top': top,
@@ -137,7 +137,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
         this.bindWindowResizeEvent();
         this.bindDocumentHandler();
-        
+
         e.preventDefault();
         e.stopPropagation();
     },
@@ -161,19 +161,16 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
     getTarget: function() {
         return this.jqTarget;
     },
-    
-    bindWindowResizeEvent: function() {
-        //Hide contextMenu on resize
-        var $this = this,
-        resizeNS = 'resize.' + this.id;
 
-        $(window).off(resizeNS).on(resizeNS, function() {
-            if($this.jq.is(':visible')) {
-                $this.hide();
-            }
+    bindWindowResizeEvent: function() {
+        var $this = this;
+
+        //Hide contextMenu on resize
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.jq, function() {
+            $this.hide();
         });
     },
-    
+
     unbindEvents: function() {
         $(window).off('resize.' + this.id);
         $(document.body).off('click.' + this.id);

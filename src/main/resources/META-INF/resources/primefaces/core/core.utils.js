@@ -169,6 +169,22 @@ if (!PrimeFaces.utils) {
 
                 hideCallback();
             });
+        },
+
+
+        registerResizeHandler: function(widget, resizeNamespace, element, resizeCallback) {
+
+            widget.destroyListeners.push(function() {
+                $(window).off(resizeNamespace);
+            });
+
+            $(window).off(resizeNamespace).on(resizeNamespace, function(e) {
+                if (element && element.is(":hidden")) {
+                    return;
+                }
+
+                resizeCallback();
+            });
         }
 
     };

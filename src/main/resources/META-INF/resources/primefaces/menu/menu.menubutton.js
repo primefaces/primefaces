@@ -122,12 +122,8 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
                 });
         }
 
-        //Realign overlay on window resize
-        var resizeNS = 'resize.' + this.id;
-        $(window).unbind(resizeNS).bind(resizeNS, function() {
-            if($this.menu.is(':visible')) {
-                $this.alignPanel();
-            }
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.menu, function() {
+            $this.alignPanel();
         });
 
         //aria

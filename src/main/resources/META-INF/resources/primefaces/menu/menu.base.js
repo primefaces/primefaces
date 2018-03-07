@@ -84,11 +84,8 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //Hide overlay on resize
-        var resizeNS = 'resize.' + this.id;
-        $(window).off(resizeNS).on(resizeNS, function() {
-            if($this.jq.is(':visible')) {
-                $this.align();
-            }
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.jq, function() {
+            $this.align();
         });
 
         //dialog support

@@ -101,8 +101,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     bindEvents: function() {
-        var $this = this,
-        resizeNS = 'resize.' + this.id;
+        var $this = this;
 
         //trigger
         this.trigger.off('click.ui-columntoggler').on('click.ui-columntoggler', function(e) {
@@ -147,11 +146,8 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             null,
             function(e) { $this.hide(); });
 
-        //Realign overlay on resize
-        $(window).off(resizeNS).on(resizeNS, function() {
-            if($this.visible) {
-                $this.alignPanel();
-            }
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.panel, function() {
+            $this.alignPanel();
         });
     },
 

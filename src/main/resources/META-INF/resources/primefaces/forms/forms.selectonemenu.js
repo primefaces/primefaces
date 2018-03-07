@@ -250,23 +250,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 }, 2);
             });
 
-        this.resizeNS = 'resize.' + this.id;
-        this.unbindResize();
-        this.bindResize();
-    },
-
-    bindResize: function() {
-        var _self = this;
-
-        $(window).bind(this.resizeNS, function(e) {
-            if(_self.panel.is(':visible')) {
-                _self.alignPanel();
-            }
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.panel, function() {
+            $this.alignPanel();
         });
-    },
-
-    unbindResize: function() {
-        $(window).unbind(this.resizeNS);
     },
 
     unbindEvents: function() {

@@ -60,20 +60,9 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
             var $this = this;
 
-            var resizeNS = "resize." + this.id;
-            $(window).off(resizeNS).on(resizeNS, function(e) {
+            PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, null, function() {
                 $this.initScrolling();
             });
-        }
-    },
-
-    //@Override
-    destroy: function() {
-        this._super();
-
-        if(this.cfg.scrollable) {
-            var resizeNS = "resize." + this.id;
-            $(window).off(resizeNS);
         }
     },
 

@@ -162,11 +162,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             function() { return $this.itemtip; },
             function(e) { $this.hide(); });
 
-        this.resizeNS = 'resize.' + this.id;
-        $(window).off(this.resizeNS).on(this.resizeNS, function(e) {
-            if($this.panel.is(':visible')) {
-                $this.alignPanel();
-            }
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.panel, function() {
+             $this.alignPanel();
         });
     },
 

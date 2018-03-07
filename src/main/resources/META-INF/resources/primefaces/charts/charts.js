@@ -20773,7 +20773,7 @@ PrimeFaces.widget.ChartUtils = {
                     else {
                         chart.cfg.axes.xaxis.ticks = chart.cfg.ticks;
                     }
-                    
+
                     if(chart.cfg.dataRenderMode === 'key') {
                         chart.cfg.data = [chart.cfg.data];
                         chart.cfg.axes = {
@@ -20952,22 +20952,20 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     makeResponsive: function() {
-        var $this = this,
-        resizeNS = 'resize.' + this.id;
+        var $this = this;
+
         this.cfg.resetAxesOnResize = (this.cfg.resetAxesOnResize === false) ? false : true;
 
-        $(window).off(resizeNS).on(resizeNS, function() {
-            if($this.jq.is(':visible')) {
-                var replotOptions = {
-                    resetAxes: $this.cfg.resetAxesOnResize
-                };
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.jq, function() {
+            var replotOptions = {
+                resetAxes: $this.cfg.resetAxesOnResize
+            };
 
-                if($this.cfg.replotMode) {
-                    replotOptions.replotMode = $this.cfg.replotMode;
-                }
-
-                $this.plot.replot(replotOptions);
+            if($this.cfg.replotMode) {
+                replotOptions.replotMode = $this.cfg.replotMode;
             }
+
+            $this.plot.replot(replotOptions);
         });
     },
 

@@ -265,8 +265,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     },
 
     bindPanelEvents: function() {
-        var $this = this,
-        resizeNS = 'resize.' + this.id;
+        var $this = this;
 
         //Events for checkboxes
         this.bindCheckboxHover(this.checkboxes);
@@ -326,11 +325,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             function() { return $this.triggers; },
             function(e) { $this.hide(true); });
 
-        //Realign overlay on resize
-        $(window).off(resizeNS).on(resizeNS, function() {
-            if($this.panel.is(':visible')) {
-                $this.alignPanel();
-            }
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.panel, function() {
+            $this.alignPanel();
         });
     },
 

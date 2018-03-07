@@ -118,11 +118,8 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
                 $this.hide();
             });
 
-        var resizeNS = 'resize.' + this.id;
-        $(window).off(resizeNS).on(resizeNS, function() {
-            if($this.menu.is(':visible')) {
-                $this.alignPanel();
-            }
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.menu, function() {
+            $this.alignPanel();
         });
     },
 
