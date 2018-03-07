@@ -106,6 +106,11 @@ if (!PrimeFaces.utils) {
             $(document).off('focus.' + id + ' mousedown.' + id + ' mouseup.' + id + ' keydown.' + id);
         },
 
+        /**
+         * Checks if a modal for the given id is currently displayed.
+         *
+         * @param {type} id the base id
+         */
         isModalActive: function(id) {
             var modalId = id + '_modal';
 
@@ -114,16 +119,23 @@ if (!PrimeFaces.utils) {
         },
 
 
-
+        /**
+         * Registers the document.body handler, to execute the hideCallback when it's clicked outside of the overlay panel.
+         *
+         * @param {type} hideNamespace the namespace
+         * @param {type} overlay the overlay $element
+         * @param {type} resolveIgnoredElementsCallback the callback which resolves the elements to ignore when clicked
+         * @param {type} hideCallback will be executed when clicked outside
+         */
         hideOverlay: function(hideNamespace, overlay, resolveIgnoredElementsCallback, hideCallback) {
-            $(document.body).off(hideNamespace).on(hideNamespace, function (e) {
+            $(document).off(hideNamespace).on(hideNamespace, function (e) {
                 if (overlay.is(":hidden")) {
                     return;
                 }
 
                 var $eventTarget = $(e.target);
 
-                //do nothing when the element should be ignored
+                // do nothing when the element should be ignored
                 if (resolveIgnoredElementsCallback) {
                     var elementsToIgnore = resolveIgnoredElementsCallback();
                     if (elementsToIgnore) {
@@ -133,21 +145,23 @@ if (!PrimeFaces.utils) {
                     }
                 }
 
-                // don't hide the panel when the clicked item is child of the overlay
-                // we just check if the clicked element is a children of the overlay
-                if (overlay.has($eventTarget).length == 0) {
-                    hideCallback(e);
+                // do nothing when the clicked element is a child of the overlay
+                if (overlay.is($eventTarget) || overlay.has($eventTarget).length > 0) {
+                    return;
                 }
-                // in the past we did something like:
+
+                // old check:
                 /*
                 var offset = overlay.offset();
-                if(e.pageX < offset.left ||
-                    e.pageX > offset.left + overlay.width() ||
-                    e.pageY < offset.top ||
-                    e.pageY > offset.top + overlay.height()) {
+                if (e.pageX < offset.left
+                        || e.pageX > offset.left + overlay.width()
+                        || e.pageY < offset.top
+                        || e.pageY > offset.top + overlay.height()) {
                     hideCallback();
                 }
                 */
+
+                hideCallback();
             });
         }
 
