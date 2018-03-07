@@ -32,13 +32,6 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         this.init(cfg);
     },
 
-    //@override
-    destroy: function() {
-        this._super();
-
-        PrimeFaces.utils.removeDynamicOverlay(this, this.panel, this.id + '_panel', $(document.body));
-    },
-
     createPanel: function() {
         this.panel = $('<div id="' + this.id + '_panel" class="ui-lightbox ui-widget ui-helper-hidden ui-corner-all ui-shadow">'
             + '<div class="ui-lightbox-content-wrapper">'
@@ -50,7 +43,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
             + '<a class="ui-lightbox-close ui-corner-all" href="#"><span class="ui-icon ui-icon-closethick"></span></a><div style="clear:both" /></div>'
             + '</div>');
 
-        this.panel.appendTo($(document.body));
+        PrimeFaces.utils.registerDynamicOverlay(this, this.panel, this.id + '_panel');
 
         this.contentWrapper = this.panel.children('.ui-lightbox-content-wrapper');
         this.content = this.contentWrapper.children('.ui-lightbox-content');

@@ -168,7 +168,7 @@ if (!PrimeFaces.utils) {
                 }
                 */
 
-                hideCallback();
+                hideCallback(e);
             });
         },
 
