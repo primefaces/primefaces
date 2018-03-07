@@ -11,27 +11,27 @@ if (!PrimeFaces.utils) {
         /**
          * Removes the overlay from the appendTo overlay container.
          */
-        removeDynamicOverlay: function(widget, element, id, appendTo) {
+        removeDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
 
             // if the id contains a ':'
-            appendTo.children(PrimeFaces.escapeClientId(id)).not(element).remove();
+            appendTo.children(PrimeFaces.escapeClientId(overlayId)).not(overlay).remove();
 
             // if the id does NOT contain a ':'
-            appendTo.children("[id='" + id + "']").not(element).remove();
+            appendTo.children("[id='" + overlayId + "']").not(overlay).remove();
         },
 
-        appendDynamicOverlay: function(widget, element, id, appendTo) {
-            var elementParent = element.parent();
+        appendDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
+            var elementParent = overlay.parent();
 
             // skip when the parent currently is already the same
             // this likely happens when the dialog is updated directly instead of a container
             // as our ajax update mechanism just updates by id
             if (!elementParent.is(appendTo)
-                    && !appendTo.is(element)) {
+                    && !appendTo.is(overlay)) {
 
-                PrimeFaces.utils.removeDynamicOverlay(widget, element, id, appendTo);
+                PrimeFaces.utils.removeDynamicOverlay(widget, overlay, overlayId, appendTo);
 
-                element.appendTo(appendTo);
+                overlay.appendTo(appendTo);
             }
         },
 
@@ -186,6 +186,16 @@ if (!PrimeFaces.utils) {
 
                 resizeCallback();
             });
+        },
+
+        registerDynamicOverlay: function(widget, overlay, overlayId) {
+            widget.destroyListeners.push(function() {
+                var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
+                PrimeFaces.utils.removeDynamicOverlay(widget, overlay, overlayId, appendTo);
+            });
+
+            var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
+            PrimeFaces.utils.appendDynamicOverlay(widget, overlay, overlayId, appendTo);
         }
 
     };

@@ -11,7 +11,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
 
         if(!this.cfg.disabled) {
             this.bindEvents();
-            this.appendPanel();
+            PrimeFaces.utils.registerDynamicOverlay(this, this.menu, this.id + '_menu');
         }
     },
 
@@ -128,11 +128,6 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
 
         //aria
         this.button.attr('role', 'button').attr('aria-disabled', this.button.is(':disabled'));
-    },
-
-    appendPanel: function() {
-        var panelContainer = PrimeFaces.utils.resolveDynamicOverlayContainer(this);
-        PrimeFaces.utils.appendDynamicOverlay(this, this.menu, this.id + '_menu', panelContainer);
     },
 
     show: function() {

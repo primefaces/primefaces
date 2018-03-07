@@ -80,7 +80,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     renderPanel: function() {
         this.panel = $('<div id="' + this.panelId + '" class="ui-selectcheckboxmenu-panel ui-widget ui-widget-content ui-corner-all ui-helper-hidden ui-input-overlay" role="dialog"></div>');
 
-        this.appendPanel();
+        PrimeFaces.utils.registerDynamicOverlay(this, this.panel, this.id + '_panel');
 
         if(this.cfg.panelStyle) {
             this.panel.attr('style', this.cfg.panelStyle);
@@ -205,11 +205,6 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
         this.items = this.itemContainer.children('li.ui-selectcheckboxmenu-item');
         this.groupHeaders = this.itemContainer.children('li.ui-selectcheckboxmenu-item-group');
-    },
-
-    appendPanel: function() {
-        var panelContainer = PrimeFaces.utils.resolveDynamicOverlayContainer(this);
-        PrimeFaces.utils.appendDynamicOverlay(this, this.panel, this.id + '_panel', panelContainer);
     },
 
     bindEvents: function() {

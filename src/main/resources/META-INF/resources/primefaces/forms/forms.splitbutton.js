@@ -14,7 +14,8 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
 
         if(!this.cfg.disabled) {
             this.bindEvents();
-            this.appendPanel();
+
+            PrimeFaces.utils.registerDynamicOverlay(this, this.menu, this.id + '_menu');
         }
 
         //pfs metadata
@@ -26,12 +27,6 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         this.menu.remove();
 
         this.init(cfg);
-    },
-
-    destroy: function() {
-        this._super();
-
-        this.menu.remove();
     },
 
     bindEvents: function() {
@@ -121,11 +116,6 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.menu, function() {
             $this.alignPanel();
         });
-    },
-
-    appendPanel: function() {
-        var panelContainer = PrimeFaces.utils.resolveDynamicOverlayContainer(this);
-        PrimeFaces.utils.appendDynamicOverlay(this, this.menu, this.id + '_menu', panelContainer);
     },
 
     show: function() {

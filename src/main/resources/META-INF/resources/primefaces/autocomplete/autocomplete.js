@@ -89,8 +89,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     },
 
     appendPanel: function() {
-        var panelContainer = PrimeFaces.utils.resolveDynamicOverlayContainer(this);
-        PrimeFaces.utils.appendDynamicOverlay(this, this.panel, this.id + '_panel', panelContainer);
+        PrimeFaces.utils.registerDynamicOverlay(this, this.panel, this.id + '_panel');
     },
 
     initCache: function() {

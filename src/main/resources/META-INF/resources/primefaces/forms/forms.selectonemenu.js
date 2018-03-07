@@ -42,7 +42,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if(!this.disabled) {
             this.bindEvents();
             this.bindConstantEvents();
-            this.appendPanel();
+
+            PrimeFaces.utils.registerDynamicOverlay(this, this.panel, this.id + '_panel');
         }
 
         // see #7602
@@ -116,15 +117,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    //@override
     refresh: function(cfg) {
         this.panelWidthAdjusted = false;
 
         this._super(cfg);
-    },
-
-    appendPanel: function() {
-        var panelContainer = PrimeFaces.utils.resolveDynamicOverlayContainer(this);
-        PrimeFaces.utils.appendDynamicOverlay(this, this.panel, this.id + '_panel', panelContainer);
     },
 
     alignPanelWidth: function() {
