@@ -126,8 +126,10 @@ if (!PrimeFaces.utils) {
                 //do nothing when the element should be ignored
                 if (resolveIgnoredElementsCallback) {
                     var elementsToIgnore = resolveIgnoredElementsCallback();
-                    if (elementsToIgnore.is($eventTarget) || elementsToIgnore.has($eventTarget).length > 0) {
-                        return;
+                    if (elementsToIgnore) {
+                        if (elementsToIgnore.is($eventTarget) || elementsToIgnore.has($eventTarget).length > 0) {
+                            return;
+                        }
                     }
                 }
 
