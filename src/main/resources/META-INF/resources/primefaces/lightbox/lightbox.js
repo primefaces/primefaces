@@ -176,7 +176,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         image.css({
             'width':imageWidth + 'px'
             ,'height':imageHeight + 'px'
-        })
+        });
     },
 
     setupInline: function() {
@@ -248,7 +248,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         })
         .mouseout(function() {
             $(this).removeClass('ui-state-hover');
-        })
+        });
 
         this.closeIcon.click(function(e) {
             $this.hide();
