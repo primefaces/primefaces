@@ -883,7 +883,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         });
         
-        if(this.cfg.scrollable) {
+        if(this.cfg.scrollable && this.scrollBody) {
             var $this = this;
             this.scrollBody.off('scroll.dataTable-contextmenu').on('scroll.dataTable-contextmenu', function() {
                 if($this.contextMenuWidget.jq.is(':visible')) {
