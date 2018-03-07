@@ -60,7 +60,7 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
            childItemsContainer.clone(true).appendTo(groupContainer).addClass('ui-multiselectlistbox-list ui-inputfield ui-widget-content').removeClass('ui-helper-hidden');
 
            if(this.cfg.showHeaders) {
-               groupContainer.prepend('<div class="ui-multiselectlistbox-header ui-widget-header ui-corner-top">' + item.children('span').text() + '</div>')
+               groupContainer.prepend('<div class="ui-multiselectlistbox-header ui-widget-header ui-corner-top">' + PrimeFaces.escapeHTML(item.children('span').text()) + '</div>')
                        .children('.ui-multiselectlistbox-list').addClass('ui-corner-bottom');
            } else {
                groupContainer.children().addClass('ui-corner-all');
@@ -115,7 +115,7 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
                 ancestor.clone(true).appendTo(groupContainer).addClass('ui-multiselectlistbox-list ui-inputfield ui-widget-content ui-corner-all').removeClass('ui-helper-hidden');
 
                 if(this.cfg.showHeaders) {
-                   groupContainer.prepend('<div class="ui-multiselectlistbox-header ui-widget-header ui-corner-top">' + ancestor.prev('span').text() + '</div>')
+                   groupContainer.prepend('<div class="ui-multiselectlistbox-header ui-widget-header ui-corner-top">' + PrimeFaces.escapeHTML(ancestor.prev('span').text()) + '</div>')
                            .children('.ui-multiselectlistbox-list').addClass('ui-corner-bottom').removeClass('ui-corner-all');
                 }
 
