@@ -786,7 +786,7 @@ public class DataTableRenderer extends DataRenderer {
             header.encodeAll(context);
         }
         else if (headerText != null) {
-            writer.write(headerText);
+            writer.writeText(headerText, "headerText");
         }
 
         writer.endElement("span");
@@ -972,7 +972,7 @@ public class DataTableRenderer extends DataRenderer {
             facet.encodeAll(context);
         }
         else if (text != null) {
-            writer.write(text);
+            writer.writeText(text, "footerText");
         }
 
         writer.endElement("td");
@@ -1127,7 +1127,7 @@ public class DataTableRenderer extends DataRenderer {
                 emptyFacet.encodeAll(context);
             }
             else {
-                writer.write(emptyMessage);
+                writer.writeText(emptyMessage, "emptyMessage");
             }
 
             writer.endElement("td");
@@ -1712,7 +1712,7 @@ public class DataTableRenderer extends DataRenderer {
 
                     writer.startElement("option", null);
                     writer.writeAttribute("value", headerIndex + "_" + order, null);
-                    writer.write(options.get(headerIndex) + " " + orderVal);
+                    writer.writeText(options.get(headerIndex) + " " + orderVal, null);
                     writer.endElement("option");
                 }
             }
