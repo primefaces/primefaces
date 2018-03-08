@@ -49,7 +49,8 @@ public class PrimeFaces {
     private final Dialog dialog;
     private final Ajax ajax;
     
-    private PrimeFaces() {
+    /** protected constructor to allow CDI proxying */
+    protected PrimeFaces() {
         dialog = new Dialog();
         ajax = new Ajax();
     }
