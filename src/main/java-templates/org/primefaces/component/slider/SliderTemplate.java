@@ -50,7 +50,7 @@ import org.primefaces.util.MessageFactory;
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if(eventName.equals("slideEnd")) {
-                int sliderValue = Integer.parseInt(params.get(clientId + "_slideValue"));
+                double sliderValue = Double.parseDouble(params.get(clientId + "_slideValue"));
                 SlideEndEvent slideEndEvent = new SlideEndEvent(this, behaviorEvent.getBehavior(), sliderValue);
                 slideEndEvent.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(slideEndEvent);
