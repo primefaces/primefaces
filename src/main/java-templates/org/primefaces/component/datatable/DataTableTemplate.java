@@ -140,16 +140,6 @@ import org.primefaces.component.datatable.TableState;
     public static final String SORT_ASC = "primefaces.datatable.SORT_ASC";
     public static final String SORT_DESC = "primefaces.datatable.SORT_DESC";
     public final static String ROW_GROUP_TOGGLER = "primefaces.rowgrouptoggler.aria.ROW_GROUP_TOGGLER";
-    
-    public static final String MOBILE_CONTAINER_CLASS = "ui-datatable ui-shadow";
-    public static final String MOBILE_TABLE_CLASS = "ui-responsive ui-table table-stripe";
-    public static final String MOBILE_COLUMN_HEADER_CLASS = "ui-column-header";
-    public static final String MOBILE_ROW_CLASS = "ui-table-row";
-    public static final String MOBILE_SORT_ICON_CLASS = "ui-sortable-column-icon ui-icon-bars ui-btn-icon-notext ui-btn-right";
-    public static final String MOBILE_SORT_ICON_ASC_CLASS = "ui-sortable-column-icon ui-icon-arrow-u ui-btn-icon-notext ui-btn-right";
-    public static final String MOBILE_SORT_ICON_DESC_CLASS = "ui-sortable-column-icon ui-icon-arrow-d ui-btn-icon-notext ui-btn-right";
-    public static final String MOBILE_SORTED_COLUMN_CLASS = "ui-column-sorted";
-    public static final String MOBILE_CELL_LABEL = "ui-table-cell-label";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("page", PageEvent.class);

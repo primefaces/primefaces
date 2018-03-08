@@ -215,7 +215,7 @@ public class CarouselRenderer extends CoreRenderer {
         }
 
         if (carousel.isResponsive()) {
-            encodeDropDown(context, carousel, clientId + "_mobiledropdown", Carousel.MOBILE_DROPDOWN_CLASS, itemCount);
+            encodeDropDown(context, carousel, clientId + "_responsivedropdown", Carousel.RESPONSIVE_DROPDOWN_CLASS, itemCount);
         }
 
         writer.endElement("div");
