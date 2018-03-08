@@ -481,12 +481,9 @@ public class TreeRenderer extends CoreRenderer {
         if (nodeOrder != NodeOrder.NONE) {
             encodeConnector(context, tree, nodeOrder);
         }
-        
-        nodeClass = uiTreeNode.getStyleClass() == null ? nodeClass : nodeClass + " " + uiTreeNode.getStyleClass();
 
         //node
         writer.startElement("td", null);
-        writer.writeAttribute("class", nodeClass, null);
         writer.writeAttribute("data-nodetype", uiTreeNode.getType(), null);
 
         if (rowKey != null) {
@@ -498,6 +495,9 @@ public class TreeRenderer extends CoreRenderer {
             writer.writeAttribute("data-rowkey", "root", null);
         }
 
+        nodeClass = uiTreeNode.getStyleClass() == null ? nodeClass : nodeClass + " " + uiTreeNode.getStyleClass();
+        writer.writeAttribute("class", nodeClass, null);
+        
         String nodeContentClass = (tree.getSelectionMode() != null && node.isSelectable()) ? Tree.SELECTABLE_NODE_CONTENT_CLASS_H : Tree.NODE_CONTENT_CLASS_H;
         if (selected) {
             nodeContentClass += " ui-state-highlight";
