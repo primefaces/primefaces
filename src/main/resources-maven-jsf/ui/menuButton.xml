@@ -83,6 +83,12 @@
             <type>java.lang.String</type>
             <description>Advisory tooltip information.</description>
         </attribute>
+        <attribute>
+            <name>ariaLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description></description>
+        </attribute>        
     </attributes>
     <resources>
         <resource>
