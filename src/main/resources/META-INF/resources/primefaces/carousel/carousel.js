@@ -14,7 +14,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         this.nextNav = this.header.children('.ui-carousel-next-button');
         this.pageLinks = this.header.find('> .ui-carousel-page-links > .ui-carousel-page-link');
         this.dropdown = this.header.children('.ui-carousel-dropdown');
-        this.mobileDropdown = this.header.children('.ui-carousel-mobiledropdown');
+        this.responsiveDropdown = this.header.children('.ui-carousel-dropdown-responsive');
         this.stateholder = $(this.jqId + '_page');
 
         if(this.cfg.toggleable) {
@@ -101,14 +101,14 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             this.columns = 1;
             this.calculateItemWidths(this.columns);
             this.totalPages = this.itemsCount;
-            this.mobileDropdown.show();
+            this.responsiveDropdown.show();
             this.pageLinks.hide();
         }
         else {
             this.columns = this.cfg.numVisible;
             this.calculateItemWidths();
             this.totalPages = Math.ceil(this.itemsCount / this.cfg.numVisible);
-            this.mobileDropdown.hide();
+            this.responsiveDropdown.hide();
             this.pageLinks.show();
         }
 
@@ -228,8 +228,8 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
             this.dropdown.val(this.page + 1);
         }
 
-        if(this.mobileDropdown.length) {
-            this.mobileDropdown.val(this.page + 1);
+        if(this.responsiveDropdown.length) {
+            this.responsiveDropdown.val(this.page + 1);
         }
     },
 

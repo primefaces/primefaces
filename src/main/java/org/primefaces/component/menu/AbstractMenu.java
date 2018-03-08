@@ -44,8 +44,6 @@ public abstract class AbstractMenu extends UIPanel {
     public static final String SEPARATOR_CLASS = "ui-separator ui-state-default";
     public static final String OPTIONS_CLASS = "ui-menuitem ui-menubar-options ui-widget ui-corner-all";
 
-    public static final String MOBILE_MENUITEM_LINK_CLASS = "ui-link ui-btn";
-
     public enum PropertyKeys {
         tabindex
     }

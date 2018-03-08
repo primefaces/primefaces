@@ -27,12 +27,6 @@ import javax.faces.event.BehaviorEvent;
 	public static final String PANEL_FOOTER_CLASS = "ui-panel-footer ui-widget-content";
     public static final String PANEL_ACTIONS_CLASS = "ui-panel-actions";
 
-    public static final String MOBILE_CLASS = "ui-panel-m ui-corner-all";
-    public static final String MOBILE_TITLE_CLASS = "ui-panel-m-titlebar ui-bar ui-bar-inherit";
-    public static final String MOBILE_CONTENT_CLASS = "ui-panel-m-content ui-body ui-body-inherit";
-    public static final String MOBILE_TOGGLEICON_EXPANDED_CLASS = "ui-panel-m-titlebar-icon ui-btn ui-shadow ui-corner-all ui-icon-minus ui-btn-icon-notext ui-btn-right";
-    public static final String MOBILE_TOGGLEICON_COLLAPSED_CLASS = "ui-panel-m-titlebar-icon ui-btn ui-shadow ui-corner-all ui-icon-plus ui-btn-icon-notext ui-btn-right";
-
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("toggle", ToggleEvent.class);
         put("close", CloseEvent.class);

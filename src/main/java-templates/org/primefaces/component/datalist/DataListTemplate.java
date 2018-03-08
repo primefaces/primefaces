@@ -31,8 +31,6 @@ import org.primefaces.PrimeFaces;
     public static final String FOOTER_CLASS = "ui-datalist-footer ui-widget-header ui-corner-bottom";
 	public static final String DATALIST_EMPTYMESSAGE_CLASS = "ui-datalist-empty-message";
 
-    public static final String MOBILE_CONTENT_CLASS = "ui-datalist-content";
-
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("page", PageEvent.class);
         put("tap", SelectEvent.class);
