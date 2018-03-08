@@ -22,6 +22,8 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
 
         this.jq.slider(this.cfg);
 
+        this.decimalStep = !(this.cfg.step % 1 === 0);
+
         this.bindEvents();
 
         if (PrimeFaces.env.touch) {
@@ -78,7 +80,8 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
                         }
 
                         //prevent letters and allow letters with meta key such as ctrl+c
-                        if(!isNumber && !metaKey) {
+                        //also allow '.' when the step is defined as decimal
+                        if(!isNumber && !metaKey && !($this.decimalStep && key === 190)) {
                             e.preventDefault();
                         }
                     break;
