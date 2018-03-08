@@ -14,6 +14,7 @@ PrimeFaces.widget.Captcha = PrimeFaces.widget.BaseWidget.extend({
         
         $(document.body).append('<script src="https://www.google.com/recaptcha/api.js?onload=' + this.cfg.widgetVar + '_initCallback&render=explicit&hl=' 
                             + this.cfg.language +'" async defer>');
+
     },
     
     render: function() {
@@ -26,6 +27,10 @@ PrimeFaces.widget.Captcha = PrimeFaces.widget.BaseWidget.extend({
             'expired-callback': $this.cfg.expired,
             'size': this.cfg.size 
         });
+
+        if (this.cfg.size === 'invisible') {
+            grecaptcha.execute();
+        }
         
         window[this.cfg.widgetVar + '_initCallback'] = undefined;
     }
