@@ -49,7 +49,9 @@ public class PrimeFaces {
     private final Dialog dialog;
     private final Ajax ajax;
     
-    /** protected constructor to allow CDI proxying */
+    /**
+     * Protected constructor to allow CDI proxying - and also allow customizations, or setting a mock.
+     */
     protected PrimeFaces() {
         dialog = new Dialog();
         ajax = new Ajax();
