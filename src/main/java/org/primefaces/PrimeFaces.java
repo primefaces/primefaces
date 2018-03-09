@@ -44,7 +44,7 @@ public class PrimeFaces {
     // TODO - there are 2 possible solutions
     // 1) the current static solution + use Faces/RequestContext#getCurrentInstance each time
     // 2) make PrimeFaces requestScoped and receive Faces/RequestContext only once
-    private static PrimeFaces INSTANCE = new PrimeFaces();
+    private static PrimeFaces instance = new PrimeFaces();
     
     private final Dialog dialog;
     private final Ajax ajax;
@@ -56,11 +56,11 @@ public class PrimeFaces {
     }
 
     public static PrimeFaces current() {
-        return INSTANCE;
+        return instance;
     }
 
     public static void setCurrent(PrimeFaces primeFaces) {
-        INSTANCE = primeFaces;
+        instance = primeFaces;
     }
     
     protected FacesContext getFacesContext() {
