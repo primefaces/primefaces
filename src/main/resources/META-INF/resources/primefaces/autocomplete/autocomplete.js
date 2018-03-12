@@ -387,8 +387,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         .on('click', function(event) {
             var item = $(this),
             itemValue = item.attr('data-item-value'),
-            isMoreText = item.hasClass('ui-autocomplete-moretext'),
-            escapedItemValue = PrimeFaces.escapeHTML(itemValue.replace(/\"/g,"\'"));
+            isMoreText = item.hasClass('ui-autocomplete-moretext');
 
             if(isMoreText) {
                 $this.input.focus();
@@ -398,22 +397,22 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 if($this.cfg.multiple) {
                     var found = false;
                     if($this.cfg.unique) {
-                        found = $this.multiItemContainer.children("li[data-token-value='" + escapedItemValue + "']").length != 0;
+                        found = $this.multiItemContainer.children("li[data-token-value='" + $.escapeSelector(itemValue) + "']").length != 0;
                     }
 
                     if(!found) {
                         var itemStyleClass = item.attr('data-item-class');
-                        var itemDisplayMarkup = '<li data-token-value="' + escapedItemValue;
+                        var itemDisplayMarkup = '<li data-token-value="' + PrimeFaces.escapeHTML(itemValue);
                         itemDisplayMarkup += '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden';
                         itemDisplayMarkup += (itemStyleClass === '' ? '' : ' '+itemStyleClass) + '">';
                         itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close" />';
-                        itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + item.attr('data-item-label') + '</span></li>';
+                        itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + PrimeFaces.escapeHTML(item.attr('data-item-label')) + '</span></li>';
 
                         $this.inputContainer.before(itemDisplayMarkup);
                         $this.multiItemContainer.children('.ui-helper-hidden').fadeIn();
                         $this.input.val('');
 
-                        $this.hinput.append('<option value="' + escapedItemValue + '" selected="selected"></option>');
+                        $this.hinput.append('<option value="' + PrimeFaces.escapeHTML(itemValue) + '" selected="selected"></option>');
                         if($this.multiItemContainer.children('li.ui-autocomplete-token').length >= $this.cfg.selectLimit) {
                             $this.input.css('display', 'none').blur();
                             $this.disableDropdown();
@@ -605,7 +604,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             if(this.cfg.emptyMessage) {
-                var emptyText = '<div class="ui-autocomplete-emptyMessage ui-widget">'+this.cfg.emptyMessage+'</div>';
+                var emptyText = '<div class="ui-autocomplete-emptyMessage ui-widget">' + PrimeFaces.escapeHTML(this.cfg.emptyMessage) + '</div>';
                 this.panel.html(emptyText);
             }
             else {
@@ -791,7 +790,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             valid = $this.isValid(value);
 
             if($this.cfg.autoSelection && valid && $this.checkMatchedItem && $this.items && !$this.isTabPressed && !$this.itemSelectedWithEnter) {
-                var selectedItem = $this.items.filter('[data-item-label="' + value + '"]');
+                var selectedItem = $this.items.filter('[data-item-label="' + $.escapeSelector(value) + '"]');
                 if (selectedItem.length) {
                     selectedItem.click();
                 }
@@ -882,7 +881,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     },
 
     displayAriaStatus: function(text) {
-        this.status.html('<div>' + text + '</div>');
+        this.status.html('<div>' + PrimeFaces.escapeHTML(text) + '</div>');
     },
 
     groupItems: function() {
