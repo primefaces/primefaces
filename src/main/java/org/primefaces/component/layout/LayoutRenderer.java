@@ -38,8 +38,6 @@ public class LayoutRenderer extends CoreRenderer {
         Layout layout = (Layout) component;
         String clientId = layout.getClientId(context);
 
-        encodeScript(context, layout);
-
         if (layout.isElementLayout()) {
             writer.startElement("div", layout);
             writer.writeAttribute("id", clientId, "id");
@@ -57,6 +55,8 @@ public class LayoutRenderer extends CoreRenderer {
         if (layout.isElementLayout()) {
             writer.endElement("div");
         }
+        
+        encodeScript(context, layout);
     }
 
     protected void encodeScript(FacesContext context, Layout layout) throws IOException {
