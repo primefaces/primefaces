@@ -83,7 +83,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
 
             var remainingText = this.cfg.counterTemplate.replace('{0}', remaining);
 
-            this.counter.html(remainingText);
+            this.counter.text(remainingText);
         }
     },
 
