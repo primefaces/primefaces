@@ -70,7 +70,8 @@
 
 <tag>
     <tag-name>autoUpdate</tag-name>
-    <description>AutoUpdate is a tag handler to mark a component to be updated at every ajax request.</description>
+    <description>AutoUpdate is a tag handler to mark a component to be updated at every ajax request.
+        AutoUpdate is ignored if the ajax request generator (p:commandButton, p:ajax...) has the attribute ignoreAutoUpdate = true.</description>
     <handler-class>
         org.primefaces.component.autoupdate.AutoUpdateTagHandler
     </handler-class>
@@ -431,7 +432,7 @@
 
 <tag>
     <tag-name>repeat</tag-name>
-    <description>Repeat is an extension to the standard ui:repeat component to provide compatibility between Mojarra and MyFaces. There are no additonal features and usage is same as ui:repeat.</description>
+    <description>Repeat is an alternative to the standard ui:repeat component aimed to fix a bug in an old Mojarra implementation. There are no additonal features and usage is same as ui:repeat.</description>
     <component>
         <component-type>org.primefaces.component.UIRepeat</component-type>
     </component>
