@@ -123,7 +123,7 @@ public class AutoCompleteRenderer extends InputRenderer {
 
     @SuppressWarnings("unchecked")
     public void encodeResults(FacesContext context, UIComponent component, String query) throws IOException {
-        AutoComplete ac = (AutoComplete) component;        
+        AutoComplete ac = (AutoComplete) component;
         List results = ac.getSuggestions();
         int maxResults = ac.getMaxResults();
 
@@ -301,16 +301,16 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
 
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, ac);
+        }
+
         for (int i = 0; i < values.size(); i++) {
             String value = values.get(i);
             writer.startElement("option", null);
             writer.writeAttribute("value", value, null);
             writer.writeAttribute("selected", "selected", null);
             writer.endElement("option");
-        }
-        
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, ac);
         }
 
         writer.endElement("select");
@@ -359,13 +359,13 @@ public class AutoCompleteRenderer extends InputRenderer {
         if (ac.getPanelStyle() != null) {
             writer.writeAttribute("style", ac.getPanelStyle(), null);
         }
-        
+
         if (ac.isDynamic() && ac.isDynamicLoadRequest(context)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String query = params.get(ac.getClientId(context) + "_query");
             encodeResults(context, ac, query);
         }
-        
+
         writer.endElement("span");
     }
 
@@ -489,7 +489,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         if (ac.isDropdown()) {
             encodeDropDown(context, ac);
         }
-        
+
         if (!ac.isDynamic()) {
             encodePanel(context, ac);
         }
