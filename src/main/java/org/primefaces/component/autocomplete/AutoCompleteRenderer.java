@@ -301,16 +301,16 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
 
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, ac);
+        }
+
         for (int i = 0; i < values.size(); i++) {
             String value = values.get(i);
             writer.startElement("option", null);
             writer.writeAttribute("value", value, null);
             writer.writeAttribute("selected", "selected", null);
             writer.endElement("option");
-        }
-        
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, ac);
         }
 
         writer.endElement("select");
