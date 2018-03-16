@@ -570,6 +570,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             },
             oncomplete: function() {
                 node.data('processing', false);
+                $this.updateVerticalScroll();
             }
         };
 
@@ -606,16 +607,35 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(this.hasBehavior('collapse')) {
-            var collapseBehavior = this.cfg.behaviors['collapse'],
-            nodeKey = node.attr('data-rk');
-
-            var ext = {
-                params : [
+            var $this = this,
+            collapseBehavior = this.cfg.behaviors['collapse'],
+            nodeKey = node.attr('data-rk'),
+            options = {
+                source: this.id,
+                process: this.id,
+                update: this.id,
+                params: [
                     {name: this.id + '_collapse', value: nodeKey}
-                ]
+                ],
+                onsuccess: function(responseXML, status, xhr) {
+                    PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                            widget: $this,
+                            handle: function(content) {
+                                // do nothing
+                            }
+                        });
+
+                    return true;
+                },
+                oncomplete: function() {
+                    $this.updateVerticalScroll();
+                }
             };
 
-            collapseBehavior.call(this, ext);
+            collapseBehavior.call(this, options);
+        }
+        else {
+            this.updateVerticalScroll();
         }
     },
 
@@ -993,9 +1013,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 this.applyViewPortScrollHeight();
             }
 
-            var marginRight = this.getScrollbarWidth() + 'px';
-            this.scrollHeaderBox.css('margin-right', marginRight);
-            this.scrollFooterBox.css('margin-right', marginRight);
+            this.marginRight = this.getScrollbarWidth() + 'px';
+            this.scrollHeaderBox.css('margin-right', this.marginRight);
+            this.scrollFooterBox.css('margin-right', this.marginRight);
             this.alignScrollBody();
         }
 
@@ -1014,6 +1034,8 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.restoreScrollState();
 
+        this.updateVerticalScroll();
+        
         this.scrollBody.scroll(function() {
             var scrollLeft = $this.scrollBody.scrollLeft();
             $this.scrollHeaderBox.css('margin-left', -scrollLeft);
@@ -1652,6 +1674,19 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
+        }
+    },
+    
+    updateVerticalScroll: function() {
+        if(this.cfg.scrollable && this.cfg.scrollHeight) {   
+            if(this.bodyTable.outerHeight() < this.scrollBody.outerHeight()) {
+                this.scrollHeaderBox.css('margin-right', 0);
+                this.scrollFooterBox.css('margin-right', 0);
+            }
+            else {
+                this.scrollHeaderBox.css('margin-right', this.marginRight);
+                this.scrollFooterBox.css('margin-right', this.marginRight);
+            }
         }
     }
 });

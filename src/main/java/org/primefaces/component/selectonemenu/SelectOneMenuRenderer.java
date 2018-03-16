@@ -526,9 +526,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             }
         }
         else {
-            String itemValueAsString = option.getValue() instanceof String
-                    ? (String) option.getValue()
-                    : getOptionAsString(context, menu, converter, option.getValue());
+            String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
             boolean disabled = option.isDisabled();
 
             Object valuesArray;

@@ -55,7 +55,6 @@ public class SliderRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, Slider slider) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = slider.getClientId(context);
         boolean range = slider.isRange();
         UIComponent output = getTarget(context, slider, slider.getDisplay());

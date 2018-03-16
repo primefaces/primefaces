@@ -357,7 +357,7 @@ public class ComponentUtils {
                     url.append("&");
                 }
                 try {
-                    url.append(entry.getKey())
+                    url.append(URLEncoder.encode(entry.getKey(), "UTF-8"))
                             .append("=")
                             .append(URLEncoder.encode(value, "UTF-8"));
                 }

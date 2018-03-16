@@ -47,6 +47,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         writer.startElement("span", button);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "class");
+        
         if (button.getStyle() != null) {
             writer.writeAttribute("style", button.getStyle(), "style");
         }
@@ -76,6 +77,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         writer.writeAttribute("name", buttonId, null);
         writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", buttonClass, null);
+        writer.writeAttribute("aria-label", button.getAriaLabel(), "ariaLabel");
         if (button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         }

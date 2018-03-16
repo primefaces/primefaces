@@ -70,6 +70,8 @@
 
 <tag>
     <tag-name>autoUpdate</tag-name>
+    <description>AutoUpdate is a TagHandler to mark the parent component to be updated at every AJAX request.
+        AutoUpdate is ignored if the trigger (p:commandButton, p:ajax...) of AJAX request has the attribute ignoreAutoUpdate set to 'true'.</description>
     <handler-class>
         org.primefaces.component.autoupdate.AutoUpdateTagHandler
     </handler-class>
@@ -83,6 +85,7 @@
 
 <tag>
     <tag-name>dataExporter</tag-name>
+    <description>DataExporter is handy for exporting data listed using a Primefaces Datatable to various formats such as excel, pdf, csv and xml.</description>
     <handler-class>
         org.primefaces.component.export.DataExporterTagHandler
     </handler-class>
@@ -150,6 +153,8 @@
 
 <tag>
     <tag-name>fileDownload</tag-name>
+    <description>The legacy way to present dynamic binary data to the client is to write a servlet or a filter and stream the binary data.
+        FileDownload presents an easier way to do the same.</description>
     <handler-class>
         org.primefaces.component.filedownload.FileDownloadTagHandler
     </handler-class>
@@ -175,6 +180,7 @@
 
 <tag>
     <tag-name>collector</tag-name>
+    <description>Collector is a simple utility to manage collections declaratively.</description>
     <handler-class>
         org.primefaces.component.collector.CollectorTagHandler
     </handler-class>
@@ -206,6 +212,7 @@
 
 <tag>
     <tag-name>ajax</tag-name>
+    <description>AjaxBehavior is an extension to standard f:ajax.</description>
     <behavior>
         <behavior-id>org.primefaces.component.AjaxBehavior</behavior-id>
         <handler-class>org.primefaces.behavior.ajax.AjaxBehaviorHandler</handler-class>
@@ -331,6 +338,7 @@
 
 <tag>
     <tag-name>printer</tag-name>
+    <description>Printer allows sending a specific JSF component to the printer, not the whole page.</description>
     <behavior>
         <behavior-id>org.primefaces.component.PrinterBehavior</behavior-id>
     </behavior>
@@ -344,6 +352,7 @@
 
 <tag>
     <tag-name>confirm</tag-name>
+    <description>Confirm is a behavior element used to integrate with global confirm dialog.</description>
     <behavior>
         <behavior-id>org.primefaces.behavior.ConfirmBehavior</behavior-id>
         <handler-class>org.primefaces.behavior.confirm.ConfirmBehaviorHandler</handler-class>
@@ -382,6 +391,8 @@
 
 <tag>
     <tag-name>resetInput</tag-name>
+    <description>Input components keep their local values at state when validation fails.
+        ResetInput is used to clear the cached values from state so that components retrieve their values from the backing bean model instead.</description>
     <handler-class>
         org.primefaces.component.resetinput.ResetInputTagHandler
     </handler-class>
@@ -401,6 +412,7 @@
 
 <tag>
     <tag-name>clientValidator</tag-name>
+    <description>ClientValidator is a behavior element used in Client Side Validation to do instant validation in case you do not want to wait for the users to fill in the form and hit commandButton/commandLink.</description>
     <behavior>
         <behavior-id>org.primefaces.behavior.ClientValidator</behavior-id>
     </behavior>
@@ -420,6 +432,7 @@
 
 <tag>
     <tag-name>repeat</tag-name>
+    <description>Repeat is an alternative to the standard ui:repeat component, that fix the compatibility with Mojarra. There are no additonal features and usage is same as ui:repeat.</description>
     <component>
         <component-type>org.primefaces.component.UIRepeat</component-type>
     </component>

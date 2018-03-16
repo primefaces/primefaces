@@ -840,11 +840,11 @@ if (window.PrimeFaces) {
                         var msgItem = $('<li></li>');
 
                         if(showSummary) {
-                            msgItem.append('<span class="ui-messages-error-summary">' + msg.summary + '</span>');
+                            msgItem.append('<span class="ui-messages-error-summary">' + PrimeFaces.escapeHTML(msg.summary) + '</span>');
                         }
 
                         if(showDetail) {
-                            msgItem.append('<span class="ui-messages-error-detail">' + msg.detail + '</span>');
+                            msgItem.append('<span class="ui-messages-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span>');
                         }
 
                         uiMessagesComponent.find('> .ui-messages-error > ul').append(msgItem);
@@ -907,19 +907,19 @@ if (window.PrimeFaces) {
                 uiMessage.addClass('ui-message-error ui-widget ui-corner-all ui-helper-clearfix');
 
                 if(display === 'both') {
-                    uiMessage.append('<div><span class="ui-message-error-icon"></span><span class="ui-message-error-detail">' + msg.detail + '</span></div>');
+                    uiMessage.append('<div><span class="ui-message-error-icon"></span><span class="ui-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span></div>');
                 }
                 else if(display === 'text') {
-                    uiMessage.append('<span class="ui-message-error-detail">' + msg.detail + '</span>');
+                    uiMessage.append('<span class="ui-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span>');
                 }
                 else if(display === 'icon') {
                     uiMessage.addClass('ui-message-icon-only')
-                            .append('<span class="ui-message-error-icon" title="' + msg.detail + '"></span>');
+                            .append('<span class="ui-message-error-icon" title="' + PrimeFaces.escapeHTML(msg.detail) + '"></span>');
                 }
             }
             else {
                 uiMessage.hide();
-                $(PrimeFaces.escapeClientId(uiMessage.data('target'))).attr('title', msg.detail);
+                $(PrimeFaces.escapeClientId(uiMessage.data('target'))).attr('title', PrimeFaces.escapeHTML(msg.detail));
             }
         },
 

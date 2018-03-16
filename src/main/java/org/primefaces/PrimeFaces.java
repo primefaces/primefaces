@@ -44,18 +44,25 @@ public class PrimeFaces {
     // TODO - there are 2 possible solutions
     // 1) the current static solution + use Faces/RequestContext#getCurrentInstance each time
     // 2) make PrimeFaces requestScoped and receive Faces/RequestContext only once
-    private static final PrimeFaces INSTANCE = new PrimeFaces();
+    private static PrimeFaces instance = new PrimeFaces();
     
     private final Dialog dialog;
     private final Ajax ajax;
     
-    private PrimeFaces() {
+    /**
+     * Protected constructor to allow CDI proxying - and also allow customizations, or setting a mock.
+     */
+    protected PrimeFaces() {
         dialog = new Dialog();
         ajax = new Ajax();
     }
 
     public static PrimeFaces current() {
-        return INSTANCE;
+        return instance;
+    }
+
+    public static void setCurrent(PrimeFaces primeFaces) {
+        instance = primeFaces;
     }
     
     protected FacesContext getFacesContext() {

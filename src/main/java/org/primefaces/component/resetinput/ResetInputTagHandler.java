@@ -40,6 +40,7 @@ public class ResetInputTagHandler extends TagHandler {
         this.clearModel = getAttribute("clearModel");
     }
 
+    @Override
     public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
         if (parent == null || !ComponentHandler.isNew(parent)) {
             return;
