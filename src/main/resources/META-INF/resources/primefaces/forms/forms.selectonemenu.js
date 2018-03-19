@@ -423,27 +423,50 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                         break;
                     }
 
-                    var text = $(this).val(),
+                    var text = String.fromCharCode(key).toLowerCase();
                     matchedOptions = null,
                     metaKey = e.metaKey||e.ctrlKey||e.shiftKey;
 
                     if(!metaKey) {
                         clearTimeout($this.searchTimer);
 
+                        // find all options with the same first letter
                         matchedOptions = $this.options.filter(function() {
                             var option = $(this);
-                            return (option.is(':not(:disabled)') && (option.text().toLowerCase().indexOf(text.toLowerCase()) === 0));
+                            return (option.is(':not(:disabled)') && (option.text().toLowerCase().indexOf(text) === 0));
                         });
 
                         if(matchedOptions.length) {
-                            var highlightItem = $this.items.eq(matchedOptions.index());
-                            if($this.panel.is(':hidden')) {
-                                $this.selectItem(highlightItem);
-                            }
-                            else {
-                                $this.highlightItem(highlightItem);
-                                PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
-                            }
+                            var selectedIndex = -1;
+
+                            // is current selection one of our matches?
+                            matchedOptions.each(function() {
+                                var option = $(this);
+                                var currentIndex = option.index();
+                                var currentItem = $this.items.eq(currentIndex);
+                                if (currentItem.hasClass('ui-state-highlight')) {
+                                    selectedIndex = currentIndex;
+                                    return false;
+                                }
+                            });
+
+                            matchedOptions.each(function() {
+                                var option = $(this);
+                                var currentIndex = option.index();
+                                var currentItem = $this.items.eq(currentIndex);
+
+                                // select next item after the current selection
+                                if (currentIndex > selectedIndex) {
+                                    if($this.panel.is(':hidden')) {
+                                        $this.selectItem(currentItem);
+                                    }
+                                    else {
+                                        $this.highlightItem(currentItem);
+                                        PrimeFaces.scrollInView($this.itemsWrapper, currentItem);
+                                    }
+                                    return false;
+                                }
+                            });
                         }
 
                         $this.searchTimer = setTimeout(function(){
