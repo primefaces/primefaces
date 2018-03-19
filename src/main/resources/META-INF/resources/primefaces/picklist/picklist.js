@@ -285,6 +285,24 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                     }
                     e.preventDefault();
                 break;
+                default:
+                    // #3304 find first item matching the character typed
+                    var keyChar = String.fromCharCode(key).toLowerCase();
+                    list.children('.ui-picklist-item').each(function() {
+                        var item = $(this), 
+                            itemLabel = item.attr('data-item-label');
+                        if (itemLabel.toLowerCase().startsWith(keyChar)) {
+                            $this.removeOutline();
+                            $this.unselectAll();
+                            $this.selectItem(item);
+                            $this.focusedItem = item;
+                            PrimeFaces.scrollInView(list, $this.focusedItem);
+                            $this.ariaRegion.text($this.focusedItem.data('item-label'));
+                            e.preventDefault();
+                            return false;
+                        }
+                    });
+                break;
             };
         });
 
