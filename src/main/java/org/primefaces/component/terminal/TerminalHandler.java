@@ -20,15 +20,11 @@ import javax.faces.view.facelets.ComponentHandler;
 import javax.faces.view.facelets.MetaRuleset;
 
 import org.primefaces.facelets.MethodRule;
-import org.primefaces.model.terminal.TerminalAutoCompleteModel;
 
 public class TerminalHandler extends ComponentHandler {
 
     private static final MethodRule COMMAND_HANDLER =
             new MethodRule("commandHandler", String.class, new Class[]{ String.class, String[].class });
-
-    private static final MethodRule AUTO_COMPLETE_MODEL =
-            new MethodRule("autoCompleteModel", TerminalAutoCompleteModel.class, new Class[]{});
 
     public TerminalHandler(ComponentConfig config) {
         super(config);
@@ -38,7 +34,6 @@ public class TerminalHandler extends ComponentHandler {
     protected MetaRuleset createMetaRuleset(Class type) {
         MetaRuleset metaRuleset = super.createMetaRuleset(type);
         metaRuleset.addRule(COMMAND_HANDLER);
-        metaRuleset.addRule(AUTO_COMPLETE_MODEL);
 
         return metaRuleset;
     }
