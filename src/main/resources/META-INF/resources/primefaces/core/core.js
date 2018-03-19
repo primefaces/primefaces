@@ -681,6 +681,7 @@
             dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             dayNamesMin: ['S', 'M', 'T', 'W ', 'T', 'F ', 'S'],
             weekHeader: 'Week',
+            weekNumberTitle: 'W',
             firstDay: 0,
             isRTL: false,
             showMonthAfterYear: false,
