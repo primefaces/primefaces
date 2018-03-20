@@ -39,6 +39,7 @@ import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
@@ -87,7 +88,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         }
 
         encodeDefaultButton(context, button, buttonId);
-        if (button.getChildCount() > 0) {
+        if (ComponentUtils.shouldRenderChildren(button)) {
             encodeMenuIcon(context, button, menuButtonId);
             encodeMenu(context, button, menuId);
         }
@@ -159,19 +160,16 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
 
-        
-        if (button.getChildCount() > 0) { 
-            //icon    
-            writer.startElement("span", null);
-            writer.writeAttribute("class", "ui-button-icon-left ui-icon ui-icon-triangle-1-s", null);
-            writer.endElement("span");
+        //icon    
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-button-icon-left ui-icon ui-icon-triangle-1-s", null);
+        writer.endElement("span");
 
-            //text
-            writer.startElement("span", null);
-            writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-            writer.write("ui-button");
-            writer.endElement("span");
-        }
+        //text
+        writer.startElement("span", null);
+        writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
+        writer.write("ui-button");
+        writer.endElement("span");
 
         writer.endElement("button");
     }
