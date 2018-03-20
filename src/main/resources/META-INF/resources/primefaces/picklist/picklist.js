@@ -217,9 +217,12 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             else {
                 $this.focusedItem = list.children('.ui-picklist-item:visible:first');
             }
-            PrimeFaces.scrollInView(list, $this.focusedItem);
-            $this.focusedItem.addClass('ui-picklist-outline');
-            $this.ariaRegion.text($this.focusedItem.data('item-label'));
+            
+            setTimeout(function() {
+                PrimeFaces.scrollInView(list, $this.focusedItem);
+                $this.focusedItem.addClass('ui-picklist-outline');
+                $this.ariaRegion.text($this.focusedItem.data('item-label'));
+            }, 100);
         })
         .on('blur.pickList', listSelector, null, function() {
             $this.removeOutline();
