@@ -70,6 +70,10 @@ PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
     toggle:function (direction) {
         if (!this.disabled) {
+            // default to switch to next state
+            if (isNaN(direction)) {
+                direction = 1;
+            }
             var oldValue = parseInt(this.input.val());
             var newValue = this.fixedMod((oldValue + direction),3);
             this.input.val(newValue);
