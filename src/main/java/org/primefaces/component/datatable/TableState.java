@@ -19,7 +19,6 @@ import java.io.Serializable;
 import java.util.List;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
-import org.primefaces.model.SortMeta;
 
 public class TableState implements Serializable {
 
@@ -27,7 +26,7 @@ public class TableState implements Serializable {
 
     private int rows;
 
-    private List<SortMeta> multiSortMeta;
+    private List<MultiSortState> multiSortState;
 
     private ValueExpression sortBy;
 
@@ -71,12 +70,12 @@ public class TableState implements Serializable {
         this.rows = rows;
     }
 
-    public List<SortMeta> getMultiSortMeta() {
-        return multiSortMeta;
+    public List<MultiSortState> getMultiSortState() {
+        return multiSortState;
     }
 
-    public void setMultiSortMeta(List<SortMeta> multiSortMeta) {
-        this.multiSortMeta = multiSortMeta;
+    public void setMultiSortState(List<MultiSortState> multiSortState) {
+        this.multiSortState = multiSortState;
     }
 
     public ValueExpression getSortBy() {

@@ -1059,6 +1059,14 @@ import org.primefaces.component.datatable.TableState;
         return (sortMode != null && sortMode.equals("multiple"));
     }
     
+    public List<MultiSortState> getMultiSortState() {
+        return (List<MultiSortState>) this.getStateHelper().get("multiSortState");
+    }
+
+    public void setMultiSortState(List<MultiSortState> _multiSortState) {
+        this.getStateHelper().put("multiSortState", _multiSortState);
+    }
+
     private List<SortMeta> multiSortMeta = null;
         
     public List<SortMeta> getMultiSortMeta() {
@@ -1066,7 +1074,7 @@ import org.primefaces.component.datatable.TableState;
             return multiSortMeta;
         }
         
-        List<MultiSortState> multiSortStateList = (List<MultiSortState>) this.getStateHelper().get("multiSortState");
+        List<MultiSortState> multiSortStateList = getMultiSortState();
         if(multiSortStateList != null && !multiSortStateList.isEmpty()) {
             multiSortMeta = new ArrayList<SortMeta>();
             for(int i = 0; i < multiSortStateList.size(); i++) {
@@ -1102,7 +1110,7 @@ import org.primefaces.component.datatable.TableState;
                 multiSortStateList.add(new MultiSortState(value.get(i)));
             }
             
-            this.getStateHelper().put("multiSortState", multiSortStateList);
+            setMultiSortState(multiSortStateList);
         }
     }
     
@@ -1457,7 +1465,7 @@ import org.primefaces.component.datatable.TableState;
                 this.setRows(rows);
             }
 
-            this.setMultiSortMeta(ts.getMultiSortMeta());
+            this.setMultiSortState(ts.getMultiSortState());
             this.setValueExpression("sortBy", ts.getSortBy());
             this.setSortOrder(ts.getSortOrder());
             this.setSortFunction(ts.getSortFunction());
