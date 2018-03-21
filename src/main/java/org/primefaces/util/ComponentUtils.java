@@ -659,7 +659,7 @@ public class ComponentUtils {
             return false;
         }
 
-        // Facet has not child but is rendered
+        // Facet has no child but is rendered
         if (facet.getChildren().isEmpty()) {
             return true;
         }
@@ -674,7 +674,6 @@ public class ComponentUtils {
      */
     public static boolean shouldRenderChildren(UIComponent component) {
         for (int i = 0; i < component.getChildren().size(); i++) {
-            // Stop when a child who is rendered is found.
             if (component.getChildren().get(i).isRendered()) {
                 return true;
             }
