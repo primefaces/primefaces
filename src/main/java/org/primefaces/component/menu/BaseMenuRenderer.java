@@ -380,13 +380,14 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
         //append params
         if (!params.isEmpty()) {
-            request.append("PrimeFaces.addSubmitParam('").append(formId).append("',{");
+            request.append("PrimeFaces.addSubmitParam(\"").append(formId).append("\",{");
 
             for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
                 String key = it.next();
                 Object value = params.get(key);
+                String valueStr = value == null ? null : escapeText(value.toString());
 
-                request.append("'").append(key).append("':'").append(value).append("'");
+                request.append("\"").append(escapeText(key)).append("\":\"").append(valueStr).append("\"");
 
                 if (it.hasNext()) {
                     request.append(",");
@@ -397,7 +398,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         }
 
         if (submit) {
-            request.append(".submit('").append(formId).append("');return false;");
+            request.append(".submit(\"").append(formId).append("\");return false;");
         }
 
         return request.toString();
