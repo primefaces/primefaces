@@ -238,7 +238,8 @@ public class AjaxRequestBuilder {
                     buffer.append(",");
                 }
 
-                buffer.append("{name:").append("\"").append(parameter.getName()).append("\",value:\"").append(paramValue).append("\"}");
+                buffer.append("{name:").append("\"").append(ComponentUtils.escapeText(parameter.getName())).append("\",value:\"")
+                    .append(ComponentUtils.escapeText(paramValue.toString())).append("\"}");
             }
         }
 
@@ -262,7 +263,8 @@ public class AjaxRequestBuilder {
                     if (paramValue == null) {
                         paramValue = "";
                     }
-                    buffer.append("{name:").append("\"").append(name).append("\",value:\"").append(paramValue).append("\"}");
+                    buffer.append("{name:").append("\"").append(ComponentUtils.escapeText(name)).append("\",value:\"")
+                        .append(ComponentUtils.escapeText(paramValue)).append("\"}");
 
                     if (i < (size - 1)) {
                         buffer.append(",");
