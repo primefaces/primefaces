@@ -659,17 +659,26 @@ public class ComponentUtils {
             return false;
         }
 
-        // Facet contains only 1 child, which is rendered due to previous test.
+        // Facet has no child but is rendered
         if (facet.getChildren().isEmpty()) {
             return true;
         }
-
-        for (int i = 0; i < facet.getChildren().size(); i++) {
-            // Stop when a child who is rendered is found.
-            if (facet.getChildren().get(i).isRendered()) {
+        
+        return shouldRenderChildren(facet);
+    }
+    
+    /**
+     * Checks if the component's children are rendered
+     * @param component The component to check
+     * @return true if one of the first level child's is rendered.
+     */
+    public static boolean shouldRenderChildren(UIComponent component) {
+        for (int i = 0; i < component.getChildren().size(); i++) {
+            if (component.getChildren().get(i).isRendered()) {
                 return true;
             }
         }
+
         return false;
     }
 }
