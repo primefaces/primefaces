@@ -2450,6 +2450,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                     if(key === keyCode.ENTER || key == keyCode.NUMPAD_ENTER) {
                         $this.saveCell(cell);
+                        $this.currentCell = null;
 
                         e.preventDefault();
                     }
