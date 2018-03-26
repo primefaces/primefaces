@@ -7,4 +7,5 @@
 <suppressions>
     <suppress files="[\\/]generated-sources[\\/]" checks="[a-zA-Z0-9]*"/>
     <suppress files="BoundedInputStream\.java"  checks="[a-zA-Z0-9]*"/>
+    <suppress files="org[\\/]owasp[\\/]encoder[\\/]" checks="[a-zA-Z0-9]*"/>
 </suppressions>

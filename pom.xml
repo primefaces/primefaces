@@ -304,6 +304,7 @@
                     </includes>
                     <excludes>
                         <exclude>**/BoundedInputStream.java</exclude>
+                        <exclude>**/org/owasp/encoder/*.java</exclude>
                     </excludes>
                 </configuration>
                 <executions>
