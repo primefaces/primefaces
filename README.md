@@ -1,4 +1,4 @@
-[![Maven](https://maven-badges.herokuapp.com/maven-central/org.primefaces/primefaces/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.primefaces/primefaces)
+[![Maven](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg)](https://repo.maven.apache.org/maven2/org/primefaces/primefaces/)
 [![Javadoc](http://javadoc.io/badge/org.primefaces/primefaces.svg)](http://javadoc.io/doc/org.primefaces/primefaces)
 [![Travis](https://travis-ci.org/primefaces/primefaces.svg?branch=master)](https://travis-ci.org/primefaces/primefaces)
 [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
