@@ -226,7 +226,7 @@ public class PrimeFaces {
         public void closeDynamic(Object data) {
             FacesContext facesContext = getFacesContext();
             Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-            String pfdlgcid = ComponentUtils.escapeEcmaScriptText(params.get(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM));
+            String pfdlgcid = EscapeUtils.forJavaScript(params.get(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM));
 
             if (data != null) {
                 Map<String, Object> session = facesContext.getExternalContext().getSessionMap();

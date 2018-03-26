@@ -15,11 +15,11 @@
  */
 package org.primefaces.util;
 
-import java.io.IOException;
+import org.primefaces.config.PrimeConfiguration;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.config.PrimeConfiguration;
+import java.io.IOException;
 
 /**
  * Helper to generate javascript code of an ajax call
@@ -131,7 +131,7 @@ public class WidgetBuilder {
             rw.write(",");
             rw.write(name);
             rw.write(":\"");
-            rw.write(ComponentUtils.escapeEcmaScriptText(value));
+            rw.write(EscapeUtils.forJavaScript(value));
             rw.write("\"");
         }
 
@@ -192,7 +192,7 @@ public class WidgetBuilder {
             rw.write(",");
             rw.write(name);
             rw.write(":\"");
-            rw.write(ComponentUtils.escapeEcmaScriptText(value));
+            rw.write(EscapeUtils.forJavaScript(value));
             rw.write("\"");
         }
 
