@@ -47,16 +47,10 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.convert.ClientConverter;
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.util.AjaxRequestBuilder;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.HTML;
-import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 import org.primefaces.validate.ClientValidator;
 import org.primefaces.validate.bean.BeanValidationMetadata;
 import org.primefaces.validate.bean.BeanValidationMetadataMapper;
-import org.primefaces.util.Jsf22Helper;
 
 public abstract class CoreRenderer extends Renderer {
 
@@ -608,6 +602,10 @@ public abstract class CoreRenderer extends Renderer {
         writer.endElement("script");
     }
 
+    /**
+     * @deprecated Use {@link EscapeUtils}
+     */
+    @Deprecated
     protected String escapeText(String text) {
         return ComponentUtils.escapeText(text);
     }
