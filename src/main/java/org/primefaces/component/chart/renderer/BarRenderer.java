@@ -15,16 +15,17 @@
  */
 package org.primefaces.component.chart.renderer;
 
+import org.primefaces.component.chart.Chart;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.util.EscapeUtils;
+
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import org.primefaces.component.chart.Chart;
-import org.primefaces.model.chart.BarChartModel;
-import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.util.ComponentUtils;
 
 public class BarRenderer extends CartesianPlotRenderer {
 
@@ -91,7 +92,7 @@ public class BarRenderer extends CartesianPlotRenderer {
         writer.write(",series:[");
         if (model.getDataRenderMode().equals("key") && legendLabel != null) {
             writer.write("{");
-            writer.write("label:\"" + ComponentUtils.escapeText(legendLabel) + "\"");
+            writer.write("label:\"" + EscapeUtils.forJavaScript(legendLabel) + "\"");
             writer.write("}");
         }
         else {
@@ -108,7 +109,7 @@ public class BarRenderer extends CartesianPlotRenderer {
 
         writer.write(",ticks:[");
         for (Iterator<String> tickIt = ticks.iterator(); tickIt.hasNext();) {
-            writer.write("\"" + ComponentUtils.escapeText(tickIt.next()) + "\"");
+            writer.write("\"" + EscapeUtils.forJavaScript(tickIt.next()) + "\"");
             if (tickIt.hasNext()) {
                 writer.write(",");
             }

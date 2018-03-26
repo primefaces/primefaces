@@ -15,16 +15,13 @@
  */
 package org.primefaces.application.exceptionhandler;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler;
+import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerVisitCallback;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EscapeUtils;
+
 import javax.el.ELException;
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
@@ -41,11 +38,16 @@ import javax.faces.context.PartialResponseWriter;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.view.ViewDeclarationLanguage;
-import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler;
-import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerVisitCallback;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.util.ComponentUtils;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
@@ -225,7 +227,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                 writer.write(handlerComponent.getOnexception());
                 writer.write("};hf.call(this,\""
                         + info.getType() + "\",\""
-                        + ComponentUtils.escapeText(info.getMessage())
+                        + EscapeUtils.forJavaScript(info.getMessage())
                         + "\",\""
                         + info.getFormattedTimestamp()
                         + "\");");

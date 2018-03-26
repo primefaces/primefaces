@@ -15,15 +15,16 @@
  */
 package org.primefaces.component.button;
 
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
 
 public class ButtonRenderer extends OutcomeTargetRenderer {
 
@@ -109,8 +110,8 @@ public class ButtonRenderer extends OutcomeTargetRenderer {
         }
 
         if (targetURL != null) {
-            onclick.append("window.open('").append(ComponentUtils.escapeText(targetURL)).append("','");
-            onclick.append(ComponentUtils.escapeText(button.getTarget())).append("')");
+            onclick.append("window.open('").append(EscapeUtils.forJavaScript(targetURL)).append("','");
+            onclick.append(EscapeUtils.forJavaScript(button.getTarget())).append("')");
         }
 
         return onclick.toString();
