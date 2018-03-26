@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY data_component_attributes				SYSTEM "../entities/data_component_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>dataViewListItem</tag>
+    <tagClass>org.primefaces.component.dataviewlistitem.DataViewListItemTag</tagClass>
+    <componentClass>org.primefaces.component.dataviewlistitem.DataViewListItem</componentClass>
+    <componentType>org.primefaces.component.DataViewListItem</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.DataViewListItemRenderer</rendererType>
+    <rendererClass>org.primefaces.component.dataviewlistitem.DataViewListItemRenderer</rendererClass>
+    <parent>org.primefaces.component.api.UIData</parent>
+    <description>
+        DataList presents a collection of data in list layout with several display types.
+    </description>
+    <interfaces>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+        <interface>
+            <name>javax.faces.component.behavior.ClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.PrimeClientBehaviorHolder</name>
+        </interface>
+        <interface>
+            <name>org.primefaces.component.api.Pageable</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &data_component_attributes;
+        &widget_var_attribute;
+    </attributes>
+    <resources>
+        <resource>
+            <name>components.css</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
+</component>
