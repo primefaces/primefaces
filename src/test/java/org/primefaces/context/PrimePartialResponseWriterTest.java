@@ -48,7 +48,7 @@ public class PrimePartialResponseWriterTest {
         
         primePartialResponseWriter.encodeJSONArray("myArray", jsonArray);
         
-        Assert.assertEquals("\"myArray\":[\"test\",12,1,\"test123&amp;\"]", partialResponseWriter.toString());
+        Assert.assertEquals("\"myArray\":[&#34;test&#34;,12,1" + ",&#34;test123&amp;&#34;]", partialResponseWriter.toString());
     }
     
     @Test
@@ -62,7 +62,7 @@ public class PrimePartialResponseWriterTest {
 
         primePartialResponseWriter.encodeJSONObject("myObj", jsonObject);
         
-        Assert.assertEquals("\"myObj\":{\"myStrVal\":\"Hello&lt;&gt;World!\",\"isThatTrue\":false}", partialResponseWriter.toString());
+        Assert.assertEquals("\"myObj\":{&#34;myStrVal&#34;:&#34;Hello&lt;&gt;World!&#34;,&#34;isThatTrue&#34;:false}", partialResponseWriter.toString());
     }
     
     @Test
@@ -71,13 +71,13 @@ public class PrimePartialResponseWriterTest {
         PrimePartialResponseWriter primePartialResponseWriter = new PrimePartialResponseWriter(partialResponseWriter);
         
         primePartialResponseWriter.encodeJSONValue("myVal", "test123>");
-        Assert.assertEquals("\"myVal\":\"test123&gt;\"", partialResponseWriter.toString());
+        Assert.assertEquals("&#34;myVal&#34;:&#34;test123&gt;&#34;", partialResponseWriter.toString());
         
         
         partialResponseWriter = new CollectingPartialResponseWriter();
         primePartialResponseWriter = new PrimePartialResponseWriter(partialResponseWriter);
         
         primePartialResponseWriter.encodeJSONValue("myVal2", 123);
-        Assert.assertEquals("\"myVal2\":123", partialResponseWriter.toString());
+        Assert.assertEquals("&#34;myVal2&#34;:123", partialResponseWriter.toString());
     }
 }

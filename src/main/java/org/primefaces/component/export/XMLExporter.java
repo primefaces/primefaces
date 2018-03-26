@@ -15,20 +15,26 @@
  */
 package org.primefaces.component.export;
 
-import java.io.*;
-import java.util.Collections;
-import java.util.List;
-import javax.el.MethodExpression;
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.XMLUtils;
+
+import javax.el.MethodExpression;
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.Collections;
+import java.util.List;
 
 public class XMLExporter extends Exporter {
 
@@ -132,14 +138,14 @@ public class XMLExporter extends Exporter {
         writer.write("\t\t<" + tag + ">");
 
         if (column.getExportFunction() != null) {
-            writer.write(XMLUtils.escapeXml(exportColumnByFunction(context, column)));
+            writer.write(EscapeUtils.forXml(exportColumnByFunction(context, column)));
         }
         else {
             for (UIComponent component : components) {
                 if (component.isRendered()) {
                     String value = exportValue(context, component);
                     if (value != null) {
-                        writer.write(XMLUtils.escapeXml(value));
+                        writer.write(EscapeUtils.forXml(value));
                     }
                 }
             }
