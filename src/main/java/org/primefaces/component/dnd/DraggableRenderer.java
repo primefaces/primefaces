@@ -49,7 +49,11 @@ public class DraggableRenderer extends CoreRenderer {
                 .attr("handle", draggable.getHandle(), null)
                 .attr("opacity", draggable.getOpacity(), 1.0)
                 .attr("stack", draggable.getStack(), null)
-                .attr("scope", draggable.getScope(), null);
+                .attr("scope", draggable.getScope(), null)
+                .attr("cancel", draggable.getCancel(), null);
+        
+        wb.callback("onStart", "function(event,ui)", draggable.getOnStart())
+            .callback("onStop", "function(event,ui)", draggable.getOnStop());
 
         if (draggable.isRevert()) {
             wb.attr("revert", "invalid");
