@@ -528,6 +528,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         else {
             String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
             boolean disabled = option.isDisabled();
+            boolean isEscape = option.isEscape();
 
             Object valuesArray;
             Object itemValue;
@@ -547,9 +548,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 writer.writeAttribute("value", itemValueAsString, null);
                 if (disabled) writer.writeAttribute("disabled", "disabled", null);
                 if (selected) writer.writeAttribute("selected", "selected", null);
+                writer.writeAttribute("data-escape", String.valueOf(isEscape), null);
 
                 if (!isValueBlank(option.getLabel())) {
-                    if (option.isEscape()) {
+                    if (isEscape) {
                         writer.writeText(option.getLabel(), "value");
                     }
                     else {
