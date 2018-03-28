@@ -878,7 +878,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 menuWidget.show(e);
             }
-            else if(row.hasClass('ui-datatable-empty-message') && $this.cfg.canShowContextMenuWhenTableIsEmpty) {
+            else if(row.hasClass('ui-datatable-empty-message') && !$this.cfg.disableContextMenuIfEmpty) {
                 menuWidget.show(e);
             }
         });

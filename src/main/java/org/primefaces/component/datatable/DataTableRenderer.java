@@ -301,7 +301,7 @@ public class DataTableRenderer extends DataRenderer {
                 .nativeAttr("groupColumnIndexes", table.getGroupedColumnIndexes(), null)
                 .callback("onRowClick", "function(row)", table.getOnRowClick());
 
-        wb.attr("canShowContextMenuWhenTableIsEmpty", table.isCanShowContextMenuWhenTableIsEmpty());
+        wb.attr("disableContextMenuIfEmpty", table.isDisableContextMenuIfEmpty());
 
         //Behaviors
         encodeClientBehaviors(context, table);

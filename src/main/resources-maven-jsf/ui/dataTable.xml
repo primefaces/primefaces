@@ -557,11 +557,11 @@
             <description>Client side check if rowclick triggered row click event not a clickable element in row content.</description>
         </attribute>
         <attribute>
-            <name>canShowContextMenuWhenTableIsEmpty</name>
+            <name>disableContextMenuIfEmpty</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
-            <defaultValue>true</defaultValue>
-            <description>Decides whether context menu can show up or not when the table has no records.</description>
+            <defaultValue>false</defaultValue>
+            <description>Decides whether to disable context menu or not if a table has no records.</description>
         </attribute>
     </attributes>
     <resources>
