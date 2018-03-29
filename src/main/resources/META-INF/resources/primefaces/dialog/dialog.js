@@ -683,11 +683,27 @@ PrimeFaces.widget.DynamicDialog = PrimeFaces.widget.Dialog.extend({
         this.moveToTop();
 
         this.jq.show();
+        
+        if(this.cfg.height != "auto") {
+            this.content.height(this.jq.outerHeight() - this.titlebar.outerHeight(true)); 
+        }
 
         this.postShow();
 
         if(this.cfg.modal) {
             this.enableModality();
+        }
+    },
+    
+    //@Override
+    initSize: function() {
+        this.jq.css({
+            'width': this.cfg.width,
+            'height': this.cfg.height
+        });
+
+        if(this.cfg.fitViewport) {
+            this.fitViewport();
         }
     }
 
