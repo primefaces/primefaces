@@ -42,7 +42,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
     private static final Map<String, String> CALLBACK_EXTENSION_PARAMS;
     
     static {
-        Map<String, String> callbackExtensionParams = new HashMap<String, String>();
+        Map<String, String> callbackExtensionParams = new HashMap<>();
         callbackExtensionParams.put("ln", "primefaces");
         callbackExtensionParams.put("type", "args");
 
@@ -96,8 +96,8 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                 encodeCallbackParams(requestContext.getCallbackParams());
                 encodeScripts(requestContext);
             }
-            catch (Exception exception) {
-                throw new AbortProcessingException(exception);
+            catch (Exception e) {
+                throw new AbortProcessingException(e);
             }
         }
 
@@ -275,7 +275,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                                 parameterPrefix += UINamingContainer.getSeparatorChar(context);
                             }
 
-                            Map<String, Object> params = new HashMap<String, Object>();
+                            Map<String, Object> params = new HashMap<>();
                             params.put("parameterPrefix", parameterPrefix);
                             encodeCallbackParams(params);
                         }
@@ -292,7 +292,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                         if (initialResources != null && currentResources != null && currentResources.size() > initialResources.size()) {
                             startEval();
 
-                            ArrayList<ResourceUtils.ResourceInfo> newResources = new ArrayList<ResourceUtils.ResourceInfo>(currentResources);
+                            ArrayList<ResourceUtils.ResourceInfo> newResources = new ArrayList<>(currentResources);
                             newResources.removeAll(initialResources);
 
                             getWrapped().write("if(window.PrimeFaces){");
