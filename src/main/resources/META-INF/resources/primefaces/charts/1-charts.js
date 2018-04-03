@@ -249,6 +249,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         this.renderDeferred();
     },
 
+    //@Override
     refresh: function(cfg) {
         if(this.plot) {
             this.plot.destroy();
@@ -257,6 +258,16 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         this.init(cfg);
     },
 
+    //@Override
+    destroy: function() {
+        this._super();
+
+        if (this.plot) {
+            this.plot.destroy();
+        }
+    },
+
+    //@Override
     _render: function() {
         this._draw();
     },
