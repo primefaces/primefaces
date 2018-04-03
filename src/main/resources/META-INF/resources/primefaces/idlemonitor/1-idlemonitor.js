@@ -73,6 +73,7 @@ PrimeFaces.widget.IdleMonitor = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    //@Override
     destroy: function() {
         this._super();
 
