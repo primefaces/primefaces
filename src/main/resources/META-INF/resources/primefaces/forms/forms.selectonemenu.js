@@ -778,14 +778,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
         else {
             var labelText = this.label.data('placeholder');
-            if (labelText == null) {
+            if (labelText == null || labelText == "") {
                 labelText = '&nbsp;';
             }
 
             if (value === '&nbsp;') {
                 if (labelText != '&nbsp;') {
                    this.label.text(labelText);
-                   this.label.addClass('ui-state-disabled');
                 } else {
                     this.label.html(labelText);
                 }
