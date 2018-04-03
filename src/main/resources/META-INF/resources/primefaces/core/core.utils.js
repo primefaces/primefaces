@@ -203,8 +203,23 @@ if (!PrimeFaces.utils) {
 
             var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
             PrimeFaces.utils.appendDynamicOverlay(widget, overlay, overlayId, appendTo);
-        }
+        },
 
+
+        registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
+
+            widget.destroyListeners.push(function() {
+                $(window).off(scrollNamespace);
+            });
+
+            $(window).off(scrollNamespace).on(scrollNamespace, function(e) {
+                scrollCallback(e);
+            });
+        },
+
+        unbdingScrollHandler: function(scrollNamespace) {
+            $(window).off(scrollNamespace);
+        }
     };
 
 }

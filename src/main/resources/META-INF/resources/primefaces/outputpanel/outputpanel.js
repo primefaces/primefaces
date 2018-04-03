@@ -57,11 +57,11 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
     },
 
     bindScrollMonitor: function() {
-        var $this = this,
-        win = $(window);
-        win.off('scroll.' + this.id).on('scroll.' + this.id, function() {
-            if($this.visible()) {
-                $this.unbindScrollMonitor();
+        var $this = this;
+
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id, function() {
+            if ($this.visible()) {
+                PrimeFaces.utils.unbdingScrollHandler('scroll.' + $this.id);
                 $this.loadContent();
             }
         });
@@ -78,8 +78,4 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
             return true;
         }
     },
-
-    unbindScrollMonitor: function() {
-        $(window).off('scroll.' + this.id);
-    }
 });
