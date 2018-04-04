@@ -878,7 +878,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                 menuWidget.show(e);
             }
-            else if(row.hasClass('ui-datatable-empty-message')) {
+            else if(row.hasClass('ui-datatable-empty-message') && !$this.cfg.disableContextMenuIfEmpty) {
                 menuWidget.show(e);
             }
         });
@@ -3461,8 +3461,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         var table = this.thead.parent(),
         offset = table.offset(),
         win = $(window),
-        $this = this,
-        stickyNS = 'scroll.' + this.id;
+        $this = this;
 
         this.stickyContainer = $('<div class="ui-datatable ui-datatable-sticky ui-widget"><table></table></div>');
         this.clone = this.thead.clone(false);
@@ -3483,7 +3482,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.relativeHeight = 0;
         }
 
-        win.off(stickyNS).on(stickyNS, function() {
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id, function() {
             var scrollTop = win.scrollTop(),
             tableOffset = table.offset();
 

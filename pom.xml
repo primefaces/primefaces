@@ -643,6 +643,15 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/charts/charts.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/charts/0-jqPlot.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/charts/1-charts.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery-plugins.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/jquery/jquery.ui.js</include>

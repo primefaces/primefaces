@@ -372,8 +372,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         var table = this.thead.parent(),
         offset = table.offset(),
         win = $(window),
-        $this = this,
-        stickyNS = 'scroll.' + this.id;
+        $this = this;
 
         this.stickyContainer = $('<div class="ui-treetable ui-treetable-sticky ui-widget"><table></table></div>');
         this.clone = this.thead.clone(false);
@@ -394,7 +393,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             this.relativeHeight = 0;
         }
 
-        win.off(stickyNS).on(stickyNS, function() {
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id, function() {
             var scrollTop = win.scrollTop(),
             tableOffset = table.offset();
 
@@ -1035,7 +1034,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         this.restoreScrollState();
 
         this.updateVerticalScroll();
-        
+
         this.scrollBody.scroll(function() {
             var scrollLeft = $this.scrollBody.scrollLeft();
             $this.scrollHeaderBox.css('margin-left', -scrollLeft);
@@ -1676,9 +1675,9 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             PrimeFaces.ajax.Request.handle(options);
         }
     },
-    
+
     updateVerticalScroll: function() {
-        if(this.cfg.scrollable && this.cfg.scrollHeight) {   
+        if(this.cfg.scrollable && this.cfg.scrollHeight) {
             if(this.bodyTable.outerHeight() < this.scrollBody.outerHeight()) {
                 this.scrollHeaderBox.css('margin-right', 0);
                 this.scrollFooterBox.css('margin-right', 0);

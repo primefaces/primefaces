@@ -20,7 +20,11 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
 
             if(this.cfg.toggleableHeader) {
                 this.header.on('click', function() {
-                    $this.toggle();
+                    if(!$this.isTitlebarClicked) { 
+                        $this.toggle();
+                    }
+                    
+                    $this.isTitlebarClicked = false;
                 });
             }
         }
@@ -46,7 +50,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
                 e.preventDefault();
             }
 
-            return false;
+            $this.isTitlebarClicked = true;
         });
     },
 

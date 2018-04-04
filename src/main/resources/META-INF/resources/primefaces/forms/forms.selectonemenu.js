@@ -778,22 +778,30 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
         else {
             var labelText = this.label.data('placeholder');
-            if (labelText == null) {
+            if (labelText == null || labelText == "") {
                 labelText = '&nbsp;';
             }
 
             if (value === '&nbsp;') {
                 if (labelText != '&nbsp;') {
                    this.label.text(labelText);
-                   this.label.addClass('ui-state-disabled');
                 } else {
                     this.label.html(labelText);
                 }
             }
             else {
                 this.label.removeClass('ui-state-disabled');
-                // prevent <select one> from being turned into <select></select>
-                if (displayedLabel.indexOf('</') !== -1 || displayedLabel.indexOf('/>') !== -1) {
+                
+                var option = null;
+                if(this.items) { 
+                    var selectedItem = this.items.filter('[data-label="' + value + '"]');
+                    option = this.options.eq(this.resolveItemIndex(selectedItem));
+                }
+                else {
+                    option = this.options.filter(':selected');
+                }
+
+                if (option && option.data('escape') == false) {
                     this.label.html(displayedLabel);
                 } else {
                     this.label.text(displayedLabel);

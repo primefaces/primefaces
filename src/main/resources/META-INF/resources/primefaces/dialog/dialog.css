@@ -1,4 +1,4 @@
-.ui-dialog { position: fixed; padding: 0; overflow: hidden; display:none; }
+.ui-dialog { position: fixed; padding: 0; overflow: hidden; display:none; max-height: 100vh; max-width: 100vw; }
 .ui-dialog.ui-dialog-absolute { position: absolute; }
 .ui-dialog.ui-overlay-hidden {display:block;}
 .ui-dialog .ui-dialog-titlebar { padding: .4em .4em .4em 1em; position: relative; border:0px; }

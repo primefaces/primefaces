@@ -62,11 +62,11 @@ public class WidgetBuilder {
     public WidgetBuilder init(String widgetClass, String widgetVar, String id) throws IOException {
         this.renderScriptBlock(id);
         
-        // since jQuery 3 document ready ($(function() {})) are executed async
-        // this would mean that our oncomplete handlers are probably called before the scripts in the update nodes
+        // AJAX case: since jQuery 3 document ready ($(function() {})) are executed async
+        //            this would mean that our oncomplete handlers are probably called before the scripts in the update nodes
         // or
         // we can also skip it when MOVE_SCRIPTS_TO_BOTTOM is enabled as the scripts are already executed when everything is ready
-        if (context.isPostback() || configuration.isMoveScriptsToBottom()) {
+        if ((context.isPostback() && context.getPartialViewContext().isAjaxRequest()) || configuration.isMoveScriptsToBottom()) {
             this.init(widgetClass, widgetVar, id, false);
         }
         else {
