@@ -166,6 +166,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.targetZindex = this.targetElement.zIndex();
 
         this.align(target);
+        this.fitViewPort();
 
         //replace visibility hidden with display none for effect support, toggle marker class
         this.jq.removeClass('ui-overlay-hidden').addClass('ui-overlay-visible').css({
@@ -185,6 +186,25 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         if(this.cfg.modal) {
             this.enableModality();
+        }
+    },
+
+    fitViewPort: function() {
+        var windowHeight = $(window).height();
+        var windowWidth = $(window).width();
+        var overlayInnerContent = this.jq.find('.ui-overlaypanel-content');
+        var innerContentHeight = overlayInnerContent.height();
+        var innerContentWidth = overlayInnerContent.width();
+        var overlayHeight = this.jq.height();
+        var overlayWidth = this.jq.width();
+        var heightOffset = overlayHeight - innerContentHeight;
+        var widthOffset = overlayWidth - innerContentWidth;
+
+        if (windowHeight < overlayHeight) {
+            this.jq.css('max-height', windowHeight - heightOffset + 'px');
+        }
+        if (windowWidth < overlayWidth) {
+            this.jq.css('max-width', windowWidth - widthOffset + 'px');
         }
     },
 
