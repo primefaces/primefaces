@@ -16,7 +16,6 @@
 package org.primefaces.component.export;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.*;
 
@@ -41,24 +40,34 @@ public class CSVExporter extends Exporter {
         
         ExternalContext externalContext = context.getExternalContext();
         configureResponse(externalContext, filename, encodingType);
-        Writer writer = externalContext.getResponseOutputWriter();
+        StringBuilder builder = new StringBuilder();
 
-        addColumnFacets(writer, table, ColumnType.HEADER);
+        if (preProcessor != null) {
+            preProcessor.invoke(context.getELContext(), new Object[]{builder});
+        }
+
+        addColumnFacets(builder, table, ColumnType.HEADER);
 
         if (pageOnly) {
-            exportPageOnly(context, table, writer);
+            exportPageOnly(context, table, builder);
         }
         else if (selectionOnly) {
-            exportSelectionOnly(context, table, writer);
+            exportSelectionOnly(context, table, builder);
         }
         else {
-            exportAll(context, table, writer);
+            exportAll(context, table, builder);
         }
 
         if (table.hasFooterColumn()) {
-            addColumnFacets(writer, table, ColumnType.FOOTER);
+            addColumnFacets(builder, table, ColumnType.FOOTER);
         }
 
+        if (postProcessor != null) {
+            postProcessor.invoke(context.getELContext(), new Object[]{builder});
+        }
+
+        Writer writer = externalContext.getResponseOutputWriter();
+        writer.write(builder.toString());
         writer.flush();
         writer.close();
     }
@@ -75,7 +84,7 @@ public class CSVExporter extends Exporter {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    protected void addColumnFacets(Writer writer, DataTable table, ColumnType columnType) throws IOException {
+    protected void addColumnFacets(StringBuilder builder, DataTable table, ColumnType columnType) throws IOException {
         boolean firstCellWritten = false;
 
         for (UIColumn col : table.getColumns()) {
@@ -85,12 +94,12 @@ public class CSVExporter extends Exporter {
 
             if (col.isRendered() && col.isExportable()) {
                 if (firstCellWritten) {
-                    writer.write(",");
+                    builder.append(",");
                 }
 
                 UIComponent facet = col.getFacet(columnType.facet());
                 if (facet != null) {
-                    addColumnValue(writer, facet);
+                    addColumnValue(builder, facet);
                 }
                 else {
                     String textValue;
@@ -108,7 +117,7 @@ public class CSVExporter extends Exporter {
                             break;
                     }
 
-                    addColumnValue(writer, textValue);
+                    addColumnValue(builder, textValue);
 
                 }
 
@@ -116,12 +125,12 @@ public class CSVExporter extends Exporter {
             }
         }
 
-        writer.write("\n");
+        builder.append("\n");
     }
 
     @Override
     protected void exportCells(DataTable table, Object document) {
-        PrintWriter writer = (PrintWriter) document;
+        StringBuilder builder = (StringBuilder) document;
         boolean firstCellWritten = false;
 
         for (UIColumn col : table.getColumns()) {
@@ -131,11 +140,11 @@ public class CSVExporter extends Exporter {
 
             if (col.isRendered() && col.isExportable()) {
                 if (firstCellWritten) {
-                    writer.write(",");
+                    builder.append(",");
                 }
 
                 try {
-                    addColumnValue(writer, col.getChildren(), col);
+                    addColumnValue(builder, col.getChildren(), col);
                 }
                 catch (IOException ex) {
                     throw new FacesException(ex);
@@ -155,40 +164,40 @@ public class CSVExporter extends Exporter {
         externalContext.addResponseCookie(Constants.DOWNLOAD_COOKIE, "true", Collections.<String, Object>emptyMap());
     }
 
-    protected void addColumnValues(Writer writer, List<UIColumn> columns) throws IOException {
+    protected void addColumnValues(StringBuilder builder, List<UIColumn> columns) throws IOException {
         for (Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
             UIColumn col = iterator.next();
-            addColumnValue(writer, col.getChildren(), col);
+            addColumnValue(builder, col.getChildren(), col);
 
             if (iterator.hasNext()) {
-                writer.write(",");
+                builder.append(",");
             }
         }
     }
 
-    protected void addColumnValue(Writer writer, UIComponent component) throws IOException {
+    protected void addColumnValue(StringBuilder builder, UIComponent component) throws IOException {
         String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
 
-        addColumnValue(writer, value);
+        addColumnValue(builder, value);
     }
 
-    protected void addColumnValue(Writer writer, String value) throws IOException {
+    protected void addColumnValue(StringBuilder builder, String value) throws IOException {
         value = (value == null) ? "" : value.replaceAll("\"", "\"\"");
 
-        writer.write("\"" + value + "\"");
+        builder.append("\"" + value + "\"");
     }
 
-    protected void addColumnValue(Writer writer, List<UIComponent> components, UIColumn column) throws IOException {
+    protected void addColumnValue(StringBuilder builder, List<UIComponent> components, UIColumn column) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        writer.write("\"");
+        builder.append("\"");
 
         if (column.getExportFunction() != null) {
             String value = exportColumnByFunction(context, column);
             //escape double quotes
             value = value == null ? "" : value.replaceAll("\"", "\"\"");
 
-            writer.write(value);
+            builder.append(value);
         }
         else {
             for (UIComponent component : components) {
@@ -198,16 +207,16 @@ public class CSVExporter extends Exporter {
                     //escape double quotes
                     value = value == null ? "" : value.replaceAll("\"", "\"\"");
 
-                    writer.write(value);
+                    builder.append(value);
                 }
             }
         }
 
-        writer.write("\"");
+        builder.append("\"");
     }
 
     @Override
     protected void postRowExport(DataTable table, Object document) {
-        ((PrintWriter) document).write("\n");
+        ((StringBuilder) document).append("\n");
     }
 }
