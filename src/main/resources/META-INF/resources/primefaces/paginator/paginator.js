@@ -220,10 +220,13 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
 
         //jump to page dropdown
         if(this.jtpSelect.length > 0) {
-            this.jtpSelect.children().remove();
+            if(this.jtpSelect[0].options.length != this.cfg.pageCount){
+                var jtpOptions = '';
+                for(var i = 0; i < this.cfg.pageCount; i++) {
+                    jtpOptions += '<option value="' + i + '">' + (i + 1) + '</option>';
+                }
 
-            for(var i=0; i < this.cfg.pageCount; i++) {
-                this.jtpSelect.append("<option value=" + i + ">" + (i + 1) + "</option>");
+                this.jtpSelect.html(jtpOptions);
             }
             this.jtpSelect.children('option[value=' + (this.cfg.page) + ']').prop('selected','selected');
         }
