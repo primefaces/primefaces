@@ -133,7 +133,6 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.jq, function() {
             $this.align();
-            $this.fitViewPort();
         });
     },
 
@@ -167,7 +166,6 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.targetZindex = this.targetElement.zIndex();
 
         this.align(target);
-        this.fitViewPort();
 
         //replace visibility hidden with display none for effect support, toggle marker class
         this.jq.removeClass('ui-overlay-hidden').addClass('ui-overlay-visible').css({
@@ -190,12 +188,6 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         }
     },
 
-    fitViewPort: function() {
-        var innerContentWidth = this.jq.find('.ui-overlaypanel-content').width();
-        var widthOffset = this.jq.width() - innerContentWidth;
-        this.jq.css('max-width', $(window).width() - widthOffset + 'px');
-    },
-
     align: function(target) {
         var fixedPosition = this.jq.css('position') == 'fixed',
         win = $(window),
@@ -209,6 +201,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                     ,of: document.getElementById(targetId)
                     ,offset: positionOffset
                 });
+
+        var widthOffset = this.jq.width() - this.content.width();
+        this.jq.css('max-width', $(window).width() - widthOffset + 'px');
     },
 
     hide: function() {
