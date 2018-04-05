@@ -448,11 +448,11 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
     },
 
     disableButton: function(btn) {
-        btn.prop('disabled', true).addClass('ui-state-disabled').removeClass('ui-state-hover ui-state-active ui-state-focus');
+        btn.prop('disabled', true).attr('aria-disabled', true).addClass('ui-state-disabled').removeClass('ui-state-hover ui-state-active ui-state-focus');
     },
 
     enableButton: function(btn) {
-        btn.prop('disabled', false).removeClass('ui-state-disabled');
+        btn.prop('disabled', false).attr('aria-disabled', false).removeClass('ui-state-disabled');
     }
 });
 
