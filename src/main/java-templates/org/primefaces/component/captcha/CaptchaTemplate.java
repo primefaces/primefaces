@@ -56,7 +56,7 @@ import org.primefaces.json.JSONObject;
             } finally {
             	// the captcha token is valid for only one request, in case of an ajax request we have to get a new one
 	        if(context.getPartialViewContext().isAjaxRequest()) {
-	            PrimeFaces.current().executeScript("try { grecaptcha.reset() } catch (error) { PrimeFaces.info('Could not reset grecaptcha, that is OK if there is no reCaptcha on the page.'); PrimeFaces.debug(error); }");
+	            PrimeFaces.current().executeScript("if (document.getElementById("g-recaptcha-response")) { try { grecaptcha.reset() } catch (error) { PrimeFaces.error(error); } }");
 	        }
 	    }
 
