@@ -33,6 +33,13 @@ public class InputMaskTest {
 		Assert.assertTrue(pattern.matcher("(012) 345-6789").matches());
 	}
 	
-	
+	@Test
+	public void issue3566() {
+		InputMask inputMask = new InputMask();
+		inputMask.setMask("a*9");
+		Pattern pattern = new InputMaskRenderer().translateMaskIntoRegex(inputMask);
+		Assert.assertEquals("[A-Za-z][A-Za-z0-9][0-9]", pattern.pattern());
+		Assert.assertTrue(pattern.matcher("aX3").matches());
+	}
 	
 }
