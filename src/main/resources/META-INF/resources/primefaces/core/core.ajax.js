@@ -458,10 +458,10 @@ if (!PrimeFaces.ajax) {
                  * if partial submit is enabled and there are components to process partially
                  */
                 if(cfg.partialSubmit && processIds.indexOf('@all') === -1) {
-                    var formProcessed = false,
-                    partialSubmitFilter = cfg.partialSubmitFilter||':input';
+                    var formProcessed = false;
 
-                    if(processIds.indexOf('@none') === -1) {
+                    if (processIds.indexOf('@none') === -1) {
+                        var partialSubmitFilter = cfg.partialSubmitFilter||':input';
                         for (var i = 0; i < processArray.length; i++) {
                             var jqProcess = $(PrimeFaces.escapeClientId(processArray[i]));
                             var componentPostParams = null;
@@ -477,7 +477,13 @@ if (!PrimeFaces.ajax) {
                                 componentPostParams = jqProcess.find(partialSubmitFilter).serializeArray();
                             }
 
-                            $.merge(postParams, componentPostParams);
+                            if (cfg.ext.partialSubmitParameterFilter) {
+                                var filteredParams = cfg.ext.partialSubmitParameterFilter.call(this, componentPostParams);
+                                $.merge(postParams, filteredParams);
+                            }
+                            else {
+                                $.merge(postParams, componentPostParams);
+                            }
                         }
                     }
 
