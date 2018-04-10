@@ -69,36 +69,26 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private boolean escape = true;
     private String rel;
 
-    public DefaultMenuItem() {
+    private DefaultMenuItem() {
+        // NOOP
     }
 
-    public DefaultMenuItem(Object value) {
-        this.value = value;
-    }
-
-    public DefaultMenuItem(Object value, String icon) {
-        this.value = value;
-        this.icon = icon;
-    }
-
-    public DefaultMenuItem(Object value, String icon, String url) {
-        this.value = value;
-        this.icon = icon;
-        this.url = url;
-    }
-
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }
 
+    @Override
     public String getIcon() {
         return icon;
     }
 
+    @Override
     public String getIconPos() {
         return iconPos;
     }
@@ -111,6 +101,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.icon = icon;
     }
 
+    @Override
     public String getTitle() {
         return title;
     }
@@ -119,6 +110,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.title = title;
     }
 
+    @Override
     public boolean isDisabled() {
         return disabled;
     }
@@ -127,6 +119,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.disabled = disabled;
     }
 
+    @Override
     public String getOnclick() {
         return onclick;
     }
@@ -135,6 +128,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.onclick = onclick;
     }
 
+    @Override
     public String getStyle() {
         return style;
     }
@@ -143,22 +137,26 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.style = style;
     }
 
+    @Override
     public String getStyleClass() {
         return styleClass;
     }
 
+    @Override
     public void setStyleClass(String styleClass) {
         this.styleClass = styleClass;
     }
 
+    @Override
     public String getHref() {
         return url;
     }
 
     public void setHref(String href) {
-        this.url = href;
+        url = href;
     }
 
+    @Override
     public String getUrl() {
         return url;
     }
@@ -167,6 +165,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.url = url;
     }
 
+    @Override
     public String getTarget() {
         return target;
     }
@@ -175,6 +174,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.target = target;
     }
 
+    @Override
     public String getOutcome() {
         return outcome;
     }
@@ -183,6 +183,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.outcome = outcome;
     }
 
+    @Override
     public boolean isAjax() {
         return ajax;
     }
@@ -191,6 +192,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.ajax = ajax;
     }
 
+    @Override
     public Object getValue() {
         return value;
     }
@@ -199,6 +201,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.value = value;
     }
 
+    @Override
     public boolean isIncludeViewParams() {
         return includeViewParams;
     }
@@ -207,6 +210,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.includeViewParams = includeViewParams;
     }
 
+    @Override
     public String getFragment() {
         return fragment;
     }
@@ -215,6 +219,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.fragment = fragment;
     }
 
+    @Override
     public Map<String, List<String>> getParams() {
         return params;
     }
@@ -223,6 +228,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.params = params;
     }
 
+    @Override
     public void setParam(String key, Object value) {
         if (value == null) {
             throw new IllegalArgumentException("value cannot be null");
@@ -239,18 +245,22 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         params.get(key).add(value.toString());
     }
 
+    @Override
     public boolean shouldRenderChildren() {
         return false;
     }
 
+    @Override
     public List<UIComponent> getChildren() {
         return null;
     }
 
+    @Override
     public boolean isDynamic() {
         return true;
     }
 
+    @Override
     public String getCommand() {
         return command;
     }
@@ -259,6 +269,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.command = command;
     }
 
+    @Override
     public boolean isRendered() {
         return rendered;
     }
@@ -267,6 +278,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.rendered = rendered;
     }
 
+    @Override
     public String getOnstart() {
         return onstart;
     }
@@ -275,6 +287,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.onstart = onstart;
     }
 
+    @Override
     public String getOnerror() {
         return onerror;
     }
@@ -283,6 +296,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.onerror = onerror;
     }
 
+    @Override
     public String getOnsuccess() {
         return onsuccess;
     }
@@ -291,6 +305,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.onsuccess = onsuccess;
     }
 
+    @Override
     public String getOncomplete() {
         return oncomplete;
     }
@@ -299,6 +314,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.oncomplete = oncomplete;
     }
 
+    @Override
     public String getUpdate() {
         return update;
     }
@@ -307,6 +323,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.update = update;
     }
 
+    @Override
     public String getProcess() {
         return process;
     }
@@ -315,24 +332,27 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.process = process;
     }
 
+    @Override
     public boolean isPartialSubmit() {
         return partialSubmit;
     }
 
     public void setPartialSubmit(boolean partialSubmit) {
         this.partialSubmit = partialSubmit;
-        this.partialSubmitSet = true;
+        partialSubmitSet = true;
     }
 
+    @Override
     public boolean isResetValues() {
         return resetValues;
     }
 
     public void setResetValues(boolean resetValues) {
         this.resetValues = resetValues;
-        this.resetValuesSet = true;
+        resetValuesSet = true;
     }
 
+    @Override
     public boolean isGlobal() {
         return global;
     }
@@ -341,6 +361,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.global = global;
     }
 
+    @Override
     public boolean isAsync() {
         return async;
     }
@@ -349,14 +370,17 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.async = async;
     }
 
+    @Override
     public boolean isPartialSubmitSet() {
         return partialSubmitSet;
     }
 
+    @Override
     public boolean isResetValuesSet() {
         return resetValuesSet;
     }
 
+    @Override
     public boolean isIgnoreAutoUpdate() {
         return ignoreAutoUpdate;
     }
@@ -365,6 +389,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.ignoreAutoUpdate = ignoreAutoUpdate;
     }
 
+    @Override
     public boolean isImmediate() {
         return immediate;
     }
@@ -373,10 +398,12 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.immediate = immediate;
     }
 
+    @Override
     public boolean isAjaxified() {
         return getUrl() == null && isAjax();
     }
 
+    @Override
     public String getDelay() {
         return delay;
     }
@@ -385,6 +412,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.delay = delay;
     }
 
+    @Override
     public boolean isDisableClientWindow() {
         return disableClientWindow;
     }
@@ -393,6 +421,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.disableClientWindow = disableClientWindow;
     }
 
+    @Override
     public String getContainerStyle() {
         return containerStyle;
     }
@@ -401,6 +430,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.containerStyle = containerStyle;
     }
 
+    @Override
     public String getContainerStyleClass() {
         return containerStyleClass;
     }
@@ -409,10 +439,12 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.containerStyleClass = containerStyleClass;
     }
 
+    @Override
     public String getClientId() {
-        return this.id;
+        return id;
     }
 
+    @Override
     public int getTimeout() {
         return timeout;
     }
@@ -421,6 +453,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.timeout = timeout;
     }
 
+    @Override
     public String getPartialSubmitFilter() {
         return partialSubmitFilter;
     }
@@ -429,6 +462,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.partialSubmitFilter = partialSubmitFilter;
     }
 
+    @Override
     public String getForm() {
         return form;
     }
@@ -437,18 +471,22 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.form = form;
     }
 
+    @Override
     public String getConfirmationScript() {
-        return this.confirmationScript;
+        return confirmationScript;
     }
 
+    @Override
     public void setConfirmationScript(String confirmationScript) {
         this.confirmationScript = confirmationScript;
     }
 
+    @Override
     public boolean requiresConfirmation() {
-        return this.confirmationScript != null;
+        return confirmationScript != null;
     }
 
+    @Override
     public boolean isEscape() {
         return escape;
     }
@@ -457,6 +495,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.escape = escape;
     }
 
+    @Override
     public String getRel() {
         return rel;
     }
@@ -465,4 +504,224 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.rel = rel;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private DefaultMenuItem defaultMenuItem;
+
+        private Builder() {
+            defaultMenuItem = new DefaultMenuItem();
+        }
+
+        public Builder withId(String id) {
+            defaultMenuItem.setId(id);
+            return this;
+        }
+
+        public Builder withIcon(String icon) {
+            defaultMenuItem.setIcon(icon);
+            return this;
+        }
+
+        public Builder withIconPos(String iconPos) {
+            defaultMenuItem.setIconPos(iconPos);
+            return this;
+        }
+
+        public Builder withTitle(String title) {
+            defaultMenuItem.setTitle(title);
+            return this;
+        }
+
+        public Builder withDisabled(boolean disabled) {
+            defaultMenuItem.setDisabled(disabled);
+            return this;
+        }
+
+        public Builder withOnclick(String onclick) {
+            defaultMenuItem.setOnclick(onclick);
+            return this;
+        }
+
+        public Builder withStyle(String style) {
+            defaultMenuItem.setStyle(style);
+            return this;
+        }
+
+        public Builder withStyleClass(String styleClass) {
+            defaultMenuItem.setStyleClass(styleClass);
+            return this;
+        }
+
+        public Builder withUrl(String url) {
+            defaultMenuItem.setUrl(url);
+            return this;
+        }
+
+        public Builder withTarget(String target) {
+            defaultMenuItem.setTarget(target);
+            return this;
+        }
+
+        public Builder withAjax(boolean ajax) {
+            defaultMenuItem.setAjax(ajax);
+            return this;
+        }
+
+        public Builder withValue(Object value) {
+            defaultMenuItem.setValue(value);
+            return this;
+        }
+
+        public Builder withOutcome(String outcome) {
+            defaultMenuItem.setOutcome(outcome);
+            return this;
+        }
+
+        public Builder withIncludeViewParams(boolean includeViewParams) {
+            defaultMenuItem.setIncludeViewParams(includeViewParams);
+            return this;
+        }
+
+        public Builder withFragment(String fragment) {
+            defaultMenuItem.setFragment(fragment);
+            return this;
+        }
+
+        public Builder withParam(String key, Object value) {
+            defaultMenuItem.setParam(key, value);
+            return this;
+        }
+
+        public Builder withParams(Map<String, List<String>> params) {
+            defaultMenuItem.setParams(params);
+            return this;
+        }
+
+        public Builder withCommand(String command) {
+            defaultMenuItem.setCommand(command);
+            return this;
+        }
+
+        public Builder withRendered(boolean rendered) {
+            defaultMenuItem.setRendered(rendered);
+            return this;
+        }
+
+        public Builder withOnstart(String onstart) {
+            defaultMenuItem.setOnstart(onstart);
+            return this;
+        }
+
+        public Builder withOnerror(String onerror) {
+            defaultMenuItem.setOnerror(onerror);
+            return this;
+        }
+
+        public Builder withOnsuccess(String onsuccess) {
+            defaultMenuItem.setOnsuccess(onsuccess);
+            return this;
+        }
+
+        public Builder withOncomplete(String oncomplete) {
+            defaultMenuItem.setOncomplete(oncomplete);
+            return this;
+        }
+
+        public Builder withUpdate(String update) {
+            defaultMenuItem.setUpdate(update);
+            return this;
+        }
+
+        public Builder withProcess(String process) {
+            defaultMenuItem.setProcess(process);
+            return this;
+        }
+
+        public Builder withPartialSubmit(boolean partialSubmit) {
+            defaultMenuItem.setPartialSubmit(partialSubmit);
+            return this;
+        }
+
+        public Builder withGlobal(boolean global) {
+            defaultMenuItem.setGlobal(global);
+            return this;
+        }
+
+        public Builder withAsync(boolean async) {
+            defaultMenuItem.setAsync(async);
+            return this;
+        }
+
+        public Builder withResetValues(boolean resetValues) {
+            defaultMenuItem.setResetValues(resetValues);
+            return this;
+        }
+
+        public Builder withIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
+            defaultMenuItem.setIgnoreAutoUpdate(ignoreAutoUpdate);
+            return this;
+        }
+
+        public Builder withImmediate(boolean immediate) {
+            defaultMenuItem.setImmediate(immediate);
+            return this;
+        }
+
+        public Builder withDelay(String delay) {
+            defaultMenuItem.setDelay(delay);
+            return this;
+        }
+
+        public Builder withTimeout(int timeout) {
+            defaultMenuItem.setTimeout(timeout);
+            return this;
+        }
+
+        public Builder withDisableClientWindow(boolean disableClientWindow) {
+            defaultMenuItem.setDisableClientWindow(disableClientWindow);
+            return this;
+        }
+
+        public Builder withContainerStyle(String containerStyle) {
+            defaultMenuItem.setContainerStyle(containerStyle);
+            return this;
+        }
+
+        public Builder withContainerStyleClass(String containerStyleClass) {
+            defaultMenuItem.setContainerStyleClass(containerStyleClass);
+            return this;
+        }
+
+        public Builder withPartialSubmitFilter(String partialSubmitFilter) {
+            defaultMenuItem.setPartialSubmitFilter(partialSubmitFilter);
+            return this;
+        }
+
+        public Builder withConfirmationScript(String confirmationScript) {
+            defaultMenuItem.setConfirmationScript(confirmationScript);
+            return this;
+        }
+
+        public Builder withForm(String form) {
+            defaultMenuItem.setForm(form);
+            return this;
+        }
+
+        public Builder withEscape(boolean escape) {
+            defaultMenuItem.setEscape(escape);
+            return this;
+        }
+
+        public Builder withRel(String rel) {
+            defaultMenuItem.setRel(rel);
+            return this;
+        }
+
+        public DefaultMenuItem build() {
+            return defaultMenuItem;
+        }
+    }
 }
