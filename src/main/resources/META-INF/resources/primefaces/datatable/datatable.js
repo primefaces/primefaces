@@ -2697,32 +2697,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             params: [{name: this.id + '_rowEditIndex', value: this.getRowMeta(row).index},
                      {name: this.id + '_rowEditAction', value: action},
                      {name: this.id + '_encodeFeature', value: true}],
-            partialSubmitParameterFilter: function(params) {
-
-                var filteredParams = $.grep(params, function(param) {
-
-                    // check if current params is a part of this datatable
-                    if (param.name.length > $this.id.length + 1 && param.name.indexOf($this.id) != -1) {
-
-                        // get the suffix after the datatable id and check if it's a row (must contain a :)
-                        var idSuffix = param.name.substring($this.id.length + 1, param.name.length);
-                        if (idSuffix.indexOf(':') != -1 && idSuffix.length > 1) {
-
-                            // try to parse the possible rowIndex
-                            var currentRowIndex = parseInt(idSuffix.substring(0, idSuffix.indexOf(':')));
-
-                            // skip all rows, just ignore the current edited row
-                            if (currentRowIndex != rowIndex) {
-                                return false;
-                            }
-                        }
-                    }
-
-                    return true;
-                });
-
-                return filteredParams;
-            },
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                         widget: $this,
