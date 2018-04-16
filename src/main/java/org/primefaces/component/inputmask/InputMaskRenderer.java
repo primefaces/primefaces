@@ -35,7 +35,7 @@ public class InputMaskRenderer extends InputRenderer {
 
     private final static String REGEX_METACHARS = "<([{\\^-=$!|]})?*+.>".replaceAll(".", "\\\\$0");
     private final static Pattern REGEX_METACHARS_PATTERN = Pattern.compile("[" + REGEX_METACHARS + "]");
-    
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         InputMask inputMask = (InputMask) component;
@@ -50,11 +50,11 @@ public class InputMaskRenderer extends InputRenderer {
         String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if (submittedValue != null) {
-            
+
             if (!translateMaskIntoRegex(inputMask).matcher(submittedValue).matches()) {
                 submittedValue = null;
             }
-            
+
             inputMask.setSubmittedValue(submittedValue);
         }
     }
@@ -66,19 +66,19 @@ public class InputMaskRenderer extends InputRenderer {
     // ? - Makes the following input optional
     protected Pattern translateMaskIntoRegex(InputMask inputMask) {
         String mask = inputMask.getMask();
-        
+
         // Escape regex metacharacters first
         String regex = REGEX_METACHARS_PATTERN.matcher(mask).replaceAll("\\\\$0");
-        
-        regex = regex.replace("a", "[A-Za-z]").replace("9", "[0-9]").replace("*", "[A-Za-z0-9]");
+
+        regex = regex.replace("a", "[A-Za-z]").replace("9", "[0-9]").replace("\\*", "[A-Za-z0-9]");
         int optionalPos = regex.indexOf("\\?");
         if (optionalPos != -1) {
             regex = regex.substring(0, optionalPos) + "(" + regex.substring(optionalPos + 2) + ")?";
         }
-        
+
         return Pattern.compile(regex);
     }
-    
+
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         InputMask inputMask = (InputMask) component;
