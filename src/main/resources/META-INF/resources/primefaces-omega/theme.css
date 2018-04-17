@@ -764,16 +764,20 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
    border: 1px solid #156090; background: #186ba0; color: #FFFFFF;
 }
 
-.ui-selectbooleanbutton.ui-button.ui-state-default .ui-icon {
+.ui-selectbooleanbutton.ui-button.ui-state-default .ui-icon,
+.ui-dataview .ui-dataview-layout-options .ui-button .ui-icon {
     background-image: url("#{resource['primefaces-omega:images/ui-icons_454545_256x240.png']}");
 }
 
 .ui-selectbooleanbutton.ui-button.ui-state-hover.ui-icon,
-.ui-selectbooleanbutton.ui-button.ui-state-focus .ui-icon {
+.ui-selectbooleanbutton.ui-button.ui-state-focus .ui-icon,
+.ui-dataview .ui-dataview-layout-options .ui-button.ui-state-hover .ui-icon,
+.ui-dataview .ui-dataview-layout-options .ui-button.ui-state-focus .ui-icon {
     background-image: url("#{resource['primefaces-omega:images/ui-icons_454545_256x240.png']}");
 }
 
-.ui-selectbooleanbutton.ui-button.ui-state-active .ui-icon {
+.ui-selectbooleanbutton.ui-button.ui-state-active .ui-icon,
+.ui-dataview .ui-dataview-layout-options .ui-button.ui-state-active .ui-icon {
     background-image: url("#{resource['primefaces-omega:images/ui-icons_ffffff_256x240.png']}");
 }
 
