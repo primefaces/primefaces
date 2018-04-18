@@ -15,12 +15,7 @@
  */
 package org.primefaces.renderkit;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.RandomAccess;
+import org.primefaces.util.ArrayUtils;
 
 import javax.el.ELException;
 import javax.el.ExpressionFactory;
@@ -37,8 +32,12 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.RandomAccess;
 
 public class SelectRenderer extends InputRenderer {
 
@@ -300,21 +299,19 @@ public class SelectRenderer extends InputRenderer {
             throws FacesException {
         List<String> restoredSubmittedValues = new ArrayList<String>();
         String msg = "Disabled select item has been submitted";
-        List<Object> oldVals = oldValues == null ? Collections.emptyList() : Arrays.asList(oldValues);
-        List<String> newSubmittedValsStr = newSubmittedValues == null ? Collections.<String>emptyList() : Arrays.asList(newSubmittedValues);
         for (SelectItem selectItem : getSelectItems(context, component)) {
             String selectItemValStr = getOptionAsString(context, component, component.getConverter(), selectItem.getValue());
             if (selectItem.isDisabled()) {
-                if (newSubmittedValsStr.contains(selectItemValStr) && !oldVals.contains(selectItemValStr)) {
+                if (ArrayUtils.contains(newSubmittedValues, selectItemValStr) && !ArrayUtils.contains(oldValues, selectItemValStr)) {
                     // disabled select item has been selected
                     throw new FacesException(msg);
                 }
-                if (oldVals.contains(selectItemValStr)) {
+                if (ArrayUtils.contains(oldValues, selectItemValStr)) {
                     restoredSubmittedValues.add(selectItemValStr);
                 }
             } 
             else {
-                if (newSubmittedValsStr.contains(selectItemValStr)) {
+                if (ArrayUtils.contains(newSubmittedValues, selectItemValStr)) {
                     restoredSubmittedValues.add(selectItemValStr);
                 }
             }
