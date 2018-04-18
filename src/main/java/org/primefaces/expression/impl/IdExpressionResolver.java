@@ -31,8 +31,7 @@ public class IdExpressionResolver implements SearchExpressionResolver, MultiSear
 
     @Override
     public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
-        throw new FacesException("@id likely returns multiple components, therefore it's not supported in #resolveComponent... expression \"" + expression
-                + "\" referenced from \"" + source.getClientId(context) + "\".");
+        return ComponentTraversalUtils.firstWithId(extractId(expression), last);
     }
 
     @Override
