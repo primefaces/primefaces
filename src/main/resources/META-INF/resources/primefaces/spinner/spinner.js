@@ -175,7 +175,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
         var value = this.input.val();
 
         if($.trim(value) === '') {
-            if(this.cfg.min !== undefined)
+            if(this.cfg.min !== undefined && this.cfg.required)
                 this.value = this.cfg.min;
             else
                 this.value = null;
