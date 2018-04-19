@@ -166,7 +166,7 @@ public abstract class CoreRenderer extends Renderer {
                 if (hasEventBehaviors) {
                     String clientId = ((UIComponent) component).getClientId(context);
                     
-                    List<ClientBehaviorContext.Parameter> params = new ArrayList<ClientBehaviorContext.Parameter>();
+                    List<ClientBehaviorContext.Parameter> params = new ArrayList<>();
                     params.add(new ClientBehaviorContext.Parameter(
                             Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.OBSTRUSIVE));
                     
@@ -443,7 +443,7 @@ public abstract class CoreRenderer extends Renderer {
     protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, boolean submit) {
         StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
         String formId = form.getClientId(context);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
 
         if (decodeParam != null) {
             params.put(decodeParam, decodeParam);
@@ -505,7 +505,7 @@ public abstract class CoreRenderer extends Renderer {
             Collection<String> eventNames = (component instanceof MixedClientBehaviorHolder)
                     ? ((MixedClientBehaviorHolder) component).getUnobstrusiveEventNames() : clientBehaviors.keySet();
             String clientId = ((UIComponent) component).getClientId(context);
-            List<ClientBehaviorContext.Parameter> params = new ArrayList<ClientBehaviorContext.Parameter>();
+            List<ClientBehaviorContext.Parameter> params = new ArrayList<>();
             params.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
 
             writer.write(",behaviors:{");
@@ -709,7 +709,7 @@ public abstract class CoreRenderer extends Renderer {
                 }
                 if (beanValidationMetadata.getValidatorIds() != null) {
                     if (validatorIds == null) {
-                        validatorIds = new ArrayList<String>();
+                        validatorIds = new ArrayList<>();
                     }
                     validatorIds.addAll(beanValidationMetadata.getValidatorIds());
                 }
@@ -728,7 +728,7 @@ public abstract class CoreRenderer extends Renderer {
                 if (validator instanceof ClientValidator) {
                     ClientValidator clientValidator = (ClientValidator) validator;
                     if (validatorIds == null) {
-                        validatorIds = new ArrayList<String>();
+                        validatorIds = new ArrayList<>();
                     }
                     validatorIds.add(clientValidator.getValidatorId());
                     Map<String, Object> metadata = clientValidator.getMetadata();

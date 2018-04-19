@@ -76,7 +76,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         // note that we have to create a new List here, because if we
         // change any value on the given List, it will be changed in the
         // NavigationCase too and the EL expression won't be evaluated again
-        List<String> target = new ArrayList<String>(values.size());
+        List<String> target = new ArrayList<>(values.size());
         for (String value : values) {
             if (isExpression(value)) {
                 // evaluate the ValueExpression
@@ -121,15 +121,15 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             String toFlowDocumentId = navCase.getToFlowDocumentId();
             if (toFlowDocumentId != null) {
                 if (params == null) {
-                    params = new LinkedHashMap<String, List<String>>();
+                    params = new LinkedHashMap<>();
                 }
 
-                List<String> flowDocumentIdValues = new ArrayList<String>();
+                List<String> flowDocumentIdValues = new ArrayList<>();
                 flowDocumentIdValues.add(toFlowDocumentId);
                 params.put(FlowHandler.TO_FLOW_DOCUMENT_ID_REQUEST_PARAM_NAME, flowDocumentIdValues);
 
                 if (!FlowHandler.NULL_FLOW.equals(toFlowDocumentId)) {
-                    List<String> flowIdValues = new ArrayList<String>();
+                    List<String> flowIdValues = new ArrayList<>();
                     flowIdValues.add(navCase.getFromOutcome());
                     params.put(FlowHandler.FLOW_ID_REQUEST_PARAM_NAME, flowIdValues);
                 }
