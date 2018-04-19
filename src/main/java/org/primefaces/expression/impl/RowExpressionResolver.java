@@ -36,11 +36,13 @@ public class RowExpressionResolver implements SearchExpressionResolver, ClientId
 
     private static final Pattern PATTERN = Pattern.compile("@row\\((\\d+)\\)");
 
+    @Override
     public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
         throw new FacesException("@row likely returns multiple components, therefore it's not supported in #resolveComponent... expression \""
                 + expression + "\" referenced from \"" + source.getClientId(context) + "\".");
     }
 
+    @Override
     public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
 
         int row = validate(context, source, last, expression);
