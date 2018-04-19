@@ -42,7 +42,7 @@ import java.util.RandomAccess;
 public class SelectRenderer extends InputRenderer {
 
     protected List<SelectItem> getSelectItems(FacesContext context, UIInput component) {
-        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        List<SelectItem> selectItems = new ArrayList<>();
 
         for (int i = 0; i < component.getChildCount(); i++) {
             UIComponent child = component.getChildren().get(i);
@@ -297,14 +297,14 @@ public class SelectRenderer extends InputRenderer {
      */
     protected String[] restoreAndCheckDisabledSelectItems(FacesContext context, UIInput component, Object[] oldValues, String... newSubmittedValues) 
             throws FacesException {
-        List<String> restoredSubmittedValues = new ArrayList<String>();
-        String msg = "Disabled select item has been submitted";
+        
+        List<String> restoredSubmittedValues = new ArrayList<>();
         for (SelectItem selectItem : getSelectItems(context, component)) {
             String selectItemValStr = getOptionAsString(context, component, component.getConverter(), selectItem.getValue());
             if (selectItem.isDisabled()) {
                 if (ArrayUtils.contains(newSubmittedValues, selectItemValStr) && !ArrayUtils.contains(oldValues, selectItemValStr)) {
                     // disabled select item has been selected
-                    throw new FacesException(msg);
+                    throw new FacesException("Disabled select item has been submitted. ClientId: " + component.getClientId(context));
                 }
                 if (ArrayUtils.contains(oldValues, selectItemValStr)) {
                     restoredSubmittedValues.add(selectItemValStr);
