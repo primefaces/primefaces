@@ -109,7 +109,7 @@ public class DataGridRenderer extends DataRenderer {
                 emptyFacet.encodeAll(context);
             }
             else {
-                writer.write(grid.getEmptyMessage());
+                writer.writeText(grid.getEmptyMessage(), "emptyMessage");
             }
         }
         else {

@@ -108,7 +108,7 @@ public class CommandButtonRenderer extends CoreRenderer {
             //For ScreenReader
             String text = (title != null) ? title : "ui-button";
 
-            writer.write(text);
+            writer.writeText(text, "title");
         }
         else {
             if (button.isEscape()) {
