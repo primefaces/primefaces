@@ -207,10 +207,7 @@ public class SelectRenderer extends InputRenderer {
             ExpressionFactory ef = ctx.getApplication().getExpressionFactory();
             newValue = ef.coerceToType(value, itemValueType);
         }
-        catch (ELException ele) {
-            newValue = value;
-        }
-        catch (IllegalArgumentException iae) {
+        catch (ELException | IllegalArgumentException ele) {
             newValue = value;
         }
 
