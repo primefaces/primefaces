@@ -32,12 +32,11 @@ public abstract class SelectOneRenderer extends SelectRenderer {
 
         String clientId = getSubmitParam(context, selectOne);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        if (params.containsKey(clientId)) {
-            selectOne.setSubmittedValue(params.get(clientId));
-        }
-        else {
-            selectOne.setSubmittedValue("");
-        }
+
+        String submittedValue = params.containsKey(clientId) ? params.get(clientId) : "";
+        String[] submittedValues = restoreAndCheckDisabledSelectItems(context, selectOne, (Object[]) getValues(selectOne), submittedValue);
+        submittedValue = submittedValues.length == 0 ? submittedValue : submittedValues[0];
+        selectOne.setSubmittedValue(submittedValue);
 
         decodeBehaviors(context, selectOne);
     }

@@ -37,7 +37,7 @@ public abstract class InputRenderer extends CoreRenderer {
         }
     }
 
-    public static boolean shouldDecode(UIComponent component) {
+    protected boolean shouldDecode(UIComponent component) {
         boolean disabled = Boolean.parseBoolean(String.valueOf(component.getAttributes().get("disabled")));
         boolean readonly = Boolean.parseBoolean(String.valueOf(component.getAttributes().get("readonly")));
 
