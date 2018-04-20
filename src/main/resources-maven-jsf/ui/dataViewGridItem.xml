@@ -10,8 +10,8 @@
     <componentClass>org.primefaces.component.dataview.DataViewGridItem</componentClass>
     <componentType>org.primefaces.component.DataViewGridItem</componentType>
     <componentFamily>org.primefaces.component</componentFamily>
-    <parent>javax.faces.component.UIData</parent>
-    <description></description>
+    <parent>javax.faces.component.UIComponentBase</parent>
+    <description>dataViewGridItem is a helper component for DataView to add grid items.</description>
     <attributes>
         &standard_uicomponent_attributes;
         <attribute>

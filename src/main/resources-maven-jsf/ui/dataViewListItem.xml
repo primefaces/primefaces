@@ -10,8 +10,8 @@
     <componentClass>org.primefaces.component.dataview.DataViewListItem</componentClass>
     <componentType>org.primefaces.component.DataViewListItem</componentType>
     <componentFamily>org.primefaces.component</componentFamily>
-    <parent>javax.faces.component.UIData</parent>
-    <description></description>
+    <parent>javax.faces.component.UIComponentBase</parent>
+    <description>dataViewListItem is a helper component for DataView to add list items.</description>
     <attributes>
         &standard_uicomponent_attributes;
     </attributes>
