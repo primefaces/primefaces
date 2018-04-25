@@ -84,7 +84,9 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
     public static String NODE_LABEL_CLASS = "ui-treenode-label ui-corner-all";
     public static final String FILTER_CLASS = "ui-tree-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public static final String FILTER_CONTAINER = "ui-tree-filter-container";
-
+    public static final String SCROLLABLE_CONTAINER_CLASS = "ui-tree-scrollable";
+    public static final String SCROLLABLE_BODY_CLASS = "ui-tree-scrollable-body";
+    
     public Map<String,UITreeNode> getTreeNodes() {
         if (nodes == null) {
             nodes = new HashMap<String, UITreeNode>();
