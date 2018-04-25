@@ -244,3 +244,49 @@
 .ui-fluid .ui-tree {
     width: 100%;
 }
+
+/* Scroallable */
+.ui-tree-scrollable-body{
+    overflow: auto;
+}
+
+.ui-tree-scrollable .ui-tree-scrollable-ulclone li ul> * {
+    display: none;
+}
+
+.ui-tree .ui-tree-scrollable ul {
+    table-layout: fixed;
+}
+
+.ui-tree-scrollable-body::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 15px;
+    background-color: transparent;
+}
+
+.ui-tree-scrollable-body::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 1px solid white;
+    background-color: rgba(194,194,194,.5);
+}
+
+.ui-tree-scrollable-ulclone {
+    height: 0px;
+}
+.ui-tree-scrollable-ulclone ul {
+    height: 0px;
+}
+
+.ui-tree-scrollable-ulclone ul .ui-state-default{
+    height: 0px;
+    border-block-end-width: 0px;
+    border-top-width: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    outline: 0 none;
+}
+
+.ui-tree-scrollable-ulclone li span {
+    display: block;
+    height: 0px;
+} 

@@ -259,6 +259,37 @@
             <method-signature>java.lang.Boolean onDrop(org.primefaces.component.tree.TreeDragDropInfo)</method-signature>
             <description>Method providing suggestions.</description>
         </attribute>
+        <attribute>
+            <name>scrollable</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Makes data scrollable with fixed header. Default is false.</description>
+        </attribute>
+        <attribute>
+            <name>scrollHeight</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Height for scrollable data.</description>
+        </attribute>
+        <attribute>
+            <name>scrollWidth</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Width for scrollable data.</description>
+        </attribute>
+        <attribute>
+            <name>treeStyle</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Inline style of the tree element.</description>
+        </attribute>
+        <attribute>
+            <name>treeStyleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style class of the tree element.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
