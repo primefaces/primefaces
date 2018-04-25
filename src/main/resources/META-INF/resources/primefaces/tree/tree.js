@@ -572,7 +572,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                             break;
                         }
 
-                        var metaKey = e.metaKey||e.ctrlKey||e.shiftKey;
+                        var metaKey = e.metaKey||e.ctrlKey;
 
                         if(!metaKey) {
                             if($this.filterTimeout) {
