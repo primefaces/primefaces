@@ -413,7 +413,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         })
         .on("input", function() {
             // #89 IE clear "x" button
-            if (this.value == ""){
+            if ($this.value == ""){
                 $this.filter();
             }
         })
