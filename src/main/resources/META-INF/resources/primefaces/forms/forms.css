@@ -433,6 +433,14 @@ button.ui-button::-moz-focus-inner {
     border: 0; padding: 0; /* reset extra padding in Firefox */
 }
 
+.ui-linkbutton.ui-button.ui-state-default > a {
+    color: inherit;
+}
+
+.ui-linkbutton.ui-button.ui-state-hover > a {
+    color: inherit;
+}
+
 /** SelectCheckbox Menu **/
 .ui-selectcheckboxmenu {
     display: inline-block;
