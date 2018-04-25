@@ -794,7 +794,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 
                 var option = null;
                 if(this.items) { 
-                    var selectedItem = this.items.filter('[data-label="' + value + '"]');
+                    var selectedItem = this.items.filter('[data-label="' + $.escapeSelector(value) + '"]');
                     option = this.options.eq(this.resolveItemIndex(selectedItem));
                 }
                 else {
