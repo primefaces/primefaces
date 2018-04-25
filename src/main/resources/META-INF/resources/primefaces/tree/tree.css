@@ -244,3 +244,24 @@
 .ui-fluid .ui-tree {
     width: 100%;
 }
+
+/* Scroallable */
+.ui-tree-scrollable-body{
+    overflow: auto;
+}
+
+.ui-tree .ui-tree-scrollable ul {
+    table-layout: fixed;
+}
+
+.ui-tree-scrollable-body::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 15px;
+    background-color: transparent;
+}
+
+.ui-tree-scrollable-body::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 1px solid white;
+    background-color: rgba(194,194,194,.5);
+}
