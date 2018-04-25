@@ -19,6 +19,12 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    _render: function () {
+        if(this.cfg.scrollable){
+            this.setupScrolling();
+        }
+    },
+
     initSelection: function() {
         this.selectionHolder = $(this.jqId + '_selection');
         var selectionsValue = this.selectionHolder.val();
@@ -95,6 +101,10 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                                 if(this.cfg.droppable) {
                                     this.makeDropPoints(nodeChildrenContainer.find('li.ui-tree-droppoint'));
                                     this.makeDropNodes(nodeChildrenContainer.find('span.ui-treenode-droppable'));
+                                }
+
+                                if(this.cfg.scrollable) {
+                                    this.alignScrollBody();
                                 }
                             }
                         });
@@ -218,6 +228,188 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 };
 
                 unselectBehavior.call(this, ext);
+            }
+        }
+    },
+
+    setupScrolling: function() {
+        this.scrollHeader = this.jq.children('div.ui-tree-scrollable-header');
+        this.scrollBody = this.jq.children('div.ui-tree-scrollable-body');
+        this.scrollFooter = this.jq.children('div.ui-tree-scrollable-footer');
+        this.scrollStateHolder = $(this.jqId + '_scrollState');
+        this.scrollHeaderBox = this.scrollHeader.children('div.ui-tree-scrollable-header-box');
+        this.scrollFooterBox = this.scrollFooter.children('div.ui-tree-scrollable-footer-box');
+        this.headerTable = this.scrollHeaderBox.children('ul');
+        this.bodyTable = this.scrollBody.children('ul');
+        this.footerTable = this.scrollFooterBox.children('ul');
+        this.headerCols = this.headerTable.find('> ul > li');
+        this.footerCols = this.footerTable.find('> ul > li');
+        this.percentageScrollHeight = this.cfg.scrollHeight && (this.cfg.scrollHeight.indexOf('%') !== -1);
+        this.percentageScrollWidth = this.cfg.scrollWidth && (this.cfg.scrollWidth.indexOf('%') !== -1);
+        var $this = this;
+
+        if(this.cfg.scrollHeight) {
+            if(this.cfg.scrollHeight.indexOf('%') !== -1) {
+                this.adjustScrollHeight();
+            }
+
+            if(this.cfg.scrollHeight.indexOf('vh') !== -1)  {
+                this.applyViewPortScrollHeight();
+            }
+
+            this.marginRight = this.getScrollbarWidth() + 'px';
+            this.scrollHeaderBox.css('margin-right', this.marginRight);
+            this.scrollFooterBox.css('margin-right', this.marginRight);
+            this.alignScrollBody();
+        }
+
+        this.fixColumnWidths();
+
+        if(this.cfg.scrollWidth) {
+            if(this.cfg.scrollWidth.indexOf('%') !== -1) {
+                this.adjustScrollWidth();
+            }
+            else {
+                this.setScrollWidth(parseInt(this.cfg.scrollWidth));
+            }
+        }
+
+        this.cloneHead();
+
+        this.restoreScrollState();
+
+        this.updateVerticalScroll();
+
+        this.scrollBody.scroll(function() {
+            var scrollLeft = $this.scrollBody.scrollLeft();
+            $this.scrollHeaderBox.css('margin-left', -scrollLeft);
+            $this.scrollFooterBox.css('margin-left', -scrollLeft);
+
+            $this.saveScrollState();
+        });
+
+         this.scrollHeader.on('scroll.tree', function() {
+            $this.scrollHeader.scrollLeft(0);
+        });
+
+        this.scrollFooter.on('scroll.tree', function() {
+            $this.scrollFooter.scrollLeft(0);
+        });
+
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.jq, function() {
+            if ($this.percentageScrollHeight) {
+                $this.adjustScrollHeight();
+            }
+            if ($this.percentageScrollWidth) {
+                $this.adjustScrollWidth();
+            }
+        });
+    },
+
+    cloneHead: function() {
+        this.theadClone = this.headerTable.children('li').clone();
+        this.theadClone.find('ul').each(function() {
+            var header = $(this);
+            header.attr('id', header.attr('id') + '_clone');
+        });
+        this.theadClone.removeAttr('id').addClass('ui-tree-scrollable-ulclone').height(0).prependTo(this.bodyTable);
+    },
+
+    adjustScrollHeight: function() {
+        var relativeHeight = this.jq.parent().innerHeight() * (parseInt(this.cfg.scrollHeight) / 100),
+            tableHeaderHeight = this.jq.children('.ui-tree-container').outerHeight(true),
+            //tableFooterHeight = this.jq.children('.ui-treetable-footer').outerHeight(true),
+            scrollersHeight = this.scrollHeader.outerHeight(true),
+            height = (relativeHeight - (scrollersHeight + tableHeaderHeight));
+    
+        this.scrollBody.height(height);
+    },
+    
+    applyViewPortScrollHeight: function() {
+        this.scrollBody.height(this.cfg.scrollHeight);
+    },
+    
+    adjustScrollWidth: function() {
+        var width = parseInt((this.jq.parent().innerWidth() * (parseInt(this.cfg.scrollWidth) / 100)));
+        this.setScrollWidth(width);
+    },
+    
+    setScrollWidth: function(width) {
+        var $this = this;
+        this.jq.children('.ui-widget-header').each(function() {
+            $this.setOuterWidth($(this), width);
+        });
+        this.scrollHeader.width(width);
+        this.scrollBody.css('padding-right', 0).width(width);
+        this.scrollFooter.width(width);
+    },
+    
+    alignScrollBody: function() {
+        if(!this.cfg.scrollWidth) {
+            if(this.hasVerticalOverflow())
+                this.scrollBody.css('padding-right', 0);
+            else
+                this.scrollBody.css('padding-right', this.getScrollbarWidth());
+        }
+    },
+    
+    getScrollbarWidth: function() {
+        return $.browser.webkit ? '15' : PrimeFaces.calculateScrollbarWidth();
+    },
+    
+    restoreScrollState: function() {
+        var scrollState = this.scrollStateVal||this.scrollStateHolder.val(),
+        scrollValues = scrollState.split(',');
+    
+        this.scrollBody.scrollLeft(scrollValues[0]);
+        this.scrollBody.scrollTop(scrollValues[1]);
+        this.scrollStateVal = null;
+    },
+    
+    saveScrollState: function() {
+        var scrollState = this.scrollBody.scrollLeft() + ',' + this.scrollBody.scrollTop();
+    
+        this.scrollStateHolder.val(scrollState);
+    },
+    
+    fixColumnWidths: function() {
+        var $this = this;
+    
+        if(!this.columnWidthsFixed) {
+            if(this.cfg.scrollable) {
+                this.headerCols.each(function() {
+                    var headerCol = $(this),
+                    colIndex = headerCol.index(),
+                    width = headerCol.width();
+    
+                    headerCol.width(width);
+    
+                    if($this.footerCols.length > 0) {
+                        var footerCol = $this.footerCols.eq(colIndex);
+                        footerCol.width(width);
+                    }
+                });
+            }
+            else {
+                this.jq.find('> ul > li > ul').each(function() {
+                    var col = $(this);
+                    col.width(col.width());
+                });
+            }
+    
+            this.columnWidthsFixed = true;
+        }
+    },
+    
+    updateVerticalScroll: function() {
+        if(this.cfg.scrollable && this.cfg.scrollHeight) {
+            if(this.bodyTable.outerHeight() < this.scrollBody.outerHeight()) {
+                this.scrollHeaderBox.css('margin-right', 0);
+                this.scrollFooterBox.css('margin-right', 0);
+            }
+            else {
+                this.scrollHeaderBox.css('margin-right', this.marginRight);
+                this.scrollFooterBox.css('margin-right', this.marginRight);
             }
         }
     },
@@ -455,7 +647,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         this.container = this.jq.children('.ui-tree-container');
         this.cfg.rtl = this.jq.hasClass('ui-tree-rtl');
         this.cfg.collapsedIcon = this.cfg.rtl ? 'ui-icon-triangle-1-w' : 'ui-icon-triangle-1-e';
-        this.scrollStateHolder = $(this.jqId + '_scrollState');
+        //this.scrollStateHolder = $(this.jqId + '_scrollState');
 
         if(!this.cfg.disabled) {
             if(this.cfg.draggable) {
@@ -467,7 +659,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             }
         }
 
-        this.restoreScrollState();
+        this.restoreScrollState(); 
     },
 
     bindEvents: function() {
@@ -818,6 +1010,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         else {
             childrenContainer.hide();
             this.postCollapse(node, childrenContainer);
+        }
+
+        if(this.cfg.scrollable) {
+            this.alignScrollBody();
         }
     },
 
