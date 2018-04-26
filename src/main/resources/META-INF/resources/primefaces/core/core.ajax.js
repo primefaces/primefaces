@@ -477,7 +477,7 @@ if (!PrimeFaces.ajax) {
                                 componentPostParams = jqProcess.find(partialSubmitFilter).serializeArray();
                             }
 
-                            if (cfg.ext.partialSubmitParameterFilter) {
+                            if (cfg.ext && cfg.ext.partialSubmitParameterFilter) {
                                 var filteredParams = cfg.ext.partialSubmitParameterFilter.call(this, componentPostParams);
                                 $.merge(postParams, filteredParams);
                             }
