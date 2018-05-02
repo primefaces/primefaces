@@ -211,10 +211,10 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
      * Internally used to add the content from the ajax response to the terminal.
      * Can also be used e.g. by a websocket.
      *
-     * @param {string} content
+     * @param {string} HTML escaped content
      */
     processResponse: function(content) {
-        $('<div></div>').text(content).appendTo(this.content.children().last());
+        $('<div>' + content + '</div>').appendTo(this.content.children().last());
 
         // always scroll down to the last item
         this.jq.scrollTop(this.jq[0].scrollHeight);

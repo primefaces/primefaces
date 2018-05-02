@@ -118,7 +118,7 @@ public class TerminalRenderer extends CoreRenderer {
         String result = (String) commandHandler.invoke(context.getELContext(), new Object[]{command, args});
 
         ResponseWriter writer = context.getResponseWriter();
-        writer.write(result);
+        writer.writeText(result, null);
     }
 
     protected void autoCompleteCommand(FacesContext context, Terminal terminal) throws IOException {
