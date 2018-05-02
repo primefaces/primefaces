@@ -376,17 +376,6 @@
             return typeof value === 'number' && isFinite(value);
         },
 
-        getScript: function(url, callback) {
-            $.ajax({
-                type: "GET",
-                url: url,
-                success: callback,
-                dataType: "script",
-                cache: true,
-                async: true
-            });
-        },
-
         focus: function(id, context) {
             var selector = ':not(:submit):not(:button):input:visible:enabled[name]';
 
