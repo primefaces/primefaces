@@ -294,7 +294,8 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                             newResources.removeAll(initialResources);
                             
                             boolean updateStarted = false;
-                            for (ResourceUtils.ResourceInfo resourceInfo : newResources) {
+                            for (int i = 0; i < newResources.size(); i++) {
+                                ResourceUtils.ResourceInfo resourceInfo = newResources.get(i);
                                 if (!updateStarted) {
                                     ((PartialResponseWriter) getWrapped()).startUpdate("javax.faces.Resource");
                                     updateStarted = true;
