@@ -144,12 +144,12 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
 
                                 // store the baseCommand in a hidden span, the anchors will use it
                                 if (responseObj.baseCommand != '') {
-                                    matchesOutput.push($('<span style="display:none;" class="ui-terminal-basecommand">' + responseObj.baseCommand + '</span>'));
+                                    matchesOutput.push($('<span style="display:none;" class="ui-terminal-basecommand">' + PrimeFaces.escapeHTML(responseObj.baseCommand) + '</span>'));
                                 }
 
                                 // create the anchors
                                 for (i = 0; i < responseObj.matches.length; i++) { 
-                                    var anchor = $('<a href="javascript:void(0);">' + responseObj.matches[i] + '</a>')
+                                    var anchor = $('<a href="javascript:void(0);">' + PrimeFaces.escapeHTML(responseObj.matches[i]) + '</a>')
                                     .click(function(e) {
                                         e.preventDefault();
 
@@ -169,7 +169,7 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
 
                                 // print the previous command
                                 var item = $('<div></div>');
-                                item.append('<span>' + this.cfg.prompt + '</span><span class="ui-terminal-command"></span>')
+                                item.append('<span>' + PrimeFaces.escapeHTML(this.cfg.prompt) + '</span><span class="ui-terminal-command"></span>')
                                 .appendTo(this.content);
                                 item.find('.ui-terminal-command').text(this.input.val());
 
