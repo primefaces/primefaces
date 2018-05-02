@@ -133,7 +133,7 @@ public class TerminalRenderer extends CoreRenderer {
         }
         else {
             TerminalAutoCompleteMatches matches = terminal.traverseAutoCompleteModel(autoCompleteModel, command, args);
-            writer.write(matches.toString());
+            writer.writeText(matches.toString(), null);
         }
     }
 
