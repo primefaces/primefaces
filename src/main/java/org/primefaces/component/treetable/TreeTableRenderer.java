@@ -493,7 +493,7 @@ public class TreeTableRenderer extends DataRenderer {
                 emptyFacet.encodeAll(context);
             }
             else {
-                writer.write(tt.getEmptyMessage());
+                writer.writeText(tt.getEmptyMessage(), "emptyMessage");
             }
 
             writer.endElement("td");
@@ -687,7 +687,7 @@ public class TreeTableRenderer extends DataRenderer {
             header.encodeAll(context);
         }
         else if (headerText != null) {
-            writer.write(headerText);
+            writer.writeText(headerText, null);
         }
 
         writer.endElement("span");
@@ -874,7 +874,7 @@ public class TreeTableRenderer extends DataRenderer {
             footerFacet.encodeAll(context);
         }
         else if (footerText != null) {
-            writer.write(footerText);
+            writer.writeText(footerText, null);
         }
 
         writer.endElement("td");

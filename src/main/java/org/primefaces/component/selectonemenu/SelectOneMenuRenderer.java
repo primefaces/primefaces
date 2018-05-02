@@ -363,7 +363,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                     headerFacet.encodeAll(context);
                 }
                 else if (headerText != null) {
-                    writer.write(headerText);
+                    writer.writeText(headerText, null);
                 }
 
                 writer.endElement("th");

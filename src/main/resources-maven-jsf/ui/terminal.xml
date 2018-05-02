@@ -54,6 +54,12 @@
             <description>Method to execute by passing command and the arguments.</description>
         </attribute>
         <attribute>
+            <name>autoCompleteModel</name>
+            <required>false</required>
+            <type>org.primefaces.model.terminal.TerminalAutoCompleteModel</type>
+            <description>TerminalAutoCompleteModel instance that represents the commands and arguments used for autocompletion.</description>
+        </attribute>
+        <attribute>
             <name>escape</name>
             <required>false</required>
             <type>java.lang.Boolean</type>

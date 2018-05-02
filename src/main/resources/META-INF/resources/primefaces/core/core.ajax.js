@@ -52,24 +52,6 @@ if (!PrimeFaces.ajax) {
         RESOURCE : "javax.faces.Resource",
 
         Utils: {
-
-            loadStylesheets: function(stylesheets) {
-                for (var i = 0; i < stylesheets.length; i++) {
-                    $('head').append('<link type="text/css" rel="stylesheet" href="' + stylesheets[i] + '" />');
-                }
-            },
-
-            loadScripts: function(scripts) {
-                var loadNextScript = function() {
-                    var script = scripts.shift();
-                    if (script) {
-                        PrimeFaces.getScript(script, loadNextScript);
-                    }
-                };
-
-                loadNextScript();
-            },
-
             getContent: function(node) {
                 var content = '';
 
