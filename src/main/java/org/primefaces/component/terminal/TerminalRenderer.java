@@ -112,7 +112,7 @@ public class TerminalRenderer extends CoreRenderer {
         MethodExpression commandHandler = terminal.getCommandHandler();
         String result = (String) commandHandler.invoke(context.getELContext(), new Object[]{command, args});
 
-        writer.write(result);
+        writer.writeText(result, null);
     }
 
 }
