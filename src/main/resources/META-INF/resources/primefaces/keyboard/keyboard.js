@@ -961,8 +961,8 @@ PrimeFaces.widget.KeyboardUtils = {
 	},
 
 	createLayoutFromTemplate : function(template) {
-	    // GitHub #3487: Unicode conversion
-	    template =  decodeURIComponent(JSON.parse('"' + template.replace(/\"/g, '\\"') + '"'));
+		// GitHub #3487: Unicode conversion
+		template =  decodeURIComponent(JSON.parse('"' + template.replace(/\"/g, '\\"') + '"'));
 		var lines = template.split(','),
 		template = new Array(lines.length);
 
