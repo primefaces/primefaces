@@ -68,7 +68,7 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
             writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
             writer.writeAttribute("href", targetURL, null);
             renderPassThruAttributes(context, linkButton, HTML.LINK_ATTRS_WITHOUT_EVENTS);
-            renderDomEvents(context, linkButton, HTML.COMMON_EVENTS);
+            renderDomEvents(context, linkButton, HTML.OUTPUT_EVENTS);
             renderContent(context, linkButton);
             writer.endElement("a");
         }
