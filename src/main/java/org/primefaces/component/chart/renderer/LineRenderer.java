@@ -39,7 +39,7 @@ public class LineRenderer extends CartesianPlotRenderer {
             for (Iterator<Object> x = series.getData().keySet().iterator(); x.hasNext();) {
                 Object xValue = x.next();
                 Number yValue = series.getData().get(xValue);
-                String yValueAsString = escapeChartData(yValue);
+                String yValueAsString = (yValue == null) ? "null" : escapeChartData(yValue);
                 String xValueAsString = escapeChartData(xValue);
 
                 writer.write("[");
