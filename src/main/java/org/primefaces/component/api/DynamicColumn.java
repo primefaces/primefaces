@@ -240,4 +240,12 @@ public class DynamicColumn implements UIColumn {
     public boolean isGroupRow() {
         return this.columns.isGroupRow();
     }
+    
+    public String getExportHeaderValue() {
+        return this.columns.getExportHeaderValue();
+    }
+    
+    public String getExportFooterValue() {
+        return this.columns.getExportFooterValue();
+    }
 }

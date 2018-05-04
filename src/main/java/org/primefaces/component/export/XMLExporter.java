@@ -118,7 +118,7 @@ public class XMLExporter extends Exporter {
     }
 
     protected String getColumnTag(UIColumn column) {
-        String headerText = column.getHeaderText();
+        String headerText = (column.getExportHeaderValue() != null) ? column.getExportHeaderValue() : column.getHeaderText();
         UIComponent facet = column.getFacet("header");
         String columnTag;
 
