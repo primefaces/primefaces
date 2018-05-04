@@ -776,7 +776,7 @@ if (!PrimeFaces.ajax) {
 
                     var widget = PF(widgetVar);
                     if (widget) {
-                        if (widget.isDetached()) {
+                        if (widget.isDetached() === true) {
                             PrimeFaces.widgets[widgetVar] = null;
                             widget.destroy();
 
