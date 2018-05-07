@@ -1207,6 +1207,35 @@ import org.primefaces.component.datatable.TableState;
             }
         }
     }
+
+    @Override
+    protected void processChildren(FacesContext context, PhaseId phaseId) {
+        int first = getFirst();
+        int rows = getRows();
+        int rowCount = getRowCount();
+        int last = rows == 0 ? (isLiveScroll() ? (getScrollRows() + getScrollOffset()) : rowCount) : (first + rows);
+
+        for (int rowIndex = first; rowIndex < last; rowIndex++) {
+            setRowIndex(rowIndex);
+
+            if (!isRowAvailable()) {
+                break;
+            }
+
+            for (UIComponent child : this.getIterableChildren()) {
+                if (child.isRendered()) {
+                    if (child instanceof Column) {
+                        for (UIComponent grandkid : child.getChildren()) {
+                            process(context, grandkid, phaseId);
+                        }
+                    }
+                    else {
+                        process(context, child, phaseId);
+                    }
+                }
+            }
+        }
+    }
         
     private ValueExpression sortByVE;
     public void setSortByVE(ValueExpression ve) {

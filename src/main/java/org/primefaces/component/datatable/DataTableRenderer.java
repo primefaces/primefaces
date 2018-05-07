@@ -705,19 +705,19 @@ public class DataTableRenderer extends DataRenderer {
             String filterPosition = column.getFilterPosition();
 
             if (filterPosition.equals("bottom")) {
-                encodeColumnHeaderContent(context, column, sortIcon);
+                encodeColumnHeaderContent(context, table, column, sortIcon);
                 encodeFilter(context, table, column);
             }
             else if (filterPosition.equals("top")) {
                 encodeFilter(context, table, column);
-                encodeColumnHeaderContent(context, column, sortIcon);
+                encodeColumnHeaderContent(context, table, column, sortIcon);
             }
             else {
                 throw new FacesException(filterPosition + " is an invalid option for filterPosition, valid values are 'bottom' or 'top'.");
             }
         }
         else {
-            encodeColumnHeaderContent(context, column, sortIcon);
+            encodeColumnHeaderContent(context, table, column, sortIcon);
         }
 
         if (selectionMode != null && selectionMode.equalsIgnoreCase("multiple")) {
@@ -775,7 +775,7 @@ public class DataTableRenderer extends DataRenderer {
         return sortIcon;
     }
 
-    protected void encodeColumnHeaderContent(FacesContext context, UIColumn column, String sortIcon) throws IOException {
+    protected void encodeColumnHeaderContent(FacesContext context, DataTable table, UIColumn column, String sortIcon) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         UIComponent header = column.getFacet("header");
@@ -788,7 +788,12 @@ public class DataTableRenderer extends DataRenderer {
             header.encodeAll(context);
         }
         else if (headerText != null) {
-            writer.writeText(headerText, "headerText");
+            if (table.isEscapeText()) {
+                writer.writeText(headerText, "headerText");
+            }
+            else {
+                writer.write(headerText);
+            }
         }
 
         writer.endElement("span");
@@ -974,7 +979,12 @@ public class DataTableRenderer extends DataRenderer {
             facet.encodeAll(context);
         }
         else if (text != null) {
-            writer.writeText(text, "footerText");
+            if (table.isEscapeText()) {
+                writer.writeText(text, "footerText");
+            }
+            else {
+                writer.write(text);
+            }
         }
 
         writer.endElement("td");

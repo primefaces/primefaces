@@ -291,28 +291,23 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                         ArrayList<ResourceUtils.ResourceInfo> initialResources = DynamicResourcesPhaseListener.getInitialResources(context);
                         ArrayList<ResourceUtils.ResourceInfo> currentResources = ResourceUtils.getComponentResources(context);
                         if (initialResources != null && currentResources != null && currentResources.size() > initialResources.size()) {
-                            startEval();
-
+                            
                             ArrayList<ResourceUtils.ResourceInfo> newResources = new ArrayList<>(currentResources);
                             newResources.removeAll(initialResources);
-
-                            getWrapped().write("if(window.PrimeFaces){");
-
-                            ArrayList<String> stylesheets = ResourceUtils.filterStylesheets(context, newResources);
-                            if (stylesheets != null && !stylesheets.isEmpty()) {
-                                String script = "PrimeFaces.ajax.Utils.loadStylesheets(['" + CollectionUtils.join(stylesheets, "','") + "']);";
-                                getWrapped().write(script);
+                            
+                            boolean updateStarted = false;
+                            for (int i = 0; i < newResources.size(); i++) {
+                                ResourceUtils.ResourceInfo resourceInfo = newResources.get(i);
+                                if (!updateStarted) {
+                                    ((PartialResponseWriter) getWrapped()).startUpdate("javax.faces.Resource");
+                                    updateStarted = true;
+                                }
+                                resourceInfo.getResource().encodeAll(context);
                             }
 
-                            ArrayList<String> scripts = ResourceUtils.filterScripts(context, newResources);
-                            if (scripts != null && !scripts.isEmpty()) {
-                                String script = "PrimeFaces.ajax.Utils.loadScripts(['" + CollectionUtils.join(scripts, "','") + "']);";
-                                getWrapped().write(script);
+                            if (updateStarted) {
+                                ((PartialResponseWriter) getWrapped()).endUpdate();
                             }
-
-                            getWrapped().write("}");
-
-                            endEval();
                         }
                     }
                 }

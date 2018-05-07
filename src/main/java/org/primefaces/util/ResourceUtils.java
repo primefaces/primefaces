@@ -18,12 +18,10 @@ package org.primefaces.util;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.Resource;
-import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
@@ -65,7 +63,7 @@ public class ResourceUtils {
     }
    
     public static ArrayList<ResourceInfo> getComponentResources(FacesContext context) {
-        ArrayList<ResourceInfo> resourceInfos = new ArrayList<ResourceInfo>();
+        ArrayList<ResourceInfo> resourceInfos = new ArrayList<>();
         
         List<UIComponent> resources = context.getViewRoot().getComponentResources(context, "head");
         if (resources != null) {
@@ -80,67 +78,7 @@ public class ResourceUtils {
         
         return resourceInfos;
     }
-    
-    public static ArrayList<String> filterStylesheets(FacesContext context, ArrayList<ResourceInfo> resourceInfos) {
-        if (resourceInfos == null || resourceInfos.isEmpty()) {
-            return null;
-        }
-        
-        ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
-        
-        ArrayList<String> stylesheets = new ArrayList<String>();
-        for (int i = 0; i < resourceInfos.size(); i++) {
-            ResourceInfo resourceInfo = resourceInfos.get(i);
-            if (isStylesheet(resourceInfo.getResource()) && !isInline(resourceInfo)) {
-                Resource resource;
-                if (ComponentUtils.isValueBlank(resourceInfo.getLibrary())) {
-                    resource = resourceHandler.createResource(resourceInfo.getName());
-                }
-                else {
-                    resource = resourceHandler.createResource(resourceInfo.getName(), resourceInfo.getLibrary());
-                }
 
-                if (resource == null) {
-                    LOG.log(Level.WARNING, "Resource not found, ignore it. Name: " + resourceInfo.getName() + ", Library: " + resourceInfo.getLibrary());
-                }
-                else {
-                    stylesheets.add(resource.getRequestPath());
-                }
-            }
-        }
-        return stylesheets;
-    }
-    
-    public static ArrayList<String> filterScripts(FacesContext context, ArrayList<ResourceInfo> resourceInfos) {
-        if (resourceInfos == null || resourceInfos.isEmpty()) {
-            return null;
-        }
-        
-        ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
-        
-        ArrayList<String> scripts = new ArrayList<String>();
-        for (int i = 0; i < resourceInfos.size(); i++) {
-            ResourceInfo resourceInfo = resourceInfos.get(i);
-            if (isScript(resourceInfo.getResource()) && !isInline(resourceInfo)) {
-                Resource resource;
-                if (ComponentUtils.isValueBlank(resourceInfo.getLibrary())) {
-                    resource = resourceHandler.createResource(resourceInfo.getName());
-                }
-                else {
-                    resource = resourceHandler.createResource(resourceInfo.getName(), resourceInfo.getLibrary());
-                }
-                
-                if (resource == null) {
-                    LOG.log(Level.WARNING, "Resource not found, ignore it. Name: " + resourceInfo.getName() + ", Library: " + resourceInfo.getLibrary());
-                }
-                else {
-                    scripts.add(resource.getRequestPath());
-                }
-            }
-        }
-        return scripts;
-    }
-    
     public static boolean isInline(ResourceInfo resourceInfo) {
         if (resourceInfo != null) {
             return ComponentUtils.isValueBlank(resourceInfo.getLibrary()) && ComponentUtils.isValueBlank(resourceInfo.getName());

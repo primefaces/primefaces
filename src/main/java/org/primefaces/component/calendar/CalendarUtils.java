@@ -15,12 +15,16 @@
  */
 package org.primefaces.component.calendar;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
+
 import org.primefaces.component.calendar.converter.PatternConverter;
 import org.primefaces.component.calendar.converter.DatePatternConverter;
 import org.primefaces.component.calendar.converter.TimePatternConverter;
@@ -40,6 +44,52 @@ public class CalendarUtils {
         }
 
         return getValueAsString(context, calendar, calendar.getValue());
+    }
+
+    public static Date getObjectAsDate(FacesContext context, Calendar calendar, Object value) {
+        if (value == null) {
+            return null;
+        }
+
+        if (value instanceof Date) {
+            return (Date) value;
+        }
+
+        String pattern = calendar.calculatePattern();
+        if (pattern != null) {
+            Locale locale = calendar.calculateLocale(context);
+            if (locale != null) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat(pattern, locale);
+                try {
+                    return dateFormat.parse(value.toString());
+                }
+                catch (ParseException ex) {
+                    // NO-OP
+                }
+            }
+        }
+
+        if (calendar.getConverter() != null) {
+            try {
+                Object obj = calendar.getConverter().getAsObject(context, calendar, value.toString());
+                if (obj instanceof Date) {
+                    return (Date) obj;
+                }
+            }
+            catch (ConverterException ex) {
+                // NO-OP
+            }
+        }
+
+        Converter converter = context.getApplication().createConverter(value.getClass());
+        if (converter != null) {
+            Object obj = converter.getAsObject(context, calendar, value.toString());
+            if (obj instanceof Date) {
+                return (Date) obj;
+            }
+        }
+
+        throw new FacesException("Value could be either String or java.util.Date");
     }
 
     public static String getValueAsString(FacesContext context, Calendar calendar, Object value) {

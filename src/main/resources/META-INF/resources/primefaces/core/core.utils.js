@@ -138,7 +138,7 @@ if (!PrimeFaces.utils) {
          */
         registerHideOverlayHandler: function(widget, hideNamespace, overlay, resolveIgnoredElementsCallback, hideCallback) {
 
-            widget.destroyListeners.push(function() {
+            widget.addDestroyListener(function() {
                 $(document).off(hideNamespace);
             });
 
@@ -182,7 +182,7 @@ if (!PrimeFaces.utils) {
 
         registerResizeHandler: function(widget, resizeNamespace, element, resizeCallback) {
 
-            widget.destroyListeners.push(function() {
+            widget.addDestroyListener(function() {
                 $(window).off(resizeNamespace);
             });
 
@@ -196,7 +196,7 @@ if (!PrimeFaces.utils) {
         },
 
         registerDynamicOverlay: function(widget, overlay, overlayId) {
-            widget.destroyListeners.push(function() {
+            widget.addDestroyListener(function() {
                 var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
                 PrimeFaces.utils.removeDynamicOverlay(widget, overlay, overlayId, appendTo);
             });
@@ -208,7 +208,7 @@ if (!PrimeFaces.utils) {
 
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
 
-            widget.destroyListeners.push(function() {
+            widget.addDestroyListener(function() {
                 $(window).off(scrollNamespace);
             });
 

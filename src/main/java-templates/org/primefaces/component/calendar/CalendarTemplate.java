@@ -6,6 +6,7 @@ import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.MessageFactory;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import javax.faces.application.FacesMessage;
 import javax.faces.convert.Converter;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
@@ -32,38 +34,38 @@ import org.primefaces.convert.DateTimeConverter;
 
     private Map<String,AjaxBehaviorEvent> customEvents = new HashMap<String,AjaxBehaviorEvent>();
 
-	private java.util.Locale calculatedLocale;
-	private java.util.TimeZone appropriateTimeZone;
-	
-	public java.util.Locale calculateLocale(FacesContext facesContext) {
-		if (calculatedLocale == null) {
-	       calculatedLocale = LocaleUtils.resolveLocale(getLocale(), this.getClientId(facesContext));
-		}
-		
-		return calculatedLocale;
-	}
-	
-	public java.util.TimeZone calculateTimeZone() {
-		if(appropriateTimeZone == null) {
-			Object usertimeZone = getTimeZone();
-			if(usertimeZone != null) {
-				if(usertimeZone instanceof String)
-					appropriateTimeZone =  java.util.TimeZone.getTimeZone((String) usertimeZone);
-				else if(usertimeZone instanceof java.util.TimeZone)
-					appropriateTimeZone = (java.util.TimeZone) usertimeZone;
-				else
-					throw new IllegalArgumentException("TimeZone could be either String or java.util.TimeZone");
-			} else {
-				appropriateTimeZone = java.util.TimeZone.getDefault();
-			}
-		}
-		
-		return appropriateTimeZone;
-	}
-	
-	public boolean isPopup() {
-		return getMode().equalsIgnoreCase("popup");
-	}
+    private java.util.Locale calculatedLocale;
+    private java.util.TimeZone appropriateTimeZone;
+    
+    public java.util.Locale calculateLocale(FacesContext facesContext) {
+        if (calculatedLocale == null) {
+           calculatedLocale = LocaleUtils.resolveLocale(getLocale(), this.getClientId(facesContext));
+        }
+        
+        return calculatedLocale;
+    }
+    
+    public java.util.TimeZone calculateTimeZone() {
+        if(appropriateTimeZone == null) {
+            Object usertimeZone = getTimeZone();
+            if(usertimeZone != null) {
+                if(usertimeZone instanceof String)
+                    appropriateTimeZone =  java.util.TimeZone.getTimeZone((String) usertimeZone);
+                else if(usertimeZone instanceof java.util.TimeZone)
+                    appropriateTimeZone = (java.util.TimeZone) usertimeZone;
+                else
+                    throw new IllegalArgumentException("TimeZone could be either String or java.util.TimeZone");
+            } else {
+                appropriateTimeZone = java.util.TimeZone.getDefault();
+            }
+        }
+        
+        return appropriateTimeZone;
+    }
+    
+    public boolean isPopup() {
+        return getMode().equalsIgnoreCase("popup");
+    }
 
     public boolean hasTime() {
         String pattern = getPattern();
@@ -136,6 +138,41 @@ import org.primefaces.convert.DateTimeConverter;
         }
     }
 
+    public final static String DATE_OUT_OF_RANGE_MESSAGE_ID = "primefaces.calendar.OUT_OF_RANGE";
+
+    @Override
+    protected void validateValue(FacesContext context, Object value) {
+        super.validateValue(context, value);
+
+        if (isValid() && !isEmpty(value) && value instanceof Date) {
+            Date date = (Date) value;
+            
+            Date minDate = CalendarUtils.getObjectAsDate(context, this, getMindate());
+            if (minDate != null && date.before(minDate)) {
+                setValid(false);
+            }
+            
+            if (isValid()) {
+                Date maxDate = CalendarUtils.getObjectAsDate(context, this, getMaxdate());
+                if (maxDate != null && date.after(maxDate)) {
+                    setValid(false);
+                }
+            }
+            
+            if (!isValid()) {
+                FacesMessage msg = null;
+                String validatorMessage = getValidatorMessage();
+                if (validatorMessage != null) {
+                    msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
+                } 
+                else {
+                    msg = MessageFactory.getMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, null);
+                }
+                context.addMessage(getClientId(context), msg);
+            }
+        }
+    }
+    
     public String calculatePattern() {
         String pattern = this.getPattern();
         Locale locale = this.calculateLocale(getFacesContext());

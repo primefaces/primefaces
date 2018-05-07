@@ -269,44 +269,43 @@ public class PDFExporter extends Exporter {
                 ((DynamicColumn) col).applyStatelessModel();
             }
 
-            if (col.isRendered() && col.isExportable()) {
+            if (col.isRendered() && col.isExportable()) {                
                 UIComponent facet = col.getFacet(columnType.facet());
-                if (facet != null) {
-                    addColumnValue(pdfTable, facet, this.facetFont);
+                String textValue;
+                switch (columnType) {
+                    case HEADER:
+                        textValue = (col.getExportHeaderValue() != null) ? col.getExportHeaderValue() : col.getHeaderText();
+                        break;
+
+                    case FOOTER:
+                        textValue = (col.getExportFooterValue() != null) ? col.getExportFooterValue() : col.getFooterText();
+                        break;
+
+                    default:
+                        textValue = null;
+                        break;
+                }
+                
+                if (textValue != null) {
+                    addColumnValue(pdfTable, textValue); 
+                }
+                else if (facet != null) {
+                    addColumnValue(pdfTable, facet);
                 }
                 else {
-                    String textValue;
-                    switch (columnType) {
-                        case HEADER:
-                            textValue = col.getHeaderText();
-                            break;
-
-                        case FOOTER:
-                            textValue = col.getFooterText();
-                            break;
-
-                        default:
-                            textValue = "";
-                            break;
-                    }
-
-                    if (textValue != null) {
-                        PdfPCell cell = new PdfPCell(new Paragraph(textValue, this.facetFont));
-                        if (this.facetBgColor != null) {
-                            cell.setBackgroundColor(this.facetBgColor);
-                        }
-
-                        pdfTable.addCell(cell);
-                    }
+                    addColumnValue(pdfTable, "");
                 }
             }
         }
     }
 
-    protected void addColumnValue(PdfPTable pdfTable, UIComponent component, Font font) {
+    protected void addColumnValue(PdfPTable pdfTable, UIComponent component) {
         String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
-
-        PdfPCell cell = new PdfPCell(new Paragraph(value, font));
+        addColumnValue(pdfTable, value);
+    }
+    
+    protected void addColumnValue(PdfPTable pdfTable, String value) {
+        PdfPCell cell = new PdfPCell(new Paragraph(value, this.facetFont));
         if (this.facetBgColor != null) {
             cell.setBackgroundColor(this.facetBgColor);
         }

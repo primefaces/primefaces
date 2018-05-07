@@ -179,26 +179,29 @@ public class ExcelExporter extends Exporter {
 
             if (col.isRendered() && col.isExportable()) {
                 UIComponent facet = col.getFacet(columnType.facet());
-                if (facet != null) {
+                String textValue;
+                switch (columnType) {
+                    case HEADER:
+                        textValue = (col.getExportHeaderValue() != null) ? col.getExportHeaderValue() : col.getHeaderText();
+                        break;
+
+                    case FOOTER:
+                        textValue = (col.getExportFooterValue() != null) ? col.getExportFooterValue() : col.getFooterText();
+                        break;
+
+                    default:
+                        textValue = null;
+                        break;
+                }
+                
+                if (textValue != null) {
+                    addColumnValue(rowHeader, textValue); 
+                }
+                else if (facet != null) {
                     addColumnValue(rowHeader, facet);
                 }
                 else {
-                    String textValue;
-                    switch (columnType) {
-                        case HEADER:
-                            textValue = col.getHeaderText();
-                            break;
-
-                        case FOOTER:
-                            textValue = col.getFooterText();
-                            break;
-
-                        default:
-                            textValue = "";
-                            break;
-                    }
-
-                    addColumnValue(rowHeader, textValue);
+                    addColumnValue(rowHeader, "");
                 }
             }
         }

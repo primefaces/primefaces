@@ -248,7 +248,7 @@ public class TabViewRenderer extends CoreRenderer {
         if (titleFacet == null) {
             String tabTitle = tab.getTitle();
             if (tabTitle != null) {
-                writer.write(tabTitle);
+                writer.writeText(tabTitle, null);
             }
         }
         else {

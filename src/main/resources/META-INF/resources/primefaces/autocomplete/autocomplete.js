@@ -386,7 +386,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         })
         .on('click', function(event) {
             var item = $(this),
-            itemValue = item.attr('data-item-value'),
             isMoreText = item.hasClass('ui-autocomplete-moretext');
 
             if(isMoreText) {
@@ -394,6 +393,8 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 $this.invokeMoreTextBehavior();
             }
             else {
+                var itemValue = item.attr('data-item-value');
+                
                 if($this.cfg.multiple) {
                     var found = false;
                     if($this.cfg.unique) {

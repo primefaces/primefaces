@@ -61,7 +61,7 @@ public class LinkRenderer extends OutcomeTargetRenderer {
             writer.writeAttribute("href", targetURL, null);
             writer.writeAttribute("class", styleClass, "styleClass");
             renderPassThruAttributes(context, link, HTML.LINK_ATTRS_WITHOUT_EVENTS);
-            renderDomEvents(context, link, HTML.COMMON_EVENTS);
+            renderDomEvents(context, link, HTML.OUTPUT_EVENTS);
             renderContent(context, link);
             writer.endElement("a");
         }

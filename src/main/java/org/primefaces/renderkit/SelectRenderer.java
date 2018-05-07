@@ -15,17 +15,12 @@
  */
 package org.primefaces.renderkit;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.RandomAccess;
+import org.primefaces.util.ArrayUtils;
 
 import javax.el.ELException;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UISelectItem;
@@ -36,11 +31,18 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.RandomAccess;
 
 public class SelectRenderer extends InputRenderer {
 
     protected List<SelectItem> getSelectItems(FacesContext context, UIInput component) {
-        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        List<SelectItem> selectItems = new ArrayList<>();
 
         for (int i = 0; i < component.getChildCount(); i++) {
             UIComponent child = component.getChildren().get(i);
@@ -205,10 +207,7 @@ public class SelectRenderer extends InputRenderer {
             ExpressionFactory ef = ctx.getApplication().getExpressionFactory();
             newValue = ef.coerceToType(value, itemValueType);
         }
-        catch (ELException ele) {
-            newValue = value;
-        }
-        catch (IllegalArgumentException iae) {
+        catch (ELException | IllegalArgumentException ele) {
             newValue = value;
         }
 
@@ -286,4 +285,35 @@ public class SelectRenderer extends InputRenderer {
         }
         return count;
     }
+
+    /**
+     * Restores checked, disabled select items (#3296) and checks if at least one disabled select item has been submitted - 
+     * this may occur with client side manipulation (#3264)
+     * @return <code>newSubmittedValues</code> merged with checked, disabled <code>oldValues</code>
+     * @throws javax.faces.FacesException if client side manipulation has been detected, in order to reject the submission
+     */
+    protected String[] restoreAndCheckDisabledSelectItems(FacesContext context, UIInput component, Object[] oldValues, String... newSubmittedValues) 
+            throws FacesException {
+        
+        List<String> restoredSubmittedValues = new ArrayList<>();
+        for (SelectItem selectItem : getSelectItems(context, component)) {
+            String selectItemValStr = getOptionAsString(context, component, component.getConverter(), selectItem.getValue());
+            if (selectItem.isDisabled()) {
+                if (ArrayUtils.contains(newSubmittedValues, selectItemValStr) && !ArrayUtils.contains(oldValues, selectItemValStr)) {
+                    // disabled select item has been selected
+                    throw new FacesException("Disabled select item has been submitted. ClientId: " + component.getClientId(context));
+                }
+                if (ArrayUtils.contains(oldValues, selectItemValStr)) {
+                    restoredSubmittedValues.add(selectItemValStr);
+                }
+            } 
+            else {
+                if (ArrayUtils.contains(newSubmittedValues, selectItemValStr)) {
+                    restoredSubmittedValues.add(selectItemValStr);
+                }
+            }
+        }
+        return restoredSubmittedValues.toArray(new String[restoredSubmittedValues.size()]);
+    }
+    
 }

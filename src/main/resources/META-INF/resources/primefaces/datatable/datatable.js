@@ -1515,7 +1515,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     $this.clearCacheMap();
                 }
 
-                $this.updateHiddenHeaders();
+                $this.updateColumnsView();
             }
         };
 
@@ -1623,7 +1623,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     $this.allLoadedLiveScroll = $this.cfg.scrollStep >= $this.cfg.scrollLimit;
                 }
 
-                $this.updateHiddenHeaders();
+                $this.updateColumnsView();
             }
         };
 
@@ -3736,14 +3736,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
-    updateHiddenHeaders: function() {
-        if(this.headers) {
-            var $this = this;
+    updateColumnsView: function() {
+        for(var i = 0; i < this.headers.length; i++) {
+            var header = this.headers.eq(i),
+            col = this.tbody.find('> tr > td:nth-child(' + (header.index() + 1) + ')');
 
-            this.headers.filter('.ui-helper-hidden').each(function() {
-               var header = $(this);
-               $this.tbody.find('> tr > td:nth-child(' + (header.index() + 1) + ')').addClass('ui-helper-hidden');
-            });
+            if(header.hasClass('ui-helper-hidden')) {
+                col.addClass('ui-helper-hidden');
+            }
+            else {
+                col.removeClass('ui-helper-hidden');
+            }
         }
     }
 

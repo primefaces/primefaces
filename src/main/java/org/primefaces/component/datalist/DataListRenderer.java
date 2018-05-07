@@ -91,7 +91,7 @@ public class DataListRenderer extends DataRenderer {
         if (empty) {
             writer.startElement("div", list);
             writer.writeAttribute("class", DataList.DATALIST_EMPTYMESSAGE_CLASS, null);
-            writer.write(list.getEmptyMessage());
+            writer.writeText(list.getEmptyMessage(), "emptyMessage");
             writer.endElement("div");
         }
         else {

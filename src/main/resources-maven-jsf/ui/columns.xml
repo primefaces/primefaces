@@ -233,5 +233,17 @@
             <defaultValue>false</defaultValue>
             <description>Speficies whether to group rows based on the column data.</description>
         </attribute>
+        <attribute>
+            <name>exportHeaderValue</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Defines if the header value of column to be exported.</description>
+        </attribute>
+        <attribute>
+            <name>exportFooterValue</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Defines if the footer value of column to be exported.</description>
+        </attribute>
     </attributes>
 </component>
