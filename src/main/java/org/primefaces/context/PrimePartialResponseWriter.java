@@ -20,7 +20,6 @@ import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
 import org.primefaces.util.BeanUtils;
-import org.primefaces.util.CollectionUtils;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.ResourceUtils;
 
