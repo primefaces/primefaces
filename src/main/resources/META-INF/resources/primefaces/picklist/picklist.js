@@ -93,6 +93,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             this.bindFilterEvents();
 
             this.bindKeyEvents();
+
+            this.updateButtonsState();
         }
     },
 
@@ -217,7 +219,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             else {
                 $this.focusedItem = list.children('.ui-picklist-item:visible:first');
             }
-            
+
             setTimeout(function() {
                 PrimeFaces.scrollInView(list, $this.focusedItem);
                 $this.focusedItem.addClass('ui-picklist-outline');
@@ -292,7 +294,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                     // #3304 find first item matching the character typed
                     var keyChar = String.fromCharCode(key).toLowerCase();
                     list.children('.ui-picklist-item').each(function() {
-                        var item = $(this), 
+                        var item = $(this),
                             itemLabel = item.attr('data-item-label');
                         if (itemLabel.toLowerCase().startsWith(keyChar)) {
                             $this.removeOutline();
@@ -327,6 +329,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         if(silent) {
             this.fireItemSelectEvent(item);
         }
+
+        this.updateButtonsState();
     },
 
     unselectItem: function(item, silent) {
@@ -339,6 +343,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         if(silent) {
             this.fireItemUnselectEvent(item);
         }
+
+        this.updateButtonsState();
     },
 
     unselectAll: function() {
@@ -743,6 +749,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         $(this.jqId + ' ul').sortable('enable');
+
+        this.updateButtonsState();
     },
 
     getListName: function(element){
@@ -800,6 +808,54 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         this.targetList.attr('tabindex', tabindex);
         $(this.jqId + ' button').attr('tabindex', tabindex);
         $(this.jqId + ' .ui-picklist-filter-container > input').attr('tabindex', tabindex);
+    },
+
+    updateButtonsState: function () {
+        var addButton = $(this.jqId + ' .ui-picklist-button-add');
+        var sourceListButtons = $(this.jqId + ' .ui-picklist-source-controls .ui-button');
+        if (this.sourceList.find('li.ui-state-highlight').length) {
+            this.enableButton(addButton);
+            this.enableButton(sourceListButtons);
+        }
+        else {
+            this.disableButton(addButton);
+            this.disableButton(sourceListButtons);
+        }
+
+        var removeButton = $(this.jqId + ' .ui-picklist-button-remove');
+        var targetListButtons = $(this.jqId + ' .ui-picklist-target-controls .ui-button');
+        if (this.targetList.find('li.ui-state-highlight').length) {
+            this.enableButton(removeButton);
+            this.enableButton(targetListButtons);
+        }
+        else {
+            this.disableButton(removeButton);
+            this.disableButton(targetListButtons);
+        }
+
+        var addAllButton = $(this.jqId + ' .ui-picklist-button-add-all');
+        if (this.sourceList.find('li.ui-picklist-item:not(.ui-state-disabled)').length) {
+            this.enableButton(addAllButton);
+        }
+        else {
+            this.disableButton(addAllButton);
+        }
+
+        var removeAllButton = $(this.jqId + ' .ui-picklist-button-remove-all');
+        if (this.targetList.find('li.ui-picklist-item:not(.ui-state-disabled)').length) {
+            this.enableButton(removeAllButton);
+        }
+        else {
+            this.disableButton(removeAllButton);
+        }
+    },
+
+    disableButton: function (button) {
+        button.attr('disabled', 'disabled').addClass('ui-state-disabled');
+    },
+
+    enableButton: function (button) {
+        button.removeAttr('disabled').removeClass('ui-state-disabled');
     }
 
 });
