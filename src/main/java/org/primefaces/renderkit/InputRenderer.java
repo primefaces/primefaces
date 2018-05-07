@@ -15,10 +15,12 @@
  */
 package org.primefaces.renderkit;
 
+import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+import org.primefaces.component.api.RTLAware;
 
 import org.primefaces.util.ComponentUtils;
 
@@ -42,5 +44,11 @@ public abstract class InputRenderer extends CoreRenderer {
         boolean readonly = Boolean.parseBoolean(String.valueOf(component.getAttributes().get("readonly")));
 
         return !disabled && !readonly;
+    }
+    
+    public <T extends UIComponent & RTLAware> void renderRTLDirection(FacesContext context, T component) throws IOException {
+        if (ComponentUtils.isRTL(context, component)) {
+            context.getResponseWriter().writeAttribute("dir", "rtl", null);
+        }
     }
 }
