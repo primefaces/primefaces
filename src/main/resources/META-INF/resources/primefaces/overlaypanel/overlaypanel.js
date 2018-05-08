@@ -32,8 +32,8 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
 
     //@Override
-    refresh: function() {
-        this._super();
+    refresh: function(cfg) {
+        this._super(cfg);
 
         // see #setupDialogSupport
         if (!this.cfg.appendTo) {

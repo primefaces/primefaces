@@ -158,8 +158,8 @@ if (!PrimeFaces.widget) {
         },
 
         //@Override
-        refresh: function() {
-            this._super();
+        refresh: function(cfg) {
+            this._super(cfg);
 
             if (this.appendTo) {
                 PrimeFaces.utils.removeDynamicOverlay(this, this.jq, this.id, this.appendTo);
