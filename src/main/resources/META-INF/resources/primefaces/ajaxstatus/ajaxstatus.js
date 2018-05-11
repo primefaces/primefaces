@@ -35,7 +35,13 @@ PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
             callback.apply(document, args);
         }
 
-        this.jq.children().hide().filter(this.jqId + '_' + event).show();
+        if (event !== 'complete' || this.jq.children().filter(this.toFacetId('complete')).length) {
+            this.jq.children().hide().filter(this.toFacetId(event)).show();
+        }
+    },
+
+    toFacetId: function(event) {
+        return this.jqId + '_' + event;
     },
 
     bindToStandard: function() {
