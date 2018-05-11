@@ -59,13 +59,15 @@ public class DataExporter implements ActionListener, StateHolder {
     private ValueExpression repeat;
 
     private ValueExpression options;
+    
+    private MethodExpression onTableRender;
 
     public DataExporter() {
     }
 
     public DataExporter(ValueExpression target, ValueExpression type, ValueExpression fileName, ValueExpression pageOnly,
             ValueExpression selectionOnly, ValueExpression encoding, MethodExpression preProcessor,
-            MethodExpression postProcessor, ValueExpression options) {
+            MethodExpression postProcessor, ValueExpression options, MethodExpression onTableRender) {
         this.target = target;
         this.type = type;
         this.fileName = fileName;
@@ -75,6 +77,7 @@ public class DataExporter implements ActionListener, StateHolder {
         this.postProcessor = postProcessor;
         this.encoding = encoding;
         this.options = options;
+        this.onTableRender = onTableRender;
     }
 
     public void processAction(ActionEvent event) {
@@ -132,7 +135,7 @@ public class DataExporter implements ActionListener, StateHolder {
 
                 if (components.size() > 1) {
                     exporter.export(context, outputFileName, (List<DataTable>) components, isPageOnly, isSelectionOnly,
-                            encodingType, preProcessor, postProcessor, exporterOptions);
+                            encodingType, preProcessor, postProcessor, exporterOptions, onTableRender);
                 }
                 else {
                     UIComponent component = (UIComponent) components.get(0);
@@ -143,13 +146,13 @@ public class DataExporter implements ActionListener, StateHolder {
 
                     DataTable table = (DataTable) component;
                     exporter.export(context, table, outputFileName, isPageOnly, isSelectionOnly, encodingType,
-                            preProcessor, postProcessor, exporterOptions);
+                            preProcessor, postProcessor, exporterOptions, onTableRender);
                 }
             }
             else {
                 String[] clientIds = tables.split("\\s+|,");
                 exporter.export(context, Arrays.asList(clientIds), outputFileName, isPageOnly, isSelectionOnly, encodingType,
-                        preProcessor, postProcessor, exporterOptions);
+                        preProcessor, postProcessor, exporterOptions, onTableRender);
             }
 
             context.responseComplete();
@@ -184,10 +187,11 @@ public class DataExporter implements ActionListener, StateHolder {
         encoding = (ValueExpression) values[7];
         repeat = (ValueExpression) values[8];
         options = (ValueExpression) values[9];
+        onTableRender = (MethodExpression) values[10];
     }
 
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[10];
+        Object values[] = new Object[11];
 
         values[0] = target;
         values[1] = type;
@@ -199,6 +203,7 @@ public class DataExporter implements ActionListener, StateHolder {
         values[7] = encoding;
         values[8] = repeat;
         values[9] = options;
+        values[10] = onTableRender;
 
         return ((Object[]) values);
     }

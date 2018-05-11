@@ -42,6 +42,7 @@ public class DataExporterTagHandler extends TagHandler {
     private final TagAttribute encoding;
     private final TagAttribute repeat;
     private final TagAttribute options;
+    private final TagAttribute onTableRender;
 
     public DataExporterTagHandler(TagConfig tagConfig) {
         super(tagConfig);
@@ -55,6 +56,7 @@ public class DataExporterTagHandler extends TagHandler {
         this.postProcessor = getAttribute("postProcessor");
         this.repeat = getAttribute("repeat");
         this.options = getAttribute("options");
+        this.onTableRender = getAttribute("onTableRender");
     }
 
     public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
@@ -69,6 +71,7 @@ public class DataExporterTagHandler extends TagHandler {
             MethodExpression postProcessorME = null;
             ValueExpression repeatVE = null;
             ValueExpression optionsVE = null;
+            MethodExpression onTableRenderME = null;
 
             if (encoding != null) {
                 encodingVE = encoding.getValueExpression(faceletContext, Object.class);
@@ -91,10 +94,13 @@ public class DataExporterTagHandler extends TagHandler {
             if (options != null) {
                 optionsVE = options.getValueExpression(faceletContext, Object.class);
             }
+            if (onTableRender != null) {
+                onTableRenderME = onTableRender.getMethodExpression(faceletContext, null, new Class[]{Object.class, Object.class});
+            }
 
             ActionSource actionSource = (ActionSource) parent;
             DataExporter dataExporter = new DataExporter(targetVE, typeVE, fileNameVE, pageOnlyVE, selectionOnlyVE,
-                    encodingVE, preProcessorME, postProcessorME, optionsVE);
+                    encodingVE, preProcessorME, postProcessorME, optionsVE, onTableRenderME);
             dataExporter.setRepeat(repeatVE);
             actionSource.addActionListener(dataExporter);
         }
