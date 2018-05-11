@@ -121,6 +121,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     refresh: function(cfg) {
         this.panelWidthAdjusted = false;
 
+        PrimeFaces.utils.removeAllDynamicOverlays(this.id + '_panel');
+
         this._super(cfg);
     },
 

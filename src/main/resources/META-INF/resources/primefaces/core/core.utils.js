@@ -9,6 +9,13 @@ if (!PrimeFaces.utils) {
         },
 
         /**
+         * Removes all the dynamic overlays for the given id.
+         */
+        removeAllDynamicOverlays: function(overlayId) {
+            $(PrimeFaces.escapeClientId(overlayId)).remove();
+        },
+
+        /**
          * Removes the overlay from the appendTo overlay container.
          */
         removeDynamicOverlay: function(widget, overlay, overlayId, appendTo) {

@@ -88,6 +88,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.status = this.jq.children('.ui-autocomplete-status');
     },
 
+    //@override
+    refresh: function(cfg) {
+        PrimeFaces.utils.removeAllDynamicOverlays(this.id + '_panel');
+
+        this._super(cfg);
+    },
+
     appendPanel: function() {
         PrimeFaces.utils.registerDynamicOverlay(this, this.panel, this.id + '_panel');
     },

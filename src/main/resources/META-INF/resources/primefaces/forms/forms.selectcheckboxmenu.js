@@ -56,7 +56,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
     },
 
     refresh: function(cfg) {
-        $(PrimeFaces.escapeClientId(this.panelId)).remove();
+        PrimeFaces.utils.removeAllDynamicOverlays(this.panelId);
 
         this.init(cfg);
     },
