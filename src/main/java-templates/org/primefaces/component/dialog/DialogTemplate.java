@@ -24,14 +24,6 @@ import javax.faces.event.BehaviorEvent;
     public static final String CONTENT_CLASS = "ui-dialog-content ui-widget-content";
     public static final String FOOTER_CLASS = "ui-dialog-footer ui-widget-content";
 
-    public static final String MOBILE_CONTAINER_CLASS = "ui-popup-container ui-popup-hidden ui-popup-truncate";
-    public static final String MOBILE_POPUP_CLASS = "ui-popup ui-body-inherit ui-overlay-shadow ui-corner-all";
-    public static final String MOBILE_MASK_CLASS = "ui-popup-screen ui-overlay-b ui-screen-hidden";
-    public static final String MOBILE_TITLE_BAR_CLASS = "ui-header ui-bar-inherit";
-    public static final String MOBILE_TITLE_CLASS = "ui-title";
-    public static final String MOBILE_CONTENT_CLASS = "ui-content";
-    public static final String MOBILE_CLOSE_ICON_CLASS = "ui-btn ui-corner-all ui-icon-delete ui-btn-icon-notext ui-btn-left";
-
     public static final String ARIA_CLOSE = "primefaces.dialog.aria.CLOSE";
 
     private final static String DEFAULT_EVENT = "close";
@@ -44,6 +36,7 @@ import javax.faces.event.BehaviorEvent;
         put("restoreMinimize", null);
         put("restoreMaximize", null);
         put("open", null);
+        put("loadContent", null);
     }});
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
@@ -67,7 +60,7 @@ import javax.faces.event.BehaviorEvent;
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(isRequestSource(context) && event instanceof AjaxBehaviorEvent) {
+        if(ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
@@ -97,7 +90,7 @@ import javax.faces.event.BehaviorEvent;
 
     @Override
     public void processDecodes(FacesContext context) {
-        if(isRequestSource(context)) {
+        if(ComponentUtils.isRequestSource(this, context)) {
             this.decode(context);
         }
         else {
@@ -107,14 +100,14 @@ import javax.faces.event.BehaviorEvent;
 
     @Override
     public void processValidators(FacesContext context) {
-        if(!isRequestSource(context)) {
+        if(!ComponentUtils.isRequestSource(this, context)) {
             super.processValidators(context);
         }
     }
 
     @Override
     public void processUpdates(FacesContext context) {
-        if(!isRequestSource(context)) {
+        if(!ComponentUtils.isRequestSource(this, context)) {
             super.processUpdates(context);
         }
         else {
@@ -131,9 +124,6 @@ import javax.faces.event.BehaviorEvent;
         }
     }
 
-    private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
-    }
 
     public boolean isContentLoadRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_contentLoad");

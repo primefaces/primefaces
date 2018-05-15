@@ -22,6 +22,8 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
 
         this.jq.slider(this.cfg);
 
+        this.decimalStep = !(this.cfg.step % 1 === 0);
+
         this.bindEvents();
 
         if (PrimeFaces.env.touch) {
@@ -46,40 +48,48 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
             $this.onSlideEnd(event, ui);
         });
 
-        this.input.on('keydown.slider', function (e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
+        if (this.input.parent().hasClass('ui-inputnumber')) {
+            this.input.parent().find('input:hidden').on('change', function () {
+                $this.setValue($(this).val());
+            });
+        }
+        else {
+            this.input.on('keydown.slider', function (e) {
+                var keyCode = $.ui.keyCode,
+                key = e.which;
 
-            switch(key) {
-                case keyCode.UP:
-                case keyCode.DOWN:
-                case keyCode.LEFT:
-                case keyCode.RIGHT:
-                case keyCode.BACKSPACE:
-                case keyCode.DELETE:
-                case keyCode.END:
-                case keyCode.HOME:
-                case keyCode.TAB:
-                break;
+                switch(key) {
+                    case keyCode.UP:
+                    case keyCode.DOWN:
+                    case keyCode.LEFT:
+                    case keyCode.RIGHT:
+                    case keyCode.BACKSPACE:
+                    case keyCode.DELETE:
+                    case keyCode.END:
+                    case keyCode.HOME:
+                    case keyCode.TAB:
+                    break;
 
-                default:
-                    var metaKey = e.metaKey||e.ctrlKey,
-                    isNumber = (key >= 48 && key <= 57) || (key >= 96 && key <= 105);
+                    default:
+                        var metaKey = e.metaKey||e.ctrlKey,
+                        isNumber = (key >= 48 && key <= 57) || (key >= 96 && key <= 105) || (key === 190);
 
-                    //prevent special characters with alt and shift
-                    if(e.altKey || (e.shiftKey && !(key === keyCode.UP || key === keyCode.DOWN || key === keyCode.LEFT || key === keyCode.RIGHT))) {
-                        e.preventDefault();
-                    }
+                        //prevent special characters with alt and shift
+                        if(e.altKey || (e.shiftKey && !(key === keyCode.UP || key === keyCode.DOWN || key === keyCode.LEFT || key === keyCode.RIGHT))) {
+                            e.preventDefault();
+                        }
 
-                    //prevent letters and allow letters with meta key such as ctrl+c
-                    if(!isNumber && !metaKey) {
-                        e.preventDefault();
-                    }
-                break;
-            }
-        }).on('keyup.slider', function (e) {
-            $this.setValue($this.input.val());
-        });
+                        //prevent letters and allow letters with meta key such as ctrl+c
+                        //also allow '.' when the step is defined as decimal
+                        if(!isNumber && !metaKey && !($this.decimalStep && key === 190)) {
+                            e.preventDefault();
+                        }
+                    break;
+                }
+            }).on('keyup.slider', function (e) {
+                $this.setValue($this.input.val());
+            });
+        }
     },
 
     bindTouchEvents: function() {

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
+]>
+<component>
+    <tag>sidebar</tag>
+    <tagClass>org.primefaces.component.sidebar.SidebarTag</tagClass>
+    <componentClass>org.primefaces.component.sidebar.Sidebar</componentClass>
+    <componentType>org.primefaces.component.Sidebar</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.SidebarRenderer</rendererType>
+    <rendererClass>org.primefaces.component.sidebar.SidebarRenderer</rendererClass>
+    <parent>javax.faces.component.UIComponentBase</parent>
+    <description>Sidebar is a panel component displayed as an overlay.</description>
+    <interfaces>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &standard_uicomponent_attributes;
+        &widget_var_attribute;
+        <attribute>
+            <name>style</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Style of the container element.</description>
+        </attribute>
+        <attribute>
+            <name>styleClass</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>StyleClass of the container element.</description>
+        </attribute>
+        <attribute>
+            <name>visible</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Specifies the visibility of the sidebar.</description>
+        </attribute>
+        <attribute>
+            <name>position</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>left</defaultValue>
+            <description>Position of the sidebar. Default is left.</description>
+        </attribute>
+        <attribute>
+            <name>fullScreen</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description></description>
+        </attribute>
+        <attribute>
+            <name>blockScroll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Whether to block scrolling of the document when sidebar is active.</description>
+        </attribute>
+        <attribute>
+            <name>baseZIndex</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>0</defaultValue>
+            <description>Base zIndex value to use in layering.</description>
+        </attribute>
+        <attribute>
+            <name>appendTo</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Appends the sidebar to the given search expression.</description>
+        </attribute>
+        <attribute>
+            <name>onShow</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when sidebar is displayed.</description>
+        </attribute>
+        <attribute>
+            <name>onHide</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when sidebar is hidden.</description>
+        </attribute>
+    </attributes>
+    <resources>
+        <resource>
+            <name>components.css</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
+</component>

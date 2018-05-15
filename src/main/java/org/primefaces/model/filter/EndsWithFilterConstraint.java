@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,17 +20,18 @@ import org.primefaces.util.Constants;
 
 public class EndsWithFilterConstraint implements FilterConstraint {
 
+    @Override
     public boolean applies(Object value, Object filter, Locale locale) {
         String filterText = (filter == null) ? null : filter.toString().trim().toLowerCase(locale);
-        
-        if(filterText == null || filterText.equals(Constants.EMPTY_STRING)) {
+
+        if (filterText == null || filterText.equals(Constants.EMPTY_STRING)) {
             return true;
         }
-        
-        if(value == null) {
+
+        if (value == null) {
             return false;
         }
-        
+
         return value.toString().toLowerCase(locale).endsWith(filterText);
     }
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,25 +15,28 @@
  */
 package org.primefaces.model;
 
+import java.io.Serializable;
 import javax.el.MethodExpression;
 import org.primefaces.component.api.UIColumn;
 
-public class SortMeta {
-    
-    private UIColumn column;
-    
+public class SortMeta implements Serializable {
+
+    private transient UIColumn column;
+
     private String sortField;
-    
+
     private SortOrder sortOrder;
-    
+
     private MethodExpression sortFunction;
 
-    public SortMeta() {}
-    
+    public SortMeta() {
+    }
+
     public SortMeta(UIColumn column, String sortField, SortOrder sortOrder, MethodExpression sortFunction) {
         this.column = column;
         this.sortField = sortField;
         this.sortOrder = sortOrder;
+        this.sortFunction = sortFunction;
     }
 
     public UIColumn getColumn() {
@@ -66,5 +69,11 @@ public class SortMeta {
 
     public void setSortFunction(MethodExpression sortFunction) {
         this.sortFunction = sortFunction;
+    }
+
+    @Override
+    public String toString() {
+        return "SortMeta [column=" + column + ", sortField=" + sortField + ", sortOrder=" + sortOrder + ", sortFunction="
+                + sortFunction + "]";
     }
 }

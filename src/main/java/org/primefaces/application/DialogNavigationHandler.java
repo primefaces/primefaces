@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,76 +24,80 @@ import java.util.UUID;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
 import javax.faces.context.FacesContext;
-import org.primefaces.context.RequestContext;
+import org.primefaces.PrimeFaces;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
 public class DialogNavigationHandler extends ConfigurableNavigationHandler {
-    
+
     private ConfigurableNavigationHandler base;
 
-    
     public DialogNavigationHandler(ConfigurableNavigationHandler base) {
         this.base = base;
     }
 
     @Override
     public void handleNavigation(FacesContext context, String fromAction, String outcome) {
-        RequestContext requestContext = RequestContext.getCurrentInstance();
-        Map<Object,Object> attrs = requestContext.getAttributes();
+        Map<Object, Object> attrs = context.getAttributes();
         String dialogOutcome = (String) attrs.get(Constants.DIALOG_FRAMEWORK.OUTCOME);
-        
-        if(dialogOutcome != null) {
-            Map<String,String> requestParams = context.getExternalContext().getRequestParameterMap();
+
+        if (dialogOutcome != null) {
+            Map<String, String> requestParams = context.getExternalContext().getRequestParameterMap();
             NavigationCase navCase = getNavigationCase(context, fromAction, dialogOutcome);
             String toViewId = navCase.getToViewId(context);
-            Map<String,Object> options = (Map<String,Object>) attrs.get(Constants.DIALOG_FRAMEWORK.OPTIONS);
-            Map<String,List<String>> params = (Map<String,List<String>>) attrs.get(Constants.DIALOG_FRAMEWORK.PARAMS);
+            Map<String, Object> options = (Map<String, Object>) attrs.get(Constants.DIALOG_FRAMEWORK.OPTIONS);
+            Map<String, List<String>> params = (Map<String, List<String>>) attrs.get(Constants.DIALOG_FRAMEWORK.PARAMS);
 
             if (params == null) {
                 params = Collections.emptyMap();
             }
-            
+
             boolean includeViewParams = false;
             if (options != null && options.containsKey(Constants.DIALOG_FRAMEWORK.INCLUDE_VIEW_PARAMS)) {
                 includeViewParams = (Boolean) options.get(Constants.DIALOG_FRAMEWORK.INCLUDE_VIEW_PARAMS);
             }
 
             String url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, includeViewParams);
+            url = ComponentUtils.escapeEcmaScriptText(url);
 
             StringBuilder sb = new StringBuilder();
             String sourceComponentId = (String) attrs.get(Constants.DIALOG_FRAMEWORK.SOURCE_COMPONENT);
             String sourceWidget = (String) attrs.get(Constants.DIALOG_FRAMEWORK.SOURCE_WIDGET);
             String pfdlgcid = requestParams.get(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM);
-            if(pfdlgcid == null) {
+            if (pfdlgcid == null) {
                 pfdlgcid = UUID.randomUUID().toString();
             }
-                        
-            sb.append("PrimeFaces.openDialog({url:'").append(url).append("',pfdlgcid:'").append(pfdlgcid)
-                                    .append("',sourceComponentId:'").append(sourceComponentId).append("'");
+            pfdlgcid = ComponentUtils.escapeEcmaScriptText(pfdlgcid);
 
-            if(sourceWidget != null) {
+            sb.append("PrimeFaces.openDialog({url:'").append(url).append("',pfdlgcid:'").append(pfdlgcid)
+                    .append("',sourceComponentId:'").append(sourceComponentId).append("'");
+
+            if (sourceWidget != null) {
                 sb.append(",sourceWidgetVar:'").append(sourceWidget).append("'");
             }
-            
+
             sb.append(",options:{");
-            if(options != null && options.size() > 0) {
-                for(Iterator<String> it = options.keySet().iterator(); it.hasNext();) {
+            if (options != null && options.size() > 0) {
+                for (Iterator<String> it = options.keySet().iterator(); it.hasNext();) {
                     String optionName = it.next();
                     Object optionValue = options.get(optionName);
-                    
+
                     sb.append(optionName).append(":");
-                    if(optionValue instanceof String)
-                        sb.append("'").append(optionValue).append("'");
-                    else 
+                    if (optionValue instanceof String) {
+                        sb.append("'").append(ComponentUtils.escapeEcmaScriptText((String) optionValue)).append("'");
+                    }
+                    else {
                         sb.append(optionValue);
-                    
-                    if(it.hasNext())
+                    }
+
+                    if (it.hasNext()) {
                         sb.append(",");
+                    }
                 }
             }
             sb.append("}});");
-            
-            requestContext.execute(sb.toString());
+
+            PrimeFaces.current().executeScript(sb.toString());
             sb.setLength(0);
         }
         else {

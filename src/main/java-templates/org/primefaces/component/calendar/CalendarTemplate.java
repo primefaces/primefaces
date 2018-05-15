@@ -5,6 +5,8 @@ import org.primefaces.util.HTML;
 import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.MessageFactory;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
@@ -16,66 +18,54 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import javax.faces.application.FacesMessage;
 import javax.faces.convert.Converter;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.convert.DateTimeConverter;
 
     public final static String CONTAINER_CLASS = "ui-calendar";
     public final static String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
-    public final static String MOBILE_POPUP_CONTAINER_CLASS = "ui-calendar ui-calendar-popup";
-    public final static String MOBILE_INLINE_CONTAINER_CLASS = "ui-calendar ui-calendar-inline";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select","dateSelect","viewChange"));
-    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("dateSelect","viewChange"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select","dateSelect","viewChange","close"));
+    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("dateSelect","viewChange","close"));
 
     private Map<String,AjaxBehaviorEvent> customEvents = new HashMap<String,AjaxBehaviorEvent>();
 
-	private java.util.Locale calculatedLocale;
-	private java.util.TimeZone appropriateTimeZone;
-	
-	public java.util.Locale calculateLocale(FacesContext facesContext) {
-		if(calculatedLocale == null) {
-			Object userLocale = getLocale();
-			if(userLocale != null) {
-				if(userLocale instanceof String) {
-					calculatedLocale = ComponentUtils.toLocale((String) userLocale);
-				}
-				else if(userLocale instanceof java.util.Locale)
-					calculatedLocale = (java.util.Locale) userLocale;
-				else
-					throw new IllegalArgumentException("Type:" + userLocale.getClass() + " is not a valid locale type for calendar:" + this.getClientId(facesContext));
-			} else {
-				calculatedLocale = facesContext.getViewRoot().getLocale();
-			}
-		}
-		
-		return calculatedLocale;
-	}
-	
-	public java.util.TimeZone calculateTimeZone() {
-		if(appropriateTimeZone == null) {
-			Object usertimeZone = getTimeZone();
-			if(usertimeZone != null) {
-				if(usertimeZone instanceof String)
-					appropriateTimeZone =  java.util.TimeZone.getTimeZone((String) usertimeZone);
-				else if(usertimeZone instanceof java.util.TimeZone)
-					appropriateTimeZone = (java.util.TimeZone) usertimeZone;
-				else
-					throw new IllegalArgumentException("TimeZone could be either String or java.util.TimeZone");
-			} else {
-				appropriateTimeZone = java.util.TimeZone.getDefault();
-			}
-		}
-		
-		return appropriateTimeZone;
-	}
-	
-	public boolean isPopup() {
-		return getMode().equalsIgnoreCase("popup");
-	}
+    private java.util.Locale calculatedLocale;
+    private java.util.TimeZone appropriateTimeZone;
+    
+    public java.util.Locale calculateLocale(FacesContext facesContext) {
+        if (calculatedLocale == null) {
+           calculatedLocale = LocaleUtils.resolveLocale(getLocale(), this.getClientId(facesContext));
+        }
+        
+        return calculatedLocale;
+    }
+    
+    public java.util.TimeZone calculateTimeZone() {
+        if(appropriateTimeZone == null) {
+            Object usertimeZone = getTimeZone();
+            if(usertimeZone != null) {
+                if(usertimeZone instanceof String)
+                    appropriateTimeZone =  java.util.TimeZone.getTimeZone((String) usertimeZone);
+                else if(usertimeZone instanceof java.util.TimeZone)
+                    appropriateTimeZone = (java.util.TimeZone) usertimeZone;
+                else
+                    throw new IllegalArgumentException("TimeZone could be either String or java.util.TimeZone");
+            } else {
+                appropriateTimeZone = java.util.TimeZone.getDefault();
+            }
+        }
+        
+        return appropriateTimeZone;
+    }
+    
+    public boolean isPopup() {
+        return getMode().equalsIgnoreCase("popup");
+    }
 
     public boolean hasTime() {
         String pattern = getPattern();
@@ -97,7 +87,7 @@ import org.primefaces.convert.DateTimeConverter;
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(this.isRequestSource(context) && (event instanceof AjaxBehaviorEvent)) {
+        if(ComponentUtils.isRequestSource(this, context) && (event instanceof AjaxBehaviorEvent)) {
             Map<String,String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = this.getClientId(context);
@@ -106,6 +96,9 @@ import org.primefaces.convert.DateTimeConverter;
             if(eventName != null) {
                 if(eventName.equals("dateSelect")) {
                     customEvents.put("dateSelect", (AjaxBehaviorEvent) event);
+                }
+                else if(eventName.equals("close")) {
+                    customEvents.put("close", (AjaxBehaviorEvent) event);
                 }
                 else if(eventName.equals("viewChange")) {
                     int month = Integer.parseInt(params.get(clientId + "_month"));
@@ -128,7 +121,7 @@ import org.primefaces.convert.DateTimeConverter;
     public void validate(FacesContext context) {
         super.validate(context);
        
-        if(isValid() && isRequestSource(context)) {
+        if(isValid() && ComponentUtils.isRequestSource(this, context)) {
             for(Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext();) {
                 AjaxBehaviorEvent behaviorEvent = customEvents.get(customEventIter.next());
                 SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getValue());
@@ -145,6 +138,41 @@ import org.primefaces.convert.DateTimeConverter;
         }
     }
 
+    public final static String DATE_OUT_OF_RANGE_MESSAGE_ID = "primefaces.calendar.OUT_OF_RANGE";
+
+    @Override
+    protected void validateValue(FacesContext context, Object value) {
+        super.validateValue(context, value);
+
+        if (isValid() && !isEmpty(value) && value instanceof Date) {
+            Date date = (Date) value;
+            
+            Date minDate = CalendarUtils.getObjectAsDate(context, this, getMindate());
+            if (minDate != null && date.before(minDate)) {
+                setValid(false);
+            }
+            
+            if (isValid()) {
+                Date maxDate = CalendarUtils.getObjectAsDate(context, this, getMaxdate());
+                if (maxDate != null && date.after(maxDate)) {
+                    setValid(false);
+                }
+            }
+            
+            if (!isValid()) {
+                FacesMessage msg = null;
+                String validatorMessage = getValidatorMessage();
+                if (validatorMessage != null) {
+                    msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
+                } 
+                else {
+                    msg = MessageFactory.getMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, null);
+                }
+                context.addMessage(getClientId(context), msg);
+            }
+        }
+    }
+    
     public String calculatePattern() {
         String pattern = this.getPattern();
         Locale locale = this.calculateLocale(getFacesContext());
@@ -190,18 +218,13 @@ import org.primefaces.convert.DateTimeConverter;
         return (String) getStateHelper().get("labelledby");
     }
 
-    private boolean isRequestSource(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
-    }
-
     @Override
     public Converter getConverter() {
         Converter converter = super.getConverter();
         
-        if(converter == null && RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if(converter == null && PrimeApplicationContext.getCurrentInstance(getFacesContext()).getConfig().isClientSideValidationEnabled()) {
             DateTimeConverter con = new DateTimeConverter();
-            String pattern = this.isTimeOnly() ? this.calculateTimeOnlyPattern() : this.calculatePattern();
-            con.setPattern(pattern);
+            con.setPattern(this.calculatePattern());
             con.setTimeZone(this.calculateTimeZone());
             con.setLocale(this.calculateLocale(getFacesContext()));
 

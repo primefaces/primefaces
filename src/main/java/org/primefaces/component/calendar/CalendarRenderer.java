@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
@@ -76,7 +76,7 @@ public class CalendarRenderer extends InputRenderer {
         writer.startElement("span", calendar);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-        
+
         if (calendar.getStyle() != null) {
             writer.writeAttribute("style", calendar.getStyle(), null);
         }
@@ -97,7 +97,7 @@ public class CalendarRenderer extends InputRenderer {
 
     protected void encodeInput(FacesContext context, Calendar calendar, String id, String value, boolean popup) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String type = popup ? "text" : "hidden";
+        String type = popup ? calendar.getType() : "hidden";
         String labelledBy = calendar.getLabelledBy();
         String inputStyle = calendar.getInputStyle();
         String inputStyleClass = calendar.getInputStyleClass();
@@ -107,33 +107,45 @@ public class CalendarRenderer extends InputRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", type, null);
 
-        if (calendar.isRequired()) writer.writeAttribute("aria-required", "true", null);
-        
+        if (calendar.isRequired()) {
+            writer.writeAttribute("aria-required", "true", null);
+        }
+
         if (!isValueBlank(value)) {
             writer.writeAttribute("value", value, null);
         }
 
         if (popup) {
             inputStyleClass = (inputStyleClass == null) ? Calendar.INPUT_STYLE_CLASS
-                : Calendar.INPUT_STYLE_CLASS + " " + inputStyleClass;
-            if (calendar.isDisabled()) inputStyleClass = inputStyleClass + " ui-state-disabled";
-            if (!calendar.isValid()) inputStyleClass = inputStyleClass + " ui-state-error";
+                    : Calendar.INPUT_STYLE_CLASS + " " + inputStyleClass;
+            if (calendar.isDisabled()) {
+                inputStyleClass = inputStyleClass + " ui-state-disabled";
+            }
+            if (!calendar.isValid()) {
+                inputStyleClass = inputStyleClass + " ui-state-error";
+            }
 
             writer.writeAttribute("class", inputStyleClass, null);
 
-            if (inputStyle != null) writer.writeAttribute("style", inputStyle, null);
-            if (calendar.isReadonly()||calendar.isReadonlyInput()) writer.writeAttribute("readonly", "readonly", null);
-            if (calendar.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+            if (inputStyle != null) {
+                writer.writeAttribute("style", inputStyle, null);
+            }
+            if (calendar.isReadonly() || calendar.isReadonlyInput()) {
+                writer.writeAttribute("readonly", "readonly", null);
+            }
+            if (calendar.isDisabled()) {
+                writer.writeAttribute("disabled", "disabled", null);
+            }
 
             renderPassThruAttributes(context, calendar, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
             renderDomEvents(context, calendar, HTML.INPUT_TEXT_EVENTS);
         }
-        
-        if(labelledBy != null) {
+
+        if (labelledBy != null) {
             writer.writeAttribute("aria-labelledby", labelledBy, null);
         }
 
-        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, calendar);
         }
 
@@ -146,11 +158,11 @@ public class CalendarRenderer extends InputRenderer {
         String pattern = calendar.isTimeOnly() ? calendar.calculateTimeOnlyPattern() : calendar.calculatePattern();
         String mask = calendar.getMask();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Calendar", calendar.resolveWidgetVar(), clientId);
+        wb.init("Calendar", calendar.resolveWidgetVar(), clientId);
 
         wb.attr("popup", calendar.isPopup())
-            .attr("locale", locale.toString())
-            .attr("dateFormat", CalendarUtils.convertPattern(pattern));
+                .attr("locale", locale.toString())
+                .attr("dateFormat", CalendarUtils.convertPattern(pattern));
 
         //default date
         Object pagedate = calendar.getPagedate();
@@ -167,15 +179,16 @@ public class CalendarRenderer extends InputRenderer {
         }
 
         wb.attr("defaultDate", defaultDate, null)
-            .attr("numberOfMonths", calendar.getPages(), 1)
-            .attr("minDate", CalendarUtils.getValueAsString(context, calendar, calendar.getMindate()), null)
-            .attr("maxDate", CalendarUtils.getValueAsString(context, calendar, calendar.getMaxdate()), null)
-            .attr("showButtonPanel", calendar.isShowButtonPanel(), false)
-            .attr("showTodayButton", calendar.isShowTodayButton(), true)
-            .attr("showWeek", calendar.isShowWeek(), false)
-            .attr("disabledWeekends", calendar.isDisabledWeekends(), false)
-            .attr("disabled", calendar.isDisabled(), false)
-            .attr("yearRange", calendar.getYearRange(), null);
+                .attr("numberOfMonths", calendar.getPages(), 1)
+                .attr("minDate", CalendarUtils.getValueAsString(context, calendar, calendar.getMindate()), null)
+                .attr("maxDate", CalendarUtils.getValueAsString(context, calendar, calendar.getMaxdate()), null)
+                .attr("showButtonPanel", calendar.isShowButtonPanel(), false)
+                .attr("showTodayButton", calendar.isShowTodayButton(), true)
+                .attr("showWeek", calendar.isShowWeek(), false)
+                .attr("disabledWeekends", calendar.isDisabledWeekends(), false)
+                .attr("disabled", calendar.isDisabled(), false)
+                .attr("yearRange", calendar.getYearRange(), null)
+                .attr("focusOnSelect", calendar.isFocusOnSelect(), false);
 
         if (calendar.isNavigator()) {
             wb.attr("changeMonth", true).attr("changeYear", true);
@@ -189,9 +202,9 @@ public class CalendarRenderer extends InputRenderer {
         if (beforeShowDay != null) {
             wb.nativeAttr("preShowDay", beforeShowDay);
         }
-        
+
         String beforeShow = calendar.getBeforeShow();
-        if(beforeShow != null) {
+        if (beforeShow != null) {
             wb.nativeAttr("preShow", beforeShow);
         }
 
@@ -206,24 +219,29 @@ public class CalendarRenderer extends InputRenderer {
 
         if (calendar.hasTime()) {
             String timeControlType = calendar.getTimeControlType();
-            
+
             wb.attr("timeOnly", calendar.isTimeOnly())
-                .attr("stepHour", calendar.getStepHour())
-                .attr("stepMinute", calendar.getStepMinute())
-                .attr("stepSecond", calendar.getStepSecond())
-                .attr("hourMin", calendar.getMinHour())
-                .attr("hourMax", calendar.getMaxHour())
-                .attr("minuteMin", calendar.getMinMinute())
-                .attr("minuteMax", calendar.getMaxMinute())
-                .attr("secondMin", calendar.getMinSecond())
-                .attr("secondMax", calendar.getMaxSecond())
-                .attr("timeInput", calendar.isTimeInput())
-                .attr("controlType", timeControlType, null)
-                .attr("showHour", calendar.getShowHour(), null)
-                .attr("showMinute", calendar.getShowMinute(), null)
-                .attr("showSecond", calendar.getShowSecond(), null)
-                .attr("showMillisec", calendar.getShowMillisec(), null);
-            
+                    .attr("stepHour", calendar.getStepHour())
+                    .attr("stepMinute", calendar.getStepMinute())
+                    .attr("stepSecond", calendar.getStepSecond())
+                    .attr("hourMin", calendar.getMinHour())
+                    .attr("hourMax", calendar.getMaxHour())
+                    .attr("minuteMin", calendar.getMinMinute())
+                    .attr("minuteMax", calendar.getMaxMinute())
+                    .attr("secondMin", calendar.getMinSecond())
+                    .attr("secondMax", calendar.getMaxSecond())
+                    .attr("timeInput", calendar.isTimeInput())
+                    .attr("controlType", timeControlType, null)
+                    .attr("showHour", calendar.getShowHour(), null)
+                    .attr("showMinute", calendar.getShowMinute(), null)
+                    .attr("showSecond", calendar.getShowSecond(), null)
+                    .attr("showMillisec", calendar.getShowMillisec(), null)
+                    .attr("oneLine", calendar.isOneLine())
+                    .attr("hour", calendar.getDefaultHour())
+                    .attr("minute", calendar.getDefaultMinute())
+                    .attr("second", calendar.getDefaultSecond())
+                    .attr("millisec", calendar.getDefaultMillisec());
+
             String timeControlObject = calendar.getTimeControlObject();
             if (timeControlObject != null && timeControlType.equalsIgnoreCase("custom")) {
                 wb.nativeAttr("timeControlObject", timeControlObject);
@@ -232,7 +250,7 @@ public class CalendarRenderer extends InputRenderer {
 
         if (mask != null && !mask.equals("false")) {
             String patternTemplate = calendar.getPattern() == null ? pattern : calendar.getPattern();
-            String maskTemplate = (mask.equals("true")) ? patternTemplate.replaceAll("[a-zA-Z]", "9") : mask;
+            String maskTemplate = (mask.equals("true")) ? convertPattern(patternTemplate) : mask;
             wb.attr("mask", maskTemplate).attr("maskSlotChar", calendar.getMaskSlotChar(), null).attr("maskAutoClear", calendar.isMaskAutoClear(), true);
         }
 
@@ -241,6 +259,24 @@ public class CalendarRenderer extends InputRenderer {
         wb.finish();
     }
 
+    public String convertPattern(String patternTemplate) {
+        String pattern = patternTemplate.replaceAll("MMM", "###");
+        int patternLen = pattern.length();
+        int countM = patternLen - pattern.replaceAll("M","").length();
+        int countD = patternLen - pattern.replaceAll("d","").length();
+        if (countM == 1) {
+            pattern = pattern.replaceAll("M", "mm");
+        }
+        
+        if (countD == 1) {
+            pattern = pattern.replaceAll("d", "dd");
+        }
+        
+        pattern = pattern.replaceAll("[a-zA-Z]", "9");
+        pattern = pattern.replaceAll("###", "aaa");
+        return pattern;
+    }
+    
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object value) throws ConverterException {
         Calendar calendar = (Calendar) component;
@@ -253,17 +289,17 @@ public class CalendarRenderer extends InputRenderer {
 
         //Delegate to user supplied converter if defined
         try {
-        	Converter converter = calendar.getConverter();
+            Converter converter = calendar.getConverter();
             if (converter != null) {
                 return converter.getAsObject(context, calendar, submittedValue);
             }
         }
-        catch(ConverterException e){
+        catch (ConverterException e) {
             calendar.setConversionFailed(true);
 
             throw e;
         }
-        
+
         //Delegate to global defined converter (e.g. joda or java8)
         try {
             ValueExpression ve = calendar.getValueExpression("value");
@@ -277,7 +313,7 @@ public class CalendarRenderer extends InputRenderer {
                 }
             }
         }
-        catch(ConverterException e){
+        catch (ConverterException e) {
             calendar.setConversionFailed(true);
 
             throw e;
@@ -301,7 +337,7 @@ public class CalendarRenderer extends InputRenderer {
 
             if (calendar.isTimeOnly()) {
                 message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.TIME", FacesMessage.SEVERITY_ERROR, params);
-            }
+            } 
             else if (calendar.hasTime()) {
                 message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.DATETIME", FacesMessage.SEVERITY_ERROR, params);
             }

@@ -1,0 +1,31 @@
+.ui-dataview .ui-dataview-header {
+    border-bottom: 0 none;
+}
+
+.ui-dataview .ui-dataview-header, 
+.ui-dataview .ui-dataview-footer {
+    text-align: center;
+    padding: 4px 10px;
+}
+
+.ui-dataview .ui-dataview-header .ui-dataview-layout-options {
+    float: right;
+}
+
+.ui-dataview-list .ui-dataview-content {
+    padding: 4px 10px;
+}
+
+.ui-dataview-list .ui-dataview-list-container {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.ui-dataview-list .ui-dataview-row {
+    border: 0 none;
+}
+
+.ui-fluid .ui-dataview-layout-options.ui-buttonset {
+    width: auto;
+}

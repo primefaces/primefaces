@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import javax.faces.event.ActionListener;
 import javax.faces.flow.FlowHandler;
 import javax.faces.lifecycle.ClientWindow;
 import org.primefaces.component.api.UIOutcomeTarget;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 
 public class OutcomeTargetRenderer extends CoreRenderer {
 
@@ -42,7 +42,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             outcome = context.getViewRoot().getViewId();
         }
 
-        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF22()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
             if (outcomeTarget instanceof UIComponent) {
                 String toFlowDocumentId = (String) ((UIComponent) outcomeTarget).getAttributes().get(ActionListener.TO_FLOW_DOCUMENT_ID_ATTR_NAME);
 
@@ -61,9 +61,11 @@ public class OutcomeTargetRenderer extends CoreRenderer {
 
     protected boolean containsEL(List<String> values) {
         if (!values.isEmpty()) {
-            for (String value : values) {
-                if (isExpression(value))
+            // Both MyFaces and Mojarra use ArrayLists. Therefore, index loop can be used.
+            for (int i = 0; i < values.size(); i++) {
+                if (isExpression(values.get(i))) {
                     return true;
+                }
             }
         }
 
@@ -74,7 +76,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         // note that we have to create a new List here, because if we
         // change any value on the given List, it will be changed in the
         // NavigationCase too and the EL expression won't be evaluated again
-        List<String> target = new ArrayList<String>(values.size());
+        List<String> target = new ArrayList<>(values.size());
         for (String value : values) {
             if (isExpression(value)) {
                 // evaluate the ValueExpression
@@ -99,7 +101,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
                 params = new LinkedHashMap<String, List<String>>();
             }
 
-            for (Map.Entry<String,List<String>> entry : navCaseParams.entrySet()) {
+            for (Map.Entry<String, List<String>> entry : navCaseParams.entrySet()) {
                 String key = entry.getKey();
 
                 //UIParams take precedence
@@ -107,26 +109,27 @@ public class OutcomeTargetRenderer extends CoreRenderer {
                     List<String> values = entry.getValue();
                     if (containsEL(values)) {
                         params.put(key, evaluateValueExpressions(context, values));
-                    } else {
+                    }
+                    else {
                         params.put(key, values);
                     }
                 }
             }
         }
 
-        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF22()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
             String toFlowDocumentId = navCase.getToFlowDocumentId();
             if (toFlowDocumentId != null) {
                 if (params == null) {
-                    params = new LinkedHashMap<String, List<String>>();
+                    params = new LinkedHashMap<>();
                 }
 
-                List<String> flowDocumentIdValues = new ArrayList<String>();
+                List<String> flowDocumentIdValues = new ArrayList<>();
                 flowDocumentIdValues.add(toFlowDocumentId);
                 params.put(FlowHandler.TO_FLOW_DOCUMENT_ID_REQUEST_PARAM_NAME, flowDocumentIdValues);
 
                 if (!FlowHandler.NULL_FLOW.equals(toFlowDocumentId)) {
-                    List<String> flowIdValues = new ArrayList<String>();
+                    List<String> flowIdValues = new ArrayList<>();
                     flowIdValues.add(navCase.getFromOutcome());
                     params.put(FlowHandler.FLOW_ID_REQUEST_PARAM_NAME, flowIdValues);
                 }
@@ -140,26 +143,42 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         return outcomeTarget.isIncludeViewParams() || navCase.isIncludeViewParams();
     }
 
+    protected String prependContextPathIfNecessary(FacesContext facesContext, String path) {
+        if (path.length() > 0 && path.charAt(0) == '/') {
+            String contextPath = facesContext.getExternalContext().getRequestContextPath();
+            if (contextPath == null) {
+                return path;
+            }
+            else if (contextPath.length() == 1 && contextPath.charAt(0) == '/') {
+                // If the context path is root, it is not necessary to append it, otherwise an extra '/' will be set.
+                return path;
+            }
+            else {
+                return contextPath + path;
+            }
+        }
+        return path;
+    }
+
     protected String getTargetURL(FacesContext context, UIOutcomeTarget outcomeTarget) {
         String url;
+        
         String href = outcomeTarget.getHref();
-
         if (href != null) {
-            url = getResourceURL(context, href);
+            url = getHrefURL(prependContextPathIfNecessary(context, href), outcomeTarget.getParams());
         }
         else {
             NavigationCase navCase = findNavigationCase(context, outcomeTarget);
 
             if (navCase == null) {
-            	throw new FacesException("Could not resolve NavigationCase for outcome: " + outcomeTarget.getOutcome());
+                throw new FacesException("Could not resolve NavigationCase for outcome: " + outcomeTarget.getOutcome());
             }
 
             String toViewId = navCase.getToViewId(context);
             boolean isIncludeViewParams = isIncludeViewParams(outcomeTarget, navCase);
             Map<String, List<String>> params = getParams(context, navCase, outcomeTarget);
 
-            if (params == null)
-            {
+            if (params == null) {
                 params = Collections.emptyMap();
             }
 
@@ -167,7 +186,9 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             Object clientWindow = null;
 
             try {
-                if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF22() && outcomeTarget.isDisableClientWindow()) {
+                if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()
+                        && outcomeTarget.isDisableClientWindow()) {
+
                     clientWindow = context.getExternalContext().getClientWindow();
 
                     if (clientWindow != null) {
@@ -181,7 +202,8 @@ public class OutcomeTargetRenderer extends CoreRenderer {
 
                 url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, isIncludeViewParams);
 
-            } finally {
+            }
+            finally {
                 if (clientWindowRenderingModeEnabled && clientWindow != null) {
                     ((ClientWindow) clientWindow).enableClientWindowRenderMode(context);
                 }

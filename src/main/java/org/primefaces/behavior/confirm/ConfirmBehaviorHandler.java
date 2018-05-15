@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,26 +28,32 @@ public class ConfirmBehaviorHandler extends AbstractBehaviorHandler<ConfirmBehav
     private final TagAttribute message;
     private final TagAttribute icon;
     private final TagAttribute disabled;
-    
+    private final TagAttribute beforeShow;
+    private final TagAttribute escape;
+
     public ConfirmBehaviorHandler(BehaviorConfig config) {
         super(config);
         this.header = this.getAttribute(ConfirmBehavior.PropertyKeys.header.name());
         this.message = this.getAttribute(ConfirmBehavior.PropertyKeys.message.name());
         this.icon = this.getAttribute(ConfirmBehavior.PropertyKeys.icon.name());
         this.disabled = this.getAttribute(ConfirmBehavior.PropertyKeys.disabled.name());
+        this.beforeShow = this.getAttribute(ConfirmBehavior.PropertyKeys.beforeShow.name());
+        this.escape = this.getAttribute(ConfirmBehavior.PropertyKeys.escape.name());
     }
-    
+
     @Override
     protected ConfirmBehavior createBehavior(FaceletContext ctx, String eventName, UIComponent parent) {
         Application application = ctx.getFacesContext().getApplication();
-        ConfirmBehavior behavior = (ConfirmBehavior)application.createBehavior(ConfirmBehavior.BEHAVIOR_ID);
-        
+        ConfirmBehavior behavior = (ConfirmBehavior) application.createBehavior(ConfirmBehavior.BEHAVIOR_ID);
+
         setBehaviorAttribute(ctx, behavior, this.header, ConfirmBehavior.PropertyKeys.header.expectedType);
         setBehaviorAttribute(ctx, behavior, this.message, ConfirmBehavior.PropertyKeys.message.expectedType);
         setBehaviorAttribute(ctx, behavior, this.icon, ConfirmBehavior.PropertyKeys.icon.expectedType);
         setBehaviorAttribute(ctx, behavior, this.disabled, ConfirmBehavior.PropertyKeys.disabled.expectedType);
-        
+        setBehaviorAttribute(ctx, behavior, this.beforeShow, ConfirmBehavior.PropertyKeys.beforeShow.expectedType);
+        setBehaviorAttribute(ctx, behavior, this.escape, ConfirmBehavior.PropertyKeys.escape.expectedType);
+
         return behavior;
     }
-    
+
 }

@@ -239,15 +239,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
             }
         });
     },
-    
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
-    
-        return false;
-    },
-    
+
     fireItemSelectEvent: function(item, e) {
         if(this.hasBehavior('select')) {
             var itemSelectBehavior = this.cfg.behaviors['select'],

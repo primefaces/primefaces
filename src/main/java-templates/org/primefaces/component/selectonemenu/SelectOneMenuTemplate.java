@@ -1,6 +1,6 @@
 import org.primefaces.component.column.Column;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.RequestContext;
 import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import javax.faces.render.Renderer;
     public final static String STYLE_CLASS = "ui-selectonemenu ui-widget ui-state-default ui-corner-all";
     public final static String LABEL_CLASS = "ui-selectonemenu-label ui-inputfield ui-corner-all";
     public final static String TRIGGER_CLASS = "ui-selectonemenu-trigger ui-state-default ui-corner-right";
-    public final static String PANEL_CLASS = "ui-selectonemenu-panel ui-widget ui-widget-content ui-corner-all ui-helper-hidden ui-shadow";
+    public final static String PANEL_CLASS = "ui-selectonemenu-panel ui-widget ui-widget-content ui-corner-all ui-helper-hidden ui-shadow ui-input-overlay";
     public final static String ITEMS_WRAPPER_CLASS = "ui-selectonemenu-items-wrapper";
     public final static String LIST_CLASS = "ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset";
     public final static String TABLE_CLASS = "ui-selectonemenu-items ui-selectonemenu-table ui-widget-content ui-widget ui-corner-all ui-helper-reset";
@@ -40,12 +40,15 @@ import javax.faces.render.Renderer;
         return EVENT_NAMES;    
     }
 
+    public boolean isDynamicLoadRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_dynamicload");
+    }
 
     public String getDefaultEventName() {
         return "valueChange";    
     }
 
-    public List<Column> getColums() {
+    public List<Column> getColumns() {
         List<Column> columns = new ArrayList<Column>();
         
         for(UIComponent kid : this.getChildren()) {
@@ -104,7 +107,7 @@ import javax.faces.render.Renderer;
                 setValid(false);
             }
 
-            PrimeConfiguration config = RequestContext.getCurrentInstance().getApplicationContext().getConfig();
+            PrimeConfiguration config = PrimeApplicationContext.getCurrentInstance(getFacesContext()).getConfig();
             
             //other validators
             if(isValid() && (!isEmpty(value) || config.isValidateEmptyFields())) {

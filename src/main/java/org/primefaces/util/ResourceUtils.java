@@ -1,11 +1,11 @@
-/*
- * Copyright 2014 tandraschko.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,23 +18,21 @@ package org.primefaces.util;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.Resource;
-import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 
 public class ResourceUtils {
 
-    private static final Logger LOG = Logger.getLogger(ResourceUtils.class.getName());
-    
     public static final String RENDERER_SCRIPT = "javax.faces.resource.Script";
     public static final String RENDERER_STYLESHEET = "javax.faces.resource.Stylesheet";
-   
+    
+    private static final Logger LOG = Logger.getLogger(ResourceUtils.class.getName());
+    
     public static void addComponentResource(FacesContext context, String name, String library, String target) {
 
         Application application = context.getApplication();
@@ -65,11 +63,12 @@ public class ResourceUtils {
     }
    
     public static ArrayList<ResourceInfo> getComponentResources(FacesContext context) {
-        ArrayList<ResourceInfo> resourceInfos = new ArrayList<ResourceInfo>();
+        ArrayList<ResourceInfo> resourceInfos = new ArrayList<>();
         
         List<UIComponent> resources = context.getViewRoot().getComponentResources(context, "head");
         if (resources != null) {
-            for (UIComponent resource : resources) {
+            for (int i = 0; i < resources.size(); i++) {
+                UIComponent resource = resources.get(i);
                 ResourceUtils.ResourceInfo resourceInfo = newResourceInfo(resource);
                 if (resourceInfo != null && !resourceInfos.contains(resourceInfo)) {
                     resourceInfos.add(resourceInfo);
@@ -79,65 +78,7 @@ public class ResourceUtils {
         
         return resourceInfos;
     }
-    
-    public static ArrayList<String> filterStylesheets(FacesContext context, ArrayList<ResourceInfo> resourceInfos) {
-        if (resourceInfos == null || resourceInfos.isEmpty()) {
-            return null;
-        }
-        
-        ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
-        
-        ArrayList<String> stylesheets = new ArrayList<String>();
-        for (ResourceInfo resourceInfo : resourceInfos) {
-            if (isStylesheet(resourceInfo.getResource()) && !isInline(resourceInfo)) {
-                Resource resource;
-                if (ComponentUtils.isValueBlank(resourceInfo.getLibrary())) {
-                    resource = resourceHandler.createResource(resourceInfo.getName());
-                }
-                else {
-                    resource = resourceHandler.createResource(resourceInfo.getName(), resourceInfo.getLibrary());
-                }
 
-                if (resource == null) {
-                    LOG.log(Level.WARNING, "Resource not found, ignore it. Name: " + resourceInfo.getName() + ", Library: " + resourceInfo.getLibrary());
-                }
-                else {
-                    stylesheets.add(resource.getRequestPath());
-                }
-            }
-        }
-        return stylesheets;
-    }
-    
-    public static ArrayList<String> filterScripts(FacesContext context, ArrayList<ResourceInfo> resourceInfos) {
-        if (resourceInfos == null || resourceInfos.isEmpty()) {
-            return null;
-        }
-        
-        ResourceHandler resourceHandler = context.getApplication().getResourceHandler();
-        
-        ArrayList<String> scripts = new ArrayList<String>();
-        for (ResourceInfo resourceInfo : resourceInfos) {
-            if (isScript(resourceInfo.getResource()) && !isInline(resourceInfo)) {
-                Resource resource;
-                if (ComponentUtils.isValueBlank(resourceInfo.getLibrary())) {
-                    resource = resourceHandler.createResource(resourceInfo.getName());
-                }
-                else {
-                    resource = resourceHandler.createResource(resourceInfo.getName(), resourceInfo.getLibrary());
-                }
-                
-                if (resource == null) {
-                    LOG.log(Level.WARNING, "Resource not found, ignore it. Name: " + resourceInfo.getName() + ", Library: " + resourceInfo.getLibrary());
-                }
-                else {
-                    scripts.add(resource.getRequestPath());
-                }
-            }
-        }
-        return scripts;
-    }
-    
     public static boolean isInline(ResourceInfo resourceInfo) {
         if (resourceInfo != null) {
             return ComponentUtils.isValueBlank(resourceInfo.getLibrary()) && ComponentUtils.isValueBlank(resourceInfo.getName());

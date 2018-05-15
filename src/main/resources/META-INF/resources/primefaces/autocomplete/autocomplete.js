@@ -22,9 +22,13 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.myPos = this.cfg.myPos||'left top';
         this.cfg.atPos = this.cfg.atPos||'left bottom';
         this.cfg.active = (this.cfg.active === false) ? false : true;
+        this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
+        this.cfg.autoSelection = this.cfg.autoSelection === false ? false : true;
         this.suppressInput = true;
         this.touchToDropdownButton = false;
-        
+        this.isTabPressed = false;
+        this.isDynamicLoaded = false;
+
         if(this.cfg.cache) {
             this.initCache();
         }
@@ -37,7 +41,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.setupMultipleMode();
 
             this.multiItemContainer.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
-            
+
             if(this.cfg.selectLimit >= 0 && this.multiItemContainer.children('li.ui-autocomplete-token').length === this.cfg.selectLimit) {
                 this.input.hide();
                 this.disableDropdown();
@@ -65,7 +69,9 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
 
         //Panel management
-        this.appendPanel();
+        if(this.panel.length) {
+            this.appendPanel();
+        }
 
         //itemtip
         if(this.cfg.itemtip) {
@@ -74,21 +80,23 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.itemtipAtPosition = this.cfg.itemtipAtPosition||'right bottom';
             this.cfg.checkForScrollbar = (this.cfg.itemtipAtPosition.indexOf('right') !== -1);
         }
-        
+
         //aria
-        this.input.attr('aria-autocomplete', 'listbox');
+        this.input.attr('aria-autocomplete', 'list');
         this.jq.attr('role', 'application');
         this.jq.append('<span role="status" aria-live="polite" class="ui-autocomplete-status ui-helper-hidden-accessible"></span>');
         this.status = this.jq.children('.ui-autocomplete-status');
     },
 
-    appendPanel: function() {
-        var container = this.cfg.appendTo ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo): $(document.body);
+    //@override
+    refresh: function(cfg) {
+        PrimeFaces.utils.removeAllDynamicOverlays(this.id + '_panel');
 
-        if(!container.is(this.jq)) {
-            container.children(this.panelId).remove();
-            this.panel.appendTo(container);
-        }
+        this._super(cfg);
+    },
+
+    appendPanel: function() {
+        PrimeFaces.utils.registerDynamicOverlay(this, this.panel, this.id + '_panel');
     },
 
     initCache: function() {
@@ -132,9 +140,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         var closeSelector = '> li.ui-autocomplete-token > .ui-autocomplete-token-icon';
         this.multiItemContainer.off('click', closeSelector).on('click', closeSelector, null, function(event) {
             if($this.multiItemContainer.children('li.ui-autocomplete-token').length === $this.cfg.selectLimit) {
-                if(PrimeFaces.isIE(8)) {
-                    $this.input.val('');
-                }
                 $this.input.css('display', 'inline');
                 $this.enableDropdown();
             }
@@ -154,38 +159,19 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 $this.touchToDropdownButton = true;
             });
         }
-        
-        //hide overlay when outside is clicked
-        this.hideNS = 'mousedown.' + this.id;
-        $(document.body).off(this.hideNS).on(this.hideNS, function (e) {
-            if($this.panel.is(":hidden")) {
-                return;
-            }
-            
-            var offset = $this.panel.offset();
-            if(e.target === $this.input.get(0)) {
-                return;
-            }
-            
-            if (e.pageX < offset.left ||
-                e.pageX > offset.left + $this.panel.width() ||
-                e.pageY < offset.top ||
-                e.pageY > offset.top + $this.panel.height()) {
-                $this.hide();
-            }
-        });
 
-        this.resizeNS = 'resize.' + this.id;
-        $(window).off(this.resizeNS).on(this.resizeNS, function(e) {
-            if($this.panel.is(':visible')) {
-                $this.alignPanel();
-            }
+        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id, $this.panel,
+            function() { return $this.itemtip; },
+            function(e) { $this.hide(); });
+
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.panel, function() {
+             $this.alignPanel();
         });
     },
-    
+
     bindDropdownEvents: function() {
         var $this = this;
-        
+
         this.dropdown.mouseover(function() {
             $(this).addClass('ui-state-hover');
         }).mouseout(function() {
@@ -208,14 +194,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }).keydown(function(e) {
             var keyCode = $.ui.keyCode,
             key = e.which;
-            
+
             if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
                 $(this).addClass('ui-state-active');
             }
         }).keyup(function(e) {
             var keyCode = $.ui.keyCode,
             key = e.which;
-            
+
             if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
                 $(this).removeClass('ui-state-active');
                 $this.searchWithDropdown();
@@ -225,20 +211,20 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
         });
     },
-    
+
     disableDropdown: function() {
         if(this.dropdown.length) {
             this.dropdown.off().prop('disabled', true).addClass('ui-state-disabled');
         }
     },
-    
+
     enableDropdown: function() {
         if(this.dropdown.length && this.dropdown.prop('disabled')) {
             this.bindDropdownEvents();
             this.dropdown.prop('disabled', false).removeClass('ui-state-disabled');
         }
     },
-    
+
     bindKeyEvents: function() {
         var $this = this;
 
@@ -247,22 +233,22 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 $this.processKeyEvent(e);
             });
         }
-        
+
         this.input.on('keyup.autoComplete', function(e) {
             var keyCode = $.ui.keyCode,
             key = e.which;
-            
-            if(PrimeFaces.isIE(9) && key === keyCode.BACKSPACE) {
+
+            if(PrimeFaces.env.isIE(9) && (key === keyCode.BACKSPACE || key === keyCode.DELETE)) {
                 $this.processKeyEvent(e);
             }
-            
+
             if($this.cfg.queryEvent === 'enter' && (key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER)) {
                 if($this.itemSelectedWithEnter)
                     $this.itemSelectedWithEnter = false;
                 else
                     $this.search($this.input.val());
             }
-            
+
             if($this.panel.is(':visible')) {
                 if(key === keyCode.ESCAPE) {
                     $this.hide();
@@ -274,6 +260,10 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     }
                 }
             }
+
+            $this.checkMatchedItem = true;
+            $this.isTabPressed = false;
+
         }).on('keydown.autoComplete', function(e) {
             var keyCode = $.ui.keyCode;
 
@@ -325,12 +315,15 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         if ($this.timeout) {
                             $this.deleteTimeout();
                         }
-                    
-                        highlightedItem.click();
+
+                        if (highlightedItem.length > 0) {
+                            highlightedItem.click();
+                            $this.itemSelectedWithEnter = true;
+                        }
 
                         e.preventDefault();
                         e.stopPropagation();
-                        $this.itemSelectedWithEnter = true;
+
                         break;
 
                     case 18: //keyCode.ALT:
@@ -342,6 +335,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                             highlightedItem.trigger('click');
                         }
                         $this.hide();
+                        $this.isTabPressed = true;
                         break;
                 }
             }
@@ -351,15 +345,20 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         if ($this.timeout) {
                             $this.deleteTimeout();
                         }
+                        $this.isTabPressed = true;
                     break;
-                    
+
                     case keyCode.ENTER:
-                    case keyCode.NUMPAD_ENTER:                        
+                    case keyCode.NUMPAD_ENTER:
                         if($this.cfg.queryEvent === 'enter' || ($this.timeout > 0) || $this.querying) {
                             e.preventDefault();
                         }
+
+                        if($this.cfg.queryEvent !== 'enter') {
+                            $this.isValid($(this).val());
+                        }
                     break;
-                    
+
                     case keyCode.BACKSPACE:
                         if ($this.cfg.multiple && !$this.input.val().length) {
                             $this.removeItem(e, $(this).parent().prev());
@@ -369,15 +368,18 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     break;
                 };
             }
-            
-        });
+
+        }).on('paste.autoComplete', function() {
+			$this.suppressInput = false;
+            $this.checkMatchedItem = true;
+		});
     },
 
     bindDynamicEvents: function() {
         var $this = this;
 
         //visuals and click handler for items
-        this.items.bind('mouseover', function() {
+        this.items.on('mouseover', function() {
             var item = $(this);
 
             if(!item.hasClass('ui-state-highlight')) {
@@ -389,37 +391,46 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
         })
-        .bind('click', function(event) {
+        .on('click', function(event) {
             var item = $(this),
-            itemValue = item.attr('data-item-value'),
             isMoreText = item.hasClass('ui-autocomplete-moretext');
-            
-            if(PrimeFaces.isIE(8)) {
-                $this.itemClick = true;
-            }
-            
+
             if(isMoreText) {
                 $this.input.focus();
-                $this.invokeMoreTextBehavior(); 
+                $this.invokeMoreTextBehavior();
             }
             else {
+                var itemValue = item.attr('data-item-value');
+                
                 if($this.cfg.multiple) {
-                    var itemDisplayMarkup = '<li data-token-value="' + item.attr('data-item-value') + '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden">';
-                    itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close" />';
-                    itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + item.attr('data-item-label') + '</span></li>';
+                    var found = false;
+                    if($this.cfg.unique) {
+                        found = $this.multiItemContainer.children("li[data-token-value='" + $.escapeSelector(itemValue) + "']").length != 0;
+                    }
 
-                    $this.inputContainer.before(itemDisplayMarkup);
-                    $this.multiItemContainer.children('.ui-helper-hidden').fadeIn();
-                    $this.input.val('').focus();
+                    if(!found) {
+                        var itemStyleClass = item.attr('data-item-class');
+                        var itemDisplayMarkup = '<li data-token-value="' + PrimeFaces.escapeHTML(itemValue);
+                        itemDisplayMarkup += '"class="ui-autocomplete-token ui-state-active ui-corner-all ui-helper-hidden';
+                        itemDisplayMarkup += (itemStyleClass === '' ? '' : ' '+itemStyleClass) + '">';
+                        itemDisplayMarkup += '<span class="ui-autocomplete-token-icon ui-icon ui-icon-close" />';
+                        itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + PrimeFaces.escapeHTML(item.attr('data-item-label')) + '</span></li>';
 
-                    $this.hinput.append('<option value="' + itemValue + '" selected="selected"></option>');
-                    if($this.multiItemContainer.children('li.ui-autocomplete-token').length >= $this.cfg.selectLimit) {
-                        $this.input.css('display', 'none').blur();
-                        $this.disableDropdown();
+                        $this.inputContainer.before(itemDisplayMarkup);
+                        $this.multiItemContainer.children('.ui-helper-hidden').fadeIn();
+                        $this.input.val('');
+
+                        $this.hinput.append('<option value="' + PrimeFaces.escapeHTML(itemValue) + '" selected="selected"></option>');
+                        if($this.multiItemContainer.children('li.ui-autocomplete-token').length >= $this.cfg.selectLimit) {
+                            $this.input.css('display', 'none').blur();
+                            $this.disableDropdown();
+                        }
+
+                        $this.invokeItemSelectBehavior(event, itemValue);
                     }
                 }
                 else {
-                    $this.input.val(item.attr('data-item-label')).focus();
+                    $this.input.val(item.attr('data-item-label'));
 
                     this.currentText = $this.input.val();
                     this.previousText = $this.input.val();
@@ -432,14 +443,21 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         var length = $this.input.val().length;
                         $this.input.setSelection(length,length);
                     }
+
+                    $this.invokeItemSelectBehavior(event, itemValue);
                 }
 
-                $this.invokeItemSelectBehavior(event, itemValue);
+                if(!$this.isTabPressed) {
+                    $this.input.focus();
+                }
             }
 
             $this.hide();
+        })
+        .on('mousedown', function() {
+            $this.checkMatchedItem = false;
         });
-        
+
         if(PrimeFaces.env.browser.mobile) {
             this.items.bind('touchstart', function() {
                 if(!$this.touchToDropdownButton) {
@@ -451,7 +469,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
     processKeyEvent: function(e) {
         var $this = this;
-        
+
         if($this.suppressInput) {
             e.preventDefault();
             return;
@@ -466,12 +484,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
         }
 
-        // for click event on IE8
-        if(PrimeFaces.isIE(8) && ($this.itemClick || e.originalEvent.propertyName !== 'value')) {
-            $this.itemClick = false;
-            return;
-        }
-
         var value = $this.input.val();
 
         if($this.cfg.pojo && !$this.cfg.multiple) {
@@ -480,6 +492,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         if(!value.length) {
             $this.hide();
+            $this.deleteTimeout();
         }
 
         if(value.length >= $this.cfg.minLength) {
@@ -493,8 +506,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 $this.search(value);
             }, delay);
         }
+        else if(value.length === 0) {
+            if($this.timeout) {
+                $this.deleteTimeout();
+            }
+            $this.fireClearEvent();
+        }
     },
-    
+
     showItemtip: function(item) {
         if(item.hasClass('ui-autocomplete-moretext')) {
             this.itemtip.hide();
@@ -540,11 +559,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     showSuggestions: function(query) {
         this.items = this.panel.find('.ui-autocomplete-item');
         this.items.attr('role', 'option');
-        
+
         if(this.cfg.grouping) {
             this.groupItems();
         }
-        
+
         this.bindDynamicEvents();
 
         var $this=this,
@@ -588,22 +607,22 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             if(this.cfg.autoHighlight && this.cfg.itemtip && firstItem.length === 1) {
                 this.showItemtip(firstItem);
             }
-            
+
             this.displayAriaStatus(this.items.length + this.cfg.resultsMessage);
         }
         else {
             if(this.cfg.emptyMessage) {
-                var emptyText = '<div class="ui-autocomplete-emptyMessage ui-widget">'+this.cfg.emptyMessage+'</div>';
+                var emptyText = '<div class="ui-autocomplete-emptyMessage ui-widget">' + PrimeFaces.escapeHTML(this.cfg.emptyMessage) + '</div>';
                 this.panel.html(emptyText);
             }
             else {
                 this.panel.hide();
             }
-            
+
             this.displayAriaStatus(this.cfg.ariaEmptyMessage);
         }
     },
-    
+
     searchWithDropdown: function() {
         if(this.cfg.dropdownMode === 'current')
             this.search(this.input.val());
@@ -626,7 +645,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         if(!this.active) {
             return;
         }
-        
+
         this.querying = true;
 
         var $this = this;
@@ -644,7 +663,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                     widget: $this,
                     handle: function(content) {
-                        this.panel.html(content);
+                        if(this.cfg.dynamic && !this.isDynamicLoaded) {
+                            this.panel = $(content);
+                            this.appendPanel();
+                            content = this.panel.get(0).innerHTML;
+                        }
+                        else {
+                            this.panel.html(content);
+                        }
 
                         if(this.cfg.cache) {
                             this.cache[query] = content;
@@ -658,12 +684,17 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             },
             oncomplete: function() {
                 $this.querying = false;
+                $this.isDynamicLoaded = true;
             }
         };
 
         options.params = [
           {name: this.id + '_query', value: query}
         ];
+
+        if(this.cfg.dynamic && !this.isDynamicLoaded) {
+            options.params.push({name: this.id + '_dynamicload', value: true});
+        }
 
         if(this.hasBehavior('query')) {
             var queryBehavior = this.cfg.behaviors['query'];
@@ -723,21 +754,21 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
         }
     },
-    
+
     invokeMoreTextBehavior: function() {
         if(this.cfg.behaviors) {
             var moreTextBehavior = this.cfg.behaviors['moreText'];
 
-            if(moreTextBehavior) {            
+            if(moreTextBehavior) {
                 var ext = {
                     params : [
                         {name: this.id + '_moreText', value: true}
                     ]
                 };
-                
+
                 moreTextBehavior.call(this, ext);
             }
-        }  
+        }
     },
 
     removeItem: function(event, item) {
@@ -764,32 +795,22 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         this.input.blur(function() {
             var value = $(this).val(),
-            valid = false;
-            
-            if(PrimeFaces.isIE(8)) {
-                $this.itemClick = true;
-            }
-            
-            for(var i = 0; i < $this.currentItems.length; i++) {
-                var stripedItem = $this.currentItems[i].replace(/\r?\n/g, '');
-                if(stripedItem === value) {
-                    valid = true;
-                    break;
+            valid = $this.isValid(value);
+
+            if($this.cfg.autoSelection && valid && $this.checkMatchedItem && $this.items && !$this.isTabPressed && !$this.itemSelectedWithEnter) {
+                var selectedItem = $this.items.filter('[data-item-label="' + $.escapeSelector(value) + '"]');
+                if (selectedItem.length) {
+                    selectedItem.click();
                 }
             }
 
-            if(!valid) {
-                $this.input.val('');
-                if(!$this.cfg.multiple) {
-                    $this.hinput.val('');
-                }
-            }
+            $this.checkMatchedItem = false;
         });
     },
 
     disable: function() {
         this.input.addClass('ui-state-disabled').prop('disabled', true);
-        
+
         if(this.dropdown.length) {
             this.dropdown.addClass('ui-state-disabled').prop('disabled', true);
         }
@@ -797,12 +818,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
     enable: function() {
         this.input.removeClass('ui-state-disabled').prop('disabled', false);
-        
+
         if(this.dropdown.length) {
             this.dropdown.removeClass('ui-state-disabled').prop('disabled', false);
         }
     },
-    
+
     close: function() {
         this.hide();
     },
@@ -813,14 +834,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
     activate: function() {
         this.active = true;
-    },
-
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
-
-        return false;
     },
 
     alignPanel: function() {
@@ -874,17 +887,17 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 });
         }
     },
-    
+
     displayAriaStatus: function(text) {
-        this.status.html('<div>' + text + '</div>');
+        this.status.html('<div>' + PrimeFaces.escapeHTML(text) + '</div>');
     },
-    
+
     groupItems: function() {
         var $this = this;
-        
+
         if(this.items.length) {
             this.itemContainer = this.panel.children('.ui-autocomplete-items');
-            
+
             var firstItem = this.items.eq(0);
             if(!firstItem.hasClass('ui-autocomplete-moretext')) {
                 this.currentGroup = firstItem.data('item-group');
@@ -892,12 +905,12 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
                 firstItem.before(this.getGroupItem($this.currentGroup, $this.itemContainer, currentGroupTooltip));
             }
-            
+
             this.items.filter(':not(.ui-autocomplete-moretext)').each(function(i) {
                 var item = $this.items.eq(i),
                 itemGroup = item.data('item-group'),
                 itemGroupTooltip = item.data('item-group-tooltip');
-                
+
                 if($this.currentGroup !== itemGroup) {
                     $this.currentGroup = itemGroup;
                     item.before($this.getGroupItem(itemGroup, $this.itemContainer, itemGroupTooltip));
@@ -905,31 +918,68 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             });
         }
     },
-    
+
     getGroupItem: function(group, container, tooltip) {
         var element = null;
-        
+
         if(container.is('.ui-autocomplete-table')) {
             if(!this.colspan) {
                 this.colspan = this.items.eq(0).children('td').length;
             }
-            
+
             element = $('<tr class="ui-autocomplete-group ui-widget-header"><td colspan="' + this.colspan + '">' + group + '</td></tr>');
         }
         else {
             element = $('<li class="ui-autocomplete-group ui-autocomplete-list-item ui-widget-header">' + group + '</li>');
         }
-        
+
         if(element) {
             element.attr('title', tooltip);
         }
-        
+
         return element;
     },
-    
+
     deleteTimeout: function() {
         clearTimeout(this.timeout);
         this.timeout = null;
+    },
+
+    fireClearEvent: function() {
+        if(this.hasBehavior('clear')) {
+            var clearBehavior = this.cfg.behaviors['clear'];
+
+            clearBehavior.call(this);
+        }
+    },
+
+    isValid: function(value) {
+        if(!this.cfg.forceSelection) {
+            return;
+        }
+
+        var valid = false;
+
+        for(var i = 0; i < this.currentItems.length; i++) {
+            var stripedItem = this.currentItems[i];
+            if (stripedItem) {
+                stripedItem = stripedItem.replace(/\r?\n/g, '');
+            }
+
+            if(stripedItem === value) {
+                valid = true;
+                break;
+            }
+        }
+
+        if(!valid) {
+            this.input.val('');
+            if(!this.cfg.multiple) {
+                this.hinput.val('');
+            }
+        }
+
+        return valid;
     }
 
 });

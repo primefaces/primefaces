@@ -53,7 +53,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         }).click(function(e) {
             var element = $(this);
             if(!element.hasClass('ui-state-disabled')) {
-                var tabIndex = element.index() / 2;
+                var tabIndex = $this.headers.index(element);
 
                 if(element.hasClass('ui-state-active')) {
                     $this.unselect(tabIndex);
@@ -273,7 +273,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         ext = {
             params: [
                 {name: this.id + '_tabId', value: panel.attr('id')},
-                {name: this.id + '_tabindex', value: parseInt(index / 2)}
+                {name: this.id + '_tabindex', value: parseInt(index)}
             ]
         };
 
@@ -295,14 +295,6 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
 
     isLoaded: function(panel) {
         return panel.data('loaded') == true;
-    },
-
-    hasBehavior: function(event) {
-        if(this.cfg.behaviors) {
-            return this.cfg.behaviors[event] != undefined;
-        }
-
-        return false;
     },
 
     addToSelection: function(nodeId) {

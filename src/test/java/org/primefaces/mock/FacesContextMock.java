@@ -37,141 +37,151 @@ public class FacesContextMock extends FacesContext {
     private Application application = new ApplicationMock();
     private PartialViewContext partialViewContext = new PartialViewContextMock();
 
-	private Map<Object, Object> attributes;
-	private ResponseWriter writer;
+    private Map<Object, Object> attributes;
+    private ResponseWriter writer;
     private UIViewRoot viewRoot;
 
+    public FacesContextMock() {
+        this.attributes = new HashMap<Object, Object>();
 
-	public FacesContextMock() {
-            this.attributes = new HashMap<Object, Object>();
-
-            setCurrentInstance(this);
+        setCurrentInstance(this);
     }
 
-	public FacesContextMock(ResponseWriter writer) {
-            this();
-            this.writer = writer;
+    public FacesContextMock(ResponseWriter writer) {
+        this();
+        this.writer = writer;
 
+    }
 
-	}
+    public FacesContextMock(Map<Object, Object> attributes) {
+        this();
+        this.attributes = attributes;
+    }
 
-	public FacesContextMock(Map<Object, Object> attributes) {
-            this();
-            this.attributes = attributes;
-	}
+    public FacesContextMock(ResponseWriter writer, Map<Object, Object> attributes) {
+        this.writer = writer;
+        this.attributes = attributes;
 
-	@Override
+        setCurrentInstance(this);
+    }
+
+    @Override
     public Map<Object, Object> getAttributes() {
-		return attributes;
-	}
+        return attributes;
+    }
 
-	@Override
+    @Override
     public boolean isProjectStage(ProjectStage stage) {
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public void addMessage(String arg0, FacesMessage arg1) {
+    @Override
+    public void addMessage(String arg0, FacesMessage arg1) {
 
-	}
+    }
 
-	@Override
-	public Application getApplication() {
-		return application;
-	}
+    @Override
+    public Application getApplication() {
+        return application;
+    }
 
-	@Override
-	public Iterator<String> getClientIdsWithMessages() {
-		return null;
-	}
+    @Override
+    public Iterator<String> getClientIdsWithMessages() {
+        return null;
+    }
 
-	@Override
-	public ExternalContext getExternalContext() {
-		return externalContext;
-	}
+    @Override
+    public ExternalContext getExternalContext() {
+        return externalContext;
+    }
 
     @Override
     public PartialViewContext getPartialViewContext() {
         return partialViewContext;
     }
 
-	@Override
-	public Severity getMaximumSeverity() {
-		return null;
-	}
+    @Override
+    public Severity getMaximumSeverity() {
+        return null;
+    }
 
-	@Override
-	public Iterator<FacesMessage> getMessages() {
-		return null;
-	}
+    @Override
+    public Iterator<FacesMessage> getMessages() {
+        return null;
+    }
 
-	@Override
-	public Iterator<FacesMessage> getMessages(String arg0) {
-		return null;
-	}
+    @Override
+    public Iterator<FacesMessage> getMessages(String arg0) {
+        return null;
+    }
 
-	@Override
-	public RenderKit getRenderKit() {
-		return new RenderKitMock();
-	}
+    @Override
+    public RenderKit getRenderKit() {
+        return new RenderKitMock();
+    }
 
-	@Override
-	public boolean getRenderResponse() {
-		return false;
-	}
+    @Override
+    public boolean getRenderResponse() {
+        return false;
+    }
 
-	@Override
-	public boolean getResponseComplete() {
-		return false;
-	}
+    @Override
+    public boolean getResponseComplete() {
+        return false;
+    }
 
-	@Override
-	public ResponseStream getResponseStream() {
-		return null;
-	}
+    @Override
+    public ResponseStream getResponseStream() {
+        return null;
+    }
 
-	@Override
-	public ResponseWriter getResponseWriter() {
-		return writer;
-	}
+    @Override
+    public ResponseWriter getResponseWriter() {
+        return writer;
+    }
 
-	@Override
-	public UIViewRoot getViewRoot() {
-		return viewRoot;
-	}
+    @Override
+    public UIViewRoot getViewRoot() {
+        return viewRoot;
+    }
 
-	@Override
-	public void release() {
+    @Override
+    public void release() {
 
-	}
+    }
 
-	@Override
-	public void renderResponse() {
+    @Override
+    public void renderResponse() {
 
-	}
+    }
 
-	@Override
-	public void responseComplete() {
+    @Override
+    public void responseComplete() {
 
-	}
+    }
 
-	@Override
-	public void setResponseStream(ResponseStream arg0) {
+    @Override
+    public void setResponseStream(ResponseStream arg0) {
 
-	}
+    }
 
-	@Override
-	public void setResponseWriter(ResponseWriter arg0) {
+    @Override
+    public void setResponseWriter(ResponseWriter arg0) {
 
-	}
+    }
 
-	@Override
-	public void setViewRoot(UIViewRoot viewRoot) {
+    @Override
+    public void setViewRoot(UIViewRoot viewRoot) {
         this.viewRoot = viewRoot;
-	}
+    }
 
     @Override
     public boolean isReleased() {
+        return false;
+    }
+    
+    @Override
+    public boolean isPostback() {
         return false;
     }
 }

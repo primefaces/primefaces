@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,119 +39,122 @@ import javax.imageio.ImageIO;
 import org.primefaces.model.CroppedImage;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.BoundedInputStream;
 
 public class ImageCropperRenderer extends CoreRenderer {
 
     @Override
-	public void decode(FacesContext context, UIComponent component) {
+    public void decode(FacesContext context, UIComponent component) {
         ImageCropper cropper = (ImageCropper) component;
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String coordsParam = cropper.getClientId(context) + "_coords";
 
-        if(params.containsKey(coordsParam)) {
+        if (params.containsKey(coordsParam)) {
             cropper.setSubmittedValue(params.get(coordsParam));
         }
-	}
+    }
 
     @Override
-	public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-		ImageCropper cropper = (ImageCropper) component;
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
+        ImageCropper cropper = (ImageCropper) component;
 
         encodeMarkup(context, cropper);
-		encodeScript(context, cropper);
-	}
+        encodeScript(context, cropper);
+    }
 
-	protected void encodeScript(FacesContext context, ImageCropper cropper) throws IOException{
-		String widgetVar = cropper.resolveWidgetVar();
-		String clientId = cropper.getClientId(context);
+    protected void encodeScript(FacesContext context, ImageCropper cropper) throws IOException {
+        String widgetVar = cropper.resolveWidgetVar();
+        String clientId = cropper.getClientId(context);
         String image = clientId + "_image";
         String select = null;
-        
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.initWithComponentLoad("ImageCropper", widgetVar, clientId, clientId + "_image")
-            .attr("image", image);
-        
-        if(cropper.getMinSize() != null) 
+                .attr("image", image);
+
+        if (cropper.getMinSize() != null) {
             wb.append(",minSize:[").append(cropper.getMinSize()).append("]");
-        
-        if(cropper.getMaxSize() != null) 
+        }
+
+        if (cropper.getMaxSize() != null) {
             wb.append(",maxSize:[").append(cropper.getMaxSize()).append("]");
-        
+        }
+
         wb.attr("bgColor", cropper.getBackgroundColor(), null)
-            .attr("bgOpacity", cropper.getBackgroundOpacity(), 0.6)
-            .attr("aspectRatio", cropper.getAspectRatio(), Double.MIN_VALUE)
-            .attr("boxWidth", cropper.getBoxWidth(), 0)
-            .attr("boxHeight", cropper.getBoxHeight(), 0);
-        
+                .attr("bgOpacity", cropper.getBackgroundOpacity(), 0.6)
+                .attr("aspectRatio", cropper.getAspectRatio(), Double.MIN_VALUE)
+                .attr("boxWidth", cropper.getBoxWidth(), 0)
+                .attr("boxHeight", cropper.getBoxHeight(), 0);
+
         Object value = cropper.getValue();
-		if(value != null) {
+        if (value != null) {
             CroppedImage croppedImage = (CroppedImage) value;
-            
+
             int x = croppedImage.getLeft();
             int y = croppedImage.getTop();
             int x2 = x + croppedImage.getWidth();
             int y2 = y + croppedImage.getHeight();
 
-            select = "[" + x +  "," + y + "," + x2 + "," + y2 + "]";
-		} 
-        else if(cropper.getInitialCoords() != null) {
+            select = "[" + x + "," + y + "," + x2 + "," + y2 + "]";
+        }
+        else if (cropper.getInitialCoords() != null) {
             select = "[" + cropper.getInitialCoords() + "]";
         }
-        
+
         wb.append(",setSelect:").append(select);
 
         wb.finish();
-	}
-	
-	protected void encodeMarkup(FacesContext context, ImageCropper cropper) throws IOException{
-		ResponseWriter writer = context.getResponseWriter();
-		String clientId = cropper.getClientId(context);
-		String coordsHolderId = clientId + "_coords";
-		
-		writer.startElement("div", cropper);
-		writer.writeAttribute("id", clientId, null);
-		
-		renderImage(context, cropper, clientId);
-		
-		writer.startElement("input", null);
-		writer.writeAttribute("type", "hidden", null);
-		writer.writeAttribute("id", coordsHolderId, null);
-		writer.writeAttribute("name", coordsHolderId, null);
-		writer.endElement("input");
-		
-		writer.endElement("div");
-	}
+    }
 
-	private void renderImage(FacesContext context, ImageCropper cropper, String clientId) throws IOException{
-		ResponseWriter writer = context.getResponseWriter();
+    protected void encodeMarkup(FacesContext context, ImageCropper cropper) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String clientId = cropper.getClientId(context);
+        String coordsHolderId = clientId + "_coords";
+
+        writer.startElement("div", cropper);
+        writer.writeAttribute("id", clientId, null);
+
+        renderImage(context, cropper, clientId);
+
+        writer.startElement("input", null);
+        writer.writeAttribute("type", "hidden", null);
+        writer.writeAttribute("id", coordsHolderId, null);
+        writer.writeAttribute("name", coordsHolderId, null);
+        writer.endElement("input");
+
+        writer.endElement("div");
+    }
+
+    private void renderImage(FacesContext context, ImageCropper cropper, String clientId) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         String alt = cropper.getAlt() == null ? "" : cropper.getAlt();
 
-		writer.startElement("img", null);
-		writer.writeAttribute("id", clientId + "_image", null);
+        writer.startElement("img", null);
+        writer.writeAttribute("id", clientId + "_image", null);
         writer.writeAttribute("alt", alt, null);
-		writer.writeAttribute("src", getResourceURL(context, cropper.getImage()), null);
-		writer.endElement("img");
-	}
+        writer.writeAttribute("src", getResourceURL(context, cropper.getImage()), null);
+        writer.endElement("img");
+    }
 
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
         String coords = (String) submittedValue;
-        
-        if(isValueBlank(coords)) {
+
+        if (isValueBlank(coords)) {
             return null;
         }
 
         String[] cropCoords = coords.split("_");
-        
+
         int x = (int) Double.parseDouble(cropCoords[0]);
         int y = (int) Double.parseDouble(cropCoords[1]);
         int w = (int) Double.parseDouble(cropCoords[2]);
         int h = (int) Double.parseDouble(cropCoords[3]);
 
-	if (w <= 0 || h <= 0) {
+        if (w <= 0 || h <= 0) {
             return null;
-        }    
-	    
+        }
+
         ImageCropper cropper = (ImageCropper) component;
         Resource resource = getImageResource(context, cropper);
         InputStream inputStream;
@@ -181,13 +184,28 @@ public class ImageCropperRenderer extends CoreRenderer {
                 }
             }
 
+            // wrap input stream by BoundedInputStream to prevent uncontrolled resource consumption (#3286)
+            if (cropper.getSizeLimit() != null) {
+                inputStream = new BoundedInputStream(inputStream, cropper.getSizeLimit());
+            }
+            
             BufferedImage outputImage = ImageIO.read(inputStream);
             inputStream.close();
+
+            // avoid java.awt.image.RasterFormatException: (x + width) is outside of Raster
+            // see #1208
+            if (x + w > outputImage.getWidth()) {
+                w = outputImage.getWidth() - x;
+            }
+            if (y + h > outputImage.getHeight()) {
+                h = outputImage.getHeight() - y;
+            }
+            
             BufferedImage cropped = outputImage.getSubimage(x, y, w, h);
             ByteArrayOutputStream croppedOutImage = new ByteArrayOutputStream();
             String format = guessImageFormat(contentType, imagePath);
             ImageIO.write(cropped, format, croppedOutImage);
-            
+
             return new CroppedImage(cropper.getImage(), croppedOutImage.toByteArray(), x, y, w, h);
         }
         catch (IOException e) {
@@ -258,7 +276,7 @@ public class ImageCropperRenderer extends CoreRenderer {
         else {
             int queryStringIndex = imagePath.indexOf('?');
 
-            if (queryStringIndex != -1 ) {
+            if (queryStringIndex != -1) {
                 imagePath = imagePath.substring(0, queryStringIndex);
             }
 

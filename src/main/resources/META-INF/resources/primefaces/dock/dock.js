@@ -297,7 +297,7 @@ jQuery.iFisheye = {
 					maxWidth : options.maxWidth
 				};
 				jQuery.iFisheye.positionContainer(el, 0);
-				jQuery(window).bind(
+				jQuery(window).on(
 					'resize',
 					function()
 					{
@@ -306,6 +306,56 @@ jQuery.iFisheye = {
 						jQuery.iFisheye.positionItems(el);
 					}
 				);
+				// PF #1728 position: fixed; scroll-Fix: start
+				var newposition = function() {
+					var getoffset = function() {
+						var yoffset = 0, xoffset = 0;       
+						if (typeof(window.pageYOffset) == 'number') {
+							yoffset = window.pageYOffset;
+							xoffset = window.pageXOffset;
+							} else if (document.body && (document.body.scrollLeft || document.body.scrollTop)) {
+							yoffset = document.body.scrollTop;
+							xoffset = document.body.scrollLeft;				
+						} else if (document.documentElement && (document.documentElement.scrollLeft || document.documentElement.scrollTop)) {				
+							yoffset = document.documentElement.scrollTop;
+							xoffset = document.documentElement.scrollLeft;				
+						}
+						return [xoffset, yoffset];
+					}
+					var oldoffset = getoffset();
+					if (oldoffset[0] > 0)
+							el.fisheyeCfg.pos.x = oldoffset[0];
+					if (oldoffset[1] > 0)
+							el.fisheyeCfg.pos.y = oldoffset[1];			
+					jQuery(window).on('scroll', function() {
+						var offset = getoffset();
+						if (oldoffset[1] < offset[1]) {		
+							el.fisheyeCfg.pos.y = el.fisheyeCfg.pos.y - oldoffset[1] + offset[1];						
+						} else {		
+							el.fisheyeCfg.pos.y = el.fisheyeCfg.pos.y - oldoffset[1] + offset[1];
+						}
+						if (oldoffset[0] < offset[0]) {				
+							el.fisheyeCfg.pos.x = el.fisheyeCfg.pos.x - oldoffset[0] + offset[0];						
+						} else {					
+							el.fisheyeCfg.pos.x = el.fisheyeCfg.pos.x - oldoffset[0] + offset[0];
+						}
+						oldoffset[1] = offset[1];
+						oldoffset[0] = offset[0];
+						jQuery.iFisheye.positionContainer(el, 0);
+						jQuery.iFisheye.positionItems(el);
+					});
+				}			
+				if (jQuery(el.fisheyeCfg.container).css('position') == 'fixed') {
+					newposition();
+				} else {			
+					jQuery(el.fisheyeCfg.container).parents().each(function() {
+						if (jQuery(this).css('position') == 'fixed') {
+							newposition();
+							return false;
+						} 
+					});	
+				}
+				// PF #1728 position: fixed; scroll-Fix: end
 				jQuery.iFisheye.positionItems(el);
 				el.fisheyeCfg.items
 					.bind(
@@ -322,7 +372,7 @@ jQuery.iFisheye = {
 							jQuery(el.fisheyeCfg.itemsText, this).get(0).style.display = 'none';
 						}
 					);
-				jQuery(document).bind(
+				jQuery(document).on(
 					'mousemove',
 					function(e)
 					{

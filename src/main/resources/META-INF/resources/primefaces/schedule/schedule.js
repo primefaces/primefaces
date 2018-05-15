@@ -13254,6 +13254,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                                     ,week: lang.week
                                     ,day: lang.day};
             this.cfg.allDayText = lang.allDayText;
+            this.cfg.weekNumberTitle = lang.weekNumberTitle;
             if(lang.eventLimitText) {
                 this.cfg.eventLimitText = lang.eventLimitText;
             }
@@ -13269,7 +13270,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 if(dateSelectBehavior) {
                     var ext = {
                         params: [
-							{name: $this.id + '_selectedDate', value: dayDate.valueOf() - dayDate.zone()*60000}
+							{name: $this.id + '_selectedDate', value: dayDate.valueOf() - dayDate.utcOffset()*60000}
                         ]
                     };
 
@@ -13357,14 +13358,21 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                     $this.tip.text('');
                 }
             };
+        } else {
+            // PF #2795 default to regular tooltip
+            this.cfg.eventRender = function(event, element) {
+                if(event.description) {
+                   element.attr('title', event.description);
+                }
+            };
         }
     },
 
     setupEventSource: function() {
-        var $this = this,
-        offset = moment().zone()*60000;
+        var $this = this;
 
         this.cfg.events = function(start, end, timezone, callback) {
+            var offset = start.utcOffset()*60000; // <-- #2977: assume start,end in same zone
             var options = {
                 source: $this.id,
                 process: $this.id,
@@ -13378,7 +13386,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                     PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
                             widget: $this,
                             handle: function(content) {
-                                callback($.parseJSON(content).events);
+                                callback(JSON.parse(content).events);
                             }
                         });
 
@@ -13437,7 +13445,12 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         var columnFormat = this.cfg.columnFormatOptions;
         if(columnFormat) {
             for (var view in views) {
-                views[view] = {columnFormat: columnFormat[view]};
+                if(view == "agendaWeek") {  // Github #2421
+                    views[view] = {columnFormat: columnFormat['week']};
+                }
+                else {
+                    views[view] = {columnFormat: columnFormat[view]};
+                }
             }
         }
 

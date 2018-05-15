@@ -17,13 +17,23 @@ package org.primefaces.context;
 
 import org.primefaces.mock.CollectingPartialResponseWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import javax.faces.context.FacesContext;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
+import org.primefaces.mock.FacesContextMock;
 
 public class PrimePartialResponseWriterTest {
+    
+    @Before
+    public void init()
+    {
+        FacesContext context = new FacesContextMock(new HashMap<Object, Object>());
+    }
     
     @Test
     public void testEncodeJSONArray() throws IOException, JSONException {

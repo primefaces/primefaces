@@ -10,6 +10,18 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'latobold';
+    src: url("#{resource['primefaces-omega:fonts/lato-bold-webfont.eot']}");
+    src: local('Lato Bold'), local('Lato-Bold'),
+         url("#{resource['primefaces-omega:fonts/lato-bold-webfont.eot']}#iefix") format('embedded-opentype'),
+         url("#{resource['primefaces-omega:fonts/lato-bold-webfont.woff']}") format('woff'),
+         url("#{resource['primefaces-omega:fonts/lato-bold-webfont.ttf']}") format('truetype'),
+         url("#{resource['primefaces-omega:fonts/lato-bold-webfont.svg']}#latobold") format('svg');
+    font-weight: 700;
+    font-style: normal;
+}
+
 /* Component containers
 ----------------------------------*/
 .ui-widget { font-family: "latoregular", "Trebuchet MS", Arial, Helvetica, sans-serif; font-size: 1em; font-size: 1em; }
@@ -438,7 +450,7 @@
 .ui-datepicker table {font-size: .9em; border-collapse: collapse; margin: -1px 0 0 0 !important; }
 .ui-datepicker th { padding: .7em 0; text-align: center; font-weight: bold; border: 0; font-size: 10px; color: #acacac; border-bottom: 1px solid #cdcdcd !important; }
 .ui-datepicker td { border: 0; padding: 0 !important; border: 1px solid #cdcdcd; }
-.ui-datepicker td a { display: block; padding: 0 !important; border: 0 none !important;/*border: 1px solid #cdcdcd !important;*/ line-height: 30px; text-align: center !important; font-size: 12px; text-decoration: none; font-weight: bold !important; }
+.ui-datepicker td a, .ui-datepicker td span { display: block; padding: 0 !important; border: 0 none !important;/*border: 1px solid #cdcdcd !important;*/ line-height: 30px; text-align: center !important; font-size: 12px; text-decoration: none; font-weight: bold !important; }
 .ui-datepicker td a.ui-state-default {
 	color: #5d5d5d;
 	background: #e8e9ea; /* Old browsers */
@@ -525,9 +537,6 @@ td.ui-datepicker-unselectable {
 	color: #FFFFFF;
 	background: #2399e5;
 }
-.ui-button, .ui-button span, button.ui-button.ui-state-default span, .ui-button.ui-state-default span {
-	font-weight: bold;
-}
 button.ui-button.ui-state-hover, .ui-button.ui-state-hover,
 button.ui-button.ui-state-focus, .ui-button.ui-state-focus {
 	border: 1px solid #156090;
@@ -613,7 +622,8 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
 .ui-datatable th {
     font-weight: bold;
 }
-.ui-datatable th.ui-state-default{
+.ui-datatable th.ui-state-default, 
+.ui-datatable tfoot td.ui-state-default{
     background: #ebedf0;
     border-color: #d9d9d9;
 }
@@ -648,7 +658,7 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
 .ui-datatable .ui-selection-column .ui-radiobutton-box .ui-icon,
 .ui-datatable .ui-selection-column .ui-chkbox-box .ui-icon{
     background-image: url("#{resource['primefaces-omega:images/ui-icons_454545_256x240.png']}");
-}
+} 
 
 /* Panel */
 .ui-panel.ui-widget {
@@ -754,16 +764,20 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
    border: 1px solid #156090; background: #186ba0; color: #FFFFFF;
 }
 
-.ui-selectbooleanbutton.ui-button.ui-state-default .ui-icon {
+.ui-selectbooleanbutton.ui-button.ui-state-default .ui-icon,
+.ui-dataview .ui-dataview-layout-options .ui-button .ui-icon {
     background-image: url("#{resource['primefaces-omega:images/ui-icons_454545_256x240.png']}");
 }
 
 .ui-selectbooleanbutton.ui-button.ui-state-hover.ui-icon,
-.ui-selectbooleanbutton.ui-button.ui-state-focus .ui-icon {
+.ui-selectbooleanbutton.ui-button.ui-state-focus .ui-icon,
+.ui-dataview .ui-dataview-layout-options .ui-button.ui-state-hover .ui-icon,
+.ui-dataview .ui-dataview-layout-options .ui-button.ui-state-focus .ui-icon {
     background-image: url("#{resource['primefaces-omega:images/ui-icons_454545_256x240.png']}");
 }
 
-.ui-selectbooleanbutton.ui-button.ui-state-active .ui-icon {
+.ui-selectbooleanbutton.ui-button.ui-state-active .ui-icon,
+.ui-dataview .ui-dataview-layout-options .ui-button.ui-state-active .ui-icon {
     background-image: url("#{resource['primefaces-omega:images/ui-icons_ffffff_256x240.png']}");
 }
 
@@ -857,4 +871,43 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
 /* ScrollPanel */
 .ui-scrollpanel .ui-scrollpanel-drag {
     background-color: #dcdcdc;
+}
+
+/* InputGroup */
+.ui-inputgroup .ui-inputgroup-addon,
+.ui-inputgroup .ui-inputgroup-addon-checkbox{
+    border-color: #d6d6d6;
+    background-color: #f0f0f0;
+    color: #222222;
+}
+.ui-inputgroup .ui-inputgroup-addon:first-child,
+.ui-inputgroup .ui-inputgroup-addon-checkbox:first-child {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.ui-inputgroup .ui-inputgroup-addon:last-child,
+.ui-inputgroup .ui-inputgroup-addon-checkbox:last-child {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+    
+.ui-inputgroup .ui-button:first-child {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+        
+.ui-inputgroup .ui-button:last-child {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+/* Tooltip */
+.ui-tooltip .ui-tooltip-text.ui-state-error {
+    border: 0 none;
+    background-color: #ef5350;
+}
+
+.ui-tooltip .ui-tooltip-arrow.ui-state-error {
+    border-right-color: #ef5350;
 }

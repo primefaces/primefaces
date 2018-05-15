@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,11 +26,13 @@ import org.primefaces.expression.SearchExpressionResolver;
  */
 public class JQuerySelectorExpressionResolver implements SearchExpressionResolver, ClientIdSearchExpressionResolver {
 
+    @Override
     public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
         throw new FacesException("jQuery selectors aka PFS are not supported on the server side... expression \"" + expression
-                        + "\" referenced from \""+ source.getClientId(context) + "\".");
+                + "\" referenced from \"" + source.getClientId(context) + "\".");
     }
 
+    @Override
     public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
         // just return the complete expression, the client side will take care of it
         // e.g. @(#myButton)

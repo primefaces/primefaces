@@ -616,7 +616,11 @@ if (window.PrimeFaces) {
             //focus first element
             for(var key in vc.messages) {
                 if(vc.messages.hasOwnProperty(key)) {
-                    $(PrimeFaces.escapeClientId(key)).focus();
+                    var el = $(PrimeFaces.escapeClientId(key));
+                    if(!el.is(':focusable'))
+                        el.find(':focusable:first').focus();
+                    else
+                        el.focus();
                     break;
                 }
             }
@@ -645,7 +649,7 @@ if (window.PrimeFaces) {
                 return;
             }
         }
-
+        
         var submittedValue = vc.getSubmittedValue(element),
         valid = true,
         converterId = element.data('p-con');
@@ -836,11 +840,11 @@ if (window.PrimeFaces) {
                         var msgItem = $('<li></li>');
 
                         if(showSummary) {
-                            msgItem.append('<span class="ui-messages-error-summary">' + msg.summary + '</span>');
+                            msgItem.append('<span class="ui-messages-error-summary">' + PrimeFaces.escapeHTML(msg.summary) + '</span>');
                         }
 
                         if(showDetail) {
-                            msgItem.append('<span class="ui-messages-error-detail">' + msg.detail + '</span>');
+                            msgItem.append('<span class="ui-messages-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span>');
                         }
 
                         uiMessagesComponent.find('> .ui-messages-error > ul').append(msgItem);
@@ -903,19 +907,19 @@ if (window.PrimeFaces) {
                 uiMessage.addClass('ui-message-error ui-widget ui-corner-all ui-helper-clearfix');
 
                 if(display === 'both') {
-                    uiMessage.append('<div><span class="ui-message-error-icon"></span><span class="ui-message-error-detail">' + msg.detail + '</span></div>');
+                    uiMessage.append('<div><span class="ui-message-error-icon"></span><span class="ui-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span></div>');
                 }
                 else if(display === 'text') {
-                    uiMessage.append('<span class="ui-message-error-detail">' + msg.detail + '</span>');
+                    uiMessage.append('<span class="ui-message-error-detail">' + PrimeFaces.escapeHTML(msg.detail) + '</span>');
                 }
                 else if(display === 'icon') {
                     uiMessage.addClass('ui-message-icon-only')
-                            .append('<span class="ui-message-error-icon" title="' + msg.detail + '"></span>');
+                            .append('<span class="ui-message-error-icon" title="' + PrimeFaces.escapeHTML(msg.detail) + '"></span>');
                 }
             }
             else {
                 uiMessage.hide();
-                $(PrimeFaces.escapeClientId(uiMessage.data('target'))).attr('title', msg.detail);
+                $(PrimeFaces.escapeClientId(uiMessage.data('target'))).attr('title', PrimeFaces.escapeHTML(msg.detail));
             }
         },
 
@@ -1144,14 +1148,15 @@ if (window.PrimeFaces) {
             'inputnumber': {
 
                 highlight: function(element) {
-                    element.addClass('ui-state-error');
-                    PrimeFaces.validator.Highlighter.highlightLabel(element);
+                    var orginalInput = element.prev('input');
+                    orginalInput.addClass('ui-state-error');
+                    PrimeFaces.validator.Highlighter.highlightLabel(orginalInput);
                 },
 
                 unhighlight: function(element) {
-                    element.removeClass('ui-state-error');
-                    PrimeFaces.validator.Highlighter.unhighlightLabel(element);
-
+                    var orginalInput = element.prev('input');
+                    orginalInput.removeClass('ui-state-error');
+                    PrimeFaces.validator.Highlighter.unhighlightLabel(orginalInput);
                 }
 
             }

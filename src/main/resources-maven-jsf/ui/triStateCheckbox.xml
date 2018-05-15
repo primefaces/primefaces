@@ -6,21 +6,21 @@
 <!ENTITY widget_var_attribute					SYSTEM "../entities/widget_var_attribute.xml">
 ]>
 <component>
-	<tag>triStateCheckbox</tag>
-	<tagClass>org.primefaces.component.tristatecheckbox.TriStateCheckboxTag</tagClass>
-	<componentClass>org.primefaces.component.tristatecheckbox.TriStateCheckbox</componentClass>
-	<componentType>org.primefaces.component.TriStateCheckbox</componentType>
-	<componentFamily>org.primefaces.component</componentFamily>
-	<rendererType>org.primefaces.component.TriStateCheckboxRenderer</rendererType>
-	<rendererClass>org.primefaces.component.tristatecheckbox.TriStateCheckboxRenderer</rendererClass>
-	<parent>javax.faces.component.html.HtmlInputText</parent>
+    <tag>triStateCheckbox</tag>
+    <tagClass>org.primefaces.component.tristatecheckbox.TriStateCheckboxTag</tagClass>
+    <componentClass>org.primefaces.component.tristatecheckbox.TriStateCheckbox</componentClass>
+    <componentType>org.primefaces.component.TriStateCheckbox</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <rendererType>org.primefaces.component.TriStateCheckboxRenderer</rendererType>
+    <rendererClass>org.primefaces.component.tristatecheckbox.TriStateCheckboxRenderer</rendererClass>
+    <parent>javax.faces.component.html.HtmlInputText</parent>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
-	</interfaces>
-	<attributes>
-		&input_component_attributes;
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
+    <attributes>
+        &input_component_attributes;
         &widget_var_attribute;
         <attribute>
             <name>stateOneIcon</name>
@@ -107,22 +107,22 @@
             <ignoreInComponent>true</ignoreInComponent>
             <description>The tabindex attribute specifies the tab order of an element when the "tab" button is used for navigating.</description>
         </attribute>    
-	</attributes>
+    </attributes>
     <resources>
         <resource>
-			<name>components.css</name>
-		</resource>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
+            <name>components.css</name>
+        </resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
-		<resource>
-			<name>core.js</name>
-		</resource>
-		<resource>
-			<name>components.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery.js</name>
+        </resource>
+        <resource>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
 </component>

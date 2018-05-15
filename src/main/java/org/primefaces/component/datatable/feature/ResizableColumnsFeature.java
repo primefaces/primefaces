@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +16,29 @@
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
+import java.util.Map;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
+import org.primefaces.component.datatable.TableState;
 
 public class ResizableColumnsFeature implements DataTableFeature {
 
     public void decode(FacesContext context, DataTable table) {
-        throw new RuntimeException("ResizableColumnsFeature should not decode.");
+        if (table.isMultiViewState()) {
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+            String resizableColumnParam = params.get(table.getClientId(context) + "_resizableColumnState");
+            TableState ts = table.getTableState(true);
+            ts.setResizableColumnsAsString(resizableColumnParam);
+        }
     }
-    
+
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         throw new RuntimeException("ResizableColumnsFeature should not encode.");
     }
-    
+
     public boolean shouldDecode(FacesContext context, DataTable table) {
-        return false;
+        return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_resizableColumnState");
     }
 
     public boolean shouldEncode(FacesContext context, DataTable table) {

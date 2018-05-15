@@ -69,11 +69,11 @@
             this.nonAjaxPosted = true;
             this.abortXHRs();
         },
-        
+
         abortXHRs : function() {
             PrimeFaces.ajax.Queue.abortAll();
         },
-        
+
         attachBehaviors : function(element, behaviors) {
             $.each(behaviors, function(event, fn) {
                 element.bind(event, function(e) {
@@ -184,11 +184,6 @@
             return this;
         },
 
-        //Deprecated, use PrimeFaces.env.isIE instead
-        isIE: function(version) {
-            return PrimeFaces.env.isIE(version);
-        },
-
         info: function(log) {
             if(this.logger) {
                 this.logger.info(log);
@@ -217,7 +212,7 @@
             }
 
             if (PrimeFaces.isDevelopmentProjectStage() && window.console) {
-                console.log(log);
+                console.error(log);
             }
         },
 
@@ -342,13 +337,13 @@
          * @returns {string} The resource URL.
          */
         getFacesResource : function(name, library, version) {
-            
+
             // just get sure - name shoudln't start with a slash
             if (name.indexOf('/') === 0)
             {
                 name = name.substring(1, name.length);
             }
-            
+
             var scriptURI = $('script[src*="/' + PrimeFaces.RESOURCE_IDENTIFIER + '/core.js"]').attr('src');
             // portlet
             if (!scriptURI) {
@@ -381,17 +376,6 @@
             return typeof value === 'number' && isFinite(value);
         },
 
-        getScript: function(url, callback) {
-            $.ajax({
-                type: "GET",
-                url: url,
-                success: callback,
-                dataType: "script",
-                cache: true,
-                async: false
-            });
-        },
-
         focus: function(id, context) {
             var selector = ':not(:submit):not(:button):input:visible:enabled[name]';
 
@@ -403,31 +387,43 @@
                         jq.focus();
                     }
                     else {
-                        jq.find(selector).eq(0).focus();
+                        var firstElement = jq.find(selector).eq(0);
+                        PrimeFaces.focusElement(firstElement);
                     }
                 }
                 else if(context) {
-                    $(PrimeFaces.escapeClientId(context)).find(selector).eq(0).focus();
+                    var firstElement = $(PrimeFaces.escapeClientId(context)).find(selector).eq(0);
+                    PrimeFaces.focusElement(firstElement);
                 }
                 else {
                     var elements = $(selector),
                     firstElement = elements.eq(0);
-                    if(firstElement.is(':radio')) {
-                        var checkedRadio = $(':radio[name="' + firstElement.attr('name') + '"]').filter(':checked');
-                        if(checkedRadio.length)
-                            checkedRadio.focus();
-                        else
-                            firstElement.focus();
-                    }
-                    else {
-                        firstElement.focus();
-                    }
+                    PrimeFaces.focusElement(firstElement);
                 }
             }, 50);
 
             // remember that a custom focus has been rendered
             // this avoids to retain the last focus after ajax update
             PrimeFaces.customFocus = true;
+        },
+
+        focusElement: function(el) {
+            if(el.is(':radio')) {
+                // github issue: #2582
+                if(el.hasClass('ui-helper-hidden-accessible')) {
+                    el.parent().focus();
+                }
+                else {
+                    var checkedRadio = $(':radio[name="' + el.attr('name') + '"]').filter(':checked');
+                    if(checkedRadio.length)
+                        checkedRadio.focus();
+                    else
+                        el.focus();
+                }
+            }
+            else {
+                el.focus();
+            }
         },
 
         monitorDownload: function(start, complete, monitorKey) {
@@ -492,22 +488,12 @@
 
         calculateScrollbarWidth: function() {
             if(!this.scrollbarWidth) {
-                if(PrimeFaces.env.browser.msie) {
-                    var $textarea1 = $('<textarea cols="10" rows="2"></textarea>')
-                            .css({ position: 'absolute', top: -1000, left: -1000 }).appendTo('body'),
-                        $textarea2 = $('<textarea cols="10" rows="2" style="overflow: hidden;"></textarea>')
-                            .css({ position: 'absolute', top: -1000, left: -1000 }).appendTo('body');
-                    this.scrollbarWidth = $textarea1.width() - $textarea2.width();
-                    $textarea1.add($textarea2).remove();
-                }
-                else {
-                    var $div = $('<div />')
-                        .css({ width: 100, height: 100, overflow: 'auto', position: 'absolute', top: -1000, left: -1000 })
-                        .prependTo('body').append('<div />').find('div')
-                            .css({ width: '100%', height: 200 });
-                    this.scrollbarWidth = 100 - $div.width();
-                    $div.parent().remove();
-                }
+                var $div = $('<div />')
+                    .css({ width: 100, height: 100, overflow: 'auto', position: 'absolute', top: -1000, left: -1000 })
+                    .prependTo('body').append('<div />').find('div')
+                        .css({ width: '100%', height: 200 });
+                this.scrollbarWidth = 100 - $div.width();
+                $div.parent().remove();
             }
 
             return this.scrollbarWidth;
@@ -598,7 +584,9 @@
                 this.localeSettings = PrimeFaces.locales[localeKey];
 
                 if(!this.localeSettings) {
-                    this.localeSettings = PrimeFaces.locales[localeKey.split('_')[0]];
+                    if(localeKey) {
+                       this.localeSettings = PrimeFaces.locales[localeKey.split('_')[0]];
+                    }
 
                     if(!this.localeSettings)
                         this.localeSettings = PrimeFaces.locales['en_US'];
@@ -607,12 +595,12 @@
 
             return this.localeSettings;
         },
-        
+
         getAriaLabel: function(key) {
             var ariaLocaleSettings = this.getLocaleSettings()['aria'];
             return (ariaLocaleSettings&&ariaLocaleSettings[key]) ? ariaLocaleSettings[key] : PrimeFaces.locales['en_US']['aria'][key];
         },
-        
+
         zindex : 1000,
 
         customFocus : false,
@@ -634,7 +622,7 @@
         RESET_VALUES_PARAM : "primefaces.resetvalues",
 
         IGNORE_AUTO_UPDATE_PARAM : "primefaces.ignoreautoupdate",
-        
+
         SKIP_CHILDREN_PARAM : "primefaces.skipchildren",
 
         VIEW_STATE : "javax.faces.ViewState",
@@ -672,6 +660,7 @@
             dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             dayNamesMin: ['S', 'M', 'T', 'W ', 'T', 'F ', 'S'],
             weekHeader: 'Week',
+            weekNumberTitle: 'W',
             firstDay: 0,
             isRTL: false,
             showMonthAfterYear: false,
@@ -697,7 +686,7 @@
         }
 
     };
-    
+
     PrimeFaces.locales['en'] = PrimeFaces.locales['en_US'];
 
     PF = function(widgetVar) {

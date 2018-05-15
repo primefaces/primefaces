@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,49 +28,49 @@ import javax.faces.context.FacesContext;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.spinner.Spinner;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
 import org.primefaces.metadata.transformer.AbstractInputMetadataTransformer;
 
 public class BeanValidationInputMetadataTransformer extends AbstractInputMetadataTransformer {
 
     private static final Logger LOG = Logger.getLogger(BeanValidationInputMetadataTransformer.class.getName());
-    
-    public void transformInput(FacesContext context, RequestContext requestContext, UIInput input) throws IOException {
+
+    @Override
+    public void transformInput(FacesContext context, PrimeApplicationContext applicationContext, UIInput input) throws IOException {
 
         EditableValueHolder editableValueHolder = (EditableValueHolder) input;
-       
+
         if (editableValueHolder.isRequired() && isMaxlenghtSet(input)) {
             return;
         }
-         
+
         try {
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
-                    context, requestContext, input.getValueExpression("value"));
-            if (constraints != null && !constraints.isEmpty()) {    
+                    context, applicationContext, input.getValueExpression("value"));
+            if (constraints != null && !constraints.isEmpty()) {
                 for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
                     applyConstraint(constraintDescriptor, input, editableValueHolder);
                 }
             }
         }
-        catch (PropertyNotFoundException e)  {
+        catch (PropertyNotFoundException e) {
             String message = "Skip transform metadata for component \"" + input.getClientId(context) + "\" because"
                     + " the ValueExpression of the \"value\" attribute"
                     + " isn't resolvable completely (e.g. a sub-expression returns null)";
             LOG.log(Level.FINE, message);
         }
     }
-    
+
     protected void applyConstraint(ConstraintDescriptor constraintDescriptor, UIInput input, EditableValueHolder editableValueHolder) {
-        
+
         Annotation constraint = constraintDescriptor.getAnnotation();
-        
+
         if (!isMaxlenghtSet(input)) {
             if (constraint.annotationType().equals(Size.class)) {
                 Size size = (Size) constraint;
@@ -79,7 +79,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
                 }
             }
         }
-        
+
         if (input instanceof Spinner) {
             Spinner spinner = (Spinner) input;
 
@@ -92,7 +92,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
                 spinner.setMin(min.value());
             }
         }
-        
+
         if (input instanceof Calendar) {
             Calendar calendar = (Calendar) input;
 

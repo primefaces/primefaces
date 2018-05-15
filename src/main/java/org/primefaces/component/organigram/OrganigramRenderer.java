@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2016 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.organigramnode.UIOrganigramNode;
 import org.primefaces.model.OrganigramNode;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
 /**
@@ -50,7 +51,7 @@ public class OrganigramRenderer extends CoreRenderer {
      */
     protected void decodeSelection(FacesContext context, Organigram organigram) {
 
-        if (organigram.isRequestSource(context)) {
+        if (ComponentUtils.isRequestSource(organigram, context)) {
             boolean selectionEnabled = organigram.getValueExpression("selection") != null;
 
             if (selectionEnabled) {
@@ -190,7 +191,6 @@ public class OrganigramRenderer extends CoreRenderer {
             }
         }
 
-
         // encode node
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-organigram-node-content", null);
@@ -216,7 +216,7 @@ public class OrganigramRenderer extends CoreRenderer {
         String clientId = organigram.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Organigram", organigram.resolveWidgetVar(), clientId)
+        wb.init("Organigram", organigram.resolveWidgetVar(), clientId)
                 .attr("zoom", organigram.isZoom())
                 .attr("leafNodeConnectorHeight", organigram.getLeafNodeConnectorHeight())
                 .attr("autoScrollToSelection", organigram.isAutoScrollToSelection());
@@ -279,5 +279,15 @@ public class OrganigramRenderer extends CoreRenderer {
         }
 
         return styleClass.trim();
+    }
+    
+    @Override
+    public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
+        //Do nothing
+    }
+
+    @Override
+    public boolean getRendersChildren() {
+        return true;
     }
 }

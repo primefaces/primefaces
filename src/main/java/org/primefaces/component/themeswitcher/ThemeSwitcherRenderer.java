@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,16 +23,16 @@ import org.primefaces.component.selectonemenu.SelectOneMenuRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 public class ThemeSwitcherRenderer extends SelectOneMenuRenderer {
- 
+
     @Override
-	protected void encodeScript(FacesContext context, SelectOneMenu menu) throws IOException {
+    protected void encodeScript(FacesContext context, SelectOneMenu menu) throws IOException {
         ThemeSwitcher ts = (ThemeSwitcher) menu;
         String clientId = ts.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("ThemeSwitcher", ts.resolveWidgetVar(), clientId)
+        wb.init("ThemeSwitcher", ts.resolveWidgetVar(), clientId)
                 .attr("effect", ts.getEffect(), null)
                 .attr("effectSpeed", ts.getEffectSpeed(), null);
 
         wb.finish();
-	}
+    }
 }

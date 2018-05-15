@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,20 +37,21 @@ public class DroppableRenderer extends CoreRenderer {
         Droppable droppable = (Droppable) component;
 
         UIComponent target = SearchExpressionFacade.resolveComponent(
-        		context, droppable, droppable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
+                context, droppable, droppable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
 
         String clientId = droppable.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Droppable", droppable.resolveWidgetVar(), clientId)
+        wb.init("Droppable", droppable.resolveWidgetVar(), clientId)
                 .attr("target", target.getClientId(context))
                 .attr("disabled", droppable.isDisabled(), false)
                 .attr("hoverClass", droppable.getHoverStyleClass(), null)
                 .attr("activeClass", droppable.getActiveStyleClass(), null)
                 .attr("accept", droppable.getAccept(), null)
                 .attr("scope", droppable.getScope(), null)
-                .attr("tolerance", droppable.getTolerance(), null);
+                .attr("tolerance", droppable.getTolerance(), null)
+                .attr("greedy", droppable.isGreedy(), false);
 
-        if(droppable.getOnDrop() != null) {
+        if (droppable.getOnDrop() != null) {
             wb.append(",onDrop:").append(droppable.getOnDrop());
         }
 

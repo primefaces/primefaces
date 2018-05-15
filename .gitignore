@@ -5,3 +5,7 @@
 .idea/
 *.iml
 *~
+/.classpath
+/.project
+.vscode/
+.checkstyle

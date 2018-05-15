@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ import org.primefaces.util.WidgetBuilder;
 
 public class MenuButtonRenderer extends BaseMenuRenderer {
 
+    @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         MenuButton button = (MenuButton) abstractMenu;
@@ -46,10 +47,13 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         writer.startElement("span", button);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "class");
+        
         if (button.getStyle() != null) {
             writer.writeAttribute("style", button.getStyle(), "style");
         }
-
+        if (button.getTitle() != null) {
+            writer.writeAttribute("title", button.getTitle(), "title");
+        }
         encodeButton(context, button, clientId + "_button", disabled);
         if (!disabled) {
             encodeMenu(context, button, clientId + "_menu");
@@ -73,6 +77,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         writer.writeAttribute("name", buttonId, null);
         writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", buttonClass, null);
+        writer.writeAttribute("aria-label", button.getAriaLabel(), "ariaLabel");
         if (button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         }
@@ -94,7 +99,8 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 
         if (isValueBlank(value)) {
             writer.write("ui-button");
-        } else {
+        }
+        else {
             writer.writeText(value, "value");
         }
 
@@ -127,7 +133,8 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
                         writer.writeAttribute("role", "menuitem", null);
                         encodeMenuItem(context, button, (MenuItem) element);
                         writer.endElement("li");
-                    } else if (element instanceof Separator) {
+                    }
+                    else if (element instanceof Separator) {
                         encodeSeparator(context, (Separator) element);
                     }
                 }
@@ -139,6 +146,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 
     }
 
+    @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         MenuButton button = (MenuButton) abstractMenu;
         String clientId = button.getClientId(context);
@@ -149,7 +157,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("MenuButton", button.resolveWidgetVar(), clientId);
+        wb.init("MenuButton", button.resolveWidgetVar(), clientId);
         wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo()), null);
         wb.finish();
     }

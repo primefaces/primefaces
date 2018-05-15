@@ -13,10 +13,10 @@
     <rendererClass>org.primefaces.component.dnd.DraggableRenderer</rendererClass>
     <parent>javax.faces.component.UIComponentBase</parent>
     <interfaces>
-		<interface>
-			<name>org.primefaces.component.api.Widget</name>
-		</interface>
-	</interfaces>
+        <interface>
+            <name>org.primefaces.component.api.Widget</name>
+        </interface>
+    </interfaces>
     <attributes>
         &standard_uicomponent_attributes;
         &widget_var_attribute;
@@ -149,19 +149,37 @@
             <type>java.lang.String</type>
             <description>A search expression to define which element to append the draggable helper to.</description>
         </attribute>
+        <attribute>
+            <name>onStart</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when dragging starts.</description>
+        </attribute>
+        <attribute>
+            <name>onStop</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side callback to execute when dragging stops.</description>
+        </attribute>
+        <attribute>
+            <name>cancel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Prevents dragging from starting on specified elements.</description>
+        </attribute>
     </attributes>
     <resources>
-		<resource>
-			<name>jquery/jquery.js</name>
-		</resource>
         <resource>
-			<name>jquery/jquery-plugins.js</name>
-		</resource>
+            <name>jquery/jquery.js</name>
+        </resource>
         <resource>
-			<name>core.js</name>
-		</resource>
-		<resource>
-			<name>components.js</name>
-		</resource>
-	</resources>
+            <name>jquery/jquery-plugins.js</name>
+        </resource>
+        <resource>
+            <name>core.js</name>
+        </resource>
+        <resource>
+            <name>components.js</name>
+        </resource>
+    </resources>
 </component>

@@ -21,7 +21,7 @@
     // Copy the properties over onto the new prototype
     for (var name in prop) {
       // Check if we're overwriting an existing function
-      prototype[name] = typeof prop[name] == "function" && 
+      prototype[name] = typeof prop[name] == "function" &&
         typeof _super[name] == "function" && fnTest.test(prop[name]) ?
         (function(name, fn){
           return function() {
@@ -33,7 +33,7 @@
 
             // The method only need to be bound temporarily, so we
             // remove it when we're done executing
-            var ret = fn.apply(this, arguments);        
+            var ret = fn.apply(this, arguments);
             this._super = tmp;
 
             return ret;
@@ -77,6 +77,7 @@ if (!PrimeFaces.widget) {
             this.jqId = PrimeFaces.escapeClientId(this.id);
             this.jq = $(this.jqId);
             this.widgetVar = cfg.widgetVar;
+            this.destroyListeners = [];
 
             //remove script tag
             $(this.jqId + '_s').remove();
@@ -84,26 +85,36 @@ if (!PrimeFaces.widget) {
             if (this.widgetVar) {
                 var $this = this;
                 this.jq.on("remove", function() {
-                    if ($this.isDetached()) {
-                        PrimeFaces.detachedWidgets.push($this.widgetVar);
-                    }
+                    PrimeFaces.detachedWidgets.push($this.widgetVar);
                 });
             }
         },
 
         //used in ajax updates, reloads the widget configuration
         refresh: function(cfg) {
+            this.destroyListeners = [];
+
             return this.init(cfg);
         },
 
         //will be called when the widget after a ajax request if the widget is detached
         destroy: function() {
             PrimeFaces.debug("Destroyed detached widget: " + this.widgetVar);
+
+            for (var i = 0; i < this.destroyListeners.length; i++) {
+                var destroyListener = this.destroyListeners[i];
+                destroyListener.call(this, this);
+            }
         },
 
         //checks if the given widget is detached
         isDetached: function() {
-            return document.getElementById(this.id) === null;
+            var element = document.getElementById(this.id);
+            if (typeof(element) !== 'undefined' && element !== null) {
+                return false;
+            }
+
+            return true;
         },
 
         //returns jquery object representing the main dom element related to the widget
@@ -118,6 +129,78 @@ if (!PrimeFaces.widget) {
          */
         removeScriptElement: function(clientId) {
             $(PrimeFaces.escapeClientId(clientId) + '_s').remove();
+        },
+
+        hasBehavior: function(event) {
+            if(this.cfg.behaviors) {
+                return this.cfg.behaviors[event] != undefined;
+            }
+
+            return false;
+        },
+
+        addDestroyListener: function(listener) {
+            if (!this.destroyListeners) {
+                this.destroyListeners = [];
+            }
+            this.destroyListeners.push(listener);
+        }
+
+    });
+
+    PrimeFaces.widget.DynamicOverlayWidget = PrimeFaces.widget.BaseWidget.extend({
+
+        //@Override
+        init: function(cfg) {
+            this._super(cfg);
+
+            if (this.cfg.appendTo) {
+                this.appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(this);
+                PrimeFaces.utils.appendDynamicOverlay(this, this.jq, this.id, this.appendTo);
+            }
+        },
+
+        //@Override
+        refresh: function(cfg) {
+            this._super(cfg);
+
+            if (this.appendTo) {
+                PrimeFaces.utils.removeDynamicOverlay(this, this.jq, this.id, this.appendTo);
+            }
+            PrimeFaces.utils.removeModal(this.id);
+
+            this.appendTo = null;
+            this.modalOverlay = null;
+        },
+
+        //@Override
+        destroy: function() {
+            this._super();
+
+            if (this.appendTo) {
+                PrimeFaces.utils.removeDynamicOverlay(this, this.jq, this.id, this.appendTo);
+            }
+            PrimeFaces.utils.removeModal(this.id);
+
+            this.appendTo = null;
+            this.modalOverlay = null;
+        },
+
+        enableModality: function() {
+            this.modalOverlay = PrimeFaces.utils.addModal(this.id,
+                this.jq.css('z-index') - 1,
+                $.proxy(function() {
+                    return this.getModalTabbables();
+                }, this));
+        },
+
+        disableModality: function(){
+            PrimeFaces.utils.removeModal(this.id);
+            this.modalOverlay = null;
+        },
+
+        getModalTabbables: function(){
+            return null;
         }
     });
 
@@ -126,7 +209,7 @@ if (!PrimeFaces.widget) {
      */
     PrimeFaces.widget.DeferredWidget = PrimeFaces.widget.BaseWidget.extend({
 
-        renderDeferred: function() {     
+        renderDeferred: function() {
             if(this.jq.is(':visible')) {
                 this._render();
                 this.postRender();
@@ -165,6 +248,7 @@ if (!PrimeFaces.widget) {
 
         },
 
+        //@Override
         destroy: function() {
             this._super();
             PrimeFaces.removeDeferredRenders(this.id);

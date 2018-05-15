@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+]>
+<component>
+    <tag>dataViewGridItem</tag>
+    <tagClass>org.primefaces.component.dataview.DataViewGridItemTag</tagClass>
+    <componentClass>org.primefaces.component.dataview.DataViewGridItem</componentClass>
+    <componentType>org.primefaces.component.DataViewGridItem</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <parent>javax.faces.component.UIComponentBase</parent>
+    <description>dataViewGridItem is a helper component for DataView to add grid items.</description>
+    <attributes>
+        &standard_uicomponent_attributes;
+        <attribute>
+            <name>columns</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+            <defaultValue>3</defaultValue>
+            <description>Number of columns of grid. Default is 3.</description>
+        </attribute>
+    </attributes>
+</component>

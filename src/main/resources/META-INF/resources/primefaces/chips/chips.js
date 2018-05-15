@@ -45,9 +45,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
                     if(value.length === 0 && $this.hinput.children('option') && $this.hinput.children('option').length > 0) {
                         var lastOption = $this.hinput.children('option:last'),
                         index = lastOption.index();
-                        
-                        $($this.itemContainer.children('li.ui-chips-token').get(index)).remove();
-                        lastOption.remove();
+                        $this.removeItem($($this.itemContainer.children('li.ui-chips-token').get(index)));
                     }
                 break;
 
@@ -77,7 +75,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
         var escapedValue = PrimeFaces.escapeHTML(value);
         var itemDisplayMarkup = '<li class="ui-chips-token ui-state-active ui-corner-all">';
         itemDisplayMarkup += '<span class="ui-chips-token-icon ui-icon ui-icon-close" />';
-        itemDisplayMarkup += '<span class="ui-autocomplete-token-label">' + escapedValue + '</span></li>';
+        itemDisplayMarkup += '<span class="ui-chips-token-label">' + escapedValue + '</span></li>';
 
         this.inputContainer.before(itemDisplayMarkup);
         this.input.val('').focus();
@@ -88,7 +86,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
     
     removeItem: function(item) {
         var itemIndex = this.itemContainer.children('li.ui-chips-token').index(item);
-        var itemValue = item.find('span.ui-autocomplete-token-label').html()
+        var itemValue = item.find('span.ui-chips-token-label').html()
         $this = this;
 
         //remove from options

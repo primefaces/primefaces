@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2015 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,14 +33,16 @@ public class CaptchaRenderer extends CoreRenderer {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Captcha captcha = (Captcha) component;
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         String answer = params.get(RESPONSE_FIELD);
 
-        if(answer != null)
+        if (answer != null) {
             captcha.setSubmittedValue(answer);
-        else
+        }
+        else {
             captcha.setSubmittedValue("");
+        }
     }
 
     @Override
@@ -52,34 +54,42 @@ public class CaptchaRenderer extends CoreRenderer {
         if (publicKey == null) {
             throw new FacesException("Cannot find public key for catpcha, use primefaces.PUBLIC_CAPTCHA_KEY context-param to define one");
         }
-                
+
         encodeMarkup(context, captcha, publicKey);
         encodeScript(context, captcha, publicKey);
     }
-    
+
     protected void encodeMarkup(FacesContext context, Captcha captcha, String publicKey) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = captcha.getClientId(context);
-
         captcha.setRequired(true);
-
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
+        
+        if (captcha.getSize() != null && "invisible".equals(captcha.getSize())) {
+            writer.writeAttribute("class", "g-recaptcha", null);
+            writer.writeAttribute("data-sitekey", publicKey, null);
+            writer.writeAttribute("data-size", "invisible", null);
+        }
+
+        renderDynamicPassThruAttributes(context, captcha);
+
         writer.endElement("div");
     }
 
     protected void encodeScript(FacesContext context, Captcha captcha, String publicKey) throws IOException {
         String clientId = captcha.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Captcha", captcha.resolveWidgetVar(), clientId);
-        
+        wb.init("Captcha", captcha.resolveWidgetVar(), clientId);
+
         wb.attr("sitekey", publicKey)
-            .attr("theme", captcha.getTheme(), "light")
-            .attr("language", captcha.getLanguage(), "en")
-            .attr("tabindex", captcha.getTabindex(), 0)
-            .attr("callback", captcha.getCallback(), null)
-            .attr("expired", captcha.getExpired(), null);
-        
+                .attr("theme", captcha.getTheme(), "light")
+                .attr("language", captcha.getLanguage(), "en")
+                .attr("tabindex", captcha.getTabindex(), 0)
+                .attr("callback", captcha.getCallback(), null)
+                .attr("expired", captcha.getExpired(), null)
+                .attr("size", captcha.getSize(), null);
+
         wb.finish();
     }
 

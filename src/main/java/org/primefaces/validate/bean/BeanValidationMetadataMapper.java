@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,17 +44,16 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
-
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
 
 public class BeanValidationMetadataMapper {
 
     private static final Logger LOG = Logger.getLogger(BeanValidationMetadataMapper.class.getName());
 
-    private static final Map<Class<? extends Annotation>, ClientValidationConstraint> CONSTRAINT_MAPPING =
-            new HashMap<Class<? extends Annotation>, ClientValidationConstraint>();
-    
+    private static final Map<Class<? extends Annotation>, ClientValidationConstraint> CONSTRAINT_MAPPING
+            = new HashMap<Class<? extends Annotation>, ClientValidationConstraint>();
+
     static {
         CONSTRAINT_MAPPING.put(NotNull.class, new NotNullClientValidationConstraint());
         CONSTRAINT_MAPPING.put(Null.class, new NullClientValidationConstraint());
@@ -70,31 +69,32 @@ public class BeanValidationMetadataMapper {
         CONSTRAINT_MAPPING.put(Future.class, new FutureClientValidationConstraint());
         CONSTRAINT_MAPPING.put(Pattern.class, new PatternClientValidationConstraint());
     }
-    
-    public static BeanValidationMetadata resolveValidationMetadata(FacesContext context, UIComponent component, RequestContext requestContext)
+
+    public static BeanValidationMetadata resolveValidationMetadata(FacesContext context, UIComponent component, PrimeApplicationContext applicationContext)
             throws IOException {
 
-        Map<String,Object> metadata = null;
+        Map<String, Object> metadata = null;
         List<String> validatorIds = null;
-        
+
         try {
             // get BV ConstraintDescriptors
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractAllConstraintDescriptors(
-                    context, requestContext, component.getValueExpression("value"));
+                    context, applicationContext, component.getValueExpression("value"));
 
             if (constraints != null && !constraints.isEmpty()) {
-              
-                boolean interpolateClientSideValidationMessages = requestContext.getApplicationContext().getConfig().isInterpolateClientSideValidationMessages();
-                
+
+                boolean interpolateClientSideValidationMessages =
+                        applicationContext.getConfig().isInterpolateClientSideValidationMessages();
+
                 MessageInterpolator messageInterpolator = null;
                 if (interpolateClientSideValidationMessages) {
-                    messageInterpolator = requestContext.getApplicationContext().getValidatorFactory().getMessageInterpolator();
+                    messageInterpolator = applicationContext.getValidatorFactory().getMessageInterpolator();
                 }
 
                 // loop BV ConstraintDescriptors
                 for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
                     Class<?> annotationType = constraintDescriptor.getAnnotation().annotationType();
-                    
+
                     // lookup ClientValidationConstraint by constraint annotation (e.g. @NotNull)
                     ClientValidationConstraint clientValidationConstraint = CONSTRAINT_MAPPING.get(annotationType);
 
@@ -126,8 +126,8 @@ public class BeanValidationMetadataMapper {
                         Map<String, Object> constraintMetadata;
 
                         if (interpolateClientSideValidationMessages) {
-                            MessageInterpolatingConstraintWrapper interpolatingConstraint =
-                                    new MessageInterpolatingConstraintWrapper(messageInterpolator, constraintDescriptor);
+                            MessageInterpolatingConstraintWrapper interpolatingConstraint
+                                    = new MessageInterpolatingConstraintWrapper(messageInterpolator, constraintDescriptor);
                             constraintMetadata = clientValidationConstraint.getMetadata(interpolatingConstraint);
                         }
                         else {
@@ -136,14 +136,14 @@ public class BeanValidationMetadataMapper {
 
                         if (constraintMetadata != null) {
                             if (metadata == null) {
-                                metadata = new HashMap<String, Object>();
+                                metadata = new HashMap<>();
                             }
                             metadata.putAll(constraintMetadata);
                         }
 
                         if (validatorId != null) {
                             if (validatorIds == null) {
-                                validatorIds = new ArrayList<String>();
+                                validatorIds = new ArrayList<>();
                             }
                             validatorIds.add(validatorId);
                         }
@@ -164,11 +164,11 @@ public class BeanValidationMetadataMapper {
 
         return new BeanValidationMetadata(metadata, validatorIds);
     }
-    
+
     public static void registerConstraintMapping(Class<? extends Annotation> constraint, ClientValidationConstraint clientValidationConstraint) {
         CONSTRAINT_MAPPING.put(constraint, clientValidationConstraint);
     }
-    
+
     public static ClientValidationConstraint removeConstraintMapping(Class<? extends Annotation> constraint) {
         return CONSTRAINT_MAPPING.remove(constraint);
     }

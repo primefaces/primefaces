@@ -57,6 +57,10 @@
     border:0 none;
 }
 
+.ui-treetable-scrollable .ui-treetable-scrollable-theadclone tr th > * { 
+    display: none;
+}
+            
 .ui-treetable.ui-treetable-scrollable table {
     table-layout: fixed;
 }
@@ -160,6 +164,14 @@
 .ui-treetable-scrollable-theadclone th span {
   display: block;
   height: 0px;
+}
+
+/** Filter **/
+.ui-treetable .ui-column-filter {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin:auto;
 }
 
 /** Reflow **/

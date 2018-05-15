@@ -13,8 +13,9 @@ if (!PrimeFaces.dialog) {
             }
 
             var dialogWidgetVar = cfg.sourceComponentId.replace(/:/g, '_') + '_dlgwidget',
-            dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container ui-overlay-hidden"' + 
-                    ' data-pfdlgcid="' + cfg.pfdlgcid + '" data-widgetvar="' + dialogWidgetVar + '"></div>')
+            styleClass = cfg.options.styleClass||'',
+            dialogDOM = $('<div id="' + dialogId + '" class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container ui-overlay-hidden ' + styleClass + '"' +
+                    ' data-pfdlgcid="' + cfg.pfdlgcid + '" data-widget="' + dialogWidgetVar + '"></div>')
                     .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span class="ui-dialog-title"></span></div>');
 
             var titlebar = dialogDOM.children('.ui-dialog-titlebar');
@@ -31,7 +32,7 @@ if (!PrimeFaces.dialog) {
             }
 
             dialogDOM.append('<div class="ui-dialog-content ui-widget-content ui-df-content" style="height: auto;">' +
-                    '<iframe style="border:0 none" frameborder="0"/>' + 
+                    '<iframe style="border:0 none" frameborder="0"/>' +
                     '</div>');
 
             dialogDOM.appendTo(rootWindow.document.body);
@@ -42,6 +43,10 @@ if (!PrimeFaces.dialog) {
             frameWidth = cfg.options.contentWidth||640;
 
             dialogFrame.width(frameWidth);
+
+            if(cfg.options.iframeTitle) {
+               dialogFrame.attr('title', cfg.options.iframeTitle);
+            }
 
             dialogFrame.on('load', function() {
                 var $frame = $(this),
@@ -61,7 +66,7 @@ if (!PrimeFaces.dialog) {
                 if(!$frame.data('initialized')) {
                     PrimeFaces.cw.call(rootWindow.PrimeFaces, 'DynamicDialog', dialogWidgetVar, {
                         id: dialogId,
-                        position: 'center',
+                        position: cfg.options.position||'center',
                         sourceComponentId: cfg.sourceComponentId,
                         sourceWidgetVar: cfg.sourceWidgetVar,
                         onHide: function() {
@@ -92,7 +97,9 @@ if (!PrimeFaces.dialog) {
                         height: cfg.options.height,
                         minimizable: cfg.options.minimizable,
                         maximizable: cfg.options.maximizable,
-                        headerElement: cfg.options.headerElement
+                        headerElement: cfg.options.headerElement,
+                        responsive: cfg.options.responsive,
+                        closeOnEscape: cfg.options.closeOnEscape
                     });
                 }
 
@@ -109,10 +116,6 @@ if (!PrimeFaces.dialog) {
                     dialogFrame.attr('title', title.text());
                 }
 
-                dialogFrame.data('initialized', true);
-
-                rootWindow.PF(dialogWidgetVar).show();
-
                 //adjust height
                 var frameHeight = null;
                 if(cfg.options.contentHeight)
@@ -121,6 +124,10 @@ if (!PrimeFaces.dialog) {
                     frameHeight = $frame.get(0).contentWindow.document.body.scrollHeight + (PrimeFaces.env.browser.webkit ? 5 : 25);
 
                 $frame.css('height', frameHeight);
+
+                // fix #1290 - dialogs are not centered vertically
+                dialogFrame.data('initialized', true);
+                rootWindow.PF(dialogWidgetVar).show();
             })
             .attr('src', frameURL);
         },
@@ -131,7 +138,7 @@ if (!PrimeFaces.dialog) {
             dlgsLength = dlgs.length,
             dlg = dlgs.eq(dlgsLength - 1),
             parentDlg = dlgsLength > 1 ? dlgs.eq(dlgsLength - 2) : null,
-            dlgWidget = rootWindow.PF(dlg.data('widgetvar')),
+            dlgWidget = rootWindow.PF(dlg.data('widget')),
             sourceWidgetVar = dlgWidget.cfg.sourceWidgetVar,
             sourceComponentId = dlgWidget.cfg.sourceComponentId,
             dialogReturnBehavior = null,
@@ -176,12 +183,12 @@ if (!PrimeFaces.dialog) {
             if(!this.messageDialog) {
                 var messageDialogDOM = $('<div id="primefacesmessagedlg" class="ui-message-dialog ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container"/>')
                             .append('<div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"><span class="ui-dialog-title"></span>' +
-                            '<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a></div>' + 
+                            '<a class="ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all" href="#" role="button"><span class="ui-icon ui-icon-closethick"></span></a></div>' +
                             '<div class="ui-dialog-content ui-widget-content" style="height: auto;"></div>')
                             .appendTo(document.body);
 
                 PrimeFaces.cw('Dialog', 'primefacesmessagedialog', {
-                    id: 'primefacesmessagedlg', 
+                    id: 'primefacesmessagedlg',
                     modal:true,
                     draggable: false,
                     resizable: false,
@@ -210,7 +217,11 @@ if (!PrimeFaces.dialog) {
         findRootWindow: function() {
             var w = window;
             while(w.frameElement) {
-                w = w.parent;
+                var parent = w.parent;
+                if (parent.PF === undefined) {
+                	break;
+                }
+                w = parent;
             };
 
             return w;

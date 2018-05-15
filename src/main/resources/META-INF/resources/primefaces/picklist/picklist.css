@@ -126,6 +126,11 @@
     width: 35%;
 }
 
+.ui-picklist.ui-picklist-responsive .ui-picklist-list-wrapper:nth-child(1),
+.ui-picklist.ui-picklist-responsive .ui-picklist-list-wrapper:nth-last-child(2) {
+    width: 45%;
+}
+
 .ui-picklist.ui-picklist-responsive .ui-picklist-buttons {
     width: 10%;
 }

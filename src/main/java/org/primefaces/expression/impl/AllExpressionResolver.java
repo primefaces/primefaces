@@ -1,5 +1,5 @@
-/*
- * Copyright 2009-2014 PrimeTek.
+/**
+ * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,16 +27,18 @@ import org.primefaces.expression.SearchExpressionResolver;
  */
 public class AllExpressionResolver implements SearchExpressionResolver, ClientIdSearchExpressionResolver {
 
-	public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
-		UIComponent parent = last.getParent();
+    @Override
+    public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
+        UIComponent parent = last.getParent();
 
-		while (parent.getParent() != null) {
-			parent = parent.getParent();
-		}
+        while (parent.getParent() != null) {
+            parent = parent.getParent();
+        }
 
-		return parent;
-	}
+        return parent;
+    }
 
+    @Override
     public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
         return SearchExpressionConstants.ALL_KEYWORD;
     }

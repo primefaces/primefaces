@@ -8,7 +8,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import javax.faces.application.FacesMessage;
 import javax.faces.FacesException;
-import org.primefaces.context.RequestContext;
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.captcha.Captcha;
 import org.primefaces.context.PrimeExternalContext;
 import org.primefaces.json.JSONObject;
@@ -55,9 +55,8 @@ import org.primefaces.json.JSONObject;
                 throw new FacesException(exception);
             } finally {
             	// the captcha token is valid for only one request, in case of an ajax request we have to get a new one
-	        RequestContext requestContext = RequestContext.getCurrentInstance();
-	        if(requestContext.isAjaxRequest()) {
-	            requestContext.execute("grecaptcha.reset()");
+	        if(context.getPartialViewContext().isAjaxRequest()) {
+	            PrimeFaces.current().executeScript("if (document.getElementById('g-recaptcha-response')) { try { grecaptcha.reset(); } catch (error) { PrimeFaces.error(error); } }");
 	        }
 	    }
 
@@ -93,7 +92,7 @@ import org.primefaces.json.JSONObject;
 
 		StringBuilder postParams = new StringBuilder();
 		postParams.append("secret=").append(URLEncoder.encode(privateKey, "UTF-8"));
-		postParams.append("&response=").append(URLEncoder.encode((String) value, "UTF-8"));
+		postParams.append("&response=").append(value == null ? "" : URLEncoder.encode((String) value, "UTF-8"));
 
         String params = postParams.toString();
         postParams.setLength(0);
