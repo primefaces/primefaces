@@ -329,6 +329,7 @@ public class TreeTableRenderer extends DataRenderer {
 
         encodeScrollAreaStart(context, tt, TreeTable.SCROLLABLE_HEADER_CLASS, TreeTable.SCROLLABLE_HEADER_BOX_CLASS,
                 tableStyle, tableStyleClass, "header", TreeTable.HEADER_CLASS);
+        
         if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
             encodePaginatorMarkup(context, tt, "bottom");
         }
@@ -341,6 +342,7 @@ public class TreeTableRenderer extends DataRenderer {
         encodeScrollAreaStart(context, tt, TreeTable.SCROLLABLE_FOOTER_CLASS, TreeTable.SCROLLABLE_FOOTER_BOX_CLASS,
                 tableStyle, tableStyleClass, "footer", TreeTable.FOOTER_CLASS);
         encodeTfoot(context, tt);
+        
         if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
             encodePaginatorMarkup(context, tt, "bottom");
         }
