@@ -140,6 +140,9 @@ if (!PrimeFaces.widget) {
         },
 
         addDestroyListener: function(listener) {
+            if (!this.destroyListeners) {
+                this.destroyListeners = [];
+            }
             this.destroyListeners.push(listener);
         }
 
