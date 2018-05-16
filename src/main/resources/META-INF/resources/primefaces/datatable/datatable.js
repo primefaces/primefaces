@@ -411,12 +411,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 e.preventDefault();
             }
         })
-        .on("input", function() {
-            // #89 IE clear "x" button
-            if (this.value == ""){
-                $this.filter();
-            }
-        })
         .on(this.cfg.filterEvent + '.dataTable', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode,
@@ -439,6 +433,25 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             },
             $this.cfg.filterDelay);
         });
+        
+        // #89 IE clear "x" button
+        if (PrimeFaces.env.isIE()) {
+            filter.on('mouseup.dataTable', function(e) {
+                var input = $(this),
+                oldValue = input.val();
+                
+                if(oldValue == "") {
+                    return;
+                }
+                
+                setTimeout(function() {
+                    var newValue = input.val();
+                    if(newValue == "") {
+                        $this.filter();
+                    }
+                }, 1);
+            }); 
+        }
     },
 
     setupRowHover: function() {
