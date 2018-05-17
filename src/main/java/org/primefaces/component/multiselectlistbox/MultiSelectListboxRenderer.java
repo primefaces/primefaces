@@ -89,7 +89,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
             writer.writeAttribute("class", MultiSelectListbox.LIST_HEADER_CLASS, null);
             writer.writeText(header, null);
             writer.endElement("div");
-        }
+        } 
         else {
             listStyleClass = listStyleClass + " ui-corner-all";
         }
@@ -152,8 +152,9 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
 
         wb.init("MultiSelectListbox", listbox.resolveWidgetVar(), clientId)
                 .attr("effect", listbox.getEffect(), null)
-                .attr("showHeaders", listbox.isShowHeaders(), false)
-                .finish();
+                .attr("showHeaders", listbox.isShowHeaders(), false);
+        encodeClientBehaviors(context, listbox);
+        wb.finish();
     }
 
     protected void encodeInput(FacesContext context, MultiSelectListbox listbox) throws IOException {
