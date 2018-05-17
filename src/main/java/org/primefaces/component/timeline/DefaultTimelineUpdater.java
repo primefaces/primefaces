@@ -177,7 +177,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
             if (renderComponent) {
                 sb.append(";PF('");
                 sb.append(widgetVar);
-                sb.append("').render()");
+                sb.append("').renderTimeline()");
             }
 
             // execute JS script
