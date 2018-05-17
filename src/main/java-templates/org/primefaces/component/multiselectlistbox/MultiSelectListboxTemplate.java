@@ -10,7 +10,8 @@ import javax.faces.event.BehaviorEvent;
     public static String LIST_HEADER_CLASS = "ui-multiselectlistbox-header ui-widget-header ui-corner-top";
     public static String LIST_CLASS = "ui-multiselectlistbox-list ui-inputfield ui-widget-content";
     public static String ITEM_CLASS = "ui-multiselectlistbox-item";
-private final static String DEFAULT_EVENT = "change";
+
+    private final static String DEFAULT_EVENT = "change";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("change", null);
