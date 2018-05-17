@@ -39,8 +39,10 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
        .on('click.multiSelectListbox', function() {
            var item = $(this);
 
-           if(!item.hasClass('ui-state-highlight'))
+           if(!item.hasClass('ui-state-highlight')){
                $this.showOptionGroup(item);
+               $this.triggerChange();
+           }
        })
     },
 
@@ -134,5 +136,14 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
         }
 
         $this.jq.children('div.ui-multiselectlistbox-listcontainer:hidden').show();
+    },
+    
+    triggerChange: function () {
+        if(this.hasBehavior('change')){
+            var changeBehavior = this.cfg.behaviors['change'];
+            if(changeBehavior){
+                changeBehavior.call(this);
+            }
+        }
     }
 });
