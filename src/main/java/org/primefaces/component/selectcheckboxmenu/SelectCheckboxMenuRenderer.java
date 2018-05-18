@@ -232,7 +232,16 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
 
                 SelectItem selectedItem = null;
                 for (SelectItem item : selectItems) {
-                    if (value.equals(item.getValue())) {
+                    if (item instanceof SelectItemGroup) {
+                        SelectItemGroup group = (SelectItemGroup) item;
+                        for (SelectItem groupItem : group.getSelectItems()) {
+                            if (value.equals(groupItem.getValue())) {
+                                selectedItem = groupItem;
+                                break;
+                            }
+                        }
+                    } 
+                    else if (value.equals(item.getValue())) {
                         selectedItem = item;
                         break;
                     }
