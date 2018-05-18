@@ -563,8 +563,13 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
         this.check(this.togglerBox);
 
+        var togglerInput = this.togglerBox.prev().children('input');
+        if(this.cfg.onChange) {
+            this.cfg.onChange.call(this);
+        }
+
         if(!this.togglerBox.hasClass('ui-state-disabled')) {
-            this.togglerBox.prev().children('input').trigger('focus.selectCheckboxMenu');
+            togglerInput.trigger('focus.selectCheckboxMenu');
             this.togglerBox.addClass('ui-state-active');
         }
 
@@ -591,8 +596,13 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
         this.uncheck(this.togglerBox);
 
+        var togglerInput = this.togglerBox.prev().children('input');
+        if(this.cfg.onChange) {
+            this.cfg.onChange.call(this);
+        }
+
         if(!this.togglerBox.hasClass('ui-state-disabled')) {
-            this.togglerBox.prev().children('input').trigger('focus.selectCheckboxMenu');
+            togglerInput.trigger('focus.selectCheckboxMenu');
         }
 
         if(this.cfg.multiple) {
