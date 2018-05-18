@@ -1765,8 +1765,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     selectRow: function(r, silent) {
-        var row = this.findRow(r),
-        rowMeta = this.getRowMeta(row);
+        var row = this.findRow(r);
+        if(!row.hasClass('ui-datatable-selectable')) {
+            return;
+        }
+        
+        var rowMeta = this.getRowMeta(row);
 
         this.highlightRow(row);
 
@@ -1789,8 +1793,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     unselectRow: function(r, silent) {
-        var row = this.findRow(r),
-        rowMeta = this.getRowMeta(row);
+        var row = this.findRow(r);
+        if(!row.hasClass('ui-datatable-selectable')) {
+            return;
+        }
+        
+        var rowMeta = this.getRowMeta(row);
 
         this.unhighlightRow(row);
 
@@ -1891,8 +1899,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Selects the corresponding row of a checkbox based column selection
      */
     selectRowWithCheckbox: function(checkbox, silent) {
-        var row = checkbox.closest('tr'),
-        rowMeta = this.getRowMeta(row);
+        var row = checkbox.closest('tr');
+        if(!row.hasClass('ui-datatable-selectable')) {
+            return;
+        }
+        
+        var rowMeta = this.getRowMeta(row);
 
         this.highlightRow(row);
 
@@ -1914,8 +1926,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Unselects the corresponding row of a checkbox based column selection
      */
     unselectRowWithCheckbox: function(checkbox, silent) {
-        var row = checkbox.closest('tr'),
-        rowMeta = this.getRowMeta(row);
+        var row = checkbox.closest('tr');
+        if(!row.hasClass('ui-datatable-selectable')) {
+            return;
+        }
+        
+        var rowMeta = this.getRowMeta(row);
 
         this.unhighlightRow(row);
 
@@ -1941,6 +1957,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         for(var i = 0; i < selectedRows.length; i++) {
             var row = selectedRows.eq(i);
+            if(!row.hasClass('ui-datatable-selectable')) {
+                continue;
+            }
 
             this.unhighlightRow(row);
 
