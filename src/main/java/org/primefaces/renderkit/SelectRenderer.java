@@ -33,6 +33,7 @@ import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -294,26 +295,50 @@ public class SelectRenderer extends InputRenderer {
      */
     protected String[] restoreAndCheckDisabledSelectItems(FacesContext context, UIInput component, Object[] oldValues, String... newSubmittedValues) 
             throws FacesException {
-        
+        List<String> restoredSubmittedValues = doRestoreAndCheckDisabledSelectItems(
+                context,
+                component,
+                oldValues,
+                getSelectItems(context, component),
+                newSubmittedValues);
+        return restoredSubmittedValues.toArray(new String[restoredSubmittedValues.size()]);
+    }
+
+    private List<String> doRestoreAndCheckDisabledSelectItems(
+            FacesContext context,
+            UIInput component,
+            Object[] oldValues,
+            List<SelectItem> selectItems,
+            String... newSubmittedValues) {
         List<String> restoredSubmittedValues = new ArrayList<>();
-        for (SelectItem selectItem : getSelectItems(context, component)) {
-            String selectItemValStr = getOptionAsString(context, component, component.getConverter(), selectItem.getValue());
-            if (selectItem.isDisabled()) {
-                if (ArrayUtils.contains(newSubmittedValues, selectItemValStr) && !ArrayUtils.contains(oldValues, selectItemValStr)) {
-                    // disabled select item has been selected
-                    throw new FacesException("Disabled select item has been submitted. ClientId: " + component.getClientId(context));
-                }
-                if (ArrayUtils.contains(oldValues, selectItemValStr)) {
-                    restoredSubmittedValues.add(selectItemValStr);
-                }
-            } 
+        for (SelectItem selectItem : selectItems) {
+            if (selectItem instanceof SelectItemGroup) {
+                restoredSubmittedValues.addAll(
+                        doRestoreAndCheckDisabledSelectItems(context,
+                                component,
+                                oldValues,
+                                Arrays.asList(((SelectItemGroup) selectItem).getSelectItems()),
+                                newSubmittedValues));
+            }
             else {
-                if (ArrayUtils.contains(newSubmittedValues, selectItemValStr)) {
-                    restoredSubmittedValues.add(selectItemValStr);
+                String selectItemValStr = getOptionAsString(context, component, component.getConverter(), selectItem.getValue());
+                if (selectItem.isDisabled()) {
+                    if (ArrayUtils.contains(newSubmittedValues, selectItemValStr) && !ArrayUtils.contains(oldValues, selectItemValStr)) {
+                        // disabled select item has been selected
+                        throw new FacesException("Disabled select item has been submitted. ClientId: " + component.getClientId(context));
+                    }
+                    if (ArrayUtils.contains(oldValues, selectItemValStr)) {
+                        restoredSubmittedValues.add(selectItemValStr);
+                    }
+                } 
+                else {
+                    if (ArrayUtils.contains(newSubmittedValues, selectItemValStr)) {
+                        restoredSubmittedValues.add(selectItemValStr);
+                    }
                 }
             }
         }
-        return restoredSubmittedValues.toArray(new String[restoredSubmittedValues.size()]);
+        return restoredSubmittedValues;
     }
     
 }
