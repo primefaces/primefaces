@@ -117,8 +117,12 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
             writer.writeAttribute("aria-checked", "false", null);
         }
 
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (checkbox.getTabindex() != null) writer.writeAttribute("tabindex", checkbox.getTabindex(), null);
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (checkbox.getTabindex() != null) {
+            writer.writeAttribute("tabindex", checkbox.getTabindex(), null);
+        }
 
         if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, checkbox);

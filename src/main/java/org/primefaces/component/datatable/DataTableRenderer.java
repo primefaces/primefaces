@@ -324,11 +324,21 @@ public class DataTableRenderer extends DataRenderer {
         //style class
         String containerClass = scrollable ? DataTable.CONTAINER_CLASS + " " + DataTable.SCROLLABLE_CONTAINER_CLASS : DataTable.CONTAINER_CLASS;
         containerClass = table.getStyleClass() != null ? containerClass + " " + table.getStyleClass() : containerClass;
-        if (resizable) containerClass = containerClass + " " + DataTable.RESIZABLE_CONTAINER_CLASS;
-        if (table.isStickyHeader()) containerClass = containerClass + " " + DataTable.STICKY_HEADER_CLASS;
-        if (ComponentUtils.isRTL(context, table)) containerClass = containerClass + " " + DataTable.RTL_CLASS;
-        if (table.isReflow()) containerClass = containerClass + " " + DataTable.REFLOW_CLASS;
-        if (hasFrozenColumns) containerClass = containerClass + " ui-datatable-frozencolumn";
+        if (resizable) {
+            containerClass = containerClass + " " + DataTable.RESIZABLE_CONTAINER_CLASS;
+        }
+        if (table.isStickyHeader()) {
+            containerClass = containerClass + " " + DataTable.STICKY_HEADER_CLASS;
+        }
+        if (ComponentUtils.isRTL(context, table)) {
+            containerClass = containerClass + " " + DataTable.RTL_CLASS;
+        }
+        if (table.isReflow()) {
+            containerClass = containerClass + " " + DataTable.REFLOW_CLASS;
+        }
+        if (hasFrozenColumns) {
+            containerClass = containerClass + " ui-datatable-frozencolumn";
+        }
 
         //aria
         if (summary != null) {
@@ -412,8 +422,12 @@ public class DataTableRenderer extends DataRenderer {
         
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
-        if (tableStyle != null) writer.writeAttribute("style", tableStyle, null);
-        if (table.getTableStyleClass() != null) writer.writeAttribute("class", table.getTableStyleClass(), null);
+        if (tableStyle != null) {
+            writer.writeAttribute("style", tableStyle, null);
+        }
+        if (table.getTableStyleClass() != null) {
+            writer.writeAttribute("class", table.getTableStyleClass(), null);
+        }
         
         String summary = table.getSummary();
         String clientId = table.getClientId(context);
@@ -534,8 +548,12 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
-        if (tableStyle != null) writer.writeAttribute("style", tableStyle, null);
-        if (tableStyleClass != null) writer.writeAttribute("class", tableStyleClass, null);        
+        if (tableStyle != null) {
+            writer.writeAttribute("style", tableStyle, null);
+        }
+        if (tableStyleClass != null) {
+            writer.writeAttribute("class", tableStyleClass, null);
+        }        
     }
 
     protected void encodeScrollAreaEnd(FacesContext context) throws IOException {
@@ -561,8 +579,12 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
 
-        if (tableStyle != null) writer.writeAttribute("style", tableStyle, null);
-        if (table.getTableStyleClass() != null) writer.writeAttribute("class", tableStyleClass, null);
+        if (tableStyle != null) {
+            writer.writeAttribute("style", tableStyle, null);
+        }
+        if (table.getTableStyleClass() != null) {
+            writer.writeAttribute("class", tableStyleClass, null);
+        }
 
         encodeTbody(context, table, false, columnStart, columnEnd, tbodyId);
 
@@ -591,7 +613,9 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("role", "grid", null);
         writer.writeAttribute("class", tableStyleClass, null);
 
-        if (tableStyle != null) writer.writeAttribute("style", tableStyle, null);
+        if (tableStyle != null) {
+            writer.writeAttribute("style", tableStyle, null);
+        }
 
         encodeTbody(context, table, false, columnStart, columnEnd, tbodyId);
 
@@ -695,9 +719,15 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("role", "columnheader", null);
         writer.writeAttribute("aria-label", ariaHeaderLabel, null);
         writer.writeAttribute("scope", "col", null);
-        if (style != null) writer.writeAttribute("style", style, null);
-        if (column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
-        if (column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
+        if (style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+        if (column.getRowspan() != 1) {
+            writer.writeAttribute("rowspan", column.getRowspan(), null);
+        }
+        if (column.getColspan() != 1) {
+            writer.writeAttribute("colspan", column.getColspan(), null);
+        }
 
         if (filterable) {
             table.enableFiltering();
@@ -968,9 +998,15 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("td", null);
         writer.writeAttribute("class", styleClass, null);
 
-        if (style != null) writer.writeAttribute("style", style, null);
-        if (column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
-        if (column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
+        if (style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+        if (column.getRowspan() != 1) {
+            writer.writeAttribute("rowspan", column.getRowspan(), null);
+        }
+        if (column.getColspan() != 1) {
+            writer.writeAttribute("colspan", column.getColspan(), null);
+        }
 
         //Footer content
         UIComponent facet = column.getFacet("footer");
@@ -1017,8 +1053,12 @@ public class DataTableRenderer extends DataRenderer {
                         String rowStyle = headerRow.getStyle();
 
                         writer.startElement("tr", null);
-                        if (rowClass != null) writer.writeAttribute("class", rowClass, null);
-                        if (rowStyle != null) writer.writeAttribute("style", rowStyle, null);
+                        if (rowClass != null) {
+                            writer.writeAttribute("class", rowClass, null);
+                        }
+                        if (rowStyle != null) {
+                            writer.writeAttribute("style", rowStyle, null);
+                        }
 
                         for (UIComponent headerRowChild : headerRow.getChildren()) {
                             if (headerRowChild.isRendered()) {
@@ -1358,10 +1398,18 @@ public class DataTableRenderer extends DataRenderer {
 
         writer.startElement("td", null);
         writer.writeAttribute("role", "gridcell", null);
-        if (colspan != 1) writer.writeAttribute("colspan", colspan, null);
-        if (rowspan != 1) writer.writeAttribute("rowspan", rowspan, null);
-        if (style != null) writer.writeAttribute("style", style, null);
-        if (styleClass != null) writer.writeAttribute("class", styleClass, null);
+        if (colspan != 1) {
+            writer.writeAttribute("colspan", colspan, null);
+        }
+        if (rowspan != 1) {
+            writer.writeAttribute("rowspan", rowspan, null);
+        }
+        if (style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+        if (styleClass != null) {
+            writer.writeAttribute("class", styleClass, null);
+        }
 
         if (selectionEnabled) {
             encodeColumnSelection(context, table, clientId, column, selected);
@@ -1410,8 +1458,12 @@ public class DataTableRenderer extends DataRenderer {
                         String rowStyle = footerRow.getStyle();
 
                         writer.startElement("tr", null);
-                        if (rowClass != null) writer.writeAttribute("class", rowClass, null);
-                        if (rowStyle != null) writer.writeAttribute("style", rowStyle, null);
+                        if (rowClass != null) {
+                            writer.writeAttribute("class", rowClass, null);
+                        }
+                        if (rowStyle != null) {
+                            writer.writeAttribute("style", rowStyle, null);
+                        }
 
                         for (UIComponent footerRowChild : footerRow.getChildren()) {
                             if (footerRowChild.isRendered()) {

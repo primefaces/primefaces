@@ -127,7 +127,9 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", buttonStyle, null);
         writer.writeAttribute("tabindex", button.getTabindex(), null);
-        if (option.getDescription() != null) writer.writeAttribute("title", option.getDescription(), null);
+        if (option.getDescription() != null) {
+            writer.writeAttribute("title", option.getDescription(), null);
+        }
 
         //input
         writer.startElement("input", null);
@@ -138,8 +140,12 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
         writer.writeAttribute("tabindex", "-1", null);
 
-        if (selected) writer.writeAttribute("checked", "checked", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
+        if (selected) {
+            writer.writeAttribute("checked", "checked", null);
+        }
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
 
         writer.endElement("input");
 

@@ -223,8 +223,12 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
                     String styleClass = ((Column) child).getStyleClass();
 
                     writer.startElement("td", null);
-                    if (styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
-                    if (style != null) writer.writeAttribute("style", style, "style");
+                    if (styleClass != null) {
+                        writer.writeAttribute("class", styleClass, "styleClass");
+                    }
+                    if (style != null) {
+                        writer.writeAttribute("style", style, "style");
+                    }
 
                     renderChildren(context, child);
                     writer.endElement("td");
@@ -289,8 +293,12 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
         writer.startElement("option", null);
         writer.writeAttribute("value", itemValueAsString, null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (selected) writer.writeAttribute("selected", "selected", null);
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (selected) {
+            writer.writeAttribute("selected", "selected", null);
+        }
 
         if (option.isEscape()) {
             writer.writeText(option.getLabel(), null);
@@ -321,7 +329,9 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
 
         writer.endElement("input");
 

@@ -361,8 +361,12 @@ public class TreeTableRenderer extends DataRenderer {
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
 
-        if (tableStyle != null) writer.writeAttribute("style", tableStyle, null);
-        if (tableStyleClass != null) writer.writeAttribute("class", tableStyleClass, null);
+        if (tableStyle != null) {
+            writer.writeAttribute("style", tableStyle, null);
+        }
+        if (tableStyleClass != null) {
+            writer.writeAttribute("class", tableStyleClass, null);
+        }
 
         encodeTbody(context, tt, false);
 
@@ -385,8 +389,12 @@ public class TreeTableRenderer extends DataRenderer {
 
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
-        if (tableStyle != null) writer.writeAttribute("style", tableStyle, null);
-        if (tableStyleClass != null) writer.writeAttribute("class", tableStyleClass, null);        
+        if (tableStyle != null) {
+            writer.writeAttribute("style", tableStyle, null);
+        }
+        if (tableStyleClass != null) {
+            writer.writeAttribute("class", tableStyleClass, null);
+        }        
     }
 
     protected void encodeScrollAreaEnd(FacesContext context) throws IOException {
@@ -410,8 +418,12 @@ public class TreeTableRenderer extends DataRenderer {
 
         writer.startElement("table", tt);
         writer.writeAttribute("role", "treegrid", null);
-        if (tt.getTableStyle() != null) writer.writeAttribute("style", tt.getTableStyle(), null);
-        if (tt.getTableStyleClass() != null) writer.writeAttribute("class", tt.getTableStyleClass(), null);
+        if (tt.getTableStyle() != null) {
+            writer.writeAttribute("style", tt.getTableStyle(), null);
+        }
+        if (tt.getTableStyleClass() != null) {
+            writer.writeAttribute("class", tt.getTableStyleClass(), null);
+        }
 
         encodeThead(context, tt);
         encodeTfoot(context, tt);
@@ -442,8 +454,12 @@ public class TreeTableRenderer extends DataRenderer {
                     String rowStyle = headerRow.getStyle();
 
                     writer.startElement("tr", null);
-                    if (rowClass != null) writer.writeAttribute("class", rowClass, null);
-                    if (rowStyle != null) writer.writeAttribute("style", rowStyle, null);
+                    if (rowClass != null) {
+                        writer.writeAttribute("class", rowClass, null);
+                    }
+                    if (rowStyle != null) {
+                        writer.writeAttribute("style", rowStyle, null);
+                    }
 
                     for (UIComponent headerRowChild : headerRow.getChildren()) {
                         if (headerRowChild.isRendered() && headerRowChild instanceof Column) {
@@ -601,10 +617,18 @@ public class TreeTableRenderer extends DataRenderer {
 
                 writer.startElement("td", null);
                 writer.writeAttribute("role", "gridcell", null);
-                if (columnStyle != null) writer.writeAttribute("style", columnStyle, null);
-                if (columnStyleClass != null) writer.writeAttribute("class", columnStyleClass, null);
-                if (rowspan != 1) writer.writeAttribute("rowspan", rowspan, null);
-                if (colspan != 1) writer.writeAttribute("colspan", colspan, null);
+                if (columnStyle != null) {
+                    writer.writeAttribute("style", columnStyle, null);
+                }
+                if (columnStyleClass != null) {
+                    writer.writeAttribute("class", columnStyleClass, null);
+                }
+                if (rowspan != 1) {
+                    writer.writeAttribute("rowspan", rowspan, null);
+                }
+                if (colspan != 1) {
+                    writer.writeAttribute("colspan", colspan, null);
+                }
 
                 if (i == 0) {
                     for (int j = 0; j < depth; j++) {
@@ -660,8 +684,12 @@ public class TreeTableRenderer extends DataRenderer {
         String style = column.getStyle();
         String columnClass = sortable ? TreeTable.SORTABLE_COLUMN_HEADER_CLASS : TreeTable.COLUMN_HEADER_CLASS;
         String userColumnClass = column.getStyleClass();
-        if (column.isResizable()) columnClass = columnClass + " " + TreeTable.RESIZABLE_COLUMN_CLASS;
-        if (userColumnClass != null) columnClass = columnClass + " " + userColumnClass;
+        if (column.isResizable()) {
+            columnClass = columnClass + " " + TreeTable.RESIZABLE_COLUMN_CLASS;
+        }
+        if (userColumnClass != null) {
+            columnClass = columnClass + " " + userColumnClass;
+        }
         columnClass = filterable ? columnClass + " " + TreeTable.FILTER_COLUMN_CLASS : columnClass;
 
         if (sortable) {
@@ -687,9 +715,15 @@ public class TreeTableRenderer extends DataRenderer {
         writer.writeAttribute("id", column.getContainerClientId(context), null);
         writer.writeAttribute("class", columnClass, null);
         writer.writeAttribute("role", "columnheader", null);
-        if (style != null) writer.writeAttribute("style", style, null);
-        if (rowspan != 1) writer.writeAttribute("rowspan", rowspan, null);
-        if (colspan != 1) writer.writeAttribute("colspan", colspan, null);
+        if (style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+        if (rowspan != 1) {
+            writer.writeAttribute("rowspan", rowspan, null);
+        }
+        if (colspan != 1) {
+            writer.writeAttribute("colspan", colspan, null);
+        }
 
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-column-title", null);
@@ -818,8 +852,12 @@ public class TreeTableRenderer extends DataRenderer {
                     String rowStyle = footerRow.getStyle();
 
                     writer.startElement("tr", null);
-                    if (rowClass != null) writer.writeAttribute("class", rowClass, null);
-                    if (rowStyle != null) writer.writeAttribute("style", rowStyle, null);
+                    if (rowClass != null) {
+                        writer.writeAttribute("class", rowClass, null);
+                    }
+                    if (rowStyle != null) {
+                        writer.writeAttribute("style", rowStyle, null);
+                    }
 
                     for (UIComponent footerRowChild : footerRow.getChildren()) {
                         if (footerRowChild.isRendered() && footerRowChild instanceof Column) {
@@ -877,9 +915,15 @@ public class TreeTableRenderer extends DataRenderer {
 
         writer.startElement("td", null);
         writer.writeAttribute("class", columnStyleClass, null);
-        if (style != null) writer.writeAttribute("style", style, null);
-        if (rowspan != 1) writer.writeAttribute("rowspan", rowspan, null);
-        if (colspan != 1) writer.writeAttribute("colspan", colspan, null);
+        if (style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+        if (rowspan != 1) {
+            writer.writeAttribute("rowspan", rowspan, null);
+        }
+        if (colspan != 1) {
+            writer.writeAttribute("colspan", colspan, null);
+        }
 
         if (footerFacet != null) {
             footerFacet.encodeAll(context);

@@ -35,9 +35,15 @@ public class SpacerRenderer extends CoreRenderer {
         writer.writeAttribute("alt", "", null);
         writer.writeAttribute("src", getResourceRequestPath(context, "spacer/dot_clear.gif"), null);
 
-        if (spacer.getStyle() != null) writer.writeAttribute("style", spacer.getStyle(), "style");
-        if (spacer.getStyleClass() != null) writer.writeAttribute("class", spacer.getStyleClass(), "styleClass");
-        if (spacer.getTitle() != null) writer.writeAttribute("title", spacer.getTitle(), "title");
+        if (spacer.getStyle() != null) {
+            writer.writeAttribute("style", spacer.getStyle(), "style");
+        }
+        if (spacer.getStyleClass() != null) {
+            writer.writeAttribute("class", spacer.getStyleClass(), "styleClass");
+        }
+        if (spacer.getTitle() != null) {
+            writer.writeAttribute("title", spacer.getTitle(), "title");
+        }
 
         writer.endElement("img");
     }

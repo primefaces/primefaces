@@ -62,6 +62,8 @@ public class UIRepeat extends UINamingContainer {
 
     private final static DataModel EMPTY_MODEL = new ListDataModel<Object>(Collections.emptyList());
 
+    private final static SavedState NULL_STATE = new SavedState();
+
     // our data
     private Object value;
 
@@ -82,6 +84,11 @@ public class UIRepeat extends UINamingContainer {
 
     private Map<String, SavedState> initialChildState;
     private String initialClientId;
+
+    private transient StringBuffer buffer;
+    private transient Object origValueOfVar;
+    private transient Object origValueOfVarStatus;
+    private Map<String, SavedState> childState;
 
     public UIRepeat() {
         this.setRendererType(null);
@@ -250,8 +257,6 @@ public class UIRepeat extends UINamingContainer {
         this.value = value;
     }
 
-    private transient StringBuffer buffer;
-
     private StringBuffer getBuffer() {
         if (this.buffer == null) {
             this.buffer = new StringBuffer();
@@ -269,9 +274,6 @@ public class UIRepeat extends UINamingContainer {
         }
         return id;
     }
-
-    private transient Object origValueOfVar;
-    private transient Object origValueOfVarStatus;
 
     private void captureOrigValue(FacesContext ctx) {
         if (this.var != null || this.varStatus != null) {
@@ -306,8 +308,6 @@ public class UIRepeat extends UINamingContainer {
             }
         }
     }
-
-    private Map<String, SavedState> childState;
 
     private Map<String, SavedState> getChildState() {
         if (this.childState == null) {
@@ -405,7 +405,7 @@ public class UIRepeat extends UINamingContainer {
                     initialState.apply(evh);
                 }
                 else {
-                    NullState.apply(evh);
+                    NULL_STATE.apply(evh);
                 }
             }
         }
@@ -888,14 +888,15 @@ public class UIRepeat extends UINamingContainer {
         app.publishEvent(faces, PostValidateEvent.class, this);
     }
 
-    private final static SavedState NullState = new SavedState();
-
     // from RI
     private final static class SavedState implements Serializable {
 
-        private Object submittedValue;
-
         private static final long serialVersionUID = 2920252657338389849L;
+
+        private Object submittedValue;
+        private boolean valid = true;
+        private Object value;
+        private boolean localValueSet;
 
         Object getSubmittedValue() {
             return (this.submittedValue);
@@ -905,8 +906,6 @@ public class UIRepeat extends UINamingContainer {
             this.submittedValue = submittedValue;
         }
 
-        private boolean valid = true;
-
         boolean isValid() {
             return (this.valid);
         }
@@ -915,8 +914,6 @@ public class UIRepeat extends UINamingContainer {
             this.valid = valid;
         }
 
-        private Object value;
-
         Object getValue() {
             return (this.value);
         }
@@ -924,8 +921,6 @@ public class UIRepeat extends UINamingContainer {
         public void setValue(Object value) {
             this.value = value;
         }
-
-        private boolean localValueSet;
 
         boolean isLocalValueSet() {
             return (this.localValueSet);

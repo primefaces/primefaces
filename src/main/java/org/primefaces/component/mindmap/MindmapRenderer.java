@@ -126,8 +126,14 @@ public class MindmapRenderer extends CoreRenderer {
 
         writer.write("\"label\":\"" + node.getLabel() + "\"");
 
-        if (nodeKey != null) writer.write(",\"key\":\"" + nodeKey + "\"");
-        if (node.getFill() != null) writer.write(",\"fill\":\"" + node.getFill() + "\"");
-        if (node.isSelectable()) writer.write(",\"selectable\":true");
+        if (nodeKey != null) {
+            writer.write(",\"key\":\"" + nodeKey + "\"");
+        }
+        if (node.getFill() != null) {
+            writer.write(",\"fill\":\"" + node.getFill() + "\"");
+        }
+        if (node.isSelectable()) {
+            writer.write(",\"selectable\":true");
+        }
     }
 }

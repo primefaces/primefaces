@@ -75,8 +75,12 @@ public class ChartRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", chart.getClientId(context), null);
-        if (style != null) writer.writeAttribute("style", style, "style");
-        if (styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
+        if (style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
+        if (styleClass != null) {
+            writer.writeAttribute("class", styleClass, "styleClass");
+        }
 
         writer.endElement("div");
     }
@@ -90,7 +94,9 @@ public class ChartRenderer extends CoreRenderer {
         wb.init("Chart", chart.resolveWidgetVar(), clientId)
             .attr("type", type);
         
-        if (chart.isResponsive()) wb.attr("responsive", true);
+        if (chart.isResponsive()) {
+            wb.attr("responsive", true);
+        }
 
         plotRenderer.render(context, chart);
         encodeClientBehaviors(context, chart);

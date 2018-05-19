@@ -82,8 +82,12 @@ public class RadioButtonRenderer extends InputRenderer {
         writer.writeAttribute("class", "ui-radio-clone", null);
         writer.writeAttribute("data-itemindex", button.getItemIndex(), null);
 
-        if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
+        if (tabindex != null) {
+            writer.writeAttribute("tabindex", tabindex, null);
+        }
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
 
         String onchange = buildEvent(context, radio, button, "onchange", "change", "valueChange");
         if (!isValueBlank(onchange)) {

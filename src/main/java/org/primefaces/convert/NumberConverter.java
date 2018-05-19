@@ -34,9 +34,15 @@ public class NumberConverter extends javax.faces.convert.NumberConverter impleme
 
             metadata.put(HTML.VALIDATION_METADATA.NUMBER_TYPE, type);
 
-            if (maxIntegerDigits != 0) metadata.put(HTML.VALIDATION_METADATA.MAX_INTEGER_DIGITS, maxIntegerDigits);
-            if (minFractionDigits != 0) metadata.put(HTML.VALIDATION_METADATA.MIN_FRACTION_DIGITS, minFractionDigits);
-            if (integerOnly) metadata.put(HTML.VALIDATION_METADATA.INTEGER_ONLY, "true");
+            if (maxIntegerDigits != 0) {
+                metadata.put(HTML.VALIDATION_METADATA.MAX_INTEGER_DIGITS, maxIntegerDigits);
+            }
+            if (minFractionDigits != 0) {
+                metadata.put(HTML.VALIDATION_METADATA.MIN_FRACTION_DIGITS, minFractionDigits);
+            }
+            if (integerOnly) {
+                metadata.put(HTML.VALIDATION_METADATA.INTEGER_ONLY, "true");
+            }
 
             if (type.equals("currency")) {
                 String currencySymbol = this.getCurrencySymbol();

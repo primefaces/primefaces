@@ -130,7 +130,9 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         //button
         writer.startElement("div", null);
         writer.writeAttribute("class", buttonStyle, null);
-        if (option.getDescription() != null) writer.writeAttribute("title", option.getDescription(), null);
+        if (option.getDescription() != null) {
+            writer.writeAttribute("title", option.getDescription(), null);
+        }
 
         //input
         writer.startElement("input", null);
@@ -142,9 +144,15 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
 
         renderOnchange(context, button);
 
-        if (selected) writer.writeAttribute("checked", "checked", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
+        if (selected) {
+            writer.writeAttribute("checked", "checked", null);
+        }
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (tabindex != null) {
+            writer.writeAttribute("tabindex", tabindex, null);
+        }
 
         writer.endElement("input");
 

@@ -46,7 +46,9 @@ public class BarChartSeries extends ChartSeries {
 
         writer.write(",renderer: $.jqplot." + this.getRenderer());
 
-        if (disableStack) writer.write(",disableStack:true");
+        if (disableStack) {
+            writer.write(",disableStack:true");
+        }
 
         writer.write("}");
     }

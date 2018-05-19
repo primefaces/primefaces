@@ -35,10 +35,14 @@ public class ConfirmBehavior extends AbstractBehavior {
         beforeShow(String.class),
         escape(Boolean.class);
 
-        public final Class<?> expectedType;
+        private final Class<?> expectedType;
 
         PropertyKeys(Class<?> expectedType) {
             this.expectedType = expectedType;
+        }
+
+        public Class<?> getExpectedType() {
+            return expectedType;
         }
     }
 

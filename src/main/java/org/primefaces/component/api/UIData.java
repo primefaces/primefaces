@@ -110,9 +110,21 @@ public class UIData extends javax.faces.component.UIData {
     private Boolean isNested = null;
 
     public enum PropertyKeys {
-        paginator, paginatorTemplate, rowsPerPageTemplate, rowsPerPageLabel, currentPageReportTemplate, pageLinks, paginatorPosition, paginatorAlwaysVisible, rowIndex, rowIndexVar, saved, lazy, rowStatePreserved;
+        paginator,
+        paginatorTemplate,
+        rowsPerPageTemplate,
+        rowsPerPageLabel,
+        currentPageReportTemplate,
+        pageLinks,
+        paginatorPosition,
+        paginatorAlwaysVisible,
+        rowIndex,
+        rowIndexVar,
+        saved,
+        lazy,
+        rowStatePreserved;
 
-        String toString;
+        private String toString;
 
         PropertyKeys(String toString) {
             this.toString = toString;
@@ -135,7 +147,8 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     public java.lang.String getPaginatorTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.paginatorTemplate, "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}");
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.paginatorTemplate,
+                "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}");
     }
 
     public void setPaginatorTemplate(java.lang.String _paginatorTemplate) {
@@ -501,7 +514,8 @@ public class UIData extends javax.faces.component.UIData {
             }
 
             if (getRowIndex() != -1) {
-                _rowTransientStates.put(getContainerClientId(facesContext), saveTransientDescendantComponentStates(facesContext, null, getChildren().iterator(), false));
+                _rowTransientStates.put(getContainerClientId(facesContext),
+                        saveTransientDescendantComponentStates(facesContext, null, getChildren().iterator(), false));
             }
         }
 
@@ -928,7 +942,8 @@ public class UIData extends javax.faces.component.UIData {
                         }
 
                     }
-                } else if (child instanceof ColumnGroup) {
+                }
+                else if (child instanceof ColumnGroup) {
                     visitColumnGroup(context, callback, (ColumnGroup) child);
                 }
             }
@@ -1258,7 +1273,9 @@ public class UIData extends javax.faces.component.UIData {
 
     }
 
-    private Map<String, Object> saveTransientDescendantComponentStates(FacesContext facesContext, Map<String, Object> childStates, Iterator<UIComponent> childIterator,
+    private Map<String, Object> saveTransientDescendantComponentStates(FacesContext facesContext,
+            Map<String, Object> childStates,
+            Iterator<UIComponent> childIterator,
             boolean saveChildFacets) {
         while (childIterator.hasNext()) {
             UIComponent child = childIterator.next();
@@ -1318,7 +1335,8 @@ public class UIData extends javax.faces.component.UIData {
                 }
                 return values;
             }
-        } else {
+        }
+        else {
             Object values[] = new Object[2];
             values[0] = super.saveState(context);
             values[1] = UIComponentBase.saveAttachedState(context, _rowDeltaStates);
@@ -1340,7 +1358,8 @@ public class UIData extends javax.faces.component.UIData {
                 isNested = Boolean.FALSE;
             }
             return isNested;
-        } else {
+        }
+        else {
             return isNested;
         }
     }

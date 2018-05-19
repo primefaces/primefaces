@@ -67,7 +67,9 @@ public class TextEditorRenderer extends CoreRenderer {
         writer.startElement("div", editor);
         writer.writeAttribute("id", clientId , null);
         writer.writeAttribute("class", styleClass, null);
-        if (style != null) writer.writeAttribute("style", style, null);
+        if (style != null) {
+            writer.writeAttribute("style", style, null);
+        }
 
         if (toolbar != null && editor.isToolbarVisible()) {
             writer.startElement("div", editor);
