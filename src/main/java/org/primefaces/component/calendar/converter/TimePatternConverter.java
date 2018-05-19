@@ -17,6 +17,7 @@ package org.primefaces.component.calendar.converter;
 
 public class TimePatternConverter implements PatternConverter {
 
+    @Override
     public String convert(String pattern) {
 
         // Hour

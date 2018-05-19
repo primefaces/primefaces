@@ -51,6 +51,7 @@ public class PrimeFacesContextFactory extends FacesContextFactory {
         return new PrimeFacesContext(wrappedContext);
     }
 
+    @Override
     public FacesContextFactory getWrapped() {
         return wrapped;
     }

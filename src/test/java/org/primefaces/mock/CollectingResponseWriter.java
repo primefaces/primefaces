@@ -135,6 +135,7 @@ public class CollectingResponseWriter extends ResponseWriter {
 		builder.append(arg0);
 	}
 
+        @Override
 	public String toString() {
 		return builder.toString();
 	}

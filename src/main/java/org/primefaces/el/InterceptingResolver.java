@@ -76,6 +76,7 @@ public class InterceptingResolver extends ELResolver {
 
     // @Override
     // < EL 2.2 compatibility
+    @Override
     public Object invoke(ELContext context,
             Object base,
             Object method,

@@ -23,6 +23,7 @@ import org.primefaces.component.api.UIData;
 
 public class CurrentPageReportRenderer implements PaginatorElementRenderer {
 
+    @Override
     public void render(FacesContext context, Pageable pageable) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String template = pageable.getCurrentPageReportTemplate();

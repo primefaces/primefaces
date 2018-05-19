@@ -25,14 +25,17 @@ public class DefaultSeparator implements Separator, Serializable {
     private String styleClass;
     private boolean rendered = true;
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }
 
+    @Override
     public String getTitle() {
         return title;
     }
@@ -41,6 +44,7 @@ public class DefaultSeparator implements Separator, Serializable {
         this.title = title;
     }
 
+    @Override
     public String getStyle() {
         return style;
     }
@@ -49,6 +53,7 @@ public class DefaultSeparator implements Separator, Serializable {
         this.style = style;
     }
 
+    @Override
     public String getStyleClass() {
         return styleClass;
     }
@@ -57,6 +62,7 @@ public class DefaultSeparator implements Separator, Serializable {
         this.styleClass = styleClass;
     }
 
+    @Override
     public boolean isRendered() {
         return rendered;
     }

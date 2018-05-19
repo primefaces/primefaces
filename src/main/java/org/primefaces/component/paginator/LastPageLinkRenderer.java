@@ -23,6 +23,7 @@ import org.primefaces.util.MessageFactory;
 
 public class LastPageLinkRenderer extends PageLinkRenderer implements PaginatorElementRenderer {
 
+    @Override
     public void render(FacesContext context, Pageable pageable) throws IOException {
         int currentPage = pageable.getPage();
         int pageCount = pageable.getPageCount();

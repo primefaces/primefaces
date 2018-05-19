@@ -31,14 +31,17 @@ public class DefaultMenuColumn implements MenuColumn, Serializable {
         elements = new ArrayList<MenuElement>();
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }
 
+    @Override
     public String getStyle() {
         return style;
     }
@@ -47,6 +50,7 @@ public class DefaultMenuColumn implements MenuColumn, Serializable {
         this.style = style;
     }
 
+    @Override
     public String getStyleClass() {
         return styleClass;
     }
@@ -55,6 +59,7 @@ public class DefaultMenuColumn implements MenuColumn, Serializable {
         this.styleClass = styleClass;
     }
 
+    @Override
     public boolean isRendered() {
         return rendered;
     }
@@ -63,6 +68,7 @@ public class DefaultMenuColumn implements MenuColumn, Serializable {
         this.rendered = rendered;
     }
 
+    @Override
     public List<MenuElement> getElements() {
         return elements;
     }
@@ -71,6 +77,7 @@ public class DefaultMenuColumn implements MenuColumn, Serializable {
         this.elements = elements;
     }
 
+    @Override
     public int getElementsCount() {
         return (elements == null) ? 0 : elements.size();
     }

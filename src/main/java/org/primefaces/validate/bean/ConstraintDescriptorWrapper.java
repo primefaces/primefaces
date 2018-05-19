@@ -75,11 +75,13 @@ public class ConstraintDescriptorWrapper<T extends Annotation> implements Constr
     }
 
     //@Override - BV 1.1
+    @Override
     public String getMessageTemplate() {
         return wrapped.getMessageTemplate();
     }
 
     //@Override - BV 1.1
+    @Override
     public ConstraintTarget getValidationAppliesTo() {
         return wrapped.getValidationAppliesTo();
     }

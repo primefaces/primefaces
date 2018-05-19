@@ -61,14 +61,17 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
         this.data = data;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }
 
+    @Override
     public String getTitle() {
         return title;
     }
@@ -77,6 +80,7 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
         this.title = title;
     }
 
+    @Override
     public Date getStartDate() {
         return startDate;
     }
@@ -85,6 +89,7 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
         this.startDate = startDate;
     }
 
+    @Override
     public Date getEndDate() {
         return endDate;
     }
@@ -93,6 +98,7 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
         this.endDate = endDate;
     }
 
+    @Override
     public boolean isAllDay() {
         return allDay;
     }
@@ -105,10 +111,12 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
         this.styleClass = styleClass;
     }
 
+    @Override
     public String getStyleClass() {
         return styleClass;
     }
 
+    @Override
     public Object getData() {
         return data;
     }
@@ -117,6 +125,7 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
         this.data = data;
     }
 
+    @Override
     public boolean isEditable() {
         return editable;
     }
@@ -125,6 +134,7 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
         this.editable = editable;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
@@ -133,6 +143,7 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
         this.description = description;
     }
 
+    @Override
     public String getUrl() {
         return url;
     }

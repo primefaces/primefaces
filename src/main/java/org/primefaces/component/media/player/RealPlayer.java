@@ -39,6 +39,7 @@ public class RealPlayer implements MediaPlayer {
         return "audio/x-pn-realaudio-plugin";
     }
 
+    @Override
     public String[] getSupportedTypes() {
         return SUPPORTED_TYPES;
     }

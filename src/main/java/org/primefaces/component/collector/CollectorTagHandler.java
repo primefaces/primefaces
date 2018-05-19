@@ -44,6 +44,7 @@ public class CollectorTagHandler extends TagHandler {
         this.unique = getAttribute("unique");
     }
 
+    @Override
     public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
         if (ComponentHandler.isNew(parent)) {
             ValueExpression addToVE = null;

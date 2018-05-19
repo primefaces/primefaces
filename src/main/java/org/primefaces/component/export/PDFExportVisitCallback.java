@@ -41,6 +41,7 @@ public class PDFExportVisitCallback implements VisitCallback {
         this.encoding = encoding;
     }
 
+    @Override
     public VisitResult visit(VisitContext context, UIComponent target) {
         DataTable dt = (DataTable) target;
         try {
