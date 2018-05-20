@@ -115,14 +115,30 @@ public class BarRenderer extends CartesianPlotRenderer {
         }
         writer.write("]");
 
-        if (orientation != null) writer.write(",orientation:\"" + orientation + "\"");
-        if (barPadding != 8) writer.write(",barPadding:" + barPadding);
-        if (barMargin != 10) writer.write(",barMargin:" + barMargin);
-        if (barWidth != 0) writer.write(",barWidth:" + barWidth);
-        if (model.isStacked()) writer.write(",stackSeries:true");       
-        if (model.isZoom()) writer.write(",zoom:true");        
-        if (model.isAnimate()) writer.write(",animate:true");  
-        if (model.isShowPointLabels()) writer.write(",showPointLabels:true");
+        if (orientation != null) {
+            writer.write(",orientation:\"" + orientation + "\"");
+        }
+        if (barPadding != 8) {
+            writer.write(",barPadding:" + barPadding);
+        }
+        if (barMargin != 10) {
+            writer.write(",barMargin:" + barMargin);
+        }
+        if (barWidth != 0) {
+            writer.write(",barWidth:" + barWidth);
+        }
+        if (model.isStacked()) {
+            writer.write(",stackSeries:true");
+        }       
+        if (model.isZoom()) {
+            writer.write(",zoom:true");
+        }        
+        if (model.isAnimate()) {
+            writer.write(",animate:true");
+        }  
+        if (model.isShowPointLabels()) {
+            writer.write(",showPointLabels:true");
+        }
         
         if (model.isShowDatatip()) {
             writer.write(",datatip:true");

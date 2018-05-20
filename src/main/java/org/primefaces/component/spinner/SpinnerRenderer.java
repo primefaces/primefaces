@@ -130,10 +130,18 @@ public class SpinnerRenderer extends InputRenderer {
         renderPassThruAttributes(context, spinner, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, spinner, HTML.INPUT_TEXT_EVENTS);
 
-        if (spinner.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
-        if (spinner.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
-        if (spinner.isRequired()) writer.writeAttribute("aria-required", "true", null);
-        if (labelledBy != null) writer.writeAttribute("aria-labelledby", labelledBy, null);
+        if (spinner.isDisabled()) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (spinner.isReadonly()) {
+            writer.writeAttribute("readonly", "readonly", null);
+        }
+        if (spinner.isRequired()) {
+            writer.writeAttribute("aria-required", "true", null);
+        }
+        if (labelledBy != null) {
+            writer.writeAttribute("aria-labelledby", labelledBy, null);
+        }
 
         if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, spinner);

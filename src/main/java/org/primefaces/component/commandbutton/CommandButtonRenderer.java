@@ -88,7 +88,9 @@ public class CommandButtonRenderer extends CoreRenderer {
 
         renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
 
-        if (button.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+        if (button.isDisabled()) {
+            writer.writeAttribute("disabled", "disabled", "disabled");
+        }
 
         //icon
         if (!isValueBlank(icon)) {

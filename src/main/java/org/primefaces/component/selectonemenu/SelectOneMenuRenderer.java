@@ -122,8 +122,12 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("role", "combobox", null);
         writer.writeAttribute("aria-haspopup", "true", null);
         writer.writeAttribute("aria-expanded", "false", null);
-        if (style != null) writer.writeAttribute("style", style, "style");
-        if (title != null) writer.writeAttribute("title", title, "title");
+        if (style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
+        if (title != null) {
+            writer.writeAttribute("title", title, "title");
+        }
 
         encodeInput(context, menu, clientId, selectItems, values, submittedValues, converter);
         encodeLabel(context, menu, selectItems);
@@ -151,9 +155,15 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("autocomplete", "off", null);
         //for keyboard accessibility and ScreenReader
         writer.writeAttribute("aria-expanded", "false", null);
-        if (labelledBy != null) writer.writeAttribute("aria-labelledby", labelledBy, null);
-        if (menu.getTabindex() != null) writer.writeAttribute("tabindex", menu.getTabindex(), null);
-        if (menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
+        if (labelledBy != null) {
+            writer.writeAttribute("aria-labelledby", labelledBy, null);
+        }
+        if (menu.getTabindex() != null) {
+            writer.writeAttribute("tabindex", menu.getTabindex(), null);
+        }
+        if (menu.isDisabled()) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
 
         renderDomEvents(context, menu, HTML.BLUR_FOCUS_EVENTS);
 
@@ -182,9 +192,15 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("tabindex", "-1", null);
         writer.writeAttribute("aria-hidden", "true", null);
-        if (menu.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
-        if (menu.getOnkeydown() != null) writer.writeAttribute("onkeydown", menu.getOnkeydown(), null);
-        if (menu.getOnkeyup() != null) writer.writeAttribute("onkeyup", menu.getOnkeyup(), null);
+        if (menu.isDisabled()) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (menu.getOnkeydown() != null) {
+            writer.writeAttribute("onkeydown", menu.getOnkeydown(), null);
+        }
+        if (menu.getOnkeyup() != null) {
+            writer.writeAttribute("onkeyup", menu.getOnkeyup(), null);
+        }
 
         renderOnchange(context, menu);
 
@@ -546,8 +562,12 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             if (!menu.isDynamic() || (menu.isDynamic() && (selected || menu.isDynamicLoadRequest(context) || itemIndex == 0))) {
                 writer.startElement("option", null);
                 writer.writeAttribute("value", itemValueAsString, null);
-                if (disabled) writer.writeAttribute("disabled", "disabled", null);
-                if (selected) writer.writeAttribute("selected", "selected", null);
+                if (disabled) {
+                    writer.writeAttribute("disabled", "disabled", null);
+                }
+                if (selected) {
+                    writer.writeAttribute("selected", "selected", null);
+                }
                 writer.writeAttribute("data-escape", String.valueOf(isEscape), null);
 
                 if (!isValueBlank(option.getLabel())) {

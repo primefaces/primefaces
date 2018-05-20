@@ -170,7 +170,9 @@ public class DataViewRenderer extends DataRenderer {
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
         writer.writeAttribute("tabindex", "-1", null);
         
-        if (isActive) writer.writeAttribute("checked", "checked", null);
+        if (isActive) {
+            writer.writeAttribute("checked", "checked", null);
+        }
         
         writer.endElement("input");
 

@@ -49,14 +49,14 @@ import org.primefaces.util.SharedStringBuilder;
 
 public abstract class UITree extends UIComponentBase implements NamingContainer {
 
+    public static final String SEPARATOR = "_";
+
+    public static final String REQUIRED_MESSAGE_ID = "primefaces.tree.REQUIRED";
+
+    public static final String CHECKBOX_CLASS = "ui-selection";
+
     private static final String SB_GET_CONTAINER_CLIENT_ID = UITree.class.getName() + "#getContainerClientId";
     private static final String SB_GET_SELECTED_ROW_KEYS_AS_STRING = UITree.class.getName() + "#getSelectedRowKeysAsString";
-
-    public final static String SEPARATOR = "_";
-
-    public final static String REQUIRED_MESSAGE_ID = "primefaces.tree.REQUIRED";
-
-    public final static String CHECKBOX_CLASS = "ui-selection";
 
     private String rowKey;
 
@@ -78,7 +78,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         ,showUnselectableCheckbox
         ,nodeVar;
 
-        String toString;
+        private String toString;
 
         PropertyKeys(String toString) {
             this.toString = toString;

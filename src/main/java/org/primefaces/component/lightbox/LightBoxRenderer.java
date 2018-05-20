@@ -42,8 +42,12 @@ public class LightBoxRenderer extends CoreRenderer {
 
         writer.startElement("div", lb);
         writer.writeAttribute("id", clientId, "id");
-        if (lb.getStyle() != null) writer.writeAttribute("style", lb.getStyle(), null);
-        if (lb.getStyleClass() != null) writer.writeAttribute("class", lb.getStyleClass(), null);
+        if (lb.getStyle() != null) {
+            writer.writeAttribute("style", lb.getStyle(), null);
+        }
+        if (lb.getStyleClass() != null) {
+            writer.writeAttribute("class", lb.getStyleClass(), null);
+        }
 
         renderChildren(context, lb);
 

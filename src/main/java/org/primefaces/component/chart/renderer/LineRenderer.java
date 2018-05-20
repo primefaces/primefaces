@@ -78,11 +78,21 @@ public class LineRenderer extends CartesianPlotRenderer {
 
         writer.write("]");
 
-        if (model.isStacked()) writer.write(",stackSeries:true");
-        if (model.isBreakOnNull()) writer.write(",breakOnNull:true");
-        if (model.isZoom()) writer.write(",zoom:true");
-        if (model.isAnimate()) writer.write(",animate:true");
-        if (model.isShowPointLabels()) writer.write(",showPointLabels:true");
+        if (model.isStacked()) {
+            writer.write(",stackSeries:true");
+        }
+        if (model.isBreakOnNull()) {
+            writer.write(",breakOnNull:true");
+        }
+        if (model.isZoom()) {
+            writer.write(",zoom:true");
+        }
+        if (model.isAnimate()) {
+            writer.write(",animate:true");
+        }
+        if (model.isShowPointLabels()) {
+            writer.write(",showPointLabels:true");
+        }
 
         if (model.isShowDatatip()) {
             writer.write(",datatip:true");

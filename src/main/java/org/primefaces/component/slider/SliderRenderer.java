@@ -48,8 +48,12 @@ public class SliderRenderer extends CoreRenderer {
 
         writer.startElement("div", slider);
         writer.writeAttribute("id", clientId , "id");
-        if (slider.getStyle() != null)  writer.writeAttribute("style", slider.getStyle() , null);
-        if (slider.getStyleClass() != null) writer.writeAttribute("class", slider.getStyleClass(), null);
+        if (slider.getStyle() != null) {
+            writer.writeAttribute("style", slider.getStyle() , null);
+        }
+        if (slider.getStyleClass() != null) {
+            writer.writeAttribute("class", slider.getStyleClass(), null);
+        }
 
         writer.endElement("div");
     }

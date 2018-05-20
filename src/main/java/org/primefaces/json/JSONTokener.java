@@ -166,10 +166,12 @@ public class JSONTokener {
         if (this.usePrevious) {
             this.usePrevious = false;
             c = this.previous;
-        } else {
+        }
+        else {
             try {
                 c = this.reader.read();
-            } catch (IOException exception) {
+            }
+            catch (IOException exception) {
                 throw new JSONException(exception);
             }
 
@@ -182,10 +184,12 @@ public class JSONTokener {
         if (this.previous == '\r') {
             this.line += 1;
             this.character = c == '\n' ? 0 : 1;
-        } else if (c == '\n') {
+        }
+        else if (c == '\n') {
             this.line += 1;
             this.character = 0;
-        } else {
+        }
+        else {
             this.character += 1;
         }
         this.previous = (char) c;
@@ -219,23 +223,23 @@ public class JSONTokener {
      *   Substring bounds error if there are not
      *   n characters remaining in the source string.
      */
-     public String next(int n) throws JSONException {
-         if (n == 0) {
-             return "";
-         }
+    public String next(int n) throws JSONException {
+        if (n == 0) {
+            return "";
+        }
 
-         char[] chars = new char[n];
-         int pos = 0;
+        char[] chars = new char[n];
+        int pos = 0;
 
-         while (pos < n) {
-             chars[pos] = this.next();
-             if (this.end()) {
-                 throw this.syntaxError("Substring bounds error");
-             }
-             pos += 1;
-         }
-         return new String(chars);
-     }
+        while (pos < n) {
+            chars[pos] = this.next();
+            if (this.end()) {
+                throw this.syntaxError("Substring bounds error");
+            }
+            pos += 1;
+        }
+        return new String(chars);
+    }
 
 
     /**
@@ -270,46 +274,46 @@ public class JSONTokener {
         for (;;) {
             c = this.next();
             switch (c) {
-            case 0:
-            case '\n':
-            case '\r':
-                throw this.syntaxError("Unterminated string");
-            case '\\':
-                c = this.next();
-                switch (c) {
-                case 'b':
-                    sb.append('\b');
-                    break;
-                case 't':
-                    sb.append('\t');
-                    break;
-                case 'n':
-                    sb.append('\n');
-                    break;
-                case 'f':
-                    sb.append('\f');
-                    break;
-                case 'r':
-                    sb.append('\r');
-                    break;
-                case 'u':
-                    sb.append((char)Integer.parseInt(this.next(4), 16));
-                    break;
-                case '"':
-                case '\'':
+                case 0:
+                case '\n':
+                case '\r':
+                    throw this.syntaxError("Unterminated string");
                 case '\\':
-                case '/':
-                    sb.append(c);
+                    c = this.next();
+                    switch (c) {
+                        case 'b':
+                            sb.append('\b');
+                            break;
+                        case 't':
+                            sb.append('\t');
+                            break;
+                        case 'n':
+                            sb.append('\n');
+                            break;
+                        case 'f':
+                            sb.append('\f');
+                            break;
+                        case 'r':
+                            sb.append('\r');
+                            break;
+                        case 'u':
+                            sb.append((char)Integer.parseInt(this.next(4), 16));
+                            break;
+                        case '"':
+                        case '\'':
+                        case '\\':
+                        case '/':
+                            sb.append(c);
+                            break;
+                        default:
+                            throw this.syntaxError("Illegal escape.");
+                    }
                     break;
                 default:
-                    throw this.syntaxError("Illegal escape.");
-                }
-                break;
-            default:
-                if (c == quote) {
-                    return sb.toString();
-                }
-                sb.append(c);
+                    if (c == quote) {
+                        return sb.toString();
+                    }
+                    sb.append(c);
             }
         }
     }
@@ -430,7 +434,8 @@ public class JSONTokener {
                     return c;
                 }
             } while (c != to);
-        } catch (IOException exception) {
+        }
+        catch (IOException exception) {
             throw new JSONException(exception);
         }
         this.back();

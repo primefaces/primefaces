@@ -69,8 +69,12 @@ public class StackRenderer extends BaseMenuRenderer {
                     String containerStyleClass = menuItem.getContainerStyleClass();
 
                     writer.startElement("li", null);
-                    if (containerStyle != null) writer.writeAttribute("style", containerStyle, null);
-                    if (containerStyleClass != null) writer.writeAttribute("class", containerStyleClass, null);
+                    if (containerStyle != null) {
+                        writer.writeAttribute("style", containerStyle, null);
+                    }
+                    if (containerStyleClass != null) {
+                        writer.writeAttribute("class", containerStyleClass, null);
+                    }
 
                     encodeMenuItem(context, stack, menuItem);
                     writer.endElement("li");

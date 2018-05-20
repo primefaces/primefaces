@@ -216,8 +216,12 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.writeAttribute("aria-selected", String.valueOf(active), null);
         writer.writeAttribute("aria-label", tab.getAriaLabel(), null);
         writer.writeAttribute("tabindex", tabindex, null);
-        if (tab.getTitleStyle() != null) writer.writeAttribute("style", tab.getTitleStyle(), null);
-        if (tab.getTitletip() != null) writer.writeAttribute("title", tab.getTitletip(), null);
+        if (tab.getTitleStyle() != null) {
+            writer.writeAttribute("style", tab.getTitleStyle(), null);
+        }
+        if (tab.getTitletip() != null) {
+            writer.writeAttribute("title", tab.getTitletip(), null);
+        }
 
         //icon
         writer.startElement("span", null);

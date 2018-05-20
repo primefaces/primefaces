@@ -682,10 +682,18 @@ public abstract class CoreRenderer extends Renderer {
 
 
         //messages
-        if (label != null) writer.writeAttribute(HTML.VALIDATION_METADATA.LABEL, label, null);
-        if (requiredMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED_MESSAGE, requiredMessage, null);
-        if (validatorMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.VALIDATOR_MESSAGE, validatorMessage, null);
-        if (converterMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.CONVERTER_MESSAGE, converterMessage, null);
+        if (label != null) {
+            writer.writeAttribute(HTML.VALIDATION_METADATA.LABEL, label, null);
+        }
+        if (requiredMessage != null) {
+            writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED_MESSAGE, requiredMessage, null);
+        }
+        if (validatorMessage != null) {
+            writer.writeAttribute(HTML.VALIDATION_METADATA.VALIDATOR_MESSAGE, validatorMessage, null);
+        }
+        if (converterMessage != null) {
+            writer.writeAttribute(HTML.VALIDATION_METADATA.CONVERTER_MESSAGE, converterMessage, null);
+        }
 
         //converter
         if (converter != null && converter instanceof ClientConverter) {

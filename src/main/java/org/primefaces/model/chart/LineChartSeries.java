@@ -108,9 +108,15 @@ public class LineChartSeries extends ChartSeries {
         writer.write("label:\"" + ComponentUtils.escapeText(this.getLabel()) + "\"");
         writer.write(",renderer: $.jqplot." + renderer);
 
-        if (xaxis != null) writer.write(",xaxis:\"" + xaxis + "\"");
-        if (yaxis != null) writer.write(",yaxis:\"" + yaxis + "\"");
-        if (disableStack) writer.write(",disableStack:true");
+        if (xaxis != null) {
+            writer.write(",xaxis:\"" + xaxis + "\"");
+        }
+        if (yaxis != null) {
+            writer.write(",yaxis:\"" + yaxis + "\"");
+        }
+        if (disableStack) {
+            writer.write(",disableStack:true");
+        }
         
 
         if (fill) {

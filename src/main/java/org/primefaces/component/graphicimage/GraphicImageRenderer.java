@@ -48,8 +48,12 @@ public class GraphicImageRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("src", imageSrc, null);
 
-        if (image.getAlt() == null) writer.writeAttribute("alt", "", null);
-        if (image.getStyleClass() != null) writer.writeAttribute("class", image.getStyleClass(), "styleClass");
+        if (image.getAlt() == null) {
+            writer.writeAttribute("alt", "", null);
+        }
+        if (image.getStyleClass() != null) {
+            writer.writeAttribute("class", image.getStyleClass(), "styleClass");
+        }
 
         renderPassThruAttributes(context, image, HTML.IMG_ATTRS);
 

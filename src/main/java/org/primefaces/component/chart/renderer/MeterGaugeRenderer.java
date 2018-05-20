@@ -57,11 +57,19 @@ public class MeterGaugeRenderer extends BasePlotRenderer {
         writer.write(",showTickLabels:" + model.isShowTickLabels());
         writer.write(",labelHeightAdjust:" + model.getLabelHeightAdjust());
 
-        if (intervalInnerRadius != null) writer.write(",intervalInnerRadius:" + intervalInnerRadius);
-        if (intervalOuterRadius != null) writer.write(",intervalOuterRadius:" + intervalOuterRadius);
+        if (intervalInnerRadius != null) {
+            writer.write(",intervalInnerRadius:" + intervalInnerRadius);
+        }
+        if (intervalOuterRadius != null) {
+            writer.write(",intervalOuterRadius:" + intervalOuterRadius);
+        }
 
-        if (min != Double.MIN_VALUE) writer.write(",min:" + min);
-        if (max != Double.MAX_VALUE) writer.write(",max:" + max);
+        if (min != Double.MIN_VALUE) {
+            writer.write(",min:" + min);
+        }
+        if (max != Double.MAX_VALUE) {
+            writer.write(",max:" + max);
+        }
     }
 
     private void encodeNumberList(FacesContext context, String name, List<Number> values) throws IOException {

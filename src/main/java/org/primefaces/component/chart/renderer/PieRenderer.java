@@ -57,13 +57,27 @@ public class PieRenderer extends BasePlotRenderer {
         String dataLabelFormatString = model.getDataLabelFormatString();
         int dataLabelThreshold = model.getDataLabelThreshold();
 
-        if (diameter != 0) writer.write(",diameter:" + diameter);
-        if (sliceMargin != 0) writer.write(",sliceMargin:" + sliceMargin);
-        if (!fill) writer.write(",fill:false");
-        if (showDataLabels) writer.write(",showDataLabels:true");
-        if (dataFormat != null) writer.write(",dataFormat:\"" + dataFormat + "\"");
-        if (dataLabelFormatString != null) writer.write(",dataLabelFormatString:\"" + dataLabelFormatString + "\"");
-        if (dataLabelThreshold > 0 && dataLabelThreshold < 100) writer.write(",dataLabelThreshold:" + dataLabelThreshold);
+        if (diameter != 0) {
+            writer.write(",diameter:" + diameter);
+        }
+        if (sliceMargin != 0) {
+            writer.write(",sliceMargin:" + sliceMargin);
+        }
+        if (!fill) {
+            writer.write(",fill:false");
+        }
+        if (showDataLabels) {
+            writer.write(",showDataLabels:true");
+        }
+        if (dataFormat != null) {
+            writer.write(",dataFormat:\"" + dataFormat + "\"");
+        }
+        if (dataLabelFormatString != null) {
+            writer.write(",dataLabelFormatString:\"" + dataLabelFormatString + "\"");
+        }
+        if (dataLabelThreshold > 0 && dataLabelThreshold < 100) {
+            writer.write(",dataLabelThreshold:" + dataLabelThreshold);
+        }
 
         if (model.isShowDatatip()) {
             writer.write(",datatip:true");

@@ -88,9 +88,15 @@ public class ChartSeries implements Serializable {
         writer.write("{");
         writer.write("label:\"" + ComponentUtils.escapeText(label) + "\"");
 
-        if (renderer != null) writer.write(",renderer: $.jqplot." + renderer);
-        if (xaxis != null) writer.write(",xaxis:\"" + xaxis + "\"");
-        if (yaxis != null) writer.write(",yaxis:\"" + yaxis + "\"");
+        if (renderer != null) {
+            writer.write(",renderer: $.jqplot." + renderer);
+        }
+        if (xaxis != null) {
+            writer.write(",xaxis:\"" + xaxis + "\"");
+        }
+        if (yaxis != null) {
+            writer.write(",yaxis:\"" + yaxis + "\"");
+        }
 
         writer.write("}");
     }

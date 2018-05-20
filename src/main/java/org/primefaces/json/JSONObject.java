@@ -110,6 +110,14 @@ import java.util.Set;
  * @version 2015-12-09
  */
 public class JSONObject {
+
+    /**
+     * It is sometimes more convenient and less ambiguous to have a
+     * <code>NULL</code> object than to use Java's <code>null</code> value.
+     * <code>JSONObject.NULL.equals(null)</code> returns <code>true</code>.
+     * <code>JSONObject.NULL.toString()</code> returns <code>"null"</code>.
+     */
+    public static final Object NULL = new Null();
     /**
      * JSONObject.NULL is equivalent to the value that JavaScript calls null,
      * whilst Java's null is equivalent to the value that JavaScript calls
@@ -141,6 +149,11 @@ public class JSONObject {
             return object == null || object == this;
         }
 
+        @Override
+        public int hashCode() {
+            return 0;
+        }
+
         /**
          * Get the "null" string value.
          *
@@ -156,14 +169,6 @@ public class JSONObject {
      * The map where the JSONObject's properties are kept.
      */
     private final Map<String, Object> map;
-
-    /**
-     * It is sometimes more convenient and less ambiguous to have a
-     * <code>NULL</code> object than to use Java's <code>null</code> value.
-     * <code>JSONObject.NULL.equals(null)</code> returns <code>true</code>.
-     * <code>JSONObject.NULL.toString()</code> returns <code>"null"</code>.
-     */
-    public static final Object NULL = new Null();
 
     /**
      * Construct an empty JSONObject.
@@ -187,7 +192,8 @@ public class JSONObject {
         for (int i = 0; i < names.length; i += 1) {
             try {
                 this.putOnce(names[i], jo.opt(names[i]));
-            } catch (Exception ignore) {
+            }
+            catch (Exception ignore) {
             }
         }
     }
@@ -212,13 +218,13 @@ public class JSONObject {
         for (;;) {
             c = x.nextClean();
             switch (c) {
-            case 0:
-                throw x.syntaxError("A JSONObject text must end with '}'");
-            case '}':
-                return;
-            default:
-                x.back();
-                key = x.nextValue().toString();
+                case 0:
+                    throw x.syntaxError("A JSONObject text must end with '}'");
+                case '}':
+                    return;
+                default:
+                    x.back();
+                    key = x.nextValue().toString();
             }
 
 // The key is followed by ':'.
@@ -232,17 +238,17 @@ public class JSONObject {
 // Pairs are separated by ','.
 
             switch (x.nextClean()) {
-            case ';':
-            case ',':
-                if (x.nextClean() == '}') {
+                case ';':
+                case ',':
+                    if (x.nextClean() == '}') {
+                        return;
+                    }
+                    x.back();
+                    break;
+                case '}':
                     return;
-                }
-                x.back();
-                break;
-            case '}':
-                return;
-            default:
-                throw x.syntaxError("Expected a ',' or '}'");
+                default:
+                    throw x.syntaxError("Expected a ',' or '}'");
             }
         }
     }
@@ -257,7 +263,7 @@ public class JSONObject {
     public JSONObject(Map<?, ?> map) {
         this.map = new HashMap<String, Object>();
         if (map != null) {
-        	for (final Entry<?, ?> e : map.entrySet()) {
+            for (final Entry<?, ?> e : map.entrySet()) {
                 final Object value = e.getValue();
                 if (value != null) {
                     this.map.put(String.valueOf(e.getKey()), wrap(value));
@@ -313,7 +319,8 @@ public class JSONObject {
             String name = names[i];
             try {
                 this.putOpt(name, c.getField(name).get(object));
-            } catch (Exception ignore) {
+            }
+            catch (Exception ignore) {
             }
         }
     }
@@ -403,9 +410,11 @@ public class JSONObject {
             this.put(key,
                     value instanceof JSONArray ? new JSONArray().put(value)
                             : value);
-        } else if (object instanceof JSONArray) {
+        }
+        else if (object instanceof JSONArray) {
             ((JSONArray) object).put(value);
-        } else {
+        }
+        else {
             this.put(key, new JSONArray().put(object).put(value));
         }
         return this;
@@ -431,9 +440,11 @@ public class JSONObject {
         Object object = this.opt(key);
         if (object == null) {
             this.put(key, new JSONArray().put(value));
-        } else if (object instanceof JSONArray) {
+        }
+        else if (object instanceof JSONArray) {
             this.put(key, ((JSONArray) object).put(value));
-        } else {
+        }
+        else {
             throw new JSONException("JSONObject[" + key
                     + "] is not a JSONArray.");
         }
@@ -502,7 +513,7 @@ public class JSONObject {
     */
     public <E extends Enum<E>> E getEnum(Class<E> clazz, String key) throws JSONException {
         E val = optEnum(clazz, key);
-        if(val==null) {
+        if (val == null) {
             // JSONException should really take a throwable argument.
             // If it did, I would re-implement this with the Enum.valueOf
             // method and place any thrown exception in the JSONException
@@ -529,7 +540,8 @@ public class JSONObject {
                 || (object instanceof String && ((String) object)
                         .equalsIgnoreCase("false"))) {
             return false;
-        } else if (object.equals(Boolean.TRUE)
+        }
+        else if (object.equals(Boolean.TRUE)
                 || (object instanceof String && ((String) object)
                         .equalsIgnoreCase("true"))) {
             return true;
@@ -552,7 +564,8 @@ public class JSONObject {
         Object object = this.get(key);
         try {
             return new BigInteger(object.toString());
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new JSONException("JSONObject[" + quote(key)
                     + "] could not be converted to BigInteger.");
         }
@@ -572,7 +585,8 @@ public class JSONObject {
         Object object = this.get(key);
         try {
             return new BigDecimal(object.toString());
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new JSONException("JSONObject[" + quote(key)
                     + "] could not be converted to BigDecimal.");
         }
@@ -593,7 +607,8 @@ public class JSONObject {
         try {
             return object instanceof Number ? ((Number) object).doubleValue()
                     : Double.parseDouble((String) object);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new JSONException("JSONObject[" + quote(key)
                     + "] is not a number.");
         }
@@ -614,7 +629,8 @@ public class JSONObject {
         try {
             return object instanceof Number ? ((Number) object).intValue()
                     : Integer.parseInt((String) object);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new JSONException("JSONObject[" + quote(key)
                     + "] is not an int.");
         }
@@ -671,7 +687,8 @@ public class JSONObject {
         try {
             return object instanceof Number ? ((Number) object).longValue()
                     : Long.parseLong((String) object);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new JSONException("JSONObject[" + quote(key)
                     + "] is not a long.");
         }
@@ -763,19 +780,26 @@ public class JSONObject {
         Object value = this.opt(key);
         if (value == null) {
             this.put(key, 1);
-        } else if (value instanceof BigInteger) {
+        }
+        else if (value instanceof BigInteger) {
             this.put(key, ((BigInteger)value).add(BigInteger.ONE));
-        } else if (value instanceof BigDecimal) {
+        }
+        else if (value instanceof BigDecimal) {
             this.put(key, ((BigDecimal)value).add(BigDecimal.ONE));
-        } else if (value instanceof Integer) {
+        }
+        else if (value instanceof Integer) {
             this.put(key, (Integer) value + 1);
-        } else if (value instanceof Long) {
+        }
+        else if (value instanceof Long) {
             this.put(key, (Long) value + 1);
-        } else if (value instanceof Double) {
+        }
+        else if (value instanceof Double) {
             this.put(key, (Double) value + 1);
-        } else if (value instanceof Float) {
+        }
+        else if (value instanceof Float) {
             this.put(key, (Float) value + 1);
-        } else {
+        }
+        else {
             throw new JSONException("Unable to increment [" + quote(key) + "].");
         }
         return this;
@@ -916,9 +940,11 @@ public class JSONObject {
                 return myE;
             }
             return Enum.valueOf(clazz, val.toString());
-        } catch (IllegalArgumentException e) {
+        }
+        catch (IllegalArgumentException e) {
             return defaultValue;
-        } catch (NullPointerException e) {
+        }
+        catch (NullPointerException e) {
             return defaultValue;
         }
     }
@@ -949,7 +975,8 @@ public class JSONObject {
     public boolean optBoolean(String key, boolean defaultValue) {
         try {
             return this.getBoolean(key);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             return defaultValue;
         }
     }
@@ -981,7 +1008,8 @@ public class JSONObject {
     public BigInteger optBigInteger(String key, BigInteger defaultValue) {
         try {
             return this.getBigInteger(key);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             return defaultValue;
         }
     }
@@ -1000,7 +1028,8 @@ public class JSONObject {
     public BigDecimal optBigDecimal(String key, BigDecimal defaultValue) {
         try {
             return this.getBigDecimal(key);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             return defaultValue;
         }
     }
@@ -1019,7 +1048,8 @@ public class JSONObject {
     public double optDouble(String key, double defaultValue) {
         try {
             return this.getDouble(key);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             return defaultValue;
         }
     }
@@ -1051,7 +1081,8 @@ public class JSONObject {
     public int optInt(String key, int defaultValue) {
         try {
             return this.getInt(key);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             return defaultValue;
         }
     }
@@ -1109,7 +1140,8 @@ public class JSONObject {
     public long optLong(String key, long defaultValue) {
         try {
             return this.getLong(key);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             return defaultValue;
         }
     }
@@ -1161,10 +1193,12 @@ public class JSONObject {
                         if ("getClass".equals(name)
                                 || "getDeclaringClass".equals(name)) {
                             key = "";
-                        } else {
+                        }
+                        else {
                             key = name.substring(3);
                         }
-                    } else if (name.startsWith("is")) {
+                    }
+                    else if (name.startsWith("is")) {
                         key = name.substring(2);
                     }
                     if (key.length() > 0
@@ -1172,7 +1206,8 @@ public class JSONObject {
                             && method.getParameterTypes().length == 0) {
                         if (key.length() == 1) {
                             key = key.toLowerCase();
-                        } else if (!Character.isUpperCase(key.charAt(1))) {
+                        }
+                        else if (!Character.isUpperCase(key.charAt(1))) {
                             key = key.substring(0, 1).toLowerCase()
                                     + key.substring(1);
                         }
@@ -1183,7 +1218,8 @@ public class JSONObject {
                         }
                     }
                 }
-            } catch (Exception ignore) {
+            }
+            catch (Exception ignore) {
             }
         }
     }
@@ -1305,7 +1341,8 @@ public class JSONObject {
         if (value != null) {
             testValidity(value);
             this.map.put(key, value);
-        } else {
+        }
+        else {
             this.remove(key);
         }
         return this;
@@ -1368,7 +1405,8 @@ public class JSONObject {
         synchronized (sw.getBuffer()) {
             try {
                 return quote(string, sw).toString();
-            } catch (IOException ignored) {
+            }
+            catch (IOException ignored) {
                 // will never happen - we are writing to a string writer
                 return "";
             }
@@ -1392,42 +1430,43 @@ public class JSONObject {
             b = c;
             c = string.charAt(i);
             switch (c) {
-            case '\\':
-            case '"':
-                w.write('\\');
-                w.write(c);
-                break;
-            case '/':
-                if (b == '<') {
+                case '\\':
+                case '"':
                     w.write('\\');
-                }
-                w.write(c);
-                break;
-            case '\b':
-                w.write("\\b");
-                break;
-            case '\t':
-                w.write("\\t");
-                break;
-            case '\n':
-                w.write("\\n");
-                break;
-            case '\f':
-                w.write("\\f");
-                break;
-            case '\r':
-                w.write("\\r");
-                break;
-            default:
-                if (c < ' ' || (c >= '\u0080' && c < '\u00a0')
-                        || (c >= '\u2000' && c < '\u2100')) {
-                    w.write("\\u");
-                    hhhh = Integer.toHexString(c);
-                    w.write("0000", 0, 4 - hhhh.length());
-                    w.write(hhhh);
-                } else {
                     w.write(c);
-                }
+                    break;
+                case '/':
+                    if (b == '<') {
+                        w.write('\\');
+                    }
+                    w.write(c);
+                    break;
+                case '\b':
+                    w.write("\\b");
+                    break;
+                case '\t':
+                    w.write("\\t");
+                    break;
+                case '\n':
+                    w.write("\\n");
+                    break;
+                case '\f':
+                    w.write("\\f");
+                    break;
+                case '\r':
+                    w.write("\\r");
+                    break;
+                default:
+                    if (c < ' ' || (c >= '\u0080' && c < '\u00a0')
+                            || (c >= '\u2000' && c < '\u2100')) {
+                        w.write("\\u");
+                        hhhh = Integer.toHexString(c);
+                        w.write("0000", 0, 4 - hhhh.length());
+                        w.write(hhhh);
+                    }
+                    else {
+                        w.write(c);
+                    }
             }
         }
         w.write('"');
@@ -1472,16 +1511,19 @@ public class JSONObject {
                     if (!((JSONObject)valueThis).similar(valueOther)) {
                         return false;
                     }
-                } else if (valueThis instanceof JSONArray) {
+                }
+                else if (valueThis instanceof JSONArray) {
                     if (!((JSONArray)valueThis).similar(valueOther)) {
                         return false;
                     }
-                } else if (!valueThis.equals(valueOther)) {
+                }
+                else if (!valueThis.equals(valueOther)) {
                     return false;
                 }
             }
             return true;
-        } catch (Throwable exception) {
+        }
+        catch (Throwable exception) {
             return false;
         }
     }
@@ -1523,17 +1565,20 @@ public class JSONObject {
                     if (!d.isInfinite() && !d.isNaN()) {
                         return d;
                     }
-                } else {
+                }
+                else {
                     Long myLong = new Long(string);
                     if (string.equals(myLong.toString())) {
                         if (myLong == myLong.intValue()) {
                             return myLong.intValue();
-                        } else {
+                        }
+                        else {
                             return myLong;
                         }
                     }
                 }
-            } catch (Exception ignore) {
+            }
+            catch (Exception ignore) {
             }
         }
         return string;
@@ -1554,7 +1599,8 @@ public class JSONObject {
                     throw new JSONException(
                             "JSON does not allow non-finite numbers.");
                 }
-            } else if (o instanceof Float) {
+            }
+            else if (o instanceof Float) {
                 if (((Float) o).isInfinite() || ((Float) o).isNaN()) {
                     throw new JSONException(
                             "JSON does not allow non-finite numbers.");
@@ -1601,7 +1647,8 @@ public class JSONObject {
     public String toString() {
         try {
             return this.toString(0);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             return null;
         }
     }
@@ -1659,7 +1706,8 @@ public class JSONObject {
             Object object;
             try {
                 object = ((JSONString) value).toJSONString();
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 throw new JSONException(e);
             }
             if (object instanceof String) {
@@ -1736,7 +1784,8 @@ public class JSONObject {
                 return object.toString();
             }
             return new JSONObject(object);
-        } catch (Exception exception) {
+        }
+        catch (Exception exception) {
             return null;
         }
     }
@@ -1758,31 +1807,41 @@ public class JSONObject {
             int indentFactor, int indent) throws JSONException, IOException {
         if (value == null || value.equals(null)) {
             writer.write("null");
-        } else if (value instanceof JSONObject) {
+        }
+        else if (value instanceof JSONObject) {
             ((JSONObject) value).write(writer, indentFactor, indent);
-        } else if (value instanceof JSONArray) {
+        }
+        else if (value instanceof JSONArray) {
             ((JSONArray) value).write(writer, indentFactor, indent);
-        } else if (value instanceof Map) {
+        }
+        else if (value instanceof Map) {
             Map<?, ?> map = (Map<?, ?>) value;
             new JSONObject(map).write(writer, indentFactor, indent);
-        } else if (value instanceof Collection) {
+        }
+        else if (value instanceof Collection) {
             Collection<?> coll = (Collection<?>) value;
             new JSONArray(coll).write(writer, indentFactor, indent);
-        } else if (value.getClass().isArray()) {
+        }
+        else if (value.getClass().isArray()) {
             new JSONArray(value).write(writer, indentFactor, indent);
-        } else if (value instanceof Number) {
+        }
+        else if (value instanceof Number) {
             writer.write(numberToString((Number) value));
-        } else if (value instanceof Boolean) {
+        }
+        else if (value instanceof Boolean) {
             writer.write(value.toString());
-        } else if (value instanceof JSONString) {
+        }
+        else if (value instanceof JSONString) {
             Object o;
             try {
                 o = ((JSONString) value).toJSONString();
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 throw new JSONException(e);
             }
             writer.write(o != null ? o.toString() : quote(value.toString()));
-        } else {
+        }
+        else {
             quote(value.toString(), writer);
         }
         return writer;
@@ -1819,7 +1878,8 @@ public class JSONObject {
                     writer.write(' ');
                 }
                 writeValue(writer, this.map.get(key), indentFactor, indent);
-            } else if (length != 0) {
+            }
+            else if (length != 0) {
                 final int newindent = indent + indentFactor;
                 while (keys.hasNext()) {
                     Object key = keys.next();
@@ -1845,7 +1905,8 @@ public class JSONObject {
             }
             writer.write('}');
             return writer;
-        } catch (IOException exception) {
+        }
+        catch (IOException exception) {
             throw new JSONException(exception);
         }
     }

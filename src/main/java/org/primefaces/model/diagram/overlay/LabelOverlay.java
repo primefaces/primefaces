@@ -72,8 +72,12 @@ public class LabelOverlay implements Overlay, Serializable {
     public String toJS(StringBuilder sb) {
         sb.append("['Label',{label:\"").append(ComponentUtils.escapeText(label)).append("\"");
 
-        if (styleClass != null) sb.append(",cssClass:'").append(styleClass).append("'");
-        if (location != 0.5) sb.append(",location:").append(location);
+        if (styleClass != null) {
+            sb.append(",cssClass:'").append(styleClass).append("'");
+        }
+        if (location != 0.5) {
+            sb.append(",location:").append(location);
+        }
         
         sb.append("}]");
 

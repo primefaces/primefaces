@@ -191,8 +191,12 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("td", null);
-        if (column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
-        if (column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
+        if (column.getStyle() != null) {
+            writer.writeAttribute("style", column.getStyle(), null);
+        }
+        if (column.getStyleClass() != null) {
+            writer.writeAttribute("class", column.getStyleClass(), null);
+        }
 
         if (column.getElementsCount() > 0) {
             List columnElements = column.getElements();

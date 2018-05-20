@@ -180,8 +180,12 @@ public class DiagramRenderer extends CoreRenderer {
             wb.append(",defaultConnector:").append(defaultConnector.toJS(sb));
             wb.append(",containment:").append("" + model.isContainment());
 
-            if (paintStyle != null) wb.append(",paintStyle:").append(paintStyle);
-            if (hoverPaintStyle != null) wb.append(",hoverPaintStyle:").append(hoverPaintStyle);
+            if (paintStyle != null) {
+                wb.append(",paintStyle:").append(paintStyle);
+            }
+            if (hoverPaintStyle != null) {
+                wb.append(",hoverPaintStyle:").append(hoverPaintStyle);
+            }
 
             sb.setLength(0);
         }
@@ -244,14 +248,30 @@ public class DiagramRenderer extends CoreRenderer {
                 .append(",element:'").append(elementClientId).append("'")
                 .append(",anchor:'").append(endPoint.getAnchor().toString()).append("'");
 
-        if (maxConnections != 1) wb.append(",maxConnections:").append(maxConnections);
-        if (style != null) wb.append(",paintStyle:").append(style);
-        if (hoverStyle != null) wb.append(",hoverPaintStyle:").append(hoverStyle);
-        if (endPoint.isSource()) wb.append(",isSource:true");
-        if (endPoint.isTarget()) wb.append(",isTarget:true");
-        if (styleClass != null) wb.append(",cssClass:'").append(styleClass).append("'");
-        if (hoverStyleClass != null) wb.append(",hoverClass:'").append(hoverStyleClass).append("'");
-        if (scope != null) wb.append(",scope:'").append(scope).append("'");
+        if (maxConnections != 1) {
+            wb.append(",maxConnections:").append(maxConnections);
+        }
+        if (style != null) {
+            wb.append(",paintStyle:").append(style);
+        }
+        if (hoverStyle != null) {
+            wb.append(",hoverPaintStyle:").append(hoverStyle);
+        }
+        if (endPoint.isSource()) {
+            wb.append(",isSource:true");
+        }
+        if (endPoint.isTarget()) {
+            wb.append(",isTarget:true");
+        }
+        if (styleClass != null) {
+            wb.append(",cssClass:'").append(styleClass).append("'");
+        }
+        if (hoverStyleClass != null) {
+            wb.append(",hoverClass:'").append(hoverStyleClass).append("'");
+        }
+        if (scope != null) {
+            wb.append(",scope:'").append(scope).append("'");
+        }
 
         if (type != null) {
             wb.append(",endpoint:").append(endPoint.toJS(sb));
@@ -283,8 +303,12 @@ public class DiagramRenderer extends CoreRenderer {
                     String paintStyle = connector.getPaintStyle();
                     String hoverPaintStyle = connector.getHoverPaintStyle();
 
-                    if (paintStyle != null) wb.append(",paintStyle:").append(paintStyle);
-                    if (hoverPaintStyle != null) wb.append(",hoverPaintStyle:").append(hoverPaintStyle);
+                    if (paintStyle != null) {
+                        wb.append(",paintStyle:").append(paintStyle);
+                    }
+                    if (hoverPaintStyle != null) {
+                        wb.append(",hoverPaintStyle:").append(hoverPaintStyle);
+                    }
                 }
 
                 if (!connection.isDetachable()) {

@@ -245,8 +245,12 @@ public class ScheduleRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        if (schedule.getStyle() != null) writer.writeAttribute("style", schedule.getStyle(), "style");
-        if (schedule.getStyleClass() != null) writer.writeAttribute("class", schedule.getStyleClass(), "style");
+        if (schedule.getStyle() != null) {
+            writer.writeAttribute("style", schedule.getStyle(), "style");
+        }
+        if (schedule.getStyleClass() != null) {
+            writer.writeAttribute("class", schedule.getStyleClass(), "style");
+        }
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId + "_container", null);

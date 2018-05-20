@@ -70,8 +70,12 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleclass, "styleclass");
-        if (style != null) writer.writeAttribute("style", style, "style");
-        if (title != null) writer.writeAttribute("title", title, "title");
+        if (style != null) {
+            writer.writeAttribute("style", style, "style");
+        }
+        if (title != null) {
+            writer.writeAttribute("title", title, "title");
+        }
 
         encodeKeyboardTarget(context, menu);
         encodeInputs(context, menu, selectItems);
@@ -159,10 +163,18 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             writer.writeAttribute("group-label", selectItemGroupLabel, null);
         }
 
-        if (checked) writer.writeAttribute("checked", "checked", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (option.getDescription() != null) writer.writeAttribute("title", option.getDescription(), null);
-        if (menu.getOnchange() != null) writer.writeAttribute("onchange", menu.getOnchange(), null);
+        if (checked) {
+            writer.writeAttribute("checked", "checked", null);
+        }
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (option.getDescription() != null) {
+            writer.writeAttribute("title", option.getDescription(), null);
+        }
+        if (menu.getOnchange() != null) {
+            writer.writeAttribute("onchange", menu.getOnchange(), null);
+        }
 
         writer.endElement("input");
 

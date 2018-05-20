@@ -37,7 +37,9 @@ public class LayoutUnitRenderer extends CoreRenderer {
         writer.startElement("div", component);
         writer.writeAttribute("id", component.getClientId(context), "id");
         writer.writeAttribute("class", styleClass , "styleClass");
-        if (unit.getStyle() != null) writer.writeAttribute("style", unit.getStyle() , "style");
+        if (unit.getStyle() != null) {
+            writer.writeAttribute("style", unit.getStyle() , "style");
+        }
 
         encodeHeader(context, unit);
 
