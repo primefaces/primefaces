@@ -13,10 +13,12 @@ public class TestMultiSearchExpressionResolver  implements SearchExpressionResol
         this.components = components;
     }
 
+    @Override
     public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public void resolveComponents(FacesContext context, UIComponent source, UIComponent last, String expression, List<UIComponent> components, int options) {
         components.addAll(this.components);
     }

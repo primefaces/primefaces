@@ -26,10 +26,12 @@ import org.primefaces.model.LazyDataModel;
 
 public class RowExpandFeature implements DataTableFeature {
 
+    @Override
     public void decode(FacesContext context, DataTable table) {
         throw new RuntimeException("RowExpandFeature should not encode.");
     }
 
+    @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         int expandedRowIndex = Integer.parseInt(params.get(table.getClientId(context) + "_expandedRowIndex"));
@@ -73,10 +75,12 @@ public class RowExpandFeature implements DataTableFeature {
         }
     }
 
+    @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
         return false;
     }
 
+    @Override
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_rowExpansion");
     }

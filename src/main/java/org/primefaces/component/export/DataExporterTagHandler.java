@@ -59,6 +59,7 @@ public class DataExporterTagHandler extends TagHandler {
         this.onTableRender = getAttribute("onTableRender");
     }
 
+    @Override
     public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
         if (ComponentHandler.isNew(parent)) {
             ValueExpression targetVE = target.getValueExpression(faceletContext, Object.class);

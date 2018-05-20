@@ -52,6 +52,7 @@ public class BeanPropertyComparator implements Comparator {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public int compare(Object obj1, Object obj2) {
         try {
             FacesContext context = FacesContext.getCurrentInstance();

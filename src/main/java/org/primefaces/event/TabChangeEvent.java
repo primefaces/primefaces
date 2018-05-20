@@ -29,6 +29,7 @@ public class TabChangeEvent extends AbstractAjaxBehaviorEvent implements TabEven
         this.tab = tab;
     }
 
+    @Override
     public Tab getTab() {
         return tab;
     }
@@ -37,6 +38,7 @@ public class TabChangeEvent extends AbstractAjaxBehaviorEvent implements TabEven
         this.tab = tab;
     }
 
+    @Override
     public Object getData() {
         return data;
     }

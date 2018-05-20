@@ -19,10 +19,12 @@ import java.util.Map;
 
 public class ByteConverter extends javax.faces.convert.ByteConverter implements ClientConverter {
 
+    @Override
     public Map<String, Object> getMetadata() {
         return null;
     }
 
+    @Override
     public String getConverterId() {
         return ByteConverter.CONVERTER_ID;
     }

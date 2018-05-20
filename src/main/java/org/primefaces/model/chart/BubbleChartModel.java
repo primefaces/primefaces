@@ -50,6 +50,7 @@ public class BubbleChartModel extends CartesianChartModel {
         this.data.add(bubble);
     }
 
+    @Override
     public void clear() {
         this.data.clear();
     }

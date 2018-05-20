@@ -30,10 +30,12 @@ import org.primefaces.visit.ResetInputVisitCallback;
 
 public class RowEditFeature implements DataTableFeature {
 
+    @Override
     public void decode(FacesContext context, DataTable table) {
         throw new RuntimeException("RowEditFeature should not encode.");
     }
 
+    @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         if (table.isSelectionEnabled()) {
             table.findSelectedRowKeys();
@@ -72,10 +74,12 @@ public class RowEditFeature implements DataTableFeature {
         }
     }
 
+    @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
         return false;
     }
 
+    @Override
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return context.getExternalContext().getRequestParameterMap().containsKey(table.getClientId(context) + "_rowEditAction");
     }

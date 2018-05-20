@@ -1223,10 +1223,12 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             _target.setPhaseId(phaseId);
         }
 
+        @Override
         public boolean isAppropriateListener(FacesListener listener) {
             return _target.isAppropriateListener(listener);
         }
 
+        @Override
         public void processListener(FacesListener listener) {
             UITabPanel owner = (UITabPanel) getComponent();
 

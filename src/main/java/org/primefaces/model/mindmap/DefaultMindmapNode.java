@@ -57,6 +57,7 @@ public class DefaultMindmapNode implements MindmapNode, Serializable {
         this.selectable = selectable;
     }
 
+    @Override
     public String getLabel() {
         return label;
     }
@@ -65,10 +66,12 @@ public class DefaultMindmapNode implements MindmapNode, Serializable {
         this.label = label;
     }
 
+    @Override
     public MindmapNode getParent() {
         return this.parent;
     }
 
+    @Override
     public Object getData() {
         return this.data;
     }
@@ -77,6 +80,7 @@ public class DefaultMindmapNode implements MindmapNode, Serializable {
         this.data = data;
     }
 
+    @Override
     public void setParent(MindmapNode parent) {
         if (this.parent != null) {
             this.parent.getChildren().remove(this);
@@ -89,6 +93,7 @@ public class DefaultMindmapNode implements MindmapNode, Serializable {
         }
     }
 
+    @Override
     public String getFill() {
         return this.fill;
     }
@@ -97,18 +102,22 @@ public class DefaultMindmapNode implements MindmapNode, Serializable {
         this.fill = fill;
     }
 
+    @Override
     public void addNode(MindmapNode node) {
         node.setParent(this);
     }
 
+    @Override
     public boolean isSelectable() {
         return selectable;
     }
 
+    @Override
     public void setSelectable(boolean selectable) {
         this.selectable = selectable;
     }
 
+    @Override
     public List<MindmapNode> getChildren() {
         return this.children;
     }

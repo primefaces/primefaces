@@ -61,10 +61,12 @@ public class DynamicColumn implements UIColumn {
         this.columns.setRowIndex(-1);
     }
 
+    @Override
     public ValueExpression getValueExpression(String property) {
         return this.columns.getValueExpression(property);
     }
 
+    @Override
     public String getContainerClientId(FacesContext context) {
         return this.columns.getContainerClientId(context);
     }
@@ -73,106 +75,132 @@ public class DynamicColumn implements UIColumn {
         return this.columns.getId();
     }
 
+    @Override
     public String getClientId() {
         return this.columns.getClientId();
     }
 
+    @Override
     public String getClientId(FacesContext context) {
         return this.columns.getClientId(context);
     }
 
+    @Override
     public String getSelectionMode() {
         return this.columns.getSelectionMode();
     }
 
+    @Override
     public boolean isResizable() {
         return this.columns.isResizable();
     }
 
+    @Override
     public String getStyle() {
         return this.columns.getStyle();
     }
 
+    @Override
     public String getStyleClass() {
         return this.columns.getStyleClass();
     }
 
+    @Override
     public int getRowspan() {
         return this.columns.getRowspan();
     }
 
+    @Override
     public int getColspan() {
         return this.columns.getColspan();
     }
 
+    @Override
     public String getFilterPosition() {
         return this.columns.getFilterPosition();
     }
 
+    @Override
     public UIComponent getFacet(String facet) {
         return this.columns.getFacet(facet);
     }
 
+    @Override
     public String getHeaderText() {
         return this.columns.getHeaderText();
     }
 
+    @Override
     public String getFooterText() {
         return this.columns.getFooterText();
     }
 
+    @Override
     public String getFilterStyleClass() {
         return this.columns.getFilterStyleClass();
     }
 
+    @Override
     public String getFilterStyle() {
         return this.columns.getFilterStyle();
     }
 
+    @Override
     public String getFilterMatchMode() {
         return this.columns.getFilterMatchMode();
     }
 
+    @Override
     public int getFilterMaxLength() {
         return this.columns.getFilterMaxLength();
     }
 
+    @Override
     public Object getFilterOptions() {
         return this.columns.getFilterOptions();
     }
 
+    @Override
     public CellEditor getCellEditor() {
         return this.columns.getCellEditor();
     }
 
+    @Override
     public boolean isDynamic() {
         return this.columns.isDynamic();
     }
 
+    @Override
     public MethodExpression getSortFunction() {
         return this.columns.getSortFunction();
     }
 
+    @Override
     public List<UIComponent> getChildren() {
         return this.columns.getChildren();
     }
 
+    @Override
     public boolean isExportable() {
         return this.columns.isExportable();
     }
 
+    @Override
     public boolean isRendered() {
         return this.columns.isRendered();
     }
 
+    @Override
     public void encodeAll(FacesContext context) throws IOException {
         this.columns.encodeAll(context);
     }
 
+    @Override
     public void renderChildren(FacesContext context) throws IOException {
         this.columns.encodeChildren(context);
     }
 
+    @Override
     public String getColumnKey() {
         return this.columnKey;
     }
@@ -181,70 +209,87 @@ public class DynamicColumn implements UIColumn {
         this.columnKey = columnKey;
     }
 
+    @Override
     public String getWidth() {
         return this.columns.getWidth();
     }
 
+    @Override
     public Object getSortBy() {
         return this.columns.getSortBy();
     }
 
+    @Override
     public Object getFilterBy() {
         return this.columns.getFilterBy();
     }
 
+    @Override
     public boolean isToggleable() {
         return this.columns.isToggleable();
     }
 
+    @Override
     public MethodExpression getFilterFunction() {
         return this.columns.getFilterFunction();
     }
 
+    @Override
     public String getField() {
         return this.columns.getField();
     }
 
+    @Override
     public Object getFilterValue() {
         return this.columns.getFilterValue();
     }
 
+    @Override
     public int getPriority() {
         return this.columns.getPriority();
     }
 
+    @Override
     public boolean isSortable() {
         return this.columns.isSortable();
     }
 
+    @Override
     public boolean isFilterable() {
         return this.columns.isFilterable();
     }
 
+    @Override
     public boolean isVisible() {
         return this.columns.isVisible();
     }
 
+    @Override
     public boolean isSelectRow() {
         return this.columns.isSelectRow();
     }
 
+    @Override
     public String getAriaHeaderText() {
         return this.columns.getAriaHeaderText();
     }
 
+    @Override
     public MethodExpression getExportFunction() {
         return this.columns.getExportFunction();
     }
 
+    @Override
     public boolean isGroupRow() {
         return this.columns.isGroupRow();
     }
     
+    @Override
     public String getExportHeaderValue() {
         return this.columns.getExportHeaderValue();
     }
     
+    @Override
     public String getExportFooterValue() {
         return this.columns.getExportFooterValue();
     }

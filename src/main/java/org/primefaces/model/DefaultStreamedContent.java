@@ -101,6 +101,7 @@ public class DefaultStreamedContent implements StreamedContent {
         this.contentEncoding = contentEncoding;
     }
 
+    @Override
     public Integer getContentLength() {
         return contentLength;
     }
