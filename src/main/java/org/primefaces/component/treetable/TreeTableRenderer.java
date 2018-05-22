@@ -35,6 +35,7 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITree;
+import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 import org.primefaces.component.celleditor.CellEditor;
 
 import org.primefaces.component.column.Column;
@@ -281,7 +282,7 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         if (root.getRowKey() == null) {
-            root.setRowKey("root");
+            root.setRowKey(ROOT_ROW_KEY);
             tt.buildRowKeys(root);
             tt.initPreselection();
         }

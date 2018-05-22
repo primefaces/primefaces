@@ -57,6 +57,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     public final static String REQUIRED_MESSAGE_ID = "primefaces.tree.REQUIRED";
 
     public final static String CHECKBOX_CLASS = "ui-selection";
+    public static final String ROOT_ROW_KEY = "root";
 
     private String rowKey;
 
@@ -227,7 +228,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             return null;
         }
 
-        if (rowKey.equals("root")) {
+        if (rowKey.equals(ROOT_ROW_KEY)) {
             return this.getValue();
         }
 
