@@ -98,6 +98,16 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     }
 
     @Override
+    public void writeText(Object text, UIComponent component, String property) throws IOException {
+        if (inScript) {
+            inline.append(text);
+        }
+        else {
+            getWrapped().writeText(text, property);
+        }
+    }
+    
+    @Override
     public void writeAttribute(String name, Object value, String property) throws IOException {
         if (inScript) {
             if ("src".equals(name)) {
@@ -111,7 +121,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             getWrapped().writeAttribute(name, value, property);
         }
     }
-
+    
     @Override
     public void writeURIAttribute(String name, Object value, String property) throws IOException {
         if (inScript) {
