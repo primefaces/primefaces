@@ -770,6 +770,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         }
 
                         box.addClass('ui-state-focus');
+                        
+                        $this.focusedRow = input.closest('.ui-datatable-selectable');
                     })
                     .on('blur.dataTable', checkboxInputSelector, null, function() {
                         var input = $(this),
@@ -780,6 +782,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         }
 
                         box.removeClass('ui-state-focus');
+                        
+                        $this.focusedRow = null;
                     })
                     .on('change.dataTable', checkboxInputSelector, null, function(e) {
                         var input = $(this),
