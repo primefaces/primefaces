@@ -16,11 +16,8 @@
 package org.primefaces.component.export;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.el.ELContext;
@@ -59,7 +56,7 @@ public class DataExporter implements ActionListener, StateHolder {
     private ValueExpression repeat;
 
     private ValueExpression options;
-    
+
     private MethodExpression onTableRender;
 
     public DataExporter() {
@@ -92,14 +89,6 @@ public class DataExporter implements ActionListener, StateHolder {
         String encodingType = "UTF-8";
         if (encoding != null) {
             encodingType = (String) encoding.getValue(elContext);
-        }
-
-        try {
-            // encode filename, see #1603
-            outputFileName = URLEncoder.encode(outputFileName, encodingType);
-        }
-        catch (UnsupportedEncodingException ex) {
-            LOGGER.log(Level.WARNING, "Encoding '" + encodingType + "' not supported by URLEncoder", ex);
         }
 
         boolean repeating = false;
