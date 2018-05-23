@@ -175,18 +175,11 @@ public class OutputLabelRenderer extends CoreRenderer {
                 return false;
             }
             for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
-                Class<? extends Annotation> annotationType = constraintDescriptor.getAnnotation().annotationType();
-                // GitHub #14 skip @NotNull check
-                if (annotationType.equals(NotNull.class)) {
-                    return applicationContext.getConfig().isInterpretEmptyStringAsNull();
-                }
-                // GitHub #3052 @NotBlank,@NotEmpty Hibernate and BeanValidator 2.0
-                String annotationClassName = annotationType.getSimpleName();
-                if ("NotBlank".equals(annotationClassName) || "NotEmpty".equals(annotationClassName)) {
+                if (isValidationAnnotation(applicationContext, constraintDescriptor)) {
                     return true;
                 }
             }
-        }
+        } 
         catch (PropertyNotFoundException e) {
             String message = "Skip evaluating [@NotNull,@NotBlank,@NotEmpty] for outputLabel and referenced component \"" + input.getClientId(context)
                         + "\" because the ValueExpression of the \"value\" attribute"
@@ -195,6 +188,33 @@ public class OutputLabelRenderer extends CoreRenderer {
         }
 
         return false;
+    }
+
+    protected boolean isValidationAnnotation(PrimeApplicationContext applicationContext, ConstraintDescriptor<?> constraintDescriptor) {
+        boolean isBeanValidation = false;
+
+        Class<? extends Annotation> annotationType = constraintDescriptor.getAnnotation().annotationType();
+        // GitHub #14 skip @NotNull check
+        if (annotationType.equals(NotNull.class)) {
+            isBeanValidation = applicationContext.getConfig().isInterpretEmptyStringAsNull();
+        }
+        // GitHub #3052 @NotBlank,@NotEmpty Hibernate and BeanValidator 2.0
+        String annotationClassName = annotationType.getSimpleName();
+        if ("NotBlank".equals(annotationClassName) || "NotEmpty".equals(annotationClassName)) {
+            isBeanValidation = true;
+        }
+
+        // Check composite constraints as well
+        if (!isBeanValidation && constraintDescriptor.getComposingConstraints() != null) {
+            for (ConstraintDescriptor<?> innerConstraintDescriptor : constraintDescriptor.getComposingConstraints()) {
+                isBeanValidation = isValidationAnnotation(applicationContext, innerConstraintDescriptor);
+                if (isBeanValidation) {
+                    break;
+                }
+            }
+        }
+
+        return isBeanValidation;
     }
 
     @Override
