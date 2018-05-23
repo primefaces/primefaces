@@ -207,7 +207,7 @@ public class OutputLabelRenderer extends CoreRenderer {
         // Check composite constraints as well
         if (!isBeanValidation && constraintDescriptor.getComposingConstraints() != null) {
             for (ConstraintDescriptor<?> innerConstraintDescriptor : constraintDescriptor.getComposingConstraints()) {
-                isBeanValidation = isValidationAnnotation(context, innerConstraintDescriptor);
+                isBeanValidation = isValidationAnnotation(applicationContext, innerConstraintDescriptor);
                 if (isBeanValidation) {
                     break;
                 }
