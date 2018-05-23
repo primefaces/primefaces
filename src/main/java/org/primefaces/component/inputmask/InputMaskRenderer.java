@@ -70,11 +70,12 @@ public class InputMaskRenderer extends InputRenderer {
         // Escape regex metacharacters first
         String regex = REGEX_METACHARS_PATTERN.matcher(mask).replaceAll("\\\\$0");
 
-        regex = regex.replace("a", "[A-Za-z]").replace("9", "[0-9]").replace("\\*", "[A-Za-z0-9]");
         int optionalPos = regex.indexOf("\\?");
         if (optionalPos != -1) {
-            regex = regex.substring(0, optionalPos) + "(" + regex.substring(optionalPos + 2) + ")?";
+            regex = regex.substring(0, optionalPos) + regex.substring(optionalPos + 2).replaceAll("[a9\\*]", "$0?");
         }
+
+        regex = regex.replace("a", "[A-Za-z]").replace("9", "[0-9]").replace("\\*", "[A-Za-z0-9]");
 
         return Pattern.compile(regex);
     }
