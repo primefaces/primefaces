@@ -131,6 +131,7 @@ public class InputNumberRenderer extends InputRenderer {
 
         String styleClass = inputNumber.getStyleClass();
         styleClass = styleClass == null ? InputNumber.STYLE_CLASS : InputNumber.STYLE_CLASS + " " + styleClass;
+        styleClass = inputNumber.isValid() ? styleClass : styleClass + " ui-state-error"; // see #3706
 
         writer.startElement("span", inputNumber);
         writer.writeAttribute("id", clientId, null);
