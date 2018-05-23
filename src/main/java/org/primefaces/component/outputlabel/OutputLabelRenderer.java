@@ -167,8 +167,9 @@ public class OutputLabelRenderer extends CoreRenderer {
 
     protected boolean isBeanValidationDefined(UIInput input, FacesContext context) {
         try {
+            PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(context,
-                    RequestContext.getCurrentInstance(context),
+                    applicationContext,
                     ValueExpressionAnalyzer.getExpression(context.getELContext(), input.getValueExpression("value")));
             if (constraints == null || constraints.isEmpty()) {
                 return false;
