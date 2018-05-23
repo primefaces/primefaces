@@ -174,7 +174,11 @@ public class MessagesRenderer extends UINotificationRenderer {
             writer.writeAttribute("aria-atomic", "true", null);
 
             String summary = message.getSummary() != null ? message.getSummary() : "";
-            String detail = message.getDetail() != null ? message.getDetail() : summary;
+            String detail = message.getDetail() != null ? message.getDetail() : "";
+            
+            if (summary != null && summary.equals(detail)) {
+                detail = "";    
+            }
 
             if (uiMessages.isShowSummary()) {
                 writer.startElement("span", null);
