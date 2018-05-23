@@ -175,7 +175,7 @@ public class OutputLabelRenderer extends CoreRenderer {
                 return false;
             }
             for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
-                if (isValidationAnnotation(context, constraintDescriptor)) {
+                if (isValidationAnnotation(applicationContext, constraintDescriptor)) {
                     return true;
                 }
             }
@@ -190,13 +190,13 @@ public class OutputLabelRenderer extends CoreRenderer {
         return false;
     }
 
-    protected boolean isValidationAnnotation(FacesContext context, ConstraintDescriptor<?> constraintDescriptor) {
+    protected boolean isValidationAnnotation(PrimeApplicationContext applicationContext, ConstraintDescriptor<?> constraintDescriptor) {
         boolean isBeanValidation = false;
 
         Class<? extends Annotation> annotationType = constraintDescriptor.getAnnotation().annotationType();
         // GitHub #14 skip @NotNull check
         if (annotationType.equals(NotNull.class)) {
-            isBeanValidation = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isInterpretEmptyStringAsNull();
+            isBeanValidation = applicationContext.getConfig().isInterpretEmptyStringAsNull();
         }
         // GitHub #3052 @NotBlank,@NotEmpty Hibernate and BeanValidator 2.0
         String annotationClassName = annotationType.getSimpleName();
