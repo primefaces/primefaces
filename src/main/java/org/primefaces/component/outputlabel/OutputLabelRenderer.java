@@ -167,34 +167,52 @@ public class OutputLabelRenderer extends CoreRenderer {
 
     protected boolean isBeanValidationDefined(UIInput input, FacesContext context) {
         try {
-            PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(context,
-                    applicationContext,
+                    RequestContext.getCurrentInstance(context),
                     ValueExpressionAnalyzer.getExpression(context.getELContext(), input.getValueExpression("value")));
             if (constraints == null || constraints.isEmpty()) {
                 return false;
             }
             for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
-                Class<? extends Annotation> annotationType = constraintDescriptor.getAnnotation().annotationType();
-                // GitHub #14 skip @NotNull check
-                if (annotationType.equals(NotNull.class)) {
-                    return applicationContext.getConfig().isInterpretEmptyStringAsNull();
-                }
-                // GitHub #3052 @NotBlank,@NotEmpty Hibernate and BeanValidator 2.0
-                String annotationClassName = annotationType.getSimpleName();
-                if ("NotBlank".equals(annotationClassName) || "NotEmpty".equals(annotationClassName)) {
+                if (isValidationAnnotation(context, constraintDescriptor)) {
                     return true;
                 }
             }
-        }
-        catch (PropertyNotFoundException e) {
+        } catch (PropertyNotFoundException e) {
             String message = "Skip evaluating [@NotNull,@NotBlank,@NotEmpty] for outputLabel and referenced component \"" + input.getClientId(context)
-                        + "\" because the ValueExpression of the \"value\" attribute"
-                        + " isn't resolvable completely (e.g. a sub-expression returns null)";
+                    + "\" because the ValueExpression of the \"value\" attribute"
+                    + " isn't resolvable completely (e.g. a sub-expression returns null)";
             LOG.log(Level.FINE, message);
         }
 
         return false;
+    }
+
+    protected boolean isValidationAnnotation(FacesContext context, ConstraintDescriptor<?> constraintDescriptor) {
+        boolean isBeanValidation = false;
+
+        Class<? extends Annotation> annotationType = constraintDescriptor.getAnnotation().annotationType();
+        // GitHub #14 skip @NotNull check
+        if (annotationType.equals(NotNull.class)) {
+            isBeanValidation = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isInterpretEmptyStringAsNull();
+        }
+        // GitHub #3052 @NotBlank,@NotEmpty Hibernate and BeanValidator 2.0
+        String annotationClassName = annotationType.getSimpleName();
+        if ("NotBlank".equals(annotationClassName) || "NotEmpty".equals(annotationClassName)) {
+            isBeanValidation = true;
+        }
+
+        // Check composite constraints as well
+        if (!isBeanValidation && constraintDescriptor.getComposingConstraints() != null) {
+            for (ConstraintDescriptor<?> innerConstraintDescriptor : constraintDescriptor.getComposingConstraints()) {
+                isBeanValidation = isValidationAnnotation(context, innerConstraintDescriptor);
+                if (isBeanValidation) {
+                    break;
+                }
+            }
+        }
+
+        return isBeanValidation;
     }
 
     @Override
