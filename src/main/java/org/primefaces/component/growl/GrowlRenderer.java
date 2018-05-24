@@ -96,6 +96,10 @@ public class GrowlRenderer extends UINotificationRenderer {
                 String summary = escapeText(message.getSummary());
                 String detail = escapeText(message.getDetail());
 
+                if (summary != null && summary.equals(detail)) {
+                    detail = "";    
+                }
+
                 writer.write("{");
 
                 if (growl.isShowSummary() && growl.isShowDetail()) {
