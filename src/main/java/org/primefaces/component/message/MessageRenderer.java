@@ -111,11 +111,24 @@ public class MessageRenderer extends UINotificationRenderer {
                 }
 
                 if (!iconOnly) {
+                    
                     if (uiMessage.isShowSummary()) {
                         encodeText(writer, msg.getSummary(), severityKey + "-summary", escape);
                     }
+
                     if (uiMessage.isShowDetail()) {
-                        encodeText(writer, msg.getDetail(), severityKey + "-detail", escape);
+                        boolean detailDifferentThanVisibleSummary = true;
+                        
+                        if (uiMessage.isShowSummary()) {
+                        
+                            if (msg.getSummary() != null && msg.getSummary().equals(msg.getDetail())) {
+                                detailDifferentThanVisibleSummary = false;
+                            }
+                        }
+
+                        if (detailDifferentThanVisibleSummary) {
+                            encodeText(writer, msg.getDetail(), severityKey + "-detail", escape);
+                        }
                     }
                 }
 
