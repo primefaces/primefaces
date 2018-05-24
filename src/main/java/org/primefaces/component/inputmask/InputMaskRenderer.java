@@ -64,44 +64,44 @@ public class InputMaskRenderer extends InputRenderer {
     // * - Represents an alphanumeric character (A-Z,a-z,0-9)
     // ? - Makes the following input optional
     protected Pattern translateMaskIntoRegex(InputMask inputMask) {
-	    String mask = inputMask.getMask();
-	    StringBuilder regex = new StringBuilder();
-	    boolean optionalFound = false;
+        String mask = inputMask.getMask();
+        StringBuilder regex = new StringBuilder();
+        boolean optionalFound = false;
 
-	    for (char c : mask.toCharArray()) {
-		    if (c == '?') {
-			    optionalFound = true;
-		    } else {
-			    regex.append(translateMaskCharIntoRegex(c, optionalFound));
-		    }
-	    }
-	    return Pattern.compile(regex.toString());
+        for (char c : mask.toCharArray()) {
+            if (c == '?') {
+                optionalFound = true;
+            }
+            else {
+                regex.append(translateMaskCharIntoRegex(c, optionalFound));
+            }
+        }
+        return Pattern.compile(regex.toString());
     }
 
-	protected String translateMaskCharIntoRegex(char c, boolean optional) {
-		String translated;
+    protected String translateMaskCharIntoRegex(char c, boolean optional) {
+        String translated;
 
-		if (c == '?') {
-			return ""; //should be ignored
-
-		} else if (c == '9') {
-			translated = "[0-9]";
-
-		} else if (c == 'a') {
-			translated = "[A-Za-z]";
-
-		} else if (c == '*') {
-			translated = "[A-Za-z0-9]";
-
-		} else if (REGEX_METACHARS.indexOf(c) >= 0) {
-			translated = "\\" + c;
-
-		} else {
-			translated = String.valueOf(c);
-		}
-
-		return optional ? (translated + "?") : translated;
-	}
+        if (c == '?') {
+            return ""; //should be ignored
+        }
+        else if (c == '9') {
+            translated = "[0-9]";
+        }
+        else if (c == 'a') {
+            translated = "[A-Za-z]";
+        }
+        else if (c == '*') {
+            translated = "[A-Za-z0-9]";
+        }
+        else if (REGEX_METACHARS.indexOf(c) >= 0) {
+            translated = "\\" + c;
+        }
+        else {
+            translated = String.valueOf(c);
+        }
+        return optional ? (translated + "?") : translated;
+    }
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
