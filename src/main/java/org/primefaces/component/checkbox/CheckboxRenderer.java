@@ -21,6 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.radiobutton.RadioButtonRenderer;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
@@ -93,6 +94,10 @@ public class CheckboxRenderer extends InputRenderer {
         if (!isValueBlank(onclick)) {
             writer.writeAttribute("onclick", onclick, null);
         }
+        
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, selectManyCheckbox);
+        }
 
         writer.endElement("input");
         writer.endElement("div");
@@ -129,5 +134,15 @@ public class CheckboxRenderer extends InputRenderer {
         writer.endElement("span");
 
         writer.endElement("div");
+    }
+    
+    @Override
+    public String getHighlighter() {
+        return "manychkbox";
+    }
+
+    @Override
+    protected boolean isGrouped() {
+        return true;
     }
 }
