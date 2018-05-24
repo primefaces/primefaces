@@ -99,6 +99,11 @@ public class GrowlRenderer extends UINotificationRenderer {
                 writer.write("{");
 
                 if (growl.isShowSummary() && growl.isShowDetail()) {
+                    
+                    if (summary != null && summary.equals(detail)) {
+                        detail = "";   
+                    }
+                    
                     writer.writeText("summary:\"" + summary + "\",detail:\"" + detail + "\"", null);
                 }
                 else if (growl.isShowSummary() && !growl.isShowDetail()) {

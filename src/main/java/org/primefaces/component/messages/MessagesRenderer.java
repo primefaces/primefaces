@@ -175,6 +175,13 @@ public class MessagesRenderer extends UINotificationRenderer {
 
             String summary = message.getSummary() != null ? message.getSummary() : "";
             String detail = message.getDetail() != null ? message.getDetail() : summary;
+            
+            if (uiMessages.isShowSummary() && uiMessages.isShowDetail()) {
+                
+                if (summary.equals(detail)) {
+                    detail = "";   
+                }
+            }
 
             if (uiMessages.isShowSummary()) {
                 writer.startElement("span", null);
