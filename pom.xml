@@ -108,9 +108,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.lowagie</groupId>
-            <artifactId>itext</artifactId>
-            <version>2.1.7</version>
+            <groupId>com.github.librepdf</groupId>
+            <artifactId>openpdf</artifactId>
+            <version>1.0.5</version>
             <scope>provided</scope>
         </dependency>
 
