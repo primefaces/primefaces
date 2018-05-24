@@ -316,4 +316,13 @@ public class SelectRenderer extends InputRenderer {
         return restoredSubmittedValues.toArray(new String[restoredSubmittedValues.size()]);
     }
     
+    
+    protected void decodeSubmittedValues(FacesContext context, UIInput component, String submitParam, Object[] values)
+    {
+        Map<String, String[]> params = context.getExternalContext().getRequestParameterValuesMap();
+
+        String[] submittedValues = params.containsKey(submitParam) ? params.get(submitParam) : new String[0];
+        submittedValues = restoreAndCheckDisabledSelectItems(context, component, values, submittedValues);
+        component.setSubmittedValue(submittedValues);
+    }
 }
