@@ -73,7 +73,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             inline.append(cbuf, off, len);
         }
         else {
-            getWrapped().write(cbuf);
+            getWrapped().write(cbuf, off, len);
         }
     }
     
@@ -88,7 +88,27 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     }
 
     @Override
+    public void writeText(char[] cbuf, int off, int len) throws IOException {
+        if (inScript) {
+            inline.append(cbuf, off, len);
+        }
+        else {
+            getWrapped().writeText(cbuf, off, len);
+        }
+    }      
+
+    @Override
     public void writeText(Object text, String property) throws IOException {
+        if (inScript) {
+            inline.append(text);
+        }
+        else {
+            getWrapped().writeText(text, property);
+        }
+    }
+
+    @Override
+    public void writeText(Object text, UIComponent component, String property) throws IOException {
         if (inScript) {
             inline.append(text);
         }
@@ -111,7 +131,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             getWrapped().writeAttribute(name, value, property);
         }
     }
-
+    
     @Override
     public void writeURIAttribute(String name, Object value, String property) throws IOException {
         if (inScript) {

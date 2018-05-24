@@ -39,6 +39,7 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
+import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 
 public class TreeRenderer extends CoreRenderer {
 
@@ -198,7 +199,7 @@ public class TreeRenderer extends CoreRenderer {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String rowKey = params.get(clientId + "_expandNode");
 
-            if (!vertical && rowKey.equals("root")) {
+            if (!vertical && rowKey.equals(ROOT_ROW_KEY)) {
                 encodeHorizontalTreeNodeChildren(context, tree, tree.getValue(), tree.getClientId(context), null, tree.isDynamic(),
                         tree.isCheckboxSelection());
             }
@@ -229,7 +230,7 @@ public class TreeRenderer extends CoreRenderer {
             TreeNode root = (TreeNode) tree.getValue();
 
             if (root != null && root.getRowKey() == null) {
-                root.setRowKey("root");
+                root.setRowKey(ROOT_ROW_KEY);
                 tree.buildRowKeys(root);
                 tree.initPreselection();
             }
@@ -320,7 +321,7 @@ public class TreeRenderer extends CoreRenderer {
         TreeNode root = (TreeNode) tree.getValue();
 
         if (root != null && root.getRowKey() == null) {
-            root.setRowKey("root");
+            root.setRowKey(ROOT_ROW_KEY);
             tree.buildRowKeys(root);
             tree.initPreselection();
         }
@@ -346,7 +347,7 @@ public class TreeRenderer extends CoreRenderer {
         boolean isDisabled = tree.isDisabled();
 
         if (root != null && root.getRowKey() == null) {
-            root.setRowKey("root");
+            root.setRowKey(ROOT_ROW_KEY);
             tree.buildRowKeys(root);
             tree.initPreselection();
         }
@@ -502,7 +503,7 @@ public class TreeRenderer extends CoreRenderer {
         }
         else {
             context.getExternalContext().getRequestMap().put(tree.getVar(), tree.getValue().getData());
-            writer.writeAttribute("data-rowkey", "root", null);
+            writer.writeAttribute("data-rowkey", ROOT_ROW_KEY, null);
         }
 
         nodeClass = uiTreeNode.getStyleClass() == null ? nodeClass : nodeClass + " " + uiTreeNode.getStyleClass();
