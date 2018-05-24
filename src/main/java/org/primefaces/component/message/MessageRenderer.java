@@ -114,7 +114,7 @@ public class MessageRenderer extends UINotificationRenderer {
                     if (uiMessage.isShowSummary()) {
                         encodeText(writer, msg.getSummary(), severityKey + "-summary", escape);
                     }
-                    if (uiMessage.isShowDetail()) {
+                    if (uiMessage.isShowDetail() && msg.getSummary() != null && !msg.getSummary().equals(msg.getDetail())) {
                         encodeText(writer, msg.getDetail(), severityKey + "-detail", escape);
                     }
                 }
