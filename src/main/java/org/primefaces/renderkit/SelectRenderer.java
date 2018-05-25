@@ -292,28 +292,35 @@ public class SelectRenderer extends InputRenderer {
      * @return <code>newSubmittedValues</code> merged with checked, disabled <code>oldValues</code>
      * @throws javax.faces.FacesException if client side manipulation has been detected, in order to reject the submission
      */
-    protected String[] restoreAndCheckDisabledSelectItems(FacesContext context, UIInput component, Object[] oldValues, String... newSubmittedValues) 
+    protected String[] validateSubmittedValues(FacesContext context, UIInput component, Object[] oldValues, String... submittedValues) 
             throws FacesException {
         
-        List<String> restoredSubmittedValues = new ArrayList<>();
-        for (SelectItem selectItem : getSelectItems(context, component)) {
-            String selectItemValStr = getOptionAsString(context, component, component.getConverter(), selectItem.getValue());
+        List<String> validSubmittedValues = new ArrayList<>();
+        
+        List<SelectItem> selectItems = getSelectItems(context, component);
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
+
+            String selectItemVal = getOptionAsString(context, component, component.getConverter(), selectItem.getValue());
+
             if (selectItem.isDisabled()) {
-                if (ArrayUtils.contains(newSubmittedValues, selectItemValStr) && !ArrayUtils.contains(oldValues, selectItemValStr)) {
+                if (ArrayUtils.contains(submittedValues, selectItemVal) && !ArrayUtils.contains(oldValues, selectItemVal)) {
                     // disabled select item has been selected
-                    throw new FacesException("Disabled select item has been submitted. ClientId: " + component.getClientId(context));
+                    // throw new FacesException("Disabled select item has been submitted. ClientId: " + component.getClientId(context));
+                    // ignore it silently for now
                 }
-                if (ArrayUtils.contains(oldValues, selectItemValStr)) {
-                    restoredSubmittedValues.add(selectItemValStr);
+                else if (ArrayUtils.contains(oldValues, selectItemVal)) {
+                    validSubmittedValues.add(selectItemVal);
                 }
             } 
             else {
-                if (ArrayUtils.contains(newSubmittedValues, selectItemValStr)) {
-                    restoredSubmittedValues.add(selectItemValStr);
+                if (ArrayUtils.contains(submittedValues, selectItemVal)) {
+                    validSubmittedValues.add(selectItemVal);
                 }
             }
         }
-        return restoredSubmittedValues.toArray(new String[restoredSubmittedValues.size()]);
+
+        return validSubmittedValues.toArray(new String[validSubmittedValues.size()]);
     }
     
 }
