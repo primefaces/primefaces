@@ -15,7 +15,6 @@
  */
 package org.primefaces.renderkit;
 
-import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
@@ -30,14 +29,7 @@ public abstract class SelectOneRenderer extends SelectRenderer {
 
         UISelectOne selectOne = (UISelectOne) component;
 
-        String clientId = getSubmitParam(context, selectOne);
-        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-
-        String submittedValue = params.containsKey(clientId) ? params.get(clientId) : "";
-        String[] submittedValues = restoreAndCheckDisabledSelectItems(context, selectOne, (Object[]) getValues(selectOne), submittedValue);
-        submittedValue = submittedValues.length == 0 ? submittedValue : submittedValues[0];
-        selectOne.setSubmittedValue(submittedValue);
-
+        decodeSubmittedValues(context, selectOne, getSubmitParam(context, selectOne), (Object[]) getValues(selectOne));
         decodeBehaviors(context, selectOne);
     }
 

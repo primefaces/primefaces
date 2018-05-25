@@ -215,17 +215,27 @@ if (!PrimeFaces.utils) {
 
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
 
+            var scrollParent = widget.getJQ().scrollParent();
+            if (scrollParent.is('body')) {
+                scrollParent = $(window);
+            }
+
             widget.addDestroyListener(function() {
-                $(window).off(scrollNamespace);
+                scrollParent.off(scrollNamespace);
             });
 
-            $(window).off(scrollNamespace).on(scrollNamespace, function(e) {
+            scrollParent.off(scrollNamespace).on(scrollNamespace, function(e) {
                 scrollCallback(e);
             });
         },
 
-        unbdingScrollHandler: function(scrollNamespace) {
-            $(window).off(scrollNamespace);
+        unbdingScrollHandler: function(widget, scrollNamespace) {
+            var scrollParent = widget.getJQ().scrollParent();
+            if (scrollParent.is('body')) {
+                scrollParent = $(window);
+            }
+            
+            scrollParent.off(scrollNamespace);
         }
     };
 

@@ -17,7 +17,6 @@ package org.primefaces.renderkit;
 
 import java.lang.reflect.Array;
 import java.util.Collection;
-import java.util.Map;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectMany;
@@ -33,14 +32,8 @@ public abstract class SelectManyRenderer extends SelectRenderer {
 
         UISelectMany selectMany = (UISelectMany) component;
 
+        decodeSubmittedValues(context, selectMany, getSubmitParam(context, selectMany), (Object[]) getValues(selectMany));
         decodeBehaviors(context, selectMany);
-
-        String submitParam = getSubmitParam(context, selectMany);
-        Map<String, String[]> params = context.getExternalContext().getRequestParameterValuesMap();
-
-        String[] submittedValues = params.containsKey(submitParam) ? params.get(submitParam) : new String[0];
-        submittedValues = restoreAndCheckDisabledSelectItems(context, selectMany, (Object[]) getValues(selectMany), submittedValues);
-        selectMany.setSubmittedValue(submittedValues);
     }
 
     protected Object getValues(UIComponent component) {
