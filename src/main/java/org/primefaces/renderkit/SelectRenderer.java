@@ -297,6 +297,7 @@ public class SelectRenderer extends InputRenderer {
         
         List<String> validSubmittedValues = new ArrayList<>();
         
+        // loop attached SelectItems - other avlues are not allowed
         List<SelectItem> selectItems = getSelectItems(context, component);
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
