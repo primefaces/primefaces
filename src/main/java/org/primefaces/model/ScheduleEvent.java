@@ -40,4 +40,20 @@ public interface ScheduleEvent {
     public String getDescription();
 
     public String getUrl();
+
+    public Rendering getRendering();
+
+    public enum Rendering {
+        BACKGROUND("background"),
+        INVERSE_BACKGROUND("inverse-background");
+
+        private String rendering;
+        Rendering(String rendering) {
+            this.rendering = rendering;
+        }
+
+        public String getRendering() {
+            return rendering;
+        }
+    }
 }

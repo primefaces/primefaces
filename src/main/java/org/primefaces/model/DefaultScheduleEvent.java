@@ -30,6 +30,7 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
     private boolean editable = true;
     private String description;
     private String url;
+    private Rendering rendering;
 
     public DefaultScheduleEvent() {
     }
@@ -150,6 +151,15 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public Rendering getRendering() {
+        return rendering;
+    }
+
+    public void setRendering(Rendering rendering) {
+        this.rendering = rendering;
     }
 
     @Override
