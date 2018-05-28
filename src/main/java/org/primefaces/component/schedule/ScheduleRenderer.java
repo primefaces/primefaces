@@ -31,6 +31,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
+import org.primefaces.model.ScheduleRenderingMode;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -100,6 +101,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 String className = event.getStyleClass();
                 String description = event.getDescription();
                 String url = event.getUrl();
+                ScheduleRenderingMode renderingMode = event.getRenderingMode();
 
                 writer.write("{");
                 writer.write("\"id\": \"" + event.getId() + "\"");
@@ -116,6 +118,9 @@ public class ScheduleRenderer extends CoreRenderer {
                 }
                 if (url != null) {
                     writer.write(",\"url\":\"" + escapeText(url) + "\"");
+                }
+                if (renderingMode != null) {
+                    writer.write(",\"rendering\":\"" + renderingMode.getRendering() + "\"");
                 }
 
                 writer.write("}");
