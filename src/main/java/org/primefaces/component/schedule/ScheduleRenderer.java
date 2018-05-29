@@ -23,11 +23,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Logger;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
@@ -74,8 +72,12 @@ public class ScheduleRenderer extends CoreRenderer {
             String startDateParam = params.get(clientId + "_start");
             String endDateParam = params.get(clientId + "_end");
 
-            Date startDate = new Date(Long.valueOf(startDateParam));
-            Date endDate = new Date(Long.valueOf(endDateParam));
+            Long startMillis = Long.valueOf(startDateParam);
+            Long endMillis = Long.valueOf(endDateParam);
+
+            TimeZone tz = schedule.calculateTimeZone();
+            Date startDate = new Date(startMillis - tz.getOffset(startMillis));
+            Date endDate = new Date(endMillis - tz.getOffset(endMillis));
 
             LazyScheduleModel lazyModel = ((LazyScheduleModel) model);
             lazyModel.clear(); //Clear old events
