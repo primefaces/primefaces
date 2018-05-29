@@ -451,7 +451,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
         //prevent form submit on enter key
         filter.on(this.cfg.filterEvent, function(e) {
-            var key = e.which,
+            var input = $(this),
+            key = e.which,
             keyCode = $.ui.keyCode,
             ignoredKeys = [keyCode.END, keyCode.HOME, keyCode.LEFT, keyCode.RIGHT, keyCode.UP, keyCode.DOWN,
                 keyCode.TAB, 16/*Shift*/, 17/*Ctrl*/, 18/*Alt*/, 91, 92, 93/*left/right Win/Cmd*/,
@@ -467,7 +468,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             }
             
             $this.filterTimeout = setTimeout(function() {
-                $this.filter(this.value, $this.getFilteredList($(this)));
+                $this.filter(input.val(), $this.getFilteredList(input));
                 $this.filterTimeout = null;
             },
             $this.cfg.filterDelay);
