@@ -28,6 +28,7 @@ import java.util.List;
 
 public class BreadCrumbRenderer extends BaseMenuRenderer {
 
+    @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         BreadCrumb breadCrumb = (BreadCrumb) menu;

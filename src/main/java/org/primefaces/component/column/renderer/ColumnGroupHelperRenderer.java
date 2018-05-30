@@ -26,6 +26,7 @@ import org.primefaces.util.ComponentUtils;
 
 public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
 
+    @Override
     public void encode(FacesContext context, Column column) throws IOException {
         ColumnGroup group = findGroup(column);
         DataTable table = (DataTable) group.getParent();

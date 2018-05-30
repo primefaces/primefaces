@@ -19,10 +19,12 @@ import java.util.Map;
 
 public class ShortConverter extends javax.faces.convert.ShortConverter implements ClientConverter {
 
+    @Override
     public Map<String, Object> getMetadata() {
         return null;
     }
 
+    @Override
     public String getConverterId() {
         return ShortConverter.CONVERTER_ID;
     }

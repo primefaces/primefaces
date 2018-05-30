@@ -35,7 +35,7 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
             onhide: function(location,pane,state,options) { $this.onhide(location,pane,state); },
             onopen: function(location,pane,state,options) { $this.onopen(location,pane,state); },
             onclose: function(location,pane,state,options) { $this.onclose(location,pane,state); },
-            onresize: function(location,pane,state,options) { $this.onresize(location,pane,state); },
+            onresize_end: function(location,pane,state,options) { $this.onresize(location,pane,state); },
             contentSelector: '.ui-layout-unit-content',
             slidable: false,
             togglerLength_open: 0,

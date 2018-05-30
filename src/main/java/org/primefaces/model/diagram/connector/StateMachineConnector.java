@@ -89,10 +89,12 @@ public class StateMachineConnector extends Connector {
         this.orientation = orientation;
     }
 
+    @Override
     public String getType() {
         return "StateMachine";
     }
 
+    @Override
     public String toJS(StringBuilder sb) {
         return sb.append("['StateMachine',{curviness:").append(curviness)
                 .append(",margin:").append(margin)

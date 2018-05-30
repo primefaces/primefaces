@@ -47,26 +47,32 @@ public class DefaultMapModel implements MapModel, Serializable {
         rectangles = new ArrayList<Rectangle>();
     }
 
+    @Override
     public List<Marker> getMarkers() {
         return markers;
     }
 
+    @Override
     public List<Polyline> getPolylines() {
         return polylines;
     }
 
+    @Override
     public List<Polygon> getPolygons() {
         return polygons;
     }
 
+    @Override
     public List<Circle> getCircles() {
         return circles;
     }
 
+    @Override
     public List<Rectangle> getRectangles() {
         return rectangles;
     }
 
+    @Override
     public void addOverlay(Overlay overlay) {
         if (overlay instanceof Marker) {
             overlay.setId(MARKER_ID_PREFIX + UUID.randomUUID().toString());
@@ -91,6 +97,7 @@ public class DefaultMapModel implements MapModel, Serializable {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public Overlay findOverlay(String id) {
         List list = null;
 

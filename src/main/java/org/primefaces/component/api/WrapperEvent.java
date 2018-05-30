@@ -43,18 +43,22 @@ public class WrapperEvent extends FacesEvent {
         return rowKey;
     }
 
+    @Override
     public PhaseId getPhaseId() {
         return (this.event.getPhaseId());
     }
 
+    @Override
     public void setPhaseId(PhaseId phaseId) {
         this.event.setPhaseId(phaseId);
     }
 
+    @Override
     public boolean isAppropriateListener(FacesListener listener) {
         return (false);
     }
 
+    @Override
     public void processListener(FacesListener listener) {
         throw new IllegalStateException();
     }

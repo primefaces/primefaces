@@ -75,6 +75,7 @@ public class MessageInterpolatingConstraintWrapper extends ConstraintDescriptorW
         }
 
         //@Override - BV 1.1
+        @Override
         public <T> T unwrap(Class<T> type) {
             return null;
         }

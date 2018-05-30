@@ -403,22 +403,75 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     },
 
     bindFilterEvents: function() {
+        this.cfg.filterEvent = this.cfg.filterEvent||'keyup';
+        this.cfg.filterDelay = this.cfg.filterDelay||300;
         this.setupFilterMatcher();
 
         this.sourceFilter = $(this.jqId + '_source_filter');
         this.targetFilter = $(this.jqId + '_target_filter');
-        var _self = this;
 
         PrimeFaces.skinInput(this.sourceFilter);
+        this.bindTextFilter(this.sourceFilter);
+        
         PrimeFaces.skinInput(this.targetFilter);
+        this.bindTextFilter(this.targetFilter);
+    },
+    
+    bindTextFilter: function(filter) {
+        if(this.cfg.filterEvent === 'enter')
+            this.bindEnterKeyFilter(filter);
+        else
+            this.bindFilterEvent(filter);
+    },
+    
+    bindEnterKeyFilter: function(filter) {
+        var $this = this;
 
-        this.sourceFilter.on('keyup', function(e) {
-            _self.filter(this.value, _self.sourceList);
-        })
-        .on('keydown', this.blockEnterKey);
+        filter.bind('keydown', function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
 
-        this.targetFilter.on('keyup', function(e) {
-            _self.filter(this.value, _self.targetList);
+            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                e.preventDefault();
+            }
+        }).bind('keyup', function(e) {
+            var key = e.which,
+            keyCode = $.ui.keyCode;
+
+            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                $this.filter(this.value, $this.getFilteredList($(this)));
+
+                e.preventDefault();
+            }
+        });
+    },
+
+    bindFilterEvent: function(filter) {
+        var $this = this;
+
+        //prevent form submit on enter key
+        filter.on(this.cfg.filterEvent, function(e) {
+            var input = $(this),
+            key = e.which,
+            keyCode = $.ui.keyCode,
+            ignoredKeys = [keyCode.END, keyCode.HOME, keyCode.LEFT, keyCode.RIGHT, keyCode.UP, keyCode.DOWN,
+                keyCode.TAB, 16/*Shift*/, 17/*Ctrl*/, 18/*Alt*/, 91, 92, 93/*left/right Win/Cmd*/,
+                keyCode.ESCAPE, keyCode.PAGE_UP, keyCode.PAGE_DOWN,
+                19/*pause/break*/, 20/*caps lock*/, 44/*print screen*/, 144/*num lock*/, 145/*scroll lock*/];
+
+            if (ignoredKeys.indexOf(key) > -1) {
+                return;
+            }
+
+            if($this.filterTimeout) {
+                clearTimeout($this.filterTimeout);
+            }
+            
+            $this.filterTimeout = setTimeout(function() {
+                $this.filter(input.val(), $this.getFilteredList(input));
+                $this.filterTimeout = null;
+            },
+            $this.cfg.filterDelay);
         })
         .on('keydown', this.blockEnterKey);
     },
@@ -486,6 +539,10 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         return value.indexOf(filter, value.length - filter.length) !== -1;
     },
 
+    getFilteredList: function(filter) {
+        return filter.hasClass('ui-source-filter-input') ? this.sourceList : this.targetList;
+    },
+    
     add: function() {
         var items = this.sourceList.children('li.ui-picklist-item.ui-state-highlight')
 

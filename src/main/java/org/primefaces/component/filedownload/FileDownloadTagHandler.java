@@ -42,6 +42,7 @@ public class FileDownloadTagHandler extends TagHandler {
         this.monitorKey = getAttribute("monitorKey");
     }
 
+    @Override
     public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
         if (ComponentHandler.isNew(parent)) {
             ValueExpression valueVE = value.getValueExpression(faceletContext, Object.class);

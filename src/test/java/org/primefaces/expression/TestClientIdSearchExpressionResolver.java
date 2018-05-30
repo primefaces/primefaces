@@ -11,10 +11,12 @@ public class TestClientIdSearchExpressionResolver implements SearchExpressionRes
         this.result = result;
     }
 
+    @Override
     public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
         return result;
     }

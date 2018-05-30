@@ -61,7 +61,7 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id, function() {
             if ($this.visible()) {
-                PrimeFaces.utils.unbdingScrollHandler('scroll.' + $this.id);
+                PrimeFaces.utils.unbdingScrollHandler($this, 'scroll.' + $this.id);
                 $this.loadContent();
             }
         });

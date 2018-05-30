@@ -152,6 +152,11 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
         if (input.parent().hasClass('ui-inputnumber')) {
             input.autoNumeric('set', inputValue);
         }
+        else if (input.hasClass('ui-spinner-input')) {
+            var spinnerId = input.closest('.ui-spinner').attr('id');
+            var spinnerWidget = PrimeFaces.getWidgetById(spinnerId);
+            spinnerWidget.setValue(inputValue);
+        }
         else {
             input.val(inputValue);
         }
@@ -159,6 +164,9 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
 
     triggerOnchange: function(input) {
         if (input.parent().hasClass('ui-inputnumber')) {
+            input.change();
+        }
+        else if (input.hasClass('ui-spinner-input')) {
             input.change();
         }
     },

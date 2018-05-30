@@ -612,7 +612,7 @@ if (window.PrimeFaces) {
             else {
                 vc.renderMessages(form);
             }
-            
+
             //focus first element
             for(var key in vc.messages) {
                 if(vc.messages.hasOwnProperty(key)) {
@@ -649,7 +649,7 @@ if (window.PrimeFaces) {
                 return;
             }
         }
-        
+
         var submittedValue = vc.getSubmittedValue(element),
         valid = true,
         converterId = element.data('p-con');
@@ -1045,8 +1045,17 @@ if (window.PrimeFaces) {
             'manychkbox': {
 
                 highlight: function(element) {
-                    var container = element.closest('.ui-selectmanycheckbox'),
-                    chkboxes = container.find('div.ui-chkbox-box');
+                    var custom = element.hasClass('ui-chkbox-clone'),
+                    chkboxes;
+                    
+                    if(custom) {
+                        var groupedInputs = $('input[name="' + element.attr('name') + '"].ui-chkbox-clone');
+                        chkboxes = groupedInputs.parent().next();
+                    }
+                    else {
+                        var container = element.closest('.ui-selectmanycheckbox');
+                        chkboxes = container.find('div.ui-chkbox-box');
+                    }
 
                     for(var i = 0; i < chkboxes.length; i++) {
                         chkboxes.eq(i).addClass('ui-state-error');
@@ -1054,8 +1063,17 @@ if (window.PrimeFaces) {
                 },
 
                 unhighlight: function(element) {
-                    var container = element.closest('.ui-selectmanycheckbox'),
-                    chkboxes = container.find('div.ui-chkbox-box');
+                    var custom = element.hasClass('ui-chkbox-clone'),
+                    chkboxes;
+                    
+                    if(custom) {
+                        var groupedInputs = $('input[name="' + element.attr('name') + '"].ui-chkbox-clone');
+                        chkboxes = groupedInputs.parent().next();
+                    }
+                    else {
+                        var container = element.closest('.ui-selectmanycheckbox');
+                        chkboxes = container.find('div.ui-chkbox-box');
+                    }
 
                     for(var i = 0; i < chkboxes.length; i++) {
                         chkboxes.eq(i).removeClass('ui-state-error');
@@ -1132,7 +1150,7 @@ if (window.PrimeFaces) {
                 }
 
             },
-            
+
             'booleanbutton': {
 
                 highlight: function(element) {
@@ -1144,19 +1162,25 @@ if (window.PrimeFaces) {
                 }
 
             },
-            
+
             'inputnumber': {
 
                 highlight: function(element) {
                     var orginalInput = element.prev('input');
                     orginalInput.addClass('ui-state-error');
                     PrimeFaces.validator.Highlighter.highlightLabel(orginalInput);
+
+                    // see #3706
+                    orginalInput.parent().addClass('ui-state-error');
                 },
 
                 unhighlight: function(element) {
                     var orginalInput = element.prev('input');
                     orginalInput.removeClass('ui-state-error');
                     PrimeFaces.validator.Highlighter.unhighlightLabel(orginalInput);
+
+                    // see #3706
+                    orginalInput.parent().removeClass('ui-state-error');
                 }
 
             }

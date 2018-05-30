@@ -34,6 +34,7 @@ public class SelectionFeature implements DataTableFeature {
 
     private final static String ALL_SELECTOR = "@all";
 
+    @Override
     public void decode(FacesContext context, DataTable table) {
         String clientId = table.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -120,14 +121,17 @@ public class SelectionFeature implements DataTableFeature {
         }
     }
 
+    @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
         throw new RuntimeException("SelectFeature should not encode.");
     }
 
+    @Override
     public boolean shouldDecode(FacesContext context, DataTable table) {
         return table.isSelectionEnabled();
     }
 
+    @Override
     public boolean shouldEncode(FacesContext context, DataTable table) {
         return false;
     }
