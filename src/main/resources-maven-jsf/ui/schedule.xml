@@ -142,7 +142,7 @@
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>30</defaultValue>
-            <description>Interval in minutes in an hour to create a slot. Default is 30.</description>
+            <description>Deprecated, use slotDuration instead. Interval in minutes in an hour to create a slot. Default is 30.</description>
         </attribute>
         <attribute>
             <name>scrollTime</name>
@@ -156,7 +156,7 @@
             <required>false</required>
             <type>java.lang.Integer</type>
             <defaultValue>6</defaultValue>
-            <description>First hour to display in day view. Default is 6.</description>
+            <description>Deprecated, use scrollTime instead. First hour to display in day view. Default is 6.</description>
         </attribute>
         <attribute>
             <name>minTime</name>
@@ -171,10 +171,16 @@
             <description>Maximum time to display in a day view. Default is 24:00:00.</description>
         </attribute>
         <attribute>
+            <name>slotLabelFormat</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Determines the time-text that will be displayed within a time slot.</description>
+        </attribute>
+        <attribute>
             <name>axisFormat</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Determines the time-text that will be displayed on the vertical axis of the agenda views.</description>
+            <description>Deprecated, use slotLabelFormat instead. Determines the time-text that will be displayed on the vertical axis of the agenda views.</description>
         </attribute>
         <attribute>
             <name>timeFormat</name>
@@ -205,7 +211,7 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
             <defaultValue>true</defaultValue>
-            <description>When parsing dates, whether UTC offsets should be ignored while processing event data. Default is true</description>
+            <description>Deprecated, use clientTimezone instead with 'local' setting. When parsing dates, whether UTC offsets should be ignored while processing event data. Default is true</description>
         </attribute>
         <attribute>
             <name>tooltip</name>

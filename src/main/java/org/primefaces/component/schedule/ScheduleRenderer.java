@@ -179,6 +179,13 @@ public class ScheduleRenderer extends CoreRenderer {
             clientTimezone = "local";
         }
 
+        String slotLabelFormat = schedule.getSlotLabelFormat();
+        String axisFormat = schedule.getAxisFormat();
+        if (axisFormat != null) {
+            LOG.warning("axisFormat is deprecated, use slotLabelFormat instead.");
+            slotLabelFormat = axisFormat;
+        }
+
         boolean isShowWeekNumbers = schedule.isShowWeekNumbers();
 
         wb.attr("allDaySlot", schedule.isAllDaySlot(), true)
@@ -191,7 +198,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("weekends", schedule.isShowWeekends(), true)
                 .attr("eventStartEditable", schedule.isDraggable(), true)
                 .attr("eventDurationEditable", schedule.isResizable(), true)
-                .attr("axisFormat", schedule.getAxisFormat(), null)
+                .attr("slotLabelFormat", slotLabelFormat, null)
                 .attr("timeFormat", schedule.getTimeFormat(), null)
                 .attr("weekNumbers", isShowWeekNumbers, false)
                 .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00")
