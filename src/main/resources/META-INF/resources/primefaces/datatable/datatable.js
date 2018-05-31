@@ -2064,12 +2064,30 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var toggleSelectBehavior = this.cfg.behaviors['toggleSelect'];
 
             if(toggleSelectBehavior) {
-                var ext = {
-                        params: [{name: this.id + '_checked', value: !checked}
-                    ]
+                var $this = this,
+                options = {
+                    source: this.id,
+                    process: this.id,
+                    update: this.id,
+                    formId: this.cfg.formId,
+                    params: [{name: this.id + '_checked', value: !checked},
+                             {name: this.id + '_encodeFeature', value: true},
+                             {name: this.id + '_skipChildren', value: true}],
+                    onsuccess: function(responseXML, status, xhr) {
+                        PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                                widget: $this,
+                                handle: function(content) {
+                                    var selection = $(content).val();
+                                    $this.selection = (selection === "") ? [] : selection.split(',');
+                                    $this.writeSelections();
+                                }
+                            });
+
+                        return true;
+                    }
                 };
 
-                toggleSelectBehavior.call(this, ext);
+                toggleSelectBehavior.call(this, options);
             }
         }
     },

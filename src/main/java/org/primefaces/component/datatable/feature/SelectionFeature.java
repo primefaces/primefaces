@@ -39,12 +39,17 @@ public class SelectionFeature implements DataTableFeature {
         String clientId = table.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String selection = params.get(clientId + "_selection");
+        boolean checked = Boolean.valueOf(params.get(clientId + "_checked"));
         Object originalValue = table.getValue();
         Object filteredValue = table.getFilteredValue();
         boolean isFiltered = (filteredValue != null);
 
         if (isFiltered) {
             table.setValue(null);
+        }
+        
+        if (checked) {
+            selection = "@all";
         }
 
         if (table.isSingleSelectionMode()) {
