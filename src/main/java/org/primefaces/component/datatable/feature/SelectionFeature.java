@@ -44,7 +44,7 @@ public class SelectionFeature implements DataTableFeature {
         Object filteredValue = table.getFilteredValue();
         boolean isFiltered = (filteredValue != null);
 
-        if (isFiltered) {
+        if (isFiltered && (!checked && table.isLiveScroll())) {
             table.setValue(null);
         }
         
