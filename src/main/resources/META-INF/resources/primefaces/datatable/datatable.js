@@ -586,8 +586,15 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     case keyCode.ENTER:
                     case keyCode.NUMPAD_ENTER:
                     case keyCode.SPACE:
-                        e.target = $this.focusedRow.children().eq(0).get(0);
-                        $this.onRowClick(e,$this.focusedRow.get(0));
+                        if($this.focusedRowWithCheckbox) {
+                            $this.focusedRow.find('> td.ui-selection-column .ui-chkbox .ui-chkbox-box').trigger('click.dataTable');
+                        }
+                        else {
+                            e.target = $this.focusedRow.children().eq(0).get(0);
+                            $this.onRowClick(e,$this.focusedRow.get(0));
+                        }
+                        
+                        $this.focusedRowWithCheckbox = false;
                         e.preventDefault();
                     break;
 
@@ -772,6 +779,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         box.addClass('ui-state-focus');
                         
                         $this.focusedRow = input.closest('.ui-datatable-selectable');
+                        $this.focusedRowWithCheckbox = true;
                     })
                     .on('blur.dataTable', checkboxInputSelector, null, function() {
                         var input = $(this),
@@ -784,6 +792,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         box.removeClass('ui-state-focus');
                         
                         $this.focusedRow = null;
+                        $this.focusedRowWithCheckbox = false;
                     })
                     .on('change.dataTable', checkboxInputSelector, null, function(e) {
                         var input = $(this),
