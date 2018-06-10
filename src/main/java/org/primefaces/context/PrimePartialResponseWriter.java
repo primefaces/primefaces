@@ -207,17 +207,22 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                 String paramName = it.next();
                 Object paramValue = params.get(paramName);
 
-                if (paramValue instanceof JSONObject) {
-                    encodeJSONObject(paramName, (JSONObject) paramValue);
-                }
-                else if (paramValue instanceof JSONArray) {
-                    encodeJSONArray(paramName, (JSONArray) paramValue);
-                }
-                else if (BeanUtils.isBean(paramValue)) {
-                    encodeJSONObject(paramName, new JSONObject(paramValue));
+                if (paramValue == null) {
+                    encodeJSONValue(paramName, null);
                 }
                 else {
-                    encodeJSONValue(paramName, paramValue);
+                    if (paramValue instanceof JSONObject) {
+                        encodeJSONObject(paramName, (JSONObject) paramValue);
+                    }
+                    else if (paramValue instanceof JSONArray) {
+                        encodeJSONArray(paramName, (JSONArray) paramValue);
+                    }
+                    else if (BeanUtils.isBean(paramValue)) {
+                        encodeJSONObject(paramName, new JSONObject(paramValue));
+                    }
+                    else {
+                        encodeJSONValue(paramName, paramValue);
+                    }
                 }
 
                 if (it.hasNext()) {
