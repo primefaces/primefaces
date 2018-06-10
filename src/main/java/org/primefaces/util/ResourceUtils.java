@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.Resource;
+import javax.faces.application.ResourceHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
@@ -32,6 +33,20 @@ public class ResourceUtils {
     public static final String RENDERER_STYLESHEET = "javax.faces.resource.Stylesheet";
     
     private static final Logger LOG = Logger.getLogger(ResourceUtils.class.getName());
+    
+    public static String getResourceURL(FacesContext context, String value) {
+        if (ComponentUtils.isValueBlank(value)) {
+            return Constants.EMPTY_STRING;
+        }
+        else if (value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
+            return value;
+        }
+        else {
+            String url = context.getApplication().getViewHandler().getResourceURL(context, value);
+
+            return context.getExternalContext().encodeResourceURL(url);
+        }
+    }
     
     public static void addComponentResource(FacesContext context, String name, String library, String target) {
 

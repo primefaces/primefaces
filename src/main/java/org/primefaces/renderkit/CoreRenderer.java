@@ -57,6 +57,7 @@ import org.primefaces.validate.ClientValidator;
 import org.primefaces.validate.bean.BeanValidationMetadata;
 import org.primefaces.validate.bean.BeanValidationMetadataMapper;
 import org.primefaces.util.Jsf22Helper;
+import org.primefaces.util.ResourceUtils;
 
 public abstract class CoreRenderer extends Renderer {
 
@@ -93,7 +94,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected String getResourceURL(FacesContext context, String value) {
-        return ComponentUtils.getResourceURL(context, value);
+        return ResourceUtils.getResourceURL(context, value);
     }
     
     protected String getResourceRequestPath(FacesContext context, String resourceName) {

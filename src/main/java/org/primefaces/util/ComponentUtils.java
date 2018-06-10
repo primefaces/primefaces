@@ -31,7 +31,6 @@ import javax.faces.FacesException;
 import javax.faces.FacesWrapper;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
-import javax.faces.application.ResourceHandler;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
@@ -281,20 +280,6 @@ public class ComponentUtils {
         }
 
         return params;
-    }
-
-    public static String getResourceURL(FacesContext context, String value) {
-        if (isValueBlank(value)) {
-            return Constants.EMPTY_STRING;
-        }
-        else if (value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
-            return value;
-        }
-        else {
-            String url = context.getApplication().getViewHandler().getResourceURL(context, value);
-
-            return context.getExternalContext().encodeResourceURL(url);
-        }
     }
 
     public static boolean isSkipIteration(VisitContext visitContext, FacesContext context) {

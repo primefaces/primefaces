@@ -48,7 +48,7 @@ public class DynamicContentSrcBuilder {
             return "";
         }
         else if (value instanceof String) {
-            src = ComponentUtils.getResourceURL(context, (String) value);
+            src = ResourceUtils.getResourceURL(context, (String) value);
         }
         else if (value instanceof StreamedContent) {
             StreamedContent streamedContent = (StreamedContent) value;
