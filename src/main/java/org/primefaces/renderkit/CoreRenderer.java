@@ -95,10 +95,6 @@ public abstract class CoreRenderer extends Renderer {
     protected String getResourceURL(FacesContext context, String value) {
         return ComponentUtils.getResourceURL(context, value);
     }
-
-    protected String getHrefURL(String baseUrl, Map<String, List<String>> params) {
-        return ComponentUtils.getHrefURL(baseUrl, params);
-    }
     
     protected String getResourceRequestPath(FacesContext context, String resourceName) {
         Resource resource = context.getApplication().getResourceHandler().createResource(resourceName, "primefaces");
