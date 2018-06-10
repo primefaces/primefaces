@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.RandomAccess;
 
-public class SelectRenderer extends InputRenderer {
+public abstract class SelectRenderer extends InputRenderer {
 
     protected List<SelectItem> getSelectItems(FacesContext context, UIInput component) {
         List<SelectItem> selectItems = new ArrayList<>();
