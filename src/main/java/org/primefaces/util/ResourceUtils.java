@@ -35,7 +35,7 @@ public class ResourceUtils {
     private static final Logger LOG = Logger.getLogger(ResourceUtils.class.getName());
     
     public static String getResourceURL(FacesContext context, String value) {
-        if (ComponentUtils.isValueBlank(value)) {
+        if (LangUtils.isValueBlank(value)) {
             return Constants.EMPTY_STRING;
         }
         else if (value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
@@ -96,7 +96,7 @@ public class ResourceUtils {
 
     public static boolean isInline(ResourceInfo resourceInfo) {
         if (resourceInfo != null) {
-            return ComponentUtils.isValueBlank(resourceInfo.getLibrary()) && ComponentUtils.isValueBlank(resourceInfo.getName());
+            return LangUtils.isValueBlank(resourceInfo.getLibrary()) && LangUtils.isValueBlank(resourceInfo.getName());
         }
 
         return false;

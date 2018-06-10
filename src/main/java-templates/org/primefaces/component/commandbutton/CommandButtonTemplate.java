@@ -11,6 +11,7 @@ import org.primefaces.component.button.Button;
 import org.primefaces.event.data.PageEvent;
 import org.primefaces.util.Constants;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.ComponentUtils;
 import javax.faces.event.BehaviorEvent;
 
@@ -83,13 +84,13 @@ import javax.faces.event.BehaviorEvent;
         Object value = getValue();
         String styleClass = ""; 
     
-        if(value != null && ComponentUtils.isValueBlank(icon)) {
+        if(value != null && LangUtils.isValueBlank(icon)) {
             styleClass = HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
         }
-        else if(value != null && !ComponentUtils.isValueBlank(icon)) {
+        else if(value != null && !LangUtils.isValueBlank(icon)) {
             styleClass = getIconPos().equals("left") ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
         }
-        else if(value == null && !ComponentUtils.isValueBlank(icon)) {
+        else if(value == null && !LangUtils.isValueBlank(icon)) {
             styleClass = HTML.BUTTON_ICON_ONLY_BUTTON_CLASS;
         }
     

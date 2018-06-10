@@ -24,6 +24,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 public class LifecyclePhaseListener implements PhaseListener {
 
@@ -100,7 +101,7 @@ public class LifecyclePhaseListener implements PhaseListener {
         }
 
         String source = facesContext.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
-        if (ComponentUtils.isValueBlank(source)) {
+        if (LangUtils.isValueBlank(source)) {
             return false;
         }
 

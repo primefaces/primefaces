@@ -193,9 +193,6 @@ public class ComponentUtils {
 
     
 
-    public static boolean isValueBlank(String value) {
-        return value == null || value.trim().isEmpty();
-    }
 
     public static boolean isRTL(FacesContext context, RTLAware component) {
         boolean globalValue = PrimeRequestContext.getCurrentInstance(context).isRTL();
@@ -296,7 +293,7 @@ public class ComponentUtils {
         UIComponent component = (UIComponent) widget;
         String userWidgetVar = (String) component.getAttributes().get("widgetVar");
 
-        if (!isValueBlank(userWidgetVar)) {
+        if (!LangUtils.isValueBlank(userWidgetVar)) {
             return userWidgetVar;
         }
         else {

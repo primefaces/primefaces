@@ -1,4 +1,5 @@
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 
     public static final String STYLE_CLASS = "ui-splitbutton ui-buttonset ui-widget";
     public static final String BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-left ui-button-text-icon-left";
@@ -9,7 +10,7 @@ import org.primefaces.util.HTML;
     public static final String SPLITBUTTON_CONTAINER_CLASS = "ui-menu ui-splitbuttonmenu ui-menu-dynamic ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-shadow";
 
     public String resolveStyleClass() {
-        boolean iconBlank = ComponentUtils.isValueBlank(getIcon());
+        boolean iconBlank = LangUtils.isValueBlank(getIcon());
         boolean valueBlank = getValue() == null;
         String styleClass = ""; 
         

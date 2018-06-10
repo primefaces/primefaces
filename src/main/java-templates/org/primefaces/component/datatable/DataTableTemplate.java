@@ -69,6 +69,7 @@ import javax.faces.event.BehaviorEvent;
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.datatable.FilterState;
 import org.primefaces.component.datatable.TableState;
+import org.primefaces.util.LangUtils;
 
     private final static Logger logger = Logger.getLogger(DataTable.class.getName());
 
@@ -1300,7 +1301,7 @@ import org.primefaces.component.datatable.TableState;
     public Map getTogglableColumnsMap() {
         if(togglableColsMap == null) {
             togglableColsMap = new HashMap<String, Boolean>();
-            boolean isValueBlank = ComponentUtils.isValueBlank(togglableColumnsAsString);
+            boolean isValueBlank = LangUtils.isValueBlank(togglableColumnsAsString);
 
             if(isValueBlank) {
                 FacesContext context = getFacesContext();
@@ -1340,7 +1341,7 @@ import org.primefaces.component.datatable.TableState;
     public Map getResizableColumnsMap() {
         if(resizableColsMap == null) {
             resizableColsMap = new HashMap<String, String>();
-            boolean isValueBlank = ComponentUtils.isValueBlank(resizableColumnsAsString);
+            boolean isValueBlank = LangUtils.isValueBlank(resizableColumnsAsString);
 
             if(isValueBlank) {
                 FacesContext context = getFacesContext();

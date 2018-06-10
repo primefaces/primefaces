@@ -22,10 +22,10 @@ import javax.faces.context.FacesContext;
 import net.glxn.qrgen.QRCode;
 import net.glxn.qrgen.image.ImageType;
 
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import org.primefaces.util.LangUtils;
 
 public class QRCodeHandler extends BaseDynamicContentHandler {
 
@@ -48,7 +48,7 @@ public class QRCodeHandler extends BaseDynamicContentHandler {
 
             ErrorCorrectionLevel ecl = ErrorCorrectionLevel.L;
             String errorCorrection = params.get("qrec");
-            if (!ComponentUtils.isValueBlank(errorCorrection)) {
+            if (!LangUtils.isValueBlank(errorCorrection)) {
                 ecl = ErrorCorrectionLevel.valueOf(errorCorrection);
             }
 

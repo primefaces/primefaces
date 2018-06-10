@@ -21,7 +21,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.TableState;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 
 public class DraggableColumnsFeature implements DataTableFeature {
 
@@ -29,7 +29,7 @@ public class DraggableColumnsFeature implements DataTableFeature {
     public void decode(FacesContext context, DataTable table) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String columnOrderParam = params.get(table.getClientId(context) + "_columnOrder");
-        if (ComponentUtils.isValueBlank(columnOrderParam)) {
+        if (LangUtils.isValueBlank(columnOrderParam)) {
             return;
         }
 

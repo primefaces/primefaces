@@ -57,6 +57,7 @@ import org.primefaces.validate.ClientValidator;
 import org.primefaces.validate.bean.BeanValidationMetadata;
 import org.primefaces.validate.bean.BeanValidationMetadataMapper;
 import org.primefaces.util.Jsf22Helper;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.ResourceUtils;
 
 public abstract class CoreRenderer extends Renderer {
@@ -401,7 +402,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     public boolean isValueBlank(String value) {
-        return ComponentUtils.isValueBlank(value);
+        return LangUtils.isValueBlank(value);
     }
 
     protected String buildAjaxRequest(FacesContext context, AjaxSource source, UIComponent form) {

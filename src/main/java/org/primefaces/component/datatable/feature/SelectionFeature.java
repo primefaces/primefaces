@@ -28,7 +28,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.TableState;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 
 public class SelectionFeature implements DataTableFeature {
 
@@ -71,7 +71,7 @@ public class SelectionFeature implements DataTableFeature {
     }
 
     void decodeSingleSelection(DataTable table, String selection) {
-        if (ComponentUtils.isValueBlank(selection)) {
+        if (LangUtils.isValueBlank(selection)) {
             table.setSelection(null);
         }
         else {
@@ -88,7 +88,7 @@ public class SelectionFeature implements DataTableFeature {
             throw new FacesException("Multiple selection reference must be an Array or a List for datatable " + table.getClientId());
         }
 
-        if (ComponentUtils.isValueBlank(selection)) {
+        if (LangUtils.isValueBlank(selection)) {
             if (isArray) {
                 table.setSelection(Array.newInstance(clazz.getComponentType(), 0));
             }

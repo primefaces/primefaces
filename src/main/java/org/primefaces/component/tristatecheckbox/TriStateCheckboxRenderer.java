@@ -22,6 +22,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class TriStateCheckboxRenderer extends InputRenderer {
@@ -57,7 +58,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
         String clientId = checkbox.getClientId(context);
         String valueToRenderer = ComponentUtils.getValueToRender(context, checkbox);
 
-        int valCheck = ComponentUtils.isValueBlank(valueToRenderer) ? 0 : Integer.parseInt(valueToRenderer);
+        int valCheck = LangUtils.isValueBlank(valueToRenderer) ? 0 : Integer.parseInt(valueToRenderer);
 
         if (valCheck > 2 || valCheck < 0) {
             valCheck = 0;
@@ -155,7 +156,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
         String dataTitles = "";
         String titleAtt = "";
 
-        if (!ComponentUtils.isValueBlank(stateOneTitle) || !ComponentUtils.isValueBlank(stateTwoTitle) || !ComponentUtils.isValueBlank(stateThreeTitle)) {
+        if (!LangUtils.isValueBlank(stateOneTitle) || !LangUtils.isValueBlank(stateTwoTitle) || !LangUtils.isValueBlank(stateThreeTitle)) {
             dataTitles = "data-titlestates='" + statesTitles + "' ";
             titleAtt = " title=\"" + activeTitle + "\" ";
         }
