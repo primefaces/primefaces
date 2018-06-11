@@ -310,7 +310,9 @@ public abstract class SelectRenderer extends InputRenderer {
             Object[] oldValues,
             List<SelectItem> selectItems,
             String... submittedValues) {
+        
         List<String> validSubmittedValues = new ArrayList<>();
+        
         // loop attached SelectItems - other values are not allowed
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
@@ -343,6 +345,7 @@ public abstract class SelectRenderer extends InputRenderer {
                 }
             }
         }
+        
         return validSubmittedValues;
     }
 }
