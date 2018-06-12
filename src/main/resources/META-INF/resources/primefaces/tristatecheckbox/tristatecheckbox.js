@@ -91,8 +91,10 @@ PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
             // change title to the new one
             var iconTitles = this.box.data('titlestates');
-            if(iconTitles!=null && iconTitles.length>0){
-                this.box.attr('title', iconTitles[newValue]);
+            if(iconTitles!=null) {
+                if(iconTitles.titles!=null && iconTitles.titles.length>0) {
+                    this.box.attr('title', iconTitles.titles[newValue]);
+                }
             }
 
             // fire change event
