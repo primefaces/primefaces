@@ -221,6 +221,12 @@
             <type>java.lang.String</type>
             <defaultValue>ui-icon-cancel</defaultValue>
         </attribute>
+        <attribute>
+            <name>onAdd</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Callback to execute before adding a file.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>
