@@ -370,7 +370,7 @@
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>yuicompressor-maven-plugin</artifactId>
-                <version>1.4.0</version>
+                <version>1.5.1</version>
                 <executions>
                     <execution>
                         <goals>
@@ -638,6 +638,15 @@
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/fileupload/2-fileupload.js</include>
                             </includes>
                         </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/schedule.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/0-fullcalendar.min.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/schedule/1-schedule.js</include>
+                            </includes>
+                        </aggregation>
                     </aggregations>
                 </configuration>
             </plugin>
@@ -756,14 +765,16 @@
                     <plugin>
                         <groupId>net.alchim31.maven</groupId>
                         <artifactId>yuicompressor-maven-plugin</artifactId>
-                        <version>1.4.0</version>
+                        <version>1.5.1</version>
                         <configuration>
                             <jswarn>false</jswarn>
+                            <force>true</force>
                             <excludes>
                                 <exclude>**/*.something</exclude>
                                 <exclude>**/photocam.js</exclude>
                                 <exclude>**/texteditor.js</exclude>
                                 <exclude>**/jquery.js</exclude>
+                                <exclude>**/0-fullcalendar.min.js</exclude>
                             </excludes>
                             <includes>
                                 <include>**/*.js</include>
