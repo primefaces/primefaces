@@ -32,13 +32,13 @@
             if ($("link[media=print]").length > 0)
             {
                 $("link[media=print]").each( function() {
-                    doc.write("<link type='text/css' rel='stylesheet' href='" + $(this).attr("href") + "' media='print' />");
+                    doc.write("<link type='text/css' rel='stylesheet' href='" + PrimeFaces.escapeHTML($(this).attr("href")) + "' media='print' />");
                 });
             }
             else
             {
                 $("link").each( function() {
-                    doc.write("<link type='text/css' rel='stylesheet' href='" + $(this).attr("href") + "' />");
+                    doc.write("<link type='text/css' rel='stylesheet' href='" + PrimeFaces.escapeHTML($(this).attr("href")) + "' />");
                 });
             }
         }
