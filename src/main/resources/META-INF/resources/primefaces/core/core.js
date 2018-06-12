@@ -353,11 +353,22 @@
             }
 
             scriptURI = scriptURI.replace('core.js', name);
-            scriptURI = scriptURI.replace('ln=primefaces', 'ln=' + library);
+
+            // In a portlet environment, url parameters may be namespaced.
+            var namespace = '';
+            var urlParametersAreNamespaced = !(scriptURI.indexOf('?ln=primefaces') > -1 ||
+                    scriptURI.indexOf('&ln=primefaces') > -1);
+
+            if (urlParametersAreNamespaced) {
+                namespace = new RegExp('[?&]([^&=]+)ln=primefaces($|&)').exec(scriptURI)[1];
+            }
+
+            // If the parameters are namespaced, the namespace must be included when replacing parameters.
+            scriptURI = scriptURI.replace(namespace + 'ln=primefaces', namespace + 'ln=' + library);
 
             if (version) {
-                var extractedVersion = new RegExp('[?&]v=([^&]*)').exec(scriptURI)[1];
-                scriptURI = scriptURI.replace('v=' + extractedVersion, 'v=' + version);
+                var extractedVersion = new RegExp('[?&]' + namespace + 'v=([^&]*)').exec(scriptURI)[1];
+                scriptURI = scriptURI.replace(namespace + 'v=' + extractedVersion, namespace + 'v=' + version);
             }
 
             var prefix = window.location.protocol + '//' + window.location.host;
