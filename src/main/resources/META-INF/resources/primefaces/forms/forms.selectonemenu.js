@@ -185,6 +185,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         .on('blur.ui-selectonemenu', function(){
             $this.jq.removeClass('ui-state-focus');
             $this.menuIcon.removeClass('ui-state-focus');
+
+            if($this.cfg.behaviors) {
+               var blurBehavior = $this.cfg.behaviors['blur'];
+               if(blurBehavior) {
+                  blurBehavior.call($this);
+               }
+            }
         });
 
         //onchange handler for editable input
@@ -722,6 +729,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     blur: function() {
         this.focusInput.blur();
+
+        if(this.cfg.behaviors) {
+            var blurBehavior = this.cfg.behaviors['blur'];
+            if(blurBehavior) {
+                blurBehavior.call(this);
+            }
+        }
     },
 
     disable: function() {
