@@ -20,10 +20,10 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
 
             if(this.cfg.toggleableHeader) {
                 this.header.on('click', function() {
-                    if(!$this.isTitlebarClicked) { 
+                    if(!$this.isTitlebarClicked) {
                         $this.toggle();
                     }
-                    
+
                     $this.isTitlebarClicked = false;
                 });
             }
@@ -137,12 +137,8 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
     },
 
     fireToggleEvent: function() {
-        if(this.cfg.behaviors) {
-            var toggleBehavior = this.cfg.behaviors['toggle'];
-
-            if(toggleBehavior) {
-                toggleBehavior.call(this);
-            }
+        if(this.hasBehavior('toggle')) {
+            this.cfg.behaviors['toggle'].call(this);
         }
     },
 

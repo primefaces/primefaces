@@ -558,16 +558,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         });
     },
 
-    fireBehaviorEvent: function(event) {
-        if(this.cfg.behaviors) {
-            var behavior = this.cfg.behaviors[event];
-
-            if(behavior) {
-                behavior.call(this);
-            }
-        }
-    },
-
     removeMinimize: function() {
         this.jq.appendTo(this.parent).removeClass('ui-dialog-minimized').css({'position':'fixed', 'float':'none'});
         this.restoreState();
@@ -683,9 +673,9 @@ PrimeFaces.widget.DynamicDialog = PrimeFaces.widget.Dialog.extend({
         this.moveToTop();
 
         this.jq.show();
-        
+
         if(this.cfg.height != "auto") {
-            this.content.height(this.jq.outerHeight() - this.titlebar.outerHeight(true)); 
+            this.content.height(this.jq.outerHeight() - this.titlebar.outerHeight(true));
         }
 
         this.postShow();
@@ -694,7 +684,7 @@ PrimeFaces.widget.DynamicDialog = PrimeFaces.widget.Dialog.extend({
             this.enableModality();
         }
     },
-    
+
     //@Override
     initSize: function() {
         this.jq.css({

@@ -139,6 +139,12 @@ if (!PrimeFaces.widget) {
             return false;
         },
 
+        fireBehaviorEvent: function(event) {
+            if(this.hasBehavior(event)) {
+                this.cfg.behaviors[event].call(this);
+            }
+        },
+
         addDestroyListener: function(listener) {
             if (!this.destroyListeners) {
                 this.destroyListeners = [];

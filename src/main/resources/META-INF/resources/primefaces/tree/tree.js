@@ -121,32 +121,26 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     },
 
     fireExpandEvent: function(node) {
-        if(this.cfg.behaviors) {
-            var expandBehavior = this.cfg.behaviors['expand'];
-            if(expandBehavior) {
-                var ext = {
-                    params: [
-                        {name: this.id + '_expandNode', value: this.getRowKey(node)}
-                    ]
-                };
+        if(this.hasBehavior('expand')) {
+            var ext = {
+                params: [
+                    {name: this.id + '_expandNode', value: this.getRowKey(node)}
+                ]
+            };
 
-                expandBehavior.call(this, ext);
-            }
+            this.cfg.behaviors['expand'].call(this, ext);
         }
     },
 
     fireCollapseEvent: function(node) {
-        if(this.cfg.behaviors) {
-            var collapseBehavior = this.cfg.behaviors['collapse'];
-            if(collapseBehavior) {
-                var ext = {
-                    params: [
-                        {name: this.id + '_collapseNode', value: this.getRowKey(node)}
-                    ]
-                };
+        if(this.hasBehavior('collapse')) {
+            var ext = {
+                params: [
+                    {name: this.id + '_collapseNode', value: this.getRowKey(node)}
+                ]
+            };
 
-                collapseBehavior.call(this, ext);
-            }
+            this.cfg.behaviors['collapse'].call(this, ext);
         }
     },
 
@@ -207,18 +201,14 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     },
 
     fireNodeUnselectEvent: function(node) {
-        if(this.cfg.behaviors) {
-            var unselectBehavior = this.cfg.behaviors['unselect'];
+        if(this.hasBehavior('unselect')) {
+            var ext = {
+                params: [
+                    {name: this.id + '_instantUnselection', value: this.getRowKey(node)}
+                ]
+            };
 
-            if(unselectBehavior) {
-                var ext = {
-                    params: [
-                        {name: this.id + '_instantUnselection', value: this.getRowKey(node)}
-                    ]
-                };
-
-                unselectBehavior.call(this, ext);
-            }
+            this.cfg.behaviors['unselect'].call(this, ext);
         }
     },
 

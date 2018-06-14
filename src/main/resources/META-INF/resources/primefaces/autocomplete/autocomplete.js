@@ -401,7 +401,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             }
             else {
                 var itemValue = item.attr('data-item-value');
-                
+
                 if($this.cfg.multiple) {
                     var found = false;
                     if($this.cfg.unique) {
@@ -724,50 +724,38 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     },
 
     invokeItemSelectBehavior: function(event, itemValue) {
-        if(this.cfg.behaviors) {
-            var itemSelectBehavior = this.cfg.behaviors['itemSelect'];
+        if(this.hasBehavior('itemSelect')) {
+            var ext = {
+                params : [
+                    {name: this.id + '_itemSelect', value: itemValue}
+                ]
+            };
 
-            if(itemSelectBehavior) {
-                var ext = {
-                    params : [
-                        {name: this.id + '_itemSelect', value: itemValue}
-                    ]
-                };
-
-                itemSelectBehavior.call(this, ext);
-            }
+            this.cfg.behaviors['itemSelect'].call(this, ext);
         }
     },
 
     invokeItemUnselectBehavior: function(event, itemValue) {
-        if(this.cfg.behaviors) {
-            var itemUnselectBehavior = this.cfg.behaviors['itemUnselect'];
+        if(this.hasBehavior('itemUnselect')) {
+            var ext = {
+                params : [
+                    {name: this.id + '_itemUnselect', value: itemValue}
+                ]
+            };
 
-            if(itemUnselectBehavior) {
-                var ext = {
-                    params : [
-                        {name: this.id + '_itemUnselect', value: itemValue}
-                    ]
-                };
-
-                itemUnselectBehavior.call(this, ext);
-            }
+            this.cfg.behaviors['itemUnselect'].call(this, ext);
         }
     },
 
     invokeMoreTextBehavior: function() {
-        if(this.cfg.behaviors) {
-            var moreTextBehavior = this.cfg.behaviors['moreText'];
+        if(this.hasBehavior('moreText')) {
+            var ext = {
+                params : [
+                    {name: this.id + '_moreText', value: true}
+                ]
+            };
 
-            if(moreTextBehavior) {
-                var ext = {
-                    params : [
-                        {name: this.id + '_moreText', value: true}
-                    ]
-                };
-
-                moreTextBehavior.call(this, ext);
-            }
+            this.cfg.behaviors['moreText'].call(this, ext);
         }
     },
 

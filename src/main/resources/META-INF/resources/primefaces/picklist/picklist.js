@@ -412,18 +412,18 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.skinInput(this.sourceFilter);
         this.bindTextFilter(this.sourceFilter);
-        
+
         PrimeFaces.skinInput(this.targetFilter);
         this.bindTextFilter(this.targetFilter);
     },
-    
+
     bindTextFilter: function(filter) {
         if(this.cfg.filterEvent === 'enter')
             this.bindEnterKeyFilter(filter);
         else
             this.bindFilterEvent(filter);
     },
-    
+
     bindEnterKeyFilter: function(filter) {
         var $this = this;
 
@@ -466,7 +466,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             if($this.filterTimeout) {
                 clearTimeout($this.filterTimeout);
             }
-            
+
             $this.filterTimeout = setTimeout(function() {
                 $this.filter(input.val(), $this.getFilteredList(input));
                 $this.filterTimeout = null;
@@ -542,7 +542,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     getFilteredList: function(filter) {
         return filter.hasClass('ui-source-filter-input') ? this.sourceList : this.targetList;
     },
-    
+
     add: function() {
         var items = this.sourceList.children('li.ui-picklist-item.ui-state-highlight')
 
@@ -786,24 +786,20 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.onTransfer.call(this, obj);
         }
 
-        if(this.cfg.behaviors) {
-            var transferBehavior = this.cfg.behaviors['transfer'];
+        if(this.hasBehavior('transfer')) {
+            var ext = {
+                params: []
+            },
+            paramName = this.id + '_transferred',
+            isAdd = from.hasClass('ui-picklist-source');
 
-            if(transferBehavior) {
-                var ext = {
-                    params: []
-                },
-                paramName = this.id + '_transferred',
-                isAdd = from.hasClass('ui-picklist-source');
+            items.each(function(index, item) {
+                ext.params.push({name:paramName, value:$(item).attr('data-item-value')});
+            });
 
-                items.each(function(index, item) {
-                    ext.params.push({name:paramName, value:$(item).attr('data-item-value')});
-                });
+            ext.params.push({name:this.id + '_add', value:isAdd});
 
-                ext.params.push({name:this.id + '_add', value:isAdd});
-
-                transferBehavior.call(this, ext);
-            }
+            this.cfg.behaviors['transfer'].call(this, ext);
         }
         $(this.jqId + ' ul').sortable('enable');
 

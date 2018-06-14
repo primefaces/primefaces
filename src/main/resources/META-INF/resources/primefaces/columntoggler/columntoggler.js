@@ -382,20 +382,15 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     fireToggleEvent: function(visible, index) {
-        if(this.cfg.behaviors) {
-            var toggleBehavior = this.cfg.behaviors['toggle'];
+        if(this.hasBehavior('toggle')) {
+            var ext = {
+                params: [
+                    {name: this.id + '_visibility', value: visible ? 'VISIBLE' : 'HIDDEN'},
+                    {name: this.id + '_index', value: index}
+                ]
+            };
 
-            if(toggleBehavior) {
-                var visibility = visible ? 'VISIBLE' : 'HIDDEN',
-                ext = {
-                    params: [
-                        {name: this.id + '_visibility', value: visibility},
-                        {name: this.id + '_index', value: index}
-                    ]
-                };
-
-                toggleBehavior.call(this, ext);
-            }
+            this.cfg.behaviors['toggle'].call(this, ext);
         }
     },
 

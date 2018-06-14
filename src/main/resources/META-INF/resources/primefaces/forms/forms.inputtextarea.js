@@ -274,18 +274,14 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     invokeItemSelectBehavior: function(event, itemValue) {
-        if(this.cfg.behaviors) {
-            var itemSelectBehavior = this.cfg.behaviors['itemSelect'];
+        if(this.hasBehavior('itemSelect')) {
+            var ext = {
+                params : [
+                    {name: this.id + '_itemSelect', value: itemValue}
+                ]
+            };
 
-            if(itemSelectBehavior) {
-                var ext = {
-                    params : [
-                        {name: this.id + '_itemSelect', value: itemValue}
-                    ]
-                };
-
-                itemSelectBehavior.call(this, ext);
-            }
+            this.cfg.behaviors['itemSelect'].call(this, ext);
         }
     },
 

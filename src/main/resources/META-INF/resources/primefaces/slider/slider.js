@@ -184,18 +184,14 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
             this.triggerOnchange(this.input);
         }
 
-        if(this.cfg.behaviors) {
-            var slideEndBehavior = this.cfg.behaviors['slideEnd'];
+        if(this.hasBehavior('slideEnd')) {
+            var ext = {
+                params: [
+                    {name: this.id + '_slideValue', value: ui.value}
+                ]
+            };
 
-            if(slideEndBehavior) {
-                var ext = {
-                    params: [
-                        {name: this.id + '_slideValue', value: ui.value}
-                    ]
-                };
-
-                slideEndBehavior.call(this, ext);
-            }
+            this.cfg.behaviors['slideEnd'].call(this, ext);
         }
     },
 

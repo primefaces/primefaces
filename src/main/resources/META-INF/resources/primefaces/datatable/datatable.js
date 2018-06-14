@@ -433,24 +433,24 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             },
             $this.cfg.filterDelay);
         });
-        
+
         // #89 IE clear "x" button
         if (PrimeFaces.env.isIE()) {
             filter.on('mouseup.dataTable', function(e) {
                 var input = $(this),
                 oldValue = input.val();
-                
+
                 if(oldValue == "") {
                     return;
                 }
-                
+
                 setTimeout(function() {
                     var newValue = input.val();
                     if(newValue == "") {
                         $this.filter();
                     }
                 }, 1);
-            }); 
+            });
         }
     },
 
@@ -593,7 +593,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                             e.target = $this.focusedRow.children().eq(0).get(0);
                             $this.onRowClick(e,$this.focusedRow.get(0));
                         }
-                        
+
                         $this.focusedRowWithCheckbox = false;
                         e.preventDefault();
                     break;
@@ -777,7 +777,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         }
 
                         box.addClass('ui-state-focus');
-                        
+
                         $this.focusedRow = input.closest('.ui-datatable-selectable');
                         $this.focusedRowWithCheckbox = true;
                     })
@@ -790,7 +790,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         }
 
                         box.removeClass('ui-state-focus');
-                        
+
                         $this.focusedRow = null;
                         $this.focusedRowWithCheckbox = false;
                     })
@@ -1782,7 +1782,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(!row.hasClass('ui-datatable-selectable')) {
             return;
         }
-        
+
         var rowMeta = this.getRowMeta(row);
 
         this.highlightRow(row);
@@ -1810,7 +1810,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(!row.hasClass('ui-datatable-selectable')) {
             return;
         }
-        
+
         var rowMeta = this.getRowMeta(row);
 
         this.unhighlightRow(row);
@@ -1851,17 +1851,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Sends a rowSelectEvent on server side to invoke a rowSelectListener if defined
      */
     fireRowSelectEvent: function(rowKey, behaviorEvent) {
-        if(this.cfg.behaviors) {
-            var selectBehavior = this.cfg.behaviors[behaviorEvent];
+        if(this.hasBehavior(behaviorEvent)) {
+            var ext = {
+                    params: [{name: this.id + '_instantSelectedRowKey', value: rowKey}
+                ]
+            };
 
-            if(selectBehavior) {
-                var ext = {
-                        params: [{name: this.id + '_instantSelectedRowKey', value: rowKey}
-                    ]
-                };
-
-                selectBehavior.call(this, ext);
-            }
+            this.cfg.behaviors[behaviorEvent].call(this, ext);
         }
     },
 
@@ -1869,21 +1865,17 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
      * Sends a rowUnselectEvent on server side to invoke a rowUnselectListener if defined
      */
     fireRowUnselectEvent: function(rowKey, behaviorEvent) {
-        if(this.cfg.behaviors) {
-            var unselectBehavior = this.cfg.behaviors[behaviorEvent];
+        if(this.hasBehavior(behaviorEvent)) {
+            var ext = {
+                params: [
+                {
+                    name: this.id + '_instantUnselectedRowKey',
+                    value: rowKey
+                }
+                ]
+            };
 
-            if(unselectBehavior) {
-                var ext = {
-                    params: [
-                    {
-                        name: this.id + '_instantUnselectedRowKey',
-                        value: rowKey
-                    }
-                    ]
-                };
-
-                unselectBehavior.call(this, ext);
-            }
+            this.cfg.behaviors[behaviorEvent].call(this, ext);
         }
     },
 
@@ -1916,7 +1908,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(!row.hasClass('ui-datatable-selectable')) {
             return;
         }
-        
+
         var rowMeta = this.getRowMeta(row);
 
         this.highlightRow(row);
@@ -1943,7 +1935,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         if(!row.hasClass('ui-datatable-selectable')) {
             return;
         }
-        
+
         var rowMeta = this.getRowMeta(row);
 
         this.unhighlightRow(row);
@@ -2069,35 +2061,31 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.writeSelections();
 
         //fire toggleSelect event
-        if(this.cfg.behaviors) {
-            var toggleSelectBehavior = this.cfg.behaviors['toggleSelect'];
+        if(this.hasBehavior('toggleSelect')) {
+            var $this = this,
+            options = {
+                source: this.id,
+                process: this.id,
+                update: this.id,
+                formId: this.cfg.formId,
+                params: [{name: this.id + '_checked', value: !checked},
+                         {name: this.id + '_encodeFeature', value: true},
+                         {name: this.id + '_skipChildren', value: true}],
+                onsuccess: function(responseXML, status, xhr) {
+                    PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                            widget: $this,
+                            handle: function(content) {
+                                var selection = $(content).val();
+                                $this.selection = (selection === "") ? [] : selection.split(',');
+                                $this.writeSelections();
+                            }
+                        });
 
-            if(toggleSelectBehavior) {
-                var $this = this,
-                options = {
-                    source: this.id,
-                    process: this.id,
-                    update: this.id,
-                    formId: this.cfg.formId,
-                    params: [{name: this.id + '_checked', value: !checked},
-                             {name: this.id + '_encodeFeature', value: true},
-                             {name: this.id + '_skipChildren', value: true}],
-                    onsuccess: function(responseXML, status, xhr) {
-                        PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                                widget: $this,
-                                handle: function(content) {
-                                    var selection = $(content).val();
-                                    $this.selection = (selection === "") ? [] : selection.split(',');
-                                    $this.writeSelections();
-                                }
-                            });
+                    return true;
+                }
+            };
 
-                        return true;
-                    }
-                };
-
-                toggleSelectBehavior.call(this, options);
-            }
+            this.cfg.behaviors['toggleSelect'].call(this, options);
         }
     },
 
@@ -3526,7 +3514,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         this.clone = this.thead.clone(false);
         table.prepend(this.clone);
-        
+
         this.stickyContainer = $('<div class="ui-datatable ui-datatable-sticky ui-widget"><table></table></div>');
         this.stickyContainer.children('table').append(this.thead);
         this.stickyContainer.css({
@@ -3538,7 +3526,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             'z-index': ++PrimeFaces.zindex
         });
         this.jq.prepend(this.stickyContainer);
-        
+
         this.stickyContainerHeight = this.stickyContainer.height();
 
         this.stickyScrollParent = this.jq.scrollParent();
@@ -3575,16 +3563,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if (showStickyHeader) {
                 // refresh top
                 $this.stickyContainer.css({ top: scrollTop - 1 });
-                
+
                 if ($this.cfg.resizableColumns) {
                     $this.relativeHeight = scrollTop - tableOffset.top; // TODO: this needs to be checked for the container case
                 }
-                
+
                 // show if not already visible
                 if (!$this.stickyContainer.is(':visible')) {
                     $this.stickyContainer.show();
                     $this.stickyContainer.addClass('ui-shadow ui-sticky');
- 
+
                     // recalculate width + left after swichting from not-visible to visisble state
                     $this.stickyContainer.css({ width: table.outerWidth() });
                     if ($.isWindow($this.stickyScrollParent[0])) {
@@ -3602,7 +3590,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     $this.stickyContainer.hide();
                     $this.stickyContainer.removeClass('ui-shadow ui-sticky');
                 }
-                
+
                 if ($this.cfg.resizableColumns) {
                     $this.relativeHeight = 0;
                 }
