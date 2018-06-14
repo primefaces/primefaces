@@ -215,9 +215,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('filter')) {
-            var filterBehavior = this.cfg.behaviors['filter'];
-
-            filterBehavior.call(this, options);
+            this.fireBehaviorEvent('filter', options);
         }
         else {
             PrimeFaces.ajax.AjaxRequest(options);
@@ -252,8 +250,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('page')) {
-            var pageBehavior = this.cfg.behaviors['page'];
-            pageBehavior.call(this, options);
+            this.fireBehaviorEvent('page', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -528,8 +525,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('sort')) {
-            var sortBehavior = this.cfg.behaviors['sort'];
-            sortBehavior.call(this, options);
+            this.fireBehaviorEvent('sort', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -574,8 +570,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('expand')) {
-            var expandBehavior = this.cfg.behaviors['expand'];
-            expandBehavior.call(this, options);
+            this.fireBehaviorEvent('expand', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -607,7 +602,6 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
 
         if(this.hasBehavior('collapse')) {
             var $this = this,
-            collapseBehavior = this.cfg.behaviors['collapse'],
             nodeKey = node.attr('data-rk'),
             options = {
                 source: this.id,
@@ -631,7 +625,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             };
 
-            collapseBehavior.call(this, options);
+            this.fireBehaviorEvent('collapse', options);
         }
         else {
             this.updateVerticalScroll();
@@ -953,8 +947,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if(this.hasBehavior('select')) {
-                var selectBehavior = this.cfg.behaviors['select'];
-                selectBehavior.call(this, options);
+                this.fireBehaviorEvent('select', options);
             }
             else {
                 PrimeFaces.ajax.AjaxRequest(options);
@@ -962,28 +955,26 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         else {
             if(this.hasBehavior('select')) {
-                var selectBehavior = this.cfg.behaviors['select'],
-                ext = {
+                var ext = {
                     params: [
                         {name: this.id + '_instantSelection', value: nodeKey}
                     ]
                 };
 
-                selectBehavior.call(this, ext);
+                this.fireBehaviorEvent('select', ext);
             }
         }
     },
 
     fireUnselectNodeEvent: function(nodeKey) {
         if(this.hasBehavior('unselect')) {
-            var unselectBehavior = this.cfg.behaviors['unselect'],
-             ext = {
+            var ext = {
                 params: [
                     {name: this.id + '_instantUnselection', value: nodeKey}
                 ]
             };
 
-            unselectBehavior.call(this, ext);
+            this.fireBehaviorEvent('unselect', ext);
         }
     },
 
@@ -1234,10 +1225,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                         {name: $this.id + '_width', value: parseInt(columnHeader.width())},
                         {name: $this.id + '_height', value: parseInt(columnHeader.height())}
                     ]
-                }
+                };
 
                 if($this.hasBehavior('colResize')) {
-                    $this.cfg.behaviors['colResize'].call($this, options);
+                    $this.fireBehaviorEvent('colResize', options);
                 }
 
                 if($this.cfg.stickyHeader) {
@@ -1294,14 +1285,13 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         this.showRowEditors(row);
 
         if(this.hasBehavior('rowEditInit')) {
-            var rowEditInitBehavior = this.cfg.behaviors['rowEditInit'],
-            rowIndex = row.data('rk');
+            var rowIndex = row.data('rk');
 
             var ext = {
                 params: [{name: this.id + '_rowEditIndex', value: rowIndex}]
             };
 
-            rowEditInitBehavior.call(this, ext);
+            this.fireBehaviorEvent('rowEditInit', ext);
         }
     },
 
@@ -1371,10 +1361,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(action === 'save' && this.hasBehavior('rowEdit')) {
-            this.cfg.behaviors['rowEdit'].call(this, options);
+            this.fireBehaviorEvent('rowEdit', options);
         }
         else if(action === 'cancel' && this.hasBehavior('rowEditCancel')) {
-            this.cfg.behaviors['rowEditCancel'].call(this, options);
+            this.fireBehaviorEvent('rowEditCancel', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -1594,7 +1584,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('cellEdit')) {
-            this.cfg.behaviors['cellEdit'].call(this, options);
+            this.fireBehaviorEvent('cellEdit', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -1632,7 +1622,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('cellEditCancel')) {
-            this.cfg.behaviors['cellEditCancel'].call(this, options);
+            this.fireBehaviorEvent('cellEditCancel', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -1669,7 +1659,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('cellEditInit')) {
-            this.cfg.behaviors['cellEditInit'].call(this, options);
+            this.fireBehaviorEvent('cellEditInit', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
