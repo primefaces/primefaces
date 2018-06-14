@@ -99,15 +99,13 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(this.hasBehavior('close')) {
-            var closeBehavior = this.cfg.behaviors['close'];
-
             var ext = {
                 params : [
                     {name: this.id + '_unit', value: location}
                 ]
             };
 
-            closeBehavior.call(this, ext);
+            this.fireBehaviorEvent('close', ext);
         }
     },
 
@@ -148,24 +146,20 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
 
         if(!state.isClosed && !state.isHidden) {
             if(this.hasBehavior('resize')) {
-                var resizeBehavior = this.cfg.behaviors['resize'];
-
                 var ext = {
-                        params : [
-                            {name: this.id + '_unit', value: location},
-                            {name: this.id + '_width', value: state.innerWidth},
-                            {name: this.id + '_height', value: state.innerHeight}
-                        ]
-                    };
+                    params : [
+                        {name: this.id + '_unit', value: location},
+                        {name: this.id + '_width', value: state.innerWidth},
+                        {name: this.id + '_height', value: state.innerHeight}
+                    ]
+                };
 
-                    resizeBehavior.call(this, ext);
+                this.fireBehaviorEvent('resize', ext);
             }
         }
     },
 
     fireToggleEvent: function(location, collapsed) {
-        var toggleBehavior = this.cfg.behaviors['toggle'];
-
         var ext = {
             params : [
                 {name: this.id + '_unit', value: location},
@@ -173,7 +167,7 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
             ]
         };
 
-        toggleBehavior.call(this, ext);
+        this.fireBehaviorEvent('toggle', ext);
     }
 
 });

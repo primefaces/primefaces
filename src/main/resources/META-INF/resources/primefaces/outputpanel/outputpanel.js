@@ -48,8 +48,7 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
         };
 
         if(this.hasBehavior('load')) {
-            var loadContentBehavior = this.cfg.behaviors['load'];
-            loadContentBehavior.call(this, options);
+            this.fireBehaviorEvent('load', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);

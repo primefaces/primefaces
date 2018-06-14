@@ -255,8 +255,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
 
     handleDblclickNode: function(node) {
         if(this.hasBehavior('dblselect')) {
-            var dblselectBehavior = this.cfg.behaviors['dblselect'],
-            key = node.data('model').key;
+            var key = node.data('model').key;
 
             var ext = {
                 params: [
@@ -264,14 +263,13 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            dblselectBehavior.call(this, ext);
+            this.fireBehaviorEvent('dblselect', ext);
         }
     },
 
     expandNode: function(node) {
         var $this = this,
         key = node.data('model').key,
-        selectBehavior = this.cfg.behaviors['select'],
         ext = {
             update: this.id,
             params: [
@@ -309,7 +307,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        selectBehavior.call(this, ext);
+        this.fireBehaviorEvent('select', ext);
     },
 
     removeNode: function(node) {

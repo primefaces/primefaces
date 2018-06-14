@@ -14,11 +14,8 @@ PrimeFaces.widget.IdleMonitor = PrimeFaces.widget.BaseWidget.extend({
                 $this.cfg.onidle.call($this);
             }
 
-            if($this.cfg.behaviors) {
-                var idleBehavior = $this.cfg.behaviors['idle'];
-                if(idleBehavior) {
-                    idleBehavior.call($this);
-                }
+            if($this.hasBehavior('idle')) {
+                $this.fireBehaviorEvent('idle');
             }
         })
         .on("active.idleTimer", function(){
@@ -26,11 +23,8 @@ PrimeFaces.widget.IdleMonitor = PrimeFaces.widget.BaseWidget.extend({
                 $this.cfg.onactive.call(this);
             }
 
-            if($this.cfg.behaviors) {
-                var activeBehavior = $this.cfg.behaviors['active'];
-                if(activeBehavior) {
-                    activeBehavior.call($this);
-                }
+            if($this.hasBehavior('active')) {
+                $this.fireBehaviorEvent('active');
             }
         });
 
