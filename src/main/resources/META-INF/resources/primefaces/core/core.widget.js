@@ -145,6 +145,16 @@ if (!PrimeFaces.widget) {
             }
         },
 
+        /**
+         * Gets behavior callback by name or null.
+         *
+         * @param name behavior name
+         * @return {Function}
+         */
+        getBehavior: function (name) {
+            return this.cfg.behaviors ? this.cfg.behaviors[name] : null;
+        },
+
         addDestroyListener: function(listener) {
             if (!this.destroyListeners) {
                 this.destroyListeners = [];
