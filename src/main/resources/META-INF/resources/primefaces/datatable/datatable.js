@@ -1377,9 +1377,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('page')) {
-            var pageBehavior = this.cfg.behaviors['page'];
-
-            pageBehavior.call(this, options);
+            this.fireBehaviorEvent('page', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -1556,9 +1554,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(this.hasBehavior('sort')) {
-            var sortBehavior = this.cfg.behaviors['sort'];
-
-            sortBehavior.call(this, options);
+            this.fireBehaviorEvent('sort', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -1654,9 +1650,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('filter')) {
-            var filterBehavior = this.cfg.behaviors['filter'];
-
-            filterBehavior.call(this, options);
+            this.fireBehaviorEvent('filter', options);
         }
         else {
             PrimeFaces.ajax.AjaxRequest(options);
@@ -1857,7 +1851,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            this.cfg.behaviors[behaviorEvent].call(this, ext);
+            this.fireBehaviorEvent(behaviorEvent, ext);
         }
     },
 
@@ -1875,7 +1869,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            this.cfg.behaviors[behaviorEvent].call(this, ext);
+            this.fireBehaviorEvent(behaviorEvent, ext);
         }
     },
 
@@ -2085,7 +2079,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             };
 
-            this.cfg.behaviors['toggleSelect'].call(this, options);
+            this.fireBehaviorEvent('toggleSelect', options);
         }
     },
 
@@ -2204,9 +2198,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('rowToggle')) {
-            var rowToggleBehavior = this.cfg.behaviors['rowToggle'];
-
-            rowToggleBehavior.call(this, options);
+            this.fireBehaviorEvent('rowToggle', options);
         }
         else {
             PrimeFaces.ajax.AjaxRequest(options);
@@ -2230,9 +2222,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            var rowToggleBehavior = this.cfg.behaviors['rowToggle'];
-
-            rowToggleBehavior.call(this, ext);
+            this.fireBehaviorEvent('rowToggle', ext);
         }
     },
 
@@ -2350,14 +2340,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.showRowEditors(row);
 
         if(this.hasBehavior('rowEditInit')) {
-            var rowEditInitBehavior = this.cfg.behaviors['rowEditInit'],
-            rowIndex = this.getRowMeta(row).index;
+            var rowIndex = this.getRowMeta(row).index;
 
             var ext = {
                 params: [{name: this.id + '_rowEditIndex', value: rowIndex}]
             };
 
-            rowEditInitBehavior.call(this, ext);
+            this.fireBehaviorEvent('rowEditInit', ext);
         }
     },
 
@@ -2410,7 +2399,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('cellEditInit')) {
-            this.cfg.behaviors['cellEditInit'].call(this, options);
+            this.fireBehaviorEvent('cellEditInit', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -2659,7 +2648,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('cellEdit')) {
-            this.cfg.behaviors['cellEdit'].call(this, options);
+            this.fireBehaviorEvent('cellEdit', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -2711,7 +2700,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('cellEditCancel')) {
-            this.cfg.behaviors['cellEditCancel'].call(this, options);
+            this.fireBehaviorEvent('cellEditCancel', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -2780,10 +2769,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(action === 'save' && this.hasBehavior('rowEdit')) {
-            this.cfg.behaviors['rowEdit'].call(this, options);
+            this.fireBehaviorEvent('rowEdit', options);
         }
         else if(action === 'cancel' && this.hasBehavior('rowEditCancel')) {
-            this.cfg.behaviors['rowEditCancel'].call(this, options);
+            this.fireBehaviorEvent('rowEditCancel', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -2973,7 +2962,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            this.cfg.behaviors['colResize'].call(this, options);
+            this.fireBehaviorEvent('colResize', options);
         }
     },
 
@@ -3325,20 +3314,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 $this.saveColumnOrder();
 
                 //fire colReorder event
-                if($this.cfg.behaviors) {
-                    var columnReorderBehavior = $this.cfg.behaviors['colReorder'];
+                if($this.hasBehavior('colReorder')) {
+                    var ext = null;
 
-                    if(columnReorderBehavior) {
-                        var ext = null;
-
-                        if($this.cfg.multiViewState) {
-                            ext = {
-                                params: [{name: this.id + '_encodeFeature', value: true}]
-                            };
-                        }
-
-                        columnReorderBehavior.call($this, ext);
+                    if($this.cfg.multiViewState) {
+                        ext = {
+                            params: [{name: this.id + '_encodeFeature', value: true}]
+                        };
                     }
+
+                    $this.fireBehaviorEvent('colReorder', ext);
                 }
             }
         });
@@ -3399,7 +3384,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 if($this.hasBehavior('rowReorder')) {
-                    $this.cfg.behaviors['rowReorder'].call($this, options);
+                    $this.fireBehaviorEvent('rowReorder', options);
                 }
                 else {
                     PrimeFaces.ajax.Request.handle(options);

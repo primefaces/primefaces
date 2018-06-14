@@ -2,10 +2,10 @@
  * PrimeFaces Fieldset Widget
  */
 PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
-    
+
     init: function(cfg) {
         this._super(cfg);
-        
+
         this.legend = this.jq.children('.ui-fieldset-legend');
 
         var $this = this;
@@ -48,7 +48,7 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
             });
         }
     },
-    
+
     /**
      * Toggles the content
      */
@@ -58,18 +58,14 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
 
         this.content.slideToggle(this.cfg.toggleSpeed, 'easeInOutCirc', function() {
-            if($this.cfg.behaviors) {
-                var toggleBehavior = $this.cfg.behaviors['toggle'];
-
-                if(toggleBehavior) {
-                    toggleBehavior.call($this);
-                }
+            if($this.hasBehavior('toggle')) {
+                $this.fireBehaviorEvent('toggle');
             }
         });
-        
+
         PrimeFaces.invokeDeferredRenders(this.id);
     },
-    
+
     /**
      * Updates the visual toggler state and saves state
      */
@@ -83,5 +79,5 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
 
         this.stateHolder.val(!collapsed);
     }
-    
+
 });

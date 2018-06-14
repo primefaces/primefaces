@@ -137,13 +137,10 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
 
         $this.jq.children('div.ui-multiselectlistbox-listcontainer:hidden').show();
     },
-    
+
     triggerChange: function () {
         if(this.hasBehavior('change')){
-            var changeBehavior = this.cfg.behaviors['change'];
-            if(changeBehavior){
-                changeBehavior.call(this);
-            }
+            this.fireBehaviorEvent('change');
         }
     }
 });

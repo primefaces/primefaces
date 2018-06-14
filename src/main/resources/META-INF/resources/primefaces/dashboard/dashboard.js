@@ -27,13 +27,13 @@ PrimeFaces.widget.Dashboard = PrimeFaces.widget.BaseWidget.extend({
                             {name: $this.id + '_itemIndex', value: itemIndex},
                             {name: $this.id + '_receiverColumnIndex', value: receiverColumnIndex}
                         ]
-                    }
+                    };
 
                     if(ui.sender) {
                         ext.params.push({name: $this.id + '_senderColumnIndex', value: ui.sender.parent().children().index(ui.sender)});
                     }
 
-                    this.cfg.behaviors['reorder'].call($this, ext);
+                    $this.fireBehaviorEvent('reorder', ext);
                 }
             };
         }

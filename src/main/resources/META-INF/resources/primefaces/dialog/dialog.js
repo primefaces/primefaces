@@ -269,14 +269,13 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             containment : $this.cfg.absolutePositioned ? 'document' : 'window',
             stop: function( event, ui ) {
                 if($this.hasBehavior('move')) {
-                    var move = $this.cfg.behaviors['move'];
                     var ext = {
                         params: [
                             {name: $this.id + '_top', value: ui.offset.top},
                             {name: $this.id + '_left', value: ui.offset.left}
                         ]
                     };
-                    move.call($this, ext);
+                    $this.fireBehaviorEvent('move', ext);
                 }
             }
         });
@@ -517,8 +516,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         };
 
         if(this.hasBehavior('loadContent')) {
-            var loadContentBehavior = this.cfg.behaviors['loadContent'];
-            loadContentBehavior.call(this, options);
+            this.fireBehaviorEvent('loadContent', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);

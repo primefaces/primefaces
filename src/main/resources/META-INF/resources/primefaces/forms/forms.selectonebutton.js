@@ -88,13 +88,10 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if(this.hasBehavior('change')) {
-            var changeBehavior = this.cfg.behaviors['change'];
-            if(changeBehavior) {
-                changeBehavior.call(this);
-            }
+            this.fireBehaviorEvent('change');
         }
     },
-    
+
     disable: function() {
         this.buttons.removeClass('ui-state-hover ui-state-focus ui-state-active')
                 .addClass('ui-state-disabled').attr('disabled', 'disabled');

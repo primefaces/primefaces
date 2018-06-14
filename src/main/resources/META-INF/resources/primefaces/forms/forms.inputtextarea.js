@@ -281,7 +281,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            this.cfg.behaviors['itemSelect'].call(this, ext);
+            this.fireBehaviorEvent('itemSelect', ext);
         }
     },
 

@@ -697,8 +697,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if(this.hasBehavior('query')) {
-            var queryBehavior = this.cfg.behaviors['query'];
-            queryBehavior.call(this, options);
+            this.fireBehaviorEvent('query', options);
         }
         else {
             PrimeFaces.ajax.AjaxRequest(options);
@@ -731,7 +730,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.cfg.behaviors['itemSelect'].call(this, ext);
+            this.fireBehaviorEvent('itemSelect', ext);
         }
     },
 
@@ -743,7 +742,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.cfg.behaviors['itemUnselect'].call(this, ext);
+            this.fireBehaviorEvent('itemUnselect', ext);
         }
     },
 
@@ -755,7 +754,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.cfg.behaviors['moreText'].call(this, ext);
+            this.fireBehaviorEvent('moreText', ext);
         }
     },
 
@@ -935,9 +934,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
     fireClearEvent: function() {
         if(this.hasBehavior('clear')) {
-            var clearBehavior = this.cfg.behaviors['clear'];
-
-            clearBehavior.call(this);
+            this.fireBehaviorEvent('clear');
         }
     },
 

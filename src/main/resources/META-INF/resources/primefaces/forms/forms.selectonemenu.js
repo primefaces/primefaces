@@ -186,11 +186,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             $this.jq.removeClass('ui-state-focus');
             $this.menuIcon.removeClass('ui-state-focus');
 
-            if($this.cfg.behaviors) {
-               var blurBehavior = $this.cfg.behaviors['blur'];
-               if(blurBehavior) {
-                  blurBehavior.call($this);
-               }
+            if($this.hasBehavior('blur')) {
+                $this.fireBehaviorEvent('blur');
             }
         });
 
@@ -293,11 +290,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     triggerItemSelect: function() {
-        if(this.cfg.behaviors) {
-            var itemSelectBehavior = this.cfg.behaviors['itemSelect'];
-            if(itemSelectBehavior) {
-                itemSelectBehavior.call(this);
-            }
+        if(this.hasBehavior('itemSelect')) {
+            this.fireBehaviorEvent('itemSelect');
         }
     },
 
@@ -730,11 +724,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     blur: function() {
         this.focusInput.blur();
 
-        if(this.cfg.behaviors) {
-            var blurBehavior = this.cfg.behaviors['blur'];
-            if(blurBehavior) {
-                blurBehavior.call(this);
-            }
+        if(this.hasBehavior('blur')) {
+            this.fireBehaviorEvent('blur');
         }
     },
 
@@ -807,9 +798,9 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             }
             else {
                 this.label.removeClass('ui-state-disabled');
-                
+
                 var option = null;
-                if(this.items) { 
+                if(this.items) {
                     var selectedItem = this.items.filter('[data-label="' + $.escapeSelector(value) + '"]');
                     option = this.options.eq(this.resolveItemIndex(selectedItem));
                 }

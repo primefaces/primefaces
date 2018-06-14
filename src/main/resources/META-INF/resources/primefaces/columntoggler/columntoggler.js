@@ -390,7 +390,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            this.cfg.behaviors['toggle'].call(this, ext);
+            this.fireBehaviorEvent('toggle', ext);
         }
     },
 
