@@ -82,8 +82,8 @@ PrimeFaces.widget.Resizable = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.cfg.behaviors['resize'].call(this, ext);
+            this.fireBehaviorEvent('resize', ext);
         }
     }
-    
+
 });

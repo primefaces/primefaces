@@ -29,7 +29,7 @@ PrimeFaces.widget.Knob = PrimeFaces.widget.BaseWidget.extend({
                     $this.cfg.onchange(value);
                 }
 
-                if ($this.cfg.behaviors && $this.cfg.behaviors['change']) {
+                if ($this.hasBehavior('change')) {
                     var ext = {
                         params: [
                             {name: $this.id + '_hidden', value: value}

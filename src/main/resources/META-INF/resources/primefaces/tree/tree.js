@@ -107,8 +107,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             };
 
             if(this.hasBehavior('expand')) {
-                var expandBehavior = this.cfg.behaviors['expand'];
-                expandBehavior.call(this, options);
+                this.fireBehaviorEvent('expand', options);
             }
             else {
                 PrimeFaces.ajax.Request.handle(options);
@@ -128,7 +127,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.cfg.behaviors['expand'].call(this, ext);
+            this.fireBehaviorEvent('expand', ext);
         }
     },
 
@@ -140,7 +139,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.cfg.behaviors['collapse'].call(this, ext);
+            this.fireBehaviorEvent('collapse', ext);
         }
     },
 
@@ -176,11 +175,10 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                     }
                     $this.writeSelections();
                 }
-            }
+            };
 
             if(this.hasBehavior('select')) {
-                var selectBehavior = this.cfg.behaviors['select'];
-                selectBehavior.call(this, options);
+                this.fireBehaviorEvent('select', ext);
             }
             else {
                 PrimeFaces.ajax.AjaxRequest(options);
@@ -188,14 +186,13 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             if(this.hasBehavior('select')) {
-                var selectBehavior = this.cfg.behaviors['select'],
-                ext = {
+                var ext = {
                     params: [
                         {name: this.id + '_instantSelection', value: this.getRowKey(node)}
                     ]
                 };
 
-                selectBehavior.call(this, ext);
+                this.fireBehaviorEvent('select', ext);
             }
         }
     },
@@ -208,20 +205,19 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.cfg.behaviors['unselect'].call(this, ext);
+            this.fireBehaviorEvent('unselect', ext);
         }
     },
 
     fireContextMenuEvent: function(node) {
         if(this.hasBehavior('contextMenu')) {
-            var contextMenuBehavior = this.cfg.behaviors['contextMenu'],
-            ext = {
+            var ext = {
                 params: [
                     {name: this.id + '_contextMenuNode', value: this.getRowKey(node)}
                 ]
             };
 
-            contextMenuBehavior.call(this, ext);
+            this.fireBehaviorEvent('contextMenu', ext);
         }
     },
 
@@ -1521,9 +1517,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         }
 
         if(this.hasBehavior('dragdrop')) {
-            var dragdropBehavior = this.cfg.behaviors['dragdrop'];
-
-            dragdropBehavior.call(this, options);
+            this.fireBehaviorEvent('dragdrop', options);
         }
         else {
             PrimeFaces.ajax.AjaxRequest(options);

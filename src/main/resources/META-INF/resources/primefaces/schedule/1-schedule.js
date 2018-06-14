@@ -65,17 +65,14 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         this.cfg.dayClick = function(dayDate, jsEvent, view) {
-            if($this.cfg.behaviors) {
-                var dateSelectBehavior = $this.cfg.behaviors['dateSelect'];
-                if(dateSelectBehavior) {
-                    var ext = {
-                        params: [
-                            {name: $this.id + '_selectedDate', value: dayDate.valueOf() - dayDate.utcOffset()*60000}
-                        ]
-                    };
+            if($this.hasBehavior('dateSelect')) {
+                var ext = {
+                    params: [
+                        {name: $this.id + '_selectedDate', value: dayDate.valueOf() - dayDate.utcOffset()*60000}
+                    ]
+                };
 
-                    dateSelectBehavior.call($this, ext);
-                }
+                $this.fireBehaviorEvent('dateSelect', ext);
             }
         };
 
@@ -85,51 +82,42 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 return false;
             }
 
-            if($this.cfg.behaviors) {
-                var eventSelectBehavior = $this.cfg.behaviors['eventSelect'];
-                if(eventSelectBehavior) {
-                    var ext = {
-                        params: [
-                            {name: $this.id + '_selectedEventId', value: calEvent.id}
-                        ]
-                    };
+            if($this.hasBehavior('eventSelect')) {
+                var ext = {
+                    params: [
+                        {name: $this.id + '_selectedEventId', value: calEvent.id}
+                    ]
+                };
 
-                    eventSelectBehavior.call($this, ext);
-                }
+                $this.fireBehaviorEvent('eventSelect', ext);
             }
         };
 
         this.cfg.eventDrop = function(calEvent, delta, revertFunc, jsEvent, ui, view) {
-            if($this.cfg.behaviors) {
-                var eventMoveBehavior = $this.cfg.behaviors['eventMove'];
-                if(eventMoveBehavior) {
-                    var ext = {
-                        params: [
-                            {name: $this.id + '_movedEventId', value: calEvent.id},
-                            {name: $this.id + '_dayDelta', value: delta.days()},
-                            {name: $this.id + '_minuteDelta', value: (delta._milliseconds/60000)}
-                        ]
-                    };
+            if($this.hasBehavior('eventMove')) {
+                var ext = {
+                    params: [
+                        {name: $this.id + '_movedEventId', value: calEvent.id},
+                        {name: $this.id + '_dayDelta', value: delta.days()},
+                        {name: $this.id + '_minuteDelta', value: (delta._milliseconds/60000)}
+                    ]
+                };
 
-                    eventMoveBehavior.call($this, ext);
-                }
+                $this.fireBehaviorEvent('eventMove', ext);
             }
         };
 
         this.cfg.eventResize = function(calEvent, delta, revertFunc, jsEvent, ui, view) {
-            if($this.cfg.behaviors) {
-                var eventResizeBehavior = $this.cfg.behaviors['eventResize'];
-                if(eventResizeBehavior) {
-                    var ext = {
-                        params: [
-                            {name: $this.id + '_resizedEventId', value: calEvent.id},
-                            {name: $this.id + '_dayDelta', value: delta.days()},
-                            {name: $this.id + '_minuteDelta', value: (delta._milliseconds/60000)}
-                        ]
-                    };
+            if($this.hasBehavior('eventResize')) {
+                var ext = {
+                    params: [
+                        {name: $this.id + '_resizedEventId', value: calEvent.id},
+                        {name: $this.id + '_dayDelta', value: delta.days()},
+                        {name: $this.id + '_minuteDelta', value: (delta._milliseconds/60000)}
+                    ]
+                };
 
-                    eventResizeBehavior.call($this, ext);
-                }
+                $this.fireBehaviorEvent('eventResize', ext);
             }
         };
 
@@ -223,11 +211,8 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
 
             $this.viewNameState.val(viewName);
 
-            if($this.cfg.behaviors) {
-                var viewChangeBehavior = $this.cfg.behaviors['viewChange'];
-                if(viewChangeBehavior) {
-                    viewChangeBehavior.call($this);
-                }
+            if($this.hasBehavior('viewChange')) {
+                $this.fireBehaviorEvent('viewChange');
             }
         });
     },

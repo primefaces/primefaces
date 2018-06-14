@@ -799,7 +799,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
             ext.params.push({name:this.id + '_add', value:isAdd});
 
-            this.cfg.behaviors['transfer'].call(this, ext);
+            this.fireBehaviorEvent('transfer', ext);
         }
         $(this.jqId + ' ul').sortable('enable');
 
@@ -812,8 +812,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
     fireItemSelectEvent: function(item) {
         if(this.hasBehavior('select')) {
-            var itemSelectBehavior = this.cfg.behaviors['select'],
-            listName = this.getListName(item),
+            var listName = this.getListName(item),
             inputContainer = (listName === "source") ? this.sourceInput : this.targetInput,
             ext = {
                 params: [
@@ -827,27 +826,26 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 }
             };
 
-            itemSelectBehavior.call(this, ext);
+            this.fireBehaviorEvent('select', ext);
         }
     },
 
     fireItemUnselectEvent: function(item) {
         if(this.hasBehavior('unselect')) {
-            var itemUnselectBehavior = this.cfg.behaviors['unselect'],
-            ext = {
+            var ext = {
                 params: [
                     {name: this.id + '_itemIndex', value: item.index()},
                     {name: this.id + '_listName', value: this.getListName(item)}
                 ]
             };
 
-            itemUnselectBehavior.call(this, ext);
+            this.fireBehaviorEvent('unselect', ext);
         }
     },
 
     fireReorderEvent: function() {
         if(this.hasBehavior('reorder')) {
-            this.cfg.behaviors['reorder'].call(this);
+            this.fireBehaviorEvent('reorder');
         }
     },
 

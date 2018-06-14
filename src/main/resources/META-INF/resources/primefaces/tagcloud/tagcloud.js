@@ -31,7 +31,7 @@ PrimeFaces.widget.TagCloud = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.cfg.behaviors['select'].call(this, ext);
+            this.fireBehaviorEvent('select', ext);
         }
     }
 

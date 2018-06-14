@@ -65,7 +65,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
 
         //invoke ajax rate behavior
         if(this.hasBehavior('rate')) {
-            this.cfg.behaviors['rate'].call(this);
+            this.fireBehaviorEvent('rate');
         }
     },
 
@@ -92,7 +92,7 @@ PrimeFaces.widget.Rating = PrimeFaces.widget.BaseWidget.extend({
 
         //invoke ajax cancel behavior
         if(this.hasBehavior('cancel')) {
-            this.cfg.behaviors['cancel'].call(this);
+            this.fireBehaviorEvent('cancel');
         }
     }
 });

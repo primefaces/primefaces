@@ -420,9 +420,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('tabChange')) {
-            var tabChangeBehavior = this.cfg.behaviors['tabChange'];
-
-            tabChangeBehavior.call(this, options);
+            this.fireBehaviorEvent('tabChange', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -481,28 +479,26 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     fireTabChangeEvent: function(panel) {
-        var tabChangeBehavior = this.cfg.behaviors['tabChange'],
-        ext = {
+        var ext = {
             params: [
                 {name: this.id + '_newTab', value: panel.attr('id')},
                 {name: this.id + '_tabindex', value: panel.data('index')}
             ]
         };
 
-        tabChangeBehavior.call(this, ext);
+        this.fireBehaviorEvent('tabChange', ext);
     },
 
     fireTabCloseEvent: function(id, index) {
         if(this.hasBehavior('tabClose')) {
-            var tabCloseBehavior = this.cfg.behaviors['tabClose'],
-            ext = {
+            var ext = {
                 params: [
                     {name: this.id + '_closeTab', value: id},
                     {name: this.id + '_tabindex', value: index}
                 ]
             };
 
-            tabCloseBehavior.call(this, ext);
+            this.fireBehaviorEvent('tabClose', ext);
         }
     },
 

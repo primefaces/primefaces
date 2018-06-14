@@ -79,7 +79,7 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
         clearInterval(this.progressPoll);
 
         if(this.hasBehavior('complete')) {
-            this.cfg.behaviors['complete'].call(this);
+            this.fireBehaviorEvent('complete');
         }
     },
 

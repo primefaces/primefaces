@@ -101,36 +101,24 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         //update input on change
         this.editor.on('text-change', function(delta, oldDelta, source) {
             $this.input.val($this.getEditorValue());
-            if($this.cfg.behaviors) {
-                var changeBehavior = $this.cfg.behaviors['change'];
-                if(changeBehavior) {
-                    changeBehavior.call($this);
-                }
+            if($this.hasBehavior('change')) {
+                $this.fireBehaviorEvent('change');
             }
         });
         this.editor.on('selection-change', function(range, oldRange, source) {
             if(range && !oldRange) {
-                if($this.cfg.behaviors && $this.cfg.behaviors["focus"]) {
-                    var changeBehavior = $this.cfg.behaviors["focus"];
-                    if(changeBehavior) {
-                        changeBehavior.call($this);
-                    }
+                if($this.hasBehavior('focus')) {
+                    $this.fireBehaviorEvent('focus');
                 }
             }
             if(!range && oldRange) {
-                if($this.cfg.behaviors && $this.cfg.behaviors["blur"]) {
-                    var changeBehavior = $this.cfg.behaviors["blur"];
-                    if(changeBehavior) {
-                        changeBehavior.call($this);
-                    }
+                if($this.hasBehavior('blur')) {
+                    $this.fireBehaviorEvent('blur');
                 }
             }
             if(range && oldRange) {
-                if($this.cfg.behaviors && $this.cfg.behaviors["select"]) {
-                    var changeBehavior = $this.cfg.behaviors["select"];
-                    if(changeBehavior) {
-                        changeBehavior.call($this);
-                    }
+                if($this.hasBehavior('select')) {
+                    $this.fireBehaviorEvent('select');
                 }
             }
         });
@@ -150,12 +138,9 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
 
     registerEvent: function(event) {
         var $this = this;
-        if(this.cfg.behaviors && this.cfg.behaviors[event]) {
+        if(this.hasBehavior(event)) {
             this.editorContainer.on(event, function () {
-                var changeBehavior = $this.cfg.behaviors[event];
-                if(changeBehavior) {
-                    changeBehavior.call($this);
-                }
+                $this.fireBehaviorEvent(event);
             });
         }
     }
