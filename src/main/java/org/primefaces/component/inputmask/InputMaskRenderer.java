@@ -27,6 +27,7 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
 public class InputMaskRenderer extends InputRenderer {
@@ -34,6 +35,7 @@ public class InputMaskRenderer extends InputRenderer {
     private final static Logger logger = Logger.getLogger(InputMaskRenderer.class.getName());
 
     private final static String REGEX_METACHARS = "<([{\\^-=$!|]})?*+.>";
+    private final static String SB_PATTERN = InputMaskRenderer.class.getName() + "#translateMaskIntoRegex";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -49,8 +51,8 @@ public class InputMaskRenderer extends InputRenderer {
         String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if (submittedValue != null) {
-
-            if (!translateMaskIntoRegex(inputMask).matcher(submittedValue).matches()) {
+            Pattern pattern = translateMaskIntoRegex(context, inputMask);
+            if (!pattern.matcher(submittedValue).matches()) {
                 submittedValue = null;
             }
 
@@ -58,14 +60,22 @@ public class InputMaskRenderer extends InputRenderer {
         }
     }
 
-    // https://github.com/digitalBush/jquery.maskedinput
-    // a - Represents an alpha character (A-Z,a-z)
-    // 9 - Represents a numeric character (0-9)
-    // * - Represents an alphanumeric character (A-Z,a-z,0-9)
-    // ? - Makes the following input optional
-    protected Pattern translateMaskIntoRegex(InputMask inputMask) {
+
+    /**
+     * Translates the client side mask to to a {@link Pattern} base on:
+     * https://github.com/digitalBush/jquery.maskedinput
+     * a - Represents an alpha character (A-Z,a-z)
+     * 9 - Represents a numeric character (0-9)
+     * * - Represents an alphanumeric character (A-Z,a-z,0-9)
+     * ? - Makes the following input optional
+     * 
+     * @param context The {@link FacesContext}
+     * @param inputMask The component
+     * @return The generated {@link Pattern}
+     */
+    protected Pattern translateMaskIntoRegex(FacesContext context, InputMask inputMask) {
         String mask = inputMask.getMask();
-        StringBuilder regex = new StringBuilder();
+        StringBuilder regex = SharedStringBuilder.get(context, SB_PATTERN);
         boolean optionalFound = false;
 
         for (char c : mask.toCharArray()) {
