@@ -489,7 +489,9 @@ public abstract class CoreRenderer extends Renderer {
             request.append(";");
         }
 
-        request.append("PrimeFaces.onPost();");
+        if (!submit) {
+            request.append("PrimeFaces.onPost();");
+        }
 
         return request.toString();
     }
