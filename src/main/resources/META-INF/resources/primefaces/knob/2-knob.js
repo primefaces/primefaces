@@ -36,7 +36,7 @@ PrimeFaces.widget.Knob = PrimeFaces.widget.BaseWidget.extend({
                         ]
                     };
 
-                    $this.fireBehaviorEvent('change', ext);
+                    $this.callBehavior('change', ext);
                 }
             },
             format : function(value) {

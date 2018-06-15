@@ -109,7 +109,7 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
         };
 
         if(this.hasBehavior('save')) {
-            this.fireBehaviorEvent('save');
+            this.callBehavior('save');
         }
         else {
             PrimeFaces.ajax.AjaxRequest(options);
@@ -129,7 +129,7 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
         ];
 
         if(this.hasBehavior('cancel')) {
-            this.fireBehaviorEvent('cancel');
+            this.callBehavior('cancel');
         }
         else {
             PrimeFaces.ajax.AjaxRequest(options);

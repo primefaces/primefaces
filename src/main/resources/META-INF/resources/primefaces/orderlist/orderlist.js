@@ -250,7 +250,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('select', ext);
+            this.callBehavior('select', ext);
         }
     },
 
@@ -262,13 +262,13 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('unselect', ext);
+            this.callBehavior('unselect', ext);
         }
     },
 
     fireReorderEvent: function() {
         if(this.hasBehavior('reorder')) {
-            this.fireBehaviorEvent('reorder');
+            this.callBehavior('reorder');
         }
     }
 

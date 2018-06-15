@@ -237,7 +237,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         };
 
         if(this.hasBehavior('tabChange')) {
-            this.fireBehaviorEvent('tabChange', options);
+            this.callBehavior('tabChange', options);
         }
         else {
             PrimeFaces.ajax.AjaxRequest(options);
@@ -261,7 +261,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             };
         }
 
-        this.fireBehaviorEvent('tabChange', ext);
+        this.callBehavior('tabChange', ext);
     },
 
     fireTabCloseEvent : function(index) {
@@ -282,7 +282,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             };
         }
 
-        this.fireBehaviorEvent('tabClose', ext);
+        this.callBehavior('tabClose', ext);
     },
 
     markAsLoaded: function(panel) {

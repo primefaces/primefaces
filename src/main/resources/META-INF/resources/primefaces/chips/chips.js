@@ -109,7 +109,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('itemSelect', ext);
+            this.callBehavior('itemSelect', ext);
         }
     },
 
@@ -121,7 +121,7 @@ PrimeFaces.widget.Chips = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('itemUnselect', ext);
+            this.callBehavior('itemUnselect', ext);
         }
     }
 });

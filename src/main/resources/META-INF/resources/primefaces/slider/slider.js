@@ -191,7 +191,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('slideEnd', ext);
+            this.callBehavior('slideEnd', ext);
         }
     },
 

@@ -190,7 +190,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
 
     fireDateSelectEvent: function() {
         if(this.hasBehavior('dateSelect')) {
-            this.fireBehaviorEvent('dateSelect');
+            this.callBehavior('dateSelect');
         }
     },
 
@@ -212,7 +212,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                     ]
             };
 
-            this.fireBehaviorEvent('viewChange', ext);
+            this.callBehavior('viewChange', ext);
         }
     },
 
@@ -227,7 +227,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
 
     fireCloseEvent: function() {
         if(this.hasBehavior('close')) {
-            this.fireBehaviorEvent('close');
+            this.callBehavior('close');
         }
     },
 

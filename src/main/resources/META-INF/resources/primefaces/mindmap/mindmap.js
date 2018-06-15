@@ -263,7 +263,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('dblselect', ext);
+            this.callBehavior('dblselect', ext);
         }
     },
 
@@ -307,7 +307,7 @@ PrimeFaces.widget.Mindmap = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
 
-        this.fireBehaviorEvent('select', ext);
+        this.callBehavior('select', ext);
     },
 
     removeNode: function(node) {

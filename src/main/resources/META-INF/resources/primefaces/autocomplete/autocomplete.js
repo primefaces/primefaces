@@ -697,7 +697,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         }
 
         if(this.hasBehavior('query')) {
-            this.fireBehaviorEvent('query', options);
+            this.callBehavior('query', options);
         }
         else {
             PrimeFaces.ajax.AjaxRequest(options);
@@ -730,7 +730,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('itemSelect', ext);
+            this.callBehavior('itemSelect', ext);
         }
     },
 
@@ -742,7 +742,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('itemUnselect', ext);
+            this.callBehavior('itemUnselect', ext);
         }
     },
 
@@ -754,7 +754,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('moreText', ext);
+            this.callBehavior('moreText', ext);
         }
     },
 
@@ -934,7 +934,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
     fireClearEvent: function() {
         if(this.hasBehavior('clear')) {
-            this.fireBehaviorEvent('clear');
+            this.callBehavior('clear');
         }
     },
 

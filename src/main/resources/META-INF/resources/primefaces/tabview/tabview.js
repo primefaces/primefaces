@@ -420,7 +420,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('tabChange')) {
-            this.fireBehaviorEvent('tabChange', options);
+            this.callBehavior('tabChange', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -486,7 +486,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             ]
         };
 
-        this.fireBehaviorEvent('tabChange', ext);
+        this.callBehavior('tabChange', ext);
     },
 
     fireTabCloseEvent: function(id, index) {
@@ -498,7 +498,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('tabClose', ext);
+            this.callBehavior('tabClose', ext);
         }
     },
 

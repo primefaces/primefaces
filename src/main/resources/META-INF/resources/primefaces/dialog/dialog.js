@@ -165,7 +165,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
 
     postShow: function() {
-        this.fireBehaviorEvent('open');
+        this.callBehavior('open');
 
         PrimeFaces.invokeDeferredRenders(this.id);
 
@@ -275,7 +275,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                             {name: $this.id + '_left', value: ui.offset.left}
                         ]
                     };
-                    $this.fireBehaviorEvent('move', ext);
+                    $this.callBehavior('move', ext);
                 }
             }
         });
@@ -357,7 +357,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
 
     onHide: function(event, ui) {
-        this.fireBehaviorEvent('close');
+        this.callBehavior('close');
 
         this.jq.attr({
             'aria-hidden': true
@@ -385,7 +385,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             this.maximizeIcon.children('.ui-icon').removeClass('ui-icon-newwin').addClass('ui-icon-extlink');
             this.maximized = false;
 
-            this.fireBehaviorEvent('restoreMaximize');
+            this.callBehavior('restoreMaximize');
         }
         else {
             this.saveState();
@@ -410,7 +410,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             this.maximizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-extlink').addClass('ui-icon-newwin');
             this.maximized = true;
 
-            this.fireBehaviorEvent('maximize');
+            this.callBehavior('maximize');
         }
     },
 
@@ -428,7 +428,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if(this.minimized) {
             this.removeMinimize();
 
-            this.fireBehaviorEvent('restoreMinimize');
+            this.callBehavior('restoreMinimize');
         }
         else {
             this.saveState();
@@ -462,7 +462,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             this.resizers.hide();
         }
 
-        this.fireBehaviorEvent('minimize');
+        this.callBehavior('minimize');
     },
 
     saveState: function() {
@@ -516,7 +516,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         };
 
         if(this.hasBehavior('loadContent')) {
-            this.fireBehaviorEvent('loadContent', options);
+            this.callBehavior('loadContent', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);

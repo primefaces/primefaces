@@ -52,7 +52,7 @@ PrimeFaces.widget.DataList = PrimeFaces.widget.BaseWidget.extend({
         };
 
         if(this.hasBehavior('page')) {
-            this.fireBehaviorEvent('page', options);
+            this.callBehavior('page', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);

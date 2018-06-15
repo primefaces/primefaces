@@ -799,7 +799,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
             ext.params.push({name:this.id + '_add', value:isAdd});
 
-            this.fireBehaviorEvent('transfer', ext);
+            this.callBehavior('transfer', ext);
         }
         $(this.jqId + ' ul').sortable('enable');
 
@@ -826,7 +826,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 }
             };
 
-            this.fireBehaviorEvent('select', ext);
+            this.callBehavior('select', ext);
         }
     },
 
@@ -839,13 +839,13 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('unselect', ext);
+            this.callBehavior('unselect', ext);
         }
     },
 
     fireReorderEvent: function() {
         if(this.hasBehavior('reorder')) {
-            this.fireBehaviorEvent('reorder');
+            this.callBehavior('reorder');
         }
     },
 

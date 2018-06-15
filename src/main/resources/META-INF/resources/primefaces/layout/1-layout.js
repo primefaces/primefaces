@@ -105,7 +105,7 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('close', ext);
+            this.callBehavior('close', ext);
         }
     },
 
@@ -154,7 +154,7 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
                     ]
                 };
 
-                this.fireBehaviorEvent('resize', ext);
+                this.callBehavior('resize', ext);
             }
         }
     },
@@ -167,7 +167,7 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
             ]
         };
 
-        this.fireBehaviorEvent('toggle', ext);
+        this.callBehavior('toggle', ext);
     }
 
 });

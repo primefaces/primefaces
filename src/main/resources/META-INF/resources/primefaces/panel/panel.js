@@ -138,7 +138,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
 
     fireToggleEvent: function() {
         if(this.hasBehavior('toggle')) {
-            this.fireBehaviorEvent('toggle');
+            this.callBehavior('toggle');
         }
     },
 
@@ -150,7 +150,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         var $this = this;
         this.jq.fadeOut(this.cfg.closeSpeed, function(e) {
             if($this.hasBehavior('close')) {
-                $this.fireBehaviorEvent('close');
+                $this.callBehavior('close');
             }
         });
     },

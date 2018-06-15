@@ -1377,7 +1377,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('page')) {
-            this.fireBehaviorEvent('page', options);
+            this.callBehavior('page', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -1554,7 +1554,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(this.hasBehavior('sort')) {
-            this.fireBehaviorEvent('sort', options);
+            this.callBehavior('sort', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -1650,7 +1650,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('filter')) {
-            this.fireBehaviorEvent('filter', options);
+            this.callBehavior('filter', options);
         }
         else {
             PrimeFaces.ajax.AjaxRequest(options);
@@ -1851,7 +1851,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent(behaviorEvent, ext);
+            this.callBehavior(behaviorEvent, ext);
         }
     },
 
@@ -1869,7 +1869,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent(behaviorEvent, ext);
+            this.callBehavior(behaviorEvent, ext);
         }
     },
 
@@ -2079,7 +2079,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             };
 
-            this.fireBehaviorEvent('toggleSelect', options);
+            this.callBehavior('toggleSelect', options);
         }
     },
 
@@ -2198,7 +2198,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('rowToggle')) {
-            this.fireBehaviorEvent('rowToggle', options);
+            this.callBehavior('rowToggle', options);
         }
         else {
             PrimeFaces.ajax.AjaxRequest(options);
@@ -2222,7 +2222,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('rowToggle', ext);
+            this.callBehavior('rowToggle', ext);
         }
     },
 
@@ -2346,7 +2346,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 params: [{name: this.id + '_rowEditIndex', value: rowIndex}]
             };
 
-            this.fireBehaviorEvent('rowEditInit', ext);
+            this.callBehavior('rowEditInit', ext);
         }
     },
 
@@ -2399,7 +2399,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('cellEditInit')) {
-            this.fireBehaviorEvent('cellEditInit', options);
+            this.callBehavior('cellEditInit', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -2648,7 +2648,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('cellEdit')) {
-            this.fireBehaviorEvent('cellEdit', options);
+            this.callBehavior('cellEdit', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -2700,7 +2700,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('cellEditCancel')) {
-            this.fireBehaviorEvent('cellEditCancel', options);
+            this.callBehavior('cellEditCancel', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -2769,10 +2769,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(action === 'save' && this.hasBehavior('rowEdit')) {
-            this.fireBehaviorEvent('rowEdit', options);
+            this.callBehavior('rowEdit', options);
         }
         else if(action === 'cancel' && this.hasBehavior('rowEditCancel')) {
-            this.fireBehaviorEvent('rowEditCancel', options);
+            this.callBehavior('rowEditCancel', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -2962,7 +2962,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('colResize', options);
+            this.callBehavior('colResize', options);
         }
     },
 
@@ -3323,7 +3323,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         };
                     }
 
-                    $this.fireBehaviorEvent('colReorder', ext);
+                    $this.callBehavior('colReorder', ext);
                 }
             }
         });
@@ -3384,7 +3384,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
 
                 if($this.hasBehavior('rowReorder')) {
-                    $this.fireBehaviorEvent('rowReorder', options);
+                    $this.callBehavior('rowReorder', options);
                 }
                 else {
                     PrimeFaces.ajax.Request.handle(options);

@@ -45,7 +45,7 @@
             $this.input.change();
 
             if ($this.hasBehavior('change')) {
-                $this.fireBehaviorEvent('change');
+                $this.callBehavior('change');
             }
         };
 

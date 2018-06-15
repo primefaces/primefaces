@@ -139,7 +139,7 @@ if (!PrimeFaces.widget) {
             return false;
         },
 
-        fireBehaviorEvent: function(event, ext) {
+        callBehavior: function(event, ext) {
             if(this.hasBehavior(event)) {
                 this.cfg.behaviors[event].call(this, ext);
             }

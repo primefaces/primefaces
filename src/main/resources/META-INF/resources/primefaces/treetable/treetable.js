@@ -215,7 +215,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('filter')) {
-            this.fireBehaviorEvent('filter', options);
+            this.callBehavior('filter', options);
         }
         else {
             PrimeFaces.ajax.AjaxRequest(options);
@@ -250,7 +250,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('page')) {
-            this.fireBehaviorEvent('page', options);
+            this.callBehavior('page', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -525,7 +525,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('sort')) {
-            this.fireBehaviorEvent('sort', options);
+            this.callBehavior('sort', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -570,7 +570,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('expand')) {
-            this.fireBehaviorEvent('expand', options);
+            this.callBehavior('expand', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -625,7 +625,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             };
 
-            this.fireBehaviorEvent('collapse', options);
+            this.callBehavior('collapse', options);
         }
         else {
             this.updateVerticalScroll();
@@ -947,7 +947,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             }
 
             if(this.hasBehavior('select')) {
-                this.fireBehaviorEvent('select', options);
+                this.callBehavior('select', options);
             }
             else {
                 PrimeFaces.ajax.AjaxRequest(options);
@@ -961,7 +961,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                     ]
                 };
 
-                this.fireBehaviorEvent('select', ext);
+                this.callBehavior('select', ext);
             }
         }
     },
@@ -974,7 +974,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('unselect', ext);
+            this.callBehavior('unselect', ext);
         }
     },
 
@@ -1228,7 +1228,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 };
 
                 if($this.hasBehavior('colResize')) {
-                    $this.fireBehaviorEvent('colResize', options);
+                    $this.callBehavior('colResize', options);
                 }
 
                 if($this.cfg.stickyHeader) {
@@ -1291,7 +1291,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 params: [{name: this.id + '_rowEditIndex', value: rowIndex}]
             };
 
-            this.fireBehaviorEvent('rowEditInit', ext);
+            this.callBehavior('rowEditInit', ext);
         }
     },
 
@@ -1361,10 +1361,10 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(action === 'save' && this.hasBehavior('rowEdit')) {
-            this.fireBehaviorEvent('rowEdit', options);
+            this.callBehavior('rowEdit', options);
         }
         else if(action === 'cancel' && this.hasBehavior('rowEditCancel')) {
-            this.fireBehaviorEvent('rowEditCancel', options);
+            this.callBehavior('rowEditCancel', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -1584,7 +1584,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('cellEdit')) {
-            this.fireBehaviorEvent('cellEdit', options);
+            this.callBehavior('cellEdit', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -1622,7 +1622,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('cellEditCancel')) {
-            this.fireBehaviorEvent('cellEditCancel', options);
+            this.callBehavior('cellEditCancel', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -1659,7 +1659,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('cellEditInit')) {
-            this.fireBehaviorEvent('cellEditInit', options);
+            this.callBehavior('cellEditInit', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);

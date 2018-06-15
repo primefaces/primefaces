@@ -107,7 +107,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             };
 
             if(this.hasBehavior('expand')) {
-                this.fireBehaviorEvent('expand', options);
+                this.callBehavior('expand', options);
             }
             else {
                 PrimeFaces.ajax.Request.handle(options);
@@ -127,7 +127,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('expand', ext);
+            this.callBehavior('expand', ext);
         }
     },
 
@@ -139,7 +139,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('collapse', ext);
+            this.callBehavior('collapse', ext);
         }
     },
 
@@ -178,7 +178,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             };
 
             if(this.hasBehavior('select')) {
-                this.fireBehaviorEvent('select', ext);
+                this.callBehavior('select', ext);
             }
             else {
                 PrimeFaces.ajax.AjaxRequest(options);
@@ -192,7 +192,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                     ]
                 };
 
-                this.fireBehaviorEvent('select', ext);
+                this.callBehavior('select', ext);
             }
         }
     },
@@ -205,7 +205,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('unselect', ext);
+            this.callBehavior('unselect', ext);
         }
     },
 
@@ -217,7 +217,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('contextMenu', ext);
+            this.callBehavior('contextMenu', ext);
         }
     },
 
@@ -1517,7 +1517,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         }
 
         if(this.hasBehavior('dragdrop')) {
-            this.fireBehaviorEvent('dragdrop', options);
+            this.callBehavior('dragdrop', options);
         }
         else {
             PrimeFaces.ajax.AjaxRequest(options);

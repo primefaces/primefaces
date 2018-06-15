@@ -140,7 +140,7 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
 
     triggerChange: function () {
         if(this.hasBehavior('change')){
-            this.fireBehaviorEvent('change');
+            this.callBehavior('change');
         }
     }
 });

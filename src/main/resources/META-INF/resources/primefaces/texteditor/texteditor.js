@@ -102,23 +102,23 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         this.editor.on('text-change', function(delta, oldDelta, source) {
             $this.input.val($this.getEditorValue());
             if($this.hasBehavior('change')) {
-                $this.fireBehaviorEvent('change');
+                $this.callBehavior('change');
             }
         });
         this.editor.on('selection-change', function(range, oldRange, source) {
             if(range && !oldRange) {
                 if($this.hasBehavior('focus')) {
-                    $this.fireBehaviorEvent('focus');
+                    $this.callBehavior('focus');
                 }
             }
             if(!range && oldRange) {
                 if($this.hasBehavior('blur')) {
-                    $this.fireBehaviorEvent('blur');
+                    $this.callBehavior('blur');
                 }
             }
             if(range && oldRange) {
                 if($this.hasBehavior('select')) {
-                    $this.fireBehaviorEvent('select');
+                    $this.callBehavior('select');
                 }
             }
         });
@@ -140,7 +140,7 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
         if(this.hasBehavior(event)) {
             this.editorContainer.on(event, function () {
-                $this.fireBehaviorEvent(event);
+                $this.callBehavior(event);
             });
         }
     }

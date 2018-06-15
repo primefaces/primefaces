@@ -72,7 +72,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                     ]
                 };
 
-                $this.fireBehaviorEvent('dateSelect', ext);
+                $this.callBehavior('dateSelect', ext);
             }
         };
 
@@ -89,7 +89,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                     ]
                 };
 
-                $this.fireBehaviorEvent('eventSelect', ext);
+                $this.callBehavior('eventSelect', ext);
             }
         };
 
@@ -103,7 +103,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                     ]
                 };
 
-                $this.fireBehaviorEvent('eventMove', ext);
+                $this.callBehavior('eventMove', ext);
             }
         };
 
@@ -117,7 +117,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                     ]
                 };
 
-                $this.fireBehaviorEvent('eventResize', ext);
+                $this.callBehavior('eventResize', ext);
             }
         };
 
@@ -212,7 +212,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
             $this.viewNameState.val(viewName);
 
             if($this.hasBehavior('viewChange')) {
-                $this.fireBehaviorEvent('viewChange');
+                $this.callBehavior('viewChange');
             }
         });
     },

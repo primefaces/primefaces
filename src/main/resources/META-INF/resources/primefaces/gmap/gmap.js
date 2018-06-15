@@ -117,7 +117,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('markerDrag', ext);
+            this.callBehavior('markerDrag', ext);
         }
     },
 
@@ -150,7 +150,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                             ]
                         };
 
-                        $this.fireBehaviorEvent('geocode', ext);
+                        $this.callBehavior('geocode', ext);
                     }
                 }
                 else {
@@ -187,7 +187,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                             ]
                         };
 
-                        $this.fireBehaviorEvent('reverseGeocode', ext);
+                        $this.callBehavior('reverseGeocode', ext);
                     }
                     else {
                         PrimeFaces.error('No results found');
@@ -227,7 +227,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('overlaySelect', ext);
+            this.callBehavior('overlaySelect', ext);
         }
     },
 
@@ -271,7 +271,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('stateChange', ext);
+            this.callBehavior('stateChange', ext);
         }
     },
 
@@ -291,7 +291,7 @@ PrimeFaces.widget.GMap = PrimeFaces.widget.DeferredWidget.extend({
                 ]
             };
 
-            this.fireBehaviorEvent('pointSelect', ext);
+            this.callBehavior('pointSelect', ext);
         }
     },
 

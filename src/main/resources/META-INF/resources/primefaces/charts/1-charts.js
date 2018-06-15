@@ -378,7 +378,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
                     ]
                 };
 
-                $this.fireBehaviorEvent('itemSelect', ext);
+                $this.callBehavior('itemSelect', ext);
             }
         });
     },

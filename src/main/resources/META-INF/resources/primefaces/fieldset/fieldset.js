@@ -59,7 +59,7 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
 
         this.content.slideToggle(this.cfg.toggleSpeed, 'easeInOutCirc', function() {
             if($this.hasBehavior('toggle')) {
-                $this.fireBehaviorEvent('toggle');
+                $this.callBehavior('toggle');
             }
         });
 

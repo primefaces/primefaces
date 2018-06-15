@@ -99,7 +99,7 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(this.hasBehavior('connect')) {
-            this.fireBehaviorEvent('connect', options);
+            this.callBehavior('connect', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -120,7 +120,7 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('disconnect')) {
-            this.fireBehaviorEvent('disconnect', options);
+            this.callBehavior('disconnect', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -147,7 +147,7 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('connectionChange')) {
-            this.fireBehaviorEvent('connectionChange', options);
+            this.callBehavior('connectionChange', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
