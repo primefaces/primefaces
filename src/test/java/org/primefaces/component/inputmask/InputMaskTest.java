@@ -29,7 +29,7 @@ public class InputMaskTest {
 		InputMask inputMask = new InputMask();
 		inputMask.setMask("(999) 999-9999? x99999");
 		Pattern pattern = new InputMaskRenderer().translateMaskIntoRegex(inputMask);
-		Assert.assertEquals("\\([0-9][0-9][0-9]\\) [0-9][0-9][0-9]\\-[0-9][0-9][0-9][0-9]( x[0-9][0-9][0-9][0-9][0-9])?", pattern.pattern());
+		Assert.assertEquals("\\([0-9][0-9][0-9]\\) [0-9][0-9][0-9]\\-[0-9][0-9][0-9][0-9] ?x?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?", pattern.pattern());
 		Assert.assertTrue(pattern.matcher("(012) 345-6789").matches());
 	}
 

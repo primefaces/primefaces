@@ -22,8 +22,8 @@ import java.util.regex.Pattern;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.PrimeApplicationContext;
 
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -33,8 +33,7 @@ public class InputMaskRenderer extends InputRenderer {
 
     private final static Logger logger = Logger.getLogger(InputMaskRenderer.class.getName());
 
-    private final static String REGEX_METACHARS = "<([{\\^-=$!|]})?*+.>".replaceAll(".", "\\\\$0");
-    private final static Pattern REGEX_METACHARS_PATTERN = Pattern.compile("[" + REGEX_METACHARS + "]");
+    private final static String REGEX_METACHARS = "<([{\\^-=$!|]})?*+.>";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -66,17 +65,42 @@ public class InputMaskRenderer extends InputRenderer {
     // ? - Makes the following input optional
     protected Pattern translateMaskIntoRegex(InputMask inputMask) {
         String mask = inputMask.getMask();
+        StringBuilder regex = new StringBuilder();
+        boolean optionalFound = false;
 
-        // Escape regex metacharacters first
-        String regex = REGEX_METACHARS_PATTERN.matcher(mask).replaceAll("\\\\$0");
-
-        regex = regex.replace("a", "[A-Za-z]").replace("9", "[0-9]").replace("\\*", "[A-Za-z0-9]");
-        int optionalPos = regex.indexOf("\\?");
-        if (optionalPos != -1) {
-            regex = regex.substring(0, optionalPos) + "(" + regex.substring(optionalPos + 2) + ")?";
+        for (char c : mask.toCharArray()) {
+            if (c == '?') {
+                optionalFound = true;
+            }
+            else {
+                regex.append(translateMaskCharIntoRegex(c, optionalFound));
+            }
         }
+        return Pattern.compile(regex.toString());
+    }
 
-        return Pattern.compile(regex);
+    protected String translateMaskCharIntoRegex(char c, boolean optional) {
+        String translated;
+
+        if (c == '?') {
+            return ""; //should be ignored
+        }
+        else if (c == '9') {
+            translated = "[0-9]";
+        }
+        else if (c == 'a') {
+            translated = "[A-Za-z]";
+        }
+        else if (c == '*') {
+            translated = "[A-Za-z0-9]";
+        }
+        else if (REGEX_METACHARS.indexOf(c) >= 0) {
+            translated = "\\" + c;
+        }
+        else {
+            translated = String.valueOf(c);
+        }
+        return optional ? (translated + "?") : translated;
     }
 
     @Override
