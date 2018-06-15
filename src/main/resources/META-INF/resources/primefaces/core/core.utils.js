@@ -229,12 +229,12 @@ if (!PrimeFaces.utils) {
             });
         },
 
-        unbdingScrollHandler: function(widget, scrollNamespace) {
+        unbindScrollHandler: function(widget, scrollNamespace) {
             var scrollParent = widget.getJQ().scrollParent();
             if (scrollParent.is('body')) {
                 scrollParent = $(window);
             }
-            
+
             scrollParent.off(scrollNamespace);
         }
     };
