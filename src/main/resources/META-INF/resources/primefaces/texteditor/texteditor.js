@@ -101,25 +101,17 @@ PrimeFaces.widget.TextEditor = PrimeFaces.widget.DeferredWidget.extend({
         //update input on change
         this.editor.on('text-change', function(delta, oldDelta, source) {
             $this.input.val($this.getEditorValue());
-            if($this.hasBehavior('change')) {
-                $this.callBehavior('change');
-            }
+            $this.callBehavior('change');
         });
         this.editor.on('selection-change', function(range, oldRange, source) {
             if(range && !oldRange) {
-                if($this.hasBehavior('focus')) {
-                    $this.callBehavior('focus');
-                }
+                $this.callBehavior('focus');
             }
             if(!range && oldRange) {
-                if($this.hasBehavior('blur')) {
-                    $this.callBehavior('blur');
-                }
+                $this.callBehavior('blur');
             }
             if(range && oldRange) {
-                if($this.hasBehavior('select')) {
-                    $this.callBehavior('select');
-                }
+                $this.callBehavior('select');
             }
         });
 

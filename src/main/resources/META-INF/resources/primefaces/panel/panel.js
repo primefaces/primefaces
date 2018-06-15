@@ -133,13 +133,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.collapsed = collapsed;
         this.toggleStateHolder.val(collapsed);
 
-        this.fireToggleEvent();
-    },
-
-    fireToggleEvent: function() {
-        if(this.hasBehavior('toggle')) {
-            this.callBehavior('toggle');
-        }
+        this.callBehavior('toggle');
     },
 
     close: function() {

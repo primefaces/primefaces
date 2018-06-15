@@ -78,9 +78,7 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
     fireCompleteEvent: function() {
         clearInterval(this.progressPoll);
 
-        if(this.hasBehavior('complete')) {
-            this.callBehavior('complete');
-        }
+        this.callBehavior('complete');
     },
 
     cancel: function() {

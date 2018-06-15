@@ -186,9 +186,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             $this.jq.removeClass('ui-state-focus');
             $this.menuIcon.removeClass('ui-state-focus');
 
-            if($this.hasBehavior('blur')) {
-                $this.callBehavior('blur');
-            }
+            $this.callBehavior('blur');
         });
 
         //onchange handler for editable input
@@ -289,12 +287,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
-    triggerItemSelect: function() {
-        if(this.hasBehavior('itemSelect')) {
-            this.callBehavior('itemSelect');
-        }
-    },
-
     /**
      * Handler to process item selection with mouse
      */
@@ -328,7 +320,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         if(!silent) {
             this.focusInput.focus();
-            this.triggerItemSelect();
+            this.callBehavior('itemSelect');
         }
 
         if(this.panel.is(':visible')) {
@@ -724,9 +716,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     blur: function() {
         this.focusInput.blur();
 
-        if(this.hasBehavior('blur')) {
-            this.callBehavior('blur');
-        }
+        this.callBehavior('blur');
     },
 
     disable: function() {

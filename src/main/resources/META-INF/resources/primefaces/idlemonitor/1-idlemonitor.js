@@ -14,18 +14,14 @@ PrimeFaces.widget.IdleMonitor = PrimeFaces.widget.BaseWidget.extend({
                 $this.cfg.onidle.call($this);
             }
 
-            if($this.hasBehavior('idle')) {
-                $this.callBehavior('idle');
-            }
+            $this.callBehavior('idle');
         })
         .on("active.idleTimer", function(){
             if($this.cfg.onactive) {
                 $this.cfg.onactive.call(this);
             }
 
-            if($this.hasBehavior('active')) {
-                $this.callBehavior('active');
-            }
+            $this.callBehavior('active');
         });
 
         $.idleTimer(this.cfg.timeout);

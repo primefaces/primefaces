@@ -87,9 +87,7 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.change.call(this);
         }
 
-        if(this.hasBehavior('change')) {
-            this.callBehavior('change');
-        }
+        this.callBehavior('change');
     },
 
     disable: function() {

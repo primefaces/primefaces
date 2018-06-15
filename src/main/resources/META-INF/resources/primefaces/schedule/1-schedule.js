@@ -211,9 +211,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
 
             $this.viewNameState.val(viewName);
 
-            if($this.hasBehavior('viewChange')) {
-                $this.callBehavior('viewChange');
-            }
+            $this.callBehavior('viewChange');
         });
     },
 

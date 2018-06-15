@@ -120,9 +120,7 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
             this.cfg.onToggle.call(this, state);
         }
 
-        if(this.hasBehavior('toggle')) {
-            this.fireToggleEvent(location, false);
-        }
+        this.fireToggleEvent(location, false);
     },
 
     onclose: function(location, pane, state) {
@@ -133,9 +131,7 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
                 this.cfg.onToggle.call(this, state);
             }
 
-            if(this.hasBehavior('toggle')) {
-                this.fireToggleEvent(location, true);
-            }
+            this.fireToggleEvent(location, true);
         }
     },
 
@@ -160,14 +156,16 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     fireToggleEvent: function(location, collapsed) {
-        var ext = {
-            params : [
-                {name: this.id + '_unit', value: location},
-                {name: this.id + '_collapsed', value: collapsed}
-            ]
-        };
+        if(this.hasBehavior('toggle')) {
+            var ext = {
+                params : [
+                    {name: this.id + '_unit', value: location},
+                    {name: this.id + '_collapsed', value: collapsed}
+                ]
+            };
 
-        this.callBehavior('toggle', ext);
+            this.callBehavior('toggle', ext);
+        }
     }
 
 });

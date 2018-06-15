@@ -151,7 +151,7 @@ if (!PrimeFaces.widget) {
          * @param name behavior name
          * @return {Function}
          */
-        getBehavior: function (name) {
+        getBehavior: function(name) {
             return this.cfg.behaviors ? this.cfg.behaviors[name] : null;
         },
 

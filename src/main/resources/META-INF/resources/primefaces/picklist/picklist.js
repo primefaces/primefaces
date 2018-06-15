@@ -844,9 +844,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     },
 
     fireReorderEvent: function() {
-        if(this.hasBehavior('reorder')) {
-            this.callBehavior('reorder');
-        }
+        this.callBehavior('reorder');
     },
 
     isAnimated: function() {

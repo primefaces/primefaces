@@ -933,9 +933,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     },
 
     fireClearEvent: function() {
-        if(this.hasBehavior('clear')) {
-            this.callBehavior('clear');
-        }
+        this.callBehavior('clear');
     },
 
     isValid: function(value) {
