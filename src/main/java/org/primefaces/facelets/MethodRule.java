@@ -20,7 +20,6 @@ import java.lang.reflect.Method;
 
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
-import javax.faces.el.MethodBinding;
 
 import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.MetaRule;
@@ -37,7 +36,6 @@ import javax.faces.view.facelets.TagAttributeException;
  *
  * Implementation copied from Facelets 1.1.14, as it got hidden by JSF 2.0
  */
-@SuppressWarnings("deprecation")
 public class MethodRule extends MetaRule {
 
     private final String methodName;
@@ -56,14 +54,16 @@ public class MethodRule extends MetaRule {
             return null;
         }
 
-        if (MethodBinding.class.equals(meta.getPropertyType(name))) {
-            throw new FacesException(MethodBinding.class.getName() + " should not be used anymore!");
-        }
-        else if (MethodExpression.class.equals(meta.getPropertyType(name))) {
+        Class<?> type = meta.getPropertyType(name);
+        
+        if (MethodExpression.class.equals(type)) {
             Method method = meta.getWriteMethod(name);
             if (method != null) {
                 return new MethodExpressionMetadata(method, attribute, this.returnTypeClass, this.params);
             }
+        }
+        else if (type != null && "javax.faces.el.MethodBinding".equals(type.getName())) {
+            throw new FacesException("javax.faces.el.MethodBinding should not be used anymore!");
         }
 
         return null;
