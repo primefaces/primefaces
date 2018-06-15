@@ -15,31 +15,17 @@
  */
 package org.primefaces.model;
 
-import java.util.Date;
+public enum ScheduleRenderingMode {
+    BACKGROUND("background"),
+    INVERSE_BACKGROUND("inverse-background");
 
-public interface ScheduleEvent {
+    private String rendering;
 
-    public String getId();
+    ScheduleRenderingMode(String rendering) {
+        this.rendering = rendering;
+    }
 
-    public void setId(String id);
-
-    public Object getData();
-
-    public String getTitle();
-
-    public Date getStartDate();
-
-    public Date getEndDate();
-
-    public boolean isAllDay();
-
-    public String getStyleClass();
-
-    public boolean isEditable();
-
-    public String getDescription();
-
-    public String getUrl();
-
-    public ScheduleRenderingMode getRenderingMode();
+    public String getRendering() {
+        return rendering;
+    }
 }
