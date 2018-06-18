@@ -11,15 +11,22 @@ if (!PrimeFaces.utils) {
         /**
          * Removes all the dynamic overlays for the given id.
          */
-        removeAllDynamicOverlays: function(overlayId) {
-            $(PrimeFaces.escapeClientId(overlayId)).remove();
+        removeAllDynamicOverlays: function(widget, overlayId) {
+            if (widget.cfg.appendTo) {
+                var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
+
+                // if the id contains a ':'
+                appendTo.children(PrimeFaces.escapeClientId(overlayId)).remove();
+
+                // if the id does NOT contain a ':'
+                appendTo.children("[id='" + overlayId + "']").remove();
+            }
         },
 
         /**
          * Removes the overlay from the appendTo overlay container.
          */
         removeDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
-
             // if the id contains a ':'
             appendTo.children(PrimeFaces.escapeClientId(overlayId)).not(overlay).remove();
 
@@ -203,13 +210,15 @@ if (!PrimeFaces.utils) {
         },
 
         registerDynamicOverlay: function(widget, overlay, overlayId) {
-            widget.addDestroyListener(function() {
-                var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
-                PrimeFaces.utils.removeDynamicOverlay(widget, overlay, overlayId, appendTo);
-            });
+            if (widget.cfg.appendTo) {
+                widget.addDestroyListener(function() {
+                    var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
+                    PrimeFaces.utils.removeDynamicOverlay(widget, overlay, overlayId, appendTo);
+                });
 
-            var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
-            PrimeFaces.utils.appendDynamicOverlay(widget, overlay, overlayId, appendTo);
+                var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
+                PrimeFaces.utils.appendDynamicOverlay(widget, overlay, overlayId, appendTo);
+            }
         },
 
 

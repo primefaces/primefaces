@@ -55,8 +55,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.inputs.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
 
+    //@override
     refresh: function(cfg) {
-        PrimeFaces.utils.removeAllDynamicOverlays(this.panelId);
+        PrimeFaces.utils.removeAllDynamicOverlays(this, this.panelId);
 
         this.init(cfg);
     },
@@ -98,7 +99,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             this.itemContainerWrapper.height(this.cfg.scrollHeight);
         }
         else if(this.inputs.length > 10) {
-            this.itemContainerWrapper.height(200)
+            this.itemContainerWrapper.height(200);
         }
     },
 

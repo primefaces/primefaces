@@ -23,8 +23,9 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         this.menuButton.data(PrimeFaces.CLIENT_ID_DATA, this.id);
     },
 
+    //@override
     refresh: function(cfg) {
-        PrimeFaces.utils.removeAllDynamicOverlays(this.id + '_menu');
+        PrimeFaces.utils.removeAllDynamicOverlays(this, this.id + '_menu');
 
         this.init(cfg);
     },
