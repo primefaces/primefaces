@@ -86,10 +86,12 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
         crudOperationDatas.add(new CrudOperationData(CrudOperation.CLEAR));
     }
 
+    @Override
     public PhaseId getPhaseId() {
         return PhaseId.RENDER_RESPONSE;
     }
 
+    @Override
     public void beforePhase(PhaseEvent event) {
         if (crudOperationDatas == null) {
             return;
@@ -177,7 +179,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
             if (renderComponent) {
                 sb.append(";PF('");
                 sb.append(widgetVar);
-                sb.append("').render()");
+                sb.append("').renderTimeline()");
             }
 
             // execute JS script
@@ -188,6 +190,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
         }
     }
 
+    @Override
     public void afterPhase(PhaseEvent event) {
         // NOOP.
     }

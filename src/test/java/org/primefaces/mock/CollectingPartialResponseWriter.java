@@ -31,6 +31,7 @@ public class CollectingPartialResponseWriter extends PartialResponseWriter {
         builder.append(str);
     }
 
+    @Override
     public String toString() {
         return builder.toString();
     }

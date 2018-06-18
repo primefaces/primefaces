@@ -27,7 +27,7 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import org.primefaces.util.ComponentTraversalUtils;
 
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
 
 /**
@@ -68,7 +68,7 @@ public class SearchExpressionFacade {
 
         ArrayList<UIComponent> components = new ArrayList<>();
 
-        if (!ComponentUtils.isValueBlank(expressions)) {
+        if (!LangUtils.isValueBlank(expressions)) {
             String[] splittedExpressions = splitExpressions(context, source, expressions);
 
             if (splittedExpressions != null && splittedExpressions.length > 0) {
@@ -79,7 +79,7 @@ public class SearchExpressionFacade {
                 for (String splittedExpression : splittedExpressions) {
                     String expression = splittedExpression.trim();
 
-                    if (ComponentUtils.isValueBlank(expression)) {
+                    if (LangUtils.isValueBlank(expression)) {
                         continue;
                     }
 
@@ -154,7 +154,7 @@ public class SearchExpressionFacade {
      */
     public static String resolveClientIds(FacesContext context, UIComponent source, String expressions, int hints) {
 
-        if (ComponentUtils.isValueBlank(expressions)) {
+        if (LangUtils.isValueBlank(expressions)) {
             if (SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.PARENT_FALLBACK)) {
                 return source.getParent().getClientId(context);
             }
@@ -174,7 +174,7 @@ public class SearchExpressionFacade {
             for (int i = 0; i < splittedExpressions.length; i++) {
                 String expression = splittedExpressions[i].trim();
 
-                if (ComponentUtils.isValueBlank(expression)) {
+                if (LangUtils.isValueBlank(expression)) {
                     continue;
                 }
 
@@ -190,7 +190,7 @@ public class SearchExpressionFacade {
                     // if it contains a keyword and it's not a nested expression (e.g. @parent:@parent), we don't need to loop
                     if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX) && expression.contains(separatorString)) {
                         String clientIds = resolveClientIdsByExpressionChain(context, source, expression, separatorChar, separatorString, hints);
-                        if (!ComponentUtils.isValueBlank(clientIds)) {
+                        if (!LangUtils.isValueBlank(clientIds)) {
                             if (expressionsBuffer.length() > 0) {
                                 expressionsBuffer.append(" ");
                             }
@@ -204,7 +204,7 @@ public class SearchExpressionFacade {
 
                             if (resolver instanceof ClientIdSearchExpressionResolver) {
                                 String clientIds = ((ClientIdSearchExpressionResolver) resolver).resolveClientIds(context, source, source, expression, hints);
-                                if (!ComponentUtils.isValueBlank(clientIds)) {
+                                if (!LangUtils.isValueBlank(clientIds)) {
                                     if (expressionsBuffer.length() > 0) {
                                         expressionsBuffer.append(" ");
                                     }
@@ -261,7 +261,7 @@ public class SearchExpressionFacade {
             }
 
             String clientIds = expressionsBuffer.toString();
-            if (!ComponentUtils.isValueBlank(clientIds)) {
+            if (!LangUtils.isValueBlank(clientIds)) {
                 return clientIds;
             }
         }
@@ -271,7 +271,7 @@ public class SearchExpressionFacade {
 
     protected static void validateRenderer(FacesContext context, UIComponent source, UIComponent component, String expression, int hints) {
         if (SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.VALIDATE_RENDERER) && context.isProjectStage(ProjectStage.Development)) {
-            if (ComponentUtils.isValueBlank(component.getRendererType())) {
+            if (LangUtils.isValueBlank(component.getRendererType())) {
                 LOG.warning("Can not update component \"" + component.getClass().getName()
                         + "\" with id \"" + component.getClientId(context)
                         + "\" without a attached renderer. Expression \"" + expression
@@ -302,7 +302,7 @@ public class SearchExpressionFacade {
      * @return A resolved clientId and/or passtrough expression (like PFS, widgetVar).
      */
     public static String resolveClientId(FacesContext context, UIComponent source, String expression, int hints) {
-        if (ComponentUtils.isValueBlank(expression)) {
+        if (LangUtils.isValueBlank(expression)) {
             return null;
         }
 
@@ -421,7 +421,7 @@ public class SearchExpressionFacade {
      */
     public static UIComponent resolveComponent(FacesContext context, UIComponent source, String expression, int hints) {
 
-        if (ComponentUtils.isValueBlank(expression)) {
+        if (LangUtils.isValueBlank(expression)) {
             if (SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.PARENT_FALLBACK)) {
                 return source.getParent();
             }
@@ -440,7 +440,7 @@ public class SearchExpressionFacade {
             return null;
         }
 
-        if (ComponentUtils.isValueBlank(expression)) {
+        if (LangUtils.isValueBlank(expression)) {
             return null;
         }
 
@@ -489,7 +489,7 @@ public class SearchExpressionFacade {
 
                 String subExpression = subExpressions[j].trim();
 
-                if (ComponentUtils.isValueBlank(subExpression)) {
+                if (LangUtils.isValueBlank(subExpression)) {
                     continue;
                 }
 
@@ -552,7 +552,7 @@ public class SearchExpressionFacade {
 
                 String subExpression = subExpressions[i].trim();
 
-                if (ComponentUtils.isValueBlank(subExpression)) {
+                if (LangUtils.isValueBlank(subExpression)) {
                     continue;
                 }
 
@@ -626,7 +626,7 @@ public class SearchExpressionFacade {
 
                 String subExpression = subExpressions[i].trim();
 
-                if (ComponentUtils.isValueBlank(subExpression)) {
+                if (LangUtils.isValueBlank(subExpression)) {
                     continue;
                 }
 
@@ -649,7 +649,7 @@ public class SearchExpressionFacade {
                     if (i == subExpressions.length - 1 && resolver instanceof ClientIdSearchExpressionResolver) {
                         String result = ((ClientIdSearchExpressionResolver) resolver).resolveClientIds(context, source, last, subExpression, hints);
 
-                        if (!ComponentUtils.isValueBlank(result)) {
+                        if (!LangUtils.isValueBlank(result)) {
 
                             if (clientIdsBuilder == null) {
                                 clientIdsBuilder = SharedStringBuilder.get(SHARED_CLIENT_ID_EXPRESSION_BUFFER_KEY);

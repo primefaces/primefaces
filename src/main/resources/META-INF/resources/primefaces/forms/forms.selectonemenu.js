@@ -183,6 +183,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         .on('blur.ui-selectonemenu', function(){
             $this.jq.removeClass('ui-state-focus');
             $this.menuIcon.removeClass('ui-state-focus');
+
+            $this.callBehavior('blur');
         });
 
         //onchange handler for editable input
@@ -283,15 +285,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
-    triggerItemSelect: function() {
-        if(this.cfg.behaviors) {
-            var itemSelectBehavior = this.cfg.behaviors['itemSelect'];
-            if(itemSelectBehavior) {
-                itemSelectBehavior.call(this);
-            }
-        }
-    },
-
     /**
      * Handler to process item selection with mouse
      */
@@ -325,7 +318,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         if(!silent) {
             this.focusInput.focus();
-            this.triggerItemSelect();
+            this.callBehavior('itemSelect');
         }
 
         if(this.panel.is(':visible')) {
@@ -423,27 +416,50 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                         break;
                     }
 
-                    var text = $(this).val(),
+                    var text = String.fromCharCode(key).toLowerCase();
                     matchedOptions = null,
                     metaKey = e.metaKey||e.ctrlKey||e.shiftKey;
 
                     if(!metaKey) {
                         clearTimeout($this.searchTimer);
 
+                        // find all options with the same first letter
                         matchedOptions = $this.options.filter(function() {
                             var option = $(this);
-                            return (option.is(':not(:disabled)') && (option.text().toLowerCase().indexOf(text.toLowerCase()) === 0));
+                            return (option.is(':not(:disabled)') && (option.text().toLowerCase().indexOf(text) === 0));
                         });
 
                         if(matchedOptions.length) {
-                            var highlightItem = $this.items.eq(matchedOptions.index());
-                            if($this.panel.is(':hidden')) {
-                                $this.selectItem(highlightItem);
-                            }
-                            else {
-                                $this.highlightItem(highlightItem);
-                                PrimeFaces.scrollInView($this.itemsWrapper, highlightItem);
-                            }
+                            var selectedIndex = -1;
+
+                            // is current selection one of our matches?
+                            matchedOptions.each(function() {
+                                var option = $(this);
+                                var currentIndex = option.index();
+                                var currentItem = $this.items.eq(currentIndex);
+                                if (currentItem.hasClass('ui-state-highlight')) {
+                                    selectedIndex = currentIndex;
+                                    return false;
+                                }
+                            });
+
+                            matchedOptions.each(function() {
+                                var option = $(this);
+                                var currentIndex = option.index();
+                                var currentItem = $this.items.eq(currentIndex);
+
+                                // select next item after the current selection
+                                if (currentIndex > selectedIndex) {
+                                    if($this.panel.is(':hidden')) {
+                                        $this.selectItem(currentItem);
+                                    }
+                                    else {
+                                        $this.highlightItem(currentItem);
+                                        PrimeFaces.scrollInView($this.itemsWrapper, currentItem);
+                                    }
+                                    return false;
+                                }
+                            });
                         }
 
                         $this.searchTimer = setTimeout(function(){
@@ -697,6 +713,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     blur: function() {
         this.focusInput.blur();
+
+        this.callBehavior('blur');
     },
 
     disable: function() {
@@ -755,21 +773,34 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         }
         else {
             var labelText = this.label.data('placeholder');
-            if (labelText == null) {
+            if (labelText == null || labelText == "") {
                 labelText = '&nbsp;';
             }
 
             if (value === '&nbsp;') {
                 if (labelText != '&nbsp;') {
                    this.label.text(labelText);
-                   this.label.addClass('ui-state-disabled');
                 } else {
                     this.label.html(labelText);
                 }
             }
             else {
                 this.label.removeClass('ui-state-disabled');
-                this.label.text(displayedLabel);
+
+                var option = null;
+                if(this.items) {
+                    var selectedItem = this.items.filter('[data-label="' + $.escapeSelector(value) + '"]');
+                    option = this.options.eq(this.resolveItemIndex(selectedItem));
+                }
+                else {
+                    option = this.options.filter(':selected');
+                }
+
+                if (option && option.data('escape') == false) {
+                    this.label.html(displayedLabel);
+                } else {
+                    this.label.text(displayedLabel);
+                }
             }
         }
     },

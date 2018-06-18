@@ -33,6 +33,7 @@ public class WidgetVarVisitCallback implements VisitCallback {
         this.component = null;
     }
 
+    @Override
     public VisitResult visit(VisitContext context, UIComponent target) {
 
         if (target instanceof Widget) {

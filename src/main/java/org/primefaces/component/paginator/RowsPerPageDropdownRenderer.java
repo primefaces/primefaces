@@ -29,6 +29,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
 
     private final static Logger logger = Logger.getLogger(RowsPerPageDropdownRenderer.class.getName());
 
+    @Override
     public void render(FacesContext context, Pageable pageable) throws IOException {
         String template = pageable.getRowsPerPageTemplate();
         UIViewRoot viewroot = context.getViewRoot();

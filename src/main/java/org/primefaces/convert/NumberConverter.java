@@ -23,6 +23,7 @@ public class NumberConverter extends javax.faces.convert.NumberConverter impleme
 
     private Map<String, Object> metadata;
 
+    @Override
     public Map<String, Object> getMetadata() {
         if (metadata == null) {
             String type = this.getType();
@@ -50,6 +51,7 @@ public class NumberConverter extends javax.faces.convert.NumberConverter impleme
         return metadata;
     }
 
+    @Override
     public String getConverterId() {
         return NumberConverter.CONVERTER_ID;
     }

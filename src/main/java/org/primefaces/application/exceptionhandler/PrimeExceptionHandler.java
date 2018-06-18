@@ -46,6 +46,7 @@ import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerVisitCa
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 
 public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
@@ -196,7 +197,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             writer.startDocument();
             writer.startElement("changes", null);
 
-            if (!ComponentUtils.isValueBlank(handlerComponent.getUpdate())) {
+            if (!LangUtils.isValueBlank(handlerComponent.getUpdate())) {
                 List<UIComponent> updates = SearchExpressionFacade.resolveComponents(context, handlerComponent, handlerComponent.getUpdate());
 
                 if (updates != null && updates.size() > 0) {
@@ -217,7 +218,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                 }
             }
 
-            if (!ComponentUtils.isValueBlank(handlerComponent.getOnexception())) {
+            if (!LangUtils.isValueBlank(handlerComponent.getOnexception())) {
                 writer.startElement("eval", null);
                 writer.startCDATA();
 

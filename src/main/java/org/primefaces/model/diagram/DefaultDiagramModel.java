@@ -44,14 +44,17 @@ public class DefaultDiagramModel implements DiagramModel, Serializable {
         defaultConnectionOverlays = new ArrayList<Overlay>();
     }
 
+    @Override
     public List<Element> getElements() {
         return elements;
     }
 
+    @Override
     public void addElement(Element element) {
         elements.add(element);
     }
 
+    @Override
     public void removeElement(Element element) {
         elements.remove(element);
     }
@@ -60,22 +63,27 @@ public class DefaultDiagramModel implements DiagramModel, Serializable {
         elements.clear();
     }
 
+    @Override
     public void clearElements() {
         elements.clear();
     }
 
+    @Override
     public List<Connection> getConnections() {
         return connections;
     }
 
+    @Override
     public void connect(Connection connection) {
         this.connections.add(connection);
     }
 
+    @Override
     public void disconnect(Connection connection) {
         this.connections.remove(connection);
     }
 
+    @Override
     public Connector getDefaultConnector() {
         return defaultConnector;
     }
@@ -84,10 +92,12 @@ public class DefaultDiagramModel implements DiagramModel, Serializable {
         this.defaultConnector = defaultConnector;
     }
 
+    @Override
     public List<Overlay> getDefaultConnectionOverlays() {
         return this.defaultConnectionOverlays;
     }
 
+    @Override
     public boolean isConnectionsDetachable() {
         return connectionsDetachable;
     }
@@ -96,6 +106,7 @@ public class DefaultDiagramModel implements DiagramModel, Serializable {
         this.connectionsDetachable = connectionsDetachable;
     }
 
+    @Override
     public int getMaxConnections() {
         return maxConnections;
     }
@@ -104,6 +115,7 @@ public class DefaultDiagramModel implements DiagramModel, Serializable {
         this.maxConnections = maxConnections;
     }
 
+    @Override
     public Element findElement(String id) {
         Element element = null;
         if (elements != null && !elements.isEmpty()) {
@@ -120,6 +132,7 @@ public class DefaultDiagramModel implements DiagramModel, Serializable {
         return element;
     }
 
+    @Override
     public EndPoint findEndPoint(Element element, String id) {
         EndPoint endPoint = null;
         List<EndPoint> endPoints = element.getEndPoints();
@@ -138,6 +151,7 @@ public class DefaultDiagramModel implements DiagramModel, Serializable {
         return endPoint;
     }
 
+    @Override
     public boolean isContainment() {
         return containment;
     }

@@ -57,6 +57,8 @@ import org.primefaces.validate.ClientValidator;
 import org.primefaces.validate.bean.BeanValidationMetadata;
 import org.primefaces.validate.bean.BeanValidationMetadataMapper;
 import org.primefaces.util.Jsf22Helper;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.ResourceUtils;
 
 public abstract class CoreRenderer extends Renderer {
 
@@ -93,11 +95,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected String getResourceURL(FacesContext context, String value) {
-        return ComponentUtils.getResourceURL(context, value);
-    }
-
-    protected String getHrefURL(String baseUrl, Map<String, List<String>> params) {
-        return ComponentUtils.getHrefURL(baseUrl, params);
+        return ResourceUtils.getResourceURL(context, value);
     }
     
     protected String getResourceRequestPath(FacesContext context, String resourceName) {
@@ -166,7 +164,7 @@ public abstract class CoreRenderer extends Renderer {
                 if (hasEventBehaviors) {
                     String clientId = ((UIComponent) component).getClientId(context);
                     
-                    List<ClientBehaviorContext.Parameter> params = new ArrayList<ClientBehaviorContext.Parameter>();
+                    List<ClientBehaviorContext.Parameter> params = new ArrayList<>();
                     params.add(new ClientBehaviorContext.Parameter(
                             Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.OBSTRUSIVE));
                     
@@ -404,7 +402,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     public boolean isValueBlank(String value) {
-        return ComponentUtils.isValueBlank(value);
+        return LangUtils.isValueBlank(value);
     }
 
     protected String buildAjaxRequest(FacesContext context, AjaxSource source, UIComponent form) {
@@ -443,7 +441,7 @@ public abstract class CoreRenderer extends Renderer {
     protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, boolean submit) {
         StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
         String formId = form.getClientId(context);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
 
         if (decodeParam != null) {
             params.put(decodeParam, decodeParam);
@@ -484,14 +482,15 @@ public abstract class CoreRenderer extends Renderer {
                 request.append(",'").append(target).append("'");
             }
 
-            request.append(");return false;");
+            request.append(");PrimeFaces.onPost();return false;");
         }
+        else {
+            if (!params.isEmpty()) {
+                request.append(";");
+            }
 
-        if (!submit && !params.isEmpty()) {
-            request.append(";");
+            request.append("PrimeFaces.onPost();");
         }
-
-        request.append("PrimeFaces.onPost();");
 
         return request.toString();
     }
@@ -505,7 +504,7 @@ public abstract class CoreRenderer extends Renderer {
             Collection<String> eventNames = (component instanceof MixedClientBehaviorHolder)
                     ? ((MixedClientBehaviorHolder) component).getUnobstrusiveEventNames() : clientBehaviors.keySet();
             String clientId = ((UIComponent) component).getClientId(context);
-            List<ClientBehaviorContext.Parameter> params = new ArrayList<ClientBehaviorContext.Parameter>();
+            List<ClientBehaviorContext.Parameter> params = new ArrayList<>();
             params.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
 
             writer.write(",behaviors:{");
@@ -709,7 +708,7 @@ public abstract class CoreRenderer extends Renderer {
                 }
                 if (beanValidationMetadata.getValidatorIds() != null) {
                     if (validatorIds == null) {
-                        validatorIds = new ArrayList<String>();
+                        validatorIds = new ArrayList<>();
                     }
                     validatorIds.addAll(beanValidationMetadata.getValidatorIds());
                 }
@@ -728,7 +727,7 @@ public abstract class CoreRenderer extends Renderer {
                 if (validator instanceof ClientValidator) {
                     ClientValidator clientValidator = (ClientValidator) validator;
                     if (validatorIds == null) {
-                        validatorIds = new ArrayList<String>();
+                        validatorIds = new ArrayList<>();
                     }
                     validatorIds.add(clientValidator.getValidatorId());
                     Map<String, Object> metadata = clientValidator.getMetadata();

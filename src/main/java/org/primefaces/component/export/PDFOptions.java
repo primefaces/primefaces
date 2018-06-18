@@ -55,6 +55,7 @@ public class PDFOptions implements ExporterOptions {
         this.cellFontSize = cellFontSize;
     }
 
+    @Override
     public String getFacetFontStyle() {
         return facetFontStyle;
     }
@@ -63,6 +64,7 @@ public class PDFOptions implements ExporterOptions {
         this.facetFontStyle = facetFontStyle;
     }
 
+    @Override
     public String getFacetFontColor() {
         return facetFontColor;
     }
@@ -71,6 +73,7 @@ public class PDFOptions implements ExporterOptions {
         this.facetFontColor = facetFontColor;
     }
 
+    @Override
     public String getFacetBgColor() {
         return facetBgColor;
     }
@@ -79,6 +82,7 @@ public class PDFOptions implements ExporterOptions {
         this.facetBgColor = facetBgColor;
     }
 
+    @Override
     public String getFacetFontSize() {
         return facetFontSize;
     }
@@ -87,6 +91,7 @@ public class PDFOptions implements ExporterOptions {
         this.facetFontSize = facetFontSize;
     }
 
+    @Override
     public String getCellFontStyle() {
         return cellFontStyle;
     }
@@ -95,6 +100,7 @@ public class PDFOptions implements ExporterOptions {
         this.cellFontStyle = cellFontStyle;
     }
 
+    @Override
     public String getCellFontColor() {
         return cellFontColor;
     }
@@ -103,6 +109,7 @@ public class PDFOptions implements ExporterOptions {
         this.cellFontColor = cellFontColor;
     }
 
+    @Override
     public String getCellFontSize() {
         return cellFontSize;
     }

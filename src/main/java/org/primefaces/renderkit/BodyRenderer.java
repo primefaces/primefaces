@@ -27,6 +27,7 @@ import org.primefaces.util.HTML;
 
 public class BodyRenderer extends CoreRenderer {
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);

@@ -72,7 +72,7 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
 
                     default:
                         var metaKey = e.metaKey||e.ctrlKey,
-                        isNumber = (key >= 48 && key <= 57) || (key >= 96 && key <= 105);
+                        isNumber = (key >= 48 && key <= 57) || (key >= 96 && key <= 105) || (key === 190);
 
                         //prevent special characters with alt and shift
                         if(e.altKey || (e.shiftKey && !(key === keyCode.UP || key === keyCode.DOWN || key === keyCode.LEFT || key === keyCode.RIGHT))) {
@@ -152,6 +152,11 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
         if (input.parent().hasClass('ui-inputnumber')) {
             input.autoNumeric('set', inputValue);
         }
+        else if (input.hasClass('ui-spinner-input')) {
+            var spinnerId = input.closest('.ui-spinner').attr('id');
+            var spinnerWidget = PrimeFaces.getWidgetById(spinnerId);
+            spinnerWidget.setValue(inputValue);
+        }
         else {
             input.val(inputValue);
         }
@@ -159,6 +164,9 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
 
     triggerOnchange: function(input) {
         if (input.parent().hasClass('ui-inputnumber')) {
+            input.change();
+        }
+        else if (input.hasClass('ui-spinner-input')) {
             input.change();
         }
     },
@@ -176,18 +184,14 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
             this.triggerOnchange(this.input);
         }
 
-        if(this.cfg.behaviors) {
-            var slideEndBehavior = this.cfg.behaviors['slideEnd'];
+        if(this.hasBehavior('slideEnd')) {
+            var ext = {
+                params: [
+                    {name: this.id + '_slideValue', value: ui.value}
+                ]
+            };
 
-            if(slideEndBehavior) {
-                var ext = {
-                    params: [
-                        {name: this.id + '_slideValue', value: ui.value}
-                    ]
-                };
-
-                slideEndBehavior.call(this, ext);
-            }
+            this.callBehavior('slideEnd', ext);
         }
     },
 

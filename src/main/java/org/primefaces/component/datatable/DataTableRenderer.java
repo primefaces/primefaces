@@ -176,11 +176,11 @@ public class DataTableRenderer extends DataRenderer {
 
         if (defaultSorted && table.isMultiViewState() && table.isDefaultSort()) {
             ValueExpression sortByVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-            List<SortMeta> multiSortMeta = table.getMultiSortMeta();
-            if (sortByVE != null || multiSortMeta != null) {
+            List<MultiSortState> multiSortState = table.isMultiSort() ? table.getMultiSortState() : null;
+            if (sortByVE != null || multiSortState != null) {
                 TableState ts = table.getTableState(true);
                 ts.setSortBy(sortByVE);
-                ts.setMultiSortMeta(multiSortMeta);
+                ts.setMultiSortState(multiSortState);
                 ts.setSortOrder(table.getSortOrder());
                 ts.setSortField(table.getSortField());
                 ts.setSortFunction(table.getSortFunction());
@@ -300,6 +300,8 @@ public class DataTableRenderer extends DataRenderer {
                 .attr("multiViewState", table.isMultiViewState(), false)
                 .nativeAttr("groupColumnIndexes", table.getGroupedColumnIndexes(), null)
                 .callback("onRowClick", "function(row)", table.getOnRowClick());
+
+        wb.attr("disableContextMenuIfEmpty", table.isDisableContextMenuIfEmpty());
 
         //Behaviors
         encodeClientBehaviors(context, table);
@@ -703,19 +705,19 @@ public class DataTableRenderer extends DataRenderer {
             String filterPosition = column.getFilterPosition();
 
             if (filterPosition.equals("bottom")) {
-                encodeColumnHeaderContent(context, column, sortIcon);
+                encodeColumnHeaderContent(context, table, column, sortIcon);
                 encodeFilter(context, table, column);
             }
             else if (filterPosition.equals("top")) {
                 encodeFilter(context, table, column);
-                encodeColumnHeaderContent(context, column, sortIcon);
+                encodeColumnHeaderContent(context, table, column, sortIcon);
             }
             else {
                 throw new FacesException(filterPosition + " is an invalid option for filterPosition, valid values are 'bottom' or 'top'.");
             }
         }
         else {
-            encodeColumnHeaderContent(context, column, sortIcon);
+            encodeColumnHeaderContent(context, table, column, sortIcon);
         }
 
         if (selectionMode != null && selectionMode.equalsIgnoreCase("multiple")) {
@@ -773,7 +775,7 @@ public class DataTableRenderer extends DataRenderer {
         return sortIcon;
     }
 
-    protected void encodeColumnHeaderContent(FacesContext context, UIColumn column, String sortIcon) throws IOException {
+    protected void encodeColumnHeaderContent(FacesContext context, DataTable table, UIColumn column, String sortIcon) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         UIComponent header = column.getFacet("header");
@@ -786,7 +788,12 @@ public class DataTableRenderer extends DataRenderer {
             header.encodeAll(context);
         }
         else if (headerText != null) {
-            writer.writeText(headerText, "headerText");
+            if (table.isEscapeText()) {
+                writer.writeText(headerText, "headerText");
+            }
+            else {
+                writer.write(headerText);
+            }
         }
 
         writer.endElement("span");
@@ -972,7 +979,12 @@ public class DataTableRenderer extends DataRenderer {
             facet.encodeAll(context);
         }
         else if (text != null) {
-            writer.writeText(text, "footerText");
+            if (table.isEscapeText()) {
+                writer.writeText(text, "footerText");
+            }
+            else {
+                writer.write(text);
+            }
         }
 
         writer.endElement("td");
@@ -1469,7 +1481,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeStateHolder(FacesContext context, DataTable table, String id, String value) throws IOException {
+    public void encodeStateHolder(FacesContext context, DataTable table, String id, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("input", null);

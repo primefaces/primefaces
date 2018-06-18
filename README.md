@@ -1,4 +1,4 @@
-[![Maven](https://maven-badges.herokuapp.com/maven-central/org.primefaces/primefaces/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.primefaces/primefaces)
+[![Maven](https://img.shields.io/maven-central/v/org.primefaces/primefaces.svg)](https://repo.maven.apache.org/maven2/org/primefaces/primefaces/)
 [![Javadoc](http://javadoc.io/badge/org.primefaces/primefaces.svg)](http://javadoc.io/doc/org.primefaces/primefaces)
 [![Travis](https://travis-ci.org/primefaces/primefaces.svg?branch=master)](https://travis-ci.org/primefaces/primefaces)
 [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
@@ -8,7 +8,7 @@
 
 This is an overview page, please visit [PrimeFaces.org](https://www.primefaces.org) for more information.
 
-![PrimeFaces icon](https://www.primefaces.org/wp-content/uploads/2016/10/prime_logo.png)
+![PrimeFaces icon](https://www.primefaces.org/wp-content/uploads/2016/10/prime_logo_new.png)
 
 ### Overview
 ***
@@ -91,6 +91,5 @@ Visit [Contribution Wiki](https://github.com/primefaces/primefaces/wiki/Contribu
 ### License
 ***
 Licensed under the Apache License, Version 2.0 (the "License") [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
-
 
 

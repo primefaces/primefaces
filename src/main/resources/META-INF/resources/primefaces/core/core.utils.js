@@ -12,7 +12,6 @@ if (!PrimeFaces.utils) {
          * Removes the overlay from the appendTo overlay container.
          */
         removeDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
-
             // if the id contains a ':'
             appendTo.children(PrimeFaces.escapeClientId(overlayId)).not(overlay).remove();
 
@@ -138,7 +137,7 @@ if (!PrimeFaces.utils) {
          */
         registerHideOverlayHandler: function(widget, hideNamespace, overlay, resolveIgnoredElementsCallback, hideCallback) {
 
-            widget.destroyListeners.push(function() {
+            widget.addDestroyListener(function() {
                 $(document).off(hideNamespace);
             });
 
@@ -182,7 +181,7 @@ if (!PrimeFaces.utils) {
 
         registerResizeHandler: function(widget, resizeNamespace, element, resizeCallback) {
 
-            widget.destroyListeners.push(function() {
+            widget.addDestroyListener(function() {
                 $(window).off(resizeNamespace);
             });
 
@@ -196,15 +195,42 @@ if (!PrimeFaces.utils) {
         },
 
         registerDynamicOverlay: function(widget, overlay, overlayId) {
-            widget.destroyListeners.push(function() {
+            if (widget.cfg.appendTo) {
+                widget.addDestroyListener(function() {
+                    var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
+                    PrimeFaces.utils.removeDynamicOverlay(widget, overlay, overlayId, appendTo);
+                });
+
                 var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
-                PrimeFaces.utils.removeDynamicOverlay(widget, overlay, overlayId, appendTo);
+                PrimeFaces.utils.appendDynamicOverlay(widget, overlay, overlayId, appendTo);
+            }
+        },
+
+
+        registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
+
+            var scrollParent = widget.getJQ().scrollParent();
+            if (scrollParent.is('body')) {
+                scrollParent = $(window);
+            }
+
+            widget.addDestroyListener(function() {
+                scrollParent.off(scrollNamespace);
             });
 
-            var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
-            PrimeFaces.utils.appendDynamicOverlay(widget, overlay, overlayId, appendTo);
-        }
+            scrollParent.off(scrollNamespace).on(scrollNamespace, function(e) {
+                scrollCallback(e);
+            });
+        },
 
+        unbindScrollHandler: function(widget, scrollNamespace) {
+            var scrollParent = widget.getJQ().scrollParent();
+            if (scrollParent.is('body')) {
+                scrollParent = $(window);
+            }
+
+            scrollParent.off(scrollNamespace);
+        }
     };
 
 }

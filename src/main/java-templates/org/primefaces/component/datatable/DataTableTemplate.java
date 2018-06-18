@@ -69,6 +69,7 @@ import javax.faces.event.BehaviorEvent;
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.datatable.FilterState;
 import org.primefaces.component.datatable.TableState;
+import org.primefaces.util.LangUtils;
 
     private final static Logger logger = Logger.getLogger(DataTable.class.getName());
 
@@ -213,6 +214,14 @@ import org.primefaces.component.datatable.TableState;
 
     public boolean isPageStateRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_pageState");
+    }
+
+    public boolean isScrollingRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_scrolling");
+    }
+
+    public boolean isToggleSelectRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_checked");
     }
     
     public boolean isRowEditCancelRequest(FacesContext context) {
@@ -1059,6 +1068,14 @@ import org.primefaces.component.datatable.TableState;
         return (sortMode != null && sortMode.equals("multiple"));
     }
     
+    public List<MultiSortState> getMultiSortState() {
+        return (List<MultiSortState>) this.getStateHelper().get("multiSortState");
+    }
+
+    public void setMultiSortState(List<MultiSortState> _multiSortState) {
+        this.getStateHelper().put("multiSortState", _multiSortState);
+    }
+
     private List<SortMeta> multiSortMeta = null;
         
     public List<SortMeta> getMultiSortMeta() {
@@ -1066,7 +1083,7 @@ import org.primefaces.component.datatable.TableState;
             return multiSortMeta;
         }
         
-        List<MultiSortState> multiSortStateList = (List<MultiSortState>) this.getStateHelper().get("multiSortState");
+        List<MultiSortState> multiSortStateList = getMultiSortState();
         if(multiSortStateList != null && !multiSortStateList.isEmpty()) {
             multiSortMeta = new ArrayList<SortMeta>();
             for(int i = 0; i < multiSortStateList.size(); i++) {
@@ -1102,7 +1119,7 @@ import org.primefaces.component.datatable.TableState;
                 multiSortStateList.add(new MultiSortState(value.get(i)));
             }
             
-            this.getStateHelper().put("multiSortState", multiSortStateList);
+            setMultiSortState(multiSortStateList);
         }
     }
     
@@ -1199,6 +1216,35 @@ import org.primefaces.component.datatable.TableState;
             }
         }
     }
+
+    @Override
+    protected void processChildren(FacesContext context, PhaseId phaseId) {
+        int first = getFirst();
+        int rows = getRows();
+        int rowCount = getRowCount();
+        int last = rows == 0 ? (isLiveScroll() ? (getScrollRows() + getScrollOffset()) : rowCount) : (first + rows);
+
+        for (int rowIndex = first; rowIndex < last; rowIndex++) {
+            setRowIndex(rowIndex);
+
+            if (!isRowAvailable()) {
+                break;
+            }
+
+            for (UIComponent child : this.getIterableChildren()) {
+                if (child.isRendered()) {
+                    if (child instanceof Column) {
+                        for (UIComponent grandkid : child.getChildren()) {
+                            process(context, grandkid, phaseId);
+                        }
+                    }
+                    else {
+                        process(context, child, phaseId);
+                    }
+                }
+            }
+        }
+    }
         
     private ValueExpression sortByVE;
     public void setSortByVE(ValueExpression ve) {
@@ -1255,7 +1301,7 @@ import org.primefaces.component.datatable.TableState;
     public Map getTogglableColumnsMap() {
         if(togglableColsMap == null) {
             togglableColsMap = new HashMap<String, Boolean>();
-            boolean isValueBlank = ComponentUtils.isValueBlank(togglableColumnsAsString);
+            boolean isValueBlank = LangUtils.isValueBlank(togglableColumnsAsString);
 
             if(isValueBlank) {
                 FacesContext context = getFacesContext();
@@ -1295,7 +1341,7 @@ import org.primefaces.component.datatable.TableState;
     public Map getResizableColumnsMap() {
         if(resizableColsMap == null) {
             resizableColsMap = new HashMap<String, String>();
-            boolean isValueBlank = ComponentUtils.isValueBlank(resizableColumnsAsString);
+            boolean isValueBlank = LangUtils.isValueBlank(resizableColumnsAsString);
 
             if(isValueBlank) {
                 FacesContext context = getFacesContext();
@@ -1457,7 +1503,7 @@ import org.primefaces.component.datatable.TableState;
                 this.setRows(rows);
             }
 
-            this.setMultiSortMeta(ts.getMultiSortMeta());
+            this.setMultiSortState(ts.getMultiSortState());
             this.setValueExpression("sortBy", ts.getSortBy());
             this.setSortOrder(ts.getSortOrder());
             this.setSortFunction(ts.getSortFunction());

@@ -28,10 +28,9 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
 
     bindEvents: function() {
         var $this = this,
-        win = $(window),
-        scrollNS = 'scroll.' + this.cfg.id;
+        win = $(window);
 
-        win.off(scrollNS).on(scrollNS, function() {
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id, function() {
             if(win.scrollTop() > $this.initialState.top - $this.cfg.margin)
                 $this.fix();
             else

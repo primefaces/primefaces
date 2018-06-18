@@ -16,12 +16,13 @@
 package org.primefaces.component.fileupload;
 
 import java.io.IOException;
-import javax.faces.FacesException;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
+
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
@@ -96,6 +97,7 @@ public class FileUploadRenderer extends CoreRenderer {
                     .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
                     .attr("disabled", fileUpload.isDisabled(), false)
                     .attr("sequentialUploads", fileUpload.isSequential(), false)
+                    .nativeAttr("onAdd", fileUpload.getOnAdd())
                     .callback("onstart", "function()", fileUpload.getOnstart())
                     .callback("onerror", "function()", fileUpload.getOnerror())
                     .callback("oncomplete", "function(args)", fileUpload.getOncomplete());
@@ -198,7 +200,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
             //button icon
             writer.startElement("span", null);
-            writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " ui-icon-plusthick", null);
+            writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + fileUpload.getChooseIcon(), null);
             writer.endElement("span");
 
             //text
@@ -214,7 +216,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
             writer.endElement("span");
 
-            encodeInputField(context, fileUpload, fileUpload.getClientId(context));
+            encodeInputField(context, fileUpload, clientId);
 
             writer.endElement("span");
 
@@ -225,7 +227,7 @@ public class FileUploadRenderer extends CoreRenderer {
             writer.endElement("span");
         }
         else {
-            encodeSimpleInputField(context, fileUpload, fileUpload.getClientId(context), style, styleClass);
+            encodeSimpleInputField(context, fileUpload, clientId, style, styleClass);
         }
     }
 

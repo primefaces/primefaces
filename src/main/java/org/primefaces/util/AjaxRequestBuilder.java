@@ -84,7 +84,7 @@ public class AjaxRequestBuilder {
     }
 
     private AjaxRequestBuilder addExpressions(UIComponent component, String expressions, String key, int options) {
-        if (!ComponentUtils.isValueBlank(expressions)) {
+        if (!LangUtils.isValueBlank(expressions)) {
             String resolvedExpressions = SearchExpressionFacade.resolveClientIds(context, component, expressions, options);
             buffer.append(",").append(key).append(":\"").append(resolvedExpressions).append("\"");
         }
@@ -123,7 +123,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder delay(String delay) {
-        if (!ComponentUtils.isValueBlank(delay) && !delay.equals("none")) {
+        if (!LangUtils.isValueBlank(delay) && !delay.equals("none")) {
             buffer.append(",d:").append(delay);
 
             if (context.isProjectStage(ProjectStage.Development)) {
@@ -238,7 +238,8 @@ public class AjaxRequestBuilder {
                     buffer.append(",");
                 }
 
-                buffer.append("{name:").append("\"").append(parameter.getName()).append("\",value:\"").append(paramValue).append("\"}");
+                buffer.append("{name:").append("\"").append(ComponentUtils.escapeText(parameter.getName())).append("\",value:\"")
+                    .append(ComponentUtils.escapeText(paramValue.toString())).append("\"}");
             }
         }
 
@@ -262,7 +263,8 @@ public class AjaxRequestBuilder {
                     if (paramValue == null) {
                         paramValue = "";
                     }
-                    buffer.append("{name:").append("\"").append(name).append("\",value:\"").append(paramValue).append("\"}");
+                    buffer.append("{name:").append("\"").append(ComponentUtils.escapeText(name)).append("\",value:\"")
+                        .append(ComponentUtils.escapeText(paramValue)).append("\"}");
 
                     if (i < (size - 1)) {
                         buffer.append(",");

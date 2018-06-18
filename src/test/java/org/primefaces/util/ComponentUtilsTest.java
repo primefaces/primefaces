@@ -15,10 +15,6 @@
  */
 package org.primefaces.util;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -39,45 +35,5 @@ public class ComponentUtilsTest {
     public void createContentDisposition() {
         assertEquals("attachment;filename=\"Test%20Spaces.txt\"; filename*=UTF-8''Test%20Spaces.txt", ComponentUtils.createContentDisposition("attachment", "Test Spaces.txt"));
     }
-    
-    @Test
-    public void getHrefURL() {
-        Map<String, List<String>> params = new LinkedHashMap<String, List<String>>();
-                
-        params.put("param1", Arrays.asList("value1"));
-        params.put("param2", Arrays.asList("enc?de&"));//URLEncoded: enc%3Fde%26
-        params.put("param3", Arrays.asList("two", "v@lues"));//v@lues URLEncoded: v%40lues
-        params.put("param1=value1Pollution&param4", Arrays.asList("value4"));//URLEncoded: param1%3Dvalue1Pollution%26param4
-        
-        Map<String, String> testCases = new LinkedHashMap<String, String>();
-        
-        //No query string nor fragment
-        testCases.put("https://foo.bar/some/path", 
-                "https://foo.bar/some/path?param1=value1&param2=enc%3Fde%26&param3=two&param3=v%40lues&param1%3Dvalue1Pollution%26param4=value4");
-        testCases.put("/internal/other/path", 
-                "/internal/other/path?param1=value1&param2=enc%3Fde%26&param3=two&param3=v%40lues&param1%3Dvalue1Pollution%26param4=value4");
-        
-        //Just Fragment
-        testCases.put("https://foo.bar/some/path#frg1", 
-                "https://foo.bar/some/path?param1=value1&param2=enc%3Fde%26&param3=two&param3=v%40lues&param1%3Dvalue1Pollution%26param4=value4#frg1");
-        testCases.put("/internal/other/path#frg1", 
-                "/internal/other/path?param1=value1&param2=enc%3Fde%26&param3=two&param3=v%40lues&param1%3Dvalue1Pollution%26param4=value4#frg1");
-        
-        //Just query string
-        testCases.put("https://foo.bar/some/path?q1=123&q2=456",
-                "https://foo.bar/some/path?q1=123&q2=456&param1=value1&param2=enc%3Fde%26&param3=two&param3=v%40lues&param1%3Dvalue1Pollution%26param4=value4");
-        testCases.put("/internal/other/path?q1=123&q2=456", 
-                "/internal/other/path?q1=123&q2=456&param1=value1&param2=enc%3Fde%26&param3=two&param3=v%40lues&param1%3Dvalue1Pollution%26param4=value4");
-        
-        //Query string and fragment
-        testCases.put("https://foo.bar/some/path?q1=123&q2=456#frg1",
-                "https://foo.bar/some/path?q1=123&q2=456&param1=value1&param2=enc%3Fde%26&param3=two&param3=v%40lues&param1%3Dvalue1Pollution%26param4=value4#frg1");
-        testCases.put("/internal/other/path?q1=123&q2=456#frg1", 
-                "/internal/other/path?q1=123&q2=456&param1=value1&param2=enc%3Fde%26&param3=two&param3=v%40lues&param1%3Dvalue1Pollution%26param4=value4#frg1");
-        
-        //Testing
-        for (Map.Entry<String, String> test : testCases.entrySet()) {
-            assertEquals(ComponentUtils.getHrefURL(test.getKey(), params), test.getValue());
-        }
-    }
+
 }

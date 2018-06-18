@@ -24,6 +24,7 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class PanelGridBodyColumnRenderer extends CoreRenderer implements HelperColumnRenderer {
 
+    @Override
     public void encode(FacesContext context, Column column) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String style = column.getStyle();

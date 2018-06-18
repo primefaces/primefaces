@@ -1,4 +1,5 @@
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 
     public static final String STYLE_CLASS = "ui-splitbutton ui-buttonset ui-widget";
     public static final String BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-left ui-button-text-icon-left";
@@ -9,17 +10,30 @@ import org.primefaces.util.HTML;
     public static final String SPLITBUTTON_CONTAINER_CLASS = "ui-menu ui-splitbuttonmenu ui-menu-dynamic ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-shadow";
 
     public String resolveStyleClass() {
-        String icon = getIcon();
-        Object value = getValue();
+        boolean iconBlank = LangUtils.isValueBlank(getIcon());
+        boolean valueBlank = getValue() == null;
         String styleClass = ""; 
-    
-        if(value != null && icon == null) {
+        
+        if (!ComponentUtils.shouldRenderChildren(this)) {
+            if(!valueBlank && iconBlank) {
+                styleClass = HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
+            }
+            else if(!valueBlank && !iconBlank) {
+                styleClass = getIconPos().equals("left") 
+                        ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS 
+                        : HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
+            }
+            else if(valueBlank && !iconBlank) {
+                styleClass = HTML.BUTTON_ICON_ONLY_BUTTON_CLASS;
+            }
+        }
+        else if(!valueBlank && iconBlank) {
             styleClass = BUTTON_TEXT_ONLY_BUTTON_CLASS;
         }
-        else if(value != null && icon != null) {
+        else if(!valueBlank && !iconBlank) {
             styleClass = getIconPos().equals("left") ? BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
         }
-        else if(value == null && icon != null) {
+        else if(valueBlank && !iconBlank) {
             styleClass = BUTTON_ICON_ONLY_BUTTON_CLASS;
         }
     

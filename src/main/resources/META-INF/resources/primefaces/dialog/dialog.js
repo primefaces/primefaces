@@ -165,7 +165,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
 
     postShow: function() {
-        this.fireBehaviorEvent('open');
+        this.callBehavior('open');
 
         PrimeFaces.invokeDeferredRenders(this.id);
 
@@ -269,14 +269,13 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             containment : $this.cfg.absolutePositioned ? 'document' : 'window',
             stop: function( event, ui ) {
                 if($this.hasBehavior('move')) {
-                    var move = $this.cfg.behaviors['move'];
                     var ext = {
                         params: [
                             {name: $this.id + '_top', value: ui.offset.top},
                             {name: $this.id + '_left', value: ui.offset.left}
                         ]
                     };
-                    move.call($this, ext);
+                    $this.callBehavior('move', ext);
                 }
             }
         });
@@ -358,7 +357,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
 
     onHide: function(event, ui) {
-        this.fireBehaviorEvent('close');
+        this.callBehavior('close');
 
         this.jq.attr({
             'aria-hidden': true
@@ -386,7 +385,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             this.maximizeIcon.children('.ui-icon').removeClass('ui-icon-newwin').addClass('ui-icon-extlink');
             this.maximized = false;
 
-            this.fireBehaviorEvent('restoreMaximize');
+            this.callBehavior('restoreMaximize');
         }
         else {
             this.saveState();
@@ -411,7 +410,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             this.maximizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-extlink').addClass('ui-icon-newwin');
             this.maximized = true;
 
-            this.fireBehaviorEvent('maximize');
+            this.callBehavior('maximize');
         }
     },
 
@@ -429,7 +428,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if(this.minimized) {
             this.removeMinimize();
 
-            this.fireBehaviorEvent('restoreMinimize');
+            this.callBehavior('restoreMinimize');
         }
         else {
             this.saveState();
@@ -463,7 +462,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             this.resizers.hide();
         }
 
-        this.fireBehaviorEvent('minimize');
+        this.callBehavior('minimize');
     },
 
     saveState: function() {
@@ -517,8 +516,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         };
 
         if(this.hasBehavior('loadContent')) {
-            var loadContentBehavior = this.cfg.behaviors['loadContent'];
-            loadContentBehavior.call(this, options);
+            this.callBehavior('loadContent', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -556,16 +554,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 $this.positionInitialized = false;
             }
         });
-    },
-
-    fireBehaviorEvent: function(event) {
-        if(this.cfg.behaviors) {
-            var behavior = this.cfg.behaviors[event];
-
-            if(behavior) {
-                behavior.call(this);
-            }
-        }
     },
 
     removeMinimize: function() {
@@ -684,10 +672,26 @@ PrimeFaces.widget.DynamicDialog = PrimeFaces.widget.Dialog.extend({
 
         this.jq.show();
 
+        if(this.cfg.height != "auto") {
+            this.content.height(this.jq.outerHeight() - this.titlebar.outerHeight(true));
+        }
+
         this.postShow();
 
         if(this.cfg.modal) {
             this.enableModality();
+        }
+    },
+
+    //@Override
+    initSize: function() {
+        this.jq.css({
+            'width': this.cfg.width,
+            'height': this.cfg.height
+        });
+
+        if(this.cfg.fitViewport) {
+            this.fitViewport();
         }
     }
 

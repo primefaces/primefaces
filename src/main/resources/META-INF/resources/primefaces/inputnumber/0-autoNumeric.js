@@ -614,13 +614,6 @@
                 parts = this.normalizeParts(left, right),
                 new_value = parts.join(''),
                 position = parts[0].length;
-
-            /**** PrimeFaces Github #2973 ****/
-                if(settingsClone.vMin > (new_value*1)) {
-                    new_value = settingsClone.vMin.toString();
-                    position = new_value.length;
-                }
-            /**************************/
         
             if (autoCheck(new_value, settingsClone)) {
                 new_value = truncateDecimal(new_value, settingsClone, paste);
@@ -1171,12 +1164,6 @@
                 if (typeof settings !== 'object') {
                     $.error("You must initialize autoNumeric('init', {options}) prior to calling the 'set' method");
                 }
-                
-                /**** PrimeFaces Github #2973 ****/
-                    if(settings.vMin > valueIn) {
-                        value = settings.vMin.toString();
-                    }
-                /**************************/
                 
                 /** allows locale decimal separator to be a comma */
                 if ((testValue === $this.attr('value') || testValue === $this.text()) && settings.runOnce === false) {

@@ -23,6 +23,7 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class ColumnGroupHelperRenderer extends CoreRenderer implements HelperRowRenderer {
 
+    @Override
     public void encode(FacesContext context, Row row) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 

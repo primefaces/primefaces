@@ -52,16 +52,19 @@ public class PDFExporter extends Exporter {
     private Font facetFont;
     private Color facetBgColor;
     private ExporterOptions expOptions;
+    private MethodExpression onTableRender;
 
     @Override
     public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType,
-            MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+            MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+            MethodExpression onTableRender) throws IOException {
         
         try {
             Document document = new Document();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PdfWriter.getInstance(document, baos);
-
+            this.onTableRender = onTableRender;
+            
             if (preProcessor != null) {
                 preProcessor.invoke(context.getELContext(), new Object[]{document});
             }
@@ -92,12 +95,14 @@ public class PDFExporter extends Exporter {
 
     @Override
     public void export(FacesContext context, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+            MethodExpression onTableRender) throws IOException {
         
         try {
             Document document = new Document();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PdfWriter.getInstance(document, baos);
+            this.onTableRender = onTableRender;
 
             if (preProcessor != null) {
                 preProcessor.invoke(context.getELContext(), new Object[]{document});
@@ -131,12 +136,14 @@ public class PDFExporter extends Exporter {
 
     @Override
     public void export(FacesContext context, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+            MethodExpression onTableRender) throws IOException {
         
         try {
             Document document = new Document();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PdfWriter.getInstance(document, baos);
+            this.onTableRender = onTableRender;
 
             if (preProcessor != null) {
                 preProcessor.invoke(context.getELContext(), new Object[]{document});
@@ -178,6 +185,10 @@ public class PDFExporter extends Exporter {
         this.cellFont = FontFactory.getFont(FontFactory.TIMES, encoding);
         this.facetFont = FontFactory.getFont(FontFactory.TIMES, encoding, Font.DEFAULTSIZE, Font.BOLD);
 
+        if (this.onTableRender != null) {
+            this.onTableRender.invoke(context.getELContext(), new Object[]{pdfTable, table});
+        }
+        
         if (this.expOptions != null) {
             applyFacetOptions(this.expOptions);
             applyCellOptions(this.expOptions);
@@ -269,44 +280,43 @@ public class PDFExporter extends Exporter {
                 ((DynamicColumn) col).applyStatelessModel();
             }
 
-            if (col.isRendered() && col.isExportable()) {
+            if (col.isRendered() && col.isExportable()) {                
                 UIComponent facet = col.getFacet(columnType.facet());
-                if (facet != null) {
-                    addColumnValue(pdfTable, facet, this.facetFont);
+                String textValue;
+                switch (columnType) {
+                    case HEADER:
+                        textValue = (col.getExportHeaderValue() != null) ? col.getExportHeaderValue() : col.getHeaderText();
+                        break;
+
+                    case FOOTER:
+                        textValue = (col.getExportFooterValue() != null) ? col.getExportFooterValue() : col.getFooterText();
+                        break;
+
+                    default:
+                        textValue = null;
+                        break;
+                }
+                
+                if (textValue != null) {
+                    addColumnValue(pdfTable, textValue); 
+                }
+                else if (facet != null) {
+                    addColumnValue(pdfTable, facet);
                 }
                 else {
-                    String textValue;
-                    switch (columnType) {
-                        case HEADER:
-                            textValue = col.getHeaderText();
-                            break;
-
-                        case FOOTER:
-                            textValue = col.getFooterText();
-                            break;
-
-                        default:
-                            textValue = "";
-                            break;
-                    }
-
-                    if (textValue != null) {
-                        PdfPCell cell = new PdfPCell(new Paragraph(textValue, this.facetFont));
-                        if (this.facetBgColor != null) {
-                            cell.setBackgroundColor(this.facetBgColor);
-                        }
-
-                        pdfTable.addCell(cell);
-                    }
+                    addColumnValue(pdfTable, "");
                 }
             }
         }
     }
 
-    protected void addColumnValue(PdfPTable pdfTable, UIComponent component, Font font) {
+    protected void addColumnValue(PdfPTable pdfTable, UIComponent component) {
         String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
-
-        PdfPCell cell = new PdfPCell(new Paragraph(value, font));
+        addColumnValue(pdfTable, value);
+    }
+    
+    protected void addColumnValue(PdfPTable pdfTable, String value) {
+        PdfPCell cell = new PdfPCell(new Paragraph(value, this.facetFont));
         if (this.facetBgColor != null) {
             cell.setBackgroundColor(this.facetBgColor);
         }

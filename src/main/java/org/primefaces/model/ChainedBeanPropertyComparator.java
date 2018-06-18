@@ -31,6 +31,7 @@ public class ChainedBeanPropertyComparator implements Comparator {
         this.comparators.add(comparator);
     }
 
+    @Override
     public int compare(Object obj1, Object obj2) {
         for (BeanPropertyComparator comparator : comparators) {
             int result = comparator.compare(obj1, obj2);

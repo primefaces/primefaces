@@ -29,6 +29,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     private boolean inScript;
     private StringBuilder include;
     private StringBuilder inline;
+    private boolean scriptsRendered;
 
     @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public MoveScriptsToBottomResponseWriter(ResponseWriter wrapped, MoveScriptsToBottomState state) {
@@ -38,6 +39,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         inScript = false;
         include = new StringBuilder(50);
         inline = new StringBuilder(75);
+        scriptsRendered = false;
     }
 
     @Override
@@ -71,7 +73,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             inline.append(cbuf, off, len);
         }
         else {
-            getWrapped().write(cbuf);
+            getWrapped().write(cbuf, off, len);
         }
     }
     
@@ -86,7 +88,27 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     }
 
     @Override
+    public void writeText(char[] cbuf, int off, int len) throws IOException {
+        if (inScript) {
+            inline.append(cbuf, off, len);
+        }
+        else {
+            getWrapped().writeText(cbuf, off, len);
+        }
+    }      
+
+    @Override
     public void writeText(Object text, String property) throws IOException {
+        if (inScript) {
+            inline.append(text);
+        }
+        else {
+            getWrapped().writeText(text, property);
+        }
+    }
+
+    @Override
+    public void writeText(Object text, UIComponent component, String property) throws IOException {
         if (inScript) {
             inline.append(text);
         }
@@ -109,7 +131,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             getWrapped().writeAttribute(name, value, property);
         }
     }
-
+    
     @Override
     public void writeURIAttribute(String name, Object value, String property) throws IOException {
         if (inScript) {
@@ -146,7 +168,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             include.setLength(0);
             inline.setLength(0);
         }
-        else if ("body".equals(name)) {
+        else if ("body".equals(name) || ("html".equals(name) && !scriptsRendered)) {
             for (int i = 0; i < state.getIncludes().size(); i++) {
                 String src = state.getIncludes().get(i);
                 if (src != null && !src.isEmpty()) {
@@ -164,6 +186,8 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             getWrapped().endElement("script");
 
             getWrapped().endElement(name);
+
+            scriptsRendered = true;
         }
         else {
             getWrapped().endElement(name);

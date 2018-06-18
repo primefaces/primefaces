@@ -40,4 +40,6 @@ public interface ScheduleEvent {
     public String getDescription();
 
     public String getUrl();
+
+    public ScheduleRenderingMode getRenderingMode();
 }

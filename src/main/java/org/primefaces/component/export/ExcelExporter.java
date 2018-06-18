@@ -59,7 +59,8 @@ public class ExcelExporter extends Exporter {
 
     @Override
     public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType,
-            MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+            MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+            MethodExpression onTableRender) throws IOException {
         
         Workbook wb = createWorkBook();
         String sheetName = getSheetName(context, table);
@@ -94,7 +95,8 @@ public class ExcelExporter extends Exporter {
 
     @Override
     public void export(FacesContext context, String filename, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+            MethodExpression onTableRender) throws IOException {
         
         Workbook wb = createWorkBook();
 
@@ -132,7 +134,8 @@ public class ExcelExporter extends Exporter {
 
     @Override
     public void export(FacesContext context, List<String> clientIds, String filename, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+            MethodExpression onTableRender) throws IOException {
         
         Workbook wb = createWorkBook();
 
@@ -179,26 +182,29 @@ public class ExcelExporter extends Exporter {
 
             if (col.isRendered() && col.isExportable()) {
                 UIComponent facet = col.getFacet(columnType.facet());
-                if (facet != null) {
+                String textValue;
+                switch (columnType) {
+                    case HEADER:
+                        textValue = (col.getExportHeaderValue() != null) ? col.getExportHeaderValue() : col.getHeaderText();
+                        break;
+
+                    case FOOTER:
+                        textValue = (col.getExportFooterValue() != null) ? col.getExportFooterValue() : col.getFooterText();
+                        break;
+
+                    default:
+                        textValue = null;
+                        break;
+                }
+                
+                if (textValue != null) {
+                    addColumnValue(rowHeader, textValue); 
+                }
+                else if (facet != null) {
                     addColumnValue(rowHeader, facet);
                 }
                 else {
-                    String textValue;
-                    switch (columnType) {
-                        case HEADER:
-                            textValue = col.getHeaderText();
-                            break;
-
-                        case FOOTER:
-                            textValue = col.getFooterText();
-                            break;
-
-                        default:
-                            textValue = "";
-                            break;
-                    }
-
-                    addColumnValue(rowHeader, textValue);
+                    addColumnValue(rowHeader, "");
                 }
             }
         }

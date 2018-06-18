@@ -63,10 +63,12 @@ public class LabelOverlay implements Overlay, Serializable {
         this.location = location;
     }
 
+    @Override
     public String getType() {
         return "Label";
     }
 
+    @Override
     public String toJS(StringBuilder sb) {
         sb.append("['Label',{label:\"").append(ComponentUtils.escapeText(label)).append("\"");
 

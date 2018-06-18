@@ -262,7 +262,9 @@
         },
 
         escapeHTML: function(value) {
-            return value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            return String(value).replace(/[&<>"'`=\/]/g, function (s) {
+                return PrimeFaces.entityMap[s];
+            });
         },
 
         clearSelection: function() {
@@ -351,11 +353,22 @@
             }
 
             scriptURI = scriptURI.replace('core.js', name);
-            scriptURI = scriptURI.replace('ln=primefaces', 'ln=' + library);
+
+            // In a portlet environment, url parameters may be namespaced.
+            var namespace = '';
+            var urlParametersAreNamespaced = !(scriptURI.indexOf('?ln=primefaces') > -1 ||
+                    scriptURI.indexOf('&ln=primefaces') > -1);
+
+            if (urlParametersAreNamespaced) {
+                namespace = new RegExp('[?&]([^&=]+)ln=primefaces($|&)').exec(scriptURI)[1];
+            }
+
+            // If the parameters are namespaced, the namespace must be included when replacing parameters.
+            scriptURI = scriptURI.replace(namespace + 'ln=primefaces', namespace + 'ln=' + library);
 
             if (version) {
-                var extractedVersion = new RegExp('[?&]v=([^&]*)').exec(scriptURI)[1];
-                scriptURI = scriptURI.replace('v=' + extractedVersion, 'v=' + version);
+                var extractedVersion = new RegExp('[?&]' + namespace + 'v=([^&]*)').exec(scriptURI)[1];
+                scriptURI = scriptURI.replace(namespace + 'v=' + extractedVersion, namespace + 'v=' + version);
             }
 
             var prefix = window.location.protocol + '//' + window.location.host;
@@ -374,17 +387,6 @@
 
         isNumber: function(value) {
             return typeof value === 'number' && isFinite(value);
-        },
-
-        getScript: function(url, callback) {
-            $.ajax({
-                type: "GET",
-                url: url,
-                success: callback,
-                dataType: "script",
-                cache: true,
-                async: true
-            });
         },
 
         focus: function(id, context) {
@@ -499,22 +501,12 @@
 
         calculateScrollbarWidth: function() {
             if(!this.scrollbarWidth) {
-                if(PrimeFaces.env.browser.msie) {
-                    var $textarea1 = $('<textarea cols="10" rows="2"></textarea>')
-                            .css({ position: 'absolute', top: -1000, left: -1000 }).appendTo('body'),
-                        $textarea2 = $('<textarea cols="10" rows="2" style="overflow: hidden;"></textarea>')
-                            .css({ position: 'absolute', top: -1000, left: -1000 }).appendTo('body');
-                    this.scrollbarWidth = $textarea1.width() - $textarea2.width();
-                    $textarea1.add($textarea2).remove();
-                }
-                else {
-                    var $div = $('<div />')
-                        .css({ width: 100, height: 100, overflow: 'auto', position: 'absolute', top: -1000, left: -1000 })
-                        .prependTo('body').append('<div />').find('div')
-                            .css({ width: '100%', height: 200 });
-                    this.scrollbarWidth = 100 - $div.width();
-                    $div.parent().remove();
-                }
+                var $div = $('<div />')
+                    .css({ width: 100, height: 100, overflow: 'auto', position: 'absolute', top: -1000, left: -1000 })
+                    .prependTo('body').append('<div />').find('div')
+                        .css({ width: '100%', height: 200 });
+                this.scrollbarWidth = 100 - $div.width();
+                $div.parent().remove();
             }
 
             return this.scrollbarWidth;
@@ -681,6 +673,7 @@
             dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             dayNamesMin: ['S', 'M', 'T', 'W ', 'T', 'F ', 'S'],
             weekHeader: 'Week',
+            weekNumberTitle: 'W',
             firstDay: 0,
             isRTL: false,
             showMonthAfterYear: false,
@@ -708,6 +701,17 @@
     };
 
     PrimeFaces.locales['en'] = PrimeFaces.locales['en_US'];
+
+    PrimeFaces.entityMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '/': '&#x2F;',
+        '`': '&#x60;',
+        '=': '&#x3D;'
+    };
 
     PF = function(widgetVar) {
     	var widgetInstance = PrimeFaces.widgets[widgetVar];

@@ -71,14 +71,13 @@ if (!PrimeFaces.widget) {
      */
     PrimeFaces.widget.BaseWidget = Class.extend({
 
-        destroyListeners : [],
-
         init: function(cfg) {
             this.cfg = cfg;
             this.id = cfg.id;
             this.jqId = PrimeFaces.escapeClientId(this.id);
             this.jq = $(this.jqId);
             this.widgetVar = cfg.widgetVar;
+            this.destroyListeners = [];
 
             //remove script tag
             $(this.jqId + '_s').remove();
@@ -104,13 +103,18 @@ if (!PrimeFaces.widget) {
 
             for (var i = 0; i < this.destroyListeners.length; i++) {
                 var destroyListener = this.destroyListeners[i];
-                destroyListener(this);
+                destroyListener.call(this, this);
             }
         },
 
         //checks if the given widget is detached
         isDetached: function() {
-            return document.getElementById(this.id) === null;
+            var element = document.getElementById(this.id);
+            if (typeof(element) !== 'undefined' && element !== null) {
+                return false;
+            }
+
+            return true;
         },
 
         //returns jquery object representing the main dom element related to the widget
@@ -133,6 +137,29 @@ if (!PrimeFaces.widget) {
             }
 
             return false;
+        },
+
+        callBehavior: function(event, ext) {
+            if(this.hasBehavior(event)) {
+                this.cfg.behaviors[event].call(this, ext);
+            }
+        },
+
+        /**
+         * Gets behavior callback by name or null.
+         *
+         * @param name behavior name
+         * @return {Function}
+         */
+        getBehavior: function(name) {
+            return this.cfg.behaviors ? this.cfg.behaviors[name] : null;
+        },
+
+        addDestroyListener: function(listener) {
+            if (!this.destroyListeners) {
+                this.destroyListeners = [];
+            }
+            this.destroyListeners.push(listener);
         }
 
     });
@@ -150,8 +177,8 @@ if (!PrimeFaces.widget) {
         },
 
         //@Override
-        refresh: function() {
-            this._super();
+        refresh: function(cfg) {
+            this._super(cfg);
 
             if (this.appendTo) {
                 PrimeFaces.utils.removeDynamicOverlay(this, this.jq, this.id, this.appendTo);

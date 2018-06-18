@@ -121,6 +121,7 @@ public class UIData extends javax.faces.component.UIData {
         PropertyKeys() {
         }
 
+        @Override
         public String toString() {
             return ((this.toString != null) ? this.toString : super.toString());
         }
@@ -206,10 +207,12 @@ public class UIData extends javax.faces.component.UIData {
         getStateHelper().put(PropertyKeys.rowIndexVar, _rowIndexVar);
     }
 
+    @Override
     public boolean isRowStatePreserved() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.rowStatePreserved, false);
     }
 
+    @Override
     public void setRowStatePreserved(boolean _paginator) {
         getStateHelper().put(PropertyKeys.rowStatePreserved, _paginator);
     }

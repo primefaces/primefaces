@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component SYSTEM "../misc/component.dtd" [
+<!ENTITY standard_uicomponent_attributes		SYSTEM "../entities/standard_uicomponent_attributes.xml">
+<!ENTITY output_component_attributes			SYSTEM "../entities/output_component_attributes.xml">
+<!ENTITY input_component_attributes				SYSTEM "../entities/input_component_attributes.xml">
+]>
+<component>
+    <tag>dataViewListItem</tag>
+    <tagClass>org.primefaces.component.dataview.DataViewListItemTag</tagClass>
+    <componentClass>org.primefaces.component.dataview.DataViewListItem</componentClass>
+    <componentType>org.primefaces.component.DataViewListItem</componentType>
+    <componentFamily>org.primefaces.component</componentFamily>
+    <parent>javax.faces.component.UIComponentBase</parent>
+    <description>dataViewListItem is a helper component for DataView to add list items.</description>
+    <attributes>
+        &standard_uicomponent_attributes;
+    </attributes>
+</component>

@@ -34,6 +34,7 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class InputNumberRenderer extends InputRenderer {
@@ -44,7 +45,7 @@ public class InputNumberRenderer extends InputRenderer {
 
         String submittedValueString = (String) submittedValue;
 
-        if (ComponentUtils.isValueBlank(submittedValueString)) {
+        if (LangUtils.isValueBlank(submittedValueString)) {
             return null;
         }
 
@@ -70,15 +71,15 @@ public class InputNumberRenderer extends InputRenderer {
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(inputId);
 
         try {
-            if (ComponentUtils.isValueBlank(submittedValue)) {
+            if (LangUtils.isValueBlank(submittedValue)) {
                 ValueExpression valueExpression = inputNumber.getValueExpression("value");
                 if (valueExpression != null) {
                     Class<?> type = valueExpression.getType(context.getELContext());
-                    if (type != null && type.isPrimitive() && !ComponentUtils.isValueBlank(inputNumber.getMinValue())) {
+                    if (type != null && type.isPrimitive() && !LangUtils.isValueBlank(inputNumber.getMinValue())) {
                         // avoid coercion of null or empty string to 0 which may be out of [minValue, maxValue] range
                         submittedValue = String.valueOf(new BigDecimal(inputNumber.getMinValue()).doubleValue());
                     }
-                    else if (type != null && type.isPrimitive() && !ComponentUtils.isValueBlank(inputNumber.getMaxValue())) {
+                    else if (type != null && type.isPrimitive() && !LangUtils.isValueBlank(inputNumber.getMaxValue())) {
                         // avoid coercion of null or empty string to 0 which may be out of [minValue, maxValue] range
                         submittedValue = String.valueOf(new BigDecimal(inputNumber.getMaxValue()).doubleValue());
                     }
@@ -89,13 +90,13 @@ public class InputNumberRenderer extends InputRenderer {
             }
             else {
                 BigDecimal value = new BigDecimal(submittedValue);
-                if (!ComponentUtils.isValueBlank(inputNumber.getMinValue())) {
+                if (!LangUtils.isValueBlank(inputNumber.getMinValue())) {
                     BigDecimal min = new BigDecimal(inputNumber.getMinValue());
                     if (value.compareTo(min) < 0) {
                         submittedValue = String.valueOf(min.doubleValue());
                     }
                 }
-                if (!ComponentUtils.isValueBlank(inputNumber.getMaxValue())) {
+                if (!LangUtils.isValueBlank(inputNumber.getMaxValue())) {
                     BigDecimal max = new BigDecimal(inputNumber.getMaxValue());
                     if (value.compareTo(max) > 0) {
                         submittedValue = String.valueOf(max.doubleValue());
@@ -131,6 +132,7 @@ public class InputNumberRenderer extends InputRenderer {
 
         String styleClass = inputNumber.getStyleClass();
         styleClass = styleClass == null ? InputNumber.STYLE_CLASS : InputNumber.STYLE_CLASS + " " + styleClass;
+        styleClass = inputNumber.isValid() ? styleClass : styleClass + " ui-state-error"; // see #3706
 
         writer.startElement("span", inputNumber);
         writer.writeAttribute("id", clientId, null);

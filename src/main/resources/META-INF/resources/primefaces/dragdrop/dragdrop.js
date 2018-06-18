@@ -8,10 +8,25 @@ PrimeFaces.widget.Draggable = PrimeFaces.widget.BaseWidget.extend({
         this.id = this.cfg.id;
         this.jqId = PrimeFaces.escapeClientId(this.id);
         this.jq = $(PrimeFaces.escapeClientId(this.cfg.target));
+        this.cfg.cancel = this.cfg.cancel || "input,textarea,button,select,option";
 
         if(this.cfg.appendTo) {
             this.cfg.appendTo = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo);
         }
+        
+        var $this = this;
+
+        this.cfg.start = function(event, ui) {
+            if($this.cfg.onStart) {
+                $this.cfg.onStart.call($this, event, ui);
+            }
+        };
+        
+        this.cfg.stop = function(event, ui) {
+            if($this.cfg.onStop) {
+                $this.cfg.onStop.call($this, event, ui);
+            }
+        };
         
         this.jq.draggable(this.cfg);
         

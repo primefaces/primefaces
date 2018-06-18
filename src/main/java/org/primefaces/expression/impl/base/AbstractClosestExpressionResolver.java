@@ -22,6 +22,7 @@ import org.primefaces.util.ComponentTraversalUtils;
 
 public abstract class AbstractClosestExpressionResolver implements SearchExpressionResolver {
 
+    @Override
     public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
         return (UIComponent) ComponentTraversalUtils.closest(getType(), last);
     }

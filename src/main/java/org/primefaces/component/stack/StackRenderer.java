@@ -42,6 +42,7 @@ public class StackRenderer extends BaseMenuRenderer {
         wb.finish();
     }
 
+    @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Stack stack = (Stack) menu;

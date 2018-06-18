@@ -301,16 +301,16 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
 
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, ac);
+        }
+
         for (int i = 0; i < values.size(); i++) {
             String value = values.get(i);
             writer.startElement("option", null);
             writer.writeAttribute("value", value, null);
             writer.writeAttribute("selected", "selected", null);
             writer.endElement("option");
-        }
-        
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, ac);
         }
 
         writer.endElement("select");
@@ -554,7 +554,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                     headerFacet.encodeAll(context);
                 }
                 else if (headerText != null) {
-                    writer.write(headerText);
+                    writer.writeText(headerText, null);
                 }
 
                 writer.endElement("th");
@@ -572,8 +572,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                 if (pojo) {
                     requestMap.put(var, item);
                     String value = converter == null ? String.valueOf(ac.getItemValue()) : converter.getAsString(context, ac, ac.getItemValue());
-                    writer.writeAttribute("data-item-value", value, null);
-                    writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
+                    writer.writeAttribute("data-item-value", escapeText(value), null);
+                    writer.writeAttribute("data-item-label", escapeText(ac.getItemLabel()), null);
                     writer.writeAttribute("data-item-class", ac.getItemStyleClass(), null);
                     writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
 
@@ -637,8 +637,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                 if (pojo) {
                     requestMap.put(var, item);
                     String value = converter == null ? String.valueOf(ac.getItemValue()) : converter.getAsString(context, ac, ac.getItemValue());
-                    writer.writeAttribute("data-item-value", value, null);
-                    writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
+                    writer.writeAttribute("data-item-value", escapeText(value), null);
+                    writer.writeAttribute("data-item-label", escapeText(ac.getItemLabel()), null);
                     writer.writeAttribute("data-item-class", ac.getItemStyleClass(), null);
                     writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
 
@@ -649,8 +649,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                     writer.writeText(ac.getItemLabel(), null);
                 }
                 else {
-                    writer.writeAttribute("data-item-label", item, null);
-                    writer.writeAttribute("data-item-value", item, null);
+                    writer.writeAttribute("data-item-label", escapeText(item.toString()), null);
+                    writer.writeAttribute("data-item-value", escapeText(item.toString()), null);
                     writer.writeAttribute("data-item-class", ac.getItemStyleClass(), null);
 
                     writer.writeText(item, null);
@@ -710,8 +710,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                     .attr("effectDuration", ac.getEffectDuration(), Integer.MAX_VALUE);
         }
 
-        wb.attr("emptyMessage", ac.getEmptyMessage(), null)
-                .attr("resultsMessage", ac.getResultsMessage(), null);
+        wb.attr("emptyMessage", escapeText(ac.getEmptyMessage()), null)
+                .attr("resultsMessage", escapeText(ac.getResultsMessage()), null);
 
         if (ac.getFacet("itemtip") != null) {
             wb.attr("itemtip", true, false)
@@ -787,7 +787,7 @@ public class AutoCompleteRenderer extends InputRenderer {
 
             writer.startElement("td", null);
             writer.writeAttribute("colspan", colSize, null);
-            writer.write(moreText);
+            writer.writeText(moreText, "moreText");
             writer.endElement("td");
 
             writer.endElement("tr");
@@ -795,7 +795,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         else {
             writer.startElement("li", null);
             writer.writeAttribute("class", AutoComplete.MORE_TEXT_LIST_CLASS, null);
-            writer.write(moreText);
+            writer.writeText(moreText, "moreText");
             writer.endElement("li");
         }
     }

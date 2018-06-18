@@ -49,6 +49,7 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         this.listenerWithCustomArg = listenerWithCustomArg;
     }
 
+    @Override
     public void processAjaxBehavior(AjaxBehaviorEvent event) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
         final ELContext elContext = context.getELContext();

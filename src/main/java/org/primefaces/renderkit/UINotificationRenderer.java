@@ -23,7 +23,7 @@ public class UINotificationRenderer extends CoreRenderer {
     protected boolean shouldRender(UINotification component, FacesMessage message, String severityName) {
         String severityLevel = component.getSeverity();
 
-        if ((message.isRendered() && !component.isRedisplay()) || (severityLevel != null && severityLevel.indexOf(severityName) == -1)) {
+        if ((message.isRendered() && !component.isRedisplay()) || (severityLevel != null && !severityLevel.contains(severityName))) {
             return false;
         }
         else {

@@ -147,6 +147,7 @@ public class CheckboxTreeNodeChildren extends TreeNodeList {
      * @param node node to be stored at the specified position
      * @return the node previously at the specified position
      */
+    @Override
     public TreeNode setSibling(int index, TreeNode node) {
         if (node == null) {
             throw new NullPointerException();

@@ -29,35 +29,43 @@ public class DefaultDashboardColumn implements DashboardColumn, Serializable {
         widgets = new LinkedList<String>();
     }
 
+    @Override
     public void removeWidget(String widgetId) {
         widgets.remove(widgetId);
     }
 
+    @Override
     public List<String> getWidgets() {
         return widgets;
     }
 
+    @Override
     public int getWidgetCount() {
         return widgets.size();
     }
 
+    @Override
     public String getWidget(int index) {
         return widgets.get(index);
     }
 
+    @Override
     public void addWidget(int index, String widgetId) {
         widgets.add(index, widgetId);
     }
 
+    @Override
     public void reorderWidget(int index, String widgetId) {
         widgets.remove(widgetId);
         widgets.add(index, widgetId);
     }
 
+    @Override
     public void addWidget(String widgetId) {
         widgets.add(widgetId);
     }
 
+    @Override
     public String getStyle() {
         return style;
     }
@@ -66,6 +74,7 @@ public class DefaultDashboardColumn implements DashboardColumn, Serializable {
         this.style = style;
     }
 
+    @Override
     public String getStyleClass() {
         return styleClass;
     }

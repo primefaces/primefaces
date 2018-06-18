@@ -15,6 +15,11 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    //@override
+    refresh: function(cfg) {
+        this._super(cfg);
+    },
+
     bindEvents: function() {
         var $this = this;
 

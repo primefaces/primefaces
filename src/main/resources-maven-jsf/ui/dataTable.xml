@@ -556,6 +556,20 @@
             <type>java.lang.String</type>
             <description>Client side check if rowclick triggered row click event not a clickable element in row content.</description>
         </attribute>
+        <attribute>
+            <name>disableContextMenuIfEmpty</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Decides whether to disable context menu or not if a table has no records.</description>
+        </attribute>
+        <attribute>
+            <name>escapeText</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>true</defaultValue>
+            <description>Defines if headerText and footerText values on columns are escaped or not. Default is true.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

@@ -34,6 +34,7 @@ public class AutoCompleteHandler extends ComponentHandler {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     protected MetaRuleset createMetaRuleset(Class type) {
         MetaRuleset metaRuleset = super.createMetaRuleset(type);
 
