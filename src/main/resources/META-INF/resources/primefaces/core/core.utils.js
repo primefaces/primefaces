@@ -9,21 +9,6 @@ if (!PrimeFaces.utils) {
         },
 
         /**
-         * Removes all the dynamic overlays for the given id.
-         */
-        removeAllDynamicOverlays: function(widget, overlayId) {
-            if (widget.cfg.appendTo) {
-                var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
-
-                // if the id contains a ':'
-                appendTo.children(PrimeFaces.escapeClientId(overlayId)).remove();
-
-                // if the id does NOT contain a ':'
-                appendTo.children("[id='" + overlayId + "']").remove();
-            }
-        },
-
-        /**
          * Removes the overlay from the appendTo overlay container.
          */
         removeDynamicOverlay: function(widget, overlay, overlayId, appendTo) {

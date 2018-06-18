@@ -17,8 +17,6 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
 
     //@override
     refresh: function(cfg) {
-        PrimeFaces.utils.removeAllDynamicOverlays(this, this.id + '_menu');
-
         this._super(cfg);
     },
 
