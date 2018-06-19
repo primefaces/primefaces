@@ -698,10 +698,13 @@ public class TreeTableRenderer extends DataRenderer {
             }
         }
 
+        String ariaHeaderLabel = getHeaderLabel(context, column);
+
         writer.startElement("th", null);
         writer.writeAttribute("id", column.getContainerClientId(context), null);
         writer.writeAttribute("class", columnClass, null);
         writer.writeAttribute("role", "columnheader", null);
+        writer.writeAttribute("aria-label", ariaHeaderLabel, null);
         if (style != null) writer.writeAttribute("style", style, null);
         if (rowspan != 1) writer.writeAttribute("rowspan", rowspan, null);
         if (colspan != 1) writer.writeAttribute("colspan", colspan, null);
