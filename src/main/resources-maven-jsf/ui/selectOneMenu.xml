@@ -154,6 +154,7 @@
             <name>appendTo</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <defaultValue>@(body)</defaultValue>
             <description>Appends the overlay to the element defined by search expression. Defaults to document body.</description>
         </attribute>
         <attribute>
@@ -207,7 +208,7 @@
 			<required>false</required>
 			<type>java.lang.Boolean</type>
             <defaultValue>false</defaultValue>
-            <description>Defines if dynamic loading is enabled for the element's panel. 
+            <description>Defines if dynamic loading is enabled for the element's panel.
                 If the value is "true", the overlay is not rendered on page load to improve performance. Default is false.</description>
 		</attribute>
     </attributes>
