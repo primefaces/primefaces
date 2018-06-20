@@ -24,7 +24,6 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
-import javax.faces.component.UIPanel;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -1661,39 +1660,6 @@ public class DataTableRenderer extends DataRenderer {
         }
 
         return false;
-    }
-
-    protected String getHeaderLabel(FacesContext context, UIColumn column) {
-        String ariaHeaderText = column.getAriaHeaderText();
-
-        // for headerText of column 
-        if (ariaHeaderText == null) {
-            ariaHeaderText = column.getHeaderText();
-        }
-
-        // for header facet
-        if (ariaHeaderText == null) {
-            UIComponent header = column.getFacet("header");
-            if (header != null) {
-                if (header instanceof UIPanel) {
-                    for (UIComponent child : header.getChildren()) {
-                        if (child.isRendered()) {
-                            String value = ComponentUtils.getValueToRender(context, child);
-
-                            if (value != null) {
-                                ariaHeaderText = value;
-                                break;
-                            }
-                        }
-                    }
-                }
-                else {
-                    ariaHeaderText = ComponentUtils.getValueToRender(context, header);
-                }
-            }
-        }
-
-        return ariaHeaderText;
     }
 
     protected void encodeSortableHeaderOnReflow(FacesContext context, DataTable table) throws IOException {
