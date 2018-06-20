@@ -142,7 +142,7 @@ if (!PrimeFaces.utils) {
             });
 
             $(document).off(hideNamespace).on(hideNamespace, function (e) {
-                if (overlay.is(":hidden")) {
+                if (overlay.is(':hidden') || overlay.css('visibility') === 'hidden') {
                     return;
                 }
 
