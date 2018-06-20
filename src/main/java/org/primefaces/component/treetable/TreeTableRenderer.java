@@ -662,6 +662,7 @@ public class TreeTableRenderer extends DataRenderer {
         boolean filterable = (column.getValueExpression("filterBy") != null && column.isFilterable());
         String sortIcon = null;
         String style = column.getStyle();
+        String width = column.getWidth();
         String columnClass = sortable ? TreeTable.SORTABLE_COLUMN_HEADER_CLASS : TreeTable.COLUMN_HEADER_CLASS;
         String userColumnClass = column.getStyleClass();
         if (column.isResizable()) columnClass = columnClass + " " + TreeTable.RESIZABLE_COLUMN_CLASS;
@@ -686,11 +687,24 @@ public class TreeTableRenderer extends DataRenderer {
         if (priority > 0) {
             columnClass = columnClass + " ui-column-p-" + priority;
         }
+        
+        if (width != null) {
+            String unit = width.endsWith("%") ? "" : "px";
+            if (style != null) {
+                style = style + ";width:" + width + unit;
+            }
+            else {
+                style = "width:" + width + unit;
+            }
+        }
+
+        String ariaHeaderLabel = getHeaderLabel(context, column);
 
         writer.startElement("th", null);
         writer.writeAttribute("id", column.getContainerClientId(context), null);
         writer.writeAttribute("class", columnClass, null);
         writer.writeAttribute("role", "columnheader", null);
+        writer.writeAttribute("aria-label", ariaHeaderLabel, null);
         if (style != null) writer.writeAttribute("style", style, null);
         if (rowspan != 1) writer.writeAttribute("rowspan", rowspan, null);
         if (colspan != 1) writer.writeAttribute("colspan", colspan, null);
