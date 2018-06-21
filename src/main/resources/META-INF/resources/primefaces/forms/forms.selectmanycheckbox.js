@@ -61,19 +61,11 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
             var input = $(this),
             checkbox = input.parent().next();
 
-            if(input.prop('checked')) {
-                checkbox.removeClass('ui-state-active');
-            }
-
             checkbox.addClass('ui-state-focus');
         })
         .on('blur', function() {
             var input = $(this),
             checkbox = input.parent().next();
-
-            if(input.prop('checked')) {
-                checkbox.addClass('ui-state-active');
-            }
 
             checkbox.removeClass('ui-state-focus');
         })

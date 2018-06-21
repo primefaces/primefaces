@@ -91,19 +91,11 @@ PrimeFaces.widget.SelectOneRadio = PrimeFaces.widget.BaseWidget.extend({
             var input = $(this),
             radio = input.parent().next();
 
-            if(input.prop('checked')) {
-                radio.removeClass('ui-state-active');
-            }
-
             radio.addClass('ui-state-focus');
         })
         .on('blur.selectOneRadio', function() {
             var input = $(this),
             radio = input.parent().next();
-
-            if(input.prop('checked')) {
-                radio.addClass('ui-state-active');
-            }
 
             radio.removeClass('ui-state-focus');
         })
