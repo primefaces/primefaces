@@ -150,10 +150,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         //Triggers
         this.triggers.mouseenter(function() {
-            if(!$this.jq.hasClass('ui-state-focus')) {
-                $this.jq.addClass('ui-state-hover');
-                $this.menuIcon.addClass('ui-state-hover');
-            }
+            $this.jq.addClass('ui-state-hover');
+            $this.menuIcon.addClass('ui-state-hover');
         })
         .mouseleave(function() {
             $this.jq.removeClass('ui-state-hover');
