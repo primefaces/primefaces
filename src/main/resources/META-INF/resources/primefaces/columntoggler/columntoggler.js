@@ -189,10 +189,6 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             var input = $(this),
             box = input.parent().next();
 
-            if(input.prop('checked')) {
-                box.removeClass('ui-state-active');
-            }
-
             box.addClass('ui-state-focus');
 
             //PrimeFaces.scrollInView($this.panel, box);
@@ -200,10 +196,6 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         .on('blur.columnToggler', function(e) {
             var input = $(this),
             box = input.parent().next();
-
-            if(input.prop('checked')) {
-                box.addClass('ui-state-active');
-            }
 
             box.removeClass('ui-state-focus');
         })

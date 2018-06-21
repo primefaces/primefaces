@@ -782,10 +782,6 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             var input = $(this),
             box = input.parent().next();
 
-            if(input.prop('checked')) {
-                box.removeClass('ui-state-active');
-            }
-
             box.addClass('ui-state-focus');
 
             PrimeFaces.scrollInView($this.itemContainerWrapper, box);
@@ -793,10 +789,6 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         .on('blur.selectCheckboxMenu', function(e) {
             var input = $(this),
             box = input.parent().next();
-
-            if(input.prop('checked')) {
-                box.addClass('ui-state-active');
-            }
 
             box.removeClass('ui-state-focus');
         })
