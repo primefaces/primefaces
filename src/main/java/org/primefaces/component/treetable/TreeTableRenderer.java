@@ -334,8 +334,8 @@ public class TreeTableRenderer extends DataRenderer {
         encodeScrollAreaStart(context, tt, TreeTable.SCROLLABLE_HEADER_CLASS, TreeTable.SCROLLABLE_HEADER_BOX_CLASS,
                 tableStyle, tableStyleClass, "header", TreeTable.HEADER_CLASS);
         
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
-            encodePaginatorMarkup(context, tt, "bottom");
+        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
+            encodePaginatorMarkup(context, tt, "top");
         }
         
         encodeThead(context, tt);
