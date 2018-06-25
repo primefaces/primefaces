@@ -570,6 +570,13 @@
             <defaultValue>true</defaultValue>
             <description>Defines if headerText and footerText values on columns are escaped or not. Default is true.</description>
         </attribute>
+        <attribute>
+            <name>rowEditMode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>eager</defaultValue>
+            <description>Defines the row edit behavior, valid values are "eager" (default) and "lazy".</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

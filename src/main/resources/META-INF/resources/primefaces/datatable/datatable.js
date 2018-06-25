@@ -2337,16 +2337,21 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     switchToRowEdit: function(row) {
-        this.showRowEditors(row);
+        if(this.cfg.rowEditMode === "lazy") {
+            this.lazyRowEditInit(row);
+        }
+        else {
+            this.showRowEditors(row);
 
-        if(this.hasBehavior('rowEditInit')) {
-            var rowIndex = this.getRowMeta(row).index;
+            if(this.hasBehavior('rowEditInit')) {
+                var rowIndex = this.getRowMeta(row).index;
 
-            var ext = {
-                params: [{name: this.id + '_rowEditIndex', value: rowIndex}]
-            };
+                var ext = {
+                    params: [{name: this.id + '_rowEditIndex', value: rowIndex}]
+                };
 
-            this.callBehavior('rowEditInit', ext);
+                this.callBehavior('rowEditInit', ext);
+            }
         }
     },
 
@@ -2760,6 +2765,13 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 if(args && args.validationFailed) {
                     $this.invalidateRow(rowIndex);
                 }
+                else {
+                    if($this.cfg.rowEditMode === "lazy") {
+                        var index = ($this.paginator) ? (rowIndex % $this.paginator.getRows()) : rowIndex,
+                        newRow = $this.tbody.children('tr').eq(index);
+                        $this.getRowEditors(newRow).children('.ui-cell-editor-input').children().remove();
+                    }
+                }
 
                 if($this.cfg.clientCache) {
                     $this.clearCacheMap();
@@ -2778,6 +2790,43 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         else if(action === 'cancel' && this.hasBehavior('rowEditCancel')) {
             this.callBehavior('rowEditCancel', options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
+    },
+    
+    lazyRowEditInit: function(row) {
+        var rowIndex = this.getRowMeta(row).index,
+        $this = this;
+
+        var options = {
+            source: this.id,
+            process: this.id,
+            update: this.id,
+            global: false,
+            params: [{name: this.id + '_encodeFeature', value: true},
+                    {name: this.id + '_rowEditInit', value: true},
+                    {name: this.id + '_rowEditIndex', value: rowIndex}],
+            onsuccess: function(responseXML, status, xhr) {
+                PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
+                        widget: $this,
+                        handle: function(content) {
+                            $this.updateRow(row, content);
+                        }
+                    });
+
+                return true;
+            },
+            oncomplete: function(xhr, status, args) {
+                var index = ($this.paginator) ? (rowIndex % $this.paginator.getRows()) : rowIndex,
+                newRow = $this.tbody.children('tr').eq(index);
+                $this.showRowEditors(newRow);
+            }
+        };
+
+        if(this.hasBehavior('rowEditInit')) {
+            this.cfg.behaviors['rowEditInit'].call(this, options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);

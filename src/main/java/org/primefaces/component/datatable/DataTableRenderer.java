@@ -280,7 +280,8 @@ public class DataTableRenderer extends DataRenderer {
                     .attr("cellSeparator", table.getCellSeparator(), null)
                     .attr("saveOnCellBlur", table.isSaveOnCellBlur(), true)
                     .attr("cellEditMode", table.getCellEditMode(), "eager")
-                    .attr("editInitEvent", table.getEditInitEvent());
+                    .attr("editInitEvent", table.getEditInitEvent())
+                    .attr("rowEditMode", table.getRowEditMode(), "eager");
         }
 
         //MultiColumn Sorting
