@@ -1849,7 +1849,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         rowRadioSelect(index);
     },
     rowRadioSelect: function(i) {
-        selectRowWithRadio(findRow(i).find('div.ui-radiobutton-box'));
+        if (this.isSingleSelection()) {
+            selectRowWithRadio(findRow(i).find('div.ui-radiobutton-box'));
+        }
     },
     getSelectedRowIndex: function() {
         if (this.selection.length === 1) {
@@ -1871,7 +1873,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     editSelectedRow: function() {
         if (this.selection.length === 1) {
             switchToRowEdit(findRow(getSelectedRowIndex()));
-        }
+        } 
     },
     cancelSelectedRow: function() {
         if (this.selection.length === 1) {
