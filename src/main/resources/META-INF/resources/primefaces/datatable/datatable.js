@@ -1826,8 +1826,62 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.fireRowUnselectEvent(rowMeta.key, "rowUnselect");
         }
     },
+    nextPage: function() {
+        $('a.ui-paginator-next:first').click();
+    },
+    prevPage: function() {
+        $('a.ui-paginator-prev:first').click();
+    },
+    rowDown: function() {
+        var index = getSelectedRowIndex()+1;
+        if (index >= this.tbody.rows.length) {
+            index = 0;
+        }
+        rowRadioSelect(index);
+    },
+    rowUp: function() {
+        var index = getSelectedRowIndex()-1;
 
-    /*
+        if (index < 0) {
+            index = this.tbody.rows.length - 1;
+        }
+
+        rowRadioSelect(index);
+    },
+    rowRadioSelect: function(i) {
+        selectRowWithRadio(findRow(i).find('div.ui-radiobutton-box'));
+    },
+    getSelectedRowIndex: function() {
+        if (this.selection.length === 1) {
+            var row = this.tbody.children('tr[data-rk="' + this.selection[0] + '"]')[0]
+            return Number(row.rowIndex-1);
+        }
+        return -1;
+    },
+    saveSelectedRow: function() {
+        if (this.selection.length === 1) {
+            var row = findRow(getSelectedRowIndex());
+            if (row.hasClass("ui-row-editing")) {
+                saveRowEdit(row);
+                return true;
+            }
+        }
+        return false;
+    },
+    editSelectedRow: function() {
+        if (this.selection.length === 1) {
+            switchToRowEdit(findRow(getSelectedRowIndex()));
+        }
+    },
+    cancelSelectedRow: function() {
+        if (this.selection.length === 1) {
+            var row = findRow(getSelectedRowIndex());
+            if (row.hasClass("ui-row-editing")) {
+                cancelRowEdit(row);
+            }
+        }
+    },
+        /*
      * Highlights row as selected
      */
     highlightRow: function(row) {
