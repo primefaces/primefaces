@@ -1826,12 +1826,24 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.fireRowUnselectEvent(rowMeta.key, "rowUnselect");
         }
     },
+    /**
+     * navigate to the next page by triggering a click on the first next page link
+     * @return {void}
+     */
     nextPage: function() {
         $('a.ui-paginator-next:first').click();
     },
+    /**
+     * navigate to the previous page by triggering a click on the first previous page link
+     * @return {void}
+     */
     prevPage: function() {
         $('a.ui-paginator-prev:first').click();
     },
+    /**
+     * when in single selection mode navigate select the next row, or the first if none or the last is selected
+     * @return {void}
+     */
     rowDown: function() {
         var index = getSelectedRowIndex()+1;
         if (index >= this.tbody.rows.length) {
@@ -1839,6 +1851,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         rowRadioSelect(index);
     },
+    /**
+     * when in single selection mode navigate select the previous row, or the last if none or the first is selected
+     * @return {void}
+     */
     rowUp: function() {
         var index = getSelectedRowIndex()-1;
 
@@ -1848,11 +1864,21 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         rowRadioSelect(index);
     },
+    /**
+     * when in single selection mode find the selection radio in the row with the argument index
+     * and call {@link DataTable#selectRowWithRadio}, the effect is the radio will be checked and events will be triggered.
+     * @return {void}
+     */
     rowRadioSelect: function(i) {
         if (this.isSingleSelection()) {
             selectRowWithRadio(findRow(i).find('div.ui-radiobutton-box'));
         }
     },
+    /**
+     * When one row is selected, find the corresponding row and return its 0 based index in the datatable,
+     * otherwise return -1.
+     * @return {Number} the row index or -1
+     */
     getSelectedRowIndex: function() {
         if (this.selection.length === 1) {
             var row = this.tbody.children('tr[data-rk="' + this.selection[0] + '"]')[0]
@@ -1860,6 +1886,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         return -1;
     },
+    /**
+     * When one row is selected and is being edited, save it by calling {@link DataTable#saveRowEdit}.
+     * @return {Boolean} true when saveRowEdit was called
+     */
     saveSelectedRow: function() {
         if (this.selection.length === 1) {
             var row = findRow(getSelectedRowIndex());
@@ -1870,11 +1900,19 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
         return false;
     },
+    /**
+     * When one row is selected call {@link DataTable#switchToRowEdit}.
+     * @return {void}
+     */
     editSelectedRow: function() {
         if (this.selection.length === 1) {
             switchToRowEdit(findRow(getSelectedRowIndex()));
         } 
     },
+    /**
+     * When one row is selected and is being edited, cancel it by calling {@link DataTable#cancelRowEdit}.
+     * @return {undefined}
+     */
     cancelSelectedRow: function() {
         if (this.selection.length === 1) {
             var row = findRow(getSelectedRowIndex());
