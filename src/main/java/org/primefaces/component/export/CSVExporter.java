@@ -33,6 +33,20 @@ import org.primefaces.util.Constants;
 
 public class CSVExporter extends Exporter {
 
+    private CSVOptions csvOptions;
+    
+    public CSVExporter(ExporterOptions options) {
+        csvOptions = CSVOptions.EXCEL;
+        if (options != null) {
+            if (options instanceof CSVOptions) {
+                csvOptions = (CSVOptions) options;
+            }
+            else {
+                throw new IllegalArgumentException("Options must be an instance of CSVOptions.");
+            }
+        }
+    }
+    
     @Override
     public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly,
             String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
@@ -96,7 +110,7 @@ public class CSVExporter extends Exporter {
 
             if (col.isRendered() && col.isExportable()) {
                 if (firstCellWritten) {
-                    builder.append(",");
+                    builder.append(csvOptions.getDelimiterChar());
                 }
 
                 UIComponent facet = col.getFacet(columnType.facet());
@@ -127,7 +141,7 @@ public class CSVExporter extends Exporter {
             }
         }
 
-        builder.append("\n");
+        builder.append(csvOptions.getEndOfLineSymbols());
     }
 
     @Override
@@ -142,7 +156,7 @@ public class CSVExporter extends Exporter {
 
             if (col.isRendered() && col.isExportable()) {
                 if (firstCellWritten) {
-                    builder.append(",");
+                    builder.append(csvOptions.getDelimiterChar());
                 }
 
                 try {
@@ -172,7 +186,7 @@ public class CSVExporter extends Exporter {
             addColumnValue(builder, col.getChildren(), col);
 
             if (iterator.hasNext()) {
-                builder.append(",");
+                builder.append(csvOptions.getDelimiterChar());
             }
         }
     }
@@ -184,20 +198,20 @@ public class CSVExporter extends Exporter {
     }
 
     protected void addColumnValue(StringBuilder builder, String value) throws IOException {
-        value = (value == null) ? "" : value.replaceAll("\"", "\"\"");
+        value = (value == null) ? "" : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());
 
-        builder.append("\"" + value + "\"");
+        builder.append(csvOptions.getQuoteChar()).append(value).append(csvOptions.getQuoteChar());
     }
 
     protected void addColumnValue(StringBuilder builder, List<UIComponent> components, UIColumn column) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        builder.append("\"");
+        builder.append(csvOptions.getQuoteChar());
 
         if (column.getExportFunction() != null) {
             String value = exportColumnByFunction(context, column);
             //escape double quotes
-            value = value == null ? "" : value.replaceAll("\"", "\"\"");
+            value = value == null ? "" : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());
 
             builder.append(value);
         }
@@ -207,18 +221,18 @@ public class CSVExporter extends Exporter {
                     String value = exportValue(context, component);
 
                     //escape double quotes
-                    value = value == null ? "" : value.replaceAll("\"", "\"\"");
+                    value = value == null ? "" : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());
 
                     builder.append(value);
                 }
             }
         }
 
-        builder.append("\"");
+        builder.append(csvOptions.getQuoteChar());
     }
 
     @Override
     protected void postRowExport(DataTable table, Object document) {
-        ((StringBuilder) document).append("\n");
+        ((StringBuilder) document).append(csvOptions.getEndOfLineSymbols());
     }
 }
