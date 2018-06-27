@@ -20767,14 +20767,15 @@
 
                 // we have stacked chart but are not showing stacked values,
                 // place labels in center.
-                if (this._stack && !p.stackedValue) {
+                /* PrimeFaces Github #3821 */
+                /*if (this._stack && !p.stackedValue) {
                     if (this.barDirection === "vertical") {
                         elt = (this._barPoints[i][0][1] + this._barPoints[i][1][1]) / 2 + plot._gridPadding.top - 0.5 * elem.outerHeight(true);
                     }
                     else {
                         ell = (this._barPoints[i][2][0] + this._barPoints[i][0][0]) / 2 + plot._gridPadding.left - 0.5 * elem.outerWidth(true);
                     }
-                }
+                }*/
 
                 if (this.renderer.constructor == $.jqplot.BarRenderer) {
                     if (this.barDirection == "vertical") {
