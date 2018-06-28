@@ -157,7 +157,7 @@ public class TimelineRenderer extends CoreRenderer {
         wb.attr("groupMinHeight", timeline.getGroupMinHeight());
 
         if (timeline.getGroupsWidth() != null) {
-            wb.attr("groupsWidth'", timeline.getGroupsWidth());
+            wb.attr("groupsWidth", timeline.getGroupsWidth());
         }
 
         wb.attr("snapEvents", timeline.isSnapEvents());
