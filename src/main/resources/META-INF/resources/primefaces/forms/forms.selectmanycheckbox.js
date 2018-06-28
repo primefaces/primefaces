@@ -72,7 +72,6 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
         .on('change', function(e) {
             var input = $(this),
             checkbox = input.parent().next(),
-            hasFocus = input.is(':focus'),
             disabled = input.is(':disabled');
 
             if(disabled) {
@@ -82,9 +81,7 @@ PrimeFaces.widget.SelectManyCheckbox = PrimeFaces.widget.BaseWidget.extend({
             if(input.is(':checked')) {
                 checkbox.children('.ui-chkbox-icon').removeClass('ui-icon-blank').addClass('ui-icon-check');
 
-                if(!hasFocus) {
-                    checkbox.addClass('ui-state-active');
-                }
+                checkbox.addClass('ui-state-active');
             }
             else {
                 checkbox.removeClass('ui-state-active').children('.ui-chkbox-icon').addClass('ui-icon-blank').removeClass('ui-icon-check');
