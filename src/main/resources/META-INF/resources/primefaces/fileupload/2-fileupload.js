@@ -87,7 +87,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                     if(validMsg) {
                         $this.showMessage({
                             summary: validMsg,
-                            filename: PrimeFaces.escapeHTML(file.name),
+                            filename: file.name,
                             filesize: file.size
                         });
                         
@@ -463,7 +463,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             detail = this.cfg.messageTemplate.replace('{name}', msg.filename).replace('{size}', this.formatSize(msg.filesize));
         }
 
-        this.messageList.append('<li><span class="ui-messages-error-summary">' + summary + '</span><span class="ui-messages-error-detail">' + detail + '</span></li>');
+        this.messageList.append('<li><span class="ui-messages-error-summary">' + PrimeFaces.escapeHTML(summary) + '</span><span class="ui-messages-error-detail">' + PrimeFaces.escapeHTML(detail) + '</span></li>');
         this.messageContainer.show();
     },
 
@@ -525,9 +525,9 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
             var file = files.length > 0 ? files[files.length - 1] : null;
             var validMsg = $this.validate($this.input[0], file); 
             if(validMsg) {
-                $this.display.text(PrimeFaces.escapeHTML(validMsg));
+                $this.display.text(validMsg);
             } else {
-                $this.display.text(PrimeFaces.escapeHTML($this.input.val().replace(/\\/g, '/').replace(/.*\//, '')));
+                $this.display.text($this.input.val().replace(/\\/g, '/').replace(/.*\//, ''));
             }
         })
         .on('focus.fileupload', function() {
