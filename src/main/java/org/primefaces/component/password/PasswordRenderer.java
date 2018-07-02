@@ -64,10 +64,10 @@ public class PasswordRenderer extends InputRenderer {
         if (feedback) {
             wb.attr("feedback", true)
                     .attr("inline", password.isInline())
-                    .attr("promptLabel", escapeText(password.getPromptLabel()))
-                    .attr("weakLabel", escapeText(password.getWeakLabel()))
-                    .attr("goodLabel", escapeText(password.getGoodLabel()))
-                    .attr("strongLabel", escapeText(password.getStrongLabel()));
+                    .attr("promptLabel", password.getPromptLabel())
+                    .attr("weakLabel", password.getWeakLabel())
+                    .attr("goodLabel", password.getGoodLabel())
+                    .attr("strongLabel", password.getStrongLabel());
         }
 
         wb.finish();
