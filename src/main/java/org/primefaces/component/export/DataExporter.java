@@ -118,7 +118,7 @@ public class DataExporter implements ActionListener, StateHolder {
         }
 
         try {
-            Exporter exporter = ExporterFactory.getExporterForType(exportAs);
+            Exporter exporter = ExporterFactory.getExporterForType(exportAs, exporterOptions);
 
             if (!repeating) {
                 List components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), tables);
