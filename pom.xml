@@ -303,6 +303,7 @@
                         <include>src/main/java/**</include>
                     </includes>
                     <excludes>
+                        <exclude>**/json/JSON*.java</exclude>
                         <exclude>**/BoundedInputStream.java</exclude>
                     </excludes>
                 </configuration>
