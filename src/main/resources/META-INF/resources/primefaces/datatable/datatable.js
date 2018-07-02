@@ -1109,8 +1109,8 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     adjustScrollHeight: function() {
         var relativeHeight = this.jq.parent().innerHeight() * (parseInt(this.cfg.scrollHeight) / 100),
-        tableHeaderHeight = this.jq.children('.ui-datatable-header').outerHeight(true),
-        tableFooterHeight = this.jq.children('.ui-datatable-footer').outerHeight(true),
+        tableHeaderHeight = (this.jq.children('.ui-datatable-header').length > 0) ? this.jq.children('.ui-datatable-header').outerHeight(true) : 0,
+        tableFooterHeight = (this.jq.children('.ui-datatable-footer').length > 0) ? this.jq.children('.ui-datatable-footer').outerHeight(true) : 0,
         scrollersHeight = (this.scrollHeader.outerHeight(true) + this.scrollFooter.outerHeight(true)),
         paginatorsHeight = this.paginator ? this.paginator.getContainerHeight(true) : 0,
         height = (relativeHeight - (scrollersHeight + paginatorsHeight + tableHeaderHeight + tableFooterHeight));
