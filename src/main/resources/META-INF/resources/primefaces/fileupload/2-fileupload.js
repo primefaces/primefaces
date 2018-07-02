@@ -90,70 +90,20 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                             filename: PrimeFaces.escapeHTML(file.name),
                             filesize: file.size
                         });
+                        
+                        $this.postSelectFile(data);
                     }
                     else {
-                        var row = $('<div class="ui-fileupload-row"></div>').append('<div class="ui-fileupload-preview"></td>')
-                                .append('<div>' + PrimeFaces.escapeHTML(file.name) + '</div>')
-                                .append('<div>' + $this.formatSize(file.size) + '</div>')
-                                .append('<div class="ui-fileupload-progress"></div>')
-                                .append('<div><button class="ui-fileupload-cancel ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-icon ui-icon ui-icon-close"></span><span class="ui-button-text">ui-button</span></button></div>')
-                                .appendTo($this.filesTbody);
-
-                        if($this.filesTbody.children('.ui-fileupload-row').length > 1) {
-                            $('<div class="ui-widget-content"></div>').prependTo(row);
+                        if($this.cfg.onAdd) {
+                            $this.cfg.onAdd.call($this, file, function(processedFile) {
+                                file = processedFile;
+                                data.files[0] = processedFile;
+                                this.addFileToRow(file, data);
+                            });
                         }
-
-                        //preview
-                        if(window.File && window.FileReader && $this.IMAGE_TYPES.test(file.name)) {
-                            var imageCanvas = $('<canvas></canvas>')
-                                                    .appendTo(row.children('div.ui-fileupload-preview')),
-                            context = imageCanvas.get(0).getContext('2d'),
-                            winURL = window.URL||window.webkitURL,
-                            url = winURL.createObjectURL(file),
-                            img = new Image();
-
-                            img.onload = function() {
-                                var imgWidth = null, imgHeight = null, scale = 1;
-
-                                if($this.cfg.previewWidth > this.width) {
-                                    imgWidth = this.width;
-                                }
-                                else {
-                                    imgWidth = $this.cfg.previewWidth;
-                                    scale = $this.cfg.previewWidth / this.width;
-                                }
-
-                                var imgHeight = parseInt(this.height * scale);
-
-                                imageCanvas.attr({width:imgWidth, height: imgHeight});
-                                context.drawImage(img, 0, 0, imgWidth, imgHeight);
-                            };
-
-                            img.src = url;
+                        else {
+                            $this.addFileToRow(file, data);
                         }
-
-                        //progress
-                        row.children('div.ui-fileupload-progress').append('<div class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="ui-progressbar-value ui-widget-header ui-corner-left" style="display: none; width: 0%;"></div></div>');
-
-                        file.row = row;
-
-                        file.row.data('filedata', data);
-
-                        $this.files.push(file);
-
-                        if($this.cfg.auto) {
-                            $this.upload();
-                        }
-                    }
-
-                    if($this.files.length > 0) {
-                        $this.enableButton($this.uploadButton);
-                        $this.enableButton($this.cancelButton);
-                    }
-
-                    $this.fileAddIndex++;
-                    if($this.fileAddIndex === (data.originalFiles.length)) {
-                        $this.fileAddIndex = 0;
                     }
                 }
             },
@@ -206,6 +156,76 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
         };
 
         this.jq.fileupload(this.ucfg);
+    },
+    
+    addFileToRow: function(file, data) {
+        var $this = this,
+            row = $('<div class="ui-fileupload-row"></div>').append('<div class="ui-fileupload-preview"></td>')
+                .append('<div>' + PrimeFaces.escapeHTML(file.name) + '</div>')
+                .append('<div>' + this.formatSize(file.size) + '</div>')
+                .append('<div class="ui-fileupload-progress"></div>')
+                .append('<div><button class="ui-fileupload-cancel ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"><span class="ui-button-icon-left ui-icon ui-icon ui-icon-close"></span><span class="ui-button-text">ui-button</span></button></div>')
+                .appendTo(this.filesTbody);
+
+        if(this.filesTbody.children('.ui-fileupload-row').length > 1) {
+            $('<div class="ui-widget-content"></div>').prependTo(row);
+        }
+
+        //preview
+        if(window.File && window.FileReader && $this.IMAGE_TYPES.test(file.name)) {
+            var imageCanvas = $('<canvas></canvas>')
+                                    .appendTo(row.children('div.ui-fileupload-preview')),
+            context = imageCanvas.get(0).getContext('2d'),
+            winURL = window.URL||window.webkitURL,
+            url = winURL.createObjectURL(file),
+            img = new Image();
+
+            img.onload = function() {
+                var imgWidth = null, imgHeight = null, scale = 1;
+
+                if($this.cfg.previewWidth > this.width) {
+                    imgWidth = this.width;
+                }
+                else {
+                    imgWidth = $this.cfg.previewWidth;
+                    scale = $this.cfg.previewWidth / this.width;
+                }
+
+                var imgHeight = parseInt(this.height * scale);
+
+                imageCanvas.attr({width:imgWidth, height: imgHeight});
+                context.drawImage(img, 0, 0, imgWidth, imgHeight);
+            };
+
+            img.src = url;
+        }
+
+        //progress
+        row.children('div.ui-fileupload-progress').append('<div class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="ui-progressbar-value ui-widget-header ui-corner-left" style="display: none; width: 0%;"></div></div>');
+
+        file.row = row;
+
+        file.row.data('filedata', data);
+
+        this.files.push(file);
+
+        if(this.cfg.auto) {
+            this.upload();
+        }
+        
+        this.postSelectFile(data);
+    },
+    
+    postSelectFile: function(data) {
+        if(this.files.length > 0) {
+            this.enableButton(this.uploadButton);
+            this.enableButton(this.cancelButton);
+        }
+
+        this.fileAddIndex++;
+        if(this.fileAddIndex === (data.originalFiles.length)) {
+            this.fileAddIndex = 0;
+        }
     },
 
     bindEvents: function() {

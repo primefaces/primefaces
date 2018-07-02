@@ -284,6 +284,7 @@
             <name>currentPageReportTemplate</name>
             <required>false</required>
             <type>java.lang.String</type>
+            <defaultValue>{currentPage} of {totalPages}</defaultValue>
             <description>Template of the currentPageReport UI.</description>
         </attribute>
         <attribute>

@@ -2,10 +2,10 @@
  * PrimeFaces OrderList Widget
  */
 PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
-    
+
     init: function(cfg) {
         this._super(cfg);
-        
+
         this.list = this.jq.find('.ui-orderlist-list'),
         this.items = this.list.children('.ui-orderlist-item');
         this.input = $(this.jqId + '_values');
@@ -32,7 +32,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
             });
         }
     },
-    
+
     generateItems: function() {
         var $this = this;
 
@@ -45,10 +45,10 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
             $this.input.append(option);
         });
     },
-    
+
     bindEvents: function() {
         var $this = this;
-        
+
         this.items.on('mouseover.orderList', function(e) {
             var element = $(this);
 
@@ -68,7 +68,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
             if(!metaKey) {
                 element.removeClass('ui-state-hover').addClass('ui-state-highlight')
                 .siblings('.ui-state-highlight').removeClass('ui-state-highlight');
-        
+
                 $this.fireItemSelectEvent(element, e);
             }
             else {
@@ -83,7 +83,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
             }
         });
     },
-    
+
     setupButtons: function() {
         var $this = this;
 
@@ -94,19 +94,19 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
         this.jq.find(' .ui-orderlist-controls .ui-orderlist-button-move-down').click(function() {$this.moveDown($this.sourceList);});
         this.jq.find(' .ui-orderlist-controls .ui-orderlist-button-move-bottom').click(function() {$this.moveBottom($this.sourceList);});
     },
-    
+
     onDragDrop: function(event, ui) {
         ui.item.removeClass('ui-state-highlight');
         this.saveState();
         this.fireReorderEvent();
     },
-    
+
     saveState: function() {
         this.input.children().remove();
 
         this.generateItems();
     },
-    
+
     moveUp: function() {
         var $this = this,
         selectedItems = $this.list.children('.ui-orderlist-item.ui-state-highlight'),
@@ -117,7 +117,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
         if(hasFirstChild) {
             return;
         }
-        
+
         selectedItems.each(function() {
             var item = $(this);
 
@@ -125,7 +125,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
                 item.hide($this.cfg.effect, {}, 'fast', function() {
                     item.insertBefore(item.prev()).show($this.cfg.effect, {}, 'fast', function() {
                         movedItemsCount++;
-                        
+
                         if(itemsToMoveCount === movedItemsCount) {
                             $this.saveState();
                             $this.fireReorderEvent();
@@ -138,7 +138,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
             }
         });
     },
-    
+
     moveTop: function() {
         var $this = this,
         selectedItems = $this.list.children('.ui-orderlist-item.ui-state-highlight'),
@@ -159,7 +159,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
                 item.hide($this.cfg.effect, {}, 'fast', function() {
                     item.insertBefore($this.list.children('.ui-orderlist-item').eq(currentIndex)).show($this.cfg.effect, {}, 'fast', function(){
                         movedItemsCount++;
-                        
+
                         if(itemsToMoveCount === movedItemsCount) {
                             $this.saveState();
                             $this.fireReorderEvent();
@@ -172,7 +172,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
             }
         });
     },
-    
+
     moveDown: function() {
         var $this = this,
         selectedItems = $($this.list.children('.ui-orderlist-item.ui-state-highlight').get().reverse()),
@@ -187,11 +187,11 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
         selectedItems.each(function() {
             var item = $(this);
 
-            if(!item.is(':last-child')) {                
+            if(!item.is(':last-child')) {
                 item.hide($this.cfg.effect, {}, 'fast', function() {
                     item.insertAfter(item.next()).show($this.cfg.effect, {}, 'fast', function() {
                         movedItemsCount++;
-                        
+
                         if(itemsToMoveCount === movedItemsCount) {
                             $this.saveState();
                             $this.fireReorderEvent();
@@ -204,7 +204,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
             }
         });
     },
-    
+
     moveBottom: function() {
         var $this = this,
         selectedItems = $($this.list.children('.ui-orderlist-item.ui-state-highlight').get().reverse()),
@@ -213,7 +213,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
         hasFirstChild = selectedItems.is(':last-child'),
         lastSelectedItemIndex = selectedItems.eq(0).index(),
         itemsLength = this.items.length;
-        
+
         if(hasFirstChild) {
             return;
         }
@@ -226,7 +226,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
                 item.hide($this.cfg.effect, {}, 'fast', function() {
                     item.insertAfter($this.list.children('.ui-orderlist-item').eq(currentIndex)).show($this.cfg.effect, {}, 'fast', function() {
                         movedItemsCount++;
-                        
+
                         if(itemsToMoveCount === movedItemsCount) {
                             $this.saveState();
                             $this.fireReorderEvent();
@@ -242,8 +242,7 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
 
     fireItemSelectEvent: function(item, e) {
         if(this.hasBehavior('select')) {
-            var itemSelectBehavior = this.cfg.behaviors['select'],
-            ext = {
+            var ext = {
                 params: [
                     {name: this.id + '_itemIndex', value: item.index()},
                     {name: this.id + '_metaKey', value: e.metaKey},
@@ -251,26 +250,25 @@ PrimeFaces.widget.OrderList = PrimeFaces.widget.BaseWidget.extend({
                 ]
             };
 
-            itemSelectBehavior.call(this, ext);
+            this.callBehavior('select', ext);
         }
     },
-    
+
     fireItemUnselectEvent: function(item) {
         if(this.hasBehavior('unselect')) {
-            var itemUnselectBehavior = this.cfg.behaviors['unselect'],
-            ext = {
+            var ext = {
                 params: [
                     {name: this.id + '_itemIndex', value: item.index()}
                 ]
             };
 
-            itemUnselectBehavior.call(this, ext);
+            this.callBehavior('unselect', ext);
         }
     },
-    
+
     fireReorderEvent: function() {
         if(this.hasBehavior('reorder')) {
-            this.cfg.behaviors['reorder'].call(this);
+            this.callBehavior('reorder');
         }
     }
 

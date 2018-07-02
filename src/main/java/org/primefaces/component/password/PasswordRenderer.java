@@ -25,6 +25,7 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class PasswordRenderer extends InputRenderer {
@@ -92,7 +93,7 @@ public class PasswordRenderer extends InputRenderer {
         }
 
         String valueToRender = ComponentUtils.getValueToRender(context, password);
-        if (!ComponentUtils.isValueBlank(valueToRender) && password.isRedisplay()) {
+        if (!LangUtils.isValueBlank(valueToRender) && password.isRedisplay()) {
             writer.writeAttribute("value", valueToRender, null);
         }
 

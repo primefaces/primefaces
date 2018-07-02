@@ -128,16 +128,12 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             if(this.cfg.controlled) {
-                if(this.hasBehavior('tabChange')) {
-                    this.fireTabChangeEvent(panel);
-                }
+                this.fireTabChangeEvent(panel);
             }
             else {
                 this.show(panel);
 
-                if(this.hasBehavior('tabChange')) {
-                    this.fireTabChangeEvent(panel);
-                }
+                this.fireTabChangeEvent(panel);
             }
 
         }
@@ -150,16 +146,12 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
      */
     unselect: function(index) {
         if(this.cfg.controlled) {
-            if(this.hasBehavior('tabClose')) {
-                this.fireTabCloseEvent(index);
-            }
+            this.fireTabCloseEvent(index);
         }
         else {
             this.hide(index);
 
-            if(this.hasBehavior('tabClose')) {
-                this.fireTabCloseEvent(index);
-            }
+            this.fireTabCloseEvent(index);
         }
     },
 
@@ -237,9 +229,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
         };
 
         if(this.hasBehavior('tabChange')) {
-            var tabChangeBehavior = this.cfg.behaviors['tabChange'];
-
-            tabChangeBehavior.call(this, options);
+            this.callBehavior('tabChange', options);
         }
         else {
             PrimeFaces.ajax.AjaxRequest(options);
@@ -247,46 +237,48 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
     },
 
     fireTabChangeEvent : function(panel) {
-        var tabChangeBehavior = this.cfg.behaviors['tabChange'],
-        ext = {
-            params: [
-                {name: this.id + '_newTab', value: panel.attr('id')},
-                {name: this.id + '_tabindex', value: parseInt(panel.index() / 2)}
-            ]
-        };
+        if(this.hasBehavior('tabChange')) {
+            var ext = {
+                params: [
+                    {name: this.id + '_newTab', value: panel.attr('id')},
+                    {name: this.id + '_tabindex', value: parseInt(panel.index() / 2)}
+                ]
+            };
 
-        if(this.cfg.controlled) {
-            var $this = this;
-            ext.oncomplete = function(xhr, status, args) {
-                if(args.access && !args.validationFailed) {
-                    $this.show(panel);
-                }
+            if(this.cfg.controlled) {
+                var $this = this;
+                ext.oncomplete = function(xhr, status, args) {
+                    if(args.access && !args.validationFailed) {
+                        $this.show(panel);
+                    }
+                };
             }
-        }
 
-        tabChangeBehavior.call(this, ext);
+            this.callBehavior('tabChange', ext);
+        }
     },
 
     fireTabCloseEvent : function(index) {
-        var panel = this.panels.eq(index),
-        tabCloseBehavior = this.cfg.behaviors['tabClose'],
-        ext = {
-            params: [
-                {name: this.id + '_tabId', value: panel.attr('id')},
-                {name: this.id + '_tabindex', value: parseInt(index)}
-            ]
-        };
+        if(this.hasBehavior('tabClose')) {
+            var panel = this.panels.eq(index),
+            ext = {
+                params: [
+                    {name: this.id + '_tabId', value: panel.attr('id')},
+                    {name: this.id + '_tabindex', value: parseInt(index)}
+                ]
+            };
 
-        if(this.cfg.controlled) {
-            var $this = this;
-            ext.oncomplete = function(xhr, status, args) {
-                if(args.access && !args.validationFailed) {
-                    $this.hide(index);
-                }
+            if(this.cfg.controlled) {
+                var $this = this;
+                ext.oncomplete = function(xhr, status, args) {
+                    if(args.access && !args.validationFailed) {
+                        $this.hide(index);
+                    }
+                };
             }
-        }
 
-        tabCloseBehavior.call(this, ext);
+            this.callBehavior('tabClose', ext);
+        }
     },
 
     markAsLoaded: function(panel) {

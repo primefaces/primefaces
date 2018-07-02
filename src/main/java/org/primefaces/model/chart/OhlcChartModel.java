@@ -49,6 +49,7 @@ public class OhlcChartModel extends CartesianChartModel {
         this.data.add(ohlc);
     }
 
+    @Override
     public void clear() {
         this.data.clear();
     }

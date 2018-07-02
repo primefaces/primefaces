@@ -21,6 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import org.primefaces.component.radiobutton.RadioButtonRenderer;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
@@ -42,7 +43,6 @@ public class CheckboxRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, Checkbox checkbox, SelectManyCheckbox selectManyCheckbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String masterClientId = selectManyCheckbox.getClientId(context);
-        String inputId = selectManyCheckbox.getCheckboxId(context);
         String clientId = checkbox.getClientId(context);
         boolean disabled = checkbox.isDisabled() || selectManyCheckbox.isDisabled();
 
@@ -51,13 +51,12 @@ public class CheckboxRenderer extends InputRenderer {
         styleClass = styleClass == null ? HTML.CHECKBOX_CLASS : HTML.CHECKBOX_CLASS + " " + styleClass;
 
         writer.startElement("div", null);
-        writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
 
-        encodeOptionInput(context, selectManyCheckbox, checkbox, inputId, masterClientId, disabled);
+        encodeOptionInput(context, selectManyCheckbox, checkbox, clientId, masterClientId, disabled);
         encodeOptionOutput(context, disabled, selectManyCheckbox);
 
         writer.endElement("div");
@@ -76,7 +75,7 @@ public class CheckboxRenderer extends InputRenderer {
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
 
         writer.startElement("input", null);
-        writer.writeAttribute("id", id + "_clone", null);
+        writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("class", "ui-chkbox-clone", null);
@@ -92,6 +91,10 @@ public class CheckboxRenderer extends InputRenderer {
         String onclick = buildEvent(context, selectManyCheckbox, checkbox, "onclick", "click", "click");
         if (!isValueBlank(onclick)) {
             writer.writeAttribute("onclick", onclick, null);
+        }
+        
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, selectManyCheckbox);
         }
 
         writer.endElement("input");
@@ -129,5 +132,15 @@ public class CheckboxRenderer extends InputRenderer {
         writer.endElement("span");
 
         writer.endElement("div");
+    }
+    
+    @Override
+    public String getHighlighter() {
+        return "manychkbox";
+    }
+
+    @Override
+    protected boolean isGrouped() {
+        return true;
     }
 }

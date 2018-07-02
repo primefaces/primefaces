@@ -97,7 +97,12 @@ import org.primefaces.util.MessageFactory;
         }
         else {
             UIInput input = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[0].trim());
-            String valueStr = getSubmittedValue(input).toString();
+            Object submittedValue = getSubmittedValue(input);
+            if (submittedValue == null) {
+                return;
+            }
+            
+            String valueStr = submittedValue.toString();
             double value = Double.valueOf(valueStr);
             if (value < this.getMinValue() || value > this.getMaxValue()) {
                 this.setValid(false);

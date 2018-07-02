@@ -35,6 +35,7 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UITree;
+import static org.primefaces.component.api.UITree.ROOT_ROW_KEY;
 import org.primefaces.component.celleditor.CellEditor;
 
 import org.primefaces.component.column.Column;
@@ -272,8 +273,11 @@ public class TreeTableRenderer extends DataRenderer {
         TreeNode root = tt.getValue();
         boolean hasPaginator = tt.isPaginator();
 
+        if (root == null) {
+            throw new FacesException("treeTable's value must be null. ClientId: " + clientId);
+        }
         if (!(root instanceof TreeNode)) {
-            throw new FacesException("treeTable's value must be an instance of " + TreeNode.class.getName());
+            throw new FacesException("treeTable's value must be an instance of " + TreeNode.class.getName() + ". ClientId: " + clientId);
         }
 
         if (hasPaginator) {
@@ -281,7 +285,7 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         if (root.getRowKey() == null) {
-            root.setRowKey("root");
+            root.setRowKey(ROOT_ROW_KEY);
             tt.buildRowKeys(root);
             tt.initPreselection();
         }
@@ -324,9 +328,16 @@ public class TreeTableRenderer extends DataRenderer {
     protected void encodeScrollableMarkup(FacesContext context, TreeTable tt) throws IOException {
         String tableStyle = tt.getTableStyle();
         String tableStyleClass = tt.getTableStyleClass();
+        boolean hasPaginator = tt.isPaginator();
+        String paginatorPosition = tt.getPaginatorPosition();
 
         encodeScrollAreaStart(context, tt, TreeTable.SCROLLABLE_HEADER_CLASS, TreeTable.SCROLLABLE_HEADER_BOX_CLASS,
                 tableStyle, tableStyleClass, "header", TreeTable.HEADER_CLASS);
+        
+        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
+            encodePaginatorMarkup(context, tt, "top");
+        }
+        
         encodeThead(context, tt);
         encodeScrollAreaEnd(context);
 
@@ -335,6 +346,10 @@ public class TreeTableRenderer extends DataRenderer {
         encodeScrollAreaStart(context, tt, TreeTable.SCROLLABLE_FOOTER_CLASS, TreeTable.SCROLLABLE_FOOTER_BOX_CLASS,
                 tableStyle, tableStyleClass, "footer", TreeTable.FOOTER_CLASS);
         encodeTfoot(context, tt);
+        
+        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
+            encodePaginatorMarkup(context, tt, "bottom");
+        }
         encodeScrollAreaEnd(context);
     }
 
@@ -647,6 +662,7 @@ public class TreeTableRenderer extends DataRenderer {
         boolean filterable = (column.getValueExpression("filterBy") != null && column.isFilterable());
         String sortIcon = null;
         String style = column.getStyle();
+        String width = column.getWidth();
         String columnClass = sortable ? TreeTable.SORTABLE_COLUMN_HEADER_CLASS : TreeTable.COLUMN_HEADER_CLASS;
         String userColumnClass = column.getStyleClass();
         if (column.isResizable()) columnClass = columnClass + " " + TreeTable.RESIZABLE_COLUMN_CLASS;
@@ -671,11 +687,24 @@ public class TreeTableRenderer extends DataRenderer {
         if (priority > 0) {
             columnClass = columnClass + " ui-column-p-" + priority;
         }
+        
+        if (width != null) {
+            String unit = width.endsWith("%") ? "" : "px";
+            if (style != null) {
+                style = style + ";width:" + width + unit;
+            }
+            else {
+                style = "width:" + width + unit;
+            }
+        }
+
+        String ariaHeaderLabel = getHeaderLabel(context, column);
 
         writer.startElement("th", null);
         writer.writeAttribute("id", column.getContainerClientId(context), null);
         writer.writeAttribute("class", columnClass, null);
         writer.writeAttribute("role", "columnheader", null);
+        writer.writeAttribute("aria-label", ariaHeaderLabel, null);
         if (style != null) writer.writeAttribute("style", style, null);
         if (rowspan != 1) writer.writeAttribute("rowspan", rowspan, null);
         if (colspan != 1) writer.writeAttribute("colspan", colspan, null);

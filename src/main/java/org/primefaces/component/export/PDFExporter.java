@@ -52,16 +52,19 @@ public class PDFExporter extends Exporter {
     private Font facetFont;
     private Color facetBgColor;
     private ExporterOptions expOptions;
+    private MethodExpression onTableRender;
 
     @Override
     public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType,
-            MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+            MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+            MethodExpression onTableRender) throws IOException {
         
         try {
             Document document = new Document();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PdfWriter.getInstance(document, baos);
-
+            this.onTableRender = onTableRender;
+            
             if (preProcessor != null) {
                 preProcessor.invoke(context.getELContext(), new Object[]{document});
             }
@@ -92,12 +95,14 @@ public class PDFExporter extends Exporter {
 
     @Override
     public void export(FacesContext context, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+            MethodExpression onTableRender) throws IOException {
         
         try {
             Document document = new Document();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PdfWriter.getInstance(document, baos);
+            this.onTableRender = onTableRender;
 
             if (preProcessor != null) {
                 preProcessor.invoke(context.getELContext(), new Object[]{document});
@@ -131,12 +136,14 @@ public class PDFExporter extends Exporter {
 
     @Override
     public void export(FacesContext context, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
+            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+            MethodExpression onTableRender) throws IOException {
         
         try {
             Document document = new Document();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PdfWriter.getInstance(document, baos);
+            this.onTableRender = onTableRender;
 
             if (preProcessor != null) {
                 preProcessor.invoke(context.getELContext(), new Object[]{document});
@@ -178,6 +185,10 @@ public class PDFExporter extends Exporter {
         this.cellFont = FontFactory.getFont(FontFactory.TIMES, encoding);
         this.facetFont = FontFactory.getFont(FontFactory.TIMES, encoding, Font.DEFAULTSIZE, Font.BOLD);
 
+        if (this.onTableRender != null) {
+            this.onTableRender.invoke(context.getELContext(), new Object[]{pdfTable, table});
+        }
+        
         if (this.expOptions != null) {
             applyFacetOptions(this.expOptions);
             applyCellOptions(this.expOptions);

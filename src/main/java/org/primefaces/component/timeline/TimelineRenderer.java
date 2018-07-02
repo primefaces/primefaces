@@ -33,6 +33,7 @@ import org.primefaces.model.timeline.TimelineModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.DateUtils;
 import org.primefaces.util.FastStringWriter;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class TimelineRenderer extends CoreRenderer {
@@ -156,7 +157,7 @@ public class TimelineRenderer extends CoreRenderer {
         wb.attr("groupMinHeight", timeline.getGroupMinHeight());
 
         if (timeline.getGroupsWidth() != null) {
-            wb.attr("groupsWidth'", timeline.getGroupsWidth());
+            wb.attr("groupsWidth", timeline.getGroupsWidth());
         }
 
         wb.attr("snapEvents", timeline.isSnapEvents());
@@ -258,7 +259,7 @@ public class TimelineRenderer extends CoreRenderer {
                     }
                     else {
                         Object data = foundGroup.getData();
-                        if (!ComponentUtils.isValueBlank(timeline.getVarGroup()) && data != null) {
+                        if (!LangUtils.isValueBlank(timeline.getVarGroup()) && data != null) {
                             context.getExternalContext().getRequestMap().put(timeline.getVarGroup(), data);
                         }
 
@@ -295,7 +296,7 @@ public class TimelineRenderer extends CoreRenderer {
             }
         }
 
-        if (!ComponentUtils.isValueBlank(event.getStyleClass())) {
+        if (!LangUtils.isValueBlank(event.getStyleClass())) {
             fsw.write(",\"className\":\"" + event.getStyleClass() + "\"");
         }
         else {
@@ -305,7 +306,7 @@ public class TimelineRenderer extends CoreRenderer {
         fsw.write(",\"content\":\"");
         if (timeline.getChildCount() > 0) {
             Object data = event.getData();
-            if (!ComponentUtils.isValueBlank(timeline.getVar()) && data != null) {
+            if (!LangUtils.isValueBlank(timeline.getVar()) && data != null) {
                 context.getExternalContext().getRequestMap().put(timeline.getVar(), data);
             }
 

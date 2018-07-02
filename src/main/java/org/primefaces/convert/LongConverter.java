@@ -19,10 +19,12 @@ import java.util.Map;
 
 public class LongConverter extends javax.faces.convert.LongConverter implements ClientConverter {
 
+    @Override
     public Map<String, Object> getMetadata() {
         return null;
     }
 
+    @Override
     public String getConverterId() {
         return LongConverter.CONVERTER_ID;
     }

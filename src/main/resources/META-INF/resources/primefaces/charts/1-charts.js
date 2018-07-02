@@ -370,18 +370,15 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         var $this = this;
 
         $(this.jqId).bind("jqplotClick", function(ev, gridpos, datapos, neighbor) {
-            if(neighbor && $this.cfg.behaviors) {
-                var itemSelectCallback = $this.cfg.behaviors['itemSelect'];
-                if(itemSelectCallback) {
-                    var ext = {
-                        params: [
-                            {name: 'itemIndex', value: neighbor.pointIndex}
-                            ,{name: 'seriesIndex', value: neighbor.seriesIndex}
-                        ]
-                    };
+            if(neighbor && $this.hasBehavior('itemSelect')) {
+                var ext = {
+                    params: [
+                        {name: 'itemIndex', value: neighbor.pointIndex}
+                        ,{name: 'seriesIndex', value: neighbor.seriesIndex}
+                    ]
+                };
 
-                    itemSelectCallback.call($this, ext);
-                }
+                $this.callBehavior('itemSelect', ext);
             }
         });
     },

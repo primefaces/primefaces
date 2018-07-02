@@ -82,7 +82,7 @@ public class AjaxRequestBuilder {
     }
 
     private AjaxRequestBuilder addExpressions(UIComponent component, String expressions, String key, int options) {
-        if (!ComponentUtils.isValueBlank(expressions)) {
+        if (!LangUtils.isValueBlank(expressions)) {
             String resolvedExpressions = SearchExpressionFacade.resolveClientIds(context, component, expressions, options);
             buffer.append(",").append(key).append(":\"").append(resolvedExpressions).append("\"");
         }
@@ -121,7 +121,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder delay(String delay) {
-        if (!ComponentUtils.isValueBlank(delay) && !delay.equals("none")) {
+        if (!LangUtils.isValueBlank(delay) && !delay.equals("none")) {
             buffer.append(",d:").append(delay);
 
             if (context.isProjectStage(ProjectStage.Development)) {

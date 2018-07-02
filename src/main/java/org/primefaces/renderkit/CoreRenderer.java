@@ -15,25 +15,17 @@
  */
 package org.primefaces.renderkit;
 
-import org.primefaces.component.api.AjaxSource;
-import org.primefaces.component.api.ClientBehaviorRenderingMode;
-import org.primefaces.component.api.MixedClientBehaviorHolder;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.convert.ClientConverter;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.util.AjaxRequestBuilder;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.Jsf22Helper;
-import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.util.WidgetBuilder;
-import org.primefaces.validate.ClientValidator;
-import org.primefaces.validate.bean.BeanValidationMetadata;
-import org.primefaces.validate.bean.BeanValidationMetadataMapper;
-
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.el.PropertyNotFoundException;
 import javax.faces.application.Resource;
 import javax.faces.component.EditableValueHolder;
@@ -48,16 +40,26 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
 import javax.faces.validator.Validator;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.primefaces.component.api.AjaxSource;
+import org.primefaces.component.api.ClientBehaviorRenderingMode;
+import org.primefaces.component.api.MixedClientBehaviorHolder;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.convert.ClientConverter;
+import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.util.AjaxRequestBuilder;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.WidgetBuilder;
+import org.primefaces.validate.ClientValidator;
+import org.primefaces.validate.bean.BeanValidationMetadata;
+import org.primefaces.validate.bean.BeanValidationMetadataMapper;
+import org.primefaces.util.Jsf22Helper;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.ResourceUtils;
 
 public abstract class CoreRenderer extends Renderer {
 
@@ -94,11 +96,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected String getResourceURL(FacesContext context, String value) {
-        return ComponentUtils.getResourceURL(context, value);
-    }
-
-    protected String getHrefURL(String baseUrl, Map<String, List<String>> params) {
-        return ComponentUtils.getHrefURL(baseUrl, params);
+        return ResourceUtils.getResourceURL(context, value);
     }
     
     protected String getResourceRequestPath(FacesContext context, String resourceName) {
@@ -405,7 +403,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     public boolean isValueBlank(String value) {
-        return ComponentUtils.isValueBlank(value);
+        return LangUtils.isValueBlank(value);
     }
 
     protected String buildAjaxRequest(FacesContext context, AjaxSource source, UIComponent form) {
@@ -485,14 +483,15 @@ public abstract class CoreRenderer extends Renderer {
                 request.append(",'").append(target).append("'");
             }
 
-            request.append(");return false;");
+            request.append(");PrimeFaces.onPost();return false;");
         }
+        else {
+            if (!params.isEmpty()) {
+                request.append(";");
+            }
 
-        if (!submit && !params.isEmpty()) {
-            request.append(";");
+            request.append("PrimeFaces.onPost();");
         }
-
-        request.append("PrimeFaces.onPost();");
 
         return request.toString();
     }

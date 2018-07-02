@@ -107,8 +107,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             };
 
             if(this.hasBehavior('expand')) {
-                var expandBehavior = this.cfg.behaviors['expand'];
-                expandBehavior.call(this, options);
+                this.callBehavior('expand', options);
             }
             else {
                 PrimeFaces.ajax.Request.handle(options);
@@ -121,32 +120,26 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     },
 
     fireExpandEvent: function(node) {
-        if(this.cfg.behaviors) {
-            var expandBehavior = this.cfg.behaviors['expand'];
-            if(expandBehavior) {
-                var ext = {
-                    params: [
-                        {name: this.id + '_expandNode', value: this.getRowKey(node)}
-                    ]
-                };
+        if(this.hasBehavior('expand')) {
+            var ext = {
+                params: [
+                    {name: this.id + '_expandNode', value: this.getRowKey(node)}
+                ]
+            };
 
-                expandBehavior.call(this, ext);
-            }
+            this.callBehavior('expand', ext);
         }
     },
 
     fireCollapseEvent: function(node) {
-        if(this.cfg.behaviors) {
-            var collapseBehavior = this.cfg.behaviors['collapse'];
-            if(collapseBehavior) {
-                var ext = {
-                    params: [
-                        {name: this.id + '_collapseNode', value: this.getRowKey(node)}
-                    ]
-                };
+        if(this.hasBehavior('collapse')) {
+            var ext = {
+                params: [
+                    {name: this.id + '_collapseNode', value: this.getRowKey(node)}
+                ]
+            };
 
-                collapseBehavior.call(this, ext);
-            }
+            this.callBehavior('collapse', ext);
         }
     },
 
@@ -182,11 +175,10 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                     }
                     $this.writeSelections();
                 }
-            }
+            };
 
             if(this.hasBehavior('select')) {
-                var selectBehavior = this.cfg.behaviors['select'];
-                selectBehavior.call(this, options);
+                this.callBehavior('select', ext);
             }
             else {
                 PrimeFaces.ajax.AjaxRequest(options);
@@ -194,44 +186,38 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         }
         else {
             if(this.hasBehavior('select')) {
-                var selectBehavior = this.cfg.behaviors['select'],
-                ext = {
+                var ext = {
                     params: [
                         {name: this.id + '_instantSelection', value: this.getRowKey(node)}
                     ]
                 };
 
-                selectBehavior.call(this, ext);
+                this.callBehavior('select', ext);
             }
         }
     },
 
     fireNodeUnselectEvent: function(node) {
-        if(this.cfg.behaviors) {
-            var unselectBehavior = this.cfg.behaviors['unselect'];
+        if(this.hasBehavior('unselect')) {
+            var ext = {
+                params: [
+                    {name: this.id + '_instantUnselection', value: this.getRowKey(node)}
+                ]
+            };
 
-            if(unselectBehavior) {
-                var ext = {
-                    params: [
-                        {name: this.id + '_instantUnselection', value: this.getRowKey(node)}
-                    ]
-                };
-
-                unselectBehavior.call(this, ext);
-            }
+            this.callBehavior('unselect', ext);
         }
     },
 
     fireContextMenuEvent: function(node) {
         if(this.hasBehavior('contextMenu')) {
-            var contextMenuBehavior = this.cfg.behaviors['contextMenu'],
-            ext = {
+            var ext = {
                 params: [
                     {name: this.id + '_contextMenuNode', value: this.getRowKey(node)}
                 ]
             };
 
-            contextMenuBehavior.call(this, ext);
+            this.callBehavior('contextMenu', ext);
         }
     },
 
@@ -1021,7 +1007,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 dropNodeKey = $this.getRowKey(dropNode),
                 transfer = (dragSource.id !== dropSource.id),
                 draggedSourceKeys = dragSource.draggedSourceKeys,
-                isDroppedNodeCopy = ($this.cfg.dropCopyNode && $this.shiftKey && transfer),
+                isDroppedNodeCopy = ($this.cfg.dropCopyNode && $this.shiftKey),
                 draggedNodes,
                 dragNodeKey;
 
@@ -1145,7 +1131,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 dropNodeKey = $this.getRowKey(dropNode),
                 transfer = (dragSource.id !== dropSource.id),
                 draggedSourceKeys = dragSource.draggedSourceKeys,
-                isDroppedNodeCopy = ($this.cfg.dropCopyNode && $this.shiftKey && transfer),
+                isDroppedNodeCopy = ($this.cfg.dropCopyNode && $this.shiftKey),
                 draggedNodes,
                 dragNodeKey,
                 dndIndex;
@@ -1531,9 +1517,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         }
 
         if(this.hasBehavior('dragdrop')) {
-            var dragdropBehavior = this.cfg.behaviors['dragdrop'];
-
-            dragdropBehavior.call(this, options);
+            this.callBehavior('dragdrop', options);
         }
         else {
             PrimeFaces.ajax.AjaxRequest(options);

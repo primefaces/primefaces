@@ -54,7 +54,7 @@ import javax.faces.event.BehaviorEvent;
 
     private TimeZone appropriateTimeZone;
 
-    java.util.TimeZone calculateTimeZone() {
+	protected TimeZone calculateTimeZone() {
 		if(appropriateTimeZone == null) {
 			Object usertimeZone = getTimeZone();
 			if(usertimeZone != null) {

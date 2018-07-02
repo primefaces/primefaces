@@ -55,6 +55,7 @@ import javax.faces.render.Renderer;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.SharedStringBuilder;
 
 /**
@@ -1223,10 +1224,12 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             _target.setPhaseId(phaseId);
         }
 
+        @Override
         public boolean isAppropriateListener(FacesListener listener) {
             return _target.isAppropriateListener(listener);
         }
 
+        @Override
         public void processListener(FacesListener listener) {
             UITabPanel owner = (UITabPanel) getComponent();
 
@@ -1455,7 +1458,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String paramValue = params.get(Constants.RequestParams.SKIP_CHILDREN_PARAM);
 
-        if (ComponentUtils.isValueBlank(paramValue)) {
+        if (LangUtils.isValueBlank(paramValue)) {
             return true;
         }
 

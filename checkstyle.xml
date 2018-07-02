@@ -4,9 +4,9 @@
     "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
 <module name="Checker">
 
-	<module name="SuppressionFilter">
-		<property name="file" value="checkstyle-suppressions.xml"/>
-	</module>
+    <module name="SuppressionFilter">
+        <property name="file" value="checkstyle-suppressions.xml"/>
+    </module>
 
     <module name="FileTabCharacter"/>
 
@@ -29,7 +29,7 @@
         <!-- Checks for Naming Conventions.                  -->
         <!-- See http://checkstyle.sf.net/config_naming.html -->
         <module name="MemberName">
-		<property name="format" value="^[a-z_](_?[a-zA-Z0-9]+)*$"/>
+            <property name="format" value="^[a-z_](_?[a-zA-Z0-9]+)*$"/>
         </module>
 
         <module name="ConstantName">
@@ -47,24 +47,24 @@
         </module>
 
         <module name="LocalVariableName">
-		<property name="format" value="^[a-z_](_?[a-zA-Z0-9]+)*$"/>
-	</module>
+            <property name="format" value="^[a-z_](_?[a-zA-Z0-9]+)*$"/>
+        </module>
         <module name="MethodName"/>
         <module name="PackageName"/>
         <module name="LocalFinalVariableName"/>
         <module name="ParameterName">
-		<property name="format" value="^[a-z_](_?[a-zA-Z0-9]+)*$"/>
-	</module>
+            <property name="format" value="^[a-z_](_?[a-zA-Z0-9]+)*$"/>
+        </module>
         <module name="StaticVariableName"/>
         <module name="TypeName">
-			<property name="format" value="^[A-Z][a-zA-Z0-9_]*$" />
-		</module>
+            <property name="format" value="^[A-Z][a-zA-Z0-9_]*$" />
+        </module>
 
         <module name="IllegalImport"/>
         <module name="RedundantImport"/>
         <module name="UnusedImports">
-			<property name="processJavadoc" value="true"/>
-		</module>
+            <property name="processJavadoc" value="true"/>
+        </module>
 
         <module name="LineLength">
           <property name="max" value="160" />
@@ -78,8 +78,8 @@
         </module>
 
         <module name="NeedBraces">
-		<property name="allowSingleLineStatement" value="true" />
-	</module>
+            <property name="allowSingleLineStatement" value="true" />
+        </module>
         <module name="LeftCurly">
         </module>
         <module name="RightCurly">

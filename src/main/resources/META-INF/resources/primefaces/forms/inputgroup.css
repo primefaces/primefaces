@@ -28,7 +28,9 @@
 }
 
 .ui-inputgroup .ui-inputtext,
-.ui-inputgroup .ui-password {
+.ui-inputgroup .ui-password,
+.ui-inputgroup .ui-autocomplete-input,
+.ui-inputgroup .ui-spinner-input {
     padding-left: .5em;
 }
 
@@ -38,7 +40,10 @@
 .ui-inputgroup > .ui-inputmask:not(:first-child),
 .ui-inputgroup > .ui-calendar:not(:first-child) > .ui-inputfield,
 .ui-inputgroup > .ui-selectonemenu:not(:first-child),
-.ui-inputgroup > .ui-selectonebutton:not(:first-child) > .ui-button {
+.ui-inputgroup > .ui-selectonebutton:not(:first-child) > .ui-button,
+.ui-inputgroup > .ui-autocomplete:not(:first-child) > .ui-autocomplete-input,
+.ui-inputgroup > .ui-spinner:not(:first-child),
+.ui-inputgroup > .ui-spinner:not(:first-child) > .ui-spinner-input {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     border-left: 0 none;
@@ -50,7 +55,11 @@
 .ui-inputgroup > .ui-inputmask:not(:last-child),
 .ui-inputgroup > .ui-selectonemenu:not(:last-child),
 .ui-inputgroup > .ui-calendar:not(:last-child) > .ui-inputfield,
-.ui-inputgroup > .ui-selectonebutton:not(:last-child) > .ui-button {
+.ui-inputgroup > .ui-selectonebutton:not(:last-child) > .ui-button,
+.ui-inputgroup > .ui-autocomplete:not(:last-child) > .ui-autocomplete-input,
+.ui-inputgroup > .ui-spinner:not(:last-child),
+.ui-inputgroup > .ui-spinner:not(:last-child) > .ui-spinner-input,
+.ui-inputgroup > .ui-spinner:not(:last-child) > .ui-spinner-button {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     border-right: 0 none;

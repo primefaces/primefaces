@@ -143,29 +143,12 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         return outcomeTarget.isIncludeViewParams() || navCase.isIncludeViewParams();
     }
 
-    protected String prependContextPathIfNecessary(FacesContext facesContext, String path) {
-        if (path.length() > 0 && path.charAt(0) == '/') {
-            String contextPath = facesContext.getExternalContext().getRequestContextPath();
-            if (contextPath == null) {
-                return path;
-            }
-            else if (contextPath.length() == 1 && contextPath.charAt(0) == '/') {
-                // If the context path is root, it is not necessary to append it, otherwise an extra '/' will be set.
-                return path;
-            }
-            else {
-                return contextPath + path;
-            }
-        }
-        return path;
-    }
-
     protected String getTargetURL(FacesContext context, UIOutcomeTarget outcomeTarget) {
         String url;
         
         String href = outcomeTarget.getHref();
         if (href != null) {
-            url = getHrefURL(prependContextPathIfNecessary(context, href), outcomeTarget.getParams());
+            url = context.getExternalContext().encodeRedirectURL(href, outcomeTarget.getParams());
         }
         else {
             NavigationCase navCase = findNavigationCase(context, outcomeTarget);

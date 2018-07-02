@@ -16,11 +16,8 @@
 package org.primefaces.component.export;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.el.ELContext;
@@ -60,12 +57,14 @@ public class DataExporter implements ActionListener, StateHolder {
 
     private ValueExpression options;
 
+    private MethodExpression onTableRender;
+
     public DataExporter() {
     }
 
     public DataExporter(ValueExpression target, ValueExpression type, ValueExpression fileName, ValueExpression pageOnly,
             ValueExpression selectionOnly, ValueExpression encoding, MethodExpression preProcessor,
-            MethodExpression postProcessor, ValueExpression options) {
+            MethodExpression postProcessor, ValueExpression options, MethodExpression onTableRender) {
         this.target = target;
         this.type = type;
         this.fileName = fileName;
@@ -75,8 +74,10 @@ public class DataExporter implements ActionListener, StateHolder {
         this.postProcessor = postProcessor;
         this.encoding = encoding;
         this.options = options;
+        this.onTableRender = onTableRender;
     }
 
+    @Override
     public void processAction(ActionEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
         ELContext elContext = context.getELContext();
@@ -88,14 +89,6 @@ public class DataExporter implements ActionListener, StateHolder {
         String encodingType = "UTF-8";
         if (encoding != null) {
             encodingType = (String) encoding.getValue(elContext);
-        }
-
-        try {
-            // encode filename, see #1603
-            outputFileName = URLEncoder.encode(outputFileName, encodingType);
-        }
-        catch (UnsupportedEncodingException ex) {
-            LOGGER.log(Level.WARNING, "Encoding '" + encodingType + "' not supported by URLEncoder", ex);
         }
 
         boolean repeating = false;
@@ -132,7 +125,7 @@ public class DataExporter implements ActionListener, StateHolder {
 
                 if (components.size() > 1) {
                     exporter.export(context, outputFileName, (List<DataTable>) components, isPageOnly, isSelectionOnly,
-                            encodingType, preProcessor, postProcessor, exporterOptions);
+                            encodingType, preProcessor, postProcessor, exporterOptions, onTableRender);
                 }
                 else {
                     UIComponent component = (UIComponent) components.get(0);
@@ -143,13 +136,13 @@ public class DataExporter implements ActionListener, StateHolder {
 
                     DataTable table = (DataTable) component;
                     exporter.export(context, table, outputFileName, isPageOnly, isSelectionOnly, encodingType,
-                            preProcessor, postProcessor, exporterOptions);
+                            preProcessor, postProcessor, exporterOptions, onTableRender);
                 }
             }
             else {
                 String[] clientIds = tables.split("\\s+|,");
                 exporter.export(context, Arrays.asList(clientIds), outputFileName, isPageOnly, isSelectionOnly, encodingType,
-                        preProcessor, postProcessor, exporterOptions);
+                        preProcessor, postProcessor, exporterOptions, onTableRender);
             }
 
             context.responseComplete();
@@ -159,10 +152,12 @@ public class DataExporter implements ActionListener, StateHolder {
         }
     }
 
+    @Override
     public boolean isTransient() {
         return false;
     }
 
+    @Override
     public void setTransient(boolean value) {
         //NoOp
     }
@@ -171,6 +166,7 @@ public class DataExporter implements ActionListener, StateHolder {
         this.repeat = ve;
     }
 
+    @Override
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
 
@@ -184,10 +180,12 @@ public class DataExporter implements ActionListener, StateHolder {
         encoding = (ValueExpression) values[7];
         repeat = (ValueExpression) values[8];
         options = (ValueExpression) values[9];
+        onTableRender = (MethodExpression) values[10];
     }
 
+    @Override
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[10];
+        Object values[] = new Object[11];
 
         values[0] = target;
         values[1] = type;
@@ -199,6 +197,7 @@ public class DataExporter implements ActionListener, StateHolder {
         values[7] = encoding;
         values[8] = repeat;
         values[9] = options;
+        values[10] = onTableRender;
 
         return ((Object[]) values);
     }

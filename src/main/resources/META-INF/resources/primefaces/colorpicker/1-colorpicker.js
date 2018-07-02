@@ -44,12 +44,7 @@
 
             $this.input.change();
 
-            if ($this.hasBehavior('change')) {
-                var changeBehavior = $this.cfg.behaviors['change'];
-                if(changeBehavior) {
-                    changeBehavior.call($this);
-                }
-            }
+            $this.callBehavior('change');
         };
 
         this.cfg.onShow = function() {

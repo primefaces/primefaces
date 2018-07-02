@@ -3,6 +3,7 @@ import java.util.Map;
 import org.primefaces.util.HTML;
 import java.util.logging.Logger;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
         
     private final static Logger logger = Logger.getLogger(Button.class.getName());
                 
@@ -24,13 +25,13 @@ import org.primefaces.util.ComponentUtils;
         Object value = getValue();
         String styleClass = ""; 
     
-        if(value != null && ComponentUtils.isValueBlank(icon)) {
+        if(value != null && LangUtils.isValueBlank(icon)) {
             styleClass = HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
         }
-        else if(value != null && !ComponentUtils.isValueBlank(icon)) {
+        else if(value != null && !LangUtils.isValueBlank(icon)) {
             styleClass = getIconPos().equals("left") ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
         }
-        else if(value == null && !ComponentUtils.isValueBlank(icon)) {
+        else if(value == null && !LangUtils.isValueBlank(icon)) {
             styleClass = HTML.BUTTON_ICON_ONLY_BUTTON_CLASS;
         }
     

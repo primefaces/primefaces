@@ -23,14 +23,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Logger;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
+import org.primefaces.model.ScheduleRenderingMode;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -74,8 +73,12 @@ public class ScheduleRenderer extends CoreRenderer {
             String startDateParam = params.get(clientId + "_start");
             String endDateParam = params.get(clientId + "_end");
 
-            Date startDate = new Date(Long.valueOf(startDateParam));
-            Date endDate = new Date(Long.valueOf(endDateParam));
+            Long startMillis = Long.valueOf(startDateParam);
+            Long endMillis = Long.valueOf(endDateParam);
+
+            TimeZone tz = schedule.calculateTimeZone();
+            Date startDate = new Date(startMillis - tz.getOffset(startMillis));
+            Date endDate = new Date(endMillis - tz.getOffset(endMillis));
 
             LazyScheduleModel lazyModel = ((LazyScheduleModel) model);
             lazyModel.clear(); //Clear old events
@@ -100,6 +103,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 String className = event.getStyleClass();
                 String description = event.getDescription();
                 String url = event.getUrl();
+                ScheduleRenderingMode renderingMode = event.getRenderingMode();
 
                 writer.write("{");
                 writer.write("\"id\": \"" + event.getId() + "\"");
@@ -116,6 +120,9 @@ public class ScheduleRenderer extends CoreRenderer {
                 }
                 if (url != null) {
                     writer.write(",\"url\":\"" + escapeText(url) + "\"");
+                }
+                if (renderingMode != null) {
+                    writer.write(",\"rendering\":\"" + renderingMode.getRendering() + "\"");
                 }
 
                 writer.write("}");
@@ -179,6 +186,13 @@ public class ScheduleRenderer extends CoreRenderer {
             clientTimezone = "local";
         }
 
+        String slotLabelFormat = schedule.getSlotLabelFormat();
+        String axisFormat = schedule.getAxisFormat();
+        if (axisFormat != null) {
+            LOG.warning("axisFormat is deprecated, use slotLabelFormat instead.");
+            slotLabelFormat = axisFormat;
+        }
+
         boolean isShowWeekNumbers = schedule.isShowWeekNumbers();
 
         wb.attr("allDaySlot", schedule.isAllDaySlot(), true)
@@ -191,7 +205,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("weekends", schedule.isShowWeekends(), true)
                 .attr("eventStartEditable", schedule.isDraggable(), true)
                 .attr("eventDurationEditable", schedule.isResizable(), true)
-                .attr("axisFormat", schedule.getAxisFormat(), null)
+                .attr("slotLabelFormat", slotLabelFormat, null)
                 .attr("timeFormat", schedule.getTimeFormat(), null)
                 .attr("weekNumbers", isShowWeekNumbers, false)
                 .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00")

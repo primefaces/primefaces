@@ -69,6 +69,7 @@ import javax.faces.event.BehaviorEvent;
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.datatable.FilterState;
 import org.primefaces.component.datatable.TableState;
+import org.primefaces.util.LangUtils;
 
     private final static Logger logger = Logger.getLogger(DataTable.class.getName());
 
@@ -199,6 +200,10 @@ import org.primefaces.component.datatable.TableState;
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_rowEditAction");
     }
 
+    public boolean isRowEditInitRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_rowEditInit");
+    }
+
     public boolean isCellEditCancelRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_cellEditCancel");
     }
@@ -213,6 +218,14 @@ import org.primefaces.component.datatable.TableState;
 
     public boolean isPageStateRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_pageState");
+    }
+
+    public boolean isScrollingRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_scrolling");
+    }
+
+    public boolean isToggleSelectRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_checked");
     }
     
     public boolean isRowEditCancelRequest(FacesContext context) {
@@ -1292,7 +1305,7 @@ import org.primefaces.component.datatable.TableState;
     public Map getTogglableColumnsMap() {
         if(togglableColsMap == null) {
             togglableColsMap = new HashMap<String, Boolean>();
-            boolean isValueBlank = ComponentUtils.isValueBlank(togglableColumnsAsString);
+            boolean isValueBlank = LangUtils.isValueBlank(togglableColumnsAsString);
 
             if(isValueBlank) {
                 FacesContext context = getFacesContext();
@@ -1332,7 +1345,7 @@ import org.primefaces.component.datatable.TableState;
     public Map getResizableColumnsMap() {
         if(resizableColsMap == null) {
             resizableColsMap = new HashMap<String, String>();
-            boolean isValueBlank = ComponentUtils.isValueBlank(resizableColumnsAsString);
+            boolean isValueBlank = LangUtils.isValueBlank(resizableColumnsAsString);
 
             if(isValueBlank) {
                 FacesContext context = getFacesContext();

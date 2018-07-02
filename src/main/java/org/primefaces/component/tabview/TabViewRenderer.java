@@ -25,6 +25,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class TabViewRenderer extends CoreRenderer {
@@ -35,7 +36,7 @@ public class TabViewRenderer extends CoreRenderer {
         TabView tabView = (TabView) component;
         String activeIndexValue = params.get(tabView.getClientId(context) + "_activeIndex");
 
-        if (!ComponentUtils.isValueBlank(activeIndexValue)) {
+        if (!LangUtils.isValueBlank(activeIndexValue)) {
             tabView.setActiveIndex(Integer.parseInt(activeIndexValue));
         }
 

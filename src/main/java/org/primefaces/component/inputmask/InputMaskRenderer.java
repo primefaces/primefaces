@@ -22,19 +22,20 @@ import java.util.regex.Pattern;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.PrimeApplicationContext;
 
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
 public class InputMaskRenderer extends InputRenderer {
 
     private final static Logger logger = Logger.getLogger(InputMaskRenderer.class.getName());
 
-    private final static String REGEX_METACHARS = "<([{\\^-=$!|]})?*+.>".replaceAll(".", "\\\\$0");
-    private final static Pattern REGEX_METACHARS_PATTERN = Pattern.compile("[" + REGEX_METACHARS + "]");
+    private final static String REGEX_METACHARS = "<([{\\^-=$!|]})?*+.>";
+    private final static String SB_PATTERN = InputMaskRenderer.class.getName() + "#translateMaskIntoRegex";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -50,8 +51,8 @@ public class InputMaskRenderer extends InputRenderer {
         String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if (submittedValue != null) {
-
-            if (!translateMaskIntoRegex(inputMask).matcher(submittedValue).matches()) {
+            Pattern pattern = translateMaskIntoRegex(context, inputMask);
+            if (!pattern.matcher(submittedValue).matches()) {
                 submittedValue = null;
             }
 
@@ -59,24 +60,57 @@ public class InputMaskRenderer extends InputRenderer {
         }
     }
 
-    // https://github.com/digitalBush/jquery.maskedinput
-    // a - Represents an alpha character (A-Z,a-z)
-    // 9 - Represents a numeric character (0-9)
-    // * - Represents an alphanumeric character (A-Z,a-z,0-9)
-    // ? - Makes the following input optional
-    protected Pattern translateMaskIntoRegex(InputMask inputMask) {
+
+    /**
+     * Translates the client side mask to to a {@link Pattern} base on:
+     * https://github.com/digitalBush/jquery.maskedinput
+     * a - Represents an alpha character (A-Z,a-z)
+     * 9 - Represents a numeric character (0-9)
+     * * - Represents an alphanumeric character (A-Z,a-z,0-9)
+     * ? - Makes the following input optional
+     * 
+     * @param context The {@link FacesContext}
+     * @param inputMask The component
+     * @return The generated {@link Pattern}
+     */
+    protected Pattern translateMaskIntoRegex(FacesContext context, InputMask inputMask) {
         String mask = inputMask.getMask();
+        StringBuilder regex = SharedStringBuilder.get(context, SB_PATTERN);
+        boolean optionalFound = false;
 
-        // Escape regex metacharacters first
-        String regex = REGEX_METACHARS_PATTERN.matcher(mask).replaceAll("\\\\$0");
-
-        regex = regex.replace("a", "[A-Za-z]").replace("9", "[0-9]").replace("\\*", "[A-Za-z0-9]");
-        int optionalPos = regex.indexOf("\\?");
-        if (optionalPos != -1) {
-            regex = regex.substring(0, optionalPos) + "(" + regex.substring(optionalPos + 2) + ")?";
+        for (char c : mask.toCharArray()) {
+            if (c == '?') {
+                optionalFound = true;
+            }
+            else {
+                regex.append(translateMaskCharIntoRegex(c, optionalFound));
+            }
         }
+        return Pattern.compile(regex.toString());
+    }
 
-        return Pattern.compile(regex);
+    protected String translateMaskCharIntoRegex(char c, boolean optional) {
+        String translated;
+
+        if (c == '?') {
+            return ""; //should be ignored
+        }
+        else if (c == '9') {
+            translated = "[0-9]";
+        }
+        else if (c == 'a') {
+            translated = "[A-Za-z]";
+        }
+        else if (c == '*') {
+            translated = "[A-Za-z0-9]";
+        }
+        else if (REGEX_METACHARS.indexOf(c) >= 0) {
+            translated = "\\" + c;
+        }
+        else {
+            translated = String.valueOf(c);
+        }
+        return optional ? (translated + "?") : translated;
     }
 
     @Override

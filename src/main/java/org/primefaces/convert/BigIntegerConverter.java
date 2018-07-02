@@ -19,10 +19,12 @@ import java.util.Map;
 
 public class BigIntegerConverter extends javax.faces.convert.BigIntegerConverter implements ClientConverter {
 
+    @Override
     public Map<String, Object> getMetadata() {
         return null;
     }
 
+    @Override
     public String getConverterId() {
         return BigIntegerConverter.CONVERTER_ID;
     }

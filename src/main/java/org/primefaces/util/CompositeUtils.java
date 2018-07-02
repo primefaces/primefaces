@@ -19,6 +19,7 @@ import java.beans.BeanInfo;
 import java.util.List;
 import javax.faces.FacesException;
 import javax.faces.component.ContextCallback;
+import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.view.AttachedObjectTarget;
@@ -39,6 +40,12 @@ public class CompositeUtils {
      */
     public static void invokeOnDeepestEditableValueHolder(FacesContext context, UIComponent composite,
             final ContextCallback callback) {
+        
+        if (composite instanceof EditableValueHolder) {
+            callback.invokeContextCallback(context, composite);
+            return;
+        }
+        
         BeanInfo info = (BeanInfo) composite.getAttributes().get(UIComponent.BEANINFO_KEY);
         List<AttachedObjectTarget> targets = (List<AttachedObjectTarget>) info.getBeanDescriptor()
                 .getValue(AttachedObjectTarget.ATTACHED_OBJECT_TARGETS_KEY);

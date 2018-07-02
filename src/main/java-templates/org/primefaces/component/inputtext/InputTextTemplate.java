@@ -3,5 +3,5 @@
 
     @Override
     public boolean isRTL() {
-        return this.getDir().equalsIgnoreCase("rtl");
+        return "rtl".equalsIgnoreCase(getDir());
     }
