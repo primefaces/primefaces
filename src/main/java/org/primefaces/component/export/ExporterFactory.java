@@ -19,7 +19,7 @@ import javax.faces.FacesException;
 
 public class ExporterFactory {
 
-    public static Exporter getExporterForType(String type) {
+    public static Exporter getExporterForType(String type, ExporterOptions options) {
         Exporter exporter = null;
 
         try {
@@ -35,7 +35,7 @@ public class ExporterFactory {
                     break;
 
                 case CSV:
-                    exporter = new CSVExporter();
+                    exporter = new CSVExporter(options);
                     break;
 
                 case XML:

@@ -29,8 +29,8 @@ $(function() {
 			}).appendTo(document.body),
 
 		toHtml : function(text) {
-			return PrimeFaces.escapeHTML(text.replace(/\n/g, '<br>')
-				.split(' ')).join('<span style="white-space:prev-wrap">&nbsp;</span>');
+			return PrimeFaces.escapeHTML(text).replace(/\n/g, '<br>')
+				.split(' ').join('<span style="white-space:prev-wrap">&nbsp;</span>');
 		},
 		// calculate position
 		getCaretPosition: function() {
