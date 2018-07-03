@@ -88,14 +88,14 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         $this.target.off('keydown.ui-overlaypanel keyup.ui-overlaypanel').on('keydown.ui-overlaypanel', function(e) {
             var keyCode = $.ui.keyCode, key = e.which;
 
-            if(key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER) {
+            if(key === keyCode.ENTER) {
                 e.preventDefault();
             }
         })
         .on('keyup.ui-overlaypanel', function(e) {
             var keyCode = $.ui.keyCode, key = e.which;
 
-            if(key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER) {
+            if(key === keyCode.ENTER) {
                 $this.toggle();
                 e.preventDefault();
             }

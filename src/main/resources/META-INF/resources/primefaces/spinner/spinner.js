@@ -89,7 +89,6 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                     $this.updateValue();
                     $this.format();
                 break;
@@ -105,7 +104,7 @@ PrimeFaces.widget.Spinner = PrimeFaces.widget.BaseWidget.extend({
             var keyCode = $.ui.keyCode;
 
             /* Github #2636 */
-            var checkForIE = (PrimeFaces.env.isIE(11) || PrimeFaces.env.isLtIE(11)) && (e.which === keyCode.ENTER ||e.which === keyCode.NUMPAD_ENTER);
+            var checkForIE = (PrimeFaces.env.isIE(11) || PrimeFaces.env.isLtIE(11)) && (e.which === keyCode.ENTER);
 
             if(e.which === keyCode.UP||e.which === keyCode.DOWN||checkForIE) {
                 $this.input.trigger('change');

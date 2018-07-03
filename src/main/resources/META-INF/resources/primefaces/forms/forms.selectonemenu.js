@@ -360,7 +360,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                     $this.handleEnterKey(e);
                 break;
 
@@ -387,7 +386,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 case keyCode.DOWN:
                 case keyCode.RIGHT:
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                 case keyCode.TAB:
                 case keyCode.ESCAPE:
                 case keyCode.SPACE:
@@ -484,7 +482,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 case keyCode.DOWN:
                 case keyCode.RIGHT:
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                 case keyCode.TAB:
                 case keyCode.ESCAPE:
                 case keyCode.SPACE:
@@ -529,7 +526,6 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                     $this.handleEnterKey(e);
                     e.stopPropagation();
                 break;

@@ -123,7 +123,6 @@ PrimeFaces.widget.Menubar = PrimeFaces.widget.TieredMenu.extend({
                     break;
 
                     case keyCode.ENTER:
-                    case keyCode.NUMPAD_ENTER:
                         var currentLink = currentitem.children('.ui-menuitem-link');
                         currentLink.trigger('click');
                         $this.jq.blur();

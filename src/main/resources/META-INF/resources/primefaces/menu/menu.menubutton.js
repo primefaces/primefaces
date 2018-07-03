@@ -100,7 +100,6 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                 case keyCode.SPACE:
                     if($this.menu.is(':visible'))
                         $this.menuitems.filter('.ui-state-hover').children('a').trigger('click');

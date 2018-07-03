@@ -167,7 +167,6 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
             switch(key) {
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                     if($this.visible)
                         $this.hide();
                     else
@@ -235,7 +234,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
             var key = e.which,
             keyCode = $.ui.keyCode;
 
-            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+            if((key === keyCode.ENTER)) {
                 $this.hide();
                 $this.trigger.focus();
                 e.preventDefault();

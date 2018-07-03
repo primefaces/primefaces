@@ -107,7 +107,6 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 case keyCode.DOWN:
                 case keyCode.RIGHT:
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                 case keyCode.TAB:
                 case keyCode.SPACE:
                 case 17: //keyCode.CONTROL:
@@ -184,7 +183,6 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                     if(overlayVisible) {
                         _self.items.filter('.ui-state-highlight').trigger('click');
 

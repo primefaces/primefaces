@@ -99,7 +99,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
             var keyCode = $.ui.keyCode,
             key = e.which;
 
-            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+            if(key === keyCode.SPACE || key === keyCode.ENTER) {
                 $(this).trigger('click');
                 e.preventDefault();
             }
@@ -193,7 +193,6 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                 case keyCode.SPACE:
                     var currentLink = $this.focusedItem.children('.ui-menuitem-link');
                     //IE fix
