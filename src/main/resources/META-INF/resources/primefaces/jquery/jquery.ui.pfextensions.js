@@ -206,6 +206,15 @@
     });
 })();
 
-
-
-
+// GitHub PrimeFaces #3675 performance
+$.widget( "ui.sortable", $.ui.sortable, {
+    _setHandleClassName: function() {
+        this._removeClass( this.element.find( ".ui-sortable-handle" ), "ui-sortable-handle" );
+        $.each( this.items, function() {
+                        (this.instance.options.handle 
+                        ? this.item.find( this.instance.options.handle ) 
+                        : this.item
+                        ).addClass('ui-sortable-handle');
+        } );
+    }
+});
