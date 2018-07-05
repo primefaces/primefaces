@@ -199,8 +199,11 @@ if (!PrimeFaces.dialog) {
                 this.messageDialog.titleContainer = this.messageDialog.titlebar.children('span.ui-dialog-title');
             }
 
-            this.messageDialog.titleContainer.text(msg.summary);
-            this.messageDialog.content.html('').append('<span class="ui-dialog-message ui-messages-' + msg.severity.split(' ')[0].toLowerCase() + '-icon" />').append(msg.detail);
+            var summaryHtml = msg.summary ? msg.summary.split(/\r\n|\n|\r/g).map(line => PrimeFaces.escapeHTML(line)).join("<br>") : "";
+            this.messageDialog.titleContainer.html(summaryHtml);
+
+            var detailHtml = msg.detail ? msg.detail.split(/\r\n|\n|\r/g).map(line => PrimeFaces.escapeHTML(line)).join("<br>") : "";
+            this.messageDialog.content.html('').append('<span class="ui-dialog-message ui-messages-' + msg.severity.split(' ')[0].toLowerCase() + '-icon" />').append(detailHtml);
             this.messageDialog.show();
         },
 

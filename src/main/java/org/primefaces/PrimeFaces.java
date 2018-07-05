@@ -241,10 +241,7 @@ public class PrimeFaces {
          */
         public void showMessageDynamic(FacesMessage message) {
             String summary = ComponentUtils.escapeText(message.getSummary());
-            summary = ComponentUtils.replaceNewLineWithHtml(summary);
-
             String detail = ComponentUtils.escapeText(message.getDetail());
-            detail = ComponentUtils.replaceNewLineWithHtml(detail);
 
             executeScript("PrimeFaces.showMessageInDialog({severity:\"" + message.getSeverity()
                     + "\",summary:\"" + summary
