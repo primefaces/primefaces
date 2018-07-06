@@ -23,8 +23,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -60,8 +58,6 @@ public class ComponentUtils {
     // marker for a undefined value when a null check is not reliable enough
     private static final Object UNDEFINED_VALUE = new Object();
     
-    private static final Pattern PATTERN_NEW_LINE = Pattern.compile("(\r\n|\n\r|\r|\n)");
-
     public static String getValueToRender(FacesContext context, UIComponent component) {
         return getValueToRender(context, component, UNDEFINED_VALUE);
     }
@@ -299,21 +295,6 @@ public class ComponentUtils {
         else {
             return "widget_" + component.getClientId(context).replaceAll("-|" + UINamingContainer.getSeparatorChar(context), "_");
         }
-    }
-
-    
-
-    public static String replaceNewLineWithHtml(String text) {
-        if (text == null) {
-            return null;
-        }
-
-        Matcher match = PATTERN_NEW_LINE.matcher(text);
-        if (match.find()) {
-            return match.replaceAll("<br/>");
-        }
-
-        return text;
     }
 
     /**
