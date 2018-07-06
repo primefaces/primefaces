@@ -551,6 +551,15 @@
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>true</removeIncluded>
+                            <output>${project.build.directory}/classes/META-INF/resources/primefaces/keyboard/keyboard.js</output>
+                            <includes>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/keyboard/0-jquery.keypad.js</include>
+                                <include>${project.build.directory}/classes/META-INF/resources/primefaces/keyboard/1-keyboard.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <insertNewLine>true</insertNewLine>
+                            <removeIncluded>true</removeIncluded>
                             <output>${project.build.directory}/classes/META-INF/resources/primefaces/keyfilter/keyfilter.js</output>
                             <includes>
                                 <include>${project.build.directory}/classes/META-INF/resources/primefaces/keyfilter/0-jquery.keyfilter.js</include>

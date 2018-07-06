@@ -60,6 +60,7 @@ public class KeyboardRenderer extends InputRenderer {
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Keyboard", keyboard.resolveWidgetVar(), clientId)
+                .attr("useThemeRoller", true)
                 .attr("showOn", keyboard.getShowMode())
                 .attr("showAnim", keyboard.getEffect())
                 .attr("buttonImageOnly", keyboard.isButtonImageOnly(), false)
