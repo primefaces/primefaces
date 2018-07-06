@@ -33,6 +33,7 @@ package org.primefaces.component.api;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -273,6 +274,10 @@ public class UIData extends javax.faces.component.UIData {
         String firstParam = params.get(componentClientId + "_first");
         String rowsParam = params.get(componentClientId + "_rows");
 
+        if (rowsParam != null && !Arrays.asList(data.getRowsPerPageTemplate().split("[,\\s]+")).contains(rowsParam)) {
+            throw new IllegalArgumentException("Unsupported rows per page value: " + rowsParam);            
+        }
+        
         data.setFirst(Integer.valueOf(firstParam));
         data.setRows(Integer.valueOf(rowsParam));
 

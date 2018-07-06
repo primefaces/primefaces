@@ -1109,8 +1109,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
     adjustScrollHeight: function() {
         var relativeHeight = this.jq.parent().innerHeight() * (parseInt(this.cfg.scrollHeight) / 100),
-        tableHeaderHeight = this.jq.children('.ui-datatable-header').outerHeight(true),
-        tableFooterHeight = this.jq.children('.ui-datatable-footer').outerHeight(true),
+        headerChilden = this.jq.children('.ui-datatable-header'),
+        footerChilden = this.jq.children('.ui-datatable-footer'),
+        tableHeaderHeight = (headerChilden.length > 0) ? headerChilden.outerHeight(true) : 0,
+        tableFooterHeight = (footerChilden.length > 0) ? footerChilden.outerHeight(true) : 0,
         scrollersHeight = (this.scrollHeader.outerHeight(true) + this.scrollFooter.outerHeight(true)),
         paginatorsHeight = this.paginator ? this.paginator.getContainerHeight(true) : 0,
         height = (relativeHeight - (scrollersHeight + paginatorsHeight + tableHeaderHeight + tableFooterHeight));
@@ -4032,8 +4034,10 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
 
     adjustScrollHeight: function() {
         var relativeHeight = this.jq.parent().innerHeight() * (parseInt(this.cfg.scrollHeight) / 100),
-        tableHeaderHeight = this.jq.children('.ui-datatable-header').outerHeight(true),
-        tableFooterHeight = this.jq.children('.ui-datatable-footer').outerHeight(true),
+        headerChilden = this.jq.children('.ui-datatable-header'),
+        footerChilden = this.jq.children('.ui-datatable-footer'),
+        tableHeaderHeight = (headerChilden.length > 0) ? headerChilden.outerHeight(true) : 0,
+        tableFooterHeight = (footerChilden.length > 0) ? footerChilden.outerHeight(true) : 0,
         scrollersHeight = (this.scrollHeader.innerHeight() + this.scrollFooter.innerHeight()),
         paginatorsHeight = this.paginator ? this.paginator.getContainerHeight(true) : 0,
         height = (relativeHeight - (scrollersHeight + paginatorsHeight + tableHeaderHeight + tableFooterHeight));

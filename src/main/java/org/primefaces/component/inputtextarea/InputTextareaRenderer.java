@@ -84,7 +84,7 @@ public class InputTextareaRenderer extends InputRenderer {
         for (Object item : items) {
             writer.startElement("li", null);
             writer.writeAttribute("class", AutoComplete.ITEM_CLASS, null);
-            writer.writeAttribute("data-item-value", escapeText(item.toString()), null);
+            writer.writeAttribute("data-item-value", item.toString(), null);
             writer.writeText(item, null);
 
             writer.endElement("li");
@@ -107,7 +107,7 @@ public class InputTextareaRenderer extends InputRenderer {
             UIComponent counterComponent = SearchExpressionFacade.resolveComponent(context, inputTextarea, counter);
 
             wb.attr("counter", counterComponent.getClientId(context))
-                    .attr("counterTemplate", escapeText(inputTextarea.getCounterTemplate()), null);
+                    .attr("counterTemplate", inputTextarea.getCounterTemplate(), null);
         }
 
         if (inputTextarea.getCompleteMethod() != null) {
