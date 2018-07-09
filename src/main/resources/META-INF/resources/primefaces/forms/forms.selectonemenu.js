@@ -6,6 +6,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     init: function(cfg) {
         this._super(cfg);
 
+        if (this.jqId.indexOf('parent') > 0) {
+            console.log('init');
+        }
+
         this.panelId = this.jqId + '_panel';
         this.input = $(this.jqId + '_input');
         this.focusInput = $(this.jqId + '_focus');
@@ -13,6 +17,13 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         this.menuIcon = this.jq.children('.ui-selectonemenu-trigger');
 
         this.panel = $(this.panelId);
+        
+        console.log('panels');
+        this.panel.each(function(e, ex) {
+            console.log(ex);
+        });
+        
+        
         this.disabled = this.jq.hasClass('ui-state-disabled');
         this.itemsWrapper = this.panel.children('.ui-selectonemenu-items-wrapper');
         this.options = this.input.children('option');
@@ -119,6 +130,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     //@override
     refresh: function(cfg) {
+        if (this.jqId.indexOf('parent') > 0) {
+            console.log('refresh');
+        }
+        
         this.panelWidthAdjusted = false;
 
         this._super(cfg);

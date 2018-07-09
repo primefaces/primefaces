@@ -195,15 +195,30 @@ if (!PrimeFaces.utils) {
         },
 
         registerDynamicOverlay: function(widget, overlay, overlayId) {
+
             if (widget.cfg.appendTo) {
+                var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
+                
+                // filter out multiple overlays
+                // this can happen if the widget is updated and the old widget is still attached to the appendTo
+                // appendDynamicOverlay will then call removeDynamicOverlay
+                // this is weird case which should not happen in normal cases but somehow happened with dialogReturn
+                // see #3860
+                if (overlay.length > 1) {
+                    overlay = overlay.filter(function(index, element) {
+                        return !$(element).parent().is(appendTo);
+                    });
+                }
+
+                PrimeFaces.utils.appendDynamicOverlay(widget, overlay, overlayId, appendTo);
+
                 widget.addDestroyListener(function() {
                     var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
                     PrimeFaces.utils.removeDynamicOverlay(widget, overlay, overlayId, appendTo);
-                });
-
-                var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
-                PrimeFaces.utils.appendDynamicOverlay(widget, overlay, overlayId, appendTo);
+                });                
             }
+            
+            return overlay;
         },
 
 
