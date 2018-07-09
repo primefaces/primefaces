@@ -107,7 +107,8 @@ public class SearchExpressionFacade {
                                     components.add(component);
                                 }
                             }
-                        } // default ID case
+                        }
+                        // default ID case
                         else {
                             ResolveComponentCallback callback = new ResolveComponentCallback();
                             resolveComponentById(source, expression, separatorString, context, callback);
@@ -322,7 +323,8 @@ public class SearchExpressionFacade {
         // if it contains a keyword and it's not a nested expression (e.g. @parent:@parent), we don't need to loop
         if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX) && expression.contains(separatorString)) {
             component = resolveComponentByExpressionChain(context, source, expression, separatorChar, separatorString, hints);
-        } // it's a keyword and not nested, just ask our resolvers
+        }
+        // it's a keyword and not nested, just ask our resolvers
         else if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX)) {
             SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(expression);
 
@@ -332,7 +334,8 @@ public class SearchExpressionFacade {
             else {
                 component = resolver.resolveComponent(context, source, source, expression, hints);
             }
-        } // default ID case
+        }
+        // default ID case
         else {
             ResolveClientIdCallback callback = new ResolveClientIdCallback(source, hints, expression);
             resolveComponentById(source, expression, separatorString, context, callback);
