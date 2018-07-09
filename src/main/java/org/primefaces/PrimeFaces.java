@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
-import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UIViewRoot;
@@ -35,6 +34,7 @@ import org.primefaces.expression.ComponentNotFoundException;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 import org.primefaces.visit.ResetInputVisitCallback;
 
 public class PrimeFaces {
@@ -266,43 +266,50 @@ public class PrimeFaces {
         }
         
         /**
-         * Updates all components with the given clientIds.
+         * Updates all components with the given expressions or clientIds.
          *
-         * @param clientIds a list of clientIds.
+         * @param expressions a list of expressions or clientIds.
          */
-        public void update(Collection<String> clientIds) {
-            if (clientIds == null || clientIds.isEmpty()) {
+        public void update(Collection<String> expressions) {
+            if (expressions == null || expressions.isEmpty()) {
                 return;
             }
             
             FacesContext facesContext = getFacesContext();
             
-            // call SEF to validate if a component with the clientId exists
-            if (facesContext.isProjectStage(ProjectStage.Development)) {
-                for (String clientId : clientIds) {
-                    try {
-                        SearchExpressionFacade.resolveClientId(facesContext, facesContext.getViewRoot(), clientId);
-                    }
-                    catch (ComponentNotFoundException e) {
-                        LOG.log(Level.WARNING, "PrimeFaces.current().ajax().update() called but component can't be resolved!", e);
-                    }
+            for (String expression : expressions) {
+                
+                if (LangUtils.isValueBlank(expression)) {
+                    continue;
+                }
+
+                try {
+                    String clientId = 
+                            SearchExpressionFacade.resolveClientId(facesContext, facesContext.getViewRoot(), expression);
+                    
+                    facesContext.getPartialViewContext().getRenderIds().add(clientId);
+                }
+                catch (ComponentNotFoundException e) {
+                    LOG.log(Level.WARNING,
+                            "PrimeFaces.current().ajax().update() called but component can't be resolved!"
+                            + "Expression will just be added to the renderIds.", e);
+
+                    facesContext.getPartialViewContext().getRenderIds().add(expression);
                 }
             }
-            
-            facesContext.getPartialViewContext().getRenderIds().addAll(clientIds);
         }
         
         /**
-         * Updates all components with the given clientIds.
+         * Updates all components with the given expressions or clientIds.
          *
-         * @param clientIds a list of clientIds.
+         * @param expressions a list of expressions or clientIds.
          */
-        public void update(String... clientIds) {
-            if (clientIds == null || clientIds.length == 0) {
+        public void update(String... expressions) {
+            if (expressions == null || expressions.length == 0) {
                 return;
             }
 
-            update(Arrays.asList(clientIds));
+            update(Arrays.asList(expressions));
         }
     }
 }
