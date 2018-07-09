@@ -76,7 +76,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.minimized = false;
         this.maximized = false;
 
-        this.init(cfg);
+        this._super(cfg);
     },
 
     initSize: function() {

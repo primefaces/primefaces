@@ -92,7 +92,7 @@ if (!PrimeFaces.widget) {
         },
 
         //used in ajax updates, reloads the widget configuration
-        refresh: function(cfg) {
+        refresh: function(cfg) {            
             this.destroyListeners = [];
 
             for (var i = 0; i < this.refreshListeners.length; i++) {
@@ -105,7 +105,7 @@ if (!PrimeFaces.widget) {
         },
 
         //will be called when the widget after a ajax request if the widget is detached
-        destroy: function() {
+        destroy: function() {            
             PrimeFaces.debug("Destroyed detached widget: " + this.widgetVar);
 
             for (var i = 0; i < this.destroyListeners.length; i++) {
@@ -184,19 +184,13 @@ if (!PrimeFaces.widget) {
         init: function(cfg) {
             this._super(cfg);
 
-            if (this.cfg.appendTo) {
-                this.appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(this);
-                PrimeFaces.utils.appendDynamicOverlay(this, this.jq, this.id, this.appendTo);
-            }
+            PrimeFaces.utils.registerDynamicOverlay(this, this.jq, this.id);
         },
 
         //@Override
         refresh: function(cfg) {
             this._super(cfg);
 
-            if (this.appendTo) {
-                PrimeFaces.utils.removeDynamicOverlay(this, this.jq, this.id, this.appendTo);
-            }
             PrimeFaces.utils.removeModal(this.id);
 
             this.appendTo = null;
@@ -207,9 +201,6 @@ if (!PrimeFaces.widget) {
         destroy: function() {
             this._super();
 
-            if (this.appendTo) {
-                PrimeFaces.utils.removeDynamicOverlay(this, this.jq, this.id, this.appendTo);
-            }
             PrimeFaces.utils.removeModal(this.id);
 
             this.appendTo = null;
