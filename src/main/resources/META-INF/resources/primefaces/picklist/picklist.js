@@ -282,7 +282,6 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                 case keyCode.SPACE:
                     if($this.focusedItem && $this.focusedItem.hasClass('ui-state-highlight')) {
                         $this.focusedItem.trigger('dblclick.pickList');
@@ -431,14 +430,14 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             var key = e.which,
             keyCode = $.ui.keyCode;
 
-            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+            if((key === keyCode.ENTER)) {
                 e.preventDefault();
             }
         }).bind('keyup', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode;
 
-            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+            if((key === keyCode.ENTER)) {
                 $this.filter(this.value, $this.getFilteredList($(this)));
 
                 e.preventDefault();
@@ -480,7 +479,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         var key = e.which,
         keyCode = $.ui.keyCode;
 
-        if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+        if((key === keyCode.ENTER)) {
             e.preventDefault();
         }
     },

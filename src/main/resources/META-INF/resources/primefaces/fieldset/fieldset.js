@@ -41,7 +41,7 @@ PrimeFaces.widget.Fieldset = PrimeFaces.widget.BaseWidget.extend({
                 var key = e.which,
                 keyCode = $.ui.keyCode;
 
-                if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                if((key === keyCode.ENTER)) {
                     $this.toggle(e);
                     e.preventDefault();
                 }

@@ -269,7 +269,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             var keyCode = $.ui.keyCode,
             key = e.which;
 
-            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+            if(key === keyCode.SPACE || key === keyCode.ENTER) {
                 $this.chooseButton.children('input').trigger('click');
                 $(this).blur();
                 e.preventDefault();

@@ -255,7 +255,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var key = e.which,
             keyCode = $.ui.keyCode;
 
-            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER) && $(e.target).is(':not(:input)')) {
+            if((key === keyCode.ENTER) && $(e.target).is(':not(:input)')) {
                 $(this).trigger('click.dataTable', (e.metaKey||e.ctrlKey));
                 e.preventDefault();
             }
@@ -384,14 +384,14 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var key = e.which,
             keyCode = $.ui.keyCode;
 
-            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+            if((key === keyCode.ENTER)) {
                 e.preventDefault();
             }
         }).bind('keyup', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode;
 
-            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+            if((key === keyCode.ENTER)) {
                 $this.filter();
 
                 e.preventDefault();
@@ -407,7 +407,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var key = e.which,
             keyCode = $.ui.keyCode;
 
-            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+            if((key === keyCode.ENTER)) {
                 e.preventDefault();
             }
         })
@@ -584,7 +584,6 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     break;
 
                     case keyCode.ENTER:
-                    case keyCode.NUMPAD_ENTER:
                     case keyCode.SPACE:
                         if($this.focusedRowWithCheckbox) {
                             $this.focusedRow.find('> td.ui-selection-column .ui-chkbox .ui-chkbox-box').trigger('click.dataTable');
@@ -870,7 +869,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 var key = e.which,
                 keyCode = $.ui.keyCode;
 
-                if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                if((key === keyCode.ENTER)) {
                     $this.toggleExpansion($(this));
                     e.preventDefault();
                 }
@@ -1099,7 +1098,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 var key = e.which,
                 keyCode = $.ui.keyCode;
 
-                if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER) && $(e.target).is(':not(:input)')) {
+                if((key === keyCode.ENTER) && $(e.target).is(':not(:input)')) {
                     $(PrimeFaces.escapeClientId($(this).data('original'))).trigger('click.dataTable', (e.metaKey||e.ctrlKey));
                     e.preventDefault();
                 }
@@ -2496,7 +2495,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         key = e.which,
                         input = $(this);
 
-                        if(key === keyCode.ENTER || key == keyCode.NUMPAD_ENTER) {
+                        if(key === keyCode.ENTER) {
                             $this.saveCell(cell);
                             $this.currentCell = null;
 

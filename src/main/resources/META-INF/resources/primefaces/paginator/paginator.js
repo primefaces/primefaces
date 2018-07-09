@@ -60,7 +60,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             var key = e.which,
             keyCode = $.ui.keyCode;
 
-            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+            if((key === keyCode.ENTER)) {
                 $(this).trigger('click');
                 e.preventDefault();
             }
@@ -170,7 +170,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             var key = e.which,
             keyCode = $.ui.keyCode;
 
-            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+            if((key === keyCode.ENTER)) {
                 $(this).trigger('click');
                 e.preventDefault();
             }

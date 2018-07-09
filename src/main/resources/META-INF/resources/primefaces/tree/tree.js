@@ -520,7 +520,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 var key = e.which,
                 keyCode = $.ui.keyCode;
 
-                if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                if((key === keyCode.ENTER)) {
                     e.preventDefault();
                 }
             })
@@ -534,7 +534,6 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     case keyCode.DOWN:
                     case keyCode.RIGHT:
                     case keyCode.ENTER:
-                    case keyCode.NUMPAD_ENTER:
                     case keyCode.TAB:
                     case keyCode.ESCAPE:
                     case keyCode.SPACE:
@@ -697,7 +696,6 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                 case keyCode.SPACE:
                     if($this.cfg.selectionMode) {
                         var selectable = $this.focusedNode.children('.ui-treenode-content').hasClass('ui-tree-selectable');

@@ -193,14 +193,14 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             var keyCode = $.ui.keyCode,
             key = e.which;
 
-            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+            if(key === keyCode.SPACE || key === keyCode.ENTER) {
                 $(this).addClass('ui-state-active');
             }
         }).keyup(function(e) {
             var keyCode = $.ui.keyCode,
             key = e.which;
 
-            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+            if(key === keyCode.SPACE || key === keyCode.ENTER) {
                 $(this).removeClass('ui-state-active');
                 $this.searchWithDropdown();
                 $this.input.focus();
@@ -240,7 +240,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                 $this.processKeyEvent(e);
             }
 
-            if($this.cfg.queryEvent === 'enter' && (key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER)) {
+            if($this.cfg.queryEvent === 'enter' && (key === keyCode.ENTER)) {
                 if($this.itemSelectedWithEnter)
                     $this.itemSelectedWithEnter = false;
                 else
@@ -309,7 +309,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         break;
 
                     case keyCode.ENTER:
-                    case keyCode.NUMPAD_ENTER:
                         if ($this.timeout) {
                             $this.deleteTimeout();
                         }
@@ -347,7 +346,6 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                     break;
 
                     case keyCode.ENTER:
-                    case keyCode.NUMPAD_ENTER:
                         if($this.cfg.queryEvent === 'enter' || ($this.timeout > 0) || $this.querying) {
                             e.preventDefault();
                         }

@@ -81,7 +81,7 @@ PrimeFaces.widget.AccordionPanel = PrimeFaces.widget.BaseWidget.extend({
             var keyCode = $.ui.keyCode,
             key = e.which;
 
-            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+            if(key === keyCode.SPACE || key === keyCode.ENTER) {
                 $(this).trigger('click');
                 e.preventDefault();
             }

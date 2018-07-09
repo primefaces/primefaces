@@ -138,10 +138,6 @@
 
 
 (function () {
-    $.extend($.ui.keyCode, {
-        NUMPAD_ENTER: 108
-    });
-
     $.fn.extend({
         focus: (function (orig) {
             return function (delay, fn) {
