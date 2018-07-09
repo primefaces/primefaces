@@ -78,6 +78,7 @@ if (!PrimeFaces.widget) {
             this.jq = $(this.jqId);
             this.widgetVar = cfg.widgetVar;
             this.destroyListeners = [];
+            this.refreshListeners = [];
 
             //remove script tag
             $(this.jqId + '_s').remove();
@@ -94,6 +95,12 @@ if (!PrimeFaces.widget) {
         refresh: function(cfg) {
             this.destroyListeners = [];
 
+            for (var i = 0; i < this.refreshListeners.length; i++) {
+                var refreshListener = this.refreshListeners[i];
+                refreshListener.call(this, this);
+            }
+            this.refreshListeners = [];
+
             return this.init(cfg);
         },
 
@@ -105,6 +112,7 @@ if (!PrimeFaces.widget) {
                 var destroyListener = this.destroyListeners[i];
                 destroyListener.call(this, this);
             }
+            this.destroyListeners = [];
         },
 
         //checks if the given widget is detached
@@ -160,8 +168,14 @@ if (!PrimeFaces.widget) {
                 this.destroyListeners = [];
             }
             this.destroyListeners.push(listener);
-        }
+        },
 
+        addRefreshListener: function(listener) {
+            if (!this.refreshListeners) {
+                this.refreshListeners = [];
+            }
+            this.refreshListeners.push(listener);
+        }
     });
 
     PrimeFaces.widget.DynamicOverlayWidget = PrimeFaces.widget.BaseWidget.extend({

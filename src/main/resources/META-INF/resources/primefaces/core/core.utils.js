@@ -9,13 +9,27 @@ if (!PrimeFaces.utils) {
         },
 
         /**
+         * Cleanup the "detached" overlay.
+         * If you update a component, the overlay is rendered below the component markup but moved to the "appendTo" via our scripts.
+         * After the AJAX update, we have now 2 overlays with the same id:
+         * 1) below the root element
+         * 2) the old, detached overlay, below the "appendTo"
+         * 
+         * We now need to remove the detached overlay.
+         */
+        cleanupDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
+            if (widget.cfg.appendTo) {
+                var overlays = $("[id='" + overlayId + "']");                
+                if (overlays.length > 1) {
+                    appendTo.children("[id='" + overlayId + "']").remove();
+                }
+            }
+        },
+
+        /**
          * Removes the overlay from the appendTo overlay container.
          */
         removeDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
-            // if the id contains a ':'
-            appendTo.children(PrimeFaces.escapeClientId(overlayId)).not(overlay).remove();
-
-            // if the id does NOT contain a ':'
             appendTo.children("[id='" + overlayId + "']").not(overlay).remove();
         },
 
@@ -198,24 +212,17 @@ if (!PrimeFaces.utils) {
 
             if (widget.cfg.appendTo) {
                 var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
-                
-                // filter out multiple overlays
-                // this can happen if the widget is updated and the old widget is still attached to the appendTo
-                // appendDynamicOverlay will then call removeDynamicOverlay
-                // this is weird case which should not happen in normal cases but somehow happened with dialogReturn
-                // see #3860
-                if (overlay.length > 1) {
-                    overlay = overlay.filter(function(index, element) {
-                        return !$(element).parent().is(appendTo);
-                    });
-                }
-
                 PrimeFaces.utils.appendDynamicOverlay(widget, overlay, overlayId, appendTo);
 
                 widget.addDestroyListener(function() {
                     var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
                     PrimeFaces.utils.removeDynamicOverlay(widget, overlay, overlayId, appendTo);
-                });                
+                });
+                
+                widget.addRefreshListener(function() {
+                    var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
+                    PrimeFaces.utils.cleanupDynamicOverlay(widget, overlay, overlayId, appendTo);
+                });    
             }
             
             return overlay;
