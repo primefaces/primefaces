@@ -1288,7 +1288,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         PrimeFaces.ajax.Request.handle(options);
     },
 
-    loadRowsWithVirtualScroll: function(page) {
+    loadRowsWithVirtualScroll: function(page, callback) {
         if(this.virtualScrollActive) {
             return;
         }
@@ -1312,7 +1312,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                     handle: function(content) {
                         //insert new rows
                         this.updateData(content);
-
+                        callback();
                         this.virtualScrollActive = false;
                     }
                 });
@@ -3980,9 +3980,10 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
 
                     if(virtualScrollBody.scrollTop + viewportHeight > parseFloat($this.scrollBodyTable.css('top')) + tableHeight || virtualScrollBody.scrollTop < parseFloat($this.scrollBodyTable.css('top'))) {
                         var page = Math.floor((virtualScrollBody.scrollTop * pageCount) / (virtualScrollBody.scrollHeight)) + 1;
-                        $this.loadRowsWithVirtualScroll(page);
-                        $this.scrollBodyTable.css('top',((page - 1) * pageHeight) + 'px');
-                        $this.frozenBodyTable.css('top',((page - 1) * pageHeight) + 'px');
+                        $this.loadRowsWithVirtualScroll(page, function () {
+                            $this.scrollBodyTable.css('top', ((page - 1) * pageHeight) + 'px');
+                            $this.frozenBodyTable.css('top', ((page - 1) * pageHeight) + 'px');
+                        });
                     }
                 }, 200);
             }
