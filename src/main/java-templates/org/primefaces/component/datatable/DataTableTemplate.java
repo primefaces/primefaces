@@ -166,6 +166,7 @@ import org.primefaces.util.LangUtils;
         put("tap", SelectEvent.class);
         put("taphold", SelectEvent.class);
         put("cellEditCancel", CellEditEvent.class);
+        put("virtualScroll", PageEvent.class);
     }});
     
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
@@ -365,6 +366,13 @@ import org.primefaces.util.LangUtils;
             }
             else if(eventName.equals("filter")) {
                 wrapperEvent = new FilterEvent(this, behaviorEvent.getBehavior(), getFilteredValue());
+            }
+            else if(eventName.equals("virtualScroll")) {
+                int rows = this.getRowsToRender();
+                int first = Integer.parseInt(params.get(clientId + "_first"));
+                int page = rows > 0 ? (int) (first / rows) : 0;
+        
+                wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
             }
             else if(eventName.equals("rowEdit")||eventName.equals("rowEditCancel")||eventName.equals("rowEditInit")) {
                 int rowIndex = Integer.parseInt(params.get(clientId + "_rowEditIndex"));

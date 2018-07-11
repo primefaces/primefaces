@@ -1023,8 +1023,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                     if(virtualScrollBody.scrollTop + viewportHeight > parseFloat($this.bodyTable.css('top')) + tableHeight || virtualScrollBody.scrollTop < parseFloat($this.bodyTable.css('top'))) {
                         var page = Math.floor((virtualScrollBody.scrollTop * pageCount) / (virtualScrollBody.scrollHeight)) + 1;
-                        $this.loadRowsWithVirtualScroll(page);
-                        $this.bodyTable.css('top',((page - 1) * pageHeight) + 'px');
+                        $this.loadRowsWithVirtualScroll(page, function () {
+                            $this.bodyTable.css('top', ((page - 1) * pageHeight) + 'px');
+                        });
                     }
                 }, 200);
             }
@@ -1325,8 +1326,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                 }
             }
         };
-
-        PrimeFaces.ajax.Request.handle(options);
+        if (this.hasBehavior('virtualScroll')) {
+            this.callBehavior('virtualScroll', options);
+        } else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
     },
 
     /**
