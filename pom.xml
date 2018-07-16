@@ -682,13 +682,20 @@
                                 <Import-Package>
                                     javax.faces.component.search;resolution:=optional,
                                     javax.faces.component.search.*;resolution:=optional,
+                                    javax.faces.flow;resolution:=optional,
                                     javax.faces;version="[2.0.0,3.0.0)",
                                     javax.faces.*;version="[2.0.0,3.0.0)",
                                     javax.inject;resolution:=optional,
                                     javax.inject.*;resolution:=optional,
                                     javax.enterprise;resolution:=optional,
                                     javax.enterprise.*;resolution:=optional,
+                                    javax.portlet;resolution:=optional,
+                                    javax.validation.executable;resolution:=optional,
                                     javax.*,
+                                    com.liferay.portal.util;resolution:=optional,
+                                    net.glxn.qrgen;resolution:=optional,
+                                    org.krysalis.barcode4j.output;resolution:=optional,
+                                    org.apache.myfaces.view.facelets;resolution:=optional,
                                     *;resolution:=optional
                                 </Import-Package>
                             </instructions>
