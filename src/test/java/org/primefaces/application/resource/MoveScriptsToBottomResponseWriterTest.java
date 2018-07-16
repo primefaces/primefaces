@@ -71,10 +71,8 @@ public class MoveScriptsToBottomResponseWriterTest {
         verify(wrappedWriter).endElement("body");
 
         verify(wrappedWriter).startElement("script", null);
-        // FIXME normally we would expect the script to be minimized, instead we get: var pf=window.PrimeFaces;inline;
-        // verify(wrappedWriter).write("inline");
-        // FIXME normally we would expect writeText instead of write to be called
-        verify(wrappedWriter).write(contains("inline"));
+        verify(wrappedWriter).write("inline;");
+        // TODO not sure
         // verify(wrappedWriter).writeText("inline", null);
         verify(wrappedWriter).endElement("script");
         

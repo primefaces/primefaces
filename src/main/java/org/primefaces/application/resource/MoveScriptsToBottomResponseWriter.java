@@ -228,20 +228,26 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     protected String mergeAndMinimizeInlineScripts(String type, ArrayList<String> inlines) {
         StringBuilder script = new StringBuilder(inlines.size() * 100);
         for (int i = 0; i < inlines.size(); i++) {
+            if (i > 0) {
+                script.append("\n");
+            }
             script.append(inlines.get(i));
-            script.append(";\n");
+            script.append(";");
         }
 
         String minimized = script.toString();
 
         if ("text/javascript".equalsIgnoreCase(type)) {
-            minimized = minimized.replace("PrimeFaces.settings", "pf.settings")
-                .replace("PrimeFaces.cw", "pf.cw")
-                .replace("PrimeFaces.ab", "pf.ab")
-                .replace("window.PrimeFaces", "pf")
-                .replace(";;", ";");
+            minimized = minimized.replace(";;", ";");
+            
+            if (minimized.contains("PrimeFaces")) {
+                minimized = minimized.replace("PrimeFaces.settings", "pf.settings")
+                    .replace("PrimeFaces.cw", "pf.cw")
+                    .replace("PrimeFaces.ab", "pf.ab")
+                    .replace("window.PrimeFaces", "pf");
 
-            minimized = "var pf=window.PrimeFaces;" + minimized;
+                minimized = "var pf=window.PrimeFaces;" + minimized;
+            }
         }
 
         return minimized;
