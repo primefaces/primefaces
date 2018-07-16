@@ -120,7 +120,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     @Override
     public void writeAttribute(String name, Object value, String property) throws IOException {
         if (inScript) {
-            if ("src".equals(name)) {
+            if ("src".equalsIgnoreCase(name)) {
                 String strValue = (String) value;
                 if (strValue != null && !strValue.trim().isEmpty()) {
                     include.append(strValue);
@@ -135,7 +135,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     @Override
     public void writeURIAttribute(String name, Object value, String property) throws IOException {
         if (inScript) {
-            if ("src".equals(name)) {
+            if ("src".equalsIgnoreCase(name)) {
                 String strValue = (String) value;
                 if (strValue != null && !strValue.trim().isEmpty()) {
                     include.append(strValue);
@@ -149,7 +149,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
     @Override
     public void startElement(String name, UIComponent component) throws IOException {
-        if ("script".equals(name)) {
+        if ("script".equalsIgnoreCase(name)) {
             inScript = true;
         }
         else {
@@ -159,7 +159,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
     @Override
     public void endElement(String name) throws IOException {
-        if ("script".equals(name)) {
+        if ("script".equalsIgnoreCase(name)) {
             inScript = false;
 
             state.addInline(inline);
@@ -168,7 +168,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             include.setLength(0);
             inline.setLength(0);
         }
-        else if ("body".equals(name) || ("html".equals(name) && !scriptsRendered)) {
+        else if ("body".equalsIgnoreCase(name) || ("html".equalsIgnoreCase(name) && !scriptsRendered)) {
             for (int i = 0; i < state.getIncludes().size(); i++) {
                 String src = state.getIncludes().get(i);
                 if (src != null && !src.isEmpty()) {

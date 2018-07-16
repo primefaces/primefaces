@@ -82,17 +82,21 @@ public class MoveScriptsToBottomResponseWriterTest {
     public void testMultipleInlineScripts() throws IOException {
         writer.startElement("body", null);
         verify(wrappedWriter).startElement("body", null);
+        
         writer.startElement("script", null);
         writer.writeText("script1", null);
         writer.endElement("script");
+        
         writer.startElement("script", null);
         writer.writeText("script2", null);
         writer.endElement("script");
+        
         Assert.assertEquals(2, state.getInlines().size());
         Assert.assertTrue(state.getIncludes().isEmpty());
-        // FIXME normally we would expect state.getSavedInlineTags() to be 1 at this point
-        // Assert.assertEquals(1, state.getSavedInlineTags());
+        Assert.assertEquals(1, state.getSavedInlineTags());
+        
         writer.endElement("body");
+        
         verify(wrappedWriter).startElement("script", null);
         verify(wrappedWriter).write(matches("(?s).*script1.*script2.*"));
         verify(wrappedWriter).endElement("body");
