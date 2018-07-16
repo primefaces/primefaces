@@ -63,7 +63,7 @@ public class MoveScriptsToBottomResponseWriterTest {
         writer.endElement("script");
         verify(wrappedWriter, never()).endElement("script");
         
-        Assert.assertEquals(1, state.getInlines().size());
+        Assert.assertEquals(1, state.getInlines().get("text/javascript").size());
         Assert.assertTrue(state.getIncludes().isEmpty());
         Assert.assertEquals(0, state.getSavedInlineTags());
         
@@ -95,7 +95,7 @@ public class MoveScriptsToBottomResponseWriterTest {
         writer.writeText("script2", null);
         writer.endElement("script");
         
-        Assert.assertEquals(2, state.getInlines().size());
+        Assert.assertEquals(2, state.getInlines().get("text/javascript").size());
         Assert.assertTrue(state.getIncludes().isEmpty());
         Assert.assertEquals(1, state.getSavedInlineTags());
         
@@ -130,11 +130,11 @@ public class MoveScriptsToBottomResponseWriterTest {
         writer.endElement("script");
         
         writer.endElement("body");
-        // FIXME we would expect two script tags to be written, one for the javascripts and the other one for the vertex 
-        // verify(wrappedWriter, times(2)).startElement("script", null);
-        // verify(wrappedWriter).write(matches("(?s).*javascript1.*javascript2(?!.*vertex.*).*"));
-        // verify(wrappedWriter).write(matches("(?s)(?!.*javascript.*).*vertex.*"));
-        // verify(wrappedWriter, times(2)).endElement("script");        
+
+        verify(wrappedWriter, times(2)).startElement("script", null);
+        verify(wrappedWriter).write(matches("(?s).*javascript1.*javascript2(?!.*vertex.*).*"));
+        verify(wrappedWriter).write(matches("(?s)(?!.*javascript.*).*vertex.*"));
+        verify(wrappedWriter, times(2)).endElement("script");        
     }
     
     @Test
@@ -146,6 +146,7 @@ public class MoveScriptsToBottomResponseWriterTest {
         writer.writeAttribute("type", "text/javascript", null);
         writer.writeAttribute("async", "true", null);
         writer.writeAttribute("defer", "true", null);
+        writer.writeText("someJS", null);
         writer.endElement("script");
         
         writer.endElement("body");
@@ -198,14 +199,12 @@ public class MoveScriptsToBottomResponseWriterTest {
         
         writer.endElement("body");
         
-        Assert.assertEquals(3, state.getIncludes().size());
+        Assert.assertEquals(3, state.getIncludes().get("text/javascript").size());
         Assert.assertTrue(state.getInlines().isEmpty());
+
         InOrder inOrder = inOrder(wrappedWriter);
         inOrder.verify(wrappedWriter).startElement("div", null);
-        // FIXME wouldn't it be even better to include url2 just once? 
-        // FIXME normally we would expect three scripts to be written if we have three includes, however one additional is written for empty inlines
-        // inOrder.verify(wrappedWriter, times(3)).startElement("script", null);
-        inOrder.verify(wrappedWriter, times(4)).startElement("script", null);
+        inOrder.verify(wrappedWriter, times(3)).startElement("script", null);
     }
     
     @Test
@@ -223,8 +222,8 @@ public class MoveScriptsToBottomResponseWriterTest {
         
         writer.endElement("body");
 
-        Assert.assertEquals(1, state.getIncludes().size());
-        Assert.assertEquals(1, state.getInlines().size());
+        Assert.assertEquals(1, state.getIncludes().get("text/javascript").size());
+        Assert.assertEquals(1, state.getInlines().get("text/javascript").size());
         verify(wrappedWriter, times(2)).startElement("script", null);
         verify(wrappedWriter).writeAttribute("src", "include", null);
         
