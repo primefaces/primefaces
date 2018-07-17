@@ -15,8 +15,8 @@
  */
 package org.primefaces.context;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.ExternalContextWrapper;
 import javax.faces.context.FacesContext;
@@ -49,26 +49,12 @@ public class PrimeExternalContext extends ExternalContextWrapper {
             httpServletRequest = (HttpServletRequest) request;
         }
         else if (isLiferay()) {
-            try {
-                Class<?> portletRequestClass = Class.forName("javax.portlet.PortletRequest");
-                Class<?> portalUtilClass = Class.forName("com.liferay.portal.util.PortalUtil");
-                Method method = portalUtilClass.getMethod("getHttpServletRequest", new Class[]{portletRequestClass});
-                httpServletRequest = (HttpServletRequest) method.invoke(null, new Object[]{request});
-            }
-            catch (Exception ex) {
-                throw new FacesException(ex);
-            }
+            httpServletRequest = LiferayUtil.getHttpServletRequest(request);
         }
     }
 
     protected boolean isLiferay() {
-        try {
-            Class.forName("com.liferay.portal.util.PortalUtil");
-            return true;
-        }
-        catch (ClassNotFoundException e) {
-            return false;
-        }
+        return LiferayUtil.isLiferay();
     }
 
     public static PrimeExternalContext getCurrentInstance(FacesContext facesContext) {
@@ -88,5 +74,64 @@ public class PrimeExternalContext extends ExternalContextWrapper {
         }
 
         return null;
+    }
+
+    private static final class LiferayUtil {
+
+        // Class initialization is lazy and thread-safe. For more details on this pattern, see
+        // http://stackoverflow.com/questions/7420504/threading-lazy-initialization-vs-static-lazy-initialization and
+        // http://docs.oracle.com/javase/specs/jls/se7/html/jls-12.html#jls-12.4.2
+        private static final Method GET_HTTP_SERVLET_REQUEST_METHOD;
+
+        static {
+
+            Method getHttpServletRequestMethod = null;
+            String portalUtilClassName = "com.liferay.portal.kernel.util.PortalUtil";
+            String getHttpServletRequestMethodName = "getHttpServletRequest";
+
+            try {
+                Class<?> portalUtilClass;
+
+                try {
+
+                    // Class name for legacy Liferay 6.2 and below support.
+                    portalUtilClass = Class.forName("com.liferay.portal.util.PortalUtil");
+                }
+                catch (ClassNotFoundException | NoClassDefFoundError e) {
+                    portalUtilClass = Class.forName(portalUtilClassName);
+                }
+
+                Class<?> portletRequestClass = Class.forName("javax.portlet.PortletRequest");
+                getHttpServletRequestMethod =
+                        portalUtilClass.getMethod(getHttpServletRequestMethodName, new Class[]{portletRequestClass});
+            }
+            catch (ClassNotFoundException | NoClassDefFoundError e) {
+                // Do nothing.
+            }
+            catch (NoSuchMethodException | SecurityException e) {
+                throw new RuntimeException("Liferay's " + portalUtilClassName + " was detected, but the " +
+                        getHttpServletRequestMethodName + " method could not be obtained via reflection.", e);
+            }
+
+            GET_HTTP_SERVLET_REQUEST_METHOD = getHttpServletRequestMethod;
+        }
+
+        private LiferayUtil() {
+            throw new AssertionError();
+        }
+
+        private static boolean isLiferay() {
+            return GET_HTTP_SERVLET_REQUEST_METHOD != null;
+        }
+
+        private static HttpServletRequest getHttpServletRequest(Object request) {
+
+            try {
+                return (HttpServletRequest) GET_HTTP_SERVLET_REQUEST_METHOD.invoke(null, new Object[]{request});
+            }
+            catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                throw new RuntimeException("Failed to obtain HttpServletRequest in Liferay.", e);
+            }
+        }
     }
 }
