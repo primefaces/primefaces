@@ -15,6 +15,8 @@
  */
 package org.primefaces.util;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class Constants {
 
     public static class ContextParams {
@@ -87,4 +89,13 @@ public class Constants {
     public static final String HELPER_RENDERER = "org.primefaces.HELPER_RENDERER";
 
     public static final String TABLE_STATE = "primefaces.TABLE_STATE";
+
+    /**
+     * The key for obtaining a static {@link Method} of the form {@code StaticUtility.getHttpServletRequest(request)}
+     * from the application map. The method must take a single argument (the request) and return an
+     * {@link HttpServletRequest} or {@code null} if it cannot convert the request object into an
+     * {@link HttpServletRequest}.
+     */
+    public static final String CUSTOM_GET_HTTP_SERVLET_REQUEST_STATIC_METHOD =
+            "org.primefaces.CUSTOM_GET_HTTP_SERVLET_REQUEST_STATIC_METHOD";
 }
