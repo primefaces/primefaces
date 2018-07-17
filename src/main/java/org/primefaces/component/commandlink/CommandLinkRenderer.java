@@ -129,9 +129,8 @@ public class CommandLinkRenderer extends CoreRenderer {
             if (label != null) {
                 writer.writeText(label, "value");
             }
-            else {
-                renderChildren(context, link);
-            }
+
+            renderChildren(context, link);
 
             writer.endElement("a");
         }
@@ -150,9 +149,8 @@ public class CommandLinkRenderer extends CoreRenderer {
             if (label != null) {
                 writer.writeText(label, "value");
             }
-            else {
-                renderChildren(context, link);
-            }
+            
+            renderChildren(context, link);
 
             writer.endElement("span");
         }
