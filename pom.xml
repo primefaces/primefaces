@@ -680,6 +680,7 @@
                             <instructions>
                                 <Export-Package>org.primefaces.*;version="${project.version}</Export-Package>
                                 <Import-Package>
+                                    org.osgi.framework,
                                     javax.faces.component.search;resolution:=optional,
                                     javax.faces.component.search.*;resolution:=optional,
                                     javax.faces.flow;resolution:=optional,
@@ -692,7 +693,7 @@
                                     javax.portlet;resolution:=optional,
                                     javax.validation.executable;resolution:=optional,
                                     javax.*,
-                                    com.liferay.portal.util;resolution:=optional,
+                                    com.liferay.portal.kernel.util;resolution:=optional,
                                     net.glxn.qrgen;resolution:=optional,
                                     org.krysalis.barcode4j.output;resolution:=optional,
                                     org.apache.myfaces.view.facelets;resolution:=optional,

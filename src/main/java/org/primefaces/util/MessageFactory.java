@@ -15,14 +15,20 @@
  */
 package org.primefaces.util;
 
+import java.io.IOException;
+import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.application.Application;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.FacesContextWrapper;
 
 public class MessageFactory {
 
@@ -43,13 +49,15 @@ public class MessageFactory {
     public static FacesMessage getMessage(Locale locale, String messageId, Object params[]) {
         String summary = null;
         String detail = null;
-        String userBundleName = FacesContext.getCurrentInstance().getApplication().getMessageBundle();
+        Application application = FacesContext.getCurrentInstance().getApplication();
+        String userBundleName = application.getMessageBundle();
         ResourceBundle bundle = null;
+        ClassLoader currentClassLoader = getCurrentClassLoader(application);
 
         //try user defined bundle first
         if (userBundleName != null) {
             try {
-                bundle = ResourceBundle.getBundle(userBundleName, locale, getCurrentClassLoader(userBundleName));
+                bundle = getBundle(userBundleName, locale, currentClassLoader);
                 summary = bundle.getString(messageId);
             }
             catch (MissingResourceException e) {
@@ -60,7 +68,7 @@ public class MessageFactory {
         //try primefaces bundle
         if (summary == null) {
             try {
-                bundle = ResourceBundle.getBundle(PRIMEFACES_BUNDLE_BASENAME, locale, getCurrentClassLoader(PRIMEFACES_BUNDLE_BASENAME));
+                bundle = getBundle(PRIMEFACES_BUNDLE_BASENAME, locale, currentClassLoader);
                 if (bundle == null) {
                     throw new NullPointerException();
                 }
@@ -74,7 +82,7 @@ public class MessageFactory {
         //fallback to default jsf bundle
         if (summary == null) {
             try {
-                bundle = ResourceBundle.getBundle(DEFAULT_BUNDLE_BASENAME, locale, getCurrentClassLoader(DEFAULT_BUNDLE_BASENAME));
+                bundle = getBundle(DEFAULT_BUNDLE_BASENAME, locale, currentClassLoader);
                 if (bundle == null) {
                     throw new NullPointerException();
                 }
@@ -155,5 +163,125 @@ public class MessageFactory {
         }
 
         return locale;
+    }
+
+    private static ResourceBundle getBundle(String baseName, Locale locale, ClassLoader classLoader) {
+
+        if (OSGiFriendlyControl.OSGI_ENVIRONMENT_DETECTED) {
+
+            if (PRIMEFACES_BUNDLE_BASENAME.equals(baseName)) {
+                return ResourceBundle.getBundle(baseName, locale, classLoader,
+                        OSGiFriendlyControls.OSGI_FRIENDLY_PRIMEFACES_CONTROL);
+            }
+            else if (DEFAULT_BUNDLE_BASENAME.equals(baseName)) {
+                return ResourceBundle.getBundle(baseName, locale, classLoader,
+                        OSGiFriendlyControls.OSGI_FRIENDLY_JSF_CONTROL);
+            }
+            else {
+                return ResourceBundle.getBundle(baseName, locale, classLoader);
+            }
+        }
+        else {
+            return ResourceBundle.getBundle(baseName, locale, classLoader);
+        }
+    }
+
+    private static final class OSGiFriendlyControl extends ResourceBundle.Control {
+
+        private final static Logger logger = Logger.getLogger(OSGiFriendlyControl.class.getName());
+
+        private static final boolean OSGI_ENVIRONMENT_DETECTED;
+
+        static {
+
+            boolean osgiEnvironmentDetected = false;
+
+            try {
+
+                Class<?> frameworkUtilClass = Class.forName("org.osgi.framework.FrameworkUtil");
+                Method getBundleMethod = frameworkUtilClass.getMethod("getBundle", Class.class);
+                Object currentBundle = getBundleMethod.invoke(null, OSGiFriendlyControl.class);
+
+                if (currentBundle != null) {
+                    osgiEnvironmentDetected = true;
+                }
+            }
+            catch (ClassNotFoundException | NoClassDefFoundError e) {
+                // Do nothing.
+            }
+            catch (Throwable t) {
+                logger.log(Level.SEVERE, "An unexpected error occurred when attempting to detect OSGi:", t);
+            }
+
+            OSGI_ENVIRONMENT_DETECTED = osgiEnvironmentDetected;
+        }
+
+        private final ClassLoader osgiBundleClassLoader;
+
+        public OSGiFriendlyControl(ClassLoader osgiBundleClassLoader) {
+            this.osgiBundleClassLoader = osgiBundleClassLoader;
+        }
+
+        @Override
+        public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader classLoader,
+                boolean reload) throws IllegalAccessException, InstantiationException, IOException {
+
+            ResourceBundle resourceBundle = super.newBundle(baseName, locale, format, classLoader, reload);
+
+            // If the ResourceBundle cannot be found with the default class loader (usually the thread context class
+            // loader or TCCL), try to find it with the OSGi bundle's class loader. Since default i18n files are
+            // included inside of the jar/bundle that provides them, default i18n files are not visible to the TCCL in
+            // an OSGi environment. Instead, i18n files are only visible to the class loader of the OSGi bundle that
+            // they are included in.
+            if (resourceBundle == null && !osgiBundleClassLoader.equals(classLoader)) {
+                resourceBundle = super.newBundle(baseName, locale, format, osgiBundleClassLoader, reload);
+            }
+
+            return resourceBundle;
+        }
+    }
+
+    private static final class OSGiFriendlyControls {
+
+        // Class initialization is lazy and thread-safe. For more details on this pattern, see
+        // http://stackoverflow.com/questions/7420504/threading-lazy-initialization-vs-static-lazy-initialization and
+        // http://docs.oracle.com/javase/specs/jls/se7/html/jls-12.html#jls-12.4.2
+        private static final ResourceBundle.Control OSGI_FRIENDLY_PRIMEFACES_CONTROL =
+                new OSGiFriendlyControl(MessageFactory.class.getClassLoader());
+        private static final ResourceBundle.Control OSGI_FRIENDLY_JSF_CONTROL =
+                new OSGiFriendlyControl(getJSFImplClassLoader());
+
+        private OSGiFriendlyControls() {
+            throw new AssertionError();
+        }
+
+        private static ClassLoader getJSFImplClassLoader() {
+
+            Class<? extends FacesContext> facesContextImplClass = FacesContext.class;
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            facesContext = getWrappedFacesContextImpl(facesContext);
+
+            if (facesContext != null) {
+                facesContextImplClass = facesContext.getClass();
+            }
+
+            return facesContextImplClass.getClassLoader();
+        }
+
+        private static FacesContext getWrappedFacesContextImpl(FacesContext facesContext) {
+
+            if (facesContext == null || !(facesContext instanceof FacesContextWrapper)) {
+                return facesContext;
+            }
+
+            FacesContextWrapper facesContextWrapper = (FacesContextWrapper) facesContext;
+            FacesContext wrappedFacesContext = facesContextWrapper.getWrapped();
+
+            if (wrappedFacesContext == null || FacesContext.class.equals(wrappedFacesContext.getClass())) {
+                return facesContext;
+            }
+
+            return getWrappedFacesContextImpl(wrappedFacesContext);
+        }
     }
 }

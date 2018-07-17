@@ -274,8 +274,14 @@ public class UIData extends javax.faces.component.UIData {
         String firstParam = params.get(componentClientId + "_first");
         String rowsParam = params.get(componentClientId + "_rows");
 
-        if (rowsParam != null && !Arrays.asList(data.getRowsPerPageTemplate().split("[,\\s]+")).contains(rowsParam)) {
-            throw new IllegalArgumentException("Unsupported rows per page value: " + rowsParam);            
+        if (rowsParam != null) {
+
+            String rowsPerPageTemplate = data.getRowsPerPageTemplate();
+
+            if (rowsPerPageTemplate != null &&
+                    !Arrays.asList(rowsPerPageTemplate.split("[,\\s]+")).contains(rowsParam)) {
+                throw new IllegalArgumentException("Unsupported rows per page value: " + rowsParam);
+            }
         }
         
         data.setFirst(Integer.valueOf(firstParam));
