@@ -1028,6 +1028,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     targetDragNode = $this.findTargetDragNode(dragNode, dragMode);
 
                     dragNodeKey = $this.getRowKey(targetDragNode);
+                    
+                    if(!transfer && dropNodeKey.indexOf(dragNodeKey) === 0) {
+                        return;
+                    }
 
                     if($this.cfg.controlled) {
                         $this.droppedNodeParams.push({
@@ -1157,6 +1161,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     }
 
                     dragNodeKey = $this.getRowKey(targetDragNode);
+                    
+                    if(!transfer && dropNodeKey.indexOf(dragNodeKey) === 0) {
+                        return;
+                    }
 
                     if($this.cfg.controlled) {
                         $this.droppedNodeParams.push({
