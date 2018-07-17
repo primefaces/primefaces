@@ -123,6 +123,12 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 }
             },
             fail: function(e, data) {
+                if (data.errorThrown === 'abort') {
+                    if ($this.cfg.oncancel) {
+                        $this.cfg.oncancel.call($this);
+                    }
+                    return;
+                }
                 if($this.cfg.onerror) {
                     $this.cfg.onerror.call($this);
                 }
@@ -339,6 +345,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 .on('click.fileupload', this.rowCancelActionSelector, null, function(e) {
                     var row = $(this).closest('.ui-fileupload-row'),
                     removedFile = $this.files.splice(row.index(), 1);
+                    removedFile[0].ajaxRequest.abort();
                     removedFile[0].row = null;
 
                     $this.removeFileRow(row);
@@ -354,7 +361,8 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
     upload: function() {
         for(var i = 0; i < this.files.length; i++) {
-            this.files[i].row.data('filedata').submit();
+            this.files[i].ajaxRequest = this.files[i].row.data('filedata');
+            this.files[i].ajaxRequest.submit();
         }
     },
 

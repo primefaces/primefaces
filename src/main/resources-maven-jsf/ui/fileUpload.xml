@@ -164,6 +164,12 @@
             <description>Callback to execute after fileupload request fails.</description>
         </attribute>
         <attribute>
+            <name>oncancel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Callback to execute after fileupload request is cancelled.</description>
+        </attribute>
+        <attribute>
             <name>disabled</name>
             <required>false</required>
             <type>java.lang.Boolean</type>

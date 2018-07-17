@@ -100,6 +100,7 @@ public class FileUploadRenderer extends CoreRenderer {
                     .nativeAttr("onAdd", fileUpload.getOnAdd())
                     .callback("onstart", "function()", fileUpload.getOnstart())
                     .callback("onerror", "function()", fileUpload.getOnerror())
+                    .callback("oncancel", "function()", fileUpload.getOncancel())
                     .callback("oncomplete", "function(args)", fileUpload.getOncomplete());
 
             String allowTypes = fileUpload.getAllowTypes();
