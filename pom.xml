@@ -680,6 +680,7 @@
                             <instructions>
                                 <Export-Package>org.primefaces.*;version="${project.version}</Export-Package>
                                 <Import-Package>
+                                    org.osgi.framework,
                                     javax.faces.component.search;resolution:=optional,
                                     javax.faces.component.search.*;resolution:=optional,
                                     javax.faces.flow;resolution:=optional,
