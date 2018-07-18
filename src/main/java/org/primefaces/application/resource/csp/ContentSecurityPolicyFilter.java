@@ -123,18 +123,18 @@ public class ContentSecurityPolicyFilter implements Filter {
             // TODO support hashes
         }
         for (String host : configuration.getHostWhitelist()) {
-            headerBuilder.append(" ").append(host);
+            headerBuilder.append(' ').append(host);
         }
         if (headerBuilder.length() > 0) {
             headerBuilder.insert(0, Constants.SCRIPT_SRC_DIRECTIVE.name);
-            headerBuilder.append(";");
+            headerBuilder.append(';');
         }
         //TODO use report-to since report-uri is deprecated
         String reportUri = configuration.getReportUri();
         if (reportUri == null) {
             reportUri = request.getContextPath() + ContentSecurityPolicyReportServlet.URL;
         }
-        headerBuilder.append(" report-uri ").append(reportUri).append(";");
+        headerBuilder.append(' ').append(Constants.REPORT_URI_DIRECTIVE.name).append(' ').append(reportUri).append(';');
         return headerBuilder.toString().trim();
     }
     
