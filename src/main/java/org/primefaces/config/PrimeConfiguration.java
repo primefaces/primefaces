@@ -15,15 +15,15 @@
  */
 package org.primefaces.config;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
+import org.primefaces.application.resource.csp.ContentSecurityPolicyConfiguration;
+import org.primefaces.util.Constants;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.util.Constants;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Container for all config parameters.
@@ -46,6 +46,7 @@ public class PrimeConfiguration {
     private boolean interpolateClientSideValidationMessages = false;
     private boolean earlyPostParamEvaluation = false;
     private boolean moveScriptsToBottom = false;
+    private ContentSecurityPolicyConfiguration cspConfiguration = null;
 
     // internal config
     private boolean stringConverterAvailable = false;
@@ -114,6 +115,8 @@ public class PrimeConfiguration {
         
         value = externalContext.getInitParameter(Constants.ContextParams.MOVE_SCRIPTS_TO_BOTTOM);
         moveScriptsToBottom = (value == null) ? false : Boolean.valueOf(value);
+
+        cspConfiguration = new ContentSecurityPolicyConfiguration(externalContext);
     }
 
     protected void initValidateEmptyFields(FacesContext context, PrimeEnvironment environment) {
@@ -148,7 +151,7 @@ public class PrimeConfiguration {
     protected void initConfigFromWebXml(FacesContext context) {
         errorPages = WebXmlParser.getErrorPages(context);
         if (errorPages == null) {
-            errorPages = new HashMap<String, String>();
+            errorPages = new HashMap<>();
         }
     }
 
@@ -254,6 +257,14 @@ public class PrimeConfiguration {
 
     public void setMoveScriptsToBottom(boolean moveScriptsToBottom) {
         this.moveScriptsToBottom = moveScriptsToBottom;
+    }
+
+    public ContentSecurityPolicyConfiguration getCspConfiguration() {
+        return cspConfiguration;
+    }
+
+    public void setCspConfiguration(ContentSecurityPolicyConfiguration cspConfiguration) {
+        this.cspConfiguration = cspConfiguration;
     }
 
     public boolean isStringConverterAvailable() {
