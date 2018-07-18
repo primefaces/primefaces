@@ -15,12 +15,15 @@
  */
 package org.primefaces.context;
 
+import org.primefaces.application.resource.MoveScriptsToBottomResponseWriter;
+import org.primefaces.application.resource.MoveScriptsToBottomState;
+import org.primefaces.application.resource.csp.ContentSecurityPolicyConfiguration;
+import org.primefaces.application.resource.csp.scripts.ContentSecurityPolicyScriptsResponseWriter;
+
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextWrapper;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.application.resource.MoveScriptsToBottomResponseWriter;
-import org.primefaces.application.resource.MoveScriptsToBottomState;
 
 /**
  * Custom {@link FacesContextWrapper} to init and release our {@link PrimeRequestContext}.
@@ -29,6 +32,7 @@ public class PrimeFacesContext extends FacesContextWrapper {
 
     private final FacesContext wrapped;
     private final boolean moveScriptsToBottom;
+    private final ContentSecurityPolicyConfiguration cspConfiguration;
 
     private MoveScriptsToBottomState moveScriptsToBottomState;
     private PrimeExternalContext externalContext;
@@ -44,6 +48,8 @@ public class PrimeFacesContext extends FacesContextWrapper {
         if (moveScriptsToBottom) {
             moveScriptsToBottomState = new MoveScriptsToBottomState();
         }
+        
+        cspConfiguration = requestContext.getApplicationContext().getConfig().getCspConfiguration();
     }
 
     @Override
@@ -56,6 +62,9 @@ public class PrimeFacesContext extends FacesContextWrapper {
 
     @Override
     public void setResponseWriter(ResponseWriter writer) {
+        if (cspConfiguration.isScripts() && !(writer instanceof ContentSecurityPolicyScriptsResponseWriter)) {
+            writer = new ContentSecurityPolicyScriptsResponseWriter(writer);
+        }
         if (!getPartialViewContext().isAjaxRequest() && moveScriptsToBottom && !(writer instanceof MoveScriptsToBottomResponseWriter)) {
             getWrapped().setResponseWriter(new MoveScriptsToBottomResponseWriter(writer, moveScriptsToBottomState));
         }
