@@ -95,9 +95,11 @@ if (!PrimeFaces.widget) {
         refresh: function(cfg) {            
             this.destroyListeners = [];
 
-            for (var i = 0; i < this.refreshListeners.length; i++) {
-                var refreshListener = this.refreshListeners[i];
-                refreshListener.call(this, this);
+            if (this.refreshListeners) {
+                for (var i = 0; i < this.refreshListeners.length; i++) {
+                    var refreshListener = this.refreshListeners[i];
+                    refreshListener.call(this, this);
+                }
             }
             this.refreshListeners = [];
 
@@ -108,9 +110,11 @@ if (!PrimeFaces.widget) {
         destroy: function() {            
             PrimeFaces.debug("Destroyed detached widget: " + this.widgetVar);
 
-            for (var i = 0; i < this.destroyListeners.length; i++) {
-                var destroyListener = this.destroyListeners[i];
-                destroyListener.call(this, this);
+            if (this.destroyListeners) {
+                for (var i = 0; i < this.destroyListeners.length; i++) {
+                    var destroyListener = this.destroyListeners[i];
+                    destroyListener.call(this, this);
+                }
             }
             this.destroyListeners = [];
         },
