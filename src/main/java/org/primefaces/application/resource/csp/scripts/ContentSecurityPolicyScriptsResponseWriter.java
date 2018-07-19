@@ -47,15 +47,10 @@ import java.util.UUID;
 // TODO generate hashes
 public class ContentSecurityPolicyScriptsResponseWriter extends ResponseWriterWrapper {
 
-    private static final String SCRIPT_TAG = "script", BODY_TAG = "body";
-    private static final String ID_ATTRIBUTE = "id", NONCE_ATTRIBUTE = "nonce";
-    private static final String EVENT_HANDLER_ATTRIBUTE_PREFIX = "on";
-    private static final String JAVASCRIPT_SCHEME = "javascript:";
-
     /**
      * @see <a href="https://www.w3schools.com/jsref/dom_obj_event.asp">List of all HTML DOM Events</a>
      */
-    private static final Set<String> DOM_EVENTS = new HashSet<>(
+    static final Set<String> DOM_EVENTS = new HashSet<>(
             Arrays.asList("abort", "afterprint", "animationend", "animationiteration", "animationstart", "beforeprint", "beforeunload", "blur", "canplay",
                     "canplaythrough", "change", "click", "contextmenu", "copy", "cut", "dblclick", "drag", "dragend", "dragenter", "dragleave", "dragover",
                     "dragstart", "drop", "durationchange", "ended", "error", "focus", "focusin", "focusout", "fullscreenchange", "fullscreenerror",
@@ -69,9 +64,14 @@ public class ContentSecurityPolicyScriptsResponseWriter extends ResponseWriterWr
      * @see <a href="https://www.w3.org/TR/html4/index/attributes.html">Index of Attributes</a>
      * @see <a href="https://stackoverflow.com/questions/2725156/complete-list-of-html-tag-attributes-which-have-a-url-value">URI attributes</a>
      */
-    private static final Set<String> URI_ATTRIBUTES = new HashSet<>(
+    static final Set<String> URI_ATTRIBUTES = new HashSet<>(
             Arrays.asList("action", "background", "cite", "classid", "codebase", "data", "href", "longdesc", "profile", "src", "usemap", "formaction", "icon",
                     "manifest", "poster"));
+    
+    private static final String SCRIPT_TAG = "script", BODY_TAG = "body";
+    private static final String ID_ATTRIBUTE = "id", NONCE_ATTRIBUTE = "nonce";
+    private static final String EVENT_HANDLER_ATTRIBUTE_PREFIX = "on";
+    private static final String JAVASCRIPT_SCHEME = "javascript:";
 
     private static final String EVENT_HANDLER_TEMPLATE = "pf.csp1(\"%s\",\"%s\",function(){%s});\n";
     private static final String URI_HANDLER_TEMPLATE = "pf.csp2(\"%s\",\"%s\",\"%s\");\n";
