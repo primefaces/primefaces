@@ -41,7 +41,7 @@ import java.io.IOException;
 @WebFilter("/*")
 public class ContentSecurityPolicyFilter implements Filter {
 
-    private ContentSecurityPolicyConfiguration configuration;
+    ContentSecurityPolicyConfiguration configuration;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -103,7 +103,8 @@ public class ContentSecurityPolicyFilter implements Filter {
                 return;
             }
             ContentSecurityPolicyScripts scripts = (ContentSecurityPolicyScripts) request.getAttribute(ContentSecurityPolicyScripts.class.getName());
-            if (scripts != null && (!scripts.getNonces().isEmpty() || !scripts.getSha256Hashes().isEmpty())) {
+            if (scripts != null && (!scripts.getNonces().isEmpty() || !scripts.getSha256Hashes().isEmpty()) || 
+                    configuration.getHostWhitelist() != null && !configuration.getHostWhitelist().isEmpty()) {
                 ((HttpServletResponse) getResponse()).addHeader(Constants.CSP_HEADER.name, getHeaderValue(request, scripts));
             }
         }
@@ -113,14 +114,16 @@ public class ContentSecurityPolicyFilter implements Filter {
     /**
      * Build Content-Security-Policy header based on collected script nonces/hashes and configuration.
      */
-    private String getHeaderValue(HttpServletRequest request, ContentSecurityPolicyScripts scripts) {
+    String getHeaderValue(HttpServletRequest request, ContentSecurityPolicyScripts scripts) {
         // TODO use well-tested library for setting CSP headers, e.g. salvation
         StringBuilder headerBuilder = new StringBuilder();
-        for (String nonce : scripts.getNonces()) {
-            headerBuilder.append(" 'nonce-").append(nonce).append('\'');
-        }
-        for (String hashes : scripts.getSha256Hashes()) {
-            // TODO support hashes
+        if (scripts != null) {
+            for (String nonce : scripts.getNonces()) {
+                headerBuilder.append(" 'nonce-").append(nonce).append('\'');
+            }
+            for (String hashes : scripts.getSha256Hashes()) {
+                // TODO support hashes
+            }
         }
         for (String host : configuration.getHostWhitelist()) {
             headerBuilder.append(' ').append(host);
