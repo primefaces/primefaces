@@ -21,12 +21,12 @@ import java.util.Set;
 /**
  * Holder for all nonces and hashes that have been generated and are ready to be used for constructing the response header.
  */
-public class ContentSecurityPolicyScripts implements Serializable {
+public class CspScripts implements Serializable {
     
     private final Set<String> nonces;
     private final Set<String> sha256Hashes;
 
-    public ContentSecurityPolicyScripts(Set<String> nonces, Set<String> sha256Hashes) {
+    public CspScripts(Set<String> nonces, Set<String> sha256Hashes) {
         this.nonces = nonces;
         this.sha256Hashes = sha256Hashes;
     }

@@ -18,7 +18,7 @@ package org.primefaces.application.resource.csp;
 /**
  * Some constants for Content-Security-Policy headers and directives
  */
-public enum Constants {
+public enum CspHeader {
     
     CSP_HEADER("Content-Security-Policy"),
     CSP_REPORT_ONLY_HEADER("Content-Security-Policy-Report-Only"),
@@ -28,7 +28,7 @@ public enum Constants {
     
     final String name; 
     
-    Constants(String name) {
+    CspHeader(String name) {
         this.name = name;
     }
     

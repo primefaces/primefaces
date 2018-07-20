@@ -15,8 +15,8 @@
  */
 package org.primefaces.application.resource.csp;
 
-import org.primefaces.application.resource.csp.scripts.ContentSecurityPolicyScripts;
-import org.primefaces.application.resource.csp.scripts.ContentSecurityPolicyScriptsResponseWriter;
+import org.primefaces.application.resource.csp.scripts.CspScripts;
+import org.primefaces.application.resource.csp.scripts.CspScriptsResponseWriter;
 import org.primefaces.util.OnCommittedResponseWrapper;
 
 import javax.servlet.Filter;
@@ -35,17 +35,17 @@ import java.io.IOException;
  * via {@link Constants.ContextParams#CONTENT_SECURITY_POLICY_HOST_WHITELIST} or determined automatically.
  * Currently the <code>script-src</code> directive is supported only. It is planned to support other directives in the future as well
  * that can then be specified via {@link Constants.ContextParams#CONTENT_SECURITY_POLICY_SUPPORTED_DIRECTIVES}.
- * Per default browsers are instructed to report any CSP violations to the {@link ContentSecurityPolicyReportServlet} endpoint if not
+ * Per default browsers are instructed to report any CSP violations to the {@link CspReportServlet} endpoint if not
  * provided via {@link Constants.ContextParams#CONTENT_SECURITY_POLICY_REPORT_URI}.
  */
 @WebFilter("/*")
-public class ContentSecurityPolicyFilter implements Filter {
+public class CspFilter implements Filter {
 
-    ContentSecurityPolicyConfiguration configuration;
+    CspConfiguration configuration;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        configuration = new ContentSecurityPolicyConfiguration(filterConfig.getServletContext());
+        configuration = new CspConfiguration(filterConfig.getServletContext());
     }
 
     @Override
@@ -82,7 +82,7 @@ public class ContentSecurityPolicyFilter implements Filter {
         }
 
         /**
-         * Content-Security-Policy header cannot be set before collection of nonce/hash information in {@link ContentSecurityPolicyScriptsResponseWriter}. 
+         * Content-Security-Policy header cannot be set before collection of nonce/hash information in {@link CspScriptsResponseWriter}. 
          * Therefore as a workaround we have to increase the response buffer size. 
          * Otherwise, sending headers after the first flush occurred will not have any effects.
          * See {@link javax.servlet.ServletResponse#setBufferSize(int)}. 
@@ -102,10 +102,10 @@ public class ContentSecurityPolicyFilter implements Filter {
             if (isDisableOnResponseCommitted()) {
                 return;
             }
-            ContentSecurityPolicyScripts scripts = (ContentSecurityPolicyScripts) request.getAttribute(ContentSecurityPolicyScripts.class.getName());
+            CspScripts scripts = (CspScripts) request.getAttribute(CspScripts.class.getName());
             if (scripts != null && (!scripts.getNonces().isEmpty() || !scripts.getSha256Hashes().isEmpty()) || 
                     configuration.getHostWhitelist() != null && !configuration.getHostWhitelist().isEmpty()) {
-                ((HttpServletResponse) getResponse()).addHeader(Constants.CSP_HEADER.name, getHeaderValue(request, scripts));
+                ((HttpServletResponse) getResponse()).addHeader(CspHeader.CSP_HEADER.name, getHeaderValue(request, scripts));
             }
         }
         
@@ -114,7 +114,7 @@ public class ContentSecurityPolicyFilter implements Filter {
     /**
      * Build Content-Security-Policy header based on collected script nonces/hashes and configuration.
      */
-    String getHeaderValue(HttpServletRequest request, ContentSecurityPolicyScripts scripts) {
+    String getHeaderValue(HttpServletRequest request, CspScripts scripts) {
         // TODO use well-tested library for setting CSP headers, e.g. salvation
         StringBuilder headerBuilder = new StringBuilder();
         if (scripts != null) {
@@ -129,15 +129,15 @@ public class ContentSecurityPolicyFilter implements Filter {
             headerBuilder.append(' ').append(host);
         }
         if (headerBuilder.length() > 0) {
-            headerBuilder.insert(0, Constants.SCRIPT_SRC_DIRECTIVE.name);
+            headerBuilder.insert(0, CspHeader.SCRIPT_SRC_DIRECTIVE.name);
             headerBuilder.append(';');
         }
         //TODO use report-to since report-uri is deprecated
         String reportUri = configuration.getReportUri();
         if (reportUri == null) {
-            reportUri = request.getContextPath() + ContentSecurityPolicyReportServlet.URL;
+            reportUri = request.getContextPath() + CspReportServlet.URL;
         }
-        headerBuilder.append(' ').append(Constants.REPORT_URI_DIRECTIVE.name).append(' ').append(reportUri).append(';');
+        headerBuilder.append(' ').append(CspHeader.REPORT_URI_DIRECTIVE.name).append(' ').append(reportUri).append(';');
         return headerBuilder.toString().trim();
     }
     

@@ -33,15 +33,15 @@ import java.util.logging.Logger;
 
 /**
  * Built-in default endpoint browsers may call via POST if Content-Security-Policy (CSP) violations occur. We just do some logging.
- * To provide your own endpoint just change {@link ContentSecurityPolicyHeader.ContextParams#CONTENT_SECURITY_POLICY_REPORT_URI} accordingly.
+ * To provide your own endpoint just change {@link CspHeader.ContextParams#CONTENT_SECURITY_POLICY_REPORT_URI} accordingly.
  * Data must be valid JSON as specified in <a href="https://w3c.github.io/webappsec-csp/2/#violation-reports">Content Security Policy Level 2 - Reporting</a>.
  */
-@WebServlet(ContentSecurityPolicyReportServlet.URL)
-public class ContentSecurityPolicyReportServlet extends HttpServlet {
+@WebServlet(CspReportServlet.URL)
+public class CspReportServlet extends HttpServlet {
 
     public static final String URL = "/csp-report";
     
-    private static final Logger LOG = Logger.getLogger(ContentSecurityPolicyReportServlet.class.getName());
+    private static final Logger LOG = Logger.getLogger(CspReportServlet.class.getName());
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

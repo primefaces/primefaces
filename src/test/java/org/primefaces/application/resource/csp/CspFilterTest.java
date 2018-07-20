@@ -3,7 +3,7 @@ package org.primefaces.application.resource.csp;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.primefaces.application.resource.csp.scripts.ContentSecurityPolicyScripts;
+import org.primefaces.application.resource.csp.scripts.CspScripts;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -13,16 +13,16 @@ import java.util.HashSet;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ContentSecurityPolicyFilterTest {
+public class CspFilterTest {
 
-    private ContentSecurityPolicyFilter filter;
+    private CspFilter filter;
     
     private HttpServletRequest request;
     private String contextPath;
     
     @Before
     public void setup() {
-        filter = new ContentSecurityPolicyFilter();
+        filter = new CspFilter();
         request = mock(HttpServletRequest.class);
         contextPath = "/pf";
         when(request.getContextPath()).thenReturn(contextPath);
@@ -30,36 +30,36 @@ public class ContentSecurityPolicyFilterTest {
 
     @Test
     public void testScriptNonces() {
-        filter.configuration = new ContentSecurityPolicyConfiguration("true", "script-src", null, null);
-        ContentSecurityPolicyScripts scripts = new ContentSecurityPolicyScripts(new HashSet<>(Arrays.asList("1", "2")),
+        filter.configuration = new CspConfiguration("true", "script-src", null, null);
+        CspScripts scripts = new CspScripts(new HashSet<>(Arrays.asList("1", "2")),
                 Collections.<String>emptySet());
         String headerValue = filter.getHeaderValue(request, scripts);
-        Assert.assertEquals(String.format("script-src 'nonce-1' 'nonce-2'; report-uri %s;", contextPath + ContentSecurityPolicyReportServlet.URL), headerValue);
+        Assert.assertEquals(String.format("script-src 'nonce-1' 'nonce-2'; report-uri %s;", contextPath + CspReportServlet.URL), headerValue);
     }
     
     @Test
     public void testScriptNoncesAndHostWhitelist() {
-        filter.configuration = new ContentSecurityPolicyConfiguration("true", "script-src", 
+        filter.configuration = new CspConfiguration("true", "script-src", 
                 "https://www.google-analytics.com", null);
-        ContentSecurityPolicyScripts scripts = new ContentSecurityPolicyScripts(new HashSet<>(Arrays.asList("1", "2")), 
+        CspScripts scripts = new CspScripts(new HashSet<>(Arrays.asList("1", "2")), 
                 Collections.<String>emptySet());
         String headerValue = filter.getHeaderValue(request, scripts);
         Assert.assertEquals(String.format("script-src 'nonce-1' 'nonce-2' https://www.google-analytics.com; report-uri %s;", contextPath + 
-                ContentSecurityPolicyReportServlet.URL), headerValue);       
+                CspReportServlet.URL), headerValue);       
     }
     
     @Test
     public void testScriptHostWhitelist() {
-        filter.configuration = new ContentSecurityPolicyConfiguration("true", "script-src", 
+        filter.configuration = new CspConfiguration("true", "script-src", 
                 "https://www.google-analytics.com", null); 
         String headerValue = filter.getHeaderValue(request, null);
         Assert.assertEquals(String.format("script-src https://www.google-analytics.com; report-uri %s;", contextPath + 
-                ContentSecurityPolicyReportServlet.URL), headerValue);
+                CspReportServlet.URL), headerValue);
     }
     
     @Test
     public void testReportUri() {
-        filter.configuration = new ContentSecurityPolicyConfiguration("true", "script-src",
+        filter.configuration = new CspConfiguration("true", "script-src",
                 "https:", "https://csp-violation");
         String headerValue = filter.getHeaderValue(request, null);
         Assert.assertEquals("script-src https:; report-uri https://csp-violation;", headerValue);

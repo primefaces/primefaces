@@ -15,7 +15,7 @@
  */
 package org.primefaces.config;
 
-import org.primefaces.application.resource.csp.ContentSecurityPolicyConfiguration;
+import org.primefaces.application.resource.csp.CspConfiguration;
 import org.primefaces.util.Constants;
 
 import javax.faces.component.UIInput;
@@ -46,7 +46,7 @@ public class PrimeConfiguration {
     private boolean interpolateClientSideValidationMessages = false;
     private boolean earlyPostParamEvaluation = false;
     private boolean moveScriptsToBottom = false;
-    private ContentSecurityPolicyConfiguration cspConfiguration = null;
+    private CspConfiguration cspConfiguration = null;
 
     // internal config
     private boolean stringConverterAvailable = false;
@@ -116,7 +116,7 @@ public class PrimeConfiguration {
         value = externalContext.getInitParameter(Constants.ContextParams.MOVE_SCRIPTS_TO_BOTTOM);
         moveScriptsToBottom = (value == null) ? false : Boolean.valueOf(value);
 
-        cspConfiguration = new ContentSecurityPolicyConfiguration(externalContext);
+        cspConfiguration = new CspConfiguration(externalContext);
     }
 
     protected void initValidateEmptyFields(FacesContext context, PrimeEnvironment environment) {
@@ -259,11 +259,11 @@ public class PrimeConfiguration {
         this.moveScriptsToBottom = moveScriptsToBottom;
     }
 
-    public ContentSecurityPolicyConfiguration getCspConfiguration() {
+    public CspConfiguration getCspConfiguration() {
         return cspConfiguration;
     }
 
-    public void setCspConfiguration(ContentSecurityPolicyConfiguration cspConfiguration) {
+    public void setCspConfiguration(CspConfiguration cspConfiguration) {
         this.cspConfiguration = cspConfiguration;
     }
 

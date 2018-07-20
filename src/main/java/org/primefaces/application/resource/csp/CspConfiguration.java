@@ -27,28 +27,28 @@ import java.util.StringTokenizer;
 /**
  * Holder for the Content-Security-Policy (CSP) configuration configured via <code>context-param</code> in the web application's web.xml. 
  */
-public class ContentSecurityPolicyConfiguration {
+public class CspConfiguration {
     
     private final boolean enabled;
     private final boolean scripts;
     private final Set<String> hostWhitelist;
     private final String reportUri;
 
-    public ContentSecurityPolicyConfiguration(ExternalContext context) {
+    public CspConfiguration(ExternalContext context) {
         this(context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_ENABLED), 
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_SUPPORTED_DIRECTIVES),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_HOST_WHITELIST),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_REPORT_URI));
     }
     
-    public ContentSecurityPolicyConfiguration(ServletContext context) {
+    public CspConfiguration(ServletContext context) {
         this(context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_ENABLED),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_SUPPORTED_DIRECTIVES),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_HOST_WHITELIST),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_REPORT_URI));       
     }
     
-    ContentSecurityPolicyConfiguration(String enabledStr, String supportedDirectives, String hostWhitelistStr, String reportUri) {
+    CspConfiguration(String enabledStr, String supportedDirectives, String hostWhitelistStr, String reportUri) {
         enabled = (enabledStr == null) ? false : Boolean.parseBoolean(enabledStr);
 
         if (supportedDirectives != null) {
@@ -57,7 +57,7 @@ public class ContentSecurityPolicyConfiguration {
             while (tok.hasMoreTokens()) {
                 cspSupportedDirectives.add(tok.nextToken().trim().toLowerCase());
             }
-            scripts = cspSupportedDirectives.contains(org.primefaces.application.resource.csp.Constants.SCRIPT_SRC_DIRECTIVE.name);
+            scripts = cspSupportedDirectives.contains(CspHeader.SCRIPT_SRC_DIRECTIVE.name);
         } 
         else {
             scripts = false;
