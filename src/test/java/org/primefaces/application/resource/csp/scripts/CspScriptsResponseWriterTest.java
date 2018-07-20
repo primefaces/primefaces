@@ -40,14 +40,14 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.primefaces.application.resource.csp.scripts.ContentSecurityPolicyScriptsResponseWriter.DOM_EVENTS;
-import static org.primefaces.application.resource.csp.scripts.ContentSecurityPolicyScriptsResponseWriter.URI_ATTRIBUTES;
+import static org.primefaces.application.resource.csp.scripts.CspScriptsResponseWriter.DOM_EVENTS;
+import static org.primefaces.application.resource.csp.scripts.CspScriptsResponseWriter.URI_ATTRIBUTES;
 
-public class ContentSecurityPolicyScriptsResponseWriterTest {
+public class CspScriptsResponseWriterTest {
 
     private static Base64Matcher base64Matcher = new Base64Matcher();
     
-    private ContentSecurityPolicyScriptsResponseWriter writer;
+    private CspScriptsResponseWriter writer;
     private ResponseWriter wrappedWriter;
     private HttpServletRequest servletRequest;
 
@@ -67,7 +67,7 @@ public class ContentSecurityPolicyScriptsResponseWriterTest {
         when(facesContext.getExternalContext()).thenReturn(externalContext);
         servletRequest = mock(HttpServletRequest.class);
         when(externalContext.getRequest()).thenReturn(servletRequest);
-        writer = new ContentSecurityPolicyScriptsResponseWriter(wrappedWriter);
+        writer = new CspScriptsResponseWriter(wrappedWriter);
     }
 
     @Test

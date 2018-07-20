@@ -45,7 +45,7 @@ import java.util.UUID;
  */
 // TODO support partial-response
 // TODO generate hashes
-public class ContentSecurityPolicyScriptsResponseWriter extends ResponseWriterWrapper {
+public class CspScriptsResponseWriter extends ResponseWriterWrapper {
 
     /**
      * @see <a href="https://www.w3schools.com/jsref/dom_obj_event.asp">List of all HTML DOM Events</a>
@@ -81,7 +81,7 @@ public class ContentSecurityPolicyScriptsResponseWriter extends ResponseWriterWr
     final Set<ElementState> elementsToHandle;
     final Set<String> nonces;
     
-    public ContentSecurityPolicyScriptsResponseWriter(ResponseWriter wrapped) {
+    public CspScriptsResponseWriter(ResponseWriter wrapped) {
         super(wrapped);
         elements = new Stack<>();
         elementsToHandle = new LinkedHashSet<>();
@@ -246,7 +246,7 @@ public class ContentSecurityPolicyScriptsResponseWriter extends ResponseWriterWr
     /**
      * Write javascript collected from event/URI handlers to a separate <code>script</code> block.
      */
-    private void writeJavascriptHandlers() throws IOException {
+    void writeJavascriptHandlers() throws IOException {
         if (!elementsToHandle.isEmpty()) {
             getWrapped().startElement(SCRIPT_TAG, null);
             getWrapped().writeAttribute(NONCE_ATTRIBUTE, generateNonce(), null);
@@ -277,12 +277,12 @@ public class ContentSecurityPolicyScriptsResponseWriter extends ResponseWriterWr
     /**
      * Make generated nonces and hashes available via request attribute that may be retrieved to set the Content-Security-Policy header later.
      */
-    private void registerNoncesAndHashes() {
+    void registerNoncesAndHashes() {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         //TODO support hashes
         Set<String> sha256Hashes = new HashSet<>();
-        request.setAttribute(ContentSecurityPolicyScripts.class.getName(), new ContentSecurityPolicyScripts(nonces, sha256Hashes));
+        request.setAttribute(CspScripts.class.getName(), new CspScripts(nonces, sha256Hashes));
     }
 
     @Override
