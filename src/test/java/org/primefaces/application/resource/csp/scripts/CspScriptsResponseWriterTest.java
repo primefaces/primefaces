@@ -119,7 +119,7 @@ public class CspScriptsResponseWriterTest {
         
         verify(wrappedWriter).startElement("script", null);
         verify(wrappedWriter).writeAttribute(eq("nonce"), argThat(base64Matcher), nullable(String.class));
-        verify(wrappedWriter).writeText(contains("pf.csp1(\"button123\",\"click\",function(){alert(1);});"), nullable(String.class));
+        verify(wrappedWriter).writeText(contains("pf.csp1(\"button123\",\"click\",function(e){pf.csp0(e);alert(1);});"), nullable(String.class));
         verify(wrappedWriter).endElement("script");
     }
     

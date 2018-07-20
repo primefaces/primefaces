@@ -73,7 +73,7 @@ public class CspScriptsResponseWriter extends ResponseWriterWrapper {
     private static final String EVENT_HANDLER_ATTRIBUTE_PREFIX = "on";
     private static final String JAVASCRIPT_SCHEME = "javascript:";
 
-    private static final String EVENT_HANDLER_TEMPLATE = "pf.csp1(\"%s\",\"%s\",function(){%s});\n";
+    private static final String EVENT_HANDLER_TEMPLATE = "pf.csp1(\"%s\",\"%s\",function(e){pf.csp0(e);%s});\n";
     private static final String URI_HANDLER_TEMPLATE = "pf.csp2(\"%s\",\"%s\",\"%s\");\n";
     
     final Stack<ElementState> elements;
@@ -251,10 +251,11 @@ public class CspScriptsResponseWriter extends ResponseWriterWrapper {
             getWrapped().startElement(SCRIPT_TAG, null);
             getWrapped().writeAttribute(NONCE_ATTRIBUTE, generateNonce(), null);
             StringBuilder javascriptBuilder = new StringBuilder("var pf=PrimeFaces;\n");
+            javascriptBuilder.append("pf.csp0=function(evt){if(evt.cancelable)evt.preventDefault();};\n");
             javascriptBuilder.append("pf.csp1=function(id,evt,js){");
-            javascriptBuilder.append("document.getElementById(id).addEventListener(evt,js);}\n");
+            javascriptBuilder.append("document.getElementById(id).addEventListener(evt,js);};\n");
             javascriptBuilder.append("pf.csp2=function(id,attr,jsUri){");
-            javascriptBuilder.append("document.getElementById(id).setAttribute(attr,jsUri);}\n");
+            javascriptBuilder.append("document.getElementById(id).setAttribute(attr,jsUri);};\n");
             for (ElementState element : elementsToHandle) {
                 for (Map.Entry<String, String> eventHandler : element.javascriptEventHandlers.entrySet()) {
                     String event = eventHandler.getKey();
