@@ -20,20 +20,20 @@ import org.primefaces.json.JSONObject;
 import org.primefaces.util.BoundedInputStream;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * Built-in default endpoint browsers may call via POST if Content-Security-Policy (CSP) violations occur. We just do some logging.
- * To provide your own endpoint just change {@link Constants.ContextParams#CONTENT_SECURITY_POLICY_REPORT_URI} accordingly.
+ * To provide your own endpoint just change {@link ContentSecurityPolicyHeader.ContextParams#CONTENT_SECURITY_POLICY_REPORT_URI} accordingly.
  * Data must be valid JSON as specified in <a href="https://w3c.github.io/webappsec-csp/2/#violation-reports">Content Security Policy Level 2 - Reporting</a>.
  */
 @WebServlet(ContentSecurityPolicyReportServlet.URL)
@@ -59,10 +59,10 @@ public class ContentSecurityPolicyReportServlet extends HttpServlet {
 
     /**
      * Read up to 10 KiB of POST data to mitigate DoS
-     * @param input
+     * @param input the request body input stream
      * @return JSON string reported by browsers
      */
-    private static String toString(InputStream input) throws IOException {
+    private static String toString(ServletInputStream input) throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new BoundedInputStream(input, 10240)))) {
             StringBuilder json = new StringBuilder();
             String line;
