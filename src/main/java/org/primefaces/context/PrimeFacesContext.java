@@ -62,10 +62,11 @@ public class PrimeFacesContext extends FacesContextWrapper {
 
     @Override
     public void setResponseWriter(ResponseWriter writer) {
-        if (cspConfiguration.isEnabled() && cspConfiguration.isScripts() && !(writer instanceof CspScriptsResponseWriter)) {
+        boolean ajaxRequest = getPartialViewContext().isAjaxRequest();
+        if (!ajaxRequest && cspConfiguration.isEnabled() && cspConfiguration.isScripts() && !(writer instanceof CspScriptsResponseWriter)) {
             writer = new CspScriptsResponseWriter(writer);
         }
-        if (!getPartialViewContext().isAjaxRequest() && moveScriptsToBottom && !(writer instanceof MoveScriptsToBottomResponseWriter)) {
+        if (!ajaxRequest && moveScriptsToBottom && !(writer instanceof MoveScriptsToBottomResponseWriter)) {
             getWrapped().setResponseWriter(new MoveScriptsToBottomResponseWriter(writer, moveScriptsToBottomState));
         }
         else {
