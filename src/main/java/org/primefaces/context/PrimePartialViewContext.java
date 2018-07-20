@@ -15,6 +15,15 @@
  */
 package org.primefaces.context;
 
+import org.primefaces.application.resource.csp.CspConfiguration;
+import org.primefaces.application.resource.csp.scripts.CspScriptsPartialResponseWriter;
+import org.primefaces.expression.SearchExpressionConstants;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
+import org.primefaces.visit.ResetInputContextCallback;
+import org.primefaces.visit.ResetInputVisitCallback;
+
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
@@ -22,22 +31,20 @@ import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.PartialViewContext;
 import javax.faces.context.PartialViewContextWrapper;
 import javax.faces.event.PhaseId;
-import org.primefaces.expression.SearchExpressionConstants;
-
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.visit.ResetInputContextCallback;
-import org.primefaces.visit.ResetInputVisitCallback;
+import java.util.logging.Logger;
 
 public class PrimePartialViewContext extends PartialViewContextWrapper {
 
+    private static final Logger LOG = Logger.getLogger(PrimePartialViewContext.class.getName());
+
     private PartialViewContext wrapped;
     private PartialResponseWriter writer = null;
+    private CspConfiguration cspConfiguration;
 
     @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimePartialViewContext(PartialViewContext wrapped) {
         this.wrapped = wrapped;
+        cspConfiguration = new CspConfiguration(FacesContext.getCurrentInstance().getExternalContext());
     }
 
     @Override
@@ -64,7 +71,12 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
     public PartialResponseWriter getPartialResponseWriter() {
         if (writer == null) {
             PartialResponseWriter parentWriter = getWrapped().getPartialResponseWriter();
-            writer = new PrimePartialResponseWriter(parentWriter);
+            if (cspConfiguration.isEnabled()) {
+                writer = new CspScriptsPartialResponseWriter(parentWriter);
+            } 
+            else {
+                writer = new PrimePartialResponseWriter(parentWriter);
+            }
         }
 
         return writer;
