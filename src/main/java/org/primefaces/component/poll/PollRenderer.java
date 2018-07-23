@@ -83,6 +83,7 @@ public class PollRenderer extends CoreRenderer {
         wb.init("Poll", poll.resolveWidgetVar(), clientId)
                 .attr("frequency", poll.getInterval())
                 .attr("autoStart", poll.isAutoStart())
+                .attr("stop", poll.isStop())
                 .callback("fn", "function()", request);
 
         wb.finish();
