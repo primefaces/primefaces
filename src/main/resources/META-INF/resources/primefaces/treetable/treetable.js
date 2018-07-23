@@ -218,7 +218,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             this.callBehavior('filter', options);
         }
         else {
-            PrimeFaces.ajax.AjaxRequest(options);
+            PrimeFaces.ajax.Request.handle(options);
         }
     },
 
@@ -950,7 +950,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
                 this.callBehavior('select', options);
             }
             else {
-                PrimeFaces.ajax.AjaxRequest(options);
+                PrimeFaces.ajax.Request.handle(options);
             }
         }
         else {
