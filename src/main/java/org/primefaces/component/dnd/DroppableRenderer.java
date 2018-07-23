@@ -40,7 +40,7 @@ public class DroppableRenderer extends CoreRenderer {
                 context, droppable, droppable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
 
         String clientId = droppable.getClientId(context);
-        WidgetBuilder wb = getWidgetBuilder(context);
+        WidgetBuilder wb = getScriptOnlyWidgetBuilder(context);
         wb.init("Droppable", droppable.resolveWidgetVar(), clientId)
                 .attr("target", target.getClientId(context))
                 .attr("disabled", droppable.isDisabled(), false)

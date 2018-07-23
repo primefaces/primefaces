@@ -59,6 +59,7 @@ import org.primefaces.validate.bean.BeanValidationMetadataMapper;
 import org.primefaces.util.Jsf22Helper;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.ResourceUtils;
+import org.primefaces.util.ScriptOnlyWidgetBuilder;
 
 public abstract class CoreRenderer extends Renderer {
 
@@ -652,6 +653,10 @@ public abstract class CoreRenderer extends Renderer {
 
     protected WidgetBuilder getWidgetBuilder(FacesContext context) {
         return PrimeRequestContext.getCurrentInstance(context).getWidgetBuilder();
+    }
+    
+    protected ScriptOnlyWidgetBuilder getScriptOnlyWidgetBuilder(FacesContext context) {
+        return PrimeRequestContext.getCurrentInstance(context).getScriptOnlyWidgetBuilder();
     }
 
     protected void renderValidationMetadata(FacesContext context, EditableValueHolder component) throws IOException {
