@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.CSVBuilder;
 import org.primefaces.util.Constants;
-import org.primefaces.util.ScriptOnlyWidgetBuilder;
 import org.primefaces.util.WidgetBuilder;
 
 /**
@@ -48,7 +47,6 @@ public class PrimeRequestContext {
     private final static String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
 
     private WidgetBuilder widgetBuilder;
-    private ScriptOnlyWidgetBuilder scriptOnlyWidgetBuilder;
     private AjaxRequestBuilder ajaxRequestBuilder;
     private CSVBuilder csvBuilder;
     private FacesContext context;
@@ -131,17 +129,6 @@ public class PrimeRequestContext {
         }
 
         return widgetBuilder;
-    }
-    
-    /**
-     * @return Shared ScriptOnlyWidgetBuilder instance of the current request
-     */
-    public ScriptOnlyWidgetBuilder getScriptOnlyWidgetBuilder() {
-        if (this.scriptOnlyWidgetBuilder == null) {
-            this.scriptOnlyWidgetBuilder = new ScriptOnlyWidgetBuilder(context, getApplicationContext().getConfig());
-        }
-
-        return scriptOnlyWidgetBuilder;
     }
 
     /**

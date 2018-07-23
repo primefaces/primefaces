@@ -22,7 +22,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.config.PrimeConfiguration;
 
 /**
- * Helper to generate scripts for widgets.
+ * Helper to generate javascript code of an ajax call
  */
 public class WidgetBuilder {
 
@@ -95,7 +95,7 @@ public class WidgetBuilder {
         return this;
     }
 
-    protected void renderScriptBlock(String id) throws IOException {
+    private void renderScriptBlock(String id) throws IOException {
         ResponseWriter rw = context.getResponseWriter();
         rw.startElement("script", null);
         rw.writeAttribute("id", id + "_s", null);

@@ -36,7 +36,7 @@ public class DraggableRenderer extends CoreRenderer {
         UIComponent target = SearchExpressionFacade.resolveComponent(
                 context, draggable, draggable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
 
-        WidgetBuilder wb = getScriptOnlyWidgetBuilder(context);
+        WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Draggable", draggable.resolveWidgetVar(), clientId)
                 .attr("target", target.getClientId(context))
                 .attr("cursor", draggable.getCursor())
