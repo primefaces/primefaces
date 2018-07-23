@@ -117,13 +117,6 @@
             <description>In autoStart mode, polling starts automatically on page load, to start polling on demand set to false. Default is true.</description>
         </attribute>
         <attribute>
-            <name>stop</name>
-            <required>false</required>
-            <type>java.lang.Boolean</type>
-            <defaultValue>false</defaultValue>
-            <description>Stops polling when true.</description>
-        </attribute>
-        <attribute>
             <name>partialSubmit</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
