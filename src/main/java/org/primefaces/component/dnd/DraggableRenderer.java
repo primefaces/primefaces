@@ -33,6 +33,8 @@ public class DraggableRenderer extends CoreRenderer {
         Draggable draggable = (Draggable) component;
         String clientId = draggable.getClientId(context);
 
+        renderDummyMarkup(context, component, clientId);
+        
         UIComponent target = SearchExpressionFacade.resolveComponent(
                 context, draggable, draggable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
 
