@@ -696,7 +696,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             this.callBehavior('query', options);
         }
         else {
-            PrimeFaces.ajax.AjaxRequest(options);
+            PrimeFaces.ajax.Request.handle(options);
         }
     },
 
