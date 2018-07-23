@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.expression.impl.base;
+package org.primefaces.expression.impl;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
