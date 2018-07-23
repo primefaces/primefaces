@@ -106,6 +106,7 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
         put("collapse", NodeCollapseEvent.class);
         put("dragdrop", TreeDragDropEvent.class);
         put("contextMenu", NodeSelectEvent.class);
+        put("filter", null);
     }});
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
@@ -201,6 +202,9 @@ import org.primefaces.model.filter.StartsWithFilterConstraint;
                 setRowKey(params.get(clientId + "_contextMenuNode"));
 
                 wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), this.getRowNode(), true);
+            }
+            else if(eventName.equals("filter")) {
+                wrapperEvent = behaviorEvent;
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
