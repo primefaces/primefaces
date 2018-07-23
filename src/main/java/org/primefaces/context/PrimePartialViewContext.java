@@ -71,7 +71,7 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
     public PartialResponseWriter getPartialResponseWriter() {
         if (writer == null) {
             PartialResponseWriter parentWriter = getWrapped().getPartialResponseWriter();
-            if (cspConfiguration.isEnabled()) {
+            if (cspConfiguration.isEnabled() && cspConfiguration.isScripts()) {
                 writer = new CspScriptsPartialResponseWriter(parentWriter);
             } 
             else {
