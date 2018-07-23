@@ -8,7 +8,7 @@ PrimeFaces.widget.Poll = PrimeFaces.widget.BaseWidget.extend({
         this.id = this.cfg.id;
         
         // GitHub #3894
-        this.active = !this.config.stop;
+        this.active = !this.cfg.stop;
 
         if(this.cfg.autoStart) {
             this.start();
