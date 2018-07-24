@@ -30,7 +30,8 @@ public class CspFilterTest {
 
     @Test
     public void testScriptNonces() {
-        filter.configuration = new CspConfiguration("true", "script-src", null, null, "false");
+        filter.configuration = new CspConfiguration("true", "script-src", null, null, "false", 
+                "false");
         CspScripts scripts = new CspScripts(new HashSet<>(Arrays.asList("1", "2")), Collections.<String>emptySet());
         String headerValue = filter.getHeaderValue(request, scripts);
         Assert.assertEquals(String.format("script-src 'nonce-1' 'nonce-2'; report-uri %s;", contextPath + CspReportServlet.URL), headerValue);
@@ -38,7 +39,8 @@ public class CspFilterTest {
     
     @Test
     public void testScriptSha256Hashes() {
-        filter.configuration = new CspConfiguration("true", "script-src", null, null, "false");
+        filter.configuration = new CspConfiguration("true", "script-src", null, null, "false", 
+                "false");
         CspScripts scripts = new CspScripts(Collections.<String>emptySet(), new HashSet<>(Arrays.asList("1", "2")));
         String headerValue = filter.getHeaderValue(request, scripts);
         Assert.assertEquals(String.format("script-src 'sha256-1' 'sha256-2'; report-uri %s;", contextPath + CspReportServlet.URL), headerValue);
@@ -47,7 +49,7 @@ public class CspFilterTest {
     @Test
     public void testScriptNoncesAndHostWhitelist() {
         filter.configuration = new CspConfiguration("true", "script-src", "https://www.google-analytics.com", 
-                null, "false");
+                null, "false", "false");
         CspScripts scripts = new CspScripts(new HashSet<>(Arrays.asList("1", "2")), 
                 Collections.<String>emptySet());
         String headerValue = filter.getHeaderValue(request, scripts);
@@ -58,7 +60,7 @@ public class CspFilterTest {
     @Test
     public void testScriptHostWhitelist() {
         filter.configuration = new CspConfiguration("true", "script-src", "https://www.google-analytics.com", 
-                null, "false"); 
+                null, "false", "false"); 
         String headerValue = filter.getHeaderValue(request, null);
         Assert.assertEquals(String.format("script-src https://www.google-analytics.com; report-uri %s;", contextPath + 
                 CspReportServlet.URL), headerValue);
@@ -67,7 +69,7 @@ public class CspFilterTest {
     @Test
     public void testReportUri() {
         filter.configuration = new CspConfiguration("true", "script-src", "https:", "https://csp-violation", 
-                "false");
+                "false", "false");
         String headerValue = filter.getHeaderValue(request, null);
         Assert.assertEquals("script-src https:; report-uri https://csp-violation;", headerValue);
     }

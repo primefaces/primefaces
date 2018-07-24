@@ -42,6 +42,7 @@ public class Constants {
         public static final String CONTENT_SECURITY_POLICY_REPORT_URI = "primefaces.csp.REPORT_URI";
         public static final String CONTENT_SECURITY_POLICY_REPORT_ONLY = "primefaces.csp.REPORT_ONLY";
         public static final String CONTENT_SECURITY_POLICY_HOST_WHITELIST = "primefaces.csp.ALLOWED_HOSTS";
+        public static final String CONTENT_SECURITY_POLICY_JAVASCRIPT_DEBUGGING_COOKIE = "primefaces.csp.JAVASCRIPT_DEBUGGING_COOKIE";
     }
 
     public static class RequestParams {

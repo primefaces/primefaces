@@ -34,13 +34,15 @@ public class CspConfiguration {
     private final Set<String> hostWhitelist;
     private final String reportUri;
     private final boolean reportOnly;
+    private final boolean javascriptDebuggingCookie;
 
     public CspConfiguration(ExternalContext context) {
         this(context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_ENABLED), 
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_SUPPORTED_DIRECTIVES),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_HOST_WHITELIST),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_REPORT_URI),
-                context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_REPORT_ONLY));
+                context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_REPORT_ONLY),
+                context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_JAVASCRIPT_DEBUGGING_COOKIE));
     }
     
     public CspConfiguration(ServletContext context) {
@@ -48,10 +50,12 @@ public class CspConfiguration {
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_SUPPORTED_DIRECTIVES),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_HOST_WHITELIST),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_REPORT_URI),
-                context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_REPORT_ONLY));       
+                context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_REPORT_ONLY),
+                context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_JAVASCRIPT_DEBUGGING_COOKIE));       
     }
     
-    CspConfiguration(String enabledStr, String supportedDirectives, String hostWhitelistStr, String reportUri, String reportOnlyStr) {
+    CspConfiguration(String enabledStr, String supportedDirectives, String hostWhitelistStr, String reportUri, String reportOnlyStr, 
+            String javascriptDebuggingCookieStr) {
         enabled = Boolean.parseBoolean(enabledStr);
 
         if (supportedDirectives != null) {
@@ -78,6 +82,8 @@ public class CspConfiguration {
         this.reportUri = reportUri;
         
         reportOnly = Boolean.parseBoolean(reportOnlyStr);
+        
+        javascriptDebuggingCookie = Boolean.parseBoolean(javascriptDebuggingCookieStr);
     }
     
     public boolean isEnabled() {
@@ -98,6 +104,10 @@ public class CspConfiguration {
 
     public boolean isReportOnly() {
         return reportOnly;
+    }
+
+    public boolean isJavascriptDebuggingCookie() {
+        return javascriptDebuggingCookie;
     }
     
 }

@@ -26,17 +26,25 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 /**
- * This servlet filter is responsible for setting appropriate Content-Security-Policy (CSP) response headers that are either whitelisted
- * via {@link Constants.ContextParams#CONTENT_SECURITY_POLICY_HOST_WHITELIST} or determined automatically.
- * Currently the <code>script-src</code> directive is supported only. It is planned to support other directives in the future as well
- * that can then be specified via {@link Constants.ContextParams#CONTENT_SECURITY_POLICY_SUPPORTED_DIRECTIVES}.
- * Per default browsers are instructed to report any CSP violations to the {@link CspReportServlet} endpoint if not
- * provided via {@link Constants.ContextParams#CONTENT_SECURITY_POLICY_REPORT_URI}.
+ * <p>This servlet filter is responsible for setting appropriate Content-Security-Policy (CSP) response headers that are either whitelisted
+ * via {@link Constants.ContextParams#CONTENT_SECURITY_POLICY_HOST_WHITELIST} or determined automatically.</p>
+ * <p>Currently the <code>script-src</code> directive is supported only. It is planned to support other directives in the future as well
+ * that can then be specified via {@link Constants.ContextParams#CONTENT_SECURITY_POLICY_SUPPORTED_DIRECTIVES}.</p>
+ * <p>Per default browsers are instructed to report any CSP violations to the {@link CspReportServlet} endpoint if not
+ * provided via {@link Constants.ContextParams#CONTENT_SECURITY_POLICY_REPORT_URI}.</p>
+ * <p>To not break functionality in production you may also want to set {@link Constants.ContextParams#CONTENT_SECURITY_POLICY_REPORT_ONLY}
+ * to just report CSP violations instead of refusing them.</p>
+ * <p>If {@link Constants.ContextParams#CONTENT_SECURITY_POLICY_JAVASCRIPT_COOKIE_DEBUGGING} is enabled, it will be possible to read the CSP header
+ * in javascript with <code>document.cookie</code>. This is because the JS API unfortunately does not expose response headers. This is not recommended
+ * in production systems.</p>
  */
 @WebFilter("/*")
 public class CspFilter implements Filter {
@@ -97,7 +105,10 @@ public class CspFilter implements Filter {
             writeHeader();
             this.disableOnResponseCommitted();
         }
-        
+
+        /**
+         * Actually write the headers depending on configuration (Content-Security-Policy, Content-Security-Policy-Report-Only, Set-Cookie).
+         */
         protected void writeHeader() {
             if (isDisableOnResponseCommitted()) {
                 return;
@@ -106,7 +117,20 @@ public class CspFilter implements Filter {
             if (scripts != null && (!scripts.getNonces().isEmpty() || !scripts.getSha256Hashes().isEmpty()) || 
                     configuration.getHostWhitelist() != null && !configuration.getHostWhitelist().isEmpty()) {
                 CspHeader header = configuration.isReportOnly() ? CspHeader.CSP_REPORT_ONLY_HEADER : CspHeader.CSP_HEADER;
-                ((HttpServletResponse) getResponse()).addHeader(header.name, getHeaderValue(request, scripts));
+                String headerValue = getHeaderValue(request, scripts);
+                HttpServletResponse response = (HttpServletResponse) getResponse();
+                response.addHeader(header.name, headerValue);
+                if (configuration.isJavascriptDebuggingCookie()) {
+                    try {
+                        Cookie cookie = new Cookie(CspHeader.COOKIE_NAME.name, URLEncoder.encode(headerValue, "UTF-8"));
+                        // Explicitly declare cookie as non-HttpOnly since we would like it to be accessible via javascript
+                        cookie.setHttpOnly(false);
+                        response.addCookie(cookie);
+                    }
+                    catch (UnsupportedEncodingException ex) {
+                        throw new IllegalStateException(ex);
+                    }
+                }
             }
         }
         
