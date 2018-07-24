@@ -75,6 +75,7 @@ public class CspScriptsResponseWriterTest {
         Assert.assertTrue(writer.elements.isEmpty());
         Assert.assertTrue(writer.elementsToHandle.isEmpty());
         Assert.assertTrue(writer.nonces.isEmpty());
+        Assert.assertTrue(writer.sha256Hashes.isEmpty());
 
         writer.startElement("span", null);
         verify(wrappedWriter).startElement("span", null);
@@ -88,6 +89,7 @@ public class CspScriptsResponseWriterTest {
         Assert.assertTrue(writer.elements.isEmpty());
         Assert.assertTrue(writer.elementsToHandle.isEmpty());
         Assert.assertTrue(writer.nonces.isEmpty());
+        Assert.assertTrue(writer.sha256Hashes.isEmpty());
     }
 
     @Test
@@ -114,11 +116,10 @@ public class CspScriptsResponseWriterTest {
         
         writer.endElement("body");
         verify(wrappedWriter).endElement("body");
-        Assert.assertEquals(1, writer.nonces.size());
+        Assert.assertEquals(1, writer.sha256Hashes.size());
         Assert.assertTrue(writer.elements.isEmpty());
         
         verify(wrappedWriter).startElement("script", null);
-        verify(wrappedWriter).writeAttribute(eq("nonce"), argThat(base64Matcher), nullable(String.class));
         verify(wrappedWriter).writeText(contains("pf.csp1(\"button123\",\"click\",function(e){pf.csp0(e);alert(1);});"), nullable(String.class));
         verify(wrappedWriter).endElement("script");
     }
@@ -134,11 +135,10 @@ public class CspScriptsResponseWriterTest {
         
         writer.endElement("body");
         Assert.assertEquals(1, writer.elementsToHandle.size());
-        Assert.assertEquals(1, writer.nonces.size());
+        Assert.assertEquals(1, writer.sha256Hashes.size());
         verify(wrappedWriter).writeAttribute(eq("id"), anyString(), nullable(String.class));
 
         verify(wrappedWriter).startElement("script", null);
-        verify(wrappedWriter).writeAttribute(eq("nonce"), argThat(base64Matcher), nullable(String.class));
 
         ArgumentCaptor<String> javascript = ArgumentCaptor.forClass(String.class);
         verify(wrappedWriter).writeText(javascript.capture(), nullable(String.class));
@@ -158,11 +158,10 @@ public class CspScriptsResponseWriterTest {
         
         writer.endElement("body");
         Assert.assertEquals(1, writer.elementsToHandle.size());
-        Assert.assertEquals(1, writer.nonces.size());
+        Assert.assertEquals(1, writer.sha256Hashes.size());
         verify(wrappedWriter).writeAttribute(eq("id"), anyString(), nullable(String.class));
 
         verify(wrappedWriter).startElement("script", null);
-        verify(wrappedWriter).writeAttribute(eq("nonce"), argThat(base64Matcher), nullable(String.class));
 
         ArgumentCaptor<String> javascript = ArgumentCaptor.forClass(String.class);
         verify(wrappedWriter).writeText(javascript.capture(), nullable(String.class));
@@ -183,6 +182,7 @@ public class CspScriptsResponseWriterTest {
         writer.endElement("body");
         Assert.assertTrue(writer.elementsToHandle.isEmpty());
         Assert.assertTrue(writer.nonces.isEmpty());
+        Assert.assertTrue(writer.sha256Hashes.isEmpty());
         
         verify(wrappedWriter, never()).writeAttribute(eq("id"), anyString(), nullable(String.class));
         verify(wrappedWriter, never()).startElement("script", null);
@@ -208,7 +208,7 @@ public class CspScriptsResponseWriterTest {
         
         writer.endElement("body");
         
-        Assert.assertEquals(2, writer.nonces.size());
+        Assert.assertEquals(2, writer.nonces.size() + writer.sha256Hashes.size());
 
         verify(wrappedWriter, never()).writeAttribute(eq("id"), anyString(), nullable(String.class));
     }

@@ -31,10 +31,17 @@ public class CspFilterTest {
     @Test
     public void testScriptNonces() {
         filter.configuration = new CspConfiguration("true", "script-src", null, null);
-        CspScripts scripts = new CspScripts(new HashSet<>(Arrays.asList("1", "2")),
-                Collections.<String>emptySet());
+        CspScripts scripts = new CspScripts(new HashSet<>(Arrays.asList("1", "2")), Collections.<String>emptySet());
         String headerValue = filter.getHeaderValue(request, scripts);
         Assert.assertEquals(String.format("script-src 'nonce-1' 'nonce-2'; report-uri %s;", contextPath + CspReportServlet.URL), headerValue);
+    }
+    
+    @Test
+    public void testScriptSha256Hashes() {
+        filter.configuration = new CspConfiguration("true", "script-src", null, null);
+        CspScripts scripts = new CspScripts(Collections.<String>emptySet(), new HashSet<>(Arrays.asList("1", "2")));
+        String headerValue = filter.getHeaderValue(request, scripts);
+        Assert.assertEquals(String.format("script-src 'sha256-1' 'sha256-2'; report-uri %s;", contextPath + CspReportServlet.URL), headerValue);
     }
     
     @Test
