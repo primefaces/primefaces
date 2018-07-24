@@ -120,18 +120,37 @@ public class CspFilter implements Filter {
                 String headerValue = getHeaderValue(request, scripts);
                 HttpServletResponse response = (HttpServletResponse) getResponse();
                 response.addHeader(header.name, headerValue);
-                if (configuration.isJavascriptDebuggingCookie()) {
-                    try {
-                        Cookie cookie = new Cookie(CspHeader.COOKIE_NAME.name, URLEncoder.encode(headerValue, "UTF-8"));
-                        // Explicitly declare cookie as non-HttpOnly since we would like it to be accessible via javascript
-                        cookie.setHttpOnly(false);
-                        response.addCookie(cookie);
+                writeCookie(headerValue);
+            }
+        }
+        
+        private void writeCookie(String headerValue) {
+            if (configuration.isJavascriptDebuggingCookie()) {
+                try {
+                    Cookie cookie = null;
+                    String cookieValue = URLEncoder.encode(headerValue, "UTF-8");
+                    if (request.getCookies() != null) {
+                        for (Cookie c : request.getCookies()) {
+                            if (CspHeader.COOKIE_NAME.name.equalsIgnoreCase(c.getName())) {
+                                cookie = c;
+                                cookie.setValue(cookieValue);
+                                break;
+                            }
+                        }
                     }
-                    catch (UnsupportedEncodingException ex) {
-                        throw new IllegalStateException(ex);
+                    if (cookie == null) {
+                        cookie = new Cookie(CspHeader.COOKIE_NAME.name, cookieValue);
                     }
+                    // Explicitly declare cookie as non-HttpOnly since we would like it to be accessible via javascript
+                    cookie.setHttpOnly(false);
+                    cookie.setPath(request.getContextPath());
+                    ((HttpServletResponse) getResponse()).addCookie(cookie);
+                }
+                catch (UnsupportedEncodingException ex) {
+                    throw new IllegalStateException(ex);
                 }
             }
+            
         }
         
     }
