@@ -105,7 +105,8 @@ public class CspFilter implements Filter {
             CspScripts scripts = (CspScripts) request.getAttribute(CspScripts.class.getName());
             if (scripts != null && (!scripts.getNonces().isEmpty() || !scripts.getSha256Hashes().isEmpty()) || 
                     configuration.getHostWhitelist() != null && !configuration.getHostWhitelist().isEmpty()) {
-                ((HttpServletResponse) getResponse()).addHeader(CspHeader.CSP_HEADER.name, getHeaderValue(request, scripts));
+                CspHeader header = configuration.isReportOnly() ? CspHeader.CSP_REPORT_ONLY_HEADER : CspHeader.CSP_HEADER;
+                ((HttpServletResponse) getResponse()).addHeader(header.name, getHeaderValue(request, scripts));
             }
         }
         

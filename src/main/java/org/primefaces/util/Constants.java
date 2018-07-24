@@ -40,6 +40,7 @@ public class Constants {
         public static final String CONTENT_SECURITY_POLICY_ENABLED = "primefaces.csp.ENABLED";
         public static final String CONTENT_SECURITY_POLICY_SUPPORTED_DIRECTIVES = "primefaces.csp.SUPPORTED_DIRECTIVES";
         public static final String CONTENT_SECURITY_POLICY_REPORT_URI = "primefaces.csp.REPORT_URI";
+        public static final String CONTENT_SECURITY_POLICY_REPORT_ONLY = "primefaces.csp.REPORT_ONLY";
         public static final String CONTENT_SECURITY_POLICY_HOST_WHITELIST = "primefaces.csp.ALLOWED_HOSTS";
     }
 

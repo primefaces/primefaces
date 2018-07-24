@@ -25,7 +25,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 /**
- * Holder for the Content-Security-Policy (CSP) configuration configured via <code>context-param</code> in the web application's web.xml. 
+ * Holder for the Content-Security-Policy (CSP) configuration configured via <code>context-param</code>s in the web application's web.xml. 
  */
 public class CspConfiguration {
     
@@ -33,23 +33,26 @@ public class CspConfiguration {
     private final boolean scripts;
     private final Set<String> hostWhitelist;
     private final String reportUri;
+    private final boolean reportOnly;
 
     public CspConfiguration(ExternalContext context) {
         this(context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_ENABLED), 
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_SUPPORTED_DIRECTIVES),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_HOST_WHITELIST),
-                context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_REPORT_URI));
+                context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_REPORT_URI),
+                context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_REPORT_ONLY));
     }
     
     public CspConfiguration(ServletContext context) {
         this(context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_ENABLED),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_SUPPORTED_DIRECTIVES),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_HOST_WHITELIST),
-                context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_REPORT_URI));       
+                context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_REPORT_URI),
+                context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_REPORT_ONLY));       
     }
     
-    CspConfiguration(String enabledStr, String supportedDirectives, String hostWhitelistStr, String reportUri) {
-        enabled = (enabledStr == null) ? false : Boolean.parseBoolean(enabledStr);
+    CspConfiguration(String enabledStr, String supportedDirectives, String hostWhitelistStr, String reportUri, String reportOnlyStr) {
+        enabled = Boolean.parseBoolean(enabledStr);
 
         if (supportedDirectives != null) {
             Set<String> cspSupportedDirectives = new HashSet<>();
@@ -72,7 +75,9 @@ public class CspConfiguration {
         }
         hostWhitelist = Collections.unmodifiableSet(cspHostWhitelist);
 
-        this.reportUri = reportUri;        
+        this.reportUri = reportUri;
+        
+        reportOnly = Boolean.parseBoolean(reportOnlyStr);
     }
     
     public boolean isEnabled() {
@@ -89,6 +94,10 @@ public class CspConfiguration {
     
     public String getReportUri() {
         return reportUri;
+    }
+
+    public boolean isReportOnly() {
+        return reportOnly;
     }
     
 }
