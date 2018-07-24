@@ -27,6 +27,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -43,8 +46,6 @@ import java.util.UUID;
  * May be enabled by including <code>script-src</code> in {@link Constants.ContextParams#CONTENT_SECURITY_POLICY_SUPPORTED_DIRECTIVES}.
  * @see <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src">CSP: script-src</a>
  */
-// TODO support partial-response
-// TODO generate hashes
 public class CspScriptsResponseWriter extends ResponseWriterWrapper {
 
     /**
@@ -73,19 +74,21 @@ public class CspScriptsResponseWriter extends ResponseWriterWrapper {
     private static final String EVENT_HANDLER_ATTRIBUTE_PREFIX = "on";
     private static final String JAVASCRIPT_SCHEME = "javascript:";
 
-    private static final String EVENT_HANDLER_TEMPLATE = "pf.csp1(\"%s\",\"%s\",function(e){pf.csp0(e);%s});\n";
-    private static final String URI_HANDLER_TEMPLATE = "pf.csp2(\"%s\",\"%s\",\"%s\");\n";
+    private static final String EVENT_HANDLER_TEMPLATE = "pf.csp1(\"%s\",\"%s\",function(e){pf.csp0(e);%s});";
+    private static final String URI_HANDLER_TEMPLATE = "pf.csp2(\"%s\",\"%s\",\"%s\");";
     
     final Stack<ElementState> elements;
 
     final Set<ElementState> elementsToHandle;
     final Set<String> nonces;
+    final Set<String> sha256Hashes;
     
     public CspScriptsResponseWriter(ResponseWriter wrapped) {
         super(wrapped);
         elements = new Stack<>();
         elementsToHandle = new LinkedHashSet<>();
         nonces = new HashSet<>();
+        sha256Hashes = new HashSet<>();
     }
 
     @Override
@@ -134,7 +137,6 @@ public class CspScriptsResponseWriter extends ResponseWriterWrapper {
             elementsToHandle.add(element);
         }
         if (BODY_TAG.equalsIgnoreCase(name)) {
-            //TODO support partial-response
             writeJavascriptHandlers();
             registerNoncesAndHashes();
         }
@@ -238,24 +240,33 @@ public class CspScriptsResponseWriter extends ResponseWriterWrapper {
      * @return cryptographically secure pseudo-random nonce (aka number used once), Base64-encoded
      */
     private String generateNonce() {
-        String nonce = Base64.encodeToString(UUID.randomUUID().toString().getBytes(), false);
+        String nonce = Base64.encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8), false);
         nonces.add(nonce);
         return nonce;
     }
 
+    /**
+     * @return SHA-256 hash for the specified javascript, Base64-encoded
+     */
+    private String generateSha256Hash(String javascript) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        String sha256Hash = Base64.encodeToString(digest.digest(javascript.getBytes(StandardCharsets.UTF_8)), false);
+        sha256Hashes.add(sha256Hash);
+        return sha256Hash;
+    }
+    
     /**
      * Write javascript collected from event/URI handlers to a separate <code>script</code> block.
      */
     void writeJavascriptHandlers() throws IOException {
         if (!elementsToHandle.isEmpty()) {
             getWrapped().startElement(SCRIPT_TAG, null);
-            getWrapped().writeAttribute(NONCE_ATTRIBUTE, generateNonce(), null);
-            StringBuilder javascriptBuilder = new StringBuilder("var pf=PrimeFaces;\n");
-            javascriptBuilder.append("pf.csp0=function(evt){if(evt.cancelable)evt.preventDefault();};\n");
+            StringBuilder javascriptBuilder = new StringBuilder("var pf=PrimeFaces;");
+            javascriptBuilder.append("pf.csp0=function(evt){if(evt.cancelable)evt.preventDefault();};");
             javascriptBuilder.append("pf.csp1=function(id,evt,js){");
-            javascriptBuilder.append("document.getElementById(id).addEventListener(evt,js);};\n");
+            javascriptBuilder.append("document.getElementById(id).addEventListener(evt,js);};");
             javascriptBuilder.append("pf.csp2=function(id,attr,jsUri){");
-            javascriptBuilder.append("document.getElementById(id).setAttribute(attr,jsUri);};\n");
+            javascriptBuilder.append("document.getElementById(id).setAttribute(attr,jsUri);};");
             for (ElementState element : elementsToHandle) {
                 for (Map.Entry<String, String> eventHandler : element.javascriptEventHandlers.entrySet()) {
                     String event = eventHandler.getKey();
@@ -270,7 +281,14 @@ public class CspScriptsResponseWriter extends ResponseWriterWrapper {
                             String.format(URI_HANDLER_TEMPLATE, ComponentUtils.escapeText(element.id), ComponentUtils.escapeText(attribute), javascript));
                 }
             }
-            getWrapped().writeText(javascriptBuilder.toString(), null);
+            String javascript = javascriptBuilder.toString();
+            getWrapped().writeText(javascript, null);
+            try {
+                generateSha256Hash(javascript);
+            }
+            catch (NoSuchAlgorithmException ex) {
+                throw new IOException("Cannot generate SHA-256 hash", ex);
+            }
             getWrapped().endElement(SCRIPT_TAG);
         }
     }
@@ -281,8 +299,6 @@ public class CspScriptsResponseWriter extends ResponseWriterWrapper {
     void registerNoncesAndHashes() {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-        //TODO support hashes
-        Set<String> sha256Hashes = new HashSet<>();
         request.setAttribute(CspScripts.class.getName(), new CspScripts(nonces, sha256Hashes));
     }
 

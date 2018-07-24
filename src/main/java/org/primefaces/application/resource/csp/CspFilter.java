@@ -121,8 +121,8 @@ public class CspFilter implements Filter {
             for (String nonce : scripts.getNonces()) {
                 headerBuilder.append(" 'nonce-").append(nonce).append('\'');
             }
-            for (String hashes : scripts.getSha256Hashes()) {
-                // TODO support hashes
+            for (String hash : scripts.getSha256Hashes()) {
+                headerBuilder.append(" 'sha256-").append(hash).append('\'');
             }
         }
         for (String host : configuration.getHostWhitelist()) {
