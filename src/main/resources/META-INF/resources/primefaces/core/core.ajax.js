@@ -143,9 +143,7 @@ if (!PrimeFaces.ajax) {
                     PrimeFaces.ajax.Utils.updateHead(content);
                 }
                 else {
-                    // jQuery's replaceWith cannot be used because it drops the nonce, see https://github.com/jquery/jquery/issues/3541
-                    // $(PrimeFaces.escapeClientId(id)).replaceWith(content);
-                    document.getElementById(id).outerHTML = content;
+                    $(PrimeFaces.escapeClientId(id)).replaceWith(content);
                 }
             }
         },
