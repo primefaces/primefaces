@@ -90,6 +90,13 @@
             <defaultValue>Back</defaultValue>
             <description>Label of back navigation button. Default is "Back".</description>
         </attribute>
+        <attribute>
+            <name>updateModelOnPrev</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>If yes, the model will be updated when the "Back" button is clicked. Default is false.</description>
+        </attribute>
     </attributes>
     <resources>
         <resource>

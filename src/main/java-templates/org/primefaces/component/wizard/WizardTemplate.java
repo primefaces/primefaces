@@ -17,19 +17,19 @@ import javax.faces.event.FacesEvent;
 	public void processDecodes(FacesContext context) {
         this.decode(context);
 
-		if(!isBackRequest(context)) {
+		if(!isBackRequest(context) || (this.isUpdateModelOnPrev() && isBackRequest(context))) {
 			getStepToProcess().processDecodes(context);
 		}
     }
 	
 	public void processValidators(FacesContext context) {
-        if(!isBackRequest(context)) {
+        if(!isBackRequest(context) || (this.isUpdateModelOnPrev() && isBackRequest(context))) {
 			current.processValidators(context);
 		}
     }
 	
 	public void processUpdates(FacesContext context) {
-		if(!isBackRequest(context)) {
+		if(!isBackRequest(context) || (this.isUpdateModelOnPrev() && isBackRequest(context))) {
 			current.processUpdates(context);
 		}
 	}
