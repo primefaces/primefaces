@@ -104,11 +104,6 @@ public class CspScriptsPartialResponseWriter extends PrimePartialResponseWriter 
     }
 
     @Override
-    public void endDocument() throws IOException {
-        cspWriter.endDocument();
-    }
-
-    @Override
     public void writeComment(Object comment) throws IOException {
         cspWriter.writeComment(comment);
     }
