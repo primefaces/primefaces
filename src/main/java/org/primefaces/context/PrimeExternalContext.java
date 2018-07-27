@@ -15,14 +15,18 @@
  */
 package org.primefaces.context;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import javax.faces.FacesException;
+import java.util.logging.Logger;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.ExternalContextWrapper;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import org.primefaces.util.Constants;
 
 public class PrimeExternalContext extends ExternalContextWrapper {
+
+    private final static Logger LOG = Logger.getLogger(PrimeExternalContext.class.getName());
 
     private ExternalContext wrapped;
     private HttpServletRequest httpServletRequest;
@@ -44,31 +48,46 @@ public class PrimeExternalContext extends ExternalContextWrapper {
     }
 
     protected void extractHttpServletRequest() {
+
         Object request = wrapped.getRequest();
+
         if (request instanceof HttpServletRequest) {
-            httpServletRequest = (HttpServletRequest) request;
+            this.httpServletRequest = (HttpServletRequest) request;
         }
-        else if (isLiferay()) {
-            try {
-                Class<?> portletRequestClass = Class.forName("javax.portlet.PortletRequest");
-                Class<?> portalUtilClass = Class.forName("com.liferay.portal.util.PortalUtil");
-                Method method = portalUtilClass.getMethod("getHttpServletRequest", new Class[]{portletRequestClass});
-                httpServletRequest = (HttpServletRequest) method.invoke(null, new Object[]{request});
+        else {
+
+            // Support non-webapp environments (such as Liferay Portal) by allowing other libraries to provide a method
+            // for extracting the HttpServletRequest from the request object.
+            Method getHttpServletRequestMethod =
+                    (Method) wrapped.getApplicationMap()
+                            .get(Constants.CUSTOM_GET_HTTP_SERVLET_REQUEST_STATIC_METHOD);
+
+            if (getHttpServletRequestMethod != null) {
+
+                try {
+                    this.httpServletRequest =
+                            (HttpServletRequest) getHttpServletRequestMethod.invoke(null, new Object[]{request});
+                }
+                catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                    throw new RuntimeException("Failed to obtain HttpServletRequest with " +
+                            getHttpServletRequestMethod.getDeclaringClass().getName() + "." +
+                            getHttpServletRequestMethod.getName() + "(request).", e);
+                }
             }
-            catch (Exception ex) {
-                throw new FacesException(ex);
+            else {
+                this.httpServletRequest = null;
             }
         }
     }
 
+    /**
+     * @deprecated No replacement available.
+     */
+    @Deprecated
     protected boolean isLiferay() {
-        try {
-            Class.forName("com.liferay.portal.util.PortalUtil");
-            return true;
-        }
-        catch (ClassNotFoundException e) {
-            return false;
-        }
+
+        LOG.warning("Deprecated isLiferay() method called. Returning false since Liferay detection is unnecessary.");
+        return false;
     }
 
     public static PrimeExternalContext getCurrentInstance(FacesContext facesContext) {
