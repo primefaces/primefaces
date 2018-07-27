@@ -23,7 +23,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
@@ -61,21 +60,11 @@ public class CspScriptsResponseWriter extends ResponseWriterWrapper {
                     "seeked", "seeking", "select", "show", "stalled", "storage", "submit", "suspend", "timeupdate", "toggle", "touchcancel", "touchend",
                     "touchmove", "touchstart", "transitionend", "unload", "volumechange", "waiting", "wheel"));
 
-    /**
-     * @see <a href="https://www.w3.org/TR/html4/index/attributes.html">Index of Attributes</a>
-     * @see <a href="https://stackoverflow.com/questions/2725156/complete-list-of-html-tag-attributes-which-have-a-url-value">URI attributes</a>
-     */
-    static final Set<String> URI_ATTRIBUTES = new HashSet<>(
-            Arrays.asList("action", "background", "cite", "classid", "codebase", "data", "href", "longdesc", "profile", "src", "usemap", "formaction", "icon",
-                    "manifest", "poster"));
-    
     private static final String SCRIPT_TAG = "script", BODY_TAG = "body";
     private static final String ID_ATTRIBUTE = "id", NONCE_ATTRIBUTE = "nonce";
     private static final String EVENT_HANDLER_ATTRIBUTE_PREFIX = "on";
-    private static final String JAVASCRIPT_SCHEME = "javascript:";
 
     private static final String EVENT_HANDLER_TEMPLATE = "pf.csp1(\"%s\",\"%s\",function(e){pf.csp0(e);%s});";
-    private static final String URI_HANDLER_TEMPLATE = "pf.csp2(\"%s\",\"%s\",\"%s\");";
     
     final Stack<ElementState> elements;
 
@@ -106,34 +95,20 @@ public class CspScriptsResponseWriter extends ResponseWriterWrapper {
         }
         boolean inEventHandlerAttribute = name.toLowerCase().startsWith(EVENT_HANDLER_ATTRIBUTE_PREFIX) && DOM_EVENTS.contains(
                 name.toLowerCase().substring(EVENT_HANDLER_ATTRIBUTE_PREFIX.length()));
-        boolean inJavascriptUriAttribute = URI_ATTRIBUTES.contains(name.toLowerCase()) && isJavascriptUri(value);
-        if (!inEventHandlerAttribute && !inJavascriptUriAttribute) {
+        if (!inEventHandlerAttribute) {
             getWrapped().writeAttribute(name, value, property);
             return;
         }
         if (inEventHandlerAttribute && value != null) {
             elements.peek().javascriptEventHandlers.put(name.toLowerCase().substring(EVENT_HANDLER_ATTRIBUTE_PREFIX.length()), (String) value);
         }
-        if (inJavascriptUriAttribute && value != null) {
-            elements.peek().javascriptUriHandlers.put(name, getJavascriptFromUri(value));
-        }
-    }
-
-    @Override
-    public void writeURIAttribute(String name, Object value, String property) throws IOException {
-        boolean inJavascriptUriAttribute = isJavascriptUri(value);
-        if (!inJavascriptUriAttribute) {
-            getWrapped().writeURIAttribute(name, value, property);
-            return;
-        }
-        elements.peek().javascriptUriHandlers.put(name, getJavascriptFromUri(value));
     }
 
     @Override
     public void endElement(String name) throws IOException {
         writeAttributesIfNeeded();
         ElementState element = elements.pop();
-        if (!element.javascriptEventHandlers.isEmpty() || !element.javascriptUriHandlers.isEmpty()) {
+        if (!element.javascriptEventHandlers.isEmpty()) {
             elementsToHandle.add(element);
         }
         if (BODY_TAG.equalsIgnoreCase(name)) {
@@ -201,7 +176,7 @@ public class CspScriptsResponseWriter extends ResponseWriterWrapper {
         }
         ElementState element = elements.peek();
         if (!element.attributesWritten) {
-            if (element.id == null && (!element.javascriptEventHandlers.isEmpty() || !element.javascriptUriHandlers.isEmpty())) {
+            if (element.id == null && !element.javascriptEventHandlers.isEmpty()) {
                 element.id = element.tag.toLowerCase() + "-" + UUID.randomUUID().toString();
                 getWrapped().writeAttribute(ID_ATTRIBUTE, element.id, null);
             }
@@ -214,33 +189,21 @@ public class CspScriptsResponseWriter extends ResponseWriterWrapper {
     }
 
     /**
-     * Example: <code>&lt;form action="javascript:alert(1);" /&gt;</code>
-     * @param attributeValue e.g. <code>javascript:alert(1);</code>
-     */
-    private static boolean isJavascriptUri(Object attributeValue) {
-        if (attributeValue == null) {
-            return false;
-        }
-        return ((String) attributeValue).trim().toLowerCase().startsWith(JAVASCRIPT_SCHEME);
-    }
-
-    /**
-     * Return just the javascript code without the <code>javascript:</code> scheme handler
-     * @param javascriptUriAttributeValue e.g. <code>javascript:alert(1);</code>
-     * @return e.g. <code>alert(1);</code>
-     */
-    private static String getJavascriptFromUri(Object javascriptUriAttributeValue) {
-        if (javascriptUriAttributeValue == null) {
-            return "";
-        }
-        return ((String) javascriptUriAttributeValue).trim().substring(JAVASCRIPT_SCHEME.length());
-    }
-
-    /**
-     * @return cryptographically secure pseudo-random nonce (aka number used once), Base64-encoded
+     * <p>Generate a cryptographically secure pseudo-random nonce (aka number used once) in Base64-encoded form.</p>
+     * For the moment we generate only one nonce per session and reuse it for all script blocks since user agents seem to ignore nonces 
+     * added incrementally in upcoming XHR response header directives and therefore would refuse to execute our scripts.
+     * @return the nonce
      */
     private String generateNonce() {
-        String nonce = Base64.encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8), false);
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        CspScripts scripts = (CspScripts) request.getSession().getAttribute(CspScripts.class.getName());
+        if (scripts == null || scripts.getNonces().isEmpty()) {
+            String nonce = Base64.encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8), false);
+            nonces.add(nonce);
+            registerNoncesAndHashes();
+            return nonce;
+        }
+        String nonce = scripts.getNonces().iterator().next();
         nonces.add(nonce);
         return nonce;
     }
@@ -261,12 +224,11 @@ public class CspScriptsResponseWriter extends ResponseWriterWrapper {
     void writeJavascriptHandlers() throws IOException {
         if (!elementsToHandle.isEmpty()) {
             getWrapped().startElement(SCRIPT_TAG, null);
+            getWrapped().writeAttribute(NONCE_ATTRIBUTE, generateNonce(), null);
             StringBuilder javascriptBuilder = new StringBuilder("var pf=PrimeFaces;");
             javascriptBuilder.append("pf.csp0=function(evt){if(evt.cancelable)evt.preventDefault();};");
             javascriptBuilder.append("pf.csp1=function(id,evt,js){");
             javascriptBuilder.append("document.getElementById(id).addEventListener(evt,js);};");
-            javascriptBuilder.append("pf.csp2=function(id,attr,jsUri){");
-            javascriptBuilder.append("document.getElementById(id).setAttribute(attr,jsUri);};");
             for (ElementState element : elementsToHandle) {
                 for (Map.Entry<String, String> eventHandler : element.javascriptEventHandlers.entrySet()) {
                     String event = eventHandler.getKey();
@@ -274,21 +236,9 @@ public class CspScriptsResponseWriter extends ResponseWriterWrapper {
                     javascriptBuilder.append(
                             String.format(EVENT_HANDLER_TEMPLATE, ComponentUtils.escapeText(element.id), ComponentUtils.escapeText(event), javascript));
                 }
-                for (Map.Entry<String, String> uriHandler : element.javascriptUriHandlers.entrySet()) {
-                    String attribute = uriHandler.getKey();
-                    String javascript = uriHandler.getValue();
-                    javascriptBuilder.append(
-                            String.format(URI_HANDLER_TEMPLATE, ComponentUtils.escapeText(element.id), ComponentUtils.escapeText(attribute), javascript));
-                }
             }
             String javascript = javascriptBuilder.toString();
             getWrapped().writeText(javascript, null);
-            try {
-                generateSha256Hash(javascript);
-            }
-            catch (NoSuchAlgorithmException ex) {
-                throw new IOException("Cannot generate SHA-256 hash", ex);
-            }
             getWrapped().endElement(SCRIPT_TAG);
         }
     }
@@ -298,8 +248,7 @@ public class CspScriptsResponseWriter extends ResponseWriterWrapper {
      */
     void registerNoncesAndHashes() {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-        request.setAttribute(CspScripts.class.getName(), new CspScripts(nonces, sha256Hashes));
+        request.getSession().setAttribute(CspScripts.class.getName(), new CspScripts(nonces, sha256Hashes));
     }
 
     @Override
@@ -315,14 +264,12 @@ public class CspScriptsResponseWriter extends ResponseWriterWrapper {
         final String tag;
         String id;
         Map<String, String> javascriptEventHandlers;
-        Map<String, String> javascriptUriHandlers;
         boolean hasNonce;
         boolean attributesWritten;
 
         ElementState(String tag) {
             this.tag = tag;
             javascriptEventHandlers = new LinkedHashMap<>(1);
-            javascriptUriHandlers = new LinkedHashMap<>(1);
         }
 
         @Override
