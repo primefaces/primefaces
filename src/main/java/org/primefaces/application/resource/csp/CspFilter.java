@@ -113,7 +113,7 @@ public class CspFilter implements Filter {
             if (isDisableOnResponseCommitted()) {
                 return;
             }
-            CspScripts scripts = (CspScripts) request.getAttribute(CspScripts.class.getName());
+            CspScripts scripts = (CspScripts) request.getSession().getAttribute(CspScripts.class.getName());
             if (scripts != null && (!scripts.getNonces().isEmpty() || !scripts.getSha256Hashes().isEmpty() || 
                     configuration.getHostWhitelist() != null && !configuration.getHostWhitelist().isEmpty())) {
                 CspHeader header = configuration.isReportOnly() ? CspHeader.CSP_REPORT_ONLY_HEADER : CspHeader.CSP_HEADER;
