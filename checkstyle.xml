@@ -10,12 +10,9 @@
 
     <module name="FileTabCharacter"/>
 
-    <!-- allow usage of CHECKSTYLE:OFF and CHECKSTYLE:ON -->
-    <module name="SuppressionCommentFilter"/>
-
     <module name="TreeWalker">
-
-        <module name="FileContentsHolder"/>
+        <!-- allow usage of CHECKSTYLE:OFF and CHECKSTYLE:ON -->
+        <module name="SuppressionCommentFilter"/>
 
         <property name="cacheFile" value="${checkstyle.cache.file}"/>
 
