@@ -28,7 +28,7 @@ public class WrapperEvent extends FacesEvent {
 
     private FacesEvent event = null;
     private String rowKey = null;
-    
+
     public WrapperEvent(UIComponent component, FacesEvent event, String rowKey) {
         super(component);
         this.event = event;

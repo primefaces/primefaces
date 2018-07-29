@@ -159,7 +159,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         String activeIndex = acco.getActiveIndex();
         List<String> activeIndexes = activeIndex == null
                 ? Collections.EMPTY_LIST
-                : Arrays.asList(activeIndex.split(","));        
+                : Arrays.asList(activeIndex.split(","));
 
         if (var == null) {
             int j = 0;
@@ -192,7 +192,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
     protected void encodeTab(FacesContext context, AccordionPanel accordionPanel, Tab tab, boolean active, boolean dynamic,
             boolean rtl) throws IOException {
-        
+
         ResponseWriter writer = context.getResponseWriter();
 
         String headerClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_CLASS : AccordionPanel.TAB_HEADER_CLASS;

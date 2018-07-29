@@ -181,7 +181,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     protected void encodeSelectItems(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems, String layout)
             throws IOException {
-        
+
         if (layout.equals("lineDirection")) {
             encodeLineLayout(context, radio, selectItems);
         }
@@ -294,7 +294,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     protected void encodeOption(FacesContext context, SelectOneRadio radio, SelectItem option, String id, String name,
             Converter converter, boolean selected, boolean disabled) throws IOException {
-        
+
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, radio, converter, option.getValue());
         String styleClass = radio.isPlain() ? HTML.RADIOBUTTON_NATIVE_CLASS : HTML.RADIOBUTTON_CLASS;
@@ -312,7 +312,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     protected void encodeOptionInput(FacesContext context, SelectOneRadio radio, String id, String name, boolean checked,
             boolean disabled, String value) throws IOException {
-        
+
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
@@ -347,7 +347,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     protected void encodeOptionLabel(FacesContext context, SelectOneRadio radio, String containerClientId, SelectItem option,
             boolean disabled) throws IOException {
-        
+
         ResponseWriter writer = context.getResponseWriter();
         String label = option.getLabel();
 

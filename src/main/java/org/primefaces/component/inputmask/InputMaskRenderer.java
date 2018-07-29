@@ -68,7 +68,7 @@ public class InputMaskRenderer extends InputRenderer {
      * 9 - Represents a numeric character (0-9)
      * * - Represents an alphanumeric character (A-Z,a-z,0-9)
      * ? - Makes the following input optional
-     * 
+     *
      * @param context The {@link FacesContext}
      * @param inputMask The component
      * @return The generated {@link Pattern}

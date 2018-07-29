@@ -28,12 +28,12 @@ import org.primefaces.expression.SearchExpressionUtils;
 public class Jsf23WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
 
     private static final Pattern PATTERN = Pattern.compile("widgetVar\\((\\w+)\\)");
-    
+
     @Override
     public boolean isResolverForKeyword(SearchExpressionContext searchExpressionContext, String keyword) {
         return keyword != null && keyword.startsWith("widgetVar(");
     }
- 
+
     @Override
     public void resolve(SearchKeywordContext context, UIComponent current, String keyword) {
         try {

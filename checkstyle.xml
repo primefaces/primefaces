@@ -114,12 +114,12 @@
         <!-- See http://checkstyle.sf.net/config_misc.html -->
         <!-- module name="ArrayTypeStyle"/ -->
         <!-- module name="FinalParameters"/ -->
-        <!-- Line with Trailing Spaces (disabled as it's to noisy)
-        <module name="GenericIllegalRegexp">
-            <property name="format" value="\s+$"/>
-            <property name="message" value="Line has trailing spaces."/>
+        <!-- Line with Trailing Spaces -->
+        <module name="Regexp">
+            <property name="format" value="[ \t]+$"/>
+            <property name="illegalPattern" value="true"/>
+            <property name="message" value="Trailing whitespace"/>
         </module>
-          -->
         <module name="UpperEll"/>
 
         <module name="WhitespaceAround">

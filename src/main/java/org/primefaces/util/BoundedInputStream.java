@@ -36,7 +36,7 @@ public class BoundedInputStream extends InputStream {
 
     // changed by PrimeFaces: copied from org.apache.commons.io.IOUtils.EOF
     private static final int EOF = -1;
-    
+
     /** the wrapped input stream */
     private final InputStream in;
 
@@ -47,7 +47,7 @@ public class BoundedInputStream extends InputStream {
     private long pos = 0;
 
     /** the marked position */
-    private long mark = EOF; 
+    private long mark = EOF;
 
     /** flag if close should be propagated */
     private boolean propagateClose = true;

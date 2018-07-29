@@ -29,7 +29,7 @@ import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class GrowlRenderer extends UINotificationRenderer {
-    
+
     private final static Logger logger = Logger.getLogger(GrowlRenderer.class.getName());
 
     @Override

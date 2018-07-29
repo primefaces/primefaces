@@ -52,7 +52,7 @@ import org.primefaces.util.WidgetBuilder;
 public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
     public static final String SEPARATOR = "_";
-    
+
     private static final String SB_BUILD_NON_AJAX_REQUEST = BaseMenuRenderer.class.getName() + "#buildNonAjaxRequest";
 
     @Override
@@ -322,7 +322,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
     protected String buildAjaxRequest(FacesContext context, AbstractMenu menu, AjaxSource source, UIComponent form,
             Map<String, List<String>> params) {
-        
+
         String clientId = menu.getClientId(context);
 
         AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
@@ -355,7 +355,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
     protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam,
             Map<String, List<String>> parameters, boolean submit) {
-        
+
         StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
         String formId = form.getClientId(context);
         Map<String, Object> params = new HashMap<String, Object>();

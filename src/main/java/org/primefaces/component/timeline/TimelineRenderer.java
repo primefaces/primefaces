@@ -198,7 +198,7 @@ public class TimelineRenderer extends CoreRenderer {
 
         writer.write("}");
         encodeClientBehaviors(context, timeline);
-        
+
         wb.finish();
     }
 

@@ -202,7 +202,7 @@ public class PickListRenderer extends CoreRenderer {
 
     protected void encodeList(FacesContext context, PickList pickList, String listId, String styleClass, List model, UIComponent caption,
             boolean filter, boolean isSource) throws IOException {
-        
+
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);

@@ -94,7 +94,7 @@ public class SortFeature implements DataTableFeature {
         if (table.isLazy()) {
             if (table.isLiveScroll()) {
                 table.loadLazyScrollData(0, table.getScrollRows());
-            } 
+            }
             else if (table.isVirtualScroll()) {
                 int rows = table.getRows();
                 int scrollRows = table.getScrollRows();
@@ -102,7 +102,7 @@ public class SortFeature implements DataTableFeature {
                 scrollRows = (rows == 0) ? virtualScrollRows : ((virtualScrollRows > rows) ? rows : virtualScrollRows);
 
                 table.loadLazyScrollData(0, scrollRows);
-            } 
+            }
             else {
                 table.loadLazyData();
             }

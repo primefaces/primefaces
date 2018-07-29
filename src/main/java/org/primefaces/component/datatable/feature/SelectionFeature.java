@@ -47,7 +47,7 @@ public class SelectionFeature implements DataTableFeature {
         if (isFiltered) {
             table.setValue(null);
         }
-        
+
         if (checked) {
             selection = "@all";
         }

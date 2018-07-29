@@ -45,7 +45,7 @@ public abstract class InputRenderer extends CoreRenderer {
 
         return !disabled && !readonly;
     }
-    
+
     public <T extends UIComponent & RTLAware> void renderRTLDirection(FacesContext context, T component) throws IOException {
         if (ComponentUtils.isRTL(context, component)) {
             context.getResponseWriter().writeAttribute("dir", "rtl", null);

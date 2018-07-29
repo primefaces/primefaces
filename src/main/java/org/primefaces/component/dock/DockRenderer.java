@@ -110,7 +110,7 @@ public class DockRenderer extends BaseMenuRenderer {
         if (menuitem.getValue() != null) {
             if (menuitem.isEscape()) {
                 writer.writeText((String) menuitem.getValue(), "value");
-            } 
+            }
             else {
                 writer.write((String) menuitem.getValue());
             }

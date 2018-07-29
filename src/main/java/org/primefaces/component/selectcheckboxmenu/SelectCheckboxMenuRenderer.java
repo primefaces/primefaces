@@ -240,7 +240,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                                 break;
                             }
                         }
-                    } 
+                    }
                     else if (value.equals(item.getValue())) {
                         selectedItem = item;
                         break;

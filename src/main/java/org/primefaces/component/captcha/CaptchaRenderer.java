@@ -65,7 +65,7 @@ public class CaptchaRenderer extends CoreRenderer {
         captcha.setRequired(true);
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
-        
+
         if (captcha.getSize() != null && "invisible".equals(captcha.getSize())) {
             writer.writeAttribute("class", "g-recaptcha", null);
             writer.writeAttribute("data-sitekey", publicKey, null);

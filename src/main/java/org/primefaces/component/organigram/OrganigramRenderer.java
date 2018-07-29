@@ -280,7 +280,7 @@ public class OrganigramRenderer extends CoreRenderer {
 
         return styleClass.trim();
     }
-    
+
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Do nothing

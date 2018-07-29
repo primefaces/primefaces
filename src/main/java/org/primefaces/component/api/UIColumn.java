@@ -110,8 +110,8 @@ public interface UIColumn {
     public MethodExpression getExportFunction();
 
     public boolean isGroupRow();
-    
+
     public String getExportHeaderValue();
-    
+
     public String getExportFooterValue();
 }

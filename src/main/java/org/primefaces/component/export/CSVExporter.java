@@ -34,7 +34,7 @@ import org.primefaces.util.Constants;
 public class CSVExporter extends Exporter {
 
     private CSVOptions csvOptions;
-    
+
     public CSVExporter(ExporterOptions options) {
         csvOptions = CSVOptions.EXCEL;
         if (options != null) {
@@ -46,12 +46,12 @@ public class CSVExporter extends Exporter {
             }
         }
     }
-    
+
     @Override
     public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly,
             String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
             MethodExpression onTableRender) throws IOException {
-        
+
         ExternalContext externalContext = context.getExternalContext();
         configureResponse(externalContext, filename, encodingType);
         StringBuilder builder = new StringBuilder();

@@ -34,7 +34,7 @@ public class DraggableColumnsFeature implements DataTableFeature {
         }
 
         table.setColumns(table.findOrderedColumns(columnOrderParam));
-        
+
         if (table.isMultiViewState()) {
             TableState ts = table.getTableState(true);
             ts.setOrderedColumnsAsString(columnOrderParam);

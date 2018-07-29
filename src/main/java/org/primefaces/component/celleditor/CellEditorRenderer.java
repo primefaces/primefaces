@@ -31,7 +31,7 @@ public class CellEditorRenderer extends CoreRenderer {
         CellEditor editor = (CellEditor) component;
         UIComponent parentTable = editor.getParentTable(context);
         boolean isLazyEdit = false;
-        
+
         if (editor.isDisabled()) {
             editor.getFacet("output").encodeAll(context);
             return;
@@ -46,11 +46,11 @@ public class CellEditorRenderer extends CoreRenderer {
                 DataTable dt = (DataTable) parentTable;
                 editMode = dt.getEditMode();
                 cellEditMode = dt.getCellEditMode();
-                
+
                 String rowEditMode = dt.getRowEditMode();
                 isLazyRowEdit = rowEditMode != null && editMode.equals("row") && rowEditMode.equals("lazy")
                         && !dt.isRowEditInitRequest(context) && !context.isValidationFailed();
-            } 
+            }
             else if (parentTable instanceof TreeTable) {
                 TreeTable tt = (TreeTable) parentTable;
                 editMode = tt.getEditMode();

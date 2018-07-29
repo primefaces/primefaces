@@ -149,7 +149,7 @@ public class CommandLinkRenderer extends CoreRenderer {
             if (label != null) {
                 writer.writeText(label, "value");
             }
-            
+
             renderChildren(context, link);
 
             writer.endElement("span");

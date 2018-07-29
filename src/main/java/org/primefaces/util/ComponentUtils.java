@@ -57,7 +57,7 @@ public class ComponentUtils {
 
     // marker for a undefined value when a null check is not reliable enough
     private static final Object UNDEFINED_VALUE = new Object();
-    
+
     public static String getValueToRender(FacesContext context, UIComponent component) {
         return getValueToRender(context, component, UNDEFINED_VALUE);
     }
@@ -187,7 +187,7 @@ public class ComponentUtils {
         return SearchExpressionUtils.resolveWidgetVar(expression, component);
     }
 
-    
+
 
 
     public static boolean isRTL(FacesContext context, RTLAware component) {
@@ -549,10 +549,10 @@ public class ComponentUtils {
         if (facet.getChildren().isEmpty()) {
             return true;
         }
-        
+
         return shouldRenderChildren(facet);
     }
-    
+
     /**
      * Checks if the component's children are rendered
      * @param component The component to check

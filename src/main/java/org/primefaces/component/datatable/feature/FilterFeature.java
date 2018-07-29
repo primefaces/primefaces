@@ -117,7 +117,7 @@ public class FilterFeature implements DataTableFeature {
         if (table.isLazy()) {
             if (table.isLiveScroll()) {
                 table.loadLazyScrollData(0, table.getScrollRows());
-            } 
+            }
             else if (table.isVirtualScroll()) {
                 int rows = table.getRows();
                 int scrollRows = table.getScrollRows();
@@ -125,7 +125,7 @@ public class FilterFeature implements DataTableFeature {
                 scrollRows = (rows == 0) ? virtualScrollRows : ((virtualScrollRows > rows) ? rows : virtualScrollRows);
 
                 table.loadLazyScrollData(0, scrollRows);
-            } 
+            }
             else {
                 table.loadLazyData();
             }
@@ -240,7 +240,7 @@ public class FilterFeature implements DataTableFeature {
 
     public Map<String, Object> populateFilterParameterMap(FacesContext context, DataTable table, List<FilterMeta> filterMetadata,
             String globalFilterParam) {
-        
+
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         Map<String, Object> filterParameterMap = new HashMap<String, Object>();
 
@@ -328,7 +328,7 @@ public class FilterFeature implements DataTableFeature {
 
     private void populateFilterMetaDataInColumnGroup(FacesContext context, List<FilterMeta> filterMetadata, ColumnGroup group,
             Map<String, String> params, String separator) {
-        
+
         if (group == null) {
             return;
         }
@@ -377,7 +377,7 @@ public class FilterFeature implements DataTableFeature {
 
     private void populateFilterMetaDataWithoutColumnGroups(FacesContext context, DataTable table, List<FilterMeta> filterMetadata,
             Map<String, String> params, String separator) {
-        
+
         for (UIColumn column : table.getColumns()) {
             ValueExpression filterVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
             if (filterVE != null) {

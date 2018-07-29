@@ -34,7 +34,7 @@ public class DraggableRenderer extends CoreRenderer {
         String clientId = draggable.getClientId(context);
 
         renderDummyMarkup(context, component, clientId);
-        
+
         UIComponent target = SearchExpressionFacade.resolveComponent(
                 context, draggable, draggable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
 
@@ -53,7 +53,7 @@ public class DraggableRenderer extends CoreRenderer {
                 .attr("stack", draggable.getStack(), null)
                 .attr("scope", draggable.getScope(), null)
                 .attr("cancel", draggable.getCancel(), null);
-        
+
         wb.callback("onStart", "function(event,ui)", draggable.getOnStart())
             .callback("onStop", "function(event,ui)", draggable.getOnStop());
 

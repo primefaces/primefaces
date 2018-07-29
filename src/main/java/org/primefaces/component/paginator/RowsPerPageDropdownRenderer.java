@@ -82,7 +82,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
                 }
                 else {
                     optionText = option.trim();
-                    rows = Integer.parseInt(optionText);  
+                    rows = Integer.parseInt(optionText);
                 }
 
                 writer.startElement("option", null);

@@ -70,7 +70,7 @@ public class GMapRenderer extends CoreRenderer {
         String widgetVar = map.resolveWidgetVar();
         GMapInfoWindow infoWindow = map.getInfoWindow();
 
-        
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("GMap", map.resolveWidgetVar(), clientId)
             .nativeAttr("mapTypeId", "google.maps.MapTypeId." + map.getType().toUpperCase())

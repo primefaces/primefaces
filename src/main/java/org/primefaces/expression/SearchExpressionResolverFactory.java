@@ -69,7 +69,7 @@ public class SearchExpressionResolverFactory {
     private SearchExpressionResolverFactory() {
 
     }
-    
+
     /**
      * Finds a {@link SearchExpressionResolver} for the given expression.
      *
