@@ -30,18 +30,7 @@ public class DefaultSubMenu implements Submenu, Serializable {
     private boolean rendered = true;
     private boolean expanded = false;
 
-    public DefaultSubMenu() {
-        elements = new ArrayList<MenuElement>();
-    }
-
-    public DefaultSubMenu(String label) {
-        this.label = label;
-        elements = new ArrayList<MenuElement>();
-    }
-
-    public DefaultSubMenu(String label, String icon) {
-        this.label = label;
-        this.icon = icon;
+    private DefaultSubMenu() {
         elements = new ArrayList<MenuElement>();
     }
 
@@ -135,5 +124,66 @@ public class DefaultSubMenu implements Submenu, Serializable {
     @Override
     public String getClientId() {
         return this.id;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static final class Builder {
+        private DefaultSubMenu defaultSubMenu;
+
+        private Builder() {
+            defaultSubMenu = new DefaultSubMenu();
+        }
+
+        public Builder withId(String id) {
+            defaultSubMenu.setId(id);
+            return this;
+        }
+
+        public Builder withStyle(String style) {
+            defaultSubMenu.setStyle(style);
+            return this;
+        }
+
+        public Builder withStyleClass(String styleClass) {
+            defaultSubMenu.setStyleClass(styleClass);
+            return this;
+        }
+
+        public Builder withIcon(String icon) {
+            defaultSubMenu.setIcon(icon);
+            return this;
+        }
+
+        public Builder withLabel(String label) {
+            defaultSubMenu.setLabel(label);
+            return this;
+        }
+
+        public Builder withElement(MenuElement element) {
+            defaultSubMenu.addElement(element);
+            return this;
+        }
+
+        public Builder withElements(List<MenuElement> elements) {
+            defaultSubMenu.setElements(elements);
+            return this;
+        }
+
+        public Builder withRendered(boolean rendered) {
+            defaultSubMenu.setRendered(rendered);
+            return this;
+        }
+
+        public Builder withExpanded(boolean expanded) {
+            defaultSubMenu.setExpanded(expanded);
+            return this;
+        }
+
+        public DefaultSubMenu build() {
+            return defaultSubMenu;
+        }
     }
 }
