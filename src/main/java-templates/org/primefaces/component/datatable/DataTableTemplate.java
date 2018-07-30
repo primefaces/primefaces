@@ -881,19 +881,18 @@ import org.primefaces.util.LangUtils;
         }
     }
     
-    protected void addToSelectedRowKeys(Object object, Map<String,Object> map, String var, boolean hasRowKey) {
-        if(hasRowKey) {
-            map.put(var, object);
-            Object rowKey = this.getRowKey();
-            if (rowKey != null && !isDisabledSelection()) {
-                this.selectedRowKeys.add(rowKey);
-            }
+    protected void addToSelectedRowKeys(Object object, Map<String,Object> requestMap, String var, boolean hasRowKey) {
+        Object rowKey = null;
+        if (hasRowKey) {
+            requestMap.put(var, object);
+            rowKey = getRowKey();
         }
         else {
-            Object rowKey = this.getRowKeyFromModel(object);
-            if (rowKey != null & !isDisabledSelection()) {
-                this.selectedRowKeys.add(rowKey);
-            }
+            rowKey = getRowKeyFromModel(object);
+        }
+
+        if (rowKey != null && !isDisabledSelection()) {
+            this.selectedRowKeys.add(rowKey);
         }
     }
 
