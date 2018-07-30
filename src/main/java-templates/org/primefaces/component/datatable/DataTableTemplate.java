@@ -882,14 +882,9 @@ import org.primefaces.util.LangUtils;
     }
     
     protected void addToSelectedRowKeys(Object object, Map<String,Object> requestMap, String var, boolean hasRowKey) {
-        Object rowKey = null;
-        if (hasRowKey) {
-            requestMap.put(var, object);
-            rowKey = getRowKey();
-        }
-        else {
-            rowKey = getRowKeyFromModel(object);
-        }
+        requestMap.put(var, object);
+
+        Object rowKey = hasRowKey ? getRowKey() : getRowKeyFromModel(object);
 
         if (rowKey != null && !isDisabledSelection()) {
             this.selectedRowKeys.add(rowKey);
