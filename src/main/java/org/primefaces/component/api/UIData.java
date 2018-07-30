@@ -265,6 +265,27 @@ public class UIData extends javax.faces.component.UIData {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_pagination");
     }
 
+    private boolean isRowsPerPageValid(UIData data, String rowsParam) {
+
+        if (rowsParam == null) {
+            return true;
+        }
+
+        String rowsPerPageTemplate = data.getRowsPerPageTemplate();
+
+        if (rowsPerPageTemplate != null) {
+            return Arrays.asList(rowsPerPageTemplate.split("[,\\s]+")).contains(rowsParam);
+        }
+
+        int rows = data.getRows();
+
+        if (rows > 0) {
+            return Integer.toString(rows).equals(rowsParam);
+        }
+
+        return true;
+    }
+
     public void updatePaginationData(FacesContext context, UIData data) {
         data.setRowIndex(-1);
         String componentClientId = data.getClientId(context);
@@ -274,8 +295,8 @@ public class UIData extends javax.faces.component.UIData {
         String firstParam = params.get(componentClientId + "_first");
         String rowsParam = params.get(componentClientId + "_rows");
 
-        if (rowsParam != null && !Arrays.asList(data.getRowsPerPageTemplate().split("[,\\s]+")).contains(rowsParam)) {
-            throw new IllegalArgumentException("Unsupported rows per page value: " + rowsParam);            
+        if (!isRowsPerPageValid(data, rowsParam)) {
+            throw new IllegalArgumentException("Unsupported rows per page value: " + rowsParam);
         }
         
         data.setFirst(Integer.valueOf(firstParam));
