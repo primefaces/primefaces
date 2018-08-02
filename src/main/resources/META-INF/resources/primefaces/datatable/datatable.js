@@ -1327,7 +1327,9 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         };
         if (this.hasBehavior('virtualScroll')) {
-            this.callBehavior('virtualScroll', options);
+            var virtualBehavior = this.cfg.behaviors['virtualScroll'];
+
+            virtualBehavior.call(this, options);
         } else {
             PrimeFaces.ajax.Request.handle(options);
         }
