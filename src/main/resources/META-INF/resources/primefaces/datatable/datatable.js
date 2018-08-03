@@ -1469,6 +1469,10 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         widget: $this,
                         handle: function(content) {
                             this.updateData(content);
+                            
+                            if(this.checkAllToggler) {
+                              this.updateHeaderCheckbox();
+                            }
                         }
                     });
 
