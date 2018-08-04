@@ -18,6 +18,7 @@ package org.primefaces.model.menu;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Base implementation for model of a programmatic menu
@@ -62,5 +63,41 @@ public class BaseMenuModel implements MenuModel, Serializable {
                 generateUniqueIds(((MenuGroup) element).getElements(), id);
             }
         }
+    }
+
+    /**
+     * A {@code BaseMenuModel}'s hash code is based on {@code elements}.
+     * @return a hash code value for this object
+     */
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.elements);
+        return hash;
+    }
+
+    /**
+     * Two BaseMenuModel are considered equals if their {@code elements} are
+     * equals.
+     * @param obj the reference object with which to compare
+     * @return {@code true} if this object is the same as the {@code obj}
+     *     argument; {@code false} otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BaseMenuModel other = (BaseMenuModel) obj;
+        if (!Objects.equals(this.elements, other.elements)) {
+            return false;
+        }
+        return true;
     }
 }

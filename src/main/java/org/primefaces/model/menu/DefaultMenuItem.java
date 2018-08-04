@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.faces.component.UIComponent;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
@@ -558,4 +559,39 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
         this.rel = rel;
     }
 
+    /**
+     * A {@code DefaultMenuItem}'s hash code is based on {@code value}.
+     * @return a hash code value for this object
+     */
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 61 * hash + Objects.hashCode(this.value);
+        return hash;
+    }
+
+    /**
+     * Two BaseMenuModel are considered equals if their {@code value}s are
+     * equals.
+     * @param obj the reference object with which to compare
+     * @return {@code true} if this object is the same as the {@code obj}
+     *     argument; {@code false} otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final DefaultMenuItem other = (DefaultMenuItem) obj;
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        return true;
+    }
 }
