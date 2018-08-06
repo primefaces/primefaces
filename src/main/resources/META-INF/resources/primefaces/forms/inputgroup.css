@@ -28,6 +28,7 @@
 }
 
 .ui-inputgroup .ui-inputtext,
+.ui-inputgroup .ui-inputtextarea,
 .ui-inputgroup .ui-password,
 .ui-inputgroup .ui-autocomplete-input,
 .ui-inputgroup .ui-spinner-input {
@@ -35,6 +36,7 @@
 }
 
 .ui-inputgroup > .ui-inputtext:not(:first-child),
+.ui-inputgroup > .ui-inputtextarea:not(:first-child),
 .ui-inputgroup > .ui-password:not(:first-child),
 .ui-inputgroup > .ui-inputnumber:not(:first-child) > .ui-inputtext,
 .ui-inputgroup > .ui-inputmask:not(:first-child),
@@ -50,6 +52,7 @@
 }
 
 .ui-inputgroup > .ui-inputtext:not(:last-child),
+.ui-inputgroup > .ui-inputtextarea:not(:last-child),
 .ui-inputgroup > .ui-password:not(:last-child),
 .ui-inputgroup > .ui-inputnumber:not(:last-child) > .ui-inputtext,
 .ui-inputgroup > .ui-inputmask:not(:last-child),
