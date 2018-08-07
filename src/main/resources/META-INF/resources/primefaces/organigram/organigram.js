@@ -94,7 +94,7 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
         // drop & drop happens in the target dom
         // but moving the actual nodes happens in the source li/ul dom
         // after dropping, we redraw the organigram from the source
-        droppableNodes.bind("drop", function (event, ui) {
+        droppableNodes.on("drop", function (event, ui) {
 
             // lookup target node in source DOM
             var targetId = $(this).data("rowkey");
@@ -181,7 +181,7 @@ PrimeFaces.widget.Organigram = PrimeFaces.widget.BaseWidget.extend({
         });
 
         // redraw from source after drop
-        draggableNodes.bind("dragstop", function (event, ui) {
+        draggableNodes.on("dragstop", function (event, ui) {
             // redraw only if the item was dropped successfully
             if (widget.redraw) {
                 widget.draw();

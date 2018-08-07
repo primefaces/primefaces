@@ -76,7 +76,7 @@
 
         attachBehaviors : function(element, behaviors) {
             $.each(behaviors, function(event, fn) {
-                element.bind(event, function(e) {
+                element.on(event, function(e) {
                     fn.call(element, e);
                 });
             });

@@ -138,14 +138,14 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
     bindEnterKeyFilter: function(filter) {
         var $this = this;
 
-        filter.bind('keydown', function(e) {
+        filter.on('keydown', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode;
 
             if(key === keyCode.ENTER) {
                 e.preventDefault();
             }
-        }).bind('keyup', function(e) {
+        }).on('keyup', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode;
 
