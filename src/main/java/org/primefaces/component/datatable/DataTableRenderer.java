@@ -1617,9 +1617,12 @@ public class DataTableRenderer extends DataRenderer {
     protected void encodeNativeRadio(FacesContext context, DataTable table, boolean checked, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
+        String ariaRowLabel = table.getAriaRowLabel();
+        
         writer.startElement("input", null);
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("name", table.getClientId(context) + "_radio", null);
+        writer.writeAttribute("aria-label", ariaRowLabel, null);
 
         if (checked) {
             writer.writeAttribute("checked", "checked", null);

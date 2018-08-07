@@ -468,7 +468,7 @@
             <name>ariaRowLabel</name>
             <required>false</required>
             <type>java.lang.String</type>
-            <description>Label to read by screen readers on checkbox selection.</description>
+            <description>Label to read by screen readers on checkbox and radio selection.</description>
         </attribute>
         <attribute>
             <name>saveOnCellBlur</name>
