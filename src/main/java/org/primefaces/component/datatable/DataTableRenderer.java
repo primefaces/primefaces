@@ -1017,6 +1017,7 @@ public class DataTableRenderer extends DataRenderer {
                         String rowStyle = headerRow.getStyle();
 
                         writer.startElement("tr", null);
+                        writer.writeAttribute("role", "row", null);
                         if (rowClass != null) writer.writeAttribute("class", rowClass, null);
                         if (rowStyle != null) writer.writeAttribute("style", rowStyle, null);
 
