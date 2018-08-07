@@ -50,8 +50,10 @@ public class HotkeyRenderer extends CoreRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write("$(function() {");
-        writer.write("$(document).off('keydown." + clientId + "').on('keydown." + clientId + "',null,'" + hotkey.getBind() + "',function(){");
+        String event = "keydown." + clientId;
+        
+        writer.write("$(function(){");
+        writer.write("$(document).off('" + event + "').on('" + event + "',null,'" + hotkey.getBind() + "',function(){");
 
         if (hotkey.isAjaxified()) {
             UIComponent form = ComponentTraversalUtils.closestForm(context, hotkey);
