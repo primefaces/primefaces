@@ -95,6 +95,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             this.bindKeyEvents();
 
             this.updateButtonsState();
+            
+            this.updateListRole();
         }
     },
 
@@ -524,6 +526,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
         }
+        
+        this.updateListRole();
     },
 
     startsWithFilter: function(value, filter) {
@@ -752,6 +756,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                         $this.saveState();
                         $this.fireTransferEvent(items, from, to, type);
                     }
+                    
+                    $this.updateListRole();
                 });
             });
         }
@@ -768,6 +774,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
             this.saveState();
             this.fireTransferEvent(items, from, to, type);
+            this.updateListRole();
         }
     },
 
@@ -904,6 +911,11 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
     enableButton: function (button) {
         button.removeAttr('disabled').removeClass('ui-state-disabled');
+    },
+    
+    updateListRole: function() {
+        this.sourceList.children('li:visible').length > 0 ? this.sourceList.attr('role', 'menu') : this.sourceList.removeAttr('role');
+        this.targetList.children('li:visible').length > 0 ? this.targetList.attr('role', 'menu') : this.targetList.removeAttr('role');
     }
 
 });
