@@ -1482,7 +1482,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.endElement("div");
     }
 
-    public void encodeStateHolder(FacesContext context, DataTable table, String id, String value) throws IOException {
+    protected void encodeStateHolder(FacesContext context, DataTable table, String id, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("input", null);

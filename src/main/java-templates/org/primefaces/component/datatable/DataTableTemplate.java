@@ -225,10 +225,6 @@ import org.primefaces.util.LangUtils;
         return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_scrolling");
     }
 
-    public boolean isToggleSelectRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_checked");
-    }
-    
     public boolean isRowEditCancelRequest(FacesContext context) {
         Map<String,String> params = context.getExternalContext().getRequestParameterMap();
         String value = params.get(this.getClientId(context) + "_rowEditAction");

@@ -2065,30 +2065,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
         //fire toggleSelect event
         if(this.hasBehavior('toggleSelect')) {
-            var $this = this,
-            options = {
-                source: this.id,
-                process: this.id,
-                update: this.id,
-                formId: this.cfg.formId,
-                params: [{name: this.id + '_checked', value: !checked},
-                         {name: this.id + '_encodeFeature', value: true},
-                         {name: this.id + '_skipChildren', value: true}],
-                onsuccess: function(responseXML, status, xhr) {
-                    PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
-                            widget: $this,
-                            handle: function(content) {
-                                var selection = $(content).val();
-                                $this.selection = (selection === "") ? [] : selection.split(',');
-                                $this.writeSelections();
-                            }
-                        });
-
-                    return true;
-                }
+            var ext = {
+                params: [{name: this.id + '_checked', value: !checked}]
             };
 
-            this.callBehavior('toggleSelect', options);
+            this.callBehavior('toggleSelect', ext);
         }
     },
 
