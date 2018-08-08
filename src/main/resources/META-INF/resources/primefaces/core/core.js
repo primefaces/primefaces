@@ -304,6 +304,14 @@
         cw : function(widgetName, widgetVar, cfg) {
             this.createWidget(widgetName, widgetVar, cfg);
         },
+        
+
+        /**
+         * @deprecated moved to PrimeFaces.resources.getFacesResource
+         */
+        getFacesResource : function(name, library, version) {
+           return PrimeFaces.resources.getFacesResource(name, library, version);
+        },
 
         createWidget : function(widgetName, widgetVar, cfg) {
             cfg.widgetVar = widgetVar;
