@@ -319,7 +319,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         //legend config
         if(this.cfg.legendPosition) {
             this.cfg.legend = {
-                renderer: $.jqplot.EnhancedLegendRenderer,
+                renderer: this.cfg.type === 'pie' ? $.jqplot.EnhancedPieLegendRenderer : $.jqplot.EnhancedLegendRenderer,
                 show: true,
                 escapeHtml: this.cfg.escapeHtml,
                 location: this.cfg.legendPosition,
