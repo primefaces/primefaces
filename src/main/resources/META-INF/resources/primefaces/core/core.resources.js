@@ -90,15 +90,9 @@ if (!PrimeFaces.resources) {
            * @returns {string} The script name.
            */
           getResourceScriptName : function(scriptURI) {
-             if (!PrimeFaces.resources.SCRIPT_NAME) {
-                // find script...normal is '/core.js' and portlets are '=core.js'
-                var scriptRegex = new RegExp('\/' + PrimeFaces.RESOURCE_IDENTIFIER + '(\/|=)(.*?)\.js');
-
-                // find script to replace e.g. 'core.js'
-                PrimeFaces.resources.SCRIPT_NAME = scriptRegex.exec(scriptURI)[2] + '.js';
-             }
-
-             return PrimeFaces.resources.SCRIPT_NAME;
+             // find script...normal is '/core.js' and portlets are '=core.js'
+             var scriptRegex = new RegExp('\/' + PrimeFaces.RESOURCE_IDENTIFIER + '(\/|=)(.*?)\.js');
+             return scriptRegex.exec(scriptURI)[2] + '.js';
           },
 
           /**
