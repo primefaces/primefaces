@@ -788,7 +788,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         //aria
         nodeContent.find('> .ui-treenode-label').attr('aria-expanded', false);
 
-        toggleIcon.addClass(_self.cfg.collapsedIcon).removeClass('ui-icon-triangle-1-s');
+        toggleIcon.removeClass('ui-icon-triangle-1-s').addClass(_self.cfg.collapsedIcon);
 
         if(iconState) {
             nodeIcon.removeClass(iconState.expandedIcon).addClass(iconState.collapsedIcon);
@@ -829,7 +829,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         //aria
         nodeContent.find('> .ui-treenode-label').attr('aria-expanded', true);
 
-        toggleIcon.addClass('ui-icon-triangle-1-s').removeClass(this.cfg.collapsedIcon);
+        toggleIcon.removeClass(this.cfg.collapsedIcon).addClass('ui-icon-triangle-1-s');
 
         if(iconState) {
             nodeIcon.removeClass(iconState.collapsedIcon).addClass(iconState.expandedIcon);
@@ -1696,7 +1696,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         iconState = this.cfg.iconStates[nodeType];
 
         if(iconState) {
-            toggleIcon.nextAll('span.ui-treenode-icon').addClass(iconState.collapsedIcon).removeClass(iconState.expandedIcon);
+            toggleIcon.nextAll('span.ui-treenode-icon').removeClass(iconState.expandedIcon).addClass(iconState.collapsedIcon);
         }
 
         toggleIcon.removeClass('ui-icon-minus').addClass('ui-icon-plus');
