@@ -126,12 +126,12 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         //hide overlay when mousedown is at outside of overlay
         if(this.cfg.dismissable && !this.cfg.modal) {
-            PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id, $this.jq,
+            PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.jq,
                 function() { return $this.target; },
                 function(e) { $this.hide(); });
         }
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.jq, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
             $this.align();
         });
     },

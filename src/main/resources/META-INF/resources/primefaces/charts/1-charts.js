@@ -287,7 +287,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
 
         this.cfg.resetAxesOnResize = (this.cfg.resetAxesOnResize === false) ? false : true;
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.jq, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
             var replotOptions = {
                 resetAxes: $this.cfg.resetAxesOnResize
             };

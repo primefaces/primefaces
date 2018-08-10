@@ -245,14 +245,15 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
             e.preventDefault();
         });
 
-        PrimeFaces.utils.registerHideOverlayHandler(this, PrimeFaces.env.ios ? 'touchstart.' + this.id: 'click.' + this.id, $this.panel,
+        var hideEvent = PrimeFaces.env.ios ? 'touchstart' : 'click';
+        PrimeFaces.utils.registerHideOverlayHandler(this, hideEvent + '.' + this.id + '_hide', $this.panel,
             function() { return $this.links.add($this.closeIcon); },
             function(e) {
                 e.preventDefault();
                 $this.hide();
             });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.panel, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.panel, function() {
             $(document.body).children('.ui-widget-overlay').css({
                 'width': $(document).width()
                 ,'height': $(document).height()

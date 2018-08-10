@@ -1050,7 +1050,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             $this.scrollFooter.scrollLeft(0);
         });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.jq, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
             if ($this.percentageScrollHeight) {
                 $this.adjustScrollHeight();
             }
@@ -1469,7 +1469,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         widget: $this,
                         handle: function(content) {
                             this.updateData(content);
-                            
+
                             if(this.checkAllToggler) {
                               this.updateHeaderCheckbox();
                             }
@@ -3567,7 +3567,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             this.relativeHeight = 0;
         }
 
-        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id, function() {
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
             var tableOffset = table.offset(),
                 scrollTop = $this.stickyScrollParent.scrollTop();
 
@@ -3626,7 +3626,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.sticky-' + this.id, null, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.sticky-' + this.id + '_align', null, function() {
             $this.stickyContainer.width(table.outerWidth());
         });
 
@@ -3989,7 +3989,7 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
             $this.saveScrollState();
         });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.jq, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
             if ($this.percentageScrollHeight) {
                 $this.adjustScrollHeight();
             }

@@ -236,7 +236,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         //Hide overlay on resize
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, _self.panel, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', _self.panel, function() {
             _self.hide();
         });
 

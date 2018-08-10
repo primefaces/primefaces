@@ -48,7 +48,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         //hide overlay on document click
         this.itemMouseDown = false;
 
-        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id, $this.jq,
+        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.jq,
             function() { return $this.trigger; },
             function(e) {
                 var $eventTarget = $(e.target);
@@ -69,7 +69,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //Hide overlay on resize
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.jq, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
             $this.align();
         });
 

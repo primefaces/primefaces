@@ -60,7 +60,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
             var $this = this;
 
-            PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, null, function() {
+            PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', null, function() {
                 $this.initScrolling();
             });
         }

@@ -390,7 +390,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             this.relativeHeight = 0;
         }
 
-        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id, function() {
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
             var scrollTop = win.scrollTop(),
             tableOffset = table.offset();
 
@@ -427,7 +427,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             }
         });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.sticky-' + this.id, null, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.sticky-' + this.id + '_align', null, function() {
             $this.stickyContainer.width(table.outerWidth());
         });
     },
@@ -1042,7 +1042,7 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
             $this.scrollFooter.scrollLeft(0);
         });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.jq, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
             if ($this.percentageScrollHeight) {
                 $this.adjustScrollHeight();
             }
