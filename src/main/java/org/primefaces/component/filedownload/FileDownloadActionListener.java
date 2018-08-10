@@ -92,7 +92,9 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
                 outputStream.write(buffer, 0, length);
             }
 
-            externalContext.setResponseStatus(200);
+            if (!externalContext.isResponseCommitted()) {
+                externalContext.setResponseStatus(200);
+            }
             externalContext.responseFlushBuffer();
             context.responseComplete();
         }
