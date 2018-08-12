@@ -38,7 +38,7 @@
             <required>false</required>
             <type>java.lang.String</type>
             <defaultValue>0</defaultValue>
-            <description>Index of the active tab or a comma separated string of indexes when multiple mode is on. Default is zero.</description>
+            <description>Index of the active tab or a comma separated string of indexes when multiple mode is on. Default is "0". As activeIndex is a bidrectional attribute, it doesn't support MethodExpressions.</description>
         </attribute>
         <attribute>
             <name>style</name>
