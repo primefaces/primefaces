@@ -177,6 +177,9 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
 
     private String decode(String encoded) {
         try {
+            // GitHub #3916 escape + and % before decode
+            encoded = encoded.replaceAll("%(?![0-9a-fA-F]{2})", "%25");
+            encoded = encoded.replaceAll("\\+", "%2B");
             return URLDecoder.decode(encoded, "UTF-8");
         }
         catch (UnsupportedEncodingException ex) {

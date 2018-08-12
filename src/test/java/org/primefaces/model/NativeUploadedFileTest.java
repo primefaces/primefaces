@@ -61,6 +61,30 @@ public class NativeUploadedFileTest {
         // Assert
         Assert.assertEquals("Test;123.txt", output);
     }
+    
+    @Test
+    public void testPercent() {
+        // Arrange
+        final String input = "form-data; name=\"XXX:XXX\"; filename=\"test%.jpg\"; charset=\"UTF-8\"";
+
+        // Act
+        final String output = file.getContentDispositionFileName(input);
+
+        // Assert
+        Assert.assertEquals("test%.jpg", output);
+    }
+    
+    @Test
+    public void testPlus() {
+        // Arrange
+        final String input = "form-data; name=\"XXX:XXX\"; filename=\"test+.jpg\"; charset=\"UTF-8\"";
+
+        // Act
+        final String output = file.getContentDispositionFileName(input);
+
+        // Assert
+        Assert.assertEquals("test+.jpg", output);
+    }
 
     @Test
     public void testSlashes() {
