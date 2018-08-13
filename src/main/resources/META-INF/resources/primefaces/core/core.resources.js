@@ -24,7 +24,7 @@ if (!PrimeFaces.resources) {
              scriptURI = scriptURI.replace(scriptName, name);
 
              // find the library like ln=primefaces
-             var libraryRegex = new RegExp('(&|\\?)ln=(.*?)(&|$)');
+             var libraryRegex = new RegExp('[?&]([^&=]*)ln=(.*?)(&|$)');
 
              // find library to replace e.g. 'ln=primefaces'
              var currentLibraryName = 'ln=' + libraryRegex.exec(scriptURI)[2];
@@ -86,12 +86,12 @@ if (!PrimeFaces.resources) {
           /**
            * For a URI parses out the name of the script like primefaces-extensions.js
            * 
-           * @param the URI of the script
+           * @param scriptURI the URI of the script
            * @returns {string} The script name.
            */
           getResourceScriptName : function(scriptURI) {
              // find script...normal is '/core.js' and portlets are '=core.js'
-             var scriptRegex = new RegExp('\/' + PrimeFaces.RESOURCE_IDENTIFIER + '(\/|=)(.*?)\.js');
+             var scriptRegex = new RegExp('\/?' + PrimeFaces.RESOURCE_IDENTIFIER + '(\/|=)(.*?)\.js');
              return scriptRegex.exec(scriptURI)[2] + '.js';
           },
 
@@ -102,7 +102,14 @@ if (!PrimeFaces.resources) {
            */
           getResourceScriptURI : function() {
              if (!PrimeFaces.resources.SCRIPT_URI) {
-                PrimeFaces.resources.SCRIPT_URI = $('script[src*="/' + PrimeFaces.RESOURCE_IDENTIFIER + '/"]').first().attr('src');
+                PrimeFaces.resources.SCRIPT_URI =
+                   $('script[src*="/' + PrimeFaces.RESOURCE_IDENTIFIER + '/"]').first().attr('src');
+
+                // portlet
+                if (!PrimeFaces.resources.SCRIPT_URI) {
+                   PrimeFaces.resources.SCRIPT_URI =
+                      $('script[src*="' + PrimeFaces.RESOURCE_IDENTIFIER + '="]').first().attr('src');
+                }
              }
              return PrimeFaces.resources.SCRIPT_URI;
           }
