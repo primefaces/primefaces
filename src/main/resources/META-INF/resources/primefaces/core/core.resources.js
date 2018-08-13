@@ -107,8 +107,7 @@ if (!PrimeFaces.resources) {
 
                 // portlet
                 if (!PrimeFaces.resources.SCRIPT_URI) {
-                   PrimeFaces.resources.SCRIPT_URI =
-                      $('script[src*="' + PrimeFaces.RESOURCE_IDENTIFIER + '="]').first().attr('src');
+                   PrimeFaces.resources.SCRIPT_URI = $('script[src*="' + PrimeFaces.RESOURCE_IDENTIFIER + '="]').first().attr('src');
                 }
              }
              return PrimeFaces.resources.SCRIPT_URI;
