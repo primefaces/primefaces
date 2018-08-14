@@ -62,10 +62,46 @@ PrimeFaces.widget.SelectListbox = PrimeFaces.widget.BaseWidget.extend({
             this.setupFilterMatcher();
         }
     },
+    
+    selectAll: function() {
+        var jqClone = this.selectAll0();
+        this.jq.replaceWith(jqClone);
+        this.jq = jqClone;
+        this.init(this.cfg);
+    },
 
+    selectAll0: function() {
+        var jqClone = this.jq.clone();
+        var input = jqClone.find(this.jqId + '_input');
+        var listContainer = jqClone.children('.ui-selectlistbox-listcontainer');
+        var listElement = listContainer.children('.ui-selectlistbox-list');
+        var options = $(input).children('option');
+        var allItems = listElement.find('.ui-selectlistbox-item');
+        var items = allItems.filter(':not(.ui-state-disabled)');
+        items.addClass("ui-state-highlight");
+        options.prop('selected', true);
+        
+        return jqClone;
+    },
+    
     unselectAll: function() {
-        this.items.removeClass('ui-state-highlight ui-state-hover');
-        this.options.filter(':selected').prop('selected', false);
+        var jqClone = this.unselectAll0();
+        this.jq.replaceWith(jqClone);
+        this.jq = jqClone;
+        this.init(this.cfg);
+    },
+    
+    unselectAll0: function() {
+        var jqClone = this.jq.clone();
+        var input = jqClone.find(this.jqId + '_input');
+        var listContainer = jqClone.children('.ui-selectlistbox-listcontainer');
+        var listElement = listContainer.children('.ui-selectlistbox-list');
+        var options = $(input).children('option');
+        var allItems = listElement.find('.ui-selectlistbox-item');
+        var items = allItems.filter(':not(.ui-state-disabled)');
+        items.removeClass("ui-state-highlight");
+        options.prop('selected', false);
+        return jqClone;
     },
 
     selectItem: function(item) {
