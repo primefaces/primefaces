@@ -128,17 +128,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if(this.cfg.dismissable && !this.cfg.modal) {
             PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.jq,
                 function() { return $this.target; },
-                function(e) {
-                    var inputOverlay = $(e.target).closest('.ui-input-overlay');
-                    if(inputOverlay && inputOverlay.length) {
-                        var parentOverlay = inputOverlay.closest('.ui-overlaypanel');
-                        if(parentOverlay.is($this.jq)) {
-                            return;
-                        }
-                    }
-                    
-                    $this.hide(); 
-                });
+                function(e) { $this.hide(); });
         }
 
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
