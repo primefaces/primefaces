@@ -76,34 +76,73 @@ import javax.faces.event.BehaviorEvent;
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
     }
+    
+    @Override
+    protected void validateValue(FacesContext facesContext, Object newValue) {
+        super.validateValue(facesContext, newValue);
 
-	protected void validateValue(FacesContext facesContext, Object newValue) {
-		super.validateValue(facesContext, newValue);
-		
-		DualListModel model = (DualListModel) newValue;
-		if(isRequired() && model.getTarget().isEmpty()) {
-			String requiredMessage = getRequiredMessage();
-			FacesMessage message = null;
-			
-			if(requiredMessage != null) {
-				message = new FacesMessage(FacesMessage.SEVERITY_ERROR, requiredMessage, requiredMessage);
+        DualListModel<?> newModel = (DualListModel<?>) newValue;
+        DualListModel<?> oldModel = (DualListModel<?>) this.getValue();
+        
+        String clientId = this.getClientId(facesContext);
+        String label = this.getLabel();
+        if (label == null) {
+            label = clientId;
+        }
+        
+        if (isRequired() && newModel.getTarget().isEmpty()) {
+            String requiredMessage = getRequiredMessage();
+            FacesMessage message = null;
+
+            if (requiredMessage != null) {
+                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, requiredMessage, requiredMessage);
             }
             else {
-                String label = this.getLabel();
-                if(label == null) {
-                    label = this.getClientId(facesContext);
-                }
-
-	        	message = MessageFactory.getMessage(REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, new Object[]{label});
-
+                message = MessageFactory.getMessage(REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, new Object[] { label });
             }
+            facesContext.addMessage(clientId, message);
+            setValid(false);
+        }
+        
+        checkDisabled(facesContext, label, newModel.getSource(), oldModel.getSource());
+        checkDisabled(facesContext, label, newModel.getTarget(), oldModel.getTarget());
+    }
+	
+    /**
+     * Prohibits client-side manipulation of disabled entries, when CSS style-class ui-state-disabled is removed. See
+     * <a href="https://github.com/primefaces/primefaces/issues/2127">https://github.com/primefaces/primefaces/issues/2127</a>
+     *
+     * @param newEntries new/set entries of model source/target list
+     * @param oldEntries old/former entries of model source/target list
+     */
+    protected void checkDisabled(FacesContext facesContext, String label, List<?> newEntries, List<?> oldEntries) {
+        if (!isValid()) {
+            return;
+        }
+        
+        Map<String, Object> requestMap = facesContext.getExternalContext().getRequestMap();
+        String varName = getVar();
+        String clientId = this.getClientId(facesContext);
+        Object originalItem = requestMap.get(varName);
+        for (int i = 0; i < newEntries.size(); i++) {
+            Object item = newEntries.get(i);
+            // Set the current item in request map to get its properties via stateHelper().eval() call
+            requestMap.put(varName, item);
+            boolean itemDisabled = isItemDisabled();
+            // Check if disabled item has been moved from its former/original list
+            if (itemDisabled && !oldEntries.contains(item)) {
+                FacesMessage message = MessageFactory.getMessage(UPDATE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, new Object[] { label });
+                facesContext.addMessage(clientId, message);
+                setValid(false);
+                break;
+            }
+        }
+        
+        // put the original value back
+        requestMap.put(varName, originalItem);
+    }
 
-			facesContext.addMessage(getClientId(facesContext), message);
-	        setValid(false);
-		}
-	}
-
- @Override
+    @Override
     public void validate(FacesContext context) {
         super.validate(context);
         if (isValid() && customEvents != null) {
