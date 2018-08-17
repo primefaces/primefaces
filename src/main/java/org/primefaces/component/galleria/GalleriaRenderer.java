@@ -22,6 +22,7 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -76,7 +77,7 @@ public class GalleriaRenderer extends CoreRenderer {
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
             Collection<?> value = (Collection<?>) galleria.getValue();
             if (value != null) {
-                for (Iterator<?> it = value.iterator(); it.hasNext();) {
+                for (Iterator<?> it = value.iterator(); it.hasNext(); ) {
                     requestMap.put(var, it.next());
 
                     writer.startElement("li", null);

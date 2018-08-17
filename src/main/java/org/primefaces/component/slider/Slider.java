@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,46 +15,36 @@
  */
 package org.primefaces.component.slider;
 
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import org.primefaces.event.SlideEndEvent;
-import org.primefaces.util.Constants;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.FacesEvent;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.HashMap;
-import javax.faces.event.PhaseId;
-import javax.faces.event.BehaviorEvent;
-import org.primefaces.expression.SearchExpressionFacade;
+import java.util.Map;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+import javax.faces.component.UIInput;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.BehaviorEvent;
+import javax.faces.event.FacesEvent;
+
+import org.primefaces.event.SlideEndEvent;
+import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 import org.primefaces.util.MessageFactory;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class Slider extends SliderBase implements org.primefaces.component.api.Widget,javax.faces.component.behavior.ClientBehaviorHolder,org.primefaces.component.api.PrimeClientBehaviorHolder {
+public class Slider extends SliderBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Slider";
 
 
     private final static String DEFAULT_EVENT = "slideEnd";
@@ -67,7 +57,7 @@ public class Slider extends SliderBase implements org.primefaces.component.api.W
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-         return BEHAVIOR_EVENT_MAPPING;
+        return BEHAVIOR_EVENT_MAPPING;
     }
 
     @Override
@@ -84,14 +74,14 @@ public class Slider extends SliderBase implements org.primefaces.component.api.W
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(ComponentUtils.isRequestSource(this, context)) {
-            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        if (ComponentUtils.isRequestSource(this, context)) {
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if(eventName.equals("slideEnd")) {
+            if (eventName.equals("slideEnd")) {
                 double sliderValue = Double.parseDouble(params.get(clientId + "_slideValue"));
                 SlideEndEvent slideEndEvent = new SlideEndEvent(this, behaviorEvent.getBehavior(), sliderValue);
                 slideEndEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -108,13 +98,13 @@ public class Slider extends SliderBase implements org.primefaces.component.api.W
     @Override
     public void validate(FacesContext context) {
         super.validate(context);
-        
+
         if (!isValid()) {
             return;
         }
 
-        String[] inputIds = this.getFor().split(",");
-        if (this.isRange()) {
+        String[] inputIds = getFor().split(",");
+        if (isRange()) {
             UIInput inputFrom = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[0].trim());
             UIInput inputTo = (UIInput) SearchExpressionFacade.resolveComponent(context, this, inputIds[1].trim());
             String valueFromStr = getSubmittedValue(inputFrom).toString();
@@ -122,17 +112,17 @@ public class Slider extends SliderBase implements org.primefaces.component.api.W
             double valueFrom = Double.valueOf(valueFromStr);
             double valueTo = Double.valueOf(valueToStr);
             if (valueTo < valueFrom) {
-                this.setValid(false);
+                setValid(false);
                 inputFrom.setValid(false);
                 inputTo.setValid(false);
             }
             else {
-                if (valueFrom < this.getMinValue() || valueFrom > this.getMaxValue()) {
-                    this.setValid(false);
+                if (valueFrom < getMinValue() || valueFrom > getMaxValue()) {
+                    setValid(false);
                     inputFrom.setValid(false);
                 }
-                if (valueTo > this.getMaxValue() || valueTo < this.getMinValue()) {
-                    this.setValid(false);
+                if (valueTo > getMaxValue() || valueTo < getMinValue()) {
+                    setValid(false);
                     inputTo.setValid(false);
                 }
             }
@@ -143,11 +133,11 @@ public class Slider extends SliderBase implements org.primefaces.component.api.W
             if (submittedValue == null) {
                 return;
             }
-            
+
             String valueStr = submittedValue.toString();
             double value = Double.valueOf(valueStr);
-            if (value < this.getMinValue() || value > this.getMaxValue()) {
-                this.setValid(false);
+            if (value < getMinValue() || value > getMaxValue()) {
+                setValid(false);
                 input.setValid(false);
             }
         }

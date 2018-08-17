@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,227 +16,239 @@
 package org.primefaces.component.carousel;
 
 import org.primefaces.component.api.UIData;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
 import org.primefaces.util.ComponentUtils;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
-public abstract class CarouselBase extends UIData implements org.primefaces.component.api.Widget {
+abstract class CarouselBase extends UIData implements org.primefaces.component.api.Widget {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.Carousel";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.CarouselRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.CarouselRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		widgetVar
-		,firstVisible
-		,numVisible
-		,circular
-		,vertical
-		,autoPlayInterval
-		,pageLinks
-		,effect
-		,easing
-		,effectDuration
-		,dropdownTemplate
-		,style
-		,styleClass
-		,itemStyle
-		,itemStyleClass
-		,headerText
-		,footerText
-		,responsive
-		,breakpoint
-		,toggleable
-		,toggleSpeed
-		,collapsed
-		,stateful;
-	}
+        widgetVar,
+        firstVisible,
+        numVisible,
+        circular,
+        vertical,
+        autoPlayInterval,
+        pageLinks,
+        effect,
+        easing,
+        effectDuration,
+        dropdownTemplate,
+        style,
+        styleClass,
+        itemStyle,
+        itemStyleClass,
+        headerText,
+        footerText,
+        responsive,
+        breakpoint,
+        toggleable,
+        toggleSpeed,
+        collapsed,
+        stateful
+    }
 
-	public CarouselBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public CarouselBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getWidgetVar() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-	}
-	public void setWidgetVar(java.lang.String _widgetVar) {
-		getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
-	}
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
 
-	public int getFirstVisible() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.firstVisible, 0);
-	}
-	public void setFirstVisible(int _firstVisible) {
-		getStateHelper().put(PropertyKeys.firstVisible, _firstVisible);
-	}
+    public void setWidgetVar(java.lang.String _widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    }
 
-	public int getNumVisible() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.numVisible, 3);
-	}
-	public void setNumVisible(int _numVisible) {
-		getStateHelper().put(PropertyKeys.numVisible, _numVisible);
-	}
+    public int getFirstVisible() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.firstVisible, 0);
+    }
 
-	public boolean isCircular() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.circular, false);
-	}
-	public void setCircular(boolean _circular) {
-		getStateHelper().put(PropertyKeys.circular, _circular);
-	}
+    public void setFirstVisible(int _firstVisible) {
+        getStateHelper().put(PropertyKeys.firstVisible, _firstVisible);
+    }
 
-	public boolean isVertical() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.vertical, false);
-	}
-	public void setVertical(boolean _vertical) {
-		getStateHelper().put(PropertyKeys.vertical, _vertical);
-	}
+    public int getNumVisible() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.numVisible, 3);
+    }
 
-	public int getAutoPlayInterval() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.autoPlayInterval, 0);
-	}
-	public void setAutoPlayInterval(int _autoPlayInterval) {
-		getStateHelper().put(PropertyKeys.autoPlayInterval, _autoPlayInterval);
-	}
+    public void setNumVisible(int _numVisible) {
+        getStateHelper().put(PropertyKeys.numVisible, _numVisible);
+    }
 
-	public int getPageLinks() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.pageLinks, 3);
-	}
-	public void setPageLinks(int _pageLinks) {
-		getStateHelper().put(PropertyKeys.pageLinks, _pageLinks);
-	}
+    public boolean isCircular() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.circular, false);
+    }
 
-	public java.lang.String getEffect() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, null);
-	}
-	public void setEffect(java.lang.String _effect) {
-		getStateHelper().put(PropertyKeys.effect, _effect);
-	}
+    public void setCircular(boolean _circular) {
+        getStateHelper().put(PropertyKeys.circular, _circular);
+    }
 
-	public java.lang.String getEasing() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.easing, null);
-	}
-	public void setEasing(java.lang.String _easing) {
-		getStateHelper().put(PropertyKeys.easing, _easing);
-	}
+    public boolean isVertical() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.vertical, false);
+    }
 
-	public int getEffectDuration() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.effectDuration, java.lang.Integer.MIN_VALUE);
-	}
-	public void setEffectDuration(int _effectDuration) {
-		getStateHelper().put(PropertyKeys.effectDuration, _effectDuration);
-	}
+    public void setVertical(boolean _vertical) {
+        getStateHelper().put(PropertyKeys.vertical, _vertical);
+    }
 
-	public java.lang.String getDropdownTemplate() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.dropdownTemplate, "{page}");
-	}
-	public void setDropdownTemplate(java.lang.String _dropdownTemplate) {
-		getStateHelper().put(PropertyKeys.dropdownTemplate, _dropdownTemplate);
-	}
+    public int getAutoPlayInterval() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.autoPlayInterval, 0);
+    }
 
-	public java.lang.String getStyle() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
-	}
-	public void setStyle(java.lang.String _style) {
-		getStateHelper().put(PropertyKeys.style, _style);
-	}
+    public void setAutoPlayInterval(int _autoPlayInterval) {
+        getStateHelper().put(PropertyKeys.autoPlayInterval, _autoPlayInterval);
+    }
 
-	public java.lang.String getStyleClass() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
-	}
-	public void setStyleClass(java.lang.String _styleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, _styleClass);
-	}
+    @Override
+    public int getPageLinks() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.pageLinks, 3);
+    }
 
-	public java.lang.String getItemStyle() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.itemStyle, null);
-	}
-	public void setItemStyle(java.lang.String _itemStyle) {
-		getStateHelper().put(PropertyKeys.itemStyle, _itemStyle);
-	}
+    @Override
+    public void setPageLinks(int _pageLinks) {
+        getStateHelper().put(PropertyKeys.pageLinks, _pageLinks);
+    }
 
-	public java.lang.String getItemStyleClass() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.itemStyleClass, null);
-	}
-	public void setItemStyleClass(java.lang.String _itemStyleClass) {
-		getStateHelper().put(PropertyKeys.itemStyleClass, _itemStyleClass);
-	}
+    public java.lang.String getEffect() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, null);
+    }
 
-	public java.lang.String getHeaderText() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.headerText, null);
-	}
-	public void setHeaderText(java.lang.String _headerText) {
-		getStateHelper().put(PropertyKeys.headerText, _headerText);
-	}
+    public void setEffect(java.lang.String _effect) {
+        getStateHelper().put(PropertyKeys.effect, _effect);
+    }
 
-	public java.lang.String getFooterText() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.footerText, null);
-	}
-	public void setFooterText(java.lang.String _footerText) {
-		getStateHelper().put(PropertyKeys.footerText, _footerText);
-	}
+    public java.lang.String getEasing() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.easing, null);
+    }
 
-	public boolean isResponsive() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
-	}
-	public void setResponsive(boolean _responsive) {
-		getStateHelper().put(PropertyKeys.responsive, _responsive);
-	}
+    public void setEasing(java.lang.String _easing) {
+        getStateHelper().put(PropertyKeys.easing, _easing);
+    }
 
-	public int getBreakpoint() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.breakpoint, 640);
-	}
-	public void setBreakpoint(int _breakpoint) {
-		getStateHelper().put(PropertyKeys.breakpoint, _breakpoint);
-	}
+    public int getEffectDuration() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.effectDuration, java.lang.Integer.MIN_VALUE);
+    }
 
-	public boolean isToggleable() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.toggleable, false);
-	}
-	public void setToggleable(boolean _toggleable) {
-		getStateHelper().put(PropertyKeys.toggleable, _toggleable);
-	}
+    public void setEffectDuration(int _effectDuration) {
+        getStateHelper().put(PropertyKeys.effectDuration, _effectDuration);
+    }
 
-	public int getToggleSpeed() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.toggleSpeed, 500);
-	}
-	public void setToggleSpeed(int _toggleSpeed) {
-		getStateHelper().put(PropertyKeys.toggleSpeed, _toggleSpeed);
-	}
+    public java.lang.String getDropdownTemplate() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.dropdownTemplate, "{page}");
+    }
 
-	public boolean isCollapsed() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.collapsed, false);
-	}
-	public void setCollapsed(boolean _collapsed) {
-		getStateHelper().put(PropertyKeys.collapsed, _collapsed);
-	}
+    public void setDropdownTemplate(java.lang.String _dropdownTemplate) {
+        getStateHelper().put(PropertyKeys.dropdownTemplate, _dropdownTemplate);
+    }
 
-	public boolean isStateful() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.stateful, false);
-	}
-	public void setStateful(boolean _stateful) {
-		getStateHelper().put(PropertyKeys.stateful, _stateful);
-	}
+    public java.lang.String getStyle() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+    }
 
-	public String resolveWidgetVar() {
-		return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-	}
+    public void setStyle(java.lang.String _style) {
+        getStateHelper().put(PropertyKeys.style, _style);
+    }
+
+    public java.lang.String getStyleClass() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+    public void setStyleClass(java.lang.String _styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    }
+
+    public java.lang.String getItemStyle() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.itemStyle, null);
+    }
+
+    public void setItemStyle(java.lang.String _itemStyle) {
+        getStateHelper().put(PropertyKeys.itemStyle, _itemStyle);
+    }
+
+    public java.lang.String getItemStyleClass() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.itemStyleClass, null);
+    }
+
+    public void setItemStyleClass(java.lang.String _itemStyleClass) {
+        getStateHelper().put(PropertyKeys.itemStyleClass, _itemStyleClass);
+    }
+
+    public java.lang.String getHeaderText() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.headerText, null);
+    }
+
+    public void setHeaderText(java.lang.String _headerText) {
+        getStateHelper().put(PropertyKeys.headerText, _headerText);
+    }
+
+    public java.lang.String getFooterText() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.footerText, null);
+    }
+
+    public void setFooterText(java.lang.String _footerText) {
+        getStateHelper().put(PropertyKeys.footerText, _footerText);
+    }
+
+    public boolean isResponsive() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
+    }
+
+    public void setResponsive(boolean _responsive) {
+        getStateHelper().put(PropertyKeys.responsive, _responsive);
+    }
+
+    public int getBreakpoint() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.breakpoint, 640);
+    }
+
+    public void setBreakpoint(int _breakpoint) {
+        getStateHelper().put(PropertyKeys.breakpoint, _breakpoint);
+    }
+
+    public boolean isToggleable() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.toggleable, false);
+    }
+
+    public void setToggleable(boolean _toggleable) {
+        getStateHelper().put(PropertyKeys.toggleable, _toggleable);
+    }
+
+    public int getToggleSpeed() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.toggleSpeed, 500);
+    }
+
+    public void setToggleSpeed(int _toggleSpeed) {
+        getStateHelper().put(PropertyKeys.toggleSpeed, _toggleSpeed);
+    }
+
+    public boolean isCollapsed() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.collapsed, false);
+    }
+
+    public void setCollapsed(boolean _collapsed) {
+        getStateHelper().put(PropertyKeys.collapsed, _collapsed);
+    }
+
+    public boolean isStateful() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.stateful, false);
+    }
+
+    public void setStateful(boolean _stateful) {
+        getStateHelper().put(PropertyKeys.stateful, _stateful);
+    }
+
+    @Override
+    public String resolveWidgetVar() {
+        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    }
 }

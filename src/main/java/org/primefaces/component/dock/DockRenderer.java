@@ -17,15 +17,14 @@ package org.primefaces.component.dock;
 
 import java.io.IOException;
 import java.util.List;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
-
 import org.primefaces.util.WidgetBuilder;
 
 public class DockRenderer extends BaseMenuRenderer {
@@ -110,7 +109,7 @@ public class DockRenderer extends BaseMenuRenderer {
         if (menuitem.getValue() != null) {
             if (menuitem.isEscape()) {
                 writer.writeText((String) menuitem.getValue(), "value");
-            } 
+            }
             else {
                 writer.write((String) menuitem.getValue());
             }

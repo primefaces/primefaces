@@ -20,7 +20,6 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -47,7 +46,7 @@ public class SelectionFeature implements DataTableFeature {
         if (isFiltered) {
             table.setValue(null);
         }
-        
+
         if (checked) {
             selection = "@all";
         }
@@ -93,7 +92,7 @@ public class SelectionFeature implements DataTableFeature {
                 table.setSelection(Array.newInstance(clazz.getComponentType(), 0));
             }
             else {
-                table.setSelection(new ArrayList<Object>());
+                table.setSelection(new ArrayList<>());
             }
         }
         else {

@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,249 +16,262 @@
 package org.primefaces.component.commandbutton;
 
 import javax.faces.component.html.HtmlCommandButton;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
+
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import java.util.logging.Logger;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.FacesEvent;
-import java.util.Collections;
-import java.util.Collection;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.HashMap;
-import org.primefaces.component.button.Button;
-import org.primefaces.event.data.PageEvent;
-import org.primefaces.util.Constants;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.ComponentUtils;
-import javax.faces.event.BehaviorEvent;
 
 
-public abstract class CommandButtonBase extends HtmlCommandButton implements org.primefaces.component.api.AjaxSource,org.primefaces.component.api.Widget,org.primefaces.component.api.Confirmable,org.primefaces.component.api.PrimeClientBehaviorHolder {
+abstract class CommandButtonBase extends HtmlCommandButton implements org.primefaces.component.api.AjaxSource, org.primefaces.component.api.Widget, org.primefaces.component.api.Confirmable, org.primefaces.component.api.PrimeClientBehaviorHolder {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.CommandButton";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.CommandButtonRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.CommandButtonRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		widgetVar
-		,ajax
-		,async
-		,process
-		,update
-		,onstart
-		,oncomplete
-		,onerror
-		,onsuccess
-		,global
-		,delay
-		,timeout
-		,partialSubmit
-		,resetValues
-		,ignoreAutoUpdate
-		,icon
-		,iconPos
-		,inline
-		,escape
-		,validateClient
-		,partialSubmitFilter
-		,form
-		,renderDisabledClick
-		,ariaLabel;
-	}
+        widgetVar,
+        ajax,
+        async,
+        process,
+        update,
+        onstart,
+        oncomplete,
+        onerror,
+        onsuccess,
+        global,
+        delay,
+        timeout,
+        partialSubmit,
+        resetValues,
+        ignoreAutoUpdate,
+        icon,
+        iconPos,
+        inline,
+        escape,
+        validateClient,
+        partialSubmitFilter,
+        form,
+        renderDisabledClick,
+        ariaLabel
+    }
 
-	public CommandButtonBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public CommandButtonBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getWidgetVar() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-	}
-	public void setWidgetVar(java.lang.String _widgetVar) {
-		getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
-	}
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
 
-	public boolean isAjax() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ajax, true);
-	}
-	public void setAjax(boolean _ajax) {
-		getStateHelper().put(PropertyKeys.ajax, _ajax);
-	}
+    public void setWidgetVar(java.lang.String _widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    }
 
-	public boolean isAsync() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.async, false);
-	}
-	public void setAsync(boolean _async) {
-		getStateHelper().put(PropertyKeys.async, _async);
-	}
+    public boolean isAjax() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ajax, true);
+    }
 
-	public java.lang.String getProcess() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.process, null);
-	}
-	public void setProcess(java.lang.String _process) {
-		getStateHelper().put(PropertyKeys.process, _process);
-	}
+    public void setAjax(boolean _ajax) {
+        getStateHelper().put(PropertyKeys.ajax, _ajax);
+    }
 
-	public java.lang.String getUpdate() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.update, null);
-	}
-	public void setUpdate(java.lang.String _update) {
-		getStateHelper().put(PropertyKeys.update, _update);
-	}
+    @Override
+    public boolean isAsync() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.async, false);
+    }
 
-	public java.lang.String getOnstart() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.onstart, null);
-	}
-	public void setOnstart(java.lang.String _onstart) {
-		getStateHelper().put(PropertyKeys.onstart, _onstart);
-	}
+    public void setAsync(boolean _async) {
+        getStateHelper().put(PropertyKeys.async, _async);
+    }
 
-	public java.lang.String getOncomplete() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.oncomplete, null);
-	}
-	public void setOncomplete(java.lang.String _oncomplete) {
-		getStateHelper().put(PropertyKeys.oncomplete, _oncomplete);
-	}
+    @Override
+    public java.lang.String getProcess() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.process, null);
+    }
 
-	public java.lang.String getOnerror() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.onerror, null);
-	}
-	public void setOnerror(java.lang.String _onerror) {
-		getStateHelper().put(PropertyKeys.onerror, _onerror);
-	}
+    public void setProcess(java.lang.String _process) {
+        getStateHelper().put(PropertyKeys.process, _process);
+    }
 
-	public java.lang.String getOnsuccess() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.onsuccess, null);
-	}
-	public void setOnsuccess(java.lang.String _onsuccess) {
-		getStateHelper().put(PropertyKeys.onsuccess, _onsuccess);
-	}
+    @Override
+    public java.lang.String getUpdate() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.update, null);
+    }
 
-	public boolean isGlobal() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.global, true);
-	}
-	public void setGlobal(boolean _global) {
-		getStateHelper().put(PropertyKeys.global, _global);
-	}
+    public void setUpdate(java.lang.String _update) {
+        getStateHelper().put(PropertyKeys.update, _update);
+    }
 
-	public java.lang.String getDelay() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.delay, null);
-	}
-	public void setDelay(java.lang.String _delay) {
-		getStateHelper().put(PropertyKeys.delay, _delay);
-	}
+    @Override
+    public java.lang.String getOnstart() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.onstart, null);
+    }
 
-	public int getTimeout() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.timeout, 0);
-	}
-	public void setTimeout(int _timeout) {
-		getStateHelper().put(PropertyKeys.timeout, _timeout);
-	}
+    public void setOnstart(java.lang.String _onstart) {
+        getStateHelper().put(PropertyKeys.onstart, _onstart);
+    }
 
-	public boolean isPartialSubmit() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.partialSubmit, false);
-	}
-	public void setPartialSubmit(boolean _partialSubmit) {
-		getStateHelper().put(PropertyKeys.partialSubmit, _partialSubmit);
-	}
+    @Override
+    public java.lang.String getOncomplete() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.oncomplete, null);
+    }
 
-	public boolean isResetValues() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.resetValues, false);
-	}
-	public void setResetValues(boolean _resetValues) {
-		getStateHelper().put(PropertyKeys.resetValues, _resetValues);
-	}
+    public void setOncomplete(java.lang.String _oncomplete) {
+        getStateHelper().put(PropertyKeys.oncomplete, _oncomplete);
+    }
 
-	public boolean isIgnoreAutoUpdate() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
-	}
-	public void setIgnoreAutoUpdate(boolean _ignoreAutoUpdate) {
-		getStateHelper().put(PropertyKeys.ignoreAutoUpdate, _ignoreAutoUpdate);
-	}
+    @Override
+    public java.lang.String getOnerror() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.onerror, null);
+    }
 
-	public java.lang.String getIcon() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.icon, null);
-	}
-	public void setIcon(java.lang.String _icon) {
-		getStateHelper().put(PropertyKeys.icon, _icon);
-	}
+    public void setOnerror(java.lang.String _onerror) {
+        getStateHelper().put(PropertyKeys.onerror, _onerror);
+    }
 
-	public java.lang.String getIconPos() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.iconPos, "left");
-	}
-	public void setIconPos(java.lang.String _iconPos) {
-		getStateHelper().put(PropertyKeys.iconPos, _iconPos);
-	}
+    @Override
+    public java.lang.String getOnsuccess() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.onsuccess, null);
+    }
 
-	public boolean isInline() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.inline, false);
-	}
-	public void setInline(boolean _inline) {
-		getStateHelper().put(PropertyKeys.inline, _inline);
-	}
+    public void setOnsuccess(java.lang.String _onsuccess) {
+        getStateHelper().put(PropertyKeys.onsuccess, _onsuccess);
+    }
 
-	public boolean isEscape() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-	}
-	public void setEscape(boolean _escape) {
-		getStateHelper().put(PropertyKeys.escape, _escape);
-	}
+    @Override
+    public boolean isGlobal() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.global, true);
+    }
 
-	public boolean isValidateClient() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.validateClient, false);
-	}
-	public void setValidateClient(boolean _validateClient) {
-		getStateHelper().put(PropertyKeys.validateClient, _validateClient);
-	}
+    public void setGlobal(boolean _global) {
+        getStateHelper().put(PropertyKeys.global, _global);
+    }
 
-	public java.lang.String getPartialSubmitFilter() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.partialSubmitFilter, null);
-	}
-	public void setPartialSubmitFilter(java.lang.String _partialSubmitFilter) {
-		getStateHelper().put(PropertyKeys.partialSubmitFilter, _partialSubmitFilter);
-	}
+    @Override
+    public java.lang.String getDelay() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.delay, null);
+    }
 
-	public java.lang.String getForm() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.form, null);
-	}
-	public void setForm(java.lang.String _form) {
-		getStateHelper().put(PropertyKeys.form, _form);
-	}
+    public void setDelay(java.lang.String _delay) {
+        getStateHelper().put(PropertyKeys.delay, _delay);
+    }
 
-	public boolean isRenderDisabledClick() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.renderDisabledClick, true);
-	}
-	public void setRenderDisabledClick(boolean _renderDisabledClick) {
-		getStateHelper().put(PropertyKeys.renderDisabledClick, _renderDisabledClick);
-	}
+    @Override
+    public int getTimeout() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.timeout, 0);
+    }
 
-	public java.lang.String getAriaLabel() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
-	}
-	public void setAriaLabel(java.lang.String _ariaLabel) {
-		getStateHelper().put(PropertyKeys.ariaLabel, _ariaLabel);
-	}
+    public void setTimeout(int _timeout) {
+        getStateHelper().put(PropertyKeys.timeout, _timeout);
+    }
 
-	public String resolveWidgetVar() {
-		return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-	}
+    @Override
+    public boolean isPartialSubmit() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.partialSubmit, false);
+    }
+
+    public void setPartialSubmit(boolean _partialSubmit) {
+        getStateHelper().put(PropertyKeys.partialSubmit, _partialSubmit);
+    }
+
+    @Override
+    public boolean isResetValues() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.resetValues, false);
+    }
+
+    public void setResetValues(boolean _resetValues) {
+        getStateHelper().put(PropertyKeys.resetValues, _resetValues);
+    }
+
+    @Override
+    public boolean isIgnoreAutoUpdate() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
+    }
+
+    public void setIgnoreAutoUpdate(boolean _ignoreAutoUpdate) {
+        getStateHelper().put(PropertyKeys.ignoreAutoUpdate, _ignoreAutoUpdate);
+    }
+
+    public java.lang.String getIcon() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.icon, null);
+    }
+
+    public void setIcon(java.lang.String _icon) {
+        getStateHelper().put(PropertyKeys.icon, _icon);
+    }
+
+    public java.lang.String getIconPos() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.iconPos, "left");
+    }
+
+    public void setIconPos(java.lang.String _iconPos) {
+        getStateHelper().put(PropertyKeys.iconPos, _iconPos);
+    }
+
+    public boolean isInline() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.inline, false);
+    }
+
+    public void setInline(boolean _inline) {
+        getStateHelper().put(PropertyKeys.inline, _inline);
+    }
+
+    public boolean isEscape() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+    }
+
+    public void setEscape(boolean _escape) {
+        getStateHelper().put(PropertyKeys.escape, _escape);
+    }
+
+    public boolean isValidateClient() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.validateClient, false);
+    }
+
+    public void setValidateClient(boolean _validateClient) {
+        getStateHelper().put(PropertyKeys.validateClient, _validateClient);
+    }
+
+    @Override
+    public java.lang.String getPartialSubmitFilter() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.partialSubmitFilter, null);
+    }
+
+    public void setPartialSubmitFilter(java.lang.String _partialSubmitFilter) {
+        getStateHelper().put(PropertyKeys.partialSubmitFilter, _partialSubmitFilter);
+    }
+
+    @Override
+    public java.lang.String getForm() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.form, null);
+    }
+
+    public void setForm(java.lang.String _form) {
+        getStateHelper().put(PropertyKeys.form, _form);
+    }
+
+    public boolean isRenderDisabledClick() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.renderDisabledClick, true);
+    }
+
+    public void setRenderDisabledClick(boolean _renderDisabledClick) {
+        getStateHelper().put(PropertyKeys.renderDisabledClick, _renderDisabledClick);
+    }
+
+    public java.lang.String getAriaLabel() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+    }
+
+    public void setAriaLabel(java.lang.String _ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, _ariaLabel);
+    }
+
+    @Override
+    public String resolveWidgetVar() {
+        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    }
 }

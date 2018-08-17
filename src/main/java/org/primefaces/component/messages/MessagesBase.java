@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,94 +16,89 @@
 package org.primefaces.component.messages;
 
 import javax.faces.component.UIMessages;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
 
 
-public abstract class MessagesBase extends UIMessages implements org.primefaces.component.api.UINotification {
+abstract class MessagesBase extends UIMessages implements org.primefaces.component.api.UINotification {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.Messages";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.MessagesRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.MessagesRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		escape
-		,severity
-		,closable
-		,style
-		,styleClass
-		,showIcon
-		,forType;
-	}
+        escape,
+        severity,
+        closable,
+        style,
+        styleClass,
+        showIcon,
+        forType
+    }
 
-	public MessagesBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public MessagesBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public boolean isEscape() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-	}
-	public void setEscape(boolean _escape) {
-		getStateHelper().put(PropertyKeys.escape, _escape);
-	}
+    public boolean isEscape() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+    }
 
-	public java.lang.String getSeverity() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.severity, null);
-	}
-	public void setSeverity(java.lang.String _severity) {
-		getStateHelper().put(PropertyKeys.severity, _severity);
-	}
+    public void setEscape(boolean _escape) {
+        getStateHelper().put(PropertyKeys.escape, _escape);
+    }
 
-	public boolean isClosable() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.closable, false);
-	}
-	public void setClosable(boolean _closable) {
-		getStateHelper().put(PropertyKeys.closable, _closable);
-	}
+    @Override
+    public java.lang.String getSeverity() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.severity, null);
+    }
 
-	public java.lang.String getStyle() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
-	}
-	public void setStyle(java.lang.String _style) {
-		getStateHelper().put(PropertyKeys.style, _style);
-	}
+    public void setSeverity(java.lang.String _severity) {
+        getStateHelper().put(PropertyKeys.severity, _severity);
+    }
 
-	public java.lang.String getStyleClass() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
-	}
-	public void setStyleClass(java.lang.String _styleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, _styleClass);
-	}
+    public boolean isClosable() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.closable, false);
+    }
 
-	public boolean isShowIcon() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showIcon, true);
-	}
-	public void setShowIcon(boolean _showIcon) {
-		getStateHelper().put(PropertyKeys.showIcon, _showIcon);
-	}
+    public void setClosable(boolean _closable) {
+        getStateHelper().put(PropertyKeys.closable, _closable);
+    }
 
-	public java.lang.String getForType() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.forType, null);
-	}
-	public void setForType(java.lang.String _forType) {
-		getStateHelper().put(PropertyKeys.forType, _forType);
-	}
+    public java.lang.String getStyle() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+    public void setStyle(java.lang.String _style) {
+        getStateHelper().put(PropertyKeys.style, _style);
+    }
+
+    public java.lang.String getStyleClass() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+    public void setStyleClass(java.lang.String _styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    }
+
+    public boolean isShowIcon() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showIcon, true);
+    }
+
+    public void setShowIcon(boolean _showIcon) {
+        getStateHelper().put(PropertyKeys.showIcon, _showIcon);
+    }
+
+    public java.lang.String getForType() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.forType, null);
+    }
+
+    public void setForType(java.lang.String _forType) {
+        getStateHelper().put(PropertyKeys.forType, _forType);
+    }
 
 }

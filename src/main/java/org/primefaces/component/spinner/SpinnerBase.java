@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,105 +16,103 @@
 package org.primefaces.component.spinner;
 
 import javax.faces.component.html.HtmlInputText;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
+
 import org.primefaces.util.ComponentUtils;
 
 
-public abstract class SpinnerBase extends HtmlInputText implements org.primefaces.component.api.Widget,org.primefaces.component.api.InputHolder {
+abstract class SpinnerBase extends HtmlInputText implements org.primefaces.component.api.Widget, org.primefaces.component.api.InputHolder {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.Spinner";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.SpinnerRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.SpinnerRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		placeholder
-		,widgetVar
-		,stepFactor
-		,min
-		,max
-		,prefix
-		,suffix
-		,decimalPlaces;
-	}
+        placeholder,
+        widgetVar,
+        stepFactor,
+        min,
+        max,
+        prefix,
+        suffix,
+        decimalPlaces
+    }
 
-	public SpinnerBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public SpinnerBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getPlaceholder() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
-	}
-	public void setPlaceholder(java.lang.String _placeholder) {
-		getStateHelper().put(PropertyKeys.placeholder, _placeholder);
-	}
+    public java.lang.String getPlaceholder() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
+    }
 
-	public java.lang.String getWidgetVar() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-	}
-	public void setWidgetVar(java.lang.String _widgetVar) {
-		getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
-	}
+    public void setPlaceholder(java.lang.String _placeholder) {
+        getStateHelper().put(PropertyKeys.placeholder, _placeholder);
+    }
 
-	public double getStepFactor() {
-		return (java.lang.Double) getStateHelper().eval(PropertyKeys.stepFactor, 1.0);
-	}
-	public void setStepFactor(double _stepFactor) {
-		getStateHelper().put(PropertyKeys.stepFactor, _stepFactor);
-	}
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
 
-	public double getMin() {
-		return (java.lang.Double) getStateHelper().eval(PropertyKeys.min, java.lang.Double.MIN_VALUE);
-	}
-	public void setMin(double _min) {
-		getStateHelper().put(PropertyKeys.min, _min);
-	}
+    public void setWidgetVar(java.lang.String _widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    }
 
-	public double getMax() {
-		return (java.lang.Double) getStateHelper().eval(PropertyKeys.max, java.lang.Double.MAX_VALUE);
-	}
-	public void setMax(double _max) {
-		getStateHelper().put(PropertyKeys.max, _max);
-	}
+    public double getStepFactor() {
+        return (java.lang.Double) getStateHelper().eval(PropertyKeys.stepFactor, 1.0);
+    }
 
-	public java.lang.String getPrefix() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.prefix, null);
-	}
-	public void setPrefix(java.lang.String _prefix) {
-		getStateHelper().put(PropertyKeys.prefix, _prefix);
-	}
+    public void setStepFactor(double _stepFactor) {
+        getStateHelper().put(PropertyKeys.stepFactor, _stepFactor);
+    }
 
-	public java.lang.String getSuffix() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.suffix, null);
-	}
-	public void setSuffix(java.lang.String _suffix) {
-		getStateHelper().put(PropertyKeys.suffix, _suffix);
-	}
+    public double getMin() {
+        return (java.lang.Double) getStateHelper().eval(PropertyKeys.min, java.lang.Double.MIN_VALUE);
+    }
 
-	public java.lang.String getDecimalPlaces() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.decimalPlaces, null);
-	}
-	public void setDecimalPlaces(java.lang.String _decimalPlaces) {
-		getStateHelper().put(PropertyKeys.decimalPlaces, _decimalPlaces);
-	}
+    public void setMin(double _min) {
+        getStateHelper().put(PropertyKeys.min, _min);
+    }
 
-	public String resolveWidgetVar() {
-		return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-	}
+    public double getMax() {
+        return (java.lang.Double) getStateHelper().eval(PropertyKeys.max, java.lang.Double.MAX_VALUE);
+    }
+
+    public void setMax(double _max) {
+        getStateHelper().put(PropertyKeys.max, _max);
+    }
+
+    public java.lang.String getPrefix() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.prefix, null);
+    }
+
+    public void setPrefix(java.lang.String _prefix) {
+        getStateHelper().put(PropertyKeys.prefix, _prefix);
+    }
+
+    public java.lang.String getSuffix() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.suffix, null);
+    }
+
+    public void setSuffix(java.lang.String _suffix) {
+        getStateHelper().put(PropertyKeys.suffix, _suffix);
+    }
+
+    public java.lang.String getDecimalPlaces() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.decimalPlaces, null);
+    }
+
+    public void setDecimalPlaces(java.lang.String _decimalPlaces) {
+        getStateHelper().put(PropertyKeys.decimalPlaces, _decimalPlaces);
+    }
+
+    @Override
+    public String resolveWidgetVar() {
+        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    }
 }

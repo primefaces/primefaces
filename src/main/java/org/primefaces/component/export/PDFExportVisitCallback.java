@@ -15,14 +15,15 @@
  */
 package org.primefaces.component.export;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Paragraph;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.view.facelets.FaceletException;
+
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Paragraph;
 import org.primefaces.component.datatable.DataTable;
 
 public class PDFExportVisitCallback implements VisitCallback {

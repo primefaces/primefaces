@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,149 +16,130 @@
 package org.primefaces.component.inputtextarea;
 
 import javax.faces.component.html.HtmlInputTextarea;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
+
 import org.primefaces.util.ComponentUtils;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Date;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-import javax.el.ValueExpression;
-import javax.faces.convert.Converter;
-import javax.faces.component.behavior.Behavior;
-import javax.el.MethodExpression;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.util.Constants;
 
 
-public abstract class InputTextareaBase extends HtmlInputTextarea implements org.primefaces.component.api.Widget,org.primefaces.component.api.MixedClientBehaviorHolder {
+abstract class InputTextareaBase extends HtmlInputTextarea implements org.primefaces.component.api.Widget, org.primefaces.component.api.MixedClientBehaviorHolder {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.InputTextarea";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.InputTextareaRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.InputTextareaRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		placeholder
-		,widgetVar
-		,autoResize
-		,maxlength
-		,counter
-		,counterTemplate
-		,completeMethod
-		,minQueryLength
-		,queryDelay
-		,scrollHeight
-		,addLine;
-	}
+        placeholder,
+        widgetVar,
+        autoResize,
+        maxlength,
+        counter,
+        counterTemplate,
+        completeMethod,
+        minQueryLength,
+        queryDelay,
+        scrollHeight,
+        addLine
+    }
 
-	public InputTextareaBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public InputTextareaBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getPlaceholder() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
-	}
-	public void setPlaceholder(java.lang.String _placeholder) {
-		getStateHelper().put(PropertyKeys.placeholder, _placeholder);
-	}
+    public java.lang.String getPlaceholder() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
+    }
 
-	public java.lang.String getWidgetVar() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-	}
-	public void setWidgetVar(java.lang.String _widgetVar) {
-		getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
-	}
+    public void setPlaceholder(java.lang.String _placeholder) {
+        getStateHelper().put(PropertyKeys.placeholder, _placeholder);
+    }
 
-	public boolean isAutoResize() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoResize, true);
-	}
-	public void setAutoResize(boolean _autoResize) {
-		getStateHelper().put(PropertyKeys.autoResize, _autoResize);
-	}
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
 
-	public int getMaxlength() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxlength, java.lang.Integer.MAX_VALUE);
-	}
-	public void setMaxlength(int _maxlength) {
-		getStateHelper().put(PropertyKeys.maxlength, _maxlength);
-	}
+    public void setWidgetVar(java.lang.String _widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    }
 
-	public java.lang.String getCounter() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.counter, null);
-	}
-	public void setCounter(java.lang.String _counter) {
-		getStateHelper().put(PropertyKeys.counter, _counter);
-	}
+    public boolean isAutoResize() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoResize, true);
+    }
 
-	public java.lang.String getCounterTemplate() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.counterTemplate, null);
-	}
-	public void setCounterTemplate(java.lang.String _counterTemplate) {
-		getStateHelper().put(PropertyKeys.counterTemplate, _counterTemplate);
-	}
+    public void setAutoResize(boolean _autoResize) {
+        getStateHelper().put(PropertyKeys.autoResize, _autoResize);
+    }
 
-	public javax.el.MethodExpression getCompleteMethod() {
-		return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.completeMethod, null);
-	}
-	public void setCompleteMethod(javax.el.MethodExpression _completeMethod) {
-		getStateHelper().put(PropertyKeys.completeMethod, _completeMethod);
-	}
+    public int getMaxlength() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxlength, java.lang.Integer.MAX_VALUE);
+    }
 
-	public int getMinQueryLength() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minQueryLength, 3);
-	}
-	public void setMinQueryLength(int _minQueryLength) {
-		getStateHelper().put(PropertyKeys.minQueryLength, _minQueryLength);
-	}
+    public void setMaxlength(int _maxlength) {
+        getStateHelper().put(PropertyKeys.maxlength, _maxlength);
+    }
 
-	public int getQueryDelay() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.queryDelay, 700);
-	}
-	public void setQueryDelay(int _queryDelay) {
-		getStateHelper().put(PropertyKeys.queryDelay, _queryDelay);
-	}
+    public java.lang.String getCounter() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.counter, null);
+    }
 
-	public int getScrollHeight() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.scrollHeight, java.lang.Integer.MAX_VALUE);
-	}
-	public void setScrollHeight(int _scrollHeight) {
-		getStateHelper().put(PropertyKeys.scrollHeight, _scrollHeight);
-	}
+    public void setCounter(java.lang.String _counter) {
+        getStateHelper().put(PropertyKeys.counter, _counter);
+    }
 
-	public boolean isAddLine() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.addLine, false);
-	}
-	public void setAddLine(boolean _addLine) {
-		getStateHelper().put(PropertyKeys.addLine, _addLine);
-	}
+    public java.lang.String getCounterTemplate() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.counterTemplate, null);
+    }
 
-	public String resolveWidgetVar() {
-		return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-	}
+    public void setCounterTemplate(java.lang.String _counterTemplate) {
+        getStateHelper().put(PropertyKeys.counterTemplate, _counterTemplate);
+    }
+
+    public javax.el.MethodExpression getCompleteMethod() {
+        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.completeMethod, null);
+    }
+
+    public void setCompleteMethod(javax.el.MethodExpression _completeMethod) {
+        getStateHelper().put(PropertyKeys.completeMethod, _completeMethod);
+    }
+
+    public int getMinQueryLength() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minQueryLength, 3);
+    }
+
+    public void setMinQueryLength(int _minQueryLength) {
+        getStateHelper().put(PropertyKeys.minQueryLength, _minQueryLength);
+    }
+
+    public int getQueryDelay() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.queryDelay, 700);
+    }
+
+    public void setQueryDelay(int _queryDelay) {
+        getStateHelper().put(PropertyKeys.queryDelay, _queryDelay);
+    }
+
+    public int getScrollHeight() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.scrollHeight, java.lang.Integer.MAX_VALUE);
+    }
+
+    public void setScrollHeight(int _scrollHeight) {
+        getStateHelper().put(PropertyKeys.scrollHeight, _scrollHeight);
+    }
+
+    public boolean isAddLine() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.addLine, false);
+    }
+
+    public void setAddLine(boolean _addLine) {
+        getStateHelper().put(PropertyKeys.addLine, _addLine);
+    }
+
+    @Override
+    public String resolveWidgetVar() {
+        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    }
 }

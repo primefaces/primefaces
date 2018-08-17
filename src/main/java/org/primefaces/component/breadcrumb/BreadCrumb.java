@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,30 +15,19 @@
  */
 package org.primefaces.component.breadcrumb;
 
-import org.primefaces.component.menu.AbstractMenu;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
 public class BreadCrumb extends BreadCrumbBase implements org.primefaces.component.api.Widget {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.BreadCrumb";
 
     public final static String CONTAINER_CLASS = "ui-breadcrumb ui-module ui-widget ui-widget-header ui-helper-clearfix ui-corner-all";
     public final static String CHEVRON_CLASS = "ui-breadcrumb-chevron ui-icon ui-icon-triangle-1-e";

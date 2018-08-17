@@ -17,7 +17,6 @@ package org.primefaces.component.hotkey;
 
 import java.io.IOException;
 import java.util.Map;
-
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -51,7 +50,7 @@ public class HotkeyRenderer extends CoreRenderer {
         writer.writeAttribute("type", "text/javascript", null);
 
         String event = "keydown." + clientId;
-        
+
         writer.write("$(function(){");
         writer.write("$(document).off('" + event + "').on('" + event + "',null,'" + hotkey.getBind() + "',function(){");
 

@@ -17,11 +17,11 @@ package org.primefaces.component.menubutton;
 
 import java.io.IOException;
 import java.util.List;
-
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
@@ -47,7 +47,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         writer.startElement("span", button);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "class");
-        
+
         if (button.getStyle() != null) {
             writer.writeAttribute("style", button.getStyle(), "style");
         }

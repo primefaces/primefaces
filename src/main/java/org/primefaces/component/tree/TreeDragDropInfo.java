@@ -16,12 +16,13 @@
 package org.primefaces.component.tree;
 
 import javax.faces.component.UIComponent;
+
 import org.primefaces.model.TreeNode;
 
 public class TreeDragDropInfo {
 
     private UIComponent component;
-    
+
     private TreeNode dragNode;
 
     private TreeNode[] dragNodes;

@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,38 +15,28 @@
  */
 package org.primefaces.component.confirmdialog;
 
-import javax.faces.component.UIPanel;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class ConfirmDialog extends ConfirmDialogBase implements org.primefaces.component.api.Widget,org.primefaces.component.api.RTLAware {
+public class ConfirmDialog extends ConfirmDialogBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.RTLAware {
 
 
-    
+    public static final String COMPONENT_TYPE = "org.primefaces.component.ConfirmDialog";
+
     public static final String CONTAINER_CLASS = "ui-confirm-dialog ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow ui-hidden-container";
     public static final String BUTTONPANE_CLASS = "ui-dialog-buttonpane ui-dialog-footer ui-widget-content ui-helper-clearfix";
     public static final String SEVERITY_ICON_CLASS = "ui-confirm-dialog-severity";
     public static final String MESSAGE_CLASS = "ui-confirm-dialog-message";
 
+    @Override
     public boolean isRTL() {
-        return this.getDir().equalsIgnoreCase("rtl");
+        return getDir().equalsIgnoreCase("rtl");
     }
 }

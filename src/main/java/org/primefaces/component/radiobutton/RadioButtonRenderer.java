@@ -19,6 +19,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.selectoneradio.SelectOneRadio;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
@@ -64,7 +65,7 @@ public class RadioButtonRenderer extends InputRenderer {
     }
 
     protected void encodeOptionInput(FacesContext context, SelectOneRadio radio, RadioButton button, String id, String name,
-            boolean disabled) throws IOException {
+                                     boolean disabled) throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
         String tabindex = button.getTabindex();
@@ -82,8 +83,12 @@ public class RadioButtonRenderer extends InputRenderer {
         writer.writeAttribute("class", "ui-radio-clone", null);
         writer.writeAttribute("data-itemindex", button.getItemIndex(), null);
 
-        if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
+        if (tabindex != null) {
+            writer.writeAttribute("tabindex", tabindex, null);
+        }
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
 
         String onchange = buildEvent(context, radio, button, "onchange", "change", "valueChange");
         if (!isValueBlank(onchange)) {
@@ -99,7 +104,7 @@ public class RadioButtonRenderer extends InputRenderer {
     }
 
     protected String buildEvent(FacesContext context, SelectOneRadio radio, RadioButton button, String domEvent, String behaviorEvent,
-            String behaviorEventAlias) {
+                                String behaviorEventAlias) {
 
         String radioEvent = buildDomEvent(context, radio, domEvent, behaviorEvent, behaviorEventAlias, null);
         String buttonEvent = buildDomEvent(context, button, domEvent, behaviorEvent, behaviorEventAlias, null);

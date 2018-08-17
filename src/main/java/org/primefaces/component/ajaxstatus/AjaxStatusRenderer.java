@@ -16,7 +16,6 @@
 package org.primefaces.component.ajaxstatus;
 
 import java.io.IOException;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -54,8 +53,12 @@ public class AjaxStatusRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
 
-        if (status.getStyle() != null) writer.writeAttribute("style", status.getStyle(), "style");
-        if (status.getStyleClass() != null) writer.writeAttribute("class", status.getStyleClass(), "styleClass");
+        if (status.getStyle() != null) {
+            writer.writeAttribute("style", status.getStyle(), "style");
+        }
+        if (status.getStyleClass() != null) {
+            writer.writeAttribute("class", status.getStyleClass(), "styleClass");
+        }
 
         for (String event : AjaxStatus.EVENTS) {
             UIComponent facet = status.getFacet(event);

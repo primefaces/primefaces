@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,27 +15,10 @@
  */
 package org.primefaces.component.separator;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-
-@ResourceDependencies({
-
-})
-public class UISeparator extends UISeparatorBase implements org.primefaces.model.menu.Separator,org.primefaces.component.separator.Separator {
+public class UISeparator extends UISeparatorBase implements org.primefaces.model.menu.Separator, org.primefaces.component.separator.Separator {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Separator";
 
     public final static String DEFAULT_STYLE_CLASS = "ui-separator ui-state-default ui-corner-all";
 }

@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,39 +15,23 @@
  */
 package org.primefaces.component.layout;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import java.util.HashMap;
-import java.util.Map;
 import javax.faces.component.UIComponent;
 
-@ResourceDependencies({
 
-})
 public class LayoutUnit extends LayoutUnitBase {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.LayoutUnit";
 
     public String getCollapseIcon() {
-        return "ui-icon-triangle-1-" + this.getPosition().substring(0,1);
+        return "ui-icon-triangle-1-" + getPosition().substring(0, 1);
     }
 
     public boolean isNesting() {
-        for(UIComponent child : getChildren()) {
-            if(child instanceof Layout)
+        for (UIComponent child : getChildren()) {
+            if (child instanceof Layout) {
                 return true;
+            }
         }
 
         return false;

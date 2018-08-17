@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,83 +15,76 @@
  */
 package org.primefaces.component.columns;
 
-import org.primefaces.component.api.UIData;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
 import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
 import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
+
 import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIData;
 import org.primefaces.component.celleditor.CellEditor;
 
-@ResourceDependencies({
 
-})
 public class Columns extends ColumnsBase implements org.primefaces.component.api.UIColumn {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Columns";
 
+    @Override
     public String getSelectionMode() {
         return null;
     }
 
     private CellEditor cellEditor = null;
 
+    @Override
     public CellEditor getCellEditor() {
-        if(cellEditor == null) {
-            for(UIComponent child : getChildren()) {
-                if(child instanceof CellEditor)
+        if (cellEditor == null) {
+            for (UIComponent child : getChildren()) {
+                if (child instanceof CellEditor) {
                     cellEditor = (CellEditor) child;
+                }
             }
         }
 
         return cellEditor;
     }
 
+    @Override
     public boolean isDynamic() {
         return true;
     }
 
     public java.lang.String getColumnIndexVar() {
-		return super.getRowIndexVar();
-	}
-	public void setColumnIndexVar(String _columnIndexVar) {
-		super.setRowIndexVar(_columnIndexVar);
-	}
-
-    public String getColumnKey() {
-        return this.getClientId();
+        return super.getRowIndexVar();
     }
 
+    public void setColumnIndexVar(String _columnIndexVar) {
+        super.setRowIndexVar(_columnIndexVar);
+    }
+
+    @Override
+    public String getColumnKey() {
+        return getClientId();
+    }
+
+    @Override
     public void renderChildren(FacesContext context) throws IOException {
-        this.encodeChildren(context);
+        encodeChildren(context);
     }
 
     private List<DynamicColumn> dynamicColumns;
 
     public List<DynamicColumn> getDynamicColumns() {
-        if(dynamicColumns == null) {
-            FacesContext context = this.getFacesContext();
-            this.setRowIndex(-1);
+        if (dynamicColumns == null) {
+            FacesContext context = getFacesContext();
+            setRowIndex(-1);
             char separator = UINamingContainer.getSeparatorChar(context);
-            dynamicColumns = new ArrayList<DynamicColumn>();
-            String clientId = this.getClientId(context);
+            dynamicColumns = new ArrayList<>();
+            String clientId = getClientId(context);
 
-            for(int i=0; i < this.getRowCount(); i++) {
+            for (int i = 0; i < getRowCount(); i++) {
                 DynamicColumn dynaColumn = new DynamicColumn(i, this);
                 dynaColumn.setColumnKey(clientId + separator + i);
 
@@ -105,5 +98,5 @@ public class Columns extends ColumnsBase implements org.primefaces.component.api
     public void setDynamicColumns(List<DynamicColumn> dynamicColumns) {
         this.dynamicColumns = dynamicColumns;
     }
-    
+
 }

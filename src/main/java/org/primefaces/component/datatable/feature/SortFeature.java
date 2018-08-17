@@ -16,19 +16,14 @@
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
+import java.util.*;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.model.ListDataModel;
-import org.primefaces.PrimeFaces;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
@@ -37,11 +32,7 @@ import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.MultiSortState;
 import org.primefaces.component.datatable.TableState;
 import org.primefaces.event.data.PostSortEvent;
-import org.primefaces.model.BeanPropertyComparator;
-import org.primefaces.model.ChainedBeanPropertyComparator;
-import org.primefaces.model.DynamicChainedPropertyComparator;
-import org.primefaces.model.SortMeta;
-import org.primefaces.model.SortOrder;
+import org.primefaces.model.*;
 
 public class SortFeature implements DataTableFeature {
 
@@ -58,7 +49,7 @@ public class SortFeature implements DataTableFeature {
         String sortDir = params.get(clientId + "_sortDir");
 
         if (table.isMultiSort()) {
-            List<SortMeta> multiSortMeta = new ArrayList<SortMeta>();
+            List<SortMeta> multiSortMeta = new ArrayList<>();
             String[] sortKeys = sortKey.split(",");
             String[] sortOrders = sortDir.split(",");
 
@@ -94,7 +85,7 @@ public class SortFeature implements DataTableFeature {
         if (table.isLazy()) {
             if (table.isLiveScroll()) {
                 table.loadLazyScrollData(0, table.getScrollRows());
-            } 
+            }
             else if (table.isVirtualScroll()) {
                 int rows = table.getRows();
                 int scrollRows = table.getScrollRows();
@@ -102,7 +93,7 @@ public class SortFeature implements DataTableFeature {
                 scrollRows = (rows == 0) ? virtualScrollRows : ((virtualScrollRows > rows) ? rows : virtualScrollRows);
 
                 table.loadLazyScrollData(0, scrollRows);
-            } 
+            }
             else {
                 table.loadLazyData();
             }

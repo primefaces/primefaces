@@ -253,6 +253,44 @@
             </plugin>
 
             <plugin>
+                <groupId>org.primefaces</groupId>
+                <artifactId>maven-jsf-plugin</artifactId>
+                <version>1.3.3-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <id>generate-ui</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <uri>http://primefaces.org/ui</uri>
+                            <shortName>p</shortName>
+                            <templatesDir>src/main/java-templates</templatesDir>
+                            <componentConfigsDir>target/resources-maven-jsf/ui</componentConfigsDir>
+                            <standardFacesConfig>src/main/resources-maven-jsf/standard-faces-config.xml</standardFacesConfig>
+                            <standardFaceletsTaglib>src/main/resources-maven-jsf/standard-facelets-taglib.xml</standardFaceletsTaglib>
+                            <standardTLD>src/main/resources-maven-jsf/standard-tld.xml</standardTLD>
+                        </configuration>
+                        <goals>
+                            <goal>generate-components</goal>
+                            <goal>generate-facelets-taglib</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>generate-facesconfig</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <componentConfigsDir>target/resources-maven-jsf/ui</componentConfigsDir>
+                            <standardFacesConfig>src/main/resources-maven-jsf/standard-faces-config.xml</standardFacesConfig>
+                            <standardRenderersConfig>src/main/resources-maven-jsf/standard-renderers.xml</standardRenderersConfig>
+                            <jsfVersion>2</jsfVersion>
+                        </configuration>
+                        <goals>
+                            <goal>generate-faces-config</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin-->
+
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <version>1.5</version>
@@ -270,7 +308,8 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin-->
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -322,43 +361,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--plugin>
-                <groupId>org.primefaces</groupId>
-                <artifactId>maven-jsf-plugin</artifactId>
-                <version>1.3.3-SNAPSHOT</version>
-                <executions>
-                    <execution>
-                        <id>generate-ui</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <uri>http://primefaces.org/ui</uri>
-                            <shortName>p</shortName>
-                            <templatesDir>src/main/java-templates</templatesDir>
-                            <componentConfigsDir>target/resources-maven-jsf/ui</componentConfigsDir>
-                            <standardFacesConfig>src/main/resources-maven-jsf/standard-faces-config.xml</standardFacesConfig>
-                            <standardFaceletsTaglib>src/main/resources-maven-jsf/standard-facelets-taglib.xml</standardFaceletsTaglib>
-                            <standardTLD>src/main/resources-maven-jsf/standard-tld.xml</standardTLD>
-                        </configuration>
-                        <goals>
-                            <goal>generate-components</goal>
-                            <goal>generate-facelets-taglib</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>generate-facesconfig</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <componentConfigsDir>target/resources-maven-jsf/ui</componentConfigsDir>
-                            <standardFacesConfig>src/main/resources-maven-jsf/standard-faces-config.xml</standardFacesConfig>
-                            <standardRenderersConfig>src/main/resources-maven-jsf/standard-renderers.xml</standardRenderersConfig>
-                            <jsfVersion>2</jsfVersion>
-                        </configuration>
-                        <goals>
-                            <goal>generate-faces-config</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

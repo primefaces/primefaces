@@ -18,22 +18,17 @@ package org.primefaces.component.commandlink;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
+
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.context.PrimeRequestContext;
-
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.CSVBuilder;
-import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.HTML;
-import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.*;
 
 public class CommandLinkRenderer extends CoreRenderer {
 
@@ -117,7 +112,7 @@ public class CommandLinkRenderer extends CoreRenderer {
                 }
             }
 
-            List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<ClientBehaviorContext.Parameter>();
+            List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<>();
             behaviorParams.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
             String dialogReturnBehavior = getEventBehaviors(context, link, "dialogReturn", behaviorParams);
             if (dialogReturnBehavior != null) {
@@ -149,7 +144,7 @@ public class CommandLinkRenderer extends CoreRenderer {
             if (label != null) {
                 writer.writeText(label, "value");
             }
-            
+
             renderChildren(context, link);
 
             writer.endElement("span");

@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,94 +15,62 @@
  */
 package org.primefaces.component.tree;
 
-import org.primefaces.component.api.UITree;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
+import java.util.*;
 import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.event.NodeSelectEvent;
-import org.primefaces.event.NodeUnselectEvent;
-import org.primefaces.event.NodeExpandEvent;
-import org.primefaces.event.NodeCollapseEvent;
-import org.primefaces.event.TreeDragDropEvent;
 import javax.faces.component.UIComponent;
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.HashMap;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.lang.StringBuilder;
-import javax.el.MethodExpression;
 import javax.faces.context.FacesContext;
-import org.primefaces.model.TreeNode;
-import javax.faces.event.FacesEvent;
 import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.PhaseId;
-import org.primefaces.component.tree.UITreeNode;
-import org.primefaces.util.Constants;
-import org.primefaces.model.TreeNode;
 import javax.faces.event.BehaviorEvent;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
+
 import org.primefaces.PrimeFaces;
+import org.primefaces.event.*;
 import org.primefaces.model.CheckboxTreeNode;
 import org.primefaces.model.DefaultTreeNode;
-import org.primefaces.model.filter.ContainsFilterConstraint;
-import org.primefaces.model.filter.EndsWithFilterConstraint;
-import org.primefaces.model.filter.EqualsFilterConstraint;
-import org.primefaces.model.filter.ExactFilterConstraint;
-import org.primefaces.model.filter.FilterConstraint;
-import org.primefaces.model.filter.GlobalFilterConstraint;
-import org.primefaces.model.filter.GreaterThanEqualsFilterConstraint;
-import org.primefaces.model.filter.GreaterThanFilterConstraint;
-import org.primefaces.model.filter.InFilterConstraint;
-import org.primefaces.model.filter.LessThanEqualsFilterConstraint;
-import org.primefaces.model.filter.LessThanFilterConstraint;
-import org.primefaces.model.filter.StartsWithFilterConstraint;
+import org.primefaces.model.TreeNode;
+import org.primefaces.model.filter.*;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class Tree extends TreeBase implements org.primefaces.component.api.Widget,org.primefaces.component.api.RTLAware,javax.faces.component.behavior.ClientBehaviorHolder,org.primefaces.component.api.PrimeClientBehaviorHolder {
+public class Tree extends TreeBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.RTLAware, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Tree";
 
-	private Map<String,UITreeNode> nodes;
+    private Map<String, UITreeNode> nodes;
 
-	public UITreeNode getUITreeNodeByType(String type) {
-		UITreeNode node = getTreeNodes().get(type);
-		
-		if(node == null)
-			throw new javax.faces.FacesException("Unsupported tree node type:" + type);
-		else
-			return node;
-	}
+    public UITreeNode getUITreeNodeByType(String type) {
+        UITreeNode node = getTreeNodes().get(type);
 
-		
+        if (node == null) {
+            throw new javax.faces.FacesException("Unsupported tree node type:" + type);
+        }
+        else {
+            return node;
+        }
+    }
+
+
     public boolean isNodeExpandRequest(FacesContext context) {
-		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_expandNode");
-	}
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_expandNode");
+    }
 
     public boolean isSelectionRequest(FacesContext context) {
-		return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_instantSelection");
-	}
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_instantSelection");
+    }
 
     public boolean isFilterRequest(FacesContext context) {
-    	return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_filtering");
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_filtering");
     }
 
     public static String CONTAINER_CLASS = "ui-tree ui-widget ui-widget-content ui-corner-all";
@@ -127,9 +95,9 @@ public class Tree extends TreeBase implements org.primefaces.component.api.Widge
     public static final String FILTER_CLASS = "ui-tree-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public static final String FILTER_CONTAINER = "ui-tree-filter-container";
 
-    public Map<String,UITreeNode> getTreeNodes() {
+    public Map<String, UITreeNode> getTreeNodes() {
         if (nodes == null) {
-            nodes = new HashMap<String, UITreeNode>();
+            nodes = new HashMap<>();
             for (UIComponent child : getChildren()) {
                 if (child instanceof UITreeNode) {
                     UITreeNode node = (UITreeNode) child;
@@ -164,11 +132,11 @@ public class Tree extends TreeBase implements org.primefaces.component.api.Widge
     private final static String EQUALS_MODE = "equals";
     private final static String IN_MODE = "in";
     private final static String GLOBAL_MODE = "global";
-  
-    final static Map<String,FilterConstraint> FILTER_CONSTRAINTS;
-    
+
+    final static Map<String, FilterConstraint> FILTER_CONSTRAINTS;
+
     static {
-        FILTER_CONSTRAINTS = new HashMap<String,FilterConstraint>();
+        FILTER_CONSTRAINTS = new HashMap<>();
         FILTER_CONSTRAINTS.put(STARTS_WITH_MATCH_MODE, new StartsWithFilterConstraint());
         FILTER_CONSTRAINTS.put(ENDS_WITH_MATCH_MODE, new EndsWithFilterConstraint());
         FILTER_CONSTRAINTS.put(CONTAINS_MATCH_MODE, new ContainsFilterConstraint());
@@ -184,7 +152,7 @@ public class Tree extends TreeBase implements org.primefaces.component.api.Widge
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-         return BEHAVIOR_EVENT_MAPPING;
+        return BEHAVIOR_EVENT_MAPPING;
     }
 
     @Override
@@ -196,64 +164,66 @@ public class Tree extends TreeBase implements org.primefaces.component.api.Widge
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
-            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-            String clientId = this.getClientId(context);
+            String clientId = getClientId(context);
             FacesEvent wrapperEvent = null;
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if(eventName.equals("expand")) {
-                this.setRowKey(params.get(clientId + "_expandNode"));
-                TreeNode expandedNode = this.getRowNode();
+            if (eventName.equals("expand")) {
+                setRowKey(params.get(clientId + "_expandNode"));
+                TreeNode expandedNode = getRowNode();
                 expandedNode.setExpanded(true);
 
                 wrapperEvent = new NodeExpandEvent(this, behaviorEvent.getBehavior(), expandedNode);
             }
-            else if(eventName.equals("collapse")) {
-                this.setRowKey(params.get(clientId + "_collapseNode"));
-                TreeNode collapsedNode = this.getRowNode();
+            else if (eventName.equals("collapse")) {
+                setRowKey(params.get(clientId + "_collapseNode"));
+                TreeNode collapsedNode = getRowNode();
                 collapsedNode.setExpanded(false);
 
                 wrapperEvent = new NodeCollapseEvent(this, behaviorEvent.getBehavior(), collapsedNode);
             }
-            else if(eventName.equals("select")) {
+            else if (eventName.equals("select")) {
                 setRowKey(params.get(clientId + "_instantSelection"));
 
-                wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
+                wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), getRowNode());
             }
-            else if(eventName.equals("unselect")) {
+            else if (eventName.equals("unselect")) {
                 setRowKey(params.get(clientId + "_instantUnselection"));
 
-                wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), this.getRowNode());
+                wrapperEvent = new NodeUnselectEvent(this, behaviorEvent.getBehavior(), getRowNode());
             }
-            else if(eventName.equals("dragdrop")) {
-                if(!retValOnDrop) {
+            else if (eventName.equals("dragdrop")) {
+                if (!retValOnDrop) {
                     return;
                 }
 
                 int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
                 boolean isDroppedNodeCopy = Boolean.valueOf(params.get(clientId + "_isDroppedNodeCopy"));
 
-                if(this.isMultipleDrag()) 
+                if (isMultipleDrag()) {
                     wrapperEvent = new TreeDragDropEvent(this, behaviorEvent.getBehavior(), dragNodes, dropNode, dndIndex, isDroppedNodeCopy);
-                else
+                }
+                else {
                     wrapperEvent = new TreeDragDropEvent(this, behaviorEvent.getBehavior(), dragNode, dropNode, dndIndex, isDroppedNodeCopy);
+                }
             }
-            else if(eventName.equals("contextMenu")) {
+            else if (eventName.equals("contextMenu")) {
                 setRowKey(params.get(clientId + "_contextMenuNode"));
 
-                wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), this.getRowNode(), true);
+                wrapperEvent = new NodeSelectEvent(this, behaviorEvent.getBehavior(), getRowNode(), true);
             }
-            else if(eventName.equals("filter")) {
+            else if (eventName.equals("filter")) {
                 wrapperEvent = behaviorEvent;
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
-            
+
             super.queueEvent(wrapperEvent);
-            
-            this.setRowKey(null);
+
+            setRowKey(null);
         }
         else {
             super.queueEvent(event);
@@ -261,14 +231,14 @@ public class Tree extends TreeBase implements org.primefaces.component.api.Widge
     }
 
     private boolean isToggleRequest(FacesContext context) {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = getClientId(context);
 
         return params.get(clientId + "_expandNode") != null || params.get(clientId + "_collapseNode") != null;
     }
 
     public boolean isDragDropRequest(FacesContext context) {
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = getClientId(context);
         String source = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM);
 
@@ -276,14 +246,14 @@ public class Tree extends TreeBase implements org.primefaces.component.api.Widge
     }
 
     private boolean shouldSkipNodes(FacesContext context) {
-        return this.isToggleRequest(context)||this.isDragDropRequest(context);
+        return isToggleRequest(context) || isDragDropRequest(context);
     }
 
     @Override
     public void processDecodes(FacesContext context) {
-        if(shouldSkipNodes(context)) {
-            this.decode(context);
-        } 
+        if (shouldSkipNodes(context)) {
+            decode(context);
+        }
         else {
             super.processDecodes(context);
         }
@@ -291,29 +261,30 @@ public class Tree extends TreeBase implements org.primefaces.component.api.Widge
 
     @Override
     public void processValidators(FacesContext context) {
-        if(!shouldSkipNodes(context)) {
+        if (!shouldSkipNodes(context)) {
             super.processValidators(context);
-        } 
+        }
     }
 
     @Override
     public void processUpdates(FacesContext context) {
-        if(shouldSkipNodes(context)) {
-            this.updateSelection(context);
+        if (shouldSkipNodes(context)) {
+            updateSelection(context);
         }
         else {
             super.processUpdates(context);
-        }  
+        }
     }
 
     public boolean isCheckboxSelection() {
-        String selectionMode = this.getSelectionMode();
-        
+        String selectionMode = getSelectionMode();
+
         return selectionMode != null && selectionMode.equals("checkbox");
     }
 
+    @Override
     public boolean isRTL() {
-        return this.getDir().equalsIgnoreCase("rtl");
+        return getDir().equalsIgnoreCase("rtl");
     }
 
     private TreeNode dragNode;
@@ -323,6 +294,7 @@ public class Tree extends TreeBase implements org.primefaces.component.api.Widge
     TreeNode getDragNode() {
         return dragNode;
     }
+
     void setDragNode(TreeNode dragNode) {
         this.dragNode = dragNode;
     }
@@ -330,6 +302,7 @@ public class Tree extends TreeBase implements org.primefaces.component.api.Widge
     TreeNode[] getDragNodes() {
         return dragNodes;
     }
+
     void setDragNodes(TreeNode[] dragNodes) {
         this.dragNodes = dragNodes;
     }
@@ -337,44 +310,52 @@ public class Tree extends TreeBase implements org.primefaces.component.api.Widge
     TreeNode getDropNode() {
         return dropNode;
     }
+
     void setDropNode(TreeNode dropNode) {
         this.dropNode = dropNode;
     }
 
     @Override
     protected boolean shouldVisitNode(TreeNode node) {
-        return this.isDynamic() ? (node.isExpanded() || node.getParent() == null) : true;
+        return isDynamic() ? (node.isExpanded() || node.getParent() == null) : true;
     }
 
     @Override
     protected void processColumnChildren(FacesContext context, PhaseId phaseId, String nodeKey) {
         setRowKey(nodeKey);
-        TreeNode treeNode = this.getRowNode();
+        TreeNode treeNode = getRowNode();
 
-        if(treeNode == null)
+        if (treeNode == null) {
             return;
-        
+        }
+
         String treeNodeType = treeNode.getType();
-        
-        for(UIComponent child : getChildren()) {
-            if(child instanceof UITreeNode && child.isRendered()) {
+
+        for (UIComponent child : getChildren()) {
+            if (child instanceof UITreeNode && child.isRendered()) {
                 UITreeNode uiTreeNode = (UITreeNode) child;
 
-                if(!treeNodeType.equals(uiTreeNode.getType()))
+                if (!treeNodeType.equals(uiTreeNode.getType())) {
                     continue;
-                
-                for(UIComponent grandkid : child.getChildren()) {
-                    if(!grandkid.isRendered())
+                }
+
+                for (UIComponent grandkid : child.getChildren()) {
+                    if (!grandkid.isRendered()) {
                         continue;
-                    
-                    if(phaseId == PhaseId.APPLY_REQUEST_VALUES)
+                    }
+
+                    if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
                         grandkid.processDecodes(context);
-                    else if(phaseId == PhaseId.PROCESS_VALIDATIONS)
+                    }
+                    else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
                         grandkid.processValidators(context);
-                    else if(phaseId == PhaseId.UPDATE_MODEL_VALUES)
+                    }
+                    else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
                         grandkid.processUpdates(context);
-                    else
+                    }
+                    else {
                         throw new IllegalArgumentException();
+                    }
                 }
             }
         }
@@ -382,72 +363,75 @@ public class Tree extends TreeBase implements org.primefaces.component.api.Widge
 
     @Override
     protected void validateSelection(FacesContext context) {
-        String selectionMode = this.getSelectionMode();
+        String selectionMode = getSelectionMode();
 
-        if(selectionMode != null && this.isRequired()) {
-            Object selection = this.getLocalSelectedNodes();
+        if (selectionMode != null && isRequired()) {
+            Object selection = getLocalSelectedNodes();
             boolean isValueBlank = (selectionMode.equalsIgnoreCase("single")) ? (selection == null) : (((TreeNode[]) selection).length == 0);
-            
-            if(isValueBlank) {
+
+            if (isValueBlank) {
                 super.updateSelection(context);
             }
         }
- 
+
         super.validateSelection(context);
     }
 
     public TreeNode createCopyOfTreeNode(TreeNode node) {
         TreeNode newNode;
-        if(node instanceof CheckboxTreeNode) {
+        if (node instanceof CheckboxTreeNode) {
             newNode = new CheckboxTreeNode(node.getData());
         }
         else {
             newNode = new DefaultTreeNode(node.getData());
         }
-        
+
         newNode.setSelectable(node.isSelectable());
         newNode.setExpanded(node.isExpanded());
-        
-        for(TreeNode childNode : node.getChildren()) {
+
+        for (TreeNode childNode : node.getChildren()) {
             newNode.getChildren().add(createCopyOfTreeNode(childNode));
         }
-        
+
         return newNode;
     }
 
     private boolean retValOnDrop = true;
 
     public boolean isTreeNodeDropped() {
-        MethodExpression me = this.getOnDrop();
-        if(me != null) {
+        MethodExpression me = getOnDrop();
+        if (me != null) {
             FacesContext context = getFacesContext();
-            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-            String clientId = this.getClientId(context);
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+            String clientId = getClientId(context);
             int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
             boolean isDroppedNodeCopy = Boolean.valueOf(params.get(clientId + "_isDroppedNodeCopy"));
             TreeDragDropInfo info;
 
-            if(this.isMultipleDrag()) 
-                info = new TreeDragDropInfo(this, this.getDragNodes(), this.getDropNode(), dndIndex, isDroppedNodeCopy);
-            else
-                info = new TreeDragDropInfo(this, this.getDragNode(), this.getDropNode(), dndIndex, isDroppedNodeCopy);
+            if (isMultipleDrag()) {
+                info = new TreeDragDropInfo(this, getDragNodes(), getDropNode(), dndIndex, isDroppedNodeCopy);
+            }
+            else {
+                info = new TreeDragDropInfo(this, getDragNode(), getDropNode(), dndIndex, isDroppedNodeCopy);
+            }
 
-            retValOnDrop = (Boolean) me.invoke(context.getELContext(), new Object[] { info });
+            retValOnDrop = (Boolean) me.invoke(context.getELContext(), new Object[]{info});
             PrimeFaces.current().ajax().addCallbackParam("access", retValOnDrop);
         }
 
         return retValOnDrop;
     }
-    
+
     public String getScrollState() {
-        Map<String,String> params = getFacesContext().getExternalContext().getRequestParameterMap();
-        String name = this.getClientId() + "_scrollState";
+        Map<String, String> params = getFacesContext().getExternalContext().getRequestParameterMap();
+        String name = getClientId() + "_scrollState";
         String value = params.get(name);
-        
+
         return value == null ? "0,0" : value;
     }
 
-    private List<String> filteredRowKeys = new ArrayList<String>();
+    private List<String> filteredRowKeys = new ArrayList<>();
+
     public List<String> getFilteredRowKeys() {
         return filteredRowKeys;
     }

@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,44 +15,35 @@
  */
 package org.primefaces.component.chips;
 
-import javax.faces.component.html.HtmlInputText;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Collection;
 import java.util.Collections;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.UnselectEvent;
+import java.util.Map;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+import javax.faces.component.behavior.Behavior;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
-import javax.faces.convert.Converter;
-import javax.faces.component.behavior.Behavior;
+
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class Chips extends ChipsBase implements org.primefaces.component.api.Widget,org.primefaces.component.api.InputHolder,org.primefaces.component.api.MixedClientBehaviorHolder {
+public class Chips extends ChipsBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.InputHolder, org.primefaces.component.api.MixedClientBehaviorHolder {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Chips";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select", "itemSelect", "itemUnselect"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "itemSelect", "itemUnselect"));
     private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("itemSelect", "itemUnselect"));
 
     public final static String STYLE_CLASS = "ui-chips ui-widget";
@@ -62,22 +53,26 @@ public class Chips extends ChipsBase implements org.primefaces.component.api.Wid
     public final static String TOKEN_CLOSE_ICON_CLASS = "ui-chips-token-icon ui-icon ui-icon-close";
     public final static String TOKEN_INPUT_CLASS = "ui-chips-input-token";
 
+    @Override
     public String getInputClientId() {
-        return this.getClientId(getFacesContext()) + "_input";
+        return getClientId(getFacesContext()) + "_input";
     }
 
+    @Override
     public String getValidatableInputClientId() {
-        return this.getInputClientId();
+        return getInputClientId();
     }
 
+    @Override
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
     }
 
+    @Override
     public String getLabelledBy() {
         return (String) getStateHelper().get("labelledby");
     }
-	
+
     @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
@@ -91,20 +86,20 @@ public class Chips extends ChipsBase implements org.primefaces.component.api.Wid
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-        if(eventName != null && event instanceof AjaxBehaviorEvent) {
+        if (eventName != null && event instanceof AjaxBehaviorEvent) {
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
 
-            if(eventName.equals("itemSelect")) {
-                Object selectedItemValue = convertValue(context, params.get(this.getClientId(context) + "_itemSelect"));
+            if (eventName.equals("itemSelect")) {
+                Object selectedItemValue = convertValue(context, params.get(getClientId(context) + "_itemSelect"));
                 SelectEvent selectEvent = new SelectEvent(this, (Behavior) ajaxBehaviorEvent.getBehavior(), selectedItemValue);
                 selectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(selectEvent);
             }
-            else if(eventName.equals("itemUnselect")) {
-                Object unselectedItemValue = convertValue(context, params.get(this.getClientId(context) + "_itemUnselect"));
+            else if (eventName.equals("itemUnselect")) {
+                Object unselectedItemValue = convertValue(context, params.get(getClientId(context) + "_itemUnselect"));
                 UnselectEvent unselectEvent = new UnselectEvent(this, (Behavior) ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
                 unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(unselectEvent);
@@ -119,13 +114,15 @@ public class Chips extends ChipsBase implements org.primefaces.component.api.Wid
             super.queueEvent(event);
         }
     }
-	
-	private Object convertValue(FacesContext context, String submittedItemValue) {
+
+    private Object convertValue(FacesContext context, String submittedItemValue) {
         Converter converter = ComponentUtils.getConverter(context, this);
 
-        if(converter == null)
+        if (converter == null) {
             return submittedItemValue;
-        else 
+        }
+        else {
             return converter.getAsObject(context, this, submittedItemValue);
+        }
     }
 }

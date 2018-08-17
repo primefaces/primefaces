@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,33 +15,19 @@
  */
 package org.primefaces.component.cache;
 
-import javax.faces.component.UIPanel;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
 import javax.faces.component.visit.VisitContext;
+import javax.faces.context.FacesContext;
 
-@ResourceDependencies({
 
-})
 public class UICache extends UICacheBase {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Cache";
 
     private boolean cacheSetInCurrentRequest = false;
 
     public boolean isCacheSetInCurrentRequest() {
-        return this.cacheSetInCurrentRequest;
+        return cacheSetInCurrentRequest;
     }
 
     public void setCacheSetInCurrentRequest(boolean cacheSetInCurrentRequest) {
@@ -50,30 +36,30 @@ public class UICache extends UICacheBase {
 
     @Override
     protected boolean isVisitable(VisitContext visitContext) {
-        return this.isDisabled() || this.isCacheSetInCurrentRequest();
+        return isDisabled() || isCacheSetInCurrentRequest();
     }
 
     protected boolean shouldProcess() {
-        return this.isDisabled() || this.isCacheSetInCurrentRequest() || this.isProcessEvents();
+        return isDisabled() || isCacheSetInCurrentRequest() || isProcessEvents();
     }
 
     @Override
     public void processDecodes(FacesContext context) {
-        if(shouldProcess()) {
+        if (shouldProcess()) {
             super.processDecodes(context);
         }
     }
 
     @Override
     public void processValidators(FacesContext context) {
-        if(shouldProcess()) {
+        if (shouldProcess()) {
             super.processValidators(context);
         }
     }
 
     @Override
     public void processUpdates(FacesContext context) {
-        if(shouldProcess()) {
+        if (shouldProcess()) {
             super.processUpdates(context);
         }
     }

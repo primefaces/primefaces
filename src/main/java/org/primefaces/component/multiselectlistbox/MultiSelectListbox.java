@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,38 +15,26 @@
  */
 package org.primefaces.component.multiselectlistbox;
 
-import javax.faces.component.UISelectOne;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Arrays;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.event.BehaviorEvent;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class MultiSelectListbox extends MultiSelectListboxBase implements org.primefaces.component.api.Widget,javax.faces.component.behavior.ClientBehaviorHolder,org.primefaces.component.api.PrimeClientBehaviorHolder {
+public class MultiSelectListbox extends MultiSelectListboxBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
 
 
-        
+    public static final String COMPONENT_TYPE = "org.primefaces.component.MultiSelectListbox";
+
     public static String CONTAINER_CLASS = "ui-multiselectlistbox ui-widget ui-helper-clearfix";
     public static String LIST_CONTAINER_CLASS = "ui-multiselectlistbox-listcontainer";
     public static String LIST_HEADER_CLASS = "ui-multiselectlistbox-header ui-widget-header ui-corner-top";
@@ -63,7 +51,7 @@ public class MultiSelectListbox extends MultiSelectListboxBase implements org.pr
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-         return BEHAVIOR_EVENT_MAPPING;
+        return BEHAVIOR_EVENT_MAPPING;
     }
 
     @Override

@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,103 +16,92 @@
 package org.primefaces.component.multiselectlistbox;
 
 import javax.faces.component.UISelectOne;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
+
 import org.primefaces.util.ComponentUtils;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.HashMap;
-import javax.faces.event.BehaviorEvent;
 
 
-public abstract class MultiSelectListboxBase extends UISelectOne implements org.primefaces.component.api.Widget,javax.faces.component.behavior.ClientBehaviorHolder,org.primefaces.component.api.PrimeClientBehaviorHolder {
+abstract class MultiSelectListboxBase extends UISelectOne implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.MultiSelectListbox";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.MultiSelectListboxRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.MultiSelectListboxRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		widgetVar
-		,style
-		,styleClass
-		,disabled
-		,effect
-		,showHeaders
-		,header;
-	}
+        widgetVar,
+        style,
+        styleClass,
+        disabled,
+        effect,
+        showHeaders,
+        header;
+    }
 
-	public MultiSelectListboxBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public MultiSelectListboxBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getWidgetVar() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-	}
-	public void setWidgetVar(java.lang.String _widgetVar) {
-		getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
-	}
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
 
-	public java.lang.String getStyle() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
-	}
-	public void setStyle(java.lang.String _style) {
-		getStateHelper().put(PropertyKeys.style, _style);
-	}
+    public void setWidgetVar(java.lang.String _widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    }
 
-	public java.lang.String getStyleClass() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
-	}
-	public void setStyleClass(java.lang.String _styleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, _styleClass);
-	}
+    public java.lang.String getStyle() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+    }
 
-	public boolean isDisabled() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-	}
-	public void setDisabled(boolean _disabled) {
-		getStateHelper().put(PropertyKeys.disabled, _disabled);
-	}
+    public void setStyle(java.lang.String _style) {
+        getStateHelper().put(PropertyKeys.style, _style);
+    }
 
-	public java.lang.String getEffect() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, null);
-	}
-	public void setEffect(java.lang.String _effect) {
-		getStateHelper().put(PropertyKeys.effect, _effect);
-	}
+    public java.lang.String getStyleClass() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
 
-	public boolean isShowHeaders() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showHeaders, false);
-	}
-	public void setShowHeaders(boolean _showHeaders) {
-		getStateHelper().put(PropertyKeys.showHeaders, _showHeaders);
-	}
+    public void setStyleClass(java.lang.String _styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    }
 
-	public java.lang.String getHeader() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.header, null);
-	}
-	public void setHeader(java.lang.String _header) {
-		getStateHelper().put(PropertyKeys.header, _header);
-	}
+    public boolean isDisabled() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+    }
 
-	public String resolveWidgetVar() {
-		return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-	}
+    public void setDisabled(boolean _disabled) {
+        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    }
+
+    public java.lang.String getEffect() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, null);
+    }
+
+    public void setEffect(java.lang.String _effect) {
+        getStateHelper().put(PropertyKeys.effect, _effect);
+    }
+
+    public boolean isShowHeaders() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showHeaders, false);
+    }
+
+    public void setShowHeaders(boolean _showHeaders) {
+        getStateHelper().put(PropertyKeys.showHeaders, _showHeaders);
+    }
+
+    public java.lang.String getHeader() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.header, null);
+    }
+
+    public void setHeader(java.lang.String _header) {
+        getStateHelper().put(PropertyKeys.header, _header);
+    }
+
+    public String resolveWidgetVar() {
+        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    }
 }

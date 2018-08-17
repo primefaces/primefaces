@@ -21,6 +21,7 @@ import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.celleditor.CellEditor;
 
 public interface UIColumn {
@@ -110,8 +111,8 @@ public interface UIColumn {
     public MethodExpression getExportFunction();
 
     public boolean isGroupRow();
-    
+
     public String getExportHeaderValue();
-    
+
     public String getExportFooterValue();
 }

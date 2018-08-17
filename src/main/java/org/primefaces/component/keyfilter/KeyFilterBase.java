@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,109 +16,108 @@
 package org.primefaces.component.keyfilter;
 
 import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
+
 import org.primefaces.util.ComponentUtils;
 
 
-public abstract class KeyFilterBase extends UIComponentBase implements org.primefaces.component.api.Widget {
+abstract class KeyFilterBase extends UIComponentBase implements org.primefaces.component.api.Widget {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.KeyFilter";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.KeyFilterRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.KeyFilterRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		widgetVar
-		,forValue("for")
-		,regEx
-		,inputRegEx
-		,mask
-		,testFunction
-		,preventPaste;
+        widgetVar,
+        forValue("for"),
+        regEx,
+        inputRegEx,
+        mask,
+        testFunction,
+        preventPaste;
 
-		String toString;
+        String toString;
 
-		PropertyKeys(String toString) {
-			this.toString = toString;
-		}
+        PropertyKeys(String toString) {
+            this.toString = toString;
+        }
 
-		PropertyKeys() {}
+        PropertyKeys() {
+        }
 
-		public String toString() {
-			return ((this.toString != null) ? this.toString : super.toString());
-}
-	}
+        @Override
+        public String toString() {
+            return ((toString != null) ? toString : super.toString());
+        }
+    }
 
-	public KeyFilterBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public KeyFilterBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getWidgetVar() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-	}
-	public void setWidgetVar(java.lang.String _widgetVar) {
-		getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
-	}
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
 
-	public java.lang.String getFor() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
-	}
-	public void setFor(java.lang.String _for) {
-		getStateHelper().put(PropertyKeys.forValue, _for);
-	}
+    public void setWidgetVar(java.lang.String _widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    }
 
-	public java.lang.String getRegEx() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.regEx, null);
-	}
-	public void setRegEx(java.lang.String _regEx) {
-		getStateHelper().put(PropertyKeys.regEx, _regEx);
-	}
+    public java.lang.String getFor() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
+    }
 
-	public java.lang.String getInputRegEx() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.inputRegEx, null);
-	}
-	public void setInputRegEx(java.lang.String _inputRegEx) {
-		getStateHelper().put(PropertyKeys.inputRegEx, _inputRegEx);
-	}
+    public void setFor(java.lang.String _for) {
+        getStateHelper().put(PropertyKeys.forValue, _for);
+    }
 
-	public java.lang.String getMask() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.mask, null);
-	}
-	public void setMask(java.lang.String _mask) {
-		getStateHelper().put(PropertyKeys.mask, _mask);
-	}
+    public java.lang.String getRegEx() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.regEx, null);
+    }
 
-	public java.lang.String getTestFunction() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.testFunction, null);
-	}
-	public void setTestFunction(java.lang.String _testFunction) {
-		getStateHelper().put(PropertyKeys.testFunction, _testFunction);
-	}
+    public void setRegEx(java.lang.String _regEx) {
+        getStateHelper().put(PropertyKeys.regEx, _regEx);
+    }
 
-	public boolean isPreventPaste() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.preventPaste, true);
-	}
-	public void setPreventPaste(boolean _preventPaste) {
-		getStateHelper().put(PropertyKeys.preventPaste, _preventPaste);
-	}
+    public java.lang.String getInputRegEx() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.inputRegEx, null);
+    }
 
-	public String resolveWidgetVar() {
-		return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-	}
+    public void setInputRegEx(java.lang.String _inputRegEx) {
+        getStateHelper().put(PropertyKeys.inputRegEx, _inputRegEx);
+    }
+
+    public java.lang.String getMask() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.mask, null);
+    }
+
+    public void setMask(java.lang.String _mask) {
+        getStateHelper().put(PropertyKeys.mask, _mask);
+    }
+
+    public java.lang.String getTestFunction() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.testFunction, null);
+    }
+
+    public void setTestFunction(java.lang.String _testFunction) {
+        getStateHelper().put(PropertyKeys.testFunction, _testFunction);
+    }
+
+    public boolean isPreventPaste() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.preventPaste, true);
+    }
+
+    public void setPreventPaste(boolean _preventPaste) {
+        getStateHelper().put(PropertyKeys.preventPaste, _preventPaste);
+    }
+
+    @Override
+    public String resolveWidgetVar() {
+        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    }
 }

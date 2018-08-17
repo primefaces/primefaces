@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,28 +15,16 @@
  */
 package org.primefaces.component.rowtoggler;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
 import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
+import javax.faces.context.FacesContext;
+
 import org.primefaces.component.datatable.DataTable;
 
-@ResourceDependencies({
 
-})
 public class RowToggler extends RowTogglerBase {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.RowToggler";
 
     public final static String COLLAPSED_ICON = "ui-icon ui-icon-circle-triangle-e";
     public final static String EXPANDED_ICON = "ui-icon ui-icon-circle-triangle-s";
@@ -46,11 +34,11 @@ public class RowToggler extends RowTogglerBase {
     private DataTable parentTable = null;
 
     public DataTable getParentTable(FacesContext context) {
-        if(parentTable == null) {
-            UIComponent parent = this.getParent();
+        if (parentTable == null) {
+            UIComponent parent = getParent();
 
-            while(parent != null) {
-                if(parent instanceof DataTable) {
+            while (parent != null) {
+                if (parent instanceof DataTable) {
                     parentTable = (DataTable) parent;
                     break;
                 }

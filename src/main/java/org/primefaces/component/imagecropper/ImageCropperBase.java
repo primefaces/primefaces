@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,137 +16,139 @@
 package org.primefaces.component.imagecropper;
 
 import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
+
 import org.primefaces.util.ComponentUtils;
 
 
-public abstract class ImageCropperBase extends UIInput implements org.primefaces.component.api.Widget {
+abstract class ImageCropperBase extends UIInput implements org.primefaces.component.api.Widget {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.ImageCropper";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.ImageCropperRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.ImageCropperRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		widgetVar
-		,image
-		,alt
-		,aspectRatio
-		,minSize
-		,maxSize
-		,backgroundColor
-		,backgroundOpacity
-		,initialCoords
-		,boxWidth
-		,boxHeight
-		,sizeLimit;
-	}
+        widgetVar,
+        image,
+        alt,
+        aspectRatio,
+        minSize,
+        maxSize,
+        backgroundColor,
+        backgroundOpacity,
+        initialCoords,
+        boxWidth,
+        boxHeight,
+        sizeLimit
+    }
 
-	public ImageCropperBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public ImageCropperBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getWidgetVar() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-	}
-	public void setWidgetVar(java.lang.String _widgetVar) {
-		getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
-	}
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
 
-	public java.lang.String getImage() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.image, null);
-	}
-	public void setImage(java.lang.String _image) {
-		getStateHelper().put(PropertyKeys.image, _image);
-	}
+    public void setWidgetVar(java.lang.String _widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    }
 
-	public java.lang.String getAlt() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.alt, null);
-	}
-	public void setAlt(java.lang.String _alt) {
-		getStateHelper().put(PropertyKeys.alt, _alt);
-	}
+    public java.lang.String getImage() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.image, null);
+    }
 
-	public double getAspectRatio() {
-		return (java.lang.Double) getStateHelper().eval(PropertyKeys.aspectRatio, java.lang.Double.MIN_VALUE);
-	}
-	public void setAspectRatio(double _aspectRatio) {
-		getStateHelper().put(PropertyKeys.aspectRatio, _aspectRatio);
-	}
+    public void setImage(java.lang.String _image) {
+        getStateHelper().put(PropertyKeys.image, _image);
+    }
 
-	public java.lang.String getMinSize() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.minSize, null);
-	}
-	public void setMinSize(java.lang.String _minSize) {
-		getStateHelper().put(PropertyKeys.minSize, _minSize);
-	}
+    public java.lang.String getAlt() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.alt, null);
+    }
 
-	public java.lang.String getMaxSize() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.maxSize, null);
-	}
-	public void setMaxSize(java.lang.String _maxSize) {
-		getStateHelper().put(PropertyKeys.maxSize, _maxSize);
-	}
+    public void setAlt(java.lang.String _alt) {
+        getStateHelper().put(PropertyKeys.alt, _alt);
+    }
 
-	public java.lang.String getBackgroundColor() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.backgroundColor, null);
-	}
-	public void setBackgroundColor(java.lang.String _backgroundColor) {
-		getStateHelper().put(PropertyKeys.backgroundColor, _backgroundColor);
-	}
+    public double getAspectRatio() {
+        return (java.lang.Double) getStateHelper().eval(PropertyKeys.aspectRatio, java.lang.Double.MIN_VALUE);
+    }
 
-	public double getBackgroundOpacity() {
-		return (java.lang.Double) getStateHelper().eval(PropertyKeys.backgroundOpacity, 0.6);
-	}
-	public void setBackgroundOpacity(double _backgroundOpacity) {
-		getStateHelper().put(PropertyKeys.backgroundOpacity, _backgroundOpacity);
-	}
+    public void setAspectRatio(double _aspectRatio) {
+        getStateHelper().put(PropertyKeys.aspectRatio, _aspectRatio);
+    }
 
-	public java.lang.String getInitialCoords() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.initialCoords, null);
-	}
-	public void setInitialCoords(java.lang.String _initialCoords) {
-		getStateHelper().put(PropertyKeys.initialCoords, _initialCoords);
-	}
+    public java.lang.String getMinSize() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.minSize, null);
+    }
 
-	public int getBoxWidth() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.boxWidth, 0);
-	}
-	public void setBoxWidth(int _boxWidth) {
-		getStateHelper().put(PropertyKeys.boxWidth, _boxWidth);
-	}
+    public void setMinSize(java.lang.String _minSize) {
+        getStateHelper().put(PropertyKeys.minSize, _minSize);
+    }
 
-	public int getBoxHeight() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.boxHeight, 0);
-	}
-	public void setBoxHeight(int _boxHeight) {
-		getStateHelper().put(PropertyKeys.boxHeight, _boxHeight);
-	}
+    public java.lang.String getMaxSize() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.maxSize, null);
+    }
 
-	public java.lang.Long getSizeLimit() {
-		return (java.lang.Long) getStateHelper().eval(PropertyKeys.sizeLimit, 10485760L);
-	}
-	public void setSizeLimit(java.lang.Long _sizeLimit) {
-		getStateHelper().put(PropertyKeys.sizeLimit, _sizeLimit);
-	}
+    public void setMaxSize(java.lang.String _maxSize) {
+        getStateHelper().put(PropertyKeys.maxSize, _maxSize);
+    }
 
-	public String resolveWidgetVar() {
-		return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-	}
+    public java.lang.String getBackgroundColor() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.backgroundColor, null);
+    }
+
+    public void setBackgroundColor(java.lang.String _backgroundColor) {
+        getStateHelper().put(PropertyKeys.backgroundColor, _backgroundColor);
+    }
+
+    public double getBackgroundOpacity() {
+        return (java.lang.Double) getStateHelper().eval(PropertyKeys.backgroundOpacity, 0.6);
+    }
+
+    public void setBackgroundOpacity(double _backgroundOpacity) {
+        getStateHelper().put(PropertyKeys.backgroundOpacity, _backgroundOpacity);
+    }
+
+    public java.lang.String getInitialCoords() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.initialCoords, null);
+    }
+
+    public void setInitialCoords(java.lang.String _initialCoords) {
+        getStateHelper().put(PropertyKeys.initialCoords, _initialCoords);
+    }
+
+    public int getBoxWidth() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.boxWidth, 0);
+    }
+
+    public void setBoxWidth(int _boxWidth) {
+        getStateHelper().put(PropertyKeys.boxWidth, _boxWidth);
+    }
+
+    public int getBoxHeight() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.boxHeight, 0);
+    }
+
+    public void setBoxHeight(int _boxHeight) {
+        getStateHelper().put(PropertyKeys.boxHeight, _boxHeight);
+    }
+
+    public java.lang.Long getSizeLimit() {
+        return (java.lang.Long) getStateHelper().eval(PropertyKeys.sizeLimit, 10485760L);
+    }
+
+    public void setSizeLimit(java.lang.Long _sizeLimit) {
+        getStateHelper().put(PropertyKeys.sizeLimit, _sizeLimit);
+    }
+
+    @Override
+    public String resolveWidgetVar() {
+        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    }
 }

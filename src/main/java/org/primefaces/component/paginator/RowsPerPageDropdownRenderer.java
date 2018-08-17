@@ -21,6 +21,7 @@ import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIData;
 import org.primefaces.util.MessageFactory;
@@ -82,7 +83,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
                 }
                 else {
                     optionText = option.trim();
-                    rows = Integer.parseInt(optionText);  
+                    rows = Integer.parseInt(optionText);
                 }
 
                 writer.startElement("option", null);

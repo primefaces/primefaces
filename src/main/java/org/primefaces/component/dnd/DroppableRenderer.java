@@ -16,7 +16,6 @@
 package org.primefaces.component.dnd;
 
 import java.io.IOException;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
@@ -38,7 +37,7 @@ public class DroppableRenderer extends CoreRenderer {
         String clientId = droppable.getClientId(context);
 
         renderDummyMarkup(context, component, clientId);
-        
+
         UIComponent target = SearchExpressionFacade.resolveComponent(
                 context, droppable, droppable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
 

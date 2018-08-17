@@ -16,24 +16,20 @@
 package org.primefaces.component.messages;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.renderkit.UINotificationRenderer;
 
 public class MessagesRenderer extends UINotificationRenderer {
-    
+
     private final static Logger logger = Logger.getLogger(MessagesRenderer.class.getName());
 
     @Override
@@ -41,7 +37,7 @@ public class MessagesRenderer extends UINotificationRenderer {
         Messages uiMessages = (Messages) component;
         ResponseWriter writer = context.getResponseWriter();
         String clientId = uiMessages.getClientId(context);
-        Map<String, List<FacesMessage>> messagesMap = new HashMap<String, List<FacesMessage>>();
+        Map<String, List<FacesMessage>> messagesMap = new HashMap<>();
         boolean globalOnly = uiMessages.isGlobalOnly();
         String containerClass = uiMessages.isShowIcon() ? Messages.CONTAINER_CLASS : Messages.ICONLESS_CONTAINER_CLASS;
         String style = uiMessages.getStyle();
@@ -49,13 +45,13 @@ public class MessagesRenderer extends UINotificationRenderer {
         styleClass = (styleClass == null) ? containerClass : containerClass + " " + styleClass;
 
         String _for = uiMessages.getFor();
-        List<FacesMessage> messages = new ArrayList<FacesMessage>();
+        List<FacesMessage> messages = new ArrayList<>();
         if (!isValueBlank(_for)) {
             String forType = uiMessages.getForType();
             Iterator<FacesMessage> messagesIterator = context.getMessages(_for);
-            
+
             // key case
-            if (forType == null || forType.equals("key")) { 
+            if (forType == null || forType.equals("key")) {
                 while (messagesIterator.hasNext()) {
                     messages.add(messagesIterator.next());
                 }
@@ -138,7 +134,7 @@ public class MessagesRenderer extends UINotificationRenderer {
             List<FacesMessage> severityMessages = messagesMap.get(severity);
 
             if (severityMessages == null) {
-                severityMessages = new ArrayList<FacesMessage>();
+                severityMessages = new ArrayList<>();
                 messagesMap.put(severity, severityMessages);
             }
 

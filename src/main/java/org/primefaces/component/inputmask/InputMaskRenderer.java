@@ -18,7 +18,6 @@ package org.primefaces.component.inputmask;
 import java.io.IOException;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -68,8 +67,8 @@ public class InputMaskRenderer extends InputRenderer {
      * 9 - Represents a numeric character (0-9)
      * * - Represents an alphanumeric character (A-Z,a-z,0-9)
      * ? - Makes the following input optional
-     * 
-     * @param context The {@link FacesContext}
+     *
+     * @param context   The {@link FacesContext}
      * @param inputMask The component
      * @return The generated {@link Pattern}
      */
@@ -159,10 +158,18 @@ public class InputMaskRenderer extends InputRenderer {
         renderPassThruAttributes(context, inputMask, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, inputMask, HTML.INPUT_TEXT_EVENTS);
 
-        if (inputMask.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
-        if (inputMask.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
-        if (inputMask.getStyle() != null) writer.writeAttribute("style", inputMask.getStyle(), "style");
-        if (inputMask.isRequired()) writer.writeAttribute("aria-required", "true", null);
+        if (inputMask.isDisabled()) {
+            writer.writeAttribute("disabled", "disabled", "disabled");
+        }
+        if (inputMask.isReadonly()) {
+            writer.writeAttribute("readonly", "readonly", "readonly");
+        }
+        if (inputMask.getStyle() != null) {
+            writer.writeAttribute("style", inputMask.getStyle(), "style");
+        }
+        if (inputMask.isRequired()) {
+            writer.writeAttribute("aria-required", "true", null);
+        }
 
         writer.writeAttribute("class", styleClass, "styleClass");
 

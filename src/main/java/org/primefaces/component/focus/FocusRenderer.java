@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -30,7 +29,7 @@ import org.primefaces.renderkit.CoreRenderer;
 
 public class FocusRenderer extends CoreRenderer {
 
-    private static final Map<String, Integer> SEVERITY_ORDINALS = new HashMap<String, Integer>();
+    private static final Map<String, Integer> SEVERITY_ORDINALS = new HashMap<>();
 
     static {
         SEVERITY_ORDINALS.put("info", FacesMessage.SEVERITY_INFO.getOrdinal());
@@ -99,10 +98,10 @@ public class FocusRenderer extends CoreRenderer {
     protected String findFirstInvalidComponentClientId(FacesContext context, Focus focus) {
         int minSeverityOrdinal = SEVERITY_ORDINALS.get(focus.getMinSeverity());
 
-        for (Iterator<String> iterator = context.getClientIdsWithMessages(); iterator.hasNext();) {
+        for (Iterator<String> iterator = context.getClientIdsWithMessages(); iterator.hasNext(); ) {
             String clientId = iterator.next();
 
-            for (Iterator<FacesMessage> messageIter = context.getMessages(clientId); messageIter.hasNext();) {
+            for (Iterator<FacesMessage> messageIter = context.getMessages(clientId); messageIter.hasNext(); ) {
                 FacesMessage message = messageIter.next();
 
                 if (message.getSeverity().getOrdinal() >= minSeverityOrdinal) {

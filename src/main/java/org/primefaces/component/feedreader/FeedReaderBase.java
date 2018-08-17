@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,62 +16,52 @@
 package org.primefaces.component.feedreader;
 
 import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
 
 
-public abstract class FeedReaderBase extends UIComponentBase {
+abstract class FeedReaderBase extends UIComponentBase {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.FeedReader";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.FeedReaderRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.FeedReaderRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		value
-		,var
-		,size;
-	}
+        value,
+        var,
+        size
+    }
 
-	public FeedReaderBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public FeedReaderBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getValue() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.value, null);
-	}
-	public void setValue(java.lang.String _value) {
-		getStateHelper().put(PropertyKeys.value, _value);
-	}
+    public java.lang.String getValue() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.value, null);
+    }
 
-	public java.lang.String getVar() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
-	}
-	public void setVar(java.lang.String _var) {
-		getStateHelper().put(PropertyKeys.var, _var);
-	}
+    public void setValue(java.lang.String _value) {
+        getStateHelper().put(PropertyKeys.value, _value);
+    }
 
-	public int getSize() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.size, java.lang.Integer.MAX_VALUE);
-	}
-	public void setSize(int _size) {
-		getStateHelper().put(PropertyKeys.size, _size);
-	}
+    public java.lang.String getVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
+    }
+
+    public void setVar(java.lang.String _var) {
+        getStateHelper().put(PropertyKeys.var, _var);
+    }
+
+    public int getSize() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.size, java.lang.Integer.MAX_VALUE);
+    }
+
+    public void setSize(int _size) {
+        getStateHelper().put(PropertyKeys.size, _size);
+    }
 
 }

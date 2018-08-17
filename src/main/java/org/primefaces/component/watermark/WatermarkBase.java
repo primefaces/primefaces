@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,77 +16,72 @@
 package org.primefaces.component.watermark;
 
 import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
+
 import org.primefaces.util.ComponentUtils;
 
 
-public abstract class WatermarkBase extends UIComponentBase implements org.primefaces.component.api.Widget {
+abstract class WatermarkBase extends UIComponentBase implements org.primefaces.component.api.Widget {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.Watermark";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.WatermarkRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.WatermarkRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		widgetVar
-		,value
-		,forValue("for");
+        widgetVar,
+        value,
+        forValue("for");
 
-		String toString;
+        String toString;
 
-		PropertyKeys(String toString) {
-			this.toString = toString;
-		}
+        PropertyKeys(String toString) {
+            this.toString = toString;
+        }
 
-		PropertyKeys() {}
+        PropertyKeys() {
+        }
 
-		public String toString() {
-			return ((this.toString != null) ? this.toString : super.toString());
-}
-	}
+        @Override
+        public String toString() {
+            return ((toString != null) ? toString : super.toString());
+        }
+    }
 
-	public WatermarkBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public WatermarkBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getWidgetVar() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-	}
-	public void setWidgetVar(java.lang.String _widgetVar) {
-		getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
-	}
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
 
-	public java.lang.String getValue() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.value, null);
-	}
-	public void setValue(java.lang.String _value) {
-		getStateHelper().put(PropertyKeys.value, _value);
-	}
+    public void setWidgetVar(java.lang.String _widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    }
 
-	public java.lang.String getFor() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
-	}
-	public void setFor(java.lang.String _for) {
-		getStateHelper().put(PropertyKeys.forValue, _for);
-	}
+    public java.lang.String getValue() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.value, null);
+    }
 
-	public String resolveWidgetVar() {
-		return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-	}
+    public void setValue(java.lang.String _value) {
+        getStateHelper().put(PropertyKeys.value, _value);
+    }
+
+    public java.lang.String getFor() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
+    }
+
+    public void setFor(java.lang.String _for) {
+        getStateHelper().put(PropertyKeys.forValue, _for);
+    }
+
+    @Override
+    public String resolveWidgetVar() {
+        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    }
 }

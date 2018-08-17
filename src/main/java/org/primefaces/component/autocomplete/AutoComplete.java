@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,58 +15,38 @@
  */
 package org.primefaces.component.autocomplete;
 
-import javax.faces.component.html.HtmlInputText;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
+import java.util.*;
 import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.component.calendar.Calendar;
+import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.Behavior;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.FacesEvent;
+
+import org.primefaces.component.column.Column;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.Constants;
-import org.primefaces.component.column.Column;
-import javax.faces.component.UIComponent;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Date;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-import javax.el.ValueExpression;
-import javax.faces.convert.Converter;
-import javax.faces.component.behavior.Behavior;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class AutoComplete extends AutoCompleteBase implements org.primefaces.component.api.Widget,org.primefaces.component.api.InputHolder,org.primefaces.component.api.MixedClientBehaviorHolder {
+public class AutoComplete extends AutoCompleteBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.InputHolder, org.primefaces.component.api.MixedClientBehaviorHolder {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.AutoComplete";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select", "itemSelect", "itemUnselect", "query", "moreText", "clear"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "itemSelect", "itemUnselect", "query", "moreText", "clear"));
     private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("itemSelect", "itemUnselect", "query", "moreText", "clear"));
-    
+
     public final static String STYLE_CLASS = "ui-autocomplete";
     public final static String MULTIPLE_STYLE_CLASS = "ui-autocomplete ui-autocomplete-multiple";
     public final static String INPUT_CLASS = "ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all";
@@ -99,35 +79,35 @@ public class AutoComplete extends AutoCompleteBase implements org.primefaces.com
     }
 
     public boolean isMoreTextRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_moreText");
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_moreText");
     }
 
     public boolean isDynamicLoadRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_dynamicload");
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_dynamicload");
     }
 
     @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
-        Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-        if(eventName != null && event instanceof AjaxBehaviorEvent) {
+        if (eventName != null && event instanceof AjaxBehaviorEvent) {
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
 
-            if(eventName.equals("itemSelect")) {
-                Object selectedItemValue = convertValue(context, params.get(this.getClientId(context) + "_itemSelect"));
+            if (eventName.equals("itemSelect")) {
+                Object selectedItemValue = convertValue(context, params.get(getClientId(context) + "_itemSelect"));
                 SelectEvent selectEvent = new SelectEvent(this, (Behavior) ajaxBehaviorEvent.getBehavior(), selectedItemValue);
                 selectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(selectEvent);
             }
-            else if(eventName.equals("itemUnselect")) {
-                Object unselectedItemValue = convertValue(context, params.get(this.getClientId(context) + "_itemUnselect"));
+            else if (eventName.equals("itemUnselect")) {
+                Object unselectedItemValue = convertValue(context, params.get(getClientId(context) + "_itemUnselect"));
                 UnselectEvent unselectEvent = new UnselectEvent(this, (Behavior) ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
                 unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(unselectEvent);
             }
-            else if(eventName.equals("moreText") || eventName.equals("clear")) {
+            else if (eventName.equals("moreText") || eventName.equals("clear")) {
                 ajaxBehaviorEvent.setPhaseId(event.getPhaseId());
                 super.queueEvent(ajaxBehaviorEvent);
             }
@@ -144,59 +124,68 @@ public class AutoComplete extends AutoCompleteBase implements org.primefaces.com
 
     private List suggestions = null;
 
+    @Override
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
-		super.broadcast(event);
-		
-		FacesContext facesContext = getFacesContext();
-		MethodExpression me = getCompleteMethod();
-		
-		if(me != null && event instanceof org.primefaces.event.AutoCompleteEvent) {
-			suggestions = (List) me.invoke(facesContext.getELContext(), new Object[] {((org.primefaces.event.AutoCompleteEvent) event).getQuery()});
-            
-            if(suggestions == null) {
+        super.broadcast(event);
+
+        FacesContext facesContext = getFacesContext();
+        MethodExpression me = getCompleteMethod();
+
+        if (me != null && event instanceof org.primefaces.event.AutoCompleteEvent) {
+            suggestions = (List) me.invoke(facesContext.getELContext(), new Object[]{((org.primefaces.event.AutoCompleteEvent) event).getQuery()});
+
+            if (suggestions == null) {
                 suggestions = new ArrayList();
             }
 
             facesContext.renderResponse();
-		}
-	}
+        }
+    }
 
     public List<Column> getColums() {
-        List<Column> columns = new ArrayList<Column>();
-        
+        List<Column> columns = new ArrayList<>();
+
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent child = getChildren().get(i);
-            if(child instanceof Column)
+            if (child instanceof Column) {
                 columns.add((Column) child);
+            }
         }
 
         return columns;
     }
 
     public List getSuggestions() {
-        return this.suggestions;
+        return suggestions;
     }
 
     private Object convertValue(FacesContext context, String submittedItemValue) {
         Converter converter = ComponentUtils.getConverter(context, this);
 
-        if(converter == null)
+        if (converter == null) {
             return submittedItemValue;
-        else 
+        }
+        else {
             return converter.getAsObject(context, this, submittedItemValue);
+        }
     }
 
+    @Override
     public String getInputClientId() {
-        return this.getClientId(getFacesContext()) + "_input";
+        return getClientId(getFacesContext()) + "_input";
     }
 
+    @Override
     public String getValidatableInputClientId() {
-        return this.getInputClientId();
+        return getInputClientId();
     }
 
+    @Override
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
     }
+
+    @Override
     public String getLabelledBy() {
         return (String) getStateHelper().get("labelledby");
     }

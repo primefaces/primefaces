@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,40 +16,24 @@
 package org.primefaces.component.subtable;
 
 import javax.faces.component.UIData;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.component.column.Column;
-import org.primefaces.component.columngroup.ColumnGroup;
 
 
-public abstract class SubTableBase extends UIData {
+abstract class SubTableBase extends UIData {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.SubTable";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.SubTableRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.SubTableRenderer";
 
-	public enum PropertyKeys {
-;
-	}
+    public enum PropertyKeys {
+    }
 
-	public SubTableBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public SubTableBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
 }

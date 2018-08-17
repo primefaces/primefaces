@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,85 +16,80 @@
 package org.primefaces.component.linkbutton;
 
 import javax.faces.component.html.HtmlOutcomeTargetLink;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
+
 import org.primefaces.util.ComponentUtils;
-import java.util.List;
-import java.util.Map;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
 
 
-public abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements org.primefaces.component.api.UIOutcomeTarget,org.primefaces.component.api.Widget {
+abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements org.primefaces.component.api.UIOutcomeTarget, org.primefaces.component.api.Widget {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.LinkButton";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.LinkButtonRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.LinkButtonRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		widgetVar
-		,fragment
-		,disableClientWindow
-		,href
-		,escape;
-	}
+        widgetVar,
+        fragment,
+        disableClientWindow,
+        href,
+        escape
+    }
 
-	public LinkButtonBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public LinkButtonBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getWidgetVar() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-	}
-	public void setWidgetVar(java.lang.String _widgetVar) {
-		getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
-	}
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
 
-	public java.lang.String getFragment() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.fragment, null);
-	}
-	public void setFragment(java.lang.String _fragment) {
-		getStateHelper().put(PropertyKeys.fragment, _fragment);
-	}
+    public void setWidgetVar(java.lang.String _widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    }
 
-	public boolean isDisableClientWindow() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
-	}
-	public void setDisableClientWindow(boolean _disableClientWindow) {
-		getStateHelper().put(PropertyKeys.disableClientWindow, _disableClientWindow);
-	}
+    @Override
+    public java.lang.String getFragment() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.fragment, null);
+    }
 
-	public java.lang.String getHref() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.href, null);
-	}
-	public void setHref(java.lang.String _href) {
-		getStateHelper().put(PropertyKeys.href, _href);
-	}
+    public void setFragment(java.lang.String _fragment) {
+        getStateHelper().put(PropertyKeys.fragment, _fragment);
+    }
 
-	public boolean isEscape() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-	}
-	public void setEscape(boolean _escape) {
-		getStateHelper().put(PropertyKeys.escape, _escape);
-	}
+    @Override
+    public boolean isDisableClientWindow() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
+    }
 
-	public String resolveWidgetVar() {
-		return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-	}
+    @Override
+    public void setDisableClientWindow(boolean _disableClientWindow) {
+        getStateHelper().put(PropertyKeys.disableClientWindow, _disableClientWindow);
+    }
+
+    @Override
+    public java.lang.String getHref() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.href, null);
+    }
+
+    public void setHref(java.lang.String _href) {
+        getStateHelper().put(PropertyKeys.href, _href);
+    }
+
+    public boolean isEscape() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+    }
+
+    public void setEscape(boolean _escape) {
+        getStateHelper().put(PropertyKeys.escape, _escape);
+    }
+
+    @Override
+    public String resolveWidgetVar() {
+        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    }
 }

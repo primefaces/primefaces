@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,42 +15,32 @@
  */
 package org.primefaces.component.tagcloud;
 
-import javax.faces.component.UIOutput;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.FacesEvent;
-import java.util.Map;
 import java.util.HashMap;
-import org.primefaces.util.Constants;
+import java.util.Map;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.BehaviorEvent;
+import javax.faces.event.FacesEvent;
+
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.tagcloud.TagCloudItem;
 import org.primefaces.model.tagcloud.TagCloudModel;
-import javax.faces.event.BehaviorEvent;
+import org.primefaces.util.Constants;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class TagCloud extends TagCloudBase implements org.primefaces.component.api.Widget,javax.faces.component.behavior.ClientBehaviorHolder,org.primefaces.component.api.PrimeClientBehaviorHolder {
+public class TagCloud extends TagCloudBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.TagCloud";
 
     public final static String STYLE_CLASS = "ui-tagcloud ui-widget ui-widget-content ui-corner-all";
     private final static String DEFAULT_EVENT = "select";
@@ -63,7 +53,7 @@ public class TagCloud extends TagCloudBase implements org.primefaces.component.a
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-         return BEHAVIOR_EVENT_MAPPING;
+        return BEHAVIOR_EVENT_MAPPING;
     }
 
     @Override
@@ -76,20 +66,21 @@ public class TagCloud extends TagCloudBase implements org.primefaces.component.a
         return DEFAULT_EVENT;
     }
 
+    @Override
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(event instanceof AjaxBehaviorEvent) {
+        if (event instanceof AjaxBehaviorEvent) {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
-            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-            String clientId = this.getClientId(context);
+            String clientId = getClientId(context);
 
-            if(eventName.equals(DEFAULT_EVENT)) {
+            if (eventName.equals(DEFAULT_EVENT)) {
                 int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
-                TagCloudModel model = this.getModel();
-                
-                if(model != null) {
+                TagCloudModel model = getModel();
+
+                if (model != null) {
                     TagCloudItem item = model.getTags().get(itemIndex);
                     SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), item);
                     selectEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -97,7 +88,7 @@ public class TagCloud extends TagCloudBase implements org.primefaces.component.a
                     super.queueEvent(selectEvent);
                 }
             }
-        } 
+        }
         else {
             super.queueEvent(event);
         }

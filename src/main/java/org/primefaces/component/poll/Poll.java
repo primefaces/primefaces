@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,61 +15,57 @@
  */
 package org.primefaces.component.poll;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
 import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
+import javax.el.ValueExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import javax.el.ValueExpression;
+import javax.faces.context.FacesContext;
+
 import org.primefaces.PrimeFaces;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
-	@ResourceDependency(library="primefaces", name="core.js")
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js")
 })
-public class Poll extends PollBase implements org.primefaces.component.api.AjaxSource,org.primefaces.component.api.Widget {
+public class Poll extends PollBase implements org.primefaces.component.api.AjaxSource, org.primefaces.component.api.Widget {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Poll";
 
+    @Override
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
-		super.broadcast(event); //backward compatibility
+        super.broadcast(event); //backward compatibility
 
-		FacesContext facesContext = getFacesContext();
-		MethodExpression me = getListener();
+        FacesContext facesContext = getFacesContext();
+        MethodExpression me = getListener();
 
-		if (me != null) {
-			me.invoke(facesContext.getELContext(), new Object[] {});
-		}
+        if (me != null) {
+            me.invoke(facesContext.getELContext(), new Object[]{});
+        }
 
         ValueExpression expr = getValueExpression(PropertyKeys.stop.toString());
-        if(expr != null) {
-        	Boolean stop = (Boolean) expr.getValue(facesContext.getELContext());
-        	
-        	if (Boolean.TRUE.equals(stop)) {
-        		String widgetVar = resolveWidgetVar();
-        		PrimeFaces.current().executeScript("PF('" + widgetVar + "').stop();");
-        	}
-        }
-	}
+        if (expr != null) {
+            Boolean stop = (Boolean) expr.getValue(facesContext.getELContext());
 
+            if (Boolean.TRUE.equals(stop)) {
+                String widgetVar = resolveWidgetVar();
+                PrimeFaces.current().executeScript("PF('" + widgetVar + "').stop();");
+            }
+        }
+    }
+
+    @Override
     public boolean isPartialSubmitSet() {
-        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (this.getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
     }
-    
+
+    @Override
     public boolean isResetValuesSet() {
-        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (this.getValueExpression(PropertyKeys.resetValues.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (getValueExpression(PropertyKeys.resetValues.toString()) != null);
     }
-    
+
+    @Override
     public boolean isAjaxified() {
         return true;
     }

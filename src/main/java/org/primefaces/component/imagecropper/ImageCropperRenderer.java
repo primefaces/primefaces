@@ -16,11 +16,7 @@
 package org.primefaces.component.imagecropper;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
@@ -28,7 +24,6 @@ import javax.el.ValueExpression;
 import javax.faces.application.Application;
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceHandler;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -38,8 +33,8 @@ import javax.imageio.ImageIO;
 
 import org.primefaces.model.CroppedImage;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.WidgetBuilder;
 import org.primefaces.util.BoundedInputStream;
+import org.primefaces.util.WidgetBuilder;
 
 public class ImageCropperRenderer extends CoreRenderer {
 
@@ -188,7 +183,7 @@ public class ImageCropperRenderer extends CoreRenderer {
             if (cropper.getSizeLimit() != null) {
                 inputStream = new BoundedInputStream(inputStream, cropper.getSizeLimit());
             }
-            
+
             BufferedImage outputImage = ImageIO.read(inputStream);
             inputStream.close();
 
@@ -200,7 +195,7 @@ public class ImageCropperRenderer extends CoreRenderer {
             if (y + h > outputImage.getHeight()) {
                 h = outputImage.getHeight() - y;
             }
-            
+
             BufferedImage cropped = outputImage.getSubimage(x, y, w, h);
             ByteArrayOutputStream croppedOutImage = new ByteArrayOutputStream();
             String format = guessImageFormat(contentType, imagePath);

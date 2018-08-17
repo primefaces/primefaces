@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,46 +15,30 @@
  */
 package org.primefaces.component.orderlist;
 
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
+import java.util.*;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.BehaviorEvent;
+import javax.faces.event.FacesEvent;
+
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
-import org.primefaces.event.ReorderEvent;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.BehaviorEvent;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class OrderList extends OrderListBase implements org.primefaces.component.api.Widget,javax.faces.component.behavior.ClientBehaviorHolder,org.primefaces.component.api.PrimeClientBehaviorHolder {
+public class OrderList extends OrderListBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.OrderList";
 
     public static final String CONTAINER_CLASS = "ui-orderlist ui-grid ui-widget";
     public static final String LIST_CLASS = "ui-widget-content ui-orderlist-list";
@@ -70,8 +54,8 @@ public class OrderList extends OrderListBase implements org.primefaces.component
     public static final String MOVE_TOP_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-n";
     public static final String MOVE_BOTTOM_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-s";
 
-    private Map<String,AjaxBehaviorEvent> customEvents = new HashMap<String,AjaxBehaviorEvent>();
-    
+    private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
+
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("select", SelectEvent.class);
         put("unselect", UnselectEvent.class);
@@ -82,7 +66,7 @@ public class OrderList extends OrderListBase implements org.primefaces.component
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-         return BEHAVIOR_EVENT_MAPPING;
+        return BEHAVIOR_EVENT_MAPPING;
     }
 
     @Override
@@ -90,9 +74,9 @@ public class OrderList extends OrderListBase implements org.primefaces.component
         return EVENT_NAMES;
     }
 
-    private Map<String,AjaxBehaviorEvent> getCustomEvents() {
-        if(customEvents == null) {
-            customEvents = new HashMap<String,AjaxBehaviorEvent>();
+    private Map<String, AjaxBehaviorEvent> getCustomEvents() {
+        if (customEvents == null) {
+            customEvents = new HashMap<>();
         }
 
         return customEvents;
@@ -102,10 +86,10 @@ public class OrderList extends OrderListBase implements org.primefaces.component
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(ComponentUtils.isRequestSource(this, context) && (event instanceof AjaxBehaviorEvent)) {
+        if (ComponentUtils.isRequestSource(this, context) && (event instanceof AjaxBehaviorEvent)) {
             String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             customEvents.put(eventName, (AjaxBehaviorEvent) event);
-        } 
+        }
         else {
             super.queueEvent(event);
         }
@@ -115,31 +99,31 @@ public class OrderList extends OrderListBase implements org.primefaces.component
     public void validate(FacesContext context) {
         super.validate(context);
 
-        if(isValid() && customEvents != null) {
-            for(Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext();) {
+        if (isValid() && customEvents != null) {
+            for (Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext(); ) {
                 String eventName = customEventIter.next();
                 AjaxBehaviorEvent behaviorEvent = customEvents.get(eventName);
-                Map<String,String> params = context.getExternalContext().getRequestParameterMap();
-                String clientId = this.getClientId(context);
-                List<?> list = (List) this.getValue();
+                Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+                String clientId = getClientId(context);
+                List<?> list = (List) getValue();
                 FacesEvent wrapperEvent = null;
 
-                if(eventName.equals("select")) {
+                if (eventName.equals("select")) {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
                     boolean metaKey = Boolean.valueOf(params.get(clientId + "_metaKey"));
                     boolean ctrlKey = Boolean.valueOf(params.get(clientId + "_ctrlKey"));
                     wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), list.get(itemIndex), metaKey, ctrlKey);
                 }
-                else if(eventName.equals("unselect")) {
+                else if (eventName.equals("unselect")) {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
                     wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), list.get(itemIndex));
                 }
-                else if(eventName.equals("reorder")) {
+                else if (eventName.equals("reorder")) {
                     wrapperEvent = behaviorEvent;
                 }
 
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
-                
+
                 super.queueEvent(wrapperEvent);
             }
         }

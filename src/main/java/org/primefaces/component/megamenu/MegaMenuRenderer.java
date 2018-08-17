@@ -20,15 +20,12 @@ import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.separator.UISeparator;
-import org.primefaces.model.menu.MenuColumn;
-import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.MenuItem;
-import org.primefaces.model.menu.Separator;
-import org.primefaces.model.menu.Submenu;
+import org.primefaces.model.menu.*;
 import org.primefaces.util.WidgetBuilder;
 
 public class MegaMenuRenderer extends BaseMenuRenderer {
@@ -191,8 +188,12 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("td", null);
-        if (column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
-        if (column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
+        if (column.getStyle() != null) {
+            writer.writeAttribute("style", column.getStyle(), null);
+        }
+        if (column.getStyleClass() != null) {
+            writer.writeAttribute("class", column.getStyleClass(), null);
+        }
 
         if (column.getElementsCount() > 0) {
             List columnElements = column.getElements();

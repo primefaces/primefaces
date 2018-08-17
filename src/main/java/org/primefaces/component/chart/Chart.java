@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,41 +15,29 @@
  */
 package org.primefaces.component.chart;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
+
 import org.primefaces.event.ItemSelectEvent;
-import javax.faces.event.BehaviorEvent;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="charts/charts.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js"),
-	@ResourceDependency(library="primefaces", name="charts/charts.js")
+        @ResourceDependency(library = "primefaces", name = "charts/charts.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js"),
+        @ResourceDependency(library = "primefaces", name = "charts/charts.js")
 })
-public class Chart extends ChartBase implements org.primefaces.component.api.Widget,javax.faces.component.behavior.ClientBehaviorHolder,org.primefaces.component.api.PrimeClientBehaviorHolder {
+public class Chart extends ChartBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Chart";
 
     private final static String DEFAULT_EVENT = "itemSelect";
 
@@ -61,7 +49,7 @@ public class Chart extends ChartBase implements org.primefaces.component.api.Wid
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-         return BEHAVIOR_EVENT_MAPPING;
+        return BEHAVIOR_EVENT_MAPPING;
     }
 
     @Override
@@ -73,12 +61,12 @@ public class Chart extends ChartBase implements org.primefaces.component.api.Wid
     public String getDefaultEventName() {
         return DEFAULT_EVENT;
     }
-    
+
     @Override
     public void queueEvent(FacesEvent event) {
-        if(event instanceof AjaxBehaviorEvent) {
+        if (event instanceof AjaxBehaviorEvent) {
             BehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
-            Map<String,String> map = getFacesContext().getExternalContext().getRequestParameterMap();
+            Map<String, String> map = getFacesContext().getExternalContext().getRequestParameterMap();
             int itemIndex = Integer.parseInt(map.get("itemIndex"));
             int seriesIndex = Integer.parseInt(map.get("seriesIndex"));
 

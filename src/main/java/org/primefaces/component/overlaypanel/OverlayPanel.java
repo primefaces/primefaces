@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,40 +15,31 @@
  */
 package org.primefaces.component.overlaypanel;
 
-import javax.faces.component.UIPanel;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
+import javax.faces.context.FacesContext;
+
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
 public class OverlayPanel extends OverlayPanelBase implements org.primefaces.component.api.Widget {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.OverlayPanel";
 
     public static final String STYLE_CLASS = "ui-overlaypanel ui-widget ui-widget-content ui-overlay-hidden ui-corner-all ui-shadow";
     public static final String CONTENT_CLASS = "ui-overlaypanel-content";
 
     @Override
     public void processDecodes(FacesContext context) {
-        if(ComponentUtils.isRequestSource(this, context)) {
-            this.decode(context);
+        if (ComponentUtils.isRequestSource(this, context)) {
+            decode(context);
         }
         else {
             super.processDecodes(context);
@@ -57,19 +48,19 @@ public class OverlayPanel extends OverlayPanelBase implements org.primefaces.com
 
     @Override
     public void processValidators(FacesContext context) {
-        if(!ComponentUtils.isRequestSource(this, context)) {
+        if (!ComponentUtils.isRequestSource(this, context)) {
             super.processValidators(context);
         }
     }
 
     @Override
     public void processUpdates(FacesContext context) {
-        if(!ComponentUtils.isRequestSource(this, context)) {
+        if (!ComponentUtils.isRequestSource(this, context)) {
             super.processUpdates(context);
         }
     }
 
     public boolean isContentLoadRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_contentLoad");
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_contentLoad");
     }
 }

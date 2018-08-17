@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,110 +16,103 @@
 package org.primefaces.component.terminal;
 
 import javax.faces.component.UIPanel;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
+
 import org.primefaces.util.ComponentUtils;
-import org.primefaces.model.terminal.TerminalAutoCompleteModel;
-import org.primefaces.model.terminal.TerminalCommand;
-import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
-import java.util.Arrays;
-import java.util.ArrayDeque;
 
 
-public abstract class TerminalBase extends UIPanel implements org.primefaces.component.api.Widget {
+abstract class TerminalBase extends UIPanel implements org.primefaces.component.api.Widget {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.Terminal";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.TerminalRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.TerminalRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		widgetVar
-		,style
-		,styleClass
-		,welcomeMessage
-		,prompt
-		,commandHandler
-		,autoCompleteModel
-		,escape;
-	}
+        widgetVar,
+        style,
+        styleClass,
+        welcomeMessage,
+        prompt,
+        commandHandler,
+        autoCompleteModel,
+        escape
+    }
 
-	public TerminalBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public TerminalBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getWidgetVar() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-	}
-	public void setWidgetVar(java.lang.String _widgetVar) {
-		getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
-	}
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
 
-	public java.lang.String getStyle() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
-	}
-	public void setStyle(java.lang.String _style) {
-		getStateHelper().put(PropertyKeys.style, _style);
-	}
+    public void setWidgetVar(java.lang.String _widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    }
 
-	public java.lang.String getStyleClass() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
-	}
-	public void setStyleClass(java.lang.String _styleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, _styleClass);
-	}
+    public java.lang.String getStyle() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+    }
 
-	public java.lang.String getWelcomeMessage() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.welcomeMessage, null);
-	}
-	public void setWelcomeMessage(java.lang.String _welcomeMessage) {
-		getStateHelper().put(PropertyKeys.welcomeMessage, _welcomeMessage);
-	}
+    public void setStyle(java.lang.String _style) {
+        getStateHelper().put(PropertyKeys.style, _style);
+    }
 
-	public java.lang.String getPrompt() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.prompt, "prime $");
-	}
-	public void setPrompt(java.lang.String _prompt) {
-		getStateHelper().put(PropertyKeys.prompt, _prompt);
-	}
+    public java.lang.String getStyleClass() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
 
-	public javax.el.MethodExpression getCommandHandler() {
-		return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.commandHandler, null);
-	}
-	public void setCommandHandler(javax.el.MethodExpression _commandHandler) {
-		getStateHelper().put(PropertyKeys.commandHandler, _commandHandler);
-	}
+    public void setStyleClass(java.lang.String _styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    }
 
-	public org.primefaces.model.terminal.TerminalAutoCompleteModel getAutoCompleteModel() {
-		return (org.primefaces.model.terminal.TerminalAutoCompleteModel) getStateHelper().eval(PropertyKeys.autoCompleteModel, null);
-	}
-	public void setAutoCompleteModel(org.primefaces.model.terminal.TerminalAutoCompleteModel _autoCompleteModel) {
-		getStateHelper().put(PropertyKeys.autoCompleteModel, _autoCompleteModel);
-	}
+    public java.lang.String getWelcomeMessage() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.welcomeMessage, null);
+    }
 
-	public boolean isEscape() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-	}
-	public void setEscape(boolean _escape) {
-		getStateHelper().put(PropertyKeys.escape, _escape);
-	}
+    public void setWelcomeMessage(java.lang.String _welcomeMessage) {
+        getStateHelper().put(PropertyKeys.welcomeMessage, _welcomeMessage);
+    }
 
-	public String resolveWidgetVar() {
-		return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-	}
+    public java.lang.String getPrompt() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.prompt, "prime $");
+    }
+
+    public void setPrompt(java.lang.String _prompt) {
+        getStateHelper().put(PropertyKeys.prompt, _prompt);
+    }
+
+    public javax.el.MethodExpression getCommandHandler() {
+        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.commandHandler, null);
+    }
+
+    public void setCommandHandler(javax.el.MethodExpression _commandHandler) {
+        getStateHelper().put(PropertyKeys.commandHandler, _commandHandler);
+    }
+
+    public org.primefaces.model.terminal.TerminalAutoCompleteModel getAutoCompleteModel() {
+        return (org.primefaces.model.terminal.TerminalAutoCompleteModel) getStateHelper().eval(PropertyKeys.autoCompleteModel, null);
+    }
+
+    public void setAutoCompleteModel(org.primefaces.model.terminal.TerminalAutoCompleteModel _autoCompleteModel) {
+        getStateHelper().put(PropertyKeys.autoCompleteModel, _autoCompleteModel);
+    }
+
+    public boolean isEscape() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+    }
+
+    public void setEscape(boolean _escape) {
+        getStateHelper().put(PropertyKeys.escape, _escape);
+    }
+
+    @Override
+    public String resolveWidgetVar() {
+        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    }
 }

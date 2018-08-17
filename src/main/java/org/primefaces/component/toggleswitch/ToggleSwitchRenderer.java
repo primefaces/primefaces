@@ -19,6 +19,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -104,9 +105,15 @@ public class ToggleSwitchRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
 
-        if (checked) writer.writeAttribute("checked", "checked", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (toggleSwitch.getTabindex() != null) writer.writeAttribute("tabindex", toggleSwitch.getTabindex(), null);
+        if (checked) {
+            writer.writeAttribute("checked", "checked", null);
+        }
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (toggleSwitch.getTabindex() != null) {
+            writer.writeAttribute("tabindex", toggleSwitch.getTabindex(), null);
+        }
 
         if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, toggleSwitch);

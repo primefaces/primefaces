@@ -17,10 +17,10 @@ package org.primefaces.component.datagrid;
 
 import java.io.IOException;
 import javax.faces.FacesException;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -143,7 +143,7 @@ public class DataGridRenderer extends DataRenderer {
 
     protected void encodeGrid(FacesContext context, DataGrid grid) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
         int columns = grid.getColumns();
         int rowIndex = grid.getFirst();
         int rows = grid.getRows();

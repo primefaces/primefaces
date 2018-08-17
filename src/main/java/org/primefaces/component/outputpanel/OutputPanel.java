@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,44 +15,26 @@
  */
 package org.primefaces.component.outputpanel;
 
-import javax.faces.component.UIPanel;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
 import java.util.HashMap;
-import org.primefaces.event.CloseEvent;
-import org.primefaces.event.MoveEvent;
-import org.primefaces.util.Constants;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PhaseId;
-import javax.el.ELContext;
+import java.util.Map;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
 import javax.faces.event.BehaviorEvent;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class OutputPanel extends OutputPanelBase implements org.primefaces.component.api.Widget,javax.faces.component.behavior.ClientBehaviorHolder,org.primefaces.component.api.PrimeClientBehaviorHolder {
+public class OutputPanel extends OutputPanelBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
 
 
-    
+    public static final String COMPONENT_TYPE = "org.primefaces.component.OutputPanel";
+
     public static final String CONTAINER_CLASS = "ui-outputpanel ui-widget";
     public static final String LOADING_CLASS = "ui-outputpanel-loading ui-widget";
 
@@ -66,7 +48,7 @@ public class OutputPanel extends OutputPanelBase implements org.primefaces.compo
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-         return BEHAVIOR_EVENT_MAPPING;
+        return BEHAVIOR_EVENT_MAPPING;
     }
 
     @Override
@@ -80,7 +62,7 @@ public class OutputPanel extends OutputPanelBase implements org.primefaces.compo
     }
 
     public boolean isContentLoadRequest(FacesContext context) {
-        String clientId = this.getClientId(context);
+        String clientId = getClientId(context);
 
         return context.getExternalContext().getRequestParameterMap().containsKey(clientId + "_load");
     }
@@ -88,7 +70,7 @@ public class OutputPanel extends OutputPanelBase implements org.primefaces.compo
     @Override
     public void processDecodes(FacesContext context) {
         if (shouldSkipChildren(context)) {
-            this.decode(context);
+            decode(context);
         }
         else {
             super.processDecodes(context);

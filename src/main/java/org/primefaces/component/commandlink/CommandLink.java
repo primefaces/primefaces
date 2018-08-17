@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,44 +15,34 @@
  */
 package org.primefaces.component.commandlink;
 
-import javax.faces.component.html.HtmlCommandLink;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
+
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.Constants;
-import javax.faces.event.BehaviorEvent;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class CommandLink extends CommandLinkBase implements org.primefaces.component.api.AjaxSource,org.primefaces.component.api.Confirmable,org.primefaces.component.api.PrimeClientBehaviorHolder {
+public class CommandLink extends CommandLinkBase implements org.primefaces.component.api.AjaxSource, org.primefaces.component.api.Confirmable, org.primefaces.component.api.PrimeClientBehaviorHolder {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.CommandLink";
 
     public final static String STYLE_CLASS = "ui-commandlink ui-widget";
     public final static String DISABLED_STYLE_CLASS = "ui-commandlink ui-widget ui-state-disabled";
-    
+
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("click", null);
         put("dialogReturn", SelectEvent.class);
@@ -62,7 +52,7 @@ public class CommandLink extends CommandLinkBase implements org.primefaces.compo
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-         return BEHAVIOR_EVENT_MAPPING;
+        return BEHAVIOR_EVENT_MAPPING;
     }
 
     @Override
@@ -79,50 +69,58 @@ public class CommandLink extends CommandLinkBase implements org.primefaces.compo
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(event instanceof AjaxBehaviorEvent) {
-            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        if (event instanceof AjaxBehaviorEvent) {
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            if(eventName.equals("dialogReturn")) {
+            if (eventName.equals("dialogReturn")) {
                 AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
-                Map<String,Object> session = context.getExternalContext().getSessionMap();
-                String dcid = params.get(this.getClientId(context) + "_pfdlgcid");
+                Map<String, Object> session = context.getExternalContext().getSessionMap();
+                String dcid = params.get(getClientId(context) + "_pfdlgcid");
                 Object selectedValue = session.get(dcid);
                 session.remove(dcid);
-        
+
                 event = new SelectEvent(this, behaviorEvent.getBehavior(), selectedValue);
                 super.queueEvent(event);
             }
-            else if(eventName.equals("click")) {
+            else if (eventName.equals("click")) {
                 super.queueEvent(event);
             }
-        } 
+        }
         else {
             super.queueEvent(event);
         }
     }
 
+    @Override
     public boolean isPartialSubmitSet() {
-        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (this.getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
     }
-    
+
+    @Override
     public boolean isResetValuesSet() {
-        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (this.getValueExpression(PropertyKeys.resetValues.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (getValueExpression(PropertyKeys.resetValues.toString()) != null);
     }
-    
+
+    @Override
     public boolean isAjaxified() {
         return isAjax();
     }
 
     private String confirmationScript;
-    
+
+    @Override
     public String getConfirmationScript() {
-        return this.confirmationScript;
+        return confirmationScript;
     }
+
+    @Override
     public void setConfirmationScript(String confirmationScript) {
         this.confirmationScript = confirmationScript;
     }
+
+    @Override
     public boolean requiresConfirmation() {
-        return this.confirmationScript != null;
+        return confirmationScript != null;
     }
 }

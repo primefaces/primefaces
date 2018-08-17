@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,57 +15,46 @@
  */
 package org.primefaces.component.captcha;
 
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import org.primefaces.util.MessageFactory;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import javax.faces.application.FacesMessage;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import javax.faces.FacesException;
+import javax.faces.application.FacesMessage;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
+
 import org.primefaces.PrimeFaces;
-import org.primefaces.component.captcha.Captcha;
-import org.primefaces.context.PrimeExternalContext;
 import org.primefaces.json.JSONObject;
+import org.primefaces.util.MessageFactory;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js"),
-	@ResourceDependency(library="primefaces", name="captcha/captcha.js")
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js"),
+        @ResourceDependency(library = "primefaces", name = "captcha/captcha.js")
 })
 public class Captcha extends CaptchaBase implements org.primefaces.component.api.Widget {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Captcha";
 
     public final static String PUBLIC_KEY = "primefaces.PUBLIC_CAPTCHA_KEY";
     public final static String PRIVATE_KEY = "primefaces.PRIVATE_CAPTCHA_KEY";
     public final static String INVALID_MESSAGE_ID = "primefaces.captcha.INVALID";
 
     @Override
-	protected void validateValue(FacesContext context, Object value) {
-		super.validateValue(context, value);
+    protected void validateValue(FacesContext context, Object value) {
+        super.validateValue(context, value);
 
-        if(isValid()) {
-            
+        if (isValid()) {
+
             boolean result = false;
-            
+
             try {
                 URL url = new URL("https://www.google.com/recaptcha/api/siteverify");
                 URLConnection conn = url.openConnection();
@@ -87,33 +76,35 @@ public class Captcha extends CaptchaBase implements org.primefaces.component.api
                 while ((inputLine = rd.readLine()) != null) {
                     response.append(inputLine);
                 }
-                
+
                 JSONObject json = new JSONObject(response.toString());
                 result = json.getBoolean("success");
-                
-                rd.close();
-            }catch(Exception exception) {
-                throw new FacesException(exception);
-            } finally {
-            	// the captcha token is valid for only one request, in case of an ajax request we have to get a new one
-	        if(context.getPartialViewContext().isAjaxRequest()) {
-	            PrimeFaces.current().executeScript("if (document.getElementById('g-recaptcha-response')) { try { grecaptcha.reset(); } catch (error) { PrimeFaces.error(error); } }");
-	        }
-	    }
 
-            if(!result) {
+                rd.close();
+            }
+            catch (Exception exception) {
+                throw new FacesException(exception);
+            }
+            finally {
+                // the captcha token is valid for only one request, in case of an ajax request we have to get a new one
+                if (context.getPartialViewContext().isAjaxRequest()) {
+                    PrimeFaces.current().executeScript("if (document.getElementById('g-recaptcha-response')) { try { grecaptcha.reset(); } catch (error) { PrimeFaces.error(error); } }");
+                }
+            }
+
+            if (!result) {
                 setValid(false);
 
                 String validatorMessage = getValidatorMessage();
                 FacesMessage msg = null;
 
-                if(validatorMessage != null) {
+                if (validatorMessage != null) {
                     msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
                 }
                 else {
                     Object[] params = new Object[2];
                     params[0] = MessageFactory.getLabel(context, this);
-                    params[1] = (String)value;
+                    params[1] = (String) value;
 
                     msg = MessageFactory.getMessage(Captcha.INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                 }
@@ -121,23 +112,23 @@ public class Captcha extends CaptchaBase implements org.primefaces.component.api
                 context.addMessage(getClientId(context), msg);
             }
         }
-	}
+    }
 
     private String createPostParameters(FacesContext context, Object value) throws UnsupportedEncodingException {
 
         String privateKey = context.getApplication().evaluateExpressionGet(context, context.getExternalContext().getInitParameter(Captcha.PRIVATE_KEY), String.class);
 
-        if(privateKey == null) {
+        if (privateKey == null) {
             throw new FacesException("Cannot find private key for catpcha, use primefaces.PRIVATE_CAPTCHA_KEY context-param to define one");
         }
 
-		StringBuilder postParams = new StringBuilder();
-		postParams.append("secret=").append(URLEncoder.encode(privateKey, "UTF-8"));
-		postParams.append("&response=").append(value == null ? "" : URLEncoder.encode((String) value, "UTF-8"));
+        StringBuilder postParams = new StringBuilder();
+        postParams.append("secret=").append(URLEncoder.encode(privateKey, "UTF-8"));
+        postParams.append("&response=").append(value == null ? "" : URLEncoder.encode((String) value, "UTF-8"));
 
         String params = postParams.toString();
         postParams.setLength(0);
-        
-		return params;
-	}
+
+        return params;
+    }
 }

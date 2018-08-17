@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,31 +15,20 @@
  */
 package org.primefaces.component.ring;
 
-import org.primefaces.component.api.UIData;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="ring/ring.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js"),
-	@ResourceDependency(library="primefaces", name="ring/ring.js")
+        @ResourceDependency(library = "primefaces", name = "ring/ring.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js"),
+        @ResourceDependency(library = "primefaces", name = "ring/ring.js")
 })
 public class Ring extends RingBase implements org.primefaces.component.api.Widget {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Ring";
 
     public static final String STYLE_CLASS = "ui-ring ui-widget";
 }

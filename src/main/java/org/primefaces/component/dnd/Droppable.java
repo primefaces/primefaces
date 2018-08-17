@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,46 +15,36 @@
  */
 package org.primefaces.component.dnd;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.event.DragDropEvent;
-import javax.el.ValueExpression;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import javax.faces.FacesException;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
-import javax.faces.event.FacesEvent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.FacesException;
-import org.primefaces.util.Constants;
-import org.primefaces.expression.SearchExpressionFacade;
 import javax.faces.event.BehaviorEvent;
+import javax.faces.event.FacesEvent;
+
+import org.primefaces.event.DragDropEvent;
+import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class Droppable extends DroppableBase implements org.primefaces.component.api.Widget,javax.faces.component.behavior.ClientBehaviorHolder,org.primefaces.component.api.PrimeClientBehaviorHolder {
+public class Droppable extends DroppableBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Droppable";
 
     private final static String DEFAULT_EVENT = "drop";
 
@@ -66,7 +56,7 @@ public class Droppable extends DroppableBase implements org.primefaces.component
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-         return BEHAVIOR_EVENT_MAPPING;
+        return BEHAVIOR_EVENT_MAPPING;
     }
 
     @Override
@@ -83,20 +73,20 @@ public class Droppable extends DroppableBase implements org.primefaces.component
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(ComponentUtils.isRequestSource(this, context)) {
-            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        if (ComponentUtils.isRequestSource(this, context)) {
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
             String clientId = getClientId(context);
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if(eventName.equals("drop")) {
+            if (eventName.equals("drop")) {
                 String dragId = params.get(clientId + "_dragId");
                 String dropId = params.get(clientId + "_dropId");
                 DragDropEvent dndEvent = null;
                 String datasourceId = getDatasource();
 
-                if(datasourceId != null) {
+                if (datasourceId != null) {
                     UIData datasource = findDatasource(context, this, datasourceId);
                     String[] idTokens = dragId.split(String.valueOf(UINamingContainer.getSeparatorChar(context)));
                     int rowIndex = Integer.parseInt(idTokens[idTokens.length - 2]);
@@ -112,7 +102,7 @@ public class Droppable extends DroppableBase implements org.primefaces.component
 
                 super.queueEvent(dndEvent);
             }
-            
+
         }
         else {
             super.queueEvent(event);
@@ -121,10 +111,12 @@ public class Droppable extends DroppableBase implements org.primefaces.component
 
     protected UIData findDatasource(FacesContext context, Droppable droppable, String datasourceId) {
         UIComponent datasource = SearchExpressionFacade.resolveComponent(context, droppable, datasourceId);
-        
-        if(datasource == null)
+
+        if (datasource == null) {
             throw new FacesException("Cannot find component \"" + datasourceId + "\" in view.");
-        else
+        }
+        else {
             return (UIData) datasource;
+        }
     }
 }

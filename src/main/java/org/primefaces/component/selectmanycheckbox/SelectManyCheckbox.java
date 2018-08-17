@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,34 +15,24 @@
  */
 package org.primefaces.component.selectmanycheckbox;
 
-import javax.faces.component.html.HtmlSelectManyCheckbox;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
+import java.util.List;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import java.util.List;
-import javax.faces.model.SelectItem;
 import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
 public class SelectManyCheckbox extends SelectManyCheckboxBase implements org.primefaces.component.api.Widget {
 
 
-    
+    public static final String COMPONENT_TYPE = "org.primefaces.component.SelectManyCheckbox";
+
     public final static String STYLE_CLASS = "ui-selectmanycheckbox ui-widget";
 
     private int index = -1;
@@ -55,7 +45,7 @@ public class SelectManyCheckbox extends SelectManyCheckboxBase implements org.pr
 
     private List<SelectItem> selectItems;
 
-    public void setSelectItems(List<SelectItem> selectItems) {  
+    public void setSelectItems(List<SelectItem> selectItems) {
         this.selectItems = selectItems;
     }
 

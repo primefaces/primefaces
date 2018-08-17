@@ -17,7 +17,6 @@ package org.primefaces.component.menu;
 
 import java.io.IOException;
 import java.util.List;
-
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 

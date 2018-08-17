@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,161 +16,168 @@
 package org.primefaces.component.galleria;
 
 import javax.faces.component.UIOutput;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
+
 import org.primefaces.util.ComponentUtils;
 
 
-public abstract class GalleriaBase extends UIOutput implements org.primefaces.component.api.Widget {
+abstract class GalleriaBase extends UIOutput implements org.primefaces.component.api.Widget {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.Galleria";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.GalleriaRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.GalleriaRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		widgetVar
-		,value
-		,var
-		,style
-		,styleClass
-		,effect
-		,effectSpeed
-		,frameWidth
-		,frameHeight
-		,showFilmstrip
-		,autoPlay
-		,transitionInterval
-		,panelWidth
-		,panelHeight
-		,showCaption;
-	}
+        widgetVar,
+        value,
+        var,
+        style,
+        styleClass,
+        effect,
+        effectSpeed,
+        frameWidth,
+        frameHeight,
+        showFilmstrip,
+        autoPlay,
+        transitionInterval,
+        panelWidth,
+        panelHeight,
+        showCaption
+    }
 
-	public GalleriaBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public GalleriaBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getWidgetVar() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-	}
-	public void setWidgetVar(java.lang.String _widgetVar) {
-		getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
-	}
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
 
-	public java.lang.Object getValue() {
-		return (java.lang.Object) getStateHelper().eval(PropertyKeys.value, null);
-	}
-	public void setValue(java.lang.Object _value) {
-		getStateHelper().put(PropertyKeys.value, _value);
-	}
+    public void setWidgetVar(java.lang.String _widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    }
 
-	public java.lang.String getVar() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
-	}
-	public void setVar(java.lang.String _var) {
-		getStateHelper().put(PropertyKeys.var, _var);
-	}
+    @Override
+    public java.lang.Object getValue() {
+        return (java.lang.Object) getStateHelper().eval(PropertyKeys.value, null);
+    }
 
-	public java.lang.String getStyle() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
-	}
-	public void setStyle(java.lang.String _style) {
-		getStateHelper().put(PropertyKeys.style, _style);
-	}
+    @Override
+    public void setValue(java.lang.Object _value) {
+        getStateHelper().put(PropertyKeys.value, _value);
+    }
 
-	public java.lang.String getStyleClass() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
-	}
-	public void setStyleClass(java.lang.String _styleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, _styleClass);
-	}
+    public java.lang.String getVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
+    }
 
-	public java.lang.String getEffect() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, "fade");
-	}
-	public void setEffect(java.lang.String _effect) {
-		getStateHelper().put(PropertyKeys.effect, _effect);
-	}
+    public void setVar(java.lang.String _var) {
+        getStateHelper().put(PropertyKeys.var, _var);
+    }
 
-	public int getEffectSpeed() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.effectSpeed, 500);
-	}
-	public void setEffectSpeed(int _effectSpeed) {
-		getStateHelper().put(PropertyKeys.effectSpeed, _effectSpeed);
-	}
+    public java.lang.String getStyle() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+    }
 
-	public int getFrameWidth() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.frameWidth, 60);
-	}
-	public void setFrameWidth(int _frameWidth) {
-		getStateHelper().put(PropertyKeys.frameWidth, _frameWidth);
-	}
+    public void setStyle(java.lang.String _style) {
+        getStateHelper().put(PropertyKeys.style, _style);
+    }
 
-	public int getFrameHeight() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.frameHeight, 40);
-	}
-	public void setFrameHeight(int _frameHeight) {
-		getStateHelper().put(PropertyKeys.frameHeight, _frameHeight);
-	}
+    public java.lang.String getStyleClass() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
 
-	public boolean isShowFilmstrip() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showFilmstrip, true);
-	}
-	public void setShowFilmstrip(boolean _showFilmstrip) {
-		getStateHelper().put(PropertyKeys.showFilmstrip, _showFilmstrip);
-	}
+    public void setStyleClass(java.lang.String _styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    }
 
-	public boolean isAutoPlay() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoPlay, true);
-	}
-	public void setAutoPlay(boolean _autoPlay) {
-		getStateHelper().put(PropertyKeys.autoPlay, _autoPlay);
-	}
+    public java.lang.String getEffect() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, "fade");
+    }
 
-	public int getTransitionInterval() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.transitionInterval, 4000);
-	}
-	public void setTransitionInterval(int _transitionInterval) {
-		getStateHelper().put(PropertyKeys.transitionInterval, _transitionInterval);
-	}
+    public void setEffect(java.lang.String _effect) {
+        getStateHelper().put(PropertyKeys.effect, _effect);
+    }
 
-	public int getPanelWidth() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.panelWidth, java.lang.Integer.MIN_VALUE);
-	}
-	public void setPanelWidth(int _panelWidth) {
-		getStateHelper().put(PropertyKeys.panelWidth, _panelWidth);
-	}
+    public int getEffectSpeed() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.effectSpeed, 500);
+    }
 
-	public int getPanelHeight() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.panelHeight, java.lang.Integer.MIN_VALUE);
-	}
-	public void setPanelHeight(int _panelHeight) {
-		getStateHelper().put(PropertyKeys.panelHeight, _panelHeight);
-	}
+    public void setEffectSpeed(int _effectSpeed) {
+        getStateHelper().put(PropertyKeys.effectSpeed, _effectSpeed);
+    }
 
-	public boolean isShowCaption() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showCaption, false);
-	}
-	public void setShowCaption(boolean _showCaption) {
-		getStateHelper().put(PropertyKeys.showCaption, _showCaption);
-	}
+    public int getFrameWidth() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.frameWidth, 60);
+    }
 
-	public String resolveWidgetVar() {
-		return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-	}
+    public void setFrameWidth(int _frameWidth) {
+        getStateHelper().put(PropertyKeys.frameWidth, _frameWidth);
+    }
+
+    public int getFrameHeight() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.frameHeight, 40);
+    }
+
+    public void setFrameHeight(int _frameHeight) {
+        getStateHelper().put(PropertyKeys.frameHeight, _frameHeight);
+    }
+
+    public boolean isShowFilmstrip() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showFilmstrip, true);
+    }
+
+    public void setShowFilmstrip(boolean _showFilmstrip) {
+        getStateHelper().put(PropertyKeys.showFilmstrip, _showFilmstrip);
+    }
+
+    public boolean isAutoPlay() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoPlay, true);
+    }
+
+    public void setAutoPlay(boolean _autoPlay) {
+        getStateHelper().put(PropertyKeys.autoPlay, _autoPlay);
+    }
+
+    public int getTransitionInterval() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.transitionInterval, 4000);
+    }
+
+    public void setTransitionInterval(int _transitionInterval) {
+        getStateHelper().put(PropertyKeys.transitionInterval, _transitionInterval);
+    }
+
+    public int getPanelWidth() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.panelWidth, java.lang.Integer.MIN_VALUE);
+    }
+
+    public void setPanelWidth(int _panelWidth) {
+        getStateHelper().put(PropertyKeys.panelWidth, _panelWidth);
+    }
+
+    public int getPanelHeight() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.panelHeight, java.lang.Integer.MIN_VALUE);
+    }
+
+    public void setPanelHeight(int _panelHeight) {
+        getStateHelper().put(PropertyKeys.panelHeight, _panelHeight);
+    }
+
+    public boolean isShowCaption() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showCaption, false);
+    }
+
+    public void setShowCaption(boolean _showCaption) {
+        getStateHelper().put(PropertyKeys.showCaption, _showCaption);
+    }
+
+    @Override
+    public String resolveWidgetVar() {
+        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    }
 }

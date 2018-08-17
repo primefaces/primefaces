@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,80 +15,39 @@
  */
 package org.primefaces.component.timeline;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.logging.Logger;
-import javax.faces.FacesException;
-import javax.faces.component.UIForm;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.UniqueIdVendor;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-import org.primefaces.event.timeline.TimelineAddEvent;
-import org.primefaces.event.timeline.TimelineDragDropEvent;
-import org.primefaces.event.timeline.TimelineLazyLoadEvent;
-import org.primefaces.event.timeline.TimelineModificationEvent;
-import org.primefaces.event.timeline.TimelineRangeEvent;
-import org.primefaces.event.timeline.TimelineSelectEvent;
+
+import org.primefaces.event.timeline.*;
 import org.primefaces.model.timeline.TimelineEvent;
 import org.primefaces.model.timeline.TimelineGroup;
-import org.primefaces.model.timeline.TimelineModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.DateUtils;
 import org.primefaces.visit.UIDataContextCallback;
-import javax.faces.event.BehaviorEvent;
-import org.primefaces.util.ComponentTraversalUtils;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js"),
-	@ResourceDependency(library="primefaces", name="timeline/timeline.css"),
-	@ResourceDependency(library="primefaces", name="timeline/timeline.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js"),
+        @ResourceDependency(library = "primefaces", name = "timeline/timeline.css"),
+        @ResourceDependency(library = "primefaces", name = "timeline/timeline.js")
 })
-public class Timeline extends TimelineBase implements org.primefaces.component.api.Widget,javax.faces.component.behavior.ClientBehaviorHolder,org.primefaces.component.api.PrimeClientBehaviorHolder {
+public class Timeline extends TimelineBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Timeline";
 
     private final static Logger logger = Logger.getLogger(Timeline.class.getName());
-    
+
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("add", TimelineAddEvent.class);
         put("change", TimelineModificationEvent.class);
@@ -103,12 +62,12 @@ public class Timeline extends TimelineBase implements org.primefaces.component.a
     }});
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-    
+
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
-         return BEHAVIOR_EVENT_MAPPING;
+        return BEHAVIOR_EVENT_MAPPING;
     }
-    
+
     @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
@@ -121,7 +80,7 @@ public class Timeline extends TimelineBase implements org.primefaces.component.a
         if (isSelfRequest(context)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-            String clientId = this.getClientId(context);
+            String clientId = getClientId(context);
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
@@ -139,9 +98,10 @@ public class Timeline extends TimelineBase implements org.primefaces.component.a
                 super.queueEvent(te);
 
                 return;
-            } else if ("change".equals(eventName) || "changed".equals(eventName)) {
+            }
+            else if ("change".equals(eventName) || "changed".equals(eventName)) {
                 TimelineEvent clonedEvent = null;
-                TimelineEvent timelineEvent = this.getValue().getEvent(params.get(clientId + "_eventIdx"));
+                TimelineEvent timelineEvent = getValue().getEvent(params.get(clientId + "_eventIdx"));
 
                 if (timelineEvent != null) {
                     clonedEvent = new TimelineEvent();
@@ -162,9 +122,10 @@ public class Timeline extends TimelineBase implements org.primefaces.component.a
                 super.queueEvent(te);
 
                 return;
-            } else if ("edit".equals(eventName) || "delete".equals(eventName)) {
+            }
+            else if ("edit".equals(eventName) || "delete".equals(eventName)) {
                 TimelineEvent clonedEvent = null;
-                TimelineEvent timelineEvent = this.getValue().getEvent(params.get(clientId + "_eventIdx"));
+                TimelineEvent timelineEvent = getValue().getEvent(params.get(clientId + "_eventIdx"));
 
                 if (timelineEvent != null) {
                     clonedEvent = new TimelineEvent();
@@ -181,14 +142,16 @@ public class Timeline extends TimelineBase implements org.primefaces.component.a
                 super.queueEvent(te);
 
                 return;
-            } else if ("select".equals(eventName)) {
-                TimelineEvent timelineEvent = this.getValue().getEvent(params.get(clientId + "_eventIdx"));
+            }
+            else if ("select".equals(eventName)) {
+                TimelineEvent timelineEvent = getValue().getEvent(params.get(clientId + "_eventIdx"));
                 TimelineSelectEvent te = new TimelineSelectEvent(this, behaviorEvent.getBehavior(), timelineEvent);
                 te.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(te);
 
                 return;
-            } else if ("rangechange".equals(eventName) || "rangechanged".equals(eventName)) {
+            }
+            else if ("rangechange".equals(eventName) || "rangechanged".equals(eventName)) {
                 TimeZone targetTZ = ComponentUtils.resolveTimeZone(getTimeZone());
                 TimeZone browserTZ = ComponentUtils.resolveTimeZone(getBrowserTimeZone());
 
@@ -200,7 +163,8 @@ public class Timeline extends TimelineBase implements org.primefaces.component.a
                 super.queueEvent(te);
 
                 return;
-            } else if ("lazyload".equals(eventName)) {
+            }
+            else if ("lazyload".equals(eventName)) {
                 TimeZone targetTZ = ComponentUtils.resolveTimeZone(getTimeZone());
                 TimeZone browserTZ = ComponentUtils.resolveTimeZone(getBrowserTimeZone());
 
@@ -214,7 +178,8 @@ public class Timeline extends TimelineBase implements org.primefaces.component.a
                 super.queueEvent(te);
 
                 return;
-            } else if ("drop".equals(eventName)) {
+            }
+            else if ("drop".equals(eventName)) {
                 Object data = null;
                 final String dragId = params.get(clientId + "_dragId");
                 final String uiDataId = params.get(clientId + "_uiDataId");
@@ -246,7 +211,7 @@ public class Timeline extends TimelineBase implements org.primefaces.component.a
     }
 
     private String getGroup(String groupParam) {
-        List<TimelineGroup> groups = this.getValue().getGroups();
+        List<TimelineGroup> groups = getValue().getGroups();
         if (groups == null || groupParam == null) {
             return groupParam;
         }
@@ -265,12 +230,10 @@ public class Timeline extends TimelineBase implements org.primefaces.component.a
     }
 
     private boolean isSelfRequest(FacesContext context) {
-        return this.getClientId(context)
+        return getClientId(context)
                 .equals(context.getExternalContext().getRequestParameterMap().get(
                         Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
-
-
 
 
 }

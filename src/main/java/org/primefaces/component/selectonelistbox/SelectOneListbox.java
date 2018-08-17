@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,31 +15,19 @@
  */
 package org.primefaces.component.selectonelistbox;
 
-import javax.faces.component.html.HtmlSelectOneListbox;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import javax.faces.component.UINamingContainer;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class SelectOneListbox extends SelectOneListboxBase implements org.primefaces.component.api.Widget,org.primefaces.component.api.InputHolder {
+public class SelectOneListbox extends SelectOneListboxBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.InputHolder {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneListbox";
 
     public static final String CONTAINER_CLASS = "ui-selectonelistbox ui-inputfield ui-widget ui-widget-content ui-corner-all";
     public static final String LIST_CONTAINER_CLASS = "ui-selectlistbox-listcontainer";
@@ -60,13 +48,14 @@ public class SelectOneListbox extends SelectOneListboxBase implements org.primef
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
     }
+
     public String getLabelledBy() {
         return (String) getStateHelper().get("labelledby");
     }
 
     public static String[] DOM_EVENTS = {
-		"onchange",
-		"onclick",
-        "ondblclick"
-	};
+            "onchange",
+            "onclick",
+            "ondblclick"
+    };
 }

@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,60 +16,47 @@
 package org.primefaces.component.selectmanycheckbox;
 
 import javax.faces.component.html.HtmlSelectManyCheckbox;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
+
 import org.primefaces.util.ComponentUtils;
-import java.util.List;
-import javax.faces.model.SelectItem;
-import javax.faces.component.UINamingContainer;
 
 
-public abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox implements org.primefaces.component.api.Widget {
+abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox implements org.primefaces.component.api.Widget {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.SelectManyCheckbox";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.SelectManyCheckboxRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.SelectManyCheckboxRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		widgetVar
-		,columns;
-	}
+        widgetVar,
+        columns;
+    }
 
-	public SelectManyCheckboxBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public SelectManyCheckboxBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getWidgetVar() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-	}
-	public void setWidgetVar(java.lang.String _widgetVar) {
-		getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
-	}
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
 
-	public int getColumns() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.columns, 0);
-	}
-	public void setColumns(int _columns) {
-		getStateHelper().put(PropertyKeys.columns, _columns);
-	}
+    public void setWidgetVar(java.lang.String _widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    }
 
-	public String resolveWidgetVar() {
-		return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-	}
+    public int getColumns() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.columns, 0);
+    }
+
+    public void setColumns(int _columns) {
+        getStateHelper().put(PropertyKeys.columns, _columns);
+    }
+
+    public String resolveWidgetVar() {
+        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    }
 }

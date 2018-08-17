@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,97 +16,94 @@
 package org.primefaces.component.dock;
 
 import org.primefaces.component.menu.AbstractMenu;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
 import org.primefaces.util.ComponentUtils;
 
 
-public abstract class DockBase extends AbstractMenu implements org.primefaces.component.api.Widget {
+abstract class DockBase extends AbstractMenu implements org.primefaces.component.api.Widget {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.Dock";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.DockRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.DockRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		widgetVar
-		,model
-		,position
-		,itemWidth
-		,maxWidth
-		,proximity
-		,halign;
-	}
+        widgetVar,
+        model,
+        position,
+        itemWidth,
+        maxWidth,
+        proximity,
+        halign
+    }
 
-	public DockBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public DockBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getWidgetVar() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-	}
-	public void setWidgetVar(java.lang.String _widgetVar) {
-		getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
-	}
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
 
-	public org.primefaces.model.menu.MenuModel getModel() {
-		return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
-	}
-	public void setModel(org.primefaces.model.menu.MenuModel _model) {
-		getStateHelper().put(PropertyKeys.model, _model);
-	}
+    public void setWidgetVar(java.lang.String _widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    }
 
-	public java.lang.String getPosition() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.position, "bottom");
-	}
-	public void setPosition(java.lang.String _position) {
-		getStateHelper().put(PropertyKeys.position, _position);
-	}
+    @Override
+    public org.primefaces.model.menu.MenuModel getModel() {
+        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
+    }
 
-	public int getItemWidth() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.itemWidth, 40);
-	}
-	public void setItemWidth(int _itemWidth) {
-		getStateHelper().put(PropertyKeys.itemWidth, _itemWidth);
-	}
+    public void setModel(org.primefaces.model.menu.MenuModel _model) {
+        getStateHelper().put(PropertyKeys.model, _model);
+    }
 
-	public int getMaxWidth() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxWidth, 50);
-	}
-	public void setMaxWidth(int _maxWidth) {
-		getStateHelper().put(PropertyKeys.maxWidth, _maxWidth);
-	}
+    public java.lang.String getPosition() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.position, "bottom");
+    }
 
-	public int getProximity() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.proximity, 90);
-	}
-	public void setProximity(int _proximity) {
-		getStateHelper().put(PropertyKeys.proximity, _proximity);
-	}
+    public void setPosition(java.lang.String _position) {
+        getStateHelper().put(PropertyKeys.position, _position);
+    }
 
-	public java.lang.String getHalign() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.halign, "center");
-	}
-	public void setHalign(java.lang.String _halign) {
-		getStateHelper().put(PropertyKeys.halign, _halign);
-	}
+    public int getItemWidth() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.itemWidth, 40);
+    }
 
-	public String resolveWidgetVar() {
-		return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-	}
+    public void setItemWidth(int _itemWidth) {
+        getStateHelper().put(PropertyKeys.itemWidth, _itemWidth);
+    }
+
+    public int getMaxWidth() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxWidth, 50);
+    }
+
+    public void setMaxWidth(int _maxWidth) {
+        getStateHelper().put(PropertyKeys.maxWidth, _maxWidth);
+    }
+
+    public int getProximity() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.proximity, 90);
+    }
+
+    public void setProximity(int _proximity) {
+        getStateHelper().put(PropertyKeys.proximity, _proximity);
+    }
+
+    public java.lang.String getHalign() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.halign, "center");
+    }
+
+    public void setHalign(java.lang.String _halign) {
+        getStateHelper().put(PropertyKeys.halign, _halign);
+    }
+
+    @Override
+    public String resolveWidgetVar() {
+        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    }
 }

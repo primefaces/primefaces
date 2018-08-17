@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,74 +16,66 @@
 package org.primefaces.component.focus;
 
 import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
 
 
-public abstract class FocusBase extends UIComponentBase {
+abstract class FocusBase extends UIComponentBase {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.Focus";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.FocusRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.FocusRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		forValue("for")
-		,context
-		,minSeverity;
+        forValue("for"),
+        context,
+        minSeverity;
 
-		String toString;
+        String toString;
 
-		PropertyKeys(String toString) {
-			this.toString = toString;
-		}
+        PropertyKeys(String toString) {
+            this.toString = toString;
+        }
 
-		PropertyKeys() {}
+        PropertyKeys() {
+        }
 
-		public String toString() {
-			return ((this.toString != null) ? this.toString : super.toString());
-}
-	}
+        @Override
+        public String toString() {
+            return ((toString != null) ? toString : super.toString());
+        }
+    }
 
-	public FocusBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public FocusBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getFor() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
-	}
-	public void setFor(java.lang.String _for) {
-		getStateHelper().put(PropertyKeys.forValue, _for);
-	}
+    public java.lang.String getFor() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
+    }
 
-	public java.lang.String getContext() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.context, null);
-	}
-	public void setContext(java.lang.String _context) {
-		getStateHelper().put(PropertyKeys.context, _context);
-	}
+    public void setFor(java.lang.String _for) {
+        getStateHelper().put(PropertyKeys.forValue, _for);
+    }
 
-	public java.lang.String getMinSeverity() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.minSeverity, "error");
-	}
-	public void setMinSeverity(java.lang.String _minSeverity) {
-		getStateHelper().put(PropertyKeys.minSeverity, _minSeverity);
-	}
+    public java.lang.String getContext() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.context, null);
+    }
+
+    public void setContext(java.lang.String _context) {
+        getStateHelper().put(PropertyKeys.context, _context);
+    }
+
+    public java.lang.String getMinSeverity() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.minSeverity, "error");
+    }
+
+    public void setMinSeverity(java.lang.String _minSeverity) {
+        getStateHelper().put(PropertyKeys.minSeverity, _minSeverity);
+    }
 
 }

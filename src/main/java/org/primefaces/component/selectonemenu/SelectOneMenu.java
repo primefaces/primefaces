@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,52 +15,37 @@
  */
 package org.primefaces.component.selectonemenu;
 
-import javax.faces.component.html.HtmlSelectOneMenu;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
+import java.util.*;
+import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.component.column.Column;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.config.PrimeConfiguration;
-import java.util.Collection;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.component.UIComponent;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.FacesEvent;
+import javax.faces.render.Renderer;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.MessageFactory;
-import org.primefaces.util.Constants;
+
+import org.primefaces.component.column.Column;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.event.SelectEvent;
-import java.util.Map;
-import javax.faces.render.Renderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.MessageFactory;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class SelectOneMenu extends SelectOneMenuBase implements org.primefaces.component.api.Widget,org.primefaces.component.api.InputHolder {
+public class SelectOneMenu extends SelectOneMenuBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.InputHolder {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneMenu";
 
     public final static String STYLE_CLASS = "ui-selectonemenu ui-widget ui-state-default ui-corner-all";
     public final static String LABEL_CLASS = "ui-selectonemenu-label ui-inputfield ui-corner-all";
@@ -76,26 +61,29 @@ public class SelectOneMenu extends SelectOneMenuBase implements org.primefaces.c
     public final static String FILTER_CLASS = "ui-selectonemenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public final static String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("itemSelect","blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("itemSelect", "blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select"));
 
+    @Override
     public Collection<String> getEventNames() {
-        return EVENT_NAMES;    
+        return EVENT_NAMES;
     }
 
     public boolean isDynamicLoadRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_dynamicload");
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_dynamicload");
     }
 
+    @Override
     public String getDefaultEventName() {
-        return "valueChange";    
+        return "valueChange";
     }
 
     public List<Column> getColumns() {
-        List<Column> columns = new ArrayList<Column>();
-        
-        for(UIComponent kid : this.getChildren()) {
-            if(kid instanceof Column)
+        List<Column> columns = new ArrayList<>();
+
+        for (UIComponent kid : getChildren()) {
+            if (kid instanceof Column) {
                 columns.add((Column) kid);
+            }
         }
 
         return columns;
@@ -103,20 +91,20 @@ public class SelectOneMenu extends SelectOneMenuBase implements org.primefaces.c
 
     @Override
     public void queueEvent(FacesEvent event) {
-        if(event instanceof AjaxBehaviorEvent) {
+        if (event instanceof AjaxBehaviorEvent) {
             FacesContext context = getFacesContext();
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
-            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-            
-            if("itemSelect".equals(eventName)) {
+
+            if ("itemSelect".equals(eventName)) {
                 Renderer renderer = ComponentUtils.getUnwrappedRenderer(
-                    context,
-                    "javax.faces.SelectOne",
-                    "javax.faces.Menu",
-                    Renderer.class);
-                
-                Object item = renderer.getConvertedValue(context, this, this.getSubmittedValue());
+                        context,
+                        "javax.faces.SelectOne",
+                        "javax.faces.Menu",
+                        Renderer.class);
+
+                Object item = renderer.getConvertedValue(context, this, getSubmittedValue());
                 SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), item);
                 selectEvent.setPhaseId(event.getPhaseId());
                 super.queueEvent(selectEvent);
@@ -132,17 +120,18 @@ public class SelectOneMenu extends SelectOneMenuBase implements org.primefaces.c
 
     @Override
     protected void validateValue(FacesContext context, Object value) {
-        if(this.isEditable()) {
-            
+        if (isEditable()) {
+
             //required field validation
-            if(isValid() && isRequired() && isEmpty(value)) {
+            if (isValid() && isRequired() && isEmpty(value)) {
                 String requiredMessageStr = getRequiredMessage();
                 FacesMessage message;
-                if(null != requiredMessageStr) {
+                if (null != requiredMessageStr) {
                     message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                                               requiredMessageStr,
-                                               requiredMessageStr);
-                } else {                    
+                            requiredMessageStr,
+                            requiredMessageStr);
+                }
+                else {
                     message = MessageFactory.getMessage(REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, new Object[]{MessageFactory.getLabel(context, this)});
                 }
                 context.addMessage(getClientId(context), message);
@@ -150,39 +139,39 @@ public class SelectOneMenu extends SelectOneMenuBase implements org.primefaces.c
             }
 
             PrimeConfiguration config = PrimeApplicationContext.getCurrentInstance(getFacesContext()).getConfig();
-            
+
             //other validators
-            if(isValid() && (!isEmpty(value) || config.isValidateEmptyFields())) {
+            if (isValid() && (!isEmpty(value) || config.isValidateEmptyFields())) {
                 Validator[] validators = getValidators();
-                    
-                for(Validator validator : validators) {
+
+                for (Validator validator : validators) {
                     try {
                         validator.validate(context, this, value);
                     }
-                    catch(ValidatorException ve) {
+                    catch (ValidatorException ve) {
                         setValid(false);
                         FacesMessage message;
                         String validatorMessageString = getValidatorMessage();
 
-                        if(null != validatorMessageString) {
-                            message =new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessageString, validatorMessageString);
-                        } 
+                        if (null != validatorMessageString) {
+                            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessageString, validatorMessageString);
+                        }
                         else {
                             Collection<FacesMessage> messages = ve.getFacesMessages();
-                            
-                            if(null != messages) {
+
+                            if (null != messages) {
                                 message = null;
                                 String cid = getClientId(context);
-                                for(FacesMessage m : messages) {
+                                for (FacesMessage m : messages) {
                                     context.addMessage(cid, m);
                                 }
-                            } 
+                            }
                             else {
                                 message = ve.getFacesMessage();
                             }
                         }
-                        
-                        if(message != null) {
+
+                        if (message != null) {
                             context.addMessage(getClientId(context), message);
                         }
                     }
@@ -194,23 +183,25 @@ public class SelectOneMenu extends SelectOneMenuBase implements org.primefaces.c
         }
     }
 
+    @Override
     public String getInputClientId() {
-        return this.getClientId(getFacesContext()) + "_focus";
+        return getClientId(getFacesContext()) + "_focus";
     }
 
+    @Override
     public String getValidatableInputClientId() {
-        return this.getClientId(getFacesContext()) + "_input";
+        return getClientId(getFacesContext()) + "_input";
     }
 
+    @Override
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
     }
+
+    @Override
     public String getLabelledBy() {
         return (String) getStateHelper().get("labelledby");
     }
 
-    
 
-
-    
 }

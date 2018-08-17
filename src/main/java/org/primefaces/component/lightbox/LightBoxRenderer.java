@@ -16,7 +16,6 @@
 package org.primefaces.component.lightbox;
 
 import java.io.IOException;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -42,8 +41,12 @@ public class LightBoxRenderer extends CoreRenderer {
 
         writer.startElement("div", lb);
         writer.writeAttribute("id", clientId, "id");
-        if (lb.getStyle() != null) writer.writeAttribute("style", lb.getStyle(), null);
-        if (lb.getStyleClass() != null) writer.writeAttribute("class", lb.getStyleClass(), null);
+        if (lb.getStyle() != null) {
+            writer.writeAttribute("style", lb.getStyle(), null);
+        }
+        if (lb.getStyleClass() != null) {
+            writer.writeAttribute("class", lb.getStyleClass(), null);
+        }
 
         renderChildren(context, lb);
 

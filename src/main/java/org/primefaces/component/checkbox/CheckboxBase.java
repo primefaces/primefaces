@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,117 +16,117 @@
 package org.primefaces.component.checkbox;
 
 import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
+
 import org.primefaces.util.ComponentUtils;
 
 
-public abstract class CheckboxBase extends UIComponentBase implements org.primefaces.component.api.Widget {
+abstract class CheckboxBase extends UIComponentBase implements org.primefaces.component.api.Widget {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.Checkbox";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.CheckboxRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.CheckboxRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		widgetVar
-		,disabled
-		,itemIndex
-		,onchange
-		,forValue("for")
-		,style
-		,styleClass
-		,tabindex;
+        widgetVar,
+        disabled,
+        itemIndex,
+        onchange,
+        forValue("for"),
+        style,
+        styleClass,
+        tabindex;
 
-		String toString;
+        String toString;
 
-		PropertyKeys(String toString) {
-			this.toString = toString;
-		}
+        PropertyKeys(String toString) {
+            this.toString = toString;
+        }
 
-		PropertyKeys() {}
+        PropertyKeys() {
+        }
 
-		public String toString() {
-			return ((this.toString != null) ? this.toString : super.toString());
-}
-	}
+        @Override
+        public String toString() {
+            return ((toString != null) ? toString : super.toString());
+        }
+    }
 
-	public CheckboxBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public CheckboxBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getWidgetVar() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-	}
-	public void setWidgetVar(java.lang.String _widgetVar) {
-		getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
-	}
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
 
-	public boolean isDisabled() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-	}
-	public void setDisabled(boolean _disabled) {
-		getStateHelper().put(PropertyKeys.disabled, _disabled);
-	}
+    public void setWidgetVar(java.lang.String _widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    }
 
-	public int getItemIndex() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.itemIndex, 0);
-	}
-	public void setItemIndex(int _itemIndex) {
-		getStateHelper().put(PropertyKeys.itemIndex, _itemIndex);
-	}
+    public boolean isDisabled() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+    }
 
-	public java.lang.String getOnchange() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.onchange, null);
-	}
-	public void setOnchange(java.lang.String _onchange) {
-		getStateHelper().put(PropertyKeys.onchange, _onchange);
-	}
+    public void setDisabled(boolean _disabled) {
+        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    }
 
-	public java.lang.String getFor() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
-	}
-	public void setFor(java.lang.String _for) {
-		getStateHelper().put(PropertyKeys.forValue, _for);
-	}
+    public int getItemIndex() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.itemIndex, 0);
+    }
 
-	public java.lang.String getStyle() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
-	}
-	public void setStyle(java.lang.String _style) {
-		getStateHelper().put(PropertyKeys.style, _style);
-	}
+    public void setItemIndex(int _itemIndex) {
+        getStateHelper().put(PropertyKeys.itemIndex, _itemIndex);
+    }
 
-	public java.lang.String getStyleClass() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
-	}
-	public void setStyleClass(java.lang.String _styleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, _styleClass);
-	}
+    public java.lang.String getOnchange() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.onchange, null);
+    }
 
-	public java.lang.String getTabindex() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, null);
-	}
-	public void setTabindex(java.lang.String _tabindex) {
-		getStateHelper().put(PropertyKeys.tabindex, _tabindex);
-	}
+    public void setOnchange(java.lang.String _onchange) {
+        getStateHelper().put(PropertyKeys.onchange, _onchange);
+    }
 
-	public String resolveWidgetVar() {
-		return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-	}
+    public java.lang.String getFor() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
+    }
+
+    public void setFor(java.lang.String _for) {
+        getStateHelper().put(PropertyKeys.forValue, _for);
+    }
+
+    public java.lang.String getStyle() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+    public void setStyle(java.lang.String _style) {
+        getStateHelper().put(PropertyKeys.style, _style);
+    }
+
+    public java.lang.String getStyleClass() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+    public void setStyleClass(java.lang.String _styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    }
+
+    public java.lang.String getTabindex() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, null);
+    }
+
+    public void setTabindex(java.lang.String _tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, _tabindex);
+    }
+
+    @Override
+    public String resolveWidgetVar() {
+        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    }
 }

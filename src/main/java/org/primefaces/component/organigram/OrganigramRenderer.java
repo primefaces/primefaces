@@ -23,6 +23,7 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.organigramnode.UIOrganigramNode;
 import org.primefaces.model.OrganigramNode;
 import org.primefaces.renderkit.CoreRenderer;
@@ -46,7 +47,7 @@ public class OrganigramRenderer extends CoreRenderer {
      * Checks if the current request is a selection request and
      * assigns the found {@link OrganigramNode} to the <code>selection</code> value expression.
      *
-     * @param context The current {@link FacesContext}.
+     * @param context    The current {@link FacesContext}.
      * @param organigram The {@link Organigram} component.
      */
     protected void decodeSelection(FacesContext context, Organigram organigram) {
@@ -141,7 +142,7 @@ public class OrganigramRenderer extends CoreRenderer {
     }
 
     protected void renderNode(FacesContext context, ResponseWriter writer, Map<String, UIOrganigramNode> nodeMapping,
-            Organigram organigram, OrganigramNode node, OrganigramNode selection, boolean selectionEnabled) throws IOException {
+                              Organigram organigram, OrganigramNode node, OrganigramNode selection, boolean selectionEnabled) throws IOException {
 
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
 
@@ -227,7 +228,7 @@ public class OrganigramRenderer extends CoreRenderer {
     }
 
     protected Map<String, UIOrganigramNode> lookupNodeMapping(Organigram organigram) {
-        Map<String, UIOrganigramNode> nodes = new HashMap<String, UIOrganigramNode>();
+        Map<String, UIOrganigramNode> nodes = new HashMap<>();
         for (UIComponent child : organigram.getChildren()) {
             UIOrganigramNode node = (UIOrganigramNode) child;
             nodes.put(node.getType(), node);
@@ -280,7 +281,7 @@ public class OrganigramRenderer extends CoreRenderer {
 
         return styleClass.trim();
     }
-    
+
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Do nothing
