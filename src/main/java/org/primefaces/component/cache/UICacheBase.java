@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,71 +16,61 @@
 package org.primefaces.component.cache;
 
 import javax.faces.component.UIPanel;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import javax.faces.component.visit.VisitContext;
 
 
-public abstract class UICacheBase extends UIPanel {
+abstract class UICacheBase extends UIPanel {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.Cache";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.UICacheRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.UICacheRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		disabled
-		,region
-		,key
-		,processEvents;
-	}
+        disabled,
+        region,
+        key,
+        processEvents
+    }
 
-	public UICacheBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public UICacheBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public boolean isDisabled() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-	}
-	public void setDisabled(boolean _disabled) {
-		getStateHelper().put(PropertyKeys.disabled, _disabled);
-	}
+    public boolean isDisabled() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+    }
 
-	public java.lang.String getRegion() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.region, null);
-	}
-	public void setRegion(java.lang.String _region) {
-		getStateHelper().put(PropertyKeys.region, _region);
-	}
+    public void setDisabled(boolean _disabled) {
+        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    }
 
-	public java.lang.String getKey() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.key, null);
-	}
-	public void setKey(java.lang.String _key) {
-		getStateHelper().put(PropertyKeys.key, _key);
-	}
+    public java.lang.String getRegion() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.region, null);
+    }
 
-	public boolean isProcessEvents() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.processEvents, false);
-	}
-	public void setProcessEvents(boolean _processEvents) {
-		getStateHelper().put(PropertyKeys.processEvents, _processEvents);
-	}
+    public void setRegion(java.lang.String _region) {
+        getStateHelper().put(PropertyKeys.region, _region);
+    }
+
+    public java.lang.String getKey() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.key, null);
+    }
+
+    public void setKey(java.lang.String _key) {
+        getStateHelper().put(PropertyKeys.key, _key);
+    }
+
+    public boolean isProcessEvents() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.processEvents, false);
+    }
+
+    public void setProcessEvents(boolean _processEvents) {
+        getStateHelper().put(PropertyKeys.processEvents, _processEvents);
+    }
 
 }

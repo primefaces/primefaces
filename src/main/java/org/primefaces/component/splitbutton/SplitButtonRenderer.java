@@ -27,6 +27,7 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
+
 import org.primefaces.behavior.confirm.ConfirmBehavior;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
@@ -38,11 +39,7 @@ import org.primefaces.component.separator.UISeparator;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
-import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class SplitButtonRenderer extends OutcomeTargetRenderer {
 

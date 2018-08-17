@@ -24,6 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+
 import org.primefaces.component.column.Column;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
@@ -172,8 +173,12 @@ public class OrderListRenderer extends CoreRenderer {
                         Column column = (Column) kid;
 
                         writer.startElement("td", null);
-                        if (column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
-                        if (column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
+                        if (column.getStyle() != null) {
+                            writer.writeAttribute("style", column.getStyle(), null);
+                        }
+                        if (column.getStyleClass() != null) {
+                            writer.writeAttribute("class", column.getStyleClass(), null);
+                        }
 
                         renderChildren(context, column);
                         writer.endElement("td");

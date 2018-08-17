@@ -16,12 +16,11 @@
 package org.primefaces.component.slider;
 
 import java.io.IOException;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.api.InputHolder;
 
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -47,9 +46,13 @@ public class SliderRenderer extends CoreRenderer {
         String clientId = slider.getClientId(context);
 
         writer.startElement("div", slider);
-        writer.writeAttribute("id", clientId , "id");
-        if (slider.getStyle() != null)  writer.writeAttribute("style", slider.getStyle() , null);
-        if (slider.getStyleClass() != null) writer.writeAttribute("class", slider.getStyleClass(), null);
+        writer.writeAttribute("id", clientId, "id");
+        if (slider.getStyle() != null) {
+            writer.writeAttribute("style", slider.getStyle(), null);
+        }
+        if (slider.getStyleClass() != null) {
+            writer.writeAttribute("class", slider.getStyleClass(), null);
+        }
 
         writer.endElement("div");
     }

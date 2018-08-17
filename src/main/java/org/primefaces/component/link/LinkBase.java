@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,73 +16,65 @@
 package org.primefaces.component.link;
 
 import javax.faces.component.html.HtmlOutcomeTargetLink;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import java.util.List;
-import java.util.Map;
-import org.primefaces.util.ComponentUtils;
 
 
-public abstract class LinkBase extends HtmlOutcomeTargetLink implements org.primefaces.component.api.UIOutcomeTarget {
+abstract class LinkBase extends HtmlOutcomeTargetLink implements org.primefaces.component.api.UIOutcomeTarget {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.Link";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.LinkRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.LinkRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		fragment
-		,disableClientWindow
-		,href
-		,escape;
-	}
+        fragment,
+        disableClientWindow,
+        href,
+        escape
+    }
 
-	public LinkBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public LinkBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getFragment() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.fragment, null);
-	}
-	public void setFragment(java.lang.String _fragment) {
-		getStateHelper().put(PropertyKeys.fragment, _fragment);
-	}
+    @Override
+    public java.lang.String getFragment() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.fragment, null);
+    }
 
-	public boolean isDisableClientWindow() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
-	}
-	public void setDisableClientWindow(boolean _disableClientWindow) {
-		getStateHelper().put(PropertyKeys.disableClientWindow, _disableClientWindow);
-	}
+    public void setFragment(java.lang.String _fragment) {
+        getStateHelper().put(PropertyKeys.fragment, _fragment);
+    }
 
-	public java.lang.String getHref() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.href, null);
-	}
-	public void setHref(java.lang.String _href) {
-		getStateHelper().put(PropertyKeys.href, _href);
-	}
+    @Override
+    public boolean isDisableClientWindow() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
+    }
 
-	public boolean isEscape() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-	}
-	public void setEscape(boolean _escape) {
-		getStateHelper().put(PropertyKeys.escape, _escape);
-	}
+    @Override
+    public void setDisableClientWindow(boolean _disableClientWindow) {
+        getStateHelper().put(PropertyKeys.disableClientWindow, _disableClientWindow);
+    }
+
+    @Override
+    public java.lang.String getHref() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.href, null);
+    }
+
+    public void setHref(java.lang.String _href) {
+        getStateHelper().put(PropertyKeys.href, _href);
+    }
+
+    public boolean isEscape() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+    }
+
+    public void setEscape(boolean _escape) {
+        getStateHelper().put(PropertyKeys.escape, _escape);
+    }
 
 }

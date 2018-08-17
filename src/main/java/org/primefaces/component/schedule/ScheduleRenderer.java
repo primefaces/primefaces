@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
@@ -98,7 +99,7 @@ public class ScheduleRenderer extends CoreRenderer {
         writer.write("\"events\" : [");
 
         if (model != null) {
-            for (Iterator<ScheduleEvent> iterator = model.getEvents().iterator(); iterator.hasNext();) {
+            for (Iterator<ScheduleEvent> iterator = model.getEvents().iterator(); iterator.hasNext(); ) {
                 ScheduleEvent event = iterator.next();
                 String className = event.getStyleClass();
                 String description = event.getDescription();
@@ -259,8 +260,12 @@ public class ScheduleRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        if (schedule.getStyle() != null) writer.writeAttribute("style", schedule.getStyle(), "style");
-        if (schedule.getStyleClass() != null) writer.writeAttribute("class", schedule.getStyleClass(), "style");
+        if (schedule.getStyle() != null) {
+            writer.writeAttribute("style", schedule.getStyle(), "style");
+        }
+        if (schedule.getStyleClass() != null) {
+            writer.writeAttribute("class", schedule.getStyleClass(), "style");
+        }
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId + "_container", null);

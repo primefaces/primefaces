@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,30 +15,19 @@
  */
 package org.primefaces.component.selectbooleancheckbox;
 
-import javax.faces.component.html.HtmlSelectBooleanCheckbox;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class SelectBooleanCheckbox extends SelectBooleanCheckboxBase implements org.primefaces.component.api.Widget,org.primefaces.component.api.InputHolder {
+public class SelectBooleanCheckbox extends SelectBooleanCheckboxBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.InputHolder {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.SelectBooleanCheckbox";
 
     public final static String STYLE_CLASS = "ui-checkbox ui-widget";
     public final static String CHECKBOX_BOX_CLASS = "ui-checkbox-box ui-widget ui-corner-all ui-state-default";
@@ -58,6 +47,7 @@ public class SelectBooleanCheckbox extends SelectBooleanCheckboxBase implements 
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
     }
+
     public String getLabelledBy() {
         return (String) getStateHelper().get("labelledby");
     }

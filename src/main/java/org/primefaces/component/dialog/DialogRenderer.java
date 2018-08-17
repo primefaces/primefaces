@@ -17,7 +17,6 @@ package org.primefaces.component.dialog;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;

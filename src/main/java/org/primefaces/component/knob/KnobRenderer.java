@@ -15,12 +15,13 @@
  */
 package org.primefaces.component.knob;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
+
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -39,8 +40,8 @@ public class KnobRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        this.encodeMarkup(context, (Knob) component);
-        this.encodeScript(context, (Knob) component);
+        encodeMarkup(context, (Knob) component);
+        encodeScript(context, (Knob) component);
     }
 
     private void encodeMarkup(FacesContext context, Knob knob) throws IOException {

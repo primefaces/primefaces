@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,31 +15,20 @@
  */
 package org.primefaces.component.spinner;
 
-import javax.faces.component.html.HtmlInputText;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class Spinner extends SpinnerBase implements org.primefaces.component.api.Widget,org.primefaces.component.api.InputHolder {
+public class Spinner extends SpinnerBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.InputHolder {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Spinner";
 
     public final static String CONTAINER_CLASS = "ui-spinner ui-widget ui-corner-all";
     public final static String INPUT_CLASS = "ui-spinner-input ui-inputfield ui-state-default ui-corner-all";
@@ -48,17 +37,22 @@ public class Spinner extends SpinnerBase implements org.primefaces.component.api
     public final static String UP_ICON_CLASS = "ui-icon ui-icon-triangle-1-n ui-c";
     public final static String DOWN_ICON_CLASS = "ui-icon ui-icon-triangle-1-s ui-c";
 
+    @Override
     public String getInputClientId() {
-        return this.getClientId(getFacesContext()) + "_input";
+        return getClientId(getFacesContext()) + "_input";
     }
 
+    @Override
     public String getValidatableInputClientId() {
-        return this.getInputClientId();
+        return getInputClientId();
     }
 
+    @Override
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
     }
+
+    @Override
     public String getLabelledBy() {
         return (String) getStateHelper().get("labelledby");
     }

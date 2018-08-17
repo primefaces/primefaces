@@ -16,7 +16,6 @@
 package org.primefaces.component.separator;
 
 import java.io.IOException;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -36,8 +35,12 @@ public class SeparatorRenderer extends CoreRenderer {
         writer.writeAttribute("id", separator.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
 
-        if (separator.getTitle() != null) writer.writeAttribute("title", separator.getTitle(), "title");
-        if (separator.getStyle() != null) writer.writeAttribute("style", separator.getStyle(), "style");
+        if (separator.getTitle() != null) {
+            writer.writeAttribute("title", separator.getTitle(), "title");
+        }
+        if (separator.getStyle() != null) {
+            writer.writeAttribute("style", separator.getStyle(), "style");
+        }
 
         writer.endElement("hr");
     }

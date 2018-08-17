@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,41 +15,31 @@
  */
 package org.primefaces.component.inputnumber;
 
-import javax.faces.component.html.HtmlInputText;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js"),
-	@ResourceDependency(library="primefaces", name="inputnumber/inputnumber.js"),
-	@ResourceDependency(library="primefaces", name="inputnumber/inputnumber.css")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js"),
+        @ResourceDependency(library = "primefaces", name = "inputnumber/inputnumber.js"),
+        @ResourceDependency(library = "primefaces", name = "inputnumber/inputnumber.css")
 })
-public class InputNumber extends InputNumberBase implements org.primefaces.component.api.Widget,org.primefaces.component.api.InputHolder {
+public class InputNumber extends InputNumberBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.InputHolder {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.InputNumber";
 
     public final static String STYLE_CLASS = "ui-inputnumber ui-widget";
 
     @Override
-	public String getInputClientId() {
-		return getClientId() + "_input";
-	}
+    public String getInputClientId() {
+        return getClientId() + "_input";
+    }
 
     @Override
     public String getValidatableInputClientId() {
@@ -64,7 +54,7 @@ public class InputNumber extends InputNumberBase implements org.primefaces.compo
     @Override
     public String getLabelledBy() {
         return (String) getStateHelper().get("labelledby");
-    } 
+    }
 
     public String getDecimalSeparator() {
         return (String) getStateHelper().eval("decimalSeparator", getCalculatedDecimalSepartor());
@@ -82,9 +72,9 @@ public class InputNumber extends InputNumberBase implements org.primefaces.compo
         getStateHelper().put("thousandSeparator", thousandSeparator);
     }
 
-    private String getCalculatedDecimalSepartor(){
+    private String getCalculatedDecimalSepartor() {
         String decimalSeparator = (String) getStateHelper().eval("decimalSeparator", null);
-        if (decimalSeparator==null){
+        if (decimalSeparator == null) {
             Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
             DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(locale);
             decimalSeparator = Character.toString(decimalFormatSymbols.getDecimalSeparator());
@@ -92,12 +82,12 @@ public class InputNumber extends InputNumberBase implements org.primefaces.compo
         return decimalSeparator;
     }
 
-    private String getCalculatedThousandSeparator(){
+    private String getCalculatedThousandSeparator() {
         String thousandSeparator = (String) getStateHelper().eval("thousandSeparator", null);
-        if (thousandSeparator==null){
+        if (thousandSeparator == null) {
             Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
             DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(locale);
-            thousandSeparator =  Character.toString(decimalFormatSymbols.getGroupingSeparator());
+            thousandSeparator = Character.toString(decimalFormatSymbols.getGroupingSeparator());
         }
         return thousandSeparator;
     }

@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,33 +15,24 @@
  */
 package org.primefaces.component.splitbutton;
 
-import javax.faces.component.html.HtmlCommandButton;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
+
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class SplitButton extends SplitButtonBase implements org.primefaces.component.api.AjaxSource,org.primefaces.component.api.Widget {
+public class SplitButton extends SplitButtonBase implements org.primefaces.component.api.AjaxSource, org.primefaces.component.api.Widget {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.SplitButton";
 
     public static final String STYLE_CLASS = "ui-splitbutton ui-buttonset ui-widget";
     public static final String BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-left ui-button-text-icon-left";
@@ -54,46 +45,49 @@ public class SplitButton extends SplitButtonBase implements org.primefaces.compo
     public String resolveStyleClass() {
         boolean iconBlank = LangUtils.isValueBlank(getIcon());
         boolean valueBlank = getValue() == null;
-        String styleClass = ""; 
-        
+        String styleClass = "";
+
         if (!ComponentUtils.shouldRenderChildren(this)) {
-            if(!valueBlank && iconBlank) {
+            if (!valueBlank && iconBlank) {
                 styleClass = HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
             }
-            else if(!valueBlank && !iconBlank) {
-                styleClass = getIconPos().equals("left") 
-                        ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS 
+            else if (!valueBlank && !iconBlank) {
+                styleClass = getIconPos().equals("left")
+                        ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS
                         : HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
             }
-            else if(valueBlank && !iconBlank) {
+            else if (valueBlank && !iconBlank) {
                 styleClass = HTML.BUTTON_ICON_ONLY_BUTTON_CLASS;
             }
         }
-        else if(!valueBlank && iconBlank) {
+        else if (!valueBlank && iconBlank) {
             styleClass = BUTTON_TEXT_ONLY_BUTTON_CLASS;
         }
-        else if(!valueBlank && !iconBlank) {
+        else if (!valueBlank && !iconBlank) {
             styleClass = getIconPos().equals("left") ? BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
         }
-        else if(valueBlank && !iconBlank) {
+        else if (valueBlank && !iconBlank) {
             styleClass = BUTTON_ICON_ONLY_BUTTON_CLASS;
         }
-    
-        if(isDisabled()) {
+
+        if (isDisabled()) {
             styleClass = styleClass + " ui-state-disabled";
-        } 
-        
+        }
+
         return styleClass;
     }
 
+    @Override
     public boolean isPartialSubmitSet() {
-        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (this.getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
     }
-    
+
+    @Override
     public boolean isResetValuesSet() {
-        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (this.getValueExpression(PropertyKeys.resetValues.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (getValueExpression(PropertyKeys.resetValues.toString()) != null);
     }
-    
+
+    @Override
     public boolean isAjaxified() {
         return isAjax();
     }

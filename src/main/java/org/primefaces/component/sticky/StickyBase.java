@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,65 +16,58 @@
 package org.primefaces.component.sticky;
 
 import javax.faces.component.UIPanel;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
+
 import org.primefaces.util.ComponentUtils;
 
 
-public abstract class StickyBase extends UIPanel implements org.primefaces.component.api.Widget {
+abstract class StickyBase extends UIPanel implements org.primefaces.component.api.Widget {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.Sticky";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.StickyRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.StickyRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		widgetVar
-		,target
-		,margin;
-	}
+        widgetVar,
+        target,
+        margin
+    }
 
-	public StickyBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public StickyBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getWidgetVar() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-	}
-	public void setWidgetVar(java.lang.String _widgetVar) {
-		getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
-	}
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
 
-	public java.lang.String getTarget() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.target, null);
-	}
-	public void setTarget(java.lang.String _target) {
-		getStateHelper().put(PropertyKeys.target, _target);
-	}
+    public void setWidgetVar(java.lang.String _widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    }
 
-	public int getMargin() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.margin, 0);
-	}
-	public void setMargin(int _margin) {
-		getStateHelper().put(PropertyKeys.margin, _margin);
-	}
+    public java.lang.String getTarget() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.target, null);
+    }
 
-	public String resolveWidgetVar() {
-		return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-	}
+    public void setTarget(java.lang.String _target) {
+        getStateHelper().put(PropertyKeys.target, _target);
+    }
+
+    public int getMargin() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.margin, 0);
+    }
+
+    public void setMargin(int _margin) {
+        getStateHelper().put(PropertyKeys.margin, _margin);
+    }
+
+    @Override
+    public String resolveWidgetVar() {
+        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    }
 }

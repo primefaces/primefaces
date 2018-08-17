@@ -27,6 +27,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
+
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -87,8 +88,8 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
     }
 
     protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter,
-            SelectItem option, int idx, int size) throws IOException {
-        
+                                SelectItem option, int idx, int size) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         SelectManyButton button = (SelectManyButton) component;
         String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
@@ -130,7 +131,9 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         //button
         writer.startElement("div", null);
         writer.writeAttribute("class", buttonStyle, null);
-        if (option.getDescription() != null) writer.writeAttribute("title", option.getDescription(), null);
+        if (option.getDescription() != null) {
+            writer.writeAttribute("title", option.getDescription(), null);
+        }
 
         //input
         writer.startElement("input", null);
@@ -142,23 +145,29 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
 
         renderOnchange(context, button);
 
-        if (selected) writer.writeAttribute("checked", "checked", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (tabindex != null) writer.writeAttribute("tabindex", tabindex, null);
+        if (selected) {
+            writer.writeAttribute("checked", "checked", null);
+        }
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (tabindex != null) {
+            writer.writeAttribute("tabindex", tabindex, null);
+        }
 
         writer.endElement("input");
 
         //item label
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        
+
         if (option.isEscape()) {
             writer.writeText(option.getLabel(), "itemLabel");
         }
         else {
             writer.write(option.getLabel());
         }
-        
+
         writer.endElement("span");
 
         writer.endElement("div");

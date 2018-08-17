@@ -19,6 +19,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -85,7 +86,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
     }
 
     protected void encodeInput(final FacesContext context, final TriStateCheckbox checkbox, final String clientId,
-            final int valCheck, final boolean disabled) throws IOException {
+                               final int valCheck, final boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
 
@@ -112,7 +113,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
     }
 
     protected void encodeOutput(final FacesContext context, final TriStateCheckbox checkbox, final int valCheck,
-            final boolean disabled) throws IOException {
+                                final boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = HTML.CHECKBOX_BOX_CLASS;
         styleClass = (valCheck == 1 || valCheck == 2) ? styleClass + " ui-state-active" : styleClass;
@@ -135,7 +136,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
         String stateTwoTitle = checkbox.getStateTwoTitle() == null ? "" : checkbox.getStateTwoTitle();
         String stateThreeTitle = checkbox.getStateThreeTitle() == null ? "" : checkbox.getStateThreeTitle();
 
-        String statesTitles = "{\"titles\": [\"" + escapeText(stateOneTitle) + "\",\"" + escapeText(stateTwoTitle) + "\",\"" + 
+        String statesTitles = "{\"titles\": [\"" + escapeText(stateOneTitle) + "\",\"" + escapeText(stateTwoTitle) + "\",\"" +
                 escapeText(stateThreeTitle) + "\"]}";
 
         String iconClass = "ui-chkbox-icon ui-c"; //HTML.CHECKBOX_ICON_CLASS;

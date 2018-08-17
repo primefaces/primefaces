@@ -16,13 +16,7 @@
 package org.primefaces.component.autocomplete;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -123,7 +117,7 @@ public class AutoCompleteRenderer extends InputRenderer {
 
     @SuppressWarnings("unchecked")
     public void encodeResults(FacesContext context, UIComponent component, String query) throws IOException {
-        AutoComplete ac = (AutoComplete) component;        
+        AutoComplete ac = (AutoComplete) component;
         List results = ac.getSuggestions();
         int maxResults = ac.getMaxResults();
 
@@ -359,13 +353,13 @@ public class AutoCompleteRenderer extends InputRenderer {
         if (ac.getPanelStyle() != null) {
             writer.writeAttribute("style", ac.getPanelStyle(), null);
         }
-        
+
         if (ac.isDynamic() && ac.isDynamicLoadRequest(context)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String query = params.get(ac.getClientId(context) + "_query");
             encodeResults(context, ac, query);
         }
-        
+
         writer.endElement("span");
     }
 
@@ -388,7 +382,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             }
         }
 
-        List<String> stringValues = new ArrayList<String>();
+        List<String> stringValues = new ArrayList<>();
         boolean disabled = ac.isDisabled();
         String title = ac.getTitle();
 
@@ -489,7 +483,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         if (ac.isDropdown()) {
             encodeDropDown(context, ac);
         }
-        
+
         if (!ac.isDynamic()) {
             encodePanel(context, ac);
         }

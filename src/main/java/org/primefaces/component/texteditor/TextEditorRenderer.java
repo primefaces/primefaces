@@ -17,7 +17,6 @@ package org.primefaces.component.texteditor;
 
 import java.io.IOException;
 import java.util.Map;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -65,9 +64,11 @@ public class TextEditorRenderer extends CoreRenderer {
         styleClass = (styleClass != null) ? TextEditor.EDITOR_CLASS + " " + styleClass : TextEditor.EDITOR_CLASS;
 
         writer.startElement("div", editor);
-        writer.writeAttribute("id", clientId , null);
+        writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", styleClass, null);
-        if (style != null) writer.writeAttribute("style", style, null);
+        if (style != null) {
+            writer.writeAttribute("style", style, null);
+        }
 
         if (toolbar != null && editor.isToolbarVisible()) {
             writer.startElement("div", editor);

@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,62 +16,52 @@
 package org.primefaces.component.ribbon;
 
 import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
 
 
-public abstract class RibbonGroupBase extends UIComponentBase {
+abstract class RibbonGroupBase extends UIComponentBase {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.RibbonGroup";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.RibbonGroupRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.RibbonGroupRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		label
-		,style
-		,styleClass;
-	}
+        label,
+        style,
+        styleClass
+    }
 
-	public RibbonGroupBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public RibbonGroupBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getLabel() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.label, null);
-	}
-	public void setLabel(java.lang.String _label) {
-		getStateHelper().put(PropertyKeys.label, _label);
-	}
+    public java.lang.String getLabel() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.label, null);
+    }
 
-	public java.lang.String getStyle() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
-	}
-	public void setStyle(java.lang.String _style) {
-		getStateHelper().put(PropertyKeys.style, _style);
-	}
+    public void setLabel(java.lang.String _label) {
+        getStateHelper().put(PropertyKeys.label, _label);
+    }
 
-	public java.lang.String getStyleClass() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
-	}
-	public void setStyleClass(java.lang.String _styleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, _styleClass);
-	}
+    public java.lang.String getStyle() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+    public void setStyle(java.lang.String _style) {
+        getStateHelper().put(PropertyKeys.style, _style);
+    }
+
+    public java.lang.String getStyleClass() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+    public void setStyleClass(java.lang.String _styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    }
 
 }

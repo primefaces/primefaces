@@ -20,7 +20,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -159,7 +158,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         String activeIndex = acco.getActiveIndex();
         List<String> activeIndexes = activeIndex == null
                 ? Collections.EMPTY_LIST
-                : Arrays.asList(activeIndex.split(","));        
+                : Arrays.asList(activeIndex.split(","));
 
         if (var == null) {
             int j = 0;
@@ -191,8 +190,8 @@ public class AccordionPanelRenderer extends CoreRenderer {
     }
 
     protected void encodeTab(FacesContext context, AccordionPanel accordionPanel, Tab tab, boolean active, boolean dynamic,
-            boolean rtl) throws IOException {
-        
+                             boolean rtl) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
 
         String headerClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_CLASS : AccordionPanel.TAB_HEADER_CLASS;
@@ -216,8 +215,12 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.writeAttribute("aria-selected", String.valueOf(active), null);
         writer.writeAttribute("aria-label", tab.getAriaLabel(), null);
         writer.writeAttribute("tabindex", tabindex, null);
-        if (tab.getTitleStyle() != null) writer.writeAttribute("style", tab.getTitleStyle(), null);
-        if (tab.getTitletip() != null) writer.writeAttribute("title", tab.getTitletip(), null);
+        if (tab.getTitleStyle() != null) {
+            writer.writeAttribute("style", tab.getTitleStyle(), null);
+        }
+        if (tab.getTitletip() != null) {
+            writer.writeAttribute("title", tab.getTitletip(), null);
+        }
 
         //icon
         writer.startElement("span", null);

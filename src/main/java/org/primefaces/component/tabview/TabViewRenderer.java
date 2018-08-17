@@ -17,7 +17,6 @@ package org.primefaces.component.tabview;
 
 import java.io.IOException;
 import java.util.Map;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -265,7 +264,7 @@ public class TabViewRenderer extends CoreRenderer {
         }
 
         UIComponent actions = tab.getFacet("actions");
-        if (actions != null && actions.isRendered())  {
+        if (actions != null && actions.isRendered()) {
             writer.startElement("li", null);
             writer.writeAttribute("class", "ui-tabs-actions", null);
             writer.writeAttribute("aria-hidden", String.valueOf(!active), null);

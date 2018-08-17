@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,45 +16,32 @@
 package org.primefaces.component.gmap;
 
 import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
 
 
-public abstract class GMapInfoWindowBase extends UIComponentBase {
+abstract class GMapInfoWindowBase extends UIComponentBase {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.GMapInfoWindow";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
+    public enum PropertyKeys {
 
-	public enum PropertyKeys {
+        maxWidth
+    }
 
-		maxWidth;
-	}
+    public GMapInfoWindowBase() {
+        setRendererType(null);
+    }
 
-	public GMapInfoWindowBase() {
-		setRendererType(null);
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    public int getMaxWidth() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxWidth, java.lang.Integer.MIN_VALUE);
+    }
 
-	public int getMaxWidth() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxWidth, java.lang.Integer.MIN_VALUE);
-	}
-	public void setMaxWidth(int _maxWidth) {
-		getStateHelper().put(PropertyKeys.maxWidth, _maxWidth);
-	}
+    public void setMaxWidth(int _maxWidth) {
+        getStateHelper().put(PropertyKeys.maxWidth, _maxWidth);
+    }
 
 }

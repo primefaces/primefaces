@@ -17,16 +17,15 @@ package org.primefaces.component.remotecommand;
 
 import java.io.IOException;
 import javax.faces.FacesException;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
+
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.context.PrimeRequestContext;
-
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentTraversalUtils;

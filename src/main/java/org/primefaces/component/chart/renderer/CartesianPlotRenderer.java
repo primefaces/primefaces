@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.Map;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
@@ -37,7 +38,7 @@ public abstract class CartesianPlotRenderer extends BasePlotRenderer {
         Map<AxisType, Axis> axes = model.getAxes();
 
         writer.write(",axes:{");
-        for (Iterator<AxisType> it = axes.keySet().iterator(); it.hasNext();) {
+        for (Iterator<AxisType> it = axes.keySet().iterator(); it.hasNext(); ) {
             AxisType axisType = it.next();
             Axis axis = model.getAxes().get(axisType);
 

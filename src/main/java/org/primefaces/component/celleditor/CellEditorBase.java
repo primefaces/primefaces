@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,51 +16,34 @@
 package org.primefaces.component.celleditor;
 
 import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import javax.el.ValueExpression;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.component.treetable.TreeTable;
 
 
-public abstract class CellEditorBase extends UIComponentBase {
+abstract class CellEditorBase extends UIComponentBase {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.CellEditor";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.CellEditorRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.CellEditorRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		disabled;
-	}
+        disabled
+    }
 
-	public CellEditorBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public CellEditorBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public boolean isDisabled() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-	}
-	public void setDisabled(boolean _disabled) {
-		getStateHelper().put(PropertyKeys.disabled, _disabled);
-	}
+    public boolean isDisabled() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+    }
+
+    public void setDisabled(boolean _disabled) {
+        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    }
 
 }

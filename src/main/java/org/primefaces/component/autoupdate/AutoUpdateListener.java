@@ -28,17 +28,17 @@ import javax.faces.event.ComponentSystemEventListener;
 public class AutoUpdateListener implements ComponentSystemEventListener {
 
     private static final String COMPONENTS = AutoUpdateListener.class.getName() + ".COMPONENTS";
-    
+
     private final boolean disabled;
-    
+
     public AutoUpdateListener() {
-        this.disabled = false;
+        disabled = false;
     }
-    
+
     public AutoUpdateListener(boolean disabled) {
         this.disabled = disabled;
     }
-    
+
     @Override
     public void processEvent(ComponentSystemEvent cse) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -58,12 +58,12 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
     public static ArrayList<String> getOrCreateAutoUpdateComponentClientIds(FacesContext context) {
         ArrayList<String> clientIds = getAutoUpdateComponentClientIds(context);
         if (clientIds == null) {
-            clientIds = new ArrayList<String>();
+            clientIds = new ArrayList<>();
             context.getViewRoot().getAttributes().put(COMPONENTS, clientIds);
         }
         return clientIds;
     }
-    
+
     public static ArrayList<String> getAutoUpdateComponentClientIds(FacesContext context) {
         return (ArrayList<String>) context.getViewRoot().getAttributes().get(COMPONENTS);
     }

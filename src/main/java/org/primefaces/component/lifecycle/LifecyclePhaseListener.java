@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
+
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
@@ -73,7 +74,7 @@ public class LifecyclePhaseListener implements PhaseListener {
                 (Map<String, LinkedHashMap<Integer, PhaseInfo>>) session.get(LifecyclePhaseListener.class.getName());
 
         if (storePerView == null) {
-            storePerView = new HashMap<String, LinkedHashMap<Integer, PhaseInfo>>();
+            storePerView = new HashMap<>();
             session.put(LifecyclePhaseListener.class.getName(), storePerView);
         }
 
@@ -81,7 +82,7 @@ public class LifecyclePhaseListener implements PhaseListener {
 
         LinkedHashMap<Integer, PhaseInfo> store = storePerView.get(viewId);
         if (store == null) {
-            store = new LinkedHashMap<Integer, PhaseInfo>();
+            store = new LinkedHashMap<>();
             storePerView.put(viewId, store);
         }
 

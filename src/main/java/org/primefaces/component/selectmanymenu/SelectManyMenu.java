@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,31 +15,19 @@
  */
 package org.primefaces.component.selectmanymenu;
 
-import javax.faces.component.html.HtmlSelectManyMenu;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import javax.faces.component.UINamingContainer;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class SelectManyMenu extends SelectManyMenuBase implements org.primefaces.component.api.Widget,org.primefaces.component.api.InputHolder {
+public class SelectManyMenu extends SelectManyMenuBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.InputHolder {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.SelectManyMenu";
 
     public static final String CONTAINER_CLASS = "ui-selectmanymenu ui-inputfield ui-widget ui-widget-content ui-corner-all";
     public static final String LIST_CONTAINER_CLASS = "ui-selectlistbox-listcontainer";
@@ -49,24 +37,29 @@ public class SelectManyMenu extends SelectManyMenuBase implements org.primefaces
     public final static String FILTER_CLASS = "ui-selectlistbox-filter ui-inputfield ui-widget ui-state-default ui-corner-all";
     public final static String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
 
+    @Override
     public String getInputClientId() {
-        return this.getClientId(getFacesContext()) + "_input";
+        return getClientId(getFacesContext()) + "_input";
     }
 
+    @Override
     public String getValidatableInputClientId() {
-        return this.getInputClientId();
+        return getInputClientId();
     }
 
+    @Override
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
     }
+
+    @Override
     public String getLabelledBy() {
         return (String) getStateHelper().get("labelledby");
     }
 
     public static String[] DOM_EVENTS = {
-		"onchange",
-		"onclick",
-        "ondblclick"
-	};
+            "onchange",
+            "onclick",
+            "ondblclick"
+    };
 }

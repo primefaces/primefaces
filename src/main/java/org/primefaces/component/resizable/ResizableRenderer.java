@@ -16,7 +16,6 @@
 package org.primefaces.component.resizable;
 
 import java.io.IOException;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIGraphic;
 import javax.faces.context.FacesContext;

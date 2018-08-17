@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,33 +15,22 @@
  */
 package org.primefaces.component.selectbooleanbutton;
 
-import javax.faces.component.html.HtmlSelectBooleanCheckbox;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.LangUtils;
+
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
 public class SelectBooleanButton extends SelectBooleanButtonBase implements org.primefaces.component.api.Widget {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.SelectBooleanButton";
 
     public final static String STYLE_CLASS = "ui-selectbooleanbutton ui-widget";
 
@@ -49,29 +38,30 @@ public class SelectBooleanButton extends SelectBooleanButtonBase implements org.
         String icon = checked ? getOnIcon() : getOffIcon();
         String styleClass = null;
 
-        if(LangUtils.isValueBlank(getOnLabel()) && LangUtils.isValueBlank(getOffLabel())) {
+        if (LangUtils.isValueBlank(getOnLabel()) && LangUtils.isValueBlank(getOffLabel())) {
             styleClass = HTML.BUTTON_ICON_ONLY_BUTTON_CLASS;
-        } else {
+        }
+        else {
             styleClass = icon != null ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
         }
-    
-        if(disabled) {
-            styleClass = styleClass + " ui-state-disabled";
-        } 
 
-        if(checked) {
+        if (disabled) {
+            styleClass = styleClass + " ui-state-disabled";
+        }
+
+        if (checked) {
             styleClass = styleClass + " ui-state-active";
         }
 
-        if(!isValid()) {
+        if (!isValid()) {
             styleClass = styleClass + " ui-state-error";
         }
 
         String userStyleClass = getStyleClass();
-        if(userStyleClass != null) {
+        if (userStyleClass != null) {
             styleClass = styleClass + " " + userStyleClass;
         }
-    
+
         return styleClass;
     }
 }

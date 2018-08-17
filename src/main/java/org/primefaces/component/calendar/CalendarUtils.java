@@ -25,8 +25,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
-import org.primefaces.component.calendar.converter.PatternConverter;
 import org.primefaces.component.calendar.converter.DatePatternConverter;
+import org.primefaces.component.calendar.converter.PatternConverter;
 import org.primefaces.component.calendar.converter.TimePatternConverter;
 
 /**
@@ -35,7 +35,7 @@ import org.primefaces.component.calendar.converter.TimePatternConverter;
 public class CalendarUtils {
 
     private final static PatternConverter[] PATTERN_CONVERTERS =
-            new PatternConverter[] { new TimePatternConverter(), new DatePatternConverter() };
+            new PatternConverter[]{new TimePatternConverter(), new DatePatternConverter()};
 
     public static String getValueAsString(FacesContext context, Calendar calendar) {
         Object submittedValue = calendar.getSubmittedValue();

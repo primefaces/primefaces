@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,66 +15,51 @@
  */
 package org.primefaces.component.celleditor;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.treetable.TreeTable;
 
-@ResourceDependencies({
 
-})
 public class CellEditor extends CellEditorBase {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.CellEditor";
 
     @Override
     public void processDecodes(FacesContext context) {
-        if(isEditRequest(context)) {
+        if (isEditRequest(context)) {
             super.processDecodes(context);
         }
-	}
-    
+    }
+
     @Override
     public void processValidators(FacesContext context) {
-        if(isEditRequest(context)) {
+        if (isEditRequest(context)) {
             super.processValidators(context);
         }
-	}
+    }
 
     @Override
     public void processUpdates(FacesContext context) {
-        if(isEditRequest(context)) {
+        if (isEditRequest(context)) {
             super.processUpdates(context);
         }
-	}
+    }
 
     public boolean isEditRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context));
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context));
     }
 
     private UIComponent parentTable = null;
 
     public UIComponent getParentTable(FacesContext context) {
-        if(parentTable == null) {
-            UIComponent parent = this.getParent();
+        if (parentTable == null) {
+            UIComponent parent = getParent();
 
-            while(parent != null) {
-                if(parent instanceof DataTable || parent instanceof TreeTable) {
+            while (parent != null) {
+                if (parent instanceof DataTable || parent instanceof TreeTable) {
                     parentTable = parent;
                     break;
                 }

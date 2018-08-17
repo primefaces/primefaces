@@ -16,7 +16,6 @@
 package org.primefaces.component.collector;
 
 import java.util.Collection;
-
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.component.StateHolder;

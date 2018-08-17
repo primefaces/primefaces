@@ -17,7 +17,6 @@ package org.primefaces.component.timeline;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PhaseListener;
@@ -36,7 +35,7 @@ public class TimelineListener implements SystemEventListener {
         Map<String, TimelineUpdater> map
                 = (Map<String, TimelineUpdater>) context.getAttributes().get(TimelineUpdater.class.getName());
         if (map == null) {
-            map = new HashMap<String, TimelineUpdater>();
+            map = new HashMap<>();
             context.getAttributes().put(TimelineUpdater.class.getName(), map);
         }
 

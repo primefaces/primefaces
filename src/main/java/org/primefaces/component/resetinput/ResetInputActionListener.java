@@ -17,7 +17,6 @@ package org.primefaces.component.resetinput;
 
 import java.io.Serializable;
 import java.util.List;
-
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
@@ -61,7 +60,7 @@ public class ResetInputActionListener implements ActionListener, Serializable {
                     ? Boolean.valueOf(clearModel.getValue(context.getELContext()).toString())
                     : (Boolean) clearModel.getValue(context.getELContext());
         }
-        
+
         ResetInputVisitCallback visitCallback = resetModel
                 ? ResetInputVisitCallback.INSTANCE_CLEAR_MODEL
                 : ResetInputVisitCallback.INSTANCE;

@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,87 +16,76 @@
 package org.primefaces.component.colorpicker;
 
 import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
+
 import org.primefaces.util.ComponentUtils;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.HashMap;
-import javax.faces.event.BehaviorEvent;
 
 
-public abstract class ColorPickerBase extends UIInput implements org.primefaces.component.api.Widget,javax.faces.component.behavior.ClientBehaviorHolder,org.primefaces.component.api.PrimeClientBehaviorHolder {
+abstract class ColorPickerBase extends UIInput implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.ColorPicker";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.ColorPickerRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.ColorPickerRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		widgetVar
-		,mode
-		,style
-		,styleClass
-		,onchange;
-	}
+        widgetVar,
+        mode,
+        style,
+        styleClass,
+        onchange
+    }
 
-	public ColorPickerBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public ColorPickerBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getWidgetVar() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-	}
-	public void setWidgetVar(java.lang.String _widgetVar) {
-		getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
-	}
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
 
-	public java.lang.String getMode() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.mode, "popup");
-	}
-	public void setMode(java.lang.String _mode) {
-		getStateHelper().put(PropertyKeys.mode, _mode);
-	}
+    public void setWidgetVar(java.lang.String _widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    }
 
-	public java.lang.String getStyle() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
-	}
-	public void setStyle(java.lang.String _style) {
-		getStateHelper().put(PropertyKeys.style, _style);
-	}
+    public java.lang.String getMode() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.mode, "popup");
+    }
 
-	public java.lang.String getStyleClass() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
-	}
-	public void setStyleClass(java.lang.String _styleClass) {
-		getStateHelper().put(PropertyKeys.styleClass, _styleClass);
-	}
+    public void setMode(java.lang.String _mode) {
+        getStateHelper().put(PropertyKeys.mode, _mode);
+    }
 
-	public java.lang.String getOnchange() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.onchange, null);
-	}
-	public void setOnchange(java.lang.String _onchange) {
-		getStateHelper().put(PropertyKeys.onchange, _onchange);
-	}
+    public java.lang.String getStyle() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+    }
 
-	public String resolveWidgetVar() {
-		return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-	}
+    public void setStyle(java.lang.String _style) {
+        getStateHelper().put(PropertyKeys.style, _style);
+    }
+
+    public java.lang.String getStyleClass() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+    public void setStyleClass(java.lang.String _styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    }
+
+    public java.lang.String getOnchange() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.onchange, null);
+    }
+
+    public void setOnchange(java.lang.String _onchange) {
+        getStateHelper().put(PropertyKeys.onchange, _onchange);
+    }
+
+    @Override
+    public String resolveWidgetVar() {
+        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    }
 }

@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,27 +15,16 @@
  */
 package org.primefaces.component.messages;
 
-import javax.faces.component.UIMessages;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css")
+        @ResourceDependency(library = "primefaces", name = "components.css")
 })
 public class Messages extends MessagesBase implements org.primefaces.component.api.UINotification {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Messages";
 
     public static final String CONTAINER_CLASS = "ui-messages ui-widget";
     public static final String ICONLESS_CONTAINER_CLASS = "ui-messages ui-messages-noicon ui-widget";

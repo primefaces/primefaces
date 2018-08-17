@@ -25,6 +25,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.ComponentUtils;
@@ -75,7 +76,7 @@ public class ChipsRenderer extends InputRenderer {
         String clientId = chips.getClientId(context);
         String inputId = clientId + "_input";
         List values = (List) chips.getValue();
-        List<String> stringValues = new ArrayList<String>();
+        List<String> stringValues = new ArrayList<>();
         boolean disabled = chips.isDisabled();
         String title = chips.getTitle();
 
@@ -109,7 +110,7 @@ public class ChipsRenderer extends InputRenderer {
         if (values != null && !values.isEmpty()) {
             Converter converter = ComponentUtils.getConverter(context, chips);
 
-            for (Iterator<Object> it = values.iterator(); it.hasNext();) {
+            for (Iterator<Object> it = values.iterator(); it.hasNext(); ) {
                 Object value = it.next();
 
                 String tokenValue = converter != null ? converter.getAsString(context, chips, value) : String.valueOf(value);
@@ -141,8 +142,12 @@ public class ChipsRenderer extends InputRenderer {
         writer.writeAttribute("class", "ui-widget", null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("autocomplete", "off", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", "disabled");
-        if (chips.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", "disabled");
+        }
+        if (chips.isReadonly()) {
+            writer.writeAttribute("readonly", "readonly", "readonly");
+        }
 
         renderPassThruAttributes(context, chips, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, chips, HTML.INPUT_TEXT_EVENTS);

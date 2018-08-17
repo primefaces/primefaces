@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,30 +15,20 @@
  */
 package org.primefaces.component.datascroller;
 
-import org.primefaces.component.api.UIData;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
+import javax.faces.context.FacesContext;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
 public class DataScroller extends DataScrollerBase implements org.primefaces.component.api.Widget {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.DataScroller";
     public final static String CONTAINER_CLASS = "ui-datascroller ui-widget";
     public final static String INLINE_CONTAINER_CLASS = "ui-datascroller ui-datascroller-inline ui-widget";
     public final static String HEADER_CLASS = "ui-datascroller-header ui-widget-header ui-corner-top";
@@ -50,6 +40,6 @@ public class DataScroller extends DataScrollerBase implements org.primefaces.com
 
     public boolean isLoadRequest() {
         FacesContext context = getFacesContext();
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_load");
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_load");
     }
 }

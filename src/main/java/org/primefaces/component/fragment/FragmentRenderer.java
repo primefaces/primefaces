@@ -21,13 +21,14 @@ import java.util.logging.Logger;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
 
 public class FragmentRenderer extends CoreRenderer {
-    
+
     private final static Logger logger = Logger.getLogger(FragmentRenderer.class.getName());
-    
+
     @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();

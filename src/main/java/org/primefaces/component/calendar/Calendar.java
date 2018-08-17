@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,96 +15,80 @@
  */
 package org.primefaces.component.calendar;
 
-import javax.faces.component.html.HtmlInputText;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.component.calendar.Calendar;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.DateViewChangeEvent;
-import org.primefaces.util.HTML;
-import org.primefaces.util.ArrayUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.MessageFactory;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Date;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.convert.DateTimeConverter;
+import org.primefaces.event.DateViewChangeEvent;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.MessageFactory;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class Calendar extends CalendarBase implements org.primefaces.component.api.Widget,org.primefaces.component.api.InputHolder,org.primefaces.component.api.MixedClientBehaviorHolder {
+public class Calendar extends CalendarBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.InputHolder, org.primefaces.component.api.MixedClientBehaviorHolder {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Calendar";
 
     public final static String CONTAINER_CLASS = "ui-calendar";
     public final static String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur","change","valueChange","click","dblclick","focus","keydown","keypress","keyup","mousedown","mousemove","mouseout","mouseover","mouseup","select","dateSelect","viewChange","close"));
-    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("dateSelect","viewChange","close"));
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "dateSelect", "viewChange", "close"));
+    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("dateSelect", "viewChange", "close"));
 
-    private Map<String,AjaxBehaviorEvent> customEvents = new HashMap<String,AjaxBehaviorEvent>();
+    private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
 
     private java.util.Locale calculatedLocale;
     private java.util.TimeZone appropriateTimeZone;
-    
+
     public java.util.Locale calculateLocale(FacesContext facesContext) {
         if (calculatedLocale == null) {
-           calculatedLocale = LocaleUtils.resolveLocale(getLocale(), this.getClientId(facesContext));
+            calculatedLocale = LocaleUtils.resolveLocale(getLocale(), getClientId(facesContext));
         }
-        
+
         return calculatedLocale;
     }
-    
+
     public java.util.TimeZone calculateTimeZone() {
-        if(appropriateTimeZone == null) {
+        if (appropriateTimeZone == null) {
             Object usertimeZone = getTimeZone();
-            if(usertimeZone != null) {
-                if(usertimeZone instanceof String)
-                    appropriateTimeZone =  java.util.TimeZone.getTimeZone((String) usertimeZone);
-                else if(usertimeZone instanceof java.util.TimeZone)
+            if (usertimeZone != null) {
+                if (usertimeZone instanceof String) {
+                    appropriateTimeZone = java.util.TimeZone.getTimeZone((String) usertimeZone);
+                }
+                else if (usertimeZone instanceof java.util.TimeZone) {
                     appropriateTimeZone = (java.util.TimeZone) usertimeZone;
-                else
+                }
+                else {
                     throw new IllegalArgumentException("TimeZone could be either String or java.util.TimeZone");
-            } else {
+                }
+            }
+            else {
                 appropriateTimeZone = java.util.TimeZone.getDefault();
             }
         }
-        
+
         return appropriateTimeZone;
     }
-    
+
     public boolean isPopup() {
         return getMode().equalsIgnoreCase("popup");
     }
@@ -129,20 +113,20 @@ public class Calendar extends CalendarBase implements org.primefaces.component.a
     public void queueEvent(FacesEvent event) {
         FacesContext context = getFacesContext();
 
-        if(ComponentUtils.isRequestSource(this, context) && (event instanceof AjaxBehaviorEvent)) {
-            Map<String,String> params = context.getExternalContext().getRequestParameterMap();
+        if (ComponentUtils.isRequestSource(this, context) && (event instanceof AjaxBehaviorEvent)) {
+            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-            String clientId = this.getClientId(context);
+            String clientId = getClientId(context);
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if(eventName != null) {
-                if(eventName.equals("dateSelect")) {
+            if (eventName != null) {
+                if (eventName.equals("dateSelect")) {
                     customEvents.put("dateSelect", (AjaxBehaviorEvent) event);
                 }
-                else if(eventName.equals("close")) {
+                else if (eventName.equals("close")) {
                     customEvents.put("close", (AjaxBehaviorEvent) event);
                 }
-                else if(eventName.equals("viewChange")) {
+                else if (eventName.equals("viewChange")) {
                     int month = Integer.parseInt(params.get(clientId + "_month"));
                     int year = Integer.parseInt(params.get(clientId + "_year"));
                     DateViewChangeEvent dateViewChangeEvent = new DateViewChangeEvent(this, behaviorEvent.getBehavior(), month, year);
@@ -152,7 +136,7 @@ public class Calendar extends CalendarBase implements org.primefaces.component.a
                 else {
                     super.queueEvent(event);        //regular events like change, click, blur
                 }
-            } 
+            }
         }
         else {
             super.queueEvent(event);            //valueChange
@@ -162,13 +146,13 @@ public class Calendar extends CalendarBase implements org.primefaces.component.a
     @Override
     public void validate(FacesContext context) {
         super.validate(context);
-       
-        if(isValid() && ComponentUtils.isRequestSource(this, context)) {
-            for(Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext();) {
-                AjaxBehaviorEvent behaviorEvent = customEvents.get(customEventIter.next());
-                SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getValue());
 
-                if(behaviorEvent.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
+        if (isValid() && ComponentUtils.isRequestSource(this, context)) {
+            for (Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext(); ) {
+                AjaxBehaviorEvent behaviorEvent = customEvents.get(customEventIter.next());
+                SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), getValue());
+
+                if (behaviorEvent.getPhaseId().equals(PhaseId.APPLY_REQUEST_VALUES)) {
                     selectEvent.setPhaseId(PhaseId.PROCESS_VALIDATIONS);
                 }
                 else {
@@ -188,25 +172,25 @@ public class Calendar extends CalendarBase implements org.primefaces.component.a
 
         if (isValid() && !isEmpty(value) && value instanceof Date) {
             Date date = (Date) value;
-            
+
             Date minDate = CalendarUtils.getObjectAsDate(context, this, getMindate());
             if (minDate != null && date.before(minDate)) {
                 setValid(false);
             }
-            
+
             if (isValid()) {
                 Date maxDate = CalendarUtils.getObjectAsDate(context, this, getMaxdate());
                 if (maxDate != null && date.after(maxDate)) {
                     setValid(false);
                 }
             }
-            
+
             if (!isValid()) {
                 FacesMessage msg = null;
                 String validatorMessage = getValidatorMessage();
                 if (validatorMessage != null) {
                     msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
-                } 
+                }
                 else {
                     msg = MessageFactory.getMessage(DATE_OUT_OF_RANGE_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, null);
                 }
@@ -214,10 +198,10 @@ public class Calendar extends CalendarBase implements org.primefaces.component.a
             }
         }
     }
-    
+
     public String calculatePattern() {
-        String pattern = this.getPattern();
-        Locale locale = this.calculateLocale(getFacesContext());
+        String pattern = getPattern();
+        Locale locale = calculateLocale(getFacesContext());
 
         return pattern == null ? ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern() : pattern;
     }
@@ -225,7 +209,7 @@ public class Calendar extends CalendarBase implements org.primefaces.component.a
     private String timeOnlyPattern = null;
 
     public String calculateTimeOnlyPattern() {
-        if(timeOnlyPattern == null) {
+        if (timeOnlyPattern == null) {
             String localePattern = ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, calculateLocale(getFacesContext()))).toPattern();
             String userTimePattern = getPattern();
 
@@ -238,24 +222,29 @@ public class Calendar extends CalendarBase implements org.primefaces.component.a
     private boolean conversionFailed = false;
 
     public void setConversionFailed(boolean value) {
-        this.conversionFailed = value;
+        conversionFailed = value;
     }
 
     public boolean isConversionFailed() {
-        return this.conversionFailed;
+        return conversionFailed;
     }
 
+    @Override
     public String getInputClientId() {
-        return this.getClientId(getFacesContext()) + "_input";
+        return getClientId(getFacesContext()) + "_input";
     }
 
+    @Override
     public String getValidatableInputClientId() {
-        return this.getClientId(getFacesContext()) + "_input";
+        return getClientId(getFacesContext()) + "_input";
     }
 
+    @Override
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
     }
+
+    @Override
     public String getLabelledBy() {
         return (String) getStateHelper().get("labelledby");
     }
@@ -263,16 +252,16 @@ public class Calendar extends CalendarBase implements org.primefaces.component.a
     @Override
     public Converter getConverter() {
         Converter converter = super.getConverter();
-        
-        if(converter == null && PrimeApplicationContext.getCurrentInstance(getFacesContext()).getConfig().isClientSideValidationEnabled()) {
+
+        if (converter == null && PrimeApplicationContext.getCurrentInstance(getFacesContext()).getConfig().isClientSideValidationEnabled()) {
             DateTimeConverter con = new DateTimeConverter();
-            con.setPattern(this.calculatePattern());
-            con.setTimeZone(this.calculateTimeZone());
-            con.setLocale(this.calculateLocale(getFacesContext()));
+            con.setPattern(calculatePattern());
+            con.setTimeZone(calculateTimeZone());
+            con.setLocale(calculateLocale(getFacesContext()));
 
             return con;
         }
-        
+
         return converter;
     }
 

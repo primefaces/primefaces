@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,38 +15,29 @@
  */
 package org.primefaces.component.terminal;
 
-import javax.faces.component.UIPanel;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
+import java.util.ArrayDeque;
+import java.util.Arrays;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
 import org.primefaces.model.terminal.TerminalAutoCompleteModel;
 import org.primefaces.model.terminal.TerminalCommand;
-import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
-import java.util.Arrays;
-import java.util.ArrayDeque;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="terminal/terminal.css"),
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js"),
-	@ResourceDependency(library="primefaces", name="terminal/terminal.js")
+        @ResourceDependency(library = "primefaces", name = "terminal/terminal.css"),
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js"),
+        @ResourceDependency(library = "primefaces", name = "terminal/terminal.js")
 })
 public class Terminal extends TerminalBase implements org.primefaces.component.api.Widget {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Terminal";
 
     public static final String CONTAINER_CLASS = "ui-terminal ui-widget ui-widget-content ui-corner-all";
     public static final String WELCOME_MESSAGE_CLASS = "ui-terminal-welcome";
@@ -56,12 +47,12 @@ public class Terminal extends TerminalBase implements org.primefaces.component.a
 
     public boolean isCommandRequest() {
         FacesContext context = getFacesContext();
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_command");
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_command");
     }
 
     public boolean isAutoCompleteRequest() {
         FacesContext context = getFacesContext();
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_autocomplete");
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_autocomplete");
     }
 
     TerminalAutoCompleteMatches traverseAutoCompleteModel(TerminalAutoCompleteModel commandModel, String input, String[] args) {

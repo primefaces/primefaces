@@ -25,6 +25,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
+
 import org.primefaces.component.column.Column;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.RendererUtils;
@@ -99,7 +100,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
     protected void encodeInput(FacesContext context, SelectManyMenu menu, String clientId, List<SelectItem> selectItems)
             throws IOException {
-        
+
         ResponseWriter writer = context.getResponseWriter();
         String inputid = clientId + "_input";
         String labelledBy = menu.getLabelledBy();
@@ -122,7 +123,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         if (menu.getTabindex() != null) {
             writer.writeAttribute("tabindex", menu.getTabindex(), null);
         }
-        
+
         if (menu.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         }
@@ -175,7 +176,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
     }
 
     protected void encodeItem(FacesContext context, SelectManyMenu menu, SelectItem option, Object values, Object submittedValues,
-            Converter converter, boolean customContent, boolean showCheckbox) throws IOException {
+                              Converter converter, boolean customContent, boolean showCheckbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
         boolean disabled = option.isDisabled() || menu.isDisabled();
@@ -223,8 +224,12 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
                     String styleClass = ((Column) child).getStyleClass();
 
                     writer.startElement("td", null);
-                    if (styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
-                    if (style != null) writer.writeAttribute("style", style, "style");
+                    if (styleClass != null) {
+                        writer.writeAttribute("class", styleClass, "styleClass");
+                    }
+                    if (style != null) {
+                        writer.writeAttribute("style", style, "style");
+                    }
 
                     renderChildren(context, child);
                     writer.endElement("td");
@@ -265,8 +270,8 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
     }
 
     protected void encodeOption(FacesContext context, SelectManyMenu menu, SelectItem option, Object values, Object submittedValues,
-            Converter converter) throws IOException {
-        
+                                Converter converter) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
         boolean disabled = option.isDisabled() || menu.isDisabled();
@@ -289,8 +294,12 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
         writer.startElement("option", null);
         writer.writeAttribute("value", itemValueAsString, null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (selected) writer.writeAttribute("selected", "selected", null);
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (selected) {
+            writer.writeAttribute("selected", "selected", null);
+        }
 
         if (option.isEscape()) {
             writer.writeText(option.getLabel(), null);
@@ -321,7 +330,9 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
 
         writer.endElement("input");
 
@@ -333,14 +344,14 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
         if (height != Integer.MAX_VALUE) {
             return height + "px";
-        } 
+        }
         else if (itemSize > 10) {
             return 200 + "px";
         }
 
         return "auto";
     }
-    
+
     @Override
     protected String getSubmitParam(FacesContext context, UISelectMany selectMany) {
         return selectMany.getClientId(context) + "_input";

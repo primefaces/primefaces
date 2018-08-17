@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,61 +16,49 @@
 package org.primefaces.component.ajaxexceptionhandler;
 
 import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
 
 
-public abstract class AjaxExceptionHandlerBase extends UIComponentBase {
+abstract class AjaxExceptionHandlerBase extends UIComponentBase {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.AjaxExceptionHandler";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
+    public enum PropertyKeys {
 
-	public enum PropertyKeys {
+        onexception,
+        update,
+        type;
+    }
 
-		onexception
-		,update
-		,type;
-	}
+    public AjaxExceptionHandlerBase() {
+        setRendererType(null);
+    }
 
-	public AjaxExceptionHandlerBase() {
-		setRendererType(null);
-	}
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    public java.lang.String getOnexception() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.onexception, null);
+    }
 
-	public java.lang.String getOnexception() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.onexception, null);
-	}
-	public void setOnexception(java.lang.String _onexception) {
-		getStateHelper().put(PropertyKeys.onexception, _onexception);
-	}
+    public void setOnexception(java.lang.String _onexception) {
+        getStateHelper().put(PropertyKeys.onexception, _onexception);
+    }
 
-	public java.lang.String getUpdate() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.update, null);
-	}
-	public void setUpdate(java.lang.String _update) {
-		getStateHelper().put(PropertyKeys.update, _update);
-	}
+    public java.lang.String getUpdate() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.update, null);
+    }
 
-	public java.lang.String getType() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.type, null);
-	}
-	public void setType(java.lang.String _type) {
-		getStateHelper().put(PropertyKeys.type, _type);
-	}
+    public void setUpdate(java.lang.String _update) {
+        getStateHelper().put(PropertyKeys.update, _update);
+    }
+
+    public java.lang.String getType() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.type, null);
+    }
+
+    public void setType(java.lang.String _type) {
+        getStateHelper().put(PropertyKeys.type, _type);
+    }
 
 }

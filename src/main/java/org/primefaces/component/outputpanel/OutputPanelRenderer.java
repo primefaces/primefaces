@@ -17,7 +17,6 @@ package org.primefaces.component.outputpanel;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -29,7 +28,7 @@ public class OutputPanelRenderer extends CoreRenderer {
 
     private final static String BLOCK = "div";
     private final static String INLINE = "span";
-    
+
     private final static Logger logger = Logger.getLogger(OutputPanelRenderer.class.getName());
 
     @Override
@@ -83,7 +82,7 @@ public class OutputPanelRenderer extends CoreRenderer {
         }
 
         encodeClientBehaviors(context, panel);
-        
+
         wb.finish();
     }
 

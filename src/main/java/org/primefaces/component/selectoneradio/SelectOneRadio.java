@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,36 +15,26 @@
  */
 package org.primefaces.component.selectoneradio;
 
-import javax.faces.component.html.HtmlSelectOneRadio;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
+import java.util.List;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import java.util.List;
-import javax.faces.model.SelectItem;
 import javax.faces.component.UINamingContainer;
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css"),
-	@ResourceDependency(library="primefaces", name="jquery/jquery.js"),
-	@ResourceDependency(library="primefaces", name="core.js"),
-	@ResourceDependency(library="primefaces", name="components.js")
+        @ResourceDependency(library = "primefaces", name = "components.css"),
+        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+        @ResourceDependency(library = "primefaces", name = "core.js"),
+        @ResourceDependency(library = "primefaces", name = "components.js")
 })
 public class SelectOneRadio extends SelectOneRadioBase implements org.primefaces.component.api.Widget {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneRadio";
 
-    public final static String[] SUPPORTED_EVENTS = new String[]{"onchange","onclick"};
-    
+    public final static String[] SUPPORTED_EVENTS = new String[]{"onchange", "onclick"};
+
     public final static String STYLE_CLASS = "ui-selectoneradio ui-widget";
     public final static String NATIVE_STYLE_CLASS = "ui-selectoneradio ui-selectoneradio-native ui-widget";
 
@@ -53,16 +43,16 @@ public class SelectOneRadio extends SelectOneRadioBase implements org.primefaces
     public String getRadioButtonId(FacesContext context) {
         index++;
 
-        return this.getClientId(context) + UINamingContainer.getSeparatorChar(context) + index;
+        return getClientId(context) + UINamingContainer.getSeparatorChar(context) + index;
     }
 
     private List<SelectItem> selectItems;
 
-    public void setSelectItems(List<SelectItem> selectItems) {  
+    public void setSelectItems(List<SelectItem> selectItems) {
         this.selectItems = selectItems;
     }
 
     public List<SelectItem> getSelectItems() {
-        return this.selectItems;
+        return selectItems;
     }
 }

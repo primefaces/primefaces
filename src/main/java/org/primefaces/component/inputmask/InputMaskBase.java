@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,89 +16,85 @@
 package org.primefaces.component.inputmask;
 
 import javax.faces.component.html.HtmlInputText;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
+
 import org.primefaces.util.ComponentUtils;
 
 
-public abstract class InputMaskBase extends HtmlInputText implements org.primefaces.component.api.Widget {
+abstract class InputMaskBase extends HtmlInputText implements org.primefaces.component.api.Widget {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.InputMask";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
-	public static final String DEFAULT_RENDERER = "org.primefaces.component.InputMaskRenderer";
+    public static final String DEFAULT_RENDERER = "org.primefaces.component.InputMaskRenderer";
 
-	public enum PropertyKeys {
+    public enum PropertyKeys {
 
-		placeholder
-		,widgetVar
-		,mask
-		,slotChar
-		,autoClear
-		,type;
-	}
+        placeholder,
+        widgetVar,
+        mask,
+        slotChar,
+        autoClear,
+        type
+    }
 
-	public InputMaskBase() {
-		setRendererType(DEFAULT_RENDERER);
-	}
+    public InputMaskBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public java.lang.String getPlaceholder() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
-	}
-	public void setPlaceholder(java.lang.String _placeholder) {
-		getStateHelper().put(PropertyKeys.placeholder, _placeholder);
-	}
+    public java.lang.String getPlaceholder() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
+    }
 
-	public java.lang.String getWidgetVar() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-	}
-	public void setWidgetVar(java.lang.String _widgetVar) {
-		getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
-	}
+    public void setPlaceholder(java.lang.String _placeholder) {
+        getStateHelper().put(PropertyKeys.placeholder, _placeholder);
+    }
 
-	public java.lang.String getMask() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.mask, null);
-	}
-	public void setMask(java.lang.String _mask) {
-		getStateHelper().put(PropertyKeys.mask, _mask);
-	}
+    public java.lang.String getWidgetVar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
 
-	public java.lang.String getSlotChar() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.slotChar, null);
-	}
-	public void setSlotChar(java.lang.String _slotChar) {
-		getStateHelper().put(PropertyKeys.slotChar, _slotChar);
-	}
+    public void setWidgetVar(java.lang.String _widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    }
 
-	public boolean isAutoClear() {
-		return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoClear, true);
-	}
-	public void setAutoClear(boolean _autoClear) {
-		getStateHelper().put(PropertyKeys.autoClear, _autoClear);
-	}
+    public java.lang.String getMask() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.mask, null);
+    }
 
-	public java.lang.String getType() {
-		return (java.lang.String) getStateHelper().eval(PropertyKeys.type, "text");
-	}
-	public void setType(java.lang.String _type) {
-		getStateHelper().put(PropertyKeys.type, _type);
-	}
+    public void setMask(java.lang.String _mask) {
+        getStateHelper().put(PropertyKeys.mask, _mask);
+    }
 
-	public String resolveWidgetVar() {
-		return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
-	}
+    public java.lang.String getSlotChar() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.slotChar, null);
+    }
+
+    public void setSlotChar(java.lang.String _slotChar) {
+        getStateHelper().put(PropertyKeys.slotChar, _slotChar);
+    }
+
+    public boolean isAutoClear() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoClear, true);
+    }
+
+    public void setAutoClear(boolean _autoClear) {
+        getStateHelper().put(PropertyKeys.autoClear, _autoClear);
+    }
+
+    public java.lang.String getType() {
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.type, "text");
+    }
+
+    public void setType(java.lang.String _type) {
+        getStateHelper().put(PropertyKeys.type, _type);
+    }
+
+    @Override
+    public String resolveWidgetVar() {
+        return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    }
 }

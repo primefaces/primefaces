@@ -20,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
+
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -117,8 +118,12 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
             writer.writeAttribute("aria-checked", "false", null);
         }
 
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (checkbox.getTabindex() != null) writer.writeAttribute("tabindex", checkbox.getTabindex(), null);
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (checkbox.getTabindex() != null) {
+            writer.writeAttribute("tabindex", checkbox.getTabindex(), null);
+        }
 
         if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, checkbox);

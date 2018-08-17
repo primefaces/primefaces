@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,27 +15,16 @@
  */
 package org.primefaces.component.toolbar;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
 
 @ResourceDependencies({
-	@ResourceDependency(library="primefaces", name="components.css")
+        @ResourceDependency(library = "primefaces", name = "components.css")
 })
 public class Toolbar extends ToolbarBase {
 
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Toolbar";
 
     public static String CONTAINER_CLASS = "ui-toolbar ui-widget ui-widget-header ui-corner-all ui-helper-clearfix";
     public static String SEPARATOR_CLASS = "ui-separator";

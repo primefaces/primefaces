@@ -19,21 +19,13 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.behavior.ajax.AjaxBehavior;
-
-import org.primefaces.model.map.Circle;
-import org.primefaces.model.map.LatLng;
-import org.primefaces.model.map.MapModel;
-import org.primefaces.model.map.Marker;
-import org.primefaces.model.map.Polygon;
-import org.primefaces.model.map.Polyline;
-import org.primefaces.model.map.Rectangle;
+import org.primefaces.model.map.*;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -58,8 +50,12 @@ public class GMapRenderer extends CoreRenderer {
 
         writer.startElement("div", map);
         writer.writeAttribute("id", clientId, null);
-        if (map.getStyle() != null) writer.writeAttribute("style", map.getStyle(), null);
-        if (map.getStyleClass() != null) writer.writeAttribute("class", map.getStyleClass(), null);
+        if (map.getStyle() != null) {
+            writer.writeAttribute("style", map.getStyle(), null);
+        }
+        if (map.getStyleClass() != null) {
+            writer.writeAttribute("class", map.getStyleClass(), null);
+        }
 
         writer.endElement("div");
     }
@@ -70,32 +66,50 @@ public class GMapRenderer extends CoreRenderer {
         String widgetVar = map.resolveWidgetVar();
         GMapInfoWindow infoWindow = map.getInfoWindow();
 
-        
+
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("GMap", map.resolveWidgetVar(), clientId)
-            .nativeAttr("mapTypeId", "google.maps.MapTypeId." + map.getType().toUpperCase())
-            .nativeAttr("center", "new google.maps.LatLng(" + map.getCenter() + ")")
-            .attr("zoom", map.getZoom());
+                .nativeAttr("mapTypeId", "google.maps.MapTypeId." + map.getType().toUpperCase())
+                .nativeAttr("center", "new google.maps.LatLng(" + map.getCenter() + ")")
+                .attr("zoom", map.getZoom());
 
 
-        if (!map.isFitBounds()) wb.attr("fitBounds", false);
+        if (!map.isFitBounds()) {
+            wb.attr("fitBounds", false);
+        }
 
         //Overlays
         encodeOverlays(context, map);
 
         //Controls
-        if (map.isDisableDefaultUI()) wb.attr("disableDefaultUI", true);
-        if (!map.isNavigationControl()) wb.attr("navigationControl", false);
-        if (!map.isMapTypeControl()) wb.attr("mapTypeControl", false);
-        if (map.isStreetView()) wb.attr("streetViewControl", true);
+        if (map.isDisableDefaultUI()) {
+            wb.attr("disableDefaultUI", true);
+        }
+        if (!map.isNavigationControl()) {
+            wb.attr("navigationControl", false);
+        }
+        if (!map.isMapTypeControl()) {
+            wb.attr("mapTypeControl", false);
+        }
+        if (map.isStreetView()) {
+            wb.attr("streetViewControl", true);
+        }
 
         //Options
-        if (!map.isDraggable()) wb.attr("draggable", false);
-        if (map.isDisableDoubleClickZoom()) wb.attr("disableDoubleClickZoom", true);
-        if (!map.isScrollWheel()) wb.attr("scrollwheel", false);
+        if (!map.isDraggable()) {
+            wb.attr("draggable", false);
+        }
+        if (map.isDisableDoubleClickZoom()) {
+            wb.attr("disableDoubleClickZoom", true);
+        }
+        if (!map.isScrollWheel()) {
+            wb.attr("scrollwheel", false);
+        }
 
         //Client events
-        if (map.getOnPointClick() != null) wb.callback("onPointClick", "function(event)", map.getOnPointClick() + ";");
+        if (map.getOnPointClick() != null) {
+            wb.callback("onPointClick", "function(event)", map.getOnPointClick() + ";");
+        }
 
         /*
          * Behaviors
@@ -153,7 +167,7 @@ public class GMapRenderer extends CoreRenderer {
 
         writer.write(",markers:[");
 
-        for (Iterator<Marker> iterator = model.getMarkers().iterator(); iterator.hasNext();) {
+        for (Iterator<Marker> iterator = model.getMarkers().iterator(); iterator.hasNext(); ) {
             Marker marker = (Marker) iterator.next();
             encodeMarker(context, marker);
 
@@ -171,14 +185,30 @@ public class GMapRenderer extends CoreRenderer {
         writer.write("position:new google.maps.LatLng(" + marker.getLatlng().getLat() + ", " + marker.getLatlng().getLng() + ")");
 
         writer.write(",id:'" + marker.getId() + "'");
-        if (marker.getTitle() != null) writer.write(",title:\"" + escapeText(marker.getTitle()) + "\"");
-        if (marker.getIcon() != null) writer.write(",icon:'" + marker.getIcon() + "'");
-        if (marker.getShadow() != null) writer.write(",shadow:'" + marker.getShadow() + "'");
-        if (marker.getCursor() != null) writer.write(",cursor:'" + marker.getCursor() + "'");
-        if (marker.isDraggable()) writer.write(",draggable: true");
-        if (!marker.isVisible()) writer.write(",visible: false");
-        if (marker.isFlat()) writer.write(",flat: true");
-        if (marker.getZindex() > Integer.MIN_VALUE) writer.write(",zIndex:" + marker.getZindex());
+        if (marker.getTitle() != null) {
+            writer.write(",title:\"" + escapeText(marker.getTitle()) + "\"");
+        }
+        if (marker.getIcon() != null) {
+            writer.write(",icon:'" + marker.getIcon() + "'");
+        }
+        if (marker.getShadow() != null) {
+            writer.write(",shadow:'" + marker.getShadow() + "'");
+        }
+        if (marker.getCursor() != null) {
+            writer.write(",cursor:'" + marker.getCursor() + "'");
+        }
+        if (marker.isDraggable()) {
+            writer.write(",draggable: true");
+        }
+        if (!marker.isVisible()) {
+            writer.write(",visible: false");
+        }
+        if (marker.isFlat()) {
+            writer.write(",flat: true");
+        }
+        if (marker.getZindex() > Integer.MIN_VALUE) {
+            writer.write(",zIndex:" + marker.getZindex());
+        }
 
         writer.write("})");
     }
@@ -189,7 +219,7 @@ public class GMapRenderer extends CoreRenderer {
 
         writer.write(",polylines:[");
 
-        for (Iterator<Polyline> lines = model.getPolylines().iterator(); lines.hasNext();) {
+        for (Iterator<Polyline> lines = model.getPolylines().iterator(); lines.hasNext(); ) {
             Polyline polyline = (Polyline) lines.next();
 
             writer.write("new google.maps.Polyline({");
@@ -200,9 +230,15 @@ public class GMapRenderer extends CoreRenderer {
             writer.write(",strokeOpacity:" + polyline.getStrokeOpacity());
             writer.write(",strokeWeight:" + polyline.getStrokeWeight());
 
-            if (polyline.getStrokeColor() != null) writer.write(",strokeColor:'" + polyline.getStrokeColor() + "'");
-            if (polyline.getZindex() > Integer.MIN_VALUE) writer.write(",zIndex:" + polyline.getZindex());
-            if (polyline.getIcons() != null) writer.write(", icons:" + polyline.getIcons());
+            if (polyline.getStrokeColor() != null) {
+                writer.write(",strokeColor:'" + polyline.getStrokeColor() + "'");
+            }
+            if (polyline.getZindex() > Integer.MIN_VALUE) {
+                writer.write(",zIndex:" + polyline.getZindex());
+            }
+            if (polyline.getIcons() != null) {
+                writer.write(", icons:" + polyline.getIcons());
+            }
 
             writer.write("})");
 
@@ -220,7 +256,7 @@ public class GMapRenderer extends CoreRenderer {
 
         writer.write(",polygons:[");
 
-        for (Iterator<Polygon> polygons = model.getPolygons().iterator(); polygons.hasNext();) {
+        for (Iterator<Polygon> polygons = model.getPolygons().iterator(); polygons.hasNext(); ) {
             Polygon polygon = (Polygon) polygons.next();
 
             writer.write("new google.maps.Polygon({");
@@ -232,9 +268,15 @@ public class GMapRenderer extends CoreRenderer {
             writer.write(",strokeWeight:" + polygon.getStrokeWeight());
             writer.write(",fillOpacity:" + polygon.getFillOpacity());
 
-            if (polygon.getStrokeColor() != null) writer.write(",strokeColor:'" + polygon.getStrokeColor() + "'");
-            if (polygon.getFillColor() != null) writer.write(",fillColor:'" + polygon.getFillColor() + "'");
-            if (polygon.getZindex() > Integer.MIN_VALUE) writer.write(",zIndex:" + polygon.getZindex());
+            if (polygon.getStrokeColor() != null) {
+                writer.write(",strokeColor:'" + polygon.getStrokeColor() + "'");
+            }
+            if (polygon.getFillColor() != null) {
+                writer.write(",fillColor:'" + polygon.getFillColor() + "'");
+            }
+            if (polygon.getZindex() > Integer.MIN_VALUE) {
+                writer.write(",zIndex:" + polygon.getZindex());
+            }
 
             writer.write("})");
 
@@ -252,7 +294,7 @@ public class GMapRenderer extends CoreRenderer {
 
         writer.write(",circles:[");
 
-        for (Iterator<Circle> circles = model.getCircles().iterator(); circles.hasNext();) {
+        for (Iterator<Circle> circles = model.getCircles().iterator(); circles.hasNext(); ) {
             Circle circle = (Circle) circles.next();
 
             writer.write("new google.maps.Circle({");
@@ -265,9 +307,15 @@ public class GMapRenderer extends CoreRenderer {
             writer.write(",strokeWeight:" + circle.getStrokeWeight());
             writer.write(",fillOpacity:" + circle.getFillOpacity());
 
-            if (circle.getStrokeColor() != null) writer.write(",strokeColor:'" + circle.getStrokeColor() + "'");
-            if (circle.getFillColor() != null) writer.write(",fillColor:'" + circle.getFillColor() + "'");
-            if (circle.getZindex() > Integer.MIN_VALUE) writer.write(",zIndex:" + circle.getZindex());
+            if (circle.getStrokeColor() != null) {
+                writer.write(",strokeColor:'" + circle.getStrokeColor() + "'");
+            }
+            if (circle.getFillColor() != null) {
+                writer.write(",fillColor:'" + circle.getFillColor() + "'");
+            }
+            if (circle.getZindex() > Integer.MIN_VALUE) {
+                writer.write(",zIndex:" + circle.getZindex());
+            }
 
             writer.write("})");
 
@@ -285,7 +333,7 @@ public class GMapRenderer extends CoreRenderer {
 
         writer.write(",rectangles:[");
 
-        for (Iterator<Rectangle> rectangles = model.getRectangles().iterator(); rectangles.hasNext();) {
+        for (Iterator<Rectangle> rectangles = model.getRectangles().iterator(); rectangles.hasNext(); ) {
             Rectangle rectangle = (Rectangle) rectangles.next();
 
             writer.write("new google.maps.Rectangle({");
@@ -301,9 +349,15 @@ public class GMapRenderer extends CoreRenderer {
             writer.write(",strokeWeight:" + rectangle.getStrokeWeight());
             writer.write(",fillOpacity:" + rectangle.getFillOpacity());
 
-            if (rectangle.getStrokeColor() != null) writer.write(",strokeColor:'" + rectangle.getStrokeColor() + "'");
-            if (rectangle.getFillColor() != null) writer.write(",fillColor:'" + rectangle.getFillColor() + "'");
-            if (rectangle.getZindex() > Integer.MIN_VALUE) writer.write(",zIndex:" + rectangle.getZindex());
+            if (rectangle.getStrokeColor() != null) {
+                writer.write(",strokeColor:'" + rectangle.getStrokeColor() + "'");
+            }
+            if (rectangle.getFillColor() != null) {
+                writer.write(",fillColor:'" + rectangle.getFillColor() + "'");
+            }
+            if (rectangle.getZindex() > Integer.MIN_VALUE) {
+                writer.write(",zIndex:" + rectangle.getZindex());
+            }
 
             writer.write("})");
 
@@ -319,7 +373,7 @@ public class GMapRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.write(",path:[");
-        for (Iterator<LatLng> coords = paths.iterator(); coords.hasNext();) {
+        for (Iterator<LatLng> coords = paths.iterator(); coords.hasNext(); ) {
             LatLng coord = coords.next();
 
             writer.write("new google.maps.LatLng(" + coord.getLat() + ", " + coord.getLng() + ")");

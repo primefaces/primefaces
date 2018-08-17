@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
-
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -63,8 +62,8 @@ public class DataExporter implements ActionListener, StateHolder {
     }
 
     public DataExporter(ValueExpression target, ValueExpression type, ValueExpression fileName, ValueExpression pageOnly,
-            ValueExpression selectionOnly, ValueExpression encoding, MethodExpression preProcessor,
-            MethodExpression postProcessor, ValueExpression options, MethodExpression onTableRender) {
+                        ValueExpression selectionOnly, ValueExpression encoding, MethodExpression preProcessor,
+                        MethodExpression postProcessor, ValueExpression options, MethodExpression onTableRender) {
         this.target = target;
         this.type = type;
         this.fileName = fileName;
@@ -163,7 +162,7 @@ public class DataExporter implements ActionListener, StateHolder {
     }
 
     public void setRepeat(ValueExpression ve) {
-        this.repeat = ve;
+        repeat = ve;
     }
 
     @Override

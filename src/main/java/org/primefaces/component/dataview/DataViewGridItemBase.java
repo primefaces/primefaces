@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,45 +16,32 @@
 package org.primefaces.component.dataview;
 
 import javax.faces.component.UIComponentBase;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
-import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
 
 
-public abstract class DataViewGridItemBase extends UIComponentBase {
+abstract class DataViewGridItemBase extends UIComponentBase {
 
+    public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-	public static final String COMPONENT_TYPE = "org.primefaces.component.DataViewGridItem";
-	public static final String COMPONENT_FAMILY = "org.primefaces.component";
+    public enum PropertyKeys {
 
-	public enum PropertyKeys {
+        columns
+    }
 
-		columns;
-	}
+    public DataViewGridItemBase() {
+        setRendererType(null);
+    }
 
-	public DataViewGridItemBase() {
-		setRendererType(null);
-	}
+    @Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
 
-	public String getFamily() {
-		return COMPONENT_FAMILY;
-	}
+    public int getColumns() {
+        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.columns, 3);
+    }
 
-	public int getColumns() {
-		return (java.lang.Integer) getStateHelper().eval(PropertyKeys.columns, 3);
-	}
-	public void setColumns(int _columns) {
-		getStateHelper().put(PropertyKeys.columns, _columns);
-	}
+    public void setColumns(int _columns) {
+        getStateHelper().put(PropertyKeys.columns, _columns);
+    }
 
 }

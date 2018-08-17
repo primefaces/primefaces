@@ -19,6 +19,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.renderkit.CoreRenderer;
@@ -40,10 +41,18 @@ public class SummaryRowRenderer extends CoreRenderer {
                 String styleClass = column.getStyleClass();
 
                 writer.startElement("td", null);
-                if (style != null) writer.writeAttribute("style", style, null);
-                if (styleClass != null) writer.writeAttribute("class", styleClass, null);
-                if (column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
-                if (column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
+                if (style != null) {
+                    writer.writeAttribute("style", style, null);
+                }
+                if (styleClass != null) {
+                    writer.writeAttribute("class", styleClass, null);
+                }
+                if (column.getRowspan() != 1) {
+                    writer.writeAttribute("rowspan", column.getRowspan(), null);
+                }
+                if (column.getColspan() != 1) {
+                    writer.writeAttribute("colspan", column.getColspan(), null);
+                }
 
                 column.encodeAll(context);
 

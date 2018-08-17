@@ -17,21 +17,16 @@ package org.primefaces.component.timeline;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-import org.primefaces.PrimeFaces;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.model.timeline.TimelineEvent;
 import org.primefaces.model.timeline.TimelineGroup;
 import org.primefaces.util.ComponentUtils;
@@ -114,7 +109,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
         UIComponent groupFacet = timeline.getFacet("group");
         if (groups != null && groupFacet != null) {
             // buffer for groups' content
-            groupsContent = new HashMap<String, String>();
+            groupsContent = new HashMap<>();
         }
 
         TimeZone targetTZ = ComponentUtils.resolveTimeZone(timeline.getTimeZone());
@@ -205,7 +200,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
     private void checkCrudOperationDataList() {
         if (crudOperationDatas == null) {
-            crudOperationDatas = new ArrayList<CrudOperationData>();
+            crudOperationDatas = new ArrayList<>();
         }
     }
 

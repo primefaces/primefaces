@@ -17,7 +17,7 @@ package org.primefaces.component.media.player;
 
 public class FlashPlayer implements MediaPlayer {
 
-    private final static String[] SUPPORTED_TYPES = new String[] { "flv", "mp3", "swf" };
+    private final static String[] SUPPORTED_TYPES = new String[]{"flv", "mp3", "swf"};
 
     @Override
     public String getClassId() {

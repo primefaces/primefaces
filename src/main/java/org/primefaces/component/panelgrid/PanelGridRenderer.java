@@ -21,6 +21,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.column.Column;
 import org.primefaces.component.row.Row;
 import org.primefaces.renderkit.CoreRenderer;
@@ -177,7 +178,9 @@ public class PanelGridRenderer extends CoreRenderer {
         if (row.getStyleClass() != null) {
             rowClass += " " + row.getStyleClass();
         }
-        if (style != null) writer.writeAttribute("style", style, null);
+        if (style != null) {
+            writer.writeAttribute("style", style, null);
+        }
 
         writer.writeAttribute("class", rowClass, null);
         writer.writeAttribute("role", "row", null);
@@ -195,9 +198,15 @@ public class PanelGridRenderer extends CoreRenderer {
                 writer.writeAttribute("role", columnRole, null);
                 writer.writeAttribute("class", styleClass, null);
 
-                if (column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
-                if (column.getColspan() > 1) writer.writeAttribute("colspan", column.getColspan(), null);
-                if (column.getRowspan() > 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
+                if (column.getStyle() != null) {
+                    writer.writeAttribute("style", column.getStyle(), null);
+                }
+                if (column.getColspan() > 1) {
+                    writer.writeAttribute("colspan", column.getColspan(), null);
+                }
+                if (column.getRowspan() > 1) {
+                    writer.writeAttribute("rowspan", column.getRowspan(), null);
+                }
 
                 renderChildren(context, column);
 
@@ -261,7 +270,7 @@ public class PanelGridRenderer extends CoreRenderer {
 
     public void encodeTableFacet(FacesContext context, PanelGrid grid, int columns, String facet, String tag, String styleClass)
             throws IOException {
-        
+
         UIComponent component = grid.getFacet(facet);
 
         if (component != null && component.isRendered()) {
@@ -278,7 +287,7 @@ public class PanelGridRenderer extends CoreRenderer {
                 writer.writeAttribute("colspan", columns, null);
                 writer.writeAttribute("role", "columnheader", null);
                 writer.writeAttribute("class", PanelGrid.CELL_CLASS + " ui-widget-header", null);
-                
+
                 component.encodeAll(context);
 
                 writer.endElement("td");

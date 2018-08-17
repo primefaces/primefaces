@@ -22,14 +22,13 @@ import java.util.Date;
 import java.util.Locale;
 import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import org.primefaces.context.PrimeApplicationContext;
 
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.MessageFactory;
@@ -262,21 +261,21 @@ public class CalendarRenderer extends InputRenderer {
     public String convertPattern(String patternTemplate) {
         String pattern = patternTemplate.replaceAll("MMM", "###");
         int patternLen = pattern.length();
-        int countM = patternLen - pattern.replaceAll("M","").length();
-        int countD = patternLen - pattern.replaceAll("d","").length();
+        int countM = patternLen - pattern.replaceAll("M", "").length();
+        int countD = patternLen - pattern.replaceAll("d", "").length();
         if (countM == 1) {
             pattern = pattern.replaceAll("M", "mm");
         }
-        
+
         if (countD == 1) {
             pattern = pattern.replaceAll("d", "dd");
         }
-        
+
         pattern = pattern.replaceAll("[a-zA-Z]", "9");
         pattern = pattern.replaceAll("###", "aaa");
         return pattern;
     }
-    
+
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object value) throws ConverterException {
         Calendar calendar = (Calendar) component;
@@ -337,7 +336,7 @@ public class CalendarRenderer extends InputRenderer {
 
             if (calendar.isTimeOnly()) {
                 message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.TIME", FacesMessage.SEVERITY_ERROR, params);
-            } 
+            }
             else if (calendar.hasTime()) {
                 message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.DATETIME", FacesMessage.SEVERITY_ERROR, params);
             }

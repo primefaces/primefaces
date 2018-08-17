@@ -26,6 +26,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
+
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -89,7 +90,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
             writer.writeAttribute("class", MultiSelectListbox.LIST_HEADER_CLASS, null);
             writer.writeText(header, null);
             writer.endElement("div");
-        } 
+        }
         else {
             listStyleClass = listStyleClass + " ui-corner-all";
         }

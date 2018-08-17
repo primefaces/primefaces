@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2009-2018 PrimeTek.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,70 +15,60 @@
  */
 package org.primefaces.component.column;
 
-import javax.faces.component.UIColumn;
-import javax.faces.context.FacesContext;
-import javax.faces.component.UINamingContainer;
-import javax.el.ValueExpression;
-import javax.el.MethodExpression;
-import javax.faces.render.Renderer;
 import java.io.IOException;
-import javax.faces.component.UIComponent;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
 import java.util.List;
-import java.util.ArrayList;
-import org.primefaces.util.ComponentUtils;
-import java.util.List;
-import org.primefaces.model.filter.*;
-import org.primefaces.component.celleditor.CellEditor;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseId;
-import org.primefaces.model.menu.MenuModel;
 
-@ResourceDependencies({
-
-})
-public class Column extends ColumnBase implements org.primefaces.component.api.UIColumn,org.primefaces.model.menu.MenuColumn {
+import org.primefaces.component.celleditor.CellEditor;
 
 
+public class Column extends ColumnBase implements org.primefaces.component.api.UIColumn, org.primefaces.model.menu.MenuColumn {
 
+
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Column";
+
+    @Override
     public CellEditor getCellEditor() {
-    	
-    	CellEditor cellEditor = null;
-    	
-	    for(UIComponent child : getChildren()) {
-	        if(child instanceof CellEditor && ((CellEditor)child).isRendered()) {
-	            cellEditor = (CellEditor) child;
-	        	break;
-	        }
-	    }
-	
-	    return cellEditor;
+
+        CellEditor cellEditor = null;
+
+        for (UIComponent child : getChildren()) {
+            if (child instanceof CellEditor && ((CellEditor) child).isRendered()) {
+                cellEditor = (CellEditor) child;
+                break;
+            }
+        }
+
+        return cellEditor;
     }
 
+    @Override
     public boolean isDynamic() {
         return false;
     }
 
+    @Override
     public String getColumnKey() {
-        return this.getClientId();
+        return getClientId();
     }
 
+    @Override
     public List getElements() {
         return getChildren();
     }
 
+    @Override
     public int getElementsCount() {
         return getChildCount();
     }
-    
+
+    @Override
     public void renderChildren(FacesContext context) throws IOException {
-        int childCount = this.getChildCount();
-        if(childCount > 0) {
-            for(int i = 0; i < childCount; i++) {
-                UIComponent child = this.getChildren().get(i);
+        int childCount = getChildCount();
+        if (childCount > 0) {
+            for (int i = 0; i < childCount; i++) {
+                UIComponent child = getChildren().get(i);
                 child.encodeAll(context);
             }
         }
