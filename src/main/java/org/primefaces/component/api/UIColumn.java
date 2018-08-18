@@ -17,11 +17,11 @@ package org.primefaces.component.api;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-
 import org.primefaces.component.celleditor.CellEditor;
 
 public interface UIColumn {

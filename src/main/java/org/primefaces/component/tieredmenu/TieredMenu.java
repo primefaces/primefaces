@@ -25,8 +25,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class TieredMenu extends TieredMenuBase implements org.primefaces.component.api.Widget, org.primefaces.component.menu.OverlayMenu {
-
+public class TieredMenu extends TieredMenuBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TieredMenu";
 

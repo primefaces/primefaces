@@ -28,8 +28,7 @@ import javax.faces.context.FacesContext;
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "signature/signature.js")
 })
-public class Signature extends SignatureBase implements org.primefaces.component.api.Widget {
-
+public class Signature extends SignatureBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Signature";
 

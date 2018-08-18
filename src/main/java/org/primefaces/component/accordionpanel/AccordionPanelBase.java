@@ -15,11 +15,15 @@
  */
 package org.primefaces.component.accordionpanel;
 
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.UITabPanel;
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class AccordionPanelBase extends UITabPanel implements org.primefaces.component.api.Widget, org.primefaces.component.api.RTLAware, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
+abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -38,14 +42,13 @@ abstract class AccordionPanelBase extends UITabPanel implements org.primefaces.c
         multiple,
         dir,
         tabindex,
-        tabController
+        tabController;
     }
 
     public AccordionPanelBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -146,12 +149,10 @@ abstract class AccordionPanelBase extends UITabPanel implements org.primefaces.c
         getStateHelper().put(PropertyKeys.tabController, _tabController);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 
-    @Override
     public boolean isRTL() {
         return "rtl".equalsIgnoreCase(getDir());
     }

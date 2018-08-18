@@ -17,6 +17,5 @@ package org.primefaces.component.ribbon;
 
 public class RibbonGroup extends RibbonGroupBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.RibbonGroup";
 }

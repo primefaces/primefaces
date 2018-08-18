@@ -16,11 +16,11 @@
 package org.primefaces.component.imagecropper;
 
 import javax.faces.component.UIInput;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class ImageCropperBase extends UIInput implements org.primefaces.component.api.Widget {
+abstract class ImageCropperBase extends UIInput implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -39,14 +39,13 @@ abstract class ImageCropperBase extends UIInput implements org.primefaces.compon
         initialCoords,
         boxWidth,
         boxHeight,
-        sizeLimit
+        sizeLimit;
     }
 
     public ImageCropperBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -147,7 +146,6 @@ abstract class ImageCropperBase extends UIInput implements org.primefaces.compon
         getStateHelper().put(PropertyKeys.sizeLimit, _sizeLimit);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

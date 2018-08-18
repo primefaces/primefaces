@@ -16,11 +16,11 @@
 package org.primefaces.component.keyfilter;
 
 import javax.faces.component.UIComponentBase;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class KeyFilterBase extends UIComponentBase implements org.primefaces.component.api.Widget {
+abstract class KeyFilterBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

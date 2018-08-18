@@ -17,6 +17,5 @@ package org.primefaces.component.organigramnode;
 
 public class UIOrganigramNode extends UIOrganigramNodeBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.OrganigramNode";
 }

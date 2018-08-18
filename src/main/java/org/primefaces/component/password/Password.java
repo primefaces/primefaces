@@ -19,7 +19,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
-
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
@@ -31,8 +30,7 @@ import org.primefaces.util.MessageFactory;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class Password extends PasswordBase implements org.primefaces.component.api.Widget {
-
+public class Password extends PasswordBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Password";
 

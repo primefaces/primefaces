@@ -16,11 +16,11 @@
 package org.primefaces.component.datagrid;
 
 import java.io.IOException;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.GridLayoutUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -79,8 +79,8 @@ public class DataGridRenderer extends DataRenderer {
         String style = grid.getStyle();
         String styleClass = grid.getStyleClass() == null ? DataGrid.DATAGRID_CLASS : DataGrid.DATAGRID_CLASS + " " + grid.getStyleClass();
         String contentClass = empty
-                ? DataGrid.EMPTY_CONTENT_CLASS
-                : (layout.equals("tabular") ? DataGrid.TABLE_CONTENT_CLASS : DataGrid.GRID_CONTENT_CLASS);
+                              ? DataGrid.EMPTY_CONTENT_CLASS
+                              : (layout.equals("tabular") ? DataGrid.TABLE_CONTENT_CLASS : DataGrid.GRID_CONTENT_CLASS);
 
         if (hasPaginator) {
             grid.calculateFirst();

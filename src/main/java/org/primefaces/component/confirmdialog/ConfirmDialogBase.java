@@ -16,11 +16,12 @@
 package org.primefaces.component.confirmdialog;
 
 import javax.faces.component.UIPanel;
-
+import org.primefaces.component.api.RTLAware;
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class ConfirmDialogBase extends UIPanel implements org.primefaces.component.api.Widget, org.primefaces.component.api.RTLAware {
+abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -44,14 +45,13 @@ abstract class ConfirmDialogBase extends UIPanel implements org.primefaces.compo
         closeOnEscape,
         dir,
         global,
-        responsive
+        responsive;
     }
 
     public ConfirmDialogBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -192,12 +192,10 @@ abstract class ConfirmDialogBase extends UIPanel implements org.primefaces.compo
         getStateHelper().put(PropertyKeys.responsive, _responsive);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 
-    @Override
     public boolean isRTL() {
         return "rtl".equalsIgnoreCase(getDir());
     }

@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.menu.AbstractMenu;
@@ -168,13 +168,13 @@ public class StepsRenderer extends BaseMenuRenderer {
                     params.put(menuClientId + "_menuid", idParams);
 
                     command = menuitem.isAjax()
-                            ? buildAjaxRequest(context, steps, (AjaxSource) menuitem, form, params)
-                            : buildNonAjaxRequest(context, steps, form, menuClientId, params, true);
+                              ? buildAjaxRequest(context, steps, (AjaxSource) menuitem, form, params)
+                              : buildNonAjaxRequest(context, steps, form, menuClientId, params, true);
                 }
                 else {
                     command = menuitem.isAjax()
-                            ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
-                            : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
+                              ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
+                              : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
                 }
 
                 onclick = (onclick == null) ? command : onclick + ";" + command;

@@ -27,8 +27,7 @@ import javax.faces.context.FacesContext;
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "photocam/photocam.js")
 })
-public class PhotoCam extends PhotoCamBase implements org.primefaces.component.api.Widget {
-
+public class PhotoCam extends PhotoCamBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.PhotoCam";
 

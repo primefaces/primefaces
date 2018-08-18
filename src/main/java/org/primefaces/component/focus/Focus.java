@@ -25,6 +25,5 @@ import javax.faces.application.ResourceDependency;
 })
 public class Focus extends FocusBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.Focus";
 }

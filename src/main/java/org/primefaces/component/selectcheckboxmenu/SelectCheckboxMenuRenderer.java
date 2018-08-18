@@ -18,6 +18,7 @@ package org.primefaces.component.selectcheckboxmenu;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UISelectMany;
@@ -28,7 +29,6 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
-
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -226,7 +226,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         Object submittedValues = getSubmittedValues(menu);
         Object valuesArray = (submittedValues != null) ? submittedValues : values;
         String listClass = menu.isDisabled() ?
-                SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS + " ui-state-disabled" : SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS;
+                           SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS + " ui-state-disabled" : SelectCheckboxMenu.MULTIPLE_CONTAINER_CLASS;
         listClass = valid ? listClass : listClass + " ui-state-error";
 
         writer.startElement("ul", null);

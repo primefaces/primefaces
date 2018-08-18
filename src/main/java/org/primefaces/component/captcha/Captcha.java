@@ -22,12 +22,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.json.JSONObject;
 import org.primefaces.util.MessageFactory;
@@ -38,8 +38,7 @@ import org.primefaces.util.MessageFactory;
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "captcha/captcha.js")
 })
-public class Captcha extends CaptchaBase implements org.primefaces.component.api.Widget {
-
+public class Captcha extends CaptchaBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Captcha";
 

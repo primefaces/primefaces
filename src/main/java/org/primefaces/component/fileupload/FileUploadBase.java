@@ -16,11 +16,11 @@
 package org.primefaces.component.fileupload;
 
 import javax.faces.component.UIInput;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class FileUploadBase extends UIInput implements org.primefaces.component.api.Widget {
+abstract class FileUploadBase extends UIInput implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

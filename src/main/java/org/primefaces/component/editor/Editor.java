@@ -26,8 +26,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "editor/editor.js")
 })
-public class Editor extends EditorBase implements org.primefaces.component.api.Widget {
-
+public class Editor extends EditorBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Editor";
 }

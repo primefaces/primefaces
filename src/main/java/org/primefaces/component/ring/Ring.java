@@ -25,8 +25,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "ring/ring.js")
 })
-public class Ring extends RingBase implements org.primefaces.component.api.Widget {
-
+public class Ring extends RingBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Ring";
 

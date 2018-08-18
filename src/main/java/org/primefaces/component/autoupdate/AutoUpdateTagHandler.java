@@ -16,6 +16,7 @@
 package org.primefaces.component.autoupdate;
 
 import java.io.IOException;
+
 import javax.el.ELException;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;

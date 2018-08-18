@@ -17,14 +17,13 @@ package org.primefaces.component.column;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-
 import org.primefaces.component.celleditor.CellEditor;
 
 
-public class Column extends ColumnBase implements org.primefaces.component.api.UIColumn, org.primefaces.model.menu.MenuColumn {
-
+public class Column extends ColumnBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Column";
 

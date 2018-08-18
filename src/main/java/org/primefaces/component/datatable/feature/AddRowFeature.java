@@ -16,8 +16,8 @@
 package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
-import javax.faces.context.FacesContext;
 
+import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 

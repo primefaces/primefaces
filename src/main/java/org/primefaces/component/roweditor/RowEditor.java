@@ -17,6 +17,5 @@ package org.primefaces.component.roweditor;
 
 public class RowEditor extends RowEditorBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.RowEditor";
 }

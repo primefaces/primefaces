@@ -16,11 +16,11 @@
 package org.primefaces.component.blockui;
 
 import javax.faces.component.UIPanel;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class BlockUIBase extends UIPanel implements org.primefaces.component.api.Widget {
+abstract class BlockUIBase extends UIPanel implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

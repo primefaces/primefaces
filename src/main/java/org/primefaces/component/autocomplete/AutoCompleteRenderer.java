@@ -17,13 +17,13 @@ package org.primefaces.component.autocomplete;
 
 import java.io.IOException;
 import java.util.*;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.event.PhaseId;
-
 import org.primefaces.component.column.Column;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.event.AutoCompleteEvent;

@@ -18,6 +18,7 @@ package org.primefaces.component.calendar;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -26,7 +27,6 @@ import javax.faces.convert.Converter;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
-
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.convert.DateTimeConverter;
 import org.primefaces.event.DateViewChangeEvent;
@@ -43,8 +43,7 @@ import org.primefaces.util.MessageFactory;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class Calendar extends CalendarBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.InputHolder, org.primefaces.component.api.MixedClientBehaviorHolder {
-
+public class Calendar extends CalendarBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Calendar";
 

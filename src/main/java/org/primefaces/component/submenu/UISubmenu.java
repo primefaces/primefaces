@@ -18,8 +18,7 @@ package org.primefaces.component.submenu;
 import java.util.List;
 
 
-public class UISubmenu extends UISubmenuBase implements org.primefaces.model.menu.Submenu {
-
+public class UISubmenu extends UISubmenuBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.UISubmenu";
 

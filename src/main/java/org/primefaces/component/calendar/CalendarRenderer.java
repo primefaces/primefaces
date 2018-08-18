@@ -20,6 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
 import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -27,7 +28,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
@@ -116,7 +116,7 @@ public class CalendarRenderer extends InputRenderer {
 
         if (popup) {
             inputStyleClass = (inputStyleClass == null) ? Calendar.INPUT_STYLE_CLASS
-                    : Calendar.INPUT_STYLE_CLASS + " " + inputStyleClass;
+                                                        : Calendar.INPUT_STYLE_CLASS + " " + inputStyleClass;
             if (calendar.isDisabled()) {
                 inputStyleClass = inputStyleClass + " ui-state-disabled";
             }

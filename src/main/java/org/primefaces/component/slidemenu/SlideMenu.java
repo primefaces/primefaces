@@ -25,8 +25,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class SlideMenu extends SlideMenuBase implements org.primefaces.component.api.Widget, org.primefaces.component.menu.OverlayMenu {
-
+public class SlideMenu extends SlideMenuBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SlideMenu";
 

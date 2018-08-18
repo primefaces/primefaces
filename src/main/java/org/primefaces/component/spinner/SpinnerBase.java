@@ -16,11 +16,12 @@
 package org.primefaces.component.spinner;
 
 import javax.faces.component.html.HtmlInputText;
-
+import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class SpinnerBase extends HtmlInputText implements org.primefaces.component.api.Widget, org.primefaces.component.api.InputHolder {
+abstract class SpinnerBase extends HtmlInputText implements Widget, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

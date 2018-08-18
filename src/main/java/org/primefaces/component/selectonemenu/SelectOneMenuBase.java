@@ -16,11 +16,12 @@
 package org.primefaces.component.selectonemenu;
 
 import javax.faces.component.html.HtmlSelectOneMenu;
-
+import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements org.primefaces.component.api.Widget, org.primefaces.component.api.InputHolder {
+abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -48,14 +49,13 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements org.primef
         labelTemplate,
         placeholder,
         autoWidth,
-        dynamic
+        dynamic;
     }
 
     public SelectOneMenuBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -180,12 +180,10 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements org.primef
         getStateHelper().put(PropertyKeys.appendTo, _appendTo);
     }
 
-    @Override
     public java.lang.String getTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.title, null);
     }
 
-    @Override
     public void setTitle(java.lang.String _title) {
         getStateHelper().put(PropertyKeys.title, _title);
     }
@@ -230,7 +228,6 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements org.primef
         getStateHelper().put(PropertyKeys.dynamic, _dynamic);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

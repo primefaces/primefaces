@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.util.*;
+
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
@@ -31,7 +32,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 import javax.faces.model.*;
 import javax.faces.render.Renderer;
-
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -444,10 +444,10 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                         }
 
                         childStates.add(child.getChildCount() > 0
-                                ? new Object[]{new SavedState((EditableValueHolder) child),
+                                        ? new Object[]{new SavedState((EditableValueHolder) child),
                                 saveDescendantComponentStates(child, saveChildFacets, true)}
-                                : new Object[]{new SavedState((EditableValueHolder) child),
-                                null});
+                                        : new Object[]{new SavedState((EditableValueHolder) child),
+                                                null});
                     }
                     else if (child.getChildCount() > 0 || (saveChildFacets && child.getFacetCount() > 0)) {
                         Object descendantSavedState = saveDescendantComponentStates(child, saveChildFacets, true);
@@ -509,10 +509,10 @@ public class UITabPanel extends UIPanel implements NamingContainer {
                         }
 
                         childStates.add(child.getChildCount() > 0
-                                ? new Object[]{new SavedState((EditableValueHolder) child),
+                                        ? new Object[]{new SavedState((EditableValueHolder) child),
                                 saveDescendantComponentStates(child, saveChildFacets, true)}
-                                : new Object[]{new SavedState((EditableValueHolder) child),
-                                null});
+                                        : new Object[]{new SavedState((EditableValueHolder) child),
+                                                null});
                     }
                     else if (child.getChildCount() > 0 || (saveChildFacets && child.getFacetCount() > 0)) {
                         Object descendantSavedState = saveDescendantComponentStates(child, saveChildFacets, true);

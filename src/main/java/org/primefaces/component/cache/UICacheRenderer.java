@@ -17,10 +17,10 @@ package org.primefaces.component.cache;
 
 import java.io.IOException;
 import java.io.StringWriter;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.cache.CacheProvider;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.CoreRenderer;

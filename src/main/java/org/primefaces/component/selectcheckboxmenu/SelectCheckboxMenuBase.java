@@ -16,11 +16,12 @@
 package org.primefaces.component.selectcheckboxmenu;
 
 import javax.faces.component.html.HtmlSelectManyCheckbox;
-
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements org.primefaces.component.api.Widget, org.primefaces.component.api.PrimeClientBehaviorHolder {
+abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements Widget, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -44,13 +45,14 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
         showHeader,
         updateLabel,
         multiple,
-        dynamic;
+        dynamic
     }
 
     public SelectCheckboxMenuBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -143,18 +145,22 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
         getStateHelper().put(PropertyKeys.appendTo, _appendTo);
     }
 
+    @Override
     public java.lang.String getTabindex() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, null);
     }
 
+    @Override
     public void setTabindex(java.lang.String _tabindex) {
         getStateHelper().put(PropertyKeys.tabindex, _tabindex);
     }
 
+    @Override
     public java.lang.String getTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.title, null);
     }
 
+    @Override
     public void setTitle(java.lang.String _title) {
         getStateHelper().put(PropertyKeys.title, _title);
     }
@@ -191,6 +197,7 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
         getStateHelper().put(PropertyKeys.dynamic, _dynamic);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

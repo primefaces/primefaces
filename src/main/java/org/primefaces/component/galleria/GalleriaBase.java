@@ -16,11 +16,11 @@
 package org.primefaces.component.galleria;
 
 import javax.faces.component.UIOutput;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class GalleriaBase extends UIOutput implements org.primefaces.component.api.Widget {
+abstract class GalleriaBase extends UIOutput implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

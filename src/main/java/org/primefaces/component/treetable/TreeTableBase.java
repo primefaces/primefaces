@@ -15,11 +15,15 @@
  */
 package org.primefaces.component.treetable;
 
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import org.primefaces.component.api.Pageable;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.UITree;
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class TreeTableBase extends UITree implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder, org.primefaces.component.api.Pageable {
+abstract class TreeTableBase extends UITree implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

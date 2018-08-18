@@ -18,6 +18,7 @@ package org.primefaces.component.datatable;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
+
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -28,7 +29,6 @@ import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.model.SelectItem;
-
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.celleditor.CellEditor;
@@ -872,8 +872,8 @@ public class DataTableRenderer extends DataRenderer {
 
             if (column.getValueExpression(Column.PropertyKeys.filterOptions.toString()) == null) {
                 filterStyleClass = filterStyleClass == null
-                        ? DataTable.COLUMN_INPUT_FILTER_CLASS
-                        : DataTable.COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;
+                                   ? DataTable.COLUMN_INPUT_FILTER_CLASS
+                                   : DataTable.COLUMN_INPUT_FILTER_CLASS + " " + filterStyleClass;
 
                 writer.startElement("input", null);
                 writer.writeAttribute("id", filterId, null);
@@ -1204,9 +1204,9 @@ public class DataTableRenderer extends DataRenderer {
         }
         else {
             groupByVE = (table.getSortBy() == null || table.isMultiSort())
-                    ? null
-                    : context.getApplication().getExpressionFactory().createValueExpression(
-                    eLContext, "#{" + table.getVar() + "." + table.getSortBy() + "}", Object.class);
+                        ? null
+                        : context.getApplication().getExpressionFactory().createValueExpression(
+                                eLContext, "#{" + table.getVar() + "." + table.getSortBy() + "}", Object.class);
         }
 
         boolean encodeSummaryRow = (summaryRow != null && groupByVE != null);
@@ -1371,17 +1371,17 @@ public class DataTableRenderer extends DataRenderer {
         int priority = column.getPriority();
         String style = column.getStyle();
         String styleClass = selectionEnabled
-                ? DataTable.SELECTION_COLUMN_CLASS
-                : (!editorEnabled) ? null : (editor.isDisabled()) ? DataTable.CELL_EDITOR_DISABLED_CLASS : DataTable.EDITABLE_COLUMN_CLASS;
+                            ? DataTable.SELECTION_COLUMN_CLASS
+                            : (!editorEnabled) ? null : (editor.isDisabled()) ? DataTable.CELL_EDITOR_DISABLED_CLASS : DataTable.EDITABLE_COLUMN_CLASS;
         styleClass = (column.isSelectRow())
-                ? styleClass
-                : (styleClass == null) ? DataTable.UNSELECTABLE_COLUMN_CLASS : styleClass + " " + DataTable.UNSELECTABLE_COLUMN_CLASS;
+                     ? styleClass
+                     : (styleClass == null) ? DataTable.UNSELECTABLE_COLUMN_CLASS : styleClass + " " + DataTable.UNSELECTABLE_COLUMN_CLASS;
         styleClass = (isColVisible)
-                ? styleClass
-                : (styleClass == null) ? DataTable.HIDDEN_COLUMN_CLASS : styleClass + " " + DataTable.HIDDEN_COLUMN_CLASS;
+                     ? styleClass
+                     : (styleClass == null) ? DataTable.HIDDEN_COLUMN_CLASS : styleClass + " " + DataTable.HIDDEN_COLUMN_CLASS;
         String userStyleClass = column.getStyleClass();
         styleClass = userStyleClass == null
-                ? styleClass : (styleClass == null) ? userStyleClass : styleClass + " " + userStyleClass;
+                     ? styleClass : (styleClass == null) ? userStyleClass : styleClass + " " + userStyleClass;
 
         if (priority > 0) {
             styleClass = (styleClass == null) ? "ui-column-p-" + priority : styleClass + " ui-column-p-" + priority;
@@ -1735,8 +1735,8 @@ public class DataTableRenderer extends DataRenderer {
             for (int headerIndex = 0; headerIndex < options.size(); headerIndex++) {
                 for (int order = 0; order < 2; order++) {
                     String orderVal = (order == 0)
-                            ? MessageFactory.getMessage(DataTable.SORT_ASC, null)
-                            : MessageFactory.getMessage(DataTable.SORT_DESC, null);
+                                      ? MessageFactory.getMessage(DataTable.SORT_ASC, null)
+                                      : MessageFactory.getMessage(DataTable.SORT_DESC, null);
 
                     writer.startElement("option", null);
                     writer.writeAttribute("value", headerIndex + "_" + order, null);

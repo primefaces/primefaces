@@ -24,8 +24,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class RadioButton extends RadioButtonBase implements org.primefaces.component.api.Widget {
-
+public class RadioButton extends RadioButtonBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.RadioButton";
 }

@@ -16,11 +16,12 @@
 package org.primefaces.component.inputnumber;
 
 import javax.faces.component.html.HtmlInputText;
-
+import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class InputNumberBase extends HtmlInputText implements org.primefaces.component.api.Widget, org.primefaces.component.api.InputHolder {
+abstract class InputNumberBase extends HtmlInputText implements Widget, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -41,14 +42,13 @@ abstract class InputNumberBase extends HtmlInputText implements org.primefaces.c
         inputStyle,
         inputStyleClass,
         padControl,
-        leadingZero
+        leadingZero;
     }
 
     public InputNumberBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -165,7 +165,6 @@ abstract class InputNumberBase extends HtmlInputText implements org.primefaces.c
         getStateHelper().put(PropertyKeys.leadingZero, _leadingZero);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

@@ -20,7 +20,6 @@ import javax.faces.component.UIComponent;
 
 public class LayoutUnit extends LayoutUnitBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.LayoutUnit";
 
     public String getCollapseIcon() {

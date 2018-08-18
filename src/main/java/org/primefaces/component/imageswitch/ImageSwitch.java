@@ -24,8 +24,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "imageswitch/imageswitch.js")
 })
-public class ImageSwitch extends ImageSwitchBase implements org.primefaces.component.api.Widget {
-
+public class ImageSwitch extends ImageSwitchBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ImageSwitch";
 }

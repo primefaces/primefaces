@@ -16,11 +16,12 @@
 package org.primefaces.component.selectbooleancheckbox;
 
 import javax.faces.component.html.HtmlSelectBooleanCheckbox;
-
+import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbox implements org.primefaces.component.api.Widget, org.primefaces.component.api.InputHolder {
+abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbox implements Widget, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

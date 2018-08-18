@@ -17,6 +17,7 @@ package org.primefaces.component.menu;
 
 import java.io.IOException;
 import java.util.*;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
@@ -26,7 +27,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
-
 import org.primefaces.behavior.confirm.ConfirmBehavior;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
@@ -188,13 +188,13 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
                     params.put(menuClientId + "_menuid", idParams);
 
                     command = menuitem.isAjax()
-                            ? buildAjaxRequest(context, menu, (AjaxSource) menuitem, form, params)
-                            : buildNonAjaxRequest(context, menu, form, menuClientId, params, true);
+                              ? buildAjaxRequest(context, menu, (AjaxSource) menuitem, form, params)
+                              : buildNonAjaxRequest(context, menu, form, menuClientId, params, true);
                 }
                 else {
                     command = menuitem.isAjax()
-                            ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
-                            : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
+                              ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
+                              : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
                 }
 
                 onclick = (onclick == null) ? command : onclick + ";" + command;

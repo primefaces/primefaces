@@ -15,10 +15,11 @@
  */
 package org.primefaces.component.columns;
 
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UIData;
 
 
-abstract class ColumnsBase extends UIData implements org.primefaces.component.api.UIColumn {
+abstract class ColumnsBase extends UIData implements UIColumn {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

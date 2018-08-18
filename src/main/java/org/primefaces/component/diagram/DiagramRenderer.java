@@ -18,10 +18,10 @@ package org.primefaces.component.diagram;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.model.diagram.Connection;
 import org.primefaces.model.diagram.DiagramModel;
 import org.primefaces.model.diagram.Element;

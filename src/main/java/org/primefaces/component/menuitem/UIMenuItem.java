@@ -16,18 +16,17 @@
 package org.primefaces.component.menuitem;
 
 import java.util.*;
+
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.BehaviorEvent;
-
 import org.primefaces.util.ComponentUtils;
 
 
-public class UIMenuItem extends UIMenuItemBase implements org.primefaces.component.api.AjaxSource, org.primefaces.component.api.UIOutcomeTarget, org.primefaces.model.menu.MenuItem, org.primefaces.component.api.Confirmable, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
-
+public class UIMenuItem extends UIMenuItemBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.UIMenuItem";
 

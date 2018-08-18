@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
@@ -26,7 +27,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.Visibility;
@@ -39,8 +39,7 @@ import org.primefaces.util.Constants;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class ColumnToggler extends ColumnTogglerBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
-
+public class ColumnToggler extends ColumnTogglerBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ColumnToggler";
 
@@ -74,7 +73,7 @@ public class ColumnToggler extends ColumnTogglerBase implements org.primefaces.c
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
         if (event instanceof AjaxBehaviorEvent && eventName.equals("toggle")) {
-            String clientId = getClientId(context);
+            String clientId = this.getClientId(context);
             Visibility visibility = Visibility.valueOf(params.get(clientId + "_visibility"));
             int index = Integer.parseInt(params.get(clientId + "_index"));
 
@@ -90,7 +89,7 @@ public class ColumnToggler extends ColumnTogglerBase implements org.primefaces.c
     public UIComponent getDataSourceComponent() {
         if (dataSourceComponent == null) {
             FacesContext context = getFacesContext();
-            String tableId = SearchExpressionFacade.resolveClientIds(context, this, getDatasource());
+            String tableId = SearchExpressionFacade.resolveClientIds(context, this, this.getDatasource());
             dataSourceComponent = context.getViewRoot().findComponent(tableId);
         }
 

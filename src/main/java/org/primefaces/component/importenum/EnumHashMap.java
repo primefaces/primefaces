@@ -16,6 +16,7 @@
 package org.primefaces.component.importenum;
 
 import java.util.HashMap;
+
 import javax.faces.FacesException;
 
 /**

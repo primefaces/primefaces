@@ -17,6 +17,7 @@ package org.primefaces.component.timeline;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.PhaseListener;

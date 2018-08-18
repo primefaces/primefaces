@@ -26,8 +26,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "keyboard/keyboard.js")
 })
-public class Keyboard extends KeyboardBase implements org.primefaces.component.api.Widget {
-
+public class Keyboard extends KeyboardBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Keyboard";
 

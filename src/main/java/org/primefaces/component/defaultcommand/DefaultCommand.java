@@ -23,8 +23,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
         @ResourceDependency(library = "primefaces", name = "core.js")
 })
-public class DefaultCommand extends DefaultCommandBase implements org.primefaces.component.api.Widget {
-
+public class DefaultCommand extends DefaultCommandBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DefaultCommand";
 }

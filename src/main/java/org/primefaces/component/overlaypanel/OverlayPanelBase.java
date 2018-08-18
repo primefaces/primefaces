@@ -16,11 +16,11 @@
 package org.primefaces.component.overlaypanel;
 
 import javax.faces.component.UIPanel;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class OverlayPanelBase extends UIPanel implements org.primefaces.component.api.Widget {
+abstract class OverlayPanelBase extends UIPanel implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -56,9 +56,8 @@ abstract class OverlayPanelBase extends UIPanel implements org.primefaces.compon
         PropertyKeys() {
         }
 
-        @Override
         public String toString() {
-            return ((toString != null) ? toString : super.toString());
+            return ((this.toString != null) ? this.toString : super.toString());
         }
     }
 
@@ -66,7 +65,6 @@ abstract class OverlayPanelBase extends UIPanel implements org.primefaces.compon
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -215,7 +213,6 @@ abstract class OverlayPanelBase extends UIPanel implements org.primefaces.compon
         getStateHelper().put(PropertyKeys.showDelay, _showDelay);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

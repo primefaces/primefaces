@@ -16,11 +16,12 @@
 package org.primefaces.component.inputtextarea;
 
 import javax.faces.component.html.HtmlInputTextarea;
-
+import org.primefaces.component.api.MixedClientBehaviorHolder;
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class InputTextareaBase extends HtmlInputTextarea implements org.primefaces.component.api.Widget, org.primefaces.component.api.MixedClientBehaviorHolder {
+abstract class InputTextareaBase extends HtmlInputTextarea implements Widget, MixedClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -38,14 +39,13 @@ abstract class InputTextareaBase extends HtmlInputTextarea implements org.primef
         minQueryLength,
         queryDelay,
         scrollHeight,
-        addLine
+        addLine;
     }
 
     public InputTextareaBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -138,7 +138,6 @@ abstract class InputTextareaBase extends HtmlInputTextarea implements org.primef
         getStateHelper().put(PropertyKeys.addLine, _addLine);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

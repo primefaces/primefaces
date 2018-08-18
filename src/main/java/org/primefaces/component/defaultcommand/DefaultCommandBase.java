@@ -16,11 +16,11 @@
 package org.primefaces.component.defaultcommand;
 
 import javax.faces.component.UIComponentBase;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class DefaultCommandBase extends UIComponentBase implements org.primefaces.component.api.Widget {
+abstract class DefaultCommandBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -30,14 +30,13 @@ abstract class DefaultCommandBase extends UIComponentBase implements org.primefa
 
         widgetVar,
         target,
-        scope
+        scope;
     }
 
     public DefaultCommandBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -66,7 +65,6 @@ abstract class DefaultCommandBase extends UIComponentBase implements org.primefa
         getStateHelper().put(PropertyKeys.scope, _scope);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

@@ -16,11 +16,13 @@
 package org.primefaces.component.outputpanel;
 
 import javax.faces.component.UIPanel;
-
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class OutputPanelBase extends UIPanel implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
+abstract class OutputPanelBase extends UIPanel implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -32,14 +34,13 @@ abstract class OutputPanelBase extends UIPanel implements org.primefaces.compone
         styleClass,
         deferred,
         deferredMode,
-        layout
+        layout;
     }
 
     public OutputPanelBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -84,7 +85,6 @@ abstract class OutputPanelBase extends UIPanel implements org.primefaces.compone
         getStateHelper().put(PropertyKeys.layout, _layout);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

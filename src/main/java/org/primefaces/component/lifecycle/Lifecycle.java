@@ -25,8 +25,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "lifecycle/lifecycle.js"),
         @ResourceDependency(library = "primefaces", name = "lifecycle/lifecycle.css")
 })
-public class Lifecycle extends LifecycleBase implements org.primefaces.component.api.Widget {
-
+public class Lifecycle extends LifecycleBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Lifecycle";
 

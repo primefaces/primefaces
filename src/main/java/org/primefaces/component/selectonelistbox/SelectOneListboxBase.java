@@ -16,11 +16,12 @@
 package org.primefaces.component.selectonelistbox;
 
 import javax.faces.component.html.HtmlSelectOneListbox;
-
+import org.primefaces.component.api.InputHolder;
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements org.primefaces.component.api.Widget, org.primefaces.component.api.InputHolder {
+abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements Widget, InputHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -16,11 +16,11 @@
 package org.primefaces.component.keyboard;
 
 import javax.faces.component.html.HtmlInputText;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class KeyboardBase extends HtmlInputText implements org.primefaces.component.api.Widget {
+abstract class KeyboardBase extends HtmlInputText implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

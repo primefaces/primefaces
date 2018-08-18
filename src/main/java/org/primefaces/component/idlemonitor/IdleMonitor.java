@@ -19,11 +19,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.BehaviorEvent;
-
 import org.primefaces.util.Constants;
 
 @ResourceDependencies({
@@ -31,8 +31,7 @@ import org.primefaces.util.Constants;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "idlemonitor/idlemonitor.js")
 })
-public class IdleMonitor extends IdleMonitorBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
-
+public class IdleMonitor extends IdleMonitorBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.IdleMonitor";
 
@@ -54,6 +53,6 @@ public class IdleMonitor extends IdleMonitorBase implements org.primefaces.compo
     }
 
     private boolean isSelfRequest(FacesContext context) {
-        return getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
+        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
 }

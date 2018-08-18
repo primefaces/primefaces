@@ -15,11 +15,12 @@
  */
 package org.primefaces.component.steps;
 
+import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class StepsBase extends AbstractMenu implements org.primefaces.component.api.Widget {
+abstract class StepsBase extends AbstractMenu implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

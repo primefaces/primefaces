@@ -16,11 +16,11 @@
 package org.primefaces.component.lifecycle;
 
 import javax.faces.component.UIComponentBase;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class LifecycleBase extends UIComponentBase implements org.primefaces.component.api.Widget {
+abstract class LifecycleBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -17,6 +17,5 @@ package org.primefaces.component.fragment;
 
 public class Fragment extends FragmentBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.Fragment";
 }

@@ -17,6 +17,5 @@ package org.primefaces.component.row;
 
 public class Row extends RowBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.Row";
 }

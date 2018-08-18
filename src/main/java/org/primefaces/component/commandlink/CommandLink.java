@@ -19,13 +19,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.Constants;
 
@@ -35,8 +35,7 @@ import org.primefaces.util.Constants;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class CommandLink extends CommandLinkBase implements org.primefaces.component.api.AjaxSource, org.primefaces.component.api.Confirmable, org.primefaces.component.api.PrimeClientBehaviorHolder {
-
+public class CommandLink extends CommandLinkBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CommandLink";
 
@@ -76,7 +75,7 @@ public class CommandLink extends CommandLinkBase implements org.primefaces.compo
             if (eventName.equals("dialogReturn")) {
                 AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
                 Map<String, Object> session = context.getExternalContext().getSessionMap();
-                String dcid = params.get(getClientId(context) + "_pfdlgcid");
+                String dcid = params.get(this.getClientId(context) + "_pfdlgcid");
                 Object selectedValue = session.get(dcid);
                 session.remove(dcid);
 
@@ -92,35 +91,29 @@ public class CommandLink extends CommandLinkBase implements org.primefaces.compo
         }
     }
 
-    @Override
     public boolean isPartialSubmitSet() {
-        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (this.getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
     }
 
-    @Override
     public boolean isResetValuesSet() {
-        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (getValueExpression(PropertyKeys.resetValues.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (this.getValueExpression(PropertyKeys.resetValues.toString()) != null);
     }
 
-    @Override
     public boolean isAjaxified() {
         return isAjax();
     }
 
     private String confirmationScript;
 
-    @Override
     public String getConfirmationScript() {
-        return confirmationScript;
+        return this.confirmationScript;
     }
 
-    @Override
     public void setConfirmationScript(String confirmationScript) {
         this.confirmationScript = confirmationScript;
     }
 
-    @Override
     public boolean requiresConfirmation() {
-        return confirmationScript != null;
+        return this.confirmationScript != null;
     }
 }

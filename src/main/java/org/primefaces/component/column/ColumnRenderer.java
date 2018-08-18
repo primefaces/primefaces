@@ -18,9 +18,9 @@ package org.primefaces.component.column;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-
 import org.primefaces.component.column.renderer.ColumnGroupHelperRenderer;
 import org.primefaces.component.column.renderer.HelperColumnRenderer;
 import org.primefaces.component.column.renderer.PanelGridBodyColumnRenderer;

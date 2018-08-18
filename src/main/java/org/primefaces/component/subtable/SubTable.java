@@ -17,14 +17,13 @@ package org.primefaces.component.subtable;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.faces.component.UIComponent;
 
+import javax.faces.component.UIComponent;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 
 
 public class SubTable extends SubTableBase {
-
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SubTable";
 

@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
+
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -28,7 +29,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
-
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.expression.SearchExpressionFacade;
 
@@ -93,22 +93,22 @@ public class DataExporter implements ActionListener, StateHolder {
         boolean repeating = false;
         if (repeat != null) {
             repeating = repeat.isLiteralText()
-                    ? Boolean.valueOf(repeat.getValue(context.getELContext()).toString())
-                    : (Boolean) repeat.getValue(context.getELContext());
+                        ? Boolean.valueOf(repeat.getValue(context.getELContext()).toString())
+                        : (Boolean) repeat.getValue(context.getELContext());
         }
 
         boolean isPageOnly = false;
         if (pageOnly != null) {
             isPageOnly = pageOnly.isLiteralText()
-                    ? Boolean.valueOf(pageOnly.getValue(context.getELContext()).toString())
-                    : (Boolean) pageOnly.getValue(context.getELContext());
+                         ? Boolean.valueOf(pageOnly.getValue(context.getELContext()).toString())
+                         : (Boolean) pageOnly.getValue(context.getELContext());
         }
 
         boolean isSelectionOnly = false;
         if (selectionOnly != null) {
             isSelectionOnly = selectionOnly.isLiteralText()
-                    ? Boolean.valueOf(selectionOnly.getValue(context.getELContext()).toString())
-                    : (Boolean) selectionOnly.getValue(context.getELContext());
+                              ? Boolean.valueOf(selectionOnly.getValue(context.getELContext()).toString())
+                              : (Boolean) selectionOnly.getValue(context.getELContext());
         }
 
         ExporterOptions exporterOptions = null;

@@ -16,11 +16,11 @@
 package org.primefaces.component.radiobutton;
 
 import javax.faces.component.UIComponentBase;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class RadioButtonBase extends UIComponentBase implements org.primefaces.component.api.Widget {
+abstract class RadioButtonBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -46,9 +46,8 @@ abstract class RadioButtonBase extends UIComponentBase implements org.primefaces
         PropertyKeys() {
         }
 
-        @Override
         public String toString() {
-            return ((toString != null) ? toString : super.toString());
+            return ((this.toString != null) ? this.toString : super.toString());
         }
     }
 
@@ -56,7 +55,6 @@ abstract class RadioButtonBase extends UIComponentBase implements org.primefaces
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -125,7 +123,6 @@ abstract class RadioButtonBase extends UIComponentBase implements org.primefaces
         getStateHelper().put(PropertyKeys.tabindex, _tabindex);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

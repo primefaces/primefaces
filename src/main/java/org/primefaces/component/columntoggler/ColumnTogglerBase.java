@@ -16,11 +16,13 @@
 package org.primefaces.component.columntoggler;
 
 import javax.faces.component.UIComponentBase;
-
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class ColumnTogglerBase extends UIComponentBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
+abstract class ColumnTogglerBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -30,14 +32,13 @@ abstract class ColumnTogglerBase extends UIComponentBase implements org.primefac
 
         widgetVar,
         trigger,
-        datasource
+        datasource;
     }
 
     public ColumnTogglerBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -66,7 +67,6 @@ abstract class ColumnTogglerBase extends UIComponentBase implements org.primefac
         getStateHelper().put(PropertyKeys.datasource, _datasource);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

@@ -16,10 +16,11 @@
 package org.primefaces.component.datascroller;
 
 import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class DataScrollerBase extends UIData implements org.primefaces.component.api.Widget {
+abstract class DataScrollerBase extends UIData implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -33,14 +34,13 @@ abstract class DataScrollerBase extends UIData implements org.primefaces.compone
         chunkSize,
         mode,
         scrollHeight,
-        buffer
+        buffer;
     }
 
     public DataScrollerBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -101,7 +101,6 @@ abstract class DataScrollerBase extends UIData implements org.primefaces.compone
         getStateHelper().put(PropertyKeys.buffer, _buffer);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

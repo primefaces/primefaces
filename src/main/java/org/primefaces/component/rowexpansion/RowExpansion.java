@@ -17,6 +17,5 @@ package org.primefaces.component.rowexpansion;
 
 public class RowExpansion extends RowExpansionBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.RowExpansion";
 }

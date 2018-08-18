@@ -17,11 +17,11 @@ package org.primefaces.component.ajaxexceptionhandler;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
-
 import org.primefaces.component.api.UIData;
 import org.primefaces.util.LangUtils;
 

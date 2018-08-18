@@ -17,6 +17,7 @@ package org.primefaces.component.inputnumber;
 
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
@@ -29,8 +30,7 @@ import javax.faces.context.FacesContext;
         @ResourceDependency(library = "primefaces", name = "inputnumber/inputnumber.js"),
         @ResourceDependency(library = "primefaces", name = "inputnumber/inputnumber.css")
 })
-public class InputNumber extends InputNumberBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.InputHolder {
-
+public class InputNumber extends InputNumberBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputNumber";
 

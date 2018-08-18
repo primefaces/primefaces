@@ -17,7 +17,6 @@ package org.primefaces.component.tabview;
 
 public class Tab extends TabBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tab";
 
     public void setLoaded(boolean value) {

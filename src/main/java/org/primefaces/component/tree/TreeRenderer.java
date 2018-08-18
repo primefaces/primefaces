@@ -17,13 +17,13 @@ package org.primefaces.component.tree;
 
 import java.io.IOException;
 import java.util.*;
+
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.UITree;
 import org.primefaces.model.TreeNode;
@@ -424,8 +424,8 @@ public class TreeRenderer extends CoreRenderer {
         boolean checkbox = (selectionMode != null) && selectionMode.equals("checkbox");
 
         String containerClass = tree.getStyleClass() == null
-                ? Tree.HORIZONTAL_CONTAINER_CLASS
-                : Tree.HORIZONTAL_CONTAINER_CLASS + " " + tree.getStyleClass();
+                                ? Tree.HORIZONTAL_CONTAINER_CLASS
+                                : Tree.HORIZONTAL_CONTAINER_CLASS + " " + tree.getStyleClass();
         containerClass = tree.isDisabled() ? containerClass + " ui-state-disabled" : containerClass;
         if (tree.isShowUnselectableCheckbox()) {
             containerClass = containerClass + " ui-tree-checkbox-all";
@@ -653,8 +653,8 @@ public class TreeRenderer extends CoreRenderer {
         boolean expanded = node.isExpanded();
         boolean selectable = tree.getSelectionMode() != null && node.isSelectable();
         String toggleIcon = expanded
-                ? Tree.EXPANDED_ICON_CLASS_V
-                : (tree.isRTLRendering() ? Tree.COLLAPSED_ICON_RTL_CLASS_V : Tree.COLLAPSED_ICON_CLASS_V);
+                            ? Tree.EXPANDED_ICON_CLASS_V
+                            : (tree.isRTLRendering() ? Tree.COLLAPSED_ICON_RTL_CLASS_V : Tree.COLLAPSED_ICON_CLASS_V);
         String stateIcon = isLeaf ? Tree.LEAF_ICON_CLASS : toggleIcon;
         Object datakey = tree.getDatakey();
         String nodeId = clientId + UINamingContainer.getSeparatorChar(context) + rowKey;

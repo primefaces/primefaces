@@ -16,11 +16,11 @@
 package org.primefaces.component.contentflow;
 
 import javax.faces.component.UIPanel;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class ContentFlowBase extends UIPanel implements org.primefaces.component.api.Widget {
+abstract class ContentFlowBase extends UIPanel implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -32,14 +32,13 @@ abstract class ContentFlowBase extends UIPanel implements org.primefaces.compone
         value,
         var,
         style,
-        styleClass
+        styleClass;
     }
 
     public ContentFlowBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -84,7 +83,6 @@ abstract class ContentFlowBase extends UIPanel implements org.primefaces.compone
         getStateHelper().put(PropertyKeys.styleClass, _styleClass);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

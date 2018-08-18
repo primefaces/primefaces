@@ -16,10 +16,10 @@
 package org.primefaces.component.tristatecheckbox;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -125,10 +125,10 @@ public class TriStateCheckboxRenderer extends InputRenderer {
                 = checkbox.getStateOneIcon() != null ? TriStateCheckbox.UI_ICON + checkbox.getStateOneIcon() : "";
         String stateTwoIconClass
                 = checkbox.getStateTwoIcon() != null ? TriStateCheckbox.UI_ICON + checkbox.getStateTwoIcon()
-                : TriStateCheckbox.UI_ICON + "ui-icon-check";
+                                                     : TriStateCheckbox.UI_ICON + "ui-icon-check";
         String stateThreeIconClass
                 = checkbox.getStateThreeIcon() != null ? TriStateCheckbox.UI_ICON + checkbox.getStateThreeIcon()
-                : TriStateCheckbox.UI_ICON + "ui-icon-closethick";
+                                                       : TriStateCheckbox.UI_ICON + "ui-icon-closethick";
 
         String statesIconsClasses = "[\"" + stateOneIconClass + "\",\"" + stateTwoIconClass + "\",\"" + stateThreeIconClass + "\"]";
 

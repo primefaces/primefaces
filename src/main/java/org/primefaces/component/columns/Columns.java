@@ -18,16 +18,15 @@ package org.primefaces.component.columns;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
-
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.celleditor.CellEditor;
 
 
-public class Columns extends ColumnsBase implements org.primefaces.component.api.UIColumn {
-
+public class Columns extends ColumnsBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Columns";
 

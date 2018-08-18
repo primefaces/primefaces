@@ -16,6 +16,7 @@
 package org.primefaces.component.selectonemenu;
 
 import java.util.*;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -26,7 +27,6 @@ import javax.faces.event.FacesEvent;
 import javax.faces.render.Renderer;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
-
 import org.primefaces.component.column.Column;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
@@ -42,8 +42,7 @@ import org.primefaces.util.MessageFactory;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class SelectOneMenu extends SelectOneMenuBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.InputHolder {
-
+public class SelectOneMenu extends SelectOneMenuBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneMenu";
 
@@ -63,24 +62,22 @@ public class SelectOneMenu extends SelectOneMenuBase implements org.primefaces.c
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("itemSelect", "blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select"));
 
-    @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
     }
 
     public boolean isDynamicLoadRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_dynamicload");
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_dynamicload");
     }
 
-    @Override
     public String getDefaultEventName() {
         return "valueChange";
     }
 
     public List<Column> getColumns() {
-        List<Column> columns = new ArrayList<>();
+        List<Column> columns = new ArrayList<Column>();
 
-        for (UIComponent kid : getChildren()) {
+        for (UIComponent kid : this.getChildren()) {
             if (kid instanceof Column) {
                 columns.add((Column) kid);
             }
@@ -104,7 +101,7 @@ public class SelectOneMenu extends SelectOneMenuBase implements org.primefaces.c
                         "javax.faces.Menu",
                         Renderer.class);
 
-                Object item = renderer.getConvertedValue(context, this, getSubmittedValue());
+                Object item = renderer.getConvertedValue(context, this, this.getSubmittedValue());
                 SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), item);
                 selectEvent.setPhaseId(event.getPhaseId());
                 super.queueEvent(selectEvent);
@@ -120,7 +117,7 @@ public class SelectOneMenu extends SelectOneMenuBase implements org.primefaces.c
 
     @Override
     protected void validateValue(FacesContext context, Object value) {
-        if (isEditable()) {
+        if (this.isEditable()) {
 
             //required field validation
             if (isValid() && isRequired() && isEmpty(value)) {
@@ -183,22 +180,18 @@ public class SelectOneMenu extends SelectOneMenuBase implements org.primefaces.c
         }
     }
 
-    @Override
     public String getInputClientId() {
-        return getClientId(getFacesContext()) + "_focus";
+        return this.getClientId(getFacesContext()) + "_focus";
     }
 
-    @Override
     public String getValidatableInputClientId() {
-        return getClientId(getFacesContext()) + "_input";
+        return this.getClientId(getFacesContext()) + "_input";
     }
 
-    @Override
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
     }
 
-    @Override
     public String getLabelledBy() {
         return (String) getStateHelper().get("labelledby");
     }

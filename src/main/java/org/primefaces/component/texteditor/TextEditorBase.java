@@ -16,11 +16,12 @@
 package org.primefaces.component.texteditor;
 
 import javax.faces.component.UIInput;
-
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class TextEditorBase extends UIInput implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder {
+abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

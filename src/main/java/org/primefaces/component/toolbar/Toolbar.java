@@ -23,7 +23,6 @@ import javax.faces.application.ResourceDependency;
 })
 public class Toolbar extends ToolbarBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.Toolbar";
 
     public static String CONTAINER_CLASS = "ui-toolbar ui-widget ui-widget-header ui-corner-all ui-helper-clearfix";

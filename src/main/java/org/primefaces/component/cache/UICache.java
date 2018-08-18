@@ -21,7 +21,6 @@ import javax.faces.context.FacesContext;
 
 public class UICache extends UICacheBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.Cache";
 
     private boolean cacheSetInCurrentRequest = false;

@@ -25,6 +25,5 @@ import javax.faces.application.ResourceDependency;
 })
 public class AjaxExceptionHandler extends AjaxExceptionHandlerBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.AjaxExceptionHandler";
 }

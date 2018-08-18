@@ -17,7 +17,6 @@ package org.primefaces.component.selectbooleanbutton;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 
@@ -27,8 +26,7 @@ import org.primefaces.util.LangUtils;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class SelectBooleanButton extends SelectBooleanButtonBase implements org.primefaces.component.api.Widget {
-
+public class SelectBooleanButton extends SelectBooleanButtonBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectBooleanButton";
 

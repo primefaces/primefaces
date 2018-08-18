@@ -16,11 +16,12 @@
 package org.primefaces.component.message;
 
 import javax.faces.component.UIMessage;
-
+import org.primefaces.component.api.UINotification;
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class MessageBase extends UIMessage implements org.primefaces.component.api.UINotification, org.primefaces.component.api.Widget {
+abstract class MessageBase extends UIMessage implements UINotification, Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

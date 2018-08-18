@@ -20,6 +20,7 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
+
 import javax.el.ValueExpression;
 import javax.faces.application.Application;
 import javax.faces.application.Resource;
@@ -30,7 +31,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 import javax.imageio.ImageIO;
-
 import org.primefaces.model.CroppedImage;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.BoundedInputStream;

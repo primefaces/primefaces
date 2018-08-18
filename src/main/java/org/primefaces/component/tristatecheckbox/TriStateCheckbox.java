@@ -25,8 +25,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class TriStateCheckbox extends TriStateCheckboxBase implements org.primefaces.component.api.Widget {
-
+public class TriStateCheckbox extends TriStateCheckboxBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TriStateCheckbox";
     public final static String UI_ICON = "ui-icon ";

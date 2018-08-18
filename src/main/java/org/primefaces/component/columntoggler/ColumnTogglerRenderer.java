@@ -17,10 +17,10 @@ package org.primefaces.component.columntoggler;
 
 import java.io.IOException;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.TableState;
 import org.primefaces.expression.SearchExpressionFacade;

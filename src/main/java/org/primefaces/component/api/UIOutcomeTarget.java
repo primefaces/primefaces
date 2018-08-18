@@ -17,6 +17,7 @@ package org.primefaces.component.api;
 
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 
 public interface UIOutcomeTarget {

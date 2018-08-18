@@ -16,6 +16,7 @@
 package org.primefaces.component.schedule;
 
 import java.util.*;
+
 import javax.el.ValueExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -23,7 +24,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
@@ -41,8 +41,7 @@ import org.primefaces.util.LocaleUtils;
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "schedule/schedule.js")
 })
-public class Schedule extends ScheduleBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
-
+public class Schedule extends ScheduleBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Schedule";
 

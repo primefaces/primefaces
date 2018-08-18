@@ -33,6 +33,7 @@ package org.primefaces.component.api;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.*;
+
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -51,7 +52,6 @@ import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.event.PreValidateEvent;
 import javax.faces.model.*;
 import javax.faces.render.Renderer;
-
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;

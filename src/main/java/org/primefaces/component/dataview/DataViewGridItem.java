@@ -17,6 +17,5 @@ package org.primefaces.component.dataview;
 
 public class DataViewGridItem extends DataViewGridItemBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataViewGridItem";
 }

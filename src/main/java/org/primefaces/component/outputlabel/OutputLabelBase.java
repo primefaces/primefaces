@@ -26,14 +26,13 @@ abstract class OutputLabelBase extends HtmlOutputLabel {
 
     public enum PropertyKeys {
 
-        indicateRequired
+        indicateRequired;
     }
 
     public OutputLabelBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }

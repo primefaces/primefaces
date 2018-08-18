@@ -24,8 +24,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class InputText extends InputTextBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.RTLAware {
-
+public class InputText extends InputTextBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputText";
 

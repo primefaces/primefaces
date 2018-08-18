@@ -16,11 +16,13 @@
 package org.primefaces.component.colorpicker;
 
 import javax.faces.component.UIInput;
-
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class ColorPickerBase extends UIInput implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
+abstract class ColorPickerBase extends UIInput implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -32,14 +34,13 @@ abstract class ColorPickerBase extends UIInput implements org.primefaces.compone
         mode,
         style,
         styleClass,
-        onchange
+        onchange;
     }
 
     public ColorPickerBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -84,7 +85,6 @@ abstract class ColorPickerBase extends UIInput implements org.primefaces.compone
         getStateHelper().put(PropertyKeys.onchange, _onchange);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
