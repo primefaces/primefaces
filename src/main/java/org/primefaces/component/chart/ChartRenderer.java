@@ -89,12 +89,12 @@ public class ChartRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Chart", chart.resolveWidgetVar(), clientId)
             .attr("type", type);
-        
+
         if (chart.isResponsive()) wb.attr("responsive", true);
 
         plotRenderer.render(context, chart);
         encodeClientBehaviors(context, chart);
-        
+
         wb.finish();
     }
 }

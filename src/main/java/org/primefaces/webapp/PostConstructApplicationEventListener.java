@@ -42,7 +42,7 @@ public class PostConstructApplicationEventListener implements SystemEventListene
         logger.log(Level.INFO,
                 "Running on PrimeFaces {0}",
                 environment.getBuildVersion());
-        
+
         if (environment.isAtLeastJsf23()) {
             Jsf23Helper.addSearchKeywordResolvers();
         }

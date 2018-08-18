@@ -25,21 +25,21 @@ import javax.validation.Validation;
 import org.primefaces.util.ClassUtils;
 
 public class PrimeEnvironment {
-    
+
     private static final Logger LOG = Logger.getLogger(PrimeEnvironment.class.getName());
-    
+
     private boolean beanValidationAvailable = false;
-    
+
     private boolean atLeastEl22 = false;
-    
+
     private boolean atLeastJsf23 = false;
     private boolean atLeastJsf22 = false;
     private boolean atLeastJsf21 = false;
-    
+
     private boolean atLeastBv11 = false;
 
     private String buildVersion = null;
-    
+
     public PrimeEnvironment() {
         atLeastEl22 = ClassUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
 
@@ -50,7 +50,7 @@ public class PrimeEnvironment {
         atLeastBv11 = ClassUtils.tryToLoadClassForName("javax.validation.executable.ExecutableValidator") != null;
 
         beanValidationAvailable = checkIfBeanValidationIsAvailable();
-        
+
         buildVersion = resolveBuildVersion();
         // This should only happen if PF + the webapp is openend and started in the same netbeans instance
         // Fallback to a UID to void a empty version in the resourceUrls
@@ -58,7 +58,7 @@ public class PrimeEnvironment {
             buildVersion = UUID.randomUUID().toString().replace("-", "").substring(0, 10);
         }
     }
-    
+
     protected boolean checkIfBeanValidationIsAvailable() {
         boolean available = ClassUtils.tryToLoadClassForName("javax.validation.Validation") != null;
 
@@ -77,7 +77,7 @@ public class PrimeEnvironment {
 
         return available;
     }
-    
+
     protected String resolveBuildVersion() {
 
         Properties buildProperties = new Properties();
@@ -98,7 +98,7 @@ public class PrimeEnvironment {
             catch (IOException e) {
             }
         }
-        
+
         return null;
     }
 

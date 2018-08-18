@@ -61,7 +61,7 @@ public class ResetInputActionListener implements ActionListener, Serializable {
                     ? Boolean.valueOf(clearModel.getValue(context.getELContext()).toString())
                     : (Boolean) clearModel.getValue(context.getELContext());
         }
-        
+
         ResetInputVisitCallback visitCallback = resetModel
                 ? ResetInputVisitCallback.INSTANCE_CLEAR_MODEL
                 : ResetInputVisitCallback.INSTANCE;

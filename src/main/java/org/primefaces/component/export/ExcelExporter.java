@@ -61,7 +61,7 @@ public class ExcelExporter extends Exporter {
     public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType,
             MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
             MethodExpression onTableRender) throws IOException {
-        
+
         Workbook wb = createWorkBook();
         String sheetName = getSheetName(context, table);
         if (sheetName == null) {
@@ -97,7 +97,7 @@ public class ExcelExporter extends Exporter {
     public void export(FacesContext context, String filename, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
             String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
             MethodExpression onTableRender) throws IOException {
-        
+
         Workbook wb = createWorkBook();
 
         if (preProcessor != null) {
@@ -136,7 +136,7 @@ public class ExcelExporter extends Exporter {
     public void export(FacesContext context, List<String> clientIds, String filename, boolean pageOnly, boolean selectionOnly,
             String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
             MethodExpression onTableRender) throws IOException {
-        
+
         Workbook wb = createWorkBook();
 
         if (preProcessor != null) {
@@ -196,9 +196,9 @@ public class ExcelExporter extends Exporter {
                         textValue = null;
                         break;
                 }
-                
+
                 if (textValue != null) {
-                    addColumnValue(rowHeader, textValue); 
+                    addColumnValue(rowHeader, textValue);
                 }
                 else if (facet != null) {
                     addColumnValue(rowHeader, facet);

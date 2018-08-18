@@ -38,7 +38,7 @@ public class DroppableRenderer extends CoreRenderer {
         String clientId = droppable.getClientId(context);
 
         renderDummyMarkup(context, component, clientId);
-        
+
         UIComponent target = SearchExpressionFacade.resolveComponent(
                 context, droppable, droppable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
 

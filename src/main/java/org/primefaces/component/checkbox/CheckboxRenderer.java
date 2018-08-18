@@ -64,7 +64,7 @@ public class CheckboxRenderer extends InputRenderer {
 
     protected void encodeOptionInput(FacesContext context, SelectManyCheckbox selectManyCheckbox, Checkbox checkbox, String id, String name,
             boolean disabled) throws IOException {
-        
+
         ResponseWriter writer = context.getResponseWriter();
         String tabindex = checkbox.getTabindex();
         if (tabindex == null) {
@@ -92,7 +92,7 @@ public class CheckboxRenderer extends InputRenderer {
         if (!isValueBlank(onclick)) {
             writer.writeAttribute("onclick", onclick, null);
         }
-        
+
         if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, selectManyCheckbox);
         }
@@ -133,7 +133,7 @@ public class CheckboxRenderer extends InputRenderer {
 
         writer.endElement("div");
     }
-    
+
     @Override
     public String getHighlighter() {
         return "manychkbox";

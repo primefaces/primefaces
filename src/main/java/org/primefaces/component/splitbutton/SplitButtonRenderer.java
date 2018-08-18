@@ -160,7 +160,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
 
-        //icon    
+        //icon
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-button-icon-left ui-icon ui-icon-triangle-1-s", null);
         writer.endElement("span");

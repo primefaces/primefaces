@@ -58,13 +58,13 @@ public class PDFExporter extends Exporter {
     public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly, String encodingType,
             MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
             MethodExpression onTableRender) throws IOException {
-        
+
         try {
             Document document = new Document();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             PdfWriter.getInstance(document, baos);
             this.onTableRender = onTableRender;
-            
+
             if (preProcessor != null) {
                 preProcessor.invoke(context.getELContext(), new Object[]{document});
             }
@@ -97,7 +97,7 @@ public class PDFExporter extends Exporter {
     public void export(FacesContext context, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly,
             String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
             MethodExpression onTableRender) throws IOException {
-        
+
         try {
             Document document = new Document();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -138,7 +138,7 @@ public class PDFExporter extends Exporter {
     public void export(FacesContext context, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
             String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
             MethodExpression onTableRender) throws IOException {
-        
+
         try {
             Document document = new Document();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -188,7 +188,7 @@ public class PDFExporter extends Exporter {
         if (this.onTableRender != null) {
             this.onTableRender.invoke(context.getELContext(), new Object[]{pdfTable, table});
         }
-        
+
         if (this.expOptions != null) {
             applyFacetOptions(this.expOptions);
             applyCellOptions(this.expOptions);
@@ -280,7 +280,7 @@ public class PDFExporter extends Exporter {
                 ((DynamicColumn) col).applyStatelessModel();
             }
 
-            if (col.isRendered() && col.isExportable()) {                
+            if (col.isRendered() && col.isExportable()) {
                 UIComponent facet = col.getFacet(columnType.facet());
                 String textValue;
                 switch (columnType) {
@@ -296,9 +296,9 @@ public class PDFExporter extends Exporter {
                         textValue = null;
                         break;
                 }
-                
+
                 if (textValue != null) {
-                    addColumnValue(pdfTable, textValue); 
+                    addColumnValue(pdfTable, textValue);
                 }
                 else if (facet != null) {
                     addColumnValue(pdfTable, facet);
@@ -314,7 +314,7 @@ public class PDFExporter extends Exporter {
         String value = component == null ? "" : exportValue(FacesContext.getCurrentInstance(), component);
         addColumnValue(pdfTable, value);
     }
-    
+
     protected void addColumnValue(PdfPTable pdfTable, String value) {
         PdfPCell cell = new PdfPCell(new Paragraph(value, this.facetFont));
         if (this.facetBgColor != null) {
@@ -348,7 +348,7 @@ public class PDFExporter extends Exporter {
 
     protected void writePDFToResponse(ExternalContext externalContext, ByteArrayOutputStream baos, String fileName)
             throws IOException, DocumentException {
-        
+
         externalContext.setResponseContentType("application/pdf");
         externalContext.setResponseHeader("Expires", "0");
         externalContext.setResponseHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");

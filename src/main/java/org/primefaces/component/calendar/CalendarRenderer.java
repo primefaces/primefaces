@@ -267,16 +267,16 @@ public class CalendarRenderer extends InputRenderer {
         if (countM == 1) {
             pattern = pattern.replaceAll("M", "mm");
         }
-        
+
         if (countD == 1) {
             pattern = pattern.replaceAll("d", "dd");
         }
-        
+
         pattern = pattern.replaceAll("[a-zA-Z]", "9");
         pattern = pattern.replaceAll("###", "aaa");
         return pattern;
     }
-    
+
     @Override
     public Object getConvertedValue(FacesContext context, UIComponent component, Object value) throws ConverterException {
         Calendar calendar = (Calendar) component;
@@ -337,7 +337,7 @@ public class CalendarRenderer extends InputRenderer {
 
             if (calendar.isTimeOnly()) {
                 message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.TIME", FacesMessage.SEVERITY_ERROR, params);
-            } 
+            }
             else if (calendar.hasTime()) {
                 message = MessageFactory.getMessage("javax.faces.converter.DateTimeConverter.DATETIME", FacesMessage.SEVERITY_ERROR, params);
             }

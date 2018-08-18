@@ -283,12 +283,12 @@ public class DynamicColumn implements UIColumn {
     public boolean isGroupRow() {
         return this.columns.isGroupRow();
     }
-    
+
     @Override
     public String getExportHeaderValue() {
         return this.columns.getExportHeaderValue();
     }
-    
+
     @Override
     public String getExportFooterValue() {
         return this.columns.getExportFooterValue();

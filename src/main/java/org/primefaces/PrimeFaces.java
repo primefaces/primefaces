@@ -40,15 +40,15 @@ import org.primefaces.visit.ResetInputVisitCallback;
 public class PrimeFaces {
 
     private static final Logger LOG = Logger.getLogger(PrimeFaces.class.getName());
-    
+
     // TODO - there are 2 possible solutions
     // 1) the current static solution + use Faces/RequestContext#getCurrentInstance each time
     // 2) make PrimeFaces requestScoped and receive Faces/RequestContext only once
     private static PrimeFaces instance = new PrimeFaces();
-    
+
     private final Dialog dialog;
     private final Ajax ajax;
-    
+
     /**
      * Protected constructor to allow CDI proxying - and also allow customizations, or setting a mock.
      */
@@ -64,33 +64,33 @@ public class PrimeFaces {
     public static void setCurrent(PrimeFaces primeFaces) {
         instance = primeFaces;
     }
-    
+
     protected FacesContext getFacesContext() {
         return FacesContext.getCurrentInstance();
     }
-    
+
     protected PrimeRequestContext getRequestContext() {
         return PrimeRequestContext.getCurrentInstance();
     }
-    
+
     /**
      * Shortcut for {@link PartialViewContext#isAjaxRequest()}.
-     * 
+     *
      * @return <code>true</code> if the current request is a AJAX request.
      */
     public boolean isAjaxRequest() {
         return getFacesContext().getPartialViewContext().isAjaxRequest();
     }
-    
+
     /**
      * Executes a JavaScript statement.
-     * 
+     *
      * @param statement the JavaScript statement.
      */
     public void executeScript(String statement) {
         getRequestContext().getScriptsToExecute().add(statement);
     }
-    
+
     /**
      * Scrolls to a component with the given clientId.
      *
@@ -99,7 +99,7 @@ public class PrimeFaces {
     public void scrollTo(String clientId) {
         executeScript("PrimeFaces.scrollTo('" + clientId + "');");
     }
-    
+
     /**
      * Resolves the search expression, starting from the viewroot, and focus the resolved component.
      *
@@ -108,7 +108,7 @@ public class PrimeFaces {
     public void focus(String expression) {
         focus(expression, FacesContext.getCurrentInstance().getViewRoot());
     }
-    
+
     /**
      * Resolves the search expression and focus the resolved component.
      *
@@ -127,7 +127,7 @@ public class PrimeFaces {
                 expression);
         executeScript("PrimeFaces.focus('" + clientId + "');");
     }
-    
+
     /**
      * Resolves the search expressions, starting from the viewroot and resets all found {@link UIInput} components.
      *
@@ -141,7 +141,7 @@ public class PrimeFaces {
         FacesContext facesContext = getFacesContext();
         VisitContext visitContext = VisitContext.createVisitContext(facesContext, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
 
-        
+
         UIViewRoot root = facesContext.getViewRoot();
         for (String expression : expressions) {
             List<UIComponent> components = SearchExpressionFacade.resolveComponents(facesContext, root, expression);
@@ -163,7 +163,7 @@ public class PrimeFaces {
 
         resetInputs(Arrays.asList(expressions));
     }
-    
+
     public void clearTableStates() {
         getFacesContext().getExternalContext().getSessionMap().remove(Constants.TABLE_STATE);
     }
@@ -178,7 +178,7 @@ public class PrimeFaces {
 
     /**
      * Returns the dialog helpers.
-     * 
+     *
      * @return the dialog helpers.
      */
     public Dialog dialog() {
@@ -233,7 +233,7 @@ public class PrimeFaces {
 
             executeScript("PrimeFaces.closeDialog({pfdlgcid:'" + pfdlgcid + "'});");
         }
-        
+
         /**
          * Displays a message in a dynamic dialog.
          *
@@ -248,11 +248,11 @@ public class PrimeFaces {
                     + "\",detail:\"" + detail + "\"});");
         }
     }
-    
-    public Ajax ajax() {        
+
+    public Ajax ajax() {
         return ajax;
     }
-    
+
     public class Ajax {
         /**
          * Add a parameter for ajax oncomplete client side callbacks. Value will be serialized to json.
@@ -264,7 +264,7 @@ public class PrimeFaces {
         public void addCallbackParam(String name, Object value) {
             getRequestContext().getCallbackParams().put(name, value);
         }
-        
+
         /**
          * Updates all components with the given expressions or clientIds.
          *
@@ -274,19 +274,19 @@ public class PrimeFaces {
             if (expressions == null || expressions.isEmpty()) {
                 return;
             }
-            
+
             FacesContext facesContext = getFacesContext();
-            
+
             for (String expression : expressions) {
-                
+
                 if (LangUtils.isValueBlank(expression)) {
                     continue;
                 }
 
                 try {
-                    String clientId = 
+                    String clientId =
                             SearchExpressionFacade.resolveClientId(facesContext, facesContext.getViewRoot(), expression);
-                    
+
                     facesContext.getPartialViewContext().getRenderIds().add(clientId);
                 }
                 catch (ComponentNotFoundException e) {
@@ -298,7 +298,7 @@ public class PrimeFaces {
                 }
             }
         }
-        
+
         /**
          * Updates all components with the given expressions or clientIds.
          *

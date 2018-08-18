@@ -261,7 +261,7 @@ public class PanelGridRenderer extends CoreRenderer {
 
     public void encodeTableFacet(FacesContext context, PanelGrid grid, int columns, String facet, String tag, String styleClass)
             throws IOException {
-        
+
         UIComponent component = grid.getFacet(facet);
 
         if (component != null && component.isRendered()) {
@@ -278,7 +278,7 @@ public class PanelGridRenderer extends CoreRenderer {
                 writer.writeAttribute("colspan", columns, null);
                 writer.writeAttribute("role", "columnheader", null);
                 writer.writeAttribute("class", PanelGrid.CELL_CLASS + " ui-widget-header", null);
-                
+
                 component.encodeAll(context);
 
                 writer.endElement("td");

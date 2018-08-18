@@ -105,7 +105,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
 
     protected void encodeOption(FacesContext context, SelectOneButton button, SelectItem option, String id, String name, Converter converter,
             boolean selected, boolean disabled, int idx, int size) throws IOException {
-        
+
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, button, converter, option.getValue());
 
@@ -146,14 +146,14 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         //item label
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        
+
         if (option.isEscape()) {
             writer.writeText(option.getLabel(), "itemLabel");
         }
         else {
             writer.write(option.getLabel());
         }
-        
+
         writer.endElement("span");
 
         writer.endElement("div");

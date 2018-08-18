@@ -135,7 +135,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
         String stateTwoTitle = checkbox.getStateTwoTitle() == null ? "" : checkbox.getStateTwoTitle();
         String stateThreeTitle = checkbox.getStateThreeTitle() == null ? "" : checkbox.getStateThreeTitle();
 
-        String statesTitles = "{\"titles\": [\"" + escapeText(stateOneTitle) + "\",\"" + escapeText(stateTwoTitle) + "\",\"" + 
+        String statesTitles = "{\"titles\": [\"" + escapeText(stateOneTitle) + "\",\"" + escapeText(stateTwoTitle) + "\",\"" +
                 escapeText(stateThreeTitle) + "\"]}";
 
         String iconClass = "ui-chkbox-icon ui-c"; //HTML.CHECKBOX_ICON_CLASS;

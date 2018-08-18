@@ -53,7 +53,7 @@ public class PrimeApplicationContext {
     public PrimeApplicationContext(FacesContext context) {
         this.environment = new PrimeEnvironment();
         this.config = new PrimeConfiguration(context, environment);
-        
+
         if (this.config.isBeanValidationEnabled()) {
             this.validatorFactory = Validation.buildDefaultValidatorFactory();
             this.validator = validatorFactory.getValidator();
@@ -70,31 +70,31 @@ public class PrimeApplicationContext {
 
         PrimeApplicationContext applicationContext =
                 (PrimeApplicationContext) facesContext.getExternalContext().getApplicationMap().get(INSTANCE_KEY);
-        
+
         if (applicationContext == null) {
             applicationContext = new PrimeApplicationContext(facesContext);
             setCurrentInstance(applicationContext, facesContext);
         }
-        
+
         return applicationContext;
     }
-    
+
     public static PrimeApplicationContext getCurrentInstance(ServletContext context) {
         return (PrimeApplicationContext) context.getAttribute(INSTANCE_KEY);
     }
 
     public static void setCurrentInstance(final PrimeApplicationContext context, final FacesContext facesContext) {
         facesContext.getExternalContext().getApplicationMap().put(INSTANCE_KEY, context);
-        
+
         if (facesContext.getExternalContext().getContext() instanceof ServletContext) {
             ((ServletContext) facesContext.getExternalContext().getContext()).setAttribute(INSTANCE_KEY, context);
         }
     }
-    
+
     public PrimeEnvironment getEnvironment() {
         return environment;
     }
-    
+
     public PrimeConfiguration getConfig() {
         return config;
     }

@@ -185,7 +185,7 @@ public class TreeTableRenderer extends DataRenderer {
 
             String globalFilterParam = clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter";
             String globalFilterValue = params.get(globalFilterParam);
-            
+
             filter(context, tt, tt.getFilterMetadata(), globalFilterValue);
 
             //sort new filtered data to restore sort state
@@ -333,11 +333,11 @@ public class TreeTableRenderer extends DataRenderer {
 
         encodeScrollAreaStart(context, tt, TreeTable.SCROLLABLE_HEADER_CLASS, TreeTable.SCROLLABLE_HEADER_BOX_CLASS,
                 tableStyle, tableStyleClass, "header", TreeTable.HEADER_CLASS);
-        
+
         if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
             encodePaginatorMarkup(context, tt, "top");
         }
-        
+
         encodeThead(context, tt);
         encodeScrollAreaEnd(context);
 
@@ -346,7 +346,7 @@ public class TreeTableRenderer extends DataRenderer {
         encodeScrollAreaStart(context, tt, TreeTable.SCROLLABLE_FOOTER_CLASS, TreeTable.SCROLLABLE_FOOTER_BOX_CLASS,
                 tableStyle, tableStyleClass, "footer", TreeTable.FOOTER_CLASS);
         encodeTfoot(context, tt);
-        
+
         if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
             encodePaginatorMarkup(context, tt, "bottom");
         }
@@ -390,7 +390,7 @@ public class TreeTableRenderer extends DataRenderer {
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
         if (tableStyle != null) writer.writeAttribute("style", tableStyle, null);
-        if (tableStyleClass != null) writer.writeAttribute("class", tableStyleClass, null);        
+        if (tableStyleClass != null) writer.writeAttribute("class", tableStyleClass, null);
     }
 
     protected void encodeScrollAreaEnd(FacesContext context) throws IOException {
@@ -687,7 +687,7 @@ public class TreeTableRenderer extends DataRenderer {
         if (priority > 0) {
             columnClass = columnClass + " ui-column-p-" + priority;
         }
-        
+
         if (width != null) {
             String unit = width.endsWith("%") ? "" : "px";
             if (style != null) {
@@ -1067,10 +1067,10 @@ public class TreeTableRenderer extends DataRenderer {
             DynamicColumn dynamicColumn = (DynamicColumn) column;
             dynamicColumn.applyStatelessModel();
         }
-        
+
         if (tt.isCellEditCancelRequest(context) || tt.isCellEditInitRequest(context)) {
             column.getCellEditor().getFacet("input").encodeAll(context);
-        } 
+        }
         else {
             column.getCellEditor().getFacet("output").encodeAll(context);
         }
@@ -1169,7 +1169,7 @@ public class TreeTableRenderer extends DataRenderer {
                 if (hasGlobalFilter && !globalMatch) {
                     globalMatch = globalFilterConstraint.applies(columnValue, globalFilterValue, filterLocale);
                 }
-                
+
                 if (!filterConstraint.applies(columnValue, filterValue, filterLocale)) {
                     localMatch = false;
                 }
@@ -1183,11 +1183,11 @@ public class TreeTableRenderer extends DataRenderer {
             if (hasGlobalFilter) {
                 matches = localMatch && globalMatch;
             }
-            
+
             if (matches) {
                 tt.getFilteredRowKeys().add(rowKey);
             }
-            
+
             findFilteredRowKeys(context, tt, childNode, filterMetadata, filterLocale, globalFilterValue);
         }
     }

@@ -99,7 +99,7 @@ public class UIData extends javax.faces.component.UIData {
     public static final String ARIA_NEXT_PAGE_LABEL = "primefaces.paginator.aria.NEXT_PAGE";
     public static final String ARIA_LAST_PAGE_LABEL = "primefaces.paginator.aria.LAST_PAGE";
     public static final String ROWS_PER_PAGE_LABEL = "primefaces.paginator.aria.ROWS_PER_PAGE";
-    
+
     private static final String SB_ID = UIData.class.getName() + "#id";
 
     private String clientId = null;
@@ -298,7 +298,7 @@ public class UIData extends javax.faces.component.UIData {
         if (!isRowsPerPageValid(data, rowsParam)) {
             throw new IllegalArgumentException("Unsupported rows per page value: " + rowsParam);
         }
-        
+
         data.setFirst(Integer.valueOf(firstParam));
         data.setRows(Integer.valueOf(rowsParam));
 
@@ -534,7 +534,7 @@ public class UIData extends javax.faces.component.UIData {
             }
         }
 
-        // Update to the new row index        
+        // Update to the new row index
         //this.rowIndex = rowIndex;
         getStateHelper().put(PropertyKeys.rowIndex, rowIndex);
         DataModel localModel = getDataModel();

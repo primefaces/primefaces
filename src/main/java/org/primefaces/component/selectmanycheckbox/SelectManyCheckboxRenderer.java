@@ -200,7 +200,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
     protected void encodeOptionInput(FacesContext context, SelectManyCheckbox checkbox, String id, String name, boolean checked,
             boolean disabled, String value) throws IOException {
-        
+
         ResponseWriter writer = context.getResponseWriter();
         String tabindex = checkbox.getTabindex();
 
@@ -232,7 +232,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
     protected void encodeOptionLabel(FacesContext context, SelectManyCheckbox checkbox, String containerClientId, SelectItem option,
             boolean disabled) throws IOException {
-        
+
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("label", null);
@@ -241,7 +241,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         }
 
         writer.writeAttribute("for", containerClientId, null);
-        
+
         if (option.getDescription() != null) {
             writer.writeAttribute("title", option.getDescription(), null);
         }
@@ -438,7 +438,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
 
     protected void encodeOption(FacesContext context, UIInput component, Object values, Object submittedValues, Converter converter,
             SelectItem option, int idx) throws IOException {
-        
+
         ResponseWriter writer = context.getResponseWriter();
         SelectManyCheckbox checkbox = (SelectManyCheckbox) component;
         String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());

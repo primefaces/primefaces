@@ -16,7 +16,7 @@
 package org.primefaces.util;
 
 public class LangUtils {
-    
+
     public static boolean isValueBlank(String value) {
         return value == null || value.trim().isEmpty();
     }

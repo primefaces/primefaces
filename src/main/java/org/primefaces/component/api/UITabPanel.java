@@ -69,7 +69,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     private static final Class<Object[]> OBJECT_ARRAY_CLASS = Object[].class;
 
     private static final Object[] LEAF_NO_STATE = new Object[]{null, null};
-    
+
     private static final String SB_ID = UITabPanel.class.getName() + "#id";
 
     public enum PropertyKeys {
@@ -1454,7 +1454,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         if (!ComponentUtils.isRequestSource(this, context)) {
             return false;
         }
-        
+
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String paramValue = params.get(Constants.RequestParams.SKIP_CHILDREN_PARAM);
 

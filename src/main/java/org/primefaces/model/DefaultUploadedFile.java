@@ -32,7 +32,7 @@ public class DefaultUploadedFile implements UploadedFile, Serializable {
 
     private FileItem fileItem;
     private Long sizeLimit;
-    
+
     public DefaultUploadedFile() {
     }
 

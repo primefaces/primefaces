@@ -135,7 +135,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
     protected void encodeInput(FacesContext context, SelectOneMenu menu, String clientId, List<SelectItem> selectItems, Object values,
             Object submittedValues, Converter converter) throws IOException {
-        
+
         ResponseWriter writer = context.getResponseWriter();
         String focusId = clientId + "_focus";
         String labelledBy = menu.getLabelledBy();
@@ -173,7 +173,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
     protected void encodeHiddenSelect(FacesContext context, SelectOneMenu menu, String clientId, List<SelectItem> selectItems,
             Object values, Object submittedValues, Converter converter) throws IOException {
-        
+
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
 
@@ -269,12 +269,12 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         String panelStyle = menu.getPanelStyle();
         String panelStyleClass = menu.getPanelStyleClass();
         panelStyleClass = panelStyleClass == null ? SelectOneMenu.PANEL_CLASS : SelectOneMenu.PANEL_CLASS + " " + panelStyleClass;
-        
+
         String height = null;
-        try { 
-            height = Integer.parseInt(menu.getHeight()) + "px"; 
-        } 
-        catch (NumberFormatException e) { 
+        try {
+            height = Integer.parseInt(menu.getHeight()) + "px";
+        }
+        catch (NumberFormatException e) {
             height = menu.getHeight();
         }
 
@@ -307,7 +307,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         if (customContent) {
             List<Column> columns = menu.getColumns();
-            
+
             writer.startElement("table", null);
             writer.writeAttribute("class", SelectOneMenu.TABLE_CLASS, null);
             encodeColumnsHeader(context, menu, columns);
@@ -328,7 +328,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
     protected void encodeColumnsHeader(FacesContext context, SelectOneMenu menu, List<Column> columns)
             throws IOException {
-        
+
         ResponseWriter writer = context.getResponseWriter();
         boolean hasHeader = false;
 
@@ -374,7 +374,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
     protected void encodeOptionsAsTable(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, List<Column> columns)
             throws IOException {
-        
+
         ResponseWriter writer = context.getResponseWriter();
         String var = menu.getVar();
         ValueExpression value = menu.getValueExpression("value");
@@ -385,7 +385,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             Object itemValue = selectItem.getValue();
             String itemLabel = selectItem.getLabel();
             itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
-            
+
             String itemStyleClass = SelectOneMenu.ROW_CLASS;
             if (selectItem.isNoSelectionOption()) {
                 itemStyleClass = itemStyleClass + " ui-noselection-option";
@@ -516,7 +516,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
     protected void encodeOption(FacesContext context, SelectOneMenu menu, SelectItem option, Object values, Object submittedValues,
             Converter converter, int itemIndex) throws IOException {
-        
+
         ResponseWriter writer = context.getResponseWriter();
 
         if (option instanceof SelectItemGroup) {
@@ -592,7 +592,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        
+
         if (menu.getFilterPlaceholder() != null) {
             writer.writeAttribute("placeholder", menu.getFilterPlaceholder(), null);
         }

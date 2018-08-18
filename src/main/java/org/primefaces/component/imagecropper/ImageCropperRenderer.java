@@ -188,7 +188,7 @@ public class ImageCropperRenderer extends CoreRenderer {
             if (cropper.getSizeLimit() != null) {
                 inputStream = new BoundedInputStream(inputStream, cropper.getSizeLimit());
             }
-            
+
             BufferedImage outputImage = ImageIO.read(inputStream);
             inputStream.close();
 
@@ -200,7 +200,7 @@ public class ImageCropperRenderer extends CoreRenderer {
             if (y + h > outputImage.getHeight()) {
                 h = outputImage.getHeight() - y;
             }
-            
+
             BufferedImage cropped = outputImage.getSubimage(x, y, w, h);
             ByteArrayOutputStream croppedOutImage = new ByteArrayOutputStream();
             String format = guessImageFormat(contentType, imagePath);

@@ -49,7 +49,7 @@ public class ExcelOptions implements ExporterOptions {
 
     public ExcelOptions(String facetFontStyle, String facetFontColor, String facetBgColor, String facetFontSize, String cellFontStyle,
             String cellFontColor, String cellFontSize) {
-        
+
         this(facetFontStyle, facetFontColor, facetBgColor, facetFontSize);
         this.cellFontStyle = cellFontStyle;
         this.cellFontColor = cellFontColor;

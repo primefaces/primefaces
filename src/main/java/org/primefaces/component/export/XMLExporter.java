@@ -36,7 +36,7 @@ public class XMLExporter extends Exporter {
     public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly,
             String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
             MethodExpression onTableRender) throws IOException {
-        
+
         ExternalContext externalContext = context.getExternalContext();
         configureResponse(externalContext, filename);
         StringBuilder builder = new StringBuilder();
@@ -78,7 +78,7 @@ public class XMLExporter extends Exporter {
     public void export(FacesContext facesContext, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly,
             String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
             MethodExpression onTableRender) throws IOException {
-        
+
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -86,7 +86,7 @@ public class XMLExporter extends Exporter {
     public void export(FacesContext facesContext, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
             String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
             MethodExpression onTableRender) throws IOException {
-        
+
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

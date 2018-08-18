@@ -140,7 +140,7 @@ public class TreeRenderer extends CoreRenderer {
         String[] dragNodeRowKeyArr = dragNodeRowKey.split(",");
         List<TreeNode> dragNodeList = new ArrayList<TreeNode>();
         TreeNode dropNode;
-        
+
         for (String rowKey : dragNodeRowKeyArr) {
             if (dragSource.equals(clientId)) {
                 tree.setRowKey(rowKey);
@@ -152,7 +152,7 @@ public class TreeRenderer extends CoreRenderer {
                 dragNodeList.add(otherTree.getRowNode());
             }
         }
-        
+
         if (isValueBlank(dropNodeRowKey)) {
             dropNode = tree.getValue();
         }
@@ -160,9 +160,9 @@ public class TreeRenderer extends CoreRenderer {
             tree.setRowKey(dropNodeRowKey);
             dropNode = tree.getRowNode();
         }
-        
+
         tree.setDropNode(dropNode);
-        
+
         TreeNode[] dragNodes = new TreeNode[dragNodeList.size()];
         dragNodes = dragNodeList.toArray(dragNodes);
         if (tree.isMultipleDrag()) {
@@ -171,16 +171,16 @@ public class TreeRenderer extends CoreRenderer {
         else {
             tree.setDragNode(dragNodes[0]);
         }
-        
+
         if (!tree.isTreeNodeDropped()) {
             return;
         }
-        
+
         for (TreeNode dragNode : dragNodes) {
             if (isDroppedNodeCopy) {
                 dragNode = tree.createCopyOfTreeNode(dragNode);
             }
-            
+
             if (dndIndex >= 0 && dndIndex < dropNode.getChildCount()) {
                 dropNode.getChildren().add(dndIndex, dragNode);
             }
@@ -249,7 +249,7 @@ public class TreeRenderer extends CoreRenderer {
     protected void encodeFilteredNodes(FacesContext context, Tree tree, TreeNode node, String filteredValue, Locale filterLocale)
             throws IOException {
         int childCount = node.getChildCount();
-        if (childCount > 0) { 
+        if (childCount > 0) {
             String var = tree.getVar();
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
             ValueExpression filterByVE = tree.getValueExpression(Tree.PropertyKeys.filterBy.toString());
@@ -302,7 +302,7 @@ public class TreeRenderer extends CoreRenderer {
                     .attr("multipleDrag", tree.isMultipleDrag())
                     .attr("dropCopyNode", tree.isDropCopyNode());
         }
-        
+
         if (tree.getOnDrop() != null) {
             wb.attr("controlled", true);
         }
@@ -375,7 +375,7 @@ public class TreeRenderer extends CoreRenderer {
         if (!isDisabled) {
             writer.writeAttribute("tabindex", tree.getTabindex(), null);
         }
-        
+
         writer.writeAttribute("aria-multiselectable", String.valueOf(multiselectable), null);
         if (tree.getStyle() != null) {
             writer.writeAttribute("style", tree.getStyle(), null);
@@ -397,9 +397,9 @@ public class TreeRenderer extends CoreRenderer {
         if (selectable) {
             encodeStateHolder(context, tree, clientId + "_selection", tree.getSelectedRowKeysAsString());
         }
-        
+
         encodeStateHolder(context, tree, clientId + "_scrollState", tree.getScrollState());
-        
+
         writer.endElement("div");
     }
 
@@ -457,7 +457,7 @@ public class TreeRenderer extends CoreRenderer {
 
     protected void encodeHorizontalTreeNode(FacesContext context, Tree tree, TreeNode node, String clientId, String rowKey,
             NodeOrder nodeOrder, boolean dynamic, boolean checkbox) throws IOException {
-        
+
         ResponseWriter writer = context.getResponseWriter();
         UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
         boolean expanded = node.isExpanded();
@@ -509,7 +509,7 @@ public class TreeRenderer extends CoreRenderer {
 
         nodeClass = uiTreeNode.getStyleClass() == null ? nodeClass : nodeClass + " " + uiTreeNode.getStyleClass();
         writer.writeAttribute("class", nodeClass, null);
-        
+
         String nodeContentClass = (tree.getSelectionMode() != null && node.isSelectable()) ? Tree.SELECTABLE_NODE_CONTENT_CLASS_H : Tree.NODE_CONTENT_CLASS_H;
         if (selected) {
             nodeContentClass += " ui-state-highlight";
@@ -564,7 +564,7 @@ public class TreeRenderer extends CoreRenderer {
 
     protected void encodeHorizontalTreeNodeChildren(FacesContext context, Tree tree, TreeNode node, String clientId, String rowKey,
             boolean dynamic, boolean checkbox) throws IOException {
-        
+
         int childIndex = 0;
         for (Iterator<TreeNode> iterator = node.getChildren().iterator(); iterator.hasNext();) {
             String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + UITree.SEPARATOR + childIndex;
@@ -623,7 +623,7 @@ public class TreeRenderer extends CoreRenderer {
 
     public void encodeTreeNode(FacesContext context, Tree tree, TreeNode node, String clientId, boolean dynamic, boolean checkbox,
             boolean dragdrop) throws IOException {
-        
+
         //preselection
         String rowKey = node.getRowKey();
         boolean selected = node.isSelected();
@@ -728,7 +728,7 @@ public class TreeRenderer extends CoreRenderer {
         if (!tree.isDisabled()) {
             writer.writeAttribute("tabindex", "-1", null);
         }
-        
+
         writer.writeAttribute("role", "treeitem", null);
         writer.writeAttribute("aria-label", uiTreeNode.getAriaLabel(), null);
         uiTreeNode.encodeAll(context);
@@ -736,7 +736,7 @@ public class TreeRenderer extends CoreRenderer {
 
         writer.endElement("span");
 
-        //children nodes                
+        //children nodes
         writer.startElement("ul", null);
         writer.writeAttribute("class", Tree.CHILDREN_NODES_CLASS, null);
         writer.writeAttribute("role", "group", null);
@@ -760,7 +760,7 @@ public class TreeRenderer extends CoreRenderer {
 
     public void encodeTreeNodeChildren(FacesContext context, Tree tree, TreeNode node, String clientId, boolean dynamic,
             boolean checkbox, boolean droppable) throws IOException {
-        
+
         int childCount = node.getChildCount();
         if (childCount > 0) {
             for (int i = 0; i < childCount; i++) {

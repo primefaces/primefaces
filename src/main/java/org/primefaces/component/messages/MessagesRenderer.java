@@ -33,7 +33,7 @@ import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.renderkit.UINotificationRenderer;
 
 public class MessagesRenderer extends UINotificationRenderer {
-    
+
     private final static Logger logger = Logger.getLogger(MessagesRenderer.class.getName());
 
     @Override
@@ -53,9 +53,9 @@ public class MessagesRenderer extends UINotificationRenderer {
         if (!isValueBlank(_for)) {
             String forType = uiMessages.getForType();
             Iterator<FacesMessage> messagesIterator = context.getMessages(_for);
-            
+
             // key case
-            if (forType == null || forType.equals("key")) { 
+            if (forType == null || forType.equals("key")) {
                 while (messagesIterator.hasNext()) {
                     messages.add(messagesIterator.next());
                 }

@@ -111,7 +111,7 @@ public class LineChartSeries extends ChartSeries {
         if (xaxis != null) writer.write(",xaxis:\"" + xaxis + "\"");
         if (yaxis != null) writer.write(",yaxis:\"" + yaxis + "\"");
         if (disableStack) writer.write(",disableStack:true");
-        
+
 
         if (fill) {
             writer.write(",fill:true");

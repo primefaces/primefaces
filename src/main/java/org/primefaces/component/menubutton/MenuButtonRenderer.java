@@ -47,7 +47,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         writer.startElement("span", button);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "class");
-        
+
         if (button.getStyle() != null) {
             writer.writeAttribute("style", button.getStyle(), "style");
         }

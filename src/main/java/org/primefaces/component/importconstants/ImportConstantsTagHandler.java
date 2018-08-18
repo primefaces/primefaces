@@ -35,7 +35,7 @@ import org.primefaces.context.PrimeApplicationContext;
  * {@link TagHandler} for the <code>ImportConstants</code> component.
  */
 public class ImportConstantsTagHandler extends TagHandler {
-    
+
     private final TagAttribute typeTagAttribute;
     private final TagAttribute varTagAttribute;
 

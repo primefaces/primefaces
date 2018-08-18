@@ -45,7 +45,7 @@ public class RowEditFeature implements DataTableFeature {
         String clientId = table.getClientId(context);
         int editedRowId = Integer.parseInt(params.get(clientId + "_rowEditIndex"));
         table.setRowIndex(editedRowId);
-        
+
         if (table.isRowEditRequest(context)) {
             String action = params.get(clientId + "_rowEditAction");
 

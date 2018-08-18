@@ -55,7 +55,7 @@ public class LayoutRenderer extends CoreRenderer {
         if (layout.isElementLayout()) {
             writer.endElement("div");
         }
-        
+
         encodeScript(context, layout);
     }
 
