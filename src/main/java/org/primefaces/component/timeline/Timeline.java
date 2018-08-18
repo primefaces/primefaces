@@ -17,13 +17,13 @@ package org.primefaces.component.timeline;
 
 import java.util.*;
 import java.util.logging.Logger;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-
 import org.primefaces.event.timeline.*;
 import org.primefaces.model.timeline.TimelineEvent;
 import org.primefaces.model.timeline.TimelineGroup;
@@ -41,8 +41,7 @@ import org.primefaces.visit.UIDataContextCallback;
         @ResourceDependency(library = "primefaces", name = "timeline/timeline.css"),
         @ResourceDependency(library = "primefaces", name = "timeline/timeline.js")
 })
-public class Timeline extends TimelineBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
-
+public class Timeline extends TimelineBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Timeline";
 

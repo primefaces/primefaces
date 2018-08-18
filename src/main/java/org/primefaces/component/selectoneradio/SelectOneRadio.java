@@ -16,6 +16,7 @@
 package org.primefaces.component.selectoneradio;
 
 import java.util.List;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UINamingContainer;
@@ -28,8 +29,7 @@ import javax.faces.model.SelectItem;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class SelectOneRadio extends SelectOneRadioBase implements org.primefaces.component.api.Widget {
-
+public class SelectOneRadio extends SelectOneRadioBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneRadio";
 
@@ -43,7 +43,7 @@ public class SelectOneRadio extends SelectOneRadioBase implements org.primefaces
     public String getRadioButtonId(FacesContext context) {
         index++;
 
-        return getClientId(context) + UINamingContainer.getSeparatorChar(context) + index;
+        return this.getClientId(context) + UINamingContainer.getSeparatorChar(context) + index;
     }
 
     private List<SelectItem> selectItems;
@@ -53,6 +53,6 @@ public class SelectOneRadio extends SelectOneRadioBase implements org.primefaces
     }
 
     public List<SelectItem> getSelectItems() {
-        return selectItems;
+        return this.selectItems;
     }
 }

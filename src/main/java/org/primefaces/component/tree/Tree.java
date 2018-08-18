@@ -16,6 +16,7 @@
 package org.primefaces.component.tree;
 
 import java.util.*;
+
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -25,7 +26,6 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.*;
 import org.primefaces.model.CheckboxTreeNode;
@@ -42,8 +42,7 @@ import org.primefaces.util.Constants;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class Tree extends TreeBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.RTLAware, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
-
+public class Tree extends TreeBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tree";
 

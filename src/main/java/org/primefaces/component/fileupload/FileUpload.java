@@ -29,8 +29,7 @@ import javax.faces.context.FacesContext;
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "fileupload/fileupload.js")
 })
-public class FileUpload extends FileUploadBase implements org.primefaces.component.api.Widget {
-
+public class FileUpload extends FileUploadBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.FileUpload";
     public final static String CONTAINER_CLASS = "ui-fileupload ui-widget ui-fileupload-responsive";

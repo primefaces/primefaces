@@ -25,8 +25,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class ContextMenu extends ContextMenuBase implements org.primefaces.component.api.Widget {
-
+public class ContextMenu extends ContextMenuBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ContextMenu";
 

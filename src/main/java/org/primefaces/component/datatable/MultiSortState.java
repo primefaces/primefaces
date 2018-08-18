@@ -16,7 +16,6 @@
 package org.primefaces.component.datatable;
 
 import javax.el.MethodExpression;
-
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 

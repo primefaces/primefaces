@@ -29,14 +29,13 @@ abstract class GraphicImageBase extends HtmlGraphicImage {
         cache,
         name,
         library,
-        stream
+        stream;
     }
 
     public GraphicImageBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }

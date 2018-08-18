@@ -16,11 +16,11 @@
 package org.primefaces.component.password;
 
 import javax.faces.component.html.HtmlInputText;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class PasswordBase extends HtmlInputText implements org.primefaces.component.api.Widget {
+abstract class PasswordBase extends HtmlInputText implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

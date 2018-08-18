@@ -17,6 +17,7 @@ package org.primefaces.component.carousel;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
@@ -29,8 +30,7 @@ import javax.faces.component.UIComponent;
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "touch/touchswipe.js")
 })
-public class Carousel extends CarouselBase implements org.primefaces.component.api.Widget {
-
+public class Carousel extends CarouselBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Carousel";
 

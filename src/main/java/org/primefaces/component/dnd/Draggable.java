@@ -24,8 +24,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class Draggable extends DraggableBase implements org.primefaces.component.api.Widget {
-
+public class Draggable extends DraggableBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Draggable";
 }

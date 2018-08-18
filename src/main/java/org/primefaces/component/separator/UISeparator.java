@@ -15,8 +15,7 @@
  */
 package org.primefaces.component.separator;
 
-public class UISeparator extends UISeparatorBase implements org.primefaces.model.menu.Separator, org.primefaces.component.separator.Separator {
-
+public class UISeparator extends UISeparatorBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Separator";
 

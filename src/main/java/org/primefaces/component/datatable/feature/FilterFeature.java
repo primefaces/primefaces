@@ -18,6 +18,7 @@ package org.primefaces.component.datatable.feature;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.*;
+
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
@@ -26,7 +27,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -346,8 +346,8 @@ public class FilterFeature implements DataTableFeature {
                             if (filterVE != null) {
                                 UIComponent filterFacet = column.getFacet("filter");
                                 Object filterValue = (filterFacet == null)
-                                        ? params.get(column.getClientId(context) + separator + "filter")
-                                        : ((ValueHolder) filterFacet).getLocalValue();
+                                                     ? params.get(column.getClientId(context) + separator + "filter")
+                                                     : ((ValueHolder) filterFacet).getLocalValue();
 
                                 filterMetadata.add(new FilterMeta(column, filterVE, filterValue));
                             }

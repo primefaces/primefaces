@@ -25,8 +25,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "stack/stack.js")
 })
-public class Stack extends StackBase implements org.primefaces.component.api.Widget {
-
+public class Stack extends StackBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Stack";
 }

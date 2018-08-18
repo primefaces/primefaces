@@ -23,22 +23,18 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
         @ResourceDependency(library = "primefaces", name = "core.js")
 })
-public class RemoteCommand extends RemoteCommandBase implements org.primefaces.component.api.AjaxSource {
-
+public class RemoteCommand extends RemoteCommandBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.RemoteCommand";
 
-    @Override
     public boolean isPartialSubmitSet() {
-        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (this.getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
     }
 
-    @Override
     public boolean isResetValuesSet() {
-        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (getValueExpression(PropertyKeys.resetValues.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (this.getValueExpression(PropertyKeys.resetValues.toString()) != null);
     }
 
-    @Override
     public boolean isAjaxified() {
         return true;
     }

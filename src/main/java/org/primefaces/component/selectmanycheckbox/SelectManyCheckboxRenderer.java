@@ -17,6 +17,7 @@ package org.primefaces.component.selectmanycheckbox;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -29,7 +30,6 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
-
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;

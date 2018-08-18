@@ -17,6 +17,5 @@ package org.primefaces.component.summaryrow;
 
 public class SummaryRow extends SummaryRowBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.SummaryRow";
 }

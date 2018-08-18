@@ -18,9 +18,9 @@ package org.primefaces.component.chart.renderer;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.OhlcChartModel;
 import org.primefaces.model.chart.OhlcChartSeries;

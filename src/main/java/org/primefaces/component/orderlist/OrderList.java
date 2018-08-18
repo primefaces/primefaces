@@ -16,13 +16,13 @@
 package org.primefaces.component.orderlist;
 
 import java.util.*;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.util.ComponentUtils;
@@ -35,8 +35,7 @@ import org.primefaces.util.Constants;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class OrderList extends OrderListBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
-
+public class OrderList extends OrderListBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.OrderList";
 

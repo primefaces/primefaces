@@ -26,8 +26,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "contentflow/contentflow.js")
 })
-public class ContentFlow extends ContentFlowBase implements org.primefaces.component.api.Widget {
-
+public class ContentFlow extends ContentFlowBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ContentFlow";
 

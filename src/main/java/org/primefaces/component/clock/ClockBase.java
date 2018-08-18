@@ -16,11 +16,11 @@
 package org.primefaces.component.clock;
 
 import javax.faces.component.UIOutput;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class ClockBase extends UIOutput implements org.primefaces.component.api.Widget {
+abstract class ClockBase extends UIOutput implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

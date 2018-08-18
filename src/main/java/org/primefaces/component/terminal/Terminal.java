@@ -17,10 +17,10 @@ package org.primefaces.component.terminal;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
-
 import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
 import org.primefaces.model.terminal.TerminalAutoCompleteModel;
 import org.primefaces.model.terminal.TerminalCommand;
@@ -34,8 +34,7 @@ import org.primefaces.model.terminal.TerminalCommand;
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "terminal/terminal.js")
 })
-public class Terminal extends TerminalBase implements org.primefaces.component.api.Widget {
-
+public class Terminal extends TerminalBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Terminal";
 

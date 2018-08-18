@@ -16,6 +16,7 @@
 package org.primefaces.component.clock;
 
 import java.util.Map;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
@@ -28,8 +29,7 @@ import javax.faces.context.FacesContext;
         @ResourceDependency(library = "primefaces", name = "raphael/raphael.js"),
         @ResourceDependency(library = "primefaces", name = "clock/clock.js")
 })
-public class Clock extends ClockBase implements org.primefaces.component.api.Widget {
-
+public class Clock extends ClockBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Clock";
 

@@ -16,10 +16,11 @@
 package org.primefaces.component.carousel;
 
 import org.primefaces.component.api.UIData;
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class CarouselBase extends UIData implements org.primefaces.component.api.Widget {
+abstract class CarouselBase extends UIData implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -16,6 +16,7 @@
 package org.primefaces.component.picklist;
 
 import java.util.*;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -24,7 +25,6 @@ import javax.faces.convert.Converter;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.event.UnselectEvent;
@@ -40,8 +40,7 @@ import org.primefaces.util.MessageFactory;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class PickList extends PickListBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
-
+public class PickList extends PickListBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.PickList";
 

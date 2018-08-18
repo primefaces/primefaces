@@ -16,11 +16,11 @@
 package org.primefaces.component.sticky;
 
 import javax.faces.component.UIPanel;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class StickyBase extends UIPanel implements org.primefaces.component.api.Widget {
+abstract class StickyBase extends UIPanel implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

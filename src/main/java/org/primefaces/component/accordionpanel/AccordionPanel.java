@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.application.ResourceDependencies;
@@ -29,7 +30,6 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-
 import org.primefaces.PrimeFaces;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.TabChangeEvent;
@@ -45,8 +45,7 @@ import org.primefaces.util.Constants;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class AccordionPanel extends AccordionPanelBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.RTLAware, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
-
+public class AccordionPanel extends AccordionPanelBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.AccordionPanel";
 
@@ -84,7 +83,7 @@ public class AccordionPanel extends AccordionPanelBase implements org.primefaces
     }
 
     public boolean isContentLoadRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_contentLoad");
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_contentLoad");
     }
 
     public Tab findTab(String tabClientId) {
@@ -104,8 +103,8 @@ public class AccordionPanel extends AccordionPanelBase implements org.primefaces
         if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-            String clientId = getClientId(context);
-            boolean repeating = isRepeating();
+            String clientId = this.getClientId(context);
+            boolean repeating = this.isRepeating();
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName.equals("tabChange")) {
@@ -115,7 +114,7 @@ public class AccordionPanel extends AccordionPanelBase implements org.primefaces
                 if (repeating) {
                     int index = Integer.parseInt(params.get(clientId + "_tabindex"));
                     setIndex(index);
-                    changeEvent.setData(getIndexData());
+                    changeEvent.setData(this.getIndexData());
                     changeEvent.setTab((Tab) getChildren().get(0));
                 }
 
@@ -134,7 +133,7 @@ public class AccordionPanel extends AccordionPanelBase implements org.primefaces
                 if (repeating) {
                     int index = Integer.parseInt(params.get(clientId + "_tabindex"));
                     setIndex(index);
-                    closeEvent.setData(getIndexData());
+                    closeEvent.setData(this.getIndexData());
                     closeEvent.setTab((Tab) getChildren().get(0));
                 }
 
@@ -160,7 +159,7 @@ public class AccordionPanel extends AccordionPanelBase implements org.primefaces
 
         super.processUpdates(context);
 
-        ValueExpression expr = getValueExpression(PropertyKeys.activeIndex.toString());
+        ValueExpression expr = this.getValueExpression(PropertyKeys.activeIndex.toString());
         if (expr != null) {
             expr.setValue(getFacesContext().getELContext(), getActiveIndex());
             resetActiveIndex();
@@ -171,9 +170,8 @@ public class AccordionPanel extends AccordionPanelBase implements org.primefaces
         getStateHelper().remove(PropertyKeys.activeIndex);
     }
 
-    @Override
     public boolean isRTL() {
-        return getDir().equalsIgnoreCase("rtl");
+        return this.getDir().equalsIgnoreCase("rtl");
     }
 
     @Override
@@ -181,7 +179,7 @@ public class AccordionPanel extends AccordionPanelBase implements org.primefaces
         super.broadcast(event);
 
         if (event instanceof TabEvent) {
-            MethodExpression me = getTabController();
+            MethodExpression me = this.getTabController();
             if (me != null) {
                 boolean retVal = (Boolean) me.invoke(getFacesContext().getELContext(), new Object[]{event});
                 PrimeFaces.current().ajax().addCallbackParam("access", retVal);

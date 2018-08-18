@@ -16,9 +16,10 @@
 package org.primefaces.component.link;
 
 import javax.faces.component.html.HtmlOutcomeTargetLink;
+import org.primefaces.component.api.UIOutcomeTarget;
 
 
-abstract class LinkBase extends HtmlOutcomeTargetLink implements org.primefaces.component.api.UIOutcomeTarget {
+abstract class LinkBase extends HtmlOutcomeTargetLink implements UIOutcomeTarget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

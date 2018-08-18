@@ -17,6 +17,5 @@ package org.primefaces.component.feedreader;
 
 public class FeedReader extends FeedReaderBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.FeedReader";
 }

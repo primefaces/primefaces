@@ -24,8 +24,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class Checkbox extends CheckboxBase implements org.primefaces.component.api.Widget {
-
+public class Checkbox extends CheckboxBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Checkbox";
 }

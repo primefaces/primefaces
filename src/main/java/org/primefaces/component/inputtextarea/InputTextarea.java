@@ -16,6 +16,7 @@
 package org.primefaces.component.inputtextarea;
 
 import java.util.*;
+
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -23,7 +24,6 @@ import javax.faces.component.behavior.Behavior;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
-
 import org.primefaces.event.SelectEvent;
 import org.primefaces.util.Constants;
 
@@ -34,8 +34,7 @@ import org.primefaces.util.Constants;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class InputTextarea extends InputTextareaBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.MixedClientBehaviorHolder {
-
+public class InputTextarea extends InputTextareaBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputTextarea";
 
@@ -78,7 +77,7 @@ public class InputTextarea extends InputTextareaBase implements org.primefaces.c
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName.equals("itemSelect")) {
-                String selectedItemValue = params.get(getClientId(context) + "_itemSelect");
+                String selectedItemValue = params.get(this.getClientId(context) + "_itemSelect");
                 SelectEvent selectEvent = new SelectEvent(this, (Behavior) ajaxBehaviorEvent.getBehavior(), selectedItemValue);
                 selectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(selectEvent);
@@ -96,7 +95,6 @@ public class InputTextarea extends InputTextareaBase implements org.primefaces.c
 
     private List suggestions = null;
 
-    @Override
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
         super.broadcast(event);
 
@@ -115,6 +113,6 @@ public class InputTextarea extends InputTextareaBase implements org.primefaces.c
     }
 
     public List getSuggestions() {
-        return suggestions;
+        return this.suggestions;
     }
 }

@@ -17,12 +17,10 @@ package org.primefaces.component.rowtoggler;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-
 import org.primefaces.component.datatable.DataTable;
 
 
 public class RowToggler extends RowTogglerBase {
-
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.RowToggler";
 

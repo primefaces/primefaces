@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
@@ -30,8 +31,7 @@ import javax.faces.event.BehaviorEvent;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class OutputPanel extends OutputPanelBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
-
+public class OutputPanel extends OutputPanelBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.OutputPanel";
 
@@ -62,7 +62,7 @@ public class OutputPanel extends OutputPanelBase implements org.primefaces.compo
     }
 
     public boolean isContentLoadRequest(FacesContext context) {
-        String clientId = getClientId(context);
+        String clientId = this.getClientId(context);
 
         return context.getExternalContext().getRequestParameterMap().containsKey(clientId + "_load");
     }
@@ -70,7 +70,7 @@ public class OutputPanel extends OutputPanelBase implements org.primefaces.compo
     @Override
     public void processDecodes(FacesContext context) {
         if (shouldSkipChildren(context)) {
-            decode(context);
+            this.decode(context);
         }
         else {
             super.processDecodes(context);

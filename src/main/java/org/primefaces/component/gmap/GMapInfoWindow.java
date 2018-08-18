@@ -17,6 +17,5 @@ package org.primefaces.component.gmap;
 
 public class GMapInfoWindow extends GMapInfoWindowBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.GMapInfoWindow";
 }

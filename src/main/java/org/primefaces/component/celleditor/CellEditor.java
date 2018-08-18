@@ -17,13 +17,11 @@ package org.primefaces.component.celleditor;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.treetable.TreeTable;
 
 
 public class CellEditor extends CellEditorBase {
-
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CellEditor";
 

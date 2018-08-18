@@ -23,7 +23,6 @@ import javax.faces.application.ResourceDependency;
 })
 public class PanelGrid extends PanelGridBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.PanelGrid";
 
     public final static String CONTAINER_CLASS = "ui-panelgrid ui-widget";

@@ -25,8 +25,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class Spotlight extends SpotlightBase implements org.primefaces.component.api.Widget {
-
+public class Spotlight extends SpotlightBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Spotlight";
 }

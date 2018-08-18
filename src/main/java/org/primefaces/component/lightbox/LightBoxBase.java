@@ -16,11 +16,11 @@
 package org.primefaces.component.lightbox;
 
 import javax.faces.component.UIComponentBase;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class LightBoxBase extends UIComponentBase implements org.primefaces.component.api.Widget {
+abstract class LightBoxBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

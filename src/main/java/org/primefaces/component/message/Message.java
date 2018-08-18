@@ -21,8 +21,7 @@ import javax.faces.application.ResourceDependency;
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css")
 })
-public class Message extends MessageBase implements org.primefaces.component.api.UINotification, org.primefaces.component.api.Widget {
-
+public class Message extends MessageBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Message";
 }

@@ -27,8 +27,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "log/log.js")
 })
-public class Log extends LogBase implements org.primefaces.component.api.Widget {
-
+public class Log extends LogBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Log";
 

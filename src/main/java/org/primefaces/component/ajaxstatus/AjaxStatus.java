@@ -23,8 +23,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
         @ResourceDependency(library = "primefaces", name = "core.js")
 })
-public class AjaxStatus extends AjaxStatusBase implements org.primefaces.component.api.Widget {
-
+public class AjaxStatus extends AjaxStatusBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.AjaxStatus";
 

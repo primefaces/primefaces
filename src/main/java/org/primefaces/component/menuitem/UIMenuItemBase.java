@@ -16,9 +16,15 @@
 package org.primefaces.component.menuitem;
 
 import javax.faces.component.UICommand;
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import org.primefaces.component.api.AjaxSource;
+import org.primefaces.component.api.Confirmable;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.UIOutcomeTarget;
+import org.primefaces.model.menu.MenuItem;
 
 
-abstract class UIMenuItemBase extends UICommand implements org.primefaces.component.api.AjaxSource, org.primefaces.component.api.UIOutcomeTarget, org.primefaces.model.menu.MenuItem, org.primefaces.component.api.Confirmable, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
+abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcomeTarget, MenuItem, Confirmable, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

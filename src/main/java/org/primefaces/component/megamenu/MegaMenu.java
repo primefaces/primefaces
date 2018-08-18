@@ -25,8 +25,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class MegaMenu extends MegaMenuBase implements org.primefaces.component.api.Widget {
-
+public class MegaMenu extends MegaMenuBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.MegaMenu";
     public static final String CONTAINER_CLASS = "ui-menu ui-menubar ui-megamenu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix";

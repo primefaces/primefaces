@@ -16,10 +16,10 @@
 package org.primefaces.component.spacer;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.renderkit.CoreRenderer;
 
 public class SpacerRenderer extends CoreRenderer {

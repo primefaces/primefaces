@@ -16,11 +16,11 @@
 package org.primefaces.component.selectoneradio;
 
 import javax.faces.component.html.HtmlSelectOneRadio;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements org.primefaces.component.api.Widget {
+abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -30,14 +30,13 @@ abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements org.prim
 
         widgetVar,
         columns,
-        plain
+        plain;
     }
 
     public SelectOneRadioBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -66,7 +65,6 @@ abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements org.prim
         getStateHelper().put(PropertyKeys.plain, _plain);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

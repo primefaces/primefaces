@@ -18,6 +18,7 @@ package org.primefaces.component.importenum;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
+
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
@@ -26,7 +27,6 @@ import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
-
 import org.primefaces.context.PrimeApplicationContext;
 
 /**

@@ -16,6 +16,7 @@
 package org.primefaces.component.autocomplete;
 
 import java.util.*;
+
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -25,7 +26,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
-
 import org.primefaces.component.column.Column;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
@@ -39,8 +39,7 @@ import org.primefaces.util.Constants;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class AutoComplete extends AutoCompleteBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.InputHolder, org.primefaces.component.api.MixedClientBehaviorHolder {
-
+public class AutoComplete extends AutoCompleteBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.AutoComplete";
 
@@ -79,11 +78,11 @@ public class AutoComplete extends AutoCompleteBase implements org.primefaces.com
     }
 
     public boolean isMoreTextRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_moreText");
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_moreText");
     }
 
     public boolean isDynamicLoadRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_dynamicload");
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_dynamicload");
     }
 
     @Override
@@ -96,13 +95,13 @@ public class AutoComplete extends AutoCompleteBase implements org.primefaces.com
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName.equals("itemSelect")) {
-                Object selectedItemValue = convertValue(context, params.get(getClientId(context) + "_itemSelect"));
+                Object selectedItemValue = convertValue(context, params.get(this.getClientId(context) + "_itemSelect"));
                 SelectEvent selectEvent = new SelectEvent(this, (Behavior) ajaxBehaviorEvent.getBehavior(), selectedItemValue);
                 selectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(selectEvent);
             }
             else if (eventName.equals("itemUnselect")) {
-                Object unselectedItemValue = convertValue(context, params.get(getClientId(context) + "_itemUnselect"));
+                Object unselectedItemValue = convertValue(context, params.get(this.getClientId(context) + "_itemUnselect"));
                 UnselectEvent unselectEvent = new UnselectEvent(this, (Behavior) ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
                 unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(unselectEvent);
@@ -124,7 +123,6 @@ public class AutoComplete extends AutoCompleteBase implements org.primefaces.com
 
     private List suggestions = null;
 
-    @Override
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
         super.broadcast(event);
 
@@ -143,7 +141,7 @@ public class AutoComplete extends AutoCompleteBase implements org.primefaces.com
     }
 
     public List<Column> getColums() {
-        List<Column> columns = new ArrayList<>();
+        List<Column> columns = new ArrayList<Column>();
 
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent child = getChildren().get(i);
@@ -156,7 +154,7 @@ public class AutoComplete extends AutoCompleteBase implements org.primefaces.com
     }
 
     public List getSuggestions() {
-        return suggestions;
+        return this.suggestions;
     }
 
     private Object convertValue(FacesContext context, String submittedItemValue) {
@@ -170,22 +168,18 @@ public class AutoComplete extends AutoCompleteBase implements org.primefaces.com
         }
     }
 
-    @Override
     public String getInputClientId() {
-        return getClientId(getFacesContext()) + "_input";
+        return this.getClientId(getFacesContext()) + "_input";
     }
 
-    @Override
     public String getValidatableInputClientId() {
-        return getInputClientId();
+        return this.getInputClientId();
     }
 
-    @Override
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
     }
 
-    @Override
     public String getLabelledBy() {
         return (String) getStateHelper().get("labelledby");
     }

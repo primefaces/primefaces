@@ -15,11 +15,12 @@
  */
 package org.primefaces.component.datatable;
 
-import org.primefaces.component.api.UIData;
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import org.primefaces.component.api.*;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class DataTableBase extends UIData implements org.primefaces.component.api.Widget, org.primefaces.component.api.RTLAware, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder, org.primefaces.component.api.Pageable {
+abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientBehaviorHolder, PrimeClientBehaviorHolder, Pageable {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

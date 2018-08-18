@@ -15,11 +15,12 @@
  */
 package org.primefaces.component.contextmenu;
 
+import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class ContextMenuBase extends AbstractMenu implements org.primefaces.component.api.Widget {
+abstract class ContextMenuBase extends AbstractMenu implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -47,9 +48,8 @@ abstract class ContextMenuBase extends AbstractMenu implements org.primefaces.co
         PropertyKeys() {
         }
 
-        @Override
         public String toString() {
-            return ((toString != null) ? toString : super.toString());
+            return ((this.toString != null) ? this.toString : super.toString());
         }
     }
 
@@ -57,7 +57,6 @@ abstract class ContextMenuBase extends AbstractMenu implements org.primefaces.co
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -94,7 +93,6 @@ abstract class ContextMenuBase extends AbstractMenu implements org.primefaces.co
         getStateHelper().put(PropertyKeys.styleClass, _styleClass);
     }
 
-    @Override
     public org.primefaces.model.menu.MenuModel getModel() {
         return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }
@@ -143,7 +141,6 @@ abstract class ContextMenuBase extends AbstractMenu implements org.primefaces.co
         getStateHelper().put(PropertyKeys.targetFilter, _targetFilter);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

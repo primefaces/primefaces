@@ -17,7 +17,6 @@ package org.primefaces.component.tree;
 
 public class UITreeNode extends UITreeNodeBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.UITreeNode";
 
     public String getIconToRender(boolean expanded) {

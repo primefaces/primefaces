@@ -27,8 +27,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "galleria/galleria.js")
 })
-public class Galleria extends GalleriaBase implements org.primefaces.component.api.Widget {
-
+public class Galleria extends GalleriaBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Galleria";
 

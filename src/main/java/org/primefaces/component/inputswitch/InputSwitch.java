@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.event.BehaviorEvent;
@@ -31,8 +32,7 @@ import javax.faces.event.BehaviorEvent;
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "inputswitch/inputswitch.js")
 })
-public class InputSwitch extends InputSwitchBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
-
+public class InputSwitch extends InputSwitchBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.InputSwitch";
 

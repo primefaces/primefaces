@@ -25,8 +25,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "imagecropper/imagecropper.js")
 })
-public class ImageCropper extends ImageCropperBase implements org.primefaces.component.api.Widget {
-
+public class ImageCropper extends ImageCropperBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ImageCropper";
 }

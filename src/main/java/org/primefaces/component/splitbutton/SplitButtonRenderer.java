@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehavior;
@@ -27,7 +28,6 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
-
 import org.primefaces.behavior.confirm.ConfirmBehavior;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
@@ -295,8 +295,8 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
                     }
 
                     String command = menuitem.isAjax()
-                            ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
-                            : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
+                                     ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
+                                     : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
 
                     onclick = (onclick == null) ? command : onclick + ";" + command;
                 }

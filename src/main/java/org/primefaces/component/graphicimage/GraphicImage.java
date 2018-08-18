@@ -17,6 +17,5 @@ package org.primefaces.component.graphicimage;
 
 public class GraphicImage extends GraphicImageBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.GraphicImage";
 }

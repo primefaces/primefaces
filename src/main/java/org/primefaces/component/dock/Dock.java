@@ -27,8 +27,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "dock/dock.js")
 })
-public class Dock extends DockBase implements org.primefaces.component.api.Widget {
-
+public class Dock extends DockBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Dock";
 }

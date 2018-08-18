@@ -15,11 +15,13 @@
  */
 package org.primefaces.component.tieredmenu;
 
+import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
+import org.primefaces.component.menu.OverlayMenu;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class TieredMenuBase extends AbstractMenu implements org.primefaces.component.api.Widget, org.primefaces.component.menu.OverlayMenu {
+abstract class TieredMenuBase extends AbstractMenu implements Widget, OverlayMenu {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

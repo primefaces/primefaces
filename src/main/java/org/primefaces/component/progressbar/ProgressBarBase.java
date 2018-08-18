@@ -16,11 +16,13 @@
 package org.primefaces.component.progressbar;
 
 import javax.faces.component.UIComponentBase;
-
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import org.primefaces.component.api.PrimeClientBehaviorHolder;
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class ProgressBarBase extends UIComponentBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
+abstract class ProgressBarBase extends UIComponentBase implements Widget, ClientBehaviorHolder, PrimeClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -38,14 +40,13 @@ abstract class ProgressBarBase extends UIComponentBase implements org.primefaces
         labelTemplate,
         displayOnly,
         global,
-        mode
+        mode;
     }
 
     public ProgressBarBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -138,7 +139,6 @@ abstract class ProgressBarBase extends UIComponentBase implements org.primefaces
         getStateHelper().put(PropertyKeys.mode, _mode);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

@@ -17,6 +17,5 @@ package org.primefaces.component.columngroup;
 
 public class ColumnGroup extends ColumnGroupBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.ColumnGroup";
 }

@@ -16,11 +16,11 @@
 package org.primefaces.component.watermark;
 
 import javax.faces.component.UIComponentBase;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class WatermarkBase extends UIComponentBase implements org.primefaces.component.api.Widget {
+abstract class WatermarkBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

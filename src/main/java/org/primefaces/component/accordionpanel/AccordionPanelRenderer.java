@@ -20,10 +20,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -157,8 +157,8 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         String activeIndex = acco.getActiveIndex();
         List<String> activeIndexes = activeIndex == null
-                ? Collections.EMPTY_LIST
-                : Arrays.asList(activeIndex.split(","));
+                                     ? Collections.EMPTY_LIST
+                                     : Arrays.asList(activeIndex.split(","));
 
         if (var == null) {
             int j = 0;
@@ -198,11 +198,11 @@ public class AccordionPanelRenderer extends CoreRenderer {
         headerClass = tab.isDisabled() ? headerClass + " ui-state-disabled" : headerClass;
         headerClass = tab.getTitleStyleClass() == null ? headerClass : headerClass + " " + tab.getTitleStyleClass();
         String iconClass = active
-                ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS
-                : (rtl ? AccordionPanel.TAB_HEADER_ICON_RTL_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS);
+                           ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS
+                           : (rtl ? AccordionPanel.TAB_HEADER_ICON_RTL_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS);
         String contentClass = active
-                ? AccordionPanel.ACTIVE_TAB_CONTENT_CLASS
-                : AccordionPanel.INACTIVE_TAB_CONTENT_CLASS;
+                              ? AccordionPanel.ACTIVE_TAB_CONTENT_CLASS
+                              : AccordionPanel.INACTIVE_TAB_CONTENT_CLASS;
         UIComponent titleFacet = tab.getFacet("title");
         String title = tab.getTitle();
         String tabindex = tab.isDisabled() ? "-1" : accordionPanel.getTabindex();

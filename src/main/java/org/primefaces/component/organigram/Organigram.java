@@ -19,13 +19,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-
 import org.primefaces.event.organigram.OrganigramNodeCollapseEvent;
 import org.primefaces.event.organigram.OrganigramNodeDragDropEvent;
 import org.primefaces.event.organigram.OrganigramNodeExpandEvent;
@@ -42,8 +42,7 @@ import org.primefaces.util.Constants;
         @ResourceDependency(library = "primefaces", name = "organigram/organigram.js"),
         @ResourceDependency(library = "primefaces", name = "organigram/organigram.css")
 })
-public class Organigram extends OrganigramBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
-
+public class Organigram extends OrganigramBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Organigram";
 

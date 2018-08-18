@@ -16,6 +16,7 @@
 package org.primefaces.component.inplace;
 
 import java.util.*;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.EditableValueHolder;
@@ -29,8 +30,7 @@ import javax.faces.event.BehaviorEvent;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class Inplace extends InplaceBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder {
-
+public class Inplace extends InplaceBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Inplace";
 

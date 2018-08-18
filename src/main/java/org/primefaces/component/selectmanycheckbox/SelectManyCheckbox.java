@@ -16,6 +16,7 @@
 package org.primefaces.component.selectmanycheckbox;
 
 import java.util.List;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UINamingContainer;
@@ -28,8 +29,7 @@ import javax.faces.model.SelectItem;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class SelectManyCheckbox extends SelectManyCheckboxBase implements org.primefaces.component.api.Widget {
-
+public class SelectManyCheckbox extends SelectManyCheckboxBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectManyCheckbox";
 

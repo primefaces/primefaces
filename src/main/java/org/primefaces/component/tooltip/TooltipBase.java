@@ -16,11 +16,11 @@
 package org.primefaces.component.tooltip;
 
 import javax.faces.component.UIOutput;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class TooltipBase extends UIOutput implements org.primefaces.component.api.Widget {
+abstract class TooltipBase extends UIOutput implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

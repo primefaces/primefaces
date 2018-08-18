@@ -18,6 +18,7 @@ package org.primefaces.component.texteditor;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
@@ -28,8 +29,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "texteditor/texteditor.js")
 })
-public class TextEditor extends TextEditorBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder {
-
+public class TextEditor extends TextEditorBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TextEditor";
 

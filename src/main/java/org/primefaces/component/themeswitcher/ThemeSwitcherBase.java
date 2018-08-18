@@ -15,11 +15,12 @@
  */
 package org.primefaces.component.themeswitcher;
 
+import org.primefaces.component.api.Widget;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class ThemeSwitcherBase extends SelectOneMenu implements org.primefaces.component.api.Widget {
+abstract class ThemeSwitcherBase extends SelectOneMenu implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -28,24 +29,21 @@ abstract class ThemeSwitcherBase extends SelectOneMenu implements org.primefaces
     public enum PropertyKeys {
 
         widgetVar,
-        buttonPreText
+        buttonPreText;
     }
 
     public ThemeSwitcherBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    @Override
     public java.lang.String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    @Override
     public void setWidgetVar(java.lang.String _widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
     }
@@ -58,7 +56,6 @@ abstract class ThemeSwitcherBase extends SelectOneMenu implements org.primefaces
         getStateHelper().put(PropertyKeys.buttonPreText, _buttonPreText);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

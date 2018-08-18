@@ -20,7 +20,6 @@ import javax.el.ValueExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
-
 import org.primefaces.PrimeFaces;
 
 @ResourceDependencies({
@@ -28,8 +27,7 @@ import org.primefaces.PrimeFaces;
         @ResourceDependency(library = "primefaces", name = "jquery/jquery-plugins.js"),
         @ResourceDependency(library = "primefaces", name = "core.js")
 })
-public class Poll extends PollBase implements org.primefaces.component.api.AjaxSource, org.primefaces.component.api.Widget {
-
+public class Poll extends PollBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Poll";
 

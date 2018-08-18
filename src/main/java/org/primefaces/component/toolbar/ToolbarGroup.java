@@ -17,6 +17,5 @@ package org.primefaces.component.toolbar;
 
 public class ToolbarGroup extends ToolbarGroupBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.ToolbarGroup";
 }

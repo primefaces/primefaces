@@ -16,11 +16,11 @@
 package org.primefaces.component.scrollpanel;
 
 import javax.faces.component.UIPanel;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class ScrollPanelBase extends UIPanel implements org.primefaces.component.api.Widget {
+abstract class ScrollPanelBase extends UIPanel implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -31,14 +31,13 @@ abstract class ScrollPanelBase extends UIPanel implements org.primefaces.compone
         widgetVar,
         style,
         styleClass,
-        mode
+        mode;
     }
 
     public ScrollPanelBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -75,7 +74,6 @@ abstract class ScrollPanelBase extends UIPanel implements org.primefaces.compone
         getStateHelper().put(PropertyKeys.mode, _mode);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

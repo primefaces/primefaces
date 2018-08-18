@@ -17,7 +17,6 @@ package org.primefaces.component.splitbutton;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
@@ -29,8 +28,7 @@ import org.primefaces.util.LangUtils;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class SplitButton extends SplitButtonBase implements org.primefaces.component.api.AjaxSource, org.primefaces.component.api.Widget {
-
+public class SplitButton extends SplitButtonBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SplitButton";
 
@@ -53,8 +51,8 @@ public class SplitButton extends SplitButtonBase implements org.primefaces.compo
             }
             else if (!valueBlank && !iconBlank) {
                 styleClass = getIconPos().equals("left")
-                        ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS
-                        : HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
+                             ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS
+                             : HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
             }
             else if (valueBlank && !iconBlank) {
                 styleClass = HTML.BUTTON_ICON_ONLY_BUTTON_CLASS;
@@ -77,17 +75,14 @@ public class SplitButton extends SplitButtonBase implements org.primefaces.compo
         return styleClass;
     }
 
-    @Override
     public boolean isPartialSubmitSet() {
-        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (this.getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
     }
 
-    @Override
     public boolean isResetValuesSet() {
-        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (getValueExpression(PropertyKeys.resetValues.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (this.getValueExpression(PropertyKeys.resetValues.toString()) != null);
     }
 
-    @Override
     public boolean isAjaxified() {
         return isAjax();
     }

@@ -22,7 +22,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
-
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.event.FlowEvent;
 
@@ -32,8 +31,7 @@ import org.primefaces.event.FlowEvent;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class Wizard extends WizardBase implements org.primefaces.component.api.Widget {
-
+public class Wizard extends WizardBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Wizard";
 

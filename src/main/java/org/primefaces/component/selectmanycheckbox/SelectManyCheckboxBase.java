@@ -16,11 +16,11 @@
 package org.primefaces.component.selectmanycheckbox;
 
 import javax.faces.component.html.HtmlSelectManyCheckbox;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox implements org.primefaces.component.api.Widget {
+abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

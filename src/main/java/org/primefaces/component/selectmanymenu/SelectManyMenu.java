@@ -24,8 +24,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class SelectManyMenu extends SelectManyMenuBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.InputHolder {
-
+public class SelectManyMenu extends SelectManyMenuBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectManyMenu";
 
@@ -37,22 +36,18 @@ public class SelectManyMenu extends SelectManyMenuBase implements org.primefaces
     public final static String FILTER_CLASS = "ui-selectlistbox-filter ui-inputfield ui-widget ui-state-default ui-corner-all";
     public final static String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
 
-    @Override
     public String getInputClientId() {
-        return getClientId(getFacesContext()) + "_input";
+        return this.getClientId(getFacesContext()) + "_input";
     }
 
-    @Override
     public String getValidatableInputClientId() {
-        return getInputClientId();
+        return this.getInputClientId();
     }
 
-    @Override
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
     }
 
-    @Override
     public String getLabelledBy() {
         return (String) getStateHelper().get("labelledby");
     }

@@ -18,7 +18,6 @@ package org.primefaces.component.overlaypanel;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
-
 import org.primefaces.util.ComponentUtils;
 
 @ResourceDependencies({
@@ -28,8 +27,7 @@ import org.primefaces.util.ComponentUtils;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class OverlayPanel extends OverlayPanelBase implements org.primefaces.component.api.Widget {
-
+public class OverlayPanel extends OverlayPanelBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.OverlayPanel";
 

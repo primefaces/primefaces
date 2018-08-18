@@ -25,8 +25,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "watermark/watermark.js")
 })
-public class Watermark extends WatermarkBase implements org.primefaces.component.api.Widget {
-
+public class Watermark extends WatermarkBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Watermark";
 }

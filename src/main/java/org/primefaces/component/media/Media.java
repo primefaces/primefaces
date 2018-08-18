@@ -17,6 +17,5 @@ package org.primefaces.component.media;
 
 public class Media extends MediaBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.Media";
 }

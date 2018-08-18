@@ -18,13 +18,13 @@ package org.primefaces.component.editor;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
+
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AgentUtils;
 import org.primefaces.util.ComponentUtils;

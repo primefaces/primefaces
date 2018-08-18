@@ -15,11 +15,12 @@
  */
 package org.primefaces.component.breadcrumb;
 
+import org.primefaces.component.api.Widget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class BreadCrumbBase extends AbstractMenu implements org.primefaces.component.api.Widget {
+abstract class BreadCrumbBase extends AbstractMenu implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

@@ -17,6 +17,5 @@ package org.primefaces.component.dataview;
 
 public class DataViewListItem extends DataViewListItemBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataViewListItem";
 }

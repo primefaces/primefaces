@@ -16,12 +16,12 @@
 package org.primefaces.component.panelgrid;
 
 import java.io.IOException;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.column.Column;
 import org.primefaces.component.row.Row;
 import org.primefaces.renderkit.CoreRenderer;
@@ -128,8 +128,8 @@ public class PanelGridRenderer extends CoreRenderer {
             }
 
             String columnClass = (colMod < columnClasses.length)
-                    ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim()
-                    : PanelGrid.CELL_CLASS;
+                                 ? PanelGrid.CELL_CLASS + " " + columnClasses[colMod].trim()
+                                 : PanelGrid.CELL_CLASS;
             writer.startElement("td", null);
             writer.writeAttribute("role", "gridcell", null);
             writer.writeAttribute("class", columnClass, null);
@@ -153,8 +153,8 @@ public class PanelGridRenderer extends CoreRenderer {
             if (child.isRendered()) {
                 if (child instanceof Row) {
                     String rowStyleClass = i % 2 == 0
-                            ? PanelGrid.TABLE_ROW_CLASS + " " + PanelGrid.EVEN_ROW_CLASS
-                            : PanelGrid.TABLE_ROW_CLASS + " " + PanelGrid.ODD_ROW_CLASS;
+                                           ? PanelGrid.TABLE_ROW_CLASS + " " + PanelGrid.EVEN_ROW_CLASS
+                                           : PanelGrid.TABLE_ROW_CLASS + " " + PanelGrid.ODD_ROW_CLASS;
                     encodeRow(context, (Row) child, "gridcell", rowStyleClass, PanelGrid.CELL_CLASS);
                     i++;
                 }

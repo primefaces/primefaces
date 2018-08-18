@@ -17,6 +17,7 @@ package org.primefaces.component.selectonelistbox;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
@@ -25,7 +26,6 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
-
 import org.primefaces.component.column.Column;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.SelectOneRenderer;

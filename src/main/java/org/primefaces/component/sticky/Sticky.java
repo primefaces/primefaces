@@ -24,8 +24,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class Sticky extends StickyBase implements org.primefaces.component.api.Widget {
-
+public class Sticky extends StickyBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Sticky";
 }

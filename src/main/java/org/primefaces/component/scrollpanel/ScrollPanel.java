@@ -27,8 +27,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "components.js"),
         @ResourceDependency(library = "primefaces", name = "scrollpanel/scrollpanel.js")
 })
-public class ScrollPanel extends ScrollPanelBase implements org.primefaces.component.api.Widget {
-
+public class ScrollPanel extends ScrollPanelBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ScrollPanel";
 

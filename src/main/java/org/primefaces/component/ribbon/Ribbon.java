@@ -29,7 +29,6 @@ import javax.faces.application.ResourceDependency;
 })
 public class Ribbon extends RibbonBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.Ribbon";
 
     public static final String CONTAINER_CLASS = "ui-ribbon ui-tabs ui-tabs-top ui-widget ui-widget-content ui-corner-top ui-hidden-container";

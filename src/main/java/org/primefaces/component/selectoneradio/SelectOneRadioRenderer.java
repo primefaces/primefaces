@@ -17,6 +17,7 @@ package org.primefaces.component.selectoneradio;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -29,7 +30,6 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
-
 import org.primefaces.component.radiobutton.RadioButton;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.SelectOneRenderer;
@@ -395,8 +395,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     protected boolean isSelected(FacesContext context, SelectOneRadio radio, SelectItem selectItem, String currentValue) {
         String itemStrValue = getOptionAsString(context, radio, radio.getConverter(), selectItem.getValue());
         return (itemStrValue == null || "".equals(itemStrValue))
-                ? currentValue == null || "".equals(currentValue)
-                : itemStrValue.equals(currentValue);
+               ? currentValue == null || "".equals(currentValue)
+               : itemStrValue.equals(currentValue);
     }
 
     protected void encodeRadioButton(FacesContext context, SelectOneRadio radio, RadioButton button) throws IOException {

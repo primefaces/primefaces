@@ -25,8 +25,7 @@ import javax.faces.context.FacesContext;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class DataScroller extends DataScrollerBase implements org.primefaces.component.api.Widget {
-
+public class DataScroller extends DataScrollerBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataScroller";
     public final static String CONTAINER_CLASS = "ui-datascroller ui-widget";
@@ -40,6 +39,6 @@ public class DataScroller extends DataScrollerBase implements org.primefaces.com
 
     public boolean isLoadRequest() {
         FacesContext context = getFacesContext();
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_load");
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_load");
     }
 }

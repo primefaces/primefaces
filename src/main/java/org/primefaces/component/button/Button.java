@@ -18,9 +18,9 @@ package org.primefaces.component.button;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
@@ -31,8 +31,7 @@ import org.primefaces.util.LangUtils;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class Button extends ButtonBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.UIOutcomeTarget {
-
+public class Button extends ButtonBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Button";
 

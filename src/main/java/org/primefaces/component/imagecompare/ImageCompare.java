@@ -26,8 +26,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "imagecompare/imagecompare.js"),
         @ResourceDependency(library = "primefaces", name = "imagecompare/imagecompare.css")
 })
-public class ImageCompare extends ImageCompareBase implements org.primefaces.component.api.Widget {
-
+public class ImageCompare extends ImageCompareBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ImageCompare";
 }

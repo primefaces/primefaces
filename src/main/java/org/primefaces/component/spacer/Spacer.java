@@ -17,6 +17,5 @@ package org.primefaces.component.spacer;
 
 public class Spacer extends SpacerBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.Spacer";
 }

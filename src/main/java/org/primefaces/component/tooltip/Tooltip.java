@@ -25,8 +25,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class Tooltip extends TooltipBase implements org.primefaces.component.api.Widget {
-
+public class Tooltip extends TooltipBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tooltip";
 

@@ -16,11 +16,12 @@
 package org.primefaces.component.button;
 
 import javax.faces.component.html.HtmlOutcomeTargetButton;
-
+import org.primefaces.component.api.UIOutcomeTarget;
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class ButtonBase extends HtmlOutcomeTargetButton implements org.primefaces.component.api.Widget, org.primefaces.component.api.UIOutcomeTarget {
+abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widget, UIOutcomeTarget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

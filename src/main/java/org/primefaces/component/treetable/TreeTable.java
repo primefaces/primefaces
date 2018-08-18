@@ -16,6 +16,7 @@
 package org.primefaces.component.treetable;
 
 import java.util.*;
+
 import javax.el.ELContext;
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -28,7 +29,6 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
-
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.column.Column;
@@ -50,8 +50,7 @@ import org.primefaces.util.LocaleUtils;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class TreeTable extends TreeTableBase implements org.primefaces.component.api.Widget, javax.faces.component.behavior.ClientBehaviorHolder, org.primefaces.component.api.PrimeClientBehaviorHolder, org.primefaces.component.api.Pageable {
-
+public class TreeTable extends TreeTableBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TreeTable";
 

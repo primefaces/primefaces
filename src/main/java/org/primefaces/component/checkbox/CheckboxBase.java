@@ -16,11 +16,11 @@
 package org.primefaces.component.checkbox;
 
 import javax.faces.component.UIComponentBase;
-
+import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
 
-abstract class CheckboxBase extends UIComponentBase implements org.primefaces.component.api.Widget {
+abstract class CheckboxBase extends UIComponentBase implements Widget {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 

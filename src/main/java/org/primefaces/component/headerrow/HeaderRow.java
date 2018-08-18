@@ -17,6 +17,5 @@ package org.primefaces.component.headerrow;
 
 public class HeaderRow extends HeaderRowBase {
 
-
     public static final String COMPONENT_TYPE = "org.primefaces.component.HeaderRow";
 }

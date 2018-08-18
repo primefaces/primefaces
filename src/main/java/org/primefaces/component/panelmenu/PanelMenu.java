@@ -25,8 +25,7 @@ import javax.faces.application.ResourceDependency;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class PanelMenu extends PanelMenuBase implements org.primefaces.component.api.Widget {
-
+public class PanelMenu extends PanelMenuBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.PanelMenu";
 

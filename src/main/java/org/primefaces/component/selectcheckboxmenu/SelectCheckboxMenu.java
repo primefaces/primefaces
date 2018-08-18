@@ -19,13 +19,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
-
 import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.util.Constants;
 
@@ -36,8 +36,7 @@ import org.primefaces.util.Constants;
         @ResourceDependency(library = "primefaces", name = "core.js"),
         @ResourceDependency(library = "primefaces", name = "components.js")
 })
-public class SelectCheckboxMenu extends SelectCheckboxMenuBase implements org.primefaces.component.api.Widget, org.primefaces.component.api.PrimeClientBehaviorHolder {
-
+public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectCheckboxMenu";
 
@@ -85,7 +84,7 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase implements org.pr
 
         if (event instanceof AjaxBehaviorEvent && eventName.equals("toggleSelect")) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String clientId = this.getClientId(context);
+            String clientId = getClientId(context);
             boolean checked = Boolean.valueOf(params.get(clientId + "_checked"));
             ToggleSelectEvent toggleSelectEvent = new ToggleSelectEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), checked);
             toggleSelectEvent.setPhaseId(event.getPhaseId());
