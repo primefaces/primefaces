@@ -16,9 +16,6 @@
         <interface>
             <name>org.primefaces.model.menu.Separator</name>
         </interface>
-        <interface>
-            <name>org.primefaces.component.separator.Separator</name>
-        </interface>
     </interfaces>
     <attributes>
         &standard_uicomponent_attributes;
