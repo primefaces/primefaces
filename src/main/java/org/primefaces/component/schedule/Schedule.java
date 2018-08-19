@@ -57,6 +57,8 @@ public class Schedule extends ScheduleBase {
     }});
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+    private java.util.Locale appropriateLocale;
+    private TimeZone appropriateTimeZone;
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -68,9 +70,6 @@ public class Schedule extends ScheduleBase {
         return EVENT_NAMES;
     }
 
-
-    private java.util.Locale appropriateLocale;
-
     java.util.Locale calculateLocale(FacesContext facesContext) {
         if (appropriateLocale == null) {
             appropriateLocale = LocaleUtils.resolveLocale(getLocale(), getClientId(facesContext));
@@ -78,8 +77,6 @@ public class Schedule extends ScheduleBase {
 
         return appropriateLocale;
     }
-
-    private TimeZone appropriateTimeZone;
 
     protected TimeZone calculateTimeZone() {
         if (appropriateTimeZone == null) {

@@ -19,13 +19,13 @@ public class Tab extends TabBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tab";
 
-    public void setLoaded(boolean value) {
-        getStateHelper().put("loaded", value);
-    }
-
     public boolean isLoaded() {
         Object value = getStateHelper().get("loaded");
 
         return (value == null) ? false : (Boolean) value;
+    }
+
+    public void setLoaded(boolean value) {
+        getStateHelper().put("loaded", value);
     }
 }

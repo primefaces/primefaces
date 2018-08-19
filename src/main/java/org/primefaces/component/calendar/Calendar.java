@@ -50,14 +50,14 @@ public class Calendar extends CalendarBase {
 
     public static final String CONTAINER_CLASS = "ui-calendar";
     public static final String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
-
+    public static final String DATE_OUT_OF_RANGE_MESSAGE_ID = "primefaces.calendar.OUT_OF_RANGE";
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "dateSelect", "viewChange", "close"));
     private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("dateSelect", "viewChange", "close"));
-
     private final Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
-
     private java.util.Locale calculatedLocale;
     private java.util.TimeZone appropriateTimeZone;
+    private String timeOnlyPattern = null;
+    private boolean conversionFailed = false;
 
     public java.util.Locale calculateLocale(FacesContext facesContext) {
         if (calculatedLocale == null) {
@@ -164,8 +164,6 @@ public class Calendar extends CalendarBase {
         }
     }
 
-    public static final String DATE_OUT_OF_RANGE_MESSAGE_ID = "primefaces.calendar.OUT_OF_RANGE";
-
     @Override
     protected void validateValue(FacesContext context, Object value) {
         super.validateValue(context, value);
@@ -206,8 +204,6 @@ public class Calendar extends CalendarBase {
         return pattern == null ? ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, locale)).toPattern() : pattern;
     }
 
-    private String timeOnlyPattern = null;
-
     public String calculateTimeOnlyPattern() {
         if (timeOnlyPattern == null) {
             String localePattern = ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, calculateLocale(getFacesContext()))).toPattern();
@@ -219,14 +215,12 @@ public class Calendar extends CalendarBase {
         return timeOnlyPattern;
     }
 
-    private boolean conversionFailed = false;
+    public boolean isConversionFailed() {
+        return conversionFailed;
+    }
 
     public void setConversionFailed(boolean value) {
         conversionFailed = value;
-    }
-
-    public boolean isConversionFailed() {
-        return conversionFailed;
     }
 
     @Override
@@ -240,13 +234,13 @@ public class Calendar extends CalendarBase {
     }
 
     @Override
-    public void setLabelledBy(String labelledBy) {
-        getStateHelper().put("labelledby", labelledBy);
+    public String getLabelledBy() {
+        return (String) getStateHelper().get("labelledby");
     }
 
     @Override
-    public String getLabelledBy() {
-        return (String) getStateHelper().get("labelledby");
+    public void setLabelledBy(String labelledBy) {
+        getStateHelper().put("labelledby", labelledBy);
     }
 
     @Override

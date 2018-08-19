@@ -35,6 +35,7 @@ public class Clock extends ClockBase {
 
     public static final String STYLE_CLASS = "ui-clock ui-widget ui-widget-header ui-corner-all";
     public static final String ANALOG_STYLE_CLASS = "ui-analog-clock ui-widget";
+    private java.util.TimeZone appropriateTimeZone;
 
     public boolean isSyncRequest() {
         FacesContext context = getFacesContext();
@@ -42,8 +43,6 @@ public class Clock extends ClockBase {
 
         return params.containsKey(getClientId(context) + "_sync");
     }
-
-    private java.util.TimeZone appropriateTimeZone;
 
     public java.util.TimeZone calculateTimeZone() {
         if (appropriateTimeZone == null) {

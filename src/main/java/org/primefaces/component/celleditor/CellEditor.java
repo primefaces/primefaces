@@ -25,6 +25,7 @@ import org.primefaces.component.treetable.TreeTable;
 public class CellEditor extends CellEditorBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CellEditor";
+    private UIComponent parentTable = null;
 
     @Override
     public void processDecodes(FacesContext context) {
@@ -50,8 +51,6 @@ public class CellEditor extends CellEditorBase {
     public boolean isEditRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context));
     }
-
-    private UIComponent parentTable = null;
 
     public UIComponent getParentTable(FacesContext context) {
         if (parentTable == null) {

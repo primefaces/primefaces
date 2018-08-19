@@ -30,7 +30,7 @@ public class KnobRenderer extends CoreRenderer {
 
     public static final String RENDERER_TYPE = "org.primefaces.component.KnobRenderer";
 
-    public static String colorToHex(Color color) {
+    public static final String colorToHex(Color color) {
 
         String red = Integer.toHexString(color.getRed());
         if (red.length() < 2) {

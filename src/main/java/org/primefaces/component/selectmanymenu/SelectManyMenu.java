@@ -35,26 +35,29 @@ public class SelectManyMenu extends SelectManyMenuBase {
     public static final String FILTER_CONTAINER_CLASS = "ui-selectlistbox-filter-container";
     public static final String FILTER_CLASS = "ui-selectlistbox-filter ui-inputfield ui-widget ui-state-default ui-corner-all";
     public static final String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
-
-    public String getInputClientId() {
-        return this.getClientId(getFacesContext()) + "_input";
-    }
-
-    public String getValidatableInputClientId() {
-        return this.getInputClientId();
-    }
-
-    public void setLabelledBy(String labelledBy) {
-        getStateHelper().put("labelledby", labelledBy);
-    }
-
-    public String getLabelledBy() {
-        return (String) getStateHelper().get("labelledby");
-    }
-
-    public static String[] DOM_EVENTS = {
+    public static final String[] DOM_EVENTS = {
             "onchange",
             "onclick",
             "ondblclick"
     };
+
+    @Override
+    public String getInputClientId() {
+        return getClientId(getFacesContext()) + "_input";
+    }
+
+    @Override
+    public String getValidatableInputClientId() {
+        return getInputClientId();
+    }
+
+    @Override
+    public String getLabelledBy() {
+        return (String) getStateHelper().get("labelledby");
+    }
+
+    @Override
+    public void setLabelledBy(String labelledBy) {
+        getStateHelper().put("labelledby", labelledBy);
+    }
 }

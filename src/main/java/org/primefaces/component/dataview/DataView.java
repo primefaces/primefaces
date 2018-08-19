@@ -61,6 +61,8 @@ public class DataView extends DataViewBase {
     }});
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+    private DataViewGridItem gridItem = null;
+    private DataViewListItem listItem = null;
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -107,9 +109,6 @@ public class DataView extends DataViewBase {
             super.queueEvent(event);
         }
     }
-
-    private DataViewGridItem gridItem = null;
-    private DataViewListItem listItem = null;
 
     public DataViewGridItem getGridItem() {
         return gridItem;

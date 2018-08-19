@@ -36,6 +36,7 @@ public class SelectManyCheckbox extends SelectManyCheckboxBase {
     public static final String STYLE_CLASS = "ui-selectmanycheckbox ui-widget";
 
     private int index = -1;
+    private List<SelectItem> selectItems;
 
     public String getCheckboxId(FacesContext context) {
         index++;
@@ -43,13 +44,11 @@ public class SelectManyCheckbox extends SelectManyCheckboxBase {
         return this.getClientId(context) + UINamingContainer.getSeparatorChar(context) + index;
     }
 
-    private List<SelectItem> selectItems;
+    public List<SelectItem> getSelectItems() {
+        return this.selectItems;
+    }
 
     public void setSelectItems(List<SelectItem> selectItems) {
         this.selectItems = selectItems;
-    }
-
-    public List<SelectItem> getSelectItems() {
-        return this.selectItems;
     }
 }

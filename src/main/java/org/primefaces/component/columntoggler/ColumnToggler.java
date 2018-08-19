@@ -51,6 +51,7 @@ public class ColumnToggler extends ColumnTogglerBase {
     }});
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+    private UIComponent dataSourceComponent = null;
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -84,8 +85,6 @@ public class ColumnToggler extends ColumnTogglerBase {
             super.queueEvent(event);
         }
     }
-
-    private UIComponent dataSourceComponent = null;
 
     public UIComponent getDataSourceComponent() {
         if (dataSourceComponent == null) {

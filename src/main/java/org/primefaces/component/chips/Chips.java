@@ -42,16 +42,14 @@ import org.primefaces.util.Constants;
 public class Chips extends ChipsBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Chips";
-
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "itemSelect", "itemUnselect"));
-    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("itemSelect", "itemUnselect"));
-
     public static final String STYLE_CLASS = "ui-chips ui-widget";
     public static final String CONTAINER_CLASS = "ui-chips-container ui-inputfield ui-state-default ui-corner-all";
     public static final String TOKEN_DISPLAY_CLASS = "ui-chips-token ui-state-active ui-corner-all";
     public static final String TOKEN_LABEL_CLASS = "ui-chips-token-label";
     public static final String TOKEN_CLOSE_ICON_CLASS = "ui-chips-token-icon ui-icon ui-icon-close";
     public static final String TOKEN_INPUT_CLASS = "ui-chips-input-token";
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "itemSelect", "itemUnselect"));
+    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("itemSelect", "itemUnselect"));
 
     @Override
     public String getInputClientId() {
@@ -64,13 +62,13 @@ public class Chips extends ChipsBase {
     }
 
     @Override
-    public void setLabelledBy(String labelledBy) {
-        getStateHelper().put("labelledby", labelledBy);
+    public String getLabelledBy() {
+        return (String) getStateHelper().get("labelledby");
     }
 
     @Override
-    public String getLabelledBy() {
-        return (String) getStateHelper().get("labelledby");
+    public void setLabelledBy(String labelledBy) {
+        getStateHelper().put("labelledby", labelledBy);
     }
 
     @Override

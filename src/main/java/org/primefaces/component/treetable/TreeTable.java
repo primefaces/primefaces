@@ -102,6 +102,22 @@ public class TreeTable extends TreeTableBase {
     public static final String GLOBAL_MODE = "global";
 
     static final Map<String, FilterConstraint> FILTER_CONSTRAINTS;
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
+        put("select", NodeSelectEvent.class);
+        put("unselect", NodeUnselectEvent.class);
+        put("expand", NodeExpandEvent.class);
+        put("collapse", NodeCollapseEvent.class);
+        put("colResize", ColumnResizeEvent.class);
+        put("sort", SortEvent.class);
+        put("rowEdit", RowEditEvent.class);
+        put("rowEditInit", RowEditEvent.class);
+        put("rowEditCancel", RowEditEvent.class);
+        put("cellEdit", CellEditEvent.class);
+        put("cellEditInit", CellEditEvent.class);
+        put("cellEditCancel", CellEditEvent.class);
+        put("page", PageEvent.class);
+    }});
+    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     static {
         FILTER_CONSTRAINTS = new HashMap<>();
@@ -118,25 +134,13 @@ public class TreeTable extends TreeTableBase {
         FILTER_CONSTRAINTS.put(GLOBAL_MODE, new GlobalFilterConstraint());
     }
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("select", NodeSelectEvent.class);
-        put("unselect", NodeUnselectEvent.class);
-        put("expand", NodeExpandEvent.class);
-        put("collapse", NodeCollapseEvent.class);
-        put("colResize", ColumnResizeEvent.class);
-        put("sort", SortEvent.class);
-        put("rowEdit", RowEditEvent.class);
-        put("rowEditInit", RowEditEvent.class);
-        put("rowEditCancel", RowEditEvent.class);
-        put("cellEdit", CellEditEvent.class);
-        put("cellEditInit", CellEditEvent.class);
-        put("cellEditCancel", CellEditEvent.class);
-        put("page", PageEvent.class);
-    }});
-
-    private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
     private final List<String> selectedRowKeys = new ArrayList<>();
+    private int columnsCount = -1;
+    private UIColumn sortColumn;
+    private List<UIColumn> columns;
+    private Columns dynamicColumns;
+    private List<String> filteredRowKeys = new ArrayList<>();
+    private List filterMetadata;
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -339,8 +343,6 @@ public class TreeTable extends TreeTableBase {
         return params.get(clientId + "_colResize") != null;
     }
 
-    private int columnsCount = -1;
-
     public int getColumnsCount() {
         if (columnsCount == -1) {
             columnsCount = 0;
@@ -369,14 +371,12 @@ public class TreeTable extends TreeTableBase {
         return selectionMode != null && selectionMode.equals("checkbox");
     }
 
-    private UIColumn sortColumn;
+    public UIColumn getSortColumn() {
+        return sortColumn;
+    }
 
     public void setSortColumn(UIColumn column) {
         sortColumn = column;
-    }
-
-    public UIColumn getSortColumn() {
-        return sortColumn;
     }
 
     public void clearDefaultSorted() {
@@ -412,8 +412,6 @@ public class TreeTable extends TreeTableBase {
         return null;
     }
 
-    private List<UIColumn> columns;
-
     public List<UIColumn> getColumns() {
         if (columns == null) {
             columns = new ArrayList<>();
@@ -440,14 +438,12 @@ public class TreeTable extends TreeTableBase {
         return columns;
     }
 
-    private Columns dynamicColumns;
+    public Columns getDynamicColumns() {
+        return dynamicColumns;
+    }
 
     public void setDynamicColumns(Columns value) {
         dynamicColumns = value;
-    }
-
-    public Columns getDynamicColumns() {
-        return dynamicColumns;
     }
 
     @Override
@@ -587,8 +583,6 @@ public class TreeTable extends TreeTableBase {
         }
     }
 
-    private List<String> filteredRowKeys = new ArrayList<>();
-
     public List<String> getFilteredRowKeys() {
         return filteredRowKeys;
     }
@@ -596,8 +590,6 @@ public class TreeTable extends TreeTableBase {
     public void setFilteredRowKeys(List<String> filteredRowKeys) {
         this.filteredRowKeys = filteredRowKeys;
     }
-
-    private List filterMetadata;
 
     public List getFilterMetadata() {
         return filterMetadata;

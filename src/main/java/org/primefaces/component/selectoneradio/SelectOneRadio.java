@@ -39,6 +39,7 @@ public class SelectOneRadio extends SelectOneRadioBase {
     public static final String NATIVE_STYLE_CLASS = "ui-selectoneradio ui-selectoneradio-native ui-widget";
 
     private int index = -1;
+    private List<SelectItem> selectItems;
 
     public String getRadioButtonId(FacesContext context) {
         index++;
@@ -46,13 +47,11 @@ public class SelectOneRadio extends SelectOneRadioBase {
         return this.getClientId(context) + UINamingContainer.getSeparatorChar(context) + index;
     }
 
-    private List<SelectItem> selectItems;
+    public List<SelectItem> getSelectItems() {
+        return this.selectItems;
+    }
 
     public void setSelectItems(List<SelectItem> selectItems) {
         this.selectItems = selectItems;
-    }
-
-    public List<SelectItem> getSelectItems() {
-        return this.selectItems;
     }
 }

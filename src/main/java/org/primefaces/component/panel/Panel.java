@@ -61,6 +61,7 @@ public class Panel extends PanelBase {
     }});
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+    private Menu optionsMenu;
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -71,8 +72,6 @@ public class Panel extends PanelBase {
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
     }
-
-    private Menu optionsMenu;
 
     public Menu getOptionsMenu() {
         if (optionsMenu == null) {

@@ -189,12 +189,12 @@ public class SelectOneMenu extends SelectOneMenuBase {
         return this.getClientId(getFacesContext()) + "_input";
     }
 
-    public void setLabelledBy(String labelledBy) {
-        getStateHelper().put("labelledby", labelledBy);
-    }
-
     public String getLabelledBy() {
         return (String) getStateHelper().get("labelledby");
+    }
+
+    public void setLabelledBy(String labelledBy) {
+        getStateHelper().put("labelledby", labelledBy);
     }
 
 
