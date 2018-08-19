@@ -17,6 +17,7 @@ package org.primefaces.component.idlemonitor;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.behavior.ClientBehaviorHolder;
+
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
@@ -34,13 +35,14 @@ abstract class IdleMonitorBase extends UIComponentBase implements Widget, Client
         timeout,
         onidle,
         onactive,
-        multiWindowSupport;
+        multiWindowSupport
     }
 
     public IdleMonitorBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -85,6 +87,7 @@ abstract class IdleMonitorBase extends UIComponentBase implements Widget, Client
         getStateHelper().put(PropertyKeys.multiWindowSupport, _multiWindowSupport);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

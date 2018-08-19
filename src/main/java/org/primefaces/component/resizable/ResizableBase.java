@@ -17,6 +17,7 @@ package org.primefaces.component.resizable;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.behavior.ClientBehaviorHolder;
+
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
@@ -58,9 +59,8 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
         PropertyKeys() {
         }
 
-        @Override
         public String toString() {
-            return ((toString != null) ? toString : super.toString());
+            return ((this.toString != null) ? this.toString : super.toString());
         }
     }
 
@@ -217,7 +217,6 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
         getStateHelper().put(PropertyKeys.onStop, _onStop);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

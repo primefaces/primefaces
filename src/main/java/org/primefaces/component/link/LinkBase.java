@@ -16,6 +16,7 @@
 package org.primefaces.component.link;
 
 import javax.faces.component.html.HtmlOutcomeTargetLink;
+
 import org.primefaces.component.api.UIOutcomeTarget;
 
 

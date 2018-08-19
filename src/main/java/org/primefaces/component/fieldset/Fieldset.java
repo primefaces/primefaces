@@ -26,6 +26,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
+
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.Visibility;
 import org.primefaces.util.ComponentUtils;
@@ -65,7 +66,7 @@ public class Fieldset extends FieldsetBase {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName.equals("toggle")) {
-                Visibility visibility = isCollapsed() ? Visibility.HIDDEN : Visibility.VISIBLE;
+                Visibility visibility = this.isCollapsed() ? Visibility.HIDDEN : Visibility.VISIBLE;
 
                 super.queueEvent(new ToggleEvent(this, behaviorEvent.getBehavior(), visibility));
             }
@@ -88,7 +89,7 @@ public class Fieldset extends FieldsetBase {
     @Override
     public void processDecodes(FacesContext context) {
         if (ComponentUtils.isRequestSource(this, context)) {
-            decode(context);
+            this.decode(context);
         }
         else {
             super.processDecodes(context);

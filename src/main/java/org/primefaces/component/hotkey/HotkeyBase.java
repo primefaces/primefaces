@@ -16,6 +16,7 @@
 package org.primefaces.component.hotkey;
 
 import javax.faces.component.UICommand;
+
 import org.primefaces.component.api.AjaxSource;
 
 

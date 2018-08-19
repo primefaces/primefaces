@@ -16,6 +16,7 @@
 package org.primefaces.component.inputtext;
 
 import javax.faces.component.html.HtmlInputText;
+
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
@@ -31,7 +32,7 @@ abstract class InputTextBase extends HtmlInputText implements Widget, RTLAware {
 
         placeholder,
         widgetVar,
-        type
+        type;
     }
 
     public InputTextBase() {
@@ -67,12 +68,10 @@ abstract class InputTextBase extends HtmlInputText implements Widget, RTLAware {
         getStateHelper().put(PropertyKeys.type, _type);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 
-    @Override
     public boolean isRTL() {
         return "rtl".equalsIgnoreCase(getDir());
     }

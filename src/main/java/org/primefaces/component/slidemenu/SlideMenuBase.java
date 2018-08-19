@@ -38,7 +38,7 @@ abstract class SlideMenuBase extends AbstractMenu implements Widget, OverlayMenu
         my,
         at,
         overlay,
-        triggerEvent
+        triggerEvent;
     }
 
     public SlideMenuBase() {
@@ -58,7 +58,6 @@ abstract class SlideMenuBase extends AbstractMenu implements Widget, OverlayMenu
         getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
     }
 
-    @Override
     public org.primefaces.model.menu.MenuModel getModel() {
         return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }
@@ -91,7 +90,6 @@ abstract class SlideMenuBase extends AbstractMenu implements Widget, OverlayMenu
         getStateHelper().put(PropertyKeys.backLabel, _backLabel);
     }
 
-    @Override
     public java.lang.String getTrigger() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.trigger, null);
     }
@@ -100,7 +98,6 @@ abstract class SlideMenuBase extends AbstractMenu implements Widget, OverlayMenu
         getStateHelper().put(PropertyKeys.trigger, _trigger);
     }
 
-    @Override
     public java.lang.String getMy() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.my, null);
     }
@@ -109,7 +106,6 @@ abstract class SlideMenuBase extends AbstractMenu implements Widget, OverlayMenu
         getStateHelper().put(PropertyKeys.my, _my);
     }
 
-    @Override
     public java.lang.String getAt() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.at, null);
     }
@@ -126,7 +122,6 @@ abstract class SlideMenuBase extends AbstractMenu implements Widget, OverlayMenu
         getStateHelper().put(PropertyKeys.overlay, _overlay);
     }
 
-    @Override
     public java.lang.String getTriggerEvent() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.triggerEvent, "click");
     }
@@ -135,7 +130,6 @@ abstract class SlideMenuBase extends AbstractMenu implements Widget, OverlayMenu
         getStateHelper().put(PropertyKeys.triggerEvent, _triggerEvent);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

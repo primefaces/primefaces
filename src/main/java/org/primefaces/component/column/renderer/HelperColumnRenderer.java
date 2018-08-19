@@ -18,6 +18,7 @@ package org.primefaces.component.column.renderer;
 import java.io.IOException;
 
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.column.Column;
 
 public interface HelperColumnRenderer {

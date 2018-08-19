@@ -16,6 +16,7 @@
 package org.primefaces.component.imageswitch;
 
 import javax.faces.component.UIComponentBase;
+
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
@@ -35,7 +36,7 @@ abstract class ImageSwitchBase extends UIComponentBase implements Widget {
         speed,
         slideshowSpeed,
         slideshowAuto,
-        activeIndex
+        activeIndex;
     }
 
     public ImageSwitchBase() {
@@ -111,7 +112,6 @@ abstract class ImageSwitchBase extends UIComponentBase implements Widget {
         getStateHelper().put(PropertyKeys.activeIndex, _activeIndex);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

@@ -22,6 +22,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
+
 import org.primefaces.component.api.UIData;
 import org.primefaces.util.LangUtils;
 
@@ -32,7 +33,7 @@ public class AjaxExceptionHandlerVisitCallback implements VisitCallback {
 
     private final Throwable throwable;
 
-    private Map<String, AjaxExceptionHandler> handlers;
+    private final Map<String, AjaxExceptionHandler> handlers;
 
     public AjaxExceptionHandlerVisitCallback(Throwable throwable) {
         this.throwable = throwable;

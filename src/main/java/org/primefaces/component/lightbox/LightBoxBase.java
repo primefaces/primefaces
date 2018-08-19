@@ -16,6 +16,7 @@
 package org.primefaces.component.lightbox;
 
 import javax.faces.component.UIComponentBase;
+
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
@@ -37,7 +38,7 @@ abstract class LightBoxBase extends UIComponentBase implements Widget {
         iframeTitle,
         visible,
         onShow,
-        onHide
+        onHide;
     }
 
     public LightBoxBase() {
@@ -129,7 +130,6 @@ abstract class LightBoxBase extends UIComponentBase implements Widget {
         getStateHelper().put(PropertyKeys.onHide, _onHide);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

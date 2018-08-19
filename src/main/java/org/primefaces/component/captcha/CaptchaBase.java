@@ -16,6 +16,7 @@
 package org.primefaces.component.captcha;
 
 import javax.faces.component.UIInput;
+
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 

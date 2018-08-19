@@ -16,6 +16,7 @@
 package org.primefaces.component.galleria;
 
 import javax.faces.component.UIOutput;
+
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
@@ -42,7 +43,7 @@ abstract class GalleriaBase extends UIOutput implements Widget {
         transitionInterval,
         panelWidth,
         panelHeight,
-        showCaption
+        showCaption;
     }
 
     public GalleriaBase() {
@@ -62,12 +63,10 @@ abstract class GalleriaBase extends UIOutput implements Widget {
         getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
     }
 
-    @Override
     public java.lang.Object getValue() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.value, null);
     }
 
-    @Override
     public void setValue(java.lang.Object _value) {
         getStateHelper().put(PropertyKeys.value, _value);
     }
@@ -176,7 +175,6 @@ abstract class GalleriaBase extends UIOutput implements Widget {
         getStateHelper().put(PropertyKeys.showCaption, _showCaption);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

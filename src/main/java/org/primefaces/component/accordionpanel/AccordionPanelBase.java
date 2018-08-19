@@ -16,6 +16,7 @@
 package org.primefaces.component.accordionpanel;
 
 import javax.faces.component.behavior.ClientBehaviorHolder;
+
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.UITabPanel;
@@ -42,13 +43,14 @@ abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware
         multiple,
         dir,
         tabindex,
-        tabController;
-    }
+        tabController
+	}
 
     public AccordionPanelBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -149,11 +151,13 @@ abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware
         getStateHelper().put(PropertyKeys.tabController, _tabController);
     }
 
-    public String resolveWidgetVar() {
+    @Override
+	public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 
-    public boolean isRTL() {
+    @Override
+	public boolean isRTL() {
         return "rtl".equalsIgnoreCase(getDir());
     }
 }

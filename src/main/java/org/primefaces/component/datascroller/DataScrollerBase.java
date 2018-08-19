@@ -34,13 +34,14 @@ abstract class DataScrollerBase extends UIData implements Widget {
         chunkSize,
         mode,
         scrollHeight,
-        buffer;
+        buffer
     }
 
     public DataScrollerBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -101,6 +102,7 @@ abstract class DataScrollerBase extends UIData implements Widget {
         getStateHelper().put(PropertyKeys.buffer, _buffer);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

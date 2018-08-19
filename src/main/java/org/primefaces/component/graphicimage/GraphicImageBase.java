@@ -36,6 +36,7 @@ abstract class GraphicImageBase extends HtmlGraphicImage {
         setRendererType(DEFAULT_RENDERER);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }

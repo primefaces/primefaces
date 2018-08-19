@@ -17,6 +17,7 @@ package org.primefaces.component.organigram;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.behavior.ClientBehaviorHolder;
+
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
@@ -38,7 +39,7 @@ abstract class OrganigramBase extends UIComponentBase implements Widget, ClientB
         styleClass,
         leafNodeConnectorHeight,
         zoom,
-        autoScrollToSelection
+        autoScrollToSelection;
     }
 
     public OrganigramBase() {
@@ -122,7 +123,6 @@ abstract class OrganigramBase extends UIComponentBase implements Widget, ClientB
         getStateHelper().put(PropertyKeys.autoScrollToSelection, _autoScrollToSelection);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

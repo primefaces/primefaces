@@ -16,6 +16,7 @@
 package org.primefaces.component.blockui;
 
 import javax.faces.component.UIPanel;
+
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 

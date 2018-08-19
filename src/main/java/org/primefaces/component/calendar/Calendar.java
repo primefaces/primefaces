@@ -27,6 +27,7 @@ import javax.faces.convert.Converter;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.convert.DateTimeConverter;
 import org.primefaces.event.DateViewChangeEvent;
@@ -53,7 +54,7 @@ public class Calendar extends CalendarBase {
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "dateSelect", "viewChange", "close"));
     private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("dateSelect", "viewChange", "close"));
 
-    private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
+    private final Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
 
     private java.util.Locale calculatedLocale;
     private java.util.TimeZone appropriateTimeZone;

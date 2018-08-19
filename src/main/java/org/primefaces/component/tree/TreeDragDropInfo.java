@@ -16,21 +16,22 @@
 package org.primefaces.component.tree;
 
 import javax.faces.component.UIComponent;
+
 import org.primefaces.model.TreeNode;
 
 public class TreeDragDropInfo {
 
-    private UIComponent component;
+    private final UIComponent component;
 
     private TreeNode dragNode;
 
     private TreeNode[] dragNodes;
 
-    private TreeNode dropNode;
+    private final TreeNode dropNode;
 
-    private int dropIndex;
+    private final int dropIndex;
 
-    private boolean droppedNodeCopy;
+    private final boolean droppedNodeCopy;
 
     public TreeDragDropInfo(UIComponent component, TreeNode dragNode, TreeNode dropNode, int dropIndex, boolean droppedNodeCopy) {
         this.component = component;

@@ -22,13 +22,14 @@ import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.columns.Columns;
 
 public class DynamicColumn implements UIColumn {
 
-    private int index;
-    private Columns columns;
+    private final int index;
+    private final Columns columns;
     private String columnKey;
 
     public DynamicColumn(int index, Columns columns) {

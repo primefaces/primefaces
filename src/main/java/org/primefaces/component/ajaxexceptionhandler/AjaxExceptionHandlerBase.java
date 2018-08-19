@@ -26,13 +26,14 @@ abstract class AjaxExceptionHandlerBase extends UIComponentBase {
 
         onexception,
         update,
-        type;
+        type
     }
 
     public AjaxExceptionHandlerBase() {
         setRendererType(null);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }

@@ -27,6 +27,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
+
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.Visibility;

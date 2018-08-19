@@ -16,6 +16,7 @@
 package org.primefaces.component.commandbutton;
 
 import javax.faces.component.html.HtmlCommandButton;
+
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Confirmable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
@@ -54,13 +55,14 @@ abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource
         partialSubmitFilter,
         form,
         renderDisabledClick,
-        ariaLabel;
+        ariaLabel
     }
 
     public CommandButtonBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -81,6 +83,7 @@ abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource
         getStateHelper().put(PropertyKeys.ajax, _ajax);
     }
 
+    @Override
     public boolean isAsync() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.async, false);
     }
@@ -89,6 +92,7 @@ abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource
         getStateHelper().put(PropertyKeys.async, _async);
     }
 
+    @Override
     public java.lang.String getProcess() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.process, null);
     }
@@ -97,6 +101,7 @@ abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource
         getStateHelper().put(PropertyKeys.process, _process);
     }
 
+    @Override
     public java.lang.String getUpdate() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.update, null);
     }
@@ -105,6 +110,7 @@ abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource
         getStateHelper().put(PropertyKeys.update, _update);
     }
 
+    @Override
     public java.lang.String getOnstart() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onstart, null);
     }
@@ -113,6 +119,7 @@ abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource
         getStateHelper().put(PropertyKeys.onstart, _onstart);
     }
 
+    @Override
     public java.lang.String getOncomplete() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.oncomplete, null);
     }
@@ -121,6 +128,7 @@ abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource
         getStateHelper().put(PropertyKeys.oncomplete, _oncomplete);
     }
 
+    @Override
     public java.lang.String getOnerror() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onerror, null);
     }
@@ -129,6 +137,7 @@ abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource
         getStateHelper().put(PropertyKeys.onerror, _onerror);
     }
 
+    @Override
     public java.lang.String getOnsuccess() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onsuccess, null);
     }
@@ -137,6 +146,7 @@ abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource
         getStateHelper().put(PropertyKeys.onsuccess, _onsuccess);
     }
 
+    @Override
     public boolean isGlobal() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.global, true);
     }
@@ -145,6 +155,7 @@ abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource
         getStateHelper().put(PropertyKeys.global, _global);
     }
 
+    @Override
     public java.lang.String getDelay() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.delay, null);
     }
@@ -153,6 +164,7 @@ abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource
         getStateHelper().put(PropertyKeys.delay, _delay);
     }
 
+    @Override
     public int getTimeout() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.timeout, 0);
     }
@@ -161,6 +173,7 @@ abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource
         getStateHelper().put(PropertyKeys.timeout, _timeout);
     }
 
+    @Override
     public boolean isPartialSubmit() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.partialSubmit, false);
     }
@@ -169,6 +182,7 @@ abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource
         getStateHelper().put(PropertyKeys.partialSubmit, _partialSubmit);
     }
 
+    @Override
     public boolean isResetValues() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.resetValues, false);
     }
@@ -177,6 +191,7 @@ abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource
         getStateHelper().put(PropertyKeys.resetValues, _resetValues);
     }
 
+    @Override
     public boolean isIgnoreAutoUpdate() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
     }
@@ -225,6 +240,7 @@ abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource
         getStateHelper().put(PropertyKeys.validateClient, _validateClient);
     }
 
+    @Override
     public java.lang.String getPartialSubmitFilter() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.partialSubmitFilter, null);
     }
@@ -233,6 +249,7 @@ abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource
         getStateHelper().put(PropertyKeys.partialSubmitFilter, _partialSubmitFilter);
     }
 
+    @Override
     public java.lang.String getForm() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.form, null);
     }
@@ -257,6 +274,7 @@ abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource
         getStateHelper().put(PropertyKeys.ariaLabel, _ariaLabel);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

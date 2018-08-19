@@ -62,7 +62,7 @@ public class OutputPanel extends OutputPanelBase {
     }
 
     public boolean isContentLoadRequest(FacesContext context) {
-        String clientId = this.getClientId(context);
+        String clientId = getClientId(context);
 
         return context.getExternalContext().getRequestParameterMap().containsKey(clientId + "_load");
     }
@@ -70,7 +70,7 @@ public class OutputPanel extends OutputPanelBase {
     @Override
     public void processDecodes(FacesContext context) {
         if (shouldSkipChildren(context)) {
-            this.decode(context);
+            decode(context);
         }
         else {
             super.processDecodes(context);

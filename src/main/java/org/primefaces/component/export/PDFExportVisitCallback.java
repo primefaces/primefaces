@@ -15,23 +15,24 @@
  */
 package org.primefaces.component.export;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Paragraph;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.view.facelets.FaceletException;
+
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Paragraph;
 import org.primefaces.component.datatable.DataTable;
 
 public class PDFExportVisitCallback implements VisitCallback {
 
-    private PDFExporter exporter;
-    private Document document;
-    private boolean pageOnly;
-    private boolean selectionOnly;
-    private String encoding;
+    private final PDFExporter exporter;
+    private final Document document;
+    private final boolean pageOnly;
+    private final boolean selectionOnly;
+    private final String encoding;
 
     public PDFExportVisitCallback(PDFExporter exporter, Document document, boolean pageOnly, boolean selectionOnly, String encoding) {
         this.exporter = exporter;

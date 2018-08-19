@@ -28,7 +28,7 @@ abstract class RowTogglerBase extends UIComponentBase {
 
         expandLabel,
         collapseLabel,
-        tabindex
+        tabindex;
     }
 
     public RowTogglerBase() {

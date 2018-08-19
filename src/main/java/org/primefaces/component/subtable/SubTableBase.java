@@ -25,6 +25,7 @@ abstract class SubTableBase extends UIData {
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SubTableRenderer";
 
     public enum PropertyKeys {
+        ;
     }
 
     public SubTableBase() {

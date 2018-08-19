@@ -16,6 +16,7 @@
 package org.primefaces.component.spinner;
 
 import javax.faces.component.html.HtmlInputText;
+
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;

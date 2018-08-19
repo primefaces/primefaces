@@ -19,6 +19,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
@@ -41,14 +42,14 @@ public class Password extends PasswordBase {
     @Override
     protected void validateValue(FacesContext context, Object value) {
         super.validateValue(context, value);
-        String match = getMatch();
-        Object submittedValue = getSubmittedValue();
+        String match = this.getMatch();
+        Object submittedValue = this.getSubmittedValue();
 
         if (isValid() && !LangUtils.isValueBlank(match)) {
             Password matchWith = (Password) SearchExpressionFacade.resolveComponent(context, this, match);
 
             if (submittedValue != null && !submittedValue.equals(matchWith.getSubmittedValue())) {
-                setValid(false);
+                this.setValid(false);
                 matchWith.setValid(false);
 
                 String validatorMessage = getValidatorMessage();

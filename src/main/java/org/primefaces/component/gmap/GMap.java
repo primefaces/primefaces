@@ -24,6 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
+
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.map.*;
 import org.primefaces.model.map.GeocodeResult;

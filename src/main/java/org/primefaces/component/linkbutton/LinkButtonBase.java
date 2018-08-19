@@ -16,6 +16,7 @@
 package org.primefaces.component.linkbutton;
 
 import javax.faces.component.html.HtmlOutcomeTargetLink;
+
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
@@ -33,7 +34,7 @@ abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UIOutcome
         fragment,
         disableClientWindow,
         href,
-        escape
+        escape;
     }
 
     public LinkButtonBase() {
@@ -53,7 +54,6 @@ abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UIOutcome
         getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
     }
 
-    @Override
     public java.lang.String getFragment() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.fragment, null);
     }
@@ -62,17 +62,14 @@ abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UIOutcome
         getStateHelper().put(PropertyKeys.fragment, _fragment);
     }
 
-    @Override
     public boolean isDisableClientWindow() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
     }
 
-    @Override
     public void setDisableClientWindow(boolean _disableClientWindow) {
         getStateHelper().put(PropertyKeys.disableClientWindow, _disableClientWindow);
     }
 
-    @Override
     public java.lang.String getHref() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.href, null);
     }
@@ -89,7 +86,6 @@ abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UIOutcome
         getStateHelper().put(PropertyKeys.escape, _escape);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

@@ -52,6 +52,7 @@ import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.event.PreValidateEvent;
 import javax.faces.model.*;
 import javax.faces.render.Renderer;
+
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
@@ -96,7 +97,7 @@ public class UIData extends javax.faces.component.UIData {
     private DataModel model = null;
     private Object oldVar = null;
     private Map<String, Object> _rowDeltaStates = new HashMap<>();
-    private Map<String, Object> _rowTransientStates = new HashMap<>();
+    private final Map<String, Object> _rowTransientStates = new HashMap<>();
     private Object _initialDescendantFullComponentState = null;
     private Boolean isNested = null;
 
