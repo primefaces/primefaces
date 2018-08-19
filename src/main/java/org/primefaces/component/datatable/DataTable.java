@@ -61,10 +61,6 @@ public class DataTable extends DataTableBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataTable";
 
-    private static final Logger logger = Logger.getLogger(DataTable.class.getName());
-
-    private static final String SB_GET_SELECTED_ROW_KEYS_AS_STRING = DataTable.class.getName() + "#getSelectedRowKeysAsString";
-
     public static final String CONTAINER_CLASS = "ui-datatable ui-widget";
     public static final String TABLE_WRAPPER_CLASS = "ui-datatable-tablewrapper";
     public static final String REFLOW_CLASS = "ui-datatable-reflow";
@@ -124,14 +120,14 @@ public class DataTable extends DataTableBase {
     public static final String ROW_GROUP_TOGGLER_ICON_CLASS = "ui-rowgroup-toggler-icon ui-icon ui-icon-circle-triangle-s";
     public static final String EDITING_ROW_CLASS = "ui-row-editing";
     public static final String STICKY_HEADER_CLASS = "ui-datatable-sticky";
-
     public static final String ARIA_FILTER_BY = "primefaces.datatable.aria.FILTER_BY";
     public static final String ARIA_HEADER_CHECKBOX_ALL = "primefaces.datatable.aria.HEADER_CHECKBOX_ALL";
     public static final String SORT_LABEL = "primefaces.datatable.SORT_LABEL";
     public static final String SORT_ASC = "primefaces.datatable.SORT_ASC";
     public static final String SORT_DESC = "primefaces.datatable.SORT_DESC";
     public static final String ROW_GROUP_TOGGLER = "primefaces.rowgrouptoggler.aria.ROW_GROUP_TOGGLER";
-
+    private static final Logger logger = Logger.getLogger(DataTable.class.getName());
+    private static final String SB_GET_SELECTED_ROW_KEYS_AS_STRING = DataTable.class.getName() + "#getSelectedRowKeysAsString";
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("page", PageEvent.class);
         put("sort", SortEvent.class);
@@ -178,6 +174,23 @@ public class DataTable extends DataTableBase {
         FEATURES.put(DataTableFeatureKey.DRAGGABLE_ROWS, new DraggableRowsFeature());
         FEATURES.put(DataTableFeatureKey.ADD_ROW, new AddRowFeature());
     }
+
+    int columnsCountWithSpan = -1;
+    private List filterMetadata;
+    private boolean reset = false;
+    private List<Object> selectedRowKeys = new ArrayList<>();
+    private boolean isRowKeyRestored = false;
+    private int columnsCount = -1;
+    private List<UIColumn> columns;
+    private UIColumn sortColumn;
+    private List<SortMeta> multiSortMeta = null;
+    private Columns dynamicColumns;
+    private ValueExpression sortByVE;
+    private String togglableColumnsAsString;
+    private Map<String, Boolean> togglableColsMap;
+    private String resizableColumnsAsString;
+    private Map<String, String> resizableColsMap;
+    private List<UIComponent> iterableChildren;
 
     public DataTableFeature getFeature(DataTableFeatureKey key) {
         return FEATURES.get(key);
@@ -443,7 +456,7 @@ public class DataTable extends DataTableBase {
             }
         }
 
-        //header columns        
+        //header columns
         if (getFrozenColumns() > 0) {
             UIColumn column = findColumnInGroup(clientId, getColumnGroup("frozenHeader"));
             if (column == null) {
@@ -716,8 +729,6 @@ public class DataTable extends DataTableBase {
         getStateHelper().put("scrollOffset", scrollOffset);
     }
 
-    private List filterMetadata;
-
     public List getFilterMetadata() {
         return filterMetadata;
     }
@@ -725,8 +736,6 @@ public class DataTable extends DataTableBase {
     public void setFilterMetadata(List filterMetadata) {
         this.filterMetadata = filterMetadata;
     }
-
-    private boolean reset = false;
 
     public boolean isReset() {
         return reset;
@@ -845,9 +854,6 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    private List<Object> selectedRowKeys = new ArrayList<>();
-    private boolean isRowKeyRestored = false;
-
     public void findSelectedRowKeys() {
         Object selection = getSelection();
         boolean hasRowKeyVe = getValueExpression(PropertyKeys.rowKey.toString()) != null;
@@ -933,8 +939,6 @@ public class DataTable extends DataTableBase {
         return null;
     }
 
-    private int columnsCount = -1;
-
     public int getColumnsCount() {
         if (columnsCount == -1) {
             columnsCount = 0;
@@ -966,8 +970,6 @@ public class DataTable extends DataTableBase {
 
         return columnsCount;
     }
-
-    int columnsCountWithSpan = -1;
 
     public int getColumnsCountWithSpan() {
         if (columnsCountWithSpan == -1) {
@@ -1001,8 +1003,6 @@ public class DataTable extends DataTableBase {
 
         return columnsCountWithSpan;
     }
-
-    private List<UIColumn> columns;
 
     public List<UIColumn> getColumns() {
         if (columns == null) {
@@ -1054,7 +1054,16 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    private UIColumn sortColumn;
+    public UIColumn getSortColumn() {
+        if (sortColumn == null) {
+            String sortColumnKey = (String) getStateHelper().get("sortColumnKey");
+            if (sortColumnKey != null) {
+                sortColumn = findColumn(sortColumnKey);
+            }
+        }
+
+        return sortColumn;
+    }
 
     public void setSortColumn(UIColumn column) {
         sortColumn = column;
@@ -1065,17 +1074,6 @@ public class DataTable extends DataTableBase {
         else {
             getStateHelper().put("sortColumnKey", column.getColumnKey());
         }
-    }
-
-    public UIColumn getSortColumn() {
-        if (sortColumn == null) {
-            String sortColumnKey = (String) getStateHelper().get("sortColumnKey");
-            if (sortColumnKey != null) {
-                sortColumn = findColumn(sortColumnKey);
-            }
-        }
-
-        return sortColumn;
     }
 
     public boolean isMultiSort() {
@@ -1091,8 +1089,6 @@ public class DataTable extends DataTableBase {
     public void setMultiSortState(List<MultiSortState> _multiSortState) {
         getStateHelper().put("multiSortState", _multiSortState);
     }
-
-    private List<SortMeta> multiSortMeta = null;
 
     public List<SortMeta> getMultiSortMeta() {
         if (multiSortMeta != null) {
@@ -1169,14 +1165,12 @@ public class DataTable extends DataTableBase {
         return true;
     }
 
-    private Columns dynamicColumns;
+    public Columns getDynamicColumns() {
+        return dynamicColumns;
+    }
 
     public void setDynamicColumns(Columns value) {
         dynamicColumns = value;
-    }
-
-    public Columns getDynamicColumns() {
-        return dynamicColumns;
     }
 
     @Override
@@ -1266,42 +1260,36 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    private ValueExpression sortByVE;
-
-    public void setSortByVE(ValueExpression ve) {
-        sortByVE = ve;
-    }
-
     public ValueExpression getSortByVE() {
         return sortByVE;
     }
 
-    public void setDefaultSortByVE(ValueExpression ve) {
-        setValueExpression("defaultSortBy", ve);
+    public void setSortByVE(ValueExpression ve) {
+        sortByVE = ve;
     }
 
     public ValueExpression getDefaultSortByVE() {
         return getValueExpression("defaultSortBy");
     }
 
-    public void setDefaultSortOrder(String val) {
-        getStateHelper().put("defaultSortOrder", val);
+    public void setDefaultSortByVE(ValueExpression ve) {
+        setValueExpression("defaultSortBy", ve);
     }
 
     public String getDefaultSortOrder() {
         return (String) getStateHelper().get("defaultSortOrder");
     }
 
-    public void setDefaultSortFunction(MethodExpression obj) {
-        getStateHelper().put("defaultSortFunction", obj);
+    public void setDefaultSortOrder(String val) {
+        getStateHelper().put("defaultSortOrder", val);
     }
 
     public MethodExpression getDefaultSortFunction() {
         return (MethodExpression) getStateHelper().get("defaultSortFunction");
     }
 
-    public void setDefaultSort(boolean defaultSort) {
-        getStateHelper().put("defaultSort", defaultSort);
+    public void setDefaultSortFunction(MethodExpression obj) {
+        getStateHelper().put("defaultSortFunction", obj);
     }
 
     public boolean isDefaultSort() {
@@ -1314,16 +1302,12 @@ public class DataTable extends DataTableBase {
         }
     }
 
-    private String togglableColumnsAsString;
+    public void setDefaultSort(boolean defaultSort) {
+        getStateHelper().put("defaultSort", defaultSort);
+    }
 
     public void setTogglableColumnsAsString(String togglableColumnsAsString) {
         this.togglableColumnsAsString = togglableColumnsAsString;
-    }
-
-    private Map<String, Boolean> togglableColsMap;
-
-    public void setTogglableColumnsMap(Map<String, Boolean> togglableColsMap) {
-        this.togglableColsMap = togglableColsMap;
     }
 
     public Map getTogglableColumnsMap() {
@@ -1350,20 +1334,16 @@ public class DataTable extends DataTableBase {
         return togglableColsMap;
     }
 
-    private String resizableColumnsAsString;
-
-    public void setResizableColumnsAsString(String resizableColumnsAsString) {
-        this.resizableColumnsAsString = resizableColumnsAsString;
+    public void setTogglableColumnsMap(Map<String, Boolean> togglableColsMap) {
+        this.togglableColsMap = togglableColsMap;
     }
 
     public String getResizableColumnsAsString() {
         return resizableColumnsAsString;
     }
 
-    private Map<String, String> resizableColsMap;
-
-    public void setResizableColumnsMap(Map<String, String> resizableColsMap) {
-        this.resizableColsMap = resizableColsMap;
+    public void setResizableColumnsAsString(String resizableColumnsAsString) {
+        this.resizableColumnsAsString = resizableColumnsAsString;
     }
 
     public Map getResizableColumnsMap() {
@@ -1388,6 +1368,10 @@ public class DataTable extends DataTableBase {
         }
 
         return resizableColsMap;
+    }
+
+    public void setResizableColumnsMap(Map<String, String> resizableColsMap) {
+        this.resizableColsMap = resizableColsMap;
     }
 
     public List findOrderedColumns(String columnOrder) {
@@ -1435,8 +1419,6 @@ public class DataTable extends DataTableBase {
     private boolean isFilterRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_filtering");
     }
-
-    private List<UIComponent> iterableChildren;
 
     @Override
     protected List<UIComponent> getIterableChildren() {

@@ -47,12 +47,12 @@ public class Spinner extends SpinnerBase {
     }
 
     @Override
-    public void setLabelledBy(String labelledBy) {
-        getStateHelper().put("labelledby", labelledBy);
+    public String getLabelledBy() {
+        return (String) getStateHelper().get("labelledby");
     }
 
     @Override
-    public String getLabelledBy() {
-        return (String) getStateHelper().get("labelledby");
+    public void setLabelledBy(String labelledBy) {
+        getStateHelper().put("labelledby", labelledBy);
     }
 }

@@ -79,17 +79,14 @@ public class PickList extends PickListBase {
     public static final String MOVE_BOTTOM_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-s";
     public static final String FILTER_CLASS = "ui-picklist-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public static final String FILTER_CONTAINER = "ui-picklist-filter-container";
-
-    private final Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
-
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("transfer", TransferEvent.class);
         put("select", SelectEvent.class);
         put("unselect", UnselectEvent.class);
         put("reorder", null);
     }});
-
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+    private final Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {

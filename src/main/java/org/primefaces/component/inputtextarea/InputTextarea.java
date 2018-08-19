@@ -38,11 +38,10 @@ import org.primefaces.util.Constants;
 public class InputTextarea extends InputTextareaBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputTextarea";
-
+    public static final String STYLE_CLASS = "ui-inputfield ui-inputtextarea ui-widget ui-state-default ui-corner-all";
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "itemSelect"));
     private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("itemSelect"));
-
-    public static final String STYLE_CLASS = "ui-inputfield ui-inputtextarea ui-widget ui-state-default ui-corner-all";
+    private List suggestions = null;
 
     @Override
     public Collection<String> getEventNames() {
@@ -93,8 +92,6 @@ public class InputTextarea extends InputTextareaBase {
             super.queueEvent(event);
         }
     }
-
-    private List suggestions = null;
 
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
         super.broadcast(event);

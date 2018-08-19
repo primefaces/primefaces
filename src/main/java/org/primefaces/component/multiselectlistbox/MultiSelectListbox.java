@@ -34,19 +34,15 @@ import javax.faces.event.BehaviorEvent;
 public class MultiSelectListbox extends MultiSelectListboxBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.MultiSelectListbox";
-
-    public static String CONTAINER_CLASS = "ui-multiselectlistbox ui-widget ui-helper-clearfix";
-    public static String LIST_CONTAINER_CLASS = "ui-multiselectlistbox-listcontainer";
-    public static String LIST_HEADER_CLASS = "ui-multiselectlistbox-header ui-widget-header ui-corner-top";
-    public static String LIST_CLASS = "ui-multiselectlistbox-list ui-inputfield ui-widget-content";
-    public static String ITEM_CLASS = "ui-multiselectlistbox-item";
-
+    public static final String CONTAINER_CLASS = "ui-multiselectlistbox ui-widget ui-helper-clearfix";
+    public static final String LIST_CONTAINER_CLASS = "ui-multiselectlistbox-listcontainer";
+    public static final String LIST_HEADER_CLASS = "ui-multiselectlistbox-header ui-widget-header ui-corner-top";
+    public static final String LIST_CLASS = "ui-multiselectlistbox-list ui-inputfield ui-widget-content";
+    public static final String ITEM_CLASS = "ui-multiselectlistbox-item";
     private static final String DEFAULT_EVENT = "change";
-
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("change", null);
     }});
-
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     @Override

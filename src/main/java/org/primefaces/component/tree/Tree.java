@@ -47,68 +47,28 @@ public class Tree extends TreeBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Tree";
 
-    private Map<String, UITreeNode> nodes;
-
-    public UITreeNode getUITreeNodeByType(String type) {
-        UITreeNode node = getTreeNodes().get(type);
-
-        if (node == null) {
-            throw new javax.faces.FacesException("Unsupported tree node type:" + type);
-        }
-        else {
-            return node;
-        }
-    }
-
-
-    public boolean isNodeExpandRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_expandNode");
-    }
-
-    public boolean isSelectionRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_instantSelection");
-    }
-
-    public boolean isFilterRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_filtering");
-    }
-
-    public static String CONTAINER_CLASS = "ui-tree ui-widget ui-widget-content ui-corner-all";
-    public static String CONTAINER_RTL_CLASS = "ui-tree ui-tree-rtl ui-widget ui-widget-content ui-corner-all";
-    public static String HORIZONTAL_CONTAINER_CLASS = "ui-tree ui-tree-horizontal ui-widget ui-widget-content ui-corner-all";
-    public static String ROOT_NODES_CLASS = "ui-tree-container";
-    public static String PARENT_NODE_CLASS = "ui-treenode ui-treenode-parent";
-    public static String LEAF_NODE_CLASS = "ui-treenode ui-treenode-leaf";
-    public static String CHILDREN_NODES_CLASS = "ui-treenode-children";
-    public static String NODE_CONTENT_CLASS_V = "ui-treenode-content";
-    public static String SELECTABLE_NODE_CONTENT_CLASS_V = "ui-treenode-content ui-tree-selectable";
-    public static String NODE_CONTENT_CLASS_H = "ui-treenode-content ui-state-default ui-corner-all";
-    public static String SELECTABLE_NODE_CONTENT_CLASS_H = "ui-treenode-content ui-tree-selectable ui-state-default ui-corner-all";
-    public static String EXPANDED_ICON_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-s";
-    public static String COLLAPSED_ICON_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-e";
-    public static String COLLAPSED_ICON_RTL_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-w";
-    public static String EXPANDED_ICON_CLASS_H = "ui-tree-toggler ui-icon ui-icon-minus";
-    public static String COLLAPSED_ICON_CLASS_H = "ui-tree-toggler ui-icon ui-icon-plus";
-    public static String LEAF_ICON_CLASS = "ui-treenode-leaf-icon";
-    public static String NODE_ICON_CLASS = "ui-treenode-icon ui-icon";
-    public static String NODE_LABEL_CLASS = "ui-treenode-label ui-corner-all";
     public static final String FILTER_CLASS = "ui-tree-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public static final String FILTER_CONTAINER = "ui-tree-filter-container";
-
-    public Map<String, UITreeNode> getTreeNodes() {
-        if (nodes == null) {
-            nodes = new HashMap<>();
-            for (UIComponent child : getChildren()) {
-                if (child instanceof UITreeNode) {
-                    UITreeNode node = (UITreeNode) child;
-                    nodes.put(node.getType(), node);
-                }
-            }
-        }
-
-        return nodes;
-    }
-
+    public static final String CONTAINER_CLASS = "ui-tree ui-widget ui-widget-content ui-corner-all";
+    public static final String CONTAINER_RTL_CLASS = "ui-tree ui-tree-rtl ui-widget ui-widget-content ui-corner-all";
+    public static final String HORIZONTAL_CONTAINER_CLASS = "ui-tree ui-tree-horizontal ui-widget ui-widget-content ui-corner-all";
+    public static final String ROOT_NODES_CLASS = "ui-tree-container";
+    public static final String PARENT_NODE_CLASS = "ui-treenode ui-treenode-parent";
+    public static final String LEAF_NODE_CLASS = "ui-treenode ui-treenode-leaf";
+    public static final String CHILDREN_NODES_CLASS = "ui-treenode-children";
+    public static final String NODE_CONTENT_CLASS_V = "ui-treenode-content";
+    public static final String SELECTABLE_NODE_CONTENT_CLASS_V = "ui-treenode-content ui-tree-selectable";
+    public static final String NODE_CONTENT_CLASS_H = "ui-treenode-content ui-state-default ui-corner-all";
+    public static final String SELECTABLE_NODE_CONTENT_CLASS_H = "ui-treenode-content ui-tree-selectable ui-state-default ui-corner-all";
+    public static final String EXPANDED_ICON_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-s";
+    public static final String COLLAPSED_ICON_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-e";
+    public static final String COLLAPSED_ICON_RTL_CLASS_V = "ui-tree-toggler ui-icon ui-icon-triangle-1-w";
+    public static final String EXPANDED_ICON_CLASS_H = "ui-tree-toggler ui-icon ui-icon-minus";
+    public static final String COLLAPSED_ICON_CLASS_H = "ui-tree-toggler ui-icon ui-icon-plus";
+    public static final String LEAF_ICON_CLASS = "ui-treenode-leaf-icon";
+    public static final String NODE_ICON_CLASS = "ui-treenode-icon ui-icon";
+    public static final String NODE_LABEL_CLASS = "ui-treenode-label ui-corner-all";
+    static final Map<String, FilterConstraint> FILTER_CONSTRAINTS;
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("select", NodeSelectEvent.class);
         put("unselect", NodeUnselectEvent.class);
@@ -118,9 +78,7 @@ public class Tree extends TreeBase {
         put("contextMenu", NodeSelectEvent.class);
         put("filter", null);
     }});
-
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
     private static final String STARTS_WITH_MATCH_MODE = "startsWith";
     private static final String ENDS_WITH_MATCH_MODE = "endsWith";
     private static final String CONTAINS_MATCH_MODE = "contains";
@@ -132,8 +90,6 @@ public class Tree extends TreeBase {
     private static final String EQUALS_MODE = "equals";
     private static final String IN_MODE = "in";
     private static final String GLOBAL_MODE = "global";
-
-    static final Map<String, FilterConstraint> FILTER_CONSTRAINTS;
 
     static {
         FILTER_CONSTRAINTS = new HashMap<>();
@@ -148,6 +104,50 @@ public class Tree extends TreeBase {
         FILTER_CONSTRAINTS.put(EQUALS_MODE, new EqualsFilterConstraint());
         FILTER_CONSTRAINTS.put(IN_MODE, new InFilterConstraint());
         FILTER_CONSTRAINTS.put(GLOBAL_MODE, new GlobalFilterConstraint());
+    }
+
+    private Map<String, UITreeNode> nodes;
+    private TreeNode dragNode;
+    private TreeNode[] dragNodes;
+    private TreeNode dropNode;
+    private boolean retValOnDrop = true;
+    private List<String> filteredRowKeys = new ArrayList<>();
+
+    public UITreeNode getUITreeNodeByType(String type) {
+        UITreeNode node = getTreeNodes().get(type);
+
+        if (node == null) {
+            throw new javax.faces.FacesException("Unsupported tree node type:" + type);
+        }
+        else {
+            return node;
+        }
+    }
+
+    public boolean isNodeExpandRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_expandNode");
+    }
+
+    public boolean isSelectionRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_instantSelection");
+    }
+
+    public boolean isFilterRequest(FacesContext context) {
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_filtering");
+    }
+
+    public Map<String, UITreeNode> getTreeNodes() {
+        if (nodes == null) {
+            nodes = new HashMap<>();
+            for (UIComponent child : getChildren()) {
+                if (child instanceof UITreeNode) {
+                    UITreeNode node = (UITreeNode) child;
+                    nodes.put(node.getType(), node);
+                }
+            }
+        }
+
+        return nodes;
     }
 
     @Override
@@ -287,10 +287,6 @@ public class Tree extends TreeBase {
         return getDir().equalsIgnoreCase("rtl");
     }
 
-    private TreeNode dragNode;
-    private TreeNode[] dragNodes;
-    private TreeNode dropNode;
-
     TreeNode getDragNode() {
         return dragNode;
     }
@@ -396,8 +392,6 @@ public class Tree extends TreeBase {
         return newNode;
     }
 
-    private boolean retValOnDrop = true;
-
     public boolean isTreeNodeDropped() {
         MethodExpression me = getOnDrop();
         if (me != null) {
@@ -429,8 +423,6 @@ public class Tree extends TreeBase {
 
         return value == null ? "0,0" : value;
     }
-
-    private List<String> filteredRowKeys = new ArrayList<>();
 
     public List<String> getFilteredRowKeys() {
         return filteredRowKeys;

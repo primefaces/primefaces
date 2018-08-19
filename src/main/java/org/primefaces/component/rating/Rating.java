@@ -43,15 +43,12 @@ public class Rating extends RatingBase {
     public static final String STAR_ON_CLASS = "ui-rating-star ui-rating-star-on";
 
     private static final String DEFAULT_EVENT = "rate";
-
-    private final Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
-
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("rate", RateEvent.class);
         put("cancel", null);
     }});
-
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+    private final Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {

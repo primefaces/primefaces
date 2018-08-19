@@ -30,13 +30,13 @@ import org.primefaces.component.celleditor.CellEditor;
 public class Columns extends ColumnsBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Columns";
+    private CellEditor cellEditor = null;
+    private List<DynamicColumn> dynamicColumns;
 
     @Override
     public String getSelectionMode() {
         return null;
     }
-
-    private CellEditor cellEditor = null;
 
     @Override
     public CellEditor getCellEditor() {
@@ -73,8 +73,6 @@ public class Columns extends ColumnsBase {
     public void renderChildren(FacesContext context) throws IOException {
         encodeChildren(context);
     }
-
-    private List<DynamicColumn> dynamicColumns;
 
     public List<DynamicColumn> getDynamicColumns() {
         if (dynamicColumns == null) {

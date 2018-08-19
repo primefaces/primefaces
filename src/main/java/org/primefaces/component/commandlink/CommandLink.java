@@ -49,6 +49,7 @@ public class CommandLink extends CommandLinkBase {
     }});
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+    private String confirmationScript;
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -103,8 +104,6 @@ public class CommandLink extends CommandLinkBase {
     public boolean isAjaxified() {
         return isAjax();
     }
-
-    private String confirmationScript;
 
     public String getConfirmationScript() {
         return this.confirmationScript;

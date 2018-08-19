@@ -52,6 +52,7 @@ public class CommandButton extends CommandButtonBase {
     }});
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+    private String confirmationScript;
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -168,8 +169,6 @@ public class CommandButton extends CommandButtonBase {
     public boolean isResetValuesSet() {
         return (getStateHelper().get(PropertyKeys.resetValues) != null) || (this.getValueExpression(PropertyKeys.resetValues.toString()) != null);
     }
-
-    private String confirmationScript;
 
     public String getConfirmationScript() {
         return this.confirmationScript;

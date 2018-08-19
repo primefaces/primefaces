@@ -43,10 +43,6 @@ import org.primefaces.util.Constants;
 public class AutoComplete extends AutoCompleteBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.AutoComplete";
-
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "itemSelect", "itemUnselect", "query", "moreText", "clear"));
-    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("itemSelect", "itemUnselect", "query", "moreText", "clear"));
-
     public static final String STYLE_CLASS = "ui-autocomplete";
     public static final String MULTIPLE_STYLE_CLASS = "ui-autocomplete ui-autocomplete-multiple";
     public static final String INPUT_CLASS = "ui-autocomplete-input ui-inputfield ui-widget ui-state-default ui-corner-all";
@@ -67,6 +63,9 @@ public class AutoComplete extends AutoCompleteBase {
     public static final String ITEMTIP_CONTENT_CLASS = "ui-autocomplete-itemtip-content";
     public static final String MORE_TEXT_LIST_CLASS = "ui-autocomplete-item ui-autocomplete-moretext ui-corner-all";
     public static final String MORE_TEXT_TABLE_CLASS = "ui-autocomplete-item ui-autocomplete-moretext ui-widget-content ui-corner-all";
+    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "itemSelect", "itemUnselect", "query", "moreText", "clear"));
+    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("itemSelect", "itemUnselect", "query", "moreText", "clear"));
+    private List suggestions = null;
 
     @Override
     public Collection<String> getEventNames() {
@@ -121,8 +120,6 @@ public class AutoComplete extends AutoCompleteBase {
             super.queueEvent(event);
         }
     }
-
-    private List suggestions = null;
 
     @Override
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
@@ -181,12 +178,12 @@ public class AutoComplete extends AutoCompleteBase {
     }
 
     @Override
-    public void setLabelledBy(String labelledBy) {
-        getStateHelper().put("labelledby", labelledBy);
+    public String getLabelledBy() {
+        return (String) getStateHelper().get("labelledby");
     }
 
     @Override
-    public String getLabelledBy() {
-        return (String) getStateHelper().get("labelledby");
+    public void setLabelledBy(String labelledBy) {
+        getStateHelper().put("labelledby", labelledBy);
     }
 }

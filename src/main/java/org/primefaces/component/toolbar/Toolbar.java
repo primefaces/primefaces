@@ -25,7 +25,7 @@ public class Toolbar extends ToolbarBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Toolbar";
 
-    public static String CONTAINER_CLASS = "ui-toolbar ui-widget ui-widget-header ui-corner-all ui-helper-clearfix";
-    public static String SEPARATOR_CLASS = "ui-separator";
-    public static String SEPARATOR_ICON_CLASS = "ui-icon ui-icon-grip-dotted-vertical";
+    public static final String CONTAINER_CLASS = "ui-toolbar ui-widget ui-widget-header ui-corner-all ui-helper-clearfix";
+    public static final String SEPARATOR_CLASS = "ui-separator";
+    public static final String SEPARATOR_ICON_CLASS = "ui-icon ui-icon-grip-dotted-vertical";
 }

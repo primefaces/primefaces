@@ -38,6 +38,7 @@ public class UIMenuItem extends UIMenuItemBase {
     }});
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
+    private String confirmationScript;
 
     @Override
     public Map<String, Class<? extends BehaviorEvent>> getBehaviorEventMapping() {
@@ -120,8 +121,6 @@ public class UIMenuItem extends UIMenuItemBase {
     public void setParam(String key, Object value) {
         throw new UnsupportedOperationException("Use UIParameter component instead to add parameters.");
     }
-
-    private String confirmationScript;
 
     @Override
     public String getConfirmationScript() {
