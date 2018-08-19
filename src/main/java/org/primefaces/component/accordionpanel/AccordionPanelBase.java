@@ -151,10 +151,12 @@ abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware
         getStateHelper().put(PropertyKeys.tabController, tabController);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 
+    @Override
     public boolean isRTL() {
         return "rtl".equalsIgnoreCase(getDir());
     }

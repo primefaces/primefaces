@@ -113,6 +113,7 @@ abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, 
         getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

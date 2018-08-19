@@ -105,6 +105,7 @@ abstract class MultiSelectListboxBase extends UISelectOne implements Widget, Cli
         getStateHelper().put(PropertyKeys.header, header);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

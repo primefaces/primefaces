@@ -67,6 +67,7 @@ abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget {
         getStateHelper().put(PropertyKeys.plain, plain);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

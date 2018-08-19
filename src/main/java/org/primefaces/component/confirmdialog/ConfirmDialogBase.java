@@ -194,10 +194,12 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
         getStateHelper().put(PropertyKeys.responsive, responsive);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 
+    @Override
     public boolean isRTL() {
         return "rtl".equalsIgnoreCase(getDir());
     }

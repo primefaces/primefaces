@@ -48,8 +48,9 @@ abstract class ContextMenuBase extends AbstractMenu implements Widget {
         PropertyKeys() {
         }
 
+        @Override
         public String toString() {
-            return ((this.toString != null) ? this.toString : super.toString());
+            return ((toString != null) ? toString : super.toString());
         }
     }
 
@@ -94,6 +95,7 @@ abstract class ContextMenuBase extends AbstractMenu implements Widget {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
+    @Override
     public org.primefaces.model.menu.MenuModel getModel() {
         return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }
@@ -142,6 +144,7 @@ abstract class ContextMenuBase extends AbstractMenu implements Widget {
         getStateHelper().put(PropertyKeys.targetFilter, targetFilter);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

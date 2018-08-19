@@ -102,6 +102,7 @@ abstract class DataScrollerBase extends UIData implements Widget {
         getStateHelper().put(PropertyKeys.buffer, buffer);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

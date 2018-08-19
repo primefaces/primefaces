@@ -57,6 +57,7 @@ abstract class ThemeSwitcherBase extends SelectOneMenu implements Widget {
         getStateHelper().put(PropertyKeys.buttonPreText, buttonPreText);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

@@ -76,6 +76,7 @@ abstract class ScrollPanelBase extends UIPanel implements Widget {
         getStateHelper().put(PropertyKeys.mode, mode);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

@@ -36,7 +36,7 @@ abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorH
         style,
         styleClass,
         placeholder,
-        toolbarVisible;
+        toolbarVisible
     }
 
     public TextEditorBase() {
@@ -104,6 +104,7 @@ abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorH
         getStateHelper().put(PropertyKeys.toolbarVisible, toolbarVisible);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

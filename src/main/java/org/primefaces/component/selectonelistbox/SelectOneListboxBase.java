@@ -104,6 +104,7 @@ abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements Widg
         getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

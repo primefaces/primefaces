@@ -34,7 +34,7 @@ abstract class MegaMenuBase extends AbstractMenu implements Widget {
         styleClass,
         autoDisplay,
         activeIndex,
-        orientation
+        orientation;
     }
 
     public MegaMenuBase() {
@@ -54,7 +54,6 @@ abstract class MegaMenuBase extends AbstractMenu implements Widget {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    @Override
     public org.primefaces.model.menu.MenuModel getModel() {
         return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }

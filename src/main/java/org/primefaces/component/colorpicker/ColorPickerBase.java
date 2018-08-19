@@ -87,6 +87,7 @@ abstract class ColorPickerBase extends UIInput implements Widget, ClientBehavior
         getStateHelper().put(PropertyKeys.onchange, onchange);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

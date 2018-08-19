@@ -44,6 +44,7 @@ public class FileUpload extends FileUploadBase {
     public final static String CONTAINER_CLASS_SIMPLE = "ui-fileupload-simple ui-widget";
     public final static String FILENAME_CLASS = "ui-fileupload-filename";
 
+    @Override
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
         super.broadcast(event);
 

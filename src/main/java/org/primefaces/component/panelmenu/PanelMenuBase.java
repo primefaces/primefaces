@@ -93,6 +93,7 @@ abstract class PanelMenuBase extends AbstractMenu implements Widget {
         getStateHelper().put(PropertyKeys.stateful, stateful);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

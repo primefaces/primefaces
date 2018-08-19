@@ -259,6 +259,7 @@ abstract class CommandButtonBase extends HtmlCommandButton implements AjaxSource
         getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

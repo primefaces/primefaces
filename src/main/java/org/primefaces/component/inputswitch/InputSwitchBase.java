@@ -150,6 +150,7 @@ abstract class InputSwitchBase extends UIInput implements Widget, ClientBehavior
         getStateHelper().put(PropertyKeys.onblur, onblur);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

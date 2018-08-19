@@ -44,7 +44,7 @@ abstract class OrderListBase extends UIInput implements Widget, ClientBehaviorHo
         moveDownLabel,
         moveBottomLabel,
         controlsLocation,
-        responsive;
+        responsive
     }
 
     public OrderListBase() {
@@ -168,6 +168,7 @@ abstract class OrderListBase extends UIInput implements Widget, ClientBehaviorHo
         getStateHelper().put(PropertyKeys.responsive, responsive);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

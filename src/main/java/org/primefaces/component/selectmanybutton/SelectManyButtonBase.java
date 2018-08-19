@@ -105,6 +105,7 @@ abstract class SelectManyButtonBase extends UISelectMany implements Widget, Clie
         getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

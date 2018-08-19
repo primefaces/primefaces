@@ -85,6 +85,7 @@ abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox impleme
         getStateHelper().put(PropertyKeys.offIcon, offIcon);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

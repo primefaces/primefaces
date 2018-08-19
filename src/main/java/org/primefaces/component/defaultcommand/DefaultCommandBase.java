@@ -67,6 +67,7 @@ abstract class DefaultCommandBase extends UIComponentBase implements Widget {
         getStateHelper().put(PropertyKeys.scope, scope);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

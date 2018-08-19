@@ -39,7 +39,7 @@ abstract class ToggleSwitchBase extends UIInput implements Widget, ClientBehavio
         styleClass,
         tabindex,
         onfocus,
-        onblur
+        onblur;
     }
 
     public ToggleSwitchBase() {

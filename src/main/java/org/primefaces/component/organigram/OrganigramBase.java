@@ -123,6 +123,7 @@ abstract class OrganigramBase extends UIComponentBase implements Widget, ClientB
         getStateHelper().put(PropertyKeys.autoScrollToSelection, autoScrollToSelection);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

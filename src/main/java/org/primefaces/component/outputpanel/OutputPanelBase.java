@@ -87,6 +87,7 @@ abstract class OutputPanelBase extends UIPanel implements Widget, ClientBehavior
         getStateHelper().put(PropertyKeys.layout, layout);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

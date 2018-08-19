@@ -58,6 +58,7 @@ abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox implements 
         getStateHelper().put(PropertyKeys.columns, columns);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

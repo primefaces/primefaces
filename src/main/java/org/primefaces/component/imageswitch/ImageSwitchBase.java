@@ -112,6 +112,7 @@ abstract class ImageSwitchBase extends UIComponentBase implements Widget {
         getStateHelper().put(PropertyKeys.activeIndex, activeIndex);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

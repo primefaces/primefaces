@@ -141,6 +141,7 @@ abstract class ProgressBarBase extends UIComponentBase implements Widget, Client
         getStateHelper().put(PropertyKeys.mode, mode);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

@@ -67,6 +67,7 @@ abstract class SpotlightBase extends UIComponentBase implements Widget {
         getStateHelper().put(PropertyKeys.active, active);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

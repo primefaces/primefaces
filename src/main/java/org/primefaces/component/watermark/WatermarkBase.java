@@ -80,6 +80,7 @@ abstract class WatermarkBase extends UIComponentBase implements Widget {
         getStateHelper().put(PropertyKeys.forValue, _for);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

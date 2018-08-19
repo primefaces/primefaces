@@ -75,6 +75,7 @@ abstract class BreadCrumbBase extends AbstractMenu implements Widget {
         getStateHelper().put(PropertyKeys.homeDisplay, homeDisplay);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

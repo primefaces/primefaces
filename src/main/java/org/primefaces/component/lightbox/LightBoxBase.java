@@ -38,7 +38,7 @@ abstract class LightBoxBase extends UIComponentBase implements Widget {
         iframeTitle,
         visible,
         onShow,
-        onHide
+        onHide;
     }
 
     public LightBoxBase() {

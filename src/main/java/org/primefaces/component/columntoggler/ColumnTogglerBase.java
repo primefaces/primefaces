@@ -69,6 +69,7 @@ abstract class ColumnTogglerBase extends UIComponentBase implements Widget, Clie
         getStateHelper().put(PropertyKeys.datasource, datasource);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

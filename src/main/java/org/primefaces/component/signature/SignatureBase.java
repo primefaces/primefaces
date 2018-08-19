@@ -157,6 +157,7 @@ abstract class SignatureBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.base64Value, base64Value);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

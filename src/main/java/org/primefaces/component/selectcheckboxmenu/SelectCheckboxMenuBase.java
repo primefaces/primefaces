@@ -194,6 +194,7 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
         getStateHelper().put(PropertyKeys.dynamic, dynamic);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

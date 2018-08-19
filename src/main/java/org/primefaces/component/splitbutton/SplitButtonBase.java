@@ -239,6 +239,7 @@ abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, 
         getStateHelper().put(PropertyKeys.form, form);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

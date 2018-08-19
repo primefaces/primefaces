@@ -167,6 +167,7 @@ abstract class InputNumberBase extends HtmlInputText implements Widget, InputHol
         getStateHelper().put(PropertyKeys.leadingZero, leadingZero);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
