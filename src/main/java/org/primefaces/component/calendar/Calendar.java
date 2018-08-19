@@ -48,8 +48,8 @@ public class Calendar extends CalendarBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Calendar";
 
-    public final static String CONTAINER_CLASS = "ui-calendar";
-    public final static String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
+    public static final String CONTAINER_CLASS = "ui-calendar";
+    public static final String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "dateSelect", "viewChange", "close"));
     private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("dateSelect", "viewChange", "close"));
@@ -164,7 +164,7 @@ public class Calendar extends CalendarBase {
         }
     }
 
-    public final static String DATE_OUT_OF_RANGE_MESSAGE_ID = "primefaces.calendar.OUT_OF_RANGE";
+    public static final String DATE_OUT_OF_RANGE_MESSAGE_ID = "primefaces.calendar.OUT_OF_RANGE";
 
     @Override
     protected void validateValue(FacesContext context, Object value) {

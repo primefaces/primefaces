@@ -42,7 +42,7 @@ public class Rating extends RatingBase {
     public static final String STAR_CLASS = "ui-rating-star";
     public static final String STAR_ON_CLASS = "ui-rating-star ui-rating-star-on";
 
-    private final static String DEFAULT_EVENT = "rate";
+    private static final String DEFAULT_EVENT = "rate";
 
     private final Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
 

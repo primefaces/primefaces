@@ -47,8 +47,8 @@ public class UIRepeat extends UINamingContainer {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-    private final static DataModel EMPTY_MODEL = new ListDataModel<>(Collections.emptyList());
-    private final static SavedState NullState = new SavedState();
+    private static final DataModel EMPTY_MODEL = new ListDataModel<>(Collections.emptyList());
+    private static final SavedState NullState = new SavedState();
     // our data
     private Object value;
     private transient DataModel model;
@@ -994,7 +994,7 @@ public class UIRepeat extends UINamingContainer {
     }
 
     // from RI
-    private final static class SavedState implements Serializable {
+    private static final class SavedState implements Serializable {
 
         private static final long serialVersionUID = 2920252657338389849L;
         private Object submittedValue;

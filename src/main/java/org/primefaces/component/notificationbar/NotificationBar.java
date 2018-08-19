@@ -28,5 +28,5 @@ public class NotificationBar extends NotificationBarBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.NotificationBar";
 
-    public final static String STYLE_CLASS = "ui-notificationbar ui-widget ui-widget-content";
+    public static final String STYLE_CLASS = "ui-notificationbar ui-widget ui-widget-content";
 }

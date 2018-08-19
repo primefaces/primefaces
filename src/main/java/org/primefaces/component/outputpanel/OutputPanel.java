@@ -38,7 +38,7 @@ public class OutputPanel extends OutputPanelBase {
     public static final String CONTAINER_CLASS = "ui-outputpanel ui-widget";
     public static final String LOADING_CLASS = "ui-outputpanel-loading ui-widget";
 
-    private final static String DEFAULT_EVENT = "load";
+    private static final String DEFAULT_EVENT = "load";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("load", null);

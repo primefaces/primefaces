@@ -39,7 +39,7 @@ public class Chart extends ChartBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Chart";
 
-    private final static String DEFAULT_EVENT = "itemSelect";
+    private static final String DEFAULT_EVENT = "itemSelect";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("itemSelect", ItemSelectEvent.class);

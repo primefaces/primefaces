@@ -59,7 +59,7 @@ public class Dialog extends DialogBase {
 
     public static final String ARIA_CLOSE = "primefaces.dialog.aria.CLOSE";
 
-    private final static String DEFAULT_EVENT = "close";
+    private static final String DEFAULT_EVENT = "close";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("close", CloseEvent.class);

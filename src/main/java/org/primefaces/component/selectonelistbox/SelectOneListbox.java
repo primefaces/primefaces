@@ -32,9 +32,9 @@ public class SelectOneListbox extends SelectOneListboxBase {
     public static final String LIST_CONTAINER_CLASS = "ui-selectlistbox-listcontainer";
     public static final String LIST_CLASS = "ui-selectlistbox-list";
     public static final String ITEM_CLASS = "ui-selectlistbox-item ui-corner-all";
-    public final static String FILTER_CONTAINER_CLASS = "ui-selectlistbox-filter-container";
-    public final static String FILTER_CLASS = "ui-selectlistbox-filter ui-inputfield ui-widget ui-state-default ui-corner-all";
-    public final static String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
+    public static final String FILTER_CONTAINER_CLASS = "ui-selectlistbox-filter-container";
+    public static final String FILTER_CLASS = "ui-selectlistbox-filter ui-inputfield ui-widget ui-state-default ui-corner-all";
+    public static final String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
 
     public String getInputClientId() {
         return this.getClientId(getFacesContext()) + "_input";

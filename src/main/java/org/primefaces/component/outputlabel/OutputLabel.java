@@ -19,6 +19,6 @@ public class OutputLabel extends OutputLabelBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.OutputLabel";
 
-    public final static String STYLE_CLASS = "ui-outputlabel ui-widget";
-    public final static String REQUIRED_FIELD_INDICATOR_CLASS = "ui-outputlabel-rfi";
+    public static final String STYLE_CLASS = "ui-outputlabel ui-widget";
+    public static final String REQUIRED_FIELD_INDICATOR_CLASS = "ui-outputlabel-rfi";
 }

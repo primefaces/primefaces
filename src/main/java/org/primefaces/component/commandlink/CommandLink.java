@@ -40,8 +40,8 @@ public class CommandLink extends CommandLinkBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CommandLink";
 
-    public final static String STYLE_CLASS = "ui-commandlink ui-widget";
-    public final static String DISABLED_STYLE_CLASS = "ui-commandlink ui-widget ui-state-disabled";
+    public static final String STYLE_CLASS = "ui-commandlink ui-widget";
+    public static final String DISABLED_STYLE_CLASS = "ui-commandlink ui-widget ui-state-disabled";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("click", null);

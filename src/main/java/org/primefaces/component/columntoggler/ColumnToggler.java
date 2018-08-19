@@ -44,7 +44,7 @@ public class ColumnToggler extends ColumnTogglerBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ColumnToggler";
 
-    private final static String DEFAULT_EVENT = "toggle";
+    private static final String DEFAULT_EVENT = "toggle";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("toggle", ToggleEvent.class);

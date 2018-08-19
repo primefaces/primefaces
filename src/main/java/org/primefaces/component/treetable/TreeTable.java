@@ -55,18 +55,18 @@ public class TreeTable extends TreeTableBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TreeTable";
 
-    public final static String CONTAINER_CLASS = "ui-treetable ui-widget";
-    public final static String RESIZABLE_CONTAINER_CLASS = "ui-treetable ui-treetable-resizable ui-widget";
-    public final static String HEADER_CLASS = "ui-treetable-header ui-widget-header ui-corner-top";
-    public final static String DATA_CLASS = "ui-treetable-data ui-widget-content";
-    public final static String FOOTER_CLASS = "ui-treetable-footer ui-widget-header ui-corner-bottom";
-    public final static String COLUMN_HEADER_CLASS = "ui-state-default";
+    public static final String CONTAINER_CLASS = "ui-treetable ui-widget";
+    public static final String RESIZABLE_CONTAINER_CLASS = "ui-treetable ui-treetable-resizable ui-widget";
+    public static final String HEADER_CLASS = "ui-treetable-header ui-widget-header ui-corner-top";
+    public static final String DATA_CLASS = "ui-treetable-data ui-widget-content";
+    public static final String FOOTER_CLASS = "ui-treetable-footer ui-widget-header ui-corner-bottom";
+    public static final String COLUMN_HEADER_CLASS = "ui-state-default";
     public static final String SORTABLE_COLUMN_HEADER_CLASS = "ui-state-default ui-sortable-column";
-    public final static String ROW_CLASS = "ui-widget-content";
-    public final static String SELECTED_ROW_CLASS = "ui-widget-content ui-state-highlight ui-selected";
-    public final static String COLUMN_CONTENT_WRAPPER = "ui-tt-c";
-    public final static String EXPAND_ICON = "ui-treetable-toggler ui-icon ui-icon-triangle-1-e ui-c";
-    public final static String COLLAPSE_ICON = "ui-treetable-toggler ui-icon ui-icon-triangle-1-s ui-c";
+    public static final String ROW_CLASS = "ui-widget-content";
+    public static final String SELECTED_ROW_CLASS = "ui-widget-content ui-state-highlight ui-selected";
+    public static final String COLUMN_CONTENT_WRAPPER = "ui-tt-c";
+    public static final String EXPAND_ICON = "ui-treetable-toggler ui-icon ui-icon-triangle-1-e ui-c";
+    public static final String COLLAPSE_ICON = "ui-treetable-toggler ui-icon ui-icon-triangle-1-s ui-c";
     public static final String SCROLLABLE_CONTAINER_CLASS = "ui-treetable-scrollable";
     public static final String SCROLLABLE_HEADER_CLASS = "ui-widget-header ui-treetable-scrollable-header";
     public static final String SCROLLABLE_HEADER_BOX_CLASS = "ui-treetable-scrollable-header-box";
@@ -77,7 +77,7 @@ public class TreeTable extends TreeTableBase {
     public static final String RESIZABLE_COLUMN_CLASS = "ui-resizable-column";
     public static final String INDENT_CLASS = "ui-treetable-indent";
     public static final String EMPTY_MESSAGE_ROW_CLASS = "ui-widget-content ui-treetable-empty-message";
-    public final static String PARTIAL_SELECTED_CLASS = "ui-treetable-partialselected";
+    public static final String PARTIAL_SELECTED_CLASS = "ui-treetable-partialselected";
     public static final String SORTABLE_COLUMN_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon-carat-2-n-s";
     public static final String SORTABLE_COLUMN_ASCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-n";
     public static final String SORTABLE_COLUMN_DESCENDING_ICON_CLASS = "ui-sortable-column-icon ui-icon ui-icon ui-icon-carat-2-n-s ui-icon-triangle-1-s";
@@ -89,19 +89,19 @@ public class TreeTable extends TreeTableBase {
     public static final String EDITABLE_COLUMN_CLASS = "ui-editable-column";
     public static final String EDITING_ROW_CLASS = "ui-row-editing";
 
-    public final static String STARTS_WITH_MATCH_MODE = "startsWith";
-    public final static String ENDS_WITH_MATCH_MODE = "endsWith";
-    public final static String CONTAINS_MATCH_MODE = "contains";
-    public final static String EXACT_MATCH_MODE = "exact";
-    public final static String LESS_THAN_MODE = "lt";
-    public final static String LESS_THAN_EQUALS_MODE = "lte";
-    public final static String GREATER_THAN_MODE = "gt";
-    public final static String GREATER_THAN_EQUALS_MODE = "gte";
-    public final static String EQUALS_MODE = "equals";
-    public final static String IN_MODE = "in";
-    public final static String GLOBAL_MODE = "global";
+    public static final String STARTS_WITH_MATCH_MODE = "startsWith";
+    public static final String ENDS_WITH_MATCH_MODE = "endsWith";
+    public static final String CONTAINS_MATCH_MODE = "contains";
+    public static final String EXACT_MATCH_MODE = "exact";
+    public static final String LESS_THAN_MODE = "lt";
+    public static final String LESS_THAN_EQUALS_MODE = "lte";
+    public static final String GREATER_THAN_MODE = "gt";
+    public static final String GREATER_THAN_EQUALS_MODE = "gte";
+    public static final String EQUALS_MODE = "equals";
+    public static final String IN_MODE = "in";
+    public static final String GLOBAL_MODE = "global";
 
-    final static Map<String, FilterConstraint> FILTER_CONSTRAINTS;
+    static final Map<String, FilterConstraint> FILTER_CONSTRAINTS;
 
     static {
         FILTER_CONSTRAINTS = new HashMap<>();

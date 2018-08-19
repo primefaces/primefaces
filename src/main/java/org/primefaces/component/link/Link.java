@@ -33,8 +33,8 @@ public class Link extends LinkBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Link";
 
-    public final static String STYLE_CLASS = "ui-link ui-widget";
-    public final static String DISABLED_STYLE_CLASS = "ui-link ui-widget ui-state-disabled";
+    public static final String STYLE_CLASS = "ui-link ui-widget";
+    public static final String DISABLED_STYLE_CLASS = "ui-link ui-widget ui-state-disabled";
 
     @Override
     public Map<String, List<String>> getParams() {

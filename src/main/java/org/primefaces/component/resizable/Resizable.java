@@ -42,7 +42,7 @@ public class Resizable extends ResizableBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Resizable";
 
-    private final static String DEFAULT_EVENT = "resize";
+    private static final String DEFAULT_EVENT = "resize";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("resize", ResizeEvent.class);

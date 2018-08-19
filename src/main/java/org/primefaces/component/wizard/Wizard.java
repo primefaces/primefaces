@@ -36,11 +36,11 @@ public class Wizard extends WizardBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Wizard";
 
-    public final static String STEP_STATUS_CLASS = "ui-wizard-step-titles ui-helper-reset ui-helper-clearfix";
-    public final static String STEP_CLASS = "ui-wizard-step-title ui-state-default ui-corner-all";
-    public final static String ACTIVE_STEP_CLASS = "ui-wizard-step-title ui-state-default ui-state-highlight ui-corner-all";
-    public final static String BACK_BUTTON_CLASS = "ui-wizard-nav-back";
-    public final static String NEXT_BUTTON_CLASS = "ui-wizard-nav-next";
+    public static final String STEP_STATUS_CLASS = "ui-wizard-step-titles ui-helper-reset ui-helper-clearfix";
+    public static final String STEP_CLASS = "ui-wizard-step-title ui-state-default ui-corner-all";
+    public static final String ACTIVE_STEP_CLASS = "ui-wizard-step-title ui-state-default ui-state-highlight ui-corner-all";
+    public static final String BACK_BUTTON_CLASS = "ui-wizard-nav-back";
+    public static final String NEXT_BUTTON_CLASS = "ui-wizard-nav-next";
 
     private Tab current;
 
