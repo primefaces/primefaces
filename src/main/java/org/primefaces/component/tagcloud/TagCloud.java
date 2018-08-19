@@ -42,8 +42,8 @@ public class TagCloud extends TagCloudBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.TagCloud";
 
-    public final static String STYLE_CLASS = "ui-tagcloud ui-widget ui-widget-content ui-corner-all";
-    private final static String DEFAULT_EVENT = "select";
+    public static final String STYLE_CLASS = "ui-tagcloud ui-widget ui-widget-content ui-corner-all";
+    private static final String DEFAULT_EVENT = "select";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("select", SelectEvent.class);

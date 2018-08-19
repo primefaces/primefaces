@@ -19,5 +19,5 @@ public class UISeparator extends UISeparatorBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Separator";
 
-    public final static String DEFAULT_STYLE_CLASS = "ui-separator ui-state-default ui-corner-all";
+    public static final String DEFAULT_STYLE_CLASS = "ui-separator ui-state-default ui-corner-all";
 }

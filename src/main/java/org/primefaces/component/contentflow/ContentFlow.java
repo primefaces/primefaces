@@ -30,5 +30,5 @@ public class ContentFlow extends ContentFlowBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ContentFlow";
 
-    public final static String CONTAINER_CLASS = "ui-contentflow ui-widget ui-widget-content ui-corner-all";
+    public static final String CONTAINER_CLASS = "ui-contentflow ui-widget ui-widget-content ui-corner-all";
 }

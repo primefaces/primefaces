@@ -31,7 +31,7 @@ public class SelectBooleanButton extends SelectBooleanButtonBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectBooleanButton";
 
-    public final static String STYLE_CLASS = "ui-selectbooleanbutton ui-widget";
+    public static final String STYLE_CLASS = "ui-selectbooleanbutton ui-widget";
 
     public String resolveStyleClass(boolean checked, boolean disabled) {
         String icon = checked ? getOnIcon() : getOffIcon();

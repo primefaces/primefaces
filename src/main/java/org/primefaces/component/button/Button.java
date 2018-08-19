@@ -36,7 +36,7 @@ public class Button extends ButtonBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Button";
 
-    private final static Logger logger = Logger.getLogger(Button.class.getName());
+    private static final Logger logger = Logger.getLogger(Button.class.getName());
 
     public String resolveIcon() {
         String icon = getIcon();

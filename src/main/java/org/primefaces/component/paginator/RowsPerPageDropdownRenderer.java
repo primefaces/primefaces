@@ -29,7 +29,7 @@ import org.primefaces.util.MessageFactory;
 
 public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
 
-    private final static Logger logger = Logger.getLogger(RowsPerPageDropdownRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(RowsPerPageDropdownRenderer.class.getName());
 
     @Override
     public void render(FacesContext context, Pageable pageable) throws IOException {

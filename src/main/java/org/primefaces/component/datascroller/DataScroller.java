@@ -28,14 +28,14 @@ import javax.faces.context.FacesContext;
 public class DataScroller extends DataScrollerBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataScroller";
-    public final static String CONTAINER_CLASS = "ui-datascroller ui-widget";
-    public final static String INLINE_CONTAINER_CLASS = "ui-datascroller ui-datascroller-inline ui-widget";
-    public final static String HEADER_CLASS = "ui-datascroller-header ui-widget-header ui-corner-top";
-    public final static String CONTENT_CLASS = "ui-datascroller-content ui-widget-content";
-    public final static String LIST_CLASS = "ui-datascroller-list";
-    public final static String ITEM_CLASS = "ui-datascroller-item";
-    public final static String LOADER_CLASS = "ui-datascroller-loader";
-    public final static String LOADING_CLASS = "ui-datascroller-loading";
+    public static final String CONTAINER_CLASS = "ui-datascroller ui-widget";
+    public static final String INLINE_CONTAINER_CLASS = "ui-datascroller ui-datascroller-inline ui-widget";
+    public static final String HEADER_CLASS = "ui-datascroller-header ui-widget-header ui-corner-top";
+    public static final String CONTENT_CLASS = "ui-datascroller-content ui-widget-content";
+    public static final String LIST_CLASS = "ui-datascroller-list";
+    public static final String ITEM_CLASS = "ui-datascroller-item";
+    public static final String LOADER_CLASS = "ui-datascroller-loader";
+    public static final String LOADING_CLASS = "ui-datascroller-loading";
 
     public boolean isLoadRequest() {
         FacesContext context = getFacesContext();

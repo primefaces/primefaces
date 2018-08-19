@@ -31,7 +31,7 @@ import org.primefaces.renderkit.UINotificationRenderer;
 
 public class MessagesRenderer extends UINotificationRenderer {
 
-    private final static Logger logger = Logger.getLogger(MessagesRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(MessagesRenderer.class.getName());
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {

@@ -31,7 +31,7 @@ public class UIMenuItem extends UIMenuItemBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.UIMenuItem";
 
-    private final static String DEFAULT_EVENT = "click";
+    private static final String DEFAULT_EVENT = "click";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("click", null);

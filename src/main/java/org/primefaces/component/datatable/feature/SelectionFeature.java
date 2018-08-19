@@ -32,7 +32,7 @@ import org.primefaces.util.LangUtils;
 
 public class SelectionFeature implements DataTableFeature {
 
-    private final static String ALL_SELECTOR = "@all";
+    private static final String ALL_SELECTOR = "@all";
 
     @Override
     public void decode(FacesContext context, DataTable table) {

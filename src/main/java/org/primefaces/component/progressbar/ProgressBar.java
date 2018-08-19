@@ -40,13 +40,13 @@ public class ProgressBar extends ProgressBarBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.ProgressBar";
 
-    public final static String CONTAINER_CLASS = "ui-progressbar ui-widget ui-widget-content ui-corner-all";
-    public final static String DETERMINATE_CLASS = "ui-progressbar-determinate";
-    public final static String INDETERMINATE_CLASS = "ui-progressbar-indeterminate";
-    public final static String VALUE_CLASS = "ui-progressbar-value ui-widget-header ui-corner-all";
-    public final static String LABEL_CLASS = "ui-progressbar-label";
+    public static final String CONTAINER_CLASS = "ui-progressbar ui-widget ui-widget-content ui-corner-all";
+    public static final String DETERMINATE_CLASS = "ui-progressbar-determinate";
+    public static final String INDETERMINATE_CLASS = "ui-progressbar-indeterminate";
+    public static final String VALUE_CLASS = "ui-progressbar-value ui-widget-header ui-corner-all";
+    public static final String LABEL_CLASS = "ui-progressbar-label";
 
-    private final static String DEFAULT_EVENT = "complete";
+    private static final String DEFAULT_EVENT = "complete";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("complete", null);

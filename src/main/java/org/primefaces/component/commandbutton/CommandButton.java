@@ -44,7 +44,7 @@ public class CommandButton extends CommandButtonBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CommandButton";
 
-    private final static Logger logger = Logger.getLogger(CommandButton.class.getName());
+    private static final Logger logger = Logger.getLogger(CommandButton.class.getName());
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("click", null);

@@ -38,7 +38,7 @@ public class ColorPicker extends ColorPickerBase {
 
     public static final String STYLE_CLASS = "ui-colorpicker";
 
-    private final static String DEFAULT_EVENT = "change";
+    private static final String DEFAULT_EVENT = "change";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("change", null);

@@ -51,7 +51,7 @@ import org.primefaces.util.*;
 
 public class DataTableRenderer extends DataRenderer {
 
-    private final static Logger logger = Logger.getLogger(DataTableRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(DataTableRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {

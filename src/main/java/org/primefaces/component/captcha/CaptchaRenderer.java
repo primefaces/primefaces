@@ -28,7 +28,7 @@ import org.primefaces.util.WidgetBuilder;
 
 public class CaptchaRenderer extends CoreRenderer {
 
-    private final static String RESPONSE_FIELD = "g-recaptcha-response";
+    private static final String RESPONSE_FIELD = "g-recaptcha-response";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {

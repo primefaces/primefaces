@@ -45,7 +45,7 @@ import org.primefaces.util.SharedStringBuilder;
  */
 public class UITabPanel extends UIPanel implements NamingContainer {
 
-    private final static DataModel<?> EMPTY_MODEL = new ListDataModel<>(Collections.emptyList());
+    private static final DataModel<?> EMPTY_MODEL = new ListDataModel<>(Collections.emptyList());
 
     private static final Class<Object[]> OBJECT_ARRAY_CLASS = Object[].class;
 
@@ -1347,7 +1347,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     }
 
     // from RI
-    private final static class SavedState implements Serializable {
+    private static final class SavedState implements Serializable {
 
         private static final long serialVersionUID = 2920252657338389849L;
         private boolean _localValueSet;

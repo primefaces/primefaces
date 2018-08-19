@@ -61,7 +61,7 @@ public class DataTable extends DataTableBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.DataTable";
 
-    private final static Logger logger = Logger.getLogger(DataTable.class.getName());
+    private static final Logger logger = Logger.getLogger(DataTable.class.getName());
 
     private static final String SB_GET_SELECTED_ROW_KEYS_AS_STRING = DataTable.class.getName() + "#getSelectedRowKeysAsString";
 
@@ -130,7 +130,7 @@ public class DataTable extends DataTableBase {
     public static final String SORT_LABEL = "primefaces.datatable.SORT_LABEL";
     public static final String SORT_ASC = "primefaces.datatable.SORT_ASC";
     public static final String SORT_DESC = "primefaces.datatable.SORT_DESC";
-    public final static String ROW_GROUP_TOGGLER = "primefaces.rowgrouptoggler.aria.ROW_GROUP_TOGGLER";
+    public static final String ROW_GROUP_TOGGLER = "primefaces.rowgrouptoggler.aria.ROW_GROUP_TOGGLER";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("page", PageEvent.class);

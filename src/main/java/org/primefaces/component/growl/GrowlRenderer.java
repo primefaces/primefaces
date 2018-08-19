@@ -31,7 +31,7 @@ import org.primefaces.util.WidgetBuilder;
 
 public class GrowlRenderer extends UINotificationRenderer {
 
-    private final static Logger logger = Logger.getLogger(GrowlRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(GrowlRenderer.class.getName());
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {

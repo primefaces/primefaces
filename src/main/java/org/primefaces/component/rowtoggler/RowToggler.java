@@ -25,10 +25,10 @@ public class RowToggler extends RowTogglerBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.RowToggler";
 
-    public final static String COLLAPSED_ICON = "ui-icon ui-icon-circle-triangle-e";
-    public final static String EXPANDED_ICON = "ui-icon ui-icon-circle-triangle-s";
+    public static final String COLLAPSED_ICON = "ui-icon ui-icon-circle-triangle-e";
+    public static final String EXPANDED_ICON = "ui-icon ui-icon-circle-triangle-s";
 
-    public final static String ROW_TOGGLER = "primefaces.rowtoggler.aria.ROW_TOGGLER";
+    public static final String ROW_TOGGLER = "primefaces.rowtoggler.aria.ROW_TOGGLER";
 
     private DataTable parentTable = null;
 

@@ -33,7 +33,7 @@ import org.primefaces.util.WidgetBuilder;
 
 public class EditorRenderer extends CoreRenderer {
 
-    private final static Logger logger = Logger.getLogger(EditorRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(EditorRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {

@@ -43,9 +43,9 @@ public class Captcha extends CaptchaBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Captcha";
 
-    public final static String PUBLIC_KEY = "primefaces.PUBLIC_CAPTCHA_KEY";
-    public final static String PRIVATE_KEY = "primefaces.PRIVATE_CAPTCHA_KEY";
-    public final static String INVALID_MESSAGE_ID = "primefaces.captcha.INVALID";
+    public static final String PUBLIC_KEY = "primefaces.PUBLIC_CAPTCHA_KEY";
+    public static final String PRIVATE_KEY = "primefaces.PRIVATE_CAPTCHA_KEY";
+    public static final String INVALID_MESSAGE_ID = "primefaces.captcha.INVALID";
 
     @Override
     protected void validateValue(FacesContext context, Object value) {

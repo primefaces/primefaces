@@ -37,7 +37,7 @@ import org.primefaces.util.WidgetBuilder;
 
 public class ScheduleRenderer extends CoreRenderer {
 
-    private final static Logger LOG = Logger.getLogger(ScheduleRenderer.class.getName());
+    private static final Logger LOG = Logger.getLogger(ScheduleRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {

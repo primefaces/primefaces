@@ -32,10 +32,10 @@ import org.primefaces.util.WidgetBuilder;
 
 public class InputMaskRenderer extends InputRenderer {
 
-    private final static Logger logger = Logger.getLogger(InputMaskRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(InputMaskRenderer.class.getName());
 
-    private final static String REGEX_METACHARS = "<([{\\^-=$!|]})?*+.>";
-    private final static String SB_PATTERN = InputMaskRenderer.class.getName() + "#translateMaskIntoRegex";
+    private static final String REGEX_METACHARS = "<([{\\^-=$!|]})?*+.>";
+    private static final String SB_PATTERN = InputMaskRenderer.class.getName() + "#translateMaskIntoRegex";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {

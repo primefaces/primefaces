@@ -44,7 +44,7 @@ public class Mindmap extends MindmapBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Mindmap";
 
-    public final static String STYLE_CLASS = "ui-mindmap ui-widget ui-widget-content ui-corner-all";
+    public static final String STYLE_CLASS = "ui-mindmap ui-widget ui-widget-content ui-corner-all";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("select", SelectEvent.class);

@@ -47,19 +47,19 @@ public class SelectOneMenu extends SelectOneMenuBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneMenu";
 
-    public final static String STYLE_CLASS = "ui-selectonemenu ui-widget ui-state-default ui-corner-all";
-    public final static String LABEL_CLASS = "ui-selectonemenu-label ui-inputfield ui-corner-all";
-    public final static String TRIGGER_CLASS = "ui-selectonemenu-trigger ui-state-default ui-corner-right";
-    public final static String PANEL_CLASS = "ui-selectonemenu-panel ui-widget ui-widget-content ui-corner-all ui-helper-hidden ui-shadow ui-input-overlay";
-    public final static String ITEMS_WRAPPER_CLASS = "ui-selectonemenu-items-wrapper";
-    public final static String LIST_CLASS = "ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset";
-    public final static String TABLE_CLASS = "ui-selectonemenu-items ui-selectonemenu-table ui-widget-content ui-widget ui-corner-all ui-helper-reset";
-    public final static String ITEM_GROUP_CLASS = "ui-selectonemenu-item-group ui-corner-all";
-    public final static String ITEM_CLASS = "ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all";
-    public final static String ROW_CLASS = "ui-selectonemenu-item ui-selectonemenu-row ui-widget-content";
-    public final static String FILTER_CONTAINER_CLASS = "ui-selectonemenu-filter-container";
-    public final static String FILTER_CLASS = "ui-selectonemenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
-    public final static String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
+    public static final String STYLE_CLASS = "ui-selectonemenu ui-widget ui-state-default ui-corner-all";
+    public static final String LABEL_CLASS = "ui-selectonemenu-label ui-inputfield ui-corner-all";
+    public static final String TRIGGER_CLASS = "ui-selectonemenu-trigger ui-state-default ui-corner-right";
+    public static final String PANEL_CLASS = "ui-selectonemenu-panel ui-widget ui-widget-content ui-corner-all ui-helper-hidden ui-shadow ui-input-overlay";
+    public static final String ITEMS_WRAPPER_CLASS = "ui-selectonemenu-items-wrapper";
+    public static final String LIST_CLASS = "ui-selectonemenu-items ui-selectonemenu-list ui-widget-content ui-widget ui-corner-all ui-helper-reset";
+    public static final String TABLE_CLASS = "ui-selectonemenu-items ui-selectonemenu-table ui-widget-content ui-widget ui-corner-all ui-helper-reset";
+    public static final String ITEM_GROUP_CLASS = "ui-selectonemenu-item-group ui-corner-all";
+    public static final String ITEM_CLASS = "ui-selectonemenu-item ui-selectonemenu-list-item ui-corner-all";
+    public static final String ROW_CLASS = "ui-selectonemenu-item ui-selectonemenu-row ui-widget-content";
+    public static final String FILTER_CONTAINER_CLASS = "ui-selectonemenu-filter-container";
+    public static final String FILTER_CLASS = "ui-selectonemenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
+    public static final String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
 
     private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("itemSelect", "blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select"));
 

@@ -34,8 +34,8 @@ public class LinkButton extends LinkButtonBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.LinkButton";
 
-    public final static String STYLE_CLASS = "ui-linkbutton " + HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
-    public final static String DISABLED_STYLE_CLASS = STYLE_CLASS + " ui-state-disabled";
+    public static final String STYLE_CLASS = "ui-linkbutton " + HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
+    public static final String DISABLED_STYLE_CLASS = STYLE_CLASS + " ui-state-disabled";
 
     @Override
     public Map<String, List<String>> getParams() {

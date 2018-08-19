@@ -35,7 +35,7 @@ import org.primefaces.component.calendar.converter.TimePatternConverter;
  */
 public class CalendarUtils {
 
-    private final static PatternConverter[] PATTERN_CONVERTERS =
+    private static final PatternConverter[] PATTERN_CONVERTERS =
             new PatternConverter[]{new TimePatternConverter(), new DatePatternConverter()};
 
     public static String getValueAsString(FacesContext context, Calendar calendar) {

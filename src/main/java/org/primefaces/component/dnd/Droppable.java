@@ -46,7 +46,7 @@ public class Droppable extends DroppableBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Droppable";
 
-    private final static String DEFAULT_EVENT = "drop";
+    private static final String DEFAULT_EVENT = "drop";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("drop", null);

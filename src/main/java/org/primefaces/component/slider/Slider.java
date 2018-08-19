@@ -47,7 +47,7 @@ public class Slider extends SliderBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Slider";
 
 
-    private final static String DEFAULT_EVENT = "slideEnd";
+    private static final String DEFAULT_EVENT = "slideEnd";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("slideEnd", SlideEndEvent.class);
@@ -93,7 +93,7 @@ public class Slider extends SliderBase {
         }
     }
 
-    public final static String VALUE_OUT_OF_RANGE = "primefaces.slider.OUT_OF_RANGE";
+    public static final String VALUE_OUT_OF_RANGE = "primefaces.slider.OUT_OF_RANGE";
 
     @Override
     public void validate(FacesContext context) {

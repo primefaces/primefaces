@@ -33,10 +33,10 @@ public class SelectOneRadio extends SelectOneRadioBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SelectOneRadio";
 
-    public final static String[] SUPPORTED_EVENTS = new String[]{"onchange", "onclick"};
+    public static final String[] SUPPORTED_EVENTS = new String[]{"onchange", "onclick"};
 
-    public final static String STYLE_CLASS = "ui-selectoneradio ui-widget";
-    public final static String NATIVE_STYLE_CLASS = "ui-selectoneradio ui-selectoneradio-native ui-widget";
+    public static final String STYLE_CLASS = "ui-selectoneradio ui-widget";
+    public static final String NATIVE_STYLE_CLASS = "ui-selectoneradio ui-selectoneradio-native ui-widget";
 
     private int index = -1;
 

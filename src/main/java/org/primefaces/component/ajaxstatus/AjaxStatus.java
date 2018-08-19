@@ -27,14 +27,14 @@ public class AjaxStatus extends AjaxStatusBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.AjaxStatus";
 
-    public final static String START = "start";
-    public final static String SUCCESS = "success";
-    public final static String COMPLETE = "complete";
-    public final static String ERROR = "error";
-    public final static String DEFAULT = "default";
-    public final static String CALLBACK_SIGNATURE = "function()";
+    public static final String START = "start";
+    public static final String SUCCESS = "success";
+    public static final String COMPLETE = "complete";
+    public static final String ERROR = "error";
+    public static final String DEFAULT = "default";
+    public static final String CALLBACK_SIGNATURE = "function()";
 
-    public final static String[] EVENTS = {
+    public static final String[] EVENTS = {
             START, SUCCESS, COMPLETE, ERROR
     };
 }

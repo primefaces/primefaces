@@ -36,11 +36,11 @@ public class ToggleSwitch extends ToggleSwitchBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.ToggleSwitch";
 
-    public final static String CONTAINER_CLASS = "ui-toggleswitch ui-widget";
-    public final static String SLIDER_CLASS = "ui-toggleswitch-slider";
-    public final static String CHECKED_CLASS = "ui-toggleswitch-checked";
+    public static final String CONTAINER_CLASS = "ui-toggleswitch ui-widget";
+    public static final String SLIDER_CLASS = "ui-toggleswitch-slider";
+    public static final String CHECKED_CLASS = "ui-toggleswitch-checked";
 
-    private final static String DEFAULT_EVENT = "change";
+    private static final String DEFAULT_EVENT = "change";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("change", null);
