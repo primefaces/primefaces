@@ -126,6 +126,20 @@ public class DataTable extends DataTableBase {
     public static final String SORT_ASC = "primefaces.datatable.SORT_ASC";
     public static final String SORT_DESC = "primefaces.datatable.SORT_DESC";
     public static final String ROW_GROUP_TOGGLER = "primefaces.rowgrouptoggler.aria.ROW_GROUP_TOGGLER";
+    static final Map<DataTableFeatureKey, DataTableFeature> FEATURES = Collections.unmodifiableMap(new HashMap<DataTableFeatureKey, DataTableFeature>() {{
+        put(DataTableFeatureKey.DRAGGABLE_COLUMNS, new DraggableColumnsFeature());
+        put(DataTableFeatureKey.FILTER, new FilterFeature());
+        put(DataTableFeatureKey.PAGE, new PageFeature());
+        put(DataTableFeatureKey.SORT, new SortFeature());
+        put(DataTableFeatureKey.RESIZABLE_COLUMNS, new ResizableColumnsFeature());
+        put(DataTableFeatureKey.SELECT, new SelectionFeature());
+        put(DataTableFeatureKey.ROW_EDIT, new RowEditFeature());
+        put(DataTableFeatureKey.CELL_EDIT, new CellEditFeature());
+        put(DataTableFeatureKey.ROW_EXPAND, new RowExpandFeature());
+        put(DataTableFeatureKey.SCROLL, new ScrollFeature());
+        put(DataTableFeatureKey.DRAGGABLE_ROWS, new DraggableRowsFeature());
+        put(DataTableFeatureKey.ADD_ROW, new AddRowFeature());
+    }});
     private static final Logger logger = Logger.getLogger(DataTable.class.getName());
     private static final String SB_GET_SELECTED_ROW_KEYS_AS_STRING = DataTable.class.getName() + "#getSelectedRowKeysAsString";
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
@@ -154,27 +168,7 @@ public class DataTable extends DataTableBase {
         put("cellEditCancel", CellEditEvent.class);
         put("virtualScroll", PageEvent.class);
     }});
-
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    static Map<DataTableFeatureKey, DataTableFeature> FEATURES;
-
-    static {
-        FEATURES = new HashMap<>();
-        FEATURES.put(DataTableFeatureKey.DRAGGABLE_COLUMNS, new DraggableColumnsFeature());
-        FEATURES.put(DataTableFeatureKey.FILTER, new FilterFeature());
-        FEATURES.put(DataTableFeatureKey.PAGE, new PageFeature());
-        FEATURES.put(DataTableFeatureKey.SORT, new SortFeature());
-        FEATURES.put(DataTableFeatureKey.RESIZABLE_COLUMNS, new ResizableColumnsFeature());
-        FEATURES.put(DataTableFeatureKey.SELECT, new SelectionFeature());
-        FEATURES.put(DataTableFeatureKey.ROW_EDIT, new RowEditFeature());
-        FEATURES.put(DataTableFeatureKey.CELL_EDIT, new CellEditFeature());
-        FEATURES.put(DataTableFeatureKey.ROW_EXPAND, new RowExpandFeature());
-        FEATURES.put(DataTableFeatureKey.SCROLL, new ScrollFeature());
-        FEATURES.put(DataTableFeatureKey.DRAGGABLE_ROWS, new DraggableRowsFeature());
-        FEATURES.put(DataTableFeatureKey.ADD_ROW, new AddRowFeature());
-    }
-
     int columnsCountWithSpan = -1;
     private List filterMetadata;
     private boolean reset = false;

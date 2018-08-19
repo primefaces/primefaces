@@ -68,7 +68,6 @@ public class Tree extends TreeBase {
     public static final String LEAF_ICON_CLASS = "ui-treenode-leaf-icon";
     public static final String NODE_ICON_CLASS = "ui-treenode-icon ui-icon";
     public static final String NODE_LABEL_CLASS = "ui-treenode-label ui-corner-all";
-    static final Map<String, FilterConstraint> FILTER_CONSTRAINTS;
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("select", NodeSelectEvent.class);
         put("unselect", NodeUnselectEvent.class);
@@ -91,20 +90,19 @@ public class Tree extends TreeBase {
     private static final String IN_MODE = "in";
     private static final String GLOBAL_MODE = "global";
 
-    static {
-        FILTER_CONSTRAINTS = new HashMap<>();
-        FILTER_CONSTRAINTS.put(STARTS_WITH_MATCH_MODE, new StartsWithFilterConstraint());
-        FILTER_CONSTRAINTS.put(ENDS_WITH_MATCH_MODE, new EndsWithFilterConstraint());
-        FILTER_CONSTRAINTS.put(CONTAINS_MATCH_MODE, new ContainsFilterConstraint());
-        FILTER_CONSTRAINTS.put(EXACT_MATCH_MODE, new ExactFilterConstraint());
-        FILTER_CONSTRAINTS.put(LESS_THAN_MODE, new LessThanFilterConstraint());
-        FILTER_CONSTRAINTS.put(LESS_THAN_EQUALS_MODE, new LessThanEqualsFilterConstraint());
-        FILTER_CONSTRAINTS.put(GREATER_THAN_MODE, new GreaterThanFilterConstraint());
-        FILTER_CONSTRAINTS.put(GREATER_THAN_EQUALS_MODE, new GreaterThanEqualsFilterConstraint());
-        FILTER_CONSTRAINTS.put(EQUALS_MODE, new EqualsFilterConstraint());
-        FILTER_CONSTRAINTS.put(IN_MODE, new InFilterConstraint());
-        FILTER_CONSTRAINTS.put(GLOBAL_MODE, new GlobalFilterConstraint());
-    }
+    static final Map<String, FilterConstraint> FILTER_CONSTRAINTS = Collections.unmodifiableMap(new HashMap<String, FilterConstraint>() {{
+        put(STARTS_WITH_MATCH_MODE, new StartsWithFilterConstraint());
+        put(ENDS_WITH_MATCH_MODE, new EndsWithFilterConstraint());
+        put(CONTAINS_MATCH_MODE, new ContainsFilterConstraint());
+        put(EXACT_MATCH_MODE, new ExactFilterConstraint());
+        put(LESS_THAN_MODE, new LessThanFilterConstraint());
+        put(LESS_THAN_EQUALS_MODE, new LessThanEqualsFilterConstraint());
+        put(GREATER_THAN_MODE, new GreaterThanFilterConstraint());
+        put(GREATER_THAN_EQUALS_MODE, new GreaterThanEqualsFilterConstraint());
+        put(EQUALS_MODE, new EqualsFilterConstraint());
+        put(IN_MODE, new InFilterConstraint());
+        put(GLOBAL_MODE, new GlobalFilterConstraint());
+    }});
 
     private Map<String, UITreeNode> nodes;
     private TreeNode dragNode;

@@ -100,8 +100,19 @@ public class TreeTable extends TreeTableBase {
     public static final String EQUALS_MODE = "equals";
     public static final String IN_MODE = "in";
     public static final String GLOBAL_MODE = "global";
-
-    static final Map<String, FilterConstraint> FILTER_CONSTRAINTS;
+    static final Map<String, FilterConstraint> FILTER_CONSTRAINTS = Collections.unmodifiableMap(new HashMap<String, FilterConstraint>() {{
+        put(STARTS_WITH_MATCH_MODE, new StartsWithFilterConstraint());
+        put(ENDS_WITH_MATCH_MODE, new EndsWithFilterConstraint());
+        put(CONTAINS_MATCH_MODE, new ContainsFilterConstraint());
+        put(EXACT_MATCH_MODE, new ExactFilterConstraint());
+        put(LESS_THAN_MODE, new LessThanFilterConstraint());
+        put(LESS_THAN_EQUALS_MODE, new LessThanEqualsFilterConstraint());
+        put(GREATER_THAN_MODE, new GreaterThanFilterConstraint());
+        put(GREATER_THAN_EQUALS_MODE, new GreaterThanEqualsFilterConstraint());
+        put(EQUALS_MODE, new EqualsFilterConstraint());
+        put(IN_MODE, new InFilterConstraint());
+        put(GLOBAL_MODE, new GlobalFilterConstraint());
+    }});
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("select", NodeSelectEvent.class);
         put("unselect", NodeUnselectEvent.class);
@@ -118,22 +129,6 @@ public class TreeTable extends TreeTableBase {
         put("page", PageEvent.class);
     }});
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-
-    static {
-        FILTER_CONSTRAINTS = new HashMap<>();
-        FILTER_CONSTRAINTS.put(STARTS_WITH_MATCH_MODE, new StartsWithFilterConstraint());
-        FILTER_CONSTRAINTS.put(ENDS_WITH_MATCH_MODE, new EndsWithFilterConstraint());
-        FILTER_CONSTRAINTS.put(CONTAINS_MATCH_MODE, new ContainsFilterConstraint());
-        FILTER_CONSTRAINTS.put(EXACT_MATCH_MODE, new ExactFilterConstraint());
-        FILTER_CONSTRAINTS.put(LESS_THAN_MODE, new LessThanFilterConstraint());
-        FILTER_CONSTRAINTS.put(LESS_THAN_EQUALS_MODE, new LessThanEqualsFilterConstraint());
-        FILTER_CONSTRAINTS.put(GREATER_THAN_MODE, new GreaterThanFilterConstraint());
-        FILTER_CONSTRAINTS.put(GREATER_THAN_EQUALS_MODE, new GreaterThanEqualsFilterConstraint());
-        FILTER_CONSTRAINTS.put(EQUALS_MODE, new EqualsFilterConstraint());
-        FILTER_CONSTRAINTS.put(IN_MODE, new InFilterConstraint());
-        FILTER_CONSTRAINTS.put(GLOBAL_MODE, new GlobalFilterConstraint());
-    }
-
     private final List<String> selectedRowKeys = new ArrayList<>();
     private int columnsCount = -1;
     private UIColumn sortColumn;
