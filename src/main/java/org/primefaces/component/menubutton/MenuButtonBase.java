@@ -39,7 +39,7 @@ abstract class MenuButtonBase extends AbstractMenu implements Widget {
         appendTo,
         menuStyleClass,
         title,
-        ariaLabel
+        ariaLabel;
     }
 
     public MenuButtonBase() {
@@ -59,7 +59,6 @@ abstract class MenuButtonBase extends AbstractMenu implements Widget {
         getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
     }
 
-    @Override
     public org.primefaces.model.menu.MenuModel getModel() {
         return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }
@@ -148,7 +147,6 @@ abstract class MenuButtonBase extends AbstractMenu implements Widget {
         getStateHelper().put(PropertyKeys.ariaLabel, _ariaLabel);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

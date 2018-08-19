@@ -16,6 +16,7 @@
 package org.primefaces.component.selectonelistbox;
 
 import javax.faces.component.html.HtmlSelectOneListbox;
+
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
@@ -35,13 +36,14 @@ abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements Widg
         filterMatchMode,
         filterFunction,
         caseSensitive,
-        scrollHeight;
+        scrollHeight
     }
 
     public SelectOneListboxBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -102,6 +104,7 @@ abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements Widg
         getStateHelper().put(PropertyKeys.scrollHeight, _scrollHeight);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

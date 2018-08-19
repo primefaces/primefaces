@@ -17,6 +17,7 @@ package org.primefaces.component.multiselectlistbox;
 
 import javax.faces.component.UISelectOne;
 import javax.faces.component.behavior.ClientBehaviorHolder;
+
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
@@ -36,13 +37,14 @@ abstract class MultiSelectListboxBase extends UISelectOne implements Widget, Cli
         disabled,
         effect,
         showHeaders,
-        header;
+        header
     }
 
     public MultiSelectListboxBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -103,6 +105,7 @@ abstract class MultiSelectListboxBase extends UISelectOne implements Widget, Cli
         getStateHelper().put(PropertyKeys.header, _header);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

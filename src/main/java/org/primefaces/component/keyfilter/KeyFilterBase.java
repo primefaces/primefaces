@@ -16,6 +16,7 @@
 package org.primefaces.component.keyfilter;
 
 import javax.faces.component.UIComponentBase;
+
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
@@ -45,9 +46,8 @@ abstract class KeyFilterBase extends UIComponentBase implements Widget {
         PropertyKeys() {
         }
 
-        @Override
         public String toString() {
-            return ((toString != null) ? toString : super.toString());
+            return ((this.toString != null) ? this.toString : super.toString());
         }
     }
 
@@ -116,7 +116,6 @@ abstract class KeyFilterBase extends UIComponentBase implements Widget {
         getStateHelper().put(PropertyKeys.preventPaste, _preventPaste);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

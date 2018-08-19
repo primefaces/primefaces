@@ -29,21 +29,24 @@ abstract class ThemeSwitcherBase extends SelectOneMenu implements Widget {
     public enum PropertyKeys {
 
         widgetVar,
-        buttonPreText;
+        buttonPreText
     }
 
     public ThemeSwitcherBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public java.lang.String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
+    @Override
     public void setWidgetVar(java.lang.String _widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
     }
@@ -56,6 +59,7 @@ abstract class ThemeSwitcherBase extends SelectOneMenu implements Widget {
         getStateHelper().put(PropertyKeys.buttonPreText, _buttonPreText);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

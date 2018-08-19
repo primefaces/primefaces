@@ -16,6 +16,7 @@
 package org.primefaces.component.autocomplete;
 
 import javax.faces.component.html.HtmlInputText;
+
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
@@ -70,13 +71,14 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
         moreText,
         unique,
         dynamic,
-        autoSelection;
+        autoSelection
     }
 
     public AutoCompleteBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -409,6 +411,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
         getStateHelper().put(PropertyKeys.autoSelection, _autoSelection);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

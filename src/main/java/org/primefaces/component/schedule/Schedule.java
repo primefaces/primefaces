@@ -24,6 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
+
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
@@ -72,7 +73,7 @@ public class Schedule extends ScheduleBase {
 
     java.util.Locale calculateLocale(FacesContext facesContext) {
         if (appropriateLocale == null) {
-            appropriateLocale = LocaleUtils.resolveLocale(getLocale(), getClientId(facesContext));
+            appropriateLocale = LocaleUtils.resolveLocale(getLocale(), this.getClientId(facesContext));
         }
 
         return appropriateLocale;
@@ -107,7 +108,7 @@ public class Schedule extends ScheduleBase {
         FacesContext context = getFacesContext();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-        String clientId = getClientId(context);
+        String clientId = this.getClientId(context);
         TimeZone tz = calculateTimeZone();
 
         if (isSelfRequest(context)) {
@@ -127,13 +128,13 @@ public class Schedule extends ScheduleBase {
             }
             else if (eventName.equals("eventSelect")) {
                 String selectedEventId = params.get(clientId + "_selectedEventId");
-                ScheduleEvent selectedEvent = getValue().getEvent(selectedEventId);
+                ScheduleEvent selectedEvent = this.getValue().getEvent(selectedEventId);
 
                 wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedEvent);
             }
             else if (eventName.equals("eventMove")) {
                 String movedEventId = params.get(clientId + "_movedEventId");
-                ScheduleEvent movedEvent = getValue().getEvent(movedEventId);
+                ScheduleEvent movedEvent = this.getValue().getEvent(movedEventId);
                 int dayDelta = (int) Double.parseDouble(params.get(clientId + "_dayDelta"));
                 int minuteDelta = (int) Double.parseDouble(params.get(clientId + "_minuteDelta"));
 
@@ -155,7 +156,7 @@ public class Schedule extends ScheduleBase {
             }
             else if (eventName.equals("eventResize")) {
                 String resizedEventId = params.get(clientId + "_resizedEventId");
-                ScheduleEvent resizedEvent = getValue().getEvent(resizedEventId);
+                ScheduleEvent resizedEvent = this.getValue().getEvent(resizedEventId);
                 int dayDelta = Integer.valueOf(params.get(clientId + "_dayDelta"));
                 int minuteDelta = Integer.valueOf(params.get(clientId + "_minuteDelta"));
 
@@ -169,7 +170,7 @@ public class Schedule extends ScheduleBase {
                 wrapperEvent = new ScheduleEntryResizeEvent(this, behaviorEvent.getBehavior(), resizedEvent, dayDelta, minuteDelta);
             }
             else if (eventName.equals("viewChange")) {
-                wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), getView());
+                wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), this.getView());
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -182,7 +183,7 @@ public class Schedule extends ScheduleBase {
     }
 
     private boolean isSelfRequest(FacesContext context) {
-        return getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
+        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
 
     @Override
@@ -193,9 +194,9 @@ public class Schedule extends ScheduleBase {
 
         super.processUpdates(context);
 
-        ValueExpression expr = getValueExpression(PropertyKeys.view.toString());
+        ValueExpression expr = this.getValueExpression(PropertyKeys.view.toString());
         if (expr != null) {
-            expr.setValue(getFacesContext().getELContext(), getView());
+            expr.setValue(getFacesContext().getELContext(), this.getView());
             getStateHelper().remove(PropertyKeys.view);
         }
     }

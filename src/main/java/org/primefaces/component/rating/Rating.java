@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
+
 import org.primefaces.event.RateEvent;
 import org.primefaces.util.Constants;
 
@@ -43,7 +44,7 @@ public class Rating extends RatingBase {
 
     private final static String DEFAULT_EVENT = "rate";
 
-    private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
+    private final Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("rate", RateEvent.class);

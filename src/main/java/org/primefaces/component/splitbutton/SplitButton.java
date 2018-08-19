@@ -17,6 +17,7 @@ package org.primefaces.component.splitbutton;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
+
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;

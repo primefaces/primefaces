@@ -16,6 +16,7 @@
 package org.primefaces.component.wizard;
 
 import javax.faces.component.UIComponentBase;
+
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 

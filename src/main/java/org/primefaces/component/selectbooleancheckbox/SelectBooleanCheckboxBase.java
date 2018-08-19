@@ -16,6 +16,7 @@
 package org.primefaces.component.selectbooleancheckbox;
 
 import javax.faces.component.html.HtmlSelectBooleanCheckbox;
+
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
@@ -30,13 +31,14 @@ abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbox imple
     public enum PropertyKeys {
 
         widgetVar,
-        itemLabel;
+        itemLabel
     }
 
     public SelectBooleanCheckboxBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -57,6 +59,7 @@ abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbox imple
         getStateHelper().put(PropertyKeys.itemLabel, _itemLabel);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

@@ -16,6 +16,7 @@
 package org.primefaces.component.scrollpanel;
 
 import javax.faces.component.UIPanel;
+
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
@@ -38,6 +39,7 @@ abstract class ScrollPanelBase extends UIPanel implements Widget {
         setRendererType(DEFAULT_RENDERER);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }

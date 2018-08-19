@@ -16,6 +16,7 @@
 package org.primefaces.component.keyboard;
 
 import javax.faces.component.html.HtmlInputText;
+
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
@@ -42,7 +43,7 @@ abstract class KeyboardBase extends HtmlInputText implements Widget {
         promptLabel,
         closeLabel,
         clearLabel,
-        backspaceLabel
+        backspaceLabel;
     }
 
     public KeyboardBase() {
@@ -174,7 +175,6 @@ abstract class KeyboardBase extends HtmlInputText implements Widget {
         getStateHelper().put(PropertyKeys.backspaceLabel, _backspaceLabel);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

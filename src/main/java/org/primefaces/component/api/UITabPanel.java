@@ -32,6 +32,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.*;
 import javax.faces.model.*;
 import javax.faces.render.Renderer;
+
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -68,14 +69,14 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     // Holds for each row the states of the child components of this UIData.
     // Note that only "partial" component state is saved: the component fields
     // that are expected to vary between rows.
-    private Map<String, Collection<Object[]>> _rowStates = new HashMap<>();
+    private final Map<String, Collection<Object[]>> _rowStates = new HashMap<>();
 
     /**
      * Handle case where this table is nested inside another table. See method getDataModel for more details.
      * <p>
      * Key: parentClientId (aka rowId when nested within a parent table) Value: DataModel
      */
-    private Map<String, DataModel> _dataModelMap = new HashMap<>();
+    private final Map<String, DataModel> _dataModelMap = new HashMap<>();
 
     // will be set to false if the data should not be refreshed at the beginning of the encode phase
     private boolean _isValidChilds = true;

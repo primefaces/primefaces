@@ -17,6 +17,7 @@ package org.primefaces.component.columntoggler;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.behavior.ClientBehaviorHolder;
+
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
@@ -39,6 +40,7 @@ abstract class ColumnTogglerBase extends UIComponentBase implements Widget, Clie
         setRendererType(DEFAULT_RENDERER);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }

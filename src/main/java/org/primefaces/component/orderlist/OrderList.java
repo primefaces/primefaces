@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
+
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.util.ComponentUtils;
@@ -53,7 +54,7 @@ public class OrderList extends OrderListBase {
     public static final String MOVE_TOP_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-n";
     public static final String MOVE_BOTTOM_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-s";
 
-    private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
+    private Map<String, AjaxBehaviorEvent> customEvents = new HashMap<String, AjaxBehaviorEvent>();
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
         put("select", SelectEvent.class);
@@ -75,7 +76,7 @@ public class OrderList extends OrderListBase {
 
     private Map<String, AjaxBehaviorEvent> getCustomEvents() {
         if (customEvents == null) {
-            customEvents = new HashMap<>();
+            customEvents = new HashMap<String, AjaxBehaviorEvent>();
         }
 
         return customEvents;
@@ -103,8 +104,8 @@ public class OrderList extends OrderListBase {
                 String eventName = customEventIter.next();
                 AjaxBehaviorEvent behaviorEvent = customEvents.get(eventName);
                 Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-                String clientId = getClientId(context);
-                List<?> list = (List) getValue();
+                String clientId = this.getClientId(context);
+                List<?> list = (List) this.getValue();
                 FacesEvent wrapperEvent = null;
 
                 if (eventName.equals("select")) {

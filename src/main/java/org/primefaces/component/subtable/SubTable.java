@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
+
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 
@@ -31,9 +32,9 @@ public class SubTable extends SubTableBase {
 
     public List<Column> getColumns() {
         if (columns == null) {
-            columns = new ArrayList<>();
+            columns = new ArrayList<Column>();
 
-            for (UIComponent child : getChildren()) {
+            for (UIComponent child : this.getChildren()) {
                 if (child.isRendered() && child instanceof Column) {
                     columns.add((Column) child);
                 }
@@ -44,7 +45,7 @@ public class SubTable extends SubTableBase {
     }
 
     public ColumnGroup getColumnGroup(String target) {
-        for (UIComponent child : getChildren()) {
+        for (UIComponent child : this.getChildren()) {
             if (child instanceof ColumnGroup) {
                 ColumnGroup colGroup = (ColumnGroup) child;
                 String type = colGroup.getType();

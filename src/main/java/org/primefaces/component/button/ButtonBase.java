@@ -16,6 +16,7 @@
 package org.primefaces.component.button;
 
 import javax.faces.component.html.HtmlOutcomeTargetButton;
+
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;

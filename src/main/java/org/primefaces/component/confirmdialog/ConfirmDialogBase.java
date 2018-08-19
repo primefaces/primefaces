@@ -16,6 +16,7 @@
 package org.primefaces.component.confirmdialog;
 
 import javax.faces.component.UIPanel;
+
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
@@ -52,6 +53,7 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
         setRendererType(DEFAULT_RENDERER);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }

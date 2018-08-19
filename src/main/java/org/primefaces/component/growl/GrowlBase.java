@@ -16,6 +16,7 @@
 package org.primefaces.component.growl;
 
 import javax.faces.component.UIMessages;
+
 import org.primefaces.component.api.UINotification;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;

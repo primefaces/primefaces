@@ -26,6 +26,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
+
 import org.primefaces.PrimeFaces;
 import org.primefaces.model.timeline.TimelineEvent;
 import org.primefaces.model.timeline.TimelineGroup;
@@ -230,7 +231,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
     class CrudOperationData implements Serializable {
 
-        private CrudOperation crudOperation;
+        private final CrudOperation crudOperation;
         private TimelineEvent event;
         private int index;
 

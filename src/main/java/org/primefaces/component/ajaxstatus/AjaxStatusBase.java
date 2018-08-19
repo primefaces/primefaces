@@ -16,6 +16,7 @@
 package org.primefaces.component.ajaxstatus;
 
 import javax.faces.component.UIComponentBase;
+
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
@@ -34,7 +35,7 @@ abstract class AjaxStatusBase extends UIComponentBase implements Widget {
         onsuccess,
         onerror,
         style,
-        styleClass
+        styleClass;
     }
 
     public AjaxStatusBase() {
@@ -102,7 +103,6 @@ abstract class AjaxStatusBase extends UIComponentBase implements Widget {
         getStateHelper().put(PropertyKeys.styleClass, _styleClass);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

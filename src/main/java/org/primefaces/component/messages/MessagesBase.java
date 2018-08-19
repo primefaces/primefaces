@@ -16,6 +16,7 @@
 package org.primefaces.component.messages;
 
 import javax.faces.component.UIMessages;
+
 import org.primefaces.component.api.UINotification;
 
 

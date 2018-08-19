@@ -30,7 +30,7 @@ abstract class RowEditorBase extends UIComponentBase {
         styleClass,
         editTitle,
         cancelTitle,
-        saveTitle
+        saveTitle;
     }
 
     public RowEditorBase() {

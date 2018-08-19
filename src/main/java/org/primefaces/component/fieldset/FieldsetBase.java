@@ -17,6 +17,7 @@ package org.primefaces.component.fieldset;
 
 import javax.faces.component.UIPanel;
 import javax.faces.component.behavior.ClientBehaviorHolder;
+
 import org.primefaces.component.api.PrimeClientBehaviorHolder;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
@@ -39,7 +40,7 @@ abstract class FieldsetBase extends UIPanel implements Widget, ClientBehaviorHol
         collapsed,
         tabindex,
         escape,
-        title
+        title;
     }
 
     public FieldsetBase() {
@@ -131,7 +132,6 @@ abstract class FieldsetBase extends UIPanel implements Widget, ClientBehaviorHol
         getStateHelper().put(PropertyKeys.title, _title);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

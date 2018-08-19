@@ -16,6 +16,7 @@
 package org.primefaces.component.submenu;
 
 import javax.faces.component.UIComponentBase;
+
 import org.primefaces.model.menu.Submenu;
 
 

@@ -31,7 +31,7 @@ abstract class UIOrganigramNodeBase extends UIComponentBase {
         iconPos,
         expandedIcon,
         collapsedIcon,
-        skipLeafHandling
+        skipLeafHandling;
     }
 
     public UIOrganigramNodeBase() {

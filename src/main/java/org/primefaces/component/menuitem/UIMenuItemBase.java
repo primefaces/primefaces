@@ -17,6 +17,7 @@ package org.primefaces.component.menuitem;
 
 import javax.faces.component.UICommand;
 import javax.faces.component.behavior.ClientBehaviorHolder;
+
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Confirmable;
 import org.primefaces.component.api.PrimeClientBehaviorHolder;

@@ -16,6 +16,7 @@
 package org.primefaces.component.selectmanycheckbox;
 
 import javax.faces.component.html.HtmlSelectManyCheckbox;
+
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
@@ -29,13 +30,14 @@ abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox implements 
     public enum PropertyKeys {
 
         widgetVar,
-        columns;
+        columns
     }
 
     public SelectManyCheckboxBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -56,6 +58,7 @@ abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox implements 
         getStateHelper().put(PropertyKeys.columns, _columns);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

@@ -33,6 +33,7 @@ abstract class OutputLabelBase extends HtmlOutputLabel {
         setRendererType(DEFAULT_RENDERER);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }

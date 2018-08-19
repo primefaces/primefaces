@@ -26,6 +26,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
+
 import org.primefaces.component.column.Column;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
@@ -78,11 +79,11 @@ public class AutoComplete extends AutoCompleteBase {
     }
 
     public boolean isMoreTextRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_moreText");
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_moreText");
     }
 
     public boolean isDynamicLoadRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_dynamicload");
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_dynamicload");
     }
 
     @Override
@@ -95,13 +96,13 @@ public class AutoComplete extends AutoCompleteBase {
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName.equals("itemSelect")) {
-                Object selectedItemValue = convertValue(context, params.get(this.getClientId(context) + "_itemSelect"));
+                Object selectedItemValue = convertValue(context, params.get(getClientId(context) + "_itemSelect"));
                 SelectEvent selectEvent = new SelectEvent(this, (Behavior) ajaxBehaviorEvent.getBehavior(), selectedItemValue);
                 selectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(selectEvent);
             }
             else if (eventName.equals("itemUnselect")) {
-                Object unselectedItemValue = convertValue(context, params.get(this.getClientId(context) + "_itemUnselect"));
+                Object unselectedItemValue = convertValue(context, params.get(getClientId(context) + "_itemUnselect"));
                 UnselectEvent unselectEvent = new UnselectEvent(this, (Behavior) ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
                 unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(unselectEvent);
@@ -123,6 +124,7 @@ public class AutoComplete extends AutoCompleteBase {
 
     private List suggestions = null;
 
+    @Override
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
         super.broadcast(event);
 
@@ -141,7 +143,7 @@ public class AutoComplete extends AutoCompleteBase {
     }
 
     public List<Column> getColums() {
-        List<Column> columns = new ArrayList<Column>();
+        List<Column> columns = new ArrayList<>();
 
         for (int i = 0; i < getChildCount(); i++) {
             UIComponent child = getChildren().get(i);
@@ -154,7 +156,7 @@ public class AutoComplete extends AutoCompleteBase {
     }
 
     public List getSuggestions() {
-        return this.suggestions;
+        return suggestions;
     }
 
     private Object convertValue(FacesContext context, String submittedItemValue) {
@@ -168,18 +170,22 @@ public class AutoComplete extends AutoCompleteBase {
         }
     }
 
+    @Override
     public String getInputClientId() {
-        return this.getClientId(getFacesContext()) + "_input";
+        return getClientId(getFacesContext()) + "_input";
     }
 
+    @Override
     public String getValidatableInputClientId() {
-        return this.getInputClientId();
+        return getInputClientId();
     }
 
+    @Override
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
     }
 
+    @Override
     public String getLabelledBy() {
         return (String) getStateHelper().get("labelledby");
     }

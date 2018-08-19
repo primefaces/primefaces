@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.ChartModel;
 import org.primefaces.model.chart.LegendPlacement;

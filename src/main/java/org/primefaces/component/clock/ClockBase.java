@@ -16,6 +16,7 @@
 package org.primefaces.component.clock;
 
 import javax.faces.component.UIOutput;
+
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 

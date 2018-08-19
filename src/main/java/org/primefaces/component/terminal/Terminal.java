@@ -21,6 +21,7 @@ import java.util.Arrays;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
 import org.primefaces.model.terminal.TerminalAutoCompleteModel;
 import org.primefaces.model.terminal.TerminalCommand;
@@ -46,12 +47,12 @@ public class Terminal extends TerminalBase {
 
     public boolean isCommandRequest() {
         FacesContext context = getFacesContext();
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_command");
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_command");
     }
 
     public boolean isAutoCompleteRequest() {
         FacesContext context = getFacesContext();
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_autocomplete");
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_autocomplete");
     }
 
     TerminalAutoCompleteMatches traverseAutoCompleteModel(TerminalAutoCompleteModel commandModel, String input, String[] args) {

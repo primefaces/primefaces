@@ -16,6 +16,7 @@
 package org.primefaces.component.imagecompare;
 
 import javax.faces.component.UIComponentBase;
+
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
@@ -34,7 +35,7 @@ abstract class ImageCompareBase extends UIComponentBase implements Widget {
         width,
         height,
         style,
-        styleClass
+        styleClass;
     }
 
     public ImageCompareBase() {
@@ -102,7 +103,6 @@ abstract class ImageCompareBase extends UIComponentBase implements Widget {
         getStateHelper().put(PropertyKeys.styleClass, _styleClass);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

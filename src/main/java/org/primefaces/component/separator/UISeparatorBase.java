@@ -16,6 +16,7 @@
 package org.primefaces.component.separator;
 
 import javax.faces.component.UIComponentBase;
+
 import org.primefaces.model.menu.Separator;
 
 
@@ -29,7 +30,7 @@ abstract class UISeparatorBase extends UIComponentBase implements Separator {
 
         title,
         style,
-        styleClass
+        styleClass;
     }
 
     public UISeparatorBase() {
@@ -41,7 +42,6 @@ abstract class UISeparatorBase extends UIComponentBase implements Separator {
         return COMPONENT_FAMILY;
     }
 
-    @Override
     public java.lang.String getTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.title, null);
     }
@@ -50,7 +50,6 @@ abstract class UISeparatorBase extends UIComponentBase implements Separator {
         getStateHelper().put(PropertyKeys.title, _title);
     }
 
-    @Override
     public java.lang.String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
@@ -59,7 +58,6 @@ abstract class UISeparatorBase extends UIComponentBase implements Separator {
         getStateHelper().put(PropertyKeys.style, _style);
     }
 
-    @Override
     public java.lang.String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }

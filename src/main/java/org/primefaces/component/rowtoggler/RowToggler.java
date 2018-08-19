@@ -17,6 +17,7 @@ package org.primefaces.component.rowtoggler;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.datatable.DataTable;
 
 
@@ -33,7 +34,7 @@ public class RowToggler extends RowTogglerBase {
 
     public DataTable getParentTable(FacesContext context) {
         if (parentTable == null) {
-            UIComponent parent = getParent();
+            UIComponent parent = this.getParent();
 
             while (parent != null) {
                 if (parent instanceof DataTable) {

@@ -24,13 +24,14 @@ abstract class RowExpansionBase extends UIColumn {
 
     public enum PropertyKeys {
 
-        styleClass;
+        styleClass
     }
 
     public RowExpansionBase() {
         setRendererType(null);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }

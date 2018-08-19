@@ -24,6 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.BehaviorEvent;
 import javax.faces.event.FacesEvent;
+
 import org.primefaces.event.timeline.*;
 import org.primefaces.model.timeline.TimelineEvent;
 import org.primefaces.model.timeline.TimelineGroup;
@@ -79,7 +80,7 @@ public class Timeline extends TimelineBase {
         if (isSelfRequest(context)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-            String clientId = getClientId(context);
+            String clientId = this.getClientId(context);
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
@@ -100,7 +101,7 @@ public class Timeline extends TimelineBase {
             }
             else if ("change".equals(eventName) || "changed".equals(eventName)) {
                 TimelineEvent clonedEvent = null;
-                TimelineEvent timelineEvent = getValue().getEvent(params.get(clientId + "_eventIdx"));
+                TimelineEvent timelineEvent = this.getValue().getEvent(params.get(clientId + "_eventIdx"));
 
                 if (timelineEvent != null) {
                     clonedEvent = new TimelineEvent();
@@ -124,7 +125,7 @@ public class Timeline extends TimelineBase {
             }
             else if ("edit".equals(eventName) || "delete".equals(eventName)) {
                 TimelineEvent clonedEvent = null;
-                TimelineEvent timelineEvent = getValue().getEvent(params.get(clientId + "_eventIdx"));
+                TimelineEvent timelineEvent = this.getValue().getEvent(params.get(clientId + "_eventIdx"));
 
                 if (timelineEvent != null) {
                     clonedEvent = new TimelineEvent();
@@ -143,7 +144,7 @@ public class Timeline extends TimelineBase {
                 return;
             }
             else if ("select".equals(eventName)) {
-                TimelineEvent timelineEvent = getValue().getEvent(params.get(clientId + "_eventIdx"));
+                TimelineEvent timelineEvent = this.getValue().getEvent(params.get(clientId + "_eventIdx"));
                 TimelineSelectEvent te = new TimelineSelectEvent(this, behaviorEvent.getBehavior(), timelineEvent);
                 te.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(te);
@@ -210,7 +211,7 @@ public class Timeline extends TimelineBase {
     }
 
     private String getGroup(String groupParam) {
-        List<TimelineGroup> groups = getValue().getGroups();
+        List<TimelineGroup> groups = this.getValue().getGroups();
         if (groups == null || groupParam == null) {
             return groupParam;
         }
@@ -229,7 +230,7 @@ public class Timeline extends TimelineBase {
     }
 
     private boolean isSelfRequest(FacesContext context) {
-        return getClientId(context)
+        return this.getClientId(context)
                 .equals(context.getExternalContext().getRequestParameterMap().get(
                         Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }

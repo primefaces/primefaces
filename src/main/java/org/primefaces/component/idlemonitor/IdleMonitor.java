@@ -24,6 +24,7 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.BehaviorEvent;
+
 import org.primefaces.util.Constants;
 
 @ResourceDependencies({
@@ -53,6 +54,6 @@ public class IdleMonitor extends IdleMonitorBase {
     }
 
     private boolean isSelfRequest(FacesContext context) {
-        return this.getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
+        return getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
 }

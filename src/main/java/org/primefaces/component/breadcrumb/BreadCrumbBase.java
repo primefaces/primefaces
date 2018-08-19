@@ -31,7 +31,7 @@ abstract class BreadCrumbBase extends AbstractMenu implements Widget {
         model,
         style,
         styleClass,
-        homeDisplay
+        homeDisplay;
     }
 
     public BreadCrumbBase() {
@@ -43,7 +43,6 @@ abstract class BreadCrumbBase extends AbstractMenu implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    @Override
     public org.primefaces.model.menu.MenuModel getModel() {
         return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }
@@ -76,7 +75,6 @@ abstract class BreadCrumbBase extends AbstractMenu implements Widget {
         getStateHelper().put(PropertyKeys.homeDisplay, _homeDisplay);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

@@ -16,6 +16,7 @@
 package org.primefaces.component.selectmanymenu;
 
 import javax.faces.component.html.HtmlSelectManyMenu;
+
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
@@ -36,13 +37,14 @@ abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, 
         filterMatchMode,
         filterFunction,
         caseSensitive,
-        scrollHeight;
+        scrollHeight
     }
 
     public SelectManyMenuBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
+    @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -111,6 +113,7 @@ abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, 
         getStateHelper().put(PropertyKeys.scrollHeight, _scrollHeight);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

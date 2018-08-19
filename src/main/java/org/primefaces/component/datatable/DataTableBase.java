@@ -16,6 +16,7 @@
 package org.primefaces.component.datatable;
 
 import javax.faces.component.behavior.ClientBehaviorHolder;
+
 import org.primefaces.component.api.*;
 import org.primefaces.util.ComponentUtils;
 

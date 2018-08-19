@@ -20,6 +20,7 @@ import java.util.Map;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
+
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 
@@ -36,7 +37,6 @@ public class LinkButton extends LinkButtonBase {
     public final static String STYLE_CLASS = "ui-linkbutton " + HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
     public final static String DISABLED_STYLE_CLASS = STYLE_CLASS + " ui-state-disabled";
 
-    @Override
     public Map<String, List<String>> getParams() {
         return ComponentUtils.getUIParams(this);
     }

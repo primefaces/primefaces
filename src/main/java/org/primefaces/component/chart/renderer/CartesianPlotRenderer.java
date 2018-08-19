@@ -21,6 +21,7 @@ import java.util.Map;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;

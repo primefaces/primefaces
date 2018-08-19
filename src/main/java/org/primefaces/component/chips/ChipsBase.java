@@ -16,6 +16,7 @@
 package org.primefaces.component.chips;
 
 import javax.faces.component.html.HtmlInputText;
+
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.component.api.Widget;

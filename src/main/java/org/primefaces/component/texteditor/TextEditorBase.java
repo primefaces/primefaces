@@ -17,6 +17,7 @@ package org.primefaces.component.texteditor;
 
 import javax.faces.component.UIInput;
 import javax.faces.component.behavior.ClientBehaviorHolder;
+
 import org.primefaces.component.api.Widget;
 import org.primefaces.util.ComponentUtils;
 
