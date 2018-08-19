@@ -33,7 +33,7 @@ abstract class PanelMenuBase extends AbstractMenu implements Widget {
         style,
         styleClass,
         multiple,
-        stateful
+        stateful;
     }
 
     public PanelMenuBase() {
@@ -45,56 +45,54 @@ abstract class PanelMenuBase extends AbstractMenu implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    @Override
     public org.primefaces.model.menu.MenuModel getModel() {
         return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }
 
-    public void setModel(org.primefaces.model.menu.MenuModel _model) {
-        getStateHelper().put(PropertyKeys.model, _model);
+    public void setModel(org.primefaces.model.menu.MenuModel model) {
+        getStateHelper().put(PropertyKeys.model, model);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public boolean isMultiple() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.multiple, true);
     }
 
-    public void setMultiple(boolean _multiple) {
-        getStateHelper().put(PropertyKeys.multiple, _multiple);
+    public void setMultiple(boolean multiple) {
+        getStateHelper().put(PropertyKeys.multiple, multiple);
     }
 
     public boolean isStateful() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.stateful, true);
     }
 
-    public void setStateful(boolean _stateful) {
-        getStateHelper().put(PropertyKeys.stateful, _stateful);
+    public void setStateful(boolean stateful) {
+        getStateHelper().put(PropertyKeys.stateful, stateful);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

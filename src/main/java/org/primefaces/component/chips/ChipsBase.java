@@ -47,44 +47,44 @@ abstract class ChipsBase extends HtmlInputText implements Widget, InputHolder, M
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getPlaceholder() {
+    public String getPlaceholder() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
-    public void setPlaceholder(java.lang.String _placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, _placeholder);
+    public void setPlaceholder(String placeholder) {
+        getStateHelper().put(PropertyKeys.placeholder, placeholder);
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public int getMax() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.max, java.lang.Integer.MAX_VALUE);
     }
 
-    public void setMax(int _max) {
-        getStateHelper().put(PropertyKeys.max, _max);
+    public void setMax(int max) {
+        getStateHelper().put(PropertyKeys.max, max);
     }
 
-    public java.lang.String getInputStyle() {
+    public String getInputStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.inputStyle, null);
     }
 
-    public void setInputStyle(java.lang.String _inputStyle) {
-        getStateHelper().put(PropertyKeys.inputStyle, _inputStyle);
+    public void setInputStyle(String inputStyle) {
+        getStateHelper().put(PropertyKeys.inputStyle, inputStyle);
     }
 
-    public java.lang.String getInputStyleClass() {
+    public String getInputStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.inputStyleClass, null);
     }
 
-    public void setInputStyleClass(java.lang.String _inputStyleClass) {
-        getStateHelper().put(PropertyKeys.inputStyleClass, _inputStyleClass);
+    public void setInputStyleClass(String inputStyleClass) {
+        getStateHelper().put(PropertyKeys.inputStyleClass, inputStyleClass);
     }
 
     @Override

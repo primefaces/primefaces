@@ -45,28 +45,28 @@ abstract class ColumnTogglerBase extends UIComponentBase implements Widget, Clie
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getTrigger() {
+    public String getTrigger() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.trigger, null);
     }
 
-    public void setTrigger(java.lang.String _trigger) {
-        getStateHelper().put(PropertyKeys.trigger, _trigger);
+    public void setTrigger(String trigger) {
+        getStateHelper().put(PropertyKeys.trigger, trigger);
     }
 
-    public java.lang.String getDatasource() {
+    public String getDatasource() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.datasource, null);
     }
 
-    public void setDatasource(java.lang.String _datasource) {
-        getStateHelper().put(PropertyKeys.datasource, _datasource);
+    public void setDatasource(String datasource) {
+        getStateHelper().put(PropertyKeys.datasource, datasource);
     }
 
     public String resolveWidgetVar() {

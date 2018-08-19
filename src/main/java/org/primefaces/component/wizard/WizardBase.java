@@ -52,100 +52,100 @@ abstract class WizardBase extends UIComponentBase implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getStep() {
+    public String getStep() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.step, null);
     }
 
-    public void setStep(java.lang.String _step) {
-        getStateHelper().put(PropertyKeys.step, _step);
+    public void setStep(String step) {
+        getStateHelper().put(PropertyKeys.step, step);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public javax.el.MethodExpression getFlowListener() {
         return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.flowListener, null);
     }
 
-    public void setFlowListener(javax.el.MethodExpression _flowListener) {
-        getStateHelper().put(PropertyKeys.flowListener, _flowListener);
+    public void setFlowListener(javax.el.MethodExpression flowListener) {
+        getStateHelper().put(PropertyKeys.flowListener, flowListener);
     }
 
     public boolean isShowNavBar() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showNavBar, true);
     }
 
-    public void setShowNavBar(boolean _showNavBar) {
-        getStateHelper().put(PropertyKeys.showNavBar, _showNavBar);
+    public void setShowNavBar(boolean showNavBar) {
+        getStateHelper().put(PropertyKeys.showNavBar, showNavBar);
     }
 
     public boolean isShowStepStatus() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showStepStatus, true);
     }
 
-    public void setShowStepStatus(boolean _showStepStatus) {
-        getStateHelper().put(PropertyKeys.showStepStatus, _showStepStatus);
+    public void setShowStepStatus(boolean showStepStatus) {
+        getStateHelper().put(PropertyKeys.showStepStatus, showStepStatus);
     }
 
-    public java.lang.String getOnback() {
+    public String getOnback() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onback, null);
     }
 
-    public void setOnback(java.lang.String _onback) {
-        getStateHelper().put(PropertyKeys.onback, _onback);
+    public void setOnback(String onback) {
+        getStateHelper().put(PropertyKeys.onback, onback);
     }
 
-    public java.lang.String getOnnext() {
+    public String getOnnext() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onnext, null);
     }
 
-    public void setOnnext(java.lang.String _onnext) {
-        getStateHelper().put(PropertyKeys.onnext, _onnext);
+    public void setOnnext(String onnext) {
+        getStateHelper().put(PropertyKeys.onnext, onnext);
     }
 
-    public java.lang.String getNextLabel() {
+    public String getNextLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.nextLabel, "Next");
     }
 
-    public void setNextLabel(java.lang.String _nextLabel) {
-        getStateHelper().put(PropertyKeys.nextLabel, _nextLabel);
+    public void setNextLabel(String nextLabel) {
+        getStateHelper().put(PropertyKeys.nextLabel, nextLabel);
     }
 
-    public java.lang.String getBackLabel() {
+    public String getBackLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.backLabel, "Back");
     }
 
-    public void setBackLabel(java.lang.String _backLabel) {
-        getStateHelper().put(PropertyKeys.backLabel, _backLabel);
+    public void setBackLabel(String backLabel) {
+        getStateHelper().put(PropertyKeys.backLabel, backLabel);
     }
 
     public boolean isUpdateModelOnPrev() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.updateModelOnPrev, false);
     }
 
-    public void setUpdateModelOnPrev(boolean _updateModelOnPrev) {
-        getStateHelper().put(PropertyKeys.updateModelOnPrev, _updateModelOnPrev);
+    public void setUpdateModelOnPrev(boolean updateModelOnPrev) {
+        getStateHelper().put(PropertyKeys.updateModelOnPrev, updateModelOnPrev);
     }
 
     @Override

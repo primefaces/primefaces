@@ -40,8 +40,8 @@ abstract class GMapInfoWindowBase extends UIComponentBase {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxWidth, java.lang.Integer.MIN_VALUE);
     }
 
-    public void setMaxWidth(int _maxWidth) {
-        getStateHelper().put(PropertyKeys.maxWidth, _maxWidth);
+    public void setMaxWidth(int maxWidth) {
+        getStateHelper().put(PropertyKeys.maxWidth, maxWidth);
     }
 
 }

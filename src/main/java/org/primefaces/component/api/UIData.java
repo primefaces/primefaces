@@ -92,12 +92,11 @@ public class UIData extends javax.faces.component.UIData {
     public static final String ROWS_PER_PAGE_LABEL = "primefaces.paginator.aria.ROWS_PER_PAGE";
 
     private static final String SB_ID = UIData.class.getName() + "#id";
-
+    private final Map<String, Object> _rowTransientStates = new HashMap<>();
     private String clientId = null;
     private DataModel model = null;
     private Object oldVar = null;
     private Map<String, Object> _rowDeltaStates = new HashMap<>();
-    private final Map<String, Object> _rowTransientStates = new HashMap<>();
     private Object _initialDescendantFullComponentState = null;
     private Boolean isNested = null;
 
@@ -503,16 +502,6 @@ public class UIData extends javax.faces.component.UIData {
         clientId = null;
     }
 
-    @Override
-    public void setRowIndex(int rowIndex) {
-        if (isRowStatePreserved()) {
-            setRowIndexRowStatePreserved(rowIndex);
-        }
-        else {
-            setRowIndexWithoutRowStatePreserved(rowIndex);
-        }
-    }
-
     //Row State preserved implementation is taken from Mojarra
     private void setRowIndexRowStatePreserved(int rowIndex) {
         if (rowIndex < -1) {
@@ -537,7 +526,7 @@ public class UIData extends javax.faces.component.UIData {
             }
         }
 
-        // Update to the new row index        
+        // Update to the new row index
         //this.rowIndex = rowIndex;
         getStateHelper().put(PropertyKeys.rowIndex, rowIndex);
         DataModel localModel = getDataModel();
@@ -647,6 +636,16 @@ public class UIData extends javax.faces.component.UIData {
     @Override
     public int getRowIndex() {
         return (Integer) getStateHelper().eval(PropertyKeys.rowIndex, -1);
+    }
+
+    @Override
+    public void setRowIndex(int rowIndex) {
+        if (isRowStatePreserved()) {
+            setRowIndexRowStatePreserved(rowIndex);
+        }
+        else {
+            setRowIndexWithoutRowStatePreserved(rowIndex);
+        }
     }
 
     protected void saveDescendantState() {

@@ -46,45 +46,45 @@ abstract class MessageBase extends UIMessage implements UINotification, Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getDisplay() {
+    public String getDisplay() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.display, "both");
     }
 
-    public void setDisplay(java.lang.String _display) {
-        getStateHelper().put(PropertyKeys.display, _display);
+    public void setDisplay(String display) {
+        getStateHelper().put(PropertyKeys.display, display);
     }
 
     public boolean isEscape() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
-    public void setEscape(boolean _escape) {
-        getStateHelper().put(PropertyKeys.escape, _escape);
+    public void setEscape(boolean escape) {
+        getStateHelper().put(PropertyKeys.escape, escape);
     }
 
     @Override
-    public java.lang.String getSeverity() {
+    public String getSeverity() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.severity, null);
     }
 
-    public void setSeverity(java.lang.String _severity) {
-        getStateHelper().put(PropertyKeys.severity, _severity);
+    public void setSeverity(String severity) {
+        getStateHelper().put(PropertyKeys.severity, severity);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     @Override

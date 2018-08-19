@@ -43,39 +43,39 @@ abstract class UISubmenuBase extends UIComponentBase implements Submenu {
     }
 
     @Override
-    public java.lang.String getLabel() {
+    public String getLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.label, null);
     }
 
-    public void setLabel(java.lang.String _label) {
-        getStateHelper().put(PropertyKeys.label, _label);
+    public void setLabel(String label) {
+        getStateHelper().put(PropertyKeys.label, label);
     }
 
     @Override
-    public java.lang.String getIcon() {
+    public String getIcon() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.icon, null);
     }
 
-    public void setIcon(java.lang.String _icon) {
-        getStateHelper().put(PropertyKeys.icon, _icon);
+    public void setIcon(String icon) {
+        getStateHelper().put(PropertyKeys.icon, icon);
     }
 
     @Override
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
     @Override
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     @Override
@@ -83,8 +83,8 @@ abstract class UISubmenuBase extends UIComponentBase implements Submenu {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.expanded, false);
     }
 
-    public void setExpanded(boolean _expanded) {
-        getStateHelper().put(PropertyKeys.expanded, _expanded);
+    public void setExpanded(boolean expanded) {
+        getStateHelper().put(PropertyKeys.expanded, expanded);
     }
 
 }

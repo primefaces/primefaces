@@ -72,148 +72,148 @@ abstract class TooltipBase extends UIOutput implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getShowEvent() {
+    public String getShowEvent() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.showEvent, null);
     }
 
-    public void setShowEvent(java.lang.String _showEvent) {
-        getStateHelper().put(PropertyKeys.showEvent, _showEvent);
+    public void setShowEvent(String showEvent) {
+        getStateHelper().put(PropertyKeys.showEvent, showEvent);
     }
 
-    public java.lang.String getShowEffect() {
+    public String getShowEffect() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.showEffect, "fade");
     }
 
-    public void setShowEffect(java.lang.String _showEffect) {
-        getStateHelper().put(PropertyKeys.showEffect, _showEffect);
+    public void setShowEffect(String showEffect) {
+        getStateHelper().put(PropertyKeys.showEffect, showEffect);
     }
 
     public int getShowDelay() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.showDelay, 150);
     }
 
-    public void setShowDelay(int _showDelay) {
-        getStateHelper().put(PropertyKeys.showDelay, _showDelay);
+    public void setShowDelay(int showDelay) {
+        getStateHelper().put(PropertyKeys.showDelay, showDelay);
     }
 
-    public java.lang.String getHideEvent() {
+    public String getHideEvent() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.hideEvent, null);
     }
 
-    public void setHideEvent(java.lang.String _hideEvent) {
-        getStateHelper().put(PropertyKeys.hideEvent, _hideEvent);
+    public void setHideEvent(String hideEvent) {
+        getStateHelper().put(PropertyKeys.hideEvent, hideEvent);
     }
 
-    public java.lang.String getHideEffect() {
+    public String getHideEffect() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.hideEffect, "fade");
     }
 
-    public void setHideEffect(java.lang.String _hideEffect) {
-        getStateHelper().put(PropertyKeys.hideEffect, _hideEffect);
+    public void setHideEffect(String hideEffect) {
+        getStateHelper().put(PropertyKeys.hideEffect, hideEffect);
     }
 
     public int getHideDelay() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.hideDelay, 0);
     }
 
-    public void setHideDelay(int _hideDelay) {
-        getStateHelper().put(PropertyKeys.hideDelay, _hideDelay);
+    public void setHideDelay(int hideDelay) {
+        getStateHelper().put(PropertyKeys.hideDelay, hideDelay);
     }
 
-    public java.lang.String getFor() {
+    public String getFor() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
-    public void setFor(java.lang.String _for) {
+    public void setFor(String _for) {
         getStateHelper().put(PropertyKeys.forValue, _for);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getGlobalSelector() {
+    public String getGlobalSelector() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.globalSelector, null);
     }
 
-    public void setGlobalSelector(java.lang.String _globalSelector) {
-        getStateHelper().put(PropertyKeys.globalSelector, _globalSelector);
+    public void setGlobalSelector(String globalSelector) {
+        getStateHelper().put(PropertyKeys.globalSelector, globalSelector);
     }
 
     public boolean isEscape() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
-    public void setEscape(boolean _escape) {
-        getStateHelper().put(PropertyKeys.escape, _escape);
+    public void setEscape(boolean escape) {
+        getStateHelper().put(PropertyKeys.escape, escape);
     }
 
     public boolean isTrackMouse() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.trackMouse, false);
     }
 
-    public void setTrackMouse(boolean _trackMouse) {
-        getStateHelper().put(PropertyKeys.trackMouse, _trackMouse);
+    public void setTrackMouse(boolean trackMouse) {
+        getStateHelper().put(PropertyKeys.trackMouse, trackMouse);
     }
 
-    public java.lang.String getBeforeShow() {
+    public String getBeforeShow() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.beforeShow, null);
     }
 
-    public void setBeforeShow(java.lang.String _beforeShow) {
-        getStateHelper().put(PropertyKeys.beforeShow, _beforeShow);
+    public void setBeforeShow(String beforeShow) {
+        getStateHelper().put(PropertyKeys.beforeShow, beforeShow);
     }
 
-    public java.lang.String getOnHide() {
+    public String getOnHide() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onHide, null);
     }
 
-    public void setOnHide(java.lang.String _onHide) {
-        getStateHelper().put(PropertyKeys.onHide, _onHide);
+    public void setOnHide(String onHide) {
+        getStateHelper().put(PropertyKeys.onHide, onHide);
     }
 
-    public java.lang.String getOnShow() {
+    public String getOnShow() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onShow, null);
     }
 
-    public void setOnShow(java.lang.String _onShow) {
-        getStateHelper().put(PropertyKeys.onShow, _onShow);
+    public void setOnShow(String onShow) {
+        getStateHelper().put(PropertyKeys.onShow, onShow);
     }
 
-    public java.lang.String getPosition() {
+    public String getPosition() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.position, "right");
     }
 
-    public void setPosition(java.lang.String _position) {
-        getStateHelper().put(PropertyKeys.position, _position);
+    public void setPosition(String position) {
+        getStateHelper().put(PropertyKeys.position, position);
     }
 
     public boolean isDelegate() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.delegate, false);
     }
 
-    public void setDelegate(boolean _delegate) {
-        getStateHelper().put(PropertyKeys.delegate, _delegate);
+    public void setDelegate(boolean delegate) {
+        getStateHelper().put(PropertyKeys.delegate, delegate);
     }
 
     @Override

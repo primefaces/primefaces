@@ -57,116 +57,116 @@ abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, Clien
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public int getActiveIndex() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.activeIndex, 0);
     }
 
-    public void setActiveIndex(int _activeIndex) {
-        getStateHelper().put(PropertyKeys.activeIndex, _activeIndex);
+    public void setActiveIndex(int activeIndex) {
+        getStateHelper().put(PropertyKeys.activeIndex, activeIndex);
     }
 
-    public java.lang.String getEffect() {
+    public String getEffect() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, null);
     }
 
-    public void setEffect(java.lang.String _effect) {
-        getStateHelper().put(PropertyKeys.effect, _effect);
+    public void setEffect(String effect) {
+        getStateHelper().put(PropertyKeys.effect, effect);
     }
 
-    public java.lang.String getEffectDuration() {
+    public String getEffectDuration() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.effectDuration, "normal");
     }
 
-    public void setEffectDuration(java.lang.String _effectDuration) {
-        getStateHelper().put(PropertyKeys.effectDuration, _effectDuration);
+    public void setEffectDuration(String effectDuration) {
+        getStateHelper().put(PropertyKeys.effectDuration, effectDuration);
     }
 
     public boolean isCache() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.cache, true);
     }
 
-    public void setCache(boolean _cache) {
-        getStateHelper().put(PropertyKeys.cache, _cache);
+    public void setCache(boolean cache) {
+        getStateHelper().put(PropertyKeys.cache, cache);
     }
 
-    public java.lang.String getOnTabChange() {
+    public String getOnTabChange() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onTabChange, null);
     }
 
-    public void setOnTabChange(java.lang.String _onTabChange) {
-        getStateHelper().put(PropertyKeys.onTabChange, _onTabChange);
+    public void setOnTabChange(String onTabChange) {
+        getStateHelper().put(PropertyKeys.onTabChange, onTabChange);
     }
 
-    public java.lang.String getOnTabShow() {
+    public String getOnTabShow() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onTabShow, null);
     }
 
-    public void setOnTabShow(java.lang.String _onTabShow) {
-        getStateHelper().put(PropertyKeys.onTabShow, _onTabShow);
+    public void setOnTabShow(String onTabShow) {
+        getStateHelper().put(PropertyKeys.onTabShow, onTabShow);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getOrientation() {
+    public String getOrientation() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.orientation, "top");
     }
 
-    public void setOrientation(java.lang.String _orientation) {
-        getStateHelper().put(PropertyKeys.orientation, _orientation);
+    public void setOrientation(String orientation) {
+        getStateHelper().put(PropertyKeys.orientation, orientation);
     }
 
-    public java.lang.String getOnTabClose() {
+    public String getOnTabClose() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onTabClose, null);
     }
 
-    public void setOnTabClose(java.lang.String _onTabClose) {
-        getStateHelper().put(PropertyKeys.onTabClose, _onTabClose);
+    public void setOnTabClose(String onTabClose) {
+        getStateHelper().put(PropertyKeys.onTabClose, onTabClose);
     }
 
-    public java.lang.String getDir() {
+    public String getDir() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
 
-    public void setDir(java.lang.String _dir) {
-        getStateHelper().put(PropertyKeys.dir, _dir);
+    public void setDir(String dir) {
+        getStateHelper().put(PropertyKeys.dir, dir);
     }
 
     public boolean isScrollable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.scrollable, false);
     }
 
-    public void setScrollable(boolean _scrollable) {
-        getStateHelper().put(PropertyKeys.scrollable, _scrollable);
+    public void setScrollable(boolean scrollable) {
+        getStateHelper().put(PropertyKeys.scrollable, scrollable);
     }
 
-    public java.lang.String getTabindex() {
+    public String getTabindex() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, null);
     }
 
-    public void setTabindex(java.lang.String _tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, _tabindex);
+    public void setTabindex(String tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 
     @Override

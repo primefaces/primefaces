@@ -41,52 +41,52 @@ abstract class UITreeNodeBase extends UIColumn {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getType() {
+    public String getType() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.type, "default");
     }
 
-    public void setType(java.lang.String _type) {
-        getStateHelper().put(PropertyKeys.type, _type);
+    public void setType(String type) {
+        getStateHelper().put(PropertyKeys.type, type);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getIcon() {
+    public String getIcon() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.icon, null);
     }
 
-    public void setIcon(java.lang.String _icon) {
-        getStateHelper().put(PropertyKeys.icon, _icon);
+    public void setIcon(String icon) {
+        getStateHelper().put(PropertyKeys.icon, icon);
     }
 
-    public java.lang.String getExpandedIcon() {
+    public String getExpandedIcon() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.expandedIcon, null);
     }
 
-    public void setExpandedIcon(java.lang.String _expandedIcon) {
-        getStateHelper().put(PropertyKeys.expandedIcon, _expandedIcon);
+    public void setExpandedIcon(String expandedIcon) {
+        getStateHelper().put(PropertyKeys.expandedIcon, expandedIcon);
     }
 
-    public java.lang.String getCollapsedIcon() {
+    public String getCollapsedIcon() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.collapsedIcon, null);
     }
 
-    public void setCollapsedIcon(java.lang.String _collapsedIcon) {
-        getStateHelper().put(PropertyKeys.collapsedIcon, _collapsedIcon);
+    public void setCollapsedIcon(String collapsedIcon) {
+        getStateHelper().put(PropertyKeys.collapsedIcon, collapsedIcon);
     }
 
-    public java.lang.String getAriaLabel() {
+    public String getAriaLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
     }
 
-    public void setAriaLabel(java.lang.String _ariaLabel) {
-        getStateHelper().put(PropertyKeys.ariaLabel, _ariaLabel);
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 
 }

@@ -48,9 +48,8 @@ abstract class ContextMenuBase extends AbstractMenu implements Widget {
         PropertyKeys() {
         }
 
-        @Override
         public String toString() {
-            return ((toString != null) ? toString : super.toString());
+            return ((this.toString != null) ? this.toString : super.toString());
         }
     }
 
@@ -63,88 +62,86 @@ abstract class ContextMenuBase extends AbstractMenu implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getFor() {
+    public String getFor() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
-    public void setFor(java.lang.String _for) {
+    public void setFor(String _for) {
         getStateHelper().put(PropertyKeys.forValue, _for);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    @Override
     public org.primefaces.model.menu.MenuModel getModel() {
         return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }
 
-    public void setModel(org.primefaces.model.menu.MenuModel _model) {
-        getStateHelper().put(PropertyKeys.model, _model);
+    public void setModel(org.primefaces.model.menu.MenuModel model) {
+        getStateHelper().put(PropertyKeys.model, model);
     }
 
-    public java.lang.String getNodeType() {
+    public String getNodeType() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.nodeType, null);
     }
 
-    public void setNodeType(java.lang.String _nodeType) {
-        getStateHelper().put(PropertyKeys.nodeType, _nodeType);
+    public void setNodeType(String nodeType) {
+        getStateHelper().put(PropertyKeys.nodeType, nodeType);
     }
 
-    public java.lang.String getEvent() {
+    public String getEvent() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.event, null);
     }
 
-    public void setEvent(java.lang.String _event) {
-        getStateHelper().put(PropertyKeys.event, _event);
+    public void setEvent(String event) {
+        getStateHelper().put(PropertyKeys.event, event);
     }
 
-    public java.lang.String getBeforeShow() {
+    public String getBeforeShow() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.beforeShow, null);
     }
 
-    public void setBeforeShow(java.lang.String _beforeShow) {
-        getStateHelper().put(PropertyKeys.beforeShow, _beforeShow);
+    public void setBeforeShow(String beforeShow) {
+        getStateHelper().put(PropertyKeys.beforeShow, beforeShow);
     }
 
-    public java.lang.String getSelectionMode() {
+    public String getSelectionMode() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.selectionMode, "multiple");
     }
 
-    public void setSelectionMode(java.lang.String _selectionMode) {
-        getStateHelper().put(PropertyKeys.selectionMode, _selectionMode);
+    public void setSelectionMode(String selectionMode) {
+        getStateHelper().put(PropertyKeys.selectionMode, selectionMode);
     }
 
-    public java.lang.String getTargetFilter() {
+    public String getTargetFilter() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.targetFilter, null);
     }
 
-    public void setTargetFilter(java.lang.String _targetFilter) {
-        getStateHelper().put(PropertyKeys.targetFilter, _targetFilter);
+    public void setTargetFilter(String targetFilter) {
+        getStateHelper().put(PropertyKeys.targetFilter, targetFilter);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

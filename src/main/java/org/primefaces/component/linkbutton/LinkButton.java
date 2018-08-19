@@ -37,6 +37,7 @@ public class LinkButton extends LinkButtonBase {
     public final static String STYLE_CLASS = "ui-linkbutton " + HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
     public final static String DISABLED_STYLE_CLASS = STYLE_CLASS + " ui-state-disabled";
 
+    @Override
     public Map<String, List<String>> getParams() {
         return ComponentUtils.getUIParams(this);
     }

@@ -35,7 +35,7 @@ abstract class OutputPanelBase extends UIPanel implements Widget, ClientBehavior
         styleClass,
         deferred,
         deferredMode,
-        layout
+        layout;
     }
 
     public OutputPanelBase() {
@@ -47,47 +47,46 @@ abstract class OutputPanelBase extends UIPanel implements Widget, ClientBehavior
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public boolean isDeferred() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.deferred, false);
     }
 
-    public void setDeferred(boolean _deferred) {
-        getStateHelper().put(PropertyKeys.deferred, _deferred);
+    public void setDeferred(boolean deferred) {
+        getStateHelper().put(PropertyKeys.deferred, deferred);
     }
 
-    public java.lang.String getDeferredMode() {
+    public String getDeferredMode() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.deferredMode, "load");
     }
 
-    public void setDeferredMode(java.lang.String _deferredMode) {
-        getStateHelper().put(PropertyKeys.deferredMode, _deferredMode);
+    public void setDeferredMode(String deferredMode) {
+        getStateHelper().put(PropertyKeys.deferredMode, deferredMode);
     }
 
-    public java.lang.String getLayout() {
+    public String getLayout() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.layout, "block");
     }
 
-    public void setLayout(java.lang.String _layout) {
-        getStateHelper().put(PropertyKeys.layout, _layout);
+    public void setLayout(String layout) {
+        getStateHelper().put(PropertyKeys.layout, layout);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

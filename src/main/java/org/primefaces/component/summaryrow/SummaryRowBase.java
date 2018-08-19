@@ -42,8 +42,8 @@ abstract class SummaryRowBase extends UIComponentBase {
         return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
     }
 
-    public void setListener(javax.el.MethodExpression _listener) {
-        getStateHelper().put(PropertyKeys.listener, _listener);
+    public void setListener(javax.el.MethodExpression listener) {
+        getStateHelper().put(PropertyKeys.listener, listener);
     }
 
 }

@@ -72,132 +72,132 @@ abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolde
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getFor() {
+    public String getFor() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
-    public void setFor(java.lang.String _for) {
+    public void setFor(String _for) {
         getStateHelper().put(PropertyKeys.forValue, _for);
     }
 
-    public java.lang.String getDisplay() {
+    public String getDisplay() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.display, null);
     }
 
-    public void setDisplay(java.lang.String _display) {
-        getStateHelper().put(PropertyKeys.display, _display);
+    public void setDisplay(String display) {
+        getStateHelper().put(PropertyKeys.display, display);
     }
 
     public double getMinValue() {
         return (java.lang.Double) getStateHelper().eval(PropertyKeys.minValue, 0.0);
     }
 
-    public void setMinValue(double _minValue) {
-        getStateHelper().put(PropertyKeys.minValue, _minValue);
+    public void setMinValue(double minValue) {
+        getStateHelper().put(PropertyKeys.minValue, minValue);
     }
 
     public double getMaxValue() {
         return (java.lang.Double) getStateHelper().eval(PropertyKeys.maxValue, 100.0);
     }
 
-    public void setMaxValue(double _maxValue) {
-        getStateHelper().put(PropertyKeys.maxValue, _maxValue);
+    public void setMaxValue(double maxValue) {
+        getStateHelper().put(PropertyKeys.maxValue, maxValue);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public boolean isAnimate() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.animate, true);
     }
 
-    public void setAnimate(boolean _animate) {
-        getStateHelper().put(PropertyKeys.animate, _animate);
+    public void setAnimate(boolean animate) {
+        getStateHelper().put(PropertyKeys.animate, animate);
     }
 
-    public java.lang.String getType() {
+    public String getType() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.type, "horizontal");
     }
 
-    public void setType(java.lang.String _type) {
-        getStateHelper().put(PropertyKeys.type, _type);
+    public void setType(String type) {
+        getStateHelper().put(PropertyKeys.type, type);
     }
 
     public double getStep() {
         return (java.lang.Double) getStateHelper().eval(PropertyKeys.step, 1.0);
     }
 
-    public void setStep(double _step) {
-        getStateHelper().put(PropertyKeys.step, _step);
+    public void setStep(double step) {
+        getStateHelper().put(PropertyKeys.step, step);
     }
 
     public boolean isDisabled() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
-    public void setDisabled(boolean _disabled) {
-        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
-    public java.lang.String getOnSlideStart() {
+    public String getOnSlideStart() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onSlideStart, null);
     }
 
-    public void setOnSlideStart(java.lang.String _onSlideStart) {
-        getStateHelper().put(PropertyKeys.onSlideStart, _onSlideStart);
+    public void setOnSlideStart(String onSlideStart) {
+        getStateHelper().put(PropertyKeys.onSlideStart, onSlideStart);
     }
 
-    public java.lang.String getOnSlide() {
+    public String getOnSlide() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onSlide, null);
     }
 
-    public void setOnSlide(java.lang.String _onSlide) {
-        getStateHelper().put(PropertyKeys.onSlide, _onSlide);
+    public void setOnSlide(String onSlide) {
+        getStateHelper().put(PropertyKeys.onSlide, onSlide);
     }
 
-    public java.lang.String getOnSlideEnd() {
+    public String getOnSlideEnd() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onSlideEnd, null);
     }
 
-    public void setOnSlideEnd(java.lang.String _onSlideEnd) {
-        getStateHelper().put(PropertyKeys.onSlideEnd, _onSlideEnd);
+    public void setOnSlideEnd(String onSlideEnd) {
+        getStateHelper().put(PropertyKeys.onSlideEnd, onSlideEnd);
     }
 
     public boolean isRange() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.range, false);
     }
 
-    public void setRange(boolean _range) {
-        getStateHelper().put(PropertyKeys.range, _range);
+    public void setRange(boolean range) {
+        getStateHelper().put(PropertyKeys.range, range);
     }
 
-    public java.lang.String getDisplayTemplate() {
+    public String getDisplayTemplate() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.displayTemplate, null);
     }
 
-    public void setDisplayTemplate(java.lang.String _displayTemplate) {
-        getStateHelper().put(PropertyKeys.displayTemplate, _displayTemplate);
+    public void setDisplayTemplate(String displayTemplate) {
+        getStateHelper().put(PropertyKeys.displayTemplate, displayTemplate);
     }
 
     @Override

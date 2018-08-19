@@ -54,140 +54,140 @@ abstract class LayoutUnitBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getPosition() {
+    public String getPosition() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.position, null);
     }
 
-    public void setPosition(java.lang.String _position) {
-        getStateHelper().put(PropertyKeys.position, _position);
+    public void setPosition(String position) {
+        getStateHelper().put(PropertyKeys.position, position);
     }
 
-    public java.lang.String getSize() {
+    public String getSize() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.size, "auto");
     }
 
-    public void setSize(java.lang.String _size) {
-        getStateHelper().put(PropertyKeys.size, _size);
+    public void setSize(String size) {
+        getStateHelper().put(PropertyKeys.size, size);
     }
 
     public boolean isResizable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.resizable, false);
     }
 
-    public void setResizable(boolean _resizable) {
-        getStateHelper().put(PropertyKeys.resizable, _resizable);
+    public void setResizable(boolean resizable) {
+        getStateHelper().put(PropertyKeys.resizable, resizable);
     }
 
     public boolean isClosable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.closable, false);
     }
 
-    public void setClosable(boolean _closable) {
-        getStateHelper().put(PropertyKeys.closable, _closable);
+    public void setClosable(boolean closable) {
+        getStateHelper().put(PropertyKeys.closable, closable);
     }
 
     public boolean isCollapsible() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.collapsible, false);
     }
 
-    public void setCollapsible(boolean _collapsible) {
-        getStateHelper().put(PropertyKeys.collapsible, _collapsible);
+    public void setCollapsible(boolean collapsible) {
+        getStateHelper().put(PropertyKeys.collapsible, collapsible);
     }
 
-    public java.lang.String getHeader() {
+    public String getHeader() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.header, null);
     }
 
-    public void setHeader(java.lang.String _header) {
-        getStateHelper().put(PropertyKeys.header, _header);
+    public void setHeader(String header) {
+        getStateHelper().put(PropertyKeys.header, header);
     }
 
-    public java.lang.String getFooter() {
+    public String getFooter() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.footer, null);
     }
 
-    public void setFooter(java.lang.String _footer) {
-        getStateHelper().put(PropertyKeys.footer, _footer);
+    public void setFooter(String footer) {
+        getStateHelper().put(PropertyKeys.footer, footer);
     }
 
     public int getMinSize() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minSize, 50);
     }
 
-    public void setMinSize(int _minSize) {
-        getStateHelper().put(PropertyKeys.minSize, _minSize);
+    public void setMinSize(int minSize) {
+        getStateHelper().put(PropertyKeys.minSize, minSize);
     }
 
     public int getMaxSize() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxSize, 0);
     }
 
-    public void setMaxSize(int _maxSize) {
-        getStateHelper().put(PropertyKeys.maxSize, _maxSize);
+    public void setMaxSize(int maxSize) {
+        getStateHelper().put(PropertyKeys.maxSize, maxSize);
     }
 
     public int getGutter() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.gutter, 6);
     }
 
-    public void setGutter(int _gutter) {
-        getStateHelper().put(PropertyKeys.gutter, _gutter);
+    public void setGutter(int gutter) {
+        getStateHelper().put(PropertyKeys.gutter, gutter);
     }
 
     public boolean isVisible() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.visible, true);
     }
 
-    public void setVisible(boolean _visible) {
-        getStateHelper().put(PropertyKeys.visible, _visible);
+    public void setVisible(boolean visible) {
+        getStateHelper().put(PropertyKeys.visible, visible);
     }
 
     public boolean isCollapsed() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.collapsed, false);
     }
 
-    public void setCollapsed(boolean _collapsed) {
-        getStateHelper().put(PropertyKeys.collapsed, _collapsed);
+    public void setCollapsed(boolean collapsed) {
+        getStateHelper().put(PropertyKeys.collapsed, collapsed);
     }
 
     public int getCollapseSize() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.collapseSize, 25);
     }
 
-    public void setCollapseSize(int _collapseSize) {
-        getStateHelper().put(PropertyKeys.collapseSize, _collapseSize);
+    public void setCollapseSize(int collapseSize) {
+        getStateHelper().put(PropertyKeys.collapseSize, collapseSize);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getEffect() {
+    public String getEffect() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, null);
     }
 
-    public void setEffect(java.lang.String _effect) {
-        getStateHelper().put(PropertyKeys.effect, _effect);
+    public void setEffect(String effect) {
+        getStateHelper().put(PropertyKeys.effect, effect);
     }
 
-    public java.lang.String getEffectSpeed() {
+    public String getEffectSpeed() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.effectSpeed, null);
     }
 
-    public void setEffectSpeed(java.lang.String _effectSpeed) {
-        getStateHelper().put(PropertyKeys.effectSpeed, _effectSpeed);
+    public void setEffectSpeed(String effectSpeed) {
+        getStateHelper().put(PropertyKeys.effectSpeed, effectSpeed);
     }
 
 }

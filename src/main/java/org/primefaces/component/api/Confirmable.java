@@ -19,7 +19,7 @@ public interface Confirmable {
 
     public boolean requiresConfirmation();
 
-    public void setConfirmationScript(String script);
-
     public String getConfirmationScript();
+
+    public void setConfirmationScript(String script);
 }

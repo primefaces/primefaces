@@ -31,7 +31,7 @@ abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbox imple
     public enum PropertyKeys {
 
         widgetVar,
-        itemLabel
+        itemLabel;
     }
 
     public SelectBooleanCheckboxBase() {
@@ -43,23 +43,22 @@ abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbox imple
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getItemLabel() {
+    public String getItemLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.itemLabel, null);
     }
 
-    public void setItemLabel(java.lang.String _itemLabel) {
-        getStateHelper().put(PropertyKeys.itemLabel, _itemLabel);
+    public void setItemLabel(String itemLabel) {
+        getStateHelper().put(PropertyKeys.itemLabel, itemLabel);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

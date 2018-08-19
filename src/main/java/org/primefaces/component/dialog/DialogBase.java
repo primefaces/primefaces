@@ -73,244 +73,244 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getHeader() {
+    public String getHeader() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.header, null);
     }
 
-    public void setHeader(java.lang.String _header) {
-        getStateHelper().put(PropertyKeys.header, _header);
+    public void setHeader(String header) {
+        getStateHelper().put(PropertyKeys.header, header);
     }
 
     public boolean isDraggable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.draggable, true);
     }
 
-    public void setDraggable(boolean _draggable) {
-        getStateHelper().put(PropertyKeys.draggable, _draggable);
+    public void setDraggable(boolean draggable) {
+        getStateHelper().put(PropertyKeys.draggable, draggable);
     }
 
     public boolean isResizable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.resizable, true);
     }
 
-    public void setResizable(boolean _resizable) {
-        getStateHelper().put(PropertyKeys.resizable, _resizable);
+    public void setResizable(boolean resizable) {
+        getStateHelper().put(PropertyKeys.resizable, resizable);
     }
 
     public boolean isModal() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.modal, false);
     }
 
-    public void setModal(boolean _modal) {
-        getStateHelper().put(PropertyKeys.modal, _modal);
+    public void setModal(boolean modal) {
+        getStateHelper().put(PropertyKeys.modal, modal);
     }
 
     public boolean isVisible() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.visible, false);
     }
 
-    public void setVisible(boolean _visible) {
-        getStateHelper().put(PropertyKeys.visible, _visible);
+    public void setVisible(boolean visible) {
+        getStateHelper().put(PropertyKeys.visible, visible);
     }
 
-    public java.lang.String getWidth() {
+    public String getWidth() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.width, null);
     }
 
-    public void setWidth(java.lang.String _width) {
-        getStateHelper().put(PropertyKeys.width, _width);
+    public void setWidth(String width) {
+        getStateHelper().put(PropertyKeys.width, width);
     }
 
-    public java.lang.String getHeight() {
+    public String getHeight() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.height, null);
     }
 
-    public void setHeight(java.lang.String _height) {
-        getStateHelper().put(PropertyKeys.height, _height);
+    public void setHeight(String height) {
+        getStateHelper().put(PropertyKeys.height, height);
     }
 
     public int getMinWidth() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minWidth, java.lang.Integer.MIN_VALUE);
     }
 
-    public void setMinWidth(int _minWidth) {
-        getStateHelper().put(PropertyKeys.minWidth, _minWidth);
+    public void setMinWidth(int minWidth) {
+        getStateHelper().put(PropertyKeys.minWidth, minWidth);
     }
 
     public int getMinHeight() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minHeight, java.lang.Integer.MIN_VALUE);
     }
 
-    public void setMinHeight(int _minHeight) {
-        getStateHelper().put(PropertyKeys.minHeight, _minHeight);
+    public void setMinHeight(int minHeight) {
+        getStateHelper().put(PropertyKeys.minHeight, minHeight);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getShowEffect() {
+    public String getShowEffect() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.showEffect, null);
     }
 
-    public void setShowEffect(java.lang.String _showEffect) {
-        getStateHelper().put(PropertyKeys.showEffect, _showEffect);
+    public void setShowEffect(String showEffect) {
+        getStateHelper().put(PropertyKeys.showEffect, showEffect);
     }
 
-    public java.lang.String getHideEffect() {
+    public String getHideEffect() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.hideEffect, null);
     }
 
-    public void setHideEffect(java.lang.String _hideEffect) {
-        getStateHelper().put(PropertyKeys.hideEffect, _hideEffect);
+    public void setHideEffect(String hideEffect) {
+        getStateHelper().put(PropertyKeys.hideEffect, hideEffect);
     }
 
-    public java.lang.String getPosition() {
+    public String getPosition() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.position, null);
     }
 
-    public void setPosition(java.lang.String _position) {
-        getStateHelper().put(PropertyKeys.position, _position);
+    public void setPosition(String position) {
+        getStateHelper().put(PropertyKeys.position, position);
     }
 
     public boolean isClosable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.closable, true);
     }
 
-    public void setClosable(boolean _closable) {
-        getStateHelper().put(PropertyKeys.closable, _closable);
+    public void setClosable(boolean closable) {
+        getStateHelper().put(PropertyKeys.closable, closable);
     }
 
-    public java.lang.String getOnShow() {
+    public String getOnShow() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onShow, null);
     }
 
-    public void setOnShow(java.lang.String _onShow) {
-        getStateHelper().put(PropertyKeys.onShow, _onShow);
+    public void setOnShow(String onShow) {
+        getStateHelper().put(PropertyKeys.onShow, onShow);
     }
 
-    public java.lang.String getOnHide() {
+    public String getOnHide() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onHide, null);
     }
 
-    public void setOnHide(java.lang.String _onHide) {
-        getStateHelper().put(PropertyKeys.onHide, _onHide);
+    public void setOnHide(String onHide) {
+        getStateHelper().put(PropertyKeys.onHide, onHide);
     }
 
-    public java.lang.String getAppendTo() {
+    public String getAppendTo() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.appendTo, null);
     }
 
-    public void setAppendTo(java.lang.String _appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, _appendTo);
+    public void setAppendTo(String appendTo) {
+        getStateHelper().put(PropertyKeys.appendTo, appendTo);
     }
 
     public boolean isShowHeader() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showHeader, true);
     }
 
-    public void setShowHeader(boolean _showHeader) {
-        getStateHelper().put(PropertyKeys.showHeader, _showHeader);
+    public void setShowHeader(boolean showHeader) {
+        getStateHelper().put(PropertyKeys.showHeader, showHeader);
     }
 
-    public java.lang.String getFooter() {
+    public String getFooter() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.footer, null);
     }
 
-    public void setFooter(java.lang.String _footer) {
-        getStateHelper().put(PropertyKeys.footer, _footer);
+    public void setFooter(String footer) {
+        getStateHelper().put(PropertyKeys.footer, footer);
     }
 
     public boolean isDynamic() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
     }
 
-    public void setDynamic(boolean _dynamic) {
-        getStateHelper().put(PropertyKeys.dynamic, _dynamic);
+    public void setDynamic(boolean dynamic) {
+        getStateHelper().put(PropertyKeys.dynamic, dynamic);
     }
 
     public boolean isMinimizable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.minimizable, false);
     }
 
-    public void setMinimizable(boolean _minimizable) {
-        getStateHelper().put(PropertyKeys.minimizable, _minimizable);
+    public void setMinimizable(boolean minimizable) {
+        getStateHelper().put(PropertyKeys.minimizable, minimizable);
     }
 
     public boolean isMaximizable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.maximizable, false);
     }
 
-    public void setMaximizable(boolean _maximizable) {
-        getStateHelper().put(PropertyKeys.maximizable, _maximizable);
+    public void setMaximizable(boolean maximizable) {
+        getStateHelper().put(PropertyKeys.maximizable, maximizable);
     }
 
     public boolean isCloseOnEscape() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.closeOnEscape, false);
     }
 
-    public void setCloseOnEscape(boolean _closeOnEscape) {
-        getStateHelper().put(PropertyKeys.closeOnEscape, _closeOnEscape);
+    public void setCloseOnEscape(boolean closeOnEscape) {
+        getStateHelper().put(PropertyKeys.closeOnEscape, closeOnEscape);
     }
 
-    public java.lang.String getDir() {
+    public String getDir() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
 
-    public void setDir(java.lang.String _dir) {
-        getStateHelper().put(PropertyKeys.dir, _dir);
+    public void setDir(String dir) {
+        getStateHelper().put(PropertyKeys.dir, dir);
     }
 
-    public java.lang.String getFocus() {
+    public String getFocus() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.focus, null);
     }
 
-    public void setFocus(java.lang.String _focus) {
-        getStateHelper().put(PropertyKeys.focus, _focus);
+    public void setFocus(String focus) {
+        getStateHelper().put(PropertyKeys.focus, focus);
     }
 
     public boolean isFitViewport() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.fitViewport, false);
     }
 
-    public void setFitViewport(boolean _fitViewport) {
-        getStateHelper().put(PropertyKeys.fitViewport, _fitViewport);
+    public void setFitViewport(boolean fitViewport) {
+        getStateHelper().put(PropertyKeys.fitViewport, fitViewport);
     }
 
-    public java.lang.String getPositionType() {
+    public String getPositionType() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.positionType, "fixed");
     }
 
-    public void setPositionType(java.lang.String _positionType) {
-        getStateHelper().put(PropertyKeys.positionType, _positionType);
+    public void setPositionType(String positionType) {
+        getStateHelper().put(PropertyKeys.positionType, positionType);
     }
 
     public boolean isResponsive() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
     }
 
-    public void setResponsive(boolean _responsive) {
-        getStateHelper().put(PropertyKeys.responsive, _responsive);
+    public void setResponsive(boolean responsive) {
+        getStateHelper().put(PropertyKeys.responsive, responsive);
     }
 
     @Override

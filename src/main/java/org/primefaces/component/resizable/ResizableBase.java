@@ -73,19 +73,19 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getFor() {
+    public String getFor() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
-    public void setFor(java.lang.String _for) {
+    public void setFor(String _for) {
         getStateHelper().put(PropertyKeys.forValue, _for);
     }
 
@@ -93,128 +93,128 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.aspectRatio, false);
     }
 
-    public void setAspectRatio(boolean _aspectRatio) {
-        getStateHelper().put(PropertyKeys.aspectRatio, _aspectRatio);
+    public void setAspectRatio(boolean aspectRatio) {
+        getStateHelper().put(PropertyKeys.aspectRatio, aspectRatio);
     }
 
     public boolean isProxy() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.proxy, false);
     }
 
-    public void setProxy(boolean _proxy) {
-        getStateHelper().put(PropertyKeys.proxy, _proxy);
+    public void setProxy(boolean proxy) {
+        getStateHelper().put(PropertyKeys.proxy, proxy);
     }
 
-    public java.lang.String getHandles() {
+    public String getHandles() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.handles, null);
     }
 
-    public void setHandles(java.lang.String _handles) {
-        getStateHelper().put(PropertyKeys.handles, _handles);
+    public void setHandles(String handles) {
+        getStateHelper().put(PropertyKeys.handles, handles);
     }
 
     public boolean isGhost() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ghost, false);
     }
 
-    public void setGhost(boolean _ghost) {
-        getStateHelper().put(PropertyKeys.ghost, _ghost);
+    public void setGhost(boolean ghost) {
+        getStateHelper().put(PropertyKeys.ghost, ghost);
     }
 
     public boolean isAnimate() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.animate, false);
     }
 
-    public void setAnimate(boolean _animate) {
-        getStateHelper().put(PropertyKeys.animate, _animate);
+    public void setAnimate(boolean animate) {
+        getStateHelper().put(PropertyKeys.animate, animate);
     }
 
-    public java.lang.String getEffect() {
+    public String getEffect() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, "swing");
     }
 
-    public void setEffect(java.lang.String _effect) {
-        getStateHelper().put(PropertyKeys.effect, _effect);
+    public void setEffect(String effect) {
+        getStateHelper().put(PropertyKeys.effect, effect);
     }
 
-    public java.lang.String getEffectDuration() {
+    public String getEffectDuration() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.effectDuration, "normal");
     }
 
-    public void setEffectDuration(java.lang.String _effectDuration) {
-        getStateHelper().put(PropertyKeys.effectDuration, _effectDuration);
+    public void setEffectDuration(String effectDuration) {
+        getStateHelper().put(PropertyKeys.effectDuration, effectDuration);
     }
 
     public int getMaxWidth() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxWidth, Integer.MAX_VALUE);
     }
 
-    public void setMaxWidth(int _maxWidth) {
-        getStateHelper().put(PropertyKeys.maxWidth, _maxWidth);
+    public void setMaxWidth(int maxWidth) {
+        getStateHelper().put(PropertyKeys.maxWidth, maxWidth);
     }
 
     public int getMaxHeight() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxHeight, Integer.MAX_VALUE);
     }
 
-    public void setMaxHeight(int _maxHeight) {
-        getStateHelper().put(PropertyKeys.maxHeight, _maxHeight);
+    public void setMaxHeight(int maxHeight) {
+        getStateHelper().put(PropertyKeys.maxHeight, maxHeight);
     }
 
     public int getMinWidth() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minWidth, Integer.MIN_VALUE);
     }
 
-    public void setMinWidth(int _minWidth) {
-        getStateHelper().put(PropertyKeys.minWidth, _minWidth);
+    public void setMinWidth(int minWidth) {
+        getStateHelper().put(PropertyKeys.minWidth, minWidth);
     }
 
     public int getMinHeight() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minHeight, Integer.MIN_VALUE);
     }
 
-    public void setMinHeight(int _minHeight) {
-        getStateHelper().put(PropertyKeys.minHeight, _minHeight);
+    public void setMinHeight(int minHeight) {
+        getStateHelper().put(PropertyKeys.minHeight, minHeight);
     }
 
     public boolean isContainment() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.containment, false);
     }
 
-    public void setContainment(boolean _containment) {
-        getStateHelper().put(PropertyKeys.containment, _containment);
+    public void setContainment(boolean containment) {
+        getStateHelper().put(PropertyKeys.containment, containment);
     }
 
     public int getGrid() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.grid, 1);
     }
 
-    public void setGrid(int _grid) {
-        getStateHelper().put(PropertyKeys.grid, _grid);
+    public void setGrid(int grid) {
+        getStateHelper().put(PropertyKeys.grid, grid);
     }
 
-    public java.lang.String getOnStart() {
+    public String getOnStart() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onStart, null);
     }
 
-    public void setOnStart(java.lang.String _onStart) {
-        getStateHelper().put(PropertyKeys.onStart, _onStart);
+    public void setOnStart(String onStart) {
+        getStateHelper().put(PropertyKeys.onStart, onStart);
     }
 
-    public java.lang.String getOnResize() {
+    public String getOnResize() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onResize, null);
     }
 
-    public void setOnResize(java.lang.String _onResize) {
-        getStateHelper().put(PropertyKeys.onResize, _onResize);
+    public void setOnResize(String onResize) {
+        getStateHelper().put(PropertyKeys.onResize, onResize);
     }
 
-    public java.lang.String getOnStop() {
+    public String getOnStop() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onStop, null);
     }
 
-    public void setOnStop(java.lang.String _onStop) {
-        getStateHelper().put(PropertyKeys.onStop, _onStop);
+    public void setOnStop(String onStop) {
+        getStateHelper().put(PropertyKeys.onStop, onStop);
     }
 
     public String resolveWidgetVar() {

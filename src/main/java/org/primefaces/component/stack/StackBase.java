@@ -45,12 +45,12 @@ abstract class StackBase extends AbstractMenu implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     @Override
@@ -58,40 +58,40 @@ abstract class StackBase extends AbstractMenu implements Widget {
         return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }
 
-    public void setModel(org.primefaces.model.menu.MenuModel _model) {
-        getStateHelper().put(PropertyKeys.model, _model);
+    public void setModel(org.primefaces.model.menu.MenuModel model) {
+        getStateHelper().put(PropertyKeys.model, model);
     }
 
-    public java.lang.String getIcon() {
+    public String getIcon() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.icon, null);
     }
 
-    public void setIcon(java.lang.String _icon) {
-        getStateHelper().put(PropertyKeys.icon, _icon);
+    public void setIcon(String icon) {
+        getStateHelper().put(PropertyKeys.icon, icon);
     }
 
     public int getOpenSpeed() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.openSpeed, 300);
     }
 
-    public void setOpenSpeed(int _openSpeed) {
-        getStateHelper().put(PropertyKeys.openSpeed, _openSpeed);
+    public void setOpenSpeed(int openSpeed) {
+        getStateHelper().put(PropertyKeys.openSpeed, openSpeed);
     }
 
     public int getCloseSpeed() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.closeSpeed, 300);
     }
 
-    public void setCloseSpeed(int _closeSpeed) {
-        getStateHelper().put(PropertyKeys.closeSpeed, _closeSpeed);
+    public void setCloseSpeed(int closeSpeed) {
+        getStateHelper().put(PropertyKeys.closeSpeed, closeSpeed);
     }
 
     public boolean isExpanded() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.expanded, false);
     }
 
-    public void setExpanded(boolean _expanded) {
-        getStateHelper().put(PropertyKeys.expanded, _expanded);
+    public void setExpanded(boolean expanded) {
+        getStateHelper().put(PropertyKeys.expanded, expanded);
     }
 
     @Override

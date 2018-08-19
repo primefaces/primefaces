@@ -55,108 +55,108 @@ abstract class InplaceBase extends UIComponentBase implements Widget, ClientBeha
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getLabel() {
+    public String getLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.label, null);
     }
 
-    public void setLabel(java.lang.String _label) {
-        getStateHelper().put(PropertyKeys.label, _label);
+    public void setLabel(String label) {
+        getStateHelper().put(PropertyKeys.label, label);
     }
 
-    public java.lang.String getEmptyLabel() {
+    public String getEmptyLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.emptyLabel, null);
     }
 
-    public void setEmptyLabel(java.lang.String _emptyLabel) {
-        getStateHelper().put(PropertyKeys.emptyLabel, _emptyLabel);
+    public void setEmptyLabel(String emptyLabel) {
+        getStateHelper().put(PropertyKeys.emptyLabel, emptyLabel);
     }
 
-    public java.lang.String getEffect() {
+    public String getEffect() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, "fade");
     }
 
-    public void setEffect(java.lang.String _effect) {
-        getStateHelper().put(PropertyKeys.effect, _effect);
+    public void setEffect(String effect) {
+        getStateHelper().put(PropertyKeys.effect, effect);
     }
 
-    public java.lang.String getEffectSpeed() {
+    public String getEffectSpeed() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.effectSpeed, "normal");
     }
 
-    public void setEffectSpeed(java.lang.String _effectSpeed) {
-        getStateHelper().put(PropertyKeys.effectSpeed, _effectSpeed);
+    public void setEffectSpeed(String effectSpeed) {
+        getStateHelper().put(PropertyKeys.effectSpeed, effectSpeed);
     }
 
     public boolean isDisabled() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
-    public void setDisabled(boolean _disabled) {
-        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public boolean isEditor() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.editor, false);
     }
 
-    public void setEditor(boolean _editor) {
-        getStateHelper().put(PropertyKeys.editor, _editor);
+    public void setEditor(boolean editor) {
+        getStateHelper().put(PropertyKeys.editor, editor);
     }
 
-    public java.lang.String getSaveLabel() {
+    public String getSaveLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.saveLabel, "Save");
     }
 
-    public void setSaveLabel(java.lang.String _saveLabel) {
-        getStateHelper().put(PropertyKeys.saveLabel, _saveLabel);
+    public void setSaveLabel(String saveLabel) {
+        getStateHelper().put(PropertyKeys.saveLabel, saveLabel);
     }
 
-    public java.lang.String getCancelLabel() {
+    public String getCancelLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.cancelLabel, "Cancel");
     }
 
-    public void setCancelLabel(java.lang.String _cancelLabel) {
-        getStateHelper().put(PropertyKeys.cancelLabel, _cancelLabel);
+    public void setCancelLabel(String cancelLabel) {
+        getStateHelper().put(PropertyKeys.cancelLabel, cancelLabel);
     }
 
-    public java.lang.String getEvent() {
+    public String getEvent() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.event, "click");
     }
 
-    public void setEvent(java.lang.String _event) {
-        getStateHelper().put(PropertyKeys.event, _event);
+    public void setEvent(String event) {
+        getStateHelper().put(PropertyKeys.event, event);
     }
 
     public boolean isToggleable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.toggleable, true);
     }
 
-    public void setToggleable(boolean _toggleable) {
-        getStateHelper().put(PropertyKeys.toggleable, _toggleable);
+    public void setToggleable(boolean toggleable) {
+        getStateHelper().put(PropertyKeys.toggleable, toggleable);
     }
 
     @Override

@@ -49,76 +49,76 @@ abstract class EditorBase extends UIInput implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getControls() {
+    public String getControls() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.controls, null);
     }
 
-    public void setControls(java.lang.String _controls) {
-        getStateHelper().put(PropertyKeys.controls, _controls);
+    public void setControls(String controls) {
+        getStateHelper().put(PropertyKeys.controls, controls);
     }
 
     public int getHeight() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.height, java.lang.Integer.MIN_VALUE);
     }
 
-    public void setHeight(int _height) {
-        getStateHelper().put(PropertyKeys.height, _height);
+    public void setHeight(int height) {
+        getStateHelper().put(PropertyKeys.height, height);
     }
 
     public int getWidth() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.width, java.lang.Integer.MIN_VALUE);
     }
 
-    public void setWidth(int _width) {
-        getStateHelper().put(PropertyKeys.width, _width);
+    public void setWidth(int width) {
+        getStateHelper().put(PropertyKeys.width, width);
     }
 
     public boolean isDisabled() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
-    public void setDisabled(boolean _disabled) {
-        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getOnchange() {
+    public String getOnchange() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onchange, null);
     }
 
-    public void setOnchange(java.lang.String _onchange) {
-        getStateHelper().put(PropertyKeys.onchange, _onchange);
+    public void setOnchange(String onchange) {
+        getStateHelper().put(PropertyKeys.onchange, onchange);
     }
 
     public int getMaxlength() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxlength, java.lang.Integer.MAX_VALUE);
     }
 
-    public void setMaxlength(int _maxlength) {
-        getStateHelper().put(PropertyKeys.maxlength, _maxlength);
+    public void setMaxlength(int maxlength) {
+        getStateHelper().put(PropertyKeys.maxlength, maxlength);
     }
 
     @Override

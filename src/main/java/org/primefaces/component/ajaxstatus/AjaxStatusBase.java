@@ -47,60 +47,60 @@ abstract class AjaxStatusBase extends UIComponentBase implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getOnstart() {
+    public String getOnstart() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onstart, null);
     }
 
-    public void setOnstart(java.lang.String _onstart) {
-        getStateHelper().put(PropertyKeys.onstart, _onstart);
+    public void setOnstart(String onstart) {
+        getStateHelper().put(PropertyKeys.onstart, onstart);
     }
 
-    public java.lang.String getOncomplete() {
+    public String getOncomplete() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.oncomplete, null);
     }
 
-    public void setOncomplete(java.lang.String _oncomplete) {
-        getStateHelper().put(PropertyKeys.oncomplete, _oncomplete);
+    public void setOncomplete(String oncomplete) {
+        getStateHelper().put(PropertyKeys.oncomplete, oncomplete);
     }
 
-    public java.lang.String getOnsuccess() {
+    public String getOnsuccess() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onsuccess, null);
     }
 
-    public void setOnsuccess(java.lang.String _onsuccess) {
-        getStateHelper().put(PropertyKeys.onsuccess, _onsuccess);
+    public void setOnsuccess(String onsuccess) {
+        getStateHelper().put(PropertyKeys.onsuccess, onsuccess);
     }
 
-    public java.lang.String getOnerror() {
+    public String getOnerror() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onerror, null);
     }
 
-    public void setOnerror(java.lang.String _onerror) {
-        getStateHelper().put(PropertyKeys.onerror, _onerror);
+    public void setOnerror(String onerror) {
+        getStateHelper().put(PropertyKeys.onerror, onerror);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public String resolveWidgetVar() {

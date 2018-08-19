@@ -43,52 +43,52 @@ abstract class BarcodeBase extends HtmlGraphicImage {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getType() {
+    public String getType() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.type, null);
     }
 
-    public void setType(java.lang.String _type) {
-        getStateHelper().put(PropertyKeys.type, _type);
+    public void setType(String type) {
+        getStateHelper().put(PropertyKeys.type, type);
     }
 
     public boolean isCache() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.cache, true);
     }
 
-    public void setCache(boolean _cache) {
-        getStateHelper().put(PropertyKeys.cache, _cache);
+    public void setCache(boolean cache) {
+        getStateHelper().put(PropertyKeys.cache, cache);
     }
 
-    public java.lang.String getFormat() {
+    public String getFormat() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.format, "svg");
     }
 
-    public void setFormat(java.lang.String _format) {
-        getStateHelper().put(PropertyKeys.format, _format);
+    public void setFormat(String format) {
+        getStateHelper().put(PropertyKeys.format, format);
     }
 
     public int getOrientation() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.orientation, 0);
     }
 
-    public void setOrientation(int _orientation) {
-        getStateHelper().put(PropertyKeys.orientation, _orientation);
+    public void setOrientation(int orientation) {
+        getStateHelper().put(PropertyKeys.orientation, orientation);
     }
 
-    public java.lang.String getQrErrorCorrection() {
+    public String getQrErrorCorrection() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.qrErrorCorrection, "L");
     }
 
-    public void setQrErrorCorrection(java.lang.String _qrErrorCorrection) {
-        getStateHelper().put(PropertyKeys.qrErrorCorrection, _qrErrorCorrection);
+    public void setQrErrorCorrection(String qrErrorCorrection) {
+        getStateHelper().put(PropertyKeys.qrErrorCorrection, qrErrorCorrection);
     }
 
-    public java.lang.String getHrp() {
+    public String getHrp() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.hrp, "bottom");
     }
 
-    public void setHrp(java.lang.String _hrp) {
-        getStateHelper().put(PropertyKeys.hrp, _hrp);
+    public void setHrp(String hrp) {
+        getStateHelper().put(PropertyKeys.hrp, hrp);
     }
 
 }

@@ -47,60 +47,60 @@ abstract class CaptchaBase extends UIInput implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getTheme() {
+    public String getTheme() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.theme, "light");
     }
 
-    public void setTheme(java.lang.String _theme) {
-        getStateHelper().put(PropertyKeys.theme, _theme);
+    public void setTheme(String theme) {
+        getStateHelper().put(PropertyKeys.theme, theme);
     }
 
-    public java.lang.String getLanguage() {
+    public String getLanguage() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.language, "en");
     }
 
-    public void setLanguage(java.lang.String _language) {
-        getStateHelper().put(PropertyKeys.language, _language);
+    public void setLanguage(String language) {
+        getStateHelper().put(PropertyKeys.language, language);
     }
 
     public int getTabindex() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.tabindex, 0);
     }
 
-    public void setTabindex(int _tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, _tabindex);
+    public void setTabindex(int tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 
-    public java.lang.String getLabel() {
+    public String getLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.label, null);
     }
 
-    public void setLabel(java.lang.String _label) {
-        getStateHelper().put(PropertyKeys.label, _label);
+    public void setLabel(String label) {
+        getStateHelper().put(PropertyKeys.label, label);
     }
 
-    public java.lang.String getCallback() {
+    public String getCallback() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.callback, null);
     }
 
-    public void setCallback(java.lang.String _callback) {
-        getStateHelper().put(PropertyKeys.callback, _callback);
+    public void setCallback(String callback) {
+        getStateHelper().put(PropertyKeys.callback, callback);
     }
 
-    public java.lang.String getExpired() {
+    public String getExpired() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.expired, null);
     }
 
-    public void setExpired(java.lang.String _expired) {
-        getStateHelper().put(PropertyKeys.expired, _expired);
+    public void setExpired(String expired) {
+        getStateHelper().put(PropertyKeys.expired, expired);
     }
 
-    public java.lang.String getSize() {
+    public String getSize() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.size, null);
     }
 
-    public void setSize(java.lang.String _size) {
-        getStateHelper().put(PropertyKeys.size, _size);
+    public void setSize(String size) {
+        getStateHelper().put(PropertyKeys.size, size);
     }
 
     @Override

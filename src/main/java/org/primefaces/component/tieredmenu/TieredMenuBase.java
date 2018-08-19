@@ -39,7 +39,7 @@ abstract class TieredMenuBase extends AbstractMenu implements Widget, OverlayMen
         at,
         overlay,
         triggerEvent,
-        toggleEvent
+        toggleEvent;
     }
 
     public TieredMenuBase() {
@@ -51,100 +51,94 @@ abstract class TieredMenuBase extends AbstractMenu implements Widget, OverlayMen
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    @Override
     public org.primefaces.model.menu.MenuModel getModel() {
         return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }
 
-    public void setModel(org.primefaces.model.menu.MenuModel _model) {
-        getStateHelper().put(PropertyKeys.model, _model);
+    public void setModel(org.primefaces.model.menu.MenuModel model) {
+        getStateHelper().put(PropertyKeys.model, model);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public boolean isAutoDisplay() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoDisplay, true);
     }
 
-    public void setAutoDisplay(boolean _autoDisplay) {
-        getStateHelper().put(PropertyKeys.autoDisplay, _autoDisplay);
+    public void setAutoDisplay(boolean autoDisplay) {
+        getStateHelper().put(PropertyKeys.autoDisplay, autoDisplay);
     }
 
-    @Override
-    public java.lang.String getTrigger() {
+    public String getTrigger() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.trigger, null);
     }
 
-    public void setTrigger(java.lang.String _trigger) {
-        getStateHelper().put(PropertyKeys.trigger, _trigger);
+    public void setTrigger(String trigger) {
+        getStateHelper().put(PropertyKeys.trigger, trigger);
     }
 
-    @Override
-    public java.lang.String getMy() {
+    public String getMy() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.my, null);
     }
 
-    public void setMy(java.lang.String _my) {
-        getStateHelper().put(PropertyKeys.my, _my);
+    public void setMy(String my) {
+        getStateHelper().put(PropertyKeys.my, my);
     }
 
-    @Override
-    public java.lang.String getAt() {
+    public String getAt() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.at, null);
     }
 
-    public void setAt(java.lang.String _at) {
-        getStateHelper().put(PropertyKeys.at, _at);
+    public void setAt(String at) {
+        getStateHelper().put(PropertyKeys.at, at);
     }
 
     public boolean isOverlay() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.overlay, false);
     }
 
-    public void setOverlay(boolean _overlay) {
-        getStateHelper().put(PropertyKeys.overlay, _overlay);
+    public void setOverlay(boolean overlay) {
+        getStateHelper().put(PropertyKeys.overlay, overlay);
     }
 
-    @Override
-    public java.lang.String getTriggerEvent() {
+    public String getTriggerEvent() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.triggerEvent, "click");
     }
 
-    public void setTriggerEvent(java.lang.String _triggerEvent) {
-        getStateHelper().put(PropertyKeys.triggerEvent, _triggerEvent);
+    public void setTriggerEvent(String triggerEvent) {
+        getStateHelper().put(PropertyKeys.triggerEvent, triggerEvent);
     }
 
-    public java.lang.String getToggleEvent() {
+    public String getToggleEvent() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.toggleEvent, null);
     }
 
-    public void setToggleEvent(java.lang.String _toggleEvent) {
-        getStateHelper().put(PropertyKeys.toggleEvent, _toggleEvent);
+    public void setToggleEvent(String toggleEvent) {
+        getStateHelper().put(PropertyKeys.toggleEvent, toggleEvent);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

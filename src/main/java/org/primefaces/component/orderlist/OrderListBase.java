@@ -44,7 +44,7 @@ abstract class OrderListBase extends UIInput implements Widget, ClientBehaviorHo
         moveDownLabel,
         moveBottomLabel,
         controlsLocation,
-        responsive
+        responsive;
     }
 
     public OrderListBase() {
@@ -56,119 +56,118 @@ abstract class OrderListBase extends UIInput implements Widget, ClientBehaviorHo
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getVar() {
+    public String getVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
-    public void setVar(java.lang.String _var) {
-        getStateHelper().put(PropertyKeys.var, _var);
+    public void setVar(String var) {
+        getStateHelper().put(PropertyKeys.var, var);
     }
 
-    public java.lang.String getItemLabel() {
+    public String getItemLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.itemLabel, null);
     }
 
-    public void setItemLabel(java.lang.String _itemLabel) {
-        getStateHelper().put(PropertyKeys.itemLabel, _itemLabel);
+    public void setItemLabel(String itemLabel) {
+        getStateHelper().put(PropertyKeys.itemLabel, itemLabel);
     }
 
     public java.lang.Object getItemValue() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.itemValue, null);
     }
 
-    public void setItemValue(java.lang.Object _itemValue) {
-        getStateHelper().put(PropertyKeys.itemValue, _itemValue);
+    public void setItemValue(java.lang.Object itemValue) {
+        getStateHelper().put(PropertyKeys.itemValue, itemValue);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public boolean isDisabled() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
-    public void setDisabled(boolean _disabled) {
-        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
-    public java.lang.String getEffect() {
+    public String getEffect() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, null);
     }
 
-    public void setEffect(java.lang.String _effect) {
-        getStateHelper().put(PropertyKeys.effect, _effect);
+    public void setEffect(String effect) {
+        getStateHelper().put(PropertyKeys.effect, effect);
     }
 
-    public java.lang.String getMoveUpLabel() {
+    public String getMoveUpLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.moveUpLabel, "Move Up");
     }
 
-    public void setMoveUpLabel(java.lang.String _moveUpLabel) {
-        getStateHelper().put(PropertyKeys.moveUpLabel, _moveUpLabel);
+    public void setMoveUpLabel(String moveUpLabel) {
+        getStateHelper().put(PropertyKeys.moveUpLabel, moveUpLabel);
     }
 
-    public java.lang.String getMoveTopLabel() {
+    public String getMoveTopLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.moveTopLabel, "Move Top");
     }
 
-    public void setMoveTopLabel(java.lang.String _moveTopLabel) {
-        getStateHelper().put(PropertyKeys.moveTopLabel, _moveTopLabel);
+    public void setMoveTopLabel(String moveTopLabel) {
+        getStateHelper().put(PropertyKeys.moveTopLabel, moveTopLabel);
     }
 
-    public java.lang.String getMoveDownLabel() {
+    public String getMoveDownLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.moveDownLabel, "Move Down");
     }
 
-    public void setMoveDownLabel(java.lang.String _moveDownLabel) {
-        getStateHelper().put(PropertyKeys.moveDownLabel, _moveDownLabel);
+    public void setMoveDownLabel(String moveDownLabel) {
+        getStateHelper().put(PropertyKeys.moveDownLabel, moveDownLabel);
     }
 
-    public java.lang.String getMoveBottomLabel() {
+    public String getMoveBottomLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.moveBottomLabel, "Move Bottom");
     }
 
-    public void setMoveBottomLabel(java.lang.String _moveBottomLabel) {
-        getStateHelper().put(PropertyKeys.moveBottomLabel, _moveBottomLabel);
+    public void setMoveBottomLabel(String moveBottomLabel) {
+        getStateHelper().put(PropertyKeys.moveBottomLabel, moveBottomLabel);
     }
 
-    public java.lang.String getControlsLocation() {
+    public String getControlsLocation() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.controlsLocation, "left");
     }
 
-    public void setControlsLocation(java.lang.String _controlsLocation) {
-        getStateHelper().put(PropertyKeys.controlsLocation, _controlsLocation);
+    public void setControlsLocation(String controlsLocation) {
+        getStateHelper().put(PropertyKeys.controlsLocation, controlsLocation);
     }
 
     public boolean isResponsive() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
     }
 
-    public void setResponsive(boolean _responsive) {
-        getStateHelper().put(PropertyKeys.responsive, _responsive);
+    public void setResponsive(boolean responsive) {
+        getStateHelper().put(PropertyKeys.responsive, responsive);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

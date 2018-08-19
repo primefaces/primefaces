@@ -35,7 +35,7 @@ abstract class IdleMonitorBase extends UIComponentBase implements Widget, Client
         timeout,
         onidle,
         onactive,
-        multiWindowSupport
+        multiWindowSupport;
     }
 
     public IdleMonitorBase() {
@@ -47,47 +47,46 @@ abstract class IdleMonitorBase extends UIComponentBase implements Widget, Client
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public int getTimeout() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.timeout, 300000);
     }
 
-    public void setTimeout(int _timeout) {
-        getStateHelper().put(PropertyKeys.timeout, _timeout);
+    public void setTimeout(int timeout) {
+        getStateHelper().put(PropertyKeys.timeout, timeout);
     }
 
-    public java.lang.String getOnidle() {
+    public String getOnidle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onidle, null);
     }
 
-    public void setOnidle(java.lang.String _onidle) {
-        getStateHelper().put(PropertyKeys.onidle, _onidle);
+    public void setOnidle(String onidle) {
+        getStateHelper().put(PropertyKeys.onidle, onidle);
     }
 
-    public java.lang.String getOnactive() {
+    public String getOnactive() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onactive, null);
     }
 
-    public void setOnactive(java.lang.String _onactive) {
-        getStateHelper().put(PropertyKeys.onactive, _onactive);
+    public void setOnactive(String onactive) {
+        getStateHelper().put(PropertyKeys.onactive, onactive);
     }
 
     public boolean isMultiWindowSupport() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.multiWindowSupport, false);
     }
 
-    public void setMultiWindowSupport(boolean _multiWindowSupport) {
-        getStateHelper().put(PropertyKeys.multiWindowSupport, _multiWindowSupport);
+    public void setMultiWindowSupport(boolean multiWindowSupport) {
+        getStateHelper().put(PropertyKeys.multiWindowSupport, multiWindowSupport);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

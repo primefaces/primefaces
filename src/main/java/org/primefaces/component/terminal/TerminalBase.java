@@ -36,7 +36,7 @@ abstract class TerminalBase extends UIPanel implements Widget {
         prompt,
         commandHandler,
         autoCompleteModel,
-        escape;
+        escape
     }
 
     public TerminalBase() {
@@ -48,70 +48,71 @@ abstract class TerminalBase extends UIPanel implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getWelcomeMessage() {
+    public String getWelcomeMessage() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.welcomeMessage, null);
     }
 
-    public void setWelcomeMessage(java.lang.String _welcomeMessage) {
-        getStateHelper().put(PropertyKeys.welcomeMessage, _welcomeMessage);
+    public void setWelcomeMessage(String welcomeMessage) {
+        getStateHelper().put(PropertyKeys.welcomeMessage, welcomeMessage);
     }
 
-    public java.lang.String getPrompt() {
+    public String getPrompt() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.prompt, "prime $");
     }
 
-    public void setPrompt(java.lang.String _prompt) {
-        getStateHelper().put(PropertyKeys.prompt, _prompt);
+    public void setPrompt(String prompt) {
+        getStateHelper().put(PropertyKeys.prompt, prompt);
     }
 
     public javax.el.MethodExpression getCommandHandler() {
         return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.commandHandler, null);
     }
 
-    public void setCommandHandler(javax.el.MethodExpression _commandHandler) {
-        getStateHelper().put(PropertyKeys.commandHandler, _commandHandler);
+    public void setCommandHandler(javax.el.MethodExpression commandHandler) {
+        getStateHelper().put(PropertyKeys.commandHandler, commandHandler);
     }
 
     public org.primefaces.model.terminal.TerminalAutoCompleteModel getAutoCompleteModel() {
         return (org.primefaces.model.terminal.TerminalAutoCompleteModel) getStateHelper().eval(PropertyKeys.autoCompleteModel, null);
     }
 
-    public void setAutoCompleteModel(org.primefaces.model.terminal.TerminalAutoCompleteModel _autoCompleteModel) {
-        getStateHelper().put(PropertyKeys.autoCompleteModel, _autoCompleteModel);
+    public void setAutoCompleteModel(org.primefaces.model.terminal.TerminalAutoCompleteModel autoCompleteModel) {
+        getStateHelper().put(PropertyKeys.autoCompleteModel, autoCompleteModel);
     }
 
     public boolean isEscape() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
-    public void setEscape(boolean _escape) {
-        getStateHelper().put(PropertyKeys.escape, _escape);
+    public void setEscape(boolean escape) {
+        getStateHelper().put(PropertyKeys.escape, escape);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

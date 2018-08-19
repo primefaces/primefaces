@@ -96,436 +96,436 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getPlaceholder() {
+    public String getPlaceholder() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
-    public void setPlaceholder(java.lang.String _placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, _placeholder);
+    public void setPlaceholder(String placeholder) {
+        getStateHelper().put(PropertyKeys.placeholder, placeholder);
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public java.lang.Object getMindate() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.mindate, null);
     }
 
-    public void setMindate(java.lang.Object _mindate) {
-        getStateHelper().put(PropertyKeys.mindate, _mindate);
+    public void setMindate(java.lang.Object mindate) {
+        getStateHelper().put(PropertyKeys.mindate, mindate);
     }
 
     public java.lang.Object getMaxdate() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.maxdate, null);
     }
 
-    public void setMaxdate(java.lang.Object _maxdate) {
-        getStateHelper().put(PropertyKeys.maxdate, _maxdate);
+    public void setMaxdate(java.lang.Object maxdate) {
+        getStateHelper().put(PropertyKeys.maxdate, maxdate);
     }
 
     public int getPages() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.pages, 1);
     }
 
-    public void setPages(int _pages) {
-        getStateHelper().put(PropertyKeys.pages, _pages);
+    public void setPages(int pages) {
+        getStateHelper().put(PropertyKeys.pages, pages);
     }
 
-    public java.lang.String getMode() {
+    public String getMode() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.mode, "popup");
     }
 
-    public void setMode(java.lang.String _mode) {
-        getStateHelper().put(PropertyKeys.mode, _mode);
+    public void setMode(String mode) {
+        getStateHelper().put(PropertyKeys.mode, mode);
     }
 
-    public java.lang.String getPattern() {
+    public String getPattern() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.pattern, null);
     }
 
-    public void setPattern(java.lang.String _pattern) {
-        getStateHelper().put(PropertyKeys.pattern, _pattern);
+    public void setPattern(String pattern) {
+        getStateHelper().put(PropertyKeys.pattern, pattern);
     }
 
     public java.lang.Object getLocale() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.locale, null);
     }
 
-    public void setLocale(java.lang.Object _locale) {
-        getStateHelper().put(PropertyKeys.locale, _locale);
+    public void setLocale(java.lang.Object locale) {
+        getStateHelper().put(PropertyKeys.locale, locale);
     }
 
     public boolean isNavigator() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.navigator, false);
     }
 
-    public void setNavigator(boolean _navigator) {
-        getStateHelper().put(PropertyKeys.navigator, _navigator);
+    public void setNavigator(boolean navigator) {
+        getStateHelper().put(PropertyKeys.navigator, navigator);
     }
 
     public java.lang.Object getTimeZone() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.timeZone, null);
     }
 
-    public void setTimeZone(java.lang.Object _timeZone) {
-        getStateHelper().put(PropertyKeys.timeZone, _timeZone);
+    public void setTimeZone(java.lang.Object timeZone) {
+        getStateHelper().put(PropertyKeys.timeZone, timeZone);
     }
 
     public boolean isReadonlyInput() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.readonlyInput, false);
     }
 
-    public void setReadonlyInput(boolean _readonlyInput) {
-        getStateHelper().put(PropertyKeys.readonlyInput, _readonlyInput);
+    public void setReadonlyInput(boolean readonlyInput) {
+        getStateHelper().put(PropertyKeys.readonlyInput, readonlyInput);
     }
 
     public boolean isShowButtonPanel() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showButtonPanel, false);
     }
 
-    public void setShowButtonPanel(boolean _showButtonPanel) {
-        getStateHelper().put(PropertyKeys.showButtonPanel, _showButtonPanel);
+    public void setShowButtonPanel(boolean showButtonPanel) {
+        getStateHelper().put(PropertyKeys.showButtonPanel, showButtonPanel);
     }
 
-    public java.lang.String getEffect() {
+    public String getEffect() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, null);
     }
 
-    public void setEffect(java.lang.String _effect) {
-        getStateHelper().put(PropertyKeys.effect, _effect);
+    public void setEffect(String effect) {
+        getStateHelper().put(PropertyKeys.effect, effect);
     }
 
-    public java.lang.String getEffectDuration() {
+    public String getEffectDuration() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.effectDuration, "normal");
     }
 
-    public void setEffectDuration(java.lang.String _effectDuration) {
-        getStateHelper().put(PropertyKeys.effectDuration, _effectDuration);
+    public void setEffectDuration(String effectDuration) {
+        getStateHelper().put(PropertyKeys.effectDuration, effectDuration);
     }
 
-    public java.lang.String getShowOn() {
+    public String getShowOn() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.showOn, "focus");
     }
 
-    public void setShowOn(java.lang.String _showOn) {
-        getStateHelper().put(PropertyKeys.showOn, _showOn);
+    public void setShowOn(String showOn) {
+        getStateHelper().put(PropertyKeys.showOn, showOn);
     }
 
     public boolean isShowWeek() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showWeek, false);
     }
 
-    public void setShowWeek(boolean _showWeek) {
-        getStateHelper().put(PropertyKeys.showWeek, _showWeek);
+    public void setShowWeek(boolean showWeek) {
+        getStateHelper().put(PropertyKeys.showWeek, showWeek);
     }
 
     public boolean isDisabledWeekends() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabledWeekends, false);
     }
 
-    public void setDisabledWeekends(boolean _disabledWeekends) {
-        getStateHelper().put(PropertyKeys.disabledWeekends, _disabledWeekends);
+    public void setDisabledWeekends(boolean disabledWeekends) {
+        getStateHelper().put(PropertyKeys.disabledWeekends, disabledWeekends);
     }
 
     public boolean isShowOtherMonths() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showOtherMonths, false);
     }
 
-    public void setShowOtherMonths(boolean _showOtherMonths) {
-        getStateHelper().put(PropertyKeys.showOtherMonths, _showOtherMonths);
+    public void setShowOtherMonths(boolean showOtherMonths) {
+        getStateHelper().put(PropertyKeys.showOtherMonths, showOtherMonths);
     }
 
     public boolean isSelectOtherMonths() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.selectOtherMonths, false);
     }
 
-    public void setSelectOtherMonths(boolean _selectOtherMonths) {
-        getStateHelper().put(PropertyKeys.selectOtherMonths, _selectOtherMonths);
+    public void setSelectOtherMonths(boolean selectOtherMonths) {
+        getStateHelper().put(PropertyKeys.selectOtherMonths, selectOtherMonths);
     }
 
-    public java.lang.String getYearRange() {
+    public String getYearRange() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.yearRange, null);
     }
 
-    public void setYearRange(java.lang.String _yearRange) {
-        getStateHelper().put(PropertyKeys.yearRange, _yearRange);
+    public void setYearRange(String yearRange) {
+        getStateHelper().put(PropertyKeys.yearRange, yearRange);
     }
 
     public boolean isTimeOnly() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.timeOnly, false);
     }
 
-    public void setTimeOnly(boolean _timeOnly) {
-        getStateHelper().put(PropertyKeys.timeOnly, _timeOnly);
+    public void setTimeOnly(boolean timeOnly) {
+        getStateHelper().put(PropertyKeys.timeOnly, timeOnly);
     }
 
     public int getStepHour() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.stepHour, 1);
     }
 
-    public void setStepHour(int _stepHour) {
-        getStateHelper().put(PropertyKeys.stepHour, _stepHour);
+    public void setStepHour(int stepHour) {
+        getStateHelper().put(PropertyKeys.stepHour, stepHour);
     }
 
     public int getStepMinute() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.stepMinute, 1);
     }
 
-    public void setStepMinute(int _stepMinute) {
-        getStateHelper().put(PropertyKeys.stepMinute, _stepMinute);
+    public void setStepMinute(int stepMinute) {
+        getStateHelper().put(PropertyKeys.stepMinute, stepMinute);
     }
 
     public int getStepSecond() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.stepSecond, 1);
     }
 
-    public void setStepSecond(int _stepSecond) {
-        getStateHelper().put(PropertyKeys.stepSecond, _stepSecond);
+    public void setStepSecond(int stepSecond) {
+        getStateHelper().put(PropertyKeys.stepSecond, stepSecond);
     }
 
     public int getMinHour() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minHour, 0);
     }
 
-    public void setMinHour(int _minHour) {
-        getStateHelper().put(PropertyKeys.minHour, _minHour);
+    public void setMinHour(int minHour) {
+        getStateHelper().put(PropertyKeys.minHour, minHour);
     }
 
     public int getMaxHour() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxHour, 23);
     }
 
-    public void setMaxHour(int _maxHour) {
-        getStateHelper().put(PropertyKeys.maxHour, _maxHour);
+    public void setMaxHour(int maxHour) {
+        getStateHelper().put(PropertyKeys.maxHour, maxHour);
     }
 
     public int getMinMinute() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minMinute, 0);
     }
 
-    public void setMinMinute(int _minMinute) {
-        getStateHelper().put(PropertyKeys.minMinute, _minMinute);
+    public void setMinMinute(int minMinute) {
+        getStateHelper().put(PropertyKeys.minMinute, minMinute);
     }
 
     public int getMaxMinute() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxMinute, 59);
     }
 
-    public void setMaxMinute(int _maxMinute) {
-        getStateHelper().put(PropertyKeys.maxMinute, _maxMinute);
+    public void setMaxMinute(int maxMinute) {
+        getStateHelper().put(PropertyKeys.maxMinute, maxMinute);
     }
 
     public int getMinSecond() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minSecond, 0);
     }
 
-    public void setMinSecond(int _minSecond) {
-        getStateHelper().put(PropertyKeys.minSecond, _minSecond);
+    public void setMinSecond(int minSecond) {
+        getStateHelper().put(PropertyKeys.minSecond, minSecond);
     }
 
     public int getMaxSecond() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxSecond, 59);
     }
 
-    public void setMaxSecond(int _maxSecond) {
-        getStateHelper().put(PropertyKeys.maxSecond, _maxSecond);
+    public void setMaxSecond(int maxSecond) {
+        getStateHelper().put(PropertyKeys.maxSecond, maxSecond);
     }
 
     public java.lang.Object getPagedate() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.pagedate, null);
     }
 
-    public void setPagedate(java.lang.Object _pagedate) {
-        getStateHelper().put(PropertyKeys.pagedate, _pagedate);
+    public void setPagedate(java.lang.Object pagedate) {
+        getStateHelper().put(PropertyKeys.pagedate, pagedate);
     }
 
-    public java.lang.String getBeforeShowDay() {
+    public String getBeforeShowDay() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.beforeShowDay, null);
     }
 
-    public void setBeforeShowDay(java.lang.String _beforeShowDay) {
-        getStateHelper().put(PropertyKeys.beforeShowDay, _beforeShowDay);
+    public void setBeforeShowDay(String beforeShowDay) {
+        getStateHelper().put(PropertyKeys.beforeShowDay, beforeShowDay);
     }
 
-    public java.lang.String getMask() {
+    public String getMask() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.mask, "false");
     }
 
-    public void setMask(java.lang.String _mask) {
-        getStateHelper().put(PropertyKeys.mask, _mask);
+    public void setMask(String mask) {
+        getStateHelper().put(PropertyKeys.mask, mask);
     }
 
-    public java.lang.String getTimeControlType() {
+    public String getTimeControlType() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.timeControlType, "slider");
     }
 
-    public void setTimeControlType(java.lang.String _timeControlType) {
-        getStateHelper().put(PropertyKeys.timeControlType, _timeControlType);
+    public void setTimeControlType(String timeControlType) {
+        getStateHelper().put(PropertyKeys.timeControlType, timeControlType);
     }
 
-    public java.lang.String getBeforeShow() {
+    public String getBeforeShow() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.beforeShow, null);
     }
 
-    public void setBeforeShow(java.lang.String _beforeShow) {
-        getStateHelper().put(PropertyKeys.beforeShow, _beforeShow);
+    public void setBeforeShow(String beforeShow) {
+        getStateHelper().put(PropertyKeys.beforeShow, beforeShow);
     }
 
-    public java.lang.String getMaskSlotChar() {
+    public String getMaskSlotChar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.maskSlotChar, null);
     }
 
-    public void setMaskSlotChar(java.lang.String _maskSlotChar) {
-        getStateHelper().put(PropertyKeys.maskSlotChar, _maskSlotChar);
+    public void setMaskSlotChar(String maskSlotChar) {
+        getStateHelper().put(PropertyKeys.maskSlotChar, maskSlotChar);
     }
 
     public boolean isMaskAutoClear() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.maskAutoClear, true);
     }
 
-    public void setMaskAutoClear(boolean _maskAutoClear) {
-        getStateHelper().put(PropertyKeys.maskAutoClear, _maskAutoClear);
+    public void setMaskAutoClear(boolean maskAutoClear) {
+        getStateHelper().put(PropertyKeys.maskAutoClear, maskAutoClear);
     }
 
-    public java.lang.String getTimeControlObject() {
+    public String getTimeControlObject() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.timeControlObject, null);
     }
 
-    public void setTimeControlObject(java.lang.String _timeControlObject) {
-        getStateHelper().put(PropertyKeys.timeControlObject, _timeControlObject);
+    public void setTimeControlObject(String timeControlObject) {
+        getStateHelper().put(PropertyKeys.timeControlObject, timeControlObject);
     }
 
     public boolean isTimeInput() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.timeInput, false);
     }
 
-    public void setTimeInput(boolean _timeInput) {
-        getStateHelper().put(PropertyKeys.timeInput, _timeInput);
+    public void setTimeInput(boolean timeInput) {
+        getStateHelper().put(PropertyKeys.timeInput, timeInput);
     }
 
-    public java.lang.String getShowHour() {
+    public String getShowHour() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.showHour, null);
     }
 
-    public void setShowHour(java.lang.String _showHour) {
-        getStateHelper().put(PropertyKeys.showHour, _showHour);
+    public void setShowHour(String showHour) {
+        getStateHelper().put(PropertyKeys.showHour, showHour);
     }
 
-    public java.lang.String getShowMinute() {
+    public String getShowMinute() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.showMinute, null);
     }
 
-    public void setShowMinute(java.lang.String _showMinute) {
-        getStateHelper().put(PropertyKeys.showMinute, _showMinute);
+    public void setShowMinute(String showMinute) {
+        getStateHelper().put(PropertyKeys.showMinute, showMinute);
     }
 
-    public java.lang.String getShowSecond() {
+    public String getShowSecond() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.showSecond, null);
     }
 
-    public void setShowSecond(java.lang.String _showSecond) {
-        getStateHelper().put(PropertyKeys.showSecond, _showSecond);
+    public void setShowSecond(String showSecond) {
+        getStateHelper().put(PropertyKeys.showSecond, showSecond);
     }
 
-    public java.lang.String getShowMillisec() {
+    public String getShowMillisec() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.showMillisec, null);
     }
 
-    public void setShowMillisec(java.lang.String _showMillisec) {
-        getStateHelper().put(PropertyKeys.showMillisec, _showMillisec);
+    public void setShowMillisec(String showMillisec) {
+        getStateHelper().put(PropertyKeys.showMillisec, showMillisec);
     }
 
     public boolean isShowTodayButton() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showTodayButton, true);
     }
 
-    public void setShowTodayButton(boolean _showTodayButton) {
-        getStateHelper().put(PropertyKeys.showTodayButton, _showTodayButton);
+    public void setShowTodayButton(boolean showTodayButton) {
+        getStateHelper().put(PropertyKeys.showTodayButton, showTodayButton);
     }
 
-    public java.lang.String getButtonTabindex() {
+    public String getButtonTabindex() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.buttonTabindex, null);
     }
 
-    public void setButtonTabindex(java.lang.String _buttonTabindex) {
-        getStateHelper().put(PropertyKeys.buttonTabindex, _buttonTabindex);
+    public void setButtonTabindex(String buttonTabindex) {
+        getStateHelper().put(PropertyKeys.buttonTabindex, buttonTabindex);
     }
 
-    public java.lang.String getInputStyle() {
+    public String getInputStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.inputStyle, null);
     }
 
-    public void setInputStyle(java.lang.String _inputStyle) {
-        getStateHelper().put(PropertyKeys.inputStyle, _inputStyle);
+    public void setInputStyle(String inputStyle) {
+        getStateHelper().put(PropertyKeys.inputStyle, inputStyle);
     }
 
-    public java.lang.String getInputStyleClass() {
+    public String getInputStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.inputStyleClass, null);
     }
 
-    public void setInputStyleClass(java.lang.String _inputStyleClass) {
-        getStateHelper().put(PropertyKeys.inputStyleClass, _inputStyleClass);
+    public void setInputStyleClass(String inputStyleClass) {
+        getStateHelper().put(PropertyKeys.inputStyleClass, inputStyleClass);
     }
 
-    public java.lang.String getType() {
+    public String getType() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.type, "text");
     }
 
-    public void setType(java.lang.String _type) {
-        getStateHelper().put(PropertyKeys.type, _type);
+    public void setType(String type) {
+        getStateHelper().put(PropertyKeys.type, type);
     }
 
     public boolean isFocusOnSelect() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.focusOnSelect, false);
     }
 
-    public void setFocusOnSelect(boolean _focusOnSelect) {
-        getStateHelper().put(PropertyKeys.focusOnSelect, _focusOnSelect);
+    public void setFocusOnSelect(boolean focusOnSelect) {
+        getStateHelper().put(PropertyKeys.focusOnSelect, focusOnSelect);
     }
 
     public boolean isOneLine() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.oneLine, false);
     }
 
-    public void setOneLine(boolean _oneLine) {
-        getStateHelper().put(PropertyKeys.oneLine, _oneLine);
+    public void setOneLine(boolean oneLine) {
+        getStateHelper().put(PropertyKeys.oneLine, oneLine);
     }
 
     public int getDefaultHour() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.defaultHour, 0);
     }
 
-    public void setDefaultHour(int _defaultHour) {
-        getStateHelper().put(PropertyKeys.defaultHour, _defaultHour);
+    public void setDefaultHour(int defaultHour) {
+        getStateHelper().put(PropertyKeys.defaultHour, defaultHour);
     }
 
     public int getDefaultMinute() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.defaultMinute, 0);
     }
 
-    public void setDefaultMinute(int _defaultMinute) {
-        getStateHelper().put(PropertyKeys.defaultMinute, _defaultMinute);
+    public void setDefaultMinute(int defaultMinute) {
+        getStateHelper().put(PropertyKeys.defaultMinute, defaultMinute);
     }
 
     public int getDefaultSecond() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.defaultSecond, 0);
     }
 
-    public void setDefaultSecond(int _defaultSecond) {
-        getStateHelper().put(PropertyKeys.defaultSecond, _defaultSecond);
+    public void setDefaultSecond(int defaultSecond) {
+        getStateHelper().put(PropertyKeys.defaultSecond, defaultSecond);
     }
 
     public int getDefaultMillisec() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.defaultMillisec, 0);
     }
 
-    public void setDefaultMillisec(int _defaultMillisec) {
-        getStateHelper().put(PropertyKeys.defaultMillisec, _defaultMillisec);
+    public void setDefaultMillisec(int defaultMillisec) {
+        getStateHelper().put(PropertyKeys.defaultMillisec, defaultMillisec);
     }
 
     @Override

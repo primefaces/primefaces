@@ -42,44 +42,44 @@ abstract class RowEditorBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getEditTitle() {
+    public String getEditTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.editTitle, null);
     }
 
-    public void setEditTitle(java.lang.String _editTitle) {
-        getStateHelper().put(PropertyKeys.editTitle, _editTitle);
+    public void setEditTitle(String editTitle) {
+        getStateHelper().put(PropertyKeys.editTitle, editTitle);
     }
 
-    public java.lang.String getCancelTitle() {
+    public String getCancelTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.cancelTitle, null);
     }
 
-    public void setCancelTitle(java.lang.String _cancelTitle) {
-        getStateHelper().put(PropertyKeys.cancelTitle, _cancelTitle);
+    public void setCancelTitle(String cancelTitle) {
+        getStateHelper().put(PropertyKeys.cancelTitle, cancelTitle);
     }
 
-    public java.lang.String getSaveTitle() {
+    public String getSaveTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.saveTitle, null);
     }
 
-    public void setSaveTitle(java.lang.String _saveTitle) {
-        getStateHelper().put(PropertyKeys.saveTitle, _saveTitle);
+    public void setSaveTitle(String saveTitle) {
+        getStateHelper().put(PropertyKeys.saveTitle, saveTitle);
     }
 
 }

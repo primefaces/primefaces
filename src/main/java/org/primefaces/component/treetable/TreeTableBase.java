@@ -82,248 +82,248 @@ abstract class TreeTableBase extends UITree implements Widget, ClientBehaviorHol
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public boolean isScrollable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.scrollable, false);
     }
 
-    public void setScrollable(boolean _scrollable) {
-        getStateHelper().put(PropertyKeys.scrollable, _scrollable);
+    public void setScrollable(boolean scrollable) {
+        getStateHelper().put(PropertyKeys.scrollable, scrollable);
     }
 
-    public java.lang.String getScrollHeight() {
+    public String getScrollHeight() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.scrollHeight, null);
     }
 
-    public void setScrollHeight(java.lang.String _scrollHeight) {
-        getStateHelper().put(PropertyKeys.scrollHeight, _scrollHeight);
+    public void setScrollHeight(String scrollHeight) {
+        getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
     }
 
-    public java.lang.String getScrollWidth() {
+    public String getScrollWidth() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.scrollWidth, null);
     }
 
-    public void setScrollWidth(java.lang.String _scrollWidth) {
-        getStateHelper().put(PropertyKeys.scrollWidth, _scrollWidth);
+    public void setScrollWidth(String scrollWidth) {
+        getStateHelper().put(PropertyKeys.scrollWidth, scrollWidth);
     }
 
-    public java.lang.String getTableStyle() {
+    public String getTableStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.tableStyle, null);
     }
 
-    public void setTableStyle(java.lang.String _tableStyle) {
-        getStateHelper().put(PropertyKeys.tableStyle, _tableStyle);
+    public void setTableStyle(String tableStyle) {
+        getStateHelper().put(PropertyKeys.tableStyle, tableStyle);
     }
 
-    public java.lang.String getTableStyleClass() {
+    public String getTableStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.tableStyleClass, null);
     }
 
-    public void setTableStyleClass(java.lang.String _tableStyleClass) {
-        getStateHelper().put(PropertyKeys.tableStyleClass, _tableStyleClass);
+    public void setTableStyleClass(String tableStyleClass) {
+        getStateHelper().put(PropertyKeys.tableStyleClass, tableStyleClass);
     }
 
-    public java.lang.String getEmptyMessage() {
+    public String getEmptyMessage() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.emptyMessage, "No records found.");
     }
 
-    public void setEmptyMessage(java.lang.String _emptyMessage) {
-        getStateHelper().put(PropertyKeys.emptyMessage, _emptyMessage);
+    public void setEmptyMessage(String emptyMessage) {
+        getStateHelper().put(PropertyKeys.emptyMessage, emptyMessage);
     }
 
     public boolean isResizableColumns() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.resizableColumns, false);
     }
 
-    public void setResizableColumns(boolean _resizableColumns) {
-        getStateHelper().put(PropertyKeys.resizableColumns, _resizableColumns);
+    public void setResizableColumns(boolean resizableColumns) {
+        getStateHelper().put(PropertyKeys.resizableColumns, resizableColumns);
     }
 
-    public java.lang.String getRowStyleClass() {
+    public String getRowStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.rowStyleClass, null);
     }
 
-    public void setRowStyleClass(java.lang.String _rowStyleClass) {
-        getStateHelper().put(PropertyKeys.rowStyleClass, _rowStyleClass);
+    public void setRowStyleClass(String rowStyleClass) {
+        getStateHelper().put(PropertyKeys.rowStyleClass, rowStyleClass);
     }
 
     public boolean isLiveResize() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.liveResize, false);
     }
 
-    public void setLiveResize(boolean _liveResize) {
-        getStateHelper().put(PropertyKeys.liveResize, _liveResize);
+    public void setLiveResize(boolean liveResize) {
+        getStateHelper().put(PropertyKeys.liveResize, liveResize);
     }
 
     public java.lang.Object getSortBy() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.sortBy, null);
     }
 
-    public void setSortBy(java.lang.Object _sortBy) {
-        getStateHelper().put(PropertyKeys.sortBy, _sortBy);
+    public void setSortBy(java.lang.Object sortBy) {
+        getStateHelper().put(PropertyKeys.sortBy, sortBy);
     }
 
-    public java.lang.String getSortOrder() {
+    public String getSortOrder() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.sortOrder, "ascending");
     }
 
-    public void setSortOrder(java.lang.String _sortOrder) {
-        getStateHelper().put(PropertyKeys.sortOrder, _sortOrder);
+    public void setSortOrder(String sortOrder) {
+        getStateHelper().put(PropertyKeys.sortOrder, sortOrder);
     }
 
     public javax.el.MethodExpression getSortFunction() {
         return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.sortFunction, null);
     }
 
-    public void setSortFunction(javax.el.MethodExpression _sortFunction) {
-        getStateHelper().put(PropertyKeys.sortFunction, _sortFunction);
+    public void setSortFunction(javax.el.MethodExpression sortFunction) {
+        getStateHelper().put(PropertyKeys.sortFunction, sortFunction);
     }
 
     public boolean isNativeElements() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.nativeElements, false);
     }
 
-    public void setNativeElements(boolean _nativeElements) {
-        getStateHelper().put(PropertyKeys.nativeElements, _nativeElements);
+    public void setNativeElements(boolean nativeElements) {
+        getStateHelper().put(PropertyKeys.nativeElements, nativeElements);
     }
 
     public java.lang.Object getDataLocale() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.dataLocale, null);
     }
 
-    public void setDataLocale(java.lang.Object _dataLocale) {
-        getStateHelper().put(PropertyKeys.dataLocale, _dataLocale);
+    public void setDataLocale(java.lang.Object dataLocale) {
+        getStateHelper().put(PropertyKeys.dataLocale, dataLocale);
     }
 
     public boolean isCaseSensitiveSort() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.caseSensitiveSort, false);
     }
 
-    public void setCaseSensitiveSort(boolean _caseSensitiveSort) {
-        getStateHelper().put(PropertyKeys.caseSensitiveSort, _caseSensitiveSort);
+    public void setCaseSensitiveSort(boolean caseSensitiveSort) {
+        getStateHelper().put(PropertyKeys.caseSensitiveSort, caseSensitiveSort);
     }
 
-    public java.lang.String getExpandMode() {
+    public String getExpandMode() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.expandMode, "children");
     }
 
-    public void setExpandMode(java.lang.String _expandMode) {
-        getStateHelper().put(PropertyKeys.expandMode, _expandMode);
+    public void setExpandMode(String expandMode) {
+        getStateHelper().put(PropertyKeys.expandMode, expandMode);
     }
 
     public boolean isStickyHeader() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.stickyHeader, false);
     }
 
-    public void setStickyHeader(boolean _stickyHeader) {
-        getStateHelper().put(PropertyKeys.stickyHeader, _stickyHeader);
+    public void setStickyHeader(boolean stickyHeader) {
+        getStateHelper().put(PropertyKeys.stickyHeader, stickyHeader);
     }
 
     public boolean isEditable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.editable, false);
     }
 
-    public void setEditable(boolean _editable) {
-        getStateHelper().put(PropertyKeys.editable, _editable);
+    public void setEditable(boolean editable) {
+        getStateHelper().put(PropertyKeys.editable, editable);
     }
 
-    public java.lang.String getEditMode() {
+    public String getEditMode() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.editMode, "row");
     }
 
-    public void setEditMode(java.lang.String _editMode) {
-        getStateHelper().put(PropertyKeys.editMode, _editMode);
+    public void setEditMode(String editMode) {
+        getStateHelper().put(PropertyKeys.editMode, editMode);
     }
 
     public boolean isEditingRow() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.editingRow, false);
     }
 
-    public void setEditingRow(boolean _editingRow) {
-        getStateHelper().put(PropertyKeys.editingRow, _editingRow);
+    public void setEditingRow(boolean editingRow) {
+        getStateHelper().put(PropertyKeys.editingRow, editingRow);
     }
 
-    public java.lang.String getCellSeparator() {
+    public String getCellSeparator() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.cellSeparator, null);
     }
 
-    public void setCellSeparator(java.lang.String _cellSeparator) {
-        getStateHelper().put(PropertyKeys.cellSeparator, _cellSeparator);
+    public void setCellSeparator(String cellSeparator) {
+        getStateHelper().put(PropertyKeys.cellSeparator, cellSeparator);
     }
 
     public boolean isDisabledTextSelection() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabledTextSelection, true);
     }
 
-    public void setDisabledTextSelection(boolean _disabledTextSelection) {
-        getStateHelper().put(PropertyKeys.disabledTextSelection, _disabledTextSelection);
+    public void setDisabledTextSelection(boolean disabledTextSelection) {
+        getStateHelper().put(PropertyKeys.disabledTextSelection, disabledTextSelection);
     }
 
     public boolean isPaginator() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.paginator, false);
     }
 
-    public void setPaginator(boolean _paginator) {
-        getStateHelper().put(PropertyKeys.paginator, _paginator);
+    public void setPaginator(boolean paginator) {
+        getStateHelper().put(PropertyKeys.paginator, paginator);
     }
 
     @Override
-    public java.lang.String getPaginatorTemplate() {
+    public String getPaginatorTemplate() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.paginatorTemplate, "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}");
     }
 
-    public void setPaginatorTemplate(java.lang.String _paginatorTemplate) {
-        getStateHelper().put(PropertyKeys.paginatorTemplate, _paginatorTemplate);
+    public void setPaginatorTemplate(String paginatorTemplate) {
+        getStateHelper().put(PropertyKeys.paginatorTemplate, paginatorTemplate);
     }
 
     @Override
-    public java.lang.String getRowsPerPageTemplate() {
+    public String getRowsPerPageTemplate() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.rowsPerPageTemplate, null);
     }
 
-    public void setRowsPerPageTemplate(java.lang.String _rowsPerPageTemplate) {
-        getStateHelper().put(PropertyKeys.rowsPerPageTemplate, _rowsPerPageTemplate);
+    public void setRowsPerPageTemplate(String rowsPerPageTemplate) {
+        getStateHelper().put(PropertyKeys.rowsPerPageTemplate, rowsPerPageTemplate);
     }
 
     @Override
-    public java.lang.String getRowsPerPageLabel() {
+    public String getRowsPerPageLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.rowsPerPageLabel, null);
     }
 
-    public void setRowsPerPageLabel(java.lang.String _rowsPerPageLabel) {
-        getStateHelper().put(PropertyKeys.rowsPerPageLabel, _rowsPerPageLabel);
+    public void setRowsPerPageLabel(String rowsPerPageLabel) {
+        getStateHelper().put(PropertyKeys.rowsPerPageLabel, rowsPerPageLabel);
     }
 
     @Override
-    public java.lang.String getCurrentPageReportTemplate() {
+    public String getCurrentPageReportTemplate() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.currentPageReportTemplate, "({currentPage} of {totalPages})");
     }
 
-    public void setCurrentPageReportTemplate(java.lang.String _currentPageReportTemplate) {
-        getStateHelper().put(PropertyKeys.currentPageReportTemplate, _currentPageReportTemplate);
+    public void setCurrentPageReportTemplate(String currentPageReportTemplate) {
+        getStateHelper().put(PropertyKeys.currentPageReportTemplate, currentPageReportTemplate);
     }
 
     @Override
@@ -331,17 +331,17 @@ abstract class TreeTableBase extends UITree implements Widget, ClientBehaviorHol
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.pageLinks, 10);
     }
 
-    public void setPageLinks(int _pageLinks) {
-        getStateHelper().put(PropertyKeys.pageLinks, _pageLinks);
+    public void setPageLinks(int pageLinks) {
+        getStateHelper().put(PropertyKeys.pageLinks, pageLinks);
     }
 
     @Override
-    public java.lang.String getPaginatorPosition() {
+    public String getPaginatorPosition() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.paginatorPosition, "both");
     }
 
-    public void setPaginatorPosition(java.lang.String _paginatorPosition) {
-        getStateHelper().put(PropertyKeys.paginatorPosition, _paginatorPosition);
+    public void setPaginatorPosition(String paginatorPosition) {
+        getStateHelper().put(PropertyKeys.paginatorPosition, paginatorPosition);
     }
 
     @Override
@@ -349,8 +349,8 @@ abstract class TreeTableBase extends UITree implements Widget, ClientBehaviorHol
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.paginatorAlwaysVisible, true);
     }
 
-    public void setPaginatorAlwaysVisible(boolean _paginatorAlwaysVisible) {
-        getStateHelper().put(PropertyKeys.paginatorAlwaysVisible, _paginatorAlwaysVisible);
+    public void setPaginatorAlwaysVisible(boolean paginatorAlwaysVisible) {
+        getStateHelper().put(PropertyKeys.paginatorAlwaysVisible, paginatorAlwaysVisible);
     }
 
     @Override
@@ -358,8 +358,8 @@ abstract class TreeTableBase extends UITree implements Widget, ClientBehaviorHol
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.rows, 0);
     }
 
-    public void setRows(int _rows) {
-        getStateHelper().put(PropertyKeys.rows, _rows);
+    public void setRows(int rows) {
+        getStateHelper().put(PropertyKeys.rows, rows);
     }
 
     @Override
@@ -367,40 +367,40 @@ abstract class TreeTableBase extends UITree implements Widget, ClientBehaviorHol
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.first, 0);
     }
 
-    public void setFirst(int _first) {
-        getStateHelper().put(PropertyKeys.first, _first);
+    public void setFirst(int first) {
+        getStateHelper().put(PropertyKeys.first, first);
     }
 
     public java.lang.Object getFilteredNode() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.filteredNode, null);
     }
 
-    public void setFilteredNode(java.lang.Object _filteredNode) {
-        getStateHelper().put(PropertyKeys.filteredNode, _filteredNode);
+    public void setFilteredNode(java.lang.Object filteredNode) {
+        getStateHelper().put(PropertyKeys.filteredNode, filteredNode);
     }
 
-    public java.lang.String getFilterEvent() {
+    public String getFilterEvent() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.filterEvent, null);
     }
 
-    public void setFilterEvent(java.lang.String _filterEvent) {
-        getStateHelper().put(PropertyKeys.filterEvent, _filterEvent);
+    public void setFilterEvent(String filterEvent) {
+        getStateHelper().put(PropertyKeys.filterEvent, filterEvent);
     }
 
     public int getFilterDelay() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.filterDelay, java.lang.Integer.MAX_VALUE);
     }
 
-    public void setFilterDelay(int _filterDelay) {
-        getStateHelper().put(PropertyKeys.filterDelay, _filterDelay);
+    public void setFilterDelay(int filterDelay) {
+        getStateHelper().put(PropertyKeys.filterDelay, filterDelay);
     }
 
-    public java.lang.String getCellEditMode() {
+    public String getCellEditMode() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.cellEditMode, "eager");
     }
 
-    public void setCellEditMode(java.lang.String _cellEditMode) {
-        getStateHelper().put(PropertyKeys.cellEditMode, _cellEditMode);
+    public void setCellEditMode(String cellEditMode) {
+        getStateHelper().put(PropertyKeys.cellEditMode, cellEditMode);
     }
 
     @Override

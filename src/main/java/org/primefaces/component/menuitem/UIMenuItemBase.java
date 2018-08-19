@@ -76,76 +76,76 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
     }
 
     @Override
-    public java.lang.String getUrl() {
+    public String getUrl() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.url, null);
     }
 
-    public void setUrl(java.lang.String _url) {
-        getStateHelper().put(PropertyKeys.url, _url);
+    public void setUrl(String url) {
+        getStateHelper().put(PropertyKeys.url, url);
     }
 
     @Override
-    public java.lang.String getTarget() {
+    public String getTarget() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.target, null);
     }
 
-    public void setTarget(java.lang.String _target) {
-        getStateHelper().put(PropertyKeys.target, _target);
+    public void setTarget(String target) {
+        getStateHelper().put(PropertyKeys.target, target);
     }
 
     @Override
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
     @Override
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     @Override
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     @Override
-    public java.lang.String getOnclick() {
+    public String getOnclick() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onclick, null);
     }
 
-    public void setOnclick(java.lang.String _onclick) {
-        getStateHelper().put(PropertyKeys.onclick, _onclick);
+    public void setOnclick(String onclick) {
+        getStateHelper().put(PropertyKeys.onclick, onclick);
     }
 
     @Override
-    public java.lang.String getUpdate() {
+    public String getUpdate() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.update, null);
     }
 
-    public void setUpdate(java.lang.String _update) {
-        getStateHelper().put(PropertyKeys.update, _update);
+    public void setUpdate(String update) {
+        getStateHelper().put(PropertyKeys.update, update);
     }
 
     @Override
-    public java.lang.String getProcess() {
+    public String getProcess() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.process, null);
     }
 
-    public void setProcess(java.lang.String _process) {
-        getStateHelper().put(PropertyKeys.process, _process);
+    public void setProcess(String process) {
+        getStateHelper().put(PropertyKeys.process, process);
     }
 
     @Override
-    public java.lang.String getOnstart() {
+    public String getOnstart() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onstart, null);
     }
 
-    public void setOnstart(java.lang.String _onstart) {
-        getStateHelper().put(PropertyKeys.onstart, _onstart);
+    public void setOnstart(String onstart) {
+        getStateHelper().put(PropertyKeys.onstart, onstart);
     }
 
     @Override
@@ -153,35 +153,35 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
-    public void setDisabled(boolean _disabled) {
-        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
     @Override
-    public java.lang.String getOncomplete() {
+    public String getOncomplete() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.oncomplete, null);
     }
 
-    public void setOncomplete(java.lang.String _oncomplete) {
-        getStateHelper().put(PropertyKeys.oncomplete, _oncomplete);
+    public void setOncomplete(String oncomplete) {
+        getStateHelper().put(PropertyKeys.oncomplete, oncomplete);
     }
 
     @Override
-    public java.lang.String getOnerror() {
+    public String getOnerror() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onerror, null);
     }
 
-    public void setOnerror(java.lang.String _onerror) {
-        getStateHelper().put(PropertyKeys.onerror, _onerror);
+    public void setOnerror(String onerror) {
+        getStateHelper().put(PropertyKeys.onerror, onerror);
     }
 
     @Override
-    public java.lang.String getOnsuccess() {
+    public String getOnsuccess() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onsuccess, null);
     }
 
-    public void setOnsuccess(java.lang.String _onsuccess) {
-        getStateHelper().put(PropertyKeys.onsuccess, _onsuccess);
+    public void setOnsuccess(String onsuccess) {
+        getStateHelper().put(PropertyKeys.onsuccess, onsuccess);
     }
 
     @Override
@@ -189,17 +189,17 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.global, true);
     }
 
-    public void setGlobal(boolean _global) {
-        getStateHelper().put(PropertyKeys.global, _global);
+    public void setGlobal(boolean global) {
+        getStateHelper().put(PropertyKeys.global, global);
     }
 
     @Override
-    public java.lang.String getDelay() {
+    public String getDelay() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.delay, null);
     }
 
-    public void setDelay(java.lang.String _delay) {
-        getStateHelper().put(PropertyKeys.delay, _delay);
+    public void setDelay(String delay) {
+        getStateHelper().put(PropertyKeys.delay, delay);
     }
 
     @Override
@@ -207,8 +207,8 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.timeout, 0);
     }
 
-    public void setTimeout(int _timeout) {
-        getStateHelper().put(PropertyKeys.timeout, _timeout);
+    public void setTimeout(int timeout) {
+        getStateHelper().put(PropertyKeys.timeout, timeout);
     }
 
     @Override
@@ -216,8 +216,8 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.async, false);
     }
 
-    public void setAsync(boolean _async) {
-        getStateHelper().put(PropertyKeys.async, _async);
+    public void setAsync(boolean async) {
+        getStateHelper().put(PropertyKeys.async, async);
     }
 
     @Override
@@ -225,26 +225,26 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ajax, true);
     }
 
-    public void setAjax(boolean _ajax) {
-        getStateHelper().put(PropertyKeys.ajax, _ajax);
+    public void setAjax(boolean ajax) {
+        getStateHelper().put(PropertyKeys.ajax, ajax);
     }
 
     @Override
-    public java.lang.String getIcon() {
+    public String getIcon() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.icon, null);
     }
 
-    public void setIcon(java.lang.String _icon) {
-        getStateHelper().put(PropertyKeys.icon, _icon);
+    public void setIcon(String icon) {
+        getStateHelper().put(PropertyKeys.icon, icon);
     }
 
     @Override
-    public java.lang.String getIconPos() {
+    public String getIconPos() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.iconPos, "right");
     }
 
-    public void setIconPos(java.lang.String _iconPos) {
-        getStateHelper().put(PropertyKeys.iconPos, _iconPos);
+    public void setIconPos(String iconPos) {
+        getStateHelper().put(PropertyKeys.iconPos, iconPos);
     }
 
     @Override
@@ -252,8 +252,8 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.partialSubmit, false);
     }
 
-    public void setPartialSubmit(boolean _partialSubmit) {
-        getStateHelper().put(PropertyKeys.partialSubmit, _partialSubmit);
+    public void setPartialSubmit(boolean partialSubmit) {
+        getStateHelper().put(PropertyKeys.partialSubmit, partialSubmit);
     }
 
     @Override
@@ -261,8 +261,8 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.resetValues, false);
     }
 
-    public void setResetValues(boolean _resetValues) {
-        getStateHelper().put(PropertyKeys.resetValues, _resetValues);
+    public void setResetValues(boolean resetValues) {
+        getStateHelper().put(PropertyKeys.resetValues, resetValues);
     }
 
     @Override
@@ -270,26 +270,26 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
     }
 
-    public void setIgnoreAutoUpdate(boolean _ignoreAutoUpdate) {
-        getStateHelper().put(PropertyKeys.ignoreAutoUpdate, _ignoreAutoUpdate);
+    public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
+        getStateHelper().put(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
     }
 
     @Override
-    public java.lang.String getTitle() {
+    public String getTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.title, null);
     }
 
-    public void setTitle(java.lang.String _title) {
-        getStateHelper().put(PropertyKeys.title, _title);
+    public void setTitle(String title) {
+        getStateHelper().put(PropertyKeys.title, title);
     }
 
     @Override
-    public java.lang.String getOutcome() {
+    public String getOutcome() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.outcome, null);
     }
 
-    public void setOutcome(java.lang.String _outcome) {
-        getStateHelper().put(PropertyKeys.outcome, _outcome);
+    public void setOutcome(String outcome) {
+        getStateHelper().put(PropertyKeys.outcome, outcome);
     }
 
     @Override
@@ -297,17 +297,17 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.includeViewParams, false);
     }
 
-    public void setIncludeViewParams(boolean _includeViewParams) {
-        getStateHelper().put(PropertyKeys.includeViewParams, _includeViewParams);
+    public void setIncludeViewParams(boolean includeViewParams) {
+        getStateHelper().put(PropertyKeys.includeViewParams, includeViewParams);
     }
 
     @Override
-    public java.lang.String getFragment() {
+    public String getFragment() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.fragment, null);
     }
 
-    public void setFragment(java.lang.String _fragment) {
-        getStateHelper().put(PropertyKeys.fragment, _fragment);
+    public void setFragment(String fragment) {
+        getStateHelper().put(PropertyKeys.fragment, fragment);
     }
 
     @Override
@@ -315,44 +315,44 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
     }
 
-    public void setDisableClientWindow(boolean _disableClientWindow) {
-        getStateHelper().put(PropertyKeys.disableClientWindow, _disableClientWindow);
+    public void setDisableClientWindow(boolean disableClientWindow) {
+        getStateHelper().put(PropertyKeys.disableClientWindow, disableClientWindow);
     }
 
     @Override
-    public java.lang.String getContainerStyle() {
+    public String getContainerStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.containerStyle, null);
     }
 
-    public void setContainerStyle(java.lang.String _containerStyle) {
-        getStateHelper().put(PropertyKeys.containerStyle, _containerStyle);
+    public void setContainerStyle(String containerStyle) {
+        getStateHelper().put(PropertyKeys.containerStyle, containerStyle);
     }
 
     @Override
-    public java.lang.String getContainerStyleClass() {
+    public String getContainerStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.containerStyleClass, null);
     }
 
-    public void setContainerStyleClass(java.lang.String _containerStyleClass) {
-        getStateHelper().put(PropertyKeys.containerStyleClass, _containerStyleClass);
+    public void setContainerStyleClass(String containerStyleClass) {
+        getStateHelper().put(PropertyKeys.containerStyleClass, containerStyleClass);
     }
 
     @Override
-    public java.lang.String getPartialSubmitFilter() {
+    public String getPartialSubmitFilter() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.partialSubmitFilter, null);
     }
 
-    public void setPartialSubmitFilter(java.lang.String _partialSubmitFilter) {
-        getStateHelper().put(PropertyKeys.partialSubmitFilter, _partialSubmitFilter);
+    public void setPartialSubmitFilter(String partialSubmitFilter) {
+        getStateHelper().put(PropertyKeys.partialSubmitFilter, partialSubmitFilter);
     }
 
     @Override
-    public java.lang.String getForm() {
+    public String getForm() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.form, null);
     }
 
-    public void setForm(java.lang.String _form) {
-        getStateHelper().put(PropertyKeys.form, _form);
+    public void setForm(String form) {
+        getStateHelper().put(PropertyKeys.form, form);
     }
 
     @Override
@@ -360,17 +360,17 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
-    public void setEscape(boolean _escape) {
-        getStateHelper().put(PropertyKeys.escape, _escape);
+    public void setEscape(boolean escape) {
+        getStateHelper().put(PropertyKeys.escape, escape);
     }
 
     @Override
-    public java.lang.String getRel() {
+    public String getRel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.rel, null);
     }
 
-    public void setRel(java.lang.String _rel) {
-        getStateHelper().put(PropertyKeys.rel, _rel);
+    public void setRel(String rel) {
+        getStateHelper().put(PropertyKeys.rel, rel);
     }
 
 }

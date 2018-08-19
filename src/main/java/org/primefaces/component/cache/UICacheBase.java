@@ -45,32 +45,32 @@ abstract class UICacheBase extends UIPanel {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
-    public void setDisabled(boolean _disabled) {
-        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
-    public java.lang.String getRegion() {
+    public String getRegion() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.region, null);
     }
 
-    public void setRegion(java.lang.String _region) {
-        getStateHelper().put(PropertyKeys.region, _region);
+    public void setRegion(String region) {
+        getStateHelper().put(PropertyKeys.region, region);
     }
 
-    public java.lang.String getKey() {
+    public String getKey() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.key, null);
     }
 
-    public void setKey(java.lang.String _key) {
-        getStateHelper().put(PropertyKeys.key, _key);
+    public void setKey(String key) {
+        getStateHelper().put(PropertyKeys.key, key);
     }
 
     public boolean isProcessEvents() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.processEvents, false);
     }
 
-    public void setProcessEvents(boolean _processEvents) {
-        getStateHelper().put(PropertyKeys.processEvents, _processEvents);
+    public void setProcessEvents(boolean processEvents) {
+        getStateHelper().put(PropertyKeys.processEvents, processEvents);
     }
 
 }

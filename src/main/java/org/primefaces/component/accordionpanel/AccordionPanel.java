@@ -84,7 +84,7 @@ public class AccordionPanel extends AccordionPanelBase {
     }
 
     public boolean isContentLoadRequest(FacesContext context) {
-        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_contentLoad");
+        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_contentLoad");
     }
 
     public Tab findTab(String tabClientId) {
@@ -104,8 +104,8 @@ public class AccordionPanel extends AccordionPanelBase {
         if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-            String clientId = getClientId(context);
-            boolean repeating = isRepeating();
+            String clientId = this.getClientId(context);
+            boolean repeating = this.isRepeating();
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName.equals("tabChange")) {
@@ -115,7 +115,7 @@ public class AccordionPanel extends AccordionPanelBase {
                 if (repeating) {
                     int index = Integer.parseInt(params.get(clientId + "_tabindex"));
                     setIndex(index);
-                    changeEvent.setData(getIndexData());
+                    changeEvent.setData(this.getIndexData());
                     changeEvent.setTab((Tab) getChildren().get(0));
                 }
 
@@ -134,7 +134,7 @@ public class AccordionPanel extends AccordionPanelBase {
                 if (repeating) {
                     int index = Integer.parseInt(params.get(clientId + "_tabindex"));
                     setIndex(index);
-                    closeEvent.setData(getIndexData());
+                    closeEvent.setData(this.getIndexData());
                     closeEvent.setTab((Tab) getChildren().get(0));
                 }
 
@@ -160,7 +160,7 @@ public class AccordionPanel extends AccordionPanelBase {
 
         super.processUpdates(context);
 
-        ValueExpression expr = getValueExpression(PropertyKeys.activeIndex.toString());
+        ValueExpression expr = this.getValueExpression(PropertyKeys.activeIndex.toString());
         if (expr != null) {
             expr.setValue(getFacesContext().getELContext(), getActiveIndex());
             resetActiveIndex();
@@ -171,9 +171,8 @@ public class AccordionPanel extends AccordionPanelBase {
         getStateHelper().remove(PropertyKeys.activeIndex);
     }
 
-    @Override
     public boolean isRTL() {
-        return getDir().equalsIgnoreCase("rtl");
+        return this.getDir().equalsIgnoreCase("rtl");
     }
 
     @Override
@@ -181,7 +180,7 @@ public class AccordionPanel extends AccordionPanelBase {
         super.broadcast(event);
 
         if (event instanceof TabEvent) {
-            MethodExpression me = getTabController();
+            MethodExpression me = this.getTabController();
             if (me != null) {
                 boolean retVal = (Boolean) me.invoke(getFacesContext().getELContext(), new Object[]{event});
                 PrimeFaces.current().ajax().addCallbackParam("access", retVal);

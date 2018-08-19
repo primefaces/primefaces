@@ -31,7 +31,7 @@ abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget {
 
         widgetVar,
         columns,
-        plain
+        plain;
     }
 
     public SelectOneRadioBase() {
@@ -43,31 +43,30 @@ abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public int getColumns() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.columns, 0);
     }
 
-    public void setColumns(int _columns) {
-        getStateHelper().put(PropertyKeys.columns, _columns);
+    public void setColumns(int columns) {
+        getStateHelper().put(PropertyKeys.columns, columns);
     }
 
     public boolean isPlain() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.plain, false);
     }
 
-    public void setPlain(boolean _plain) {
-        getStateHelper().put(PropertyKeys.plain, _plain);
+    public void setPlain(boolean plain) {
+        getStateHelper().put(PropertyKeys.plain, plain);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

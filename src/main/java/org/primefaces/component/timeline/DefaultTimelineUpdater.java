@@ -44,6 +44,15 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
     private String widgetVar;
     private List<CrudOperationData> crudOperationDatas;
 
+    enum CrudOperation {
+
+        ADD,
+        UPDATE,
+        DELETE,
+        SELECT,
+        CLEAR
+    }
+
     @Override
     public void add(TimelineEvent event) {
         if (event == null) {
@@ -191,12 +200,12 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
         // NOOP.
     }
 
-    public void setWidgetVar(String widgetVar) {
-        this.widgetVar = widgetVar;
-    }
-
     public String getWidgetVar() {
         return widgetVar;
+    }
+
+    public void setWidgetVar(String widgetVar) {
+        this.widgetVar = widgetVar;
     }
 
     private void checkCrudOperationDataList() {
@@ -266,14 +275,5 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
         public int getIndex() {
             return index;
         }
-    }
-
-    enum CrudOperation {
-
-        ADD,
-        UPDATE,
-        DELETE,
-        SELECT,
-        CLEAR
     }
 }

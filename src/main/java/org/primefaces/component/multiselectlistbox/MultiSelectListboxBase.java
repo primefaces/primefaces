@@ -37,7 +37,7 @@ abstract class MultiSelectListboxBase extends UISelectOne implements Widget, Cli
         disabled,
         effect,
         showHeaders,
-        header
+        header;
     }
 
     public MultiSelectListboxBase() {
@@ -49,63 +49,62 @@ abstract class MultiSelectListboxBase extends UISelectOne implements Widget, Cli
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public boolean isDisabled() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
-    public void setDisabled(boolean _disabled) {
-        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
-    public java.lang.String getEffect() {
+    public String getEffect() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, null);
     }
 
-    public void setEffect(java.lang.String _effect) {
-        getStateHelper().put(PropertyKeys.effect, _effect);
+    public void setEffect(String effect) {
+        getStateHelper().put(PropertyKeys.effect, effect);
     }
 
     public boolean isShowHeaders() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showHeaders, false);
     }
 
-    public void setShowHeaders(boolean _showHeaders) {
-        getStateHelper().put(PropertyKeys.showHeaders, _showHeaders);
+    public void setShowHeaders(boolean showHeaders) {
+        getStateHelper().put(PropertyKeys.showHeaders, showHeaders);
     }
 
-    public java.lang.String getHeader() {
+    public String getHeader() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.header, null);
     }
 
-    public void setHeader(java.lang.String _header) {
-        getStateHelper().put(PropertyKeys.header, _header);
+    public void setHeader(String header) {
+        getStateHelper().put(PropertyKeys.header, header);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

@@ -91,396 +91,396 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getVar() {
+    public String getVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
-    public void setVar(java.lang.String _var) {
-        getStateHelper().put(PropertyKeys.var, _var);
+    public void setVar(String var) {
+        getStateHelper().put(PropertyKeys.var, var);
     }
 
     public org.primefaces.model.timeline.TimelineModel getValue() {
         return (org.primefaces.model.timeline.TimelineModel) getStateHelper().eval(PropertyKeys.value, null);
     }
 
-    public void setValue(org.primefaces.model.timeline.TimelineModel _value) {
-        getStateHelper().put(PropertyKeys.value, _value);
+    public void setValue(org.primefaces.model.timeline.TimelineModel value) {
+        getStateHelper().put(PropertyKeys.value, value);
     }
 
-    public java.lang.String getVarGroup() {
+    public String getVarGroup() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.varGroup, null);
     }
 
-    public void setVarGroup(java.lang.String _varGroup) {
-        getStateHelper().put(PropertyKeys.varGroup, _varGroup);
+    public void setVarGroup(String varGroup) {
+        getStateHelper().put(PropertyKeys.varGroup, varGroup);
     }
 
     public java.lang.Object getLocale() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.locale, null);
     }
 
-    public void setLocale(java.lang.Object _locale) {
-        getStateHelper().put(PropertyKeys.locale, _locale);
+    public void setLocale(java.lang.Object locale) {
+        getStateHelper().put(PropertyKeys.locale, locale);
     }
 
     public java.lang.Object getTimeZone() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.timeZone, null);
     }
 
-    public void setTimeZone(java.lang.Object _timeZone) {
-        getStateHelper().put(PropertyKeys.timeZone, _timeZone);
+    public void setTimeZone(java.lang.Object timeZone) {
+        getStateHelper().put(PropertyKeys.timeZone, timeZone);
     }
 
     public java.lang.Object getBrowserTimeZone() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.browserTimeZone, null);
     }
 
-    public void setBrowserTimeZone(java.lang.Object _browserTimeZone) {
-        getStateHelper().put(PropertyKeys.browserTimeZone, _browserTimeZone);
+    public void setBrowserTimeZone(java.lang.Object browserTimeZone) {
+        getStateHelper().put(PropertyKeys.browserTimeZone, browserTimeZone);
     }
 
-    public java.lang.String getHeight() {
+    public String getHeight() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.height, "auto");
     }
 
-    public void setHeight(java.lang.String _height) {
-        getStateHelper().put(PropertyKeys.height, _height);
+    public void setHeight(String height) {
+        getStateHelper().put(PropertyKeys.height, height);
     }
 
     public int getMinHeight() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minHeight, 0);
     }
 
-    public void setMinHeight(int _minHeight) {
-        getStateHelper().put(PropertyKeys.minHeight, _minHeight);
+    public void setMinHeight(int minHeight) {
+        getStateHelper().put(PropertyKeys.minHeight, minHeight);
     }
 
-    public java.lang.String getWidth() {
+    public String getWidth() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.width, "100%");
     }
 
-    public void setWidth(java.lang.String _width) {
-        getStateHelper().put(PropertyKeys.width, _width);
+    public void setWidth(String width) {
+        getStateHelper().put(PropertyKeys.width, width);
     }
 
     public boolean isResponsive() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.responsive, true);
     }
 
-    public void setResponsive(boolean _responsive) {
-        getStateHelper().put(PropertyKeys.responsive, _responsive);
+    public void setResponsive(boolean responsive) {
+        getStateHelper().put(PropertyKeys.responsive, responsive);
     }
 
     public boolean isAxisOnTop() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.axisOnTop, false);
     }
 
-    public void setAxisOnTop(boolean _axisOnTop) {
-        getStateHelper().put(PropertyKeys.axisOnTop, _axisOnTop);
+    public void setAxisOnTop(boolean axisOnTop) {
+        getStateHelper().put(PropertyKeys.axisOnTop, axisOnTop);
     }
 
     public int getDragAreaWidth() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.dragAreaWidth, 10);
     }
 
-    public void setDragAreaWidth(int _dragAreaWidth) {
-        getStateHelper().put(PropertyKeys.dragAreaWidth, _dragAreaWidth);
+    public void setDragAreaWidth(int dragAreaWidth) {
+        getStateHelper().put(PropertyKeys.dragAreaWidth, dragAreaWidth);
     }
 
     public boolean isEditable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.editable, false);
     }
 
-    public void setEditable(boolean _editable) {
-        getStateHelper().put(PropertyKeys.editable, _editable);
+    public void setEditable(boolean editable) {
+        getStateHelper().put(PropertyKeys.editable, editable);
     }
 
     public boolean isSelectable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.selectable, true);
     }
 
-    public void setSelectable(boolean _selectable) {
-        getStateHelper().put(PropertyKeys.selectable, _selectable);
+    public void setSelectable(boolean selectable) {
+        getStateHelper().put(PropertyKeys.selectable, selectable);
     }
 
     public boolean isUnselectable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.unselectable, true);
     }
 
-    public void setUnselectable(boolean _unselectable) {
-        getStateHelper().put(PropertyKeys.unselectable, _unselectable);
+    public void setUnselectable(boolean unselectable) {
+        getStateHelper().put(PropertyKeys.unselectable, unselectable);
     }
 
     public boolean isZoomable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.zoomable, true);
     }
 
-    public void setZoomable(boolean _zoomable) {
-        getStateHelper().put(PropertyKeys.zoomable, _zoomable);
+    public void setZoomable(boolean zoomable) {
+        getStateHelper().put(PropertyKeys.zoomable, zoomable);
     }
 
     public boolean isMoveable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.moveable, true);
     }
 
-    public void setMoveable(boolean _moveable) {
-        getStateHelper().put(PropertyKeys.moveable, _moveable);
+    public void setMoveable(boolean moveable) {
+        getStateHelper().put(PropertyKeys.moveable, moveable);
     }
 
     public java.util.Date getStart() {
         return (java.util.Date) getStateHelper().eval(PropertyKeys.start, null);
     }
 
-    public void setStart(java.util.Date _start) {
-        getStateHelper().put(PropertyKeys.start, _start);
+    public void setStart(java.util.Date start) {
+        getStateHelper().put(PropertyKeys.start, start);
     }
 
     public java.util.Date getEnd() {
         return (java.util.Date) getStateHelper().eval(PropertyKeys.end, null);
     }
 
-    public void setEnd(java.util.Date _end) {
-        getStateHelper().put(PropertyKeys.end, _end);
+    public void setEnd(java.util.Date end) {
+        getStateHelper().put(PropertyKeys.end, end);
     }
 
     public java.util.Date getMin() {
         return (java.util.Date) getStateHelper().eval(PropertyKeys.min, null);
     }
 
-    public void setMin(java.util.Date _min) {
-        getStateHelper().put(PropertyKeys.min, _min);
+    public void setMin(java.util.Date min) {
+        getStateHelper().put(PropertyKeys.min, min);
     }
 
     public java.util.Date getMax() {
         return (java.util.Date) getStateHelper().eval(PropertyKeys.max, null);
     }
 
-    public void setMax(java.util.Date _max) {
-        getStateHelper().put(PropertyKeys.max, _max);
+    public void setMax(java.util.Date max) {
+        getStateHelper().put(PropertyKeys.max, max);
     }
 
     public java.lang.Long getZoomMin() {
         return (java.lang.Long) getStateHelper().eval(PropertyKeys.zoomMin, 10L);
     }
 
-    public void setZoomMin(java.lang.Long _zoomMin) {
-        getStateHelper().put(PropertyKeys.zoomMin, _zoomMin);
+    public void setZoomMin(java.lang.Long zoomMin) {
+        getStateHelper().put(PropertyKeys.zoomMin, zoomMin);
     }
 
     public java.lang.Long getZoomMax() {
         return (java.lang.Long) getStateHelper().eval(PropertyKeys.zoomMax, 315360000000000L);
     }
 
-    public void setZoomMax(java.lang.Long _zoomMax) {
-        getStateHelper().put(PropertyKeys.zoomMax, _zoomMax);
+    public void setZoomMax(java.lang.Long zoomMax) {
+        getStateHelper().put(PropertyKeys.zoomMax, zoomMax);
     }
 
     public java.lang.Float getPreloadFactor() {
         return (java.lang.Float) getStateHelper().eval(PropertyKeys.preloadFactor, 0.0f);
     }
 
-    public void setPreloadFactor(java.lang.Float _preloadFactor) {
-        getStateHelper().put(PropertyKeys.preloadFactor, _preloadFactor);
+    public void setPreloadFactor(java.lang.Float preloadFactor) {
+        getStateHelper().put(PropertyKeys.preloadFactor, preloadFactor);
     }
 
     public int getEventMargin() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.eventMargin, 10);
     }
 
-    public void setEventMargin(int _eventMargin) {
-        getStateHelper().put(PropertyKeys.eventMargin, _eventMargin);
+    public void setEventMargin(int eventMargin) {
+        getStateHelper().put(PropertyKeys.eventMargin, eventMargin);
     }
 
     public int getEventMarginAxis() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.eventMarginAxis, 10);
     }
 
-    public void setEventMarginAxis(int _eventMarginAxis) {
-        getStateHelper().put(PropertyKeys.eventMarginAxis, _eventMarginAxis);
+    public void setEventMarginAxis(int eventMarginAxis) {
+        getStateHelper().put(PropertyKeys.eventMarginAxis, eventMarginAxis);
     }
 
-    public java.lang.String getEventStyle() {
+    public String getEventStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.eventStyle, "box");
     }
 
-    public void setEventStyle(java.lang.String _eventStyle) {
-        getStateHelper().put(PropertyKeys.eventStyle, _eventStyle);
+    public void setEventStyle(String eventStyle) {
+        getStateHelper().put(PropertyKeys.eventStyle, eventStyle);
     }
 
     public boolean isGroupsChangeable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.groupsChangeable, true);
     }
 
-    public void setGroupsChangeable(boolean _groupsChangeable) {
-        getStateHelper().put(PropertyKeys.groupsChangeable, _groupsChangeable);
+    public void setGroupsChangeable(boolean groupsChangeable) {
+        getStateHelper().put(PropertyKeys.groupsChangeable, groupsChangeable);
     }
 
     public boolean isGroupsOnRight() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.groupsOnRight, false);
     }
 
-    public void setGroupsOnRight(boolean _groupsOnRight) {
-        getStateHelper().put(PropertyKeys.groupsOnRight, _groupsOnRight);
+    public void setGroupsOnRight(boolean groupsOnRight) {
+        getStateHelper().put(PropertyKeys.groupsOnRight, groupsOnRight);
     }
 
     public boolean isGroupsOrder() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.groupsOrder, true);
     }
 
-    public void setGroupsOrder(boolean _groupsOrder) {
-        getStateHelper().put(PropertyKeys.groupsOrder, _groupsOrder);
+    public void setGroupsOrder(boolean groupsOrder) {
+        getStateHelper().put(PropertyKeys.groupsOrder, groupsOrder);
     }
 
-    public java.lang.String getGroupsWidth() {
+    public String getGroupsWidth() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.groupsWidth, null);
     }
 
-    public void setGroupsWidth(java.lang.String _groupsWidth) {
-        getStateHelper().put(PropertyKeys.groupsWidth, _groupsWidth);
+    public void setGroupsWidth(String groupsWidth) {
+        getStateHelper().put(PropertyKeys.groupsWidth, groupsWidth);
     }
 
     public int getGroupMinHeight() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.groupMinHeight, 0);
     }
 
-    public void setGroupMinHeight(int _groupMinHeight) {
-        getStateHelper().put(PropertyKeys.groupMinHeight, _groupMinHeight);
+    public void setGroupMinHeight(int groupMinHeight) {
+        getStateHelper().put(PropertyKeys.groupMinHeight, groupMinHeight);
     }
 
     public boolean isSnapEvents() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.snapEvents, true);
     }
 
-    public void setSnapEvents(boolean _snapEvents) {
-        getStateHelper().put(PropertyKeys.snapEvents, _snapEvents);
+    public void setSnapEvents(boolean snapEvents) {
+        getStateHelper().put(PropertyKeys.snapEvents, snapEvents);
     }
 
     public boolean isStackEvents() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.stackEvents, true);
     }
 
-    public void setStackEvents(boolean _stackEvents) {
-        getStateHelper().put(PropertyKeys.stackEvents, _stackEvents);
+    public void setStackEvents(boolean stackEvents) {
+        getStateHelper().put(PropertyKeys.stackEvents, stackEvents);
     }
 
     public boolean isShowCurrentTime() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showCurrentTime, true);
     }
 
-    public void setShowCurrentTime(boolean _showCurrentTime) {
-        getStateHelper().put(PropertyKeys.showCurrentTime, _showCurrentTime);
+    public void setShowCurrentTime(boolean showCurrentTime) {
+        getStateHelper().put(PropertyKeys.showCurrentTime, showCurrentTime);
     }
 
     public boolean isShowMajorLabels() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showMajorLabels, true);
     }
 
-    public void setShowMajorLabels(boolean _showMajorLabels) {
-        getStateHelper().put(PropertyKeys.showMajorLabels, _showMajorLabels);
+    public void setShowMajorLabels(boolean showMajorLabels) {
+        getStateHelper().put(PropertyKeys.showMajorLabels, showMajorLabels);
     }
 
     public boolean isShowMinorLabels() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showMinorLabels, true);
     }
 
-    public void setShowMinorLabels(boolean _showMinorLabels) {
-        getStateHelper().put(PropertyKeys.showMinorLabels, _showMinorLabels);
+    public void setShowMinorLabels(boolean showMinorLabels) {
+        getStateHelper().put(PropertyKeys.showMinorLabels, showMinorLabels);
     }
 
     public boolean isShowButtonNew() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showButtonNew, false);
     }
 
-    public void setShowButtonNew(boolean _showButtonNew) {
-        getStateHelper().put(PropertyKeys.showButtonNew, _showButtonNew);
+    public void setShowButtonNew(boolean showButtonNew) {
+        getStateHelper().put(PropertyKeys.showButtonNew, showButtonNew);
     }
 
     public boolean isShowNavigation() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showNavigation, false);
     }
 
-    public void setShowNavigation(boolean _showNavigation) {
-        getStateHelper().put(PropertyKeys.showNavigation, _showNavigation);
+    public void setShowNavigation(boolean showNavigation) {
+        getStateHelper().put(PropertyKeys.showNavigation, showNavigation);
     }
 
     public boolean isTimeChangeable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.timeChangeable, true);
     }
 
-    public void setTimeChangeable(boolean _timeChangeable) {
-        getStateHelper().put(PropertyKeys.timeChangeable, _timeChangeable);
+    public void setTimeChangeable(boolean timeChangeable) {
+        getStateHelper().put(PropertyKeys.timeChangeable, timeChangeable);
     }
 
-    public java.lang.String getDropHoverStyleClass() {
+    public String getDropHoverStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.dropHoverStyleClass, null);
     }
 
-    public void setDropHoverStyleClass(java.lang.String _dropHoverStyleClass) {
-        getStateHelper().put(PropertyKeys.dropHoverStyleClass, _dropHoverStyleClass);
+    public void setDropHoverStyleClass(String dropHoverStyleClass) {
+        getStateHelper().put(PropertyKeys.dropHoverStyleClass, dropHoverStyleClass);
     }
 
-    public java.lang.String getDropActiveStyleClass() {
+    public String getDropActiveStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.dropActiveStyleClass, null);
     }
 
-    public void setDropActiveStyleClass(java.lang.String _dropActiveStyleClass) {
-        getStateHelper().put(PropertyKeys.dropActiveStyleClass, _dropActiveStyleClass);
+    public void setDropActiveStyleClass(String dropActiveStyleClass) {
+        getStateHelper().put(PropertyKeys.dropActiveStyleClass, dropActiveStyleClass);
     }
 
-    public java.lang.String getDropAccept() {
+    public String getDropAccept() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.dropAccept, null);
     }
 
-    public void setDropAccept(java.lang.String _dropAccept) {
-        getStateHelper().put(PropertyKeys.dropAccept, _dropAccept);
+    public void setDropAccept(String dropAccept) {
+        getStateHelper().put(PropertyKeys.dropAccept, dropAccept);
     }
 
-    public java.lang.String getDropScope() {
+    public String getDropScope() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.dropScope, null);
     }
 
-    public void setDropScope(java.lang.String _dropScope) {
-        getStateHelper().put(PropertyKeys.dropScope, _dropScope);
+    public void setDropScope(String dropScope) {
+        getStateHelper().put(PropertyKeys.dropScope, dropScope);
     }
 
     public boolean isAnimate() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.animate, true);
     }
 
-    public void setAnimate(boolean _animate) {
-        getStateHelper().put(PropertyKeys.animate, _animate);
+    public void setAnimate(boolean animate) {
+        getStateHelper().put(PropertyKeys.animate, animate);
     }
 
     public boolean isAnimateZoom() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.animateZoom, true);
     }
 
-    public void setAnimateZoom(boolean _animateZoom) {
-        getStateHelper().put(PropertyKeys.animateZoom, _animateZoom);
+    public void setAnimateZoom(boolean animateZoom) {
+        getStateHelper().put(PropertyKeys.animateZoom, animateZoom);
     }
 
     @Override

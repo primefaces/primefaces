@@ -73,26 +73,26 @@ abstract class ColumnsBase extends UIData implements UIColumn {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.sortBy, null);
     }
 
-    public void setSortBy(java.lang.Object _sortBy) {
-        getStateHelper().put(PropertyKeys.sortBy, _sortBy);
+    public void setSortBy(java.lang.Object sortBy) {
+        getStateHelper().put(PropertyKeys.sortBy, sortBy);
     }
 
     @Override
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
     @Override
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     @Override
@@ -100,8 +100,8 @@ abstract class ColumnsBase extends UIData implements UIColumn {
         return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.sortFunction, null);
     }
 
-    public void setSortFunction(javax.el.MethodExpression _sortFunction) {
-        getStateHelper().put(PropertyKeys.sortFunction, _sortFunction);
+    public void setSortFunction(javax.el.MethodExpression sortFunction) {
+        getStateHelper().put(PropertyKeys.sortFunction, sortFunction);
     }
 
     @Override
@@ -109,26 +109,26 @@ abstract class ColumnsBase extends UIData implements UIColumn {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.filterBy, null);
     }
 
-    public void setFilterBy(java.lang.Object _filterBy) {
-        getStateHelper().put(PropertyKeys.filterBy, _filterBy);
+    public void setFilterBy(java.lang.Object filterBy) {
+        getStateHelper().put(PropertyKeys.filterBy, filterBy);
     }
 
     @Override
-    public java.lang.String getFilterStyle() {
+    public String getFilterStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.filterStyle, null);
     }
 
-    public void setFilterStyle(java.lang.String _filterStyle) {
-        getStateHelper().put(PropertyKeys.filterStyle, _filterStyle);
+    public void setFilterStyle(String filterStyle) {
+        getStateHelper().put(PropertyKeys.filterStyle, filterStyle);
     }
 
     @Override
-    public java.lang.String getFilterStyleClass() {
+    public String getFilterStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.filterStyleClass, null);
     }
 
-    public void setFilterStyleClass(java.lang.String _filterStyleClass) {
-        getStateHelper().put(PropertyKeys.filterStyleClass, _filterStyleClass);
+    public void setFilterStyleClass(String filterStyleClass) {
+        getStateHelper().put(PropertyKeys.filterStyleClass, filterStyleClass);
     }
 
     @Override
@@ -136,26 +136,26 @@ abstract class ColumnsBase extends UIData implements UIColumn {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.filterOptions, null);
     }
 
-    public void setFilterOptions(java.lang.Object _filterOptions) {
-        getStateHelper().put(PropertyKeys.filterOptions, _filterOptions);
+    public void setFilterOptions(java.lang.Object filterOptions) {
+        getStateHelper().put(PropertyKeys.filterOptions, filterOptions);
     }
 
     @Override
-    public java.lang.String getFilterMatchMode() {
+    public String getFilterMatchMode() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.filterMatchMode, "startsWith");
     }
 
-    public void setFilterMatchMode(java.lang.String _filterMatchMode) {
-        getStateHelper().put(PropertyKeys.filterMatchMode, _filterMatchMode);
+    public void setFilterMatchMode(String filterMatchMode) {
+        getStateHelper().put(PropertyKeys.filterMatchMode, filterMatchMode);
     }
 
     @Override
-    public java.lang.String getFilterPosition() {
+    public String getFilterPosition() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.filterPosition, "bottom");
     }
 
-    public void setFilterPosition(java.lang.String _filterPosition) {
-        getStateHelper().put(PropertyKeys.filterPosition, _filterPosition);
+    public void setFilterPosition(String filterPosition) {
+        getStateHelper().put(PropertyKeys.filterPosition, filterPosition);
     }
 
     @Override
@@ -163,8 +163,8 @@ abstract class ColumnsBase extends UIData implements UIColumn {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.filterValue, null);
     }
 
-    public void setFilterValue(java.lang.Object _filterValue) {
-        getStateHelper().put(PropertyKeys.filterValue, _filterValue);
+    public void setFilterValue(java.lang.Object filterValue) {
+        getStateHelper().put(PropertyKeys.filterValue, filterValue);
     }
 
     @Override
@@ -172,8 +172,8 @@ abstract class ColumnsBase extends UIData implements UIColumn {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.rowspan, 1);
     }
 
-    public void setRowspan(int _rowspan) {
-        getStateHelper().put(PropertyKeys.rowspan, _rowspan);
+    public void setRowspan(int rowspan) {
+        getStateHelper().put(PropertyKeys.rowspan, rowspan);
     }
 
     @Override
@@ -181,26 +181,26 @@ abstract class ColumnsBase extends UIData implements UIColumn {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.colspan, 1);
     }
 
-    public void setColspan(int _colspan) {
-        getStateHelper().put(PropertyKeys.colspan, _colspan);
+    public void setColspan(int colspan) {
+        getStateHelper().put(PropertyKeys.colspan, colspan);
     }
 
     @Override
-    public java.lang.String getHeaderText() {
+    public String getHeaderText() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.headerText, null);
     }
 
-    public void setHeaderText(java.lang.String _headerText) {
-        getStateHelper().put(PropertyKeys.headerText, _headerText);
+    public void setHeaderText(String headerText) {
+        getStateHelper().put(PropertyKeys.headerText, headerText);
     }
 
     @Override
-    public java.lang.String getFooterText() {
+    public String getFooterText() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.footerText, null);
     }
 
-    public void setFooterText(java.lang.String _footerText) {
-        getStateHelper().put(PropertyKeys.footerText, _footerText);
+    public void setFooterText(String footerText) {
+        getStateHelper().put(PropertyKeys.footerText, footerText);
     }
 
     @Override
@@ -208,8 +208,8 @@ abstract class ColumnsBase extends UIData implements UIColumn {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.filterMaxLength, java.lang.Integer.MAX_VALUE);
     }
 
-    public void setFilterMaxLength(int _filterMaxLength) {
-        getStateHelper().put(PropertyKeys.filterMaxLength, _filterMaxLength);
+    public void setFilterMaxLength(int filterMaxLength) {
+        getStateHelper().put(PropertyKeys.filterMaxLength, filterMaxLength);
     }
 
     @Override
@@ -217,8 +217,8 @@ abstract class ColumnsBase extends UIData implements UIColumn {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.resizable, true);
     }
 
-    public void setResizable(boolean _resizable) {
-        getStateHelper().put(PropertyKeys.resizable, _resizable);
+    public void setResizable(boolean resizable) {
+        getStateHelper().put(PropertyKeys.resizable, resizable);
     }
 
     @Override
@@ -226,17 +226,17 @@ abstract class ColumnsBase extends UIData implements UIColumn {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.exportable, true);
     }
 
-    public void setExportable(boolean _exportable) {
-        getStateHelper().put(PropertyKeys.exportable, _exportable);
+    public void setExportable(boolean exportable) {
+        getStateHelper().put(PropertyKeys.exportable, exportable);
     }
 
     @Override
-    public java.lang.String getWidth() {
+    public String getWidth() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.width, null);
     }
 
-    public void setWidth(java.lang.String _width) {
-        getStateHelper().put(PropertyKeys.width, _width);
+    public void setWidth(String width) {
+        getStateHelper().put(PropertyKeys.width, width);
     }
 
     @Override
@@ -244,8 +244,8 @@ abstract class ColumnsBase extends UIData implements UIColumn {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.toggleable, true);
     }
 
-    public void setToggleable(boolean _toggleable) {
-        getStateHelper().put(PropertyKeys.toggleable, _toggleable);
+    public void setToggleable(boolean toggleable) {
+        getStateHelper().put(PropertyKeys.toggleable, toggleable);
     }
 
     @Override
@@ -253,17 +253,17 @@ abstract class ColumnsBase extends UIData implements UIColumn {
         return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.filterFunction, null);
     }
 
-    public void setFilterFunction(javax.el.MethodExpression _filterFunction) {
-        getStateHelper().put(PropertyKeys.filterFunction, _filterFunction);
+    public void setFilterFunction(javax.el.MethodExpression filterFunction) {
+        getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
     }
 
     @Override
-    public java.lang.String getField() {
+    public String getField() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.field, null);
     }
 
-    public void setField(java.lang.String _field) {
-        getStateHelper().put(PropertyKeys.field, _field);
+    public void setField(String field) {
+        getStateHelper().put(PropertyKeys.field, field);
     }
 
     @Override
@@ -271,8 +271,8 @@ abstract class ColumnsBase extends UIData implements UIColumn {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.priority, 0);
     }
 
-    public void setPriority(int _priority) {
-        getStateHelper().put(PropertyKeys.priority, _priority);
+    public void setPriority(int priority) {
+        getStateHelper().put(PropertyKeys.priority, priority);
     }
 
     @Override
@@ -280,8 +280,8 @@ abstract class ColumnsBase extends UIData implements UIColumn {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.sortable, true);
     }
 
-    public void setSortable(boolean _sortable) {
-        getStateHelper().put(PropertyKeys.sortable, _sortable);
+    public void setSortable(boolean sortable) {
+        getStateHelper().put(PropertyKeys.sortable, sortable);
     }
 
     @Override
@@ -289,8 +289,8 @@ abstract class ColumnsBase extends UIData implements UIColumn {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.filterable, true);
     }
 
-    public void setFilterable(boolean _filterable) {
-        getStateHelper().put(PropertyKeys.filterable, _filterable);
+    public void setFilterable(boolean filterable) {
+        getStateHelper().put(PropertyKeys.filterable, filterable);
     }
 
     @Override
@@ -298,8 +298,8 @@ abstract class ColumnsBase extends UIData implements UIColumn {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.visible, true);
     }
 
-    public void setVisible(boolean _visible) {
-        getStateHelper().put(PropertyKeys.visible, _visible);
+    public void setVisible(boolean visible) {
+        getStateHelper().put(PropertyKeys.visible, visible);
     }
 
     @Override
@@ -307,17 +307,17 @@ abstract class ColumnsBase extends UIData implements UIColumn {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.selectRow, true);
     }
 
-    public void setSelectRow(boolean _selectRow) {
-        getStateHelper().put(PropertyKeys.selectRow, _selectRow);
+    public void setSelectRow(boolean selectRow) {
+        getStateHelper().put(PropertyKeys.selectRow, selectRow);
     }
 
     @Override
-    public java.lang.String getAriaHeaderText() {
+    public String getAriaHeaderText() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.ariaHeaderText, null);
     }
 
-    public void setAriaHeaderText(java.lang.String _ariaHeaderText) {
-        getStateHelper().put(PropertyKeys.ariaHeaderText, _ariaHeaderText);
+    public void setAriaHeaderText(String ariaHeaderText) {
+        getStateHelper().put(PropertyKeys.ariaHeaderText, ariaHeaderText);
     }
 
     @Override
@@ -325,8 +325,8 @@ abstract class ColumnsBase extends UIData implements UIColumn {
         return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.exportFunction, null);
     }
 
-    public void setExportFunction(javax.el.MethodExpression _exportFunction) {
-        getStateHelper().put(PropertyKeys.exportFunction, _exportFunction);
+    public void setExportFunction(javax.el.MethodExpression exportFunction) {
+        getStateHelper().put(PropertyKeys.exportFunction, exportFunction);
     }
 
     @Override
@@ -334,26 +334,26 @@ abstract class ColumnsBase extends UIData implements UIColumn {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.groupRow, false);
     }
 
-    public void setGroupRow(boolean _groupRow) {
-        getStateHelper().put(PropertyKeys.groupRow, _groupRow);
+    public void setGroupRow(boolean groupRow) {
+        getStateHelper().put(PropertyKeys.groupRow, groupRow);
     }
 
     @Override
-    public java.lang.String getExportHeaderValue() {
+    public String getExportHeaderValue() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.exportHeaderValue, null);
     }
 
-    public void setExportHeaderValue(java.lang.String _exportHeaderValue) {
-        getStateHelper().put(PropertyKeys.exportHeaderValue, _exportHeaderValue);
+    public void setExportHeaderValue(String exportHeaderValue) {
+        getStateHelper().put(PropertyKeys.exportHeaderValue, exportHeaderValue);
     }
 
     @Override
-    public java.lang.String getExportFooterValue() {
+    public String getExportFooterValue() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.exportFooterValue, null);
     }
 
-    public void setExportFooterValue(java.lang.String _exportFooterValue) {
-        getStateHelper().put(PropertyKeys.exportFooterValue, _exportFooterValue);
+    public void setExportFooterValue(String exportFooterValue) {
+        getStateHelper().put(PropertyKeys.exportFooterValue, exportFooterValue);
     }
 
 }

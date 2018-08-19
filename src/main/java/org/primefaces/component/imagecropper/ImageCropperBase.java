@@ -40,7 +40,7 @@ abstract class ImageCropperBase extends UIInput implements Widget {
         initialCoords,
         boxWidth,
         boxHeight,
-        sizeLimit;
+        sizeLimit
     }
 
     public ImageCropperBase() {
@@ -52,102 +52,103 @@ abstract class ImageCropperBase extends UIInput implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getImage() {
+    public String getImage() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.image, null);
     }
 
-    public void setImage(java.lang.String _image) {
-        getStateHelper().put(PropertyKeys.image, _image);
+    public void setImage(String image) {
+        getStateHelper().put(PropertyKeys.image, image);
     }
 
-    public java.lang.String getAlt() {
+    public String getAlt() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.alt, null);
     }
 
-    public void setAlt(java.lang.String _alt) {
-        getStateHelper().put(PropertyKeys.alt, _alt);
+    public void setAlt(String alt) {
+        getStateHelper().put(PropertyKeys.alt, alt);
     }
 
     public double getAspectRatio() {
         return (java.lang.Double) getStateHelper().eval(PropertyKeys.aspectRatio, java.lang.Double.MIN_VALUE);
     }
 
-    public void setAspectRatio(double _aspectRatio) {
-        getStateHelper().put(PropertyKeys.aspectRatio, _aspectRatio);
+    public void setAspectRatio(double aspectRatio) {
+        getStateHelper().put(PropertyKeys.aspectRatio, aspectRatio);
     }
 
-    public java.lang.String getMinSize() {
+    public String getMinSize() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.minSize, null);
     }
 
-    public void setMinSize(java.lang.String _minSize) {
-        getStateHelper().put(PropertyKeys.minSize, _minSize);
+    public void setMinSize(String minSize) {
+        getStateHelper().put(PropertyKeys.minSize, minSize);
     }
 
-    public java.lang.String getMaxSize() {
+    public String getMaxSize() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.maxSize, null);
     }
 
-    public void setMaxSize(java.lang.String _maxSize) {
-        getStateHelper().put(PropertyKeys.maxSize, _maxSize);
+    public void setMaxSize(String maxSize) {
+        getStateHelper().put(PropertyKeys.maxSize, maxSize);
     }
 
-    public java.lang.String getBackgroundColor() {
+    public String getBackgroundColor() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.backgroundColor, null);
     }
 
-    public void setBackgroundColor(java.lang.String _backgroundColor) {
-        getStateHelper().put(PropertyKeys.backgroundColor, _backgroundColor);
+    public void setBackgroundColor(String backgroundColor) {
+        getStateHelper().put(PropertyKeys.backgroundColor, backgroundColor);
     }
 
     public double getBackgroundOpacity() {
         return (java.lang.Double) getStateHelper().eval(PropertyKeys.backgroundOpacity, 0.6);
     }
 
-    public void setBackgroundOpacity(double _backgroundOpacity) {
-        getStateHelper().put(PropertyKeys.backgroundOpacity, _backgroundOpacity);
+    public void setBackgroundOpacity(double backgroundOpacity) {
+        getStateHelper().put(PropertyKeys.backgroundOpacity, backgroundOpacity);
     }
 
-    public java.lang.String getInitialCoords() {
+    public String getInitialCoords() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.initialCoords, null);
     }
 
-    public void setInitialCoords(java.lang.String _initialCoords) {
-        getStateHelper().put(PropertyKeys.initialCoords, _initialCoords);
+    public void setInitialCoords(String initialCoords) {
+        getStateHelper().put(PropertyKeys.initialCoords, initialCoords);
     }
 
     public int getBoxWidth() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.boxWidth, 0);
     }
 
-    public void setBoxWidth(int _boxWidth) {
-        getStateHelper().put(PropertyKeys.boxWidth, _boxWidth);
+    public void setBoxWidth(int boxWidth) {
+        getStateHelper().put(PropertyKeys.boxWidth, boxWidth);
     }
 
     public int getBoxHeight() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.boxHeight, 0);
     }
 
-    public void setBoxHeight(int _boxHeight) {
-        getStateHelper().put(PropertyKeys.boxHeight, _boxHeight);
+    public void setBoxHeight(int boxHeight) {
+        getStateHelper().put(PropertyKeys.boxHeight, boxHeight);
     }
 
     public java.lang.Long getSizeLimit() {
         return (java.lang.Long) getStateHelper().eval(PropertyKeys.sizeLimit, 10485760L);
     }
 
-    public void setSizeLimit(java.lang.Long _sizeLimit) {
-        getStateHelper().put(PropertyKeys.sizeLimit, _sizeLimit);
+    public void setSizeLimit(java.lang.Long sizeLimit) {
+        getStateHelper().put(PropertyKeys.sizeLimit, sizeLimit);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

@@ -49,52 +49,52 @@ abstract class DataViewBase extends UIData implements Widget, ClientBehaviorHold
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getLayout() {
+    public String getLayout() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.layout, "list");
     }
 
-    public void setLayout(java.lang.String _layout) {
-        getStateHelper().put(PropertyKeys.layout, _layout);
+    public void setLayout(String layout) {
+        getStateHelper().put(PropertyKeys.layout, layout);
     }
 
-    public java.lang.String getGridIcon() {
+    public String getGridIcon() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.gridIcon, null);
     }
 
-    public void setGridIcon(java.lang.String _gridIcon) {
-        getStateHelper().put(PropertyKeys.gridIcon, _gridIcon);
+    public void setGridIcon(String gridIcon) {
+        getStateHelper().put(PropertyKeys.gridIcon, gridIcon);
     }
 
-    public java.lang.String getListIcon() {
+    public String getListIcon() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.listIcon, null);
     }
 
-    public void setListIcon(java.lang.String _listIcon) {
-        getStateHelper().put(PropertyKeys.listIcon, _listIcon);
+    public void setListIcon(String listIcon) {
+        getStateHelper().put(PropertyKeys.listIcon, listIcon);
     }
 
     @Override

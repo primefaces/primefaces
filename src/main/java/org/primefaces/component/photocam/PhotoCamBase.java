@@ -54,116 +54,116 @@ abstract class PhotoCamBase extends UIInput implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getProcess() {
+    public String getProcess() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.process, null);
     }
 
-    public void setProcess(java.lang.String _process) {
-        getStateHelper().put(PropertyKeys.process, _process);
+    public void setProcess(String process) {
+        getStateHelper().put(PropertyKeys.process, process);
     }
 
-    public java.lang.String getUpdate() {
+    public String getUpdate() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.update, null);
     }
 
-    public void setUpdate(java.lang.String _update) {
-        getStateHelper().put(PropertyKeys.update, _update);
+    public void setUpdate(String update) {
+        getStateHelper().put(PropertyKeys.update, update);
     }
 
     public javax.el.MethodExpression getListener() {
         return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
     }
 
-    public void setListener(javax.el.MethodExpression _listener) {
-        getStateHelper().put(PropertyKeys.listener, _listener);
+    public void setListener(javax.el.MethodExpression listener) {
+        getStateHelper().put(PropertyKeys.listener, listener);
     }
 
     public int getWidth() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.width, 320);
     }
 
-    public void setWidth(int _width) {
-        getStateHelper().put(PropertyKeys.width, _width);
+    public void setWidth(int width) {
+        getStateHelper().put(PropertyKeys.width, width);
     }
 
     public int getHeight() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.height, 240);
     }
 
-    public void setHeight(int _height) {
-        getStateHelper().put(PropertyKeys.height, _height);
+    public void setHeight(int height) {
+        getStateHelper().put(PropertyKeys.height, height);
     }
 
     public int getPhotoWidth() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.photoWidth, 320);
     }
 
-    public void setPhotoWidth(int _photoWidth) {
-        getStateHelper().put(PropertyKeys.photoWidth, _photoWidth);
+    public void setPhotoWidth(int photoWidth) {
+        getStateHelper().put(PropertyKeys.photoWidth, photoWidth);
     }
 
     public int getPhotoHeight() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.photoHeight, 240);
     }
 
-    public void setPhotoHeight(int _photoHeight) {
-        getStateHelper().put(PropertyKeys.photoHeight, _photoHeight);
+    public void setPhotoHeight(int photoHeight) {
+        getStateHelper().put(PropertyKeys.photoHeight, photoHeight);
     }
 
-    public java.lang.String getFormat() {
+    public String getFormat() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.format, null);
     }
 
-    public void setFormat(java.lang.String _format) {
-        getStateHelper().put(PropertyKeys.format, _format);
+    public void setFormat(String format) {
+        getStateHelper().put(PropertyKeys.format, format);
     }
 
     public int getJpegQuality() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.jpegQuality, 90);
     }
 
-    public void setJpegQuality(int _jpegQuality) {
-        getStateHelper().put(PropertyKeys.jpegQuality, _jpegQuality);
+    public void setJpegQuality(int jpegQuality) {
+        getStateHelper().put(PropertyKeys.jpegQuality, jpegQuality);
     }
 
     public boolean isForceFlash() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.forceFlash, false);
     }
 
-    public void setForceFlash(boolean _forceFlash) {
-        getStateHelper().put(PropertyKeys.forceFlash, _forceFlash);
+    public void setForceFlash(boolean forceFlash) {
+        getStateHelper().put(PropertyKeys.forceFlash, forceFlash);
     }
 
     public boolean isAutoStart() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoStart, true);
     }
 
-    public void setAutoStart(boolean _autoStart) {
-        getStateHelper().put(PropertyKeys.autoStart, _autoStart);
+    public void setAutoStart(boolean autoStart) {
+        getStateHelper().put(PropertyKeys.autoStart, autoStart);
     }
 
     @Override

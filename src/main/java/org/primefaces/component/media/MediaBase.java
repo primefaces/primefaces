@@ -50,72 +50,72 @@ abstract class MediaBase extends UIComponentBase {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.value, null);
     }
 
-    public void setValue(java.lang.Object _value) {
-        getStateHelper().put(PropertyKeys.value, _value);
+    public void setValue(java.lang.Object value) {
+        getStateHelper().put(PropertyKeys.value, value);
     }
 
-    public java.lang.String getPlayer() {
+    public String getPlayer() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.player, null);
     }
 
-    public void setPlayer(java.lang.String _player) {
-        getStateHelper().put(PropertyKeys.player, _player);
+    public void setPlayer(String player) {
+        getStateHelper().put(PropertyKeys.player, player);
     }
 
-    public java.lang.String getWidth() {
+    public String getWidth() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.width, null);
     }
 
-    public void setWidth(java.lang.String _width) {
-        getStateHelper().put(PropertyKeys.width, _width);
+    public void setWidth(String width) {
+        getStateHelper().put(PropertyKeys.width, width);
     }
 
-    public java.lang.String getHeight() {
+    public String getHeight() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.height, null);
     }
 
-    public void setHeight(java.lang.String _height) {
-        getStateHelper().put(PropertyKeys.height, _height);
+    public void setHeight(String height) {
+        getStateHelper().put(PropertyKeys.height, height);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public boolean isCache() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.cache, true);
     }
 
-    public void setCache(boolean _cache) {
-        getStateHelper().put(PropertyKeys.cache, _cache);
+    public void setCache(boolean cache) {
+        getStateHelper().put(PropertyKeys.cache, cache);
     }
 
-    public java.lang.String getZoom() {
+    public String getZoom() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.zoom, null);
     }
 
-    public void setZoom(java.lang.String _zoom) {
-        getStateHelper().put(PropertyKeys.zoom, _zoom);
+    public void setZoom(String zoom) {
+        getStateHelper().put(PropertyKeys.zoom, zoom);
     }
 
-    public java.lang.String getView() {
+    public String getView() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.view, null);
     }
 
-    public void setView(java.lang.String _view) {
-        getStateHelper().put(PropertyKeys.view, _view);
+    public void setView(String view) {
+        getStateHelper().put(PropertyKeys.view, view);
     }
 
 }

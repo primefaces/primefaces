@@ -50,7 +50,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
         labelTemplate,
         placeholder,
         autoWidth,
-        dynamic
+        dynamic;
     }
 
     public SelectOneMenuBase() {
@@ -62,177 +62,174 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getEffect() {
+    public String getEffect() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, null);
     }
 
-    public void setEffect(java.lang.String _effect) {
-        getStateHelper().put(PropertyKeys.effect, _effect);
+    public void setEffect(String effect) {
+        getStateHelper().put(PropertyKeys.effect, effect);
     }
 
-    public java.lang.String getEffectSpeed() {
+    public String getEffectSpeed() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.effectSpeed, null);
     }
 
-    public void setEffectSpeed(java.lang.String _effectSpeed) {
-        getStateHelper().put(PropertyKeys.effectSpeed, _effectSpeed);
+    public void setEffectSpeed(String effectSpeed) {
+        getStateHelper().put(PropertyKeys.effectSpeed, effectSpeed);
     }
 
-    public java.lang.String getPanelStyle() {
+    public String getPanelStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.panelStyle, null);
     }
 
-    public void setPanelStyle(java.lang.String _panelStyle) {
-        getStateHelper().put(PropertyKeys.panelStyle, _panelStyle);
+    public void setPanelStyle(String panelStyle) {
+        getStateHelper().put(PropertyKeys.panelStyle, panelStyle);
     }
 
-    public java.lang.String getPanelStyleClass() {
+    public String getPanelStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.panelStyleClass, null);
     }
 
-    public void setPanelStyleClass(java.lang.String _panelStyleClass) {
-        getStateHelper().put(PropertyKeys.panelStyleClass, _panelStyleClass);
+    public void setPanelStyleClass(String panelStyleClass) {
+        getStateHelper().put(PropertyKeys.panelStyleClass, panelStyleClass);
     }
 
-    public java.lang.String getVar() {
+    public String getVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
-    public void setVar(java.lang.String _var) {
-        getStateHelper().put(PropertyKeys.var, _var);
+    public void setVar(String var) {
+        getStateHelper().put(PropertyKeys.var, var);
     }
 
-    public java.lang.String getHeight() {
+    public String getHeight() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.height, "200");
     }
 
-    public void setHeight(java.lang.String _height) {
-        getStateHelper().put(PropertyKeys.height, _height);
+    public void setHeight(String height) {
+        getStateHelper().put(PropertyKeys.height, height);
     }
 
     public boolean isEditable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.editable, false);
     }
 
-    public void setEditable(boolean _editable) {
-        getStateHelper().put(PropertyKeys.editable, _editable);
+    public void setEditable(boolean editable) {
+        getStateHelper().put(PropertyKeys.editable, editable);
     }
 
     public boolean isFilter() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.filter, false);
     }
 
-    public void setFilter(boolean _filter) {
-        getStateHelper().put(PropertyKeys.filter, _filter);
+    public void setFilter(boolean filter) {
+        getStateHelper().put(PropertyKeys.filter, filter);
     }
 
-    public java.lang.String getFilterMatchMode() {
+    public String getFilterMatchMode() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
     }
 
-    public void setFilterMatchMode(java.lang.String _filterMatchMode) {
-        getStateHelper().put(PropertyKeys.filterMatchMode, _filterMatchMode);
+    public void setFilterMatchMode(String filterMatchMode) {
+        getStateHelper().put(PropertyKeys.filterMatchMode, filterMatchMode);
     }
 
-    public java.lang.String getFilterFunction() {
+    public String getFilterFunction() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.filterFunction, null);
     }
 
-    public void setFilterFunction(java.lang.String _filterFunction) {
-        getStateHelper().put(PropertyKeys.filterFunction, _filterFunction);
+    public void setFilterFunction(String filterFunction) {
+        getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
     }
 
-    public java.lang.String getFilterPlaceholder() {
+    public String getFilterPlaceholder() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.filterPlaceholder, null);
     }
 
-    public void setFilterPlaceholder(java.lang.String _filterPlaceholder) {
-        getStateHelper().put(PropertyKeys.filterPlaceholder, _filterPlaceholder);
+    public void setFilterPlaceholder(String filterPlaceholder) {
+        getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
     }
 
     public boolean isCaseSensitive() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.caseSensitive, false);
     }
 
-    public void setCaseSensitive(boolean _caseSensitive) {
-        getStateHelper().put(PropertyKeys.caseSensitive, _caseSensitive);
+    public void setCaseSensitive(boolean caseSensitive) {
+        getStateHelper().put(PropertyKeys.caseSensitive, caseSensitive);
     }
 
     public int getMaxlength() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxlength, Integer.MAX_VALUE);
     }
 
-    public void setMaxlength(int _maxlength) {
-        getStateHelper().put(PropertyKeys.maxlength, _maxlength);
+    public void setMaxlength(int maxlength) {
+        getStateHelper().put(PropertyKeys.maxlength, maxlength);
     }
 
-    public java.lang.String getAppendTo() {
+    public String getAppendTo() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
     }
 
-    public void setAppendTo(java.lang.String _appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, _appendTo);
+    public void setAppendTo(String appendTo) {
+        getStateHelper().put(PropertyKeys.appendTo, appendTo);
     }
 
-    @Override
-    public java.lang.String getTitle() {
+    public String getTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.title, null);
     }
 
-    @Override
-    public void setTitle(java.lang.String _title) {
-        getStateHelper().put(PropertyKeys.title, _title);
+    public void setTitle(String title) {
+        getStateHelper().put(PropertyKeys.title, title);
     }
 
     public boolean isSyncTooltip() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.syncTooltip, false);
     }
 
-    public void setSyncTooltip(boolean _syncTooltip) {
-        getStateHelper().put(PropertyKeys.syncTooltip, _syncTooltip);
+    public void setSyncTooltip(boolean syncTooltip) {
+        getStateHelper().put(PropertyKeys.syncTooltip, syncTooltip);
     }
 
-    public java.lang.String getLabelTemplate() {
+    public String getLabelTemplate() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.labelTemplate, null);
     }
 
-    public void setLabelTemplate(java.lang.String _labelTemplate) {
-        getStateHelper().put(PropertyKeys.labelTemplate, _labelTemplate);
+    public void setLabelTemplate(String labelTemplate) {
+        getStateHelper().put(PropertyKeys.labelTemplate, labelTemplate);
     }
 
-    public java.lang.String getPlaceholder() {
+    public String getPlaceholder() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
-    public void setPlaceholder(java.lang.String _placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, _placeholder);
+    public void setPlaceholder(String placeholder) {
+        getStateHelper().put(PropertyKeys.placeholder, placeholder);
     }
 
     public boolean isAutoWidth() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoWidth, true);
     }
 
-    public void setAutoWidth(boolean _autoWidth) {
-        getStateHelper().put(PropertyKeys.autoWidth, _autoWidth);
+    public void setAutoWidth(boolean autoWidth) {
+        getStateHelper().put(PropertyKeys.autoWidth, autoWidth);
     }
 
     public boolean isDynamic() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
     }
 
-    public void setDynamic(boolean _dynamic) {
-        getStateHelper().put(PropertyKeys.dynamic, _dynamic);
+    public void setDynamic(boolean dynamic) {
+        getStateHelper().put(PropertyKeys.dynamic, dynamic);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

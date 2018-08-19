@@ -43,7 +43,7 @@ abstract class KeyboardBase extends HtmlInputText implements Widget {
         promptLabel,
         closeLabel,
         clearLabel,
-        backspaceLabel;
+        backspaceLabel
     }
 
     public KeyboardBase() {
@@ -55,126 +55,127 @@ abstract class KeyboardBase extends HtmlInputText implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getPlaceholder() {
+    public String getPlaceholder() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
-    public void setPlaceholder(java.lang.String _placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, _placeholder);
+    public void setPlaceholder(String placeholder) {
+        getStateHelper().put(PropertyKeys.placeholder, placeholder);
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public boolean isPassword() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.password, false);
     }
 
-    public void setPassword(boolean _password) {
-        getStateHelper().put(PropertyKeys.password, _password);
+    public void setPassword(boolean password) {
+        getStateHelper().put(PropertyKeys.password, password);
     }
 
-    public java.lang.String getShowMode() {
+    public String getShowMode() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.showMode, "focus");
     }
 
-    public void setShowMode(java.lang.String _showMode) {
-        getStateHelper().put(PropertyKeys.showMode, _showMode);
+    public void setShowMode(String showMode) {
+        getStateHelper().put(PropertyKeys.showMode, showMode);
     }
 
-    public java.lang.String getButtonImage() {
+    public String getButtonImage() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.buttonImage, null);
     }
 
-    public void setButtonImage(java.lang.String _buttonImage) {
-        getStateHelper().put(PropertyKeys.buttonImage, _buttonImage);
+    public void setButtonImage(String buttonImage) {
+        getStateHelper().put(PropertyKeys.buttonImage, buttonImage);
     }
 
     public boolean isButtonImageOnly() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.buttonImageOnly, false);
     }
 
-    public void setButtonImageOnly(boolean _buttonImageOnly) {
-        getStateHelper().put(PropertyKeys.buttonImageOnly, _buttonImageOnly);
+    public void setButtonImageOnly(boolean buttonImageOnly) {
+        getStateHelper().put(PropertyKeys.buttonImageOnly, buttonImageOnly);
     }
 
-    public java.lang.String getEffect() {
+    public String getEffect() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, "fadeIn");
     }
 
-    public void setEffect(java.lang.String _effect) {
-        getStateHelper().put(PropertyKeys.effect, _effect);
+    public void setEffect(String effect) {
+        getStateHelper().put(PropertyKeys.effect, effect);
     }
 
-    public java.lang.String getEffectDuration() {
+    public String getEffectDuration() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.effectDuration, null);
     }
 
-    public void setEffectDuration(java.lang.String _effectDuration) {
-        getStateHelper().put(PropertyKeys.effectDuration, _effectDuration);
+    public void setEffectDuration(String effectDuration) {
+        getStateHelper().put(PropertyKeys.effectDuration, effectDuration);
     }
 
-    public java.lang.String getLayout() {
+    public String getLayout() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.layout, "qwerty");
     }
 
-    public void setLayout(java.lang.String _layout) {
-        getStateHelper().put(PropertyKeys.layout, _layout);
+    public void setLayout(String layout) {
+        getStateHelper().put(PropertyKeys.layout, layout);
     }
 
-    public java.lang.String getLayoutTemplate() {
+    public String getLayoutTemplate() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.layoutTemplate, null);
     }
 
-    public void setLayoutTemplate(java.lang.String _layoutTemplate) {
-        getStateHelper().put(PropertyKeys.layoutTemplate, _layoutTemplate);
+    public void setLayoutTemplate(String layoutTemplate) {
+        getStateHelper().put(PropertyKeys.layoutTemplate, layoutTemplate);
     }
 
     public boolean isKeypadOnly() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.keypadOnly, false);
     }
 
-    public void setKeypadOnly(boolean _keypadOnly) {
-        getStateHelper().put(PropertyKeys.keypadOnly, _keypadOnly);
+    public void setKeypadOnly(boolean keypadOnly) {
+        getStateHelper().put(PropertyKeys.keypadOnly, keypadOnly);
     }
 
-    public java.lang.String getPromptLabel() {
+    public String getPromptLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.promptLabel, null);
     }
 
-    public void setPromptLabel(java.lang.String _promptLabel) {
-        getStateHelper().put(PropertyKeys.promptLabel, _promptLabel);
+    public void setPromptLabel(String promptLabel) {
+        getStateHelper().put(PropertyKeys.promptLabel, promptLabel);
     }
 
-    public java.lang.String getCloseLabel() {
+    public String getCloseLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.closeLabel, null);
     }
 
-    public void setCloseLabel(java.lang.String _closeLabel) {
-        getStateHelper().put(PropertyKeys.closeLabel, _closeLabel);
+    public void setCloseLabel(String closeLabel) {
+        getStateHelper().put(PropertyKeys.closeLabel, closeLabel);
     }
 
-    public java.lang.String getClearLabel() {
+    public String getClearLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.clearLabel, null);
     }
 
-    public void setClearLabel(java.lang.String _clearLabel) {
-        getStateHelper().put(PropertyKeys.clearLabel, _clearLabel);
+    public void setClearLabel(String clearLabel) {
+        getStateHelper().put(PropertyKeys.clearLabel, clearLabel);
     }
 
-    public java.lang.String getBackspaceLabel() {
+    public String getBackspaceLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.backspaceLabel, null);
     }
 
-    public void setBackspaceLabel(java.lang.String _backspaceLabel) {
-        getStateHelper().put(PropertyKeys.backspaceLabel, _backspaceLabel);
+    public void setBackspaceLabel(String backspaceLabel) {
+        getStateHelper().put(PropertyKeys.backspaceLabel, backspaceLabel);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

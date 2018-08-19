@@ -46,12 +46,12 @@ abstract class DockBase extends AbstractMenu implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     @Override
@@ -59,48 +59,48 @@ abstract class DockBase extends AbstractMenu implements Widget {
         return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }
 
-    public void setModel(org.primefaces.model.menu.MenuModel _model) {
-        getStateHelper().put(PropertyKeys.model, _model);
+    public void setModel(org.primefaces.model.menu.MenuModel model) {
+        getStateHelper().put(PropertyKeys.model, model);
     }
 
-    public java.lang.String getPosition() {
+    public String getPosition() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.position, "bottom");
     }
 
-    public void setPosition(java.lang.String _position) {
-        getStateHelper().put(PropertyKeys.position, _position);
+    public void setPosition(String position) {
+        getStateHelper().put(PropertyKeys.position, position);
     }
 
     public int getItemWidth() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.itemWidth, 40);
     }
 
-    public void setItemWidth(int _itemWidth) {
-        getStateHelper().put(PropertyKeys.itemWidth, _itemWidth);
+    public void setItemWidth(int itemWidth) {
+        getStateHelper().put(PropertyKeys.itemWidth, itemWidth);
     }
 
     public int getMaxWidth() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxWidth, 50);
     }
 
-    public void setMaxWidth(int _maxWidth) {
-        getStateHelper().put(PropertyKeys.maxWidth, _maxWidth);
+    public void setMaxWidth(int maxWidth) {
+        getStateHelper().put(PropertyKeys.maxWidth, maxWidth);
     }
 
     public int getProximity() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.proximity, 90);
     }
 
-    public void setProximity(int _proximity) {
-        getStateHelper().put(PropertyKeys.proximity, _proximity);
+    public void setProximity(int proximity) {
+        getStateHelper().put(PropertyKeys.proximity, proximity);
     }
 
-    public java.lang.String getHalign() {
+    public String getHalign() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.halign, "center");
     }
 
-    public void setHalign(java.lang.String _halign) {
-        getStateHelper().put(PropertyKeys.halign, _halign);
+    public void setHalign(String halign) {
+        getStateHelper().put(PropertyKeys.halign, halign);
     }
 
     @Override

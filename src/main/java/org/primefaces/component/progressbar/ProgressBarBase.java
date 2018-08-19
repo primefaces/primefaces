@@ -53,92 +53,92 @@ abstract class ProgressBarBase extends UIComponentBase implements Widget, Client
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public int getValue() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.value, 0);
     }
 
-    public void setValue(int _value) {
-        getStateHelper().put(PropertyKeys.value, _value);
+    public void setValue(int value) {
+        getStateHelper().put(PropertyKeys.value, value);
     }
 
     public boolean isDisabled() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
-    public void setDisabled(boolean _disabled) {
-        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
     public boolean isAjax() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ajax, false);
     }
 
-    public void setAjax(boolean _ajax) {
-        getStateHelper().put(PropertyKeys.ajax, _ajax);
+    public void setAjax(boolean ajax) {
+        getStateHelper().put(PropertyKeys.ajax, ajax);
     }
 
     public int getInterval() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.interval, 3000);
     }
 
-    public void setInterval(int _interval) {
-        getStateHelper().put(PropertyKeys.interval, _interval);
+    public void setInterval(int interval) {
+        getStateHelper().put(PropertyKeys.interval, interval);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getLabelTemplate() {
+    public String getLabelTemplate() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.labelTemplate, null);
     }
 
-    public void setLabelTemplate(java.lang.String _labelTemplate) {
-        getStateHelper().put(PropertyKeys.labelTemplate, _labelTemplate);
+    public void setLabelTemplate(String labelTemplate) {
+        getStateHelper().put(PropertyKeys.labelTemplate, labelTemplate);
     }
 
     public boolean isDisplayOnly() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.displayOnly, false);
     }
 
-    public void setDisplayOnly(boolean _displayOnly) {
-        getStateHelper().put(PropertyKeys.displayOnly, _displayOnly);
+    public void setDisplayOnly(boolean displayOnly) {
+        getStateHelper().put(PropertyKeys.displayOnly, displayOnly);
     }
 
     public boolean isGlobal() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.global, true);
     }
 
-    public void setGlobal(boolean _global) {
-        getStateHelper().put(PropertyKeys.global, _global);
+    public void setGlobal(boolean global) {
+        getStateHelper().put(PropertyKeys.global, global);
     }
 
-    public java.lang.String getMode() {
+    public String getMode() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.mode, "determinate");
     }
 
-    public void setMode(java.lang.String _mode) {
-        getStateHelper().put(PropertyKeys.mode, _mode);
+    public void setMode(String mode) {
+        getStateHelper().put(PropertyKeys.mode, mode);
     }
 
     public String resolveWidgetVar() {

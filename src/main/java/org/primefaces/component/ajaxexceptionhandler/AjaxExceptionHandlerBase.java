@@ -26,7 +26,7 @@ abstract class AjaxExceptionHandlerBase extends UIComponentBase {
 
         onexception,
         update,
-        type
+        type;
     }
 
     public AjaxExceptionHandlerBase() {
@@ -38,28 +38,28 @@ abstract class AjaxExceptionHandlerBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getOnexception() {
+    public String getOnexception() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onexception, null);
     }
 
-    public void setOnexception(java.lang.String _onexception) {
-        getStateHelper().put(PropertyKeys.onexception, _onexception);
+    public void setOnexception(String onexception) {
+        getStateHelper().put(PropertyKeys.onexception, onexception);
     }
 
-    public java.lang.String getUpdate() {
+    public String getUpdate() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.update, null);
     }
 
-    public void setUpdate(java.lang.String _update) {
-        getStateHelper().put(PropertyKeys.update, _update);
+    public void setUpdate(String update) {
+        getStateHelper().put(PropertyKeys.update, update);
     }
 
-    public java.lang.String getType() {
+    public String getType() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.type, null);
     }
 
-    public void setType(java.lang.String _type) {
-        getStateHelper().put(PropertyKeys.type, _type);
+    public void setType(String type) {
+        getStateHelper().put(PropertyKeys.type, type);
     }
 
 }

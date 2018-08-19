@@ -54,28 +54,28 @@ abstract class FocusBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getFor() {
+    public String getFor() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
-    public void setFor(java.lang.String _for) {
+    public void setFor(String _for) {
         getStateHelper().put(PropertyKeys.forValue, _for);
     }
 
-    public java.lang.String getContext() {
+    public String getContext() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.context, null);
     }
 
-    public void setContext(java.lang.String _context) {
-        getStateHelper().put(PropertyKeys.context, _context);
+    public void setContext(String context) {
+        getStateHelper().put(PropertyKeys.context, context);
     }
 
-    public java.lang.String getMinSeverity() {
+    public String getMinSeverity() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.minSeverity, "error");
     }
 
-    public void setMinSeverity(java.lang.String _minSeverity) {
-        getStateHelper().put(PropertyKeys.minSeverity, _minSeverity);
+    public void setMinSeverity(String minSeverity) {
+        getStateHelper().put(PropertyKeys.minSeverity, minSeverity);
     }
 
 }

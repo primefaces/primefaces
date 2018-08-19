@@ -37,7 +37,7 @@ abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, 
         filterMatchMode,
         filterFunction,
         caseSensitive,
-        scrollHeight
+        scrollHeight;
     }
 
     public SelectManyMenuBase() {
@@ -49,71 +49,70 @@ abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, 
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getVar() {
+    public String getVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
-    public void setVar(java.lang.String _var) {
-        getStateHelper().put(PropertyKeys.var, _var);
+    public void setVar(String var) {
+        getStateHelper().put(PropertyKeys.var, var);
     }
 
     public boolean isShowCheckbox() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showCheckbox, false);
     }
 
-    public void setShowCheckbox(boolean _showCheckbox) {
-        getStateHelper().put(PropertyKeys.showCheckbox, _showCheckbox);
+    public void setShowCheckbox(boolean showCheckbox) {
+        getStateHelper().put(PropertyKeys.showCheckbox, showCheckbox);
     }
 
     public boolean isFilter() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.filter, false);
     }
 
-    public void setFilter(boolean _filter) {
-        getStateHelper().put(PropertyKeys.filter, _filter);
+    public void setFilter(boolean filter) {
+        getStateHelper().put(PropertyKeys.filter, filter);
     }
 
-    public java.lang.String getFilterMatchMode() {
+    public String getFilterMatchMode() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
     }
 
-    public void setFilterMatchMode(java.lang.String _filterMatchMode) {
-        getStateHelper().put(PropertyKeys.filterMatchMode, _filterMatchMode);
+    public void setFilterMatchMode(String filterMatchMode) {
+        getStateHelper().put(PropertyKeys.filterMatchMode, filterMatchMode);
     }
 
-    public java.lang.String getFilterFunction() {
+    public String getFilterFunction() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.filterFunction, null);
     }
 
-    public void setFilterFunction(java.lang.String _filterFunction) {
-        getStateHelper().put(PropertyKeys.filterFunction, _filterFunction);
+    public void setFilterFunction(String filterFunction) {
+        getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
     }
 
     public boolean isCaseSensitive() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.caseSensitive, false);
     }
 
-    public void setCaseSensitive(boolean _caseSensitive) {
-        getStateHelper().put(PropertyKeys.caseSensitive, _caseSensitive);
+    public void setCaseSensitive(boolean caseSensitive) {
+        getStateHelper().put(PropertyKeys.caseSensitive, caseSensitive);
     }
 
     public int getScrollHeight() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.scrollHeight, java.lang.Integer.MAX_VALUE);
     }
 
-    public void setScrollHeight(int _scrollHeight) {
-        getStateHelper().put(PropertyKeys.scrollHeight, _scrollHeight);
+    public void setScrollHeight(int scrollHeight) {
+        getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

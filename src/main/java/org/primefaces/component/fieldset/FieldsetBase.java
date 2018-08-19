@@ -40,7 +40,7 @@ abstract class FieldsetBase extends UIPanel implements Widget, ClientBehaviorHol
         collapsed,
         tabindex,
         escape,
-        title;
+        title
     }
 
     public FieldsetBase() {
@@ -52,86 +52,87 @@ abstract class FieldsetBase extends UIPanel implements Widget, ClientBehaviorHol
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getLegend() {
+    public String getLegend() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.legend, null);
     }
 
-    public void setLegend(java.lang.String _legend) {
-        getStateHelper().put(PropertyKeys.legend, _legend);
+    public void setLegend(String legend) {
+        getStateHelper().put(PropertyKeys.legend, legend);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public boolean isToggleable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.toggleable, false);
     }
 
-    public void setToggleable(boolean _toggleable) {
-        getStateHelper().put(PropertyKeys.toggleable, _toggleable);
+    public void setToggleable(boolean toggleable) {
+        getStateHelper().put(PropertyKeys.toggleable, toggleable);
     }
 
     public int getToggleSpeed() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.toggleSpeed, 500);
     }
 
-    public void setToggleSpeed(int _toggleSpeed) {
-        getStateHelper().put(PropertyKeys.toggleSpeed, _toggleSpeed);
+    public void setToggleSpeed(int toggleSpeed) {
+        getStateHelper().put(PropertyKeys.toggleSpeed, toggleSpeed);
     }
 
     public boolean isCollapsed() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.collapsed, false);
     }
 
-    public void setCollapsed(boolean _collapsed) {
-        getStateHelper().put(PropertyKeys.collapsed, _collapsed);
+    public void setCollapsed(boolean collapsed) {
+        getStateHelper().put(PropertyKeys.collapsed, collapsed);
     }
 
-    public java.lang.String getTabindex() {
+    public String getTabindex() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, "0");
     }
 
-    public void setTabindex(java.lang.String _tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, _tabindex);
+    public void setTabindex(String tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 
     public boolean isEscape() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
-    public void setEscape(boolean _escape) {
-        getStateHelper().put(PropertyKeys.escape, _escape);
+    public void setEscape(boolean escape) {
+        getStateHelper().put(PropertyKeys.escape, escape);
     }
 
-    public java.lang.String getTitle() {
+    public String getTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.title, null);
     }
 
-    public void setTitle(java.lang.String _title) {
-        getStateHelper().put(PropertyKeys.title, _title);
+    public void setTitle(String title) {
+        getStateHelper().put(PropertyKeys.title, title);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

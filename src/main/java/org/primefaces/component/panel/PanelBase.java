@@ -58,132 +58,132 @@ abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getHeader() {
+    public String getHeader() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.header, null);
     }
 
-    public void setHeader(java.lang.String _header) {
-        getStateHelper().put(PropertyKeys.header, _header);
+    public void setHeader(String header) {
+        getStateHelper().put(PropertyKeys.header, header);
     }
 
-    public java.lang.String getFooter() {
+    public String getFooter() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.footer, null);
     }
 
-    public void setFooter(java.lang.String _footer) {
-        getStateHelper().put(PropertyKeys.footer, _footer);
+    public void setFooter(String footer) {
+        getStateHelper().put(PropertyKeys.footer, footer);
     }
 
     public boolean isToggleable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.toggleable, false);
     }
 
-    public void setToggleable(boolean _toggleable) {
-        getStateHelper().put(PropertyKeys.toggleable, _toggleable);
+    public void setToggleable(boolean toggleable) {
+        getStateHelper().put(PropertyKeys.toggleable, toggleable);
     }
 
     public int getToggleSpeed() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.toggleSpeed, 500);
     }
 
-    public void setToggleSpeed(int _toggleSpeed) {
-        getStateHelper().put(PropertyKeys.toggleSpeed, _toggleSpeed);
+    public void setToggleSpeed(int toggleSpeed) {
+        getStateHelper().put(PropertyKeys.toggleSpeed, toggleSpeed);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public boolean isCollapsed() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.collapsed, false);
     }
 
-    public void setCollapsed(boolean _collapsed) {
-        getStateHelper().put(PropertyKeys.collapsed, _collapsed);
+    public void setCollapsed(boolean collapsed) {
+        getStateHelper().put(PropertyKeys.collapsed, collapsed);
     }
 
     public boolean isClosable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.closable, false);
     }
 
-    public void setClosable(boolean _closable) {
-        getStateHelper().put(PropertyKeys.closable, _closable);
+    public void setClosable(boolean closable) {
+        getStateHelper().put(PropertyKeys.closable, closable);
     }
 
     public int getCloseSpeed() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.closeSpeed, 500);
     }
 
-    public void setCloseSpeed(int _closeSpeed) {
-        getStateHelper().put(PropertyKeys.closeSpeed, _closeSpeed);
+    public void setCloseSpeed(int closeSpeed) {
+        getStateHelper().put(PropertyKeys.closeSpeed, closeSpeed);
     }
 
     public boolean isVisible() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.visible, true);
     }
 
-    public void setVisible(boolean _visible) {
-        getStateHelper().put(PropertyKeys.visible, _visible);
+    public void setVisible(boolean visible) {
+        getStateHelper().put(PropertyKeys.visible, visible);
     }
 
-    public java.lang.String getCloseTitle() {
+    public String getCloseTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.closeTitle, null);
     }
 
-    public void setCloseTitle(java.lang.String _closeTitle) {
-        getStateHelper().put(PropertyKeys.closeTitle, _closeTitle);
+    public void setCloseTitle(String closeTitle) {
+        getStateHelper().put(PropertyKeys.closeTitle, closeTitle);
     }
 
-    public java.lang.String getToggleTitle() {
+    public String getToggleTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.toggleTitle, null);
     }
 
-    public void setToggleTitle(java.lang.String _toggleTitle) {
-        getStateHelper().put(PropertyKeys.toggleTitle, _toggleTitle);
+    public void setToggleTitle(String toggleTitle) {
+        getStateHelper().put(PropertyKeys.toggleTitle, toggleTitle);
     }
 
-    public java.lang.String getMenuTitle() {
+    public String getMenuTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.menuTitle, null);
     }
 
-    public void setMenuTitle(java.lang.String _menuTitle) {
-        getStateHelper().put(PropertyKeys.menuTitle, _menuTitle);
+    public void setMenuTitle(String menuTitle) {
+        getStateHelper().put(PropertyKeys.menuTitle, menuTitle);
     }
 
-    public java.lang.String getToggleOrientation() {
+    public String getToggleOrientation() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.toggleOrientation, "vertical");
     }
 
-    public void setToggleOrientation(java.lang.String _toggleOrientation) {
-        getStateHelper().put(PropertyKeys.toggleOrientation, _toggleOrientation);
+    public void setToggleOrientation(String toggleOrientation) {
+        getStateHelper().put(PropertyKeys.toggleOrientation, toggleOrientation);
     }
 
     public boolean isToggleableHeader() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.toggleableHeader, false);
     }
 
-    public void setToggleableHeader(boolean _toggleableHeader) {
-        getStateHelper().put(PropertyKeys.toggleableHeader, _toggleableHeader);
+    public void setToggleableHeader(boolean toggleableHeader) {
+        getStateHelper().put(PropertyKeys.toggleableHeader, toggleableHeader);
     }
 
     @Override

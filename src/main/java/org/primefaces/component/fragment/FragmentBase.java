@@ -25,7 +25,6 @@ abstract class FragmentBase extends UIPanel {
     public static final String DEFAULT_RENDERER = "org.primefaces.component.FragmentRenderer";
 
     public enum PropertyKeys {
-        ;
     }
 
     public FragmentBase() {

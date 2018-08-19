@@ -51,21 +51,21 @@ abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widget, UIO
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     @Override
-    public java.lang.String getFragment() {
+    public String getFragment() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.fragment, null);
     }
 
-    public void setFragment(java.lang.String _fragment) {
-        getStateHelper().put(PropertyKeys.fragment, _fragment);
+    public void setFragment(String fragment) {
+        getStateHelper().put(PropertyKeys.fragment, fragment);
     }
 
     @Override
@@ -74,57 +74,57 @@ abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widget, UIO
     }
 
     @Override
-    public void setDisabled(boolean _disabled) {
-        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
-    public java.lang.String getIcon() {
+    public String getIcon() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.icon, null);
     }
 
-    public void setIcon(java.lang.String _icon) {
-        getStateHelper().put(PropertyKeys.icon, _icon);
+    public void setIcon(String icon) {
+        getStateHelper().put(PropertyKeys.icon, icon);
     }
 
-    public java.lang.String getIconPos() {
+    public String getIconPos() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.iconPos, "left");
     }
 
-    public void setIconPos(java.lang.String _iconPos) {
-        getStateHelper().put(PropertyKeys.iconPos, _iconPos);
+    public void setIconPos(String iconPos) {
+        getStateHelper().put(PropertyKeys.iconPos, iconPos);
     }
 
     @Override
-    public java.lang.String getHref() {
+    public String getHref() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.href, null);
     }
 
-    public void setHref(java.lang.String _href) {
-        getStateHelper().put(PropertyKeys.href, _href);
+    public void setHref(String href) {
+        getStateHelper().put(PropertyKeys.href, href);
     }
 
-    public java.lang.String getTarget() {
+    public String getTarget() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.target, "_self");
     }
 
-    public void setTarget(java.lang.String _target) {
-        getStateHelper().put(PropertyKeys.target, _target);
+    public void setTarget(String target) {
+        getStateHelper().put(PropertyKeys.target, target);
     }
 
     public boolean isEscape() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
-    public void setEscape(boolean _escape) {
-        getStateHelper().put(PropertyKeys.escape, _escape);
+    public void setEscape(boolean escape) {
+        getStateHelper().put(PropertyKeys.escape, escape);
     }
 
     public boolean isInline() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.inline, false);
     }
 
-    public void setInline(boolean _inline) {
-        getStateHelper().put(PropertyKeys.inline, _inline);
+    public void setInline(boolean inline) {
+        getStateHelper().put(PropertyKeys.inline, inline);
     }
 
     @Override
@@ -133,8 +133,8 @@ abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widget, UIO
     }
 
     @Override
-    public void setDisableClientWindow(boolean _disableClientWindow) {
-        getStateHelper().put(PropertyKeys.disableClientWindow, _disableClientWindow);
+    public void setDisableClientWindow(boolean disableClientWindow) {
+        getStateHelper().put(PropertyKeys.disableClientWindow, disableClientWindow);
     }
 
     @Override

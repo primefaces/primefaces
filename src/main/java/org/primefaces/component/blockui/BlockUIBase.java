@@ -46,52 +46,52 @@ abstract class BlockUIBase extends UIPanel implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getTrigger() {
+    public String getTrigger() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.trigger, null);
     }
 
-    public void setTrigger(java.lang.String _trigger) {
-        getStateHelper().put(PropertyKeys.trigger, _trigger);
+    public void setTrigger(String trigger) {
+        getStateHelper().put(PropertyKeys.trigger, trigger);
     }
 
-    public java.lang.String getBlock() {
+    public String getBlock() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.block, null);
     }
 
-    public void setBlock(java.lang.String _block) {
-        getStateHelper().put(PropertyKeys.block, _block);
+    public void setBlock(String block) {
+        getStateHelper().put(PropertyKeys.block, block);
     }
 
     public boolean isBlocked() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.blocked, false);
     }
 
-    public void setBlocked(boolean _blocked) {
-        getStateHelper().put(PropertyKeys.blocked, _blocked);
+    public void setBlocked(boolean blocked) {
+        getStateHelper().put(PropertyKeys.blocked, blocked);
     }
 
     public boolean isAnimate() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.animate, true);
     }
 
-    public void setAnimate(boolean _animate) {
-        getStateHelper().put(PropertyKeys.animate, _animate);
+    public void setAnimate(boolean animate) {
+        getStateHelper().put(PropertyKeys.animate, animate);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     @Override

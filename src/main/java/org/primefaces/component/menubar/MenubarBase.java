@@ -45,12 +45,12 @@ abstract class MenubarBase extends AbstractMenu implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     @Override
@@ -58,40 +58,40 @@ abstract class MenubarBase extends AbstractMenu implements Widget {
         return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }
 
-    public void setModel(org.primefaces.model.menu.MenuModel _model) {
-        getStateHelper().put(PropertyKeys.model, _model);
+    public void setModel(org.primefaces.model.menu.MenuModel model) {
+        getStateHelper().put(PropertyKeys.model, model);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public boolean isAutoDisplay() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoDisplay, true);
     }
 
-    public void setAutoDisplay(boolean _autoDisplay) {
-        getStateHelper().put(PropertyKeys.autoDisplay, _autoDisplay);
+    public void setAutoDisplay(boolean autoDisplay) {
+        getStateHelper().put(PropertyKeys.autoDisplay, autoDisplay);
     }
 
-    public java.lang.String getToggleEvent() {
+    public String getToggleEvent() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.toggleEvent, null);
     }
 
-    public void setToggleEvent(java.lang.String _toggleEvent) {
-        getStateHelper().put(PropertyKeys.toggleEvent, _toggleEvent);
+    public void setToggleEvent(String toggleEvent) {
+        getStateHelper().put(PropertyKeys.toggleEvent, toggleEvent);
     }
 
     @Override

@@ -44,12 +44,12 @@ abstract class LinkBase extends HtmlOutcomeTargetLink implements UIOutcomeTarget
     }
 
     @Override
-    public java.lang.String getFragment() {
+    public String getFragment() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.fragment, null);
     }
 
-    public void setFragment(java.lang.String _fragment) {
-        getStateHelper().put(PropertyKeys.fragment, _fragment);
+    public void setFragment(String fragment) {
+        getStateHelper().put(PropertyKeys.fragment, fragment);
     }
 
     @Override
@@ -58,25 +58,25 @@ abstract class LinkBase extends HtmlOutcomeTargetLink implements UIOutcomeTarget
     }
 
     @Override
-    public void setDisableClientWindow(boolean _disableClientWindow) {
-        getStateHelper().put(PropertyKeys.disableClientWindow, _disableClientWindow);
+    public void setDisableClientWindow(boolean disableClientWindow) {
+        getStateHelper().put(PropertyKeys.disableClientWindow, disableClientWindow);
     }
 
     @Override
-    public java.lang.String getHref() {
+    public String getHref() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.href, null);
     }
 
-    public void setHref(java.lang.String _href) {
-        getStateHelper().put(PropertyKeys.href, _href);
+    public void setHref(String href) {
+        getStateHelper().put(PropertyKeys.href, href);
     }
 
     public boolean isEscape() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
-    public void setEscape(boolean _escape) {
-        getStateHelper().put(PropertyKeys.escape, _escape);
+    public void setEscape(boolean escape) {
+        getStateHelper().put(PropertyKeys.escape, escape);
     }
 
 }
