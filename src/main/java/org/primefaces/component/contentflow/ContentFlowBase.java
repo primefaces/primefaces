@@ -85,6 +85,7 @@ abstract class ContentFlowBase extends UIPanel implements Widget {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

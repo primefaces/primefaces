@@ -59,6 +59,7 @@ abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbox imple
         getStateHelper().put(PropertyKeys.itemLabel, itemLabel);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

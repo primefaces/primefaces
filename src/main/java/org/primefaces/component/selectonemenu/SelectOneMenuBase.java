@@ -230,6 +230,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
         getStateHelper().put(PropertyKeys.dynamic, dynamic);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

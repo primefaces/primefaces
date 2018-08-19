@@ -64,7 +64,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
         }
 
         @Override
-        public String toString() {
+		public String toString() {
             return ((toString != null) ? toString : super.toString());
         }
     }

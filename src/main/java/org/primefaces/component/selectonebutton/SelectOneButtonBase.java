@@ -114,6 +114,7 @@ abstract class SelectOneButtonBase extends UISelectOne implements Widget, Client
         getStateHelper().put(PropertyKeys.unselectable, unselectable);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

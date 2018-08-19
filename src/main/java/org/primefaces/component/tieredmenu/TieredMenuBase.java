@@ -139,6 +139,7 @@ abstract class TieredMenuBase extends AbstractMenu implements Widget, OverlayMen
         getStateHelper().put(PropertyKeys.toggleEvent, toggleEvent);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

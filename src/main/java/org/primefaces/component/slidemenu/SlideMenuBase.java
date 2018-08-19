@@ -130,6 +130,7 @@ abstract class SlideMenuBase extends AbstractMenu implements Widget, OverlayMenu
         getStateHelper().put(PropertyKeys.triggerEvent, triggerEvent);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

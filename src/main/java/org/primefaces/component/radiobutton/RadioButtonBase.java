@@ -47,9 +47,8 @@ abstract class RadioButtonBase extends UIComponentBase implements Widget {
         PropertyKeys() {
         }
 
-        @Override
         public String toString() {
-            return ((toString != null) ? toString : super.toString());
+            return ((this.toString != null) ? this.toString : super.toString());
         }
     }
 

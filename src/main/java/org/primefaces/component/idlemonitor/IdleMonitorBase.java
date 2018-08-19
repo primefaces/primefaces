@@ -87,6 +87,7 @@ abstract class IdleMonitorBase extends UIComponentBase implements Widget, Client
         getStateHelper().put(PropertyKeys.multiWindowSupport, multiWindowSupport);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

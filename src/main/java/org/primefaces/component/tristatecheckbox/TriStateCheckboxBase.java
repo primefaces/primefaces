@@ -112,6 +112,7 @@ abstract class TriStateCheckboxBase extends HtmlInputText implements Widget {
         getStateHelper().put(PropertyKeys.stateThreeTitle, stateThreeTitle);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

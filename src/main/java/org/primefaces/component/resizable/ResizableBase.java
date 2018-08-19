@@ -217,6 +217,7 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
         getStateHelper().put(PropertyKeys.onStop, onStop);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

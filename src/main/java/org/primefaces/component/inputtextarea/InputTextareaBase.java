@@ -140,6 +140,7 @@ abstract class InputTextareaBase extends HtmlInputTextarea implements Widget, Mi
         getStateHelper().put(PropertyKeys.addLine, addLine);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
