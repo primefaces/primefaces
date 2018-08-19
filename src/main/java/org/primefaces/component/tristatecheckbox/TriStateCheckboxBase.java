@@ -36,7 +36,7 @@ abstract class TriStateCheckboxBase extends HtmlInputText implements Widget {
         itemLabel,
         stateOneTitle,
         stateTwoTitle,
-        stateThreeTitle
+        stateThreeTitle;
     }
 
     public TriStateCheckboxBase() {
@@ -48,71 +48,70 @@ abstract class TriStateCheckboxBase extends HtmlInputText implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getStateOneIcon() {
+    public String getStateOneIcon() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.stateOneIcon, null);
     }
 
-    public void setStateOneIcon(java.lang.String _stateOneIcon) {
-        getStateHelper().put(PropertyKeys.stateOneIcon, _stateOneIcon);
+    public void setStateOneIcon(String stateOneIcon) {
+        getStateHelper().put(PropertyKeys.stateOneIcon, stateOneIcon);
     }
 
-    public java.lang.String getStateTwoIcon() {
+    public String getStateTwoIcon() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.stateTwoIcon, null);
     }
 
-    public void setStateTwoIcon(java.lang.String _stateTwoIcon) {
-        getStateHelper().put(PropertyKeys.stateTwoIcon, _stateTwoIcon);
+    public void setStateTwoIcon(String stateTwoIcon) {
+        getStateHelper().put(PropertyKeys.stateTwoIcon, stateTwoIcon);
     }
 
-    public java.lang.String getStateThreeIcon() {
+    public String getStateThreeIcon() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.stateThreeIcon, null);
     }
 
-    public void setStateThreeIcon(java.lang.String _stateThreeIcon) {
-        getStateHelper().put(PropertyKeys.stateThreeIcon, _stateThreeIcon);
+    public void setStateThreeIcon(String stateThreeIcon) {
+        getStateHelper().put(PropertyKeys.stateThreeIcon, stateThreeIcon);
     }
 
-    public java.lang.String getItemLabel() {
+    public String getItemLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.itemLabel, null);
     }
 
-    public void setItemLabel(java.lang.String _itemLabel) {
-        getStateHelper().put(PropertyKeys.itemLabel, _itemLabel);
+    public void setItemLabel(String itemLabel) {
+        getStateHelper().put(PropertyKeys.itemLabel, itemLabel);
     }
 
-    public java.lang.String getStateOneTitle() {
+    public String getStateOneTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.stateOneTitle, null);
     }
 
-    public void setStateOneTitle(java.lang.String _stateOneTitle) {
-        getStateHelper().put(PropertyKeys.stateOneTitle, _stateOneTitle);
+    public void setStateOneTitle(String stateOneTitle) {
+        getStateHelper().put(PropertyKeys.stateOneTitle, stateOneTitle);
     }
 
-    public java.lang.String getStateTwoTitle() {
+    public String getStateTwoTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.stateTwoTitle, null);
     }
 
-    public void setStateTwoTitle(java.lang.String _stateTwoTitle) {
-        getStateHelper().put(PropertyKeys.stateTwoTitle, _stateTwoTitle);
+    public void setStateTwoTitle(String stateTwoTitle) {
+        getStateHelper().put(PropertyKeys.stateTwoTitle, stateTwoTitle);
     }
 
-    public java.lang.String getStateThreeTitle() {
+    public String getStateThreeTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.stateThreeTitle, null);
     }
 
-    public void setStateThreeTitle(java.lang.String _stateThreeTitle) {
-        getStateHelper().put(PropertyKeys.stateThreeTitle, _stateThreeTitle);
+    public void setStateThreeTitle(String stateThreeTitle) {
+        getStateHelper().put(PropertyKeys.stateThreeTitle, stateThreeTitle);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

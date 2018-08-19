@@ -33,7 +33,7 @@ abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox impleme
         onLabel,
         offLabel,
         onIcon,
-        offIcon
+        offIcon;
     }
 
     public SelectBooleanButtonBase() {
@@ -45,47 +45,46 @@ abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox impleme
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getOnLabel() {
+    public String getOnLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onLabel, null);
     }
 
-    public void setOnLabel(java.lang.String _onLabel) {
-        getStateHelper().put(PropertyKeys.onLabel, _onLabel);
+    public void setOnLabel(String onLabel) {
+        getStateHelper().put(PropertyKeys.onLabel, onLabel);
     }
 
-    public java.lang.String getOffLabel() {
+    public String getOffLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.offLabel, null);
     }
 
-    public void setOffLabel(java.lang.String _offLabel) {
-        getStateHelper().put(PropertyKeys.offLabel, _offLabel);
+    public void setOffLabel(String offLabel) {
+        getStateHelper().put(PropertyKeys.offLabel, offLabel);
     }
 
-    public java.lang.String getOnIcon() {
+    public String getOnIcon() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onIcon, null);
     }
 
-    public void setOnIcon(java.lang.String _onIcon) {
-        getStateHelper().put(PropertyKeys.onIcon, _onIcon);
+    public void setOnIcon(String onIcon) {
+        getStateHelper().put(PropertyKeys.onIcon, onIcon);
     }
 
-    public java.lang.String getOffIcon() {
+    public String getOffIcon() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.offIcon, null);
     }
 
-    public void setOffIcon(java.lang.String _offIcon) {
-        getStateHelper().put(PropertyKeys.offIcon, _offIcon);
+    public void setOffIcon(String offIcon) {
+        getStateHelper().put(PropertyKeys.offIcon, offIcon);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

@@ -50,57 +50,57 @@ abstract class MessagesBase extends UIMessages implements UINotification {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
-    public void setEscape(boolean _escape) {
-        getStateHelper().put(PropertyKeys.escape, _escape);
+    public void setEscape(boolean escape) {
+        getStateHelper().put(PropertyKeys.escape, escape);
     }
 
     @Override
-    public java.lang.String getSeverity() {
+    public String getSeverity() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.severity, null);
     }
 
-    public void setSeverity(java.lang.String _severity) {
-        getStateHelper().put(PropertyKeys.severity, _severity);
+    public void setSeverity(String severity) {
+        getStateHelper().put(PropertyKeys.severity, severity);
     }
 
     public boolean isClosable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.closable, false);
     }
 
-    public void setClosable(boolean _closable) {
-        getStateHelper().put(PropertyKeys.closable, _closable);
+    public void setClosable(boolean closable) {
+        getStateHelper().put(PropertyKeys.closable, closable);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public boolean isShowIcon() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showIcon, true);
     }
 
-    public void setShowIcon(boolean _showIcon) {
-        getStateHelper().put(PropertyKeys.showIcon, _showIcon);
+    public void setShowIcon(boolean showIcon) {
+        getStateHelper().put(PropertyKeys.showIcon, showIcon);
     }
 
-    public java.lang.String getForType() {
+    public String getForType() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.forType, null);
     }
 
-    public void setForType(java.lang.String _forType) {
-        getStateHelper().put(PropertyKeys.forType, _forType);
+    public void setForType(String forType) {
+        getStateHelper().put(PropertyKeys.forType, forType);
     }
 
 }

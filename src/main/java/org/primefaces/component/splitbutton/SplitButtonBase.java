@@ -51,7 +51,7 @@ abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, 
         appendTo,
         partialSubmitFilter,
         menuStyleClass,
-        form
+        form;
     }
 
     public SplitButtonBase() {
@@ -63,198 +63,182 @@ abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, 
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public boolean isAjax() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ajax, true);
     }
 
-    public void setAjax(boolean _ajax) {
-        getStateHelper().put(PropertyKeys.ajax, _ajax);
+    public void setAjax(boolean ajax) {
+        getStateHelper().put(PropertyKeys.ajax, ajax);
     }
 
-    @Override
     public boolean isAsync() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.async, false);
     }
 
-    public void setAsync(boolean _async) {
-        getStateHelper().put(PropertyKeys.async, _async);
+    public void setAsync(boolean async) {
+        getStateHelper().put(PropertyKeys.async, async);
     }
 
-    @Override
-    public java.lang.String getProcess() {
+    public String getProcess() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.process, null);
     }
 
-    public void setProcess(java.lang.String _process) {
-        getStateHelper().put(PropertyKeys.process, _process);
+    public void setProcess(String process) {
+        getStateHelper().put(PropertyKeys.process, process);
     }
 
-    @Override
-    public java.lang.String getUpdate() {
+    public String getUpdate() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.update, null);
     }
 
-    public void setUpdate(java.lang.String _update) {
-        getStateHelper().put(PropertyKeys.update, _update);
+    public void setUpdate(String update) {
+        getStateHelper().put(PropertyKeys.update, update);
     }
 
-    @Override
-    public java.lang.String getOnstart() {
+    public String getOnstart() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onstart, null);
     }
 
-    public void setOnstart(java.lang.String _onstart) {
-        getStateHelper().put(PropertyKeys.onstart, _onstart);
+    public void setOnstart(String onstart) {
+        getStateHelper().put(PropertyKeys.onstart, onstart);
     }
 
-    @Override
-    public java.lang.String getOncomplete() {
+    public String getOncomplete() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.oncomplete, null);
     }
 
-    public void setOncomplete(java.lang.String _oncomplete) {
-        getStateHelper().put(PropertyKeys.oncomplete, _oncomplete);
+    public void setOncomplete(String oncomplete) {
+        getStateHelper().put(PropertyKeys.oncomplete, oncomplete);
     }
 
-    @Override
-    public java.lang.String getOnerror() {
+    public String getOnerror() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onerror, null);
     }
 
-    public void setOnerror(java.lang.String _onerror) {
-        getStateHelper().put(PropertyKeys.onerror, _onerror);
+    public void setOnerror(String onerror) {
+        getStateHelper().put(PropertyKeys.onerror, onerror);
     }
 
-    @Override
-    public java.lang.String getOnsuccess() {
+    public String getOnsuccess() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onsuccess, null);
     }
 
-    public void setOnsuccess(java.lang.String _onsuccess) {
-        getStateHelper().put(PropertyKeys.onsuccess, _onsuccess);
+    public void setOnsuccess(String onsuccess) {
+        getStateHelper().put(PropertyKeys.onsuccess, onsuccess);
     }
 
-    @Override
     public boolean isGlobal() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.global, true);
     }
 
-    public void setGlobal(boolean _global) {
-        getStateHelper().put(PropertyKeys.global, _global);
+    public void setGlobal(boolean global) {
+        getStateHelper().put(PropertyKeys.global, global);
     }
 
-    @Override
-    public java.lang.String getDelay() {
+    public String getDelay() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.delay, null);
     }
 
-    public void setDelay(java.lang.String _delay) {
-        getStateHelper().put(PropertyKeys.delay, _delay);
+    public void setDelay(String delay) {
+        getStateHelper().put(PropertyKeys.delay, delay);
     }
 
-    @Override
     public int getTimeout() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.timeout, 0);
     }
 
-    public void setTimeout(int _timeout) {
-        getStateHelper().put(PropertyKeys.timeout, _timeout);
+    public void setTimeout(int timeout) {
+        getStateHelper().put(PropertyKeys.timeout, timeout);
     }
 
-    public java.lang.String getIcon() {
+    public String getIcon() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.icon, null);
     }
 
-    public void setIcon(java.lang.String _icon) {
-        getStateHelper().put(PropertyKeys.icon, _icon);
+    public void setIcon(String icon) {
+        getStateHelper().put(PropertyKeys.icon, icon);
     }
 
-    public java.lang.String getIconPos() {
+    public String getIconPos() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.iconPos, "left");
     }
 
-    public void setIconPos(java.lang.String _iconPos) {
-        getStateHelper().put(PropertyKeys.iconPos, _iconPos);
+    public void setIconPos(String iconPos) {
+        getStateHelper().put(PropertyKeys.iconPos, iconPos);
     }
 
     public boolean isInline() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.inline, false);
     }
 
-    public void setInline(boolean _inline) {
-        getStateHelper().put(PropertyKeys.inline, _inline);
+    public void setInline(boolean inline) {
+        getStateHelper().put(PropertyKeys.inline, inline);
     }
 
-    @Override
     public boolean isPartialSubmit() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.partialSubmit, false);
     }
 
-    public void setPartialSubmit(boolean _partialSubmit) {
-        getStateHelper().put(PropertyKeys.partialSubmit, _partialSubmit);
+    public void setPartialSubmit(boolean partialSubmit) {
+        getStateHelper().put(PropertyKeys.partialSubmit, partialSubmit);
     }
 
-    @Override
     public boolean isResetValues() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.resetValues, false);
     }
 
-    public void setResetValues(boolean _resetValues) {
-        getStateHelper().put(PropertyKeys.resetValues, _resetValues);
+    public void setResetValues(boolean resetValues) {
+        getStateHelper().put(PropertyKeys.resetValues, resetValues);
     }
 
-    @Override
     public boolean isIgnoreAutoUpdate() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
     }
 
-    public void setIgnoreAutoUpdate(boolean _ignoreAutoUpdate) {
-        getStateHelper().put(PropertyKeys.ignoreAutoUpdate, _ignoreAutoUpdate);
+    public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
+        getStateHelper().put(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
     }
 
-    public java.lang.String getAppendTo() {
+    public String getAppendTo() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.appendTo, null);
     }
 
-    public void setAppendTo(java.lang.String _appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, _appendTo);
+    public void setAppendTo(String appendTo) {
+        getStateHelper().put(PropertyKeys.appendTo, appendTo);
     }
 
-    @Override
-    public java.lang.String getPartialSubmitFilter() {
+    public String getPartialSubmitFilter() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.partialSubmitFilter, null);
     }
 
-    public void setPartialSubmitFilter(java.lang.String _partialSubmitFilter) {
-        getStateHelper().put(PropertyKeys.partialSubmitFilter, _partialSubmitFilter);
+    public void setPartialSubmitFilter(String partialSubmitFilter) {
+        getStateHelper().put(PropertyKeys.partialSubmitFilter, partialSubmitFilter);
     }
 
-    public java.lang.String getMenuStyleClass() {
+    public String getMenuStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.menuStyleClass, null);
     }
 
-    public void setMenuStyleClass(java.lang.String _menuStyleClass) {
-        getStateHelper().put(PropertyKeys.menuStyleClass, _menuStyleClass);
+    public void setMenuStyleClass(String menuStyleClass) {
+        getStateHelper().put(PropertyKeys.menuStyleClass, menuStyleClass);
     }
 
-    @Override
-    public java.lang.String getForm() {
+    public String getForm() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.form, null);
     }
 
-    public void setForm(java.lang.String _form) {
-        getStateHelper().put(PropertyKeys.form, _form);
+    public void setForm(String form) {
+        getStateHelper().put(PropertyKeys.form, form);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

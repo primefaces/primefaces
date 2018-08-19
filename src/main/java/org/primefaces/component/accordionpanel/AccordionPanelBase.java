@@ -43,8 +43,8 @@ abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware
         multiple,
         dir,
         tabindex,
-        tabController
-	}
+        tabController;
+    }
 
     public AccordionPanelBase() {
         setRendererType(DEFAULT_RENDERER);
@@ -55,109 +55,107 @@ abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getActiveIndex() {
+    public String getActiveIndex() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.activeIndex, "0");
     }
 
-    public void setActiveIndex(java.lang.String _activeIndex) {
-        getStateHelper().put(PropertyKeys.activeIndex, _activeIndex);
+    public void setActiveIndex(String activeIndex) {
+        getStateHelper().put(PropertyKeys.activeIndex, activeIndex);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getOnTabChange() {
+    public String getOnTabChange() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onTabChange, null);
     }
 
-    public void setOnTabChange(java.lang.String _onTabChange) {
-        getStateHelper().put(PropertyKeys.onTabChange, _onTabChange);
+    public void setOnTabChange(String onTabChange) {
+        getStateHelper().put(PropertyKeys.onTabChange, onTabChange);
     }
 
-    public java.lang.String getOnTabShow() {
+    public String getOnTabShow() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onTabShow, null);
     }
 
-    public void setOnTabShow(java.lang.String _onTabShow) {
-        getStateHelper().put(PropertyKeys.onTabShow, _onTabShow);
+    public void setOnTabShow(String onTabShow) {
+        getStateHelper().put(PropertyKeys.onTabShow, onTabShow);
     }
 
-    public java.lang.String getOnTabClose() {
+    public String getOnTabClose() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onTabClose, null);
     }
 
-    public void setOnTabClose(java.lang.String _onTabClose) {
-        getStateHelper().put(PropertyKeys.onTabClose, _onTabClose);
+    public void setOnTabClose(String onTabClose) {
+        getStateHelper().put(PropertyKeys.onTabClose, onTabClose);
     }
 
     public boolean isCache() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.cache, true);
     }
 
-    public void setCache(boolean _cache) {
-        getStateHelper().put(PropertyKeys.cache, _cache);
+    public void setCache(boolean cache) {
+        getStateHelper().put(PropertyKeys.cache, cache);
     }
 
     public boolean isMultiple() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.multiple, false);
     }
 
-    public void setMultiple(boolean _multiple) {
-        getStateHelper().put(PropertyKeys.multiple, _multiple);
+    public void setMultiple(boolean multiple) {
+        getStateHelper().put(PropertyKeys.multiple, multiple);
     }
 
-    public java.lang.String getDir() {
+    public String getDir() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
 
-    public void setDir(java.lang.String _dir) {
-        getStateHelper().put(PropertyKeys.dir, _dir);
+    public void setDir(String dir) {
+        getStateHelper().put(PropertyKeys.dir, dir);
     }
 
-    public java.lang.String getTabindex() {
+    public String getTabindex() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, "0");
     }
 
-    public void setTabindex(java.lang.String _tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, _tabindex);
+    public void setTabindex(String tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 
     public javax.el.MethodExpression getTabController() {
         return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.tabController, null);
     }
 
-    public void setTabController(javax.el.MethodExpression _tabController) {
-        getStateHelper().put(PropertyKeys.tabController, _tabController);
+    public void setTabController(javax.el.MethodExpression tabController) {
+        getStateHelper().put(PropertyKeys.tabController, tabController);
     }
 
-    @Override
-	public String resolveWidgetVar() {
+    public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 
-    @Override
-	public boolean isRTL() {
+    public boolean isRTL() {
         return "rtl".equalsIgnoreCase(getDir());
     }
 }

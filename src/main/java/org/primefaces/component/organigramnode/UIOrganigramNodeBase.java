@@ -43,68 +43,68 @@ abstract class UIOrganigramNodeBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getType() {
+    public String getType() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.type, null);
     }
 
-    public void setType(java.lang.String _type) {
-        getStateHelper().put(PropertyKeys.type, _type);
+    public void setType(String type) {
+        getStateHelper().put(PropertyKeys.type, type);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getIcon() {
+    public String getIcon() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.icon, null);
     }
 
-    public void setIcon(java.lang.String _icon) {
-        getStateHelper().put(PropertyKeys.icon, _icon);
+    public void setIcon(String icon) {
+        getStateHelper().put(PropertyKeys.icon, icon);
     }
 
-    public java.lang.String getIconPos() {
+    public String getIconPos() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.iconPos, null);
     }
 
-    public void setIconPos(java.lang.String _iconPos) {
-        getStateHelper().put(PropertyKeys.iconPos, _iconPos);
+    public void setIconPos(String iconPos) {
+        getStateHelper().put(PropertyKeys.iconPos, iconPos);
     }
 
-    public java.lang.String getExpandedIcon() {
+    public String getExpandedIcon() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.expandedIcon, null);
     }
 
-    public void setExpandedIcon(java.lang.String _expandedIcon) {
-        getStateHelper().put(PropertyKeys.expandedIcon, _expandedIcon);
+    public void setExpandedIcon(String expandedIcon) {
+        getStateHelper().put(PropertyKeys.expandedIcon, expandedIcon);
     }
 
-    public java.lang.String getCollapsedIcon() {
+    public String getCollapsedIcon() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.collapsedIcon, null);
     }
 
-    public void setCollapsedIcon(java.lang.String _collapsedIcon) {
-        getStateHelper().put(PropertyKeys.collapsedIcon, _collapsedIcon);
+    public void setCollapsedIcon(String collapsedIcon) {
+        getStateHelper().put(PropertyKeys.collapsedIcon, collapsedIcon);
     }
 
     public boolean isSkipLeafHandling() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.skipLeafHandling, false);
     }
 
-    public void setSkipLeafHandling(boolean _skipLeafHandling) {
-        getStateHelper().put(PropertyKeys.skipLeafHandling, _skipLeafHandling);
+    public void setSkipLeafHandling(boolean skipLeafHandling) {
+        getStateHelper().put(PropertyKeys.skipLeafHandling, skipLeafHandling);
     }
 
 }

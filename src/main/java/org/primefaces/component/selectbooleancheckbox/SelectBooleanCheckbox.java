@@ -35,22 +35,18 @@ public class SelectBooleanCheckbox extends SelectBooleanCheckboxBase {
     public final static String CHECKBOX_CHECKED_ICON_CLASS = "ui-icon ui-icon-check";
     public final static String LABEL_CLASS = "ui-checkbox-label";
 
-    @Override
     public String getInputClientId() {
-        return getClientId(getFacesContext()) + "_input";
+        return this.getClientId(getFacesContext()) + "_input";
     }
 
-    @Override
     public String getValidatableInputClientId() {
-        return getInputClientId();
+        return this.getInputClientId();
     }
 
-    @Override
     public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
     }
 
-    @Override
     public String getLabelledBy() {
         return (String) getStateHelper().get("labelledby");
     }

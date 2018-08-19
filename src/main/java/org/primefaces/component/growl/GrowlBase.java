@@ -47,53 +47,53 @@ abstract class GrowlBase extends UIMessages implements Widget, UINotification {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public boolean isSticky() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.sticky, false);
     }
 
-    public void setSticky(boolean _sticky) {
-        getStateHelper().put(PropertyKeys.sticky, _sticky);
+    public void setSticky(boolean sticky) {
+        getStateHelper().put(PropertyKeys.sticky, sticky);
     }
 
     public int getLife() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.life, 6000);
     }
 
-    public void setLife(int _life) {
-        getStateHelper().put(PropertyKeys.life, _life);
+    public void setLife(int life) {
+        getStateHelper().put(PropertyKeys.life, life);
     }
 
     public boolean isEscape() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
-    public void setEscape(boolean _escape) {
-        getStateHelper().put(PropertyKeys.escape, _escape);
+    public void setEscape(boolean escape) {
+        getStateHelper().put(PropertyKeys.escape, escape);
     }
 
     @Override
-    public java.lang.String getSeverity() {
+    public String getSeverity() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.severity, null);
     }
 
-    public void setSeverity(java.lang.String _severity) {
-        getStateHelper().put(PropertyKeys.severity, _severity);
+    public void setSeverity(String severity) {
+        getStateHelper().put(PropertyKeys.severity, severity);
     }
 
     public boolean isKeepAlive() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.keepAlive, false);
     }
 
-    public void setKeepAlive(boolean _keepAlive) {
-        getStateHelper().put(PropertyKeys.keepAlive, _keepAlive);
+    public void setKeepAlive(boolean keepAlive) {
+        getStateHelper().put(PropertyKeys.keepAlive, keepAlive);
     }
 
     @Override

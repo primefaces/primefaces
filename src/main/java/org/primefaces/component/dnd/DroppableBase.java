@@ -67,19 +67,19 @@ abstract class DroppableBase extends UIComponentBase implements Widget, ClientBe
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getFor() {
+    public String getFor() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
-    public void setFor(java.lang.String _for) {
+    public void setFor(String _for) {
         getStateHelper().put(PropertyKeys.forValue, _for);
     }
 
@@ -87,72 +87,72 @@ abstract class DroppableBase extends UIComponentBase implements Widget, ClientBe
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
-    public void setDisabled(boolean _disabled) {
-        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
-    public java.lang.String getHoverStyleClass() {
+    public String getHoverStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.hoverStyleClass, null);
     }
 
-    public void setHoverStyleClass(java.lang.String _hoverStyleClass) {
-        getStateHelper().put(PropertyKeys.hoverStyleClass, _hoverStyleClass);
+    public void setHoverStyleClass(String hoverStyleClass) {
+        getStateHelper().put(PropertyKeys.hoverStyleClass, hoverStyleClass);
     }
 
-    public java.lang.String getActiveStyleClass() {
+    public String getActiveStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.activeStyleClass, null);
     }
 
-    public void setActiveStyleClass(java.lang.String _activeStyleClass) {
-        getStateHelper().put(PropertyKeys.activeStyleClass, _activeStyleClass);
+    public void setActiveStyleClass(String activeStyleClass) {
+        getStateHelper().put(PropertyKeys.activeStyleClass, activeStyleClass);
     }
 
-    public java.lang.String getOnDrop() {
+    public String getOnDrop() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onDrop, null);
     }
 
-    public void setOnDrop(java.lang.String _onDrop) {
-        getStateHelper().put(PropertyKeys.onDrop, _onDrop);
+    public void setOnDrop(String onDrop) {
+        getStateHelper().put(PropertyKeys.onDrop, onDrop);
     }
 
-    public java.lang.String getAccept() {
+    public String getAccept() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.accept, null);
     }
 
-    public void setAccept(java.lang.String _accept) {
-        getStateHelper().put(PropertyKeys.accept, _accept);
+    public void setAccept(String accept) {
+        getStateHelper().put(PropertyKeys.accept, accept);
     }
 
-    public java.lang.String getScope() {
+    public String getScope() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.scope, null);
     }
 
-    public void setScope(java.lang.String _scope) {
-        getStateHelper().put(PropertyKeys.scope, _scope);
+    public void setScope(String scope) {
+        getStateHelper().put(PropertyKeys.scope, scope);
     }
 
-    public java.lang.String getTolerance() {
+    public String getTolerance() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.tolerance, null);
     }
 
-    public void setTolerance(java.lang.String _tolerance) {
-        getStateHelper().put(PropertyKeys.tolerance, _tolerance);
+    public void setTolerance(String tolerance) {
+        getStateHelper().put(PropertyKeys.tolerance, tolerance);
     }
 
-    public java.lang.String getDatasource() {
+    public String getDatasource() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.datasource, null);
     }
 
-    public void setDatasource(java.lang.String _datasource) {
-        getStateHelper().put(PropertyKeys.datasource, _datasource);
+    public void setDatasource(String datasource) {
+        getStateHelper().put(PropertyKeys.datasource, datasource);
     }
 
     public boolean isGreedy() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.greedy, false);
     }
 
-    public void setGreedy(boolean _greedy) {
-        getStateHelper().put(PropertyKeys.greedy, _greedy);
+    public void setGreedy(boolean greedy) {
+        getStateHelper().put(PropertyKeys.greedy, greedy);
     }
 
     @Override

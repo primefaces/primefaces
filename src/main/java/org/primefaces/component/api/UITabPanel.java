@@ -52,6 +52,25 @@ public class UITabPanel extends UIPanel implements NamingContainer {
     private static final Object[] LEAF_NO_STATE = new Object[]{null, null};
 
     private static final String SB_ID = UITabPanel.class.getName() + "#id";
+    // Holds for each row the states of the child components of this UIData.
+    // Note that only "partial" component state is saved: the component fields
+    // that are expected to vary between rows.
+    private final Map<String, Collection<Object[]>> _rowStates = new HashMap<>();
+    /**
+     * Handle case where this table is nested inside another table. See method getDataModel for more details.
+     * <p>
+     * Key: parentClientId (aka rowId when nested within a parent table) Value: DataModel
+     */
+    private final Map<String, DataModel> _dataModelMap = new HashMap<>();
+    private Object _initialDescendantComponentState = null;
+    // will be set to false if the data should not be refreshed at the beginning of the encode phase
+    private boolean _isValidChilds = true;
+    private int _end = -1;
+    private int _count;
+    private int _index = -1;
+    private transient Object _origValue;
+    private transient Object _origVarStatus;
+    private transient FacesContext _facesContext;
 
     public enum PropertyKeys {
         value,
@@ -63,34 +82,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         dynamic,
         prependId
     }
-
-    private Object _initialDescendantComponentState = null;
-
-    // Holds for each row the states of the child components of this UIData.
-    // Note that only "partial" component state is saved: the component fields
-    // that are expected to vary between rows.
-    private final Map<String, Collection<Object[]>> _rowStates = new HashMap<>();
-
-    /**
-     * Handle case where this table is nested inside another table. See method getDataModel for more details.
-     * <p>
-     * Key: parentClientId (aka rowId when nested within a parent table) Value: DataModel
-     */
-    private final Map<String, DataModel> _dataModelMap = new HashMap<>();
-
-    // will be set to false if the data should not be refreshed at the beginning of the encode phase
-    private boolean _isValidChilds = true;
-
-    private int _end = -1;
-
-    private int _count;
-
-    private int _index = -1;
-
-    private transient Object _origValue;
-    private transient Object _origVarStatus;
-
-    private transient FacesContext _facesContext;
 
     public int getOffset() {
         return (Integer) getStateHelper().eval(PropertyKeys.offset, 0);
@@ -1152,146 +1143,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         popComponentFromEL(context);
     }
 
-    // from RI
-    private final static class SavedState implements Serializable {
-
-        private boolean _localValueSet;
-        private Object _submittedValue;
-        private boolean _valid = true;
-        private Object _value;
-
-        private static final long serialVersionUID = 2920252657338389849L;
-
-        public SavedState(EditableValueHolder evh) {
-            _value = evh.getLocalValue();
-            _localValueSet = evh.isLocalValueSet();
-            _valid = evh.isValid();
-            _submittedValue = evh.getSubmittedValue();
-        }
-
-        Object getSubmittedValue() {
-            return (_submittedValue);
-        }
-
-        void setSubmittedValue(Object submittedValue) {
-            _submittedValue = submittedValue;
-        }
-
-        boolean isValid() {
-            return (_valid);
-        }
-
-        void setValid(boolean valid) {
-            _valid = valid;
-        }
-
-        Object getValue() {
-            return _value;
-        }
-
-        public void setValue(Object value) {
-            _value = value;
-        }
-
-        boolean isLocalValueSet() {
-            return _localValueSet;
-        }
-
-        public void setLocalValueSet(boolean localValueSet) {
-            _localValueSet = localValueSet;
-        }
-
-        @Override
-        public String toString() {
-            return ("submittedValue: " + _submittedValue + " value: " + _value + " localValueSet: " + _localValueSet);
-        }
-
-        public void restoreState(EditableValueHolder evh) {
-            evh.setValue(_value);
-            evh.setValid(_valid);
-            evh.setSubmittedValue(_submittedValue);
-            evh.setLocalValueSet(_localValueSet);
-        }
-
-        public void populate(EditableValueHolder evh) {
-            _value = evh.getLocalValue();
-            _valid = evh.isValid();
-            _submittedValue = evh.getSubmittedValue();
-            _localValueSet = evh.isLocalValueSet();
-        }
-
-        public void apply(EditableValueHolder evh) {
-            evh.setValue(_value);
-            evh.setValid(_valid);
-            evh.setSubmittedValue(_submittedValue);
-            evh.setLocalValueSet(_localValueSet);
-        }
-    }
-
-    private final class IndexedEvent extends FacesEvent {
-
-        private final FacesEvent _target;
-
-        private final int _index;
-
-        public IndexedEvent(UITabPanel owner, FacesEvent target, int index) {
-            super(owner);
-            _target = target;
-            _index = index;
-        }
-
-        @Override
-        public PhaseId getPhaseId() {
-            return _target.getPhaseId();
-        }
-
-        @Override
-        public void setPhaseId(PhaseId phaseId) {
-            _target.setPhaseId(phaseId);
-        }
-
-        @Override
-        public boolean isAppropriateListener(FacesListener listener) {
-            return _target.isAppropriateListener(listener);
-        }
-
-        @Override
-        public void processListener(FacesListener listener) {
-            UITabPanel owner = (UITabPanel) getComponent();
-
-            // safe the current index, count aside
-            final int prevIndex = owner._index;
-            final int prevCount = owner._count;
-
-            try {
-                owner._captureScopeValues();
-                if (_index != -1) {
-                    // calculate count for RepeatStatus
-                    _count = _calculateCountForIndex(_index);
-                }
-                owner.setIndex(_index);
-                if (owner._isIndexAvailable()) {
-                    _target.processListener(listener);
-                }
-            }
-            finally {
-                // restore the previous count, index and scope values
-                owner._count = prevCount;
-                owner.setIndex(prevIndex);
-                owner._restoreScopeValues();
-            }
-        }
-
-        public int getIndex() {
-            return _index;
-        }
-
-        public FacesEvent getTarget() {
-            return _target;
-        }
-
-    }
-
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
         if (!isRepeating()) {
@@ -1493,5 +1344,144 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
 
         return Boolean.valueOf(paramValue);
+    }
+
+    // from RI
+    private final static class SavedState implements Serializable {
+
+        private static final long serialVersionUID = 2920252657338389849L;
+        private boolean _localValueSet;
+        private Object _submittedValue;
+        private boolean _valid = true;
+        private Object _value;
+
+        public SavedState(EditableValueHolder evh) {
+            _value = evh.getLocalValue();
+            _localValueSet = evh.isLocalValueSet();
+            _valid = evh.isValid();
+            _submittedValue = evh.getSubmittedValue();
+        }
+
+        Object getSubmittedValue() {
+            return (_submittedValue);
+        }
+
+        void setSubmittedValue(Object submittedValue) {
+            _submittedValue = submittedValue;
+        }
+
+        boolean isValid() {
+            return (_valid);
+        }
+
+        void setValid(boolean valid) {
+            _valid = valid;
+        }
+
+        Object getValue() {
+            return _value;
+        }
+
+        public void setValue(Object value) {
+            _value = value;
+        }
+
+        boolean isLocalValueSet() {
+            return _localValueSet;
+        }
+
+        public void setLocalValueSet(boolean localValueSet) {
+            _localValueSet = localValueSet;
+        }
+
+        @Override
+        public String toString() {
+            return ("submittedValue: " + _submittedValue + " value: " + _value + " localValueSet: " + _localValueSet);
+        }
+
+        public void restoreState(EditableValueHolder evh) {
+            evh.setValue(_value);
+            evh.setValid(_valid);
+            evh.setSubmittedValue(_submittedValue);
+            evh.setLocalValueSet(_localValueSet);
+        }
+
+        public void populate(EditableValueHolder evh) {
+            _value = evh.getLocalValue();
+            _valid = evh.isValid();
+            _submittedValue = evh.getSubmittedValue();
+            _localValueSet = evh.isLocalValueSet();
+        }
+
+        public void apply(EditableValueHolder evh) {
+            evh.setValue(_value);
+            evh.setValid(_valid);
+            evh.setSubmittedValue(_submittedValue);
+            evh.setLocalValueSet(_localValueSet);
+        }
+    }
+
+    private final class IndexedEvent extends FacesEvent {
+
+        private final FacesEvent _target;
+
+        private final int _index;
+
+        public IndexedEvent(UITabPanel owner, FacesEvent target, int index) {
+            super(owner);
+            _target = target;
+            _index = index;
+        }
+
+        @Override
+        public PhaseId getPhaseId() {
+            return _target.getPhaseId();
+        }
+
+        @Override
+        public void setPhaseId(PhaseId phaseId) {
+            _target.setPhaseId(phaseId);
+        }
+
+        @Override
+        public boolean isAppropriateListener(FacesListener listener) {
+            return _target.isAppropriateListener(listener);
+        }
+
+        @Override
+        public void processListener(FacesListener listener) {
+            UITabPanel owner = (UITabPanel) getComponent();
+
+            // safe the current index, count aside
+            final int prevIndex = owner._index;
+            final int prevCount = owner._count;
+
+            try {
+                owner._captureScopeValues();
+                if (_index != -1) {
+                    // calculate count for RepeatStatus
+                    _count = _calculateCountForIndex(_index);
+                }
+                owner.setIndex(_index);
+                if (owner._isIndexAvailable()) {
+                    _target.processListener(listener);
+                }
+            }
+            finally {
+                // restore the previous count, index and scope values
+                owner._count = prevCount;
+                owner.setIndex(prevIndex);
+                owner._restoreScopeValues();
+            }
+        }
+
+        public int getIndex() {
+            return _index;
+        }
+
+        public FacesEvent getTarget() {
+            return _target;
+        }
+
     }
 }

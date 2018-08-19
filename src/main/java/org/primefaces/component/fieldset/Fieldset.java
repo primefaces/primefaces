@@ -66,7 +66,7 @@ public class Fieldset extends FieldsetBase {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName.equals("toggle")) {
-                Visibility visibility = this.isCollapsed() ? Visibility.HIDDEN : Visibility.VISIBLE;
+                Visibility visibility = isCollapsed() ? Visibility.HIDDEN : Visibility.VISIBLE;
 
                 super.queueEvent(new ToggleEvent(this, behaviorEvent.getBehavior(), visibility));
             }
@@ -89,7 +89,7 @@ public class Fieldset extends FieldsetBase {
     @Override
     public void processDecodes(FacesContext context) {
         if (ComponentUtils.isRequestSource(this, context)) {
-            this.decode(context);
+            decode(context);
         }
         else {
             super.processDecodes(context);

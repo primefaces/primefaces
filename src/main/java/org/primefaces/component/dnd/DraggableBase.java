@@ -78,35 +78,35 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public boolean isProxy() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.proxy, false);
     }
 
-    public void setProxy(boolean _proxy) {
-        getStateHelper().put(PropertyKeys.proxy, _proxy);
+    public void setProxy(boolean proxy) {
+        getStateHelper().put(PropertyKeys.proxy, proxy);
     }
 
     public boolean isDragOnly() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dragOnly, false);
     }
 
-    public void setDragOnly(boolean _dragOnly) {
-        getStateHelper().put(PropertyKeys.dragOnly, _dragOnly);
+    public void setDragOnly(boolean dragOnly) {
+        getStateHelper().put(PropertyKeys.dragOnly, dragOnly);
     }
 
-    public java.lang.String getFor() {
+    public String getFor() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
-    public void setFor(java.lang.String _for) {
+    public void setFor(String _for) {
         getStateHelper().put(PropertyKeys.forValue, _for);
     }
 
@@ -114,160 +114,160 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
-    public void setDisabled(boolean _disabled) {
-        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
-    public java.lang.String getAxis() {
+    public String getAxis() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.axis, null);
     }
 
-    public void setAxis(java.lang.String _axis) {
-        getStateHelper().put(PropertyKeys.axis, _axis);
+    public void setAxis(String axis) {
+        getStateHelper().put(PropertyKeys.axis, axis);
     }
 
-    public java.lang.String getContainment() {
+    public String getContainment() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.containment, null);
     }
 
-    public void setContainment(java.lang.String _containment) {
-        getStateHelper().put(PropertyKeys.containment, _containment);
+    public void setContainment(String containment) {
+        getStateHelper().put(PropertyKeys.containment, containment);
     }
 
-    public java.lang.String getHelper() {
+    public String getHelper() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.helper, null);
     }
 
-    public void setHelper(java.lang.String _helper) {
-        getStateHelper().put(PropertyKeys.helper, _helper);
+    public void setHelper(String helper) {
+        getStateHelper().put(PropertyKeys.helper, helper);
     }
 
     public boolean isRevert() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.revert, false);
     }
 
-    public void setRevert(boolean _revert) {
-        getStateHelper().put(PropertyKeys.revert, _revert);
+    public void setRevert(boolean revert) {
+        getStateHelper().put(PropertyKeys.revert, revert);
     }
 
     public boolean isSnap() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.snap, false);
     }
 
-    public void setSnap(boolean _snap) {
-        getStateHelper().put(PropertyKeys.snap, _snap);
+    public void setSnap(boolean snap) {
+        getStateHelper().put(PropertyKeys.snap, snap);
     }
 
-    public java.lang.String getSnapMode() {
+    public String getSnapMode() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.snapMode, null);
     }
 
-    public void setSnapMode(java.lang.String _snapMode) {
-        getStateHelper().put(PropertyKeys.snapMode, _snapMode);
+    public void setSnapMode(String snapMode) {
+        getStateHelper().put(PropertyKeys.snapMode, snapMode);
     }
 
     public int getSnapTolerance() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.snapTolerance, 20);
     }
 
-    public void setSnapTolerance(int _snapTolerance) {
-        getStateHelper().put(PropertyKeys.snapTolerance, _snapTolerance);
+    public void setSnapTolerance(int snapTolerance) {
+        getStateHelper().put(PropertyKeys.snapTolerance, snapTolerance);
     }
 
     public int getZindex() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.zindex, -1);
     }
 
-    public void setZindex(int _zindex) {
-        getStateHelper().put(PropertyKeys.zindex, _zindex);
+    public void setZindex(int zindex) {
+        getStateHelper().put(PropertyKeys.zindex, zindex);
     }
 
-    public java.lang.String getHandle() {
+    public String getHandle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.handle, null);
     }
 
-    public void setHandle(java.lang.String _handle) {
-        getStateHelper().put(PropertyKeys.handle, _handle);
+    public void setHandle(String handle) {
+        getStateHelper().put(PropertyKeys.handle, handle);
     }
 
     public double getOpacity() {
         return (java.lang.Double) getStateHelper().eval(PropertyKeys.opacity, 1.0);
     }
 
-    public void setOpacity(double _opacity) {
-        getStateHelper().put(PropertyKeys.opacity, _opacity);
+    public void setOpacity(double opacity) {
+        getStateHelper().put(PropertyKeys.opacity, opacity);
     }
 
-    public java.lang.String getStack() {
+    public String getStack() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.stack, null);
     }
 
-    public void setStack(java.lang.String _stack) {
-        getStateHelper().put(PropertyKeys.stack, _stack);
+    public void setStack(String stack) {
+        getStateHelper().put(PropertyKeys.stack, stack);
     }
 
-    public java.lang.String getGrid() {
+    public String getGrid() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.grid, null);
     }
 
-    public void setGrid(java.lang.String _grid) {
-        getStateHelper().put(PropertyKeys.grid, _grid);
+    public void setGrid(String grid) {
+        getStateHelper().put(PropertyKeys.grid, grid);
     }
 
-    public java.lang.String getScope() {
+    public String getScope() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.scope, null);
     }
 
-    public void setScope(java.lang.String _scope) {
-        getStateHelper().put(PropertyKeys.scope, _scope);
+    public void setScope(String scope) {
+        getStateHelper().put(PropertyKeys.scope, scope);
     }
 
-    public java.lang.String getCursor() {
+    public String getCursor() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.cursor, "crosshair");
     }
 
-    public void setCursor(java.lang.String _cursor) {
-        getStateHelper().put(PropertyKeys.cursor, _cursor);
+    public void setCursor(String cursor) {
+        getStateHelper().put(PropertyKeys.cursor, cursor);
     }
 
-    public java.lang.String getDashboard() {
+    public String getDashboard() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.dashboard, null);
     }
 
-    public void setDashboard(java.lang.String _dashboard) {
-        getStateHelper().put(PropertyKeys.dashboard, _dashboard);
+    public void setDashboard(String dashboard) {
+        getStateHelper().put(PropertyKeys.dashboard, dashboard);
     }
 
-    public java.lang.String getAppendTo() {
+    public String getAppendTo() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.appendTo, null);
     }
 
-    public void setAppendTo(java.lang.String _appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, _appendTo);
+    public void setAppendTo(String appendTo) {
+        getStateHelper().put(PropertyKeys.appendTo, appendTo);
     }
 
-    public java.lang.String getOnStart() {
+    public String getOnStart() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onStart, null);
     }
 
-    public void setOnStart(java.lang.String _onStart) {
-        getStateHelper().put(PropertyKeys.onStart, _onStart);
+    public void setOnStart(String onStart) {
+        getStateHelper().put(PropertyKeys.onStart, onStart);
     }
 
-    public java.lang.String getOnStop() {
+    public String getOnStop() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onStop, null);
     }
 
-    public void setOnStop(java.lang.String _onStop) {
-        getStateHelper().put(PropertyKeys.onStop, _onStop);
+    public void setOnStop(String onStop) {
+        getStateHelper().put(PropertyKeys.onStop, onStop);
     }
 
-    public java.lang.String getCancel() {
+    public String getCancel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.cancel, null);
     }
 
-    public void setCancel(java.lang.String _cancel) {
-        getStateHelper().put(PropertyKeys.cancel, _cancel);
+    public void setCancel(String cancel) {
+        getStateHelper().put(PropertyKeys.cancel, cancel);
     }
 
     @Override

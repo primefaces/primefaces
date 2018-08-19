@@ -54,100 +54,100 @@ abstract class LayoutBase extends UIPanel implements Widget, ClientBehaviorHolde
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public boolean isFullPage() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.fullPage, false);
     }
 
-    public void setFullPage(boolean _fullPage) {
-        getStateHelper().put(PropertyKeys.fullPage, _fullPage);
+    public void setFullPage(boolean fullPage) {
+        getStateHelper().put(PropertyKeys.fullPage, fullPage);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getOnResize() {
+    public String getOnResize() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onResize, null);
     }
 
-    public void setOnResize(java.lang.String _onResize) {
-        getStateHelper().put(PropertyKeys.onResize, _onResize);
+    public void setOnResize(String onResize) {
+        getStateHelper().put(PropertyKeys.onResize, onResize);
     }
 
-    public java.lang.String getOnClose() {
+    public String getOnClose() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onClose, null);
     }
 
-    public void setOnClose(java.lang.String _onClose) {
-        getStateHelper().put(PropertyKeys.onClose, _onClose);
+    public void setOnClose(String onClose) {
+        getStateHelper().put(PropertyKeys.onClose, onClose);
     }
 
-    public java.lang.String getOnToggle() {
+    public String getOnToggle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onToggle, null);
     }
 
-    public void setOnToggle(java.lang.String _onToggle) {
-        getStateHelper().put(PropertyKeys.onToggle, _onToggle);
+    public void setOnToggle(String onToggle) {
+        getStateHelper().put(PropertyKeys.onToggle, onToggle);
     }
 
-    public java.lang.String getResizeTitle() {
+    public String getResizeTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.resizeTitle, null);
     }
 
-    public void setResizeTitle(java.lang.String _resizeTitle) {
-        getStateHelper().put(PropertyKeys.resizeTitle, _resizeTitle);
+    public void setResizeTitle(String resizeTitle) {
+        getStateHelper().put(PropertyKeys.resizeTitle, resizeTitle);
     }
 
-    public java.lang.String getCollapseTitle() {
+    public String getCollapseTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.collapseTitle, "Collapse");
     }
 
-    public void setCollapseTitle(java.lang.String _collapseTitle) {
-        getStateHelper().put(PropertyKeys.collapseTitle, _collapseTitle);
+    public void setCollapseTitle(String collapseTitle) {
+        getStateHelper().put(PropertyKeys.collapseTitle, collapseTitle);
     }
 
-    public java.lang.String getExpandTitle() {
+    public String getExpandTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.expandTitle, null);
     }
 
-    public void setExpandTitle(java.lang.String _expandTitle) {
-        getStateHelper().put(PropertyKeys.expandTitle, _expandTitle);
+    public void setExpandTitle(String expandTitle) {
+        getStateHelper().put(PropertyKeys.expandTitle, expandTitle);
     }
 
-    public java.lang.String getCloseTitle() {
+    public String getCloseTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.closeTitle, "Close");
     }
 
-    public void setCloseTitle(java.lang.String _closeTitle) {
-        getStateHelper().put(PropertyKeys.closeTitle, _closeTitle);
+    public void setCloseTitle(String closeTitle) {
+        getStateHelper().put(PropertyKeys.closeTitle, closeTitle);
     }
 
     public boolean isStateful() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.stateful, false);
     }
 
-    public void setStateful(boolean _stateful) {
-        getStateHelper().put(PropertyKeys.stateful, _stateful);
+    public void setStateful(boolean stateful) {
+        getStateHelper().put(PropertyKeys.stateful, stateful);
     }
 
     @Override

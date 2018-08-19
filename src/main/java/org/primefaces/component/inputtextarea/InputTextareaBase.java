@@ -40,7 +40,7 @@ abstract class InputTextareaBase extends HtmlInputTextarea implements Widget, Mi
         minQueryLength,
         queryDelay,
         scrollHeight,
-        addLine
+        addLine;
     }
 
     public InputTextareaBase() {
@@ -52,95 +52,94 @@ abstract class InputTextareaBase extends HtmlInputTextarea implements Widget, Mi
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getPlaceholder() {
+    public String getPlaceholder() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
-    public void setPlaceholder(java.lang.String _placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, _placeholder);
+    public void setPlaceholder(String placeholder) {
+        getStateHelper().put(PropertyKeys.placeholder, placeholder);
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public boolean isAutoResize() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoResize, true);
     }
 
-    public void setAutoResize(boolean _autoResize) {
-        getStateHelper().put(PropertyKeys.autoResize, _autoResize);
+    public void setAutoResize(boolean autoResize) {
+        getStateHelper().put(PropertyKeys.autoResize, autoResize);
     }
 
     public int getMaxlength() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxlength, java.lang.Integer.MAX_VALUE);
     }
 
-    public void setMaxlength(int _maxlength) {
-        getStateHelper().put(PropertyKeys.maxlength, _maxlength);
+    public void setMaxlength(int maxlength) {
+        getStateHelper().put(PropertyKeys.maxlength, maxlength);
     }
 
-    public java.lang.String getCounter() {
+    public String getCounter() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.counter, null);
     }
 
-    public void setCounter(java.lang.String _counter) {
-        getStateHelper().put(PropertyKeys.counter, _counter);
+    public void setCounter(String counter) {
+        getStateHelper().put(PropertyKeys.counter, counter);
     }
 
-    public java.lang.String getCounterTemplate() {
+    public String getCounterTemplate() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.counterTemplate, null);
     }
 
-    public void setCounterTemplate(java.lang.String _counterTemplate) {
-        getStateHelper().put(PropertyKeys.counterTemplate, _counterTemplate);
+    public void setCounterTemplate(String counterTemplate) {
+        getStateHelper().put(PropertyKeys.counterTemplate, counterTemplate);
     }
 
     public javax.el.MethodExpression getCompleteMethod() {
         return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.completeMethod, null);
     }
 
-    public void setCompleteMethod(javax.el.MethodExpression _completeMethod) {
-        getStateHelper().put(PropertyKeys.completeMethod, _completeMethod);
+    public void setCompleteMethod(javax.el.MethodExpression completeMethod) {
+        getStateHelper().put(PropertyKeys.completeMethod, completeMethod);
     }
 
     public int getMinQueryLength() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minQueryLength, 3);
     }
 
-    public void setMinQueryLength(int _minQueryLength) {
-        getStateHelper().put(PropertyKeys.minQueryLength, _minQueryLength);
+    public void setMinQueryLength(int minQueryLength) {
+        getStateHelper().put(PropertyKeys.minQueryLength, minQueryLength);
     }
 
     public int getQueryDelay() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.queryDelay, 700);
     }
 
-    public void setQueryDelay(int _queryDelay) {
-        getStateHelper().put(PropertyKeys.queryDelay, _queryDelay);
+    public void setQueryDelay(int queryDelay) {
+        getStateHelper().put(PropertyKeys.queryDelay, queryDelay);
     }
 
     public int getScrollHeight() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.scrollHeight, java.lang.Integer.MAX_VALUE);
     }
 
-    public void setScrollHeight(int _scrollHeight) {
-        getStateHelper().put(PropertyKeys.scrollHeight, _scrollHeight);
+    public void setScrollHeight(int scrollHeight) {
+        getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
     }
 
     public boolean isAddLine() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.addLine, false);
     }
 
-    public void setAddLine(boolean _addLine) {
-        getStateHelper().put(PropertyKeys.addLine, _addLine);
+    public void setAddLine(boolean addLine) {
+        getStateHelper().put(PropertyKeys.addLine, addLine);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

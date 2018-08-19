@@ -49,68 +49,68 @@ abstract class SpinnerBase extends HtmlInputText implements Widget, InputHolder 
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getPlaceholder() {
+    public String getPlaceholder() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
-    public void setPlaceholder(java.lang.String _placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, _placeholder);
+    public void setPlaceholder(String placeholder) {
+        getStateHelper().put(PropertyKeys.placeholder, placeholder);
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public double getStepFactor() {
         return (java.lang.Double) getStateHelper().eval(PropertyKeys.stepFactor, 1.0);
     }
 
-    public void setStepFactor(double _stepFactor) {
-        getStateHelper().put(PropertyKeys.stepFactor, _stepFactor);
+    public void setStepFactor(double stepFactor) {
+        getStateHelper().put(PropertyKeys.stepFactor, stepFactor);
     }
 
     public double getMin() {
         return (java.lang.Double) getStateHelper().eval(PropertyKeys.min, java.lang.Double.MIN_VALUE);
     }
 
-    public void setMin(double _min) {
-        getStateHelper().put(PropertyKeys.min, _min);
+    public void setMin(double min) {
+        getStateHelper().put(PropertyKeys.min, min);
     }
 
     public double getMax() {
         return (java.lang.Double) getStateHelper().eval(PropertyKeys.max, java.lang.Double.MAX_VALUE);
     }
 
-    public void setMax(double _max) {
-        getStateHelper().put(PropertyKeys.max, _max);
+    public void setMax(double max) {
+        getStateHelper().put(PropertyKeys.max, max);
     }
 
-    public java.lang.String getPrefix() {
+    public String getPrefix() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.prefix, null);
     }
 
-    public void setPrefix(java.lang.String _prefix) {
-        getStateHelper().put(PropertyKeys.prefix, _prefix);
+    public void setPrefix(String prefix) {
+        getStateHelper().put(PropertyKeys.prefix, prefix);
     }
 
-    public java.lang.String getSuffix() {
+    public String getSuffix() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.suffix, null);
     }
 
-    public void setSuffix(java.lang.String _suffix) {
-        getStateHelper().put(PropertyKeys.suffix, _suffix);
+    public void setSuffix(String suffix) {
+        getStateHelper().put(PropertyKeys.suffix, suffix);
     }
 
-    public java.lang.String getDecimalPlaces() {
+    public String getDecimalPlaces() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.decimalPlaces, null);
     }
 
-    public void setDecimalPlaces(java.lang.String _decimalPlaces) {
-        getStateHelper().put(PropertyKeys.decimalPlaces, _decimalPlaces);
+    public void setDecimalPlaces(String decimalPlaces) {
+        getStateHelper().put(PropertyKeys.decimalPlaces, decimalPlaces);
     }
 
     @Override

@@ -80,7 +80,7 @@ public class Timeline extends TimelineBase {
         if (isSelfRequest(context)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-            String clientId = this.getClientId(context);
+            String clientId = getClientId(context);
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
@@ -101,7 +101,7 @@ public class Timeline extends TimelineBase {
             }
             else if ("change".equals(eventName) || "changed".equals(eventName)) {
                 TimelineEvent clonedEvent = null;
-                TimelineEvent timelineEvent = this.getValue().getEvent(params.get(clientId + "_eventIdx"));
+                TimelineEvent timelineEvent = getValue().getEvent(params.get(clientId + "_eventIdx"));
 
                 if (timelineEvent != null) {
                     clonedEvent = new TimelineEvent();
@@ -125,7 +125,7 @@ public class Timeline extends TimelineBase {
             }
             else if ("edit".equals(eventName) || "delete".equals(eventName)) {
                 TimelineEvent clonedEvent = null;
-                TimelineEvent timelineEvent = this.getValue().getEvent(params.get(clientId + "_eventIdx"));
+                TimelineEvent timelineEvent = getValue().getEvent(params.get(clientId + "_eventIdx"));
 
                 if (timelineEvent != null) {
                     clonedEvent = new TimelineEvent();
@@ -144,7 +144,7 @@ public class Timeline extends TimelineBase {
                 return;
             }
             else if ("select".equals(eventName)) {
-                TimelineEvent timelineEvent = this.getValue().getEvent(params.get(clientId + "_eventIdx"));
+                TimelineEvent timelineEvent = getValue().getEvent(params.get(clientId + "_eventIdx"));
                 TimelineSelectEvent te = new TimelineSelectEvent(this, behaviorEvent.getBehavior(), timelineEvent);
                 te.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(te);
@@ -211,7 +211,7 @@ public class Timeline extends TimelineBase {
     }
 
     private String getGroup(String groupParam) {
-        List<TimelineGroup> groups = this.getValue().getGroups();
+        List<TimelineGroup> groups = getValue().getGroups();
         if (groups == null || groupParam == null) {
             return groupParam;
         }
@@ -230,7 +230,7 @@ public class Timeline extends TimelineBase {
     }
 
     private boolean isSelfRequest(FacesContext context) {
-        return this.getClientId(context)
+        return getClientId(context)
                 .equals(context.getExternalContext().getRequestParameterMap().get(
                         Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }

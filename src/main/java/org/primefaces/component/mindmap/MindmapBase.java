@@ -47,44 +47,44 @@ abstract class MindmapBase extends UIComponentBase implements Widget, ClientBeha
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public org.primefaces.model.mindmap.MindmapNode getValue() {
         return (org.primefaces.model.mindmap.MindmapNode) getStateHelper().eval(PropertyKeys.value, null);
     }
 
-    public void setValue(org.primefaces.model.mindmap.MindmapNode _value) {
-        getStateHelper().put(PropertyKeys.value, _value);
+    public void setValue(org.primefaces.model.mindmap.MindmapNode value) {
+        getStateHelper().put(PropertyKeys.value, value);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public int getEffectSpeed() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.effectSpeed, 300);
     }
 
-    public void setEffectSpeed(int _effectSpeed) {
-        getStateHelper().put(PropertyKeys.effectSpeed, _effectSpeed);
+    public void setEffectSpeed(int effectSpeed) {
+        getStateHelper().put(PropertyKeys.effectSpeed, effectSpeed);
     }
 
     @Override

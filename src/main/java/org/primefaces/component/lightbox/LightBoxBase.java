@@ -38,7 +38,7 @@ abstract class LightBoxBase extends UIComponentBase implements Widget {
         iframeTitle,
         visible,
         onShow,
-        onHide;
+        onHide
     }
 
     public LightBoxBase() {
@@ -50,86 +50,87 @@ abstract class LightBoxBase extends UIComponentBase implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getWidth() {
+    public String getWidth() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.width, null);
     }
 
-    public void setWidth(java.lang.String _width) {
-        getStateHelper().put(PropertyKeys.width, _width);
+    public void setWidth(String width) {
+        getStateHelper().put(PropertyKeys.width, width);
     }
 
-    public java.lang.String getHeight() {
+    public String getHeight() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.height, null);
     }
 
-    public void setHeight(java.lang.String _height) {
-        getStateHelper().put(PropertyKeys.height, _height);
+    public void setHeight(String height) {
+        getStateHelper().put(PropertyKeys.height, height);
     }
 
     public boolean isIframe() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.iframe, false);
     }
 
-    public void setIframe(boolean _iframe) {
-        getStateHelper().put(PropertyKeys.iframe, _iframe);
+    public void setIframe(boolean iframe) {
+        getStateHelper().put(PropertyKeys.iframe, iframe);
     }
 
-    public java.lang.String getIframeTitle() {
+    public String getIframeTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.iframeTitle, null);
     }
 
-    public void setIframeTitle(java.lang.String _iframeTitle) {
-        getStateHelper().put(PropertyKeys.iframeTitle, _iframeTitle);
+    public void setIframeTitle(String iframeTitle) {
+        getStateHelper().put(PropertyKeys.iframeTitle, iframeTitle);
     }
 
     public boolean isVisible() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.visible, false);
     }
 
-    public void setVisible(boolean _visible) {
-        getStateHelper().put(PropertyKeys.visible, _visible);
+    public void setVisible(boolean visible) {
+        getStateHelper().put(PropertyKeys.visible, visible);
     }
 
-    public java.lang.String getOnShow() {
+    public String getOnShow() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onShow, null);
     }
 
-    public void setOnShow(java.lang.String _onShow) {
-        getStateHelper().put(PropertyKeys.onShow, _onShow);
+    public void setOnShow(String onShow) {
+        getStateHelper().put(PropertyKeys.onShow, onShow);
     }
 
-    public java.lang.String getOnHide() {
+    public String getOnHide() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onHide, null);
     }
 
-    public void setOnHide(java.lang.String _onHide) {
-        getStateHelper().put(PropertyKeys.onHide, _onHide);
+    public void setOnHide(String onHide) {
+        getStateHelper().put(PropertyKeys.onHide, onHide);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

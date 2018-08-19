@@ -30,6 +30,26 @@ public class KnobRenderer extends CoreRenderer {
 
     public static final String RENDERER_TYPE = "org.primefaces.component.KnobRenderer";
 
+    public static String colorToHex(Color color) {
+
+        String red = Integer.toHexString(color.getRed());
+        if (red.length() < 2) {
+            red = "0" + red;
+        }
+
+        String blue = Integer.toHexString(color.getBlue());
+        if (blue.length() < 2) {
+            blue = "0" + blue;
+        }
+
+        String green = Integer.toHexString(color.getGreen());
+        if (green.length() < 2) {
+            green = "0" + green;
+        }
+
+        return "#" + red + green + blue;
+    }
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
 
@@ -136,26 +156,6 @@ public class KnobRenderer extends CoreRenderer {
         catch (NumberFormatException e) {
             throw new ConverterException(e);
         }
-    }
-
-    public static String colorToHex(Color color) {
-
-        String red = Integer.toHexString(color.getRed());
-        if (red.length() < 2) {
-            red = "0" + red;
-        }
-
-        String blue = Integer.toHexString(color.getBlue());
-        if (blue.length() < 2) {
-            blue = "0" + blue;
-        }
-
-        String green = Integer.toHexString(color.getGreen());
-        if (green.length() < 2) {
-            green = "0" + green;
-        }
-
-        return "#" + red + green + blue;
     }
 
 }

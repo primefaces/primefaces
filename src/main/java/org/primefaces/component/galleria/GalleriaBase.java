@@ -43,7 +43,7 @@ abstract class GalleriaBase extends UIOutput implements Widget {
         transitionInterval,
         panelWidth,
         panelHeight,
-        showCaption;
+        showCaption
     }
 
     public GalleriaBase() {
@@ -55,126 +55,129 @@ abstract class GalleriaBase extends UIOutput implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
+    @Override
     public java.lang.Object getValue() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.value, null);
     }
 
-    public void setValue(java.lang.Object _value) {
-        getStateHelper().put(PropertyKeys.value, _value);
+    @Override
+    public void setValue(java.lang.Object value) {
+        getStateHelper().put(PropertyKeys.value, value);
     }
 
-    public java.lang.String getVar() {
+    public String getVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
-    public void setVar(java.lang.String _var) {
-        getStateHelper().put(PropertyKeys.var, _var);
+    public void setVar(String var) {
+        getStateHelper().put(PropertyKeys.var, var);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getEffect() {
+    public String getEffect() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, "fade");
     }
 
-    public void setEffect(java.lang.String _effect) {
-        getStateHelper().put(PropertyKeys.effect, _effect);
+    public void setEffect(String effect) {
+        getStateHelper().put(PropertyKeys.effect, effect);
     }
 
     public int getEffectSpeed() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.effectSpeed, 500);
     }
 
-    public void setEffectSpeed(int _effectSpeed) {
-        getStateHelper().put(PropertyKeys.effectSpeed, _effectSpeed);
+    public void setEffectSpeed(int effectSpeed) {
+        getStateHelper().put(PropertyKeys.effectSpeed, effectSpeed);
     }
 
     public int getFrameWidth() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.frameWidth, 60);
     }
 
-    public void setFrameWidth(int _frameWidth) {
-        getStateHelper().put(PropertyKeys.frameWidth, _frameWidth);
+    public void setFrameWidth(int frameWidth) {
+        getStateHelper().put(PropertyKeys.frameWidth, frameWidth);
     }
 
     public int getFrameHeight() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.frameHeight, 40);
     }
 
-    public void setFrameHeight(int _frameHeight) {
-        getStateHelper().put(PropertyKeys.frameHeight, _frameHeight);
+    public void setFrameHeight(int frameHeight) {
+        getStateHelper().put(PropertyKeys.frameHeight, frameHeight);
     }
 
     public boolean isShowFilmstrip() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showFilmstrip, true);
     }
 
-    public void setShowFilmstrip(boolean _showFilmstrip) {
-        getStateHelper().put(PropertyKeys.showFilmstrip, _showFilmstrip);
+    public void setShowFilmstrip(boolean showFilmstrip) {
+        getStateHelper().put(PropertyKeys.showFilmstrip, showFilmstrip);
     }
 
     public boolean isAutoPlay() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoPlay, true);
     }
 
-    public void setAutoPlay(boolean _autoPlay) {
-        getStateHelper().put(PropertyKeys.autoPlay, _autoPlay);
+    public void setAutoPlay(boolean autoPlay) {
+        getStateHelper().put(PropertyKeys.autoPlay, autoPlay);
     }
 
     public int getTransitionInterval() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.transitionInterval, 4000);
     }
 
-    public void setTransitionInterval(int _transitionInterval) {
-        getStateHelper().put(PropertyKeys.transitionInterval, _transitionInterval);
+    public void setTransitionInterval(int transitionInterval) {
+        getStateHelper().put(PropertyKeys.transitionInterval, transitionInterval);
     }
 
     public int getPanelWidth() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.panelWidth, java.lang.Integer.MIN_VALUE);
     }
 
-    public void setPanelWidth(int _panelWidth) {
-        getStateHelper().put(PropertyKeys.panelWidth, _panelWidth);
+    public void setPanelWidth(int panelWidth) {
+        getStateHelper().put(PropertyKeys.panelWidth, panelWidth);
     }
 
     public int getPanelHeight() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.panelHeight, java.lang.Integer.MIN_VALUE);
     }
 
-    public void setPanelHeight(int _panelHeight) {
-        getStateHelper().put(PropertyKeys.panelHeight, _panelHeight);
+    public void setPanelHeight(int panelHeight) {
+        getStateHelper().put(PropertyKeys.panelHeight, panelHeight);
     }
 
     public boolean isShowCaption() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showCaption, false);
     }
 
-    public void setShowCaption(boolean _showCaption) {
-        getStateHelper().put(PropertyKeys.showCaption, _showCaption);
+    public void setShowCaption(boolean showCaption) {
+        getStateHelper().put(PropertyKeys.showCaption, showCaption);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

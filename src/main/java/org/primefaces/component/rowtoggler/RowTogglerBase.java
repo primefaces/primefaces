@@ -40,28 +40,28 @@ abstract class RowTogglerBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getExpandLabel() {
+    public String getExpandLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.expandLabel, null);
     }
 
-    public void setExpandLabel(java.lang.String _expandLabel) {
-        getStateHelper().put(PropertyKeys.expandLabel, _expandLabel);
+    public void setExpandLabel(String expandLabel) {
+        getStateHelper().put(PropertyKeys.expandLabel, expandLabel);
     }
 
-    public java.lang.String getCollapseLabel() {
+    public String getCollapseLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.collapseLabel, null);
     }
 
-    public void setCollapseLabel(java.lang.String _collapseLabel) {
-        getStateHelper().put(PropertyKeys.collapseLabel, _collapseLabel);
+    public void setCollapseLabel(String collapseLabel) {
+        getStateHelper().put(PropertyKeys.collapseLabel, collapseLabel);
     }
 
-    public java.lang.String getTabindex() {
+    public String getTabindex() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, "0");
     }
 
-    public void setTabindex(java.lang.String _tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, _tabindex);
+    public void setTabindex(String tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 
 }

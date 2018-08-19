@@ -38,7 +38,7 @@ abstract class PasswordBase extends HtmlInputText implements Widget {
         goodLabel,
         strongLabel,
         redisplay,
-        match;
+        match
     }
 
     public PasswordBase() {
@@ -50,86 +50,87 @@ abstract class PasswordBase extends HtmlInputText implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getPlaceholder() {
+    public String getPlaceholder() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
-    public void setPlaceholder(java.lang.String _placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, _placeholder);
+    public void setPlaceholder(String placeholder) {
+        getStateHelper().put(PropertyKeys.placeholder, placeholder);
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public boolean isFeedback() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.feedback, false);
     }
 
-    public void setFeedback(boolean _feedback) {
-        getStateHelper().put(PropertyKeys.feedback, _feedback);
+    public void setFeedback(boolean feedback) {
+        getStateHelper().put(PropertyKeys.feedback, feedback);
     }
 
     public boolean isInline() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.inline, false);
     }
 
-    public void setInline(boolean _inline) {
-        getStateHelper().put(PropertyKeys.inline, _inline);
+    public void setInline(boolean inline) {
+        getStateHelper().put(PropertyKeys.inline, inline);
     }
 
-    public java.lang.String getPromptLabel() {
+    public String getPromptLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.promptLabel, "Please enter a password");
     }
 
-    public void setPromptLabel(java.lang.String _promptLabel) {
-        getStateHelper().put(PropertyKeys.promptLabel, _promptLabel);
+    public void setPromptLabel(String promptLabel) {
+        getStateHelper().put(PropertyKeys.promptLabel, promptLabel);
     }
 
-    public java.lang.String getWeakLabel() {
+    public String getWeakLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.weakLabel, "Weak");
     }
 
-    public void setWeakLabel(java.lang.String _weakLabel) {
-        getStateHelper().put(PropertyKeys.weakLabel, _weakLabel);
+    public void setWeakLabel(String weakLabel) {
+        getStateHelper().put(PropertyKeys.weakLabel, weakLabel);
     }
 
-    public java.lang.String getGoodLabel() {
+    public String getGoodLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.goodLabel, "Good");
     }
 
-    public void setGoodLabel(java.lang.String _goodLabel) {
-        getStateHelper().put(PropertyKeys.goodLabel, _goodLabel);
+    public void setGoodLabel(String goodLabel) {
+        getStateHelper().put(PropertyKeys.goodLabel, goodLabel);
     }
 
-    public java.lang.String getStrongLabel() {
+    public String getStrongLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.strongLabel, "Strong");
     }
 
-    public void setStrongLabel(java.lang.String _strongLabel) {
-        getStateHelper().put(PropertyKeys.strongLabel, _strongLabel);
+    public void setStrongLabel(String strongLabel) {
+        getStateHelper().put(PropertyKeys.strongLabel, strongLabel);
     }
 
     public boolean isRedisplay() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.redisplay, false);
     }
 
-    public void setRedisplay(boolean _redisplay) {
-        getStateHelper().put(PropertyKeys.redisplay, _redisplay);
+    public void setRedisplay(boolean redisplay) {
+        getStateHelper().put(PropertyKeys.redisplay, redisplay);
     }
 
-    public java.lang.String getMatch() {
+    public String getMatch() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.match, null);
     }
 
-    public void setMatch(java.lang.String _match) {
-        getStateHelper().put(PropertyKeys.match, _match);
+    public void setMatch(String match) {
+        getStateHelper().put(PropertyKeys.match, match);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

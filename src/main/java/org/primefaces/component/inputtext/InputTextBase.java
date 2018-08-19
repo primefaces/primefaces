@@ -32,7 +32,7 @@ abstract class InputTextBase extends HtmlInputText implements Widget, RTLAware {
 
         placeholder,
         widgetVar,
-        type;
+        type
     }
 
     public InputTextBase() {
@@ -44,34 +44,36 @@ abstract class InputTextBase extends HtmlInputText implements Widget, RTLAware {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getPlaceholder() {
+    public String getPlaceholder() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
-    public void setPlaceholder(java.lang.String _placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, _placeholder);
+    public void setPlaceholder(String placeholder) {
+        getStateHelper().put(PropertyKeys.placeholder, placeholder);
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getType() {
+    public String getType() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.type, "text");
     }
 
-    public void setType(java.lang.String _type) {
-        getStateHelper().put(PropertyKeys.type, _type);
+    public void setType(String type) {
+        getStateHelper().put(PropertyKeys.type, type);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }
 
+    @Override
     public boolean isRTL() {
         return "rtl".equalsIgnoreCase(getDir());
     }

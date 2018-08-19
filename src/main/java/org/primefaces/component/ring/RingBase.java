@@ -47,68 +47,68 @@ abstract class RingBase extends UIData implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getEasing() {
+    public String getEasing() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.easing, null);
     }
 
-    public void setEasing(java.lang.String _easing) {
-        getStateHelper().put(PropertyKeys.easing, _easing);
+    public void setEasing(String easing) {
+        getStateHelper().put(PropertyKeys.easing, easing);
     }
 
     public boolean isAutoplay() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoplay, false);
     }
 
-    public void setAutoplay(boolean _autoplay) {
-        getStateHelper().put(PropertyKeys.autoplay, _autoplay);
+    public void setAutoplay(boolean autoplay) {
+        getStateHelper().put(PropertyKeys.autoplay, autoplay);
     }
 
     public int getAutoplayDuration() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.autoplayDuration, 1000);
     }
 
-    public void setAutoplayDuration(int _autoplayDuration) {
-        getStateHelper().put(PropertyKeys.autoplayDuration, _autoplayDuration);
+    public void setAutoplayDuration(int autoplayDuration) {
+        getStateHelper().put(PropertyKeys.autoplayDuration, autoplayDuration);
     }
 
     public boolean isAutoplayPauseOnHover() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoplayPauseOnHover, false);
     }
 
-    public void setAutoplayPauseOnHover(boolean _autoplayPauseOnHover) {
-        getStateHelper().put(PropertyKeys.autoplayPauseOnHover, _autoplayPauseOnHover);
+    public void setAutoplayPauseOnHover(boolean autoplayPauseOnHover) {
+        getStateHelper().put(PropertyKeys.autoplayPauseOnHover, autoplayPauseOnHover);
     }
 
     public int getAutoplayInitialDelay() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.autoplayInitialDelay, 0);
     }
 
-    public void setAutoplayInitialDelay(int _autoplayInitialDelay) {
-        getStateHelper().put(PropertyKeys.autoplayInitialDelay, _autoplayInitialDelay);
+    public void setAutoplayInitialDelay(int autoplayInitialDelay) {
+        getStateHelper().put(PropertyKeys.autoplayInitialDelay, autoplayInitialDelay);
     }
 
     @Override

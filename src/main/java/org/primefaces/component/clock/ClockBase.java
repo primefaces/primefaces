@@ -50,48 +50,48 @@ abstract class ClockBase extends UIOutput implements Widget {
         return (String) getStateHelper().eval(PropertyKeys.pattern, null);
     }
 
-    public void setPattern(String _pattern) {
-        getStateHelper().put(PropertyKeys.pattern, _pattern);
+    public void setPattern(String pattern) {
+        getStateHelper().put(PropertyKeys.pattern, pattern);
     }
 
-    public java.lang.String getMode() {
+    public String getMode() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.mode, "client");
     }
 
-    public void setMode(java.lang.String _mode) {
-        getStateHelper().put(PropertyKeys.mode, _mode);
+    public void setMode(String mode) {
+        getStateHelper().put(PropertyKeys.mode, mode);
     }
 
     public boolean isAutoSync() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoSync, false);
     }
 
-    public void setAutoSync(boolean _autoSync) {
-        getStateHelper().put(PropertyKeys.autoSync, _autoSync);
+    public void setAutoSync(boolean autoSync) {
+        getStateHelper().put(PropertyKeys.autoSync, autoSync);
     }
 
     public int getSyncInterval() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.syncInterval, 60000);
     }
 
-    public void setSyncInterval(int _syncInterval) {
-        getStateHelper().put(PropertyKeys.syncInterval, _syncInterval);
+    public void setSyncInterval(int syncInterval) {
+        getStateHelper().put(PropertyKeys.syncInterval, syncInterval);
     }
 
     public java.lang.Object getTimeZone() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.timeZone, null);
     }
 
-    public void setTimeZone(java.lang.Object _timeZone) {
-        getStateHelper().put(PropertyKeys.timeZone, _timeZone);
+    public void setTimeZone(java.lang.Object timeZone) {
+        getStateHelper().put(PropertyKeys.timeZone, timeZone);
     }
 
-    public java.lang.String getDisplayMode() {
+    public String getDisplayMode() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.displayMode, "digital");
     }
 
-    public void setDisplayMode(java.lang.String _displayMode) {
-        getStateHelper().put(PropertyKeys.displayMode, _displayMode);
+    public void setDisplayMode(String displayMode) {
+        getStateHelper().put(PropertyKeys.displayMode, displayMode);
     }
 
     @Override

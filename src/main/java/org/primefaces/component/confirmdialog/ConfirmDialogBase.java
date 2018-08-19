@@ -58,140 +58,140 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getMessage() {
+    public String getMessage() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.message, null);
     }
 
-    public void setMessage(java.lang.String _message) {
-        getStateHelper().put(PropertyKeys.message, _message);
+    public void setMessage(String message) {
+        getStateHelper().put(PropertyKeys.message, message);
     }
 
-    public java.lang.String getHeader() {
+    public String getHeader() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.header, null);
     }
 
-    public void setHeader(java.lang.String _header) {
-        getStateHelper().put(PropertyKeys.header, _header);
+    public void setHeader(String header) {
+        getStateHelper().put(PropertyKeys.header, header);
     }
 
-    public java.lang.String getSeverity() {
+    public String getSeverity() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.severity, "alert");
     }
 
-    public void setSeverity(java.lang.String _severity) {
-        getStateHelper().put(PropertyKeys.severity, _severity);
+    public void setSeverity(String severity) {
+        getStateHelper().put(PropertyKeys.severity, severity);
     }
 
-    public java.lang.String getWidth() {
+    public String getWidth() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.width, null);
     }
 
-    public void setWidth(java.lang.String _width) {
-        getStateHelper().put(PropertyKeys.width, _width);
+    public void setWidth(String width) {
+        getStateHelper().put(PropertyKeys.width, width);
     }
 
-    public java.lang.String getHeight() {
+    public String getHeight() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.height, null);
     }
 
-    public void setHeight(java.lang.String _height) {
-        getStateHelper().put(PropertyKeys.height, _height);
+    public void setHeight(String height) {
+        getStateHelper().put(PropertyKeys.height, height);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public boolean isClosable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.closable, true);
     }
 
-    public void setClosable(boolean _closable) {
-        getStateHelper().put(PropertyKeys.closable, _closable);
+    public void setClosable(boolean closable) {
+        getStateHelper().put(PropertyKeys.closable, closable);
     }
 
-    public java.lang.String getAppendTo() {
+    public String getAppendTo() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.appendTo, null);
     }
 
-    public void setAppendTo(java.lang.String _appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, _appendTo);
+    public void setAppendTo(String appendTo) {
+        getStateHelper().put(PropertyKeys.appendTo, appendTo);
     }
 
     public boolean isVisible() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.visible, false);
     }
 
-    public void setVisible(boolean _visible) {
-        getStateHelper().put(PropertyKeys.visible, _visible);
+    public void setVisible(boolean visible) {
+        getStateHelper().put(PropertyKeys.visible, visible);
     }
 
-    public java.lang.String getShowEffect() {
+    public String getShowEffect() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.showEffect, null);
     }
 
-    public void setShowEffect(java.lang.String _showEffect) {
-        getStateHelper().put(PropertyKeys.showEffect, _showEffect);
+    public void setShowEffect(String showEffect) {
+        getStateHelper().put(PropertyKeys.showEffect, showEffect);
     }
 
-    public java.lang.String getHideEffect() {
+    public String getHideEffect() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.hideEffect, null);
     }
 
-    public void setHideEffect(java.lang.String _hideEffect) {
-        getStateHelper().put(PropertyKeys.hideEffect, _hideEffect);
+    public void setHideEffect(String hideEffect) {
+        getStateHelper().put(PropertyKeys.hideEffect, hideEffect);
     }
 
     public boolean isCloseOnEscape() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.closeOnEscape, false);
     }
 
-    public void setCloseOnEscape(boolean _closeOnEscape) {
-        getStateHelper().put(PropertyKeys.closeOnEscape, _closeOnEscape);
+    public void setCloseOnEscape(boolean closeOnEscape) {
+        getStateHelper().put(PropertyKeys.closeOnEscape, closeOnEscape);
     }
 
-    public java.lang.String getDir() {
+    public String getDir() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
 
-    public void setDir(java.lang.String _dir) {
-        getStateHelper().put(PropertyKeys.dir, _dir);
+    public void setDir(String dir) {
+        getStateHelper().put(PropertyKeys.dir, dir);
     }
 
     public boolean isGlobal() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.global, false);
     }
 
-    public void setGlobal(boolean _global) {
-        getStateHelper().put(PropertyKeys.global, _global);
+    public void setGlobal(boolean global) {
+        getStateHelper().put(PropertyKeys.global, global);
     }
 
     public boolean isResponsive() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
     }
 
-    public void setResponsive(boolean _responsive) {
-        getStateHelper().put(PropertyKeys.responsive, _responsive);
+    public void setResponsive(boolean responsive) {
+        getStateHelper().put(PropertyKeys.responsive, responsive);
     }
 
     public String resolveWidgetVar() {

@@ -75,268 +75,268 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getVar() {
+    public String getVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
-    public void setVar(java.lang.String _var) {
-        getStateHelper().put(PropertyKeys.var, _var);
+    public void setVar(String var) {
+        getStateHelper().put(PropertyKeys.var, var);
     }
 
-    public java.lang.String getItemLabel() {
+    public String getItemLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.itemLabel, null);
     }
 
-    public void setItemLabel(java.lang.String _itemLabel) {
-        getStateHelper().put(PropertyKeys.itemLabel, _itemLabel);
+    public void setItemLabel(String itemLabel) {
+        getStateHelper().put(PropertyKeys.itemLabel, itemLabel);
     }
 
     public java.lang.Object getItemValue() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.itemValue, null);
     }
 
-    public void setItemValue(java.lang.Object _itemValue) {
-        getStateHelper().put(PropertyKeys.itemValue, _itemValue);
+    public void setItemValue(java.lang.Object itemValue) {
+        getStateHelper().put(PropertyKeys.itemValue, itemValue);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public boolean isDisabled() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
-    public void setDisabled(boolean _disabled) {
-        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
-    public java.lang.String getEffect() {
+    public String getEffect() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, "fade");
     }
 
-    public void setEffect(java.lang.String _effect) {
-        getStateHelper().put(PropertyKeys.effect, _effect);
+    public void setEffect(String effect) {
+        getStateHelper().put(PropertyKeys.effect, effect);
     }
 
-    public java.lang.String getEffectSpeed() {
+    public String getEffectSpeed() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.effectSpeed, "fast");
     }
 
-    public void setEffectSpeed(java.lang.String _effectSpeed) {
-        getStateHelper().put(PropertyKeys.effectSpeed, _effectSpeed);
+    public void setEffectSpeed(String effectSpeed) {
+        getStateHelper().put(PropertyKeys.effectSpeed, effectSpeed);
     }
 
-    public java.lang.String getAddLabel() {
+    public String getAddLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.addLabel, "Add");
     }
 
-    public void setAddLabel(java.lang.String _addLabel) {
-        getStateHelper().put(PropertyKeys.addLabel, _addLabel);
+    public void setAddLabel(String addLabel) {
+        getStateHelper().put(PropertyKeys.addLabel, addLabel);
     }
 
-    public java.lang.String getAddAllLabel() {
+    public String getAddAllLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.addAllLabel, "Add All");
     }
 
-    public void setAddAllLabel(java.lang.String _addAllLabel) {
-        getStateHelper().put(PropertyKeys.addAllLabel, _addAllLabel);
+    public void setAddAllLabel(String addAllLabel) {
+        getStateHelper().put(PropertyKeys.addAllLabel, addAllLabel);
     }
 
-    public java.lang.String getRemoveLabel() {
+    public String getRemoveLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.removeLabel, "Remove");
     }
 
-    public void setRemoveLabel(java.lang.String _removeLabel) {
-        getStateHelper().put(PropertyKeys.removeLabel, _removeLabel);
+    public void setRemoveLabel(String removeLabel) {
+        getStateHelper().put(PropertyKeys.removeLabel, removeLabel);
     }
 
-    public java.lang.String getRemoveAllLabel() {
+    public String getRemoveAllLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.removeAllLabel, "Remove All");
     }
 
-    public void setRemoveAllLabel(java.lang.String _removeAllLabel) {
-        getStateHelper().put(PropertyKeys.removeAllLabel, _removeAllLabel);
+    public void setRemoveAllLabel(String removeAllLabel) {
+        getStateHelper().put(PropertyKeys.removeAllLabel, removeAllLabel);
     }
 
-    public java.lang.String getMoveUpLabel() {
+    public String getMoveUpLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.moveUpLabel, "Move Up");
     }
 
-    public void setMoveUpLabel(java.lang.String _moveUpLabel) {
-        getStateHelper().put(PropertyKeys.moveUpLabel, _moveUpLabel);
+    public void setMoveUpLabel(String moveUpLabel) {
+        getStateHelper().put(PropertyKeys.moveUpLabel, moveUpLabel);
     }
 
-    public java.lang.String getMoveTopLabel() {
+    public String getMoveTopLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.moveTopLabel, "Move Top");
     }
 
-    public void setMoveTopLabel(java.lang.String _moveTopLabel) {
-        getStateHelper().put(PropertyKeys.moveTopLabel, _moveTopLabel);
+    public void setMoveTopLabel(String moveTopLabel) {
+        getStateHelper().put(PropertyKeys.moveTopLabel, moveTopLabel);
     }
 
-    public java.lang.String getMoveDownLabel() {
+    public String getMoveDownLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.moveDownLabel, "Move Down");
     }
 
-    public void setMoveDownLabel(java.lang.String _moveDownLabel) {
-        getStateHelper().put(PropertyKeys.moveDownLabel, _moveDownLabel);
+    public void setMoveDownLabel(String moveDownLabel) {
+        getStateHelper().put(PropertyKeys.moveDownLabel, moveDownLabel);
     }
 
-    public java.lang.String getMoveBottomLabel() {
+    public String getMoveBottomLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.moveBottomLabel, "Move Bottom");
     }
 
-    public void setMoveBottomLabel(java.lang.String _moveBottomLabel) {
-        getStateHelper().put(PropertyKeys.moveBottomLabel, _moveBottomLabel);
+    public void setMoveBottomLabel(String moveBottomLabel) {
+        getStateHelper().put(PropertyKeys.moveBottomLabel, moveBottomLabel);
     }
 
     public boolean isShowSourceControls() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showSourceControls, false);
     }
 
-    public void setShowSourceControls(boolean _showSourceControls) {
-        getStateHelper().put(PropertyKeys.showSourceControls, _showSourceControls);
+    public void setShowSourceControls(boolean showSourceControls) {
+        getStateHelper().put(PropertyKeys.showSourceControls, showSourceControls);
     }
 
     public boolean isShowTargetControls() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showTargetControls, false);
     }
 
-    public void setShowTargetControls(boolean _showTargetControls) {
-        getStateHelper().put(PropertyKeys.showTargetControls, _showTargetControls);
+    public void setShowTargetControls(boolean showTargetControls) {
+        getStateHelper().put(PropertyKeys.showTargetControls, showTargetControls);
     }
 
-    public java.lang.String getOnTransfer() {
+    public String getOnTransfer() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onTransfer, null);
     }
 
-    public void setOnTransfer(java.lang.String _onTransfer) {
-        getStateHelper().put(PropertyKeys.onTransfer, _onTransfer);
+    public void setOnTransfer(String onTransfer) {
+        getStateHelper().put(PropertyKeys.onTransfer, onTransfer);
     }
 
-    public java.lang.String getLabel() {
+    public String getLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.label, null);
     }
 
-    public void setLabel(java.lang.String _label) {
-        getStateHelper().put(PropertyKeys.label, _label);
+    public void setLabel(String label) {
+        getStateHelper().put(PropertyKeys.label, label);
     }
 
     public boolean isItemDisabled() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.itemDisabled, false);
     }
 
-    public void setItemDisabled(boolean _itemDisabled) {
-        getStateHelper().put(PropertyKeys.itemDisabled, _itemDisabled);
+    public void setItemDisabled(boolean itemDisabled) {
+        getStateHelper().put(PropertyKeys.itemDisabled, itemDisabled);
     }
 
     public boolean isShowSourceFilter() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showSourceFilter, false);
     }
 
-    public void setShowSourceFilter(boolean _showSourceFilter) {
-        getStateHelper().put(PropertyKeys.showSourceFilter, _showSourceFilter);
+    public void setShowSourceFilter(boolean showSourceFilter) {
+        getStateHelper().put(PropertyKeys.showSourceFilter, showSourceFilter);
     }
 
     public boolean isShowTargetFilter() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showTargetFilter, false);
     }
 
-    public void setShowTargetFilter(boolean _showTargetFilter) {
-        getStateHelper().put(PropertyKeys.showTargetFilter, _showTargetFilter);
+    public void setShowTargetFilter(boolean showTargetFilter) {
+        getStateHelper().put(PropertyKeys.showTargetFilter, showTargetFilter);
     }
 
-    public java.lang.String getFilterMatchMode() {
+    public String getFilterMatchMode() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
     }
 
-    public void setFilterMatchMode(java.lang.String _filterMatchMode) {
-        getStateHelper().put(PropertyKeys.filterMatchMode, _filterMatchMode);
+    public void setFilterMatchMode(String filterMatchMode) {
+        getStateHelper().put(PropertyKeys.filterMatchMode, filterMatchMode);
     }
 
-    public java.lang.String getFilterFunction() {
+    public String getFilterFunction() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.filterFunction, null);
     }
 
-    public void setFilterFunction(java.lang.String _filterFunction) {
-        getStateHelper().put(PropertyKeys.filterFunction, _filterFunction);
+    public void setFilterFunction(String filterFunction) {
+        getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
     }
 
     public boolean isShowCheckbox() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showCheckbox, false);
     }
 
-    public void setShowCheckbox(boolean _showCheckbox) {
-        getStateHelper().put(PropertyKeys.showCheckbox, _showCheckbox);
+    public void setShowCheckbox(boolean showCheckbox) {
+        getStateHelper().put(PropertyKeys.showCheckbox, showCheckbox);
     }
 
-    public java.lang.String getLabelDisplay() {
+    public String getLabelDisplay() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.labelDisplay, "tooltip");
     }
 
-    public void setLabelDisplay(java.lang.String _labelDisplay) {
-        getStateHelper().put(PropertyKeys.labelDisplay, _labelDisplay);
+    public void setLabelDisplay(String labelDisplay) {
+        getStateHelper().put(PropertyKeys.labelDisplay, labelDisplay);
     }
 
-    public java.lang.String getOrientation() {
+    public String getOrientation() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.orientation, "horizontal");
     }
 
-    public void setOrientation(java.lang.String _orientation) {
-        getStateHelper().put(PropertyKeys.orientation, _orientation);
+    public void setOrientation(String orientation) {
+        getStateHelper().put(PropertyKeys.orientation, orientation);
     }
 
     public boolean isResponsive() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
     }
 
-    public void setResponsive(boolean _responsive) {
-        getStateHelper().put(PropertyKeys.responsive, _responsive);
+    public void setResponsive(boolean responsive) {
+        getStateHelper().put(PropertyKeys.responsive, responsive);
     }
 
-    public java.lang.String getTabindex() {
+    public String getTabindex() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, "0");
     }
 
-    public void setTabindex(java.lang.String _tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, _tabindex);
+    public void setTabindex(String tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 
-    public java.lang.String getFilterEvent() {
+    public String getFilterEvent() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.filterEvent, null);
     }
 
-    public void setFilterEvent(java.lang.String _filterEvent) {
-        getStateHelper().put(PropertyKeys.filterEvent, _filterEvent);
+    public void setFilterEvent(String filterEvent) {
+        getStateHelper().put(PropertyKeys.filterEvent, filterEvent);
     }
 
     public int getFilterDelay() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.filterDelay, java.lang.Integer.MAX_VALUE);
     }
 
-    public void setFilterDelay(int _filterDelay) {
-        getStateHelper().put(PropertyKeys.filterDelay, _filterDelay);
+    public void setFilterDelay(int filterDelay) {
+        getStateHelper().put(PropertyKeys.filterDelay, filterDelay);
     }
 
     @Override

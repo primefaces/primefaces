@@ -44,7 +44,7 @@ abstract class RemoteCommandBase extends UICommand implements AjaxSource {
         resetValues,
         ignoreAutoUpdate,
         partialSubmitFilter,
-        form
+        form;
     }
 
     public RemoteCommandBase() {
@@ -56,155 +56,140 @@ abstract class RemoteCommandBase extends UICommand implements AjaxSource {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getName() {
+    public String getName() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.name, null);
     }
 
-    public void setName(java.lang.String _name) {
-        getStateHelper().put(PropertyKeys.name, _name);
+    public void setName(String name) {
+        getStateHelper().put(PropertyKeys.name, name);
     }
 
-    @Override
-    public java.lang.String getUpdate() {
+    public String getUpdate() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.update, null);
     }
 
-    public void setUpdate(java.lang.String _update) {
-        getStateHelper().put(PropertyKeys.update, _update);
+    public void setUpdate(String update) {
+        getStateHelper().put(PropertyKeys.update, update);
     }
 
-    @Override
-    public java.lang.String getProcess() {
+    public String getProcess() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.process, null);
     }
 
-    public void setProcess(java.lang.String _process) {
-        getStateHelper().put(PropertyKeys.process, _process);
+    public void setProcess(String process) {
+        getStateHelper().put(PropertyKeys.process, process);
     }
 
-    @Override
-    public java.lang.String getOnstart() {
+    public String getOnstart() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onstart, null);
     }
 
-    public void setOnstart(java.lang.String _onstart) {
-        getStateHelper().put(PropertyKeys.onstart, _onstart);
+    public void setOnstart(String onstart) {
+        getStateHelper().put(PropertyKeys.onstart, onstart);
     }
 
-    @Override
-    public java.lang.String getOncomplete() {
+    public String getOncomplete() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.oncomplete, null);
     }
 
-    public void setOncomplete(java.lang.String _oncomplete) {
-        getStateHelper().put(PropertyKeys.oncomplete, _oncomplete);
+    public void setOncomplete(String oncomplete) {
+        getStateHelper().put(PropertyKeys.oncomplete, oncomplete);
     }
 
-    @Override
-    public java.lang.String getOnerror() {
+    public String getOnerror() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onerror, null);
     }
 
-    public void setOnerror(java.lang.String _onerror) {
-        getStateHelper().put(PropertyKeys.onerror, _onerror);
+    public void setOnerror(String onerror) {
+        getStateHelper().put(PropertyKeys.onerror, onerror);
     }
 
-    @Override
-    public java.lang.String getOnsuccess() {
+    public String getOnsuccess() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onsuccess, null);
     }
 
-    public void setOnsuccess(java.lang.String _onsuccess) {
-        getStateHelper().put(PropertyKeys.onsuccess, _onsuccess);
+    public void setOnsuccess(String onsuccess) {
+        getStateHelper().put(PropertyKeys.onsuccess, onsuccess);
     }
 
-    @Override
     public boolean isGlobal() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.global, true);
     }
 
-    public void setGlobal(boolean _global) {
-        getStateHelper().put(PropertyKeys.global, _global);
+    public void setGlobal(boolean global) {
+        getStateHelper().put(PropertyKeys.global, global);
     }
 
-    @Override
-    public java.lang.String getDelay() {
+    public String getDelay() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.delay, null);
     }
 
-    public void setDelay(java.lang.String _delay) {
-        getStateHelper().put(PropertyKeys.delay, _delay);
+    public void setDelay(String delay) {
+        getStateHelper().put(PropertyKeys.delay, delay);
     }
 
-    @Override
     public int getTimeout() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.timeout, 0);
     }
 
-    public void setTimeout(int _timeout) {
-        getStateHelper().put(PropertyKeys.timeout, _timeout);
+    public void setTimeout(int timeout) {
+        getStateHelper().put(PropertyKeys.timeout, timeout);
     }
 
-    @Override
     public boolean isAsync() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.async, false);
     }
 
-    public void setAsync(boolean _async) {
-        getStateHelper().put(PropertyKeys.async, _async);
+    public void setAsync(boolean async) {
+        getStateHelper().put(PropertyKeys.async, async);
     }
 
     public boolean isAutoRun() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoRun, false);
     }
 
-    public void setAutoRun(boolean _autoRun) {
-        getStateHelper().put(PropertyKeys.autoRun, _autoRun);
+    public void setAutoRun(boolean autoRun) {
+        getStateHelper().put(PropertyKeys.autoRun, autoRun);
     }
 
-    @Override
     public boolean isPartialSubmit() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.partialSubmit, false);
     }
 
-    public void setPartialSubmit(boolean _partialSubmit) {
-        getStateHelper().put(PropertyKeys.partialSubmit, _partialSubmit);
+    public void setPartialSubmit(boolean partialSubmit) {
+        getStateHelper().put(PropertyKeys.partialSubmit, partialSubmit);
     }
 
-    @Override
     public boolean isResetValues() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.resetValues, false);
     }
 
-    public void setResetValues(boolean _resetValues) {
-        getStateHelper().put(PropertyKeys.resetValues, _resetValues);
+    public void setResetValues(boolean resetValues) {
+        getStateHelper().put(PropertyKeys.resetValues, resetValues);
     }
 
-    @Override
     public boolean isIgnoreAutoUpdate() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
     }
 
-    public void setIgnoreAutoUpdate(boolean _ignoreAutoUpdate) {
-        getStateHelper().put(PropertyKeys.ignoreAutoUpdate, _ignoreAutoUpdate);
+    public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
+        getStateHelper().put(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
     }
 
-    @Override
-    public java.lang.String getPartialSubmitFilter() {
+    public String getPartialSubmitFilter() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.partialSubmitFilter, null);
     }
 
-    public void setPartialSubmitFilter(java.lang.String _partialSubmitFilter) {
-        getStateHelper().put(PropertyKeys.partialSubmitFilter, _partialSubmitFilter);
+    public void setPartialSubmitFilter(String partialSubmitFilter) {
+        getStateHelper().put(PropertyKeys.partialSubmitFilter, partialSubmitFilter);
     }
 
-    @Override
-    public java.lang.String getForm() {
+    public String getForm() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.form, null);
     }
 
-    public void setForm(java.lang.String _form) {
-        getStateHelper().put(PropertyKeys.form, _form);
+    public void setForm(String form) {
+        getStateHelper().put(PropertyKeys.form, form);
     }
 
 }

@@ -42,14 +42,14 @@ public class Password extends PasswordBase {
     @Override
     protected void validateValue(FacesContext context, Object value) {
         super.validateValue(context, value);
-        String match = this.getMatch();
-        Object submittedValue = this.getSubmittedValue();
+        String match = getMatch();
+        Object submittedValue = getSubmittedValue();
 
         if (isValid() && !LangUtils.isValueBlank(match)) {
             Password matchWith = (Password) SearchExpressionFacade.resolveComponent(context, this, match);
 
             if (submittedValue != null && !submittedValue.equals(matchWith.getSubmittedValue())) {
-                this.setValid(false);
+                setValid(false);
                 matchWith.setValid(false);
 
                 String validatorMessage = getValidatorMessage();

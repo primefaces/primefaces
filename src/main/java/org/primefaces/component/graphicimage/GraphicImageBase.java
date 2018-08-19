@@ -45,32 +45,32 @@ abstract class GraphicImageBase extends HtmlGraphicImage {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.cache, true);
     }
 
-    public void setCache(boolean _cache) {
-        getStateHelper().put(PropertyKeys.cache, _cache);
+    public void setCache(boolean cache) {
+        getStateHelper().put(PropertyKeys.cache, cache);
     }
 
-    public java.lang.String getName() {
+    public String getName() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.name, null);
     }
 
-    public void setName(java.lang.String _name) {
-        getStateHelper().put(PropertyKeys.name, _name);
+    public void setName(String name) {
+        getStateHelper().put(PropertyKeys.name, name);
     }
 
-    public java.lang.String getLibrary() {
+    public String getLibrary() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.library, null);
     }
 
-    public void setLibrary(java.lang.String _library) {
-        getStateHelper().put(PropertyKeys.library, _library);
+    public void setLibrary(String library) {
+        getStateHelper().put(PropertyKeys.library, library);
     }
 
     public boolean isStream() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.stream, true);
     }
 
-    public void setStream(boolean _stream) {
-        getStateHelper().put(PropertyKeys.stream, _stream);
+    public void setStream(boolean stream) {
+        getStateHelper().put(PropertyKeys.stream, stream);
     }
 
 }

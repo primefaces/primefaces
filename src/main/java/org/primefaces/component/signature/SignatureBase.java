@@ -53,108 +53,108 @@ abstract class SignatureBase extends UIInput implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getBackgroundColor() {
+    public String getBackgroundColor() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.backgroundColor, null);
     }
 
-    public void setBackgroundColor(java.lang.String _backgroundColor) {
-        getStateHelper().put(PropertyKeys.backgroundColor, _backgroundColor);
+    public void setBackgroundColor(String backgroundColor) {
+        getStateHelper().put(PropertyKeys.backgroundColor, backgroundColor);
     }
 
-    public java.lang.String getColor() {
+    public String getColor() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.color, null);
     }
 
-    public void setColor(java.lang.String _color) {
-        getStateHelper().put(PropertyKeys.color, _color);
+    public void setColor(String color) {
+        getStateHelper().put(PropertyKeys.color, color);
     }
 
     public int getThickness() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.thickness, 2);
     }
 
-    public void setThickness(int _thickness) {
-        getStateHelper().put(PropertyKeys.thickness, _thickness);
+    public void setThickness(int thickness) {
+        getStateHelper().put(PropertyKeys.thickness, thickness);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public boolean isReadonly() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
     }
 
-    public void setReadonly(boolean _readonly) {
-        getStateHelper().put(PropertyKeys.readonly, _readonly);
+    public void setReadonly(boolean readonly) {
+        getStateHelper().put(PropertyKeys.readonly, readonly);
     }
 
     public boolean isGuideline() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.guideline, false);
     }
 
-    public void setGuideline(boolean _guideline) {
-        getStateHelper().put(PropertyKeys.guideline, _guideline);
+    public void setGuideline(boolean guideline) {
+        getStateHelper().put(PropertyKeys.guideline, guideline);
     }
 
-    public java.lang.String getGuidelineColor() {
+    public String getGuidelineColor() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.guidelineColor, null);
     }
 
-    public void setGuidelineColor(java.lang.String _guidelineColor) {
-        getStateHelper().put(PropertyKeys.guidelineColor, _guidelineColor);
+    public void setGuidelineColor(String guidelineColor) {
+        getStateHelper().put(PropertyKeys.guidelineColor, guidelineColor);
     }
 
     public int getGuidelineOffset() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.guidelineOffset, 25);
     }
 
-    public void setGuidelineOffset(int _guidelineOffset) {
-        getStateHelper().put(PropertyKeys.guidelineOffset, _guidelineOffset);
+    public void setGuidelineOffset(int guidelineOffset) {
+        getStateHelper().put(PropertyKeys.guidelineOffset, guidelineOffset);
     }
 
     public int getGuidelineIndent() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.guidelineIndent, 10);
     }
 
-    public void setGuidelineIndent(int _guidelineIndent) {
-        getStateHelper().put(PropertyKeys.guidelineIndent, _guidelineIndent);
+    public void setGuidelineIndent(int guidelineIndent) {
+        getStateHelper().put(PropertyKeys.guidelineIndent, guidelineIndent);
     }
 
-    public java.lang.String getOnchange() {
+    public String getOnchange() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onchange, null);
     }
 
-    public void setOnchange(java.lang.String _onchange) {
-        getStateHelper().put(PropertyKeys.onchange, _onchange);
+    public void setOnchange(String onchange) {
+        getStateHelper().put(PropertyKeys.onchange, onchange);
     }
 
-    public java.lang.String getBase64Value() {
+    public String getBase64Value() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.base64Value, null);
     }
 
-    public void setBase64Value(java.lang.String _base64Value) {
-        getStateHelper().put(PropertyKeys.base64Value, _base64Value);
+    public void setBase64Value(String base64Value) {
+        getStateHelper().put(PropertyKeys.base64Value, base64Value);
     }
 
     public String resolveWidgetVar() {

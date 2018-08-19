@@ -47,32 +47,32 @@ abstract class BreadCrumbBase extends AbstractMenu implements Widget {
         return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }
 
-    public void setModel(org.primefaces.model.menu.MenuModel _model) {
-        getStateHelper().put(PropertyKeys.model, _model);
+    public void setModel(org.primefaces.model.menu.MenuModel model) {
+        getStateHelper().put(PropertyKeys.model, model);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getHomeDisplay() {
+    public String getHomeDisplay() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.homeDisplay, "icon");
     }
 
-    public void setHomeDisplay(java.lang.String _homeDisplay) {
-        getStateHelper().put(PropertyKeys.homeDisplay, _homeDisplay);
+    public void setHomeDisplay(String homeDisplay) {
+        getStateHelper().put(PropertyKeys.homeDisplay, homeDisplay);
     }
 
     public String resolveWidgetVar() {

@@ -58,132 +58,132 @@ abstract class KnobBase extends UIInput implements Widget, ClientBehaviorHolder,
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public int getMin() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.min, 0);
     }
 
-    public void setMin(int _min) {
-        getStateHelper().put(PropertyKeys.min, _min);
+    public void setMin(int min) {
+        getStateHelper().put(PropertyKeys.min, min);
     }
 
     public int getMax() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.max, 100);
     }
 
-    public void setMax(int _max) {
-        getStateHelper().put(PropertyKeys.max, _max);
+    public void setMax(int max) {
+        getStateHelper().put(PropertyKeys.max, max);
     }
 
     public int getStep() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.step, 1);
     }
 
-    public void setStep(int _step) {
-        getStateHelper().put(PropertyKeys.step, _step);
+    public void setStep(int step) {
+        getStateHelper().put(PropertyKeys.step, step);
     }
 
     public java.lang.Float getThickness() {
         return (java.lang.Float) getStateHelper().eval(PropertyKeys.thickness, null);
     }
 
-    public void setThickness(java.lang.Float _thickness) {
-        getStateHelper().put(PropertyKeys.thickness, _thickness);
+    public void setThickness(java.lang.Float thickness) {
+        getStateHelper().put(PropertyKeys.thickness, thickness);
     }
 
     public java.lang.Object getWidth() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.width, null);
     }
 
-    public void setWidth(java.lang.Object _width) {
-        getStateHelper().put(PropertyKeys.width, _width);
+    public void setWidth(java.lang.Object width) {
+        getStateHelper().put(PropertyKeys.width, width);
     }
 
     public java.lang.Object getHeight() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.height, null);
     }
 
-    public void setHeight(java.lang.Object _height) {
-        getStateHelper().put(PropertyKeys.height, _height);
+    public void setHeight(java.lang.Object height) {
+        getStateHelper().put(PropertyKeys.height, height);
     }
 
     public java.lang.Object getForegroundColor() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.foregroundColor, null);
     }
 
-    public void setForegroundColor(java.lang.Object _foregroundColor) {
-        getStateHelper().put(PropertyKeys.foregroundColor, _foregroundColor);
+    public void setForegroundColor(java.lang.Object foregroundColor) {
+        getStateHelper().put(PropertyKeys.foregroundColor, foregroundColor);
     }
 
     public java.lang.Object getBackgroundColor() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.backgroundColor, null);
     }
 
-    public void setBackgroundColor(java.lang.Object _backgroundColor) {
-        getStateHelper().put(PropertyKeys.backgroundColor, _backgroundColor);
+    public void setBackgroundColor(java.lang.Object backgroundColor) {
+        getStateHelper().put(PropertyKeys.backgroundColor, backgroundColor);
     }
 
-    public java.lang.String getColorTheme() {
+    public String getColorTheme() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.colorTheme, null);
     }
 
-    public void setColorTheme(java.lang.String _colorTheme) {
-        getStateHelper().put(PropertyKeys.colorTheme, _colorTheme);
+    public void setColorTheme(String colorTheme) {
+        getStateHelper().put(PropertyKeys.colorTheme, colorTheme);
     }
 
     public boolean isDisabled() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
-    public void setDisabled(boolean _disabled) {
-        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
     public boolean isShowLabel() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showLabel, true);
     }
 
-    public void setShowLabel(boolean _showLabel) {
-        getStateHelper().put(PropertyKeys.showLabel, _showLabel);
+    public void setShowLabel(boolean showLabel) {
+        getStateHelper().put(PropertyKeys.showLabel, showLabel);
     }
 
     public boolean isCursor() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.cursor, false);
     }
 
-    public void setCursor(boolean _cursor) {
-        getStateHelper().put(PropertyKeys.cursor, _cursor);
+    public void setCursor(boolean cursor) {
+        getStateHelper().put(PropertyKeys.cursor, cursor);
     }
 
-    public java.lang.String getLabelTemplate() {
+    public String getLabelTemplate() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.labelTemplate, "{value}");
     }
 
-    public void setLabelTemplate(java.lang.String _labelTemplate) {
-        getStateHelper().put(PropertyKeys.labelTemplate, _labelTemplate);
+    public void setLabelTemplate(String labelTemplate) {
+        getStateHelper().put(PropertyKeys.labelTemplate, labelTemplate);
     }
 
-    public java.lang.String getOnchange() {
+    public String getOnchange() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onchange, null);
     }
 
-    public void setOnchange(java.lang.String _onchange) {
-        getStateHelper().put(PropertyKeys.onchange, _onchange);
+    public void setOnchange(String onchange) {
+        getStateHelper().put(PropertyKeys.onchange, onchange);
     }
 
-    public java.lang.String getLineCap() {
+    public String getLineCap() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.lineCap, "butt");
     }
 
-    public void setLineCap(java.lang.String _lineCap) {
-        getStateHelper().put(PropertyKeys.lineCap, _lineCap);
+    public void setLineCap(String lineCap) {
+        getStateHelper().put(PropertyKeys.lineCap, lineCap);
     }
 
     @Override

@@ -42,60 +42,60 @@ abstract class TabBase extends UIPanel {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getTitle() {
+    public String getTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.title, null);
     }
 
-    public void setTitle(java.lang.String _title) {
-        getStateHelper().put(PropertyKeys.title, _title);
+    public void setTitle(String title) {
+        getStateHelper().put(PropertyKeys.title, title);
     }
 
-    public java.lang.String getTitleStyle() {
+    public String getTitleStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.titleStyle, null);
     }
 
-    public void setTitleStyle(java.lang.String _titleStyle) {
-        getStateHelper().put(PropertyKeys.titleStyle, _titleStyle);
+    public void setTitleStyle(String titleStyle) {
+        getStateHelper().put(PropertyKeys.titleStyle, titleStyle);
     }
 
-    public java.lang.String getTitleStyleClass() {
+    public String getTitleStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.titleStyleClass, null);
     }
 
-    public void setTitleStyleClass(java.lang.String _titleStyleClass) {
-        getStateHelper().put(PropertyKeys.titleStyleClass, _titleStyleClass);
+    public void setTitleStyleClass(String titleStyleClass) {
+        getStateHelper().put(PropertyKeys.titleStyleClass, titleStyleClass);
     }
 
     public boolean isDisabled() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
-    public void setDisabled(boolean _disabled) {
-        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
     public boolean isClosable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.closable, false);
     }
 
-    public void setClosable(boolean _closable) {
-        getStateHelper().put(PropertyKeys.closable, _closable);
+    public void setClosable(boolean closable) {
+        getStateHelper().put(PropertyKeys.closable, closable);
     }
 
-    public java.lang.String getTitletip() {
+    public String getTitletip() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.titletip, null);
     }
 
-    public void setTitletip(java.lang.String _titletip) {
-        getStateHelper().put(PropertyKeys.titletip, _titletip);
+    public void setTitletip(String titletip) {
+        getStateHelper().put(PropertyKeys.titletip, titletip);
     }
 
-    public java.lang.String getAriaLabel() {
+    public String getAriaLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
     }
 
-    public void setAriaLabel(java.lang.String _ariaLabel) {
-        getStateHelper().put(PropertyKeys.ariaLabel, _ariaLabel);
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 
 }

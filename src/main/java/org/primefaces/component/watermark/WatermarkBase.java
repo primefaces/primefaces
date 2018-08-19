@@ -42,9 +42,8 @@ abstract class WatermarkBase extends UIComponentBase implements Widget {
         PropertyKeys() {
         }
 
-        @Override
         public String toString() {
-            return ((toString != null) ? toString : super.toString());
+            return ((this.toString != null) ? this.toString : super.toString());
         }
     }
 
@@ -57,31 +56,30 @@ abstract class WatermarkBase extends UIComponentBase implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getValue() {
+    public String getValue() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.value, null);
     }
 
-    public void setValue(java.lang.String _value) {
-        getStateHelper().put(PropertyKeys.value, _value);
+    public void setValue(String value) {
+        getStateHelper().put(PropertyKeys.value, value);
     }
 
-    public java.lang.String getFor() {
+    public String getFor() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
-    public void setFor(java.lang.String _for) {
+    public void setFor(String _for) {
         getStateHelper().put(PropertyKeys.forValue, _for);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

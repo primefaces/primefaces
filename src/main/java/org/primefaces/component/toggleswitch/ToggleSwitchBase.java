@@ -39,7 +39,7 @@ abstract class ToggleSwitchBase extends UIInput implements Widget, ClientBehavio
         styleClass,
         tabindex,
         onfocus,
-        onblur;
+        onblur
     }
 
     public ToggleSwitchBase() {
@@ -51,78 +51,79 @@ abstract class ToggleSwitchBase extends UIInput implements Widget, ClientBehavio
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getLabel() {
+    public String getLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.label, null);
     }
 
-    public void setLabel(java.lang.String _label) {
-        getStateHelper().put(PropertyKeys.label, _label);
+    public void setLabel(String label) {
+        getStateHelper().put(PropertyKeys.label, label);
     }
 
     public boolean isDisabled() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
-    public void setDisabled(boolean _disabled) {
-        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
-    public java.lang.String getOnchange() {
+    public String getOnchange() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onchange, null);
     }
 
-    public void setOnchange(java.lang.String _onchange) {
-        getStateHelper().put(PropertyKeys.onchange, _onchange);
+    public void setOnchange(String onchange) {
+        getStateHelper().put(PropertyKeys.onchange, onchange);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getTabindex() {
+    public String getTabindex() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, null);
     }
 
-    public void setTabindex(java.lang.String _tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, _tabindex);
+    public void setTabindex(String tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 
-    public java.lang.String getOnfocus() {
+    public String getOnfocus() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onfocus, null);
     }
 
-    public void setOnfocus(java.lang.String _onfocus) {
-        getStateHelper().put(PropertyKeys.onfocus, _onfocus);
+    public void setOnfocus(String onfocus) {
+        getStateHelper().put(PropertyKeys.onfocus, onfocus);
     }
 
-    public java.lang.String getOnblur() {
+    public String getOnblur() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onblur, null);
     }
 
-    public void setOnblur(java.lang.String _onblur) {
-        getStateHelper().put(PropertyKeys.onblur, _onblur);
+    public void setOnblur(String onblur) {
+        getStateHelper().put(PropertyKeys.onblur, onblur);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

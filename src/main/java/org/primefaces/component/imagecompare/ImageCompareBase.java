@@ -47,60 +47,60 @@ abstract class ImageCompareBase extends UIComponentBase implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getLeftImage() {
+    public String getLeftImage() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.leftImage, null);
     }
 
-    public void setLeftImage(java.lang.String _leftImage) {
-        getStateHelper().put(PropertyKeys.leftImage, _leftImage);
+    public void setLeftImage(String leftImage) {
+        getStateHelper().put(PropertyKeys.leftImage, leftImage);
     }
 
-    public java.lang.String getRightImage() {
+    public String getRightImage() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.rightImage, null);
     }
 
-    public void setRightImage(java.lang.String _rightImage) {
-        getStateHelper().put(PropertyKeys.rightImage, _rightImage);
+    public void setRightImage(String rightImage) {
+        getStateHelper().put(PropertyKeys.rightImage, rightImage);
     }
 
-    public java.lang.String getWidth() {
+    public String getWidth() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.width, null);
     }
 
-    public void setWidth(java.lang.String _width) {
-        getStateHelper().put(PropertyKeys.width, _width);
+    public void setWidth(String width) {
+        getStateHelper().put(PropertyKeys.width, width);
     }
 
-    public java.lang.String getHeight() {
+    public String getHeight() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.height, null);
     }
 
-    public void setHeight(java.lang.String _height) {
-        getStateHelper().put(PropertyKeys.height, _height);
+    public void setHeight(String height) {
+        getStateHelper().put(PropertyKeys.height, height);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public String resolveWidgetVar() {

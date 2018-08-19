@@ -39,7 +39,7 @@ abstract class MenuButtonBase extends AbstractMenu implements Widget {
         appendTo,
         menuStyleClass,
         title,
-        ariaLabel;
+        ariaLabel
     }
 
     public MenuButtonBase() {
@@ -51,102 +51,104 @@ abstract class MenuButtonBase extends AbstractMenu implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
+    @Override
     public org.primefaces.model.menu.MenuModel getModel() {
         return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }
 
-    public void setModel(org.primefaces.model.menu.MenuModel _model) {
-        getStateHelper().put(PropertyKeys.model, _model);
+    public void setModel(org.primefaces.model.menu.MenuModel model) {
+        getStateHelper().put(PropertyKeys.model, model);
     }
 
-    public java.lang.String getValue() {
+    public String getValue() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.value, null);
     }
 
-    public void setValue(java.lang.String _value) {
-        getStateHelper().put(PropertyKeys.value, _value);
+    public void setValue(String value) {
+        getStateHelper().put(PropertyKeys.value, value);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public boolean isDisabled() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
-    public void setDisabled(boolean _disabled) {
-        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
-    public java.lang.String getIcon() {
+    public String getIcon() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.icon, null);
     }
 
-    public void setIcon(java.lang.String _icon) {
-        getStateHelper().put(PropertyKeys.icon, _icon);
+    public void setIcon(String icon) {
+        getStateHelper().put(PropertyKeys.icon, icon);
     }
 
-    public java.lang.String getIconPos() {
+    public String getIconPos() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.iconPos, "left");
     }
 
-    public void setIconPos(java.lang.String _iconPos) {
-        getStateHelper().put(PropertyKeys.iconPos, _iconPos);
+    public void setIconPos(String iconPos) {
+        getStateHelper().put(PropertyKeys.iconPos, iconPos);
     }
 
-    public java.lang.String getAppendTo() {
+    public String getAppendTo() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.appendTo, null);
     }
 
-    public void setAppendTo(java.lang.String _appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, _appendTo);
+    public void setAppendTo(String appendTo) {
+        getStateHelper().put(PropertyKeys.appendTo, appendTo);
     }
 
-    public java.lang.String getMenuStyleClass() {
+    public String getMenuStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.menuStyleClass, null);
     }
 
-    public void setMenuStyleClass(java.lang.String _menuStyleClass) {
-        getStateHelper().put(PropertyKeys.menuStyleClass, _menuStyleClass);
+    public void setMenuStyleClass(String menuStyleClass) {
+        getStateHelper().put(PropertyKeys.menuStyleClass, menuStyleClass);
     }
 
-    public java.lang.String getTitle() {
+    public String getTitle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.title, null);
     }
 
-    public void setTitle(java.lang.String _title) {
-        getStateHelper().put(PropertyKeys.title, _title);
+    public void setTitle(String title) {
+        getStateHelper().put(PropertyKeys.title, title);
     }
 
-    public java.lang.String getAriaLabel() {
+    public String getAriaLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
     }
 
-    public void setAriaLabel(java.lang.String _ariaLabel) {
-        getStateHelper().put(PropertyKeys.ariaLabel, _ariaLabel);
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 
+    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

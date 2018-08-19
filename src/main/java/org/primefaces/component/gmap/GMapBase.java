@@ -58,132 +58,132 @@ abstract class GMapBase extends UIComponentBase implements Widget, ClientBehavio
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public org.primefaces.model.map.MapModel getModel() {
         return (org.primefaces.model.map.MapModel) getStateHelper().eval(PropertyKeys.model, null);
     }
 
-    public void setModel(org.primefaces.model.map.MapModel _model) {
-        getStateHelper().put(PropertyKeys.model, _model);
+    public void setModel(org.primefaces.model.map.MapModel model) {
+        getStateHelper().put(PropertyKeys.model, model);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getType() {
+    public String getType() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.type, null);
     }
 
-    public void setType(java.lang.String _type) {
-        getStateHelper().put(PropertyKeys.type, _type);
+    public void setType(String type) {
+        getStateHelper().put(PropertyKeys.type, type);
     }
 
-    public java.lang.String getCenter() {
+    public String getCenter() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.center, null);
     }
 
-    public void setCenter(java.lang.String _center) {
-        getStateHelper().put(PropertyKeys.center, _center);
+    public void setCenter(String center) {
+        getStateHelper().put(PropertyKeys.center, center);
     }
 
     public int getZoom() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.zoom, 8);
     }
 
-    public void setZoom(int _zoom) {
-        getStateHelper().put(PropertyKeys.zoom, _zoom);
+    public void setZoom(int zoom) {
+        getStateHelper().put(PropertyKeys.zoom, zoom);
     }
 
     public boolean isStreetView() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.streetView, false);
     }
 
-    public void setStreetView(boolean _streetView) {
-        getStateHelper().put(PropertyKeys.streetView, _streetView);
+    public void setStreetView(boolean streetView) {
+        getStateHelper().put(PropertyKeys.streetView, streetView);
     }
 
     public boolean isDisableDefaultUI() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disableDefaultUI, false);
     }
 
-    public void setDisableDefaultUI(boolean _disableDefaultUI) {
-        getStateHelper().put(PropertyKeys.disableDefaultUI, _disableDefaultUI);
+    public void setDisableDefaultUI(boolean disableDefaultUI) {
+        getStateHelper().put(PropertyKeys.disableDefaultUI, disableDefaultUI);
     }
 
     public boolean isNavigationControl() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.navigationControl, true);
     }
 
-    public void setNavigationControl(boolean _navigationControl) {
-        getStateHelper().put(PropertyKeys.navigationControl, _navigationControl);
+    public void setNavigationControl(boolean navigationControl) {
+        getStateHelper().put(PropertyKeys.navigationControl, navigationControl);
     }
 
     public boolean isMapTypeControl() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.mapTypeControl, true);
     }
 
-    public void setMapTypeControl(boolean _mapTypeControl) {
-        getStateHelper().put(PropertyKeys.mapTypeControl, _mapTypeControl);
+    public void setMapTypeControl(boolean mapTypeControl) {
+        getStateHelper().put(PropertyKeys.mapTypeControl, mapTypeControl);
     }
 
     public boolean isDraggable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.draggable, true);
     }
 
-    public void setDraggable(boolean _draggable) {
-        getStateHelper().put(PropertyKeys.draggable, _draggable);
+    public void setDraggable(boolean draggable) {
+        getStateHelper().put(PropertyKeys.draggable, draggable);
     }
 
     public boolean isDisableDoubleClickZoom() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disableDoubleClickZoom, false);
     }
 
-    public void setDisableDoubleClickZoom(boolean _disableDoubleClickZoom) {
-        getStateHelper().put(PropertyKeys.disableDoubleClickZoom, _disableDoubleClickZoom);
+    public void setDisableDoubleClickZoom(boolean disableDoubleClickZoom) {
+        getStateHelper().put(PropertyKeys.disableDoubleClickZoom, disableDoubleClickZoom);
     }
 
-    public java.lang.String getOnPointClick() {
+    public String getOnPointClick() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onPointClick, null);
     }
 
-    public void setOnPointClick(java.lang.String _onPointClick) {
-        getStateHelper().put(PropertyKeys.onPointClick, _onPointClick);
+    public void setOnPointClick(String onPointClick) {
+        getStateHelper().put(PropertyKeys.onPointClick, onPointClick);
     }
 
     public boolean isFitBounds() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.fitBounds, false);
     }
 
-    public void setFitBounds(boolean _fitBounds) {
-        getStateHelper().put(PropertyKeys.fitBounds, _fitBounds);
+    public void setFitBounds(boolean fitBounds) {
+        getStateHelper().put(PropertyKeys.fitBounds, fitBounds);
     }
 
     public boolean isScrollWheel() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.scrollWheel, true);
     }
 
-    public void setScrollWheel(boolean _scrollWheel) {
-        getStateHelper().put(PropertyKeys.scrollWheel, _scrollWheel);
+    public void setScrollWheel(boolean scrollWheel) {
+        getStateHelper().put(PropertyKeys.scrollWheel, scrollWheel);
     }
 
     @Override

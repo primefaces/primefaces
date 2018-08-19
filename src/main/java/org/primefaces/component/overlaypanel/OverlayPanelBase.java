@@ -72,148 +72,148 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getFor() {
+    public String getFor() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
-    public void setFor(java.lang.String _for) {
+    public void setFor(String _for) {
         getStateHelper().put(PropertyKeys.forValue, _for);
     }
 
-    public java.lang.String getShowEvent() {
+    public String getShowEvent() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.showEvent, null);
     }
 
-    public void setShowEvent(java.lang.String _showEvent) {
-        getStateHelper().put(PropertyKeys.showEvent, _showEvent);
+    public void setShowEvent(String showEvent) {
+        getStateHelper().put(PropertyKeys.showEvent, showEvent);
     }
 
-    public java.lang.String getHideEvent() {
+    public String getHideEvent() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.hideEvent, null);
     }
 
-    public void setHideEvent(java.lang.String _hideEvent) {
-        getStateHelper().put(PropertyKeys.hideEvent, _hideEvent);
+    public void setHideEvent(String hideEvent) {
+        getStateHelper().put(PropertyKeys.hideEvent, hideEvent);
     }
 
-    public java.lang.String getShowEffect() {
+    public String getShowEffect() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.showEffect, null);
     }
 
-    public void setShowEffect(java.lang.String _showEffect) {
-        getStateHelper().put(PropertyKeys.showEffect, _showEffect);
+    public void setShowEffect(String showEffect) {
+        getStateHelper().put(PropertyKeys.showEffect, showEffect);
     }
 
-    public java.lang.String getHideEffect() {
+    public String getHideEffect() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.hideEffect, null);
     }
 
-    public void setHideEffect(java.lang.String _hideEffect) {
-        getStateHelper().put(PropertyKeys.hideEffect, _hideEffect);
+    public void setHideEffect(String hideEffect) {
+        getStateHelper().put(PropertyKeys.hideEffect, hideEffect);
     }
 
-    public java.lang.String getAppendTo() {
+    public String getAppendTo() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.appendTo, null);
     }
 
-    public void setAppendTo(java.lang.String _appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, _appendTo);
+    public void setAppendTo(String appendTo) {
+        getStateHelper().put(PropertyKeys.appendTo, appendTo);
     }
 
-    public java.lang.String getOnShow() {
+    public String getOnShow() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onShow, null);
     }
 
-    public void setOnShow(java.lang.String _onShow) {
-        getStateHelper().put(PropertyKeys.onShow, _onShow);
+    public void setOnShow(String onShow) {
+        getStateHelper().put(PropertyKeys.onShow, onShow);
     }
 
-    public java.lang.String getOnHide() {
+    public String getOnHide() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onHide, null);
     }
 
-    public void setOnHide(java.lang.String _onHide) {
-        getStateHelper().put(PropertyKeys.onHide, _onHide);
+    public void setOnHide(String onHide) {
+        getStateHelper().put(PropertyKeys.onHide, onHide);
     }
 
-    public java.lang.String getMy() {
+    public String getMy() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.my, null);
     }
 
-    public void setMy(java.lang.String _my) {
-        getStateHelper().put(PropertyKeys.my, _my);
+    public void setMy(String my) {
+        getStateHelper().put(PropertyKeys.my, my);
     }
 
-    public java.lang.String getAt() {
+    public String getAt() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.at, null);
     }
 
-    public void setAt(java.lang.String _at) {
-        getStateHelper().put(PropertyKeys.at, _at);
+    public void setAt(String at) {
+        getStateHelper().put(PropertyKeys.at, at);
     }
 
     public boolean isDynamic() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
     }
 
-    public void setDynamic(boolean _dynamic) {
-        getStateHelper().put(PropertyKeys.dynamic, _dynamic);
+    public void setDynamic(boolean dynamic) {
+        getStateHelper().put(PropertyKeys.dynamic, dynamic);
     }
 
     public boolean isDismissable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dismissable, true);
     }
 
-    public void setDismissable(boolean _dismissable) {
-        getStateHelper().put(PropertyKeys.dismissable, _dismissable);
+    public void setDismissable(boolean dismissable) {
+        getStateHelper().put(PropertyKeys.dismissable, dismissable);
     }
 
     public boolean isShowCloseIcon() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showCloseIcon, false);
     }
 
-    public void setShowCloseIcon(boolean _showCloseIcon) {
-        getStateHelper().put(PropertyKeys.showCloseIcon, _showCloseIcon);
+    public void setShowCloseIcon(boolean showCloseIcon) {
+        getStateHelper().put(PropertyKeys.showCloseIcon, showCloseIcon);
     }
 
     public boolean isModal() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.modal, false);
     }
 
-    public void setModal(boolean _modal) {
-        getStateHelper().put(PropertyKeys.modal, _modal);
+    public void setModal(boolean modal) {
+        getStateHelper().put(PropertyKeys.modal, modal);
     }
 
     public int getShowDelay() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.showDelay, 0);
     }
 
-    public void setShowDelay(int _showDelay) {
-        getStateHelper().put(PropertyKeys.showDelay, _showDelay);
+    public void setShowDelay(int showDelay) {
+        getStateHelper().put(PropertyKeys.showDelay, showDelay);
     }
 
     @Override

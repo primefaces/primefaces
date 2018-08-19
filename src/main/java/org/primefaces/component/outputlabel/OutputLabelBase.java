@@ -38,12 +38,12 @@ abstract class OutputLabelBase extends HtmlOutputLabel {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getIndicateRequired() {
+    public String getIndicateRequired() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.indicateRequired, "auto");
     }
 
-    public void setIndicateRequired(java.lang.String _indicateRequired) {
-        getStateHelper().put(PropertyKeys.indicateRequired, _indicateRequired);
+    public void setIndicateRequired(String indicateRequired) {
+        getStateHelper().put(PropertyKeys.indicateRequired, indicateRequired);
     }
 
 }

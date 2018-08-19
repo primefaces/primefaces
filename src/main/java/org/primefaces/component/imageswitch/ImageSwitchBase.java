@@ -48,68 +48,68 @@ abstract class ImageSwitchBase extends UIComponentBase implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getEffect() {
+    public String getEffect() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, null);
     }
 
-    public void setEffect(java.lang.String _effect) {
-        getStateHelper().put(PropertyKeys.effect, _effect);
+    public void setEffect(String effect) {
+        getStateHelper().put(PropertyKeys.effect, effect);
     }
 
     public int getSpeed() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.speed, 500);
     }
 
-    public void setSpeed(int _speed) {
-        getStateHelper().put(PropertyKeys.speed, _speed);
+    public void setSpeed(int speed) {
+        getStateHelper().put(PropertyKeys.speed, speed);
     }
 
     public int getSlideshowSpeed() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.slideshowSpeed, 3000);
     }
 
-    public void setSlideshowSpeed(int _slideshowSpeed) {
-        getStateHelper().put(PropertyKeys.slideshowSpeed, _slideshowSpeed);
+    public void setSlideshowSpeed(int slideshowSpeed) {
+        getStateHelper().put(PropertyKeys.slideshowSpeed, slideshowSpeed);
     }
 
     public boolean isSlideshowAuto() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.slideshowAuto, true);
     }
 
-    public void setSlideshowAuto(boolean _slideshowAuto) {
-        getStateHelper().put(PropertyKeys.slideshowAuto, _slideshowAuto);
+    public void setSlideshowAuto(boolean slideshowAuto) {
+        getStateHelper().put(PropertyKeys.slideshowAuto, slideshowAuto);
     }
 
     public int getActiveIndex() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.activeIndex, 0);
     }
 
-    public void setActiveIndex(int _activeIndex) {
-        getStateHelper().put(PropertyKeys.activeIndex, _activeIndex);
+    public void setActiveIndex(int activeIndex) {
+        getStateHelper().put(PropertyKeys.activeIndex, activeIndex);
     }
 
     public String resolveWidgetVar() {

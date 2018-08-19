@@ -48,27 +48,25 @@ public class UIRepeat extends UINamingContainer {
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     private final static DataModel EMPTY_MODEL = new ListDataModel<>(Collections.emptyList());
-
+    private final static SavedState NullState = new SavedState();
     // our data
     private Object value;
-
     private transient DataModel model;
-
     // variables
     private String var;
-
     private String varStatus;
-
     private int index = -1;
-
     private Integer begin;
     private Integer end;
     private Integer step;
     private Integer size;
     private Boolean isNested = null;
-
     private Map<String, SavedState> initialChildState;
     private String initialClientId;
+    private transient StringBuffer buffer;
+    private transient Object origValueOfVar;
+    private transient Object origValueOfVarStatus;
+    private Map<String, SavedState> childState;
 
     public UIRepeat() {
         setRendererType(null);
@@ -77,10 +75,6 @@ public class UIRepeat extends UINamingContainer {
     @Override
     public String getFamily() {
         return COMPONENT_FAMILY;
-    }
-
-    public void setEnd(Integer end) {
-        this.end = end;
     }
 
     public Integer getEnd() {
@@ -96,8 +90,8 @@ public class UIRepeat extends UINamingContainer {
 
     }
 
-    public void setSize(Integer size) {
-        this.size = size;
+    public void setEnd(Integer end) {
+        this.end = end;
     }
 
     public Integer getSize() {
@@ -113,8 +107,8 @@ public class UIRepeat extends UINamingContainer {
 
     }
 
-    public void setOffset(Integer offset) {
-        begin = offset;
+    public void setSize(Integer size) {
+        this.size = size;
     }
 
     public Integer getOffset() {
@@ -130,8 +124,8 @@ public class UIRepeat extends UINamingContainer {
 
     }
 
-    public void setBegin(Integer begin) {
-        this.begin = begin;
+    public void setOffset(Integer offset) {
+        begin = offset;
     }
 
     public Integer getBegin() {
@@ -147,8 +141,8 @@ public class UIRepeat extends UINamingContainer {
 
     }
 
-    public void setStep(Integer step) {
-        this.step = step;
+    public void setBegin(Integer begin) {
+        this.begin = begin;
     }
 
     public Integer getStep() {
@@ -162,6 +156,10 @@ public class UIRepeat extends UINamingContainer {
         }
         return null;
 
+    }
+
+    public void setStep(Integer step) {
+        this.step = step;
     }
 
     public String getVar() {
@@ -184,11 +182,6 @@ public class UIRepeat extends UINamingContainer {
         if (isNestedInIterator()) {
             setDataModel(null);
         }
-    }
-
-    private void setDataModel(DataModel model) {
-        //noinspection unchecked
-        this.model = model;
     }
 
     private DataModel getDataModel() {
@@ -224,6 +217,11 @@ public class UIRepeat extends UINamingContainer {
         return model;
     }
 
+    private void setDataModel(DataModel model) {
+        //noinspection unchecked
+        this.model = model;
+    }
+
     public Object getValue() {
         if (value == null) {
             ValueExpression ve = getValueExpression("value");
@@ -237,8 +235,6 @@ public class UIRepeat extends UINamingContainer {
     public void setValue(Object value) {
         this.value = value;
     }
-
-    private transient StringBuffer buffer;
 
     private StringBuffer getBuffer() {
         if (buffer == null) {
@@ -258,9 +254,6 @@ public class UIRepeat extends UINamingContainer {
         }
         return id;
     }
-
-    private transient Object origValueOfVar;
-    private transient Object origValueOfVarStatus;
 
     private void captureOrigValue(FacesContext ctx) {
         if (var != null || varStatus != null) {
@@ -295,8 +288,6 @@ public class UIRepeat extends UINamingContainer {
             }
         }
     }
-
-    private Map<String, SavedState> childState;
 
     private Map<String, SavedState> getChildState() {
         if (childState == null) {
@@ -881,130 +872,6 @@ public class UIRepeat extends UINamingContainer {
         app.publishEvent(faces, PostValidateEvent.class, this);
     }
 
-    private final static SavedState NullState = new SavedState();
-
-    // from RI
-    private final static class SavedState implements Serializable {
-
-        private Object submittedValue;
-
-        private static final long serialVersionUID = 2920252657338389849L;
-
-        Object getSubmittedValue() {
-            return (submittedValue);
-        }
-
-        void setSubmittedValue(Object submittedValue) {
-            this.submittedValue = submittedValue;
-        }
-
-        private boolean valid = true;
-
-        boolean isValid() {
-            return (valid);
-        }
-
-        void setValid(boolean valid) {
-            this.valid = valid;
-        }
-
-        private Object value;
-
-        Object getValue() {
-            return (value);
-        }
-
-        public void setValue(Object value) {
-            this.value = value;
-        }
-
-        private boolean localValueSet;
-
-        boolean isLocalValueSet() {
-            return (localValueSet);
-        }
-
-        public void setLocalValueSet(boolean localValueSet) {
-            this.localValueSet = localValueSet;
-        }
-
-        @Override
-        public String toString() {
-            return ("submittedValue: " + submittedValue + " value: " + value
-                    + " localValueSet: " + localValueSet);
-        }
-
-        public void populate(EditableValueHolder evh) {
-            value = evh.getLocalValue();
-            valid = evh.isValid();
-            submittedValue = evh.getSubmittedValue();
-            localValueSet = evh.isLocalValueSet();
-        }
-
-        public void apply(EditableValueHolder evh) {
-            evh.setValue(value);
-            evh.setValid(valid);
-            evh.setSubmittedValue(submittedValue);
-            evh.setLocalValueSet(localValueSet);
-        }
-
-    }
-
-    private static final class IndexedEvent extends FacesEvent {
-
-        private static final long serialVersionUID = 1L;
-
-        private final FacesEvent target;
-
-        private final int index;
-
-        public IndexedEvent(UIRepeat owner, FacesEvent target, int index) {
-            super(owner);
-            this.target = target;
-            this.index = index;
-        }
-
-        @Override
-        public PhaseId getPhaseId() {
-            return (target.getPhaseId());
-        }
-
-        @Override
-        public void setPhaseId(PhaseId phaseId) {
-            target.setPhaseId(phaseId);
-        }
-
-        @Override
-        public boolean isAppropriateListener(FacesListener listener) {
-            return target.isAppropriateListener(listener);
-        }
-
-        @Override
-        public void processListener(FacesListener listener) {
-            UIRepeat owner = (UIRepeat) getComponent();
-            int prevIndex = owner.index;
-            FacesContext ctx = FacesContext.getCurrentInstance();
-            try {
-                owner.setIndex(ctx, index);
-                if (owner.isIndexAvailable()) {
-                    target.processListener(listener);
-                }
-            }
-            finally {
-                owner.setIndex(ctx, prevIndex);
-            }
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        public FacesEvent getTarget() {
-            return target;
-        }
-
-    }
-
     @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
         if (event instanceof IndexedEvent) {
@@ -1124,5 +991,123 @@ public class UIRepeat extends UINamingContainer {
             }
         }
         return true;
+    }
+
+    // from RI
+    private final static class SavedState implements Serializable {
+
+        private static final long serialVersionUID = 2920252657338389849L;
+        private Object submittedValue;
+        private boolean valid = true;
+        private Object value;
+        private boolean localValueSet;
+
+        Object getSubmittedValue() {
+            return (submittedValue);
+        }
+
+        void setSubmittedValue(Object submittedValue) {
+            this.submittedValue = submittedValue;
+        }
+
+        boolean isValid() {
+            return (valid);
+        }
+
+        void setValid(boolean valid) {
+            this.valid = valid;
+        }
+
+        Object getValue() {
+            return (value);
+        }
+
+        public void setValue(Object value) {
+            this.value = value;
+        }
+
+        boolean isLocalValueSet() {
+            return (localValueSet);
+        }
+
+        public void setLocalValueSet(boolean localValueSet) {
+            this.localValueSet = localValueSet;
+        }
+
+        @Override
+        public String toString() {
+            return ("submittedValue: " + submittedValue + " value: " + value
+                    + " localValueSet: " + localValueSet);
+        }
+
+        public void populate(EditableValueHolder evh) {
+            value = evh.getLocalValue();
+            valid = evh.isValid();
+            submittedValue = evh.getSubmittedValue();
+            localValueSet = evh.isLocalValueSet();
+        }
+
+        public void apply(EditableValueHolder evh) {
+            evh.setValue(value);
+            evh.setValid(valid);
+            evh.setSubmittedValue(submittedValue);
+            evh.setLocalValueSet(localValueSet);
+        }
+
+    }
+
+    private static final class IndexedEvent extends FacesEvent {
+
+        private static final long serialVersionUID = 1L;
+
+        private final FacesEvent target;
+
+        private final int index;
+
+        public IndexedEvent(UIRepeat owner, FacesEvent target, int index) {
+            super(owner);
+            this.target = target;
+            this.index = index;
+        }
+
+        @Override
+        public PhaseId getPhaseId() {
+            return (target.getPhaseId());
+        }
+
+        @Override
+        public void setPhaseId(PhaseId phaseId) {
+            target.setPhaseId(phaseId);
+        }
+
+        @Override
+        public boolean isAppropriateListener(FacesListener listener) {
+            return target.isAppropriateListener(listener);
+        }
+
+        @Override
+        public void processListener(FacesListener listener) {
+            UIRepeat owner = (UIRepeat) getComponent();
+            int prevIndex = owner.index;
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            try {
+                owner.setIndex(ctx, index);
+                if (owner.isIndexAvailable()) {
+                    target.processListener(listener);
+                }
+            }
+            finally {
+                owner.setIndex(ctx, prevIndex);
+            }
+        }
+
+        public int getIndex() {
+            return index;
+        }
+
+        public FacesEvent getTarget() {
+            return target;
+        }
+
     }
 }

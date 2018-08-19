@@ -50,68 +50,68 @@ abstract class SelectOneButtonBase extends UISelectOne implements Widget, Client
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public boolean isDisabled() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
-    public void setDisabled(boolean _disabled) {
-        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
-    public java.lang.String getLabel() {
+    public String getLabel() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.label, null);
     }
 
-    public void setLabel(java.lang.String _label) {
-        getStateHelper().put(PropertyKeys.label, _label);
+    public void setLabel(String label) {
+        getStateHelper().put(PropertyKeys.label, label);
     }
 
-    public java.lang.String getOnchange() {
+    public String getOnchange() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onchange, null);
     }
 
-    public void setOnchange(java.lang.String _onchange) {
-        getStateHelper().put(PropertyKeys.onchange, _onchange);
+    public void setOnchange(String onchange) {
+        getStateHelper().put(PropertyKeys.onchange, onchange);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getTabindex() {
+    public String getTabindex() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, "0");
     }
 
-    public void setTabindex(java.lang.String _tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, _tabindex);
+    public void setTabindex(String tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 
     public boolean isUnselectable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.unselectable, true);
     }
 
-    public void setUnselectable(boolean _unselectable) {
-        getStateHelper().put(PropertyKeys.unselectable, _unselectable);
+    public void setUnselectable(boolean unselectable) {
+        getStateHelper().put(PropertyKeys.unselectable, unselectable);
     }
 
     public String resolveWidgetVar() {

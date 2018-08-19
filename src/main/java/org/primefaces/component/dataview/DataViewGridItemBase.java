@@ -40,8 +40,8 @@ abstract class DataViewGridItemBase extends UIComponentBase {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.columns, 3);
     }
 
-    public void setColumns(int _columns) {
-        getStateHelper().put(PropertyKeys.columns, _columns);
+    public void setColumns(int columns) {
+        getStateHelper().put(PropertyKeys.columns, columns);
     }
 
 }

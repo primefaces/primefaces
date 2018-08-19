@@ -42,7 +42,6 @@ public class TextEditor extends TextEditorBase {
         return EVENT_NAMES;
     }
 
-    @Override
     public String getDefaultEventName() {
         return "change";
     }

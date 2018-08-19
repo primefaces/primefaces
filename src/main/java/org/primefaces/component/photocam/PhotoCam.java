@@ -31,6 +31,7 @@ public class PhotoCam extends PhotoCamBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.PhotoCam";
 
+    @Override
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
         super.broadcast(event);
 

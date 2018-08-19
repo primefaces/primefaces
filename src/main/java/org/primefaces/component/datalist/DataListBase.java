@@ -51,68 +51,68 @@ abstract class DataListBase extends UIData implements Widget, ClientBehaviorHold
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getType() {
+    public String getType() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.type, "unordered");
     }
 
-    public void setType(java.lang.String _type) {
-        getStateHelper().put(PropertyKeys.type, _type);
+    public void setType(String type) {
+        getStateHelper().put(PropertyKeys.type, type);
     }
 
-    public java.lang.String getItemType() {
+    public String getItemType() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.itemType, null);
     }
 
-    public void setItemType(java.lang.String _itemType) {
-        getStateHelper().put(PropertyKeys.itemType, _itemType);
+    public void setItemType(String itemType) {
+        getStateHelper().put(PropertyKeys.itemType, itemType);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getVarStatus() {
+    public String getVarStatus() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.varStatus, null);
     }
 
-    public void setVarStatus(java.lang.String _varStatus) {
-        getStateHelper().put(PropertyKeys.varStatus, _varStatus);
+    public void setVarStatus(String varStatus) {
+        getStateHelper().put(PropertyKeys.varStatus, varStatus);
     }
 
-    public java.lang.String getEmptyMessage() {
+    public String getEmptyMessage() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.emptyMessage, "No records found.");
     }
 
-    public void setEmptyMessage(java.lang.String _emptyMessage) {
-        getStateHelper().put(PropertyKeys.emptyMessage, _emptyMessage);
+    public void setEmptyMessage(String emptyMessage) {
+        getStateHelper().put(PropertyKeys.emptyMessage, emptyMessage);
     }
 
-    public java.lang.String getItemStyleClass() {
+    public String getItemStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.itemStyleClass, null);
     }
 
-    public void setItemStyleClass(java.lang.String _itemStyleClass) {
-        getStateHelper().put(PropertyKeys.itemStyleClass, _itemStyleClass);
+    public void setItemStyleClass(String itemStyleClass) {
+        getStateHelper().put(PropertyKeys.itemStyleClass, itemStyleClass);
     }
 
     @Override

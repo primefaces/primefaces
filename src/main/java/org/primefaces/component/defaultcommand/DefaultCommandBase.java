@@ -31,7 +31,7 @@ abstract class DefaultCommandBase extends UIComponentBase implements Widget {
 
         widgetVar,
         target,
-        scope
+        scope;
     }
 
     public DefaultCommandBase() {
@@ -43,31 +43,30 @@ abstract class DefaultCommandBase extends UIComponentBase implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getTarget() {
+    public String getTarget() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.target, null);
     }
 
-    public void setTarget(java.lang.String _target) {
-        getStateHelper().put(PropertyKeys.target, _target);
+    public void setTarget(String target) {
+        getStateHelper().put(PropertyKeys.target, target);
     }
 
-    public java.lang.String getScope() {
+    public String getScope() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.scope, null);
     }
 
-    public void setScope(java.lang.String _scope) {
-        getStateHelper().put(PropertyKeys.scope, _scope);
+    public void setScope(String scope) {
+        getStateHelper().put(PropertyKeys.scope, scope);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

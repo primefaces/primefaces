@@ -36,12 +36,12 @@ abstract class ColumnGroupBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getType() {
+    public String getType() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.type, null);
     }
 
-    public void setType(java.lang.String _type) {
-        getStateHelper().put(PropertyKeys.type, _type);
+    public void setType(String type) {
+        getStateHelper().put(PropertyKeys.type, type);
     }
 
 }

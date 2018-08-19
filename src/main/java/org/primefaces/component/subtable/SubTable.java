@@ -32,9 +32,9 @@ public class SubTable extends SubTableBase {
 
     public List<Column> getColumns() {
         if (columns == null) {
-            columns = new ArrayList<Column>();
+            columns = new ArrayList<>();
 
-            for (UIComponent child : this.getChildren()) {
+            for (UIComponent child : getChildren()) {
                 if (child.isRendered() && child instanceof Column) {
                     columns.add((Column) child);
                 }
@@ -45,7 +45,7 @@ public class SubTable extends SubTableBase {
     }
 
     public ColumnGroup getColumnGroup(String target) {
-        for (UIComponent child : this.getChildren()) {
+        for (UIComponent child : getChildren()) {
             if (child instanceof ColumnGroup) {
                 ColumnGroup colGroup = (ColumnGroup) child;
                 String type = colGroup.getType();

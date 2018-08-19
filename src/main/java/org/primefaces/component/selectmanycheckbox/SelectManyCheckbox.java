@@ -40,7 +40,7 @@ public class SelectManyCheckbox extends SelectManyCheckboxBase {
     public String getCheckboxId(FacesContext context) {
         index++;
 
-        return getClientId(context) + UINamingContainer.getSeparatorChar(context) + index;
+        return this.getClientId(context) + UINamingContainer.getSeparatorChar(context) + index;
     }
 
     private List<SelectItem> selectItems;
@@ -50,6 +50,6 @@ public class SelectManyCheckbox extends SelectManyCheckboxBase {
     }
 
     public List<SelectItem> getSelectItems() {
-        return selectItems;
+        return this.selectItems;
     }
 }

@@ -36,7 +36,7 @@ abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorH
         style,
         styleClass,
         placeholder,
-        toolbarVisible
+        toolbarVisible;
     }
 
     public TextEditorBase() {
@@ -48,63 +48,62 @@ abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorH
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public int getHeight() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.height, java.lang.Integer.MIN_VALUE);
     }
 
-    public void setHeight(int _height) {
-        getStateHelper().put(PropertyKeys.height, _height);
+    public void setHeight(int height) {
+        getStateHelper().put(PropertyKeys.height, height);
     }
 
     public boolean isReadonly() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
     }
 
-    public void setReadonly(boolean _readonly) {
-        getStateHelper().put(PropertyKeys.readonly, _readonly);
+    public void setReadonly(boolean readonly) {
+        getStateHelper().put(PropertyKeys.readonly, readonly);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
-    public java.lang.String getPlaceholder() {
+    public String getPlaceholder() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
-    public void setPlaceholder(java.lang.String _placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, _placeholder);
+    public void setPlaceholder(String placeholder) {
+        getStateHelper().put(PropertyKeys.placeholder, placeholder);
     }
 
     public boolean isToolbarVisible() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.toolbarVisible, true);
     }
 
-    public void setToolbarVisible(boolean _toolbarVisible) {
-        getStateHelper().put(PropertyKeys.toolbarVisible, _toolbarVisible);
+    public void setToolbarVisible(boolean toolbarVisible) {
+        getStateHelper().put(PropertyKeys.toolbarVisible, toolbarVisible);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

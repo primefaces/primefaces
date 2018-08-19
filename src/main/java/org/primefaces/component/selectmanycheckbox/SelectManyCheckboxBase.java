@@ -30,7 +30,7 @@ abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox implements 
     public enum PropertyKeys {
 
         widgetVar,
-        columns
+        columns;
     }
 
     public SelectManyCheckboxBase() {
@@ -42,23 +42,22 @@ abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox implements 
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public int getColumns() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.columns, 0);
     }
 
-    public void setColumns(int _columns) {
-        getStateHelper().put(PropertyKeys.columns, _columns);
+    public void setColumns(int columns) {
+        getStateHelper().put(PropertyKeys.columns, columns);
     }
 
-    @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
     }

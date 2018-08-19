@@ -40,6 +40,19 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
         this.disabled = disabled;
     }
 
+    public static ArrayList<String> getOrCreateAutoUpdateComponentClientIds(FacesContext context) {
+        ArrayList<String> clientIds = getAutoUpdateComponentClientIds(context);
+        if (clientIds == null) {
+            clientIds = new ArrayList<>();
+            context.getViewRoot().getAttributes().put(COMPONENTS, clientIds);
+        }
+        return clientIds;
+    }
+
+    public static ArrayList<String> getAutoUpdateComponentClientIds(FacesContext context) {
+        return (ArrayList<String>) context.getViewRoot().getAttributes().get(COMPONENTS);
+    }
+
     @Override
     public void processEvent(ComponentSystemEvent cse) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -54,18 +67,5 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
                 clientIds.add(clientId);
             }
         }
-    }
-
-    public static ArrayList<String> getOrCreateAutoUpdateComponentClientIds(FacesContext context) {
-        ArrayList<String> clientIds = getAutoUpdateComponentClientIds(context);
-        if (clientIds == null) {
-            clientIds = new ArrayList<>();
-            context.getViewRoot().getAttributes().put(COMPONENTS, clientIds);
-        }
-        return clientIds;
-    }
-
-    public static ArrayList<String> getAutoUpdateComponentClientIds(FacesContext context) {
-        return (ArrayList<String>) context.getViewRoot().getAttributes().get(COMPONENTS);
     }
 }

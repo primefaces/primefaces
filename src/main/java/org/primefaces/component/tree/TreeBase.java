@@ -68,204 +68,204 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
     public boolean isDynamic() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
     }
 
-    public void setDynamic(boolean _dynamic) {
-        getStateHelper().put(PropertyKeys.dynamic, _dynamic);
+    public void setDynamic(boolean dynamic) {
+        getStateHelper().put(PropertyKeys.dynamic, dynamic);
     }
 
     public boolean isCache() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.cache, true);
     }
 
-    public void setCache(boolean _cache) {
-        getStateHelper().put(PropertyKeys.cache, _cache);
+    public void setCache(boolean cache) {
+        getStateHelper().put(PropertyKeys.cache, cache);
     }
 
-    public java.lang.String getOnNodeClick() {
+    public String getOnNodeClick() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onNodeClick, null);
     }
 
-    public void setOnNodeClick(java.lang.String _onNodeClick) {
-        getStateHelper().put(PropertyKeys.onNodeClick, _onNodeClick);
+    public void setOnNodeClick(String onNodeClick) {
+        getStateHelper().put(PropertyKeys.onNodeClick, onNodeClick);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public boolean isHighlight() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.highlight, true);
     }
 
-    public void setHighlight(boolean _highlight) {
-        getStateHelper().put(PropertyKeys.highlight, _highlight);
+    public void setHighlight(boolean highlight) {
+        getStateHelper().put(PropertyKeys.highlight, highlight);
     }
 
     public java.lang.Object getDatakey() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.datakey, null);
     }
 
-    public void setDatakey(java.lang.Object _datakey) {
-        getStateHelper().put(PropertyKeys.datakey, _datakey);
+    public void setDatakey(java.lang.Object datakey) {
+        getStateHelper().put(PropertyKeys.datakey, datakey);
     }
 
     public boolean isAnimate() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.animate, false);
     }
 
-    public void setAnimate(boolean _animate) {
-        getStateHelper().put(PropertyKeys.animate, _animate);
+    public void setAnimate(boolean animate) {
+        getStateHelper().put(PropertyKeys.animate, animate);
     }
 
-    public java.lang.String getOrientation() {
+    public String getOrientation() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.orientation, "vertical");
     }
 
-    public void setOrientation(java.lang.String _orientation) {
-        getStateHelper().put(PropertyKeys.orientation, _orientation);
+    public void setOrientation(String orientation) {
+        getStateHelper().put(PropertyKeys.orientation, orientation);
     }
 
     public boolean isPropagateSelectionUp() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.propagateSelectionUp, true);
     }
 
-    public void setPropagateSelectionUp(boolean _propagateSelectionUp) {
-        getStateHelper().put(PropertyKeys.propagateSelectionUp, _propagateSelectionUp);
+    public void setPropagateSelectionUp(boolean propagateSelectionUp) {
+        getStateHelper().put(PropertyKeys.propagateSelectionUp, propagateSelectionUp);
     }
 
     public boolean isPropagateSelectionDown() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.propagateSelectionDown, true);
     }
 
-    public void setPropagateSelectionDown(boolean _propagateSelectionDown) {
-        getStateHelper().put(PropertyKeys.propagateSelectionDown, _propagateSelectionDown);
+    public void setPropagateSelectionDown(boolean propagateSelectionDown) {
+        getStateHelper().put(PropertyKeys.propagateSelectionDown, propagateSelectionDown);
     }
 
-    public java.lang.String getDir() {
+    public String getDir() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
 
-    public void setDir(java.lang.String _dir) {
-        getStateHelper().put(PropertyKeys.dir, _dir);
+    public void setDir(String dir) {
+        getStateHelper().put(PropertyKeys.dir, dir);
     }
 
     public boolean isDraggable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.draggable, false);
     }
 
-    public void setDraggable(boolean _draggable) {
-        getStateHelper().put(PropertyKeys.draggable, _draggable);
+    public void setDraggable(boolean draggable) {
+        getStateHelper().put(PropertyKeys.draggable, draggable);
     }
 
     public boolean isDroppable() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.droppable, false);
     }
 
-    public void setDroppable(boolean _droppable) {
-        getStateHelper().put(PropertyKeys.droppable, _droppable);
+    public void setDroppable(boolean droppable) {
+        getStateHelper().put(PropertyKeys.droppable, droppable);
     }
 
-    public java.lang.String getDragdropScope() {
+    public String getDragdropScope() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.dragdropScope, null);
     }
 
-    public void setDragdropScope(java.lang.String _dragdropScope) {
-        getStateHelper().put(PropertyKeys.dragdropScope, _dragdropScope);
+    public void setDragdropScope(String dragdropScope) {
+        getStateHelper().put(PropertyKeys.dragdropScope, dragdropScope);
     }
 
-    public java.lang.String getDragMode() {
+    public String getDragMode() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.dragMode, "self");
     }
 
-    public void setDragMode(java.lang.String _dragMode) {
-        getStateHelper().put(PropertyKeys.dragMode, _dragMode);
+    public void setDragMode(String dragMode) {
+        getStateHelper().put(PropertyKeys.dragMode, dragMode);
     }
 
-    public java.lang.String getDropRestrict() {
+    public String getDropRestrict() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.dropRestrict, "none");
     }
 
-    public void setDropRestrict(java.lang.String _dropRestrict) {
-        getStateHelper().put(PropertyKeys.dropRestrict, _dropRestrict);
+    public void setDropRestrict(String dropRestrict) {
+        getStateHelper().put(PropertyKeys.dropRestrict, dropRestrict);
     }
 
     public int getTabindex() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.tabindex, 0);
     }
 
-    public void setTabindex(int _tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, _tabindex);
+    public void setTabindex(int tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 
     public java.lang.Object getFilterBy() {
         return (java.lang.Object) getStateHelper().eval(PropertyKeys.filterBy, null);
     }
 
-    public void setFilterBy(java.lang.Object _filterBy) {
-        getStateHelper().put(PropertyKeys.filterBy, _filterBy);
+    public void setFilterBy(java.lang.Object filterBy) {
+        getStateHelper().put(PropertyKeys.filterBy, filterBy);
     }
 
-    public java.lang.String getFilterMatchMode() {
+    public String getFilterMatchMode() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.filterMatchMode, "startsWith");
     }
 
-    public void setFilterMatchMode(java.lang.String _filterMatchMode) {
-        getStateHelper().put(PropertyKeys.filterMatchMode, _filterMatchMode);
+    public void setFilterMatchMode(String filterMatchMode) {
+        getStateHelper().put(PropertyKeys.filterMatchMode, filterMatchMode);
     }
 
     public boolean isDisabled() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
-    public void setDisabled(boolean _disabled) {
-        getStateHelper().put(PropertyKeys.disabled, _disabled);
+    public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
     public boolean isMultipleDrag() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.multipleDrag, false);
     }
 
-    public void setMultipleDrag(boolean _multipleDrag) {
-        getStateHelper().put(PropertyKeys.multipleDrag, _multipleDrag);
+    public void setMultipleDrag(boolean multipleDrag) {
+        getStateHelper().put(PropertyKeys.multipleDrag, multipleDrag);
     }
 
     public boolean isDropCopyNode() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dropCopyNode, false);
     }
 
-    public void setDropCopyNode(boolean _dropCopyNode) {
-        getStateHelper().put(PropertyKeys.dropCopyNode, _dropCopyNode);
+    public void setDropCopyNode(boolean dropCopyNode) {
+        getStateHelper().put(PropertyKeys.dropCopyNode, dropCopyNode);
     }
 
     public javax.el.MethodExpression getOnDrop() {
         return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.onDrop, null);
     }
 
-    public void setOnDrop(javax.el.MethodExpression _onDrop) {
-        getStateHelper().put(PropertyKeys.onDrop, _onDrop);
+    public void setOnDrop(javax.el.MethodExpression onDrop) {
+        getStateHelper().put(PropertyKeys.onDrop, onDrop);
     }
 
     @Override

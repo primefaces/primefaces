@@ -119,6 +119,11 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
     }
 
     @Override
+    public void setTransient(boolean value) {
+
+    }
+
+    @Override
     public void restoreState(FacesContext facesContext, Object state) {
         Object values[] = (Object[]) state;
 
@@ -136,10 +141,5 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
         values[2] = monitorKey;
 
         return ((Object[]) values);
-    }
-
-    @Override
-    public void setTransient(boolean value) {
-
     }
 }

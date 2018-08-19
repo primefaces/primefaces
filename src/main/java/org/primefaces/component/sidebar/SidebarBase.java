@@ -51,92 +51,92 @@ abstract class SidebarBase extends UIComponentBase implements Widget {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getWidgetVar() {
+    public String getWidgetVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(java.lang.String _widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, _widgetVar);
+    public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.String getStyle() {
+    public String getStyle() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(java.lang.String _style) {
-        getStateHelper().put(PropertyKeys.style, _style);
+    public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public java.lang.String getStyleClass() {
+    public String getStyleClass() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(java.lang.String _styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, _styleClass);
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     public boolean isVisible() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.visible, false);
     }
 
-    public void setVisible(boolean _visible) {
-        getStateHelper().put(PropertyKeys.visible, _visible);
+    public void setVisible(boolean visible) {
+        getStateHelper().put(PropertyKeys.visible, visible);
     }
 
-    public java.lang.String getPosition() {
+    public String getPosition() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.position, "left");
     }
 
-    public void setPosition(java.lang.String _position) {
-        getStateHelper().put(PropertyKeys.position, _position);
+    public void setPosition(String position) {
+        getStateHelper().put(PropertyKeys.position, position);
     }
 
     public boolean isFullScreen() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.fullScreen, false);
     }
 
-    public void setFullScreen(boolean _fullScreen) {
-        getStateHelper().put(PropertyKeys.fullScreen, _fullScreen);
+    public void setFullScreen(boolean fullScreen) {
+        getStateHelper().put(PropertyKeys.fullScreen, fullScreen);
     }
 
     public boolean isBlockScroll() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.blockScroll, false);
     }
 
-    public void setBlockScroll(boolean _blockScroll) {
-        getStateHelper().put(PropertyKeys.blockScroll, _blockScroll);
+    public void setBlockScroll(boolean blockScroll) {
+        getStateHelper().put(PropertyKeys.blockScroll, blockScroll);
     }
 
     public int getBaseZIndex() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.baseZIndex, 0);
     }
 
-    public void setBaseZIndex(int _baseZIndex) {
-        getStateHelper().put(PropertyKeys.baseZIndex, _baseZIndex);
+    public void setBaseZIndex(int baseZIndex) {
+        getStateHelper().put(PropertyKeys.baseZIndex, baseZIndex);
     }
 
-    public java.lang.String getAppendTo() {
+    public String getAppendTo() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.appendTo, null);
     }
 
-    public void setAppendTo(java.lang.String _appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, _appendTo);
+    public void setAppendTo(String appendTo) {
+        getStateHelper().put(PropertyKeys.appendTo, appendTo);
     }
 
-    public java.lang.String getOnShow() {
+    public String getOnShow() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onShow, null);
     }
 
-    public void setOnShow(java.lang.String _onShow) {
-        getStateHelper().put(PropertyKeys.onShow, _onShow);
+    public void setOnShow(String onShow) {
+        getStateHelper().put(PropertyKeys.onShow, onShow);
     }
 
-    public java.lang.String getOnHide() {
+    public String getOnHide() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.onHide, null);
     }
 
-    public void setOnHide(java.lang.String _onHide) {
-        getStateHelper().put(PropertyKeys.onHide, _onHide);
+    public void setOnHide(String onHide) {
+        getStateHelper().put(PropertyKeys.onHide, onHide);
     }
 
     @Override

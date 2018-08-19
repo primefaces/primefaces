@@ -28,7 +28,7 @@ abstract class FeedReaderBase extends UIComponentBase {
 
         value,
         var,
-        size
+        size;
     }
 
     public FeedReaderBase() {
@@ -40,28 +40,28 @@ abstract class FeedReaderBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.String getValue() {
+    public String getValue() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.value, null);
     }
 
-    public void setValue(java.lang.String _value) {
-        getStateHelper().put(PropertyKeys.value, _value);
+    public void setValue(String value) {
+        getStateHelper().put(PropertyKeys.value, value);
     }
 
-    public java.lang.String getVar() {
+    public String getVar() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
-    public void setVar(java.lang.String _var) {
-        getStateHelper().put(PropertyKeys.var, _var);
+    public void setVar(String var) {
+        getStateHelper().put(PropertyKeys.var, var);
     }
 
     public int getSize() {
         return (java.lang.Integer) getStateHelper().eval(PropertyKeys.size, java.lang.Integer.MAX_VALUE);
     }
 
-    public void setSize(int _size) {
-        getStateHelper().put(PropertyKeys.size, _size);
+    public void setSize(int size) {
+        getStateHelper().put(PropertyKeys.size, size);
     }
 
 }
