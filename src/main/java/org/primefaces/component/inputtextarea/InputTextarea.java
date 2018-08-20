@@ -77,7 +77,7 @@ public class InputTextarea extends InputTextareaBase {
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName.equals("itemSelect")) {
-                String selectedItemValue = params.get(this.getClientId(context) + "_itemSelect");
+                String selectedItemValue = params.get(getClientId(context) + "_itemSelect");
                 SelectEvent selectEvent = new SelectEvent(this, (Behavior) ajaxBehaviorEvent.getBehavior(), selectedItemValue);
                 selectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(selectEvent);
@@ -93,6 +93,7 @@ public class InputTextarea extends InputTextareaBase {
         }
     }
 
+    @Override
     public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
         super.broadcast(event);
 
@@ -111,6 +112,6 @@ public class InputTextarea extends InputTextareaBase {
     }
 
     public List getSuggestions() {
-        return this.suggestions;
+        return suggestions;
     }
 }

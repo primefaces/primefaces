@@ -80,7 +80,7 @@ public class CommandButton extends CommandButtonBase {
             if (eventName.equals("dialogReturn")) {
                 AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
                 Map<String, Object> session = context.getExternalContext().getSessionMap();
-                String dcid = params.get(this.getClientId(context) + "_pfdlgcid");
+                String dcid = params.get(getClientId(context) + "_pfdlgcid");
                 Object selectedValue = session.get(dcid);
                 session.remove(dcid);
 
@@ -162,26 +162,32 @@ public class CommandButton extends CommandButtonBase {
         return styleClass;
     }
 
+    @Override
     public boolean isPartialSubmitSet() {
-        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (this.getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
     }
 
+    @Override
     public boolean isResetValuesSet() {
-        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (this.getValueExpression(PropertyKeys.resetValues.toString()) != null);
+        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (getValueExpression(PropertyKeys.resetValues.toString()) != null);
     }
 
+    @Override
     public String getConfirmationScript() {
-        return this.confirmationScript;
+        return confirmationScript;
     }
 
+    @Override
     public void setConfirmationScript(String confirmationScript) {
         this.confirmationScript = confirmationScript;
     }
 
+    @Override
     public boolean requiresConfirmation() {
-        return this.confirmationScript != null;
+        return confirmationScript != null;
     }
 
+    @Override
     public boolean isAjaxified() {
         return !getType().equals("reset") && !getType().equals("button") && isAjax();
     }

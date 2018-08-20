@@ -34,7 +34,7 @@ public class RowToggler extends RowTogglerBase {
 
     public DataTable getParentTable(FacesContext context) {
         if (parentTable == null) {
-            UIComponent parent = this.getParent();
+            UIComponent parent = getParent();
 
             while (parent != null) {
                 if (parent instanceof DataTable) {

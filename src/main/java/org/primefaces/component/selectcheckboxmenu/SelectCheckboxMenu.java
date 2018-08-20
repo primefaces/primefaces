@@ -85,7 +85,7 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
 
         if (event instanceof AjaxBehaviorEvent && eventName.equals("toggleSelect")) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String clientId = this.getClientId(context);
+            String clientId = getClientId(context);
             boolean checked = Boolean.valueOf(params.get(clientId + "_checked"));
             ToggleSelectEvent toggleSelectEvent = new ToggleSelectEvent(this, ((AjaxBehaviorEvent) event).getBehavior(), checked);
             toggleSelectEvent.setPhaseId(event.getPhaseId());

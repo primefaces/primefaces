@@ -75,7 +75,7 @@ public class ColumnToggler extends ColumnTogglerBase {
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
         if (event instanceof AjaxBehaviorEvent && eventName.equals("toggle")) {
-            String clientId = this.getClientId(context);
+            String clientId = getClientId(context);
             Visibility visibility = Visibility.valueOf(params.get(clientId + "_visibility"));
             int index = Integer.parseInt(params.get(clientId + "_index"));
 
@@ -89,7 +89,7 @@ public class ColumnToggler extends ColumnTogglerBase {
     public UIComponent getDataSourceComponent() {
         if (dataSourceComponent == null) {
             FacesContext context = getFacesContext();
-            String tableId = SearchExpressionFacade.resolveClientIds(context, this, this.getDatasource());
+            String tableId = SearchExpressionFacade.resolveClientIds(context, this, getDatasource());
             dataSourceComponent = context.getViewRoot().findComponent(tableId);
         }
 

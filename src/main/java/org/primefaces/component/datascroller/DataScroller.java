@@ -39,6 +39,6 @@ public class DataScroller extends DataScrollerBase {
 
     public boolean isLoadRequest() {
         FacesContext context = getFacesContext();
-        return context.getExternalContext().getRequestParameterMap().containsKey(this.getClientId(context) + "_load");
+        return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_load");
     }
 }
