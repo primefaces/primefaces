@@ -17,8 +17,10 @@ package org.primefaces.component.media.player;
 
 public class QuickTimePlayer implements MediaPlayer {
 
+    // CHECKSTYLE:OFF
     private static final String[] SUPPORTED_TYPES = new String[]{"aif", "aiff", "aac", "au", "bmp", "gsm", "mov", "mid", "midi", "mpg", "mpeg",
             "mp4", "m4a", "psd", "qt", "qtif", "qif", "qti", "snd", "tif", "tiff", "wav", "3g2", "3pg"};
+    // CHECKSTYLE:ON
 
     @Override
     public String getClassId() {
