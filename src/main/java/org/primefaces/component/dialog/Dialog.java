@@ -162,9 +162,4 @@ public class Dialog extends DialogBase {
     public boolean isContentLoadRequest(FacesContext context) {
         return context.getExternalContext().getRequestParameterMap().containsKey(getClientId(context) + "_contentLoad");
     }
-
-    @Override
-    public boolean isRTL() {
-        return getDir().equalsIgnoreCase("rtl");
-    }
 }

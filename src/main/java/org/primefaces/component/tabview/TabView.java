@@ -151,11 +151,6 @@ public class TabView extends TabViewBase {
     }
 
     @Override
-    public boolean isRTL() {
-        return getDir().equalsIgnoreCase("rtl");
-    }
-
-    @Override
     public void processUpdates(FacesContext context) {
         if (!isRendered()) {
             return;

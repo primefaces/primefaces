@@ -29,9 +29,4 @@ public class InputText extends InputTextBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputText";
 
     public static final String STYLE_CLASS = "ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
-
-    @Override
-    public boolean isRTL() {
-        return "rtl".equalsIgnoreCase(getDir());
-    }
 }

@@ -280,11 +280,6 @@ public class Tree extends TreeBase {
         return selectionMode != null && selectionMode.equals("checkbox");
     }
 
-    @Override
-    public boolean isRTL() {
-        return getDir().equalsIgnoreCase("rtl");
-    }
-
     TreeNode getDragNode() {
         return dragNode;
     }

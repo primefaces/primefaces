@@ -1134,11 +1134,6 @@ public class DataTable extends DataTableBase {
         getStateHelper().remove("multiSortState");
     }
 
-    @Override
-    public boolean isRTL() {
-        return getDir().equalsIgnoreCase("rtl");
-    }
-
     public String resolveSelectionMode() {
         String tableSelectionMode = getSelectionMode();
         String columnSelectionMode = getColumnSelectionMode();
