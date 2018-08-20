@@ -48,7 +48,7 @@ abstract class TooltipBase extends UIOutput implements Widget {
         position,
         delegate;
 
-        String toString;
+        private String toString;
 
         PropertyKeys(String toString) {
             this.toString = toString;

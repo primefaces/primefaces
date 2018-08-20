@@ -38,7 +38,7 @@ abstract class CheckboxBase extends UIComponentBase implements Widget {
         styleClass,
         tabindex;
 
-        String toString;
+        private String toString;
 
         PropertyKeys(String toString) {
             this.toString = toString;

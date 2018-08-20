@@ -167,7 +167,7 @@ public class DataTable extends DataTableBase {
             .put("virtualScroll", PageEvent.class)
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-    int columnsCountWithSpan = -1;
+    private int columnsCountWithSpan = -1;
     private List filterMetadata;
     private boolean reset = false;
     private List<Object> selectedRowKeys = new ArrayList<>();

@@ -30,7 +30,7 @@ abstract class FocusBase extends UIComponentBase {
         context,
         minSeverity;
 
-        String toString;
+        private String toString;
 
         PropertyKeys(String toString) {
             this.toString = toString;

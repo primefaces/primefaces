@@ -48,7 +48,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
         modal,
         showDelay;
 
-        String toString;
+        private String toString;
 
         PropertyKeys(String toString) {
             this.toString = toString;

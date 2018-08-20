@@ -37,7 +37,7 @@ abstract class EffectBase extends UIComponentBase implements Widget {
         delay,
         queue;
 
-        String toString;
+        private String toString;
 
         PropertyKeys(String toString) {
             this.toString = toString;

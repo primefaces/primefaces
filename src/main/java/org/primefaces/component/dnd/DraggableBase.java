@@ -54,7 +54,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
         onStop,
         cancel;
 
-        String toString;
+        private String toString;
 
         PropertyKeys(String toString) {
             this.toString = toString;

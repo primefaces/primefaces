@@ -50,7 +50,7 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
         onResize,
         onStop;
 
-        String toString;
+        private String toString;
 
         PropertyKeys(String toString) {
             this.toString = toString;
@@ -59,8 +59,9 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
         PropertyKeys() {
         }
 
+        @Override
         public String toString() {
-            return ((this.toString != null) ? this.toString : super.toString());
+            return ((toString != null) ? toString : super.toString());
         }
     }
 

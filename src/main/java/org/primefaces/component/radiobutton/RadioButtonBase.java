@@ -38,7 +38,7 @@ abstract class RadioButtonBase extends UIComponentBase implements Widget {
         styleClass,
         tabindex;
 
-        String toString;
+        private String toString;
 
         PropertyKeys(String toString) {
             this.toString = toString;
@@ -47,8 +47,9 @@ abstract class RadioButtonBase extends UIComponentBase implements Widget {
         PropertyKeys() {
         }
 
+        @Override
         public String toString() {
-            return ((this.toString != null) ? this.toString : super.toString());
+            return ((toString != null) ? toString : super.toString());
         }
     }
 

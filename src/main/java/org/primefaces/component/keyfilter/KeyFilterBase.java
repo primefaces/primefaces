@@ -37,7 +37,7 @@ abstract class KeyFilterBase extends UIComponentBase implements Widget {
         testFunction,
         preventPaste;
 
-        String toString;
+        private String toString;
 
         PropertyKeys(String toString) {
             this.toString = toString;

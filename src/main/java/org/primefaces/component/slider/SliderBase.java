@@ -48,7 +48,7 @@ abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolde
         range,
         displayTemplate;
 
-        String toString;
+        private String toString;
 
         PropertyKeys(String toString) {
             this.toString = toString;

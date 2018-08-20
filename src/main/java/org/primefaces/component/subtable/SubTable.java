@@ -28,7 +28,7 @@ public class SubTable extends SubTableBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.SubTable";
 
-    public List<Column> columns;
+    private List<Column> columns;
 
     public List<Column> getColumns() {
         if (columns == null) {

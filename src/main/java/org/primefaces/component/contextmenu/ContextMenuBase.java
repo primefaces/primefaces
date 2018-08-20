@@ -39,7 +39,7 @@ abstract class ContextMenuBase extends AbstractMenu implements Widget {
         selectionMode,
         targetFilter;
 
-        String toString;
+        private String toString;
 
         PropertyKeys(String toString) {
             this.toString = toString;

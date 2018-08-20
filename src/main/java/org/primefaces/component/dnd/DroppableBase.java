@@ -43,7 +43,7 @@ abstract class DroppableBase extends UIComponentBase implements Widget, ClientBe
         datasource,
         greedy;
 
-        String toString;
+        private String toString;
 
         PropertyKeys(String toString) {
             this.toString = toString;
