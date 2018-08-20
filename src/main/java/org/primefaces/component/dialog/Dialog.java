@@ -33,6 +33,7 @@ import org.primefaces.event.CloseEvent;
 import org.primefaces.event.MoveEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -61,17 +62,16 @@ public class Dialog extends DialogBase {
 
     private static final String DEFAULT_EVENT = "close";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("close", CloseEvent.class);
-        put("minimize", null);
-        put("maximize", null);
-        put("move", MoveEvent.class);
-        put("restoreMinimize", null);
-        put("restoreMaximize", null);
-        put("open", null);
-        put("loadContent", null);
-    }});
-
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("close", CloseEvent.class)
+            .put("minimize", null)
+            .put("maximize", null)
+            .put("move", MoveEvent.class)
+            .put("restoreMinimize", null)
+            .put("restoreMaximize", null)
+            .put("open", null)
+            .put("loadContent", null)
+            .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     @Override

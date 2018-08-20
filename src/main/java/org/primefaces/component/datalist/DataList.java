@@ -34,6 +34,7 @@ import org.primefaces.event.data.PageEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -55,11 +56,11 @@ public class DataList extends DataListBase {
     public static final String FOOTER_CLASS = "ui-datalist-footer ui-widget-header ui-corner-bottom";
     public static final String DATALIST_EMPTYMESSAGE_CLASS = "ui-datalist-empty-message";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("page", PageEvent.class);
-        put("tap", SelectEvent.class);
-        put("taphold", SelectEvent.class);
-    }});
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("page", PageEvent.class)
+            .put("tap", SelectEvent.class)
+            .put("taphold", SelectEvent.class)
+            .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

@@ -30,6 +30,7 @@ import javax.faces.event.FacesEvent;
 import org.primefaces.event.ResizeEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -43,11 +44,9 @@ public class Resizable extends ResizableBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Resizable";
 
     private static final String DEFAULT_EVENT = "resize";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("resize", ResizeEvent.class);
-    }});
-
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("resize", ResizeEvent.class)
+            .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     @Override

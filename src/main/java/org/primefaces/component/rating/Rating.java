@@ -26,6 +26,7 @@ import javax.faces.event.FacesEvent;
 
 import org.primefaces.event.RateEvent;
 import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -43,10 +44,10 @@ public class Rating extends RatingBase {
     public static final String STAR_ON_CLASS = "ui-rating-star ui-rating-star-on";
 
     private static final String DEFAULT_EVENT = "rate";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("rate", RateEvent.class);
-        put("cancel", null);
-    }});
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("rate", RateEvent.class)
+            .put("cancel", null)
+            .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
     private final Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
 

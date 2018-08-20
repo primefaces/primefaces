@@ -25,6 +25,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.BehaviorEvent;
 
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.MapBuilder;
 
 
 public class UIMenuItem extends UIMenuItemBase {
@@ -33,9 +34,9 @@ public class UIMenuItem extends UIMenuItemBase {
 
     private static final String DEFAULT_EVENT = "click";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("click", null);
-    }});
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("click", null)
+            .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
     private String confirmationScript;

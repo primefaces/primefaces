@@ -34,6 +34,7 @@ import org.primefaces.event.organigram.OrganigramNodeSelectEvent;
 import org.primefaces.model.OrganigramNode;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -47,17 +48,13 @@ public class Organigram extends OrganigramBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Organigram";
 
-
     private static final String DEFAULT_EVENT = "select";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("select", OrganigramNodeSelectEvent.class);
-        put("expand", OrganigramNodeExpandEvent.class);
-        put("collapse", OrganigramNodeCollapseEvent.class);
-        put("dragdrop", OrganigramNodeDragDropEvent.class);
-        put("contextmenu", OrganigramNodeSelectEvent.class);
-    }});
-
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("select", OrganigramNodeSelectEvent.class)
+            .put("expand", OrganigramNodeExpandEvent.class)
+            .put("collapse", OrganigramNodeCollapseEvent.class)
+            .put("dragdrop", OrganigramNodeDragDropEvent.class)
+            .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     @Override
@@ -82,7 +79,7 @@ public class Organigram extends OrganigramBase {
         if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-            String clientId = this.getClientId(context);
+            String clientId = getClientId(context);
             FacesEvent wrapperEvent = null;
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 

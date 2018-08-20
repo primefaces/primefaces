@@ -32,6 +32,7 @@ import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DualListModel;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 import org.primefaces.util.MessageFactory;
 
 @ResourceDependencies({
@@ -79,12 +80,13 @@ public class PickList extends PickListBase {
     public static final String MOVE_BOTTOM_BUTTON_ICON_CLASS = "ui-icon ui-icon-arrowstop-1-s";
     public static final String FILTER_CLASS = "ui-picklist-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public static final String FILTER_CONTAINER = "ui-picklist-filter-container";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("transfer", TransferEvent.class);
-        put("select", SelectEvent.class);
-        put("unselect", UnselectEvent.class);
-        put("reorder", null);
-    }});
+
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("transfer", TransferEvent.class)
+            .put("select", SelectEvent.class)
+            .put("unselect", UnselectEvent.class)
+            .put("reorder", null)
+            .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
     private final Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
 

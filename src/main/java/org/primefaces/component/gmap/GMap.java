@@ -32,6 +32,7 @@ import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.LatLngBounds;
 import org.primefaces.model.map.Marker;
 import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
@@ -43,14 +44,14 @@ public class GMap extends GMapBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.GMap";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("overlaySelect", OverlaySelectEvent.class);
-        put("stateChange", StateChangeEvent.class);
-        put("pointSelect", PointSelectEvent.class);
-        put("markerDrag", MarkerDragEvent.class);
-        put("geocode", GeocodeEvent.class);
-        put("reverseGeocode", ReverseGeocodeEvent.class);
-    }});
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("overlaySelect", OverlaySelectEvent.class)
+            .put("stateChange", StateChangeEvent.class)
+            .put("pointSelect", PointSelectEvent.class)
+            .put("markerDrag", MarkerDragEvent.class)
+            .put("geocode", GeocodeEvent.class)
+            .put("reverseGeocode", ReverseGeocodeEvent.class)
+            .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

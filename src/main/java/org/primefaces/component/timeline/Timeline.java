@@ -31,6 +31,7 @@ import org.primefaces.model.timeline.TimelineGroup;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.DateUtils;
+import org.primefaces.util.MapBuilder;
 import org.primefaces.visit.UIDataContextCallback;
 
 @ResourceDependencies({
@@ -48,18 +49,18 @@ public class Timeline extends TimelineBase {
 
     private static final Logger logger = Logger.getLogger(Timeline.class.getName());
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("add", TimelineAddEvent.class);
-        put("change", TimelineModificationEvent.class);
-        put("changed", TimelineModificationEvent.class);
-        put("edit", TimelineModificationEvent.class);
-        put("delete", TimelineModificationEvent.class);
-        put("select", TimelineSelectEvent.class);
-        put("rangechange", TimelineRangeEvent.class);
-        put("rangechanged", TimelineRangeEvent.class);
-        put("lazyload", TimelineLazyLoadEvent.class);
-        put("drop", TimelineDragDropEvent.class);
-    }});
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("add", TimelineAddEvent.class)
+            .put("change", TimelineModificationEvent.class)
+            .put("changed", TimelineModificationEvent.class)
+            .put("edit", TimelineModificationEvent.class)
+            .put("delete", TimelineModificationEvent.class)
+            .put("select", TimelineSelectEvent.class)
+            .put("rangechange", TimelineRangeEvent.class)
+            .put("rangechanged", TimelineRangeEvent.class)
+            .put("lazyload", TimelineLazyLoadEvent.class)
+            .put("drop", TimelineDragDropEvent.class)
+            .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

@@ -44,6 +44,7 @@ import org.primefaces.model.filter.*;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -100,36 +101,36 @@ public class TreeTable extends TreeTableBase {
     public static final String EQUALS_MODE = "equals";
     public static final String IN_MODE = "in";
     public static final String GLOBAL_MODE = "global";
-    static final Map<String, FilterConstraint> FILTER_CONSTRAINTS = Collections.unmodifiableMap(new HashMap<String, FilterConstraint>() {{
-        put(STARTS_WITH_MATCH_MODE, new StartsWithFilterConstraint());
-        put(ENDS_WITH_MATCH_MODE, new EndsWithFilterConstraint());
-        put(CONTAINS_MATCH_MODE, new ContainsFilterConstraint());
-        put(EXACT_MATCH_MODE, new ExactFilterConstraint());
-        put(LESS_THAN_MODE, new LessThanFilterConstraint());
-        put(LESS_THAN_EQUALS_MODE, new LessThanEqualsFilterConstraint());
-        put(GREATER_THAN_MODE, new GreaterThanFilterConstraint());
-        put(GREATER_THAN_EQUALS_MODE, new GreaterThanEqualsFilterConstraint());
-        put(EQUALS_MODE, new EqualsFilterConstraint());
-        put(IN_MODE, new InFilterConstraint());
-        put(GLOBAL_MODE, new GlobalFilterConstraint());
-    }});
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("select", NodeSelectEvent.class);
-        put("unselect", NodeUnselectEvent.class);
-        put("expand", NodeExpandEvent.class);
-        put("collapse", NodeCollapseEvent.class);
-        put("colResize", ColumnResizeEvent.class);
-        put("sort", SortEvent.class);
-        put("rowEdit", RowEditEvent.class);
-        put("rowEditInit", RowEditEvent.class);
-        put("rowEditCancel", RowEditEvent.class);
-        put("cellEdit", CellEditEvent.class);
-        put("cellEditInit", CellEditEvent.class);
-        put("cellEditCancel", CellEditEvent.class);
-        put("page", PageEvent.class);
-    }});
+    static final Map<String, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<String, FilterConstraint>builder()
+            .put(STARTS_WITH_MATCH_MODE, new StartsWithFilterConstraint())
+            .put(ENDS_WITH_MATCH_MODE, new EndsWithFilterConstraint())
+            .put(CONTAINS_MATCH_MODE, new ContainsFilterConstraint())
+            .put(EXACT_MATCH_MODE, new ExactFilterConstraint())
+            .put(LESS_THAN_MODE, new LessThanFilterConstraint())
+            .put(LESS_THAN_EQUALS_MODE, new LessThanEqualsFilterConstraint())
+            .put(GREATER_THAN_MODE, new GreaterThanFilterConstraint())
+            .put(GREATER_THAN_EQUALS_MODE, new GreaterThanEqualsFilterConstraint())
+            .put(EQUALS_MODE, new EqualsFilterConstraint())
+            .put(IN_MODE, new InFilterConstraint())
+            .put(GLOBAL_MODE, new GlobalFilterConstraint())
+            .build();
+
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("select", NodeSelectEvent.class)
+            .put("unselect", NodeUnselectEvent.class)
+            .put("expand", NodeExpandEvent.class)
+            .put("collapse", NodeCollapseEvent.class)
+            .put("colResize", ColumnResizeEvent.class)
+            .put("sort", SortEvent.class)
+            .put("rowEdit", RowEditEvent.class)
+            .put("rowEditInit", RowEditEvent.class)
+            .put("rowEditCancel", RowEditEvent.class)
+            .put("cellEdit", CellEditEvent.class)
+            .put("cellEditInit", CellEditEvent.class)
+            .put("cellEditCancel", CellEditEvent.class)
+            .put("page", PageEvent.class)
+            .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
-    private final List<String> selectedRowKeys = new ArrayList<>();
     private int columnsCount = -1;
     private UIColumn sortColumn;
     private List<UIColumn> columns;

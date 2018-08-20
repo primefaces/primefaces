@@ -29,6 +29,7 @@ import javax.faces.event.FacesEvent;
 
 import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -55,11 +56,10 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
     public static final String TOKEN_ICON_CLASS = "ui-selectcheckboxmenu-token-icon ui-icon ui-icon-close";
 
     private static final String DEFAULT_EVENT = "change";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("change", null);
-        put("toggleSelect", ToggleSelectEvent.class);
-    }});
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("change", null)
+            .put("toggleSelect", ToggleSelectEvent.class)
+            .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

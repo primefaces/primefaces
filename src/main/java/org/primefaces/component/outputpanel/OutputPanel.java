@@ -25,6 +25,8 @@ import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
 import javax.faces.event.BehaviorEvent;
 
+import org.primefaces.util.MapBuilder;
+
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
         @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
@@ -39,10 +41,9 @@ public class OutputPanel extends OutputPanelBase {
     public static final String LOADING_CLASS = "ui-outputpanel-loading ui-widget";
 
     private static final String DEFAULT_EVENT = "load";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("load", null);
-    }});
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("load", null)
+            .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

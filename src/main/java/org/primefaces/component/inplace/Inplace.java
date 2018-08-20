@@ -24,6 +24,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.BehaviorEvent;
 
+import org.primefaces.util.MapBuilder;
+
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
         @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
@@ -42,10 +44,10 @@ public class Inplace extends InplaceBase {
     public static final String SAVE_BUTTON_CLASS = "ui-inplace-save";
     public static final String CANCEL_BUTTON_CLASS = "ui-inplace-cancel";
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("save", null);
-        put("cancel", null);
-    }});
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("save", null)
+            .put("cancel", null)
+            .build();
 
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 

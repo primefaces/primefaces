@@ -31,6 +31,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.model.tagcloud.TagCloudItem;
 import org.primefaces.model.tagcloud.TagCloudModel;
 import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -43,12 +44,11 @@ public class TagCloud extends TagCloudBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.TagCloud";
 
     public static final String STYLE_CLASS = "ui-tagcloud ui-widget ui-widget-content ui-corner-all";
+
     private static final String DEFAULT_EVENT = "select";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("select", SelectEvent.class);
-    }});
-
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("select", SelectEvent.class)
+            .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     @Override

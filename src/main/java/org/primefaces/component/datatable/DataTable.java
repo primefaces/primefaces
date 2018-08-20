@@ -126,48 +126,47 @@ public class DataTable extends DataTableBase {
     public static final String SORT_ASC = "primefaces.datatable.SORT_ASC";
     public static final String SORT_DESC = "primefaces.datatable.SORT_DESC";
     public static final String ROW_GROUP_TOGGLER = "primefaces.rowgrouptoggler.aria.ROW_GROUP_TOGGLER";
-    static final Map<DataTableFeatureKey, DataTableFeature> FEATURES = Collections.unmodifiableMap(new HashMap<DataTableFeatureKey, DataTableFeature>() {{
-        put(DataTableFeatureKey.DRAGGABLE_COLUMNS, new DraggableColumnsFeature());
-        put(DataTableFeatureKey.FILTER, new FilterFeature());
-        put(DataTableFeatureKey.PAGE, new PageFeature());
-        put(DataTableFeatureKey.SORT, new SortFeature());
-        put(DataTableFeatureKey.RESIZABLE_COLUMNS, new ResizableColumnsFeature());
-        put(DataTableFeatureKey.SELECT, new SelectionFeature());
-        put(DataTableFeatureKey.ROW_EDIT, new RowEditFeature());
-        put(DataTableFeatureKey.CELL_EDIT, new CellEditFeature());
-        put(DataTableFeatureKey.ROW_EXPAND, new RowExpandFeature());
-        put(DataTableFeatureKey.SCROLL, new ScrollFeature());
-        put(DataTableFeatureKey.DRAGGABLE_ROWS, new DraggableRowsFeature());
-        put(DataTableFeatureKey.ADD_ROW, new AddRowFeature());
-    }});
-    private static final Logger logger = Logger.getLogger(DataTable.class.getName());
+    static final Map<DataTableFeatureKey, DataTableFeature> FEATURES = MapBuilder.<DataTableFeatureKey, DataTableFeature>builder()
+            .put(DataTableFeatureKey.DRAGGABLE_COLUMNS, new DraggableColumnsFeature())
+            .put(DataTableFeatureKey.FILTER, new FilterFeature())
+            .put(DataTableFeatureKey.PAGE, new PageFeature())
+            .put(DataTableFeatureKey.SORT, new SortFeature())
+            .put(DataTableFeatureKey.RESIZABLE_COLUMNS, new ResizableColumnsFeature())
+            .put(DataTableFeatureKey.SELECT, new SelectionFeature())
+            .put(DataTableFeatureKey.ROW_EDIT, new RowEditFeature())
+            .put(DataTableFeatureKey.CELL_EDIT, new CellEditFeature())
+            .put(DataTableFeatureKey.ROW_EXPAND, new RowExpandFeature())
+            .put(DataTableFeatureKey.SCROLL, new ScrollFeature())
+            .put(DataTableFeatureKey.DRAGGABLE_ROWS, new DraggableRowsFeature())
+            .put(DataTableFeatureKey.ADD_ROW, new AddRowFeature())
+            .build();
     private static final String SB_GET_SELECTED_ROW_KEYS_AS_STRING = DataTable.class.getName() + "#getSelectedRowKeysAsString";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("page", PageEvent.class);
-        put("sort", SortEvent.class);
-        put("filter", FilterEvent.class);
-        put("rowSelect", SelectEvent.class);
-        put("rowUnselect", UnselectEvent.class);
-        put("rowEdit", RowEditEvent.class);
-        put("rowEditInit", RowEditEvent.class);
-        put("rowEditCancel", RowEditEvent.class);
-        put("colResize", ColumnResizeEvent.class);
-        put("toggleSelect", ToggleSelectEvent.class);
-        put("colReorder", null);
-        put("contextMenu", SelectEvent.class);
-        put("rowSelectRadio", SelectEvent.class);
-        put("rowSelectCheckbox", SelectEvent.class);
-        put("rowUnselectCheckbox", UnselectEvent.class);
-        put("rowDblselect", SelectEvent.class);
-        put("rowToggle", ToggleEvent.class);
-        put("cellEditInit", CellEditEvent.class);
-        put("cellEdit", CellEditEvent.class);
-        put("rowReorder", ReorderEvent.class);
-        put("tap", SelectEvent.class);
-        put("taphold", SelectEvent.class);
-        put("cellEditCancel", CellEditEvent.class);
-        put("virtualScroll", PageEvent.class);
-    }});
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("page", PageEvent.class)
+            .put("sort", SortEvent.class)
+            .put("filter", FilterEvent.class)
+            .put("rowSelect", SelectEvent.class)
+            .put("rowUnselect", UnselectEvent.class)
+            .put("rowEdit", RowEditEvent.class)
+            .put("rowEditInit", RowEditEvent.class)
+            .put("rowEditCancel", RowEditEvent.class)
+            .put("colResize", ColumnResizeEvent.class)
+            .put("toggleSelect", ToggleSelectEvent.class)
+            .put("colReorder", null)
+            .put("contextMenu", SelectEvent.class)
+            .put("rowSelectRadio", SelectEvent.class)
+            .put("rowSelectCheckbox", SelectEvent.class)
+            .put("rowUnselectCheckbox", UnselectEvent.class)
+            .put("rowDblselect", SelectEvent.class)
+            .put("rowToggle", ToggleEvent.class)
+            .put("cellEditInit", CellEditEvent.class)
+            .put("cellEdit", CellEditEvent.class)
+            .put("rowReorder", ReorderEvent.class)
+            .put("tap", SelectEvent.class)
+            .put("taphold", SelectEvent.class)
+            .put("cellEditCancel", CellEditEvent.class)
+            .put("virtualScroll", PageEvent.class)
+            .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
     int columnsCountWithSpan = -1;
     private List filterMetadata;

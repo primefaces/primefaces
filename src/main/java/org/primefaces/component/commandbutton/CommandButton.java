@@ -16,8 +16,6 @@
 package org.primefaces.component.commandbutton;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -32,6 +30,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -44,13 +43,12 @@ public class CommandButton extends CommandButtonBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.CommandButton";
 
-    private static final Logger logger = Logger.getLogger(CommandButton.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommandButton.class.getName());
 
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("click", null);
-        put("dialogReturn", SelectEvent.class);
-    }});
-
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("click", null)
+            .put("dialogReturn", SelectEvent.class)
+            .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
     private String confirmationScript;
 
@@ -103,7 +101,7 @@ public class CommandButton extends CommandButtonBase {
             icon = getImage();
 
             if (icon != null) {
-                logger.info("image attribute is deprecated to define an icon, use icon attribute instead.");
+                LOGGER.info("image attribute is deprecated to define an icon, use icon attribute instead.");
             }
         }
 
@@ -123,31 +121,6 @@ public class CommandButton extends CommandButtonBase {
         }
         else if (value == null && !LangUtils.isValueBlank(icon)) {
             styleClass = HTML.BUTTON_ICON_ONLY_BUTTON_CLASS;
-        }
-
-        if (isDisabled()) {
-            styleClass = styleClass + " ui-state-disabled";
-        }
-
-        String userStyleClass = getStyleClass();
-        if (userStyleClass != null) {
-            styleClass = styleClass + " " + userStyleClass;
-        }
-
-        return styleClass;
-    }
-
-    public String resolveMobileStyleClass() {
-        String icon = getIcon();
-        String iconPos = getIconPos();
-        Object value = getValue();
-        String styleClass = "ui-btn ui-shadow ui-corner-all";
-
-        if (value != null && icon != null) {
-            styleClass = styleClass + " " + icon + " ui-btn-icon-" + iconPos;
-        }
-        else if (value == null && icon != null) {
-            styleClass = styleClass + " " + icon + " ui-btn-icon-notext";
         }
 
         if (isDisabled()) {

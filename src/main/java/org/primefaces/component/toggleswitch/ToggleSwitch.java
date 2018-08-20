@@ -24,6 +24,8 @@ import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.event.BehaviorEvent;
 
+import org.primefaces.util.MapBuilder;
+
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
         @ResourceDependency(library = "primefaces", name = "toggleswitch/toggleswitch.css"),
@@ -41,11 +43,9 @@ public class ToggleSwitch extends ToggleSwitchBase {
     public static final String CHECKED_CLASS = "ui-toggleswitch-checked";
 
     private static final String DEFAULT_EVENT = "change";
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("change", null);
-    }});
-
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("change", null)
+            .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     @Override

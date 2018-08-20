@@ -33,6 +33,7 @@ import org.primefaces.event.SlideEndEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 import org.primefaces.util.MessageFactory;
 
 @ResourceDependencies({
@@ -46,10 +47,11 @@ public class Slider extends SliderBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Slider";
     public static final String VALUE_OUT_OF_RANGE = "primefaces.slider.OUT_OF_RANGE";
+
     private static final String DEFAULT_EVENT = "slideEnd";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("slideEnd", SlideEndEvent.class);
-    }});
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("slideEnd", SlideEndEvent.class)
+            .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
     @Override

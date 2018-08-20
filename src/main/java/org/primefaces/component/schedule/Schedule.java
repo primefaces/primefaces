@@ -31,6 +31,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LocaleUtils;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "schedule/schedule.css"),
@@ -47,15 +48,13 @@ public class Schedule extends ScheduleBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Schedule";
 
     private static final TimeZone DEFAULT_TIME_ZONE = TimeZone.getTimeZone("UTC");
-
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("dateSelect", SelectEvent.class);
-        put("eventSelect", SelectEvent.class);
-        put("eventMove", ScheduleEntryMoveEvent.class);
-        put("eventResize", ScheduleEntryResizeEvent.class);
-        put("viewChange", SelectEvent.class);
-    }});
-
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("dateSelect", SelectEvent.class)
+            .put("eventSelect", SelectEvent.class)
+            .put("eventMove", ScheduleEntryMoveEvent.class)
+            .put("eventResize", ScheduleEntryResizeEvent.class)
+            .put("viewChange", SelectEvent.class)
+            .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
     private java.util.Locale appropriateLocale;
     private TimeZone appropriateTimeZone;

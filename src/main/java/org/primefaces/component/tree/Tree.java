@@ -16,7 +16,6 @@
 package org.primefaces.component.tree;
 
 import java.util.*;
-
 import javax.el.MethodExpression;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -35,6 +34,7 @@ import org.primefaces.model.TreeNode;
 import org.primefaces.model.filter.*;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.MapBuilder;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -68,15 +68,16 @@ public class Tree extends TreeBase {
     public static final String LEAF_ICON_CLASS = "ui-treenode-leaf-icon";
     public static final String NODE_ICON_CLASS = "ui-treenode-icon ui-icon";
     public static final String NODE_LABEL_CLASS = "ui-treenode-label ui-corner-all";
-    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = Collections.unmodifiableMap(new HashMap<String, Class<? extends BehaviorEvent>>() {{
-        put("select", NodeSelectEvent.class);
-        put("unselect", NodeUnselectEvent.class);
-        put("expand", NodeExpandEvent.class);
-        put("collapse", NodeCollapseEvent.class);
-        put("dragdrop", TreeDragDropEvent.class);
-        put("contextMenu", NodeSelectEvent.class);
-        put("filter", null);
-    }});
+
+    private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
+            .put("select", NodeSelectEvent.class)
+            .put("unselect", NodeUnselectEvent.class)
+            .put("expand", NodeExpandEvent.class)
+            .put("collapse", NodeCollapseEvent.class)
+            .put("dragdrop", TreeDragDropEvent.class)
+            .put("contextMenu", NodeSelectEvent.class)
+            .put("filter", null)
+            .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
     private static final String STARTS_WITH_MATCH_MODE = "startsWith";
     private static final String ENDS_WITH_MATCH_MODE = "endsWith";
@@ -90,19 +91,19 @@ public class Tree extends TreeBase {
     private static final String IN_MODE = "in";
     private static final String GLOBAL_MODE = "global";
 
-    static final Map<String, FilterConstraint> FILTER_CONSTRAINTS = Collections.unmodifiableMap(new HashMap<String, FilterConstraint>() {{
-        put(STARTS_WITH_MATCH_MODE, new StartsWithFilterConstraint());
-        put(ENDS_WITH_MATCH_MODE, new EndsWithFilterConstraint());
-        put(CONTAINS_MATCH_MODE, new ContainsFilterConstraint());
-        put(EXACT_MATCH_MODE, new ExactFilterConstraint());
-        put(LESS_THAN_MODE, new LessThanFilterConstraint());
-        put(LESS_THAN_EQUALS_MODE, new LessThanEqualsFilterConstraint());
-        put(GREATER_THAN_MODE, new GreaterThanFilterConstraint());
-        put(GREATER_THAN_EQUALS_MODE, new GreaterThanEqualsFilterConstraint());
-        put(EQUALS_MODE, new EqualsFilterConstraint());
-        put(IN_MODE, new InFilterConstraint());
-        put(GLOBAL_MODE, new GlobalFilterConstraint());
-    }});
+    static final Map<String, FilterConstraint> FILTER_CONSTRAINTS = MapBuilder.<String, FilterConstraint>builder()
+            .put(STARTS_WITH_MATCH_MODE, new StartsWithFilterConstraint())
+            .put(ENDS_WITH_MATCH_MODE, new EndsWithFilterConstraint())
+            .put(CONTAINS_MATCH_MODE, new ContainsFilterConstraint())
+            .put(EXACT_MATCH_MODE, new ExactFilterConstraint())
+            .put(LESS_THAN_MODE, new LessThanFilterConstraint())
+            .put(LESS_THAN_EQUALS_MODE, new LessThanEqualsFilterConstraint())
+            .put(GREATER_THAN_MODE, new GreaterThanFilterConstraint())
+            .put(GREATER_THAN_EQUALS_MODE, new GreaterThanEqualsFilterConstraint())
+            .put(EQUALS_MODE, new EqualsFilterConstraint())
+            .put(IN_MODE, new InFilterConstraint())
+            .put(GLOBAL_MODE, new GlobalFilterConstraint())
+            .build();
 
     private Map<String, UITreeNode> nodes;
     private TreeNode dragNode;
