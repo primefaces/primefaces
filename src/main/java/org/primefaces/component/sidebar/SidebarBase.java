@@ -52,7 +52,7 @@ abstract class SidebarBase extends UIComponentBase implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -60,7 +60,7 @@ abstract class SidebarBase extends UIComponentBase implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -68,7 +68,7 @@ abstract class SidebarBase extends UIComponentBase implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -76,7 +76,7 @@ abstract class SidebarBase extends UIComponentBase implements Widget {
     }
 
     public boolean isVisible() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.visible, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.visible, false);
     }
 
     public void setVisible(boolean visible) {
@@ -84,7 +84,7 @@ abstract class SidebarBase extends UIComponentBase implements Widget {
     }
 
     public String getPosition() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.position, "left");
+        return (String) getStateHelper().eval(PropertyKeys.position, "left");
     }
 
     public void setPosition(String position) {
@@ -92,7 +92,7 @@ abstract class SidebarBase extends UIComponentBase implements Widget {
     }
 
     public boolean isFullScreen() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.fullScreen, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.fullScreen, false);
     }
 
     public void setFullScreen(boolean fullScreen) {
@@ -100,7 +100,7 @@ abstract class SidebarBase extends UIComponentBase implements Widget {
     }
 
     public boolean isBlockScroll() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.blockScroll, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, false);
     }
 
     public void setBlockScroll(boolean blockScroll) {
@@ -108,7 +108,7 @@ abstract class SidebarBase extends UIComponentBase implements Widget {
     }
 
     public int getBaseZIndex() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.baseZIndex, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.baseZIndex, 0);
     }
 
     public void setBaseZIndex(int baseZIndex) {
@@ -116,7 +116,7 @@ abstract class SidebarBase extends UIComponentBase implements Widget {
     }
 
     public String getAppendTo() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.appendTo, null);
+        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
     }
 
     public void setAppendTo(String appendTo) {
@@ -124,7 +124,7 @@ abstract class SidebarBase extends UIComponentBase implements Widget {
     }
 
     public String getOnShow() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onShow, null);
+        return (String) getStateHelper().eval(PropertyKeys.onShow, null);
     }
 
     public void setOnShow(String onShow) {
@@ -132,7 +132,7 @@ abstract class SidebarBase extends UIComponentBase implements Widget {
     }
 
     public String getOnHide() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onHide, null);
+        return (String) getStateHelper().eval(PropertyKeys.onHide, null);
     }
 
     public void setOnHide(String onHide) {

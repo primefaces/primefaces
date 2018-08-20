@@ -55,7 +55,7 @@ abstract class ClockBase extends UIOutput implements Widget {
     }
 
     public String getMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.mode, "client");
+        return (String) getStateHelper().eval(PropertyKeys.mode, "client");
     }
 
     public void setMode(String mode) {
@@ -63,7 +63,7 @@ abstract class ClockBase extends UIOutput implements Widget {
     }
 
     public boolean isAutoSync() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoSync, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoSync, false);
     }
 
     public void setAutoSync(boolean autoSync) {
@@ -71,23 +71,23 @@ abstract class ClockBase extends UIOutput implements Widget {
     }
 
     public int getSyncInterval() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.syncInterval, 60000);
+        return (Integer) getStateHelper().eval(PropertyKeys.syncInterval, 60000);
     }
 
     public void setSyncInterval(int syncInterval) {
         getStateHelper().put(PropertyKeys.syncInterval, syncInterval);
     }
 
-    public java.lang.Object getTimeZone() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.timeZone, null);
+    public Object getTimeZone() {
+        return getStateHelper().eval(PropertyKeys.timeZone, null);
     }
 
-    public void setTimeZone(java.lang.Object timeZone) {
+    public void setTimeZone(Object timeZone) {
         getStateHelper().put(PropertyKeys.timeZone, timeZone);
     }
 
     public String getDisplayMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.displayMode, "digital");
+        return (String) getStateHelper().eval(PropertyKeys.displayMode, "digital");
     }
 
     public void setDisplayMode(String displayMode) {

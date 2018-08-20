@@ -43,7 +43,7 @@ abstract class TabBase extends UIPanel {
     }
 
     public String getTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.title, null);
+        return (String) getStateHelper().eval(PropertyKeys.title, null);
     }
 
     public void setTitle(String title) {
@@ -51,7 +51,7 @@ abstract class TabBase extends UIPanel {
     }
 
     public String getTitleStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.titleStyle, null);
+        return (String) getStateHelper().eval(PropertyKeys.titleStyle, null);
     }
 
     public void setTitleStyle(String titleStyle) {
@@ -59,7 +59,7 @@ abstract class TabBase extends UIPanel {
     }
 
     public String getTitleStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.titleStyleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.titleStyleClass, null);
     }
 
     public void setTitleStyleClass(String titleStyleClass) {
@@ -67,7 +67,7 @@ abstract class TabBase extends UIPanel {
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -75,7 +75,7 @@ abstract class TabBase extends UIPanel {
     }
 
     public boolean isClosable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.closable, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.closable, false);
     }
 
     public void setClosable(boolean closable) {
@@ -83,7 +83,7 @@ abstract class TabBase extends UIPanel {
     }
 
     public String getTitletip() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.titletip, null);
+        return (String) getStateHelper().eval(PropertyKeys.titletip, null);
     }
 
     public void setTitletip(String titletip) {
@@ -91,7 +91,7 @@ abstract class TabBase extends UIPanel {
     }
 
     public String getAriaLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
     }
 
     public void setAriaLabel(String ariaLabel) {

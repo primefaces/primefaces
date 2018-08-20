@@ -48,7 +48,7 @@ abstract class DashboardBase extends UIPanel implements Widget, ClientBehaviorHo
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -64,7 +64,7 @@ abstract class DashboardBase extends UIPanel implements Widget, ClientBehaviorHo
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -72,7 +72,7 @@ abstract class DashboardBase extends UIPanel implements Widget, ClientBehaviorHo
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -80,7 +80,7 @@ abstract class DashboardBase extends UIPanel implements Widget, ClientBehaviorHo
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {

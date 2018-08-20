@@ -49,7 +49,7 @@ abstract class ChartBase extends UIComponentBase implements Widget, ClientBehavi
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -57,7 +57,7 @@ abstract class ChartBase extends UIComponentBase implements Widget, ClientBehavi
     }
 
     public String getType() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.type, null);
+        return (String) getStateHelper().eval(PropertyKeys.type, null);
     }
 
     public void setType(String type) {
@@ -73,7 +73,7 @@ abstract class ChartBase extends UIComponentBase implements Widget, ClientBehavi
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -81,7 +81,7 @@ abstract class ChartBase extends UIComponentBase implements Widget, ClientBehavi
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -89,7 +89,7 @@ abstract class ChartBase extends UIComponentBase implements Widget, ClientBehavi
     }
 
     public boolean isResponsive() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
     }
 
     public void setResponsive(boolean responsive) {

@@ -43,7 +43,7 @@ abstract class SpacerBase extends UIComponentBase {
     }
 
     public String getWidth() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.width, null);
+        return (String) getStateHelper().eval(PropertyKeys.width, null);
     }
 
     public void setWidth(String width) {
@@ -51,7 +51,7 @@ abstract class SpacerBase extends UIComponentBase {
     }
 
     public String getHeight() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.height, null);
+        return (String) getStateHelper().eval(PropertyKeys.height, null);
     }
 
     public void setHeight(String height) {
@@ -59,7 +59,7 @@ abstract class SpacerBase extends UIComponentBase {
     }
 
     public String getTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.title, null);
+        return (String) getStateHelper().eval(PropertyKeys.title, null);
     }
 
     public void setTitle(String title) {
@@ -67,7 +67,7 @@ abstract class SpacerBase extends UIComponentBase {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -75,7 +75,7 @@ abstract class SpacerBase extends UIComponentBase {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {

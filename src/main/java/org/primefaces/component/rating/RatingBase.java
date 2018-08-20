@@ -51,7 +51,7 @@ abstract class RatingBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -59,7 +59,7 @@ abstract class RatingBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public int getStars() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.stars, 5);
+        return (Integer) getStateHelper().eval(PropertyKeys.stars, 5);
     }
 
     public void setStars(int stars) {
@@ -67,7 +67,7 @@ abstract class RatingBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -75,7 +75,7 @@ abstract class RatingBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public boolean isReadonly() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
     }
 
     public void setReadonly(boolean readonly) {
@@ -83,7 +83,7 @@ abstract class RatingBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public String getOnRate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onRate, null);
+        return (String) getStateHelper().eval(PropertyKeys.onRate, null);
     }
 
     public void setOnRate(String onRate) {
@@ -91,7 +91,7 @@ abstract class RatingBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -99,7 +99,7 @@ abstract class RatingBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -107,7 +107,7 @@ abstract class RatingBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public boolean isCancel() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.cancel, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.cancel, true);
     }
 
     public void setCancel(boolean cancel) {

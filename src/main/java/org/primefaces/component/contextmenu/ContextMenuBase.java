@@ -64,7 +64,7 @@ abstract class ContextMenuBase extends AbstractMenu implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -72,7 +72,7 @@ abstract class ContextMenuBase extends AbstractMenu implements Widget {
     }
 
     public String getFor() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
+        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
     public void setFor(String _for) {
@@ -80,7 +80,7 @@ abstract class ContextMenuBase extends AbstractMenu implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -88,7 +88,7 @@ abstract class ContextMenuBase extends AbstractMenu implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -105,7 +105,7 @@ abstract class ContextMenuBase extends AbstractMenu implements Widget {
     }
 
     public String getNodeType() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.nodeType, null);
+        return (String) getStateHelper().eval(PropertyKeys.nodeType, null);
     }
 
     public void setNodeType(String nodeType) {
@@ -113,7 +113,7 @@ abstract class ContextMenuBase extends AbstractMenu implements Widget {
     }
 
     public String getEvent() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.event, null);
+        return (String) getStateHelper().eval(PropertyKeys.event, null);
     }
 
     public void setEvent(String event) {
@@ -121,7 +121,7 @@ abstract class ContextMenuBase extends AbstractMenu implements Widget {
     }
 
     public String getBeforeShow() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.beforeShow, null);
+        return (String) getStateHelper().eval(PropertyKeys.beforeShow, null);
     }
 
     public void setBeforeShow(String beforeShow) {
@@ -129,7 +129,7 @@ abstract class ContextMenuBase extends AbstractMenu implements Widget {
     }
 
     public String getSelectionMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.selectionMode, "multiple");
+        return (String) getStateHelper().eval(PropertyKeys.selectionMode, "multiple");
     }
 
     public void setSelectionMode(String selectionMode) {
@@ -137,7 +137,7 @@ abstract class ContextMenuBase extends AbstractMenu implements Widget {
     }
 
     public String getTargetFilter() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.targetFilter, null);
+        return (String) getStateHelper().eval(PropertyKeys.targetFilter, null);
     }
 
     public void setTargetFilter(String targetFilter) {

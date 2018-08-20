@@ -49,7 +49,7 @@ abstract class TriStateCheckboxBase extends HtmlInputText implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -57,7 +57,7 @@ abstract class TriStateCheckboxBase extends HtmlInputText implements Widget {
     }
 
     public String getStateOneIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.stateOneIcon, null);
+        return (String) getStateHelper().eval(PropertyKeys.stateOneIcon, null);
     }
 
     public void setStateOneIcon(String stateOneIcon) {
@@ -65,7 +65,7 @@ abstract class TriStateCheckboxBase extends HtmlInputText implements Widget {
     }
 
     public String getStateTwoIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.stateTwoIcon, null);
+        return (String) getStateHelper().eval(PropertyKeys.stateTwoIcon, null);
     }
 
     public void setStateTwoIcon(String stateTwoIcon) {
@@ -73,7 +73,7 @@ abstract class TriStateCheckboxBase extends HtmlInputText implements Widget {
     }
 
     public String getStateThreeIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.stateThreeIcon, null);
+        return (String) getStateHelper().eval(PropertyKeys.stateThreeIcon, null);
     }
 
     public void setStateThreeIcon(String stateThreeIcon) {
@@ -81,7 +81,7 @@ abstract class TriStateCheckboxBase extends HtmlInputText implements Widget {
     }
 
     public String getItemLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.itemLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.itemLabel, null);
     }
 
     public void setItemLabel(String itemLabel) {
@@ -89,7 +89,7 @@ abstract class TriStateCheckboxBase extends HtmlInputText implements Widget {
     }
 
     public String getStateOneTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.stateOneTitle, null);
+        return (String) getStateHelper().eval(PropertyKeys.stateOneTitle, null);
     }
 
     public void setStateOneTitle(String stateOneTitle) {
@@ -97,7 +97,7 @@ abstract class TriStateCheckboxBase extends HtmlInputText implements Widget {
     }
 
     public String getStateTwoTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.stateTwoTitle, null);
+        return (String) getStateHelper().eval(PropertyKeys.stateTwoTitle, null);
     }
 
     public void setStateTwoTitle(String stateTwoTitle) {
@@ -105,7 +105,7 @@ abstract class TriStateCheckboxBase extends HtmlInputText implements Widget {
     }
 
     public String getStateThreeTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.stateThreeTitle, null);
+        return (String) getStateHelper().eval(PropertyKeys.stateThreeTitle, null);
     }
 
     public void setStateThreeTitle(String stateThreeTitle) {

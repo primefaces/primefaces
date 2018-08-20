@@ -74,7 +74,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -82,7 +82,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public String getHeader() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.header, null);
+        return (String) getStateHelper().eval(PropertyKeys.header, null);
     }
 
     public void setHeader(String header) {
@@ -90,7 +90,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public boolean isDraggable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.draggable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.draggable, true);
     }
 
     public void setDraggable(boolean draggable) {
@@ -98,7 +98,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public boolean isResizable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.resizable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.resizable, true);
     }
 
     public void setResizable(boolean resizable) {
@@ -106,7 +106,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public boolean isModal() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.modal, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.modal, false);
     }
 
     public void setModal(boolean modal) {
@@ -114,7 +114,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public boolean isVisible() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.visible, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.visible, false);
     }
 
     public void setVisible(boolean visible) {
@@ -122,7 +122,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public String getWidth() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.width, null);
+        return (String) getStateHelper().eval(PropertyKeys.width, null);
     }
 
     public void setWidth(String width) {
@@ -130,7 +130,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public String getHeight() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.height, null);
+        return (String) getStateHelper().eval(PropertyKeys.height, null);
     }
 
     public void setHeight(String height) {
@@ -138,7 +138,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public int getMinWidth() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minWidth, java.lang.Integer.MIN_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.minWidth, Integer.MIN_VALUE);
     }
 
     public void setMinWidth(int minWidth) {
@@ -146,7 +146,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public int getMinHeight() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minHeight, java.lang.Integer.MIN_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.minHeight, Integer.MIN_VALUE);
     }
 
     public void setMinHeight(int minHeight) {
@@ -154,7 +154,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -162,7 +162,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -170,7 +170,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public String getShowEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.showEffect, null);
+        return (String) getStateHelper().eval(PropertyKeys.showEffect, null);
     }
 
     public void setShowEffect(String showEffect) {
@@ -178,7 +178,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public String getHideEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.hideEffect, null);
+        return (String) getStateHelper().eval(PropertyKeys.hideEffect, null);
     }
 
     public void setHideEffect(String hideEffect) {
@@ -186,7 +186,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public String getPosition() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.position, null);
+        return (String) getStateHelper().eval(PropertyKeys.position, null);
     }
 
     public void setPosition(String position) {
@@ -194,7 +194,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public boolean isClosable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.closable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.closable, true);
     }
 
     public void setClosable(boolean closable) {
@@ -202,7 +202,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public String getOnShow() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onShow, null);
+        return (String) getStateHelper().eval(PropertyKeys.onShow, null);
     }
 
     public void setOnShow(String onShow) {
@@ -210,7 +210,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public String getOnHide() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onHide, null);
+        return (String) getStateHelper().eval(PropertyKeys.onHide, null);
     }
 
     public void setOnHide(String onHide) {
@@ -218,7 +218,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public String getAppendTo() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.appendTo, null);
+        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
     }
 
     public void setAppendTo(String appendTo) {
@@ -226,7 +226,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public boolean isShowHeader() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showHeader, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showHeader, true);
     }
 
     public void setShowHeader(boolean showHeader) {
@@ -234,7 +234,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public String getFooter() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.footer, null);
+        return (String) getStateHelper().eval(PropertyKeys.footer, null);
     }
 
     public void setFooter(String footer) {
@@ -242,7 +242,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public boolean isDynamic() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
     }
 
     public void setDynamic(boolean dynamic) {
@@ -250,7 +250,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public boolean isMinimizable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.minimizable, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.minimizable, false);
     }
 
     public void setMinimizable(boolean minimizable) {
@@ -258,7 +258,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public boolean isMaximizable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.maximizable, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.maximizable, false);
     }
 
     public void setMaximizable(boolean maximizable) {
@@ -266,7 +266,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public boolean isCloseOnEscape() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.closeOnEscape, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.closeOnEscape, false);
     }
 
     public void setCloseOnEscape(boolean closeOnEscape) {
@@ -274,7 +274,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public String getDir() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.dir, "ltr");
+        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
 
     public void setDir(String dir) {
@@ -282,7 +282,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public String getFocus() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.focus, null);
+        return (String) getStateHelper().eval(PropertyKeys.focus, null);
     }
 
     public void setFocus(String focus) {
@@ -290,7 +290,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public boolean isFitViewport() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.fitViewport, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.fitViewport, false);
     }
 
     public void setFitViewport(boolean fitViewport) {
@@ -298,7 +298,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public String getPositionType() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.positionType, "fixed");
+        return (String) getStateHelper().eval(PropertyKeys.positionType, "fixed");
     }
 
     public void setPositionType(String positionType) {
@@ -306,7 +306,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
     }
 
     public boolean isResponsive() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
     }
 
     public void setResponsive(boolean responsive) {

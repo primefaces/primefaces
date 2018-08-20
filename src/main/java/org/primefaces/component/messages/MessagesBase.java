@@ -47,7 +47,7 @@ abstract class MessagesBase extends UIMessages implements UINotification {
     }
 
     public boolean isEscape() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
     public void setEscape(boolean escape) {
@@ -56,7 +56,7 @@ abstract class MessagesBase extends UIMessages implements UINotification {
 
     @Override
     public String getSeverity() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.severity, null);
+        return (String) getStateHelper().eval(PropertyKeys.severity, null);
     }
 
     public void setSeverity(String severity) {
@@ -64,7 +64,7 @@ abstract class MessagesBase extends UIMessages implements UINotification {
     }
 
     public boolean isClosable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.closable, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.closable, false);
     }
 
     public void setClosable(boolean closable) {
@@ -72,7 +72,7 @@ abstract class MessagesBase extends UIMessages implements UINotification {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -80,7 +80,7 @@ abstract class MessagesBase extends UIMessages implements UINotification {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -88,7 +88,7 @@ abstract class MessagesBase extends UIMessages implements UINotification {
     }
 
     public boolean isShowIcon() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showIcon, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showIcon, true);
     }
 
     public void setShowIcon(boolean showIcon) {
@@ -96,7 +96,7 @@ abstract class MessagesBase extends UIMessages implements UINotification {
     }
 
     public String getForType() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.forType, null);
+        return (String) getStateHelper().eval(PropertyKeys.forType, null);
     }
 
     public void setForType(String forType) {

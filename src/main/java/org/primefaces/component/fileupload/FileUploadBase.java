@@ -74,7 +74,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -82,7 +82,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -90,7 +90,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -98,7 +98,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getUpdate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.update, null);
+        return (String) getStateHelper().eval(PropertyKeys.update, null);
     }
 
     public void setUpdate(String update) {
@@ -106,7 +106,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getProcess() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.process, null);
+        return (String) getStateHelper().eval(PropertyKeys.process, null);
     }
 
     public void setProcess(String process) {
@@ -122,7 +122,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public boolean isMultiple() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.multiple, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.multiple, false);
     }
 
     public void setMultiple(boolean multiple) {
@@ -130,7 +130,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public boolean isAuto() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.auto, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.auto, false);
     }
 
     public void setAuto(boolean auto) {
@@ -138,7 +138,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.label, "Choose");
+        return (String) getStateHelper().eval(PropertyKeys.label, "Choose");
     }
 
     public void setLabel(String label) {
@@ -146,7 +146,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getAllowTypes() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.allowTypes, null);
+        return (String) getStateHelper().eval(PropertyKeys.allowTypes, null);
     }
 
     public void setAllowTypes(String allowTypes) {
@@ -154,23 +154,23 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public int getFileLimit() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.fileLimit, java.lang.Integer.MAX_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.fileLimit, Integer.MAX_VALUE);
     }
 
     public void setFileLimit(int fileLimit) {
         getStateHelper().put(PropertyKeys.fileLimit, fileLimit);
     }
 
-    public java.lang.Long getSizeLimit() {
-        return (java.lang.Long) getStateHelper().eval(PropertyKeys.sizeLimit, java.lang.Long.MAX_VALUE);
+    public Long getSizeLimit() {
+        return (Long) getStateHelper().eval(PropertyKeys.sizeLimit, Long.MAX_VALUE);
     }
 
-    public void setSizeLimit(java.lang.Long sizeLimit) {
+    public void setSizeLimit(Long sizeLimit) {
         getStateHelper().put(PropertyKeys.sizeLimit, sizeLimit);
     }
 
     public String getMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.mode, "advanced");
+        return (String) getStateHelper().eval(PropertyKeys.mode, "advanced");
     }
 
     public void setMode(String mode) {
@@ -178,7 +178,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getUploadLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.uploadLabel, "Upload");
+        return (String) getStateHelper().eval(PropertyKeys.uploadLabel, "Upload");
     }
 
     public void setUploadLabel(String uploadLabel) {
@@ -186,7 +186,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getCancelLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.cancelLabel, "Cancel");
+        return (String) getStateHelper().eval(PropertyKeys.cancelLabel, "Cancel");
     }
 
     public void setCancelLabel(String cancelLabel) {
@@ -194,7 +194,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getInvalidSizeMessage() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.invalidSizeMessage, null);
+        return (String) getStateHelper().eval(PropertyKeys.invalidSizeMessage, null);
     }
 
     public void setInvalidSizeMessage(String invalidSizeMessage) {
@@ -202,7 +202,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getInvalidFileMessage() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.invalidFileMessage, null);
+        return (String) getStateHelper().eval(PropertyKeys.invalidFileMessage, null);
     }
 
     public void setInvalidFileMessage(String invalidFileMessage) {
@@ -210,7 +210,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getFileLimitMessage() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.fileLimitMessage, null);
+        return (String) getStateHelper().eval(PropertyKeys.fileLimitMessage, null);
     }
 
     public void setFileLimitMessage(String fileLimitMessage) {
@@ -218,7 +218,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public boolean isDragDropSupport() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dragDropSupport, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.dragDropSupport, true);
     }
 
     public void setDragDropSupport(boolean dragDropSupport) {
@@ -226,7 +226,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getOnstart() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onstart, null);
+        return (String) getStateHelper().eval(PropertyKeys.onstart, null);
     }
 
     public void setOnstart(String onstart) {
@@ -234,7 +234,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getOncomplete() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.oncomplete, null);
+        return (String) getStateHelper().eval(PropertyKeys.oncomplete, null);
     }
 
     public void setOncomplete(String oncomplete) {
@@ -242,7 +242,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getOnerror() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onerror, null);
+        return (String) getStateHelper().eval(PropertyKeys.onerror, null);
     }
 
     public void setOnerror(String onerror) {
@@ -250,7 +250,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getOncancel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.oncancel, null);
+        return (String) getStateHelper().eval(PropertyKeys.oncancel, null);
     }
 
     public void setOncancel(String oncancel) {
@@ -258,7 +258,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -266,7 +266,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getMessageTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.messageTemplate, null);
+        return (String) getStateHelper().eval(PropertyKeys.messageTemplate, null);
     }
 
     public void setMessageTemplate(String messageTemplate) {
@@ -274,7 +274,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public int getPreviewWidth() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.previewWidth, 80);
+        return (Integer) getStateHelper().eval(PropertyKeys.previewWidth, 80);
     }
 
     public void setPreviewWidth(int previewWidth) {
@@ -282,7 +282,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public boolean isSkinSimple() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.skinSimple, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.skinSimple, false);
     }
 
     public void setSkinSimple(boolean skinSimple) {
@@ -290,7 +290,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getAccept() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.accept, null);
+        return (String) getStateHelper().eval(PropertyKeys.accept, null);
     }
 
     public void setAccept(String accept) {
@@ -298,7 +298,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public boolean isSequential() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.sequential, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.sequential, false);
     }
 
     public void setSequential(boolean sequential) {
@@ -306,7 +306,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getChooseIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.chooseIcon, "ui-icon-plusthick");
+        return (String) getStateHelper().eval(PropertyKeys.chooseIcon, "ui-icon-plusthick");
     }
 
     public void setChooseIcon(String chooseIcon) {
@@ -314,7 +314,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getUploadIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.uploadIcon, "ui-icon-arrowreturnthick-1-n");
+        return (String) getStateHelper().eval(PropertyKeys.uploadIcon, "ui-icon-arrowreturnthick-1-n");
     }
 
     public void setUploadIcon(String uploadIcon) {
@@ -322,7 +322,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getCancelIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.cancelIcon, "ui-icon-cancel");
+        return (String) getStateHelper().eval(PropertyKeys.cancelIcon, "ui-icon-cancel");
     }
 
     public void setCancelIcon(String cancelIcon) {
@@ -330,7 +330,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
     }
 
     public String getOnAdd() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onAdd, null);
+        return (String) getStateHelper().eval(PropertyKeys.onAdd, null);
     }
 
     public void setOnAdd(String onAdd) {

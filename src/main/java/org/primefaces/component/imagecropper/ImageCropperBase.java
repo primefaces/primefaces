@@ -53,7 +53,7 @@ abstract class ImageCropperBase extends UIInput implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -61,7 +61,7 @@ abstract class ImageCropperBase extends UIInput implements Widget {
     }
 
     public String getImage() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.image, null);
+        return (String) getStateHelper().eval(PropertyKeys.image, null);
     }
 
     public void setImage(String image) {
@@ -69,7 +69,7 @@ abstract class ImageCropperBase extends UIInput implements Widget {
     }
 
     public String getAlt() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.alt, null);
+        return (String) getStateHelper().eval(PropertyKeys.alt, null);
     }
 
     public void setAlt(String alt) {
@@ -77,7 +77,7 @@ abstract class ImageCropperBase extends UIInput implements Widget {
     }
 
     public double getAspectRatio() {
-        return (java.lang.Double) getStateHelper().eval(PropertyKeys.aspectRatio, java.lang.Double.MIN_VALUE);
+        return (Double) getStateHelper().eval(PropertyKeys.aspectRatio, Double.MIN_VALUE);
     }
 
     public void setAspectRatio(double aspectRatio) {
@@ -85,7 +85,7 @@ abstract class ImageCropperBase extends UIInput implements Widget {
     }
 
     public String getMinSize() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.minSize, null);
+        return (String) getStateHelper().eval(PropertyKeys.minSize, null);
     }
 
     public void setMinSize(String minSize) {
@@ -93,7 +93,7 @@ abstract class ImageCropperBase extends UIInput implements Widget {
     }
 
     public String getMaxSize() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.maxSize, null);
+        return (String) getStateHelper().eval(PropertyKeys.maxSize, null);
     }
 
     public void setMaxSize(String maxSize) {
@@ -101,7 +101,7 @@ abstract class ImageCropperBase extends UIInput implements Widget {
     }
 
     public String getBackgroundColor() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.backgroundColor, null);
+        return (String) getStateHelper().eval(PropertyKeys.backgroundColor, null);
     }
 
     public void setBackgroundColor(String backgroundColor) {
@@ -109,7 +109,7 @@ abstract class ImageCropperBase extends UIInput implements Widget {
     }
 
     public double getBackgroundOpacity() {
-        return (java.lang.Double) getStateHelper().eval(PropertyKeys.backgroundOpacity, 0.6);
+        return (Double) getStateHelper().eval(PropertyKeys.backgroundOpacity, 0.6);
     }
 
     public void setBackgroundOpacity(double backgroundOpacity) {
@@ -117,7 +117,7 @@ abstract class ImageCropperBase extends UIInput implements Widget {
     }
 
     public String getInitialCoords() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.initialCoords, null);
+        return (String) getStateHelper().eval(PropertyKeys.initialCoords, null);
     }
 
     public void setInitialCoords(String initialCoords) {
@@ -125,7 +125,7 @@ abstract class ImageCropperBase extends UIInput implements Widget {
     }
 
     public int getBoxWidth() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.boxWidth, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.boxWidth, 0);
     }
 
     public void setBoxWidth(int boxWidth) {
@@ -133,18 +133,18 @@ abstract class ImageCropperBase extends UIInput implements Widget {
     }
 
     public int getBoxHeight() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.boxHeight, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.boxHeight, 0);
     }
 
     public void setBoxHeight(int boxHeight) {
         getStateHelper().put(PropertyKeys.boxHeight, boxHeight);
     }
 
-    public java.lang.Long getSizeLimit() {
-        return (java.lang.Long) getStateHelper().eval(PropertyKeys.sizeLimit, 10485760L);
+    public Long getSizeLimit() {
+        return (Long) getStateHelper().eval(PropertyKeys.sizeLimit, 10485760L);
     }
 
-    public void setSizeLimit(java.lang.Long sizeLimit) {
+    public void setSizeLimit(Long sizeLimit) {
         getStateHelper().put(PropertyKeys.sizeLimit, sizeLimit);
     }
 

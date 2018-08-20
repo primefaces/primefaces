@@ -53,7 +53,7 @@ abstract class FieldsetBase extends UIPanel implements Widget, ClientBehaviorHol
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -61,7 +61,7 @@ abstract class FieldsetBase extends UIPanel implements Widget, ClientBehaviorHol
     }
 
     public String getLegend() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.legend, null);
+        return (String) getStateHelper().eval(PropertyKeys.legend, null);
     }
 
     public void setLegend(String legend) {
@@ -69,7 +69,7 @@ abstract class FieldsetBase extends UIPanel implements Widget, ClientBehaviorHol
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -77,7 +77,7 @@ abstract class FieldsetBase extends UIPanel implements Widget, ClientBehaviorHol
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -85,7 +85,7 @@ abstract class FieldsetBase extends UIPanel implements Widget, ClientBehaviorHol
     }
 
     public boolean isToggleable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.toggleable, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.toggleable, false);
     }
 
     public void setToggleable(boolean toggleable) {
@@ -93,7 +93,7 @@ abstract class FieldsetBase extends UIPanel implements Widget, ClientBehaviorHol
     }
 
     public int getToggleSpeed() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.toggleSpeed, 500);
+        return (Integer) getStateHelper().eval(PropertyKeys.toggleSpeed, 500);
     }
 
     public void setToggleSpeed(int toggleSpeed) {
@@ -101,7 +101,7 @@ abstract class FieldsetBase extends UIPanel implements Widget, ClientBehaviorHol
     }
 
     public boolean isCollapsed() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.collapsed, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.collapsed, false);
     }
 
     public void setCollapsed(boolean collapsed) {
@@ -109,7 +109,7 @@ abstract class FieldsetBase extends UIPanel implements Widget, ClientBehaviorHol
     }
 
     public String getTabindex() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, "0");
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
     }
 
     public void setTabindex(String tabindex) {
@@ -117,7 +117,7 @@ abstract class FieldsetBase extends UIPanel implements Widget, ClientBehaviorHol
     }
 
     public boolean isEscape() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
     public void setEscape(boolean escape) {
@@ -125,7 +125,7 @@ abstract class FieldsetBase extends UIPanel implements Widget, ClientBehaviorHol
     }
 
     public String getTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.title, null);
+        return (String) getStateHelper().eval(PropertyKeys.title, null);
     }
 
     public void setTitle(String title) {

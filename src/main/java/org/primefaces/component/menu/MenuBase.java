@@ -49,7 +49,7 @@ abstract class MenuBase extends AbstractMenu implements Widget, OverlayMenu {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -67,7 +67,7 @@ abstract class MenuBase extends AbstractMenu implements Widget, OverlayMenu {
 
     @Override
     public String getTrigger() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.trigger, null);
+        return (String) getStateHelper().eval(PropertyKeys.trigger, null);
     }
 
     public void setTrigger(String trigger) {
@@ -76,7 +76,7 @@ abstract class MenuBase extends AbstractMenu implements Widget, OverlayMenu {
 
     @Override
     public String getMy() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.my, null);
+        return (String) getStateHelper().eval(PropertyKeys.my, null);
     }
 
     public void setMy(String my) {
@@ -85,7 +85,7 @@ abstract class MenuBase extends AbstractMenu implements Widget, OverlayMenu {
 
     @Override
     public String getAt() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.at, null);
+        return (String) getStateHelper().eval(PropertyKeys.at, null);
     }
 
     public void setAt(String at) {
@@ -93,7 +93,7 @@ abstract class MenuBase extends AbstractMenu implements Widget, OverlayMenu {
     }
 
     public boolean isOverlay() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.overlay, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.overlay, false);
     }
 
     public void setOverlay(boolean overlay) {
@@ -101,7 +101,7 @@ abstract class MenuBase extends AbstractMenu implements Widget, OverlayMenu {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -109,7 +109,7 @@ abstract class MenuBase extends AbstractMenu implements Widget, OverlayMenu {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -118,7 +118,7 @@ abstract class MenuBase extends AbstractMenu implements Widget, OverlayMenu {
 
     @Override
     public String getTriggerEvent() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.triggerEvent, "click");
+        return (String) getStateHelper().eval(PropertyKeys.triggerEvent, "click");
     }
 
     public void setTriggerEvent(String triggerEvent) {
@@ -126,7 +126,7 @@ abstract class MenuBase extends AbstractMenu implements Widget, OverlayMenu {
     }
 
     public boolean isToggleable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.toggleable, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.toggleable, false);
     }
 
     public void setToggleable(boolean toggleable) {

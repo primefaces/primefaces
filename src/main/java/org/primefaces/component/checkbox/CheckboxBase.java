@@ -63,7 +63,7 @@ abstract class CheckboxBase extends UIComponentBase implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -71,7 +71,7 @@ abstract class CheckboxBase extends UIComponentBase implements Widget {
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -79,7 +79,7 @@ abstract class CheckboxBase extends UIComponentBase implements Widget {
     }
 
     public int getItemIndex() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.itemIndex, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.itemIndex, 0);
     }
 
     public void setItemIndex(int itemIndex) {
@@ -87,7 +87,7 @@ abstract class CheckboxBase extends UIComponentBase implements Widget {
     }
 
     public String getOnchange() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onchange, null);
+        return (String) getStateHelper().eval(PropertyKeys.onchange, null);
     }
 
     public void setOnchange(String onchange) {
@@ -95,7 +95,7 @@ abstract class CheckboxBase extends UIComponentBase implements Widget {
     }
 
     public String getFor() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
+        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
     public void setFor(String _for) {
@@ -103,7 +103,7 @@ abstract class CheckboxBase extends UIComponentBase implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -111,7 +111,7 @@ abstract class CheckboxBase extends UIComponentBase implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -119,7 +119,7 @@ abstract class CheckboxBase extends UIComponentBase implements Widget {
     }
 
     public String getTabindex() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, null);
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, null);
     }
 
     public void setTabindex(String tabindex) {

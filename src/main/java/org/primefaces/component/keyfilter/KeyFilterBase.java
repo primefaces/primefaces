@@ -62,7 +62,7 @@ abstract class KeyFilterBase extends UIComponentBase implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -70,7 +70,7 @@ abstract class KeyFilterBase extends UIComponentBase implements Widget {
     }
 
     public String getFor() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
+        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
     public void setFor(String _for) {
@@ -78,7 +78,7 @@ abstract class KeyFilterBase extends UIComponentBase implements Widget {
     }
 
     public String getRegEx() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.regEx, null);
+        return (String) getStateHelper().eval(PropertyKeys.regEx, null);
     }
 
     public void setRegEx(String regEx) {
@@ -86,7 +86,7 @@ abstract class KeyFilterBase extends UIComponentBase implements Widget {
     }
 
     public String getInputRegEx() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.inputRegEx, null);
+        return (String) getStateHelper().eval(PropertyKeys.inputRegEx, null);
     }
 
     public void setInputRegEx(String inputRegEx) {
@@ -94,7 +94,7 @@ abstract class KeyFilterBase extends UIComponentBase implements Widget {
     }
 
     public String getMask() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.mask, null);
+        return (String) getStateHelper().eval(PropertyKeys.mask, null);
     }
 
     public void setMask(String mask) {
@@ -102,7 +102,7 @@ abstract class KeyFilterBase extends UIComponentBase implements Widget {
     }
 
     public String getTestFunction() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.testFunction, null);
+        return (String) getStateHelper().eval(PropertyKeys.testFunction, null);
     }
 
     public void setTestFunction(String testFunction) {
@@ -110,7 +110,7 @@ abstract class KeyFilterBase extends UIComponentBase implements Widget {
     }
 
     public boolean isPreventPaste() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.preventPaste, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.preventPaste, true);
     }
 
     public void setPreventPaste(boolean preventPaste) {

@@ -47,7 +47,7 @@ abstract class InputMaskBase extends HtmlInputText implements Widget {
     }
 
     public String getPlaceholder() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
+        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
     public void setPlaceholder(String placeholder) {
@@ -55,7 +55,7 @@ abstract class InputMaskBase extends HtmlInputText implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -63,7 +63,7 @@ abstract class InputMaskBase extends HtmlInputText implements Widget {
     }
 
     public String getMask() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.mask, null);
+        return (String) getStateHelper().eval(PropertyKeys.mask, null);
     }
 
     public void setMask(String mask) {
@@ -71,7 +71,7 @@ abstract class InputMaskBase extends HtmlInputText implements Widget {
     }
 
     public String getSlotChar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.slotChar, null);
+        return (String) getStateHelper().eval(PropertyKeys.slotChar, null);
     }
 
     public void setSlotChar(String slotChar) {
@@ -79,7 +79,7 @@ abstract class InputMaskBase extends HtmlInputText implements Widget {
     }
 
     public boolean isAutoClear() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoClear, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoClear, true);
     }
 
     public void setAutoClear(boolean autoClear) {
@@ -87,7 +87,7 @@ abstract class InputMaskBase extends HtmlInputText implements Widget {
     }
 
     public String getType() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.type, "text");
+        return (String) getStateHelper().eval(PropertyKeys.type, "text");
     }
 
     public void setType(String type) {

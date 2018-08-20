@@ -35,7 +35,7 @@ abstract class IdleMonitorBase extends UIComponentBase implements Widget, Client
         timeout,
         onidle,
         onactive,
-        multiWindowSupport;
+        multiWindowSupport
     }
 
     public IdleMonitorBase() {
@@ -48,7 +48,7 @@ abstract class IdleMonitorBase extends UIComponentBase implements Widget, Client
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -56,7 +56,7 @@ abstract class IdleMonitorBase extends UIComponentBase implements Widget, Client
     }
 
     public int getTimeout() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.timeout, 300000);
+        return (Integer) getStateHelper().eval(PropertyKeys.timeout, 300000);
     }
 
     public void setTimeout(int timeout) {
@@ -64,7 +64,7 @@ abstract class IdleMonitorBase extends UIComponentBase implements Widget, Client
     }
 
     public String getOnidle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onidle, null);
+        return (String) getStateHelper().eval(PropertyKeys.onidle, null);
     }
 
     public void setOnidle(String onidle) {
@@ -72,7 +72,7 @@ abstract class IdleMonitorBase extends UIComponentBase implements Widget, Client
     }
 
     public String getOnactive() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onactive, null);
+        return (String) getStateHelper().eval(PropertyKeys.onactive, null);
     }
 
     public void setOnactive(String onactive) {
@@ -80,7 +80,7 @@ abstract class IdleMonitorBase extends UIComponentBase implements Widget, Client
     }
 
     public boolean isMultiWindowSupport() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.multiWindowSupport, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.multiWindowSupport, false);
     }
 
     public void setMultiWindowSupport(boolean multiWindowSupport) {

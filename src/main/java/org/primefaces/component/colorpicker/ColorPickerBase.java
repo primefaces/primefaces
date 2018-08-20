@@ -48,7 +48,7 @@ abstract class ColorPickerBase extends UIInput implements Widget, ClientBehavior
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -56,7 +56,7 @@ abstract class ColorPickerBase extends UIInput implements Widget, ClientBehavior
     }
 
     public String getMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.mode, "popup");
+        return (String) getStateHelper().eval(PropertyKeys.mode, "popup");
     }
 
     public void setMode(String mode) {
@@ -64,7 +64,7 @@ abstract class ColorPickerBase extends UIInput implements Widget, ClientBehavior
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -72,7 +72,7 @@ abstract class ColorPickerBase extends UIInput implements Widget, ClientBehavior
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -80,7 +80,7 @@ abstract class ColorPickerBase extends UIInput implements Widget, ClientBehavior
     }
 
     public String getOnchange() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onchange, null);
+        return (String) getStateHelper().eval(PropertyKeys.onchange, null);
     }
 
     public void setOnchange(String onchange) {

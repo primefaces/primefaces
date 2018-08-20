@@ -50,7 +50,7 @@ abstract class EditorBase extends UIInput implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -58,7 +58,7 @@ abstract class EditorBase extends UIInput implements Widget {
     }
 
     public String getControls() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.controls, null);
+        return (String) getStateHelper().eval(PropertyKeys.controls, null);
     }
 
     public void setControls(String controls) {
@@ -66,7 +66,7 @@ abstract class EditorBase extends UIInput implements Widget {
     }
 
     public int getHeight() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.height, java.lang.Integer.MIN_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.height, Integer.MIN_VALUE);
     }
 
     public void setHeight(int height) {
@@ -74,7 +74,7 @@ abstract class EditorBase extends UIInput implements Widget {
     }
 
     public int getWidth() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.width, java.lang.Integer.MIN_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.width, Integer.MIN_VALUE);
     }
 
     public void setWidth(int width) {
@@ -82,7 +82,7 @@ abstract class EditorBase extends UIInput implements Widget {
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -90,7 +90,7 @@ abstract class EditorBase extends UIInput implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -98,7 +98,7 @@ abstract class EditorBase extends UIInput implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -106,7 +106,7 @@ abstract class EditorBase extends UIInput implements Widget {
     }
 
     public String getOnchange() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onchange, null);
+        return (String) getStateHelper().eval(PropertyKeys.onchange, null);
     }
 
     public void setOnchange(String onchange) {
@@ -114,7 +114,7 @@ abstract class EditorBase extends UIInput implements Widget {
     }
 
     public int getMaxlength() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxlength, java.lang.Integer.MAX_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.maxlength, Integer.MAX_VALUE);
     }
 
     public void setMaxlength(int maxlength) {

@@ -50,7 +50,7 @@ abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, 
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -58,7 +58,7 @@ abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, 
     }
 
     public String getVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
+        return (String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
     public void setVar(String var) {
@@ -66,7 +66,7 @@ abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, 
     }
 
     public boolean isShowCheckbox() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showCheckbox, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showCheckbox, false);
     }
 
     public void setShowCheckbox(boolean showCheckbox) {
@@ -74,7 +74,7 @@ abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, 
     }
 
     public boolean isFilter() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.filter, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.filter, false);
     }
 
     public void setFilter(boolean filter) {
@@ -82,7 +82,7 @@ abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, 
     }
 
     public String getFilterMatchMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
+        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
     }
 
     public void setFilterMatchMode(String filterMatchMode) {
@@ -90,7 +90,7 @@ abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, 
     }
 
     public String getFilterFunction() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.filterFunction, null);
+        return (String) getStateHelper().eval(PropertyKeys.filterFunction, null);
     }
 
     public void setFilterFunction(String filterFunction) {
@@ -98,7 +98,7 @@ abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, 
     }
 
     public boolean isCaseSensitive() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.caseSensitive, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitive, false);
     }
 
     public void setCaseSensitive(boolean caseSensitive) {
@@ -106,7 +106,7 @@ abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements Widget, 
     }
 
     public int getScrollHeight() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.scrollHeight, java.lang.Integer.MAX_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.scrollHeight, Integer.MAX_VALUE);
     }
 
     public void setScrollHeight(int scrollHeight) {

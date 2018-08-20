@@ -63,7 +63,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -71,7 +71,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public int getFirstVisible() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.firstVisible, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.firstVisible, 0);
     }
 
     public void setFirstVisible(int firstVisible) {
@@ -79,7 +79,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public int getNumVisible() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.numVisible, 3);
+        return (Integer) getStateHelper().eval(PropertyKeys.numVisible, 3);
     }
 
     public void setNumVisible(int numVisible) {
@@ -87,7 +87,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public boolean isCircular() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.circular, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.circular, false);
     }
 
     public void setCircular(boolean circular) {
@@ -95,7 +95,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public boolean isVertical() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.vertical, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.vertical, false);
     }
 
     public void setVertical(boolean vertical) {
@@ -103,7 +103,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public int getAutoPlayInterval() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.autoPlayInterval, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.autoPlayInterval, 0);
     }
 
     public void setAutoPlayInterval(int autoPlayInterval) {
@@ -112,7 +112,7 @@ abstract class CarouselBase extends UIData implements Widget {
 
     @Override
     public int getPageLinks() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.pageLinks, 3);
+        return (Integer) getStateHelper().eval(PropertyKeys.pageLinks, 3);
     }
 
     @Override
@@ -121,7 +121,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public String getEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, null);
+        return (String) getStateHelper().eval(PropertyKeys.effect, null);
     }
 
     public void setEffect(String effect) {
@@ -129,7 +129,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public String getEasing() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.easing, null);
+        return (String) getStateHelper().eval(PropertyKeys.easing, null);
     }
 
     public void setEasing(String easing) {
@@ -137,7 +137,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public int getEffectDuration() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.effectDuration, java.lang.Integer.MIN_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.effectDuration, Integer.MIN_VALUE);
     }
 
     public void setEffectDuration(int effectDuration) {
@@ -145,7 +145,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public String getDropdownTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.dropdownTemplate, "{page}");
+        return (String) getStateHelper().eval(PropertyKeys.dropdownTemplate, "{page}");
     }
 
     public void setDropdownTemplate(String dropdownTemplate) {
@@ -153,7 +153,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -161,7 +161,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -169,7 +169,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public String getItemStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.itemStyle, null);
+        return (String) getStateHelper().eval(PropertyKeys.itemStyle, null);
     }
 
     public void setItemStyle(String itemStyle) {
@@ -177,7 +177,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public String getItemStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.itemStyleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.itemStyleClass, null);
     }
 
     public void setItemStyleClass(String itemStyleClass) {
@@ -185,7 +185,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public String getHeaderText() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.headerText, null);
+        return (String) getStateHelper().eval(PropertyKeys.headerText, null);
     }
 
     public void setHeaderText(String headerText) {
@@ -193,7 +193,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public String getFooterText() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.footerText, null);
+        return (String) getStateHelper().eval(PropertyKeys.footerText, null);
     }
 
     public void setFooterText(String footerText) {
@@ -201,7 +201,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public boolean isResponsive() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
     }
 
     public void setResponsive(boolean responsive) {
@@ -209,7 +209,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public int getBreakpoint() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.breakpoint, 640);
+        return (Integer) getStateHelper().eval(PropertyKeys.breakpoint, 640);
     }
 
     public void setBreakpoint(int breakpoint) {
@@ -217,7 +217,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public boolean isToggleable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.toggleable, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.toggleable, false);
     }
 
     public void setToggleable(boolean toggleable) {
@@ -225,7 +225,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public int getToggleSpeed() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.toggleSpeed, 500);
+        return (Integer) getStateHelper().eval(PropertyKeys.toggleSpeed, 500);
     }
 
     public void setToggleSpeed(int toggleSpeed) {
@@ -233,7 +233,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public boolean isCollapsed() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.collapsed, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.collapsed, false);
     }
 
     public void setCollapsed(boolean collapsed) {
@@ -241,7 +241,7 @@ abstract class CarouselBase extends UIData implements Widget {
     }
 
     public boolean isStateful() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.stateful, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.stateful, false);
     }
 
     public void setStateful(boolean stateful) {

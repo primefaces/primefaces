@@ -49,7 +49,7 @@ abstract class TerminalBase extends UIPanel implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -57,7 +57,7 @@ abstract class TerminalBase extends UIPanel implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -65,7 +65,7 @@ abstract class TerminalBase extends UIPanel implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -73,7 +73,7 @@ abstract class TerminalBase extends UIPanel implements Widget {
     }
 
     public String getWelcomeMessage() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.welcomeMessage, null);
+        return (String) getStateHelper().eval(PropertyKeys.welcomeMessage, null);
     }
 
     public void setWelcomeMessage(String welcomeMessage) {
@@ -81,7 +81,7 @@ abstract class TerminalBase extends UIPanel implements Widget {
     }
 
     public String getPrompt() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.prompt, "prime $");
+        return (String) getStateHelper().eval(PropertyKeys.prompt, "prime $");
     }
 
     public void setPrompt(String prompt) {
@@ -105,7 +105,7 @@ abstract class TerminalBase extends UIPanel implements Widget {
     }
 
     public boolean isEscape() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
     public void setEscape(boolean escape) {

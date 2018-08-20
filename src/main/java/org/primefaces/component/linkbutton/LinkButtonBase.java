@@ -47,7 +47,7 @@ abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UIOutcome
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -56,7 +56,7 @@ abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UIOutcome
 
     @Override
     public String getFragment() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.fragment, null);
+        return (String) getStateHelper().eval(PropertyKeys.fragment, null);
     }
 
     public void setFragment(String fragment) {
@@ -65,7 +65,7 @@ abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UIOutcome
 
     @Override
     public boolean isDisableClientWindow() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
     }
 
     @Override
@@ -75,7 +75,7 @@ abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UIOutcome
 
     @Override
     public String getHref() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.href, null);
+        return (String) getStateHelper().eval(PropertyKeys.href, null);
     }
 
     public void setHref(String href) {
@@ -83,7 +83,7 @@ abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UIOutcome
     }
 
     public boolean isEscape() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
     public void setEscape(boolean escape) {

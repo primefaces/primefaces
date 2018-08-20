@@ -39,7 +39,7 @@ abstract class MenuButtonBase extends AbstractMenu implements Widget {
         appendTo,
         menuStyleClass,
         title,
-        ariaLabel;
+        ariaLabel
     }
 
     public MenuButtonBase() {
@@ -52,13 +52,14 @@ abstract class MenuButtonBase extends AbstractMenu implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
+    @Override
     public org.primefaces.model.menu.MenuModel getModel() {
         return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }
@@ -68,7 +69,7 @@ abstract class MenuButtonBase extends AbstractMenu implements Widget {
     }
 
     public String getValue() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.value, null);
+        return (String) getStateHelper().eval(PropertyKeys.value, null);
     }
 
     public void setValue(String value) {
@@ -76,7 +77,7 @@ abstract class MenuButtonBase extends AbstractMenu implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -84,7 +85,7 @@ abstract class MenuButtonBase extends AbstractMenu implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -92,7 +93,7 @@ abstract class MenuButtonBase extends AbstractMenu implements Widget {
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -100,7 +101,7 @@ abstract class MenuButtonBase extends AbstractMenu implements Widget {
     }
 
     public String getIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.icon, null);
+        return (String) getStateHelper().eval(PropertyKeys.icon, null);
     }
 
     public void setIcon(String icon) {
@@ -108,7 +109,7 @@ abstract class MenuButtonBase extends AbstractMenu implements Widget {
     }
 
     public String getIconPos() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.iconPos, "left");
+        return (String) getStateHelper().eval(PropertyKeys.iconPos, "left");
     }
 
     public void setIconPos(String iconPos) {
@@ -116,7 +117,7 @@ abstract class MenuButtonBase extends AbstractMenu implements Widget {
     }
 
     public String getAppendTo() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.appendTo, null);
+        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
     }
 
     public void setAppendTo(String appendTo) {
@@ -124,7 +125,7 @@ abstract class MenuButtonBase extends AbstractMenu implements Widget {
     }
 
     public String getMenuStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.menuStyleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.menuStyleClass, null);
     }
 
     public void setMenuStyleClass(String menuStyleClass) {
@@ -132,7 +133,7 @@ abstract class MenuButtonBase extends AbstractMenu implements Widget {
     }
 
     public String getTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.title, null);
+        return (String) getStateHelper().eval(PropertyKeys.title, null);
     }
 
     public void setTitle(String title) {
@@ -140,7 +141,7 @@ abstract class MenuButtonBase extends AbstractMenu implements Widget {
     }
 
     public String getAriaLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
     }
 
     public void setAriaLabel(String ariaLabel) {

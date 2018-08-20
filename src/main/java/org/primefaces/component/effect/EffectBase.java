@@ -62,7 +62,7 @@ abstract class EffectBase extends UIComponentBase implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -70,7 +70,7 @@ abstract class EffectBase extends UIComponentBase implements Widget {
     }
 
     public String getEvent() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.event, null);
+        return (String) getStateHelper().eval(PropertyKeys.event, null);
     }
 
     public void setEvent(String event) {
@@ -78,7 +78,7 @@ abstract class EffectBase extends UIComponentBase implements Widget {
     }
 
     public String getType() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.type, null);
+        return (String) getStateHelper().eval(PropertyKeys.type, null);
     }
 
     public void setType(String type) {
@@ -86,7 +86,7 @@ abstract class EffectBase extends UIComponentBase implements Widget {
     }
 
     public String getFor() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
+        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
     public void setFor(String _for) {
@@ -94,7 +94,7 @@ abstract class EffectBase extends UIComponentBase implements Widget {
     }
 
     public int getSpeed() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.speed, 1000);
+        return (Integer) getStateHelper().eval(PropertyKeys.speed, 1000);
     }
 
     public void setSpeed(int speed) {
@@ -102,7 +102,7 @@ abstract class EffectBase extends UIComponentBase implements Widget {
     }
 
     public int getDelay() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.delay, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.delay, 0);
     }
 
     public void setDelay(int delay) {
@@ -110,7 +110,7 @@ abstract class EffectBase extends UIComponentBase implements Widget {
     }
 
     public boolean isQueue() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.queue, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.queue, true);
     }
 
     public void setQueue(boolean queue) {

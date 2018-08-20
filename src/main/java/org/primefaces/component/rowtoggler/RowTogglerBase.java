@@ -41,7 +41,7 @@ abstract class RowTogglerBase extends UIComponentBase {
     }
 
     public String getExpandLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.expandLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.expandLabel, null);
     }
 
     public void setExpandLabel(String expandLabel) {
@@ -49,7 +49,7 @@ abstract class RowTogglerBase extends UIComponentBase {
     }
 
     public String getCollapseLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.collapseLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.collapseLabel, null);
     }
 
     public void setCollapseLabel(String collapseLabel) {
@@ -57,7 +57,7 @@ abstract class RowTogglerBase extends UIComponentBase {
     }
 
     public String getTabindex() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, "0");
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
     }
 
     public void setTabindex(String tabindex) {

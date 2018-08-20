@@ -42,7 +42,7 @@ abstract class UICacheBase extends UIPanel {
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -50,7 +50,7 @@ abstract class UICacheBase extends UIPanel {
     }
 
     public String getRegion() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.region, null);
+        return (String) getStateHelper().eval(PropertyKeys.region, null);
     }
 
     public void setRegion(String region) {
@@ -58,7 +58,7 @@ abstract class UICacheBase extends UIPanel {
     }
 
     public String getKey() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.key, null);
+        return (String) getStateHelper().eval(PropertyKeys.key, null);
     }
 
     public void setKey(String key) {
@@ -66,7 +66,7 @@ abstract class UICacheBase extends UIPanel {
     }
 
     public boolean isProcessEvents() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.processEvents, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.processEvents, false);
     }
 
     public void setProcessEvents(boolean processEvents) {

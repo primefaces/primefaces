@@ -38,7 +38,7 @@ abstract class SelectOneButtonBase extends UISelectOne implements Widget, Client
         style,
         styleClass,
         tabindex,
-        unselectable;
+        unselectable
     }
 
     public SelectOneButtonBase() {
@@ -51,7 +51,7 @@ abstract class SelectOneButtonBase extends UISelectOne implements Widget, Client
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -59,7 +59,7 @@ abstract class SelectOneButtonBase extends UISelectOne implements Widget, Client
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -67,7 +67,7 @@ abstract class SelectOneButtonBase extends UISelectOne implements Widget, Client
     }
 
     public String getLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.label, null);
+        return (String) getStateHelper().eval(PropertyKeys.label, null);
     }
 
     public void setLabel(String label) {
@@ -75,7 +75,7 @@ abstract class SelectOneButtonBase extends UISelectOne implements Widget, Client
     }
 
     public String getOnchange() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onchange, null);
+        return (String) getStateHelper().eval(PropertyKeys.onchange, null);
     }
 
     public void setOnchange(String onchange) {
@@ -83,7 +83,7 @@ abstract class SelectOneButtonBase extends UISelectOne implements Widget, Client
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -91,7 +91,7 @@ abstract class SelectOneButtonBase extends UISelectOne implements Widget, Client
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -99,7 +99,7 @@ abstract class SelectOneButtonBase extends UISelectOne implements Widget, Client
     }
 
     public String getTabindex() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, "0");
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
     }
 
     public void setTabindex(String tabindex) {
@@ -107,7 +107,7 @@ abstract class SelectOneButtonBase extends UISelectOne implements Widget, Client
     }
 
     public boolean isUnselectable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.unselectable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.unselectable, true);
     }
 
     public void setUnselectable(boolean unselectable) {

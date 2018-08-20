@@ -36,7 +36,7 @@ abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements Widg
         filterMatchMode,
         filterFunction,
         caseSensitive,
-        scrollHeight;
+        scrollHeight
     }
 
     public SelectOneListboxBase() {
@@ -49,7 +49,7 @@ abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements Widg
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -57,7 +57,7 @@ abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements Widg
     }
 
     public String getVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
+        return (String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
     public void setVar(String var) {
@@ -65,7 +65,7 @@ abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements Widg
     }
 
     public boolean isFilter() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.filter, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.filter, false);
     }
 
     public void setFilter(boolean filter) {
@@ -73,7 +73,7 @@ abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements Widg
     }
 
     public String getFilterMatchMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
+        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
     }
 
     public void setFilterMatchMode(String filterMatchMode) {
@@ -81,7 +81,7 @@ abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements Widg
     }
 
     public String getFilterFunction() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.filterFunction, null);
+        return (String) getStateHelper().eval(PropertyKeys.filterFunction, null);
     }
 
     public void setFilterFunction(String filterFunction) {
@@ -89,7 +89,7 @@ abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements Widg
     }
 
     public boolean isCaseSensitive() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.caseSensitive, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitive, false);
     }
 
     public void setCaseSensitive(boolean caseSensitive) {
@@ -97,7 +97,7 @@ abstract class SelectOneListboxBase extends HtmlSelectOneListbox implements Widg
     }
 
     public int getScrollHeight() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.scrollHeight, java.lang.Integer.MAX_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.scrollHeight, Integer.MAX_VALUE);
     }
 
     public void setScrollHeight(int scrollHeight) {

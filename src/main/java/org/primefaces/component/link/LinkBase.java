@@ -45,7 +45,7 @@ abstract class LinkBase extends HtmlOutcomeTargetLink implements UIOutcomeTarget
 
     @Override
     public String getFragment() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.fragment, null);
+        return (String) getStateHelper().eval(PropertyKeys.fragment, null);
     }
 
     public void setFragment(String fragment) {
@@ -54,7 +54,7 @@ abstract class LinkBase extends HtmlOutcomeTargetLink implements UIOutcomeTarget
 
     @Override
     public boolean isDisableClientWindow() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
     }
 
     @Override
@@ -64,7 +64,7 @@ abstract class LinkBase extends HtmlOutcomeTargetLink implements UIOutcomeTarget
 
     @Override
     public String getHref() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.href, null);
+        return (String) getStateHelper().eval(PropertyKeys.href, null);
     }
 
     public void setHref(String href) {
@@ -72,7 +72,7 @@ abstract class LinkBase extends HtmlOutcomeTargetLink implements UIOutcomeTarget
     }
 
     public boolean isEscape() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
     public void setEscape(boolean escape) {

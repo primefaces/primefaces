@@ -36,7 +36,7 @@ abstract class ImageSwitchBase extends UIComponentBase implements Widget {
         speed,
         slideshowSpeed,
         slideshowAuto,
-        activeIndex;
+        activeIndex
     }
 
     public ImageSwitchBase() {
@@ -49,7 +49,7 @@ abstract class ImageSwitchBase extends UIComponentBase implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -57,7 +57,7 @@ abstract class ImageSwitchBase extends UIComponentBase implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -65,7 +65,7 @@ abstract class ImageSwitchBase extends UIComponentBase implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -73,7 +73,7 @@ abstract class ImageSwitchBase extends UIComponentBase implements Widget {
     }
 
     public String getEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, null);
+        return (String) getStateHelper().eval(PropertyKeys.effect, null);
     }
 
     public void setEffect(String effect) {
@@ -81,7 +81,7 @@ abstract class ImageSwitchBase extends UIComponentBase implements Widget {
     }
 
     public int getSpeed() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.speed, 500);
+        return (Integer) getStateHelper().eval(PropertyKeys.speed, 500);
     }
 
     public void setSpeed(int speed) {
@@ -89,7 +89,7 @@ abstract class ImageSwitchBase extends UIComponentBase implements Widget {
     }
 
     public int getSlideshowSpeed() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.slideshowSpeed, 3000);
+        return (Integer) getStateHelper().eval(PropertyKeys.slideshowSpeed, 3000);
     }
 
     public void setSlideshowSpeed(int slideshowSpeed) {
@@ -97,7 +97,7 @@ abstract class ImageSwitchBase extends UIComponentBase implements Widget {
     }
 
     public boolean isSlideshowAuto() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.slideshowAuto, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.slideshowAuto, true);
     }
 
     public void setSlideshowAuto(boolean slideshowAuto) {
@@ -105,7 +105,7 @@ abstract class ImageSwitchBase extends UIComponentBase implements Widget {
     }
 
     public int getActiveIndex() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.activeIndex, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.activeIndex, 0);
     }
 
     public void setActiveIndex(int activeIndex) {

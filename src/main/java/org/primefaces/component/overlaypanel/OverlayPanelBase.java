@@ -73,7 +73,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -81,7 +81,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -89,7 +89,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -97,7 +97,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
     }
 
     public String getFor() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
+        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
     public void setFor(String _for) {
@@ -105,7 +105,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
     }
 
     public String getShowEvent() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.showEvent, null);
+        return (String) getStateHelper().eval(PropertyKeys.showEvent, null);
     }
 
     public void setShowEvent(String showEvent) {
@@ -113,7 +113,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
     }
 
     public String getHideEvent() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.hideEvent, null);
+        return (String) getStateHelper().eval(PropertyKeys.hideEvent, null);
     }
 
     public void setHideEvent(String hideEvent) {
@@ -121,7 +121,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
     }
 
     public String getShowEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.showEffect, null);
+        return (String) getStateHelper().eval(PropertyKeys.showEffect, null);
     }
 
     public void setShowEffect(String showEffect) {
@@ -129,7 +129,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
     }
 
     public String getHideEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.hideEffect, null);
+        return (String) getStateHelper().eval(PropertyKeys.hideEffect, null);
     }
 
     public void setHideEffect(String hideEffect) {
@@ -137,7 +137,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
     }
 
     public String getAppendTo() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.appendTo, null);
+        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
     }
 
     public void setAppendTo(String appendTo) {
@@ -145,7 +145,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
     }
 
     public String getOnShow() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onShow, null);
+        return (String) getStateHelper().eval(PropertyKeys.onShow, null);
     }
 
     public void setOnShow(String onShow) {
@@ -153,7 +153,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
     }
 
     public String getOnHide() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onHide, null);
+        return (String) getStateHelper().eval(PropertyKeys.onHide, null);
     }
 
     public void setOnHide(String onHide) {
@@ -161,7 +161,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
     }
 
     public String getMy() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.my, null);
+        return (String) getStateHelper().eval(PropertyKeys.my, null);
     }
 
     public void setMy(String my) {
@@ -169,7 +169,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
     }
 
     public String getAt() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.at, null);
+        return (String) getStateHelper().eval(PropertyKeys.at, null);
     }
 
     public void setAt(String at) {
@@ -177,7 +177,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
     }
 
     public boolean isDynamic() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
     }
 
     public void setDynamic(boolean dynamic) {
@@ -185,7 +185,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
     }
 
     public boolean isDismissable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dismissable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.dismissable, true);
     }
 
     public void setDismissable(boolean dismissable) {
@@ -193,7 +193,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
     }
 
     public boolean isShowCloseIcon() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showCloseIcon, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showCloseIcon, false);
     }
 
     public void setShowCloseIcon(boolean showCloseIcon) {
@@ -201,7 +201,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
     }
 
     public boolean isModal() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.modal, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.modal, false);
     }
 
     public void setModal(boolean modal) {
@@ -209,7 +209,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
     }
 
     public int getShowDelay() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.showDelay, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.showDelay, 0);
     }
 
     public void setShowDelay(int showDelay) {

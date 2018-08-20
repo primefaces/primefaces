@@ -52,7 +52,7 @@ abstract class DataListBase extends UIData implements Widget, ClientBehaviorHold
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -60,7 +60,7 @@ abstract class DataListBase extends UIData implements Widget, ClientBehaviorHold
     }
 
     public String getType() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.type, "unordered");
+        return (String) getStateHelper().eval(PropertyKeys.type, "unordered");
     }
 
     public void setType(String type) {
@@ -68,7 +68,7 @@ abstract class DataListBase extends UIData implements Widget, ClientBehaviorHold
     }
 
     public String getItemType() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.itemType, null);
+        return (String) getStateHelper().eval(PropertyKeys.itemType, null);
     }
 
     public void setItemType(String itemType) {
@@ -76,7 +76,7 @@ abstract class DataListBase extends UIData implements Widget, ClientBehaviorHold
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -84,7 +84,7 @@ abstract class DataListBase extends UIData implements Widget, ClientBehaviorHold
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -92,7 +92,7 @@ abstract class DataListBase extends UIData implements Widget, ClientBehaviorHold
     }
 
     public String getVarStatus() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.varStatus, null);
+        return (String) getStateHelper().eval(PropertyKeys.varStatus, null);
     }
 
     public void setVarStatus(String varStatus) {
@@ -100,7 +100,7 @@ abstract class DataListBase extends UIData implements Widget, ClientBehaviorHold
     }
 
     public String getEmptyMessage() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.emptyMessage, "No records found.");
+        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, "No records found.");
     }
 
     public void setEmptyMessage(String emptyMessage) {
@@ -108,7 +108,7 @@ abstract class DataListBase extends UIData implements Widget, ClientBehaviorHold
     }
 
     public String getItemStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.itemStyleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.itemStyleClass, null);
     }
 
     public void setItemStyleClass(String itemStyleClass) {

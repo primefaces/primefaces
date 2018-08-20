@@ -46,7 +46,7 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
         showHeader,
         updateLabel,
         multiple,
-        dynamic;
+        dynamic
     }
 
     public SelectCheckboxMenuBase() {
@@ -59,7 +59,7 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -67,7 +67,7 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
     }
 
     public int getScrollHeight() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.scrollHeight, java.lang.Integer.MAX_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.scrollHeight, Integer.MAX_VALUE);
     }
 
     public void setScrollHeight(int scrollHeight) {
@@ -75,7 +75,7 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
     }
 
     public String getOnShow() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onShow, null);
+        return (String) getStateHelper().eval(PropertyKeys.onShow, null);
     }
 
     public void setOnShow(String onShow) {
@@ -83,7 +83,7 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
     }
 
     public String getOnHide() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onHide, null);
+        return (String) getStateHelper().eval(PropertyKeys.onHide, null);
     }
 
     public void setOnHide(String onHide) {
@@ -91,7 +91,7 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
     }
 
     public boolean isFilter() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.filter, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.filter, false);
     }
 
     public void setFilter(boolean filter) {
@@ -99,7 +99,7 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
     }
 
     public String getFilterMatchMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
+        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
     }
 
     public void setFilterMatchMode(String filterMatchMode) {
@@ -107,7 +107,7 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
     }
 
     public String getFilterFunction() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.filterFunction, null);
+        return (String) getStateHelper().eval(PropertyKeys.filterFunction, null);
     }
 
     public void setFilterFunction(String filterFunction) {
@@ -115,7 +115,7 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
     }
 
     public boolean isCaseSensitive() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.caseSensitive, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitive, false);
     }
 
     public void setCaseSensitive(boolean caseSensitive) {
@@ -123,7 +123,7 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
     }
 
     public String getPanelStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.panelStyle, null);
+        return (String) getStateHelper().eval(PropertyKeys.panelStyle, null);
     }
 
     public void setPanelStyle(String panelStyle) {
@@ -131,7 +131,7 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
     }
 
     public String getPanelStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.panelStyleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.panelStyleClass, null);
     }
 
     public void setPanelStyleClass(String panelStyleClass) {
@@ -139,31 +139,35 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
     }
 
     public String getAppendTo() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
+        return (String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
     }
 
     public void setAppendTo(String appendTo) {
         getStateHelper().put(PropertyKeys.appendTo, appendTo);
     }
 
+    @Override
     public String getTabindex() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, null);
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, null);
     }
 
+    @Override
     public void setTabindex(String tabindex) {
         getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 
+    @Override
     public String getTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.title, null);
+        return (String) getStateHelper().eval(PropertyKeys.title, null);
     }
 
+    @Override
     public void setTitle(String title) {
         getStateHelper().put(PropertyKeys.title, title);
     }
 
     public boolean isShowHeader() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showHeader, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showHeader, true);
     }
 
     public void setShowHeader(boolean showHeader) {
@@ -171,7 +175,7 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
     }
 
     public boolean isUpdateLabel() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.updateLabel, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.updateLabel, false);
     }
 
     public void setUpdateLabel(boolean updateLabel) {
@@ -179,7 +183,7 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
     }
 
     public boolean isMultiple() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.multiple, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.multiple, false);
     }
 
     public void setMultiple(boolean multiple) {
@@ -187,7 +191,7 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
     }
 
     public boolean isDynamic() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
     }
 
     public void setDynamic(boolean dynamic) {

@@ -52,7 +52,7 @@ abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widget, UIO
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -61,7 +61,7 @@ abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widget, UIO
 
     @Override
     public String getFragment() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.fragment, null);
+        return (String) getStateHelper().eval(PropertyKeys.fragment, null);
     }
 
     public void setFragment(String fragment) {
@@ -70,7 +70,7 @@ abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widget, UIO
 
     @Override
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     @Override
@@ -79,7 +79,7 @@ abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widget, UIO
     }
 
     public String getIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.icon, null);
+        return (String) getStateHelper().eval(PropertyKeys.icon, null);
     }
 
     public void setIcon(String icon) {
@@ -87,7 +87,7 @@ abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widget, UIO
     }
 
     public String getIconPos() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.iconPos, "left");
+        return (String) getStateHelper().eval(PropertyKeys.iconPos, "left");
     }
 
     public void setIconPos(String iconPos) {
@@ -96,7 +96,7 @@ abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widget, UIO
 
     @Override
     public String getHref() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.href, null);
+        return (String) getStateHelper().eval(PropertyKeys.href, null);
     }
 
     public void setHref(String href) {
@@ -104,7 +104,7 @@ abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widget, UIO
     }
 
     public String getTarget() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.target, "_self");
+        return (String) getStateHelper().eval(PropertyKeys.target, "_self");
     }
 
     public void setTarget(String target) {
@@ -112,7 +112,7 @@ abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widget, UIO
     }
 
     public boolean isEscape() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
     public void setEscape(boolean escape) {
@@ -120,7 +120,7 @@ abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widget, UIO
     }
 
     public boolean isInline() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.inline, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.inline, false);
     }
 
     public void setInline(boolean inline) {
@@ -129,7 +129,7 @@ abstract class ButtonBase extends HtmlOutcomeTargetButton implements Widget, UIO
 
     @Override
     public boolean isDisableClientWindow() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
     }
 
     @Override

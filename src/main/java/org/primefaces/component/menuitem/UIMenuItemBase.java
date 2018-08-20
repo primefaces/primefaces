@@ -77,7 +77,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getUrl() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.url, null);
+        return (String) getStateHelper().eval(PropertyKeys.url, null);
     }
 
     public void setUrl(String url) {
@@ -86,7 +86,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getTarget() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.target, null);
+        return (String) getStateHelper().eval(PropertyKeys.target, null);
     }
 
     public void setTarget(String target) {
@@ -95,7 +95,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -104,7 +104,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     @Override
@@ -114,7 +114,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getOnclick() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onclick, null);
+        return (String) getStateHelper().eval(PropertyKeys.onclick, null);
     }
 
     public void setOnclick(String onclick) {
@@ -123,7 +123,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getUpdate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.update, null);
+        return (String) getStateHelper().eval(PropertyKeys.update, null);
     }
 
     public void setUpdate(String update) {
@@ -132,7 +132,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getProcess() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.process, null);
+        return (String) getStateHelper().eval(PropertyKeys.process, null);
     }
 
     public void setProcess(String process) {
@@ -141,7 +141,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getOnstart() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onstart, null);
+        return (String) getStateHelper().eval(PropertyKeys.onstart, null);
     }
 
     public void setOnstart(String onstart) {
@@ -150,7 +150,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -159,7 +159,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getOncomplete() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.oncomplete, null);
+        return (String) getStateHelper().eval(PropertyKeys.oncomplete, null);
     }
 
     public void setOncomplete(String oncomplete) {
@@ -168,7 +168,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getOnerror() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onerror, null);
+        return (String) getStateHelper().eval(PropertyKeys.onerror, null);
     }
 
     public void setOnerror(String onerror) {
@@ -177,7 +177,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getOnsuccess() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onsuccess, null);
+        return (String) getStateHelper().eval(PropertyKeys.onsuccess, null);
     }
 
     public void setOnsuccess(String onsuccess) {
@@ -186,7 +186,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public boolean isGlobal() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.global, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.global, true);
     }
 
     public void setGlobal(boolean global) {
@@ -195,7 +195,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getDelay() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.delay, null);
+        return (String) getStateHelper().eval(PropertyKeys.delay, null);
     }
 
     public void setDelay(String delay) {
@@ -204,7 +204,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public int getTimeout() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.timeout, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.timeout, 0);
     }
 
     public void setTimeout(int timeout) {
@@ -213,7 +213,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public boolean isAsync() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.async, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.async, false);
     }
 
     public void setAsync(boolean async) {
@@ -222,7 +222,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public boolean isAjax() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ajax, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.ajax, true);
     }
 
     public void setAjax(boolean ajax) {
@@ -231,7 +231,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.icon, null);
+        return (String) getStateHelper().eval(PropertyKeys.icon, null);
     }
 
     public void setIcon(String icon) {
@@ -240,7 +240,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getIconPos() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.iconPos, "right");
+        return (String) getStateHelper().eval(PropertyKeys.iconPos, "right");
     }
 
     public void setIconPos(String iconPos) {
@@ -249,7 +249,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public boolean isPartialSubmit() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.partialSubmit, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.partialSubmit, false);
     }
 
     public void setPartialSubmit(boolean partialSubmit) {
@@ -258,7 +258,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public boolean isResetValues() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.resetValues, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.resetValues, false);
     }
 
     public void setResetValues(boolean resetValues) {
@@ -267,7 +267,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public boolean isIgnoreAutoUpdate() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
     }
 
     public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
@@ -276,7 +276,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.title, null);
+        return (String) getStateHelper().eval(PropertyKeys.title, null);
     }
 
     public void setTitle(String title) {
@@ -285,7 +285,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getOutcome() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.outcome, null);
+        return (String) getStateHelper().eval(PropertyKeys.outcome, null);
     }
 
     public void setOutcome(String outcome) {
@@ -294,7 +294,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public boolean isIncludeViewParams() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.includeViewParams, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.includeViewParams, false);
     }
 
     public void setIncludeViewParams(boolean includeViewParams) {
@@ -303,7 +303,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getFragment() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.fragment, null);
+        return (String) getStateHelper().eval(PropertyKeys.fragment, null);
     }
 
     public void setFragment(String fragment) {
@@ -312,7 +312,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public boolean isDisableClientWindow() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
     }
 
     public void setDisableClientWindow(boolean disableClientWindow) {
@@ -321,7 +321,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getContainerStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.containerStyle, null);
+        return (String) getStateHelper().eval(PropertyKeys.containerStyle, null);
     }
 
     public void setContainerStyle(String containerStyle) {
@@ -330,7 +330,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getContainerStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.containerStyleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.containerStyleClass, null);
     }
 
     public void setContainerStyleClass(String containerStyleClass) {
@@ -339,7 +339,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getPartialSubmitFilter() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.partialSubmitFilter, null);
+        return (String) getStateHelper().eval(PropertyKeys.partialSubmitFilter, null);
     }
 
     public void setPartialSubmitFilter(String partialSubmitFilter) {
@@ -348,7 +348,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getForm() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.form, null);
+        return (String) getStateHelper().eval(PropertyKeys.form, null);
     }
 
     public void setForm(String form) {
@@ -357,7 +357,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public boolean isEscape() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
     public void setEscape(boolean escape) {
@@ -366,7 +366,7 @@ abstract class UIMenuItemBase extends UICommand implements AjaxSource, UIOutcome
 
     @Override
     public String getRel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.rel, null);
+        return (String) getStateHelper().eval(PropertyKeys.rel, null);
     }
 
     public void setRel(String rel) {

@@ -31,7 +31,7 @@ abstract class PanelGridBase extends UIPanel {
         styleClass,
         columnClasses,
         layout,
-        role;
+        role
     }
 
     public PanelGridBase() {
@@ -44,7 +44,7 @@ abstract class PanelGridBase extends UIPanel {
     }
 
     public int getColumns() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.columns, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.columns, 0);
     }
 
     public void setColumns(int columns) {
@@ -52,7 +52,7 @@ abstract class PanelGridBase extends UIPanel {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -60,7 +60,7 @@ abstract class PanelGridBase extends UIPanel {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -68,7 +68,7 @@ abstract class PanelGridBase extends UIPanel {
     }
 
     public String getColumnClasses() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.columnClasses, null);
+        return (String) getStateHelper().eval(PropertyKeys.columnClasses, null);
     }
 
     public void setColumnClasses(String columnClasses) {
@@ -76,7 +76,7 @@ abstract class PanelGridBase extends UIPanel {
     }
 
     public String getLayout() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.layout, "tabular");
+        return (String) getStateHelper().eval(PropertyKeys.layout, "tabular");
     }
 
     public void setLayout(String layout) {
@@ -84,7 +84,7 @@ abstract class PanelGridBase extends UIPanel {
     }
 
     public String getRole() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.role, "grid");
+        return (String) getStateHelper().eval(PropertyKeys.role, "grid");
     }
 
     public void setRole(String role) {

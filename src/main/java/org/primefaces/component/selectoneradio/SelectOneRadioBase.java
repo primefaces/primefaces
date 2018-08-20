@@ -31,7 +31,7 @@ abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget {
 
         widgetVar,
         columns,
-        plain;
+        plain
     }
 
     public SelectOneRadioBase() {
@@ -44,7 +44,7 @@ abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -52,7 +52,7 @@ abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget {
     }
 
     public int getColumns() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.columns, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.columns, 0);
     }
 
     public void setColumns(int columns) {
@@ -60,7 +60,7 @@ abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements Widget {
     }
 
     public boolean isPlain() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.plain, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.plain, false);
     }
 
     public void setPlain(boolean plain) {

@@ -43,7 +43,7 @@ abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware
         multiple,
         dir,
         tabindex,
-        tabController;
+        tabController
     }
 
     public AccordionPanelBase() {
@@ -56,7 +56,7 @@ abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -64,7 +64,7 @@ abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware
     }
 
     public String getActiveIndex() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.activeIndex, "0");
+        return (String) getStateHelper().eval(PropertyKeys.activeIndex, "0");
     }
 
     public void setActiveIndex(String activeIndex) {
@@ -72,7 +72,7 @@ abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -80,7 +80,7 @@ abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -88,7 +88,7 @@ abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware
     }
 
     public String getOnTabChange() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onTabChange, null);
+        return (String) getStateHelper().eval(PropertyKeys.onTabChange, null);
     }
 
     public void setOnTabChange(String onTabChange) {
@@ -96,7 +96,7 @@ abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware
     }
 
     public String getOnTabShow() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onTabShow, null);
+        return (String) getStateHelper().eval(PropertyKeys.onTabShow, null);
     }
 
     public void setOnTabShow(String onTabShow) {
@@ -104,7 +104,7 @@ abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware
     }
 
     public String getOnTabClose() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onTabClose, null);
+        return (String) getStateHelper().eval(PropertyKeys.onTabClose, null);
     }
 
     public void setOnTabClose(String onTabClose) {
@@ -112,7 +112,7 @@ abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware
     }
 
     public boolean isCache() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.cache, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
     }
 
     public void setCache(boolean cache) {
@@ -120,7 +120,7 @@ abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware
     }
 
     public boolean isMultiple() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.multiple, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.multiple, false);
     }
 
     public void setMultiple(boolean multiple) {
@@ -128,7 +128,7 @@ abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware
     }
 
     public String getDir() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.dir, "ltr");
+        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
 
     public void setDir(String dir) {
@@ -136,7 +136,7 @@ abstract class AccordionPanelBase extends UITabPanel implements Widget, RTLAware
     }
 
     public String getTabindex() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, "0");
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
     }
 
     public void setTabindex(String tabindex) {

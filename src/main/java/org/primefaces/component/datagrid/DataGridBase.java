@@ -50,7 +50,7 @@ abstract class DataGridBase extends UIData implements Widget, ClientBehaviorHold
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -58,7 +58,7 @@ abstract class DataGridBase extends UIData implements Widget, ClientBehaviorHold
     }
 
     public int getColumns() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.columns, 3);
+        return (Integer) getStateHelper().eval(PropertyKeys.columns, 3);
     }
 
     public void setColumns(int columns) {
@@ -66,7 +66,7 @@ abstract class DataGridBase extends UIData implements Widget, ClientBehaviorHold
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -74,7 +74,7 @@ abstract class DataGridBase extends UIData implements Widget, ClientBehaviorHold
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -82,7 +82,7 @@ abstract class DataGridBase extends UIData implements Widget, ClientBehaviorHold
     }
 
     public String getEmptyMessage() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.emptyMessage, "No records found.");
+        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, "No records found.");
     }
 
     public void setEmptyMessage(String emptyMessage) {
@@ -90,7 +90,7 @@ abstract class DataGridBase extends UIData implements Widget, ClientBehaviorHold
     }
 
     public String getLayout() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.layout, "tabular");
+        return (String) getStateHelper().eval(PropertyKeys.layout, "tabular");
     }
 
     public void setLayout(String layout) {

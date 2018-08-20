@@ -59,7 +59,7 @@ abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -67,7 +67,7 @@ abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder
     }
 
     public String getHeader() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.header, null);
+        return (String) getStateHelper().eval(PropertyKeys.header, null);
     }
 
     public void setHeader(String header) {
@@ -75,7 +75,7 @@ abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder
     }
 
     public String getFooter() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.footer, null);
+        return (String) getStateHelper().eval(PropertyKeys.footer, null);
     }
 
     public void setFooter(String footer) {
@@ -83,7 +83,7 @@ abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder
     }
 
     public boolean isToggleable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.toggleable, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.toggleable, false);
     }
 
     public void setToggleable(boolean toggleable) {
@@ -91,7 +91,7 @@ abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder
     }
 
     public int getToggleSpeed() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.toggleSpeed, 500);
+        return (Integer) getStateHelper().eval(PropertyKeys.toggleSpeed, 500);
     }
 
     public void setToggleSpeed(int toggleSpeed) {
@@ -99,7 +99,7 @@ abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -107,7 +107,7 @@ abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -115,7 +115,7 @@ abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder
     }
 
     public boolean isCollapsed() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.collapsed, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.collapsed, false);
     }
 
     public void setCollapsed(boolean collapsed) {
@@ -123,7 +123,7 @@ abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder
     }
 
     public boolean isClosable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.closable, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.closable, false);
     }
 
     public void setClosable(boolean closable) {
@@ -131,7 +131,7 @@ abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder
     }
 
     public int getCloseSpeed() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.closeSpeed, 500);
+        return (Integer) getStateHelper().eval(PropertyKeys.closeSpeed, 500);
     }
 
     public void setCloseSpeed(int closeSpeed) {
@@ -139,7 +139,7 @@ abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder
     }
 
     public boolean isVisible() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.visible, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.visible, true);
     }
 
     public void setVisible(boolean visible) {
@@ -147,7 +147,7 @@ abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder
     }
 
     public String getCloseTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.closeTitle, null);
+        return (String) getStateHelper().eval(PropertyKeys.closeTitle, null);
     }
 
     public void setCloseTitle(String closeTitle) {
@@ -155,7 +155,7 @@ abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder
     }
 
     public String getToggleTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.toggleTitle, null);
+        return (String) getStateHelper().eval(PropertyKeys.toggleTitle, null);
     }
 
     public void setToggleTitle(String toggleTitle) {
@@ -163,7 +163,7 @@ abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder
     }
 
     public String getMenuTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.menuTitle, null);
+        return (String) getStateHelper().eval(PropertyKeys.menuTitle, null);
     }
 
     public void setMenuTitle(String menuTitle) {
@@ -171,7 +171,7 @@ abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder
     }
 
     public String getToggleOrientation() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.toggleOrientation, "vertical");
+        return (String) getStateHelper().eval(PropertyKeys.toggleOrientation, "vertical");
     }
 
     public void setToggleOrientation(String toggleOrientation) {
@@ -179,7 +179,7 @@ abstract class PanelBase extends UIPanel implements Widget, ClientBehaviorHolder
     }
 
     public boolean isToggleableHeader() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.toggleableHeader, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.toggleableHeader, false);
     }
 
     public void setToggleableHeader(boolean toggleableHeader) {

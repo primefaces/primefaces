@@ -58,7 +58,7 @@ abstract class WatermarkBase extends UIComponentBase implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -66,7 +66,7 @@ abstract class WatermarkBase extends UIComponentBase implements Widget {
     }
 
     public String getValue() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.value, null);
+        return (String) getStateHelper().eval(PropertyKeys.value, null);
     }
 
     public void setValue(String value) {
@@ -74,7 +74,7 @@ abstract class WatermarkBase extends UIComponentBase implements Widget {
     }
 
     public String getFor() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
+        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
     public void setFor(String _for) {

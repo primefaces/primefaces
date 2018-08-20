@@ -43,7 +43,7 @@ abstract class RowEditorBase extends UIComponentBase {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -51,7 +51,7 @@ abstract class RowEditorBase extends UIComponentBase {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -59,7 +59,7 @@ abstract class RowEditorBase extends UIComponentBase {
     }
 
     public String getEditTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.editTitle, null);
+        return (String) getStateHelper().eval(PropertyKeys.editTitle, null);
     }
 
     public void setEditTitle(String editTitle) {
@@ -67,7 +67,7 @@ abstract class RowEditorBase extends UIComponentBase {
     }
 
     public String getCancelTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.cancelTitle, null);
+        return (String) getStateHelper().eval(PropertyKeys.cancelTitle, null);
     }
 
     public void setCancelTitle(String cancelTitle) {
@@ -75,7 +75,7 @@ abstract class RowEditorBase extends UIComponentBase {
     }
 
     public String getSaveTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.saveTitle, null);
+        return (String) getStateHelper().eval(PropertyKeys.saveTitle, null);
     }
 
     public void setSaveTitle(String saveTitle) {

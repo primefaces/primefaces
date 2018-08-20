@@ -45,7 +45,7 @@ abstract class InputTextBase extends HtmlInputText implements Widget, RTLAware {
     }
 
     public String getPlaceholder() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
+        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
     public void setPlaceholder(String placeholder) {
@@ -53,7 +53,7 @@ abstract class InputTextBase extends HtmlInputText implements Widget, RTLAware {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -61,7 +61,7 @@ abstract class InputTextBase extends HtmlInputText implements Widget, RTLAware {
     }
 
     public String getType() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.type, "text");
+        return (String) getStateHelper().eval(PropertyKeys.type, "text");
     }
 
     public void setType(String type) {

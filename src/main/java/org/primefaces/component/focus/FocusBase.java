@@ -55,7 +55,7 @@ abstract class FocusBase extends UIComponentBase {
     }
 
     public String getFor() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
+        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
     public void setFor(String _for) {
@@ -63,7 +63,7 @@ abstract class FocusBase extends UIComponentBase {
     }
 
     public String getContext() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.context, null);
+        return (String) getStateHelper().eval(PropertyKeys.context, null);
     }
 
     public void setContext(String context) {
@@ -71,7 +71,7 @@ abstract class FocusBase extends UIComponentBase {
     }
 
     public String getMinSeverity() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.minSeverity, "error");
+        return (String) getStateHelper().eval(PropertyKeys.minSeverity, "error");
     }
 
     public void setMinSeverity(String minSeverity) {

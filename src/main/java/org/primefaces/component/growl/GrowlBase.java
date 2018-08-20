@@ -48,7 +48,7 @@ abstract class GrowlBase extends UIMessages implements Widget, UINotification {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -56,7 +56,7 @@ abstract class GrowlBase extends UIMessages implements Widget, UINotification {
     }
 
     public boolean isSticky() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.sticky, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.sticky, false);
     }
 
     public void setSticky(boolean sticky) {
@@ -64,7 +64,7 @@ abstract class GrowlBase extends UIMessages implements Widget, UINotification {
     }
 
     public int getLife() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.life, 6000);
+        return (Integer) getStateHelper().eval(PropertyKeys.life, 6000);
     }
 
     public void setLife(int life) {
@@ -72,7 +72,7 @@ abstract class GrowlBase extends UIMessages implements Widget, UINotification {
     }
 
     public boolean isEscape() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
     public void setEscape(boolean escape) {
@@ -81,7 +81,7 @@ abstract class GrowlBase extends UIMessages implements Widget, UINotification {
 
     @Override
     public String getSeverity() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.severity, null);
+        return (String) getStateHelper().eval(PropertyKeys.severity, null);
     }
 
     public void setSeverity(String severity) {
@@ -89,7 +89,7 @@ abstract class GrowlBase extends UIMessages implements Widget, UINotification {
     }
 
     public boolean isKeepAlive() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.keepAlive, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.keepAlive, false);
     }
 
     public void setKeepAlive(boolean keepAlive) {

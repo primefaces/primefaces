@@ -34,7 +34,7 @@ abstract class MegaMenuBase extends AbstractMenu implements Widget {
         styleClass,
         autoDisplay,
         activeIndex,
-        orientation;
+        orientation
     }
 
     public MegaMenuBase() {
@@ -47,13 +47,14 @@ abstract class MegaMenuBase extends AbstractMenu implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
+    @Override
     public org.primefaces.model.menu.MenuModel getModel() {
         return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }
@@ -63,7 +64,7 @@ abstract class MegaMenuBase extends AbstractMenu implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -71,7 +72,7 @@ abstract class MegaMenuBase extends AbstractMenu implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -79,7 +80,7 @@ abstract class MegaMenuBase extends AbstractMenu implements Widget {
     }
 
     public boolean isAutoDisplay() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoDisplay, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoDisplay, true);
     }
 
     public void setAutoDisplay(boolean autoDisplay) {
@@ -87,7 +88,7 @@ abstract class MegaMenuBase extends AbstractMenu implements Widget {
     }
 
     public int getActiveIndex() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.activeIndex, java.lang.Integer.MIN_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.activeIndex, Integer.MIN_VALUE);
     }
 
     public void setActiveIndex(int activeIndex) {
@@ -95,7 +96,7 @@ abstract class MegaMenuBase extends AbstractMenu implements Widget {
     }
 
     public String getOrientation() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.orientation, "horizontal");
+        return (String) getStateHelper().eval(PropertyKeys.orientation, "horizontal");
     }
 
     public void setOrientation(String orientation) {

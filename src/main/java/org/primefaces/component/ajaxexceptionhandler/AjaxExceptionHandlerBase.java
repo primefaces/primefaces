@@ -39,7 +39,7 @@ abstract class AjaxExceptionHandlerBase extends UIComponentBase {
     }
 
     public String getOnexception() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onexception, null);
+        return (String) getStateHelper().eval(PropertyKeys.onexception, null);
     }
 
     public void setOnexception(String onexception) {
@@ -47,7 +47,7 @@ abstract class AjaxExceptionHandlerBase extends UIComponentBase {
     }
 
     public String getUpdate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.update, null);
+        return (String) getStateHelper().eval(PropertyKeys.update, null);
     }
 
     public void setUpdate(String update) {
@@ -55,7 +55,7 @@ abstract class AjaxExceptionHandlerBase extends UIComponentBase {
     }
 
     public String getType() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.type, null);
+        return (String) getStateHelper().eval(PropertyKeys.type, null);
     }
 
     public void setType(String type) {

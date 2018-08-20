@@ -44,7 +44,7 @@ abstract class BarcodeBase extends HtmlGraphicImage {
     }
 
     public String getType() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.type, null);
+        return (String) getStateHelper().eval(PropertyKeys.type, null);
     }
 
     public void setType(String type) {
@@ -52,7 +52,7 @@ abstract class BarcodeBase extends HtmlGraphicImage {
     }
 
     public boolean isCache() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.cache, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
     }
 
     public void setCache(boolean cache) {
@@ -60,7 +60,7 @@ abstract class BarcodeBase extends HtmlGraphicImage {
     }
 
     public String getFormat() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.format, "svg");
+        return (String) getStateHelper().eval(PropertyKeys.format, "svg");
     }
 
     public void setFormat(String format) {
@@ -68,7 +68,7 @@ abstract class BarcodeBase extends HtmlGraphicImage {
     }
 
     public int getOrientation() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.orientation, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.orientation, 0);
     }
 
     public void setOrientation(int orientation) {
@@ -76,7 +76,7 @@ abstract class BarcodeBase extends HtmlGraphicImage {
     }
 
     public String getQrErrorCorrection() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.qrErrorCorrection, "L");
+        return (String) getStateHelper().eval(PropertyKeys.qrErrorCorrection, "L");
     }
 
     public void setQrErrorCorrection(String qrErrorCorrection) {
@@ -84,7 +84,7 @@ abstract class BarcodeBase extends HtmlGraphicImage {
     }
 
     public String getHrp() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.hrp, "bottom");
+        return (String) getStateHelper().eval(PropertyKeys.hrp, "bottom");
     }
 
     public void setHrp(String hrp) {

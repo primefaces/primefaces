@@ -37,7 +37,7 @@ abstract class ColumnGroupBase extends UIComponentBase {
     }
 
     public String getType() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.type, null);
+        return (String) getStateHelper().eval(PropertyKeys.type, null);
     }
 
     public void setType(String type) {

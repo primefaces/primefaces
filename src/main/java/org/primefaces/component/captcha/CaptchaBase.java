@@ -48,7 +48,7 @@ abstract class CaptchaBase extends UIInput implements Widget {
     }
 
     public String getTheme() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.theme, "light");
+        return (String) getStateHelper().eval(PropertyKeys.theme, "light");
     }
 
     public void setTheme(String theme) {
@@ -56,7 +56,7 @@ abstract class CaptchaBase extends UIInput implements Widget {
     }
 
     public String getLanguage() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.language, "en");
+        return (String) getStateHelper().eval(PropertyKeys.language, "en");
     }
 
     public void setLanguage(String language) {
@@ -64,7 +64,7 @@ abstract class CaptchaBase extends UIInput implements Widget {
     }
 
     public int getTabindex() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.tabindex, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.tabindex, 0);
     }
 
     public void setTabindex(int tabindex) {
@@ -72,7 +72,7 @@ abstract class CaptchaBase extends UIInput implements Widget {
     }
 
     public String getLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.label, null);
+        return (String) getStateHelper().eval(PropertyKeys.label, null);
     }
 
     public void setLabel(String label) {
@@ -80,7 +80,7 @@ abstract class CaptchaBase extends UIInput implements Widget {
     }
 
     public String getCallback() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.callback, null);
+        return (String) getStateHelper().eval(PropertyKeys.callback, null);
     }
 
     public void setCallback(String callback) {
@@ -88,7 +88,7 @@ abstract class CaptchaBase extends UIInput implements Widget {
     }
 
     public String getExpired() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.expired, null);
+        return (String) getStateHelper().eval(PropertyKeys.expired, null);
     }
 
     public void setExpired(String expired) {
@@ -96,7 +96,7 @@ abstract class CaptchaBase extends UIInput implements Widget {
     }
 
     public String getSize() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.size, null);
+        return (String) getStateHelper().eval(PropertyKeys.size, null);
     }
 
     public void setSize(String size) {

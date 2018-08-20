@@ -55,7 +55,7 @@ abstract class PhotoCamBase extends UIInput implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -63,7 +63,7 @@ abstract class PhotoCamBase extends UIInput implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -71,7 +71,7 @@ abstract class PhotoCamBase extends UIInput implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -79,7 +79,7 @@ abstract class PhotoCamBase extends UIInput implements Widget {
     }
 
     public String getProcess() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.process, null);
+        return (String) getStateHelper().eval(PropertyKeys.process, null);
     }
 
     public void setProcess(String process) {
@@ -87,7 +87,7 @@ abstract class PhotoCamBase extends UIInput implements Widget {
     }
 
     public String getUpdate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.update, null);
+        return (String) getStateHelper().eval(PropertyKeys.update, null);
     }
 
     public void setUpdate(String update) {
@@ -103,7 +103,7 @@ abstract class PhotoCamBase extends UIInput implements Widget {
     }
 
     public int getWidth() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.width, 320);
+        return (Integer) getStateHelper().eval(PropertyKeys.width, 320);
     }
 
     public void setWidth(int width) {
@@ -111,7 +111,7 @@ abstract class PhotoCamBase extends UIInput implements Widget {
     }
 
     public int getHeight() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.height, 240);
+        return (Integer) getStateHelper().eval(PropertyKeys.height, 240);
     }
 
     public void setHeight(int height) {
@@ -119,7 +119,7 @@ abstract class PhotoCamBase extends UIInput implements Widget {
     }
 
     public int getPhotoWidth() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.photoWidth, 320);
+        return (Integer) getStateHelper().eval(PropertyKeys.photoWidth, 320);
     }
 
     public void setPhotoWidth(int photoWidth) {
@@ -127,7 +127,7 @@ abstract class PhotoCamBase extends UIInput implements Widget {
     }
 
     public int getPhotoHeight() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.photoHeight, 240);
+        return (Integer) getStateHelper().eval(PropertyKeys.photoHeight, 240);
     }
 
     public void setPhotoHeight(int photoHeight) {
@@ -135,7 +135,7 @@ abstract class PhotoCamBase extends UIInput implements Widget {
     }
 
     public String getFormat() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.format, null);
+        return (String) getStateHelper().eval(PropertyKeys.format, null);
     }
 
     public void setFormat(String format) {
@@ -143,7 +143,7 @@ abstract class PhotoCamBase extends UIInput implements Widget {
     }
 
     public int getJpegQuality() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.jpegQuality, 90);
+        return (Integer) getStateHelper().eval(PropertyKeys.jpegQuality, 90);
     }
 
     public void setJpegQuality(int jpegQuality) {
@@ -151,7 +151,7 @@ abstract class PhotoCamBase extends UIInput implements Widget {
     }
 
     public boolean isForceFlash() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.forceFlash, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.forceFlash, false);
     }
 
     public void setForceFlash(boolean forceFlash) {
@@ -159,7 +159,7 @@ abstract class PhotoCamBase extends UIInput implements Widget {
     }
 
     public boolean isAutoStart() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoStart, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoStart, true);
     }
 
     public void setAutoStart(boolean autoStart) {

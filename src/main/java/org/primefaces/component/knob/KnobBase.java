@@ -59,7 +59,7 @@ abstract class KnobBase extends UIInput implements Widget, ClientBehaviorHolder,
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -67,7 +67,7 @@ abstract class KnobBase extends UIInput implements Widget, ClientBehaviorHolder,
     }
 
     public int getMin() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.min, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.min, 0);
     }
 
     public void setMin(int min) {
@@ -75,7 +75,7 @@ abstract class KnobBase extends UIInput implements Widget, ClientBehaviorHolder,
     }
 
     public int getMax() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.max, 100);
+        return (Integer) getStateHelper().eval(PropertyKeys.max, 100);
     }
 
     public void setMax(int max) {
@@ -83,55 +83,55 @@ abstract class KnobBase extends UIInput implements Widget, ClientBehaviorHolder,
     }
 
     public int getStep() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.step, 1);
+        return (Integer) getStateHelper().eval(PropertyKeys.step, 1);
     }
 
     public void setStep(int step) {
         getStateHelper().put(PropertyKeys.step, step);
     }
 
-    public java.lang.Float getThickness() {
-        return (java.lang.Float) getStateHelper().eval(PropertyKeys.thickness, null);
+    public Float getThickness() {
+        return (Float) getStateHelper().eval(PropertyKeys.thickness, null);
     }
 
-    public void setThickness(java.lang.Float thickness) {
+    public void setThickness(Float thickness) {
         getStateHelper().put(PropertyKeys.thickness, thickness);
     }
 
-    public java.lang.Object getWidth() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.width, null);
+    public Object getWidth() {
+        return getStateHelper().eval(PropertyKeys.width, null);
     }
 
-    public void setWidth(java.lang.Object width) {
+    public void setWidth(Object width) {
         getStateHelper().put(PropertyKeys.width, width);
     }
 
-    public java.lang.Object getHeight() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.height, null);
+    public Object getHeight() {
+        return getStateHelper().eval(PropertyKeys.height, null);
     }
 
-    public void setHeight(java.lang.Object height) {
+    public void setHeight(Object height) {
         getStateHelper().put(PropertyKeys.height, height);
     }
 
-    public java.lang.Object getForegroundColor() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.foregroundColor, null);
+    public Object getForegroundColor() {
+        return getStateHelper().eval(PropertyKeys.foregroundColor, null);
     }
 
-    public void setForegroundColor(java.lang.Object foregroundColor) {
+    public void setForegroundColor(Object foregroundColor) {
         getStateHelper().put(PropertyKeys.foregroundColor, foregroundColor);
     }
 
-    public java.lang.Object getBackgroundColor() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.backgroundColor, null);
+    public Object getBackgroundColor() {
+        return getStateHelper().eval(PropertyKeys.backgroundColor, null);
     }
 
-    public void setBackgroundColor(java.lang.Object backgroundColor) {
+    public void setBackgroundColor(Object backgroundColor) {
         getStateHelper().put(PropertyKeys.backgroundColor, backgroundColor);
     }
 
     public String getColorTheme() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.colorTheme, null);
+        return (String) getStateHelper().eval(PropertyKeys.colorTheme, null);
     }
 
     public void setColorTheme(String colorTheme) {
@@ -139,7 +139,7 @@ abstract class KnobBase extends UIInput implements Widget, ClientBehaviorHolder,
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -147,7 +147,7 @@ abstract class KnobBase extends UIInput implements Widget, ClientBehaviorHolder,
     }
 
     public boolean isShowLabel() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showLabel, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showLabel, true);
     }
 
     public void setShowLabel(boolean showLabel) {
@@ -155,7 +155,7 @@ abstract class KnobBase extends UIInput implements Widget, ClientBehaviorHolder,
     }
 
     public boolean isCursor() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.cursor, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.cursor, false);
     }
 
     public void setCursor(boolean cursor) {
@@ -163,7 +163,7 @@ abstract class KnobBase extends UIInput implements Widget, ClientBehaviorHolder,
     }
 
     public String getLabelTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.labelTemplate, "{value}");
+        return (String) getStateHelper().eval(PropertyKeys.labelTemplate, "{value}");
     }
 
     public void setLabelTemplate(String labelTemplate) {
@@ -171,7 +171,7 @@ abstract class KnobBase extends UIInput implements Widget, ClientBehaviorHolder,
     }
 
     public String getOnchange() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onchange, null);
+        return (String) getStateHelper().eval(PropertyKeys.onchange, null);
     }
 
     public void setOnchange(String onchange) {
@@ -179,7 +179,7 @@ abstract class KnobBase extends UIInput implements Widget, ClientBehaviorHolder,
     }
 
     public String getLineCap() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.lineCap, "butt");
+        return (String) getStateHelper().eval(PropertyKeys.lineCap, "butt");
     }
 
     public void setLineCap(String lineCap) {

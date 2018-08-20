@@ -47,7 +47,7 @@ abstract class BlockUIBase extends UIPanel implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -55,7 +55,7 @@ abstract class BlockUIBase extends UIPanel implements Widget {
     }
 
     public String getTrigger() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.trigger, null);
+        return (String) getStateHelper().eval(PropertyKeys.trigger, null);
     }
 
     public void setTrigger(String trigger) {
@@ -63,7 +63,7 @@ abstract class BlockUIBase extends UIPanel implements Widget {
     }
 
     public String getBlock() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.block, null);
+        return (String) getStateHelper().eval(PropertyKeys.block, null);
     }
 
     public void setBlock(String block) {
@@ -71,7 +71,7 @@ abstract class BlockUIBase extends UIPanel implements Widget {
     }
 
     public boolean isBlocked() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.blocked, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.blocked, false);
     }
 
     public void setBlocked(boolean blocked) {
@@ -79,7 +79,7 @@ abstract class BlockUIBase extends UIPanel implements Widget {
     }
 
     public boolean isAnimate() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.animate, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.animate, true);
     }
 
     public void setAnimate(boolean animate) {
@@ -87,7 +87,7 @@ abstract class BlockUIBase extends UIPanel implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {

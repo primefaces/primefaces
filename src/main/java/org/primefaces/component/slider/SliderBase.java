@@ -73,7 +73,7 @@ abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -81,7 +81,7 @@ abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public String getFor() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
+        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
     public void setFor(String _for) {
@@ -89,7 +89,7 @@ abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public String getDisplay() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.display, null);
+        return (String) getStateHelper().eval(PropertyKeys.display, null);
     }
 
     public void setDisplay(String display) {
@@ -97,7 +97,7 @@ abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public double getMinValue() {
-        return (java.lang.Double) getStateHelper().eval(PropertyKeys.minValue, 0.0);
+        return (Double) getStateHelper().eval(PropertyKeys.minValue, 0.0);
     }
 
     public void setMinValue(double minValue) {
@@ -105,7 +105,7 @@ abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public double getMaxValue() {
-        return (java.lang.Double) getStateHelper().eval(PropertyKeys.maxValue, 100.0);
+        return (Double) getStateHelper().eval(PropertyKeys.maxValue, 100.0);
     }
 
     public void setMaxValue(double maxValue) {
@@ -113,7 +113,7 @@ abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -121,7 +121,7 @@ abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -129,7 +129,7 @@ abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public boolean isAnimate() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.animate, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.animate, true);
     }
 
     public void setAnimate(boolean animate) {
@@ -137,7 +137,7 @@ abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public String getType() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.type, "horizontal");
+        return (String) getStateHelper().eval(PropertyKeys.type, "horizontal");
     }
 
     public void setType(String type) {
@@ -145,7 +145,7 @@ abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public double getStep() {
-        return (java.lang.Double) getStateHelper().eval(PropertyKeys.step, 1.0);
+        return (Double) getStateHelper().eval(PropertyKeys.step, 1.0);
     }
 
     public void setStep(double step) {
@@ -153,7 +153,7 @@ abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -161,7 +161,7 @@ abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public String getOnSlideStart() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onSlideStart, null);
+        return (String) getStateHelper().eval(PropertyKeys.onSlideStart, null);
     }
 
     public void setOnSlideStart(String onSlideStart) {
@@ -169,7 +169,7 @@ abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public String getOnSlide() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onSlide, null);
+        return (String) getStateHelper().eval(PropertyKeys.onSlide, null);
     }
 
     public void setOnSlide(String onSlide) {
@@ -177,7 +177,7 @@ abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public String getOnSlideEnd() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onSlideEnd, null);
+        return (String) getStateHelper().eval(PropertyKeys.onSlideEnd, null);
     }
 
     public void setOnSlideEnd(String onSlideEnd) {
@@ -185,7 +185,7 @@ abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public boolean isRange() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.range, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.range, false);
     }
 
     public void setRange(boolean range) {
@@ -193,7 +193,7 @@ abstract class SliderBase extends UIInput implements Widget, ClientBehaviorHolde
     }
 
     public String getDisplayTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.displayTemplate, null);
+        return (String) getStateHelper().eval(PropertyKeys.displayTemplate, null);
     }
 
     public void setDisplayTemplate(String displayTemplate) {

@@ -33,7 +33,7 @@ abstract class ContentFlowBase extends UIPanel implements Widget {
         value,
         var,
         style,
-        styleClass;
+        styleClass
     }
 
     public ContentFlowBase() {
@@ -46,23 +46,23 @@ abstract class ContentFlowBase extends UIPanel implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.Object getValue() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.value, null);
+    public Object getValue() {
+        return getStateHelper().eval(PropertyKeys.value, null);
     }
 
-    public void setValue(java.lang.Object value) {
+    public void setValue(Object value) {
         getStateHelper().put(PropertyKeys.value, value);
     }
 
     public String getVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
+        return (String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
     public void setVar(String var) {
@@ -70,7 +70,7 @@ abstract class ContentFlowBase extends UIPanel implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -78,7 +78,7 @@ abstract class ContentFlowBase extends UIPanel implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {

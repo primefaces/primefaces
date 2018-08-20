@@ -111,7 +111,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -119,7 +119,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isScrollable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.scrollable, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.scrollable, false);
     }
 
     public void setScrollable(boolean scrollable) {
@@ -127,7 +127,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getScrollHeight() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.scrollHeight, null);
+        return (String) getStateHelper().eval(PropertyKeys.scrollHeight, null);
     }
 
     public void setScrollHeight(String scrollHeight) {
@@ -135,7 +135,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getScrollWidth() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.scrollWidth, null);
+        return (String) getStateHelper().eval(PropertyKeys.scrollWidth, null);
     }
 
     public void setScrollWidth(String scrollWidth) {
@@ -143,23 +143,23 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getSelectionMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.selectionMode, null);
+        return (String) getStateHelper().eval(PropertyKeys.selectionMode, null);
     }
 
     public void setSelectionMode(String selectionMode) {
         getStateHelper().put(PropertyKeys.selectionMode, selectionMode);
     }
 
-    public java.lang.Object getSelection() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.selection, null);
+    public Object getSelection() {
+        return getStateHelper().eval(PropertyKeys.selection, null);
     }
 
-    public void setSelection(java.lang.Object selection) {
+    public void setSelection(Object selection) {
         getStateHelper().put(PropertyKeys.selection, selection);
     }
 
     public String getEmptyMessage() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.emptyMessage, "No records found.");
+        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, "No records found.");
     }
 
     public void setEmptyMessage(String emptyMessage) {
@@ -167,7 +167,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -175,7 +175,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -183,7 +183,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isLiveScroll() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.liveScroll, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.liveScroll, false);
     }
 
     public void setLiveScroll(boolean liveScroll) {
@@ -191,7 +191,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getRowStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.rowStyleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.rowStyleClass, null);
     }
 
     public void setRowStyleClass(String rowStyleClass) {
@@ -199,7 +199,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getOnExpandStart() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onExpandStart, null);
+        return (String) getStateHelper().eval(PropertyKeys.onExpandStart, null);
     }
 
     public void setOnExpandStart(String onExpandStart) {
@@ -207,23 +207,23 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isResizableColumns() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.resizableColumns, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.resizableColumns, false);
     }
 
     public void setResizableColumns(boolean resizableColumns) {
         getStateHelper().put(PropertyKeys.resizableColumns, resizableColumns);
     }
 
-    public java.lang.Object getSortBy() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.sortBy, null);
+    public Object getSortBy() {
+        return getStateHelper().eval(PropertyKeys.sortBy, null);
     }
 
-    public void setSortBy(java.lang.Object sortBy) {
+    public void setSortBy(Object sortBy) {
         getStateHelper().put(PropertyKeys.sortBy, sortBy);
     }
 
     public String getSortOrder() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.sortOrder, "ascending");
+        return (String) getStateHelper().eval(PropertyKeys.sortOrder, "ascending");
     }
 
     public void setSortOrder(String sortOrder) {
@@ -239,23 +239,23 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public int getScrollRows() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.scrollRows, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.scrollRows, 0);
     }
 
     public void setScrollRows(int scrollRows) {
         getStateHelper().put(PropertyKeys.scrollRows, scrollRows);
     }
 
-    public java.lang.Object getRowKey() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.rowKey, null);
+    public Object getRowKey() {
+        return getStateHelper().eval(PropertyKeys.rowKey, null);
     }
 
-    public void setRowKey(java.lang.Object rowKey) {
+    public void setRowKey(Object rowKey) {
         getStateHelper().put(PropertyKeys.rowKey, rowKey);
     }
 
     public String getFilterEvent() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.filterEvent, null);
+        return (String) getStateHelper().eval(PropertyKeys.filterEvent, null);
     }
 
     public void setFilterEvent(String filterEvent) {
@@ -263,7 +263,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public int getFilterDelay() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.filterDelay, java.lang.Integer.MAX_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.filterDelay, Integer.MAX_VALUE);
     }
 
     public void setFilterDelay(int filterDelay) {
@@ -271,7 +271,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getTableStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.tableStyle, null);
+        return (String) getStateHelper().eval(PropertyKeys.tableStyle, null);
     }
 
     public void setTableStyle(String tableStyle) {
@@ -279,7 +279,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getTableStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.tableStyleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.tableStyleClass, null);
     }
 
     public void setTableStyleClass(String tableStyleClass) {
@@ -287,7 +287,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isDraggableColumns() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.draggableColumns, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.draggableColumns, false);
     }
 
     public void setDraggableColumns(boolean draggableColumns) {
@@ -295,7 +295,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isEditable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.editable, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.editable, false);
     }
 
     public void setEditable(boolean editable) {
@@ -311,7 +311,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getSortMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.sortMode, "single");
+        return (String) getStateHelper().eval(PropertyKeys.sortMode, "single");
     }
 
     public void setSortMode(String sortMode) {
@@ -319,7 +319,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getEditMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.editMode, "row");
+        return (String) getStateHelper().eval(PropertyKeys.editMode, "row");
     }
 
     public void setEditMode(String editMode) {
@@ -327,7 +327,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isEditingRow() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.editingRow, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.editingRow, false);
     }
 
     public void setEditingRow(boolean editingRow) {
@@ -335,7 +335,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getCellSeparator() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.cellSeparator, null);
+        return (String) getStateHelper().eval(PropertyKeys.cellSeparator, null);
     }
 
     public void setCellSeparator(String cellSeparator) {
@@ -343,7 +343,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getSummary() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.summary, null);
+        return (String) getStateHelper().eval(PropertyKeys.summary, null);
     }
 
     public void setSummary(String summary) {
@@ -351,7 +351,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public int getFrozenRows() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.frozenRows, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.frozenRows, 0);
     }
 
     public void setFrozenRows(int frozenRows) {
@@ -359,7 +359,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getDir() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.dir, "ltr");
+        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
 
     public void setDir(String dir) {
@@ -367,7 +367,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isLiveResize() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.liveResize, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.liveResize, false);
     }
 
     public void setLiveResize(boolean liveResize) {
@@ -375,7 +375,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isStickyHeader() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.stickyHeader, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.stickyHeader, false);
     }
 
     public void setStickyHeader(boolean stickyHeader) {
@@ -383,7 +383,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isExpandedRow() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.expandedRow, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.expandedRow, false);
     }
 
     public void setExpandedRow(boolean expandedRow) {
@@ -391,7 +391,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isDisabledSelection() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabledSelection, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabledSelection, false);
     }
 
     public void setDisabledSelection(boolean disabledSelection) {
@@ -399,7 +399,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getRowSelectMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.rowSelectMode, "new");
+        return (String) getStateHelper().eval(PropertyKeys.rowSelectMode, "new");
     }
 
     public void setRowSelectMode(String rowSelectMode) {
@@ -407,23 +407,23 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getRowExpandMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.rowExpandMode, "multiple");
+        return (String) getStateHelper().eval(PropertyKeys.rowExpandMode, "multiple");
     }
 
     public void setRowExpandMode(String rowExpandMode) {
         getStateHelper().put(PropertyKeys.rowExpandMode, rowExpandMode);
     }
 
-    public java.lang.Object getDataLocale() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.dataLocale, null);
+    public Object getDataLocale() {
+        return getStateHelper().eval(PropertyKeys.dataLocale, null);
     }
 
-    public void setDataLocale(java.lang.Object dataLocale) {
+    public void setDataLocale(Object dataLocale) {
         getStateHelper().put(PropertyKeys.dataLocale, dataLocale);
     }
 
     public boolean isNativeElements() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.nativeElements, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.nativeElements, false);
     }
 
     public void setNativeElements(boolean nativeElements) {
@@ -431,7 +431,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public int getFrozenColumns() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.frozenColumns, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.frozenColumns, 0);
     }
 
     public void setFrozenColumns(int frozenColumns) {
@@ -439,7 +439,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isDraggableRows() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.draggableRows, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.draggableRows, false);
     }
 
     public void setDraggableRows(boolean draggableRows) {
@@ -447,7 +447,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isCaseSensitiveSort() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.caseSensitiveSort, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitiveSort, false);
     }
 
     public void setCaseSensitiveSort(boolean caseSensitiveSort) {
@@ -455,7 +455,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isSkipChildren() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.skipChildren, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.skipChildren, false);
     }
 
     public void setSkipChildren(boolean skipChildren) {
@@ -463,7 +463,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isDisabledTextSelection() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabledTextSelection, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabledTextSelection, true);
     }
 
     public void setDisabledTextSelection(boolean disabledTextSelection) {
@@ -471,7 +471,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getSortField() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.sortField, null);
+        return (String) getStateHelper().eval(PropertyKeys.sortField, null);
     }
 
     public void setSortField(String sortField) {
@@ -479,7 +479,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getInitMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.initMode, "load");
+        return (String) getStateHelper().eval(PropertyKeys.initMode, "load");
     }
 
     public void setInitMode(String initMode) {
@@ -487,7 +487,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public int getNullSortOrder() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.nullSortOrder, 1);
+        return (Integer) getStateHelper().eval(PropertyKeys.nullSortOrder, 1);
     }
 
     public void setNullSortOrder(int nullSortOrder) {
@@ -495,7 +495,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getTabindex() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, "0");
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
     }
 
     public void setTabindex(String tabindex) {
@@ -503,7 +503,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isReflow() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.reflow, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.reflow, false);
     }
 
     public void setReflow(boolean reflow) {
@@ -511,7 +511,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public int getLiveScrollBuffer() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.liveScrollBuffer, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.liveScrollBuffer, 0);
     }
 
     public void setLiveScrollBuffer(int liveScrollBuffer) {
@@ -519,7 +519,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isRowHover() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.rowHover, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.rowHover, false);
     }
 
     public void setRowHover(boolean rowHover) {
@@ -527,7 +527,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getResizeMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.resizeMode, "fit");
+        return (String) getStateHelper().eval(PropertyKeys.resizeMode, "fit");
     }
 
     public void setResizeMode(String resizeMode) {
@@ -535,7 +535,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getAriaRowLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.ariaRowLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.ariaRowLabel, null);
     }
 
     public void setAriaRowLabel(String ariaRowLabel) {
@@ -543,7 +543,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isSaveOnCellBlur() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.saveOnCellBlur, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.saveOnCellBlur, true);
     }
 
     public void setSaveOnCellBlur(boolean saveOnCellBlur) {
@@ -551,7 +551,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isClientCache() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.clientCache, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.clientCache, false);
     }
 
     public void setClientCache(boolean clientCache) {
@@ -559,7 +559,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isMultiViewState() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
     }
 
     public void setMultiViewState(boolean multiViewState) {
@@ -575,7 +575,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getGlobalFilter() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.globalFilter, null);
+        return (String) getStateHelper().eval(PropertyKeys.globalFilter, null);
     }
 
     public void setGlobalFilter(String globalFilter) {
@@ -583,7 +583,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getCellEditMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.cellEditMode, "eager");
+        return (String) getStateHelper().eval(PropertyKeys.cellEditMode, "eager");
     }
 
     public void setCellEditMode(String cellEditMode) {
@@ -591,7 +591,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isExpandableRowGroups() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.expandableRowGroups, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.expandableRowGroups, false);
     }
 
     public void setExpandableRowGroups(boolean expandableRowGroups) {
@@ -599,7 +599,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isVirtualScroll() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.virtualScroll, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.virtualScroll, false);
     }
 
     public void setVirtualScroll(boolean virtualScroll) {
@@ -607,7 +607,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getRowDragSelector() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.rowDragSelector, null);
+        return (String) getStateHelper().eval(PropertyKeys.rowDragSelector, null);
     }
 
     public void setRowDragSelector(String rowDragSelector) {
@@ -623,7 +623,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getOnRowClick() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onRowClick, null);
+        return (String) getStateHelper().eval(PropertyKeys.onRowClick, null);
     }
 
     public void setOnRowClick(String onRowClick) {
@@ -631,7 +631,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getEditInitEvent() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.editInitEvent, "click");
+        return (String) getStateHelper().eval(PropertyKeys.editInitEvent, "click");
     }
 
     public void setEditInitEvent(String editInitEvent) {
@@ -639,7 +639,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getRowSelector() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.rowSelector, null);
+        return (String) getStateHelper().eval(PropertyKeys.rowSelector, null);
     }
 
     public void setRowSelector(String rowSelector) {
@@ -647,7 +647,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isDisableContextMenuIfEmpty() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disableContextMenuIfEmpty, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disableContextMenuIfEmpty, false);
     }
 
     public void setDisableContextMenuIfEmpty(boolean disableContextMenuIfEmpty) {
@@ -655,7 +655,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public boolean isEscapeText() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escapeText, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.escapeText, true);
     }
 
     public void setEscapeText(boolean escapeText) {
@@ -663,7 +663,7 @@ abstract class DataTableBase extends UIData implements Widget, RTLAware, ClientB
     }
 
     public String getRowEditMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.rowEditMode, "eager");
+        return (String) getStateHelper().eval(PropertyKeys.rowEditMode, "eager");
     }
 
     public void setRowEditMode(String rowEditMode) {

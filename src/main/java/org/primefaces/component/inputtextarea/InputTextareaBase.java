@@ -40,7 +40,7 @@ abstract class InputTextareaBase extends HtmlInputTextarea implements Widget, Mi
         minQueryLength,
         queryDelay,
         scrollHeight,
-        addLine;
+        addLine
     }
 
     public InputTextareaBase() {
@@ -53,7 +53,7 @@ abstract class InputTextareaBase extends HtmlInputTextarea implements Widget, Mi
     }
 
     public String getPlaceholder() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
+        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
     public void setPlaceholder(String placeholder) {
@@ -61,7 +61,7 @@ abstract class InputTextareaBase extends HtmlInputTextarea implements Widget, Mi
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -69,7 +69,7 @@ abstract class InputTextareaBase extends HtmlInputTextarea implements Widget, Mi
     }
 
     public boolean isAutoResize() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoResize, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoResize, true);
     }
 
     public void setAutoResize(boolean autoResize) {
@@ -77,7 +77,7 @@ abstract class InputTextareaBase extends HtmlInputTextarea implements Widget, Mi
     }
 
     public int getMaxlength() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxlength, java.lang.Integer.MAX_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.maxlength, Integer.MAX_VALUE);
     }
 
     public void setMaxlength(int maxlength) {
@@ -85,7 +85,7 @@ abstract class InputTextareaBase extends HtmlInputTextarea implements Widget, Mi
     }
 
     public String getCounter() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.counter, null);
+        return (String) getStateHelper().eval(PropertyKeys.counter, null);
     }
 
     public void setCounter(String counter) {
@@ -93,7 +93,7 @@ abstract class InputTextareaBase extends HtmlInputTextarea implements Widget, Mi
     }
 
     public String getCounterTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.counterTemplate, null);
+        return (String) getStateHelper().eval(PropertyKeys.counterTemplate, null);
     }
 
     public void setCounterTemplate(String counterTemplate) {
@@ -109,7 +109,7 @@ abstract class InputTextareaBase extends HtmlInputTextarea implements Widget, Mi
     }
 
     public int getMinQueryLength() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minQueryLength, 3);
+        return (Integer) getStateHelper().eval(PropertyKeys.minQueryLength, 3);
     }
 
     public void setMinQueryLength(int minQueryLength) {
@@ -117,7 +117,7 @@ abstract class InputTextareaBase extends HtmlInputTextarea implements Widget, Mi
     }
 
     public int getQueryDelay() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.queryDelay, 700);
+        return (Integer) getStateHelper().eval(PropertyKeys.queryDelay, 700);
     }
 
     public void setQueryDelay(int queryDelay) {
@@ -125,7 +125,7 @@ abstract class InputTextareaBase extends HtmlInputTextarea implements Widget, Mi
     }
 
     public int getScrollHeight() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.scrollHeight, java.lang.Integer.MAX_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.scrollHeight, Integer.MAX_VALUE);
     }
 
     public void setScrollHeight(int scrollHeight) {
@@ -133,7 +133,7 @@ abstract class InputTextareaBase extends HtmlInputTextarea implements Widget, Mi
     }
 
     public boolean isAddLine() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.addLine, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.addLine, false);
     }
 
     public void setAddLine(boolean addLine) {

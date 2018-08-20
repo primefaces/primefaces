@@ -37,7 +37,7 @@ abstract class MultiSelectListboxBase extends UISelectOne implements Widget, Cli
         disabled,
         effect,
         showHeaders,
-        header;
+        header
     }
 
     public MultiSelectListboxBase() {
@@ -50,7 +50,7 @@ abstract class MultiSelectListboxBase extends UISelectOne implements Widget, Cli
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -58,7 +58,7 @@ abstract class MultiSelectListboxBase extends UISelectOne implements Widget, Cli
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -66,7 +66,7 @@ abstract class MultiSelectListboxBase extends UISelectOne implements Widget, Cli
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -74,7 +74,7 @@ abstract class MultiSelectListboxBase extends UISelectOne implements Widget, Cli
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -82,7 +82,7 @@ abstract class MultiSelectListboxBase extends UISelectOne implements Widget, Cli
     }
 
     public String getEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, null);
+        return (String) getStateHelper().eval(PropertyKeys.effect, null);
     }
 
     public void setEffect(String effect) {
@@ -90,7 +90,7 @@ abstract class MultiSelectListboxBase extends UISelectOne implements Widget, Cli
     }
 
     public boolean isShowHeaders() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showHeaders, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showHeaders, false);
     }
 
     public void setShowHeaders(boolean showHeaders) {
@@ -98,7 +98,7 @@ abstract class MultiSelectListboxBase extends UISelectOne implements Widget, Cli
     }
 
     public String getHeader() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.header, null);
+        return (String) getStateHelper().eval(PropertyKeys.header, null);
     }
 
     public void setHeader(String header) {

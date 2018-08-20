@@ -46,7 +46,7 @@ abstract class ColumnTogglerBase extends UIComponentBase implements Widget, Clie
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -54,7 +54,7 @@ abstract class ColumnTogglerBase extends UIComponentBase implements Widget, Clie
     }
 
     public String getTrigger() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.trigger, null);
+        return (String) getStateHelper().eval(PropertyKeys.trigger, null);
     }
 
     public void setTrigger(String trigger) {
@@ -62,7 +62,7 @@ abstract class ColumnTogglerBase extends UIComponentBase implements Widget, Clie
     }
 
     public String getDatasource() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.datasource, null);
+        return (String) getStateHelper().eval(PropertyKeys.datasource, null);
     }
 
     public void setDatasource(String datasource) {

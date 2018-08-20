@@ -50,7 +50,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
         labelTemplate,
         placeholder,
         autoWidth,
-        dynamic;
+        dynamic
     }
 
     public SelectOneMenuBase() {
@@ -63,7 +63,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -71,7 +71,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
     }
 
     public String getEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, null);
+        return (String) getStateHelper().eval(PropertyKeys.effect, null);
     }
 
     public void setEffect(String effect) {
@@ -79,7 +79,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
     }
 
     public String getEffectSpeed() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effectSpeed, null);
+        return (String) getStateHelper().eval(PropertyKeys.effectSpeed, null);
     }
 
     public void setEffectSpeed(String effectSpeed) {
@@ -87,7 +87,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
     }
 
     public String getPanelStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.panelStyle, null);
+        return (String) getStateHelper().eval(PropertyKeys.panelStyle, null);
     }
 
     public void setPanelStyle(String panelStyle) {
@@ -95,7 +95,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
     }
 
     public String getPanelStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.panelStyleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.panelStyleClass, null);
     }
 
     public void setPanelStyleClass(String panelStyleClass) {
@@ -103,7 +103,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
     }
 
     public String getVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
+        return (String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
     public void setVar(String var) {
@@ -111,7 +111,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
     }
 
     public String getHeight() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.height, "200");
+        return (String) getStateHelper().eval(PropertyKeys.height, "200");
     }
 
     public void setHeight(String height) {
@@ -119,7 +119,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
     }
 
     public boolean isEditable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.editable, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.editable, false);
     }
 
     public void setEditable(boolean editable) {
@@ -127,7 +127,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
     }
 
     public boolean isFilter() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.filter, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.filter, false);
     }
 
     public void setFilter(boolean filter) {
@@ -135,7 +135,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
     }
 
     public String getFilterMatchMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
+        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
     }
 
     public void setFilterMatchMode(String filterMatchMode) {
@@ -143,7 +143,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
     }
 
     public String getFilterFunction() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.filterFunction, null);
+        return (String) getStateHelper().eval(PropertyKeys.filterFunction, null);
     }
 
     public void setFilterFunction(String filterFunction) {
@@ -151,7 +151,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
     }
 
     public String getFilterPlaceholder() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.filterPlaceholder, null);
+        return (String) getStateHelper().eval(PropertyKeys.filterPlaceholder, null);
     }
 
     public void setFilterPlaceholder(String filterPlaceholder) {
@@ -159,7 +159,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
     }
 
     public boolean isCaseSensitive() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.caseSensitive, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitive, false);
     }
 
     public void setCaseSensitive(boolean caseSensitive) {
@@ -167,7 +167,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
     }
 
     public int getMaxlength() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxlength, Integer.MAX_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.maxlength, Integer.MAX_VALUE);
     }
 
     public void setMaxlength(int maxlength) {
@@ -175,23 +175,25 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
     }
 
     public String getAppendTo() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
+        return (String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
     }
 
     public void setAppendTo(String appendTo) {
         getStateHelper().put(PropertyKeys.appendTo, appendTo);
     }
 
+    @Override
     public String getTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.title, null);
+        return (String) getStateHelper().eval(PropertyKeys.title, null);
     }
 
+    @Override
     public void setTitle(String title) {
         getStateHelper().put(PropertyKeys.title, title);
     }
 
     public boolean isSyncTooltip() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.syncTooltip, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.syncTooltip, false);
     }
 
     public void setSyncTooltip(boolean syncTooltip) {
@@ -199,7 +201,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
     }
 
     public String getLabelTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.labelTemplate, null);
+        return (String) getStateHelper().eval(PropertyKeys.labelTemplate, null);
     }
 
     public void setLabelTemplate(String labelTemplate) {
@@ -207,7 +209,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
     }
 
     public String getPlaceholder() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
+        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
     public void setPlaceholder(String placeholder) {
@@ -215,7 +217,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
     }
 
     public boolean isAutoWidth() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoWidth, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoWidth, true);
     }
 
     public void setAutoWidth(boolean autoWidth) {
@@ -223,7 +225,7 @@ abstract class SelectOneMenuBase extends HtmlSelectOneMenu implements Widget, In
     }
 
     public boolean isDynamic() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
     }
 
     public void setDynamic(boolean dynamic) {

@@ -56,7 +56,7 @@ abstract class GalleriaBase extends UIOutput implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -64,17 +64,17 @@ abstract class GalleriaBase extends UIOutput implements Widget {
     }
 
     @Override
-    public java.lang.Object getValue() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.value, null);
+    public Object getValue() {
+        return getStateHelper().eval(PropertyKeys.value, null);
     }
 
     @Override
-    public void setValue(java.lang.Object value) {
+    public void setValue(Object value) {
         getStateHelper().put(PropertyKeys.value, value);
     }
 
     public String getVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
+        return (String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
     public void setVar(String var) {
@@ -82,7 +82,7 @@ abstract class GalleriaBase extends UIOutput implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -90,7 +90,7 @@ abstract class GalleriaBase extends UIOutput implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -98,7 +98,7 @@ abstract class GalleriaBase extends UIOutput implements Widget {
     }
 
     public String getEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, "fade");
+        return (String) getStateHelper().eval(PropertyKeys.effect, "fade");
     }
 
     public void setEffect(String effect) {
@@ -106,7 +106,7 @@ abstract class GalleriaBase extends UIOutput implements Widget {
     }
 
     public int getEffectSpeed() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.effectSpeed, 500);
+        return (Integer) getStateHelper().eval(PropertyKeys.effectSpeed, 500);
     }
 
     public void setEffectSpeed(int effectSpeed) {
@@ -114,7 +114,7 @@ abstract class GalleriaBase extends UIOutput implements Widget {
     }
 
     public int getFrameWidth() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.frameWidth, 60);
+        return (Integer) getStateHelper().eval(PropertyKeys.frameWidth, 60);
     }
 
     public void setFrameWidth(int frameWidth) {
@@ -122,7 +122,7 @@ abstract class GalleriaBase extends UIOutput implements Widget {
     }
 
     public int getFrameHeight() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.frameHeight, 40);
+        return (Integer) getStateHelper().eval(PropertyKeys.frameHeight, 40);
     }
 
     public void setFrameHeight(int frameHeight) {
@@ -130,7 +130,7 @@ abstract class GalleriaBase extends UIOutput implements Widget {
     }
 
     public boolean isShowFilmstrip() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showFilmstrip, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showFilmstrip, true);
     }
 
     public void setShowFilmstrip(boolean showFilmstrip) {
@@ -138,7 +138,7 @@ abstract class GalleriaBase extends UIOutput implements Widget {
     }
 
     public boolean isAutoPlay() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoPlay, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoPlay, true);
     }
 
     public void setAutoPlay(boolean autoPlay) {
@@ -146,7 +146,7 @@ abstract class GalleriaBase extends UIOutput implements Widget {
     }
 
     public int getTransitionInterval() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.transitionInterval, 4000);
+        return (Integer) getStateHelper().eval(PropertyKeys.transitionInterval, 4000);
     }
 
     public void setTransitionInterval(int transitionInterval) {
@@ -154,7 +154,7 @@ abstract class GalleriaBase extends UIOutput implements Widget {
     }
 
     public int getPanelWidth() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.panelWidth, java.lang.Integer.MIN_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.panelWidth, Integer.MIN_VALUE);
     }
 
     public void setPanelWidth(int panelWidth) {
@@ -162,7 +162,7 @@ abstract class GalleriaBase extends UIOutput implements Widget {
     }
 
     public int getPanelHeight() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.panelHeight, java.lang.Integer.MIN_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.panelHeight, Integer.MIN_VALUE);
     }
 
     public void setPanelHeight(int panelHeight) {
@@ -170,7 +170,7 @@ abstract class GalleriaBase extends UIOutput implements Widget {
     }
 
     public boolean isShowCaption() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showCaption, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showCaption, false);
     }
 
     public void setShowCaption(boolean showCaption) {

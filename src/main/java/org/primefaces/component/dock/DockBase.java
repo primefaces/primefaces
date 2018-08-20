@@ -47,7 +47,7 @@ abstract class DockBase extends AbstractMenu implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -64,7 +64,7 @@ abstract class DockBase extends AbstractMenu implements Widget {
     }
 
     public String getPosition() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.position, "bottom");
+        return (String) getStateHelper().eval(PropertyKeys.position, "bottom");
     }
 
     public void setPosition(String position) {
@@ -72,7 +72,7 @@ abstract class DockBase extends AbstractMenu implements Widget {
     }
 
     public int getItemWidth() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.itemWidth, 40);
+        return (Integer) getStateHelper().eval(PropertyKeys.itemWidth, 40);
     }
 
     public void setItemWidth(int itemWidth) {
@@ -80,7 +80,7 @@ abstract class DockBase extends AbstractMenu implements Widget {
     }
 
     public int getMaxWidth() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxWidth, 50);
+        return (Integer) getStateHelper().eval(PropertyKeys.maxWidth, 50);
     }
 
     public void setMaxWidth(int maxWidth) {
@@ -88,7 +88,7 @@ abstract class DockBase extends AbstractMenu implements Widget {
     }
 
     public int getProximity() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.proximity, 90);
+        return (Integer) getStateHelper().eval(PropertyKeys.proximity, 90);
     }
 
     public void setProximity(int proximity) {
@@ -96,7 +96,7 @@ abstract class DockBase extends AbstractMenu implements Widget {
     }
 
     public String getHalign() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.halign, "center");
+        return (String) getStateHelper().eval(PropertyKeys.halign, "center");
     }
 
     public void setHalign(String halign) {

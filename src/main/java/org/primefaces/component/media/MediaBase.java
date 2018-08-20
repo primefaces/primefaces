@@ -46,16 +46,16 @@ abstract class MediaBase extends UIComponentBase {
         return COMPONENT_FAMILY;
     }
 
-    public java.lang.Object getValue() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.value, null);
+    public Object getValue() {
+        return getStateHelper().eval(PropertyKeys.value, null);
     }
 
-    public void setValue(java.lang.Object value) {
+    public void setValue(Object value) {
         getStateHelper().put(PropertyKeys.value, value);
     }
 
     public String getPlayer() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.player, null);
+        return (String) getStateHelper().eval(PropertyKeys.player, null);
     }
 
     public void setPlayer(String player) {
@@ -63,7 +63,7 @@ abstract class MediaBase extends UIComponentBase {
     }
 
     public String getWidth() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.width, null);
+        return (String) getStateHelper().eval(PropertyKeys.width, null);
     }
 
     public void setWidth(String width) {
@@ -71,7 +71,7 @@ abstract class MediaBase extends UIComponentBase {
     }
 
     public String getHeight() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.height, null);
+        return (String) getStateHelper().eval(PropertyKeys.height, null);
     }
 
     public void setHeight(String height) {
@@ -79,7 +79,7 @@ abstract class MediaBase extends UIComponentBase {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -87,7 +87,7 @@ abstract class MediaBase extends UIComponentBase {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -95,7 +95,7 @@ abstract class MediaBase extends UIComponentBase {
     }
 
     public boolean isCache() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.cache, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
     }
 
     public void setCache(boolean cache) {
@@ -103,7 +103,7 @@ abstract class MediaBase extends UIComponentBase {
     }
 
     public String getZoom() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.zoom, null);
+        return (String) getStateHelper().eval(PropertyKeys.zoom, null);
     }
 
     public void setZoom(String zoom) {
@@ -111,7 +111,7 @@ abstract class MediaBase extends UIComponentBase {
     }
 
     public String getView() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.view, null);
+        return (String) getStateHelper().eval(PropertyKeys.view, null);
     }
 
     public void setView(String view) {

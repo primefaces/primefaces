@@ -48,7 +48,7 @@ abstract class RingBase extends UIData implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -56,7 +56,7 @@ abstract class RingBase extends UIData implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -64,7 +64,7 @@ abstract class RingBase extends UIData implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -72,7 +72,7 @@ abstract class RingBase extends UIData implements Widget {
     }
 
     public String getEasing() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.easing, null);
+        return (String) getStateHelper().eval(PropertyKeys.easing, null);
     }
 
     public void setEasing(String easing) {
@@ -80,7 +80,7 @@ abstract class RingBase extends UIData implements Widget {
     }
 
     public boolean isAutoplay() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoplay, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoplay, false);
     }
 
     public void setAutoplay(boolean autoplay) {
@@ -88,7 +88,7 @@ abstract class RingBase extends UIData implements Widget {
     }
 
     public int getAutoplayDuration() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.autoplayDuration, 1000);
+        return (Integer) getStateHelper().eval(PropertyKeys.autoplayDuration, 1000);
     }
 
     public void setAutoplayDuration(int autoplayDuration) {
@@ -96,7 +96,7 @@ abstract class RingBase extends UIData implements Widget {
     }
 
     public boolean isAutoplayPauseOnHover() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoplayPauseOnHover, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoplayPauseOnHover, false);
     }
 
     public void setAutoplayPauseOnHover(boolean autoplayPauseOnHover) {
@@ -104,7 +104,7 @@ abstract class RingBase extends UIData implements Widget {
     }
 
     public int getAutoplayInitialDelay() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.autoplayInitialDelay, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.autoplayInitialDelay, 0);
     }
 
     public void setAutoplayInitialDelay(int autoplayInitialDelay) {

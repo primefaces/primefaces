@@ -41,7 +41,7 @@ abstract class SignatureBase extends UIInput implements Widget {
         guidelineOffset,
         guidelineIndent,
         onchange,
-        base64Value;
+        base64Value
     }
 
     public SignatureBase() {
@@ -54,7 +54,7 @@ abstract class SignatureBase extends UIInput implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -62,7 +62,7 @@ abstract class SignatureBase extends UIInput implements Widget {
     }
 
     public String getBackgroundColor() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.backgroundColor, null);
+        return (String) getStateHelper().eval(PropertyKeys.backgroundColor, null);
     }
 
     public void setBackgroundColor(String backgroundColor) {
@@ -70,7 +70,7 @@ abstract class SignatureBase extends UIInput implements Widget {
     }
 
     public String getColor() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.color, null);
+        return (String) getStateHelper().eval(PropertyKeys.color, null);
     }
 
     public void setColor(String color) {
@@ -78,7 +78,7 @@ abstract class SignatureBase extends UIInput implements Widget {
     }
 
     public int getThickness() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.thickness, 2);
+        return (Integer) getStateHelper().eval(PropertyKeys.thickness, 2);
     }
 
     public void setThickness(int thickness) {
@@ -86,7 +86,7 @@ abstract class SignatureBase extends UIInput implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -94,7 +94,7 @@ abstract class SignatureBase extends UIInput implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -102,7 +102,7 @@ abstract class SignatureBase extends UIInput implements Widget {
     }
 
     public boolean isReadonly() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
     }
 
     public void setReadonly(boolean readonly) {
@@ -110,7 +110,7 @@ abstract class SignatureBase extends UIInput implements Widget {
     }
 
     public boolean isGuideline() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.guideline, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.guideline, false);
     }
 
     public void setGuideline(boolean guideline) {
@@ -118,7 +118,7 @@ abstract class SignatureBase extends UIInput implements Widget {
     }
 
     public String getGuidelineColor() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.guidelineColor, null);
+        return (String) getStateHelper().eval(PropertyKeys.guidelineColor, null);
     }
 
     public void setGuidelineColor(String guidelineColor) {
@@ -126,7 +126,7 @@ abstract class SignatureBase extends UIInput implements Widget {
     }
 
     public int getGuidelineOffset() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.guidelineOffset, 25);
+        return (Integer) getStateHelper().eval(PropertyKeys.guidelineOffset, 25);
     }
 
     public void setGuidelineOffset(int guidelineOffset) {
@@ -134,7 +134,7 @@ abstract class SignatureBase extends UIInput implements Widget {
     }
 
     public int getGuidelineIndent() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.guidelineIndent, 10);
+        return (Integer) getStateHelper().eval(PropertyKeys.guidelineIndent, 10);
     }
 
     public void setGuidelineIndent(int guidelineIndent) {
@@ -142,7 +142,7 @@ abstract class SignatureBase extends UIInput implements Widget {
     }
 
     public String getOnchange() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onchange, null);
+        return (String) getStateHelper().eval(PropertyKeys.onchange, null);
     }
 
     public void setOnchange(String onchange) {
@@ -150,7 +150,7 @@ abstract class SignatureBase extends UIInput implements Widget {
     }
 
     public String getBase64Value() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.base64Value, null);
+        return (String) getStateHelper().eval(PropertyKeys.base64Value, null);
     }
 
     public void setBase64Value(String base64Value) {

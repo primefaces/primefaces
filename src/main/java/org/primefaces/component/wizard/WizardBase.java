@@ -53,7 +53,7 @@ abstract class WizardBase extends UIComponentBase implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -61,7 +61,7 @@ abstract class WizardBase extends UIComponentBase implements Widget {
     }
 
     public String getStep() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.step, null);
+        return (String) getStateHelper().eval(PropertyKeys.step, null);
     }
 
     public void setStep(String step) {
@@ -69,7 +69,7 @@ abstract class WizardBase extends UIComponentBase implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -77,7 +77,7 @@ abstract class WizardBase extends UIComponentBase implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -93,7 +93,7 @@ abstract class WizardBase extends UIComponentBase implements Widget {
     }
 
     public boolean isShowNavBar() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showNavBar, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showNavBar, true);
     }
 
     public void setShowNavBar(boolean showNavBar) {
@@ -101,7 +101,7 @@ abstract class WizardBase extends UIComponentBase implements Widget {
     }
 
     public boolean isShowStepStatus() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showStepStatus, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showStepStatus, true);
     }
 
     public void setShowStepStatus(boolean showStepStatus) {
@@ -109,7 +109,7 @@ abstract class WizardBase extends UIComponentBase implements Widget {
     }
 
     public String getOnback() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onback, null);
+        return (String) getStateHelper().eval(PropertyKeys.onback, null);
     }
 
     public void setOnback(String onback) {
@@ -117,7 +117,7 @@ abstract class WizardBase extends UIComponentBase implements Widget {
     }
 
     public String getOnnext() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onnext, null);
+        return (String) getStateHelper().eval(PropertyKeys.onnext, null);
     }
 
     public void setOnnext(String onnext) {
@@ -125,7 +125,7 @@ abstract class WizardBase extends UIComponentBase implements Widget {
     }
 
     public String getNextLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.nextLabel, "Next");
+        return (String) getStateHelper().eval(PropertyKeys.nextLabel, "Next");
     }
 
     public void setNextLabel(String nextLabel) {
@@ -133,7 +133,7 @@ abstract class WizardBase extends UIComponentBase implements Widget {
     }
 
     public String getBackLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.backLabel, "Back");
+        return (String) getStateHelper().eval(PropertyKeys.backLabel, "Back");
     }
 
     public void setBackLabel(String backLabel) {
@@ -141,7 +141,7 @@ abstract class WizardBase extends UIComponentBase implements Widget {
     }
 
     public boolean isUpdateModelOnPrev() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.updateModelOnPrev, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.updateModelOnPrev, false);
     }
 
     public void setUpdateModelOnPrev(boolean updateModelOnPrev) {

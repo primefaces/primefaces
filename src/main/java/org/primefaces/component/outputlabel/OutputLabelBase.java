@@ -39,7 +39,7 @@ abstract class OutputLabelBase extends HtmlOutputLabel {
     }
 
     public String getIndicateRequired() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.indicateRequired, "auto");
+        return (String) getStateHelper().eval(PropertyKeys.indicateRequired, "auto");
     }
 
     public void setIndicateRequired(String indicateRequired) {

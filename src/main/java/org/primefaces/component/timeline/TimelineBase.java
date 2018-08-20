@@ -92,7 +92,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -100,7 +100,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -108,7 +108,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -116,7 +116,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
+        return (String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
     public void setVar(String var) {
@@ -132,39 +132,39 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getVarGroup() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.varGroup, null);
+        return (String) getStateHelper().eval(PropertyKeys.varGroup, null);
     }
 
     public void setVarGroup(String varGroup) {
         getStateHelper().put(PropertyKeys.varGroup, varGroup);
     }
 
-    public java.lang.Object getLocale() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.locale, null);
+    public Object getLocale() {
+        return getStateHelper().eval(PropertyKeys.locale, null);
     }
 
-    public void setLocale(java.lang.Object locale) {
+    public void setLocale(Object locale) {
         getStateHelper().put(PropertyKeys.locale, locale);
     }
 
-    public java.lang.Object getTimeZone() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.timeZone, null);
+    public Object getTimeZone() {
+        return getStateHelper().eval(PropertyKeys.timeZone, null);
     }
 
-    public void setTimeZone(java.lang.Object timeZone) {
+    public void setTimeZone(Object timeZone) {
         getStateHelper().put(PropertyKeys.timeZone, timeZone);
     }
 
-    public java.lang.Object getBrowserTimeZone() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.browserTimeZone, null);
+    public Object getBrowserTimeZone() {
+        return getStateHelper().eval(PropertyKeys.browserTimeZone, null);
     }
 
-    public void setBrowserTimeZone(java.lang.Object browserTimeZone) {
+    public void setBrowserTimeZone(Object browserTimeZone) {
         getStateHelper().put(PropertyKeys.browserTimeZone, browserTimeZone);
     }
 
     public String getHeight() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.height, "auto");
+        return (String) getStateHelper().eval(PropertyKeys.height, "auto");
     }
 
     public void setHeight(String height) {
@@ -172,7 +172,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public int getMinHeight() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minHeight, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.minHeight, 0);
     }
 
     public void setMinHeight(int minHeight) {
@@ -180,7 +180,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getWidth() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.width, "100%");
+        return (String) getStateHelper().eval(PropertyKeys.width, "100%");
     }
 
     public void setWidth(String width) {
@@ -188,7 +188,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isResponsive() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.responsive, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, true);
     }
 
     public void setResponsive(boolean responsive) {
@@ -196,7 +196,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isAxisOnTop() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.axisOnTop, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.axisOnTop, false);
     }
 
     public void setAxisOnTop(boolean axisOnTop) {
@@ -204,7 +204,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public int getDragAreaWidth() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.dragAreaWidth, 10);
+        return (Integer) getStateHelper().eval(PropertyKeys.dragAreaWidth, 10);
     }
 
     public void setDragAreaWidth(int dragAreaWidth) {
@@ -212,7 +212,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isEditable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.editable, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.editable, false);
     }
 
     public void setEditable(boolean editable) {
@@ -220,7 +220,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isSelectable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.selectable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectable, true);
     }
 
     public void setSelectable(boolean selectable) {
@@ -228,7 +228,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isUnselectable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.unselectable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.unselectable, true);
     }
 
     public void setUnselectable(boolean unselectable) {
@@ -236,7 +236,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isZoomable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.zoomable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.zoomable, true);
     }
 
     public void setZoomable(boolean zoomable) {
@@ -244,7 +244,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isMoveable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.moveable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.moveable, true);
     }
 
     public void setMoveable(boolean moveable) {
@@ -283,32 +283,32 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
         getStateHelper().put(PropertyKeys.max, max);
     }
 
-    public java.lang.Long getZoomMin() {
-        return (java.lang.Long) getStateHelper().eval(PropertyKeys.zoomMin, 10L);
+    public Long getZoomMin() {
+        return (Long) getStateHelper().eval(PropertyKeys.zoomMin, 10L);
     }
 
-    public void setZoomMin(java.lang.Long zoomMin) {
+    public void setZoomMin(Long zoomMin) {
         getStateHelper().put(PropertyKeys.zoomMin, zoomMin);
     }
 
-    public java.lang.Long getZoomMax() {
-        return (java.lang.Long) getStateHelper().eval(PropertyKeys.zoomMax, 315360000000000L);
+    public Long getZoomMax() {
+        return (Long) getStateHelper().eval(PropertyKeys.zoomMax, 315360000000000L);
     }
 
-    public void setZoomMax(java.lang.Long zoomMax) {
+    public void setZoomMax(Long zoomMax) {
         getStateHelper().put(PropertyKeys.zoomMax, zoomMax);
     }
 
-    public java.lang.Float getPreloadFactor() {
-        return (java.lang.Float) getStateHelper().eval(PropertyKeys.preloadFactor, 0.0f);
+    public Float getPreloadFactor() {
+        return (Float) getStateHelper().eval(PropertyKeys.preloadFactor, 0.0f);
     }
 
-    public void setPreloadFactor(java.lang.Float preloadFactor) {
+    public void setPreloadFactor(Float preloadFactor) {
         getStateHelper().put(PropertyKeys.preloadFactor, preloadFactor);
     }
 
     public int getEventMargin() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.eventMargin, 10);
+        return (Integer) getStateHelper().eval(PropertyKeys.eventMargin, 10);
     }
 
     public void setEventMargin(int eventMargin) {
@@ -316,7 +316,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public int getEventMarginAxis() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.eventMarginAxis, 10);
+        return (Integer) getStateHelper().eval(PropertyKeys.eventMarginAxis, 10);
     }
 
     public void setEventMarginAxis(int eventMarginAxis) {
@@ -324,7 +324,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getEventStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.eventStyle, "box");
+        return (String) getStateHelper().eval(PropertyKeys.eventStyle, "box");
     }
 
     public void setEventStyle(String eventStyle) {
@@ -332,7 +332,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isGroupsChangeable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.groupsChangeable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.groupsChangeable, true);
     }
 
     public void setGroupsChangeable(boolean groupsChangeable) {
@@ -340,7 +340,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isGroupsOnRight() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.groupsOnRight, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.groupsOnRight, false);
     }
 
     public void setGroupsOnRight(boolean groupsOnRight) {
@@ -348,7 +348,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isGroupsOrder() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.groupsOrder, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.groupsOrder, true);
     }
 
     public void setGroupsOrder(boolean groupsOrder) {
@@ -356,7 +356,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getGroupsWidth() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.groupsWidth, null);
+        return (String) getStateHelper().eval(PropertyKeys.groupsWidth, null);
     }
 
     public void setGroupsWidth(String groupsWidth) {
@@ -364,7 +364,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public int getGroupMinHeight() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.groupMinHeight, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.groupMinHeight, 0);
     }
 
     public void setGroupMinHeight(int groupMinHeight) {
@@ -372,7 +372,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isSnapEvents() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.snapEvents, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.snapEvents, true);
     }
 
     public void setSnapEvents(boolean snapEvents) {
@@ -380,7 +380,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isStackEvents() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.stackEvents, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.stackEvents, true);
     }
 
     public void setStackEvents(boolean stackEvents) {
@@ -388,7 +388,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isShowCurrentTime() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showCurrentTime, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showCurrentTime, true);
     }
 
     public void setShowCurrentTime(boolean showCurrentTime) {
@@ -396,7 +396,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isShowMajorLabels() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showMajorLabels, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showMajorLabels, true);
     }
 
     public void setShowMajorLabels(boolean showMajorLabels) {
@@ -404,7 +404,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isShowMinorLabels() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showMinorLabels, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showMinorLabels, true);
     }
 
     public void setShowMinorLabels(boolean showMinorLabels) {
@@ -412,7 +412,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isShowButtonNew() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showButtonNew, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showButtonNew, false);
     }
 
     public void setShowButtonNew(boolean showButtonNew) {
@@ -420,7 +420,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isShowNavigation() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showNavigation, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showNavigation, false);
     }
 
     public void setShowNavigation(boolean showNavigation) {
@@ -428,7 +428,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isTimeChangeable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.timeChangeable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.timeChangeable, true);
     }
 
     public void setTimeChangeable(boolean timeChangeable) {
@@ -436,7 +436,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getDropHoverStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.dropHoverStyleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.dropHoverStyleClass, null);
     }
 
     public void setDropHoverStyleClass(String dropHoverStyleClass) {
@@ -444,7 +444,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getDropActiveStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.dropActiveStyleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.dropActiveStyleClass, null);
     }
 
     public void setDropActiveStyleClass(String dropActiveStyleClass) {
@@ -452,7 +452,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getDropAccept() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.dropAccept, null);
+        return (String) getStateHelper().eval(PropertyKeys.dropAccept, null);
     }
 
     public void setDropAccept(String dropAccept) {
@@ -460,7 +460,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getDropScope() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.dropScope, null);
+        return (String) getStateHelper().eval(PropertyKeys.dropScope, null);
     }
 
     public void setDropScope(String dropScope) {
@@ -468,7 +468,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isAnimate() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.animate, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.animate, true);
     }
 
     public void setAnimate(boolean animate) {
@@ -476,7 +476,7 @@ abstract class TimelineBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isAnimateZoom() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.animateZoom, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.animateZoom, true);
     }
 
     public void setAnimateZoom(boolean animateZoom) {

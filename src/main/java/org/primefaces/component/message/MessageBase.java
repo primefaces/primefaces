@@ -47,7 +47,7 @@ abstract class MessageBase extends UIMessage implements UINotification, Widget {
     }
 
     public String getDisplay() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.display, "both");
+        return (String) getStateHelper().eval(PropertyKeys.display, "both");
     }
 
     public void setDisplay(String display) {
@@ -55,7 +55,7 @@ abstract class MessageBase extends UIMessage implements UINotification, Widget {
     }
 
     public boolean isEscape() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
     public void setEscape(boolean escape) {
@@ -64,7 +64,7 @@ abstract class MessageBase extends UIMessage implements UINotification, Widget {
 
     @Override
     public String getSeverity() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.severity, null);
+        return (String) getStateHelper().eval(PropertyKeys.severity, null);
     }
 
     public void setSeverity(String severity) {
@@ -72,7 +72,7 @@ abstract class MessageBase extends UIMessage implements UINotification, Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -80,7 +80,7 @@ abstract class MessageBase extends UIMessage implements UINotification, Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {

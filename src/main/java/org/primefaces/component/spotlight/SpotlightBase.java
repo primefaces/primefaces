@@ -31,7 +31,7 @@ abstract class SpotlightBase extends UIComponentBase implements Widget {
 
         widgetVar,
         target,
-        active;
+        active
     }
 
     public SpotlightBase() {
@@ -44,7 +44,7 @@ abstract class SpotlightBase extends UIComponentBase implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -52,7 +52,7 @@ abstract class SpotlightBase extends UIComponentBase implements Widget {
     }
 
     public String getTarget() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.target, null);
+        return (String) getStateHelper().eval(PropertyKeys.target, null);
     }
 
     public void setTarget(String target) {
@@ -60,7 +60,7 @@ abstract class SpotlightBase extends UIComponentBase implements Widget {
     }
 
     public boolean isActive() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.active, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.active, false);
     }
 
     public void setActive(boolean active) {

@@ -43,7 +43,7 @@ abstract class InputNumberBase extends HtmlInputText implements Widget, InputHol
         inputStyle,
         inputStyleClass,
         padControl,
-        leadingZero;
+        leadingZero
     }
 
     public InputNumberBase() {
@@ -56,7 +56,7 @@ abstract class InputNumberBase extends HtmlInputText implements Widget, InputHol
     }
 
     public String getPlaceholder() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
+        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
     public void setPlaceholder(String placeholder) {
@@ -64,7 +64,7 @@ abstract class InputNumberBase extends HtmlInputText implements Widget, InputHol
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -72,7 +72,7 @@ abstract class InputNumberBase extends HtmlInputText implements Widget, InputHol
     }
 
     public String getType() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.type, "text");
+        return (String) getStateHelper().eval(PropertyKeys.type, "text");
     }
 
     public void setType(String type) {
@@ -80,7 +80,7 @@ abstract class InputNumberBase extends HtmlInputText implements Widget, InputHol
     }
 
     public String getSymbol() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.symbol, null);
+        return (String) getStateHelper().eval(PropertyKeys.symbol, null);
     }
 
     public void setSymbol(String symbol) {
@@ -88,7 +88,7 @@ abstract class InputNumberBase extends HtmlInputText implements Widget, InputHol
     }
 
     public String getSymbolPosition() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.symbolPosition, null);
+        return (String) getStateHelper().eval(PropertyKeys.symbolPosition, null);
     }
 
     public void setSymbolPosition(String symbolPosition) {
@@ -96,7 +96,7 @@ abstract class InputNumberBase extends HtmlInputText implements Widget, InputHol
     }
 
     public String getMinValue() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.minValue, null);
+        return (String) getStateHelper().eval(PropertyKeys.minValue, null);
     }
 
     public void setMinValue(String minValue) {
@@ -104,7 +104,7 @@ abstract class InputNumberBase extends HtmlInputText implements Widget, InputHol
     }
 
     public String getMaxValue() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.maxValue, null);
+        return (String) getStateHelper().eval(PropertyKeys.maxValue, null);
     }
 
     public void setMaxValue(String maxValue) {
@@ -112,7 +112,7 @@ abstract class InputNumberBase extends HtmlInputText implements Widget, InputHol
     }
 
     public String getRoundMethod() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.roundMethod, null);
+        return (String) getStateHelper().eval(PropertyKeys.roundMethod, null);
     }
 
     public void setRoundMethod(String roundMethod) {
@@ -120,7 +120,7 @@ abstract class InputNumberBase extends HtmlInputText implements Widget, InputHol
     }
 
     public String getDecimalPlaces() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.decimalPlaces, null);
+        return (String) getStateHelper().eval(PropertyKeys.decimalPlaces, null);
     }
 
     public void setDecimalPlaces(String decimalPlaces) {
@@ -128,7 +128,7 @@ abstract class InputNumberBase extends HtmlInputText implements Widget, InputHol
     }
 
     public String getEmptyValue() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.emptyValue, "empty");
+        return (String) getStateHelper().eval(PropertyKeys.emptyValue, "empty");
     }
 
     public void setEmptyValue(String emptyValue) {
@@ -136,7 +136,7 @@ abstract class InputNumberBase extends HtmlInputText implements Widget, InputHol
     }
 
     public String getInputStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.inputStyle, null);
+        return (String) getStateHelper().eval(PropertyKeys.inputStyle, null);
     }
 
     public void setInputStyle(String inputStyle) {
@@ -144,7 +144,7 @@ abstract class InputNumberBase extends HtmlInputText implements Widget, InputHol
     }
 
     public String getInputStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.inputStyleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.inputStyleClass, null);
     }
 
     public void setInputStyleClass(String inputStyleClass) {
@@ -152,7 +152,7 @@ abstract class InputNumberBase extends HtmlInputText implements Widget, InputHol
     }
 
     public boolean isPadControl() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.padControl, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.padControl, true);
     }
 
     public void setPadControl(boolean padControl) {
@@ -160,7 +160,7 @@ abstract class InputNumberBase extends HtmlInputText implements Widget, InputHol
     }
 
     public String getLeadingZero() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.leadingZero, "allow");
+        return (String) getStateHelper().eval(PropertyKeys.leadingZero, "allow");
     }
 
     public void setLeadingZero(String leadingZero) {

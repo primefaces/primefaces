@@ -44,7 +44,7 @@ abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbox imple
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -52,7 +52,7 @@ abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbox imple
     }
 
     public String getItemLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.itemLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.itemLabel, null);
     }
 
     public void setItemLabel(String itemLabel) {

@@ -48,7 +48,7 @@ abstract class ImageCompareBase extends UIComponentBase implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -56,7 +56,7 @@ abstract class ImageCompareBase extends UIComponentBase implements Widget {
     }
 
     public String getLeftImage() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.leftImage, null);
+        return (String) getStateHelper().eval(PropertyKeys.leftImage, null);
     }
 
     public void setLeftImage(String leftImage) {
@@ -64,7 +64,7 @@ abstract class ImageCompareBase extends UIComponentBase implements Widget {
     }
 
     public String getRightImage() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.rightImage, null);
+        return (String) getStateHelper().eval(PropertyKeys.rightImage, null);
     }
 
     public void setRightImage(String rightImage) {
@@ -72,7 +72,7 @@ abstract class ImageCompareBase extends UIComponentBase implements Widget {
     }
 
     public String getWidth() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.width, null);
+        return (String) getStateHelper().eval(PropertyKeys.width, null);
     }
 
     public void setWidth(String width) {
@@ -80,7 +80,7 @@ abstract class ImageCompareBase extends UIComponentBase implements Widget {
     }
 
     public String getHeight() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.height, null);
+        return (String) getStateHelper().eval(PropertyKeys.height, null);
     }
 
     public void setHeight(String height) {
@@ -88,7 +88,7 @@ abstract class ImageCompareBase extends UIComponentBase implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -96,7 +96,7 @@ abstract class ImageCompareBase extends UIComponentBase implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {

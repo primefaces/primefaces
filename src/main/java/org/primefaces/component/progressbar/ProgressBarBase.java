@@ -41,7 +41,7 @@ abstract class ProgressBarBase extends UIComponentBase implements Widget, Client
         labelTemplate,
         displayOnly,
         global,
-        mode;
+        mode
     }
 
     public ProgressBarBase() {
@@ -54,7 +54,7 @@ abstract class ProgressBarBase extends UIComponentBase implements Widget, Client
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -62,7 +62,7 @@ abstract class ProgressBarBase extends UIComponentBase implements Widget, Client
     }
 
     public int getValue() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.value, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.value, 0);
     }
 
     public void setValue(int value) {
@@ -70,7 +70,7 @@ abstract class ProgressBarBase extends UIComponentBase implements Widget, Client
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -78,7 +78,7 @@ abstract class ProgressBarBase extends UIComponentBase implements Widget, Client
     }
 
     public boolean isAjax() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ajax, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.ajax, false);
     }
 
     public void setAjax(boolean ajax) {
@@ -86,7 +86,7 @@ abstract class ProgressBarBase extends UIComponentBase implements Widget, Client
     }
 
     public int getInterval() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.interval, 3000);
+        return (Integer) getStateHelper().eval(PropertyKeys.interval, 3000);
     }
 
     public void setInterval(int interval) {
@@ -94,7 +94,7 @@ abstract class ProgressBarBase extends UIComponentBase implements Widget, Client
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -102,7 +102,7 @@ abstract class ProgressBarBase extends UIComponentBase implements Widget, Client
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -110,7 +110,7 @@ abstract class ProgressBarBase extends UIComponentBase implements Widget, Client
     }
 
     public String getLabelTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.labelTemplate, null);
+        return (String) getStateHelper().eval(PropertyKeys.labelTemplate, null);
     }
 
     public void setLabelTemplate(String labelTemplate) {
@@ -118,7 +118,7 @@ abstract class ProgressBarBase extends UIComponentBase implements Widget, Client
     }
 
     public boolean isDisplayOnly() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.displayOnly, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.displayOnly, false);
     }
 
     public void setDisplayOnly(boolean displayOnly) {
@@ -126,7 +126,7 @@ abstract class ProgressBarBase extends UIComponentBase implements Widget, Client
     }
 
     public boolean isGlobal() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.global, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.global, true);
     }
 
     public void setGlobal(boolean global) {
@@ -134,7 +134,7 @@ abstract class ProgressBarBase extends UIComponentBase implements Widget, Client
     }
 
     public String getMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.mode, "determinate");
+        return (String) getStateHelper().eval(PropertyKeys.mode, "determinate");
     }
 
     public void setMode(String mode) {

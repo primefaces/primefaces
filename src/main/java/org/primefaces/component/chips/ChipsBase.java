@@ -48,7 +48,7 @@ abstract class ChipsBase extends HtmlInputText implements Widget, InputHolder, M
     }
 
     public String getPlaceholder() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
+        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
     public void setPlaceholder(String placeholder) {
@@ -56,7 +56,7 @@ abstract class ChipsBase extends HtmlInputText implements Widget, InputHolder, M
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -64,7 +64,7 @@ abstract class ChipsBase extends HtmlInputText implements Widget, InputHolder, M
     }
 
     public int getMax() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.max, java.lang.Integer.MAX_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.max, Integer.MAX_VALUE);
     }
 
     public void setMax(int max) {
@@ -72,7 +72,7 @@ abstract class ChipsBase extends HtmlInputText implements Widget, InputHolder, M
     }
 
     public String getInputStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.inputStyle, null);
+        return (String) getStateHelper().eval(PropertyKeys.inputStyle, null);
     }
 
     public void setInputStyle(String inputStyle) {
@@ -80,7 +80,7 @@ abstract class ChipsBase extends HtmlInputText implements Widget, InputHolder, M
     }
 
     public String getInputStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.inputStyleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.inputStyleClass, null);
     }
 
     public void setInputStyleClass(String inputStyleClass) {

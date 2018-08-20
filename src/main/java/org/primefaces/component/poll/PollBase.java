@@ -63,7 +63,7 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -71,7 +71,7 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
     }
 
     public int getInterval() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.interval, 2);
+        return (Integer) getStateHelper().eval(PropertyKeys.interval, 2);
     }
 
     public void setInterval(int interval) {
@@ -80,7 +80,7 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
     @Override
     public String getUpdate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.update, null);
+        return (String) getStateHelper().eval(PropertyKeys.update, null);
     }
 
     public void setUpdate(String update) {
@@ -96,7 +96,7 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
     }
 
     public boolean isImmediate() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.immediate, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.immediate, false);
     }
 
     public void setImmediate(boolean immediate) {
@@ -105,7 +105,7 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
     @Override
     public String getOnstart() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onstart, null);
+        return (String) getStateHelper().eval(PropertyKeys.onstart, null);
     }
 
     public void setOnstart(String onstart) {
@@ -114,7 +114,7 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
     @Override
     public String getOncomplete() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.oncomplete, null);
+        return (String) getStateHelper().eval(PropertyKeys.oncomplete, null);
     }
 
     public void setOncomplete(String oncomplete) {
@@ -123,7 +123,7 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
     @Override
     public String getProcess() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.process, null);
+        return (String) getStateHelper().eval(PropertyKeys.process, null);
     }
 
     public void setProcess(String process) {
@@ -132,7 +132,7 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
     @Override
     public String getOnerror() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onerror, null);
+        return (String) getStateHelper().eval(PropertyKeys.onerror, null);
     }
 
     public void setOnerror(String onerror) {
@@ -141,7 +141,7 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
     @Override
     public String getOnsuccess() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onsuccess, null);
+        return (String) getStateHelper().eval(PropertyKeys.onsuccess, null);
     }
 
     public void setOnsuccess(String onsuccess) {
@@ -150,7 +150,7 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
     @Override
     public boolean isGlobal() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.global, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.global, true);
     }
 
     public void setGlobal(boolean global) {
@@ -159,7 +159,7 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
     @Override
     public String getDelay() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.delay, null);
+        return (String) getStateHelper().eval(PropertyKeys.delay, null);
     }
 
     public void setDelay(String delay) {
@@ -168,7 +168,7 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
     @Override
     public int getTimeout() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.timeout, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.timeout, 0);
     }
 
     public void setTimeout(int timeout) {
@@ -177,7 +177,7 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
     @Override
     public boolean isAsync() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.async, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.async, false);
     }
 
     public void setAsync(boolean async) {
@@ -185,7 +185,7 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
     }
 
     public boolean isAutoStart() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoStart, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoStart, true);
     }
 
     public void setAutoStart(boolean autoStart) {
@@ -193,7 +193,7 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
     }
 
     public boolean isStop() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.stop, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.stop, false);
     }
 
     public void setStop(boolean stop) {
@@ -202,7 +202,7 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
     @Override
     public boolean isPartialSubmit() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.partialSubmit, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.partialSubmit, false);
     }
 
     public void setPartialSubmit(boolean partialSubmit) {
@@ -211,7 +211,7 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
     @Override
     public boolean isResetValues() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.resetValues, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.resetValues, false);
     }
 
     public void setResetValues(boolean resetValues) {
@@ -220,7 +220,7 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
     @Override
     public boolean isIgnoreAutoUpdate() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
     }
 
     public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
@@ -229,7 +229,7 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
     @Override
     public String getPartialSubmitFilter() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.partialSubmitFilter, null);
+        return (String) getStateHelper().eval(PropertyKeys.partialSubmitFilter, null);
     }
 
     public void setPartialSubmitFilter(String partialSubmitFilter) {
@@ -238,7 +238,7 @@ abstract class PollBase extends UIComponentBase implements AjaxSource, Widget {
 
     @Override
     public String getForm() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.form, null);
+        return (String) getStateHelper().eval(PropertyKeys.form, null);
     }
 
     public void setForm(String form) {

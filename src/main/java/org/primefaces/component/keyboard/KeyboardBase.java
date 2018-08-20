@@ -56,7 +56,7 @@ abstract class KeyboardBase extends HtmlInputText implements Widget {
     }
 
     public String getPlaceholder() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
+        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
     public void setPlaceholder(String placeholder) {
@@ -64,7 +64,7 @@ abstract class KeyboardBase extends HtmlInputText implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -72,7 +72,7 @@ abstract class KeyboardBase extends HtmlInputText implements Widget {
     }
 
     public boolean isPassword() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.password, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.password, false);
     }
 
     public void setPassword(boolean password) {
@@ -80,7 +80,7 @@ abstract class KeyboardBase extends HtmlInputText implements Widget {
     }
 
     public String getShowMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.showMode, "focus");
+        return (String) getStateHelper().eval(PropertyKeys.showMode, "focus");
     }
 
     public void setShowMode(String showMode) {
@@ -88,7 +88,7 @@ abstract class KeyboardBase extends HtmlInputText implements Widget {
     }
 
     public String getButtonImage() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.buttonImage, null);
+        return (String) getStateHelper().eval(PropertyKeys.buttonImage, null);
     }
 
     public void setButtonImage(String buttonImage) {
@@ -96,7 +96,7 @@ abstract class KeyboardBase extends HtmlInputText implements Widget {
     }
 
     public boolean isButtonImageOnly() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.buttonImageOnly, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.buttonImageOnly, false);
     }
 
     public void setButtonImageOnly(boolean buttonImageOnly) {
@@ -104,7 +104,7 @@ abstract class KeyboardBase extends HtmlInputText implements Widget {
     }
 
     public String getEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, "fadeIn");
+        return (String) getStateHelper().eval(PropertyKeys.effect, "fadeIn");
     }
 
     public void setEffect(String effect) {
@@ -112,7 +112,7 @@ abstract class KeyboardBase extends HtmlInputText implements Widget {
     }
 
     public String getEffectDuration() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effectDuration, null);
+        return (String) getStateHelper().eval(PropertyKeys.effectDuration, null);
     }
 
     public void setEffectDuration(String effectDuration) {
@@ -120,7 +120,7 @@ abstract class KeyboardBase extends HtmlInputText implements Widget {
     }
 
     public String getLayout() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.layout, "qwerty");
+        return (String) getStateHelper().eval(PropertyKeys.layout, "qwerty");
     }
 
     public void setLayout(String layout) {
@@ -128,7 +128,7 @@ abstract class KeyboardBase extends HtmlInputText implements Widget {
     }
 
     public String getLayoutTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.layoutTemplate, null);
+        return (String) getStateHelper().eval(PropertyKeys.layoutTemplate, null);
     }
 
     public void setLayoutTemplate(String layoutTemplate) {
@@ -136,7 +136,7 @@ abstract class KeyboardBase extends HtmlInputText implements Widget {
     }
 
     public boolean isKeypadOnly() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.keypadOnly, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.keypadOnly, false);
     }
 
     public void setKeypadOnly(boolean keypadOnly) {
@@ -144,7 +144,7 @@ abstract class KeyboardBase extends HtmlInputText implements Widget {
     }
 
     public String getPromptLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.promptLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.promptLabel, null);
     }
 
     public void setPromptLabel(String promptLabel) {
@@ -152,7 +152,7 @@ abstract class KeyboardBase extends HtmlInputText implements Widget {
     }
 
     public String getCloseLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.closeLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.closeLabel, null);
     }
 
     public void setCloseLabel(String closeLabel) {
@@ -160,7 +160,7 @@ abstract class KeyboardBase extends HtmlInputText implements Widget {
     }
 
     public String getClearLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.clearLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.clearLabel, null);
     }
 
     public void setClearLabel(String clearLabel) {
@@ -168,7 +168,7 @@ abstract class KeyboardBase extends HtmlInputText implements Widget {
     }
 
     public String getBackspaceLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.backspaceLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.backspaceLabel, null);
     }
 
     public void setBackspaceLabel(String backspaceLabel) {

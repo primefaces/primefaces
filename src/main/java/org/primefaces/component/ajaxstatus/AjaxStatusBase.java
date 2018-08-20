@@ -48,7 +48,7 @@ abstract class AjaxStatusBase extends UIComponentBase implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -56,7 +56,7 @@ abstract class AjaxStatusBase extends UIComponentBase implements Widget {
     }
 
     public String getOnstart() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onstart, null);
+        return (String) getStateHelper().eval(PropertyKeys.onstart, null);
     }
 
     public void setOnstart(String onstart) {
@@ -64,7 +64,7 @@ abstract class AjaxStatusBase extends UIComponentBase implements Widget {
     }
 
     public String getOncomplete() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.oncomplete, null);
+        return (String) getStateHelper().eval(PropertyKeys.oncomplete, null);
     }
 
     public void setOncomplete(String oncomplete) {
@@ -72,7 +72,7 @@ abstract class AjaxStatusBase extends UIComponentBase implements Widget {
     }
 
     public String getOnsuccess() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onsuccess, null);
+        return (String) getStateHelper().eval(PropertyKeys.onsuccess, null);
     }
 
     public void setOnsuccess(String onsuccess) {
@@ -80,7 +80,7 @@ abstract class AjaxStatusBase extends UIComponentBase implements Widget {
     }
 
     public String getOnerror() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onerror, null);
+        return (String) getStateHelper().eval(PropertyKeys.onerror, null);
     }
 
     public void setOnerror(String onerror) {
@@ -88,7 +88,7 @@ abstract class AjaxStatusBase extends UIComponentBase implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -96,7 +96,7 @@ abstract class AjaxStatusBase extends UIComponentBase implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {

@@ -43,7 +43,7 @@ abstract class RibbonBase extends TabView {
 
     @Override
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     @Override
@@ -53,7 +53,7 @@ abstract class RibbonBase extends TabView {
 
     @Override
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     @Override
@@ -63,7 +63,7 @@ abstract class RibbonBase extends TabView {
 
     @Override
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     @Override
@@ -73,7 +73,7 @@ abstract class RibbonBase extends TabView {
 
     @Override
     public int getActiveIndex() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.activeIndex, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.activeIndex, 0);
     }
 
     @Override

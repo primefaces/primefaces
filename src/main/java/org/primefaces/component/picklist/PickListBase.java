@@ -76,7 +76,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -84,7 +84,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
+        return (String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
     public void setVar(String var) {
@@ -92,23 +92,23 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getItemLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.itemLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.itemLabel, null);
     }
 
     public void setItemLabel(String itemLabel) {
         getStateHelper().put(PropertyKeys.itemLabel, itemLabel);
     }
 
-    public java.lang.Object getItemValue() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.itemValue, null);
+    public Object getItemValue() {
+        return getStateHelper().eval(PropertyKeys.itemValue, null);
     }
 
-    public void setItemValue(java.lang.Object itemValue) {
+    public void setItemValue(Object itemValue) {
         getStateHelper().put(PropertyKeys.itemValue, itemValue);
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -116,7 +116,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -124,7 +124,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -132,7 +132,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, "fade");
+        return (String) getStateHelper().eval(PropertyKeys.effect, "fade");
     }
 
     public void setEffect(String effect) {
@@ -140,7 +140,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getEffectSpeed() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effectSpeed, "fast");
+        return (String) getStateHelper().eval(PropertyKeys.effectSpeed, "fast");
     }
 
     public void setEffectSpeed(String effectSpeed) {
@@ -148,7 +148,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getAddLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.addLabel, "Add");
+        return (String) getStateHelper().eval(PropertyKeys.addLabel, "Add");
     }
 
     public void setAddLabel(String addLabel) {
@@ -156,7 +156,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getAddAllLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.addAllLabel, "Add All");
+        return (String) getStateHelper().eval(PropertyKeys.addAllLabel, "Add All");
     }
 
     public void setAddAllLabel(String addAllLabel) {
@@ -164,7 +164,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getRemoveLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.removeLabel, "Remove");
+        return (String) getStateHelper().eval(PropertyKeys.removeLabel, "Remove");
     }
 
     public void setRemoveLabel(String removeLabel) {
@@ -172,7 +172,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getRemoveAllLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.removeAllLabel, "Remove All");
+        return (String) getStateHelper().eval(PropertyKeys.removeAllLabel, "Remove All");
     }
 
     public void setRemoveAllLabel(String removeAllLabel) {
@@ -180,7 +180,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getMoveUpLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.moveUpLabel, "Move Up");
+        return (String) getStateHelper().eval(PropertyKeys.moveUpLabel, "Move Up");
     }
 
     public void setMoveUpLabel(String moveUpLabel) {
@@ -188,7 +188,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getMoveTopLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.moveTopLabel, "Move Top");
+        return (String) getStateHelper().eval(PropertyKeys.moveTopLabel, "Move Top");
     }
 
     public void setMoveTopLabel(String moveTopLabel) {
@@ -196,7 +196,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getMoveDownLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.moveDownLabel, "Move Down");
+        return (String) getStateHelper().eval(PropertyKeys.moveDownLabel, "Move Down");
     }
 
     public void setMoveDownLabel(String moveDownLabel) {
@@ -204,7 +204,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getMoveBottomLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.moveBottomLabel, "Move Bottom");
+        return (String) getStateHelper().eval(PropertyKeys.moveBottomLabel, "Move Bottom");
     }
 
     public void setMoveBottomLabel(String moveBottomLabel) {
@@ -212,7 +212,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public boolean isShowSourceControls() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showSourceControls, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showSourceControls, false);
     }
 
     public void setShowSourceControls(boolean showSourceControls) {
@@ -220,7 +220,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public boolean isShowTargetControls() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showTargetControls, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showTargetControls, false);
     }
 
     public void setShowTargetControls(boolean showTargetControls) {
@@ -228,7 +228,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getOnTransfer() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onTransfer, null);
+        return (String) getStateHelper().eval(PropertyKeys.onTransfer, null);
     }
 
     public void setOnTransfer(String onTransfer) {
@@ -236,7 +236,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.label, null);
+        return (String) getStateHelper().eval(PropertyKeys.label, null);
     }
 
     public void setLabel(String label) {
@@ -244,7 +244,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public boolean isItemDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.itemDisabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.itemDisabled, false);
     }
 
     public void setItemDisabled(boolean itemDisabled) {
@@ -252,7 +252,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public boolean isShowSourceFilter() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showSourceFilter, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showSourceFilter, false);
     }
 
     public void setShowSourceFilter(boolean showSourceFilter) {
@@ -260,7 +260,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public boolean isShowTargetFilter() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showTargetFilter, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showTargetFilter, false);
     }
 
     public void setShowTargetFilter(boolean showTargetFilter) {
@@ -268,7 +268,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getFilterMatchMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
+        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
     }
 
     public void setFilterMatchMode(String filterMatchMode) {
@@ -276,7 +276,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getFilterFunction() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.filterFunction, null);
+        return (String) getStateHelper().eval(PropertyKeys.filterFunction, null);
     }
 
     public void setFilterFunction(String filterFunction) {
@@ -284,7 +284,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public boolean isShowCheckbox() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showCheckbox, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showCheckbox, false);
     }
 
     public void setShowCheckbox(boolean showCheckbox) {
@@ -292,7 +292,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getLabelDisplay() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.labelDisplay, "tooltip");
+        return (String) getStateHelper().eval(PropertyKeys.labelDisplay, "tooltip");
     }
 
     public void setLabelDisplay(String labelDisplay) {
@@ -300,7 +300,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getOrientation() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.orientation, "horizontal");
+        return (String) getStateHelper().eval(PropertyKeys.orientation, "horizontal");
     }
 
     public void setOrientation(String orientation) {
@@ -308,7 +308,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public boolean isResponsive() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
     }
 
     public void setResponsive(boolean responsive) {
@@ -316,7 +316,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getTabindex() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, "0");
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
     }
 
     public void setTabindex(String tabindex) {
@@ -324,7 +324,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public String getFilterEvent() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.filterEvent, null);
+        return (String) getStateHelper().eval(PropertyKeys.filterEvent, null);
     }
 
     public void setFilterEvent(String filterEvent) {
@@ -332,7 +332,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
     }
 
     public int getFilterDelay() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.filterDelay, java.lang.Integer.MAX_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.filterDelay, Integer.MAX_VALUE);
     }
 
     public void setFilterDelay(int filterDelay) {

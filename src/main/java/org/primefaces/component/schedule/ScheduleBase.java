@@ -81,7 +81,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -96,16 +96,16 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
         getStateHelper().put(PropertyKeys.value, value);
     }
 
-    public java.lang.Object getLocale() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.locale, null);
+    public Object getLocale() {
+        return getStateHelper().eval(PropertyKeys.locale, null);
     }
 
-    public void setLocale(java.lang.Object locale) {
+    public void setLocale(Object locale) {
         getStateHelper().put(PropertyKeys.locale, locale);
     }
 
     public double getAspectRatio() {
-        return (java.lang.Double) getStateHelper().eval(PropertyKeys.aspectRatio, java.lang.Double.MIN_VALUE);
+        return (Double) getStateHelper().eval(PropertyKeys.aspectRatio, Double.MIN_VALUE);
     }
 
     public void setAspectRatio(double aspectRatio) {
@@ -113,23 +113,23 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getView() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.view, "month");
+        return (String) getStateHelper().eval(PropertyKeys.view, "month");
     }
 
     public void setView(String view) {
         getStateHelper().put(PropertyKeys.view, view);
     }
 
-    public java.lang.Object getInitialDate() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.initialDate, null);
+    public Object getInitialDate() {
+        return getStateHelper().eval(PropertyKeys.initialDate, null);
     }
 
-    public void setInitialDate(java.lang.Object initialDate) {
+    public void setInitialDate(Object initialDate) {
         getStateHelper().put(PropertyKeys.initialDate, initialDate);
     }
 
     public boolean isShowWeekends() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showWeekends, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showWeekends, true);
     }
 
     public void setShowWeekends(boolean showWeekends) {
@@ -137,7 +137,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -145,7 +145,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -153,7 +153,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isDraggable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.draggable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.draggable, true);
     }
 
     public void setDraggable(boolean draggable) {
@@ -161,7 +161,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isResizable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.resizable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.resizable, true);
     }
 
     public void setResizable(boolean resizable) {
@@ -169,7 +169,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isShowHeader() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showHeader, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showHeader, true);
     }
 
     public void setShowHeader(boolean showHeader) {
@@ -177,7 +177,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getLeftHeaderTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.leftHeaderTemplate, "prev,next today");
+        return (String) getStateHelper().eval(PropertyKeys.leftHeaderTemplate, "prev,next today");
     }
 
     public void setLeftHeaderTemplate(String leftHeaderTemplate) {
@@ -185,7 +185,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getCenterHeaderTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.centerHeaderTemplate, "title");
+        return (String) getStateHelper().eval(PropertyKeys.centerHeaderTemplate, "title");
     }
 
     public void setCenterHeaderTemplate(String centerHeaderTemplate) {
@@ -193,7 +193,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getRightHeaderTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.rightHeaderTemplate, "month,agendaWeek,agendaDay");
+        return (String) getStateHelper().eval(PropertyKeys.rightHeaderTemplate, "month,agendaWeek,agendaDay");
     }
 
     public void setRightHeaderTemplate(String rightHeaderTemplate) {
@@ -201,7 +201,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isAllDaySlot() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.allDaySlot, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.allDaySlot, true);
     }
 
     public void setAllDaySlot(boolean allDaySlot) {
@@ -209,7 +209,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getSlotDuration() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.slotDuration, "00:30:00");
+        return (String) getStateHelper().eval(PropertyKeys.slotDuration, "00:30:00");
     }
 
     public void setSlotDuration(String slotDuration) {
@@ -217,7 +217,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public int getSlotMinutes() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.slotMinutes, 30);
+        return (Integer) getStateHelper().eval(PropertyKeys.slotMinutes, 30);
     }
 
     public void setSlotMinutes(int slotMinutes) {
@@ -225,7 +225,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getScrollTime() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.scrollTime, "06:00:00");
+        return (String) getStateHelper().eval(PropertyKeys.scrollTime, "06:00:00");
     }
 
     public void setScrollTime(String scrollTime) {
@@ -233,7 +233,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public int getFirstHour() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.firstHour, 6);
+        return (Integer) getStateHelper().eval(PropertyKeys.firstHour, 6);
     }
 
     public void setFirstHour(int firstHour) {
@@ -241,7 +241,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getMinTime() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.minTime, null);
+        return (String) getStateHelper().eval(PropertyKeys.minTime, null);
     }
 
     public void setMinTime(String minTime) {
@@ -249,7 +249,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getMaxTime() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.maxTime, null);
+        return (String) getStateHelper().eval(PropertyKeys.maxTime, null);
     }
 
     public void setMaxTime(String maxTime) {
@@ -257,7 +257,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getSlotLabelFormat() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.slotLabelFormat, null);
+        return (String) getStateHelper().eval(PropertyKeys.slotLabelFormat, null);
     }
 
     public void setSlotLabelFormat(String slotLabelFormat) {
@@ -265,7 +265,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getAxisFormat() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.axisFormat, null);
+        return (String) getStateHelper().eval(PropertyKeys.axisFormat, null);
     }
 
     public void setAxisFormat(String axisFormat) {
@@ -273,7 +273,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getTimeFormat() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.timeFormat, null);
+        return (String) getStateHelper().eval(PropertyKeys.timeFormat, null);
     }
 
     public void setTimeFormat(String timeFormat) {
@@ -281,23 +281,23 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getColumnFormat() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.columnFormat, null);
+        return (String) getStateHelper().eval(PropertyKeys.columnFormat, null);
     }
 
     public void setColumnFormat(String columnFormat) {
         getStateHelper().put(PropertyKeys.columnFormat, columnFormat);
     }
 
-    public java.lang.Object getTimeZone() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.timeZone, null);
+    public Object getTimeZone() {
+        return getStateHelper().eval(PropertyKeys.timeZone, null);
     }
 
-    public void setTimeZone(java.lang.Object timeZone) {
+    public void setTimeZone(Object timeZone) {
         getStateHelper().put(PropertyKeys.timeZone, timeZone);
     }
 
     public String getClientTimeZone() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.clientTimeZone, null);
+        return (String) getStateHelper().eval(PropertyKeys.clientTimeZone, null);
     }
 
     public void setClientTimeZone(String clientTimeZone) {
@@ -305,7 +305,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isIgnoreTimezone() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ignoreTimezone, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreTimezone, true);
     }
 
     public void setIgnoreTimezone(boolean ignoreTimezone) {
@@ -313,7 +313,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isTooltip() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.tooltip, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.tooltip, false);
     }
 
     public void setTooltip(boolean tooltip) {
@@ -321,7 +321,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isShowWeekNumbers() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showWeekNumbers, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showWeekNumbers, false);
     }
 
     public void setShowWeekNumbers(boolean showWeekNumbers) {
@@ -329,7 +329,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getExtender() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.extender, null);
+        return (String) getStateHelper().eval(PropertyKeys.extender, null);
     }
 
     public void setExtender(String extender) {
@@ -337,7 +337,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getDisplayEventEnd() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.displayEventEnd, null);
+        return (String) getStateHelper().eval(PropertyKeys.displayEventEnd, null);
     }
 
     public void setDisplayEventEnd(String displayEventEnd) {
@@ -345,7 +345,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getWeekNumberCalculation() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.weekNumberCalculation, "local");
+        return (String) getStateHelper().eval(PropertyKeys.weekNumberCalculation, "local");
     }
 
     public void setWeekNumberCalculation(String weekNumberCalculation) {
@@ -353,7 +353,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getWeekNumberCalculator() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.weekNumberCalculator, null);
+        return (String) getStateHelper().eval(PropertyKeys.weekNumberCalculator, null);
     }
 
     public void setWeekNumberCalculator(String weekNumberCalculator) {
@@ -361,7 +361,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getNextDayThreshold() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.nextDayThreshold, "09:00:00");
+        return (String) getStateHelper().eval(PropertyKeys.nextDayThreshold, "09:00:00");
     }
 
     public void setNextDayThreshold(String nextDayThreshold) {
@@ -369,7 +369,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public boolean isSlotEventOverlap() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.slotEventOverlap, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.slotEventOverlap, true);
     }
 
     public void setSlotEventOverlap(boolean slotEventOverlap) {
@@ -377,7 +377,7 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     }
 
     public String getUrlTarget() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.urlTarget, "_blank");
+        return (String) getStateHelper().eval(PropertyKeys.urlTarget, "_blank");
     }
 
     public void setUrlTarget(String urlTarget) {

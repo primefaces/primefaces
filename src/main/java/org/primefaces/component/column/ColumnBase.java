@@ -73,17 +73,17 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
     }
 
     @Override
-    public java.lang.Object getSortBy() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.sortBy, null);
+    public Object getSortBy() {
+        return getStateHelper().eval(PropertyKeys.sortBy, null);
     }
 
-    public void setSortBy(java.lang.Object sortBy) {
+    public void setSortBy(Object sortBy) {
         getStateHelper().put(PropertyKeys.sortBy, sortBy);
     }
 
     @Override
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -92,7 +92,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -109,17 +109,17 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
     }
 
     @Override
-    public java.lang.Object getFilterBy() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.filterBy, null);
+    public Object getFilterBy() {
+        return getStateHelper().eval(PropertyKeys.filterBy, null);
     }
 
-    public void setFilterBy(java.lang.Object filterBy) {
+    public void setFilterBy(Object filterBy) {
         getStateHelper().put(PropertyKeys.filterBy, filterBy);
     }
 
     @Override
     public String getFilterStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.filterStyle, null);
+        return (String) getStateHelper().eval(PropertyKeys.filterStyle, null);
     }
 
     public void setFilterStyle(String filterStyle) {
@@ -128,7 +128,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public String getFilterStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.filterStyleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.filterStyleClass, null);
     }
 
     public void setFilterStyleClass(String filterStyleClass) {
@@ -136,17 +136,17 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
     }
 
     @Override
-    public java.lang.Object getFilterOptions() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.filterOptions, null);
+    public Object getFilterOptions() {
+        return getStateHelper().eval(PropertyKeys.filterOptions, null);
     }
 
-    public void setFilterOptions(java.lang.Object filterOptions) {
+    public void setFilterOptions(Object filterOptions) {
         getStateHelper().put(PropertyKeys.filterOptions, filterOptions);
     }
 
     @Override
     public String getFilterMatchMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.filterMatchMode, "startsWith");
+        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, "startsWith");
     }
 
     public void setFilterMatchMode(String filterMatchMode) {
@@ -155,7 +155,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public String getFilterPosition() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.filterPosition, "bottom");
+        return (String) getStateHelper().eval(PropertyKeys.filterPosition, "bottom");
     }
 
     public void setFilterPosition(String filterPosition) {
@@ -164,7 +164,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public int getRowspan() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.rowspan, 1);
+        return (Integer) getStateHelper().eval(PropertyKeys.rowspan, 1);
     }
 
     public void setRowspan(int rowspan) {
@@ -173,7 +173,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public int getColspan() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.colspan, 1);
+        return (Integer) getStateHelper().eval(PropertyKeys.colspan, 1);
     }
 
     public void setColspan(int colspan) {
@@ -182,7 +182,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public String getHeaderText() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.headerText, null);
+        return (String) getStateHelper().eval(PropertyKeys.headerText, null);
     }
 
     public void setHeaderText(String headerText) {
@@ -191,7 +191,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public String getFooterText() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.footerText, null);
+        return (String) getStateHelper().eval(PropertyKeys.footerText, null);
     }
 
     public void setFooterText(String footerText) {
@@ -200,7 +200,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public String getSelectionMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.selectionMode, null);
+        return (String) getStateHelper().eval(PropertyKeys.selectionMode, null);
     }
 
     public void setSelectionMode(String selectionMode) {
@@ -209,7 +209,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public int getFilterMaxLength() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.filterMaxLength, java.lang.Integer.MAX_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.filterMaxLength, Integer.MAX_VALUE);
     }
 
     public void setFilterMaxLength(int filterMaxLength) {
@@ -218,7 +218,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public boolean isResizable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.resizable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.resizable, true);
     }
 
     public void setResizable(boolean resizable) {
@@ -227,7 +227,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public boolean isExportable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.exportable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.exportable, true);
     }
 
     public void setExportable(boolean exportable) {
@@ -235,17 +235,17 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
     }
 
     @Override
-    public java.lang.Object getFilterValue() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.filterValue, null);
+    public Object getFilterValue() {
+        return getStateHelper().eval(PropertyKeys.filterValue, null);
     }
 
-    public void setFilterValue(java.lang.Object filterValue) {
+    public void setFilterValue(Object filterValue) {
         getStateHelper().put(PropertyKeys.filterValue, filterValue);
     }
 
     @Override
     public String getWidth() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.width, null);
+        return (String) getStateHelper().eval(PropertyKeys.width, null);
     }
 
     public void setWidth(String width) {
@@ -254,7 +254,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public boolean isToggleable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.toggleable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.toggleable, true);
     }
 
     public void setToggleable(boolean toggleable) {
@@ -272,7 +272,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public String getField() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.field, null);
+        return (String) getStateHelper().eval(PropertyKeys.field, null);
     }
 
     public void setField(String field) {
@@ -281,7 +281,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public int getPriority() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.priority, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.priority, 0);
     }
 
     public void setPriority(int priority) {
@@ -290,7 +290,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public boolean isSortable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.sortable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.sortable, true);
     }
 
     public void setSortable(boolean sortable) {
@@ -299,7 +299,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public boolean isFilterable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.filterable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.filterable, true);
     }
 
     public void setFilterable(boolean filterable) {
@@ -308,7 +308,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public boolean isVisible() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.visible, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.visible, true);
     }
 
     public void setVisible(boolean visible) {
@@ -317,7 +317,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public boolean isSelectRow() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.selectRow, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectRow, true);
     }
 
     public void setSelectRow(boolean selectRow) {
@@ -326,7 +326,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public String getAriaHeaderText() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.ariaHeaderText, null);
+        return (String) getStateHelper().eval(PropertyKeys.ariaHeaderText, null);
     }
 
     public void setAriaHeaderText(String ariaHeaderText) {
@@ -344,7 +344,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public boolean isGroupRow() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.groupRow, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.groupRow, false);
     }
 
     public void setGroupRow(boolean groupRow) {
@@ -353,7 +353,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public String getExportHeaderValue() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.exportHeaderValue, null);
+        return (String) getStateHelper().eval(PropertyKeys.exportHeaderValue, null);
     }
 
     public void setExportHeaderValue(String exportHeaderValue) {
@@ -362,7 +362,7 @@ abstract class ColumnBase extends UIColumn implements org.primefaces.component.a
 
     @Override
     public String getExportFooterValue() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.exportFooterValue, null);
+        return (String) getStateHelper().eval(PropertyKeys.exportFooterValue, null);
     }
 
     public void setExportFooterValue(String exportFooterValue) {

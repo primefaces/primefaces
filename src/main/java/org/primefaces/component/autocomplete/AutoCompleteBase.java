@@ -84,7 +84,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getPlaceholder() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
+        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
     public void setPlaceholder(String placeholder) {
@@ -92,7 +92,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -108,7 +108,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
+        return (String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
     public void setVar(String var) {
@@ -116,23 +116,23 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getItemLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.itemLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.itemLabel, null);
     }
 
     public void setItemLabel(String itemLabel) {
         getStateHelper().put(PropertyKeys.itemLabel, itemLabel);
     }
 
-    public java.lang.Object getItemValue() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.itemValue, null);
+    public Object getItemValue() {
+        return getStateHelper().eval(PropertyKeys.itemValue, null);
     }
 
-    public void setItemValue(java.lang.Object itemValue) {
+    public void setItemValue(Object itemValue) {
         getStateHelper().put(PropertyKeys.itemValue, itemValue);
     }
 
     public String getItemStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.itemStyleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.itemStyleClass, null);
     }
 
     public void setItemStyleClass(String itemStyleClass) {
@@ -140,7 +140,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public int getMaxResults() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxResults, java.lang.Integer.MAX_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.maxResults, Integer.MAX_VALUE);
     }
 
     public void setMaxResults(int maxResults) {
@@ -148,7 +148,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public int getMinQueryLength() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minQueryLength, 1);
+        return (Integer) getStateHelper().eval(PropertyKeys.minQueryLength, 1);
     }
 
     public void setMinQueryLength(int minQueryLength) {
@@ -156,7 +156,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public int getQueryDelay() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.queryDelay, 300);
+        return (Integer) getStateHelper().eval(PropertyKeys.queryDelay, 300);
     }
 
     public void setQueryDelay(int queryDelay) {
@@ -164,7 +164,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public boolean isForceSelection() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.forceSelection, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.forceSelection, false);
     }
 
     public void setForceSelection(boolean forceSelection) {
@@ -172,7 +172,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public int getScrollHeight() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.scrollHeight, java.lang.Integer.MAX_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.scrollHeight, Integer.MAX_VALUE);
     }
 
     public void setScrollHeight(int scrollHeight) {
@@ -180,7 +180,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, null);
+        return (String) getStateHelper().eval(PropertyKeys.effect, null);
     }
 
     public void setEffect(String effect) {
@@ -188,7 +188,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public int getEffectDuration() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.effectDuration, 400);
+        return (Integer) getStateHelper().eval(PropertyKeys.effectDuration, 400);
     }
 
     public void setEffectDuration(int effectDuration) {
@@ -196,7 +196,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public boolean isDropdown() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dropdown, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.dropdown, false);
     }
 
     public void setDropdown(boolean dropdown) {
@@ -204,7 +204,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getPanelStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.panelStyle, null);
+        return (String) getStateHelper().eval(PropertyKeys.panelStyle, null);
     }
 
     public void setPanelStyle(String panelStyle) {
@@ -212,7 +212,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getPanelStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.panelStyleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.panelStyleClass, null);
     }
 
     public void setPanelStyleClass(String panelStyleClass) {
@@ -220,7 +220,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public boolean isMultiple() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.multiple, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.multiple, false);
     }
 
     public void setMultiple(boolean multiple) {
@@ -228,7 +228,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getItemtipMyPosition() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.itemtipMyPosition, null);
+        return (String) getStateHelper().eval(PropertyKeys.itemtipMyPosition, null);
     }
 
     public void setItemtipMyPosition(String itemtipMyPosition) {
@@ -236,7 +236,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getItemtipAtPosition() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.itemtipAtPosition, null);
+        return (String) getStateHelper().eval(PropertyKeys.itemtipAtPosition, null);
     }
 
     public void setItemtipAtPosition(String itemtipAtPosition) {
@@ -244,7 +244,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public boolean isCache() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.cache, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.cache, false);
     }
 
     public void setCache(boolean cache) {
@@ -252,7 +252,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public int getCacheTimeout() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.cacheTimeout, 300000);
+        return (Integer) getStateHelper().eval(PropertyKeys.cacheTimeout, 300000);
     }
 
     public void setCacheTimeout(int cacheTimeout) {
@@ -260,7 +260,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getEmptyMessage() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.emptyMessage, null);
+        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, null);
     }
 
     public void setEmptyMessage(String emptyMessage) {
@@ -268,7 +268,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getAppendTo() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.appendTo, null);
+        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
     }
 
     public void setAppendTo(String appendTo) {
@@ -276,23 +276,23 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getResultsMessage() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.resultsMessage, null);
+        return (String) getStateHelper().eval(PropertyKeys.resultsMessage, null);
     }
 
     public void setResultsMessage(String resultsMessage) {
         getStateHelper().put(PropertyKeys.resultsMessage, resultsMessage);
     }
 
-    public java.lang.Object getGroupBy() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.groupBy, null);
+    public Object getGroupBy() {
+        return getStateHelper().eval(PropertyKeys.groupBy, null);
     }
 
-    public void setGroupBy(java.lang.Object groupBy) {
+    public void setGroupBy(Object groupBy) {
         getStateHelper().put(PropertyKeys.groupBy, groupBy);
     }
 
     public String getQueryEvent() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.queryEvent, null);
+        return (String) getStateHelper().eval(PropertyKeys.queryEvent, null);
     }
 
     public void setQueryEvent(String queryEvent) {
@@ -300,7 +300,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getDropdownMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.dropdownMode, null);
+        return (String) getStateHelper().eval(PropertyKeys.dropdownMode, null);
     }
 
     public void setDropdownMode(String dropdownMode) {
@@ -308,7 +308,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public boolean isAutoHighlight() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoHighlight, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoHighlight, true);
     }
 
     public void setAutoHighlight(boolean autoHighlight) {
@@ -316,7 +316,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public int getSelectLimit() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.selectLimit, java.lang.Integer.MAX_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.selectLimit, Integer.MAX_VALUE);
     }
 
     public void setSelectLimit(int selectLimit) {
@@ -324,7 +324,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getInputStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.inputStyle, null);
+        return (String) getStateHelper().eval(PropertyKeys.inputStyle, null);
     }
 
     public void setInputStyle(String inputStyle) {
@@ -332,7 +332,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getInputStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.inputStyleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.inputStyleClass, null);
     }
 
     public void setInputStyleClass(String inputStyleClass) {
@@ -340,7 +340,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getGroupByTooltip() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.groupByTooltip, null);
+        return (String) getStateHelper().eval(PropertyKeys.groupByTooltip, null);
     }
 
     public void setGroupByTooltip(String groupByTooltip) {
@@ -348,7 +348,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getMy() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.my, null);
+        return (String) getStateHelper().eval(PropertyKeys.my, null);
     }
 
     public void setMy(String my) {
@@ -356,7 +356,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getAt() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.at, null);
+        return (String) getStateHelper().eval(PropertyKeys.at, null);
     }
 
     public void setAt(String at) {
@@ -364,7 +364,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public boolean isActive() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.active, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.active, true);
     }
 
     public void setActive(boolean active) {
@@ -372,7 +372,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getType() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.type, "text");
+        return (String) getStateHelper().eval(PropertyKeys.type, "text");
     }
 
     public void setType(String type) {
@@ -380,7 +380,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public String getMoreText() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.moreText, "...");
+        return (String) getStateHelper().eval(PropertyKeys.moreText, "...");
     }
 
     public void setMoreText(String moreText) {
@@ -388,7 +388,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public boolean isUnique() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.unique, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.unique, false);
     }
 
     public void setUnique(boolean unique) {
@@ -396,7 +396,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public boolean isDynamic() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
     }
 
     public void setDynamic(boolean dynamic) {
@@ -404,7 +404,7 @@ abstract class AutoCompleteBase extends HtmlInputText implements Widget, InputHo
     }
 
     public boolean isAutoSelection() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoSelection, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoSelection, true);
     }
 
     public void setAutoSelection(boolean autoSelection) {

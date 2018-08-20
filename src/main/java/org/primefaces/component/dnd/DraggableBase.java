@@ -79,7 +79,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -87,7 +87,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public boolean isProxy() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.proxy, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.proxy, false);
     }
 
     public void setProxy(boolean proxy) {
@@ -95,7 +95,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public boolean isDragOnly() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dragOnly, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.dragOnly, false);
     }
 
     public void setDragOnly(boolean dragOnly) {
@@ -103,7 +103,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public String getFor() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
+        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
     public void setFor(String _for) {
@@ -111,7 +111,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -119,7 +119,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public String getAxis() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.axis, null);
+        return (String) getStateHelper().eval(PropertyKeys.axis, null);
     }
 
     public void setAxis(String axis) {
@@ -127,7 +127,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public String getContainment() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.containment, null);
+        return (String) getStateHelper().eval(PropertyKeys.containment, null);
     }
 
     public void setContainment(String containment) {
@@ -135,7 +135,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public String getHelper() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.helper, null);
+        return (String) getStateHelper().eval(PropertyKeys.helper, null);
     }
 
     public void setHelper(String helper) {
@@ -143,7 +143,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public boolean isRevert() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.revert, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.revert, false);
     }
 
     public void setRevert(boolean revert) {
@@ -151,7 +151,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public boolean isSnap() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.snap, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.snap, false);
     }
 
     public void setSnap(boolean snap) {
@@ -159,7 +159,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public String getSnapMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.snapMode, null);
+        return (String) getStateHelper().eval(PropertyKeys.snapMode, null);
     }
 
     public void setSnapMode(String snapMode) {
@@ -167,7 +167,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public int getSnapTolerance() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.snapTolerance, 20);
+        return (Integer) getStateHelper().eval(PropertyKeys.snapTolerance, 20);
     }
 
     public void setSnapTolerance(int snapTolerance) {
@@ -175,7 +175,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public int getZindex() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.zindex, -1);
+        return (Integer) getStateHelper().eval(PropertyKeys.zindex, -1);
     }
 
     public void setZindex(int zindex) {
@@ -183,7 +183,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public String getHandle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.handle, null);
+        return (String) getStateHelper().eval(PropertyKeys.handle, null);
     }
 
     public void setHandle(String handle) {
@@ -191,7 +191,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public double getOpacity() {
-        return (java.lang.Double) getStateHelper().eval(PropertyKeys.opacity, 1.0);
+        return (Double) getStateHelper().eval(PropertyKeys.opacity, 1.0);
     }
 
     public void setOpacity(double opacity) {
@@ -199,7 +199,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public String getStack() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.stack, null);
+        return (String) getStateHelper().eval(PropertyKeys.stack, null);
     }
 
     public void setStack(String stack) {
@@ -207,7 +207,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public String getGrid() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.grid, null);
+        return (String) getStateHelper().eval(PropertyKeys.grid, null);
     }
 
     public void setGrid(String grid) {
@@ -215,7 +215,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public String getScope() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.scope, null);
+        return (String) getStateHelper().eval(PropertyKeys.scope, null);
     }
 
     public void setScope(String scope) {
@@ -223,7 +223,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public String getCursor() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.cursor, "crosshair");
+        return (String) getStateHelper().eval(PropertyKeys.cursor, "crosshair");
     }
 
     public void setCursor(String cursor) {
@@ -231,7 +231,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public String getDashboard() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.dashboard, null);
+        return (String) getStateHelper().eval(PropertyKeys.dashboard, null);
     }
 
     public void setDashboard(String dashboard) {
@@ -239,7 +239,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public String getAppendTo() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.appendTo, null);
+        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
     }
 
     public void setAppendTo(String appendTo) {
@@ -247,7 +247,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public String getOnStart() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onStart, null);
+        return (String) getStateHelper().eval(PropertyKeys.onStart, null);
     }
 
     public void setOnStart(String onStart) {
@@ -255,7 +255,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public String getOnStop() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onStop, null);
+        return (String) getStateHelper().eval(PropertyKeys.onStop, null);
     }
 
     public void setOnStop(String onStop) {
@@ -263,7 +263,7 @@ abstract class DraggableBase extends UIComponentBase implements Widget {
     }
 
     public String getCancel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.cancel, null);
+        return (String) getStateHelper().eval(PropertyKeys.cancel, null);
     }
 
     public void setCancel(String cancel) {

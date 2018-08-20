@@ -34,7 +34,7 @@ abstract class DataScrollerBase extends UIData implements Widget {
         chunkSize,
         mode,
         scrollHeight,
-        buffer;
+        buffer
     }
 
     public DataScrollerBase() {
@@ -47,7 +47,7 @@ abstract class DataScrollerBase extends UIData implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -55,7 +55,7 @@ abstract class DataScrollerBase extends UIData implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -63,7 +63,7 @@ abstract class DataScrollerBase extends UIData implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -71,7 +71,7 @@ abstract class DataScrollerBase extends UIData implements Widget {
     }
 
     public int getChunkSize() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.chunkSize, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.chunkSize, 0);
     }
 
     public void setChunkSize(int chunkSize) {
@@ -79,7 +79,7 @@ abstract class DataScrollerBase extends UIData implements Widget {
     }
 
     public String getMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.mode, "document");
+        return (String) getStateHelper().eval(PropertyKeys.mode, "document");
     }
 
     public void setMode(String mode) {
@@ -87,7 +87,7 @@ abstract class DataScrollerBase extends UIData implements Widget {
     }
 
     public String getScrollHeight() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.scrollHeight, null);
+        return (String) getStateHelper().eval(PropertyKeys.scrollHeight, null);
     }
 
     public void setScrollHeight(String scrollHeight) {
@@ -95,7 +95,7 @@ abstract class DataScrollerBase extends UIData implements Widget {
     }
 
     public int getBuffer() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.buffer, 10);
+        return (Integer) getStateHelper().eval(PropertyKeys.buffer, 10);
     }
 
     public void setBuffer(int buffer) {

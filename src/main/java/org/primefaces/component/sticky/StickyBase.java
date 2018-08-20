@@ -44,7 +44,7 @@ abstract class StickyBase extends UIPanel implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -52,7 +52,7 @@ abstract class StickyBase extends UIPanel implements Widget {
     }
 
     public String getTarget() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.target, null);
+        return (String) getStateHelper().eval(PropertyKeys.target, null);
     }
 
     public void setTarget(String target) {
@@ -60,7 +60,7 @@ abstract class StickyBase extends UIPanel implements Widget {
     }
 
     public int getMargin() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.margin, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.margin, 0);
     }
 
     public void setMargin(int margin) {

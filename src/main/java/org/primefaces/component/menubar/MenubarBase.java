@@ -46,7 +46,7 @@ abstract class MenubarBase extends AbstractMenu implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -63,7 +63,7 @@ abstract class MenubarBase extends AbstractMenu implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -71,7 +71,7 @@ abstract class MenubarBase extends AbstractMenu implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -79,7 +79,7 @@ abstract class MenubarBase extends AbstractMenu implements Widget {
     }
 
     public boolean isAutoDisplay() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoDisplay, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoDisplay, true);
     }
 
     public void setAutoDisplay(boolean autoDisplay) {
@@ -87,7 +87,7 @@ abstract class MenubarBase extends AbstractMenu implements Widget {
     }
 
     public String getToggleEvent() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.toggleEvent, null);
+        return (String) getStateHelper().eval(PropertyKeys.toggleEvent, null);
     }
 
     public void setToggleEvent(String toggleEvent) {

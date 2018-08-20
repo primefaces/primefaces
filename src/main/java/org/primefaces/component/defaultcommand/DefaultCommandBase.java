@@ -44,7 +44,7 @@ abstract class DefaultCommandBase extends UIComponentBase implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -52,7 +52,7 @@ abstract class DefaultCommandBase extends UIComponentBase implements Widget {
     }
 
     public String getTarget() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.target, null);
+        return (String) getStateHelper().eval(PropertyKeys.target, null);
     }
 
     public void setTarget(String target) {
@@ -60,7 +60,7 @@ abstract class DefaultCommandBase extends UIComponentBase implements Widget {
     }
 
     public String getScope() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.scope, null);
+        return (String) getStateHelper().eval(PropertyKeys.scope, null);
     }
 
     public void setScope(String scope) {

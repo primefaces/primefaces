@@ -28,7 +28,7 @@ abstract class FeedReaderBase extends UIComponentBase {
 
         value,
         var,
-        size;
+        size
     }
 
     public FeedReaderBase() {
@@ -41,7 +41,7 @@ abstract class FeedReaderBase extends UIComponentBase {
     }
 
     public String getValue() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.value, null);
+        return (String) getStateHelper().eval(PropertyKeys.value, null);
     }
 
     public void setValue(String value) {
@@ -49,7 +49,7 @@ abstract class FeedReaderBase extends UIComponentBase {
     }
 
     public String getVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
+        return (String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
     public void setVar(String var) {
@@ -57,7 +57,7 @@ abstract class FeedReaderBase extends UIComponentBase {
     }
 
     public int getSize() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.size, java.lang.Integer.MAX_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.size, Integer.MAX_VALUE);
     }
 
     public void setSize(int size) {

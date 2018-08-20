@@ -68,7 +68,7 @@ abstract class DroppableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -76,7 +76,7 @@ abstract class DroppableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public String getFor() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
+        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
     public void setFor(String _for) {
@@ -84,7 +84,7 @@ abstract class DroppableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -92,7 +92,7 @@ abstract class DroppableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public String getHoverStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.hoverStyleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.hoverStyleClass, null);
     }
 
     public void setHoverStyleClass(String hoverStyleClass) {
@@ -100,7 +100,7 @@ abstract class DroppableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public String getActiveStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.activeStyleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.activeStyleClass, null);
     }
 
     public void setActiveStyleClass(String activeStyleClass) {
@@ -108,7 +108,7 @@ abstract class DroppableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public String getOnDrop() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onDrop, null);
+        return (String) getStateHelper().eval(PropertyKeys.onDrop, null);
     }
 
     public void setOnDrop(String onDrop) {
@@ -116,7 +116,7 @@ abstract class DroppableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public String getAccept() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.accept, null);
+        return (String) getStateHelper().eval(PropertyKeys.accept, null);
     }
 
     public void setAccept(String accept) {
@@ -124,7 +124,7 @@ abstract class DroppableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public String getScope() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.scope, null);
+        return (String) getStateHelper().eval(PropertyKeys.scope, null);
     }
 
     public void setScope(String scope) {
@@ -132,7 +132,7 @@ abstract class DroppableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public String getTolerance() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.tolerance, null);
+        return (String) getStateHelper().eval(PropertyKeys.tolerance, null);
     }
 
     public void setTolerance(String tolerance) {
@@ -140,7 +140,7 @@ abstract class DroppableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public String getDatasource() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.datasource, null);
+        return (String) getStateHelper().eval(PropertyKeys.datasource, null);
     }
 
     public void setDatasource(String datasource) {
@@ -148,7 +148,7 @@ abstract class DroppableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public boolean isGreedy() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.greedy, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.greedy, false);
     }
 
     public void setGreedy(boolean greedy) {

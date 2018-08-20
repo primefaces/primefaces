@@ -50,7 +50,7 @@ abstract class DataViewBase extends UIData implements Widget, ClientBehaviorHold
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -58,7 +58,7 @@ abstract class DataViewBase extends UIData implements Widget, ClientBehaviorHold
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -66,7 +66,7 @@ abstract class DataViewBase extends UIData implements Widget, ClientBehaviorHold
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -74,7 +74,7 @@ abstract class DataViewBase extends UIData implements Widget, ClientBehaviorHold
     }
 
     public String getLayout() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.layout, "list");
+        return (String) getStateHelper().eval(PropertyKeys.layout, "list");
     }
 
     public void setLayout(String layout) {
@@ -82,7 +82,7 @@ abstract class DataViewBase extends UIData implements Widget, ClientBehaviorHold
     }
 
     public String getGridIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.gridIcon, null);
+        return (String) getStateHelper().eval(PropertyKeys.gridIcon, null);
     }
 
     public void setGridIcon(String gridIcon) {
@@ -90,7 +90,7 @@ abstract class DataViewBase extends UIData implements Widget, ClientBehaviorHold
     }
 
     public String getListIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.listIcon, null);
+        return (String) getStateHelper().eval(PropertyKeys.listIcon, null);
     }
 
     public void setListIcon(String listIcon) {

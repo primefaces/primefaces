@@ -56,7 +56,7 @@ abstract class InplaceBase extends UIComponentBase implements Widget, ClientBeha
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -64,7 +64,7 @@ abstract class InplaceBase extends UIComponentBase implements Widget, ClientBeha
     }
 
     public String getLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.label, null);
+        return (String) getStateHelper().eval(PropertyKeys.label, null);
     }
 
     public void setLabel(String label) {
@@ -72,7 +72,7 @@ abstract class InplaceBase extends UIComponentBase implements Widget, ClientBeha
     }
 
     public String getEmptyLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.emptyLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.emptyLabel, null);
     }
 
     public void setEmptyLabel(String emptyLabel) {
@@ -80,7 +80,7 @@ abstract class InplaceBase extends UIComponentBase implements Widget, ClientBeha
     }
 
     public String getEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, "fade");
+        return (String) getStateHelper().eval(PropertyKeys.effect, "fade");
     }
 
     public void setEffect(String effect) {
@@ -88,7 +88,7 @@ abstract class InplaceBase extends UIComponentBase implements Widget, ClientBeha
     }
 
     public String getEffectSpeed() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effectSpeed, "normal");
+        return (String) getStateHelper().eval(PropertyKeys.effectSpeed, "normal");
     }
 
     public void setEffectSpeed(String effectSpeed) {
@@ -96,7 +96,7 @@ abstract class InplaceBase extends UIComponentBase implements Widget, ClientBeha
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -104,7 +104,7 @@ abstract class InplaceBase extends UIComponentBase implements Widget, ClientBeha
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -112,7 +112,7 @@ abstract class InplaceBase extends UIComponentBase implements Widget, ClientBeha
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -120,7 +120,7 @@ abstract class InplaceBase extends UIComponentBase implements Widget, ClientBeha
     }
 
     public boolean isEditor() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.editor, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.editor, false);
     }
 
     public void setEditor(boolean editor) {
@@ -128,7 +128,7 @@ abstract class InplaceBase extends UIComponentBase implements Widget, ClientBeha
     }
 
     public String getSaveLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.saveLabel, "Save");
+        return (String) getStateHelper().eval(PropertyKeys.saveLabel, "Save");
     }
 
     public void setSaveLabel(String saveLabel) {
@@ -136,7 +136,7 @@ abstract class InplaceBase extends UIComponentBase implements Widget, ClientBeha
     }
 
     public String getCancelLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.cancelLabel, "Cancel");
+        return (String) getStateHelper().eval(PropertyKeys.cancelLabel, "Cancel");
     }
 
     public void setCancelLabel(String cancelLabel) {
@@ -144,7 +144,7 @@ abstract class InplaceBase extends UIComponentBase implements Widget, ClientBeha
     }
 
     public String getEvent() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.event, "click");
+        return (String) getStateHelper().eval(PropertyKeys.event, "click");
     }
 
     public void setEvent(String event) {
@@ -152,7 +152,7 @@ abstract class InplaceBase extends UIComponentBase implements Widget, ClientBeha
     }
 
     public boolean isToggleable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.toggleable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.toggleable, true);
     }
 
     public void setToggleable(boolean toggleable) {

@@ -49,7 +49,7 @@ abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorH
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -57,7 +57,7 @@ abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorH
     }
 
     public int getHeight() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.height, java.lang.Integer.MIN_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.height, Integer.MIN_VALUE);
     }
 
     public void setHeight(int height) {
@@ -65,7 +65,7 @@ abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorH
     }
 
     public boolean isReadonly() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
     }
 
     public void setReadonly(boolean readonly) {
@@ -73,7 +73,7 @@ abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorH
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -81,7 +81,7 @@ abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorH
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -89,7 +89,7 @@ abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorH
     }
 
     public String getPlaceholder() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
+        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
     public void setPlaceholder(String placeholder) {
@@ -97,7 +97,7 @@ abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorH
     }
 
     public boolean isToolbarVisible() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.toolbarVisible, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.toolbarVisible, true);
     }
 
     public void setToolbarVisible(boolean toolbarVisible) {

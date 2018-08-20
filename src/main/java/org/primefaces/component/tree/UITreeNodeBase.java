@@ -42,7 +42,7 @@ abstract class UITreeNodeBase extends UIColumn {
     }
 
     public String getType() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.type, "default");
+        return (String) getStateHelper().eval(PropertyKeys.type, "default");
     }
 
     public void setType(String type) {
@@ -50,7 +50,7 @@ abstract class UITreeNodeBase extends UIColumn {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -58,7 +58,7 @@ abstract class UITreeNodeBase extends UIColumn {
     }
 
     public String getIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.icon, null);
+        return (String) getStateHelper().eval(PropertyKeys.icon, null);
     }
 
     public void setIcon(String icon) {
@@ -66,7 +66,7 @@ abstract class UITreeNodeBase extends UIColumn {
     }
 
     public String getExpandedIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.expandedIcon, null);
+        return (String) getStateHelper().eval(PropertyKeys.expandedIcon, null);
     }
 
     public void setExpandedIcon(String expandedIcon) {
@@ -74,7 +74,7 @@ abstract class UITreeNodeBase extends UIColumn {
     }
 
     public String getCollapsedIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.collapsedIcon, null);
+        return (String) getStateHelper().eval(PropertyKeys.collapsedIcon, null);
     }
 
     public void setCollapsedIcon(String collapsedIcon) {
@@ -82,7 +82,7 @@ abstract class UITreeNodeBase extends UIColumn {
     }
 
     public String getAriaLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
     }
 
     public void setAriaLabel(String ariaLabel) {

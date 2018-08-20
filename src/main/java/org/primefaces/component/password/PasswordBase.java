@@ -51,7 +51,7 @@ abstract class PasswordBase extends HtmlInputText implements Widget {
     }
 
     public String getPlaceholder() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
+        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
     public void setPlaceholder(String placeholder) {
@@ -59,7 +59,7 @@ abstract class PasswordBase extends HtmlInputText implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -67,7 +67,7 @@ abstract class PasswordBase extends HtmlInputText implements Widget {
     }
 
     public boolean isFeedback() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.feedback, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.feedback, false);
     }
 
     public void setFeedback(boolean feedback) {
@@ -75,7 +75,7 @@ abstract class PasswordBase extends HtmlInputText implements Widget {
     }
 
     public boolean isInline() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.inline, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.inline, false);
     }
 
     public void setInline(boolean inline) {
@@ -83,7 +83,7 @@ abstract class PasswordBase extends HtmlInputText implements Widget {
     }
 
     public String getPromptLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.promptLabel, "Please enter a password");
+        return (String) getStateHelper().eval(PropertyKeys.promptLabel, "Please enter a password");
     }
 
     public void setPromptLabel(String promptLabel) {
@@ -91,7 +91,7 @@ abstract class PasswordBase extends HtmlInputText implements Widget {
     }
 
     public String getWeakLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.weakLabel, "Weak");
+        return (String) getStateHelper().eval(PropertyKeys.weakLabel, "Weak");
     }
 
     public void setWeakLabel(String weakLabel) {
@@ -99,7 +99,7 @@ abstract class PasswordBase extends HtmlInputText implements Widget {
     }
 
     public String getGoodLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.goodLabel, "Good");
+        return (String) getStateHelper().eval(PropertyKeys.goodLabel, "Good");
     }
 
     public void setGoodLabel(String goodLabel) {
@@ -107,7 +107,7 @@ abstract class PasswordBase extends HtmlInputText implements Widget {
     }
 
     public String getStrongLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.strongLabel, "Strong");
+        return (String) getStateHelper().eval(PropertyKeys.strongLabel, "Strong");
     }
 
     public void setStrongLabel(String strongLabel) {
@@ -115,7 +115,7 @@ abstract class PasswordBase extends HtmlInputText implements Widget {
     }
 
     public boolean isRedisplay() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.redisplay, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.redisplay, false);
     }
 
     public void setRedisplay(boolean redisplay) {
@@ -123,7 +123,7 @@ abstract class PasswordBase extends HtmlInputText implements Widget {
     }
 
     public String getMatch() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.match, null);
+        return (String) getStateHelper().eval(PropertyKeys.match, null);
     }
 
     public void setMatch(String match) {

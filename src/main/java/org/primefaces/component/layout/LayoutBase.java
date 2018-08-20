@@ -55,7 +55,7 @@ abstract class LayoutBase extends UIPanel implements Widget, ClientBehaviorHolde
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -63,7 +63,7 @@ abstract class LayoutBase extends UIPanel implements Widget, ClientBehaviorHolde
     }
 
     public boolean isFullPage() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.fullPage, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.fullPage, false);
     }
 
     public void setFullPage(boolean fullPage) {
@@ -71,7 +71,7 @@ abstract class LayoutBase extends UIPanel implements Widget, ClientBehaviorHolde
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -79,7 +79,7 @@ abstract class LayoutBase extends UIPanel implements Widget, ClientBehaviorHolde
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -87,7 +87,7 @@ abstract class LayoutBase extends UIPanel implements Widget, ClientBehaviorHolde
     }
 
     public String getOnResize() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onResize, null);
+        return (String) getStateHelper().eval(PropertyKeys.onResize, null);
     }
 
     public void setOnResize(String onResize) {
@@ -95,7 +95,7 @@ abstract class LayoutBase extends UIPanel implements Widget, ClientBehaviorHolde
     }
 
     public String getOnClose() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onClose, null);
+        return (String) getStateHelper().eval(PropertyKeys.onClose, null);
     }
 
     public void setOnClose(String onClose) {
@@ -103,7 +103,7 @@ abstract class LayoutBase extends UIPanel implements Widget, ClientBehaviorHolde
     }
 
     public String getOnToggle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onToggle, null);
+        return (String) getStateHelper().eval(PropertyKeys.onToggle, null);
     }
 
     public void setOnToggle(String onToggle) {
@@ -111,7 +111,7 @@ abstract class LayoutBase extends UIPanel implements Widget, ClientBehaviorHolde
     }
 
     public String getResizeTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.resizeTitle, null);
+        return (String) getStateHelper().eval(PropertyKeys.resizeTitle, null);
     }
 
     public void setResizeTitle(String resizeTitle) {
@@ -119,7 +119,7 @@ abstract class LayoutBase extends UIPanel implements Widget, ClientBehaviorHolde
     }
 
     public String getCollapseTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.collapseTitle, "Collapse");
+        return (String) getStateHelper().eval(PropertyKeys.collapseTitle, "Collapse");
     }
 
     public void setCollapseTitle(String collapseTitle) {
@@ -127,7 +127,7 @@ abstract class LayoutBase extends UIPanel implements Widget, ClientBehaviorHolde
     }
 
     public String getExpandTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.expandTitle, null);
+        return (String) getStateHelper().eval(PropertyKeys.expandTitle, null);
     }
 
     public void setExpandTitle(String expandTitle) {
@@ -135,7 +135,7 @@ abstract class LayoutBase extends UIPanel implements Widget, ClientBehaviorHolde
     }
 
     public String getCloseTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.closeTitle, "Close");
+        return (String) getStateHelper().eval(PropertyKeys.closeTitle, "Close");
     }
 
     public void setCloseTitle(String closeTitle) {
@@ -143,7 +143,7 @@ abstract class LayoutBase extends UIPanel implements Widget, ClientBehaviorHolde
     }
 
     public boolean isStateful() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.stateful, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.stateful, false);
     }
 
     public void setStateful(boolean stateful) {

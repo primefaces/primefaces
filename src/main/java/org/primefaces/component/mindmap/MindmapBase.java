@@ -48,7 +48,7 @@ abstract class MindmapBase extends UIComponentBase implements Widget, ClientBeha
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -64,7 +64,7 @@ abstract class MindmapBase extends UIComponentBase implements Widget, ClientBeha
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -72,7 +72,7 @@ abstract class MindmapBase extends UIComponentBase implements Widget, ClientBeha
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -80,7 +80,7 @@ abstract class MindmapBase extends UIComponentBase implements Widget, ClientBeha
     }
 
     public int getEffectSpeed() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.effectSpeed, 300);
+        return (Integer) getStateHelper().eval(PropertyKeys.effectSpeed, 300);
     }
 
     public void setEffectSpeed(int effectSpeed) {

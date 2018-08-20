@@ -46,7 +46,7 @@ abstract class StackBase extends AbstractMenu implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -63,7 +63,7 @@ abstract class StackBase extends AbstractMenu implements Widget {
     }
 
     public String getIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.icon, null);
+        return (String) getStateHelper().eval(PropertyKeys.icon, null);
     }
 
     public void setIcon(String icon) {
@@ -71,7 +71,7 @@ abstract class StackBase extends AbstractMenu implements Widget {
     }
 
     public int getOpenSpeed() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.openSpeed, 300);
+        return (Integer) getStateHelper().eval(PropertyKeys.openSpeed, 300);
     }
 
     public void setOpenSpeed(int openSpeed) {
@@ -79,7 +79,7 @@ abstract class StackBase extends AbstractMenu implements Widget {
     }
 
     public int getCloseSpeed() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.closeSpeed, 300);
+        return (Integer) getStateHelper().eval(PropertyKeys.closeSpeed, 300);
     }
 
     public void setCloseSpeed(int closeSpeed) {
@@ -87,7 +87,7 @@ abstract class StackBase extends AbstractMenu implements Widget {
     }
 
     public boolean isExpanded() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.expanded, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.expanded, false);
     }
 
     public void setExpanded(boolean expanded) {

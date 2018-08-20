@@ -37,7 +37,7 @@ abstract class SelectManyButtonBase extends UISelectMany implements Widget, Clie
         onchange,
         style,
         styleClass,
-        tabindex;
+        tabindex
     }
 
     public SelectManyButtonBase() {
@@ -50,7 +50,7 @@ abstract class SelectManyButtonBase extends UISelectMany implements Widget, Clie
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -58,7 +58,7 @@ abstract class SelectManyButtonBase extends UISelectMany implements Widget, Clie
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -66,7 +66,7 @@ abstract class SelectManyButtonBase extends UISelectMany implements Widget, Clie
     }
 
     public String getLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.label, null);
+        return (String) getStateHelper().eval(PropertyKeys.label, null);
     }
 
     public void setLabel(String label) {
@@ -74,7 +74,7 @@ abstract class SelectManyButtonBase extends UISelectMany implements Widget, Clie
     }
 
     public String getOnchange() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onchange, null);
+        return (String) getStateHelper().eval(PropertyKeys.onchange, null);
     }
 
     public void setOnchange(String onchange) {
@@ -82,7 +82,7 @@ abstract class SelectManyButtonBase extends UISelectMany implements Widget, Clie
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -90,7 +90,7 @@ abstract class SelectManyButtonBase extends UISelectMany implements Widget, Clie
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -98,7 +98,7 @@ abstract class SelectManyButtonBase extends UISelectMany implements Widget, Clie
     }
 
     public String getTabindex() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, null);
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, null);
     }
 
     public void setTabindex(String tabindex) {

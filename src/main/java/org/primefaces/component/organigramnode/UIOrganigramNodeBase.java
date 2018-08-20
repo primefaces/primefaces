@@ -31,7 +31,7 @@ abstract class UIOrganigramNodeBase extends UIComponentBase {
         iconPos,
         expandedIcon,
         collapsedIcon,
-        skipLeafHandling;
+        skipLeafHandling
     }
 
     public UIOrganigramNodeBase() {
@@ -44,7 +44,7 @@ abstract class UIOrganigramNodeBase extends UIComponentBase {
     }
 
     public String getType() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.type, null);
+        return (String) getStateHelper().eval(PropertyKeys.type, null);
     }
 
     public void setType(String type) {
@@ -52,7 +52,7 @@ abstract class UIOrganigramNodeBase extends UIComponentBase {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -60,7 +60,7 @@ abstract class UIOrganigramNodeBase extends UIComponentBase {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -68,7 +68,7 @@ abstract class UIOrganigramNodeBase extends UIComponentBase {
     }
 
     public String getIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.icon, null);
+        return (String) getStateHelper().eval(PropertyKeys.icon, null);
     }
 
     public void setIcon(String icon) {
@@ -76,7 +76,7 @@ abstract class UIOrganigramNodeBase extends UIComponentBase {
     }
 
     public String getIconPos() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.iconPos, null);
+        return (String) getStateHelper().eval(PropertyKeys.iconPos, null);
     }
 
     public void setIconPos(String iconPos) {
@@ -84,7 +84,7 @@ abstract class UIOrganigramNodeBase extends UIComponentBase {
     }
 
     public String getExpandedIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.expandedIcon, null);
+        return (String) getStateHelper().eval(PropertyKeys.expandedIcon, null);
     }
 
     public void setExpandedIcon(String expandedIcon) {
@@ -92,7 +92,7 @@ abstract class UIOrganigramNodeBase extends UIComponentBase {
     }
 
     public String getCollapsedIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.collapsedIcon, null);
+        return (String) getStateHelper().eval(PropertyKeys.collapsedIcon, null);
     }
 
     public void setCollapsedIcon(String collapsedIcon) {
@@ -100,7 +100,7 @@ abstract class UIOrganigramNodeBase extends UIComponentBase {
     }
 
     public boolean isSkipLeafHandling() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.skipLeafHandling, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.skipLeafHandling, false);
     }
 
     public void setSkipLeafHandling(boolean skipLeafHandling) {

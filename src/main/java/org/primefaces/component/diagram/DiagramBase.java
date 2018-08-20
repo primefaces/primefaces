@@ -47,7 +47,7 @@ abstract class DiagramBase extends UIOutput implements Widget, ClientBehaviorHol
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -55,7 +55,7 @@ abstract class DiagramBase extends UIOutput implements Widget, ClientBehaviorHol
     }
 
     public String getVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
+        return (String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
     public void setVar(String var) {
@@ -63,7 +63,7 @@ abstract class DiagramBase extends UIOutput implements Widget, ClientBehaviorHol
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -71,7 +71,7 @@ abstract class DiagramBase extends UIOutput implements Widget, ClientBehaviorHol
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {

@@ -39,7 +39,7 @@ abstract class OrganigramBase extends UIComponentBase implements Widget, ClientB
         styleClass,
         leafNodeConnectorHeight,
         zoom,
-        autoScrollToSelection;
+        autoScrollToSelection
     }
 
     public OrganigramBase() {
@@ -52,7 +52,7 @@ abstract class OrganigramBase extends UIComponentBase implements Widget, ClientB
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -68,7 +68,7 @@ abstract class OrganigramBase extends UIComponentBase implements Widget, ClientB
     }
 
     public String getVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
+        return (String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
     public void setVar(String var) {
@@ -84,7 +84,7 @@ abstract class OrganigramBase extends UIComponentBase implements Widget, ClientB
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -92,7 +92,7 @@ abstract class OrganigramBase extends UIComponentBase implements Widget, ClientB
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -100,7 +100,7 @@ abstract class OrganigramBase extends UIComponentBase implements Widget, ClientB
     }
 
     public int getLeafNodeConnectorHeight() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.leafNodeConnectorHeight, 10);
+        return (Integer) getStateHelper().eval(PropertyKeys.leafNodeConnectorHeight, 10);
     }
 
     public void setLeafNodeConnectorHeight(int leafNodeConnectorHeight) {
@@ -108,7 +108,7 @@ abstract class OrganigramBase extends UIComponentBase implements Widget, ClientB
     }
 
     public boolean isZoom() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.zoom, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.zoom, false);
     }
 
     public void setZoom(boolean zoom) {
@@ -116,7 +116,7 @@ abstract class OrganigramBase extends UIComponentBase implements Widget, ClientB
     }
 
     public boolean isAutoScrollToSelection() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoScrollToSelection, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoScrollToSelection, false);
     }
 
     public void setAutoScrollToSelection(boolean autoScrollToSelection) {

@@ -46,7 +46,7 @@ abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox impleme
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -54,7 +54,7 @@ abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox impleme
     }
 
     public String getOnLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.onLabel, null);
     }
 
     public void setOnLabel(String onLabel) {
@@ -62,7 +62,7 @@ abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox impleme
     }
 
     public String getOffLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.offLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.offLabel, null);
     }
 
     public void setOffLabel(String offLabel) {
@@ -70,7 +70,7 @@ abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox impleme
     }
 
     public String getOnIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onIcon, null);
+        return (String) getStateHelper().eval(PropertyKeys.onIcon, null);
     }
 
     public void setOnIcon(String onIcon) {
@@ -78,7 +78,7 @@ abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox impleme
     }
 
     public String getOffIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.offIcon, null);
+        return (String) getStateHelper().eval(PropertyKeys.offIcon, null);
     }
 
     public void setOffIcon(String offIcon) {

@@ -39,7 +39,7 @@ abstract class ToolbarGroupBase extends UIComponentBase {
     }
 
     public String getAlign() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.align, "left");
+        return (String) getStateHelper().eval(PropertyKeys.align, "left");
     }
 
     public void setAlign(String align) {
@@ -47,7 +47,7 @@ abstract class ToolbarGroupBase extends UIComponentBase {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -55,7 +55,7 @@ abstract class ToolbarGroupBase extends UIComponentBase {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {

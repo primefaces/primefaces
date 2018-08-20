@@ -33,7 +33,7 @@ abstract class PanelMenuBase extends AbstractMenu implements Widget {
         style,
         styleClass,
         multiple,
-        stateful;
+        stateful
     }
 
     public PanelMenuBase() {
@@ -46,13 +46,14 @@ abstract class PanelMenuBase extends AbstractMenu implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
+    @Override
     public org.primefaces.model.menu.MenuModel getModel() {
         return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }
@@ -62,7 +63,7 @@ abstract class PanelMenuBase extends AbstractMenu implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -70,7 +71,7 @@ abstract class PanelMenuBase extends AbstractMenu implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -78,7 +79,7 @@ abstract class PanelMenuBase extends AbstractMenu implements Widget {
     }
 
     public boolean isMultiple() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.multiple, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.multiple, true);
     }
 
     public void setMultiple(boolean multiple) {
@@ -86,7 +87,7 @@ abstract class PanelMenuBase extends AbstractMenu implements Widget {
     }
 
     public boolean isStateful() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.stateful, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.stateful, true);
     }
 
     public void setStateful(boolean stateful) {

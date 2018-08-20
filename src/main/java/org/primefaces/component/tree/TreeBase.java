@@ -69,7 +69,7 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -77,7 +77,7 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public boolean isDynamic() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
     }
 
     public void setDynamic(boolean dynamic) {
@@ -85,7 +85,7 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public boolean isCache() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.cache, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
     }
 
     public void setCache(boolean cache) {
@@ -93,7 +93,7 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public String getOnNodeClick() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onNodeClick, null);
+        return (String) getStateHelper().eval(PropertyKeys.onNodeClick, null);
     }
 
     public void setOnNodeClick(String onNodeClick) {
@@ -101,7 +101,7 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -109,7 +109,7 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -117,23 +117,23 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public boolean isHighlight() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.highlight, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.highlight, true);
     }
 
     public void setHighlight(boolean highlight) {
         getStateHelper().put(PropertyKeys.highlight, highlight);
     }
 
-    public java.lang.Object getDatakey() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.datakey, null);
+    public Object getDatakey() {
+        return getStateHelper().eval(PropertyKeys.datakey, null);
     }
 
-    public void setDatakey(java.lang.Object datakey) {
+    public void setDatakey(Object datakey) {
         getStateHelper().put(PropertyKeys.datakey, datakey);
     }
 
     public boolean isAnimate() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.animate, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.animate, false);
     }
 
     public void setAnimate(boolean animate) {
@@ -141,7 +141,7 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public String getOrientation() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.orientation, "vertical");
+        return (String) getStateHelper().eval(PropertyKeys.orientation, "vertical");
     }
 
     public void setOrientation(String orientation) {
@@ -149,7 +149,7 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public boolean isPropagateSelectionUp() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.propagateSelectionUp, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.propagateSelectionUp, true);
     }
 
     public void setPropagateSelectionUp(boolean propagateSelectionUp) {
@@ -157,7 +157,7 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public boolean isPropagateSelectionDown() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.propagateSelectionDown, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.propagateSelectionDown, true);
     }
 
     public void setPropagateSelectionDown(boolean propagateSelectionDown) {
@@ -165,7 +165,7 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public String getDir() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.dir, "ltr");
+        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
 
     public void setDir(String dir) {
@@ -173,7 +173,7 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public boolean isDraggable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.draggable, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.draggable, false);
     }
 
     public void setDraggable(boolean draggable) {
@@ -181,7 +181,7 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public boolean isDroppable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.droppable, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.droppable, false);
     }
 
     public void setDroppable(boolean droppable) {
@@ -189,7 +189,7 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public String getDragdropScope() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.dragdropScope, null);
+        return (String) getStateHelper().eval(PropertyKeys.dragdropScope, null);
     }
 
     public void setDragdropScope(String dragdropScope) {
@@ -197,7 +197,7 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public String getDragMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.dragMode, "self");
+        return (String) getStateHelper().eval(PropertyKeys.dragMode, "self");
     }
 
     public void setDragMode(String dragMode) {
@@ -205,7 +205,7 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public String getDropRestrict() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.dropRestrict, "none");
+        return (String) getStateHelper().eval(PropertyKeys.dropRestrict, "none");
     }
 
     public void setDropRestrict(String dropRestrict) {
@@ -213,23 +213,23 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public int getTabindex() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.tabindex, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.tabindex, 0);
     }
 
     public void setTabindex(int tabindex) {
         getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 
-    public java.lang.Object getFilterBy() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.filterBy, null);
+    public Object getFilterBy() {
+        return getStateHelper().eval(PropertyKeys.filterBy, null);
     }
 
-    public void setFilterBy(java.lang.Object filterBy) {
+    public void setFilterBy(Object filterBy) {
         getStateHelper().put(PropertyKeys.filterBy, filterBy);
     }
 
     public String getFilterMatchMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.filterMatchMode, "startsWith");
+        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, "startsWith");
     }
 
     public void setFilterMatchMode(String filterMatchMode) {
@@ -237,7 +237,7 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -245,7 +245,7 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public boolean isMultipleDrag() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.multipleDrag, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.multipleDrag, false);
     }
 
     public void setMultipleDrag(boolean multipleDrag) {
@@ -253,7 +253,7 @@ abstract class TreeBase extends UITree implements Widget, RTLAware, ClientBehavi
     }
 
     public boolean isDropCopyNode() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.dropCopyNode, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.dropCopyNode, false);
     }
 
     public void setDropCopyNode(boolean dropCopyNode) {

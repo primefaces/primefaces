@@ -97,7 +97,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getPlaceholder() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
+        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
     public void setPlaceholder(String placeholder) {
@@ -105,31 +105,31 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public java.lang.Object getMindate() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.mindate, null);
+    public Object getMindate() {
+        return getStateHelper().eval(PropertyKeys.mindate, null);
     }
 
-    public void setMindate(java.lang.Object mindate) {
+    public void setMindate(Object mindate) {
         getStateHelper().put(PropertyKeys.mindate, mindate);
     }
 
-    public java.lang.Object getMaxdate() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.maxdate, null);
+    public Object getMaxdate() {
+        return getStateHelper().eval(PropertyKeys.maxdate, null);
     }
 
-    public void setMaxdate(java.lang.Object maxdate) {
+    public void setMaxdate(Object maxdate) {
         getStateHelper().put(PropertyKeys.maxdate, maxdate);
     }
 
     public int getPages() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.pages, 1);
+        return (Integer) getStateHelper().eval(PropertyKeys.pages, 1);
     }
 
     public void setPages(int pages) {
@@ -137,7 +137,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.mode, "popup");
+        return (String) getStateHelper().eval(PropertyKeys.mode, "popup");
     }
 
     public void setMode(String mode) {
@@ -145,39 +145,39 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getPattern() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.pattern, null);
+        return (String) getStateHelper().eval(PropertyKeys.pattern, null);
     }
 
     public void setPattern(String pattern) {
         getStateHelper().put(PropertyKeys.pattern, pattern);
     }
 
-    public java.lang.Object getLocale() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.locale, null);
+    public Object getLocale() {
+        return getStateHelper().eval(PropertyKeys.locale, null);
     }
 
-    public void setLocale(java.lang.Object locale) {
+    public void setLocale(Object locale) {
         getStateHelper().put(PropertyKeys.locale, locale);
     }
 
     public boolean isNavigator() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.navigator, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.navigator, false);
     }
 
     public void setNavigator(boolean navigator) {
         getStateHelper().put(PropertyKeys.navigator, navigator);
     }
 
-    public java.lang.Object getTimeZone() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.timeZone, null);
+    public Object getTimeZone() {
+        return getStateHelper().eval(PropertyKeys.timeZone, null);
     }
 
-    public void setTimeZone(java.lang.Object timeZone) {
+    public void setTimeZone(Object timeZone) {
         getStateHelper().put(PropertyKeys.timeZone, timeZone);
     }
 
     public boolean isReadonlyInput() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.readonlyInput, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.readonlyInput, false);
     }
 
     public void setReadonlyInput(boolean readonlyInput) {
@@ -185,7 +185,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public boolean isShowButtonPanel() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showButtonPanel, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showButtonPanel, false);
     }
 
     public void setShowButtonPanel(boolean showButtonPanel) {
@@ -193,7 +193,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, null);
+        return (String) getStateHelper().eval(PropertyKeys.effect, null);
     }
 
     public void setEffect(String effect) {
@@ -201,7 +201,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getEffectDuration() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effectDuration, "normal");
+        return (String) getStateHelper().eval(PropertyKeys.effectDuration, "normal");
     }
 
     public void setEffectDuration(String effectDuration) {
@@ -209,7 +209,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getShowOn() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.showOn, "focus");
+        return (String) getStateHelper().eval(PropertyKeys.showOn, "focus");
     }
 
     public void setShowOn(String showOn) {
@@ -217,7 +217,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public boolean isShowWeek() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showWeek, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showWeek, false);
     }
 
     public void setShowWeek(boolean showWeek) {
@@ -225,7 +225,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public boolean isDisabledWeekends() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabledWeekends, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabledWeekends, false);
     }
 
     public void setDisabledWeekends(boolean disabledWeekends) {
@@ -233,7 +233,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public boolean isShowOtherMonths() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showOtherMonths, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showOtherMonths, false);
     }
 
     public void setShowOtherMonths(boolean showOtherMonths) {
@@ -241,7 +241,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public boolean isSelectOtherMonths() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.selectOtherMonths, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.selectOtherMonths, false);
     }
 
     public void setSelectOtherMonths(boolean selectOtherMonths) {
@@ -249,7 +249,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getYearRange() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.yearRange, null);
+        return (String) getStateHelper().eval(PropertyKeys.yearRange, null);
     }
 
     public void setYearRange(String yearRange) {
@@ -257,7 +257,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public boolean isTimeOnly() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.timeOnly, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.timeOnly, false);
     }
 
     public void setTimeOnly(boolean timeOnly) {
@@ -265,7 +265,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public int getStepHour() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.stepHour, 1);
+        return (Integer) getStateHelper().eval(PropertyKeys.stepHour, 1);
     }
 
     public void setStepHour(int stepHour) {
@@ -273,7 +273,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public int getStepMinute() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.stepMinute, 1);
+        return (Integer) getStateHelper().eval(PropertyKeys.stepMinute, 1);
     }
 
     public void setStepMinute(int stepMinute) {
@@ -281,7 +281,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public int getStepSecond() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.stepSecond, 1);
+        return (Integer) getStateHelper().eval(PropertyKeys.stepSecond, 1);
     }
 
     public void setStepSecond(int stepSecond) {
@@ -289,7 +289,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public int getMinHour() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minHour, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.minHour, 0);
     }
 
     public void setMinHour(int minHour) {
@@ -297,7 +297,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public int getMaxHour() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxHour, 23);
+        return (Integer) getStateHelper().eval(PropertyKeys.maxHour, 23);
     }
 
     public void setMaxHour(int maxHour) {
@@ -305,7 +305,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public int getMinMinute() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minMinute, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.minMinute, 0);
     }
 
     public void setMinMinute(int minMinute) {
@@ -313,7 +313,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public int getMaxMinute() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxMinute, 59);
+        return (Integer) getStateHelper().eval(PropertyKeys.maxMinute, 59);
     }
 
     public void setMaxMinute(int maxMinute) {
@@ -321,7 +321,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public int getMinSecond() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minSecond, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.minSecond, 0);
     }
 
     public void setMinSecond(int minSecond) {
@@ -329,23 +329,23 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public int getMaxSecond() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxSecond, 59);
+        return (Integer) getStateHelper().eval(PropertyKeys.maxSecond, 59);
     }
 
     public void setMaxSecond(int maxSecond) {
         getStateHelper().put(PropertyKeys.maxSecond, maxSecond);
     }
 
-    public java.lang.Object getPagedate() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.pagedate, null);
+    public Object getPagedate() {
+        return getStateHelper().eval(PropertyKeys.pagedate, null);
     }
 
-    public void setPagedate(java.lang.Object pagedate) {
+    public void setPagedate(Object pagedate) {
         getStateHelper().put(PropertyKeys.pagedate, pagedate);
     }
 
     public String getBeforeShowDay() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.beforeShowDay, null);
+        return (String) getStateHelper().eval(PropertyKeys.beforeShowDay, null);
     }
 
     public void setBeforeShowDay(String beforeShowDay) {
@@ -353,7 +353,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getMask() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.mask, "false");
+        return (String) getStateHelper().eval(PropertyKeys.mask, "false");
     }
 
     public void setMask(String mask) {
@@ -361,7 +361,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getTimeControlType() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.timeControlType, "slider");
+        return (String) getStateHelper().eval(PropertyKeys.timeControlType, "slider");
     }
 
     public void setTimeControlType(String timeControlType) {
@@ -369,7 +369,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getBeforeShow() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.beforeShow, null);
+        return (String) getStateHelper().eval(PropertyKeys.beforeShow, null);
     }
 
     public void setBeforeShow(String beforeShow) {
@@ -377,7 +377,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getMaskSlotChar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.maskSlotChar, null);
+        return (String) getStateHelper().eval(PropertyKeys.maskSlotChar, null);
     }
 
     public void setMaskSlotChar(String maskSlotChar) {
@@ -385,7 +385,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public boolean isMaskAutoClear() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.maskAutoClear, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.maskAutoClear, true);
     }
 
     public void setMaskAutoClear(boolean maskAutoClear) {
@@ -393,7 +393,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getTimeControlObject() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.timeControlObject, null);
+        return (String) getStateHelper().eval(PropertyKeys.timeControlObject, null);
     }
 
     public void setTimeControlObject(String timeControlObject) {
@@ -401,7 +401,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public boolean isTimeInput() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.timeInput, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.timeInput, false);
     }
 
     public void setTimeInput(boolean timeInput) {
@@ -409,7 +409,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getShowHour() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.showHour, null);
+        return (String) getStateHelper().eval(PropertyKeys.showHour, null);
     }
 
     public void setShowHour(String showHour) {
@@ -417,7 +417,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getShowMinute() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.showMinute, null);
+        return (String) getStateHelper().eval(PropertyKeys.showMinute, null);
     }
 
     public void setShowMinute(String showMinute) {
@@ -425,7 +425,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getShowSecond() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.showSecond, null);
+        return (String) getStateHelper().eval(PropertyKeys.showSecond, null);
     }
 
     public void setShowSecond(String showSecond) {
@@ -433,7 +433,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getShowMillisec() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.showMillisec, null);
+        return (String) getStateHelper().eval(PropertyKeys.showMillisec, null);
     }
 
     public void setShowMillisec(String showMillisec) {
@@ -441,7 +441,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public boolean isShowTodayButton() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showTodayButton, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.showTodayButton, true);
     }
 
     public void setShowTodayButton(boolean showTodayButton) {
@@ -449,7 +449,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getButtonTabindex() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.buttonTabindex, null);
+        return (String) getStateHelper().eval(PropertyKeys.buttonTabindex, null);
     }
 
     public void setButtonTabindex(String buttonTabindex) {
@@ -457,7 +457,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getInputStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.inputStyle, null);
+        return (String) getStateHelper().eval(PropertyKeys.inputStyle, null);
     }
 
     public void setInputStyle(String inputStyle) {
@@ -465,7 +465,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getInputStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.inputStyleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.inputStyleClass, null);
     }
 
     public void setInputStyleClass(String inputStyleClass) {
@@ -473,7 +473,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public String getType() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.type, "text");
+        return (String) getStateHelper().eval(PropertyKeys.type, "text");
     }
 
     public void setType(String type) {
@@ -481,7 +481,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public boolean isFocusOnSelect() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.focusOnSelect, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.focusOnSelect, false);
     }
 
     public void setFocusOnSelect(boolean focusOnSelect) {
@@ -489,7 +489,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public boolean isOneLine() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.oneLine, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.oneLine, false);
     }
 
     public void setOneLine(boolean oneLine) {
@@ -497,7 +497,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public int getDefaultHour() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.defaultHour, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.defaultHour, 0);
     }
 
     public void setDefaultHour(int defaultHour) {
@@ -505,7 +505,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public int getDefaultMinute() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.defaultMinute, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.defaultMinute, 0);
     }
 
     public void setDefaultMinute(int defaultMinute) {
@@ -513,7 +513,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public int getDefaultSecond() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.defaultSecond, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.defaultSecond, 0);
     }
 
     public void setDefaultSecond(int defaultSecond) {
@@ -521,7 +521,7 @@ abstract class CalendarBase extends HtmlInputText implements Widget, InputHolder
     }
 
     public int getDefaultMillisec() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.defaultMillisec, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.defaultMillisec, 0);
     }
 
     public void setDefaultMillisec(int defaultMillisec) {

@@ -75,7 +75,7 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -83,7 +83,7 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public String getFor() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
+        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
     public void setFor(String _for) {
@@ -91,7 +91,7 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public boolean isAspectRatio() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.aspectRatio, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.aspectRatio, false);
     }
 
     public void setAspectRatio(boolean aspectRatio) {
@@ -99,7 +99,7 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public boolean isProxy() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.proxy, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.proxy, false);
     }
 
     public void setProxy(boolean proxy) {
@@ -107,7 +107,7 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public String getHandles() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.handles, null);
+        return (String) getStateHelper().eval(PropertyKeys.handles, null);
     }
 
     public void setHandles(String handles) {
@@ -115,7 +115,7 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public boolean isGhost() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.ghost, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.ghost, false);
     }
 
     public void setGhost(boolean ghost) {
@@ -123,7 +123,7 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public boolean isAnimate() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.animate, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.animate, false);
     }
 
     public void setAnimate(boolean animate) {
@@ -131,7 +131,7 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public String getEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, "swing");
+        return (String) getStateHelper().eval(PropertyKeys.effect, "swing");
     }
 
     public void setEffect(String effect) {
@@ -139,7 +139,7 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public String getEffectDuration() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effectDuration, "normal");
+        return (String) getStateHelper().eval(PropertyKeys.effectDuration, "normal");
     }
 
     public void setEffectDuration(String effectDuration) {
@@ -147,7 +147,7 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public int getMaxWidth() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxWidth, Integer.MAX_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.maxWidth, Integer.MAX_VALUE);
     }
 
     public void setMaxWidth(int maxWidth) {
@@ -155,7 +155,7 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public int getMaxHeight() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxHeight, Integer.MAX_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.maxHeight, Integer.MAX_VALUE);
     }
 
     public void setMaxHeight(int maxHeight) {
@@ -163,7 +163,7 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public int getMinWidth() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minWidth, Integer.MIN_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.minWidth, Integer.MIN_VALUE);
     }
 
     public void setMinWidth(int minWidth) {
@@ -171,7 +171,7 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public int getMinHeight() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minHeight, Integer.MIN_VALUE);
+        return (Integer) getStateHelper().eval(PropertyKeys.minHeight, Integer.MIN_VALUE);
     }
 
     public void setMinHeight(int minHeight) {
@@ -179,7 +179,7 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public boolean isContainment() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.containment, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.containment, false);
     }
 
     public void setContainment(boolean containment) {
@@ -187,7 +187,7 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public int getGrid() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.grid, 1);
+        return (Integer) getStateHelper().eval(PropertyKeys.grid, 1);
     }
 
     public void setGrid(int grid) {
@@ -195,7 +195,7 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public String getOnStart() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onStart, null);
+        return (String) getStateHelper().eval(PropertyKeys.onStart, null);
     }
 
     public void setOnStart(String onStart) {
@@ -203,7 +203,7 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public String getOnResize() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onResize, null);
+        return (String) getStateHelper().eval(PropertyKeys.onResize, null);
     }
 
     public void setOnResize(String onResize) {
@@ -211,7 +211,7 @@ abstract class ResizableBase extends UIComponentBase implements Widget, ClientBe
     }
 
     public String getOnStop() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onStop, null);
+        return (String) getStateHelper().eval(PropertyKeys.onStop, null);
     }
 
     public void setOnStop(String onStop) {

@@ -57,7 +57,7 @@ abstract class OrderListBase extends UIInput implements Widget, ClientBehaviorHo
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -65,7 +65,7 @@ abstract class OrderListBase extends UIInput implements Widget, ClientBehaviorHo
     }
 
     public String getVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.var, null);
+        return (String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
     public void setVar(String var) {
@@ -73,23 +73,23 @@ abstract class OrderListBase extends UIInput implements Widget, ClientBehaviorHo
     }
 
     public String getItemLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.itemLabel, null);
+        return (String) getStateHelper().eval(PropertyKeys.itemLabel, null);
     }
 
     public void setItemLabel(String itemLabel) {
         getStateHelper().put(PropertyKeys.itemLabel, itemLabel);
     }
 
-    public java.lang.Object getItemValue() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.itemValue, null);
+    public Object getItemValue() {
+        return getStateHelper().eval(PropertyKeys.itemValue, null);
     }
 
-    public void setItemValue(java.lang.Object itemValue) {
+    public void setItemValue(Object itemValue) {
         getStateHelper().put(PropertyKeys.itemValue, itemValue);
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -97,7 +97,7 @@ abstract class OrderListBase extends UIInput implements Widget, ClientBehaviorHo
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -105,7 +105,7 @@ abstract class OrderListBase extends UIInput implements Widget, ClientBehaviorHo
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -113,7 +113,7 @@ abstract class OrderListBase extends UIInput implements Widget, ClientBehaviorHo
     }
 
     public String getEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, null);
+        return (String) getStateHelper().eval(PropertyKeys.effect, null);
     }
 
     public void setEffect(String effect) {
@@ -121,7 +121,7 @@ abstract class OrderListBase extends UIInput implements Widget, ClientBehaviorHo
     }
 
     public String getMoveUpLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.moveUpLabel, "Move Up");
+        return (String) getStateHelper().eval(PropertyKeys.moveUpLabel, "Move Up");
     }
 
     public void setMoveUpLabel(String moveUpLabel) {
@@ -129,7 +129,7 @@ abstract class OrderListBase extends UIInput implements Widget, ClientBehaviorHo
     }
 
     public String getMoveTopLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.moveTopLabel, "Move Top");
+        return (String) getStateHelper().eval(PropertyKeys.moveTopLabel, "Move Top");
     }
 
     public void setMoveTopLabel(String moveTopLabel) {
@@ -137,7 +137,7 @@ abstract class OrderListBase extends UIInput implements Widget, ClientBehaviorHo
     }
 
     public String getMoveDownLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.moveDownLabel, "Move Down");
+        return (String) getStateHelper().eval(PropertyKeys.moveDownLabel, "Move Down");
     }
 
     public void setMoveDownLabel(String moveDownLabel) {
@@ -145,7 +145,7 @@ abstract class OrderListBase extends UIInput implements Widget, ClientBehaviorHo
     }
 
     public String getMoveBottomLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.moveBottomLabel, "Move Bottom");
+        return (String) getStateHelper().eval(PropertyKeys.moveBottomLabel, "Move Bottom");
     }
 
     public void setMoveBottomLabel(String moveBottomLabel) {
@@ -153,7 +153,7 @@ abstract class OrderListBase extends UIInput implements Widget, ClientBehaviorHo
     }
 
     public String getControlsLocation() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.controlsLocation, "left");
+        return (String) getStateHelper().eval(PropertyKeys.controlsLocation, "left");
     }
 
     public void setControlsLocation(String controlsLocation) {
@@ -161,7 +161,7 @@ abstract class OrderListBase extends UIInput implements Widget, ClientBehaviorHo
     }
 
     public boolean isResponsive() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
     }
 
     public void setResponsive(boolean responsive) {

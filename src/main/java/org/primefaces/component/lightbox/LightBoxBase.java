@@ -38,7 +38,7 @@ abstract class LightBoxBase extends UIComponentBase implements Widget {
         iframeTitle,
         visible,
         onShow,
-        onHide;
+        onHide
     }
 
     public LightBoxBase() {
@@ -51,7 +51,7 @@ abstract class LightBoxBase extends UIComponentBase implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -59,7 +59,7 @@ abstract class LightBoxBase extends UIComponentBase implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -67,7 +67,7 @@ abstract class LightBoxBase extends UIComponentBase implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -75,7 +75,7 @@ abstract class LightBoxBase extends UIComponentBase implements Widget {
     }
 
     public String getWidth() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.width, null);
+        return (String) getStateHelper().eval(PropertyKeys.width, null);
     }
 
     public void setWidth(String width) {
@@ -83,7 +83,7 @@ abstract class LightBoxBase extends UIComponentBase implements Widget {
     }
 
     public String getHeight() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.height, null);
+        return (String) getStateHelper().eval(PropertyKeys.height, null);
     }
 
     public void setHeight(String height) {
@@ -91,7 +91,7 @@ abstract class LightBoxBase extends UIComponentBase implements Widget {
     }
 
     public boolean isIframe() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.iframe, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.iframe, false);
     }
 
     public void setIframe(boolean iframe) {
@@ -99,7 +99,7 @@ abstract class LightBoxBase extends UIComponentBase implements Widget {
     }
 
     public String getIframeTitle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.iframeTitle, null);
+        return (String) getStateHelper().eval(PropertyKeys.iframeTitle, null);
     }
 
     public void setIframeTitle(String iframeTitle) {
@@ -107,7 +107,7 @@ abstract class LightBoxBase extends UIComponentBase implements Widget {
     }
 
     public boolean isVisible() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.visible, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.visible, false);
     }
 
     public void setVisible(boolean visible) {
@@ -115,7 +115,7 @@ abstract class LightBoxBase extends UIComponentBase implements Widget {
     }
 
     public String getOnShow() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onShow, null);
+        return (String) getStateHelper().eval(PropertyKeys.onShow, null);
     }
 
     public void setOnShow(String onShow) {
@@ -123,7 +123,7 @@ abstract class LightBoxBase extends UIComponentBase implements Widget {
     }
 
     public String getOnHide() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onHide, null);
+        return (String) getStateHelper().eval(PropertyKeys.onHide, null);
     }
 
     public void setOnHide(String onHide) {

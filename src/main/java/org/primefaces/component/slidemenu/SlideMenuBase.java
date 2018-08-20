@@ -38,7 +38,7 @@ abstract class SlideMenuBase extends AbstractMenu implements Widget, OverlayMenu
         my,
         at,
         overlay,
-        triggerEvent;
+        triggerEvent
     }
 
     public SlideMenuBase() {
@@ -51,13 +51,14 @@ abstract class SlideMenuBase extends AbstractMenu implements Widget, OverlayMenu
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
+    @Override
     public org.primefaces.model.menu.MenuModel getModel() {
         return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }
@@ -67,7 +68,7 @@ abstract class SlideMenuBase extends AbstractMenu implements Widget, OverlayMenu
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -75,7 +76,7 @@ abstract class SlideMenuBase extends AbstractMenu implements Widget, OverlayMenu
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -83,31 +84,34 @@ abstract class SlideMenuBase extends AbstractMenu implements Widget, OverlayMenu
     }
 
     public String getBackLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.backLabel, "Back");
+        return (String) getStateHelper().eval(PropertyKeys.backLabel, "Back");
     }
 
     public void setBackLabel(String backLabel) {
         getStateHelper().put(PropertyKeys.backLabel, backLabel);
     }
 
+    @Override
     public String getTrigger() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.trigger, null);
+        return (String) getStateHelper().eval(PropertyKeys.trigger, null);
     }
 
     public void setTrigger(String trigger) {
         getStateHelper().put(PropertyKeys.trigger, trigger);
     }
 
+    @Override
     public String getMy() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.my, null);
+        return (String) getStateHelper().eval(PropertyKeys.my, null);
     }
 
     public void setMy(String my) {
         getStateHelper().put(PropertyKeys.my, my);
     }
 
+    @Override
     public String getAt() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.at, null);
+        return (String) getStateHelper().eval(PropertyKeys.at, null);
     }
 
     public void setAt(String at) {
@@ -115,15 +119,16 @@ abstract class SlideMenuBase extends AbstractMenu implements Widget, OverlayMenu
     }
 
     public boolean isOverlay() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.overlay, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.overlay, false);
     }
 
     public void setOverlay(boolean overlay) {
         getStateHelper().put(PropertyKeys.overlay, overlay);
     }
 
+    @Override
     public String getTriggerEvent() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.triggerEvent, "click");
+        return (String) getStateHelper().eval(PropertyKeys.triggerEvent, "click");
     }
 
     public void setTriggerEvent(String triggerEvent) {

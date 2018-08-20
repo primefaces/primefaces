@@ -39,7 +39,7 @@ abstract class ToggleSwitchBase extends UIInput implements Widget, ClientBehavio
         styleClass,
         tabindex,
         onfocus,
-        onblur;
+        onblur
     }
 
     public ToggleSwitchBase() {
@@ -52,7 +52,7 @@ abstract class ToggleSwitchBase extends UIInput implements Widget, ClientBehavio
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -60,7 +60,7 @@ abstract class ToggleSwitchBase extends UIInput implements Widget, ClientBehavio
     }
 
     public String getLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.label, null);
+        return (String) getStateHelper().eval(PropertyKeys.label, null);
     }
 
     public void setLabel(String label) {
@@ -68,7 +68,7 @@ abstract class ToggleSwitchBase extends UIInput implements Widget, ClientBehavio
     }
 
     public boolean isDisabled() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
     public void setDisabled(boolean disabled) {
@@ -76,7 +76,7 @@ abstract class ToggleSwitchBase extends UIInput implements Widget, ClientBehavio
     }
 
     public String getOnchange() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onchange, null);
+        return (String) getStateHelper().eval(PropertyKeys.onchange, null);
     }
 
     public void setOnchange(String onchange) {
@@ -84,7 +84,7 @@ abstract class ToggleSwitchBase extends UIInput implements Widget, ClientBehavio
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -92,7 +92,7 @@ abstract class ToggleSwitchBase extends UIInput implements Widget, ClientBehavio
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -100,7 +100,7 @@ abstract class ToggleSwitchBase extends UIInput implements Widget, ClientBehavio
     }
 
     public String getTabindex() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, null);
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, null);
     }
 
     public void setTabindex(String tabindex) {
@@ -108,7 +108,7 @@ abstract class ToggleSwitchBase extends UIInput implements Widget, ClientBehavio
     }
 
     public String getOnfocus() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onfocus, null);
+        return (String) getStateHelper().eval(PropertyKeys.onfocus, null);
     }
 
     public void setOnfocus(String onfocus) {
@@ -116,7 +116,7 @@ abstract class ToggleSwitchBase extends UIInput implements Widget, ClientBehavio
     }
 
     public String getOnblur() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onblur, null);
+        return (String) getStateHelper().eval(PropertyKeys.onblur, null);
     }
 
     public void setOnblur(String onblur) {

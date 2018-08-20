@@ -52,7 +52,7 @@ abstract class BreadCrumbBase extends AbstractMenu implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -60,7 +60,7 @@ abstract class BreadCrumbBase extends AbstractMenu implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -68,7 +68,7 @@ abstract class BreadCrumbBase extends AbstractMenu implements Widget {
     }
 
     public String getHomeDisplay() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.homeDisplay, "icon");
+        return (String) getStateHelper().eval(PropertyKeys.homeDisplay, "icon");
     }
 
     public void setHomeDisplay(String homeDisplay) {

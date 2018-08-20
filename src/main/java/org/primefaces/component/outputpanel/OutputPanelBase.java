@@ -35,7 +35,7 @@ abstract class OutputPanelBase extends UIPanel implements Widget, ClientBehavior
         styleClass,
         deferred,
         deferredMode,
-        layout;
+        layout
     }
 
     public OutputPanelBase() {
@@ -48,7 +48,7 @@ abstract class OutputPanelBase extends UIPanel implements Widget, ClientBehavior
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -56,7 +56,7 @@ abstract class OutputPanelBase extends UIPanel implements Widget, ClientBehavior
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -64,7 +64,7 @@ abstract class OutputPanelBase extends UIPanel implements Widget, ClientBehavior
     }
 
     public boolean isDeferred() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.deferred, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.deferred, false);
     }
 
     public void setDeferred(boolean deferred) {
@@ -72,7 +72,7 @@ abstract class OutputPanelBase extends UIPanel implements Widget, ClientBehavior
     }
 
     public String getDeferredMode() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.deferredMode, "load");
+        return (String) getStateHelper().eval(PropertyKeys.deferredMode, "load");
     }
 
     public void setDeferredMode(String deferredMode) {
@@ -80,7 +80,7 @@ abstract class OutputPanelBase extends UIPanel implements Widget, ClientBehavior
     }
 
     public String getLayout() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.layout, "block");
+        return (String) getStateHelper().eval(PropertyKeys.layout, "block");
     }
 
     public void setLayout(String layout) {

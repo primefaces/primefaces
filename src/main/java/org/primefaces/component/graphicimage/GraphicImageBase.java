@@ -29,7 +29,7 @@ abstract class GraphicImageBase extends HtmlGraphicImage {
         cache,
         name,
         library,
-        stream;
+        stream
     }
 
     public GraphicImageBase() {
@@ -42,7 +42,7 @@ abstract class GraphicImageBase extends HtmlGraphicImage {
     }
 
     public boolean isCache() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.cache, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
     }
 
     public void setCache(boolean cache) {
@@ -50,7 +50,7 @@ abstract class GraphicImageBase extends HtmlGraphicImage {
     }
 
     public String getName() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.name, null);
+        return (String) getStateHelper().eval(PropertyKeys.name, null);
     }
 
     public void setName(String name) {
@@ -58,7 +58,7 @@ abstract class GraphicImageBase extends HtmlGraphicImage {
     }
 
     public String getLibrary() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.library, null);
+        return (String) getStateHelper().eval(PropertyKeys.library, null);
     }
 
     public void setLibrary(String library) {
@@ -66,7 +66,7 @@ abstract class GraphicImageBase extends HtmlGraphicImage {
     }
 
     public boolean isStream() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.stream, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.stream, true);
     }
 
     public void setStream(boolean stream) {

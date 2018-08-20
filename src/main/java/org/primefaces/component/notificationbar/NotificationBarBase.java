@@ -35,7 +35,7 @@ abstract class NotificationBarBase extends UIComponentBase implements Widget {
         position,
         effect,
         effectSpeed,
-        autoDisplay;
+        autoDisplay
     }
 
     public NotificationBarBase() {
@@ -48,7 +48,7 @@ abstract class NotificationBarBase extends UIComponentBase implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -56,7 +56,7 @@ abstract class NotificationBarBase extends UIComponentBase implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -64,7 +64,7 @@ abstract class NotificationBarBase extends UIComponentBase implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -72,7 +72,7 @@ abstract class NotificationBarBase extends UIComponentBase implements Widget {
     }
 
     public String getPosition() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.position, "top");
+        return (String) getStateHelper().eval(PropertyKeys.position, "top");
     }
 
     public void setPosition(String position) {
@@ -80,7 +80,7 @@ abstract class NotificationBarBase extends UIComponentBase implements Widget {
     }
 
     public String getEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, "fade");
+        return (String) getStateHelper().eval(PropertyKeys.effect, "fade");
     }
 
     public void setEffect(String effect) {
@@ -88,7 +88,7 @@ abstract class NotificationBarBase extends UIComponentBase implements Widget {
     }
 
     public String getEffectSpeed() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effectSpeed, "normal");
+        return (String) getStateHelper().eval(PropertyKeys.effectSpeed, "normal");
     }
 
     public void setEffectSpeed(String effectSpeed) {
@@ -96,7 +96,7 @@ abstract class NotificationBarBase extends UIComponentBase implements Widget {
     }
 
     public boolean isAutoDisplay() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.autoDisplay, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoDisplay, false);
     }
 
     public void setAutoDisplay(boolean autoDisplay) {

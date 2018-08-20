@@ -46,7 +46,7 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
         closeOnEscape,
         dir,
         global,
-        responsive;
+        responsive
     }
 
     public ConfirmDialogBase() {
@@ -59,7 +59,7 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -67,7 +67,7 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
     }
 
     public String getMessage() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.message, null);
+        return (String) getStateHelper().eval(PropertyKeys.message, null);
     }
 
     public void setMessage(String message) {
@@ -75,7 +75,7 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
     }
 
     public String getHeader() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.header, null);
+        return (String) getStateHelper().eval(PropertyKeys.header, null);
     }
 
     public void setHeader(String header) {
@@ -83,7 +83,7 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
     }
 
     public String getSeverity() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.severity, "alert");
+        return (String) getStateHelper().eval(PropertyKeys.severity, "alert");
     }
 
     public void setSeverity(String severity) {
@@ -91,7 +91,7 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
     }
 
     public String getWidth() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.width, null);
+        return (String) getStateHelper().eval(PropertyKeys.width, null);
     }
 
     public void setWidth(String width) {
@@ -99,7 +99,7 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
     }
 
     public String getHeight() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.height, null);
+        return (String) getStateHelper().eval(PropertyKeys.height, null);
     }
 
     public void setHeight(String height) {
@@ -107,7 +107,7 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -115,7 +115,7 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -123,7 +123,7 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
     }
 
     public boolean isClosable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.closable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.closable, true);
     }
 
     public void setClosable(boolean closable) {
@@ -131,7 +131,7 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
     }
 
     public String getAppendTo() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.appendTo, null);
+        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
     }
 
     public void setAppendTo(String appendTo) {
@@ -139,7 +139,7 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
     }
 
     public boolean isVisible() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.visible, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.visible, false);
     }
 
     public void setVisible(boolean visible) {
@@ -147,7 +147,7 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
     }
 
     public String getShowEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.showEffect, null);
+        return (String) getStateHelper().eval(PropertyKeys.showEffect, null);
     }
 
     public void setShowEffect(String showEffect) {
@@ -155,7 +155,7 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
     }
 
     public String getHideEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.hideEffect, null);
+        return (String) getStateHelper().eval(PropertyKeys.hideEffect, null);
     }
 
     public void setHideEffect(String hideEffect) {
@@ -163,7 +163,7 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
     }
 
     public boolean isCloseOnEscape() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.closeOnEscape, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.closeOnEscape, false);
     }
 
     public void setCloseOnEscape(boolean closeOnEscape) {
@@ -171,7 +171,7 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
     }
 
     public String getDir() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.dir, "ltr");
+        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
 
     public void setDir(String dir) {
@@ -179,7 +179,7 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
     }
 
     public boolean isGlobal() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.global, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.global, false);
     }
 
     public void setGlobal(boolean global) {
@@ -187,7 +187,7 @@ abstract class ConfirmDialogBase extends UIPanel implements Widget, RTLAware {
     }
 
     public boolean isResponsive() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.responsive, false);
     }
 
     public void setResponsive(boolean responsive) {

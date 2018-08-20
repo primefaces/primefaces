@@ -50,7 +50,7 @@ abstract class SpinnerBase extends HtmlInputText implements Widget, InputHolder 
     }
 
     public String getPlaceholder() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.placeholder, null);
+        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
     }
 
     public void setPlaceholder(String placeholder) {
@@ -58,7 +58,7 @@ abstract class SpinnerBase extends HtmlInputText implements Widget, InputHolder 
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -66,7 +66,7 @@ abstract class SpinnerBase extends HtmlInputText implements Widget, InputHolder 
     }
 
     public double getStepFactor() {
-        return (java.lang.Double) getStateHelper().eval(PropertyKeys.stepFactor, 1.0);
+        return (Double) getStateHelper().eval(PropertyKeys.stepFactor, 1.0);
     }
 
     public void setStepFactor(double stepFactor) {
@@ -74,7 +74,7 @@ abstract class SpinnerBase extends HtmlInputText implements Widget, InputHolder 
     }
 
     public double getMin() {
-        return (java.lang.Double) getStateHelper().eval(PropertyKeys.min, java.lang.Double.MIN_VALUE);
+        return (Double) getStateHelper().eval(PropertyKeys.min, Double.MIN_VALUE);
     }
 
     public void setMin(double min) {
@@ -82,7 +82,7 @@ abstract class SpinnerBase extends HtmlInputText implements Widget, InputHolder 
     }
 
     public double getMax() {
-        return (java.lang.Double) getStateHelper().eval(PropertyKeys.max, java.lang.Double.MAX_VALUE);
+        return (Double) getStateHelper().eval(PropertyKeys.max, Double.MAX_VALUE);
     }
 
     public void setMax(double max) {
@@ -90,7 +90,7 @@ abstract class SpinnerBase extends HtmlInputText implements Widget, InputHolder 
     }
 
     public String getPrefix() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.prefix, null);
+        return (String) getStateHelper().eval(PropertyKeys.prefix, null);
     }
 
     public void setPrefix(String prefix) {
@@ -98,7 +98,7 @@ abstract class SpinnerBase extends HtmlInputText implements Widget, InputHolder 
     }
 
     public String getSuffix() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.suffix, null);
+        return (String) getStateHelper().eval(PropertyKeys.suffix, null);
     }
 
     public void setSuffix(String suffix) {
@@ -106,7 +106,7 @@ abstract class SpinnerBase extends HtmlInputText implements Widget, InputHolder 
     }
 
     public String getDecimalPlaces() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.decimalPlaces, null);
+        return (String) getStateHelper().eval(PropertyKeys.decimalPlaces, null);
     }
 
     public void setDecimalPlaces(String decimalPlaces) {

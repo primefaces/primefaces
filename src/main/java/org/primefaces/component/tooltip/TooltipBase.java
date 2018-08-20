@@ -73,7 +73,7 @@ abstract class TooltipBase extends UIOutput implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -81,7 +81,7 @@ abstract class TooltipBase extends UIOutput implements Widget {
     }
 
     public String getShowEvent() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.showEvent, null);
+        return (String) getStateHelper().eval(PropertyKeys.showEvent, null);
     }
 
     public void setShowEvent(String showEvent) {
@@ -89,7 +89,7 @@ abstract class TooltipBase extends UIOutput implements Widget {
     }
 
     public String getShowEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.showEffect, "fade");
+        return (String) getStateHelper().eval(PropertyKeys.showEffect, "fade");
     }
 
     public void setShowEffect(String showEffect) {
@@ -97,7 +97,7 @@ abstract class TooltipBase extends UIOutput implements Widget {
     }
 
     public int getShowDelay() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.showDelay, 150);
+        return (Integer) getStateHelper().eval(PropertyKeys.showDelay, 150);
     }
 
     public void setShowDelay(int showDelay) {
@@ -105,7 +105,7 @@ abstract class TooltipBase extends UIOutput implements Widget {
     }
 
     public String getHideEvent() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.hideEvent, null);
+        return (String) getStateHelper().eval(PropertyKeys.hideEvent, null);
     }
 
     public void setHideEvent(String hideEvent) {
@@ -113,7 +113,7 @@ abstract class TooltipBase extends UIOutput implements Widget {
     }
 
     public String getHideEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.hideEffect, "fade");
+        return (String) getStateHelper().eval(PropertyKeys.hideEffect, "fade");
     }
 
     public void setHideEffect(String hideEffect) {
@@ -121,7 +121,7 @@ abstract class TooltipBase extends UIOutput implements Widget {
     }
 
     public int getHideDelay() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.hideDelay, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.hideDelay, 0);
     }
 
     public void setHideDelay(int hideDelay) {
@@ -129,7 +129,7 @@ abstract class TooltipBase extends UIOutput implements Widget {
     }
 
     public String getFor() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.forValue, null);
+        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
     }
 
     public void setFor(String _for) {
@@ -137,7 +137,7 @@ abstract class TooltipBase extends UIOutput implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -145,7 +145,7 @@ abstract class TooltipBase extends UIOutput implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -153,7 +153,7 @@ abstract class TooltipBase extends UIOutput implements Widget {
     }
 
     public String getGlobalSelector() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.globalSelector, null);
+        return (String) getStateHelper().eval(PropertyKeys.globalSelector, null);
     }
 
     public void setGlobalSelector(String globalSelector) {
@@ -161,7 +161,7 @@ abstract class TooltipBase extends UIOutput implements Widget {
     }
 
     public boolean isEscape() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
     }
 
     public void setEscape(boolean escape) {
@@ -169,7 +169,7 @@ abstract class TooltipBase extends UIOutput implements Widget {
     }
 
     public boolean isTrackMouse() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.trackMouse, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.trackMouse, false);
     }
 
     public void setTrackMouse(boolean trackMouse) {
@@ -177,7 +177,7 @@ abstract class TooltipBase extends UIOutput implements Widget {
     }
 
     public String getBeforeShow() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.beforeShow, null);
+        return (String) getStateHelper().eval(PropertyKeys.beforeShow, null);
     }
 
     public void setBeforeShow(String beforeShow) {
@@ -185,7 +185,7 @@ abstract class TooltipBase extends UIOutput implements Widget {
     }
 
     public String getOnHide() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onHide, null);
+        return (String) getStateHelper().eval(PropertyKeys.onHide, null);
     }
 
     public void setOnHide(String onHide) {
@@ -193,7 +193,7 @@ abstract class TooltipBase extends UIOutput implements Widget {
     }
 
     public String getOnShow() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onShow, null);
+        return (String) getStateHelper().eval(PropertyKeys.onShow, null);
     }
 
     public void setOnShow(String onShow) {
@@ -201,7 +201,7 @@ abstract class TooltipBase extends UIOutput implements Widget {
     }
 
     public String getPosition() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.position, "right");
+        return (String) getStateHelper().eval(PropertyKeys.position, "right");
     }
 
     public void setPosition(String position) {
@@ -209,7 +209,7 @@ abstract class TooltipBase extends UIOutput implements Widget {
     }
 
     public boolean isDelegate() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.delegate, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.delegate, false);
     }
 
     public void setDelegate(boolean delegate) {

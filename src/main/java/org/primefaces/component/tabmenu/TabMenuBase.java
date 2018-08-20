@@ -45,7 +45,7 @@ abstract class TabMenuBase extends AbstractMenu implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -62,7 +62,7 @@ abstract class TabMenuBase extends AbstractMenu implements Widget {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -70,7 +70,7 @@ abstract class TabMenuBase extends AbstractMenu implements Widget {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -78,7 +78,7 @@ abstract class TabMenuBase extends AbstractMenu implements Widget {
     }
 
     public int getActiveIndex() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.activeIndex, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.activeIndex, 0);
     }
 
     public void setActiveIndex(int activeIndex) {

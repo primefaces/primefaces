@@ -44,7 +44,7 @@ abstract class UISubmenuBase extends UIComponentBase implements Submenu {
 
     @Override
     public String getLabel() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.label, null);
+        return (String) getStateHelper().eval(PropertyKeys.label, null);
     }
 
     public void setLabel(String label) {
@@ -53,7 +53,7 @@ abstract class UISubmenuBase extends UIComponentBase implements Submenu {
 
     @Override
     public String getIcon() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.icon, null);
+        return (String) getStateHelper().eval(PropertyKeys.icon, null);
     }
 
     public void setIcon(String icon) {
@@ -62,7 +62,7 @@ abstract class UISubmenuBase extends UIComponentBase implements Submenu {
 
     @Override
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -71,7 +71,7 @@ abstract class UISubmenuBase extends UIComponentBase implements Submenu {
 
     @Override
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -80,7 +80,7 @@ abstract class UISubmenuBase extends UIComponentBase implements Submenu {
 
     @Override
     public boolean isExpanded() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.expanded, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.expanded, false);
     }
 
     public void setExpanded(boolean expanded) {

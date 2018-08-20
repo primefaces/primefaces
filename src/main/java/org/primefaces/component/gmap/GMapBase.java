@@ -59,7 +59,7 @@ abstract class GMapBase extends UIComponentBase implements Widget, ClientBehavio
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -75,7 +75,7 @@ abstract class GMapBase extends UIComponentBase implements Widget, ClientBehavio
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -83,7 +83,7 @@ abstract class GMapBase extends UIComponentBase implements Widget, ClientBehavio
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -91,7 +91,7 @@ abstract class GMapBase extends UIComponentBase implements Widget, ClientBehavio
     }
 
     public String getType() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.type, null);
+        return (String) getStateHelper().eval(PropertyKeys.type, null);
     }
 
     public void setType(String type) {
@@ -99,7 +99,7 @@ abstract class GMapBase extends UIComponentBase implements Widget, ClientBehavio
     }
 
     public String getCenter() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.center, null);
+        return (String) getStateHelper().eval(PropertyKeys.center, null);
     }
 
     public void setCenter(String center) {
@@ -107,7 +107,7 @@ abstract class GMapBase extends UIComponentBase implements Widget, ClientBehavio
     }
 
     public int getZoom() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.zoom, 8);
+        return (Integer) getStateHelper().eval(PropertyKeys.zoom, 8);
     }
 
     public void setZoom(int zoom) {
@@ -115,7 +115,7 @@ abstract class GMapBase extends UIComponentBase implements Widget, ClientBehavio
     }
 
     public boolean isStreetView() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.streetView, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.streetView, false);
     }
 
     public void setStreetView(boolean streetView) {
@@ -123,7 +123,7 @@ abstract class GMapBase extends UIComponentBase implements Widget, ClientBehavio
     }
 
     public boolean isDisableDefaultUI() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disableDefaultUI, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disableDefaultUI, false);
     }
 
     public void setDisableDefaultUI(boolean disableDefaultUI) {
@@ -131,7 +131,7 @@ abstract class GMapBase extends UIComponentBase implements Widget, ClientBehavio
     }
 
     public boolean isNavigationControl() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.navigationControl, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.navigationControl, true);
     }
 
     public void setNavigationControl(boolean navigationControl) {
@@ -139,7 +139,7 @@ abstract class GMapBase extends UIComponentBase implements Widget, ClientBehavio
     }
 
     public boolean isMapTypeControl() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.mapTypeControl, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.mapTypeControl, true);
     }
 
     public void setMapTypeControl(boolean mapTypeControl) {
@@ -147,7 +147,7 @@ abstract class GMapBase extends UIComponentBase implements Widget, ClientBehavio
     }
 
     public boolean isDraggable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.draggable, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.draggable, true);
     }
 
     public void setDraggable(boolean draggable) {
@@ -155,7 +155,7 @@ abstract class GMapBase extends UIComponentBase implements Widget, ClientBehavio
     }
 
     public boolean isDisableDoubleClickZoom() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.disableDoubleClickZoom, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.disableDoubleClickZoom, false);
     }
 
     public void setDisableDoubleClickZoom(boolean disableDoubleClickZoom) {
@@ -163,7 +163,7 @@ abstract class GMapBase extends UIComponentBase implements Widget, ClientBehavio
     }
 
     public String getOnPointClick() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onPointClick, null);
+        return (String) getStateHelper().eval(PropertyKeys.onPointClick, null);
     }
 
     public void setOnPointClick(String onPointClick) {
@@ -171,7 +171,7 @@ abstract class GMapBase extends UIComponentBase implements Widget, ClientBehavio
     }
 
     public boolean isFitBounds() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.fitBounds, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.fitBounds, false);
     }
 
     public void setFitBounds(boolean fitBounds) {
@@ -179,7 +179,7 @@ abstract class GMapBase extends UIComponentBase implements Widget, ClientBehavio
     }
 
     public boolean isScrollWheel() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.scrollWheel, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.scrollWheel, true);
     }
 
     public void setScrollWheel(boolean scrollWheel) {

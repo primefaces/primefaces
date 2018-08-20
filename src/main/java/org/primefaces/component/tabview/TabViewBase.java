@@ -58,7 +58,7 @@ abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, Clien
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -66,7 +66,7 @@ abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, Clien
     }
 
     public int getActiveIndex() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.activeIndex, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.activeIndex, 0);
     }
 
     public void setActiveIndex(int activeIndex) {
@@ -74,7 +74,7 @@ abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, Clien
     }
 
     public String getEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, null);
+        return (String) getStateHelper().eval(PropertyKeys.effect, null);
     }
 
     public void setEffect(String effect) {
@@ -82,7 +82,7 @@ abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, Clien
     }
 
     public String getEffectDuration() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effectDuration, "normal");
+        return (String) getStateHelper().eval(PropertyKeys.effectDuration, "normal");
     }
 
     public void setEffectDuration(String effectDuration) {
@@ -90,7 +90,7 @@ abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, Clien
     }
 
     public boolean isCache() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.cache, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
     }
 
     public void setCache(boolean cache) {
@@ -98,7 +98,7 @@ abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, Clien
     }
 
     public String getOnTabChange() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onTabChange, null);
+        return (String) getStateHelper().eval(PropertyKeys.onTabChange, null);
     }
 
     public void setOnTabChange(String onTabChange) {
@@ -106,7 +106,7 @@ abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, Clien
     }
 
     public String getOnTabShow() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onTabShow, null);
+        return (String) getStateHelper().eval(PropertyKeys.onTabShow, null);
     }
 
     public void setOnTabShow(String onTabShow) {
@@ -114,7 +114,7 @@ abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, Clien
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -122,7 +122,7 @@ abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, Clien
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -130,7 +130,7 @@ abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, Clien
     }
 
     public String getOrientation() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.orientation, "top");
+        return (String) getStateHelper().eval(PropertyKeys.orientation, "top");
     }
 
     public void setOrientation(String orientation) {
@@ -138,7 +138,7 @@ abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, Clien
     }
 
     public String getOnTabClose() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.onTabClose, null);
+        return (String) getStateHelper().eval(PropertyKeys.onTabClose, null);
     }
 
     public void setOnTabClose(String onTabClose) {
@@ -146,7 +146,7 @@ abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, Clien
     }
 
     public String getDir() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.dir, "ltr");
+        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
     }
 
     public void setDir(String dir) {
@@ -154,7 +154,7 @@ abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, Clien
     }
 
     public boolean isScrollable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.scrollable, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.scrollable, false);
     }
 
     public void setScrollable(boolean scrollable) {
@@ -162,7 +162,7 @@ abstract class TabViewBase extends UITabPanel implements Widget, RTLAware, Clien
     }
 
     public String getTabindex() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.tabindex, null);
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, null);
     }
 
     public void setTabindex(String tabindex) {

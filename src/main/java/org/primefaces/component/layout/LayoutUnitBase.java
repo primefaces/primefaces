@@ -55,7 +55,7 @@ abstract class LayoutUnitBase extends UIComponentBase {
     }
 
     public String getPosition() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.position, null);
+        return (String) getStateHelper().eval(PropertyKeys.position, null);
     }
 
     public void setPosition(String position) {
@@ -63,7 +63,7 @@ abstract class LayoutUnitBase extends UIComponentBase {
     }
 
     public String getSize() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.size, "auto");
+        return (String) getStateHelper().eval(PropertyKeys.size, "auto");
     }
 
     public void setSize(String size) {
@@ -71,7 +71,7 @@ abstract class LayoutUnitBase extends UIComponentBase {
     }
 
     public boolean isResizable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.resizable, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.resizable, false);
     }
 
     public void setResizable(boolean resizable) {
@@ -79,7 +79,7 @@ abstract class LayoutUnitBase extends UIComponentBase {
     }
 
     public boolean isClosable() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.closable, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.closable, false);
     }
 
     public void setClosable(boolean closable) {
@@ -87,7 +87,7 @@ abstract class LayoutUnitBase extends UIComponentBase {
     }
 
     public boolean isCollapsible() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.collapsible, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.collapsible, false);
     }
 
     public void setCollapsible(boolean collapsible) {
@@ -95,7 +95,7 @@ abstract class LayoutUnitBase extends UIComponentBase {
     }
 
     public String getHeader() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.header, null);
+        return (String) getStateHelper().eval(PropertyKeys.header, null);
     }
 
     public void setHeader(String header) {
@@ -103,7 +103,7 @@ abstract class LayoutUnitBase extends UIComponentBase {
     }
 
     public String getFooter() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.footer, null);
+        return (String) getStateHelper().eval(PropertyKeys.footer, null);
     }
 
     public void setFooter(String footer) {
@@ -111,7 +111,7 @@ abstract class LayoutUnitBase extends UIComponentBase {
     }
 
     public int getMinSize() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.minSize, 50);
+        return (Integer) getStateHelper().eval(PropertyKeys.minSize, 50);
     }
 
     public void setMinSize(int minSize) {
@@ -119,7 +119,7 @@ abstract class LayoutUnitBase extends UIComponentBase {
     }
 
     public int getMaxSize() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.maxSize, 0);
+        return (Integer) getStateHelper().eval(PropertyKeys.maxSize, 0);
     }
 
     public void setMaxSize(int maxSize) {
@@ -127,7 +127,7 @@ abstract class LayoutUnitBase extends UIComponentBase {
     }
 
     public int getGutter() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.gutter, 6);
+        return (Integer) getStateHelper().eval(PropertyKeys.gutter, 6);
     }
 
     public void setGutter(int gutter) {
@@ -135,7 +135,7 @@ abstract class LayoutUnitBase extends UIComponentBase {
     }
 
     public boolean isVisible() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.visible, true);
+        return (Boolean) getStateHelper().eval(PropertyKeys.visible, true);
     }
 
     public void setVisible(boolean visible) {
@@ -143,7 +143,7 @@ abstract class LayoutUnitBase extends UIComponentBase {
     }
 
     public boolean isCollapsed() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.collapsed, false);
+        return (Boolean) getStateHelper().eval(PropertyKeys.collapsed, false);
     }
 
     public void setCollapsed(boolean collapsed) {
@@ -151,7 +151,7 @@ abstract class LayoutUnitBase extends UIComponentBase {
     }
 
     public int getCollapseSize() {
-        return (java.lang.Integer) getStateHelper().eval(PropertyKeys.collapseSize, 25);
+        return (Integer) getStateHelper().eval(PropertyKeys.collapseSize, 25);
     }
 
     public void setCollapseSize(int collapseSize) {
@@ -159,7 +159,7 @@ abstract class LayoutUnitBase extends UIComponentBase {
     }
 
     public String getStyle() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.style, null);
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
     public void setStyle(String style) {
@@ -167,7 +167,7 @@ abstract class LayoutUnitBase extends UIComponentBase {
     }
 
     public String getStyleClass() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.styleClass, null);
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
     public void setStyleClass(String styleClass) {
@@ -175,7 +175,7 @@ abstract class LayoutUnitBase extends UIComponentBase {
     }
 
     public String getEffect() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effect, null);
+        return (String) getStateHelper().eval(PropertyKeys.effect, null);
     }
 
     public void setEffect(String effect) {
@@ -183,7 +183,7 @@ abstract class LayoutUnitBase extends UIComponentBase {
     }
 
     public String getEffectSpeed() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.effectSpeed, null);
+        return (String) getStateHelper().eval(PropertyKeys.effectSpeed, null);
     }
 
     public void setEffectSpeed(String effectSpeed) {

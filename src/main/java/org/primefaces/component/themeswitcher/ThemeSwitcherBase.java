@@ -42,7 +42,7 @@ abstract class ThemeSwitcherBase extends SelectOneMenu implements Widget {
     }
 
     public String getWidgetVar() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
     public void setWidgetVar(String widgetVar) {
@@ -50,7 +50,7 @@ abstract class ThemeSwitcherBase extends SelectOneMenu implements Widget {
     }
 
     public String getButtonPreText() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.buttonPreText, null);
+        return (String) getStateHelper().eval(PropertyKeys.buttonPreText, null);
     }
 
     public void setButtonPreText(String buttonPreText) {
