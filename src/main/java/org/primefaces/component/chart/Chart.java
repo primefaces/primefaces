@@ -17,6 +17,7 @@ package org.primefaces.component.chart;
 
 import java.util.Collection;
 import java.util.Map;
+
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.event.AjaxBehaviorEvent;

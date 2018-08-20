@@ -16,8 +16,6 @@
 package org.primefaces.component.selectonebutton;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.faces.application.ResourceDependencies;

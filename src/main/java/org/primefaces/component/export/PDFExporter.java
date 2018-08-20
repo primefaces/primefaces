@@ -41,8 +41,6 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
-import java.util.List;
-
 public class PDFExporter extends Exporter {
 
     private Font cellFont;

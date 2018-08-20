@@ -17,7 +17,6 @@ package org.primefaces.component.datatable;
 
 import java.lang.reflect.Array;
 import java.util.*;
-import java.util.logging.Logger;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;

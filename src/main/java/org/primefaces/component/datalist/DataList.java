@@ -15,7 +15,9 @@
  */
 package org.primefaces.component.datalist;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.application.ResourceDependencies;

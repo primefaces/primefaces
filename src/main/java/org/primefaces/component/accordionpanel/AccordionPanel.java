@@ -17,6 +17,7 @@ package org.primefaces.component.accordionpanel;
 
 import java.util.Collection;
 import java.util.Map;
+
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.application.ResourceDependencies;

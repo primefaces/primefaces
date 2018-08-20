@@ -15,7 +15,9 @@
  */
 package org.primefaces.component.menuitem;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
