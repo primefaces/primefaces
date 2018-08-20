@@ -40,7 +40,7 @@ public class InputSwitchRenderer extends InputRenderer {
         decodeBehaviors(context, inputSwitch);
 
         String clientId = inputSwitch.getClientId(context);
-        String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
         if (submittedValue != null && isChecked(submittedValue)) {
             inputSwitch.setSubmittedValue(true);

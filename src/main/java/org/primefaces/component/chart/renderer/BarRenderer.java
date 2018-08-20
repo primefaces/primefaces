@@ -98,7 +98,7 @@ public class BarRenderer extends CartesianPlotRenderer {
         }
         else {
             for (Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext(); ) {
-                ChartSeries series = (ChartSeries) it.next();
+                ChartSeries series = it.next();
                 series.encode(writer);
 
                 if (it.hasNext()) {

@@ -124,7 +124,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
 
         if (button.getElementsCount() > 0) {
-            List<MenuElement> elements = (List<MenuElement>) button.getElements();
+            List<MenuElement> elements = button.getElements();
 
             for (MenuElement element : elements) {
                 if (element.isRendered()) {

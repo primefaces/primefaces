@@ -124,7 +124,7 @@ public class DataExporter implements ActionListener, StateHolder {
                 List components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), tables);
 
                 if (components.size() > 1) {
-                    exporter.export(context, outputFileName, (List<DataTable>) components, isPageOnly, isSelectionOnly,
+                    exporter.export(context, outputFileName, components, isPageOnly, isSelectionOnly,
                             encodingType, preProcessor, postProcessor, exporterOptions, onTableRender);
                 }
                 else {
@@ -199,6 +199,6 @@ public class DataExporter implements ActionListener, StateHolder {
         values[9] = options;
         values[10] = onTableRender;
 
-        return ((Object[]) values);
+        return (values);
     }
 }

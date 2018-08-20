@@ -48,7 +48,7 @@ public class InputMaskRenderer extends InputRenderer {
         decodeBehaviors(context, inputMask);
 
         String clientId = inputMask.getClientId(context);
-        String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if (submittedValue != null) {
             Pattern pattern = translateMaskIntoRegex(context, inputMask);

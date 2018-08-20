@@ -76,14 +76,17 @@ public class SplitButton extends SplitButtonBase {
         return styleClass;
     }
 
+    @Override
     public boolean isPartialSubmitSet() {
         return (getStateHelper().get(PropertyKeys.partialSubmit) != null) || (this.getValueExpression(PropertyKeys.partialSubmit.toString()) != null);
     }
 
+    @Override
     public boolean isResetValuesSet() {
         return (getStateHelper().get(PropertyKeys.resetValues) != null) || (this.getValueExpression(PropertyKeys.resetValues.toString()) != null);
     }
 
+    @Override
     public boolean isAjaxified() {
         return isAjax();
     }

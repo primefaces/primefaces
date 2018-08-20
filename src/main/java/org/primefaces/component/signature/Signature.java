@@ -35,6 +35,7 @@ public class Signature extends SignatureBase {
     public static final String STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
     public static final String READONLY_STYLE_CLASS = "ui-widget ui-widget-content ui-corner-all";
 
+    @Override
     public void processUpdates(FacesContext context) {
         super.processUpdates(context);
         String base64Value = this.getBase64Value();

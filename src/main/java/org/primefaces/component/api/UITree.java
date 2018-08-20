@@ -164,7 +164,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     }
 
     public java.lang.Object getSelection() {
-        return (java.lang.Object) getStateHelper().eval(PropertyKeys.selection, null);
+        return getStateHelper().eval(PropertyKeys.selection, null);
     }
 
     public void setSelection(java.lang.Object _selection) {

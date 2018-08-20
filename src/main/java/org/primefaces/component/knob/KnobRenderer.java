@@ -55,7 +55,7 @@ public class KnobRenderer extends CoreRenderer {
 
         decodeBehaviors(context, component);
 
-        String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(component.getClientId(context) + "_hidden");
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(component.getClientId(context) + "_hidden");
         ((Knob) component).setSubmittedValue(submittedValue);
     }
 

@@ -911,7 +911,7 @@ public class DataTableRenderer extends DataRenderer {
                     writer.writeAttribute("tabindex", "-1", null);
                 }
 
-                SelectItem[] itemsArray = (SelectItem[]) getFilterOptions(column);
+                SelectItem[] itemsArray = getFilterOptions(column);
 
                 for (SelectItem item : itemsArray) {
                     Object itemValue = item.getValue();

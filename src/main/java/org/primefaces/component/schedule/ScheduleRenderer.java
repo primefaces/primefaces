@@ -68,7 +68,7 @@ public class ScheduleRenderer extends CoreRenderer {
 
     protected void encodeEvents(FacesContext context, Schedule schedule) throws IOException {
         String clientId = schedule.getClientId(context);
-        ScheduleModel model = (ScheduleModel) schedule.getValue();
+        ScheduleModel model = schedule.getValue();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         if (model instanceof LazyScheduleModel) {
@@ -145,7 +145,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("defaultView", schedule.getView())
                 .attr("locale", schedule.calculateLocale(context).toString())
                 .attr("tooltip", schedule.isTooltip(), false)
-                .attr("eventLimit", ((ScheduleModel) schedule.getValue()).isEventLimit(), false)
+                .attr("eventLimit", schedule.getValue().isEventLimit(), false)
                 .attr("lazyFetching", false);
 
         Object initialDate = schedule.getInitialDate();

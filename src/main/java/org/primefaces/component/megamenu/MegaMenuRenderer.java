@@ -91,7 +91,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
     protected void encodeRootItems(FacesContext context, MegaMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        List<MenuElement> elements = (List<MenuElement>) menu.getElements();
+        List<MenuElement> elements = menu.getElements();
 
         for (MenuElement element : elements) {
             if (element.isRendered()) {
@@ -158,7 +158,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
         //submenus
         if (submenu.getElementsCount() > 0) {
-            List<MenuElement> submenuElements = (List<MenuElement>) submenu.getElements();
+            List<MenuElement> submenuElements = submenu.getElements();
             writer.startElement("ul", null);
             writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
             writer.writeAttribute("role", "menu", null);
@@ -247,7 +247,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
         //menuitems
         if (submenu.getElementsCount() > 0) {
-            List<MenuElement> submenuElements = (List<MenuElement>) submenu.getElements();
+            List<MenuElement> submenuElements = submenu.getElements();
             for (MenuElement submenuElement : submenuElements) {
                 if (submenuElement.isRendered()) {
                     if (submenuElement instanceof MenuItem) {

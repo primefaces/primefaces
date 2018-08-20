@@ -70,7 +70,7 @@ public class DockRenderer extends BaseMenuRenderer {
 
     protected void encodeMenuItems(FacesContext context, Dock dock) throws IOException {
         if (dock.getElementsCount() > 0) {
-            List<MenuElement> menuElements = (List<MenuElement>) dock.getElements();
+            List<MenuElement> menuElements = dock.getElements();
 
             for (MenuElement element : menuElements) {
                 if (element.isRendered() && element instanceof MenuItem) {
@@ -109,7 +109,7 @@ public class DockRenderer extends BaseMenuRenderer {
 
         if (menuitem.getValue() != null) {
             if (menuitem.isEscape()) {
-                writer.writeText((String) menuitem.getValue(), "value");
+                writer.writeText(menuitem.getValue(), "value");
             }
             else {
                 writer.write((String) menuitem.getValue());

@@ -41,7 +41,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         decodeBehaviors(context, button);
 
         String clientId = button.getClientId(context);
-        String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
         if (submittedValue != null && submittedValue.equalsIgnoreCase("on")) {
             button.setSubmittedValue(true);

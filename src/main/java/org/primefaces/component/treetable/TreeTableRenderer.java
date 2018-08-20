@@ -494,7 +494,7 @@ public class TreeTableRenderer extends DataRenderer {
 
     protected void encodeTbody(FacesContext context, TreeTable tt, boolean dataOnly) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        TreeNode root = (TreeNode) tt.getValue();
+        TreeNode root = tt.getValue();
         String clientId = tt.getClientId(context);
         boolean empty = (root == null || root.getChildCount() == 0);
         UIComponent emptyFacet = tt.getFacet("emptyMessage");
@@ -1151,7 +1151,7 @@ public class TreeTableRenderer extends DataRenderer {
 
     public void filter(FacesContext context, TreeTable tt, List<FilterMeta> filterMetadata, String globalFilterValue) throws IOException {
         Locale filterLocale = context.getViewRoot().getLocale();
-        TreeNode root = (TreeNode) tt.getValue();
+        TreeNode root = tt.getValue();
         TreeNode filteredNode = null;
 
         tt.getFilteredRowKeys().clear();

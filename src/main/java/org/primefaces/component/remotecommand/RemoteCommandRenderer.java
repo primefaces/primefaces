@@ -54,10 +54,10 @@ public class RemoteCommandRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         RemoteCommand command = (RemoteCommand) component;
-        AjaxSource source = (AjaxSource) command;
+        AjaxSource source = command;
         String clientId = command.getClientId(context);
         String name = resolveName(command, context);
-        UIComponent form = (UIComponent) ComponentTraversalUtils.closestForm(context, command);
+        UIComponent form = ComponentTraversalUtils.closestForm(context, command);
         if (form == null) {
             throw new FacesException("RemoteCommand '" + name + "'must be inside a form.");
         }

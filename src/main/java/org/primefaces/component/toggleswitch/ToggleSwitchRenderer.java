@@ -40,7 +40,7 @@ public class ToggleSwitchRenderer extends InputRenderer {
         decodeBehaviors(context, toggleSwitch);
 
         String clientId = toggleSwitch.getClientId(context);
-        String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
         if (submittedValue != null && isChecked(submittedValue)) {
             toggleSwitch.setSubmittedValue(true);

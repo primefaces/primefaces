@@ -23,5 +23,5 @@ import org.primefaces.component.column.Column;
 
 public interface HelperColumnRenderer {
 
-    public void encode(FacesContext context, Column column) throws IOException;
+    void encode(FacesContext context, Column column) throws IOException;
 }

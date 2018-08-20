@@ -37,7 +37,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         String styleClass = breadCrumb.getStyleClass();
         styleClass = styleClass == null ? BreadCrumb.CONTAINER_CLASS : BreadCrumb.CONTAINER_CLASS + " " + styleClass;
         int elementCount = menu.getElementsCount();
-        List<MenuElement> menuElements = (List<MenuElement>) menu.getElements();
+        List<MenuElement> menuElements = menu.getElements();
         boolean isIconHome = breadCrumb.getHomeDisplay().equals("icon");
 
         //home icon for first item

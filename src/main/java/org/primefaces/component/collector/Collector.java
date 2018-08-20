@@ -51,7 +51,7 @@ public class Collector implements ActionListener, StateHolder {
 
         ELContext elContext = FacesContext.getCurrentInstance().getELContext();
 
-        Object val = (Object) value.getValue(elContext);
+        Object val = value.getValue(elContext);
 
         if (addTo != null) {
             Collection collection = (Collection) addTo.getValue(elContext);

@@ -41,10 +41,12 @@ abstract class ThemeSwitcherBase extends SelectOneMenu implements Widget {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public String getWidgetVar() {
         return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
+    @Override
     public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }

@@ -487,7 +487,7 @@ public class TreeTable extends TreeTableBase {
             if (rows > 0) {
                 int first = getFirst();
 
-                return (int) (first / rows);
+                return first / rows;
             }
             else {
                 return 0;

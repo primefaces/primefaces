@@ -30,8 +30,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
 import org.primefaces.behavior.confirm.ConfirmBehavior;
-import org.primefaces.component.api.AjaxSource;
-import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
@@ -248,7 +246,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         String title = menuitem.getTitle();
 
         if (menuitem.shouldRenderChildren()) {
-            renderChildren(context, (UIComponent) menuitem);
+            renderChildren(context, menuitem);
         }
         else {
             boolean disabled = menuitem.isDisabled();
@@ -279,7 +277,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
 
                 //GET
                 if (menuitem.getUrl() != null || menuitem.getOutcome() != null) {
-                    String targetURL = getTargetURL(context, (UIOutcomeTarget) menuitem);
+                    String targetURL = getTargetURL(context, menuitem);
                     writer.writeAttribute("href", targetURL, null);
 
                     if (menuitem.getTarget() != null) {
@@ -296,8 +294,8 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
                     }
 
                     String command = menuitem.isAjax()
-                                     ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
-                                     : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
+                            ? buildAjaxRequest(context, menuitem, form)
+                            : buildNonAjaxRequest(context, (menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
 
                     onclick = (onclick == null) ? command : onclick + ";" + command;
                 }
@@ -322,7 +320,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
             if (menuitem.getValue() != null) {
                 writer.startElement("span", null);
                 writer.writeAttribute("class", AbstractMenu.MENUITEM_TEXT_CLASS, null);
-                writer.writeText((String) menuitem.getValue(), "value");
+                writer.writeText(menuitem.getValue(), "value");
                 writer.endElement("span");
             }
 

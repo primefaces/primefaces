@@ -140,6 +140,6 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
         values[1] = contentDisposition;
         values[2] = monitorKey;
 
-        return ((Object[]) values);
+        return (values);
     }
 }

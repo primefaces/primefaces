@@ -105,7 +105,7 @@ public class Captcha extends CaptchaBase {
                 else {
                     Object[] params = new Object[2];
                     params[0] = MessageFactory.getLabel(context, this);
-                    params[1] = (String) value;
+                    params[1] = value;
 
                     msg = MessageFactory.getMessage(Captcha.INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
                 }

@@ -242,7 +242,7 @@ public class UIData extends javax.faces.component.UIData {
             if (rows > 0) {
                 int first = getFirst();
 
-                return (int) (first / rows);
+                return first / rows;
             }
             else {
                 return 0;
@@ -599,7 +599,7 @@ public class UIData extends javax.faces.component.UIData {
         }
 
         //update var
-        String var = (String) getVar();
+        String var = getVar();
         if (var != null) {
             String rowIndexVar = getRowIndexVar();
             Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
@@ -975,7 +975,7 @@ public class UIData extends javax.faces.component.UIData {
                 if (row.getChildCount() > 0) {
                     for (UIComponent col : row.getChildren()) {
                         if (col instanceof Column && col.getFacetCount() > 0) {
-                            boolean value = visitColumnFacets(context, callback, (Column) col);
+                            boolean value = visitColumnFacets(context, callback, col);
                             if (value) {
                                 return true;
                             }
@@ -1238,7 +1238,7 @@ public class UIData extends javax.faces.component.UIData {
                 }
                 if (descendantFullStateIterator != null
                         && descendantFullStateIterator.hasNext()) {
-                    Object[] object = (Object[]) descendantFullStateIterator.next();
+                    Object[] object = descendantFullStateIterator.next();
                     childInitialState = object[0];
                     descendantInitialState = object[1];
                 }

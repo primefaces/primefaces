@@ -220,8 +220,8 @@ public class TreeRenderer extends CoreRenderer {
             Locale filterLocale = context.getViewRoot().getLocale();
 
             tree.getFilteredRowKeys().clear();
-            encodeFilteredNodes(context, tree, (TreeNode) tree.getValue(), filteredValue, filterLocale);
-            TreeNode root = (TreeNode) tree.getValue();
+            encodeFilteredNodes(context, tree, tree.getValue(), filteredValue, filterLocale);
+            TreeNode root = tree.getValue();
 
             if (root != null && root.getRowKey() == null) {
                 root.setRowKey(ROOT_ROW_KEY);
@@ -312,7 +312,7 @@ public class TreeRenderer extends CoreRenderer {
 
     protected void encodeMarkup(FacesContext context, Tree tree) throws IOException {
         boolean vertical = tree.getOrientation().equals("vertical");
-        TreeNode root = (TreeNode) tree.getValue();
+        TreeNode root = tree.getValue();
 
         if (root != null && root.getRowKey() == null) {
             root.setRowKey(ROOT_ROW_KEY);

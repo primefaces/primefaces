@@ -42,6 +42,7 @@ abstract class UISeparatorBase extends UIComponentBase implements Separator {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public String getTitle() {
         return (String) getStateHelper().eval(PropertyKeys.title, null);
     }
@@ -50,6 +51,7 @@ abstract class UISeparatorBase extends UIComponentBase implements Separator {
         getStateHelper().put(PropertyKeys.title, title);
     }
 
+    @Override
     public String getStyle() {
         return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
@@ -58,6 +60,7 @@ abstract class UISeparatorBase extends UIComponentBase implements Separator {
         getStateHelper().put(PropertyKeys.style, style);
     }
 
+    @Override
     public String getStyleClass() {
         return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }

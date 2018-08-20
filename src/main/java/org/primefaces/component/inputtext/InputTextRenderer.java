@@ -40,7 +40,7 @@ public class InputTextRenderer extends InputRenderer {
         decodeBehaviors(context, inputText);
 
         String clientId = inputText.getClientId(context);
-        String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if (submittedValue != null) {
             inputText.setSubmittedValue(submittedValue);

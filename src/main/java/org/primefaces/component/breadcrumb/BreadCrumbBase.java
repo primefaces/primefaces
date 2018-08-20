@@ -43,6 +43,7 @@ abstract class BreadCrumbBase extends AbstractMenu implements Widget {
         return COMPONENT_FAMILY;
     }
 
+    @Override
     public org.primefaces.model.menu.MenuModel getModel() {
         return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }

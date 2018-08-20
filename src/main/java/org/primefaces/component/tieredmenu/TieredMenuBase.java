@@ -59,6 +59,7 @@ abstract class TieredMenuBase extends AbstractMenu implements Widget, OverlayMen
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
+    @Override
     public org.primefaces.model.menu.MenuModel getModel() {
         return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }
@@ -91,6 +92,7 @@ abstract class TieredMenuBase extends AbstractMenu implements Widget, OverlayMen
         getStateHelper().put(PropertyKeys.autoDisplay, autoDisplay);
     }
 
+    @Override
     public String getTrigger() {
         return (String) getStateHelper().eval(PropertyKeys.trigger, null);
     }
@@ -99,6 +101,7 @@ abstract class TieredMenuBase extends AbstractMenu implements Widget, OverlayMen
         getStateHelper().put(PropertyKeys.trigger, trigger);
     }
 
+    @Override
     public String getMy() {
         return (String) getStateHelper().eval(PropertyKeys.my, null);
     }
@@ -107,6 +110,7 @@ abstract class TieredMenuBase extends AbstractMenu implements Widget, OverlayMen
         getStateHelper().put(PropertyKeys.my, my);
     }
 
+    @Override
     public String getAt() {
         return (String) getStateHelper().eval(PropertyKeys.at, null);
     }
@@ -123,6 +127,7 @@ abstract class TieredMenuBase extends AbstractMenu implements Widget, OverlayMen
         getStateHelper().put(PropertyKeys.overlay, overlay);
     }
 
+    @Override
     public String getTriggerEvent() {
         return (String) getStateHelper().eval(PropertyKeys.triggerEvent, "click");
     }

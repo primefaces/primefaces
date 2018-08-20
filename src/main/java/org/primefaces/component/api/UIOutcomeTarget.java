@@ -22,17 +22,17 @@ import javax.faces.component.UIComponent;
 
 public interface UIOutcomeTarget {
 
-    public String getOutcome();
+    String getOutcome();
 
-    public boolean isIncludeViewParams();
+    boolean isIncludeViewParams();
 
-    public String getFragment();
+    String getFragment();
 
-    public List<UIComponent> getChildren();
+    List<UIComponent> getChildren();
 
-    public Map<String, List<String>> getParams();
+    Map<String, List<String>> getParams();
 
-    public String getHref();
+    String getHref();
 
-    public boolean isDisableClientWindow();
+    boolean isDisableClientWindow();
 }

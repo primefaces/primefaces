@@ -169,7 +169,7 @@ public class GMapRenderer extends CoreRenderer {
         writer.write(",markers:[");
 
         for (Iterator<Marker> iterator = model.getMarkers().iterator(); iterator.hasNext(); ) {
-            Marker marker = (Marker) iterator.next();
+            Marker marker = iterator.next();
             encodeMarker(context, marker);
 
             if (iterator.hasNext()) {
@@ -221,7 +221,7 @@ public class GMapRenderer extends CoreRenderer {
         writer.write(",polylines:[");
 
         for (Iterator<Polyline> lines = model.getPolylines().iterator(); lines.hasNext(); ) {
-            Polyline polyline = (Polyline) lines.next();
+            Polyline polyline = lines.next();
 
             writer.write("new google.maps.Polyline({");
             writer.write("id:'" + polyline.getId() + "'");
@@ -258,7 +258,7 @@ public class GMapRenderer extends CoreRenderer {
         writer.write(",polygons:[");
 
         for (Iterator<Polygon> polygons = model.getPolygons().iterator(); polygons.hasNext(); ) {
-            Polygon polygon = (Polygon) polygons.next();
+            Polygon polygon = polygons.next();
 
             writer.write("new google.maps.Polygon({");
             writer.write("id:'" + polygon.getId() + "'");
@@ -296,7 +296,7 @@ public class GMapRenderer extends CoreRenderer {
         writer.write(",circles:[");
 
         for (Iterator<Circle> circles = model.getCircles().iterator(); circles.hasNext(); ) {
-            Circle circle = (Circle) circles.next();
+            Circle circle = circles.next();
 
             writer.write("new google.maps.Circle({");
             writer.write("id:'" + circle.getId() + "'");
@@ -335,7 +335,7 @@ public class GMapRenderer extends CoreRenderer {
         writer.write(",rectangles:[");
 
         for (Iterator<Rectangle> rectangles = model.getRectangles().iterator(); rectangles.hasNext(); ) {
-            Rectangle rectangle = (Rectangle) rectangles.next();
+            Rectangle rectangle = rectangles.next();
 
             writer.write("new google.maps.Rectangle({");
             writer.write("id:'" + rectangle.getId() + "'");

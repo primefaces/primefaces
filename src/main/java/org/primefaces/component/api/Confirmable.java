@@ -17,9 +17,9 @@ package org.primefaces.component.api;
 
 public interface Confirmable {
 
-    public boolean requiresConfirmation();
+    boolean requiresConfirmation();
 
-    public String getConfirmationScript();
+    String getConfirmationScript();
 
-    public void setConfirmationScript(String script);
+    void setConfirmationScript(String script);
 }
