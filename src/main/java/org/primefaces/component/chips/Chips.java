@@ -15,9 +15,7 @@
  */
 package org.primefaces.component.chips;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 
 import javax.faces.application.ResourceDependencies;
@@ -30,6 +28,7 @@ import javax.faces.event.FacesEvent;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
+import org.primefaces.util.CollectionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
@@ -48,8 +47,10 @@ public class Chips extends ChipsBase {
     public static final String TOKEN_LABEL_CLASS = "ui-chips-token-label";
     public static final String TOKEN_CLOSE_ICON_CLASS = "ui-chips-token-icon ui-icon ui-icon-close";
     public static final String TOKEN_INPUT_CLASS = "ui-chips-input-token";
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "itemSelect", "itemUnselect"));
-    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("itemSelect", "itemUnselect"));
+
+    private static final Collection<String> EVENT_NAMES = CollectionUtils.unmodifiableList("blur", "change", "valueChange", "click", "dblclick",
+            "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "itemSelect", "itemUnselect");
+    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = CollectionUtils.unmodifiableList("itemSelect", "itemUnselect");
 
     @Override
     public String getInputClientId() {

@@ -32,10 +32,7 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.convert.DateTimeConverter;
 import org.primefaces.event.DateViewChangeEvent;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LocaleUtils;
-import org.primefaces.util.MessageFactory;
+import org.primefaces.util.*;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -51,8 +48,11 @@ public class Calendar extends CalendarBase {
     public static final String CONTAINER_CLASS = "ui-calendar";
     public static final String INPUT_STYLE_CLASS = "ui-inputfield ui-widget ui-state-default ui-corner-all";
     public static final String DATE_OUT_OF_RANGE_MESSAGE_ID = "primefaces.calendar.OUT_OF_RANGE";
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur", "change", "valueChange", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "dateSelect", "viewChange", "close"));
-    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("dateSelect", "viewChange", "close"));
+
+    private static final Collection<String> EVENT_NAMES = CollectionUtils.unmodifiableList("blur", "change", "valueChange", "click", "dblclick",
+            "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "dateSelect", "viewChange",
+            "close");
+    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = CollectionUtils.unmodifiableList("dateSelect", "viewChange", "close");
     private final Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
     private java.util.Locale calculatedLocale;
     private java.util.TimeZone appropriateTimeZone;

@@ -88,7 +88,8 @@ public class Captcha extends CaptchaBase {
             finally {
                 // the captcha token is valid for only one request, in case of an ajax request we have to get a new one
                 if (context.getPartialViewContext().isAjaxRequest()) {
-                    PrimeFaces.current().executeScript("if (document.getElementById('g-recaptcha-response')) { try { grecaptcha.reset(); } catch (error) { PrimeFaces.error(error); } }");
+                    PrimeFaces.current().executeScript("if (document.getElementById('g-recaptcha-response')) { "
+                            + "try { grecaptcha.reset(); } catch (error) { PrimeFaces.error(error); } }");
                 }
             }
 
@@ -115,8 +116,8 @@ public class Captcha extends CaptchaBase {
     }
 
     private String createPostParameters(FacesContext context, Object value) throws UnsupportedEncodingException {
-
-        String privateKey = context.getApplication().evaluateExpressionGet(context, context.getExternalContext().getInitParameter(Captcha.PRIVATE_KEY), String.class);
+        String privateKey = context.getApplication().evaluateExpressionGet(context,
+                context.getExternalContext().getInitParameter(Captcha.PRIVATE_KEY), String.class);
 
         if (privateKey == null) {
             throw new FacesException("Cannot find private key for catpcha, use primefaces.PRIVATE_CAPTCHA_KEY context-param to define one");

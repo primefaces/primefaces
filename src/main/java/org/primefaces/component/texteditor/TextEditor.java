@@ -15,12 +15,12 @@
  */
 package org.primefaces.component.texteditor;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
+
+import org.primefaces.util.CollectionUtils;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "texteditor/texteditor.css"),
@@ -35,7 +35,8 @@ public class TextEditor extends TextEditorBase {
 
     public static final String EDITOR_CLASS = "ui-texteditor";
 
-    private static final Collection<String> EVENT_NAMES = Collections.unmodifiableCollection(Arrays.asList("blur", "change", "click", "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select"));
+    private static final Collection<String> EVENT_NAMES = CollectionUtils.unmodifiableList("blur", "change", "click", "dblclick", "focus", "keydown",
+            "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select");
 
     @Override
     public Collection<String> getEventNames() {

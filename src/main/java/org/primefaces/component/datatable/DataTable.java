@@ -125,6 +125,7 @@ public class DataTable extends DataTableBase {
     public static final String SORT_ASC = "primefaces.datatable.SORT_ASC";
     public static final String SORT_DESC = "primefaces.datatable.SORT_DESC";
     public static final String ROW_GROUP_TOGGLER = "primefaces.rowgrouptoggler.aria.ROW_GROUP_TOGGLER";
+
     static final Map<DataTableFeatureKey, DataTableFeature> FEATURES = MapBuilder.<DataTableFeatureKey, DataTableFeature>builder()
             .put(DataTableFeatureKey.DRAGGABLE_COLUMNS, new DraggableColumnsFeature())
             .put(DataTableFeatureKey.FILTER, new FilterFeature())
@@ -139,6 +140,7 @@ public class DataTable extends DataTableBase {
             .put(DataTableFeatureKey.DRAGGABLE_ROWS, new DraggableRowsFeature())
             .put(DataTableFeatureKey.ADD_ROW, new AddRowFeature())
             .build();
+
     private static final String SB_GET_SELECTED_ROW_KEYS_AS_STRING = DataTable.class.getName() + "#getSelectedRowKeysAsString";
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("page", PageEvent.class)
@@ -839,7 +841,9 @@ public class DataTable extends DataTableBase {
         }
         else {
             if (!(model instanceof SelectableDataModel)) {
-                throw new FacesException("DataModel must implement org.primefaces.model.SelectableDataModel when selection is enabled or you need to define rowKey attribute");
+                throw new FacesException("DataModel must implement "
+                        + SelectableDataModel.class.getName()
+                        + " when selection is enabled or you need to define rowKey attribute");
             }
 
             return ((SelectableDataModel) model).getRowData(rowKey);

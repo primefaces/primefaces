@@ -86,7 +86,8 @@ public class Dashboard extends DashboardBase {
                 String[] idTokens = widgetClientId.split(":");
                 String widgetId = idTokens.length == 1 ? idTokens[0] : idTokens[idTokens.length - 1];
 
-                DashboardReorderEvent reorderEvent = new DashboardReorderEvent(this, behaviorEvent.getBehavior(), widgetId, itemIndex, receiverColumnIndex, senderColumnIndex);
+                DashboardReorderEvent reorderEvent =
+                        new DashboardReorderEvent(this, behaviorEvent.getBehavior(), widgetId, itemIndex, receiverColumnIndex, senderColumnIndex);
                 reorderEvent.setPhaseId(behaviorEvent.getPhaseId());
 
                 updateDashboardModel(getModel(), widgetId, itemIndex, receiverColumnIndex, senderColumnIndex);
