@@ -41,7 +41,7 @@ public class SearchExpressionFacade {
     private static final String SHARED_SPLIT_BUFFER_KEY = SearchExpressionFacade.class.getName() + ".SHARED_SPLIT_BUFFER_KEY";
     private static final String SHARED_CLIENT_ID_EXPRESSION_BUFFER_KEY = SearchExpressionFacade.class.getName() + ".SHARED_CLIENT_ID_EXPRESSION_BUFFER_KEY";
 
-    private static final char[] EXPRESSION_SEPARATORS = new char[] { ',', ' ' };
+    private static final char[] EXPRESSION_SEPARATORS = new char[]{',', ' '};
 
     /**
      * Resolves a list of {@link UIComponent}s for the given expression or expressions.

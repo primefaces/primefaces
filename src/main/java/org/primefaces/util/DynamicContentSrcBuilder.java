@@ -58,8 +58,8 @@ public class DynamicContentSrcBuilder {
                         "dynamiccontent.properties", "primefaces", streamedContent.getContentType());
                 String resourcePath = resource.getRequestPath();
 
-                Map<String,Object> session = context.getExternalContext().getSessionMap();
-                Map<String,String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
+                Map<String, Object> session = context.getExternalContext().getSessionMap();
+                Map<String, String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
                 if (dynamicResourcesMapping == null) {
                     dynamicResourcesMapping = new LimitedSizeHashMap<>(200);
                     session.put(Constants.DYNAMIC_RESOURCES_MAPPING, dynamicResourcesMapping);
