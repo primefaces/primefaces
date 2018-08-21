@@ -6,10 +6,20 @@ jdk:
 - openjdk8
 # - openjdk7  (not possible since JSF 2.3 dependency - we need to compile it)
 
-install:
-- git clone https://github.com/primefaces/maven-jsf-plugin && cd maven-jsf-plugin && mvn install && cd ..
-
 script:
 - mvn install -DskipTests=true -Dmaven.javadoc.skip=true --batch-mode --show-version
 # add --update-snapshots if snapshots are used
 - mvn test verify --batch-mode
+# the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+
+addons:
+  sonarcloud:
+    organization: "primefaces"
+    token:
+      secure: "eae4chfHo/D+1O9u2Y6iQ2PhLBnT/90d7al8Z1hKZT6w1+zaXPHOcD7lusbsi92m9/vnCQ03MLP68w8DnwCuYqAUIZNzq0/dFuM60rnO4mhuvYDHG+eh2Dkr+dQ4b14Cty5B4FPcam0suvrNHiWvseAzjubX4rmAAlPGK9eCc5yJkbYA3dfwK+sNg+W93czqFoc74nUY5O0+CyglAYUJx1l8N0tz5tnLbGeAIYLlO8N2fadxda37nDaQ3oc7AaPTHHH6JY9Nh6EXCCntX20xFSnE0oGY2Ua5Iq/zh6M+Zyle2Qz+LT9VwwxbfslAbSmEUZHlWOWh1C3JhZnH/e6rWBAttn5MeCzEbiBC1Gv/2c6pwjMw8u5IePrkUzKXpsCjENaVDE7ItMFeOwRDbVyt0MMTA4q+yfluu21gQE9ne9fyGZKr99jB6CeRSVP59319+ZQH8GXIQAytq6+6dcjXKOnNOfsq2zpVWuGOfKdfVilbIOtfORTLcGhmDEMZwrnaEeL0Ya25zb0IDqLYQoCX0KZ0VpOJuvySoiRzFnGIYfDSG2GIa0+lB3kTPkmkqPF2di5MEeIxl7mC1OeYzh9oF+/aTkYr+U8JiKmrC4qtYdAT+OMWSe2yuettP3dzq+/TAjze6QLjoc+WqKNS5wNIbv8Or/pwE4s3rxIRbDH+gz8="
+
+cache:
+  directories:
+  - "$HOME/.m2/repository"
+  - "$HOME/.sonar/cache"
