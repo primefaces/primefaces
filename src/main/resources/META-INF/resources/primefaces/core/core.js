@@ -219,6 +219,10 @@
         isDevelopmentProjectStage: function() {
             return PrimeFaces.settings.projectStage === 'Development';
         },
+        
+        widgetNotAvailable: function(widgetVar) {
+           PrimeFaces.error("Widget for var '" + widgetVar + "' not available!");
+        },
 
         setCaretToEnd: function(element) {
             if(element) {
@@ -334,7 +338,7 @@
             // widget script not loaded
             else {
                 // should be loaded by our dynamic resource handling, log a error
-                PrimeFaces.error("Widget not available: " + widgetName);
+                PrimeFaces.widgetNotAvailable(widgetName);
             }
         },
 
@@ -680,7 +684,7 @@
     	var widgetInstance = PrimeFaces.widgets[widgetVar];
 
     	if (!widgetInstance) {
-	        PrimeFaces.error("Widget for var '" + widgetVar + "' not available!");
+	        PrimeFaces.widgetNotAvailable(widgetVar);
     	}
 
         return widgetInstance;
