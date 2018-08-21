@@ -42,16 +42,16 @@ public class BarChartSeries extends ChartSeries {
     @Override
     public void encode(Writer writer) throws IOException {
         writer.write("{");
-        writer.write("label:\"" + ComponentUtils.escapeText(this.getLabel()) + "\"");
+        writer.write("label:\"" + ComponentUtils.escapeText(getLabel()) + "\"");
 
-        writer.write(",renderer: $.jqplot." + this.getRenderer());
-        
-        AxisType xaxis = this.getXaxis();
+        writer.write(",renderer: $.jqplot." + getRenderer());
+
+        AxisType xaxis = getXaxis();
         if (xaxis != null) {
             writer.write(",xaxis:\"" + xaxis + "\"");
         }
 
-        AxisType yaxis = this.getYaxis();
+        AxisType yaxis = getYaxis();
         if (yaxis != null) {
             writer.write(",yaxis:\"" + yaxis + "\"");
         }
