@@ -7,6 +7,7 @@ jdk:
 # - openjdk7  (not possible since JSF 2.3 dependency - we need to compile it)
 
 script:
+  echo $SONARQUBE_SCANNER_PARAMS
 - mvn install -DskipTests=true -Dmaven.javadoc.skip=true --batch-mode --show-version
 # add --update-snapshots if snapshots are used
 - mvn test verify --batch-mode
