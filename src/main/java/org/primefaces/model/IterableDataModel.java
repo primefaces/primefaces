@@ -83,7 +83,7 @@ public class IterableDataModel<E> extends DataModel<E> {
             if (isRowAvailable()) {
                 rowData = getRowData();
             }
-            
+
             DataModelEvent event = new DataModelEvent(this, index, rowData);
             for (DataModelListener listener : dataModelListeners) {
                 if (listener != null) {

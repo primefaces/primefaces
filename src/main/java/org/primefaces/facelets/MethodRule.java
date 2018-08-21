@@ -55,7 +55,7 @@ public class MethodRule extends MetaRule {
         }
 
         Class<?> type = meta.getPropertyType(name);
-        
+
         if (MethodExpression.class.equals(type)) {
             Method method = meta.getWriteMethod(name);
             if (method != null) {

@@ -193,7 +193,7 @@ public class DataRenderer extends CoreRenderer {
     protected String getHeaderLabel(FacesContext context, UIColumn column) {
         String ariaHeaderText = column.getAriaHeaderText();
 
-        // for headerText of column 
+        // for headerText of column
         if (ariaHeaderText == null) {
             ariaHeaderText = column.getHeaderText();
         }

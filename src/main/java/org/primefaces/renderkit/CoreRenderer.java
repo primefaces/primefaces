@@ -97,7 +97,7 @@ public abstract class CoreRenderer extends Renderer {
     protected String getResourceURL(FacesContext context, String value) {
         return ResourceUtils.getResourceURL(context, value);
     }
-    
+
     protected String getResourceRequestPath(FacesContext context, String resourceName) {
         Resource resource = context.getApplication().getResourceHandler().createResource(resourceName, "primefaces");
 
@@ -163,11 +163,11 @@ public abstract class CoreRenderer extends Renderer {
 
                 if (hasEventBehaviors) {
                     String clientId = ((UIComponent) component).getClientId(context);
-                    
+
                     List<ClientBehaviorContext.Parameter> params = new ArrayList<>();
                     params.add(new ClientBehaviorContext.Parameter(
                             Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.OBSTRUSIVE));
-                    
+
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
                             context, (UIComponent) component, behaviorEvent, clientId, params);
                     int size = eventBehaviors.size();
@@ -794,7 +794,7 @@ public abstract class CoreRenderer extends Renderer {
     protected boolean isGrouped() {
         return false;
     }
-    
+
     /**
      * Used by script-only widget to fix #3265 and allow updating of the component.
      *
@@ -809,7 +809,7 @@ public abstract class CoreRenderer extends Renderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("style", "display: none;", null);
-        
+
         renderPassThruAttributes(context, component, null);
 
         writer.endElement("div");

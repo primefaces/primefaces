@@ -38,7 +38,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     public MoveScriptsToBottomResponseWriter(ResponseWriter wrapped, MoveScriptsToBottomState state) {
         this.wrapped = wrapped;
         this.state = state;
-        
+
         inScript = false;
         scriptsRendered = false;
 
@@ -70,7 +70,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             getWrapped().write(cbuf);
         }
     }
-    
+
     @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
         if (inScript) {
@@ -80,7 +80,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             getWrapped().write(cbuf, off, len);
         }
     }
-    
+
     @Override
     public void write(String str) throws IOException {
         if (inScript) {
@@ -99,7 +99,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         else {
             getWrapped().writeText(cbuf, off, len);
         }
-    }      
+    }
 
     @Override
     public void writeText(Object text, String property) throws IOException {
@@ -141,7 +141,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             getWrapped().writeAttribute(name, value, property);
         }
     }
-    
+
     @Override
     public void writeURIAttribute(String name, Object value, String property) throws IOException {
         if (inScript) {
@@ -187,7 +187,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             inline.setLength(0);
         }
         else if ("body".equalsIgnoreCase(name) || ("html".equalsIgnoreCase(name) && !scriptsRendered)) {
-            
+
             for (Map.Entry<String, ArrayList<String>> entry : state.getIncludes().entrySet()) {
                 String type = entry.getKey();
                 ArrayList<String> includes = entry.getValue();
@@ -207,7 +207,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
                 String type = entry.getKey();
                 ArrayList<String> inlines = entry.getValue();
                 String merged = mergeAndMinimizeInlineScripts(type, inlines);
-                
+
                 if (merged != null && !merged.trim().isEmpty()) {
                     getWrapped().startElement("script", null);
                     getWrapped().writeAttribute("type", type, null);
@@ -239,7 +239,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
         if ("text/javascript".equalsIgnoreCase(type)) {
             minimized = minimized.replace(";;", ";");
-            
+
             if (minimized.contains("PrimeFaces")) {
                 minimized = minimized.replace("PrimeFaces.settings", "pf.settings")
                     .replace("PrimeFaces.cw", "pf.cw")

@@ -34,7 +34,7 @@ public class JSONObjectTest {
 			fail();
 		}
 	}
-	
+
 	@Test
 	public void testPojoToJSON() throws JSONException {
 		JSONObject json = new JSONObject(new Person("Cagatay", "Civici"));
@@ -44,7 +44,7 @@ public class JSONObjectTest {
 		assertEquals("Civici", json.get("lastname"));
         assertEquals(2, json.length());
 	}
-    
+
     @Test
     public void testListToJSONArray() throws JSONException {
         List<String> myList = new ArrayList<String>();
@@ -54,7 +54,7 @@ public class JSONObjectTest {
 
         assertEquals(5, new JSONArray(myList).length());
     }
-    
+
     @Test
     public void testMapToJSONObject() throws JSONException {
         Map<String, String> myMap = new HashMap<String, String>();
@@ -64,14 +64,14 @@ public class JSONObjectTest {
 
         assertEquals(5, new JSONObject(myMap).length());
     }
-	
+
 	static public class Person {
-		
+
 		private String firstname;
 		private String lastname;
-		
+
 		public Person() {}
-		
+
 		public Person(String firstname, String lastname) {
 			this.firstname = firstname;
 			this.lastname = lastname;

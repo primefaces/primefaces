@@ -129,7 +129,7 @@ public class ChartModel implements Serializable {
     public void setLegendEscapeHtml(boolean legendEscapeHtml) {
         this.legendEscapeHtml = legendEscapeHtml;
     }
-    
+
     public String getDataRenderMode() {
         return dataRenderMode;
     }

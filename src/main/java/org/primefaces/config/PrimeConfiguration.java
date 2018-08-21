@@ -49,7 +49,7 @@ public class PrimeConfiguration {
 
     // internal config
     private boolean stringConverterAvailable = false;
-        
+
     private boolean beanValidationEnabled = false;
 
     // web.xml
@@ -65,7 +65,7 @@ public class PrimeConfiguration {
         initConfigFromWebXml(context);
         initValidateEmptyFields(context, environment);
     }
-    
+
     protected void initInternalConfig(FacesContext context) {
         stringConverterAvailable = null != context.getApplication().createConverter(String.class);
     }
@@ -111,7 +111,7 @@ public class PrimeConfiguration {
 
         value = externalContext.getInitParameter(Constants.ContextParams.EARLY_POST_PARAM_EVALUATION);
         earlyPostParamEvaluation = (value == null) ? false : Boolean.valueOf(value);
-        
+
         value = externalContext.getInitParameter(Constants.ContextParams.MOVE_SCRIPTS_TO_BOTTOM);
         moveScriptsToBottom = (value == null) ? false : Boolean.valueOf(value);
     }

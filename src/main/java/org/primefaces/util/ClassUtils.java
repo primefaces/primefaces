@@ -16,7 +16,7 @@
 package org.primefaces.util;
 
 public class ClassUtils {
-    
+
     public static Class tryToLoadClassForName(String name) {
         try {
             return Class.forName(name);

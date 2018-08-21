@@ -61,7 +61,7 @@ public class NativeUploadedFileTest {
         // Assert
         Assert.assertEquals("Test;123.txt", output);
     }
-    
+
     @Test
     public void testPercent() {
         // Arrange
@@ -73,7 +73,7 @@ public class NativeUploadedFileTest {
         // Assert
         Assert.assertEquals("test%.jpg", output);
     }
-    
+
     @Test
     public void testPlus() {
         // Arrange

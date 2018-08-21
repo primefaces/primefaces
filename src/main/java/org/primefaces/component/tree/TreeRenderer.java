@@ -729,7 +729,7 @@ public class TreeRenderer extends CoreRenderer {
 
         writer.endElement("span");
 
-        //children nodes                
+        //children nodes
         writer.startElement("ul", null);
         writer.writeAttribute("class", Tree.CHILDREN_NODES_CLASS, null);
         writer.writeAttribute("role", "group", null);

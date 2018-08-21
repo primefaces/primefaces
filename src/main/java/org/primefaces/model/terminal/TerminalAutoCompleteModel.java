@@ -22,7 +22,7 @@ import java.util.List;
 public class TerminalAutoCompleteModel implements Serializable {
 
     private List<TerminalCommand> commands;
-    
+
     public TerminalAutoCompleteModel() {
         this.commands = new ArrayList<TerminalCommand>();
     }
@@ -30,17 +30,17 @@ public class TerminalAutoCompleteModel implements Serializable {
     public List<TerminalCommand> getCommands() {
         return commands;
     }
-    
+
     public void setCommands(List<TerminalCommand> commands) {
         this.commands = commands;
     }
-    
+
     public TerminalCommand addCommand(String commandText) {
         TerminalCommand command = new TerminalCommand(commandText);
-        
+
         this.commands.add(command);
-        
+
         return command;
     }
-    
+
 }

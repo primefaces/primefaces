@@ -74,7 +74,7 @@ public class LabelOverlay implements Overlay, Serializable {
 
         if (styleClass != null) sb.append(",cssClass:'").append(styleClass).append("'");
         if (location != 0.5) sb.append(",location:").append(location);
-        
+
         sb.append("}]");
 
         return sb.toString();

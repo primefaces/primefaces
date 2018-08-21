@@ -277,13 +277,13 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         return true;
     }
 
-    
+
     @Override
     protected Enum<?>[] getAllProperties() {
         return PropertyKeys.values();
     }
 
-    
+
     public void addAjaxBehaviorListener(AjaxBehaviorListener listener) {
         addBehaviorListener(listener);
     }

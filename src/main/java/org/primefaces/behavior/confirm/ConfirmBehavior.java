@@ -64,7 +64,7 @@ public class ConfirmBehavior extends AbstractBehavior {
         String headerText = JSONObject.quote(this.getHeader());
         String messageText = JSONObject.quote(this.getMessage());
         String beforeShow = JSONObject.quote(this.getBeforeShow());
-        
+
         if (component instanceof Confirmable) {
             String sourceProperty = (source == null) ? "source:this" : "source:\"" + source + "\"";
             String script = "PrimeFaces.confirm({" + sourceProperty
@@ -120,7 +120,7 @@ public class ConfirmBehavior extends AbstractBehavior {
     public void setDisabled(boolean disabled) {
         setLiteral(PropertyKeys.disabled, disabled);
     }
-    
+
     public String getBeforeShow() {
         return eval(PropertyKeys.beforeShow, null);
     }

@@ -265,7 +265,7 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
         else if (!rowKey.equals(other.rowKey)) {
             return false;
         }
-        
+
         return true;
     }
 

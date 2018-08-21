@@ -201,7 +201,7 @@ public abstract class SelectRenderer extends InputRenderer {
 
         return null;
     }
-    
+
     protected Object coerceToModelType(FacesContext ctx, Object value, Class itemValueType) {
         Object newValue;
         try {
@@ -288,12 +288,12 @@ public abstract class SelectRenderer extends InputRenderer {
     }
 
     /**
-     * Restores checked, disabled select items (#3296) and checks if at least one disabled select item has been submitted - 
+     * Restores checked, disabled select items (#3296) and checks if at least one disabled select item has been submitted -
      * this may occur with client side manipulation (#3264)
      * @return <code>newSubmittedValues</code> merged with checked, disabled <code>oldValues</code>
      * @throws javax.faces.FacesException if client side manipulation has been detected, in order to reject the submission
      */
-    protected String[] validateSubmittedValues(FacesContext context, UIInput component, Object[] oldValues, String... submittedValues) 
+    protected String[] validateSubmittedValues(FacesContext context, UIInput component, Object[] oldValues, String... submittedValues)
             throws FacesException {
         List<String> validSubmittedValues = doValidateSubmittedValues(
                 context,
@@ -310,9 +310,9 @@ public abstract class SelectRenderer extends InputRenderer {
             Object[] oldValues,
             List<SelectItem> selectItems,
             String... submittedValues) {
-        
+
         List<String> validSubmittedValues = new ArrayList<>();
-        
+
         // loop attached SelectItems - other values are not allowed
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
@@ -337,7 +337,7 @@ public abstract class SelectRenderer extends InputRenderer {
                     else if (ArrayUtils.contains(oldValues, selectItemVal)) {
                         validSubmittedValues.add(selectItemVal);
                     }
-                } 
+                }
                 else {
                     if (ArrayUtils.contains(submittedValues, selectItemVal)) {
                         validSubmittedValues.add(selectItemVal);
@@ -345,7 +345,7 @@ public abstract class SelectRenderer extends InputRenderer {
                 }
             }
         }
-        
+
         return validSubmittedValues;
     }
 }

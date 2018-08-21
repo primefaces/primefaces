@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MoveScriptsToBottomState implements Serializable {
-    
+
     private HashMap<String, ArrayList<String>> includes;
     private HashMap<String, ArrayList<String>> inlines;
     private int savedInlineTags;
@@ -30,7 +30,7 @@ public class MoveScriptsToBottomState implements Serializable {
         inlines = new HashMap<>(1);
         savedInlineTags = -1;
     }
-    
+
     public void addInclude(String type, StringBuilder src) {
         if (src.length() > 0) {
             ArrayList<String> includeList = includes.get(type);
@@ -41,7 +41,7 @@ public class MoveScriptsToBottomState implements Serializable {
             includeList.add(src.toString());
         }
     }
-    
+
     public void addInline(String type, StringBuilder content) {
         if (content.length() > 0) {
             ArrayList<String> inlineList = inlines.get(type);
