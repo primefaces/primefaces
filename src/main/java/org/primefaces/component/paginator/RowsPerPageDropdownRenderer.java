@@ -17,17 +17,19 @@ package org.primefaces.component.paginator;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIData;
 import org.primefaces.util.MessageFactory;
 
 public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
 
-    private final static Logger logger = Logger.getLogger(RowsPerPageDropdownRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(RowsPerPageDropdownRenderer.class.getName());
 
     @Override
     public void render(FacesContext context, Pageable pageable) throws IOException {
@@ -82,7 +84,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
                 }
                 else {
                     optionText = option.trim();
-                    rows = Integer.parseInt(optionText);  
+                    rows = Integer.parseInt(optionText);
                 }
 
                 writer.startElement("option", null);

@@ -16,17 +16,19 @@
 package org.primefaces.component.autoupdate;
 
 import java.util.ArrayList;
+
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
+
 import org.primefaces.context.PrimeRequestContext;
 
 public class AutoUpdatePhaseListener implements PhaseListener {
-    
+
     @Override
     public void afterPhase(PhaseEvent event) {
-        
+
     }
 
     @Override
@@ -51,5 +53,5 @@ public class AutoUpdatePhaseListener implements PhaseListener {
     public PhaseId getPhaseId() {
         return PhaseId.RENDER_RESPONSE;
     }
-    
+
 }

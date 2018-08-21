@@ -17,7 +17,7 @@ package org.primefaces.component.media.player;
 
 public class WindowsPlayer implements MediaPlayer {
 
-    private static final String[] SUPPORTED_TYPES = new String[] { "asx", "asf", "avi", "wma", "wmv" };
+    private static final String[] SUPPORTED_TYPES = new String[]{"asx", "asf", "avi", "wma", "wmv"};
 
     @Override
     public String getClassId() {

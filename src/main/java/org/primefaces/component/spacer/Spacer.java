@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.component.separator;
+package org.primefaces.component.spacer;
 
-/**
- * Backward compatibility between PrimeFaces Mobile targeting 3.5 and PrimeFaces 4.0
- */
-public interface Separator {
+public class Spacer extends SpacerBase {
 
+    public static final String COMPONENT_TYPE = "org.primefaces.component.Spacer";
 }

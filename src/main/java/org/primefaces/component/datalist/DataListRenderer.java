@@ -17,9 +17,11 @@ package org.primefaces.component.datalist;
 
 import java.io.IOException;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.DataRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -132,7 +134,7 @@ public class DataListRenderer extends DataRenderer {
      * Renders items with no strict markup
      *
      * @param context FacesContext instance
-     * @param list DataList component
+     * @param list    DataList component
      * @throws IOException
      */
     protected void encodeStrictList(FacesContext context, DataList list) throws IOException {
@@ -212,7 +214,7 @@ public class DataListRenderer extends DataRenderer {
      * Renders items with no strict markup
      *
      * @param context FacesContext instance
-     * @param list DataList component
+     * @param list    DataList component
      * @throws IOException
      */
     protected void encodeFreeList(FacesContext context, DataList list) throws IOException {

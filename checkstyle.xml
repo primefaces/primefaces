@@ -64,8 +64,8 @@
         </module>
 
         <module name="LineLength">
-          <property name="max" value="160" />
-          <property name="ignorePattern" value="@version|@see"/>
+            <property name="max" value="160"/>
+            <property name="ignorePattern" value="@version|@see|\w*_CLASS"/>
         </module>
         <module name="MethodLength">
           <property name="max" value="300" />

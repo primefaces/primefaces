@@ -22,12 +22,7 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.ActionSource;
 import javax.faces.component.UIComponent;
-import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.FaceletContext;
-import javax.faces.view.facelets.FaceletException;
-import javax.faces.view.facelets.TagAttribute;
-import javax.faces.view.facelets.TagConfig;
-import javax.faces.view.facelets.TagHandler;
+import javax.faces.view.facelets.*;
 
 public class CollectorTagHandler extends TagHandler {
 
@@ -38,10 +33,10 @@ public class CollectorTagHandler extends TagHandler {
 
     public CollectorTagHandler(TagConfig tagConfig) {
         super(tagConfig);
-        this.addTo = getAttribute("addTo");
-        this.removeFrom = getAttribute("removeFrom");
-        this.value = getRequiredAttribute("value");
-        this.unique = getAttribute("unique");
+        addTo = getAttribute("addTo");
+        removeFrom = getAttribute("removeFrom");
+        value = getRequiredAttribute("value");
+        unique = getAttribute("unique");
     }
 
     @Override

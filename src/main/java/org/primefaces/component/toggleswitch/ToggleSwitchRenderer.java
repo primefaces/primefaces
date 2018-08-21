@@ -16,9 +16,11 @@
 package org.primefaces.component.toggleswitch;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -38,7 +40,7 @@ public class ToggleSwitchRenderer extends InputRenderer {
         decodeBehaviors(context, toggleSwitch);
 
         String clientId = toggleSwitch.getClientId(context);
-        String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
         if (submittedValue != null && isChecked(submittedValue)) {
             toggleSwitch.setSubmittedValue(true);
@@ -104,9 +106,15 @@ public class ToggleSwitchRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
 
-        if (checked) writer.writeAttribute("checked", "checked", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (toggleSwitch.getTabindex() != null) writer.writeAttribute("tabindex", toggleSwitch.getTabindex(), null);
+        if (checked) {
+            writer.writeAttribute("checked", "checked", null);
+        }
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (toggleSwitch.getTabindex() != null) {
+            writer.writeAttribute("tabindex", toggleSwitch.getTabindex(), null);
+        }
 
         if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, toggleSwitch);

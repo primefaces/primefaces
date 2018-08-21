@@ -17,16 +17,18 @@ package org.primefaces.component.export;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.*;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
-
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
@@ -34,7 +36,7 @@ import org.primefaces.util.Constants;
 public class CSVExporter extends Exporter {
 
     private CSVOptions csvOptions;
-    
+
     public CSVExporter(ExporterOptions options) {
         csvOptions = CSVOptions.EXCEL;
         if (options != null) {
@@ -46,12 +48,12 @@ public class CSVExporter extends Exporter {
             }
         }
     }
-    
+
     @Override
     public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-            MethodExpression onTableRender) throws IOException {
-        
+                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+                       MethodExpression onTableRender) throws IOException {
+
         ExternalContext externalContext = context.getExternalContext();
         configureResponse(externalContext, filename, encodingType);
         StringBuilder builder = new StringBuilder();
@@ -88,15 +90,15 @@ public class CSVExporter extends Exporter {
 
     @Override
     public void export(FacesContext facesContext, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-            MethodExpression onTableRender) throws IOException {
+                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+                       MethodExpression onTableRender) throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void export(FacesContext facesContext, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-            MethodExpression onTableRender) throws IOException {
+                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+                       MethodExpression onTableRender) throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -181,7 +183,7 @@ public class CSVExporter extends Exporter {
     }
 
     protected void addColumnValues(StringBuilder builder, List<UIColumn> columns) throws IOException {
-        for (Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
+        for (Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext(); ) {
             UIColumn col = iterator.next();
             addColumnValue(builder, col.getChildren(), col);
 

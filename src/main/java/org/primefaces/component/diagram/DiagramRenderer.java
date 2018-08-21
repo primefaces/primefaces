@@ -18,12 +18,14 @@ package org.primefaces.component.diagram;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
+import org.primefaces.model.diagram.Connection;
 import org.primefaces.model.diagram.DiagramModel;
 import org.primefaces.model.diagram.Element;
-import org.primefaces.model.diagram.Connection;
 import org.primefaces.model.diagram.connector.Connector;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.overlay.Overlay;
@@ -180,8 +182,12 @@ public class DiagramRenderer extends CoreRenderer {
             wb.append(",defaultConnector:").append(defaultConnector.toJS(sb));
             wb.append(",containment:").append("" + model.isContainment());
 
-            if (paintStyle != null) wb.append(",paintStyle:").append(paintStyle);
-            if (hoverPaintStyle != null) wb.append(",hoverPaintStyle:").append(hoverPaintStyle);
+            if (paintStyle != null) {
+                wb.append(",paintStyle:").append(paintStyle);
+            }
+            if (hoverPaintStyle != null) {
+                wb.append(",hoverPaintStyle:").append(hoverPaintStyle);
+            }
 
             sb.setLength(0);
         }
@@ -244,14 +250,30 @@ public class DiagramRenderer extends CoreRenderer {
                 .append(",element:'").append(elementClientId).append("'")
                 .append(",anchor:'").append(endPoint.getAnchor().toString()).append("'");
 
-        if (maxConnections != 1) wb.append(",maxConnections:").append(maxConnections);
-        if (style != null) wb.append(",paintStyle:").append(style);
-        if (hoverStyle != null) wb.append(",hoverPaintStyle:").append(hoverStyle);
-        if (endPoint.isSource()) wb.append(",isSource:true");
-        if (endPoint.isTarget()) wb.append(",isTarget:true");
-        if (styleClass != null) wb.append(",cssClass:'").append(styleClass).append("'");
-        if (hoverStyleClass != null) wb.append(",hoverClass:'").append(hoverStyleClass).append("'");
-        if (scope != null) wb.append(",scope:'").append(scope).append("'");
+        if (maxConnections != 1) {
+            wb.append(",maxConnections:").append(maxConnections);
+        }
+        if (style != null) {
+            wb.append(",paintStyle:").append(style);
+        }
+        if (hoverStyle != null) {
+            wb.append(",hoverPaintStyle:").append(hoverStyle);
+        }
+        if (endPoint.isSource()) {
+            wb.append(",isSource:true");
+        }
+        if (endPoint.isTarget()) {
+            wb.append(",isTarget:true");
+        }
+        if (styleClass != null) {
+            wb.append(",cssClass:'").append(styleClass).append("'");
+        }
+        if (hoverStyleClass != null) {
+            wb.append(",hoverClass:'").append(hoverStyleClass).append("'");
+        }
+        if (scope != null) {
+            wb.append(",scope:'").append(scope).append("'");
+        }
 
         if (type != null) {
             wb.append(",endpoint:").append(endPoint.toJS(sb));
@@ -283,8 +305,12 @@ public class DiagramRenderer extends CoreRenderer {
                     String paintStyle = connector.getPaintStyle();
                     String hoverPaintStyle = connector.getHoverPaintStyle();
 
-                    if (paintStyle != null) wb.append(",paintStyle:").append(paintStyle);
-                    if (hoverPaintStyle != null) wb.append(",hoverPaintStyle:").append(hoverPaintStyle);
+                    if (paintStyle != null) {
+                        wb.append(",paintStyle:").append(paintStyle);
+                    }
+                    if (hoverPaintStyle != null) {
+                        wb.append(",hoverPaintStyle:").append(hoverPaintStyle);
+                    }
                 }
 
                 if (!connection.isDetachable()) {

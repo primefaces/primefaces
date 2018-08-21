@@ -19,8 +19,10 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
@@ -36,12 +38,12 @@ public class BarRenderer extends CartesianPlotRenderer {
 
         //data
         writer.write(",data:[");
-        for (Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
+        for (Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext(); ) {
             ChartSeries series = it.next();
             int i = 1;
 
             writer.write("[");
-            for (Iterator<Map.Entry<Object, Number>> its = series.getData().entrySet().iterator(); its.hasNext();) {
+            for (Iterator<Map.Entry<Object, Number>> its = series.getData().entrySet().iterator(); its.hasNext(); ) {
                 Map.Entry<Object, Number> entry = its.next();
                 Number value = entry.getValue();
                 String valueToRender = value != null ? value.toString() : "null";
@@ -52,11 +54,11 @@ public class BarRenderer extends CartesianPlotRenderer {
                     writer.write("]");
 
                     i++;
-                } 
+                }
                 else {
                     if (model.getDataRenderMode().equals("key")) {
                         writer.write("'" + (String) entry.getKey() + "'," + valueToRender);
-                    } 
+                    }
                     else {
                         writer.write(valueToRender);
                     }
@@ -95,8 +97,8 @@ public class BarRenderer extends CartesianPlotRenderer {
             writer.write("}");
         }
         else {
-            for (Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
-                ChartSeries series = (ChartSeries) it.next();
+            for (Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext(); ) {
+                ChartSeries series = it.next();
                 series.encode(writer);
 
                 if (it.hasNext()) {
@@ -107,7 +109,7 @@ public class BarRenderer extends CartesianPlotRenderer {
         writer.write("]");
 
         writer.write(",ticks:[");
-        for (Iterator<String> tickIt = ticks.iterator(); tickIt.hasNext();) {
+        for (Iterator<String> tickIt = ticks.iterator(); tickIt.hasNext(); ) {
             writer.write("\"" + ComponentUtils.escapeText(tickIt.next()) + "\"");
             if (tickIt.hasNext()) {
                 writer.write(",");
@@ -115,15 +117,31 @@ public class BarRenderer extends CartesianPlotRenderer {
         }
         writer.write("]");
 
-        if (orientation != null) writer.write(",orientation:\"" + orientation + "\"");
-        if (barPadding != 8) writer.write(",barPadding:" + barPadding);
-        if (barMargin != 10) writer.write(",barMargin:" + barMargin);
-        if (barWidth != 0) writer.write(",barWidth:" + barWidth);
-        if (model.isStacked()) writer.write(",stackSeries:true");       
-        if (model.isZoom()) writer.write(",zoom:true");        
-        if (model.isAnimate()) writer.write(",animate:true");  
-        if (model.isShowPointLabels()) writer.write(",showPointLabels:true");
-        
+        if (orientation != null) {
+            writer.write(",orientation:\"" + orientation + "\"");
+        }
+        if (barPadding != 8) {
+            writer.write(",barPadding:" + barPadding);
+        }
+        if (barMargin != 10) {
+            writer.write(",barMargin:" + barMargin);
+        }
+        if (barWidth != 0) {
+            writer.write(",barWidth:" + barWidth);
+        }
+        if (model.isStacked()) {
+            writer.write(",stackSeries:true");
+        }
+        if (model.isZoom()) {
+            writer.write(",zoom:true");
+        }
+        if (model.isAnimate()) {
+            writer.write(",animate:true");
+        }
+        if (model.isShowPointLabels()) {
+            writer.write(",showPointLabels:true");
+        }
+
         if (model.isShowDatatip()) {
             writer.write(",datatip:true");
             if (model.getDatatipFormat() != null) {

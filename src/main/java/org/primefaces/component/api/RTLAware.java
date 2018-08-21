@@ -17,5 +17,5 @@ package org.primefaces.component.api;
 
 public interface RTLAware {
 
-    public boolean isRTL();
+    boolean isRTL();
 }

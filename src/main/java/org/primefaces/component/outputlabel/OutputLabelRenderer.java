@@ -15,7 +15,6 @@
  */
 package org.primefaces.component.outputlabel;
 
-import org.primefaces.util.EditableValueHolderState;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.Set;
@@ -31,16 +30,14 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.validation.constraints.NotNull;
 import javax.validation.metadata.ConstraintDescriptor;
+
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.CompositeUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.*;
 
 public class OutputLabelRenderer extends CoreRenderer {
 
@@ -189,8 +186,8 @@ public class OutputLabelRenderer extends CoreRenderer {
         }
         catch (PropertyNotFoundException e) {
             String message = "Skip evaluating [@NotNull,@NotBlank,@NotEmpty] for outputLabel and referenced component \"" + input.getClientId(context)
-                        + "\" because the ValueExpression of the \"value\" attribute"
-                        + " isn't resolvable completely (e.g. a sub-expression returns null)";
+                    + "\" because the ValueExpression of the \"value\" attribute"
+                    + " isn't resolvable completely (e.g. a sub-expression returns null)";
             LOG.log(Level.FINE, message);
         }
 
