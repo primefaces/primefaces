@@ -7,12 +7,11 @@ jdk:
 # - openjdk7  (not possible since JSF 2.3 dependency - we need to compile it)
 
 script:
-  echo $SONARQUBE_SCANNER_PARAMS
 - mvn install -DskipTests=true -Dmaven.javadoc.skip=true --batch-mode --show-version
 # add --update-snapshots if snapshots are used
 - mvn test verify --batch-mode
 # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+- echo $SONARQUBE_SCANNER_PARAMS mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
 
 addons:
   sonarcloud:
