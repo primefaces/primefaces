@@ -823,7 +823,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
         var panelWidth = null;
 
         if(this.cfg.multiple) {
-            panelWidth = this.multiItemContainer.innerWidth() - (this.input.position().left - this.multiItemContainer.position().left);
+            panelWidth = this.multiItemContainer.outerWidth();
         }
         else {
             if(this.panel.is(':visible')) {
