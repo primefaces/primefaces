@@ -98,7 +98,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 var ext = {
                     params: [
                         {name: $this.id + '_movedEventId', value: calEvent.id},
-                        {name: $this.id + '_dayDelta', value: delta.days()},
+                        {name: $this.id + '_dayDelta', value: delta._days},
                         {name: $this.id + '_minuteDelta', value: (delta._milliseconds/60000)}
                     ]
                 };
@@ -112,7 +112,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 var ext = {
                     params: [
                         {name: $this.id + '_resizedEventId', value: calEvent.id},
-                        {name: $this.id + '_dayDelta', value: delta.days()},
+                        {name: $this.id + '_dayDelta', value: delta._days},
                         {name: $this.id + '_minuteDelta', value: (delta._milliseconds/60000)}
                     ]
                 };
