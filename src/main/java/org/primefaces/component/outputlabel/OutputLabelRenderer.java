@@ -28,6 +28,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.metadata.ConstraintDescriptor;
 
@@ -177,7 +178,10 @@ public class OutputLabelRenderer extends CoreRenderer {
                 if (annotationType.equals(NotNull.class)) {
                     return applicationContext.getConfig().isInterpretEmptyStringAsNull();
                 }
-                // GitHub #3052 @NotBlank,@NotEmpty Hibernate and BeanValidator 2.0
+                else if (annotationType.equals(AssertTrue.class)) {
+                    return true;
+                }
+                // GitHub #3052 @NotBlank,@NotEmpty Hibernate and BeanValidation 2.0
                 String annotationClassName = annotationType.getSimpleName();
                 if ("NotBlank".equals(annotationClassName) || "NotEmpty".equals(annotationClassName)) {
                     return true;
@@ -185,7 +189,8 @@ public class OutputLabelRenderer extends CoreRenderer {
             }
         }
         catch (PropertyNotFoundException e) {
-            String message = "Skip evaluating [@NotNull,@NotBlank,@NotEmpty] for outputLabel and referenced component \"" + input.getClientId(context)
+            String message = "Skip evaluating [@NotNull,@NotBlank,@NotEmpty,@AssertTrue] for outputLabel and referenced component \""
+                    + input.getClientId(context)
                     + "\" because the ValueExpression of the \"value\" attribute"
                     + " isn't resolvable completely (e.g. a sub-expression returns null)";
             LOG.log(Level.FINE, message);
