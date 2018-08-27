@@ -170,18 +170,18 @@ public class OutputLabelRenderer extends CoreRenderer {
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(context,
                     applicationContext,
                     ValueExpressionAnalyzer.getExpression(context.getELContext(), input.getValueExpression("value")));
-            
+
             if (constraints == null || constraints.isEmpty()) {
                 return false;
             }
-            
+
             for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
                 Class<? extends Annotation> annotationType = constraintDescriptor.getAnnotation().annotationType();
                 // GitHub #14 skip @NotNull check
                 if (annotationType.equals(NotNull.class)) {
                     return applicationContext.getConfig().isInterpretEmptyStringAsNull();
                 }
-                
+
                 // GitHub #3052 @NotBlank,@NotEmpty Hibernate and BeanValidator 2.0
                 String annotationClassName = annotationType.getSimpleName();
                 if ("NotBlank".equals(annotationClassName) || "NotEmpty".equals(annotationClassName)) {
