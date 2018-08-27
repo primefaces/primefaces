@@ -220,6 +220,10 @@ public abstract class SelectRenderer extends InputRenderer {
             return true;
         }
 
+        if (itemValue == valueArray) {
+            return true;
+        }
+
         if (valueArray != null) {
             if (!valueArray.getClass().isArray()) {
                 return valueArray.equals(itemValue);

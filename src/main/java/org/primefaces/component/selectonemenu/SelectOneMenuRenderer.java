@@ -217,7 +217,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
     protected void encodeLabel(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        
+
         if (menu.isEditable()) {
             writer.startElement("input", null);
             writer.writeAttribute("type", "text", null);
@@ -233,14 +233,14 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             }
 
             String valueToRender = ComponentUtils.getValueToRender(context, menu);
-            if (valueToRender != null) {
-                for (SelectItem anItem : selectItems) {
-                    if (isSelected(context, menu, valueToRender, anItem.getValue().toString(), null)) {
-                        valueToRender = anItem.getLabel();
-                    }
+            for (int i = 0; i < selectItems.size(); i++) {
+                SelectItem selectItem = selectItems.get(i);
+                if (isSelected(context, menu, valueToRender, selectItem.getValue(), null)) {
+                    valueToRender = selectItem.getLabel();
+                    break;
                 }
-                writer.writeAttribute("value", valueToRender, null);
             }
+            writer.writeAttribute("value", valueToRender, null);
 
             if (menu.getMaxlength() != Integer.MAX_VALUE) {
                 writer.writeAttribute("maxlength", menu.getMaxlength(), null);
