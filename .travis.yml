@@ -11,13 +11,13 @@ script:
 # add --update-snapshots if snapshots are used
 - mvn test verify --batch-mode
 # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-# - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
 
-# addons:
-#  sonarcloud:
-#    organization: "primefaces"
-#    token:
-#      secure: "psffl4OEx96kgPynOMq2Wca80Rp3RmhKNmj2utYomUSszf/F0nBpoV9qhwz523JdoKeJohpnv6DODVs034vRtjcGBVcEW7v6Fe9I+2mU7HuErOIKsNWAT9kwLA5eme4NIuzB5YNFgM3wncAD+zwBONZseH/oQUGhMWkuy0JoiC91YfZlTVMkNiuSK/VTzcBnmnP7R40LOr6ROYSgym+NEpWS1tC9xJXVYp9dW8GY7NhIU3hSfkGv30ylz2ZFcV2gVchy1gWP++S9Ir1Wa1KCpfRVXqjRn62jvZJZO14nlnuLPs6Uq2VV9Ff4+gskeT63Ss2fZXOk0bS8EgZyY7afVplDE7Y8CxbbQJcfXsdRY1NUAahDRafTyhRu7kn0WiOsr7Y4YJrxy7UUuRnJLCJXlbQl2BTkprj0KALo27caAPmGgtJSTfFg/ZblKAXi2vY+eu+aTIJAuR49me4q4m0XdwHuqE2Bg8PumRoCJn4NZyaJCiiyiCDTEJiYpLEF4/KcOpEAr6GVx1F1/rogovVxeM1zGRsV+eUWvJppigNgip8ocaWjKZ6Ounk1DeWHZe+Mh4GjJGVJHjvdHIWWqyeW1+zZToxEo4ORcaYAPQw1C7HdrkGzkahD7h0BYV5tbbE6hjV+JEnFGq0zLFUyDftK1tJ7mS3DlxlHwfKLL1/YhnM="
+addons:
+  sonarcloud:
+    organization: "primefaces"
+    token:
+      secure: "SSvE7GhNv3rdsDLwnFSt++Hbc65OtWD1So2ISRLm4y9qSxsov/nGuOjSvx4C9d+fBdzAJ6Cyyrgz1ARJ2m2HMBz3azmoHwvRonyD8zTqTu8qD+tteZt1M9t02F9DKLLFojML491ozlo0xOwqNptl/QURFnlzZ2yRBtKpPYDfqOw="
 
 cache:
   directories:
