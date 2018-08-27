@@ -26,8 +26,10 @@ import javax.el.ValueExpression;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.component.UISelectBoolean;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.metadata.ConstraintDescriptor;
 
@@ -168,24 +170,33 @@ public class OutputLabelRenderer extends CoreRenderer {
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(context,
                     applicationContext,
                     ValueExpressionAnalyzer.getExpression(context.getELContext(), input.getValueExpression("value")));
+            
             if (constraints == null || constraints.isEmpty()) {
                 return false;
             }
+            
             for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
                 Class<? extends Annotation> annotationType = constraintDescriptor.getAnnotation().annotationType();
                 // GitHub #14 skip @NotNull check
                 if (annotationType.equals(NotNull.class)) {
                     return applicationContext.getConfig().isInterpretEmptyStringAsNull();
                 }
+                
                 // GitHub #3052 @NotBlank,@NotEmpty Hibernate and BeanValidator 2.0
                 String annotationClassName = annotationType.getSimpleName();
                 if ("NotBlank".equals(annotationClassName) || "NotEmpty".equals(annotationClassName)) {
                     return true;
                 }
+
+                // GitHub #3986
+                if (input instanceof UISelectBoolean && annotationType.equals(AssertTrue.class)) {
+                    return true;
+                }
             }
         }
         catch (PropertyNotFoundException e) {
-            String message = "Skip evaluating [@NotNull,@NotBlank,@NotEmpty] for outputLabel and referenced component \"" + input.getClientId(context)
+            String message = "Skip evaluating [@NotNull,@NotBlank,@NotEmpty,@AssertTrue] for outputLabel and referenced component \""
+                    + input.getClientId(context)
                     + "\" because the ValueExpression of the \"value\" attribute"
                     + " isn't resolvable completely (e.g. a sub-expression returns null)";
             LOG.log(Level.FINE, message);
