@@ -44,7 +44,6 @@ import javax.faces.view.facelets.TagHandler;
 
 import org.primefaces.behavior.ajax.AjaxBehaviorHandler;
 import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
 
 public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         extends TagHandler implements BehaviorHolderAttachedObjectHandler {
