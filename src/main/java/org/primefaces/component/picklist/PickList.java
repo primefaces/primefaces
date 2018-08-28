@@ -105,10 +105,10 @@ public class PickList extends PickListBase {
         super.validateValue(facesContext, newValue);
 
         DualListModel<?> newModel = (DualListModel<?>) newValue;
-        DualListModel<?> oldModel = (DualListModel<?>) this.getValue();
+        DualListModel<?> oldModel = (DualListModel<?>) getValue();
 
-        String clientId = this.getClientId(facesContext);
-        String label = this.getLabel();
+        String clientId = getClientId(facesContext);
+        String label = getLabel();
         if (label == null) {
             label = clientId;
         }
@@ -145,7 +145,7 @@ public class PickList extends PickListBase {
 
         Map<String, Object> requestMap = facesContext.getExternalContext().getRequestMap();
         String varName = getVar();
-        String clientId = this.getClientId(facesContext);
+        String clientId = getClientId(facesContext);
         Object originalItem = requestMap.get(varName);
         for (int i = 0; i < newEntries.size(); i++) {
             Object item = newEntries.get(i);
