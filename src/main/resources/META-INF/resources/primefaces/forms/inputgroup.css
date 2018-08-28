@@ -31,6 +31,7 @@
 .ui-inputgroup .ui-inputtextarea,
 .ui-inputgroup .ui-password,
 .ui-inputgroup .ui-autocomplete-input,
+.ui-inputgroup .ui-chips-container,
 .ui-inputgroup .ui-spinner-input {
     padding-left: .5em;
 }
@@ -41,6 +42,7 @@
 .ui-inputgroup > .ui-inputnumber:not(:first-child) > .ui-inputtext,
 .ui-inputgroup > .ui-inputmask:not(:first-child),
 .ui-inputgroup > .ui-calendar:not(:first-child) > .ui-inputfield,
+.ui-inputgroup > .ui-chips:not(:first-child) > .ui-chips-container,
 .ui-inputgroup > .ui-selectonemenu:not(:first-child),
 .ui-inputgroup > .ui-selectonebutton:not(:first-child) > .ui-button,
 .ui-inputgroup > .ui-autocomplete:not(:first-child) > .ui-autocomplete-input,
@@ -58,6 +60,7 @@
 .ui-inputgroup > .ui-inputmask:not(:last-child),
 .ui-inputgroup > .ui-selectonemenu:not(:last-child),
 .ui-inputgroup > .ui-calendar:not(:last-child) > .ui-inputfield,
+.ui-inputgroup > .ui-chips:not(:last-child) > .ui-chips-container,
 .ui-inputgroup > .ui-selectonebutton:not(:last-child) > .ui-button,
 .ui-inputgroup > .ui-autocomplete:not(:last-child) > .ui-autocomplete-input,
 .ui-inputgroup > .ui-spinner:not(:last-child),
