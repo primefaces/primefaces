@@ -2,22 +2,23 @@ language: java
 # specifying other dists doesn't make sense because `trusty` doesn't have `oraclejdk8` (fails due to `Sorry, but JDK '[oraclejdk8]' is not known.`) which is the only supported JDK currently. Testing on Mac OSX doesn't make too much sense since it will run the same `maven` based build routine.
 
 jdk:
-  - oraclejdk8
-  - openjdk8
+- oraclejdk8
+- openjdk8
 # - openjdk7  (not possible since JSF 2.3 dependency - we need to compile it)
 
 script:
 # add --update-snapshots if snapshots are used
-  - mvn install -Dmaven.javadoc.skip=true --batch-mode --show-version
+- mvn clean install -Dmaven.javadoc.skip=true --batch-mode --show-version
 # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+- if [[ "$TRAVIS_PULL_REQUEST" = "false" ]]; then mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar; fi
 
 addons:
   sonarcloud:
     organization: "primefaces"
     token:
       secure: "SSvE7GhNv3rdsDLwnFSt++Hbc65OtWD1So2ISRLm4y9qSxsov/nGuOjSvx4C9d+fBdzAJ6Cyyrgz1ARJ2m2HMBz3azmoHwvRonyD8zTqTu8qD+tteZt1M9t02F9DKLLFojML491ozlo0xOwqNptl/QURFnlzZ2yRBtKpPYDfqOw="
-
+    branches:
+    - master
 cache:
   directories:
   - "$HOME/.m2/repository"
