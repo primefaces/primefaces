@@ -22,6 +22,9 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         //mark trigger and descandants of trigger as a trigger for a primefaces overlay
         this.trigger.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
 
+        this.cfg.appendTo = '@(body)';
+        PrimeFaces.utils.registerDynamicOverlay(this, this.jq, this.jqId);
+
         this.cfg.pos = {
             my: this.cfg.my
             ,at: this.cfg.at
