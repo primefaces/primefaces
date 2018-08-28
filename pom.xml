@@ -237,8 +237,9 @@
                 <version>2.17</version>
                 <configuration>
                     <consoleOutput>true</consoleOutput>
-                    <configLocation>./checkstyle.xml</configLocation>
-                    <excludes>**/UIData.java,**/Base64.java,**/UITabPanel.java,**/json/**,**/UITree.java,**/UIRepeat.java,**/AbstractBehaviorHandler.java</excludes>
+                    <configLocation>${basedir}/checkstyle.xml</configLocation>
+                    <excludes>**/UIData.java,**/Base64.java,**/UITabPanel.java,**/json/**,**/UITree.java,**/UIRepeat.java,**/AbstractBehaviorHandler.java</excludes> 
+                    <propertiesLocation>${basedir}/checkstyle_maven.properties</propertiesLocation>
                 </configuration>
                 <executions>
                     <execution>
