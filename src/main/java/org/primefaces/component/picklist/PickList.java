@@ -106,13 +106,13 @@ public class PickList extends PickListBase {
 
         DualListModel<?> newModel = (DualListModel<?>) newValue;
         DualListModel<?> oldModel = (DualListModel<?>) this.getValue();
-        
+
         String clientId = this.getClientId(facesContext);
         String label = this.getLabel();
         if (label == null) {
             label = clientId;
         }
-        
+
         if (isRequired() && newModel.getTarget().isEmpty()) {
             String requiredMessage = getRequiredMessage();
             FacesMessage message = null;
@@ -126,11 +126,11 @@ public class PickList extends PickListBase {
             facesContext.addMessage(clientId, message);
             setValid(false);
         }
-        
+
         checkDisabled(facesContext, label, newModel.getSource(), oldModel.getSource());
         checkDisabled(facesContext, label, newModel.getTarget(), oldModel.getTarget());
     }
-    
+
     /**
      * Prohibits client-side manipulation of disabled entries, when CSS style-class ui-state-disabled is removed. See
      * <a href="https://github.com/primefaces/primefaces/issues/2127">https://github.com/primefaces/primefaces/issues/2127</a>
@@ -142,7 +142,7 @@ public class PickList extends PickListBase {
         if (!isValid()) {
             return;
         }
-        
+
         Map<String, Object> requestMap = facesContext.getExternalContext().getRequestMap();
         String varName = getVar();
         String clientId = this.getClientId(facesContext);
@@ -160,7 +160,7 @@ public class PickList extends PickListBase {
                 break;
             }
         }
-        
+
         // put the original value back
         requestMap.put(varName, originalItem);
     }
