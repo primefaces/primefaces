@@ -147,6 +147,7 @@ public class PickList extends PickListBase {
         String varName = getVar();
         String clientId = getClientId(facesContext);
         Object originalItem = requestMap.get(varName);
+
         for (int i = 0; i < newEntries.size(); i++) {
             Object item = newEntries.get(i);
             // Set the current item in request map to get its properties via stateHelper().eval() call
