@@ -1828,20 +1828,23 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     /**
      * navigate to the next page by triggering a click on the first next page link
+     * 
      * @return {void}
      */
     nextPage: function() {
-        $('a.ui-paginator-next:first').click();
+        this.getPaginator().next();
     },
     /**
      * navigate to the previous page by triggering a click on the first previous page link
+     * 
      * @return {void}
      */
     prevPage: function() {
-        $('a.ui-paginator-prev:first').click();
+        this.getPaginator().prev();
     },
     /**
      * when in single selection mode navigate select the next row, or the first if none or the last is selected
+     * 
      * @return {void}
      */
     rowDown: function() {
@@ -1853,6 +1856,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     /**
      * when in single selection mode navigate select the previous row, or the last if none or the first is selected
+     * 
      * @return {void}
      */
     rowUp: function() {
@@ -1867,6 +1871,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * when in single selection mode find the selection radio in the row with the argument index
      * and call {@link DataTable#selectRowWithRadio}, the effect is the radio will be checked and events will be triggered.
+     * 
      * @return {void}
      */
     rowRadioSelect: function(i) {
@@ -1877,6 +1882,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * When one row is selected, find the corresponding row and return its 0 based index in the datatable,
      * otherwise return -1.
+     * 
      * @return {Number} the row index or -1
      */
     getSelectedRowIndex: function() {
@@ -1889,6 +1895,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     /**
      * When one row is selected and is being edited, save it by calling {@link DataTable#saveRowEdit}.
      * @return {Boolean} true when saveRowEdit was called
+     * 
      */
     saveSelectedRow: function() {
         if (this.selection.length === 1) {
@@ -1902,6 +1909,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     /**
      * When one row is selected call {@link DataTable#switchToRowEdit}.
+     * 
      * @return {void}
      */
     editSelectedRow: function() {
@@ -1911,6 +1919,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
     /**
      * When one row is selected and is being edited, cancel it by calling {@link DataTable#cancelRowEdit}.
+     * 
      * @return {undefined}
      */
     cancelSelectedRow: function() {
