@@ -272,6 +272,7 @@
                     <excludes>
                         <exclude>**/json/JSON*.java</exclude>
                         <exclude>**/BoundedInputStream.java</exclude>
+                        <exclude>**/SafeFile.java</exclude>
                     </excludes>
                 </configuration>
                 <executions>
