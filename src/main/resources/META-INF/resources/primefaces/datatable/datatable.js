@@ -3559,7 +3559,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         this.stickyContainerHeight = this.stickyContainer.height();
 
         this.stickyScrollParent = this.jq.scrollParent();
-        if (this.stickyScrollParent.is('body')) {
+        if (this.stickyScrollParent.is('body') || this.stickyScrollParent.is(document)) {
             this.stickyScrollParent = $(window);
         }
 
