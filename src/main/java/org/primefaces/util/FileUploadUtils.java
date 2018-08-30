@@ -24,10 +24,10 @@ import javax.faces.FacesException;
  */
 public class FileUploadUtils {
     /* Restrict character set of filename */
-    private static final Pattern FILENAME_PATTERN = Pattern.compile("([a-z,A-Z,0-9,-,_]+\\.[a-z,A-Z,0-9]+)");
+    private static final Pattern INVALID_FILENAME_PATTERN = Pattern.compile("([\\\\/:*?<>|])");
     /**
      * Check the filename according to pattern
-     * If the filename does not match the pattern([a-z,A-Z,0-9,-,_]+\\.[a-z,A-Z,0-9]+), it throws an exception.
+     * If the filename does not match the pattern([\\\\/:*?<>|]), it throws an exception.
      *
      * @param filename The name of file
      * @return
@@ -36,8 +36,8 @@ public class FileUploadUtils {
         if (filename != null) {
             String[] parts = filename.split(Pattern.quote(File.separator));
             for (String part : parts) {
-                if (!FILENAME_PATTERN.matcher(part).matches()) {
-                    throw new FacesException("Invalid filename");
+                if (INVALID_FILENAME_PATTERN.matcher(part).find()) {
+                    throw new FacesException("Invalid filename: " + filename);
                 }
             }
         }
