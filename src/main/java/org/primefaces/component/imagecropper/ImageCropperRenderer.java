@@ -20,6 +20,7 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.el.ValueExpression;
 import javax.faces.application.Application;
@@ -38,6 +39,8 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
 public class ImageCropperRenderer extends CoreRenderer {
+
+    private static final Logger LOGGER = Logger.getLogger(ImageCropperRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -153,7 +156,7 @@ public class ImageCropperRenderer extends CoreRenderer {
 
         ImageCropper cropper = (ImageCropper) component;
         Resource resource = getImageResource(context, cropper);
-        InputStream inputStream;
+        InputStream inputStream = null;
         String imagePath = cropper.getImage();
         String contentType = null;
 
@@ -186,7 +189,6 @@ public class ImageCropperRenderer extends CoreRenderer {
             }
 
             BufferedImage outputImage = ImageIO.read(inputStream);
-            inputStream.close();
 
             // avoid java.awt.image.RasterFormatException: (x + width) is outside of Raster
             // see #1208
@@ -206,6 +208,16 @@ public class ImageCropperRenderer extends CoreRenderer {
         }
         catch (IOException e) {
             throw new ConverterException(e);
+        }
+        finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                }
+                catch (IOException e) {
+                    LOGGER.severe(e.getMessage());
+                }
+            }
         }
     }
 
