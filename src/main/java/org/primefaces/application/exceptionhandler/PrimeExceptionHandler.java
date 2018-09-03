@@ -43,9 +43,10 @@ import javax.faces.event.PhaseId;
 import javax.faces.view.ViewDeclarationLanguage;
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler;
 import org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandlerVisitCallback;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 
 public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
@@ -54,6 +55,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
     private final ExceptionHandler wrapped;
 
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeExceptionHandler(ExceptionHandler wrapped) {
         this.wrapped = wrapped;
     }
@@ -195,7 +197,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             writer.startDocument();
             writer.startElement("changes", null);
 
-            if (!ComponentUtils.isValueBlank(handlerComponent.getUpdate())) {
+            if (!LangUtils.isValueBlank(handlerComponent.getUpdate())) {
                 List<UIComponent> updates = SearchExpressionFacade.resolveComponents(context, handlerComponent, handlerComponent.getUpdate());
 
                 if (updates != null && updates.size() > 0) {
@@ -216,7 +218,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                 }
             }
 
-            if (!ComponentUtils.isValueBlank(handlerComponent.getOnexception())) {
+            if (!LangUtils.isValueBlank(handlerComponent.getOnexception())) {
                 writer.startElement("eval", null);
                 writer.startCDATA();
 
@@ -248,12 +250,12 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         info.setTimestamp(new Date());
         info.setType(rootCause.getClass().getName());
 
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        rootCause.printStackTrace(pw);
-        info.setFormattedStackTrace(ComponentUtils.escapeXml(sw.toString()).replaceAll("(\r\n|\n)", "<br/>"));
-        pw.close();
-        sw.close();
+        try (StringWriter sw = new StringWriter()) {
+            PrintWriter pw = new PrintWriter(sw);
+            rootCause.printStackTrace(pw);
+            info.setFormattedStackTrace(ComponentUtils.escapeXml(sw.toString()).replaceAll("(\r\n|\n)", "<br/>"));
+            pw.close();
+        }
 
         SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_PATTERN);
         info.setFormattedTimestamp(format.format(info.getTimestamp()));
@@ -329,7 +331,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         ExternalContext externalContext = context.getExternalContext();
         externalContext.getSessionMap().put(ExceptionInfo.ATTRIBUTE_NAME, info);
 
-        Map<String, String> errorPages = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().getErrorPages();
+        Map<String, String> errorPages = PrimeApplicationContext.getCurrentInstance(context).getConfig().getErrorPages();
         String errorPage = evaluateErrorPage(errorPages, rootCause);
 
         String url = externalContext.getRequestContextPath() + errorPage;

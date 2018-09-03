@@ -35,6 +35,7 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
 
     private final static Logger LOG = Logger.getLogger(StreamedContentHandler.class.getName());
 
+    @Override
     public void handle(FacesContext context) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String library = params.get("ln");

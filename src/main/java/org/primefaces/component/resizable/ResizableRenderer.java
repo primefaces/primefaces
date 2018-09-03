@@ -48,7 +48,7 @@ public class ResizableRenderer extends CoreRenderer {
             wb.initWithComponentLoad("Resizable", resizable.resolveWidgetVar(), clientId, targetId);
         }
         else {
-            wb.initWithDomReady("Resizable", resizable.resolveWidgetVar(), clientId);
+            wb.init("Resizable", resizable.resolveWidgetVar(), clientId);
         }
 
         wb.attr("target", targetId)

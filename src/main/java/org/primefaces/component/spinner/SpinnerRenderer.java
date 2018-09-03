@@ -20,8 +20,8 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.RequestContext;
 
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -76,6 +76,7 @@ public class SpinnerRenderer extends InputRenderer {
                 .attr("max", spinner.getMax(), Double.MAX_VALUE)
                 .attr("prefix", spinner.getPrefix(), null)
                 .attr("suffix", spinner.getSuffix(), null)
+                .attr("required", spinner.isRequired(), false)
                 .attr("decimalPlaces", spinner.getDecimalPlaces(), null);
 
         wb.finish();
@@ -130,12 +131,20 @@ public class SpinnerRenderer extends InputRenderer {
         renderPassThruAttributes(context, spinner, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, spinner, HTML.INPUT_TEXT_EVENTS);
 
-        if (spinner.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
-        if (spinner.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
-        if (spinner.isRequired()) writer.writeAttribute("aria-required", "true", null);
-        if (labelledBy != null) writer.writeAttribute("aria-labelledby", labelledBy, null);
+        if (spinner.isDisabled()) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (spinner.isReadonly()) {
+            writer.writeAttribute("readonly", "readonly", null);
+        }
+        if (spinner.isRequired()) {
+            writer.writeAttribute("aria-required", "true", null);
+        }
+        if (labelledBy != null) {
+            writer.writeAttribute("aria-labelledby", labelledBy, null);
+        }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, spinner);
         }
 

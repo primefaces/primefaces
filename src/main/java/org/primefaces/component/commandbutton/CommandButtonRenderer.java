@@ -22,8 +22,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
-import org.primefaces.context.RequestContext;
 
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.CSVBuilder;
 import org.primefaces.util.ComponentTraversalUtils;
@@ -88,7 +88,9 @@ public class CommandButtonRenderer extends CoreRenderer {
 
         renderPassThruAttributes(context, button, HTML.BUTTON_ATTRS, HTML.CLICK_EVENT);
 
-        if (button.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
+        if (button.isDisabled()) {
+            writer.writeAttribute("disabled", "disabled", "disabled");
+        }
 
         //icon
         if (!isValueBlank(icon)) {
@@ -108,7 +110,7 @@ public class CommandButtonRenderer extends CoreRenderer {
             //For ScreenReader
             String text = (title != null) ? title : "ui-button";
 
-            writer.write(text);
+            writer.writeText(text, "title");
         }
         else {
             if (button.isEscape()) {
@@ -125,7 +127,7 @@ public class CommandButtonRenderer extends CoreRenderer {
     }
 
     protected String buildRequest(FacesContext context, CommandButton button, String clientId) throws FacesException {
-        RequestContext requestContext = RequestContext.getCurrentInstance(context);
+        PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
         boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled() && button.isValidateClient();
         String request = null;
         boolean ajax = button.isAjax();

@@ -2,7 +2,7 @@
  * PrimeFaces Sticky Widget
  */
 PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
-    
+
     init: function(cfg) {
         this.cfg = cfg;
         this.id = this.cfg.id;
@@ -16,40 +16,39 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
 
         this.bindEvents();
     },
-    
-    refresh: function(cfg) {        
+
+    refresh: function(cfg) {
         this.target = $(PrimeFaces.escapeClientId(this.cfg.target));
-        
+
         if(this.fixed) {
             this.ghost.remove();
             this.fix(true);
         }
     },
-    
+
     bindEvents: function() {
         var $this = this,
-        win = $(window),
-        scrollNS = 'scroll.' + this.cfg.id,
-        resizeNS = 'resize.' + this.cfg.id;
+        win = $(window);
 
-        win.off(scrollNS).on(scrollNS, function() {
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
             if(win.scrollTop() > $this.initialState.top - $this.cfg.margin)
                 $this.fix();
             else
                 $this.restore();
-        })
-        .off(resizeNS).on(resizeNS, function() {
+        });
+
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', null, function() {
             if ($this.fixed) {
                 $this.target.width($this.ghost.outerWidth() - ($this.target.outerWidth() - $this.target.width()));
             }
         });
     },
-    
+
     fix: function(force) {
         if(!this.fixed || force) {
             var win = $(window),
             winScrollTop = win.scrollTop();
-            
+
             this.target.css({
                 'position': 'fixed',
                 'top': this.cfg.margin,
@@ -63,7 +62,7 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
             win.scrollTop(winScrollTop);
         }
     },
-    
+
     restore: function() {
         if(this.fixed) {
             this.target.css({
@@ -78,4 +77,4 @@ PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
         }
     }
 
-});   
+});

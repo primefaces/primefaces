@@ -15,12 +15,13 @@
  */
 package org.primefaces.model;
 
+import java.io.Serializable;
 import javax.el.MethodExpression;
 import org.primefaces.component.api.UIColumn;
 
-public class SortMeta {
+public class SortMeta implements Serializable {
 
-    private UIColumn column;
+    private transient UIColumn column;
 
     private String sortField;
 

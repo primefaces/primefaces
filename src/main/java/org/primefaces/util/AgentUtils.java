@@ -22,6 +22,17 @@ public class AgentUtils {
     private AgentUtils() {
     }
 
+    public static boolean isEdge(FacesContext context) {
+        String userAgent = context.getExternalContext().getRequestHeaderMap().get("User-Agent");
+
+        if (userAgent == null) {
+            return false;
+        }
+        else {
+            return userAgent.contains("Edge");
+        }
+    }
+
     public static boolean isIE(FacesContext context) {
         String userAgent = context.getExternalContext().getRequestHeaderMap().get("User-Agent");
 

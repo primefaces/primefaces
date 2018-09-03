@@ -76,7 +76,7 @@
 
         attachBehaviors : function(element, behaviors) {
             $.each(behaviors, function(event, fn) {
-                element.bind(event, function(e) {
+                element.on(event, function(e) {
                     fn.call(element, e);
                 });
             });
@@ -151,7 +151,7 @@
             }).blur(function() {
                 $(this).removeClass('ui-state-focus ui-state-active');
             }).keydown(function(e) {
-                if(e.which === $.ui.keyCode.SPACE || e.which === $.ui.keyCode.ENTER || e.which === $.ui.keyCode.NUMPAD_ENTER) {
+                if(e.which === $.ui.keyCode.SPACE || e.which === $.ui.keyCode.ENTER) {
                     $(this).addClass('ui-state-active');
                 }
             }).keyup(function() {
@@ -219,6 +219,10 @@
         isDevelopmentProjectStage: function() {
             return PrimeFaces.settings.projectStage === 'Development';
         },
+        
+        widgetNotAvailable: function(widgetVar) {
+           PrimeFaces.error("Widget for var '" + widgetVar + "' not available!");
+        },
 
         setCaretToEnd: function(element) {
             if(element) {
@@ -262,7 +266,9 @@
         },
 
         escapeHTML: function(value) {
-            return value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            return String(value).replace(/[&<>"'`=\/]/g, function (s) {
+                return PrimeFaces.entityMap[s];
+            });
         },
 
         clearSelection: function() {
@@ -302,6 +308,14 @@
         cw : function(widgetName, widgetVar, cfg) {
             this.createWidget(widgetName, widgetVar, cfg);
         },
+        
+
+        /**
+         * @deprecated moved to PrimeFaces.resources.getFacesResource
+         */
+        getFacesResource : function(name, library, version) {
+           return PrimeFaces.resources.getFacesResource(name, library, version);
+        },
 
         createWidget : function(widgetName, widgetVar, cfg) {
             cfg.widgetVar = widgetVar;
@@ -324,42 +338,8 @@
             // widget script not loaded
             else {
                 // should be loaded by our dynamic resource handling, log a error
-                PrimeFaces.error("Widget not available: " + widgetName);
+                PrimeFaces.widgetNotAvailable(widgetName);
             }
-        },
-
-        /**
-         * Builds a resource URL for given parameters.
-         *
-         * @param {string} name The name of the resource. For example: primefaces.js
-         * @param {string} library The library of the resource. For example: primefaces
-         * @param {string} version The version of the library. For example: 5.1
-         * @returns {string} The resource URL.
-         */
-        getFacesResource : function(name, library, version) {
-
-            // just get sure - name shoudln't start with a slash
-            if (name.indexOf('/') === 0)
-            {
-                name = name.substring(1, name.length);
-            }
-
-            var scriptURI = $('script[src*="/' + PrimeFaces.RESOURCE_IDENTIFIER + '/core.js"]').attr('src');
-            // portlet
-            if (!scriptURI) {
-                scriptURI = $('script[src*="' + PrimeFaces.RESOURCE_IDENTIFIER + '=core.js"]').attr('src');
-            }
-
-            scriptURI = scriptURI.replace('core.js', name);
-            scriptURI = scriptURI.replace('ln=primefaces', 'ln=' + library);
-
-            if (version) {
-                var extractedVersion = new RegExp('[?&]v=([^&]*)').exec(scriptURI)[1];
-                scriptURI = scriptURI.replace('v=' + extractedVersion, 'v=' + version);
-            }
-
-            var prefix = window.location.protocol + '//' + window.location.host;
-            return scriptURI.indexOf(prefix) >= 0 ? scriptURI : prefix + scriptURI;
         },
 
         inArray: function(arr, item) {
@@ -374,17 +354,6 @@
 
         isNumber: function(value) {
             return typeof value === 'number' && isFinite(value);
-        },
-
-        getScript: function(url, callback) {
-            $.ajax({
-                type: "GET",
-                url: url,
-                success: callback,
-                dataType: "script",
-                cache: true,
-                async: true
-            });
         },
 
         focus: function(id, context) {
@@ -409,16 +378,7 @@
                 else {
                     var elements = $(selector),
                     firstElement = elements.eq(0);
-                    if(firstElement.is(':radio')) {
-                        var checkedRadio = $(':radio[name="' + firstElement.attr('name') + '"]').filter(':checked');
-                        if(checkedRadio.length)
-                            PrimeFaces.focusElement(checkedRadio);
-                        else
-                            PrimeFaces.focusElement(firstElement);
-                    }
-                    else {
-                        firstElement.focus();
-                    }
+                    PrimeFaces.focusElement(firstElement);
                 }
             }, 50);
 
@@ -428,8 +388,18 @@
         },
 
         focusElement: function(el) {
-            if(el.is(':radio') && el.hasClass('ui-helper-hidden-accessible')) {
-                el.parent().focus();
+            if(el.is(':radio')) {
+                // github issue: #2582
+                if(el.hasClass('ui-helper-hidden-accessible')) {
+                    el.parent().focus();
+                }
+                else {
+                    var checkedRadio = $(':radio[name="' + el.attr('name') + '"]').filter(':checked');
+                    if(checkedRadio.length)
+                        checkedRadio.focus();
+                    else
+                        el.focus();
+                }
             }
             else {
                 el.focus();
@@ -498,22 +468,12 @@
 
         calculateScrollbarWidth: function() {
             if(!this.scrollbarWidth) {
-                if(PrimeFaces.env.browser.msie) {
-                    var $textarea1 = $('<textarea cols="10" rows="2"></textarea>')
-                            .css({ position: 'absolute', top: -1000, left: -1000 }).appendTo('body'),
-                        $textarea2 = $('<textarea cols="10" rows="2" style="overflow: hidden;"></textarea>')
-                            .css({ position: 'absolute', top: -1000, left: -1000 }).appendTo('body');
-                    this.scrollbarWidth = $textarea1.width() - $textarea2.width();
-                    $textarea1.add($textarea2).remove();
-                }
-                else {
-                    var $div = $('<div />')
-                        .css({ width: 100, height: 100, overflow: 'auto', position: 'absolute', top: -1000, left: -1000 })
-                        .prependTo('body').append('<div />').find('div')
-                            .css({ width: '100%', height: 200 });
-                    this.scrollbarWidth = 100 - $div.width();
-                    $div.parent().remove();
-                }
+                var $div = $('<div />')
+                    .css({ width: 100, height: 100, overflow: 'auto', position: 'absolute', top: -1000, left: -1000 })
+                    .prependTo('body').append('<div />').find('div')
+                        .css({ width: '100%', height: 200 });
+                this.scrollbarWidth = 100 - $div.width();
+                $div.parent().remove();
             }
 
             return this.scrollbarWidth;
@@ -680,6 +640,7 @@
             dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             dayNamesMin: ['S', 'M', 'T', 'W ', 'T', 'F ', 'S'],
             weekHeader: 'Week',
+            weekNumberTitle: 'W',
             firstDay: 0,
             isRTL: false,
             showMonthAfterYear: false,
@@ -708,11 +669,22 @@
 
     PrimeFaces.locales['en'] = PrimeFaces.locales['en_US'];
 
+    PrimeFaces.entityMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '/': '&#x2F;',
+        '`': '&#x60;',
+        '=': '&#x3D;'
+    };
+
     PF = function(widgetVar) {
     	var widgetInstance = PrimeFaces.widgets[widgetVar];
 
     	if (!widgetInstance) {
-	        PrimeFaces.error("Widget for var '" + widgetVar + "' not available!");
+	        PrimeFaces.widgetNotAvailable(widgetVar);
     	}
 
         return widgetInstance;

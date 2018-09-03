@@ -17,6 +17,7 @@ package org.primefaces.component.multiselectlistbox;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
@@ -26,6 +27,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
+
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -152,8 +154,9 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
 
         wb.init("MultiSelectListbox", listbox.resolveWidgetVar(), clientId)
                 .attr("effect", listbox.getEffect(), null)
-                .attr("showHeaders", listbox.isShowHeaders(), false)
-                .finish();
+                .attr("showHeaders", listbox.isShowHeaders(), false);
+        encodeClientBehaviors(context, listbox);
+        wb.finish();
     }
 
     protected void encodeInput(FacesContext context, MultiSelectListbox listbox) throws IOException {

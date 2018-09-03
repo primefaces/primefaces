@@ -19,7 +19,6 @@ if (!PrimeFaces.ajax) {
         'psf': 'partialSubmitFilter',
         'rv': 'resetValues',
         'fi': 'fragmentId',
-        'fu': 'fragmentUpdate',
         'pa': 'params',
         'onst': 'onstart',
         'oner': 'onerror',
@@ -53,24 +52,6 @@ if (!PrimeFaces.ajax) {
         RESOURCE : "javax.faces.Resource",
 
         Utils: {
-
-            loadStylesheets: function(stylesheets) {
-                for (var i = 0; i < stylesheets.length; i++) {
-                    $('head').append('<link type="text/css" rel="stylesheet" href="' + stylesheets[i] + '" />');
-                }
-            },
-
-            loadScripts: function(scripts) {
-                var loadNextScript = function() {
-                    var script = scripts.shift();
-                    if (script) {
-                        PrimeFaces.getScript(script, loadNextScript);
-                    }
-                };
-
-                loadNextScript();
-            },
-
             getContent: function(node) {
                 var content = '';
 
@@ -287,20 +268,21 @@ if (!PrimeFaces.ajax) {
                 }
                 if (sourceElement.is(':input') && sourceElement.is(':not(:button)')) {
                     earlyPostParams = [];
-                    earlyPostParams.push({
-                        name: sourceElement.attr('name'),
-                        value: sourceElement.is(':checkbox') ? sourceElement.is(':checked') : sourceElement.val()
-                    });
+
+                    if (sourceElement.is(':checkbox')) {
+                        var checkboxPostParams = $("input[name='" + sourceElement.attr('name') + "']")
+                                .filter(':checked').serializeArray();
+                        $.merge(earlyPostParams, checkboxPostParams);
+                    }
+                    else {
+                        earlyPostParams.push({
+                            name: sourceElement.attr('name'),
+                            value: sourceElement.val()
+                        });
+                    }
                 }
                 else {
-                    earlyPostParams = sourceElement.find(':input').serializeArray();
-                    // jQuery doesn't add unchecked checkboxes
-                    earlyPostParams = earlyPostParams.concat(
-                        sourceElement.find('input[type=checkbox]:not(:checked)').map(function() {
-                            var $this = $(this);
-                            return { 'name': $this.attr('name'), 'value': $this.is(':checked') };
-                        }).get()
-                    );
+                    earlyPostParams = sourceElement.serializeArray();
                 }
 
                 return earlyPostParams;
@@ -424,9 +406,6 @@ if (!PrimeFaces.ajax) {
 
                 //update
                 var updateArray = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall(cfg, 'update');
-                if(cfg.fragmentId && cfg.fragmentUpdate) {
-                    updateArray.push(cfg.fragmentId);
-                }
                 if(updateArray.length > 0) {
                     PrimeFaces.ajax.Request.addParam(postParams, PrimeFaces.PARTIAL_UPDATE_PARAM, updateArray.join(' '), parameterPrefix);
                 }
@@ -461,10 +440,10 @@ if (!PrimeFaces.ajax) {
                  * if partial submit is enabled and there are components to process partially
                  */
                 if(cfg.partialSubmit && processIds.indexOf('@all') === -1) {
-                    var formProcessed = false,
-                    partialSubmitFilter = cfg.partialSubmitFilter||':input';
+                    var formProcessed = false;
 
-                    if(processIds.indexOf('@none') === -1) {
+                    if (processIds.indexOf('@none') === -1) {
+                        var partialSubmitFilter = cfg.partialSubmitFilter||':input';
                         for (var i = 0; i < processArray.length; i++) {
                             var jqProcess = $(PrimeFaces.escapeClientId(processArray[i]));
                             var componentPostParams = null;
@@ -480,7 +459,13 @@ if (!PrimeFaces.ajax) {
                                 componentPostParams = jqProcess.find(partialSubmitFilter).serializeArray();
                             }
 
-                            $.merge(postParams, componentPostParams);
+                            if (cfg.ext && cfg.ext.partialSubmitParameterFilter) {
+                                var filteredParams = cfg.ext.partialSubmitParameterFilter.call(this, componentPostParams);
+                                $.merge(postParams, filteredParams);
+                            }
+                            else {
+                                $.merge(postParams, componentPostParams);
+                            }
                         }
                     }
 
@@ -791,7 +776,7 @@ if (!PrimeFaces.ajax) {
 
                     var widget = PF(widgetVar);
                     if (widget) {
-                        if (widget.isDetached()) {
+                        if (widget.isDetached() === true) {
                             PrimeFaces.widgets[widgetVar] = null;
                             widget.destroy();
 

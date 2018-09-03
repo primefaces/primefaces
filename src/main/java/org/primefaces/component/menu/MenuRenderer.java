@@ -29,12 +29,13 @@ import org.primefaces.util.WidgetBuilder;
 
 public class MenuRenderer extends BaseMenuRenderer {
 
+    @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         Menu menu = (Menu) abstractMenu;
         String clientId = menu.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("PlainMenu", menu.resolveWidgetVar(), clientId)
+        wb.init("PlainMenu", menu.resolveWidgetVar(), clientId)
                 .attr("toggleable", menu.isToggleable(), false);
 
         if (menu.isOverlay()) {
@@ -44,6 +45,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         wb.finish();
     }
 
+    @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Menu menu = (Menu) abstractMenu;

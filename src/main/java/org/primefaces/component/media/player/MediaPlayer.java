@@ -17,19 +17,19 @@ package org.primefaces.component.media.player;
 
 public interface MediaPlayer {
 
-    public static final String WINDOWS = "windows";
-    public static final String QUICKTIME = "quicktime";
-    public static final String FLASH = "flash";
-    public static final String REAL = "real";
-    public static final String PDF = "pdf";
+    String WINDOWS = "windows";
+    String QUICKTIME = "quicktime";
+    String FLASH = "flash";
+    String REAL = "real";
+    String PDF = "pdf";
 
-    public String getClassId();
+    String getClassId();
 
-    public String getCodebase();
+    String getCodebase();
 
-    public String getSourceParam();
+    String getSourceParam();
 
-    public String getType();
+    String getType();
 
-    public String[] getSupportedTypes();
+    String[] getSupportedTypes();
 }

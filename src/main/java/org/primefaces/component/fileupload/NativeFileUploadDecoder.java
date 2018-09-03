@@ -16,11 +16,13 @@
 package org.primefaces.component.fileupload;
 
 import java.io.IOException;
+
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
+
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.NativeUploadedFile;
 import org.primefaces.model.UploadedFileWrapper;
@@ -51,8 +53,8 @@ public class NativeFileUploadDecoder {
 
         Part part = request.getPart(inputToDecodeId);
 
-        if (part != null) {
-            fileUpload.setSubmittedValue(new UploadedFileWrapper(new NativeUploadedFile(part)));
+        if (part != null && isValidFile(fileUpload, part)) {
+            fileUpload.setSubmittedValue(new UploadedFileWrapper(new NativeUploadedFile(part, fileUpload)));
         }
         else {
             fileUpload.setSubmittedValue("");
@@ -63,9 +65,14 @@ public class NativeFileUploadDecoder {
         String clientId = fileUpload.getClientId(context);
         Part part = request.getPart(clientId);
 
-        if (part != null) {
-            fileUpload.queueEvent(new FileUploadEvent(fileUpload, new NativeUploadedFile(part)));
+        if (part != null && isValidFile(fileUpload, part)) {
+            fileUpload.queueEvent(new FileUploadEvent(fileUpload, new NativeUploadedFile(part, fileUpload)));
         }
+    }
+
+    private static boolean isValidFile(FileUpload fileUpload, Part part) {
+        // TODO some more checks could be performed here, e.g. allowed types
+        return fileUpload.getSizeLimit() == null || part.getSize() <= fileUpload.getSizeLimit();
     }
 
 }

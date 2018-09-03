@@ -16,6 +16,7 @@
 package org.primefaces.component.menu;
 
 import java.util.List;
+
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.MethodNotFoundException;
@@ -24,10 +25,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.FacesEvent;
-import org.primefaces.event.MenuActionEvent;
 
-import org.primefaces.model.menu.MenuModel;
+import org.primefaces.event.MenuActionEvent;
 import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.MenuModel;
 
 public abstract class AbstractMenu extends UIPanel {
 
@@ -43,8 +44,6 @@ public abstract class AbstractMenu extends UIPanel {
     public static final String SUBMENU_LINK_CLASS = "ui-menuitem-link ui-submenu-link ui-corner-all";
     public static final String SEPARATOR_CLASS = "ui-separator ui-state-default";
     public static final String OPTIONS_CLASS = "ui-menuitem ui-menubar-options ui-widget ui-corner-all";
-
-    public static final String MOBILE_MENUITEM_LINK_CLASS = "ui-link ui-btn";
 
     public enum PropertyKeys {
         tabindex
@@ -77,7 +76,7 @@ public abstract class AbstractMenu extends UIPanel {
     public abstract MenuModel getModel();
 
     public boolean isDynamic() {
-        return this.getValueExpression("model") != null;
+        return getValueExpression("model") != null;
     }
 
     @Override

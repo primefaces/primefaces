@@ -17,8 +17,8 @@ package org.primefaces.application.resource;
 
 import javax.faces.application.Resource;
 import javax.faces.application.ResourceWrapper;
-
-import org.primefaces.context.RequestContext;
+import javax.faces.context.FacesContext;
+import org.primefaces.context.PrimeApplicationContext;
 
 /**
  * {@link ResourceWrapper} which appends the version of PrimeFaces to the URL.
@@ -28,10 +28,11 @@ public class PrimeResource extends ResourceWrapper {
     private Resource wrapped;
     private String version;
 
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeResource(final Resource resource) {
         super();
         wrapped = resource;
-        version = "&v=" + RequestContext.getCurrentInstance().getApplicationContext().getConfig().getBuildVersion();
+        version = "&v=" + PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment().getBuildVersion();
     }
 
     @Override

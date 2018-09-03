@@ -36,19 +36,19 @@ import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.StreamedContent;
 
 public class DynamicContentSrcBuilder {
-    
+
     private static final String SB_BUILD = DynamicContentSrcBuilder.class.getName() + "#build";
-    
+
     public static String build(FacesContext context, Object value, UIComponent component, boolean cache, DynamicContentType type, boolean stream)
             throws UnsupportedEncodingException {
-        
+
         String src = null;
-            
+
         if (value == null) {
             return "";
         }
         else if (value instanceof String) {
-            src = ComponentUtils.getResourceURL(context, (String) value);
+            src = ResourceUtils.getResourceURL(context, (String) value);
         }
         else if (value instanceof StreamedContent) {
             StreamedContent streamedContent = (StreamedContent) value;
@@ -58,29 +58,30 @@ public class DynamicContentSrcBuilder {
                         "dynamiccontent.properties", "primefaces", streamedContent.getContentType());
                 String resourcePath = resource.getRequestPath();
 
-                Map<String,Object> session = context.getExternalContext().getSessionMap();
-                Map<String,String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
+                Map<String, Object> session = context.getExternalContext().getSessionMap();
+                Map<String, String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
                 if (dynamicResourcesMapping == null) {
-                    dynamicResourcesMapping = new LimitedSizeHashMap<String, String>(200);
+                    dynamicResourcesMapping = new LimitedSizeHashMap<>(200);
                     session.put(Constants.DYNAMIC_RESOURCES_MAPPING, dynamicResourcesMapping);
                 }
-                
+
                 ValueExpression expression = ValueExpressionAnalyzer.getExpression(
                         context.getELContext(), component.getValueExpression("value"));
-                
+
                 String expressionString = expression.getExpressionString();
                 String resourceKey = md5(expressionString);
-                
+
                 dynamicResourcesMapping.put(resourceKey, expressionString);
-                
+
                 StringBuilder builder = SharedStringBuilder.get(context, SB_BUILD);
                 builder.append(resourcePath)
                         .append("&").append(Constants.DYNAMIC_CONTENT_PARAM).append("=").append(URLEncoder.encode(resourceKey, "UTF-8"))
                         .append("&").append(Constants.DYNAMIC_CONTENT_TYPE_PARAM).append("=").append(type.toString());
 
-                for (UIComponent kid : component.getChildren()) {
-                    if (kid instanceof UIParameter) {
-                        UIParameter param = (UIParameter) kid;
+                for (int i = 0; i < component.getChildCount(); i++) {
+                    UIComponent child = component.getChildren().get(i);
+                    if (child instanceof UIParameter) {
+                        UIParameter param = (UIParameter) child;
                         if (!param.isDisable()) {
                             Object paramValue = param.getValue();
 
@@ -113,7 +114,7 @@ public class DynamicContentSrcBuilder {
 
         return context.getExternalContext().encodeResourceURL(src);
     }
-    
+
     public static byte[] toByteArray(InputStream stream) {
         try {
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -133,7 +134,7 @@ public class DynamicContentSrcBuilder {
             throw new FacesException("Could not read InputStream to byte[]", e);
         }
     }
-    
+
     private static String md5(String input) {
 
         MessageDigest messageDigest;

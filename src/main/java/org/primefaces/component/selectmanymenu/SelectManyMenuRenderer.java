@@ -17,6 +17,7 @@ package org.primefaces.component.selectmanymenu;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectMany;
 import javax.faces.context.FacesContext;
@@ -25,8 +26,9 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
+
 import org.primefaces.component.column.Column;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -99,7 +101,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
     protected void encodeInput(FacesContext context, SelectManyMenu menu, String clientId, List<SelectItem> selectItems)
             throws IOException {
-        
+
         ResponseWriter writer = context.getResponseWriter();
         String inputid = clientId + "_input";
         String labelledBy = menu.getLabelledBy();
@@ -123,7 +125,11 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
             writer.writeAttribute("tabindex", menu.getTabindex(), null);
         }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (menu.isDisabled()) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, menu);
         }
 
@@ -171,7 +177,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
     }
 
     protected void encodeItem(FacesContext context, SelectManyMenu menu, SelectItem option, Object values, Object submittedValues,
-            Converter converter, boolean customContent, boolean showCheckbox) throws IOException {
+                              Converter converter, boolean customContent, boolean showCheckbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
         boolean disabled = option.isDisabled() || menu.isDisabled();
@@ -219,8 +225,12 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
                     String styleClass = ((Column) child).getStyleClass();
 
                     writer.startElement("td", null);
-                    if (styleClass != null) writer.writeAttribute("class", styleClass, "styleClass");
-                    if (style != null) writer.writeAttribute("style", style, "style");
+                    if (styleClass != null) {
+                        writer.writeAttribute("class", styleClass, "styleClass");
+                    }
+                    if (style != null) {
+                        writer.writeAttribute("style", style, "style");
+                    }
 
                     renderChildren(context, child);
                     writer.endElement("td");
@@ -254,14 +264,15 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         Object values = getValues(menu);
         Object submittedValues = getSubmittedValues(menu);
 
-        for (SelectItem selectItem : selectItems) {
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem selectItem = selectItems.get(i);
             encodeOption(context, menu, selectItem, values, submittedValues, converter);
         }
     }
 
     protected void encodeOption(FacesContext context, SelectManyMenu menu, SelectItem option, Object values, Object submittedValues,
-            Converter converter) throws IOException {
-        
+                                Converter converter) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
         boolean disabled = option.isDisabled() || menu.isDisabled();
@@ -284,8 +295,12 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
         writer.startElement("option", null);
         writer.writeAttribute("value", itemValueAsString, null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (selected) writer.writeAttribute("selected", "selected", null);
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (selected) {
+            writer.writeAttribute("selected", "selected", null);
+        }
 
         if (option.isEscape()) {
             writer.writeText(option.getLabel(), null);
@@ -316,7 +331,9 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
 
         writer.endElement("input");
 
@@ -328,14 +345,14 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
         if (height != Integer.MAX_VALUE) {
             return height + "px";
-        } 
+        }
         else if (itemSize > 10) {
             return 200 + "px";
         }
 
         return "auto";
     }
-    
+
     @Override
     protected String getSubmitParam(FacesContext context, UISelectMany selectMany) {
         return selectMany.getClientId(context) + "_input";

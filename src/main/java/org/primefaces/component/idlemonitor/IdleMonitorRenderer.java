@@ -36,7 +36,7 @@ public class IdleMonitorRenderer extends CoreRenderer {
         String clientId = idleMonitor.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("IdleMonitor", idleMonitor.resolveWidgetVar(), clientId)
+        wb.init("IdleMonitor", idleMonitor.resolveWidgetVar(), clientId)
                 .attr("timeout", idleMonitor.getTimeout())
                 .attr("multiWindowSupport", idleMonitor.isMultiWindowSupport())
                 .attr("contextPath", context.getExternalContext().getRequestContextPath())

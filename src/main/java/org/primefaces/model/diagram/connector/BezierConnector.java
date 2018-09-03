@@ -45,10 +45,12 @@ public class BezierConnector extends Connector {
         this.stub = stub;
     }
 
+    @Override
     public String getType() {
         return "Bezier";
     }
 
+    @Override
     public String toJS(StringBuilder sb) {
         return sb.append("['Bezier',{curviness:").append(curviness).append(",stub:").append(stub).append("}]").toString();
     }

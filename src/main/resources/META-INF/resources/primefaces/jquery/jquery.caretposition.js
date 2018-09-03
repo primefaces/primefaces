@@ -29,7 +29,7 @@ $(function() {
 			}).appendTo(document.body),
 
 		toHtml : function(text) {
-			return text.replace(/\n/g, '<br>')
+			return PrimeFaces.escapeHTML(text).replace(/\n/g, '<br>')
 				.split(' ').join('<span style="white-space:prev-wrap">&nbsp;</span>');
 		},
 		// calculate position

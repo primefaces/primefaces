@@ -20,39 +20,39 @@ package org.primefaces.component.api;
  */
 public interface AjaxSource {
 
-    public String getOnstart();
+    String getOnstart();
 
-    public String getOncomplete();
+    String getOncomplete();
 
-    public String getOnsuccess();
+    String getOnsuccess();
 
-    public String getOnerror();
+    String getOnerror();
 
-    public String getUpdate();
+    String getUpdate();
 
-    public String getProcess();
+    String getProcess();
 
-    public boolean isGlobal();
+    boolean isGlobal();
 
-    public boolean isAsync();
+    boolean isAsync();
 
-    public boolean isPartialSubmit();
+    boolean isPartialSubmit();
 
-    public boolean isPartialSubmitSet();
+    boolean isPartialSubmitSet();
 
-    public String getPartialSubmitFilter();
+    String getPartialSubmitFilter();
 
-    public boolean isResetValues();
+    boolean isResetValues();
 
-    public boolean isResetValuesSet();
+    boolean isResetValuesSet();
 
-    public boolean isIgnoreAutoUpdate();
+    boolean isIgnoreAutoUpdate();
 
-    public boolean isAjaxified();
+    boolean isAjaxified();
 
-    public String getDelay();
+    String getDelay();
 
-    public int getTimeout();
+    int getTimeout();
 
-    public String getForm();
+    String getForm();
 }

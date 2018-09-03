@@ -24,31 +24,28 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.primefaces.context.ApplicationContext;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.mock.FacesContextMock;
-import org.primefaces.mock.pf.ApplicationContextMock;
-import org.primefaces.mock.pf.PrimeConfigurationMock;
-import org.primefaces.mock.pf.RequestContextMock;
+import org.primefaces.mock.pf.PrimeApplicationContextMock;
+import org.primefaces.mock.pf.PrimeRequestContextMock;
 
 public class ValueExpressionAnalyzerTest
 {
     @Before
     public void init() {
         FacesContext facesContext = new FacesContextMock();
-        
-        PrimeConfigurationMock config = new PrimeConfigurationMock(facesContext);
-        config.setEl22Available(true);
-        
-        ApplicationContext applicationContext = new ApplicationContextMock(facesContext, config);
-        
-        RequestContext requestContext = new RequestContextMock(facesContext, applicationContext);
-        RequestContext.setCurrentInstance(requestContext, facesContext);
+
+        PrimeApplicationContextMock applicationContext = new PrimeApplicationContextMock(facesContext);
+        PrimeApplicationContext.setCurrentInstance(applicationContext, facesContext);
+
+        PrimeRequestContext requestContext = new PrimeRequestContextMock(facesContext, applicationContext);
+        PrimeRequestContext.setCurrentInstance(requestContext, facesContext);
     }
 
     @After
     public void destroy() {
-        RequestContext.setCurrentInstance(null, FacesContext.getCurrentInstance());
+        PrimeRequestContext.setCurrentInstance(null, FacesContext.getCurrentInstance());
         FacesContext.getCurrentInstance().release();
     }
 

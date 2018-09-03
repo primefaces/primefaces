@@ -17,8 +17,27 @@ package org.primefaces.model.menu;
 
 public interface MenuElement {
 
+    /**
+     * Allows access the id property which is managed and auto-assigned by
+     * callers like menu model implementations and used to identify the element.
+     *
+     * The property is unrelated to the {@code id} attribute in the generated
+     * XHTML.
+     *
+     * @return the id property
+     */
     public String getId();
 
+    /**
+     * Sets the id property which is described in {@link #getId() }. You should
+     * have a good reason to call this if you're not extending, but only using
+     * Primefaces.
+     *
+     * The property is unrelated to the {@code id} attribute in the generated
+     * XHTML.
+     *
+     * @param id the id value
+     */
     public void setId(String id);
 
     public boolean isRendered();

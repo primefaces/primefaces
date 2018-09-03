@@ -217,7 +217,7 @@ public class PanelRenderer extends CoreRenderer {
         UIComponent footer = panel.getFacet("footer");
         String footerText = panel.getFooter();
 
-        if (footer != null || footerText != null) {
+        if (footerText != null || ComponentUtils.shouldRenderFacet(footer)) {
             writer.startElement("div", null);
             writer.writeAttribute("id", panel.getClientId(context) + "_footer", null);
             writer.writeAttribute("class", Panel.PANEL_FOOTER_CLASS, null);

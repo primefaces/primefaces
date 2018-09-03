@@ -33,11 +33,13 @@ public class DraggableRenderer extends CoreRenderer {
         Draggable draggable = (Draggable) component;
         String clientId = draggable.getClientId(context);
 
+        renderDummyMarkup(context, component, clientId);
+
         UIComponent target = SearchExpressionFacade.resolveComponent(
                 context, draggable, draggable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Draggable", draggable.resolveWidgetVar(), clientId)
+        wb.init("Draggable", draggable.resolveWidgetVar(), clientId)
                 .attr("target", target.getClientId(context))
                 .attr("cursor", draggable.getCursor())
                 .attr("disabled", draggable.isDisabled(), false)
@@ -49,7 +51,11 @@ public class DraggableRenderer extends CoreRenderer {
                 .attr("handle", draggable.getHandle(), null)
                 .attr("opacity", draggable.getOpacity(), 1.0)
                 .attr("stack", draggable.getStack(), null)
-                .attr("scope", draggable.getScope(), null);
+                .attr("scope", draggable.getScope(), null)
+                .attr("cancel", draggable.getCancel(), null);
+
+        wb.callback("onStart", "function(event,ui)", draggable.getOnStart())
+                .callback("onStop", "function(event,ui)", draggable.getOnStop());
 
         if (draggable.isRevert()) {
             wb.attr("revert", "invalid");

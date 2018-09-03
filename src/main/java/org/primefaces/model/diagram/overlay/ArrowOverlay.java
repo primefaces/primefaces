@@ -90,10 +90,12 @@ public class ArrowOverlay implements Overlay, Serializable {
         this.paintStyle = paintStyle;
     }
 
+    @Override
     public String getType() {
         return "Arrow";
     }
 
+    @Override
     public String toJS(StringBuilder sb) {
         sb.append("['Arrow',{location:").append(location);
 

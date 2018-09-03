@@ -19,10 +19,12 @@ import java.io.Serializable;
 
 public class DiamondOverlay implements Overlay, Serializable {
 
+    @Override
     public String getType() {
         return "Diamond";
     }
 
+    @Override
     public String toJS(StringBuilder sb) {
         return "'Diamond'";
     }

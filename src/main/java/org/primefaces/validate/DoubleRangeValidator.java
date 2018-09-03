@@ -25,8 +25,9 @@ public class DoubleRangeValidator extends javax.faces.validator.DoubleRangeValid
     private boolean minimumSet;
     private boolean maximumSet;
 
+    @Override
     public Map<String, Object> getMetadata() {
-        metadata = new HashMap<String, Object>();
+        metadata = new HashMap<>();
         double min = this.getMinimum();
         double max = this.getMaximum();
 
@@ -41,6 +42,7 @@ public class DoubleRangeValidator extends javax.faces.validator.DoubleRangeValid
         return metadata;
     }
 
+    @Override
     public String getValidatorId() {
         return DoubleRangeValidator.VALIDATOR_ID;
     }

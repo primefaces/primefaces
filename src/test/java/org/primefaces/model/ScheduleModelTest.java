@@ -26,25 +26,25 @@ public class ScheduleModelTest {
 		ScheduleModel model = new DefaultScheduleModel();
 		model.addEvent(new DefaultScheduleEvent("Entry 1", null, null));
 		model.addEvent(new DefaultScheduleEvent("Entry 2", null, null));
-		
+
 		assertEquals(2, model.getEventCount());
 	}
-	
+
 	@Test
 	public void deleteEvent() {
 		ScheduleModel model = new DefaultScheduleModel();
 		ScheduleEvent event1 = new DefaultScheduleEvent("Entry 1", null, null);
 		ScheduleEvent event2 = new DefaultScheduleEvent("Entry 2", null, null);
-		
+
 		model.addEvent(event1);
 		model.addEvent(event2);
 
 		model.deleteEvent(event2);
-		
+
 		assertEquals(1, model.getEventCount());
 		assertEquals("Entry 1", model.getEvents().get(0).getTitle());
 	}
-	
+
 	@Test
 	public void findEventById() {
 		ScheduleModel model = new DefaultScheduleModel();
@@ -53,9 +53,9 @@ public class ScheduleModelTest {
 		model.addEvent(new DefaultScheduleEvent("Entry 3", null, null));
 		model.addEvent(new DefaultScheduleEvent("Entry 4", null, null));
 		model.addEvent(new DefaultScheduleEvent("Entry 5", null, null));
-		
+
 		String id = model.getEvents().get(2).getId();
-		
+
 		assertEquals("Entry 3", model.getEvent(id).getTitle());
 	}
 }

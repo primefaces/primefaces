@@ -23,12 +23,7 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.ActionSource;
 import javax.faces.component.UIComponent;
-import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.FaceletContext;
-import javax.faces.view.facelets.FaceletException;
-import javax.faces.view.facelets.TagAttribute;
-import javax.faces.view.facelets.TagConfig;
-import javax.faces.view.facelets.TagHandler;
+import javax.faces.view.facelets.*;
 
 public class DataExporterTagHandler extends TagHandler {
 
@@ -42,21 +37,24 @@ public class DataExporterTagHandler extends TagHandler {
     private final TagAttribute encoding;
     private final TagAttribute repeat;
     private final TagAttribute options;
+    private final TagAttribute onTableRender;
 
     public DataExporterTagHandler(TagConfig tagConfig) {
         super(tagConfig);
-        this.target = getRequiredAttribute("target");
-        this.type = getRequiredAttribute("type");
-        this.fileName = getRequiredAttribute("fileName");
-        this.pageOnly = getAttribute("pageOnly");
-        this.selectionOnly = getAttribute("selectionOnly");
-        this.encoding = getAttribute("encoding");
-        this.preProcessor = getAttribute("preProcessor");
-        this.postProcessor = getAttribute("postProcessor");
-        this.repeat = getAttribute("repeat");
-        this.options = getAttribute("options");
+        target = getRequiredAttribute("target");
+        type = getRequiredAttribute("type");
+        fileName = getRequiredAttribute("fileName");
+        pageOnly = getAttribute("pageOnly");
+        selectionOnly = getAttribute("selectionOnly");
+        encoding = getAttribute("encoding");
+        preProcessor = getAttribute("preProcessor");
+        postProcessor = getAttribute("postProcessor");
+        repeat = getAttribute("repeat");
+        options = getAttribute("options");
+        onTableRender = getAttribute("onTableRender");
     }
 
+    @Override
     public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
         if (ComponentHandler.isNew(parent)) {
             ValueExpression targetVE = target.getValueExpression(faceletContext, Object.class);
@@ -69,6 +67,7 @@ public class DataExporterTagHandler extends TagHandler {
             MethodExpression postProcessorME = null;
             ValueExpression repeatVE = null;
             ValueExpression optionsVE = null;
+            MethodExpression onTableRenderME = null;
 
             if (encoding != null) {
                 encodingVE = encoding.getValueExpression(faceletContext, Object.class);
@@ -91,10 +90,13 @@ public class DataExporterTagHandler extends TagHandler {
             if (options != null) {
                 optionsVE = options.getValueExpression(faceletContext, Object.class);
             }
+            if (onTableRender != null) {
+                onTableRenderME = onTableRender.getMethodExpression(faceletContext, null, new Class[]{Object.class, Object.class});
+            }
 
             ActionSource actionSource = (ActionSource) parent;
             DataExporter dataExporter = new DataExporter(targetVE, typeVE, fileNameVE, pageOnlyVE, selectionOnlyVE,
-                    encodingVE, preProcessorME, postProcessorME, optionsVE);
+                    encodingVE, preProcessorME, postProcessorME, optionsVE, onTableRenderME);
             dataExporter.setRepeat(repeatVE);
             actionSource.addActionListener(dataExporter);
         }

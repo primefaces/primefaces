@@ -21,16 +21,17 @@ import javax.faces.context.PartialResponseWriter;
 public class CollectingPartialResponseWriter extends PartialResponseWriter {
 
     private final StringBuilder builder = new StringBuilder();
-    
+
     public CollectingPartialResponseWriter() {
         super(null);
     }
-    
+
     @Override
     public void write(String str) throws IOException {
         builder.append(str);
     }
 
+    @Override
     public String toString() {
         return builder.toString();
     }

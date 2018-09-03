@@ -18,8 +18,10 @@ package org.primefaces.component.row;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.row.renderer.ColumnGroupHelperRenderer;
 import org.primefaces.component.row.renderer.HelperRowRenderer;
 import org.primefaces.component.row.renderer.PanelGridBodyRowRenderer;
@@ -32,7 +34,7 @@ public class RowRenderer extends CoreRenderer {
     static final Map<String, HelperRowRenderer> RENDERERS;
 
     static {
-        RENDERERS = new HashMap<String, HelperRowRenderer>();
+        RENDERERS = new HashMap<>();
         RENDERERS.put("columnGroup", new ColumnGroupHelperRenderer());
         RENDERERS.put("panelGridBody", new PanelGridBodyRowRenderer());
         RENDERERS.put("panelGridFacet", new PanelGridFacetRowRenderer());

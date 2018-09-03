@@ -35,7 +35,7 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
             onhide: function(location,pane,state,options) { $this.onhide(location,pane,state); },
             onopen: function(location,pane,state,options) { $this.onopen(location,pane,state); },
             onclose: function(location,pane,state,options) { $this.onclose(location,pane,state); },
-            onresize: function(location,pane,state,options) { $this.onresize(location,pane,state); },
+            onresize_end: function(location,pane,state,options) { $this.onresize(location,pane,state); },
             contentSelector: '.ui-layout-unit-content',
             slidable: false,
             togglerLength_open: 0,
@@ -99,15 +99,13 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(this.hasBehavior('close')) {
-            var closeBehavior = this.cfg.behaviors['close'];
-
             var ext = {
                 params : [
                     {name: this.id + '_unit', value: location}
                 ]
             };
 
-            closeBehavior.call(this, ext);
+            this.callBehavior('close', ext);
         }
     },
 
@@ -122,9 +120,7 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
             this.cfg.onToggle.call(this, state);
         }
 
-        if(this.hasBehavior('toggle')) {
-            this.fireToggleEvent(location, false);
-        }
+        this.fireToggleEvent(location, false);
     },
 
     onclose: function(location, pane, state) {
@@ -135,9 +131,7 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
                 this.cfg.onToggle.call(this, state);
             }
 
-            if(this.hasBehavior('toggle')) {
-                this.fireToggleEvent(location, true);
-            }
+            this.fireToggleEvent(location, true);
         }
     },
 
@@ -148,32 +142,30 @@ PrimeFaces.widget.Layout = PrimeFaces.widget.DeferredWidget.extend({
 
         if(!state.isClosed && !state.isHidden) {
             if(this.hasBehavior('resize')) {
-                var resizeBehavior = this.cfg.behaviors['resize'];
-
                 var ext = {
-                        params : [
-                            {name: this.id + '_unit', value: location},
-                            {name: this.id + '_width', value: state.innerWidth},
-                            {name: this.id + '_height', value: state.innerHeight}
-                        ]
-                    };
+                    params : [
+                        {name: this.id + '_unit', value: location},
+                        {name: this.id + '_width', value: state.innerWidth},
+                        {name: this.id + '_height', value: state.innerHeight}
+                    ]
+                };
 
-                    resizeBehavior.call(this, ext);
+                this.callBehavior('resize', ext);
             }
         }
     },
 
     fireToggleEvent: function(location, collapsed) {
-        var toggleBehavior = this.cfg.behaviors['toggle'];
+        if(this.hasBehavior('toggle')) {
+            var ext = {
+                params : [
+                    {name: this.id + '_unit', value: location},
+                    {name: this.id + '_collapsed', value: collapsed}
+                ]
+            };
 
-        var ext = {
-            params : [
-                {name: this.id + '_unit', value: location},
-                {name: this.id + '_collapsed', value: collapsed}
-            ]
-        };
-
-        toggleBehavior.call(this, ext);
+            this.callBehavior('toggle', ext);
+        }
     }
 
 });

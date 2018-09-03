@@ -25,8 +25,9 @@ public class NotNullClientValidationConstraint implements ClientValidationConstr
     private static final String MESSAGE_METADATA = "data-p-notnull-msg";
     private static final String MESSAGE_ID = "{javax.validation.constraints.NotNull.message}";
 
+    @Override
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
-        Map<String, Object> metadata = new HashMap<String, Object>();
+        Map<String, Object> metadata = new HashMap<>();
         Map attrs = constraintDescriptor.getAttributes();
         Object message = attrs.get(ATTR_MESSAGE);
 
@@ -37,6 +38,7 @@ public class NotNullClientValidationConstraint implements ClientValidationConstr
         return metadata;
     }
 
+    @Override
     public String getValidatorId() {
         return NotNull.class.getSimpleName();
     }

@@ -29,24 +29,28 @@ public class HazelcastCacheProvider implements CacheProvider {
         hazelcastInstance = Hazelcast.newHazelcastInstance(config);
     }
 
+    @Override
     public Object get(String region, String key) {
         IMap<String, Object> cacheRegion = getRegion(region);
 
         return cacheRegion.get(key);
     }
 
+    @Override
     public void put(String region, String key, Object object) {
         IMap<String, Object> cacheRegion = getRegion(region);
 
         cacheRegion.put(key, object);
     }
 
+    @Override
     public void remove(String region, String key) {
         IMap<String, Object> cacheRegion = getRegion(region);
 
         cacheRegion.remove(key);
     }
 
+    @Override
     public void clear() {
 
     }

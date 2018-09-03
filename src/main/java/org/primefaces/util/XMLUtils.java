@@ -20,7 +20,7 @@ import org.apache.xmlbeans.impl.common.XMLChar;
 public class XMLUtils {
 
     private static final String SB_ESCAPE = XMLUtils.class.getName() + "#escape";
-    
+
     /**
      * Ensure a valid XMLElement name is returned.<br>
      * Uses the {@link org.apache.xmlbeans.impl.common.XMLChar}<br>
@@ -37,7 +37,7 @@ public class XMLUtils {
 
         StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE, intag.length());
         sb.append(intag);
-        
+
         char c;
         for (int i = sb.length() - 1; i >= 0; i--) {
             c = intag.charAt(i);
@@ -72,13 +72,13 @@ public class XMLUtils {
 
     /**
      * Escapes <, >, ", &, and ' in XML strings.
-     * 
+     *
      * @param value the value to escape
      * @return the escaped XML string
      */
     public static String escapeXml(String value) {
         StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE, value.length());
-        
+
         for (int i = 0; i < value.length(); i++) {
             char c = value.charAt(i);
             switch (c) {

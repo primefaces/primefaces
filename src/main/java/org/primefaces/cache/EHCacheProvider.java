@@ -27,6 +27,7 @@ public class EHCacheProvider implements CacheProvider {
         cacheManager = CacheManager.create();
     }
 
+    @Override
     public Object get(String region, String key) {
         Cache cacheRegion = getRegion(region);
         Element element = cacheRegion.get(key);
@@ -39,18 +40,21 @@ public class EHCacheProvider implements CacheProvider {
         }
     }
 
+    @Override
     public void put(String region, String key, Object object) {
         Cache cacheRegion = getRegion(region);
 
         cacheRegion.put(new Element(key, object));
     }
 
+    @Override
     public void remove(String region, String key) {
         Cache cacheRegion = getRegion(region);
 
         cacheRegion.remove(key);
     }
 
+    @Override
     public void clear() {
         String[] cacheNames = getCacheManager().getCacheNames();
         if (cacheNames != null) {

@@ -1,53 +1,24 @@
 /**
  * PrimeFaces Sidebar Widget
  */
-PrimeFaces.widget.Sidebar = PrimeFaces.widget.BaseWidget.extend({
-    
+PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
+
     init: function(cfg) {
         this._super(cfg);
-        
+
         this.closeIcon = this.jq.children('.ui-sidebar-close');
         this.cfg.baseZIndex = this.cfg.baseZIndex||0;
-        
-        if(this.cfg.appendTo) {
-            this.parent = this.jq.parent();
-            this.targetParent = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.appendTo);
-            
-            if (!this.parent.is(this.targetParent)) {
-                this.jq.appendTo(this.targetParent);
-            }
-        }
-        
-        //remove related modality if there is one
-        var modal = $(this.jqId + '_modal');
-        if(modal.length > 0) {
-            modal.remove();
-        }
-        
+
         //aria
         this.applyARIA();
 
         if(this.cfg.visible){
             this.show();
         }
-        
+
         this.bindEvents();
     },
-    
-    //override
-    refresh: function(cfg) {
-        this.mask = false;
 
-        if(cfg.appendTo) {
-            var jqs = $('[id=' + cfg.id.replace(/:/g,"\\:") + ']');
-            if(jqs.length > 1) {
-            	PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(cfg.appendTo).children(this.jqId).remove();
-            }
-        }
-
-        this.init(cfg);
-    },
-    
     bindEvents: function() {
         var $this = this;
 
@@ -64,7 +35,7 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.BaseWidget.extend({
             e.preventDefault();
         });
     },
-    
+
     show: function() {
         if(this.isVisible()) {
             return;
@@ -72,11 +43,11 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.BaseWidget.extend({
 
         this.jq.addClass('ui-sidebar-active');
         this.jq.css('z-index', this.cfg.baseZIndex + (++PrimeFaces.zindex));
-        
+
         this.postShow();
         this.enableModality();
     },
-    
+
     postShow: function() {
         PrimeFaces.invokeDeferredRenders(this.id);
 
@@ -90,7 +61,7 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.BaseWidget.extend({
             ,'aria-live': 'polite'
         });
     },
-    
+
     hide: function() {
         if(!this.isVisible()) {
             return;
@@ -100,11 +71,11 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.BaseWidget.extend({
         this.onHide();
         this.disableModality();
     },
-    
+
     isVisible: function() {
         return this.jq.hasClass('ui-sidebar-active');
     },
-    
+
     onHide: function(event, ui) {
         this.jq.attr({
             'aria-hidden': true
@@ -122,39 +93,35 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.BaseWidget.extend({
         else
             this.show();
     },
-    
+
+    //@override
     enableModality: function() {
-        if(!this.mask) {
-            var $this = this, 
-            docBody = $(document.body);
-           
-            this.mask = $('<div id="' + this.id + '_modal" class="ui-widget-overlay ui-sidebar-mask"></div>');
-            this.mask.css('z-index' , this.jq.css('z-index') - 1);
-            docBody.append(this.mask);
-            
-            this.mask.on('click.sidebar-mask', function() {
-                $this.hide(); 
-            });
-        
-            if(this.cfg.blockScroll) {
-                docBody.addClass('ui-overflow-hidden');
-            }
+        this._super();
+
+        var $this = this;
+        this.modalOverlay.on('click', function() {
+            $this.hide();
+        });
+
+        if (this.cfg.blockScroll) {
+            $(document.body).addClass('ui-overflow-hidden');
         }
     },
-        
+
+    //@override
     disableModality: function() {
-        if(this.mask) {
-            var docBody = $(document.body);
-            this.mask.off('click.sidebar-mask');
-            this.mask.remove();
-            
-            if(this.cfg.blockScroll) {
-                docBody.removeClass('ui-overflow-hidden');
-            }
-            this.mask = null;
+        this._super();
+
+        if (this.cfg.blockScroll) {
+            $(document.body).removeClass('ui-overflow-hidden');
         }
     },
-    
+
+    //@override
+    getModalTabbables: function(){
+        return this.jq.find(':tabbable');
+    },
+
     applyARIA: function() {
         this.jq.attr({
             'role': 'dialog'
@@ -163,5 +130,5 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.BaseWidget.extend({
 
         this.closeIcon.attr('role', 'button');
     }
-    
+
 });

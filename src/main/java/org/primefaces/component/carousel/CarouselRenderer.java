@@ -55,7 +55,7 @@ public class CarouselRenderer extends CoreRenderer {
     private void encodeScript(FacesContext context, Carousel carousel) throws IOException {
         String clientId = carousel.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Carousel", carousel.resolveWidgetVar(), clientId);
+        wb.init("Carousel", carousel.resolveWidgetVar(), clientId);
 
         wb.attr("firstVisible", carousel.getFirstVisible(), 0)
                 .attr("circular", carousel.isCircular(), false)
@@ -185,7 +185,7 @@ public class CarouselRenderer extends CoreRenderer {
             facet.encodeAll(context);
         }
         else if (text != null) {
-            writer.write(text);
+            writer.writeText(text, "headerText");
         }
 
         writer.endElement("div");
@@ -215,7 +215,7 @@ public class CarouselRenderer extends CoreRenderer {
         }
 
         if (carousel.isResponsive()) {
-            encodeDropDown(context, carousel, clientId + "_mobiledropdown", Carousel.MOBILE_DROPDOWN_CLASS, itemCount);
+            encodeDropDown(context, carousel, clientId + "_responsivedropdown", Carousel.RESPONSIVE_DROPDOWN_CLASS, itemCount);
         }
 
         writer.endElement("div");
@@ -275,7 +275,7 @@ public class CarouselRenderer extends CoreRenderer {
             facet.encodeAll(context);
         }
         else if (text != null) {
-            writer.write(text);
+            writer.writeText(text, "footerText");
         }
 
         writer.endElement("div");

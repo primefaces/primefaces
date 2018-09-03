@@ -16,11 +16,13 @@
 package org.primefaces.component.selectbooleancheckbox;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
-import org.primefaces.context.RequestContext;
+
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -39,7 +41,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         decodeBehaviors(context, checkbox);
 
         String clientId = checkbox.getClientId(context);
-        String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
         if (submittedValue != null && isChecked(submittedValue)) {
             checkbox.setSubmittedValue(true);
@@ -117,10 +119,14 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
             writer.writeAttribute("aria-checked", "false", null);
         }
 
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (checkbox.getTabindex() != null) writer.writeAttribute("tabindex", checkbox.getTabindex(), null);
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (checkbox.getTabindex() != null) {
+            writer.writeAttribute("tabindex", checkbox.getTabindex(), null);
+        }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, checkbox);
         }
 

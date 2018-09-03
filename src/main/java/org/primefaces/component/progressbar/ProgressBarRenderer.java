@@ -21,8 +21,8 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.PrimeFaces;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -86,7 +86,7 @@ public class ProgressBarRenderer extends CoreRenderer {
         writer.writeAttribute("class", ProgressBar.LABEL_CLASS, null);
         if (labelTemplate != null) {
             writer.writeAttribute("style", "display:block", style);
-            writer.write(labelTemplate.replaceAll("\\{value\\}", String.valueOf(value)));
+            writer.writeText(labelTemplate.replaceAll("\\{value\\}", String.valueOf(value)), null);
         }
         writer.endElement("div");
 
@@ -98,7 +98,7 @@ public class ProgressBarRenderer extends CoreRenderer {
         boolean isAjax = progressBar.isAjax();
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("ProgressBar", progressBar.resolveWidgetVar(), clientId)
+        wb.init("ProgressBar", progressBar.resolveWidgetVar(), clientId)
                 .attr("initialValue", progressBar.getValue())
                 .attr("ajax", isAjax)
                 .attr("labelTemplate", progressBar.getLabelTemplate(), null)

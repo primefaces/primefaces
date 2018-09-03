@@ -20,8 +20,8 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.RequestContext;
 
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -60,6 +60,7 @@ public class KeyboardRenderer extends InputRenderer {
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Keyboard", keyboard.resolveWidgetVar(), clientId)
+                .attr("useThemeRoller", true)
                 .attr("showOn", keyboard.getShowMode())
                 .attr("showAnim", keyboard.getEffect())
                 .attr("buttonImageOnly", keyboard.isButtonImageOnly(), false)
@@ -109,12 +110,20 @@ public class KeyboardRenderer extends InputRenderer {
 
         writer.writeAttribute("class", styleClass, "styleClass");
 
-        if (keyboard.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
-        if (keyboard.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
-        if (keyboard.getStyle() != null) writer.writeAttribute("style", keyboard.getStyle(), "style");
-        if (keyboard.isRequired()) writer.writeAttribute("aria-required", "true", null);
+        if (keyboard.isDisabled()) {
+            writer.writeAttribute("disabled", "disabled", "disabled");
+        }
+        if (keyboard.isReadonly()) {
+            writer.writeAttribute("readonly", "readonly", "readonly");
+        }
+        if (keyboard.getStyle() != null) {
+            writer.writeAttribute("style", keyboard.getStyle(), "style");
+        }
+        if (keyboard.isRequired()) {
+            writer.writeAttribute("aria-required", "true", null);
+        }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, keyboard);
         }
 

@@ -24,7 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentTraversalUtils;
@@ -50,8 +50,10 @@ public class HotkeyRenderer extends CoreRenderer {
         writer.startElement("script", null);
         writer.writeAttribute("type", "text/javascript", null);
 
-        writer.write("$(function() {");
-        writer.write("$(document).bind('keydown', '" + hotkey.getBind() + "', function(){");
+        String event = "keydown." + clientId;
+
+        writer.write("$(function(){");
+        writer.write("$(document).off('" + event + "').on('" + event + "',null,'" + hotkey.getBind() + "',function(){");
 
         if (hotkey.isAjaxified()) {
             UIComponent form = ComponentTraversalUtils.closestForm(context, hotkey);
@@ -60,7 +62,7 @@ public class HotkeyRenderer extends CoreRenderer {
                 throw new FacesException("Hotkey '" + clientId + "' needs to be enclosed in a form when ajax mode is enabled");
             }
 
-            AjaxRequestBuilder builder = RequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
+            AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
 
             String request = builder.init()
                     .source(clientId)

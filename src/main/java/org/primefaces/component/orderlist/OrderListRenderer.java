@@ -17,14 +17,15 @@ package org.primefaces.component.orderlist;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+
 import org.primefaces.component.column.Column;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.HTML;
@@ -154,8 +155,7 @@ public class OrderListRenderer extends CoreRenderer {
         String var = old.getVar();
         Converter converter = old.getConverter();
 
-        for (Iterator it = model.iterator(); it.hasNext();) {
-            Object item = it.next();
+        for (Object item : model) {
             context.getExternalContext().getRequestMap().put(var, item);
             String value = converter != null ? converter.getAsString(context, old, old.getItemValue()) : old.getItemValue().toString();
 
@@ -174,8 +174,12 @@ public class OrderListRenderer extends CoreRenderer {
                         Column column = (Column) kid;
 
                         writer.startElement("td", null);
-                        if (column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
-                        if (column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
+                        if (column.getStyle() != null) {
+                            writer.writeAttribute("style", column.getStyle(), null);
+                        }
+                        if (column.getStyleClass() != null) {
+                            writer.writeAttribute("class", column.getStyleClass(), null);
+                        }
 
                         renderChildren(context, column);
                         writer.endElement("td");

@@ -19,9 +19,11 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -88,7 +90,7 @@ public class ContentFlowRenderer extends CoreRenderer {
             Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
             Collection<?> value = (Collection<?>) cf.getValue();
             if (value != null) {
-                for (Iterator<?> it = value.iterator(); it.hasNext();) {
+                for (Iterator<?> it = value.iterator(); it.hasNext(); ) {
                     requestMap.put(var, it.next());
 
                     writer.startElement("div", null);
@@ -106,7 +108,7 @@ public class ContentFlowRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
 
         if (context.isPostback()) {
-            wb.initWithDomReady("ContentFlow", cf.resolveWidgetVar(), cf.getClientId(context));
+            wb.init("ContentFlow", cf.resolveWidgetVar(), cf.getClientId(context));
         }
         else {
             wb.initWithWindowLoad("ContentFlow", cf.resolveWidgetVar(), cf.getClientId(context));

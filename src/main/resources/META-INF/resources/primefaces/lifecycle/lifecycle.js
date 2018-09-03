@@ -1,7 +1,7 @@
 PrimeFaces.widget.Lifecycle = PrimeFaces.widget.BaseWidget.extend({
-	
-	init : function(cfg) {
-		this._super(cfg);
+
+    init : function(cfg) {
+        this._super(cfg);
 
         if (!this.initialized) {
             this.initialized = true;
@@ -20,7 +20,7 @@ PrimeFaces.widget.Lifecycle = PrimeFaces.widget.BaseWidget.extend({
                 }, 25);
             }
         });
-        
+
         if (window.jsf && window.jsf.ajax) {
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
@@ -34,8 +34,8 @@ PrimeFaces.widget.Lifecycle = PrimeFaces.widget.BaseWidget.extend({
                 }
             });
         }
-	},
-    
+    },
+
     update: function() {
         this.updating = true;
 

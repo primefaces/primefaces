@@ -19,10 +19,12 @@ import java.util.Map;
 
 public class FloatConverter extends javax.faces.convert.FloatConverter implements ClientConverter {
 
+    @Override
     public Map<String, Object> getMetadata() {
         return null;
     }
 
+    @Override
     public String getConverterId() {
         return FloatConverter.CONVERTER_ID;
     }

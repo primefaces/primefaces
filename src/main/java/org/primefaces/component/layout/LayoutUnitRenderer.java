@@ -20,6 +20,7 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.CoreRenderer;
 
 public class LayoutUnitRenderer extends CoreRenderer {
@@ -36,8 +37,10 @@ public class LayoutUnitRenderer extends CoreRenderer {
 
         writer.startElement("div", component);
         writer.writeAttribute("id", component.getClientId(context), "id");
-        writer.writeAttribute("class", styleClass , "styleClass");
-        if (unit.getStyle() != null) writer.writeAttribute("style", unit.getStyle() , "style");
+        writer.writeAttribute("class", styleClass, "styleClass");
+        if (unit.getStyle() != null) {
+            writer.writeAttribute("style", unit.getStyle(), "style");
+        }
 
         encodeHeader(context, unit);
 

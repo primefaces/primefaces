@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.behavior.ClientBehavior;
@@ -27,9 +28,8 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
+
 import org.primefaces.behavior.confirm.ConfirmBehavior;
-import org.primefaces.component.api.AjaxSource;
-import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
@@ -38,10 +38,7 @@ import org.primefaces.component.separator.UISeparator;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
-import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.util.*;
 
 public class SplitButtonRenderer extends OutcomeTargetRenderer {
 
@@ -87,7 +84,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         }
 
         encodeDefaultButton(context, button, buttonId);
-        if (button.getChildCount() > 0) {
+        if (ComponentUtils.shouldRenderChildren(button)) {
             encodeMenuIcon(context, button, menuButtonId);
             encodeMenu(context, button, menuId);
         }
@@ -159,19 +156,16 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
 
-        
-        if (button.getChildCount() > 0) { 
-            //icon    
-            writer.startElement("span", null);
-            writer.writeAttribute("class", "ui-button-icon-left ui-icon ui-icon-triangle-1-s", null);
-            writer.endElement("span");
+        //icon
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-button-icon-left ui-icon ui-icon-triangle-1-s", null);
+        writer.endElement("span");
 
-            //text
-            writer.startElement("span", null);
-            writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-            writer.write("ui-button");
-            writer.endElement("span");
-        }
+        //text
+        writer.startElement("span", null);
+        writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
+        writer.write("ui-button");
+        writer.endElement("span");
 
         writer.endElement("button");
     }
@@ -179,7 +173,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
     protected void encodeScript(FacesContext context, SplitButton button) throws IOException {
         String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("SplitButton", button.resolveWidgetVar(), clientId);
+        wb.init("SplitButton", button.resolveWidgetVar(), clientId);
         wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo()), null);
         wb.finish();
     }
@@ -223,7 +217,8 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         writer.startElement("ul", null);
         writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
 
-        for (UIComponent child : button.getChildren()) {
+        for (int i = 0; i < button.getChildCount(); i++) {
+            UIComponent child = button.getChildren().get(i);
             if (child.isRendered()) {
                 if (child instanceof UIMenuItem) {
                     UIMenuItem item = (UIMenuItem) child;
@@ -251,7 +246,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         String title = menuitem.getTitle();
 
         if (menuitem.shouldRenderChildren()) {
-            renderChildren(context, (UIComponent) menuitem);
+            renderChildren(context, menuitem);
         }
         else {
             boolean disabled = menuitem.isDisabled();
@@ -282,7 +277,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
 
                 //GET
                 if (menuitem.getUrl() != null || menuitem.getOutcome() != null) {
-                    String targetURL = getTargetURL(context, (UIOutcomeTarget) menuitem);
+                    String targetURL = getTargetURL(context, menuitem);
                     writer.writeAttribute("href", targetURL, null);
 
                     if (menuitem.getTarget() != null) {
@@ -299,8 +294,8 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
                     }
 
                     String command = menuitem.isAjax()
-                            ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
-                            : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
+                            ? buildAjaxRequest(context, menuitem, form)
+                            : buildNonAjaxRequest(context, (menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
 
                     onclick = (onclick == null) ? command : onclick + ";" + command;
                 }
@@ -325,7 +320,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
             if (menuitem.getValue() != null) {
                 writer.startElement("span", null);
                 writer.writeAttribute("class", AbstractMenu.MENUITEM_TEXT_CLASS, null);
-                writer.writeText((String) menuitem.getValue(), "value");
+                writer.writeText(menuitem.getValue(), "value");
                 writer.endElement("span");
             }
 

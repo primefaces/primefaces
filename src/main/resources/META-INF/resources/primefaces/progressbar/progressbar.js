@@ -2,10 +2,10 @@
  * PrimeFaces ProgressBar widget
  */
 PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
-    
+
     init: function(cfg) {
         this._super(cfg);
-        
+
         this.jqValue = this.jq.children('.ui-progressbar-value');
         this.jqLabel = this.jq.children('.ui-progressbar-label');
         this.value = this.cfg.initialValue;
@@ -17,7 +17,7 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
 
         this.enableARIA();
     },
-    
+
     setValue: function(value) {
         if(value >= 0 && value<=100) {
             if(value == 0) {
@@ -27,7 +27,7 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
             }
             else {
                 this.jqValue.show().animate({
-                    'width': value + '%' 
+                    'width': value + '%'
                 }, 500, 'easeInOutCirc');
 
                 if(this.cfg.labelTemplate) {
@@ -41,11 +41,11 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
             this.jq.attr('aria-valuenow', value);
         }
     },
-    
+
     getValue: function() {
         return this.value;
     },
-    
+
     start: function() {
         var $this = this;
 
@@ -69,29 +69,23 @@ PrimeFaces.widget.ProgressBar = PrimeFaces.widget.BaseWidget.extend({
                     }
                 };
 
-                PrimeFaces.ajax.AjaxRequest(options);
+                PrimeFaces.ajax.Request.handle(options);
 
             }, this.cfg.interval);
         }
     },
-    
+
     fireCompleteEvent: function() {
         clearInterval(this.progressPoll);
 
-        if(this.cfg.behaviors) {
-            var completeBehavior = this.cfg.behaviors['complete'];
-
-            if(completeBehavior) {
-                completeBehavior.call(this);
-            }
-        }
+        this.callBehavior('complete');
     },
-    
+
     cancel: function() {
         clearInterval(this.progressPoll);
         this.setValue(0);
     },
-    
+
     enableARIA: function() {
         this.jq.attr('role', 'progressbar')
                 .attr('aria-valuemin', 0)

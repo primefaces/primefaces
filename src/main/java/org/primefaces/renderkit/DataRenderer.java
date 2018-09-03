@@ -20,10 +20,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.api.Pageable;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.api.UIData;
 import org.primefaces.component.paginator.CurrentPageReportRenderer;
 import org.primefaces.component.paginator.FirstPageLinkRenderer;
@@ -34,6 +36,7 @@ import org.primefaces.component.paginator.PageLinksRenderer;
 import org.primefaces.component.paginator.PaginatorElementRenderer;
 import org.primefaces.component.paginator.PrevPageLinkRenderer;
 import org.primefaces.component.paginator.RowsPerPageDropdownRenderer;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
@@ -185,4 +188,39 @@ public class DataRenderer extends CoreRenderer {
             writer.endElement("div");
         }
     }
+
+
+    protected String getHeaderLabel(FacesContext context, UIColumn column) {
+        String ariaHeaderText = column.getAriaHeaderText();
+
+        // for headerText of column
+        if (ariaHeaderText == null) {
+            ariaHeaderText = column.getHeaderText();
+        }
+
+        // for header facet
+        if (ariaHeaderText == null) {
+            UIComponent header = column.getFacet("header");
+            if (header != null) {
+                if (header instanceof UIPanel) {
+                    for (UIComponent child : header.getChildren()) {
+                        if (child.isRendered()) {
+                            String value = ComponentUtils.getValueToRender(context, child);
+
+                            if (value != null) {
+                                ariaHeaderText = value;
+                                break;
+                            }
+                        }
+                    }
+                }
+                else {
+                    ariaHeaderText = ComponentUtils.getValueToRender(context, header);
+                }
+            }
+        }
+
+        return ariaHeaderText;
+    }
+
 }

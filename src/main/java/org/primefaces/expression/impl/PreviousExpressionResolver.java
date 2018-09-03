@@ -27,6 +27,7 @@ import org.primefaces.expression.SearchExpressionResolver;
  */
 public class PreviousExpressionResolver implements SearchExpressionResolver {
 
+    @Override
     public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
         UIComponent parent = last.getParent();
 

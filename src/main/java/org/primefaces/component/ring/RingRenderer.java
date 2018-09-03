@@ -16,9 +16,11 @@
 package org.primefaces.component.ring;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -67,7 +69,7 @@ public class RingRenderer extends CoreRenderer {
         String clientId = ring.getClientId(context);
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Ring", ring.resolveWidgetVar(), clientId)
+        wb.init("Ring", ring.resolveWidgetVar(), clientId)
                 .attr("startingChild", ring.getFirst())
                 .attr("easing", ring.getEasing(), null)
                 .attr("autoplay", ring.isAutoplay(), false)

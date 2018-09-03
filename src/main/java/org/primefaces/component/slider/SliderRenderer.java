@@ -20,8 +20,8 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.component.api.InputHolder;
 
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -47,21 +47,24 @@ public class SliderRenderer extends CoreRenderer {
         String clientId = slider.getClientId(context);
 
         writer.startElement("div", slider);
-        writer.writeAttribute("id", clientId , "id");
-        if (slider.getStyle() != null)  writer.writeAttribute("style", slider.getStyle() , null);
-        if (slider.getStyleClass() != null) writer.writeAttribute("class", slider.getStyleClass(), null);
+        writer.writeAttribute("id", clientId, "id");
+        if (slider.getStyle() != null) {
+            writer.writeAttribute("style", slider.getStyle(), null);
+        }
+        if (slider.getStyleClass() != null) {
+            writer.writeAttribute("class", slider.getStyleClass(), null);
+        }
 
         writer.endElement("div");
     }
 
     protected void encodeScript(FacesContext context, Slider slider) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = slider.getClientId(context);
         boolean range = slider.isRange();
         UIComponent output = getTarget(context, slider, slider.getDisplay());
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Slider", slider.resolveWidgetVar(), clientId);
+        wb.init("Slider", slider.resolveWidgetVar(), clientId);
 
         if (range) {
             String[] inputIds = slider.getFor().split(",");

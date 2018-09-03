@@ -19,7 +19,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
-import org.primefaces.context.ApplicationContext;
+import org.primefaces.context.PrimeApplicationContext;
 
 public class PreDestroyApplicationEventListener implements SystemEventListener {
 
@@ -30,7 +30,7 @@ public class PreDestroyApplicationEventListener implements SystemEventListener {
 
     @Override
     public void processEvent(SystemEvent event) throws AbortProcessingException {
-        ApplicationContext applicationContext = ApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance());
+        PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance());
         if (applicationContext != null) {
             applicationContext.release();
         }

@@ -2,10 +2,10 @@
  * PrimeFaces Inplace Widget
  */
 PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
-    
+
     init: function(cfg) {
         this._super(cfg);
-        
+
         this.display = $(this.jqId + '_display');
         this.content = $(this.jqId + '_content');
         this.cfg.formId = this.jq.parents('form:first').attr('id');
@@ -42,7 +42,7 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
                 saveButton.click(function(e) {$this.save(e)});
                 cancelButton.click(function(e) {$this.cancel(e)});
             }
-            
+
             /* to enter space in inplace input within multi-selection dataTable */
             this.content.find('input:text,textarea').on('keydown.inplace-text', function(e) {
                 var keyCode = $.ui.keyCode;
@@ -53,15 +53,15 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
             });
         }
     },
-    
-    show: function() {    
+
+    show: function() {
         this.toggle(this.content, this.display);
     },
-    
+
     hide: function() {
         this.toggle(this.display, this.content);
     },
-    
+
     toggle: function(elToShow, elToHide) {
         var $this = this;
 
@@ -85,21 +85,21 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
             $this.postShow();
         }
     },
-    
+
     postShow: function() {
         this.content.find('input:text,textarea').filter(':visible:enabled:first').focus().select();
-        
+
         PrimeFaces.invokeDeferredRenders(this.id);
     },
-    
+
     getDisplay: function() {
         return this.display;
     },
-    
+
     getContent: function() {
         return this.content;
     },
-    
+
     save: function(e) {
         var options = {
             source: this.id,
@@ -109,15 +109,13 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
         };
 
         if(this.hasBehavior('save')) {
-            var saveBehavior = this.cfg.behaviors['save'];
-
-            saveBehavior.call(this, options);
-        } 
+            this.callBehavior('save');
+        }
         else {
-            PrimeFaces.ajax.AjaxRequest(options); 
+            PrimeFaces.ajax.Request.handle(options);
         }
     },
-    
+
     cancel: function(e) {
         var options = {
             source: this.id,
@@ -131,13 +129,11 @@ PrimeFaces.widget.Inplace = PrimeFaces.widget.BaseWidget.extend({
         ];
 
         if(this.hasBehavior('cancel')) {
-            var saveBehavior = this.cfg.behaviors['cancel'];
-
-            saveBehavior.call(this, options);
-        } 
+            this.callBehavior('cancel');
+        }
         else {
-            PrimeFaces.ajax.AjaxRequest(options); 
+            PrimeFaces.ajax.Request.handle(options);
         }
     }
-    
+
 });

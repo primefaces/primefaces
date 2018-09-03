@@ -600,6 +600,35 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
 	color: #ffffff !important;
 }
 
+/* ToggleSwitch */
+.ui-toggleswitch-slider {
+    -webkit-transition: background-color .3s, box-shadow .2s;
+    transition: background-color .3s, box-shadow .2s;
+    background: #cccccc; 
+}
+    
+.ui-toggleswitch-slider:before {
+    background-color: #ffffff;
+}
+
+.ui-toggleswitch-focus .ui-toggleswitch-slider {
+    -moz-box-shadow: 0px 0px 5px #c0c0c0;
+    -webkit-box-shadow: 0px 0px 5px #c0c0c0;
+    box-shadow: 0px 0px 5px #c0c0c0; 
+}
+
+.ui-toggleswitch:not(.ui-state-disabled):hover .ui-toggleswitch-slider {
+    background-color: #b7b7b7;
+}
+
+.ui-toggleswitch.ui-toggleswitch-checked .ui-toggleswitch-slider {
+    background-color: #186ba0;
+}
+
+.ui-toggleswitch.ui-toggleswitch-checked:not(.ui-state-disabled):hover .ui-toggleswitch-slider {
+    background-color: #114d74;
+}
+
 .ui-paginator .ui-paginator-page.ui-state-active {
 	background: #186ba0;
 	color: #ffffff;
@@ -764,16 +793,20 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
    border: 1px solid #156090; background: #186ba0; color: #FFFFFF;
 }
 
-.ui-selectbooleanbutton.ui-button.ui-state-default .ui-icon {
+.ui-selectbooleanbutton.ui-button.ui-state-default .ui-icon,
+.ui-dataview .ui-dataview-layout-options .ui-button .ui-icon {
     background-image: url("#{resource['primefaces-omega:images/ui-icons_454545_256x240.png']}");
 }
 
 .ui-selectbooleanbutton.ui-button.ui-state-hover.ui-icon,
-.ui-selectbooleanbutton.ui-button.ui-state-focus .ui-icon {
+.ui-selectbooleanbutton.ui-button.ui-state-focus .ui-icon,
+.ui-dataview .ui-dataview-layout-options .ui-button.ui-state-hover .ui-icon,
+.ui-dataview .ui-dataview-layout-options .ui-button.ui-state-focus .ui-icon {
     background-image: url("#{resource['primefaces-omega:images/ui-icons_454545_256x240.png']}");
 }
 
-.ui-selectbooleanbutton.ui-button.ui-state-active .ui-icon {
+.ui-selectbooleanbutton.ui-button.ui-state-active .ui-icon,
+.ui-dataview .ui-dataview-layout-options .ui-button.ui-state-active .ui-icon {
     background-image: url("#{resource['primefaces-omega:images/ui-icons_ffffff_256x240.png']}");
 }
 
@@ -893,10 +926,12 @@ button.ui-button.ui-state-active, .ui-button.ui-state-active {
     border-bottom-left-radius: 3px;
 }
         
-.ui-inputgroup .ui-button:last-child {
+.ui-inputgroup .ui-button:last-child,
+.ui-inputgroup .ui-autocomplete:last-child .ui-button.ui-autocomplete-dropdown,
+.ui-inputgroup .ui-spinner:last-child .ui-spinner-button {
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
-}
+} 
 
 /* Tooltip */
 .ui-tooltip .ui-tooltip-text.ui-state-error {

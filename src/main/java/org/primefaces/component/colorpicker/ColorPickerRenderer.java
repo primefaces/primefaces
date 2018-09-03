@@ -17,6 +17,7 @@ package org.primefaces.component.colorpicker;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -29,6 +30,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class ColorPickerRenderer extends CoreRenderer {
 
+    private static final Pattern COLOR_HEX_PATTERN = Pattern.compile("([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})");
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         ColorPicker colorPicker = (ColorPicker) component;
@@ -37,6 +40,11 @@ public class ColorPickerRenderer extends CoreRenderer {
 
         if (params.containsKey(paramName)) {
             String submittedValue = params.get(paramName);
+
+            if (!COLOR_HEX_PATTERN.matcher(submittedValue).matches()) {
+                return;
+            }
+
             Converter converter = colorPicker.getConverter();
             if (converter != null) {
                 colorPicker.setSubmittedValue(
@@ -143,7 +151,7 @@ public class ColorPickerRenderer extends CoreRenderer {
         String clientId = colorPicker.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
 
-        wb.initWithDomReady("ColorPicker", colorPicker.resolveWidgetVar(), clientId)
+        wb.init("ColorPicker", colorPicker.resolveWidgetVar(), clientId)
                 .attr("mode", colorPicker.getMode())
                 .attr("color", value, null);
 

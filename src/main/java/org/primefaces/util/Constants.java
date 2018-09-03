@@ -24,14 +24,10 @@ public class Constants {
 
         // PF context params
         public static final String THEME = "primefaces.THEME";
-        public static final String MOBILE_THEME = "primefaces.mobile.THEME";
         public static final String FONT_AWESOME = "primefaces.FONT_AWESOME";
-        public static final String AUTO_UPDATE = "primefaces.AUTO_UPDATE";
-        public static final String PUSH_SERVER_URL = "primefaces.PUSH_SERVER_URL";
         public static final String SUBMIT = "primefaces.SUBMIT";
         public static final String DIRECTION = "primefaces.DIR";
         public static final String RESET_VALUES = "primefaces.RESET_VALUES";
-        public static final String SECRET_KEY = "primefaces.SECRET";
         public static final String PFV_KEY = "primefaces.CLIENT_SIDE_VALIDATION";
         public static final String UPLOADER = "primefaces.UPLOADER";
         public static final String CACHE_PROVIDER = "primefaces.CACHE_PROVIDER";
@@ -62,8 +58,6 @@ public class Constants {
 
     public final static String LIBRARY = "primefaces";
 
-    public final static String PUSH_PATH = "/primepush";
-
     public static final String DYNAMIC_CONTENT_PARAM = "pfdrid";
     public static final String DYNAMIC_CONTENT_CACHE_PARAM = "pfdrid_c";
     public static final String DYNAMIC_CONTENT_TYPE_PARAM = "pfdrt";
@@ -72,7 +66,6 @@ public class Constants {
     public static final String BARCODE_MAPPING = "primefaces.barcodeMapping";
 
     public final static String FRAGMENT_ID = "primefaces.fragment";
-    public final static String FRAGMENT_AUTO_RENDERED = "primefaces.fragment.autorendered";
 
     public static class DIALOG_FRAMEWORK {
 
@@ -90,8 +83,6 @@ public class Constants {
     public final static String CLIENT_BEHAVIOR_RENDERING_MODE = "CLIENT_BEHAVIOR_RENDERING_MODE";
 
     public final static String DEFAULT_CACHE_REGION = "primefaces.DEFAULT_CACHE_REGION";
-
-    public final static String MOBILE_RENDER_KIT_ID = "PRIMEFACES_MOBILE";
 
     public static final String HELPER_RENDERER = "org.primefaces.HELPER_RENDERER";
 

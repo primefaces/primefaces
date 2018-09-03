@@ -25,15 +25,11 @@ import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
-import org.primefaces.component.api.ClientBehaviorRenderingMode;
-import org.primefaces.context.RequestContext;
 
+import org.primefaces.component.api.ClientBehaviorRenderingMode;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.CSVBuilder;
-import org.primefaces.util.ComponentTraversalUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.HTML;
-import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.*;
 
 public class CommandLinkRenderer extends CoreRenderer {
 
@@ -67,7 +63,7 @@ public class CommandLinkRenderer extends CoreRenderer {
             boolean ajax = link.isAjax();
             String styleClass = link.getStyleClass();
             styleClass = styleClass == null ? CommandLink.STYLE_CLASS : CommandLink.STYLE_CLASS + " " + styleClass;
-            RequestContext requestContext = RequestContext.getCurrentInstance(context);
+            PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
             boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled() && link.isValidateClient();
 
             StringBuilder onclick = SharedStringBuilder.get(context, SB_BUILD_ONCLICK);
@@ -117,7 +113,7 @@ public class CommandLinkRenderer extends CoreRenderer {
                 }
             }
 
-            List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<ClientBehaviorContext.Parameter>();
+            List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<>();
             behaviorParams.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
             String dialogReturnBehavior = getEventBehaviors(context, link, "dialogReturn", behaviorParams);
             if (dialogReturnBehavior != null) {
@@ -129,9 +125,8 @@ public class CommandLinkRenderer extends CoreRenderer {
             if (label != null) {
                 writer.writeText(label, "value");
             }
-            else {
-                renderChildren(context, link);
-            }
+
+            renderChildren(context, link);
 
             writer.endElement("a");
         }
@@ -150,9 +145,8 @@ public class CommandLinkRenderer extends CoreRenderer {
             if (label != null) {
                 writer.writeText(label, "value");
             }
-            else {
-                renderChildren(context, link);
-            }
+
+            renderChildren(context, link);
 
             writer.endElement("span");
         }

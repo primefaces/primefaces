@@ -35,7 +35,7 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
         //create panel element
         var panelMarkup = '<div id="' + this.id + '_panel" class="ui-password-panel ui-widget ui-state-highlight ui-corner-all ui-helper-hidden ' + panelStyle + '">';
         panelMarkup += '<div class="ui-password-meter" style="background-position:0pt 0pt">&nbsp;</div>';
-        panelMarkup += '<div class="ui-password-info">' + this.cfg.promptLabel + '</div>';
+        panelMarkup += '<div class="ui-password-info">' + PrimeFaces.escapeHTML(this.cfg.promptLabel) + '</div>';
         panelMarkup += '</div>';
 
         this.panel = $(panelMarkup).insertAfter(this.jq);
@@ -89,11 +89,8 @@ PrimeFaces.widget.Password = PrimeFaces.widget.BaseWidget.extend({
             this.panel.appendTo('body');
 
             //Hide overlay on resize
-            var resizeNS = 'resize.' + this.id;
-            $(window).unbind(resizeNS).bind(resizeNS, function() {
-                if(_self.panel.is(':visible')) {
-                    _self.align();
-                }
+            PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', _self.panel, function() {
+                _self.align();
             });
         }
     },

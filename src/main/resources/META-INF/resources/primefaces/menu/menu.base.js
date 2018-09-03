@@ -12,7 +12,9 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
 
     initOverlay: function() {
         var $this = this;
-        
+
+        this.jq.addClass('ui-menu-overlay');
+
         this.cfg.trigger = this.cfg.trigger.replace(/\\\\:/g,"\\:");
 
         this.trigger = PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.cfg.trigger);
@@ -20,28 +22,16 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         //mark trigger and descandants of trigger as a trigger for a primefaces overlay
         this.trigger.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
 
-        // we might have two menus with same ids if an ancestor of a menu is updated, if so remove the previous one and refresh jq
-        // the first check is required if the id contains a ':' - See #2485
-        if(this.jq.length > 1){
-            $(document.body).children(this.jqId).remove();
-            this.jq = $(this.jqId);
-            this.jq.appendTo(document.body);
-        }
-	else {
-            // this is required if the id does NOT contain a ':' - See #2485
-	    $(document.body).children("[id='" + this.id + "']").not(this.jq).remove();
-	    if(this.jq.parent().is(':not(body)')) {
-		this.jq.appendTo(document.body);
-	    }
-	}
+        this.cfg.appendTo = '@(body)';
+        PrimeFaces.utils.registerDynamicOverlay(this, this.jq, this.jqId);
 
         this.cfg.pos = {
             my: this.cfg.my
             ,at: this.cfg.at
             ,of: this.trigger
-        }
+        };
 
-        this.trigger.bind(this.cfg.triggerEvent + '.ui-menu', function(e) {
+        this.trigger.off(this.cfg.triggerEvent + '.ui-menu').on(this.cfg.triggerEvent + '.ui-menu', function(e) {
             var trigger = $(this);
 
             if($this.jq.is(':visible')) {
@@ -60,31 +50,18 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
 
         //hide overlay on document click
         this.itemMouseDown = false;
-        var hideNS = 'mousedown.' + this.id;
-        $(document.body).off(hideNS).on(hideNS, function (e) {
-            if($this.jq.is(":hidden")) {
-                return;
-            }
 
-            //do nothing if mousedown is on trigger
-            var target = $(e.target);
-            if(target.is($this.trigger.get(0))||$this.trigger.has(target).length > 0) {
-                return;
-            }
-
-            //hide if mouse is outside of overlay except trigger
-            var offset = $this.jq.offset();
-            if(e.pageX < offset.left ||
-                e.pageX > offset.left + $this.jq.width() ||
-                e.pageY < offset.top ||
-                e.pageY > offset.top + $this.jq.height()) {
-
-                if(target.is('.ui-menuitem-link') || target.closest('.ui-menuitem-link').length)
+        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.jq,
+            function() { return $this.trigger; },
+            function(e) {
+                var $eventTarget = $(e.target);
+                if ($eventTarget.is('.ui-menuitem-link') || $eventTarget.closest('.ui-menuitem-link').length) {
                     $this.itemMouseDown = true;
-                else
+                }
+                else {
                     $this.hide(e);
-            }
-        });
+                }
+            });
 
         var hideUpNS = 'mouseup.' + this.id;
         $(document.body).off(hideUpNS).on(hideUpNS, function (e) {
@@ -95,11 +72,8 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         });
 
         //Hide overlay on resize
-        var resizeNS = 'resize.' + this.id;
-        $(window).off(resizeNS).on(resizeNS, function() {
-            if($this.jq.is(':visible')) {
-                $this.align();
-            }
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
+            $this.align();
         });
 
         //dialog support

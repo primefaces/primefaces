@@ -26,8 +26,9 @@ public class DigitsClientValidationConstraint implements ClientValidationConstra
     private static final String MESSAGE_METADATA = "data-p-digits-msg";
     private static final String MESSAGE_ID = "{javax.validation.constraints.Digits.message}";
 
+    @Override
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
-        Map<String, Object> metadata = new HashMap<String, Object>();
+        Map<String, Object> metadata = new HashMap<>();
         Map attrs = constraintDescriptor.getAttributes();
         Object message = attrs.get(ATTR_MESSAGE);
 
@@ -41,6 +42,7 @@ public class DigitsClientValidationConstraint implements ClientValidationConstra
         return metadata;
     }
 
+    @Override
     public String getValidatorId() {
         return Digits.class.getSimpleName();
     }

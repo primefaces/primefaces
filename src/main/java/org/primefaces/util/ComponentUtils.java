@@ -23,25 +23,28 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.FacesWrapper;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.NavigationCase;
-import javax.faces.application.ResourceHandler;
-import javax.faces.component.*;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.UIParameter;
+import javax.faces.component.ValueHolder;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
+
 import org.primefaces.component.api.RTLAware;
 import org.primefaces.component.api.Widget;
 import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.expression.SearchExpressionUtils;
 
 public class ComponentUtils {
@@ -54,8 +57,6 @@ public class ComponentUtils {
 
     // marker for a undefined value when a null check is not reliable enough
     private static final Object UNDEFINED_VALUE = new Object();
-    
-    private static final Pattern PATTERN_NEW_LINE = Pattern.compile("(\r\n|\n\r|\r|\n)");
 
     public static String getValueToRender(FacesContext context, UIComponent component) {
         return getValueToRender(context, component, UNDEFINED_VALUE);
@@ -78,7 +79,7 @@ public class ComponentUtils {
             if (component instanceof EditableValueHolder) {
                 EditableValueHolder input = (EditableValueHolder) component;
                 Object submittedValue = input.getSubmittedValue();
-                PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
+                PrimeConfiguration config = PrimeApplicationContext.getCurrentInstance(context).getConfig();
 
                 if (config.isInterpretEmptyStringAsNull()
                         && submittedValue == null
@@ -103,7 +104,7 @@ public class ComponentUtils {
                 if (converter == null) {
                     Class valueType = value.getClass();
                     if (valueType == String.class
-                            && !RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isStringConverterAvailable()) {
+                            && !PrimeApplicationContext.getCurrentInstance(context).getConfig().isStringConverterAvailable()) {
                         return (String) value;
                     }
 
@@ -156,7 +157,7 @@ public class ComponentUtils {
         }
 
         if (converterType == String.class
-                && !RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isStringConverterAvailable()) {
+                && !PrimeApplicationContext.getCurrentInstance(context).getConfig().isStringConverterAvailable()) {
             return null;
         }
 
@@ -186,18 +187,11 @@ public class ComponentUtils {
         return SearchExpressionUtils.resolveWidgetVar(expression, component);
     }
 
-    
 
-    public static boolean isValueBlank(String value) {
-        if (value == null) {
-            return true;
-        }
 
-        return value.trim().equals("");
-    }
 
     public static boolean isRTL(FacesContext context, RTLAware component) {
-        boolean globalValue = RequestContext.getCurrentInstance(context).isRTL();
+        boolean globalValue = PrimeRequestContext.getCurrentInstance(context).isRTL();
 
         return globalValue || component.isRTL();
     }
@@ -255,25 +249,25 @@ public class ComponentUtils {
     }
 
     public static Map<String, List<String>> getUIParams(UIComponent component) {
-        List<UIComponent> children = component.getChildren();
         Map<String, List<String>> params = null;
 
-        if (children != null && children.size() > 0) {
-            params = new LinkedHashMap<String, List<String>>();
+        for (int i = 0; i < component.getChildCount(); i++) {
+            UIComponent child = component.getChildren().get(i);
+            if (child.isRendered() && (child instanceof UIParameter)) {
+                UIParameter uiParam = (UIParameter) child;
 
-            for (UIComponent child : children) {
-                if (child.isRendered() && (child instanceof UIParameter)) {
-                    UIParameter uiParam = (UIParameter) child;
-
-                    if (!uiParam.isDisable()) {
-                        List<String> paramValues = params.get(uiParam.getName());
-                        if (paramValues == null) {
-                            paramValues = new ArrayList<String>();
-                            params.put(uiParam.getName(), paramValues);
-                        }
-
-                        paramValues.add(String.valueOf(uiParam.getValue()));
+                if (!uiParam.isDisable()) {
+                    if (params == null) {
+                        params = new LinkedHashMap<>();
                     }
+
+                    List<String> paramValues = params.get(uiParam.getName());
+                    if (paramValues == null) {
+                        paramValues = new ArrayList<>();
+                        params.put(uiParam.getName(), paramValues);
+                    }
+
+                    paramValues.add(String.valueOf(uiParam.getValue()));
                 }
             }
         }
@@ -281,22 +275,8 @@ public class ComponentUtils {
         return params;
     }
 
-    public static String getResourceURL(FacesContext context, String value) {
-        if (isValueBlank(value)) {
-            return Constants.EMPTY_STRING;
-        }
-        else if (value.contains(ResourceHandler.RESOURCE_IDENTIFIER)) {
-            return value;
-        }
-        else {
-            String url = context.getApplication().getViewHandler().getResourceURL(context, value);
-
-            return context.getExternalContext().encodeResourceURL(url);
-        }
-    }
-
     public static boolean isSkipIteration(VisitContext visitContext, FacesContext context) {
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF21()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf21()) {
             return visitContext.getHints().contains(VisitHint.SKIP_ITERATION);
         }
         else {
@@ -309,27 +289,12 @@ public class ComponentUtils {
         UIComponent component = (UIComponent) widget;
         String userWidgetVar = (String) component.getAttributes().get("widgetVar");
 
-        if (!isValueBlank(userWidgetVar)) {
+        if (!LangUtils.isValueBlank(userWidgetVar)) {
             return userWidgetVar;
         }
         else {
             return "widget_" + component.getClientId(context).replaceAll("-|" + UINamingContainer.getSeparatorChar(context), "_");
         }
-    }
-
-    
-
-    public static String replaceNewLineWithHtml(String text) {
-        if (text == null) {
-            return null;
-        }
-
-        Matcher match = PATTERN_NEW_LINE.matcher(text);
-        if (match.find()) {
-            return match.replaceAll("<br/>");
-        }
-
-        return text;
     }
 
     /**
@@ -574,32 +539,32 @@ public class ComponentUtils {
      * @return true when facet and one of the first level child's is rendered.
      */
     public static boolean shouldRenderFacet(UIComponent facet) {
-        if (!facet.isRendered()) {
+        if (facet == null || !facet.isRendered()) {
             // For any future version of JSF where the f:facet gets a rendered attribute (https://github.com/javaserverfaces/mojarra/issues/4299)
             // or there is only 1 child.
             return false;
         }
 
-        // Facet contains only 1 child, which is rendered due to previous test.
+        // Facet has no child but is rendered
         if (facet.getChildren().isEmpty()) {
             return true;
         }
-        for (int i = 0; i < facet.getChildren().size(); i++) {
-            // Stop when a child who is rendered is found.
-            if (facet.getChildren().get(i).isRendered()) {
+
+        return shouldRenderChildren(facet);
+    }
+
+    /**
+     * Checks if the component's children are rendered
+     * @param component The component to check
+     * @return true if one of the first level child's is rendered.
+     */
+    public static boolean shouldRenderChildren(UIComponent component) {
+        for (int i = 0; i < component.getChildren().size(); i++) {
+            if (component.getChildren().get(i).isRendered()) {
                 return true;
             }
         }
-        return false;
-    }
 
-    public static boolean equals(Object object1, Object object2) {
-        if (object1 == object2) {
-            return true;
-        }
-        if ((object1 == null) || (object2 == null)) {
-            return false;
-        }
-        return object1.equals(object2);
+        return false;
     }
 }

@@ -43,7 +43,8 @@ import javax.faces.validator.Validator;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.ClientBehaviorRenderingMode;
 import org.primefaces.component.api.MixedClientBehaviorHolder;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.convert.ClientConverter;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.AjaxRequestBuilder;
@@ -56,6 +57,8 @@ import org.primefaces.validate.ClientValidator;
 import org.primefaces.validate.bean.BeanValidationMetadata;
 import org.primefaces.validate.bean.BeanValidationMetadataMapper;
 import org.primefaces.util.Jsf22Helper;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.ResourceUtils;
 
 public abstract class CoreRenderer extends Renderer {
 
@@ -92,7 +95,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected String getResourceURL(FacesContext context, String value) {
-        return ComponentUtils.getResourceURL(context, value);
+        return ResourceUtils.getResourceURL(context, value);
     }
 
     protected String getResourceRequestPath(FacesContext context, String resourceName) {
@@ -119,7 +122,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected void renderDynamicPassThruAttributes(FacesContext context, UIComponent component) throws IOException {
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF22()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
             Jsf22Helper.renderPassThroughAttributes(context, component);
         }
     }
@@ -160,11 +163,11 @@ public abstract class CoreRenderer extends Renderer {
 
                 if (hasEventBehaviors) {
                     String clientId = ((UIComponent) component).getClientId(context);
-                    
-                    List<ClientBehaviorContext.Parameter> params = new ArrayList<ClientBehaviorContext.Parameter>();
+
+                    List<ClientBehaviorContext.Parameter> params = new ArrayList<>();
                     params.add(new ClientBehaviorContext.Parameter(
                             Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.OBSTRUSIVE));
-                    
+
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
                             context, (UIComponent) component, behaviorEvent, clientId, params);
                     int size = eventBehaviors.size();
@@ -229,7 +232,7 @@ public abstract class CoreRenderer extends Renderer {
         }
 
         //dynamic attributes
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isAtLeastJSF22()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
             Jsf22Helper.renderPassThroughAttributes(context, component);
         }
     }
@@ -399,14 +402,14 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     public boolean isValueBlank(String value) {
-        return ComponentUtils.isValueBlank(value);
+        return LangUtils.isValueBlank(value);
     }
 
     protected String buildAjaxRequest(FacesContext context, AjaxSource source, UIComponent form) {
         UIComponent component = (UIComponent) source;
         String clientId = component.getClientId(context);
 
-        AjaxRequestBuilder builder = RequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
+        AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
 
         builder.init()
                 .source(clientId)
@@ -438,13 +441,14 @@ public abstract class CoreRenderer extends Renderer {
     protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, boolean submit) {
         StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
         String formId = form.getClientId(context);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
 
         if (decodeParam != null) {
             params.put(decodeParam, decodeParam);
         }
 
-        for (UIComponent child : component.getChildren()) {
+        for (int i = 0; i < component.getChildCount(); i++) {
+            UIComponent child = component.getChildren().get(i);
             if (child instanceof UIParameter) {
                 UIParameter param = (UIParameter) child;
 
@@ -478,14 +482,15 @@ public abstract class CoreRenderer extends Renderer {
                 request.append(",'").append(target).append("'");
             }
 
-            request.append(");return false;");
+            request.append(");PrimeFaces.onPost();return false;");
         }
+        else {
+            if (!params.isEmpty()) {
+                request.append(";");
+            }
 
-        if (!submit && !params.isEmpty()) {
-            request.append(";");
+            request.append("PrimeFaces.onPost();");
         }
-
-        request.append("PrimeFaces.onPost();");
 
         return request.toString();
     }
@@ -499,7 +504,7 @@ public abstract class CoreRenderer extends Renderer {
             Collection<String> eventNames = (component instanceof MixedClientBehaviorHolder)
                     ? ((MixedClientBehaviorHolder) component).getUnobstrusiveEventNames() : clientBehaviors.keySet();
             String clientId = ((UIComponent) component).getClientId(context);
-            List<ClientBehaviorContext.Parameter> params = new ArrayList<ClientBehaviorContext.Parameter>();
+            List<ClientBehaviorContext.Parameter> params = new ArrayList<>();
             params.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
 
             writer.write(",behaviors:{");
@@ -646,7 +651,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected WidgetBuilder getWidgetBuilder(FacesContext context) {
-        return RequestContext.getCurrentInstance(context).getWidgetBuilder();
+        return PrimeRequestContext.getCurrentInstance(context).getWidgetBuilder();
     }
 
     protected void renderValidationMetadata(FacesContext context, EditableValueHolder component) throws IOException {
@@ -674,7 +679,6 @@ public abstract class CoreRenderer extends Renderer {
         List<String> validatorIds = null;
         String highlighter = getHighlighter();
 
-        RequestContext requestContext = RequestContext.getCurrentInstance(context);
 
         //messages
         if (label != null) writer.writeAttribute(HTML.VALIDATION_METADATA.LABEL, label, null);
@@ -695,15 +699,16 @@ public abstract class CoreRenderer extends Renderer {
         }
 
         //bean validation
-        if (requestContext.getApplicationContext().getConfig().isBeanValidationAvailable()) {
-            BeanValidationMetadata beanValidationMetadata = BeanValidationMetadataMapper.resolveValidationMetadata(context, comp, requestContext);
+        PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
+        if (applicationContext.getConfig().isBeanValidationEnabled()) {
+            BeanValidationMetadata beanValidationMetadata = BeanValidationMetadataMapper.resolveValidationMetadata(context, comp, applicationContext);
             if (beanValidationMetadata != null) {
                 if (beanValidationMetadata.getAttributes() != null) {
                     renderValidationMetadataMap(context, beanValidationMetadata.getAttributes());
                 }
                 if (beanValidationMetadata.getValidatorIds() != null) {
                     if (validatorIds == null) {
-                        validatorIds = new ArrayList<String>();
+                        validatorIds = new ArrayList<>();
                     }
                     validatorIds.addAll(beanValidationMetadata.getValidatorIds());
                 }
@@ -722,7 +727,7 @@ public abstract class CoreRenderer extends Renderer {
                 if (validator instanceof ClientValidator) {
                     ClientValidator clientValidator = (ClientValidator) validator;
                     if (validatorIds == null) {
-                        validatorIds = new ArrayList<String>();
+                        validatorIds = new ArrayList<>();
                     }
                     validatorIds.add(clientValidator.getValidatorId());
                     Map<String, Object> metadata = clientValidator.getMetadata();
@@ -788,5 +793,25 @@ public abstract class CoreRenderer extends Renderer {
 
     protected boolean isGrouped() {
         return false;
+    }
+
+    /**
+     * Used by script-only widget to fix #3265 and allow updating of the component.
+     *
+     * @param context the {@link FacesContext}.
+     * @param component the widget without actual HTML markup.
+     * @param clientId the component clientId.
+     * @throws IOException
+     */
+    protected void renderDummyMarkup(FacesContext context, UIComponent component, String clientId) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("style", "display: none;", null);
+
+        renderPassThruAttributes(context, component, null);
+
+        writer.endElement("div");
     }
 }

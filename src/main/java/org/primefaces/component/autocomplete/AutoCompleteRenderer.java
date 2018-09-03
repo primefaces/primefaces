@@ -16,12 +16,7 @@
 package org.primefaces.component.autocomplete;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -31,7 +26,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.event.PhaseId;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
@@ -123,7 +118,7 @@ public class AutoCompleteRenderer extends InputRenderer {
 
     @SuppressWarnings("unchecked")
     public void encodeResults(FacesContext context, UIComponent component, String query) throws IOException {
-        AutoComplete ac = (AutoComplete) component;        
+        AutoComplete ac = (AutoComplete) component;
         List results = ac.getSuggestions();
         int maxResults = ac.getMaxResults();
 
@@ -186,13 +181,14 @@ public class AutoCompleteRenderer extends InputRenderer {
         String inputStyleClass = ac.getInputStyleClass();
         inputStyleClass = (inputStyleClass == null) ? styleClass : styleClass + " " + inputStyleClass;
         String labelledBy = ac.getLabelledBy();
+        String autocompleteProp = (ac.getAutocomplete() != null) ? ac.getAutocomplete() : "off";
 
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_input", null);
         writer.writeAttribute("name", clientId + "_input", null);
         writer.writeAttribute("type", ac.getType(), null);
         writer.writeAttribute("class", inputStyleClass, null);
-        writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute("autocomplete", autocompleteProp, null);
 
         if (labelledBy != null) {
             writer.writeAttribute("aria-labelledby", labelledBy, null);
@@ -263,7 +259,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.writeAttribute("aria-required", "true", null);
         }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, ac);
         }
 
@@ -273,12 +269,13 @@ public class AutoCompleteRenderer extends InputRenderer {
     protected void encodeHiddenInput(FacesContext context, AutoComplete ac, String clientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String valueToRender = ComponentUtils.getValueToRender(context, ac);
+        String autocompleteProp = (ac.getAutocomplete() != null) ? ac.getAutocomplete() : "off";
 
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId + "_hinput", null);
         writer.writeAttribute("name", clientId + "_hinput", null);
         writer.writeAttribute("type", "hidden", null);
-        writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute("autocomplete", autocompleteProp, null);
         if (valueToRender != null) {
             writer.writeAttribute("value", valueToRender, null);
         }
@@ -299,15 +296,16 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
 
-        for (String value : values) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
+            renderValidationMetadata(context, ac);
+        }
+
+        for (int i = 0; i < values.size(); i++) {
+            String value = values.get(i);
             writer.startElement("option", null);
             writer.writeAttribute("value", value, null);
             writer.writeAttribute("selected", "selected", null);
             writer.endElement("option");
-        }
-        
-        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, ac);
         }
 
         writer.endElement("select");
@@ -356,13 +354,13 @@ public class AutoCompleteRenderer extends InputRenderer {
         if (ac.getPanelStyle() != null) {
             writer.writeAttribute("style", ac.getPanelStyle(), null);
         }
-        
+
         if (ac.isDynamic() && ac.isDynamicLoadRequest(context)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String query = params.get(ac.getClientId(context) + "_query");
             encodeResults(context, ac, query);
         }
-        
+
         writer.endElement("span");
     }
 
@@ -385,7 +383,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             }
         }
 
-        List<String> stringValues = new ArrayList<String>();
+        List<String> stringValues = new ArrayList<>();
         boolean disabled = ac.isDisabled();
         String title = ac.getTitle();
 
@@ -395,6 +393,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         String listClass = ac.isDropdown() ? AutoComplete.MULTIPLE_CONTAINER_WITH_DROPDOWN_CLASS : AutoComplete.MULTIPLE_CONTAINER_CLASS;
         listClass = disabled ? listClass + " ui-state-disabled" : listClass;
         listClass = ac.isValid() ? listClass : listClass + " ui-state-error";
+        String autocompleteProp = (ac.getAutocomplete() != null) ? ac.getAutocomplete() : "off";
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
@@ -463,7 +462,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
-        writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute("autocomplete", autocompleteProp, null);
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
@@ -485,7 +484,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         if (ac.isDropdown()) {
             encodeDropDown(context, ac);
         }
-        
+
         if (!ac.isDynamic()) {
             encodePanel(context, ac);
         }
@@ -516,7 +515,8 @@ public class AutoCompleteRenderer extends InputRenderer {
         boolean hasHeader = false;
         boolean hasGroupByTooltip = (ac.getValueExpression(AutoComplete.PropertyKeys.groupByTooltip.toString()) != null);
 
-        for (Column column : ac.getColums()) {
+        for (int i = 0; i < ac.getColums().size(); i++) {
+            Column column = ac.getColums().get(i);
             if (column.isRendered() && (column.getHeaderText() != null || column.getFacet("header") != null)) {
                 hasHeader = true;
                 break;
@@ -528,7 +528,8 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         if (hasHeader) {
             writer.startElement("thead", ac);
-            for (Column column : ac.getColums()) {
+            for (int i = 0; i < ac.getColums().size(); i++) {
+                Column column = ac.getColums().get(i);
                 if (!column.isRendered()) {
                     continue;
                 }
@@ -548,7 +549,7 @@ public class AutoCompleteRenderer extends InputRenderer {
                     headerFacet.encodeAll(context);
                 }
                 else if (headerText != null) {
-                    writer.write(headerText);
+                    writer.writeText(headerText, null);
                 }
 
                 writer.endElement("th");
@@ -576,7 +577,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                     }
                 }
 
-                for (Column column : ac.getColums()) {
+                for (int i = 0; i < ac.getColums().size(); i++) {
+                    Column column = ac.getColums().get(i);
                     if (column.isRendered()) {
                         writer.startElement("td", null);
                         if (column.getStyle() != null) {
@@ -642,8 +644,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                     writer.writeText(ac.getItemLabel(), null);
                 }
                 else {
-                    writer.writeAttribute("data-item-label", item, null);
-                    writer.writeAttribute("data-item-value", item, null);
+                    writer.writeAttribute("data-item-label", item.toString(), null);
+                    writer.writeAttribute("data-item-value", item.toString(), null);
                     writer.writeAttribute("data-item-class", ac.getItemStyleClass(), null);
 
                     writer.writeText(item, null);
@@ -674,7 +676,7 @@ public class AutoCompleteRenderer extends InputRenderer {
     protected void encodeScript(FacesContext context, AutoComplete ac) throws IOException {
         String clientId = ac.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("AutoComplete", ac.resolveWidgetVar(), clientId);
+        wb.init("AutoComplete", ac.resolveWidgetVar(), clientId);
 
         wb.attr("minLength", ac.getMinQueryLength(), 1)
                 .attr("delay", ac.getQueryDelay())
@@ -780,7 +782,7 @@ public class AutoCompleteRenderer extends InputRenderer {
 
             writer.startElement("td", null);
             writer.writeAttribute("colspan", colSize, null);
-            writer.write(moreText);
+            writer.writeText(moreText, "moreText");
             writer.endElement("td");
 
             writer.endElement("tr");
@@ -788,7 +790,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         else {
             writer.startElement("li", null);
             writer.writeAttribute("class", AutoComplete.MORE_TEXT_LIST_CLASS, null);
-            writer.write(moreText);
+            writer.writeText(moreText, "moreText");
             writer.endElement("li");
         }
     }

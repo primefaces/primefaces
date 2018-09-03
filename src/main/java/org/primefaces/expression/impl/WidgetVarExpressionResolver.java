@@ -31,6 +31,7 @@ public class WidgetVarExpressionResolver implements SearchExpressionResolver, Cl
 
     private static final Pattern PATTERN = Pattern.compile("@widgetVar\\((\\w+)\\)");
 
+    @Override
     public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
 
         try {
@@ -56,6 +57,7 @@ public class WidgetVarExpressionResolver implements SearchExpressionResolver, Cl
         }
     }
 
+    @Override
     public String resolveClientIds(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
         // just return the complete expression, the client side will take care of it
         // e.g. @widgetVar(myWidget)

@@ -15,22 +15,13 @@
  */
 package org.primefaces.util;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class CollectionUtils {
 
-    public static String join(List<String> list, String delimiter) {
-        int length = list.size();
-        if (length == 0) {
-            return "";
-        }
-
-        StringBuilder sb = new StringBuilder(list.get(0));
-        for (int i = 1; i < length; i++) {
-            sb.append(delimiter);
-            sb.append(list.get(i));
-        }
-
-        return sb.toString();
+    public static final <T> List<T> unmodifiableList(T... args) {
+        return Collections.unmodifiableList(Arrays.asList(args));
     }
 }

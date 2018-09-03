@@ -16,11 +16,12 @@
 package org.primefaces.component.lifecycle;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
-import org.primefaces.context.RequestContext;
+
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -47,8 +48,8 @@ public class LifecycleRenderer extends CoreRenderer {
 
         writer.endElement("table");
 
-        WidgetBuilder wb = RequestContext.getCurrentInstance(context).getWidgetBuilder();
-        wb.initWithDomReady("Lifecycle", lifecycle.resolveWidgetVar(), clientId);
+        WidgetBuilder wb = getWidgetBuilder(context);
+        wb.init("Lifecycle", lifecycle.resolveWidgetVar(), clientId);
         wb.finish();
     }
 

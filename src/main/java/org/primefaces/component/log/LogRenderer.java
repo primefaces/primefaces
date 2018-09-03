@@ -16,9 +16,11 @@
 package org.primefaces.component.log;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -80,7 +82,7 @@ public class LogRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, Log log) throws IOException {
         String clientId = log.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Log", log.resolveWidgetVar(), clientId);
+        wb.init("Log", log.resolveWidgetVar(), clientId);
         wb.finish();
     }
 }

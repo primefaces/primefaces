@@ -20,14 +20,14 @@ import javax.faces.component.behavior.Behavior;
 
 public class SlideEndEvent extends AbstractAjaxBehaviorEvent {
 
-    private int value;
+    private double value;
 
-    public SlideEndEvent(UIComponent component, Behavior behavior, int value) {
+    public SlideEndEvent(UIComponent component, Behavior behavior, double value) {
         super(component, behavior);
         this.value = value;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 }

@@ -32,14 +32,17 @@ public class BaseMenuModel implements MenuModel, Serializable {
         elements = new ArrayList<MenuElement>();
     }
 
+    @Override
     public void addElement(MenuElement element) {
         elements.add(element);
     }
 
+    @Override
     public List<MenuElement> getElements() {
         return elements;
     }
 
+    @Override
     public void generateUniqueIds() {
         this.generateUniqueIds(getElements(), null);
     }

@@ -26,8 +26,9 @@ public class DecimalMaxClientValidationConstraint implements ClientValidationCon
     private static final String MESSAGE_METADATA = "data-p-decimalmax-msg";
     private static final String MESSAGE_ID = "{javax.validation.constraints.DecimalMax.message}";
 
+    @Override
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
-        Map<String, Object> metadata = new HashMap<String, Object>();
+        Map<String, Object> metadata = new HashMap<>();
         Map attrs = constraintDescriptor.getAttributes();
         Object message = attrs.get(ATTR_MESSAGE);
 
@@ -40,6 +41,7 @@ public class DecimalMaxClientValidationConstraint implements ClientValidationCon
         return metadata;
     }
 
+    @Override
     public String getValidatorId() {
         return DecimalMax.class.getSimpleName();
     }

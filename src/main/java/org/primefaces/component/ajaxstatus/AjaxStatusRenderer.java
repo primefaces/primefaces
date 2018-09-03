@@ -37,7 +37,7 @@ public class AjaxStatusRenderer extends CoreRenderer {
     protected void encodeScript(FacesContext context, AjaxStatus status) throws IOException {
         String clientId = status.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("AjaxStatus", status.resolveWidgetVar(), clientId);
+        wb.init("AjaxStatus", status.resolveWidgetVar(), clientId);
 
         wb.callback(AjaxStatus.START, AjaxStatus.CALLBACK_SIGNATURE, status.getOnstart())
                 .callback(AjaxStatus.ERROR, AjaxStatus.CALLBACK_SIGNATURE, status.getOnerror())
@@ -54,8 +54,12 @@ public class AjaxStatusRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
 
-        if (status.getStyle() != null) writer.writeAttribute("style", status.getStyle(), "style");
-        if (status.getStyleClass() != null) writer.writeAttribute("class", status.getStyleClass(), "styleClass");
+        if (status.getStyle() != null) {
+            writer.writeAttribute("style", status.getStyle(), "style");
+        }
+        if (status.getStyleClass() != null) {
+            writer.writeAttribute("class", status.getStyleClass(), "styleClass");
+        }
 
         for (String event : AjaxStatus.EVENTS) {
             UIComponent facet = status.getFacet(event);

@@ -22,11 +22,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.util.HTML;
 
 public class BodyRenderer extends CoreRenderer {
 
+    @Override
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = component.getClientId(context);
@@ -58,7 +59,7 @@ public class BodyRenderer extends CoreRenderer {
     }
 
     protected void encodeOnloadScripts(ResponseWriter writer) throws IOException {
-        List<String> scripts = RequestContext.getCurrentInstance().getScriptsToExecute();
+        List<String> scripts = PrimeRequestContext.getCurrentInstance().getScriptsToExecute();
 
         if (!scripts.isEmpty()) {
             writer.startElement("script", null);

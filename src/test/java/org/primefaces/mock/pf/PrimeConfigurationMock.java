@@ -20,16 +20,13 @@ import javax.faces.context.FacesContext;
 import org.primefaces.config.PrimeConfiguration;
 
 public class PrimeConfigurationMock extends PrimeConfiguration {
-    
+
     // context params
     private boolean validateEmptyFields = false;
     private boolean partialSubmitEnabled = false;
     private boolean resetValuesEnabled = false;
     private boolean interpretEmptyStringAsNull = false;
-    private String  secretKey = null;
-    private String  pushServerURL = null;
     private String  theme = null;
-    private String  mobileTheme = null;
     private boolean fontAwesomeEnabled = false;
     private boolean clientSideValidationEnabled = false;
     private String  uploader = null;
@@ -38,23 +35,15 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
     private boolean beanValidationDisabled = false;
     private boolean interpolateClientSideValidationMessages = false;
     private boolean earlyPostParamEvaluation = false;
+    private boolean moveScriptsToBottom = false;
 
-    // internal config
-    private boolean beanValidationAvailable = false;
     private boolean stringConverterAvailable = false;
-    private boolean el22Available = false;
-    private boolean jsf22 = false;
-    private boolean jsf21 = false;
-    private boolean bv11 = false;
-
-    // build properties
-    private String buildVersion = null;
 
     // web.xml
     private Map<String, String> errorPages = null;
-    
+
     public PrimeConfigurationMock(FacesContext context) {
-        
+
     }
 
     @Override
@@ -62,6 +51,7 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return validateEmptyFields;
     }
 
+    @Override
     public void setValidateEmptyFields(boolean validateEmptyFields) {
         this.validateEmptyFields = validateEmptyFields;
     }
@@ -71,6 +61,7 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return partialSubmitEnabled;
     }
 
+    @Override
     public void setPartialSubmitEnabled(boolean partialSubmitEnabled) {
         this.partialSubmitEnabled = partialSubmitEnabled;
     }
@@ -80,6 +71,7 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return resetValuesEnabled;
     }
 
+    @Override
     public void setResetValuesEnabled(boolean resetValuesEnabled) {
         this.resetValuesEnabled = resetValuesEnabled;
     }
@@ -89,26 +81,9 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return interpretEmptyStringAsNull;
     }
 
+    @Override
     public void setInterpretEmptyStringAsNull(boolean interpretEmptyStringAsNull) {
         this.interpretEmptyStringAsNull = interpretEmptyStringAsNull;
-    }
-
-    @Override
-    public String getSecretKey() {
-        return secretKey;
-    }
-
-    public void setSecretKey(String secretKey) {
-        this.secretKey = secretKey;
-    }
-
-    @Override
-    public String getPushServerURL() {
-        return pushServerURL;
-    }
-
-    public void setPushServerURL(String pushServerURL) {
-        this.pushServerURL = pushServerURL;
     }
 
     @Override
@@ -116,17 +91,9 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return theme;
     }
 
+    @Override
     public void setTheme(String theme) {
         this.theme = theme;
-    }
-
-    @Override
-    public String getMobileTheme() {
-        return mobileTheme;
-    }
-
-    public void setMobileTheme(String mobileTheme) {
-        this.mobileTheme = mobileTheme;
     }
 
     @Override
@@ -134,6 +101,7 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return fontAwesomeEnabled;
     }
 
+    @Override
     public void setFontAwesomeEnabled(boolean fontAwesomeEnabled) {
         this.fontAwesomeEnabled = fontAwesomeEnabled;
     }
@@ -143,6 +111,7 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return clientSideValidationEnabled;
     }
 
+    @Override
     public void setClientSideValidationEnabled(boolean clientSideValidationEnabled) {
         this.clientSideValidationEnabled = clientSideValidationEnabled;
     }
@@ -152,6 +121,7 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return uploader;
     }
 
+    @Override
     public void setUploader(String uploader) {
         this.uploader = uploader;
     }
@@ -161,6 +131,7 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return transformMetadataEnabled;
     }
 
+    @Override
     public void setTransformMetadataEnabled(boolean transformMetadataEnabled) {
         this.transformMetadataEnabled = transformMetadataEnabled;
     }
@@ -170,6 +141,7 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return legacyWidgetNamespace;
     }
 
+    @Override
     public void setLegacyWidgetNamespace(boolean legacyWidgetNamespace) {
         this.legacyWidgetNamespace = legacyWidgetNamespace;
     }
@@ -187,6 +159,7 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return interpolateClientSideValidationMessages;
     }
 
+    @Override
     public void setInterpolateClientSideValidationMessages(boolean interpolateClientSideValidationMessages) {
         this.interpolateClientSideValidationMessages = interpolateClientSideValidationMessages;
     }
@@ -196,17 +169,9 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return earlyPostParamEvaluation;
     }
 
+    @Override
     public void setEarlyPostParamEvaluation(boolean earlyPostParamEvaluation) {
         this.earlyPostParamEvaluation = earlyPostParamEvaluation;
-    }
-
-    @Override
-    public boolean isBeanValidationAvailable() {
-        return beanValidationAvailable;
-    }
-
-    public void setBeanValidationAvailable(boolean beanValidationAvailable) {
-        this.beanValidationAvailable = beanValidationAvailable;
     }
 
     @Override
@@ -214,49 +179,9 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return stringConverterAvailable;
     }
 
+    @Override
     public void setStringConverterAvailable(boolean stringConverterAvailable) {
         this.stringConverterAvailable = stringConverterAvailable;
-    }
-
-    public boolean isEl22Available() {
-        return el22Available;
-    }
-
-    public void setEl22Available(boolean el22Available) {
-        this.el22Available = el22Available;
-    }
-
-    public boolean isJsf22() {
-        return jsf22;
-    }
-
-    public void setJsf22(boolean jsf22) {
-        this.jsf22 = jsf22;
-    }
-
-    public boolean isJsf21() {
-        return jsf21;
-    }
-
-    public void setJsf21(boolean jsf21) {
-        this.jsf21 = jsf21;
-    }
-
-    public boolean isBv11() {
-        return bv11;
-    }
-
-    public void setBv11(boolean bv11) {
-        this.bv11 = bv11;
-    }
-
-    @Override
-    public String getBuildVersion() {
-        return buildVersion;
-    }
-
-    public void setBuildVersion(String buildVersion) {
-        this.buildVersion = buildVersion;
     }
 
     @Override
@@ -264,12 +189,19 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
         return errorPages;
     }
 
+    @Override
     public void setErrorPages(Map<String, String> errorPages) {
         this.errorPages = errorPages;
     }
 
     @Override
-    public boolean isAtLeastEL22() {
-        return el22Available;
+    public boolean isMoveScriptsToBottom() {
+        return moveScriptsToBottom;
     }
+
+    @Override
+    public void setMoveScriptsToBottom(boolean moveScriptsToBottom) {
+        this.moveScriptsToBottom = moveScriptsToBottom;
+    }
+
 }

@@ -60,20 +60,9 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
             var $this = this;
 
-            var resizeNS = "resize." + this.id;
-            $(window).off(resizeNS).on(resizeNS, function(e) {
+            PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', null, function() {
                 $this.initScrolling();
             });
-        }
-    },
-
-    //@Override
-    destroy: function() {
-        this._super();
-
-        if(this.cfg.scrollable) {
-            var resizeNS = "resize." + this.id;
-            $(window).off(resizeNS);
         }
     },
 
@@ -203,7 +192,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             key = e.which,
             element = $(this);
 
-            if((key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) && !element.hasClass('ui-state-disabled')) {
+            if((key === keyCode.SPACE || key === keyCode.ENTER) && !element.hasClass('ui-state-disabled')) {
                 $this.select(element.index());
                 e.preventDefault();
             }
@@ -215,7 +204,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                 var keyCode = $.ui.keyCode,
                 key = e.which;
 
-                if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+                if(key === keyCode.SPACE || key === keyCode.ENTER) {
                     $this.scroll(100);
                     e.preventDefault();
                 }
@@ -225,7 +214,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                 var keyCode = $.ui.keyCode,
                 key = e.which;
 
-                if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+                if(key === keyCode.SPACE || key === keyCode.ENTER) {
                     $this.scroll(-100);
                     e.preventDefault();
                 }
@@ -323,7 +312,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         shouldLoad = this.cfg.dynamic && !this.isLoaded(newPanel);
 
         //update state
-        this.stateHolder.val(index);
+        this.stateHolder.val(newPanel.data('index'));
         this.cfg.selected = index;
 
         if(shouldLoad) {
@@ -402,7 +391,6 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      */
     loadDynamicTab: function(newPanel) {
         var $this = this,
-        tabindex = newPanel.index(),
         options = {
             source: this.id,
             process: this.id,
@@ -410,7 +398,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             params: [
                 {name: this.id + '_contentLoad', value: true},
                 {name: this.id + '_newTab', value: newPanel.attr('id')},
-                {name: this.id + '_tabindex', value: tabindex}
+                {name: this.id + '_tabindex', value: newPanel.data('index')}
             ],
             onsuccess: function(responseXML, status, xhr) {
                 PrimeFaces.ajax.Response.handle(responseXML, status, xhr, {
@@ -432,9 +420,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         };
 
         if(this.hasBehavior('tabChange')) {
-            var tabChangeBehavior = this.cfg.behaviors['tabChange'];
-
-            tabChangeBehavior.call(this, options);
+            this.callBehavior('tabChange', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -445,14 +431,19 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
      * Removes a tab with given index
      */
     remove: function(index) {
+        // remove old header and content
         var header = this.headerContainer.eq(index),
         panel = this.panelContainer.children().eq(index);
 
         header.remove();
         panel.remove();
 
-        var length = this.getLength();
+        // refresh "chached" selectors
+        this.headerContainer = this.navContainer.children('li.ui-tabs-header');
+        this.panelContainer = this.jq.children('.ui-tabs-panels');
 
+        // select next tab
+        var length = this.getLength();
         if(length > 0) {
             if(index < this.cfg.selected) {
                 this.cfg.selected--;
@@ -488,28 +479,26 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     fireTabChangeEvent: function(panel) {
-        var tabChangeBehavior = this.cfg.behaviors['tabChange'],
-        ext = {
+        var ext = {
             params: [
                 {name: this.id + '_newTab', value: panel.attr('id')},
-                {name: this.id + '_tabindex', value: panel.index()}
+                {name: this.id + '_tabindex', value: panel.data('index')}
             ]
         };
 
-        tabChangeBehavior.call(this, ext);
+        this.callBehavior('tabChange', ext);
     },
 
     fireTabCloseEvent: function(id, index) {
         if(this.hasBehavior('tabClose')) {
-            var tabCloseBehavior = this.cfg.behaviors['tabClose'],
-            ext = {
+            var ext = {
                 params: [
                     {name: this.id + '_closeTab', value: id},
                     {name: this.id + '_tabindex', value: index}
                 ]
             };
 
-            tabCloseBehavior.call(this, ext);
+            this.callBehavior('tabClose', ext);
         }
     },
 

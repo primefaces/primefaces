@@ -18,6 +18,7 @@ package org.primefaces.component.themeswitcher;
 import java.io.IOException;
 
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.component.selectonemenu.SelectOneMenuRenderer;
 import org.primefaces.util.WidgetBuilder;
@@ -29,7 +30,7 @@ public class ThemeSwitcherRenderer extends SelectOneMenuRenderer {
         ThemeSwitcher ts = (ThemeSwitcher) menu;
         String clientId = ts.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("ThemeSwitcher", ts.resolveWidgetVar(), clientId)
+        wb.init("ThemeSwitcher", ts.resolveWidgetVar(), clientId)
                 .attr("effect", ts.getEffect(), null)
                 .attr("effectSpeed", ts.getEffectSpeed(), null);
 

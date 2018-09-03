@@ -22,6 +22,7 @@ import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
@@ -47,6 +48,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         writer.startElement("span", button);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "class");
+
         if (button.getStyle() != null) {
             writer.writeAttribute("style", button.getStyle(), "style");
         }
@@ -76,6 +78,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         writer.writeAttribute("name", buttonId, null);
         writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", buttonClass, null);
+        writer.writeAttribute("aria-label", button.getAriaLabel(), "ariaLabel");
         if (button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         }
@@ -121,7 +124,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
 
         if (button.getElementsCount() > 0) {
-            List<MenuElement> elements = (List<MenuElement>) button.getElements();
+            List<MenuElement> elements = button.getElements();
 
             for (MenuElement element : elements) {
                 if (element.isRendered()) {
@@ -155,7 +158,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("MenuButton", button.resolveWidgetVar(), clientId);
+        wb.init("MenuButton", button.resolveWidgetVar(), clientId);
         wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo()), null);
         wb.finish();
     }

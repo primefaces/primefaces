@@ -58,6 +58,7 @@ public class EffectBuilder implements JSObjectBuilder {
         return this;
     }
 
+    @Override
     public String build() {
         buffer.append(");");
 

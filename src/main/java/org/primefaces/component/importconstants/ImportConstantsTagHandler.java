@@ -21,9 +21,6 @@ import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.el.ELContext;
-import javax.el.ExpressionFactory;
-import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
@@ -32,16 +29,14 @@ import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
-import org.primefaces.context.RequestContext;
-import org.primefaces.util.SharedStringBuilder;
+
+import org.primefaces.context.PrimeApplicationContext;
 
 /**
  * {@link TagHandler} for the <code>ImportConstants</code> component.
  */
 public class ImportConstantsTagHandler extends TagHandler {
 
-    private static final String SB_VAR = ImportConstantsTagHandler.class.getName() + "#var";
-    
     private final TagAttribute typeTagAttribute;
     private final TagAttribute varTagAttribute;
 
@@ -69,26 +64,14 @@ public class ImportConstantsTagHandler extends TagHandler {
             var = varTagAttribute.getValue(ctx);
         }
 
-        if (var.charAt(0) != '#') {
-            StringBuilder varBuilder = SharedStringBuilder.get(facesContext, SB_VAR, var.length() + 3);
-            varBuilder.append("#{").append(var).append("}");
-
-            var = varBuilder.toString();
-        }
-
-        // Assign constants to alias/var expression
-        ELContext elContext = facesContext.getELContext();
-        ExpressionFactory expressionFactory = facesContext.getApplication().getExpressionFactory();
-
-        ValueExpression aliasValueExpression = expressionFactory.createValueExpression(elContext, var, Map.class);
-        aliasValueExpression.setValue(elContext, constants);
+        ctx.setAttribute(var, constants);
     }
 
     /**
      * Gets the {@link Class} from the {@link TagAttribute}.
      *
      * @param attribute The {@link TagAttribute}.
-     * @param ctx The {@link FaceletContext}.
+     * @param ctx       The {@link FaceletContext}.
      * @return The {@link Class}.
      */
     protected Class<?> getClassFromAttribute(TagAttribute attribute, FaceletContext ctx) {
@@ -106,13 +89,13 @@ public class ImportConstantsTagHandler extends TagHandler {
      * Get all constants of the given {@link Class}.
      *
      * @param facesContext The {@link FacesContext}.
-     * @param type The class which includes the constants.
+     * @param type         The class which includes the constants.
      * @return A {@link Map} with the constants.
      */
     protected Map<String, Object> getConstants(FacesContext facesContext, Class<?> type) {
         boolean cacheEnabled = facesContext.isProjectStage(ProjectStage.Production);
         Map<Class<?>, Map<String, Object>> cache
-                = RequestContext.getCurrentInstance().getApplicationContext().getConstantsCacheMap();
+                = PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getConstantsCacheMap();
 
         Map<String, Object> constants;
 
@@ -137,7 +120,7 @@ public class ImportConstantsTagHandler extends TagHandler {
      * @return A {@link Map} with the found constants.
      */
     protected Map<String, Object> collectConstants(Class<?> type) {
-        Map<String, Object> constants = new ConstantsHashMap<String, Object>(type);
+        Map<String, Object> constants = new ConstantsHashMap<>(type);
 
         // Go through all the fields, and put static ones in a map.
         Field[] fields = type.getDeclaredFields();

@@ -33,7 +33,7 @@ import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.spinner.Spinner;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
 import org.primefaces.metadata.transformer.AbstractInputMetadataTransformer;
 
@@ -42,7 +42,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
     private static final Logger LOG = Logger.getLogger(BeanValidationInputMetadataTransformer.class.getName());
 
     @Override
-    public void transformInput(FacesContext context, RequestContext requestContext, UIInput input) throws IOException {
+    public void transformInput(FacesContext context, PrimeApplicationContext applicationContext, UIInput input) throws IOException {
 
         EditableValueHolder editableValueHolder = (EditableValueHolder) input;
 
@@ -52,7 +52,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
 
         try {
             Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
-                    context, requestContext, input.getValueExpression("value"));
+                    context, applicationContext, input.getValueExpression("value"));
             if (constraints != null && !constraints.isEmpty()) {
                 for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
                     applyConstraint(constraintDescriptor, input, editableValueHolder);

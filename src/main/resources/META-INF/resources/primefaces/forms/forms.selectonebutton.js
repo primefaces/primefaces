@@ -44,20 +44,14 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
             button.addClass('ui-state-focus');
         })
         .on('blur.selectOneButton', function(){
-            var button = $(this),
-            radio = button.children(':radio');
-
-            if(radio.prop('checked')) {
-                button.addClass('ui-state-active');
-            }
-
+            var button = $(this);
             button.removeClass('ui-state-focus');
         })
         .on('keydown.selectOneButton', function(e) {
             var keyCode = $.ui.keyCode,
             key = e.which;
 
-            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+            if(key === keyCode.SPACE || key === keyCode.ENTER) {
                 var button = $(this),
                 radio = button.children(':radio');
 
@@ -82,7 +76,7 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
 
     unselect: function(button) {
         if(this.cfg.unselectable) {
-            button.removeClass('ui-state-active ui-state-hover ui-state-focus').children(':radio').prop('checked', false).change();
+            button.removeClass('ui-state-active ui-state-hover').children(':radio').prop('checked', false).change();
 
             this.triggerChange();
         }
@@ -93,14 +87,9 @@ PrimeFaces.widget.SelectOneButton = PrimeFaces.widget.BaseWidget.extend({
             this.cfg.change.call(this);
         }
 
-        if(this.hasBehavior('change')) {
-            var changeBehavior = this.cfg.behaviors['change'];
-            if(changeBehavior) {
-                changeBehavior.call(this);
-            }
-        }
+        this.callBehavior('change');
     },
-    
+
     disable: function() {
         this.buttons.removeClass('ui-state-hover ui-state-focus ui-state-active')
                 .addClass('ui-state-disabled').attr('disabled', 'disabled');

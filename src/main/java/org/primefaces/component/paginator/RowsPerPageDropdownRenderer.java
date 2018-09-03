@@ -17,18 +17,21 @@ package org.primefaces.component.paginator;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIData;
 import org.primefaces.util.MessageFactory;
 
 public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
 
-    private final static Logger logger = Logger.getLogger(RowsPerPageDropdownRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(RowsPerPageDropdownRenderer.class.getName());
 
+    @Override
     public void render(FacesContext context, Pageable pageable) throws IOException {
         String template = pageable.getRowsPerPageTemplate();
         UIViewRoot viewroot = context.getViewRoot();
@@ -37,7 +40,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
         if (template != null) {
             ResponseWriter writer = context.getResponseWriter();
             int actualRows = pageable.getRows();
-            String[] options = pageable.getRowsPerPageTemplate().split("[,\\s]+");
+            String[] options = pageable.getRowsPerPageTemplate().split("[,]+");
             String label = pageable.getRowsPerPageLabel();
             if (label != null) {
                 logger.info("RowsPerPageLabel attribute is deprecated, use 'primefaces.paginator.aria.ROWS_PER_PAGE' key instead to override default message.");
@@ -52,7 +55,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
             String labelId = null;
 
             if (label != null) {
-                labelId = clientId + "_rppLabel";
+                labelId = ddId + "_rppLabel";
 
                 writer.startElement("label", null);
                 writer.writeAttribute("id", labelId, null);
@@ -74,11 +77,14 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
 
             for (String option : options) {
                 int rows;
-                if (option.equalsIgnoreCase("*") || option.equalsIgnoreCase("All rows")) {
+                String optionText;
+                if (option.trim().startsWith("{ShowAll|")) {
+                    optionText = option.substring(option.indexOf("'") + 1, option.lastIndexOf("'"));
                     rows = pageable.getRowCount();
                 }
                 else {
-                    rows = Integer.parseInt(option);
+                    optionText = option.trim();
+                    rows = Integer.parseInt(optionText);
                 }
 
                 writer.startElement("option", null);
@@ -88,7 +94,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
                     writer.writeAttribute("selected", "selected", null);
                 }
 
-                writer.writeText(option, null);
+                writer.writeText(optionText, null);
                 writer.endElement("option");
             }
 

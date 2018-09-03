@@ -15,7 +15,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
 
             this.bindEvents();
 
-            this.jq.data('widget', this);
+            this.jq.data('widget', cfg.widgetVar);
         }
     },
 
@@ -27,7 +27,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         if(this.cursorNode) {
             this.cursorNode = this.jq.find('.ui-treenode[data-rowkey="' + this.cursorNode.data('rowkey') + '"]');
         }
-        
+
         if(this.isCheckboxSelection()) {
             this.preselectCheckbox();
         }
@@ -107,8 +107,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
             };
 
             if(this.hasBehavior('expand')) {
-                var expandBehavior = this.cfg.behaviors['expand'];
-                expandBehavior.call(this, options);
+                this.callBehavior('expand', options);
             }
             else {
                 PrimeFaces.ajax.Request.handle(options);
@@ -121,32 +120,26 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
     },
 
     fireExpandEvent: function(node) {
-        if(this.cfg.behaviors) {
-            var expandBehavior = this.cfg.behaviors['expand'];
-            if(expandBehavior) {
-                var ext = {
-                    params: [
-                        {name: this.id + '_expandNode', value: this.getRowKey(node)}
-                    ]
-                };
+        if(this.hasBehavior('expand')) {
+            var ext = {
+                params: [
+                    {name: this.id + '_expandNode', value: this.getRowKey(node)}
+                ]
+            };
 
-                expandBehavior.call(this, ext);
-            }
+            this.callBehavior('expand', ext);
         }
     },
 
     fireCollapseEvent: function(node) {
-        if(this.cfg.behaviors) {
-            var collapseBehavior = this.cfg.behaviors['collapse'];
-            if(collapseBehavior) {
-                var ext = {
-                    params: [
-                        {name: this.id + '_collapseNode', value: this.getRowKey(node)}
-                    ]
-                };
+        if(this.hasBehavior('collapse')) {
+            var ext = {
+                params: [
+                    {name: this.id + '_collapseNode', value: this.getRowKey(node)}
+                ]
+            };
 
-                collapseBehavior.call(this, ext);
-            }
+            this.callBehavior('collapse', ext);
         }
     },
 
@@ -182,56 +175,49 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                     }
                     $this.writeSelections();
                 }
-            }
+            };
 
             if(this.hasBehavior('select')) {
-                var selectBehavior = this.cfg.behaviors['select'];
-                selectBehavior.call(this, options);
+                this.callBehavior('select', ext);
             }
             else {
-                PrimeFaces.ajax.AjaxRequest(options);
+                PrimeFaces.ajax.Request.handle(options);
             }
         }
         else {
             if(this.hasBehavior('select')) {
-                var selectBehavior = this.cfg.behaviors['select'],
-                ext = {
+                var ext = {
                     params: [
                         {name: this.id + '_instantSelection', value: this.getRowKey(node)}
                     ]
                 };
 
-                selectBehavior.call(this, ext);
+                this.callBehavior('select', ext);
             }
         }
     },
 
     fireNodeUnselectEvent: function(node) {
-        if(this.cfg.behaviors) {
-            var unselectBehavior = this.cfg.behaviors['unselect'];
+        if(this.hasBehavior('unselect')) {
+            var ext = {
+                params: [
+                    {name: this.id + '_instantUnselection', value: this.getRowKey(node)}
+                ]
+            };
 
-            if(unselectBehavior) {
-                var ext = {
-                    params: [
-                        {name: this.id + '_instantUnselection', value: this.getRowKey(node)}
-                    ]
-                };
-
-                unselectBehavior.call(this, ext);
-            }
+            this.callBehavior('unselect', ext);
         }
     },
 
     fireContextMenuEvent: function(node) {
         if(this.hasBehavior('contextMenu')) {
-            var contextMenuBehavior = this.cfg.behaviors['contextMenu'],
-            ext = {
+            var ext = {
                 params: [
                     {name: this.id + '_contextMenuNode', value: this.getRowKey(node)}
                 ]
             };
 
-            contextMenuBehavior.call(this, ext);
+            this.callBehavior('contextMenu', ext);
         }
     },
 
@@ -309,7 +295,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
                             cursorNodeIndex = treenodes.index(this.cursorNode),
                             startIndex = (currentNodeIndex > cursorNodeIndex) ? cursorNodeIndex : currentNodeIndex,
                             endIndex = (currentNodeIndex > cursorNodeIndex) ? (currentNodeIndex + 1) : (cursorNodeIndex + 1);
-                    
+
                             for(var i = startIndex; i < endIndex; i++) {
                                 var treenode = treenodes.eq(i);
                                 if(treenode.is(':visible')) {
@@ -466,7 +452,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 this.initDroppable();
             }
         }
-        
+
         this.restoreScrollState();
     },
 
@@ -534,7 +520,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 var key = e.which,
                 keyCode = $.ui.keyCode;
 
-                if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+                if((key === keyCode.ENTER)) {
                     e.preventDefault();
                 }
             })
@@ -548,7 +534,6 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     case keyCode.DOWN:
                     case keyCode.RIGHT:
                     case keyCode.ENTER:
-                    case keyCode.NUMPAD_ENTER:
                     case keyCode.TAB:
                     case keyCode.ESCAPE:
                     case keyCode.SPACE:
@@ -572,7 +557,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                             break;
                         }
 
-                        var metaKey = e.metaKey||e.ctrlKey||e.shiftKey;
+                        var metaKey = e.metaKey||e.ctrlKey;
 
                         if(!metaKey) {
                             if($this.filterTimeout) {
@@ -588,7 +573,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 }
             });
         }
-        
+
         this.jq.on('scroll.tree', function(e) {
             $this.saveScrollState();
         });
@@ -711,7 +696,6 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                 case keyCode.SPACE:
                     if($this.cfg.selectionMode) {
                         var selectable = $this.focusedNode.children('.ui-treenode-content').hasClass('ui-tree-selectable');
@@ -761,7 +745,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 $this.focusedNode = null;
             }
         });
-        
+
         /* For copy/paste operation on drag and drop */
         $(document.body).on('keydown.tree', function(e) {
             $this.shiftKey = e.shiftKey;
@@ -804,7 +788,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         //aria
         nodeContent.find('> .ui-treenode-label').attr('aria-expanded', false);
 
-        toggleIcon.addClass(_self.cfg.collapsedIcon).removeClass('ui-icon-triangle-1-s');
+        toggleIcon.removeClass('ui-icon-triangle-1-s').addClass(_self.cfg.collapsedIcon);
 
         if(iconState) {
             nodeIcon.removeClass(iconState.expandedIcon).addClass(iconState.collapsedIcon);
@@ -845,7 +829,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         //aria
         nodeContent.find('> .ui-treenode-label').attr('aria-expanded', true);
 
-        toggleIcon.addClass('ui-icon-triangle-1-s').removeClass(this.cfg.collapsedIcon);
+        toggleIcon.removeClass(this.cfg.collapsedIcon).addClass('ui-icon-triangle-1-s');
 
         if(iconState) {
             nodeIcon.removeClass(iconState.collapsedIcon).addClass(iconState.expandedIcon);
@@ -976,14 +960,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             start: function(event, ui) {
                 if(ui.helper) {
                     var element = $(event.target),
-                    source = $(element.data('dragsourceid')).data('widget'),
+                    source = PF($(element.data('dragsourceid')).data('widget')),
                     height = 20;
-            
+
                     if(source.cfg.multipleDrag && element.find('.ui-treenode-label').hasClass('ui-state-highlight')) {
                         source.draggedSourceKeys = $this.findSelectedParentKeys(source.selections.slice());
                         height = 20 * (source.draggedSourceKeys.length || 1);
                     }
-                    
+
                     $(ui.helper).height(height);
                 }
             },
@@ -1014,14 +998,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             tolerance: 'pointer',
             scope: dragdropScope,
             drop: function(event, ui) {
-                var dragSource = $(ui.draggable.data('dragsourceid')).data('widget'),
+                var dragSource = PF($(ui.draggable.data('dragsourceid')).data('widget')),
                 dropSource = $this,
                 dropPoint = $(this),
                 dropNode = dropPoint.closest('li.ui-treenode-parent'),
                 dropNodeKey = $this.getRowKey(dropNode),
                 transfer = (dragSource.id !== dropSource.id),
                 draggedSourceKeys = dragSource.draggedSourceKeys,
-                isDroppedNodeCopy = ($this.cfg.dropCopyNode && $this.shiftKey && transfer),
+                isDroppedNodeCopy = ($this.cfg.dropCopyNode && $this.shiftKey),
                 draggedNodes,
                 dragNodeKey;
 
@@ -1031,28 +1015,32 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 else {
                     draggedNodes = [ui.draggable];
                 }
-                
+
                 if($this.cfg.controlled) {
                     $this.droppedNodeParams = [];
                 }
-                
+
                 for(var i = (draggedNodes.length - 1); i >= 0; i--) {
                     var draggedNode = $(draggedNodes[i]),
                     dragMode = ui.draggable.data('dragmode'),
                     dragNode = draggedNode.is('li.ui-treenode') ? draggedNode : draggedNode.closest('li.ui-treenode'),
                     dragNode = (isDroppedNodeCopy) ? dragNode.clone() : dragNode,
                     targetDragNode = $this.findTargetDragNode(dragNode, dragMode);
-            
+
                     dragNodeKey = $this.getRowKey(targetDragNode);
-                    
+
+                    if(!transfer && dropNodeKey.indexOf(dragNodeKey) === 0) {
+                        return;
+                    }
+
                     if($this.cfg.controlled) {
                         $this.droppedNodeParams.push({
-                            'ui': ui, 
-                            'dragSource': dragSource, 
-                            'dragNode': dragNode, 
-                            'targetDragNode': targetDragNode, 
+                            'ui': ui,
+                            'dragSource': dragSource,
+                            'dragNode': dragNode,
+                            'targetDragNode': targetDragNode,
                             'dropPoint': dropPoint,
-                            'dropNode': dropNode, 
+                            'dropNode': dropNode,
                             'transfer': transfer
                         });
                     }
@@ -1060,9 +1048,9 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                         $this.onDropPoint(ui, dragSource, dragNode, targetDragNode, dropPoint, dropNode, transfer);
                     }
                 }
-                
+
                 draggedSourceKeys = (draggedSourceKeys && draggedSourceKeys.length) ? draggedSourceKeys.reverse().join(',') : dragNodeKey;
-                
+
                 $this.fireDragDropEvent({
                     'dragNodeKey': draggedSourceKeys,
                     'dropNodeKey': dropNodeKey,
@@ -1071,20 +1059,20 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     'transfer': transfer,
                     'isDroppedNodeCopy': isDroppedNodeCopy
                 });
-                
+
                 dragSource.draggedSourceKeys = null;
-                
+
                 if(isDroppedNodeCopy) {
                     $this.initDraggable();
                 }
             }
         });
     },
-    
+
     onDropPoint: function(ui, dragSource, dragNode, targetDragNode, dropPoint, dropNode, transfer) {
         var dragNodeDropPoint = targetDragNode.next('li.ui-tree-droppoint'),
         oldParentNode = targetDragNode.parent().closest('li.ui-treenode-parent');
-        
+
         ui.helper.remove();
         dropPoint.removeClass('ui-state-hover');
 
@@ -1113,7 +1101,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
         targetDragNode.fadeIn();
 
-        if(this.isCheckboxSelection()) {                                                
+        if(this.isCheckboxSelection()) {
             this.syncDNDCheckboxes(dragSource, oldParentNode, dropNode);
         }
 
@@ -1122,11 +1110,11 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             dragSource.syncDragDrop();
         }
     },
-        
+
     makeDropNodes: function(elements) {
         var $this = this,
         dragdropScope = this.cfg.dragdropScope||this.id;
-        
+
         elements.droppable({
             accept: '.ui-treenode-content',
             tolerance: 'pointer',
@@ -1138,14 +1126,14 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 $(this).children('.ui-treenode-label').removeClass('ui-state-hover');
             },
             drop: function(event, ui) {
-                var dragSource = $(ui.draggable.data('dragsourceid')).data('widget'),
+                var dragSource = PF($(ui.draggable.data('dragsourceid')).data('widget')),
                 dropSource = $this,
                 droppable = $(this),
                 dropNode = droppable.closest('li.ui-treenode'),
                 dropNodeKey = $this.getRowKey(dropNode),
                 transfer = (dragSource.id !== dropSource.id),
                 draggedSourceKeys = dragSource.draggedSourceKeys,
-                isDroppedNodeCopy = ($this.cfg.dropCopyNode && $this.shiftKey && transfer),
+                isDroppedNodeCopy = ($this.cfg.dropCopyNode && $this.shiftKey),
                 draggedNodes,
                 dragNodeKey,
                 dndIndex;
@@ -1156,42 +1144,46 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 else {
                     draggedNodes = [ui.draggable];
                 }
-                
+
                 if($this.cfg.controlled) {
                     $this.droppedNodeParams = [];
                 }
-                
+
                 for(var i = 0; i < draggedNodes.length; i++) {
                     var draggedNode = $(draggedNodes[i]),
                     dragMode = ui.draggable.data('dragmode'),
                     dragNode = draggedNode.is('li.ui-treenode') ? draggedNode : draggedNode.closest('li.ui-treenode'),
                     dragNode = (isDroppedNodeCopy) ? dragNode.clone() : dragNode,
                     targetDragNode = $this.findTargetDragNode(dragNode, dragMode);
-                    
+
                     if(i === 0) {
                         dndIndex = targetDragNode.prevAll('li.ui-treenode').length;
                     }
-                    
+
                     dragNodeKey = $this.getRowKey(targetDragNode);
-                    
+
+                    if(!transfer && dropNodeKey.indexOf(dragNodeKey) === 0) {
+                        return;
+                    }
+
                     if($this.cfg.controlled) {
                         $this.droppedNodeParams.push({
-                            'ui': ui, 
-                            'dragSource': dragSource, 
-                            'dragNode': dragNode, 
-                            'targetDragNode': targetDragNode, 
+                            'ui': ui,
+                            'dragSource': dragSource,
+                            'dragNode': dragNode,
+                            'targetDragNode': targetDragNode,
                             'droppable': droppable,
-                            'dropNode': dropNode, 
+                            'dropNode': dropNode,
                             'transfer': transfer
                         });
                     }
                     else {
                         $this.onDropNode(ui, dragSource, dragNode, targetDragNode, droppable, dropNode, transfer);
                     }
-                } 
+                }
 
                 draggedSourceKeys = (draggedSourceKeys && draggedSourceKeys.length) ? draggedSourceKeys.reverse().join(',') : dragNodeKey;
-                
+
                 $this.fireDragDropEvent({
                     'dragNodeKey': draggedSourceKeys,
                     'dropNodeKey': dropNodeKey,
@@ -1200,25 +1192,25 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                     'transfer': transfer,
                     'isDroppedNodeCopy': isDroppedNodeCopy
                 });
-                
+
                 dragSource.draggedSourceKeys = null;
-                
+
                 if(isDroppedNodeCopy) {
                     $this.initDraggable();
                 }
             }
         });
     },
-    
+
     onDropNode: function(ui, dragSource, dragNode, targetDragNode, droppable, dropNode, transfer) {
         var dragNodeDropPoint = targetDragNode.next('li.ui-tree-droppoint'),
         oldParentNode = targetDragNode.parent().closest('li.ui-treenode-parent'),
         childrenContainer = dropNode.children('.ui-treenode-children');
-            
+
         ui.helper.remove();
         droppable.children('.ui-treenode-label').removeClass('ui-state-hover');
 
-        var validDrop = this.validateDropNode(dragNode, dropNode, oldParentNode);  
+        var validDrop = this.validateDropNode(dragNode, dropNode, oldParentNode);
         if(!validDrop) {
             return;
         }
@@ -1248,7 +1240,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
         targetDragNode.fadeIn();
 
-        if(this.isCheckboxSelection()) {                                                
+        if(this.isCheckboxSelection()) {
             this.syncDNDCheckboxes(dragSource, oldParentNode, dropNode);
         }
 
@@ -1257,8 +1249,8 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             dragSource.syncDragDrop();
         }
     },
-    
-    findSelectedParentKeys: function(arr) {       
+
+    findSelectedParentKeys: function(arr) {
         for(var i = 0; i < arr.length; i++) {
             var key = arr[i];
             for(var j = 0; j < arr.length && key !== -1; j++) {
@@ -1268,10 +1260,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
                 }
             }
         }
-        
-        return arr.filter(function(item) { 
+
+        return arr.filter(function(item) {
             return item !== -1;
-        });       
+        });
     },
 
     initDropScrollers: function() {
@@ -1515,7 +1507,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             {name: this.id + '_dndIndex', value: event.dndIndex},
             {name: this.id + '_isDroppedNodeCopy', value: event.isDroppedNodeCopy}
         ];
-        
+
         if(this.cfg.controlled) {
             options.oncomplete = function(xhr, status, args) {
                 if(args.access) {
@@ -1531,12 +1523,10 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         }
 
         if(this.hasBehavior('dragdrop')) {
-            var dragdropBehavior = this.cfg.behaviors['dragdrop'];
-
-            dragdropBehavior.call(this, options);
+            this.callBehavior('dragdrop', options);
         }
         else {
-            PrimeFaces.ajax.AjaxRequest(options);
+            PrimeFaces.ajax.Request.handle(options);
         }
     },
 
@@ -1586,9 +1576,15 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
             }
         };
 
-        PrimeFaces.ajax.Request.handle(options);
+        if(this.hasBehavior('filter')) {
+            this.callBehavior('filter', options);
+        }
+        else {
+            PrimeFaces.ajax.Request.handle(options);
+        }
+
     },
-    
+
     restoreScrollState: function() {
         var scrollState = this.scrollStateHolder.val(),
         scrollValues = scrollState.split(',');
@@ -1596,13 +1592,13 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
         this.jq.scrollLeft(scrollValues[0]);
         this.jq.scrollTop(scrollValues[1]);
     },
-    
+
     saveScrollState: function() {
         var scrollState = this.jq.scrollLeft() + ',' + this.jq.scrollTop();
-        
+
         this.scrollStateHolder.val(scrollState);
     },
-    
+
     clearScrollState: function() {
         this.scrollStateHolder.val('0,0');
     }
@@ -1700,7 +1696,7 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
         iconState = this.cfg.iconStates[nodeType];
 
         if(iconState) {
-            toggleIcon.nextAll('span.ui-treenode-icon').addClass(iconState.collapsedIcon).removeClass(iconState.expandedIcon);
+            toggleIcon.nextAll('span.ui-treenode-icon').removeClass(iconState.expandedIcon).addClass(iconState.collapsedIcon);
         }
 
         toggleIcon.removeClass('ui-icon-minus').addClass('ui-icon-plus');
@@ -1825,9 +1821,10 @@ PrimeFaces.widget.HorizontalTree = PrimeFaces.widget.BaseTree.extend({
 
     drawConnectors: function() {
         this.jq.find('table.ui-treenode-connector-table').each(function() {
-            var table = $(this);
+            var table = $(this),
+            row = table.closest('tr');
 
-            table.height(0).height(table.parent().height());
+            table.height(0).height(row.height());
         });
     },
 

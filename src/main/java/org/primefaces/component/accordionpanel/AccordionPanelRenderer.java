@@ -158,19 +158,20 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         String activeIndex = acco.getActiveIndex();
         List<String> activeIndexes = activeIndex == null
-                ? Collections.EMPTY_LIST
-                : Arrays.asList(activeIndex.split(","));        
+                                     ? Collections.EMPTY_LIST
+                                     : Arrays.asList(activeIndex.split(","));
 
         if (var == null) {
-            int i = 0;
+            int j = 0;
 
-            for (UIComponent child : acco.getChildren()) {
+            for (int i = 0; i < acco.getChildCount(); i++) {
+                UIComponent child = acco.getChildren().get(i);
                 if (child.isRendered() && child instanceof Tab) {
-                    boolean active = activeIndexes.indexOf(Integer.toString(i)) != -1;
+                    boolean active = activeIndexes.indexOf(Integer.toString(j)) != -1;
 
                     encodeTab(context, acco, (Tab) child, active, dynamic, rtl);
 
-                    i++;
+                    j++;
                 }
             }
         }
@@ -190,19 +191,19 @@ public class AccordionPanelRenderer extends CoreRenderer {
     }
 
     protected void encodeTab(FacesContext context, AccordionPanel accordionPanel, Tab tab, boolean active, boolean dynamic,
-            boolean rtl) throws IOException {
-        
+                             boolean rtl) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
 
         String headerClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_CLASS : AccordionPanel.TAB_HEADER_CLASS;
         headerClass = tab.isDisabled() ? headerClass + " ui-state-disabled" : headerClass;
         headerClass = tab.getTitleStyleClass() == null ? headerClass : headerClass + " " + tab.getTitleStyleClass();
         String iconClass = active
-                ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS
-                : (rtl ? AccordionPanel.TAB_HEADER_ICON_RTL_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS);
+                           ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS
+                           : (rtl ? AccordionPanel.TAB_HEADER_ICON_RTL_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS);
         String contentClass = active
-                ? AccordionPanel.ACTIVE_TAB_CONTENT_CLASS
-                : AccordionPanel.INACTIVE_TAB_CONTENT_CLASS;
+                              ? AccordionPanel.ACTIVE_TAB_CONTENT_CLASS
+                              : AccordionPanel.INACTIVE_TAB_CONTENT_CLASS;
         UIComponent titleFacet = tab.getFacet("title");
         String title = tab.getTitle();
         String tabindex = tab.isDisabled() ? "-1" : accordionPanel.getTabindex();
@@ -215,8 +216,12 @@ public class AccordionPanelRenderer extends CoreRenderer {
         writer.writeAttribute("aria-selected", String.valueOf(active), null);
         writer.writeAttribute("aria-label", tab.getAriaLabel(), null);
         writer.writeAttribute("tabindex", tabindex, null);
-        if (tab.getTitleStyle() != null) writer.writeAttribute("style", tab.getTitleStyle(), null);
-        if (tab.getTitletip() != null) writer.writeAttribute("title", tab.getTitletip(), null);
+        if (tab.getTitleStyle() != null) {
+            writer.writeAttribute("style", tab.getTitleStyle(), null);
+        }
+        if (tab.getTitletip() != null) {
+            writer.writeAttribute("title", tab.getTitletip(), null);
+        }
 
         //icon
         writer.startElement("span", null);

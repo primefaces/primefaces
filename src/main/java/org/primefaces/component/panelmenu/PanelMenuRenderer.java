@@ -17,8 +17,10 @@ package org.primefaces.component.panelmenu;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
@@ -34,8 +36,9 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         PanelMenu menu = (PanelMenu) abstractMenu;
         String clientId = menu.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("PanelMenu", menu.resolveWidgetVar(), clientId)
-                .attr("stateful", menu.isStateful());
+        wb.init("PanelMenu", menu.resolveWidgetVar(), clientId)
+                .attr("stateful", menu.isStateful())
+                .attr("multiple", menu.isMultiple(), true);
         wb.finish();
     }
 

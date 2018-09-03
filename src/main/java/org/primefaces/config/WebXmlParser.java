@@ -30,7 +30,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -177,7 +177,7 @@ public class WebXmlParser {
 
     private static Map<String, String> parseErrorPages(Element webXml) throws Exception {
 
-        Map<String, String> errorPages = new HashMap<String, String>();
+        Map<String, String> errorPages = new HashMap<>();
 
         XPath xpath = XPathFactory.newInstance().newXPath();
 
@@ -199,11 +199,11 @@ public class WebXmlParser {
         if (!errorPages.containsKey(null)) {
             String defaultLocation = xpath.compile("error-page[error-code=500]/location").evaluate(webXml).trim();
 
-            if (ComponentUtils.isValueBlank(defaultLocation)) {
+            if (LangUtils.isValueBlank(defaultLocation)) {
                 defaultLocation = xpath.compile("error-page[not(error-code) and not(exception-type)]/location").evaluate(webXml).trim();
             }
 
-            if (!ComponentUtils.isValueBlank(defaultLocation)) {
+            if (!LangUtils.isValueBlank(defaultLocation)) {
                 errorPages.put(null, defaultLocation);
             }
         }

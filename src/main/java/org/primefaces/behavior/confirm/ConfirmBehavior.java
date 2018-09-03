@@ -32,12 +32,23 @@ public class ConfirmBehavior extends AbstractBehavior {
         message(String.class),
         icon(String.class),
         disabled(Boolean.class),
-        beforeShow(String.class);
+        beforeShow(String.class),
+        escape(Boolean.class);
 
-        public final Class<?> expectedType;
+        private final Class<?> expectedType;
 
         PropertyKeys(Class<?> expectedType) {
             this.expectedType = expectedType;
+        }
+
+        /**
+         * Holds the type which ought to be passed to
+         * {@link javax.faces.view.facelets.TagAttribute#getObject(javax.faces.view.facelets.FaceletContext, java.lang.Class) }
+         * when creating the behavior.
+         * @return the expectedType the expected object type
+         */
+        public Class<?> getExpectedType() {
+            return expectedType;
         }
     }
 
@@ -57,11 +68,12 @@ public class ConfirmBehavior extends AbstractBehavior {
         if (component instanceof Confirmable) {
             String sourceProperty = (source == null) ? "source:this" : "source:\"" + source + "\"";
             String script = "PrimeFaces.confirm({" + sourceProperty
-                    + ",header:" + headerText
-                    + ",message:" + messageText
-                    + ",icon:\"" + getIcon()
-                    + "\",beforeShow:" + beforeShow
-                    + "});return false;";
+                                                   + ",escape:" + this.isEscape()
+                                                   + ",header:" + headerText
+                                                   + ",message:" + messageText
+                                                   + ",icon:\"" + getIcon()
+                                                   + "\",beforeShow:" + beforeShow
+                                                   + "});return false;";
             ((Confirmable) component).setConfirmationScript(script);
 
             return null;
@@ -108,11 +120,20 @@ public class ConfirmBehavior extends AbstractBehavior {
     public void setDisabled(boolean disabled) {
         setLiteral(PropertyKeys.disabled, disabled);
     }
-    
+
     public String getBeforeShow() {
         return eval(PropertyKeys.beforeShow, null);
     }
+
     public void setBeforeShow(String beforeShow) {
         setLiteral(PropertyKeys.beforeShow, beforeShow);
+    }
+
+    public boolean isEscape() {
+        return eval(PropertyKeys.escape, Boolean.TRUE);
+    }
+
+    public void setEscape(boolean escape) {
+        setLiteral(PropertyKeys.escape, escape);
     }
 }

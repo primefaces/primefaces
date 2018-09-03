@@ -1,12 +1,12 @@
 /**
  * PrimeFaces OverlayPanel Widget
  */
-PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
+PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
     init: function(cfg) {
         this._super(cfg);
 
-        this.content = this.jq.children('div.ui-overlaypanel-content')
+        this.content = this.jq.children('div.ui-overlaypanel-content');
 
         //configuration
         this.cfg.my = this.cfg.my||'left top';
@@ -20,27 +20,6 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
             this.closerIcon = $('<a href="#" class="ui-overlaypanel-close ui-state-default" href="#"><span class="ui-icon ui-icon-closethick"></span></a>').appendTo(this.jq);
         }
 
-        // prevent duplicate elements
-        // the first check is required if the id contains a ':' - See #2485
-        if(this.jq.length > 1) {
-            $(document.body).children(this.jqId).remove();
-            this.jq = $(this.jqId);
-        }
-        else {
-            // this is required if the id does NOT contain a ':' - See #2485
-            $(document.body).children("[id='" + this.id + "']").not(this.jq).remove();
-        }
-
-        //remove related modality if there is one
-        var modal = $(this.jqId + '_modal');
-        if(modal.length > 0) {
-            modal.remove();
-        }
-
-        if(this.cfg.appendToBody) {
-            this.jq.appendTo(document.body);
-        }
-
         this.bindCommonEvents();
 
         if(this.cfg.target) {
@@ -49,6 +28,26 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
 
             //dialog support
             this.setupDialogSupport();
+        }
+    },
+
+    //@Override
+    refresh: function(cfg) {
+        this._super(cfg);
+
+        // see #setupDialogSupport
+        if (!this.cfg.appendTo) {
+            PrimeFaces.utils.removeDynamicOverlay(this, this.jq, this.id, $(document.body));
+        }
+    },
+
+    //@Override
+    destroy: function() {
+        this._super();
+
+        // see #setupDialogSupport
+        if (!this.cfg.appendTo) {
+            PrimeFaces.utils.removeDynamicOverlay(this, this.jq, this.id, $(document.body));
         }
     },
 
@@ -89,14 +88,14 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         $this.target.off('keydown.ui-overlaypanel keyup.ui-overlaypanel').on('keydown.ui-overlaypanel', function(e) {
             var keyCode = $.ui.keyCode, key = e.which;
 
-            if(key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER) {
+            if(key === keyCode.ENTER) {
                 e.preventDefault();
             }
         })
         .on('keyup.ui-overlaypanel', function(e) {
             var keyCode = $.ui.keyCode, key = e.which;
 
-            if(key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER) {
+            if(key === keyCode.ENTER) {
                 $this.toggle();
                 e.preventDefault();
             }
@@ -127,38 +126,13 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
 
         //hide overlay when mousedown is at outside of overlay
         if(this.cfg.dismissable && !this.cfg.modal) {
-            var hideNS = 'mousedown.' + this.id;
-            $(document.body).off(hideNS).on(hideNS, function (e) {
-                if($this.jq.hasClass('ui-overlay-hidden')) {
-                    return;
-                }
-
-                //do nothing on target mousedown
-                if($this.target) {
-                    var target = $(e.target);
-                    if($this.target.is(target)||$this.target.has(target).length > 0) {
-                        return;
-                    }
-                }
-
-                //hide overlay if mousedown is on outside
-                var offset = $this.jq.offset();
-                if(e.pageX < offset.left ||
-                    e.pageX > offset.left + $this.jq.outerWidth() ||
-                    e.pageY < offset.top ||
-                    e.pageY > offset.top + $this.jq.outerHeight()) {
-
-                    $this.hide();
-                }
-            });
+            PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.jq,
+                function() { return $this.target; },
+                function(e) { $this.hide(); });
         }
 
-        //Hide overlay on resize
-        var resizeNS = 'resize.' + this.id;
-        $(window).off(resizeNS).on(resizeNS, function() {
-            if($this.jq.hasClass('ui-overlay-visible')) {
-                $this.align();
-            }
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
+            $this.align();
         });
     },
 
@@ -227,6 +201,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
                     ,of: document.getElementById(targetId)
                     ,offset: positionOffset
                 });
+
+        var widthOffset = this.jq.width() - this.content.width();
+        this.jq.css('max-width', win.width() - widthOffset + 'px');
     },
 
     hide: function() {
@@ -277,7 +254,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
             this.jq.css('position', 'fixed');
 
             //append to body if not already appended by user choice
-            if(!this.cfg.appendToBody) {
+            if(!this.cfg.appendTo) {
                 this.jq.appendTo(document.body);
             }
         }
@@ -319,86 +296,32 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.BaseWidget.extend({
         this.jq.find(':not(:submit):not(:button):input:visible:enabled:first').focus();
     },
 
+    //@override
     enableModality: function() {
-        var $this = this,
-        doc = $(document);
+        this._super();
 
-        $(document.body).append('<div id="' + this.id + '_modal" class="ui-widget-overlay ui-overlaypanel-mask"></div>')
-                        .children(this.jqId + '_modal').css('z-index' , this.jq.css('z-index') - 1);
-
-        this.blockEvents = 'focus.' + this.id + ' mousedown.' + this.id + ' mouseup.' + this.id;
         if(this.targetElement) {
             this.targetElement.css('z-index', this.jq.css('z-index'));
         }
-
-        //Disable tabbing out of modal overlaypanel and stop events from targets outside of overlaypanel
-        doc.on('keydown.' + this.id,
-                function(event) {
-                    var target = $(event.target);
-
-                    if(event.which === $.ui.keyCode.TAB) {
-                        var tabbables = $this.getTabbables();
-
-                        if(tabbables.length) {
-                            var first = tabbables.filter(':first'),
-                            last = tabbables.filter(':last'),
-                            focusingRadioItem = null;
-
-                            if(first.is(':radio')) {
-                                focusingRadioItem = tabbables.filter('[name="' + first.attr('name') + '"]').filter(':checked');
-                                if(focusingRadioItem.length > 0) {
-                                    first = focusingRadioItem;
-                                }
-                            }
-
-                            if(last.is(':radio')) {
-                                focusingRadioItem = tabbables.filter('[name="' + last.attr('name') + '"]').filter(':checked');
-                                if(focusingRadioItem.length > 0) {
-                                    last = focusingRadioItem;
-                                }
-                            }
-
-                            if(target.is(document.body)) {
-                                first.focus(1);
-                                event.preventDefault();
-                            }
-                            else if(event.target === last[0] && !event.shiftKey) {
-                                first.focus(1);
-                                event.preventDefault();
-                            }
-                            else if (event.target === first[0] && event.shiftKey) {
-                                last.focus(1);
-                                event.preventDefault();
-                            }
-                        }
-                    }
-                    else if(!target.is(document.body) && (target.zIndex() < $this.jq.zIndex())) {
-                        event.preventDefault();
-                    }
-                })
-                .on(this.blockEvents, function(event) {
-                    if ($(event.target).zIndex() < $this.jq.zIndex()) {
-                        event.preventDefault();
-                    }
-                });
     },
 
+    //@override
     disableModality: function(){
+        this._super();
+
         if(this.targetElement) {
             this.targetElement.css('z-index', this.targetZindex);
         }
-
-        $(document.body).children(this.jqId + '_modal').remove();
-        $(document).off(this.blockEvents).off('keydown.' + this.id);
     },
 
-    getTabbables: function(){
-        var tabbableTarget;
-        if(this.targetElement && this.targetElement.is(':tabbable')) {
-            tabbableTarget = this.targetElement;
+    //@override
+    getModalTabbables: function(){
+        var tabbables = this.jq.find(':tabbable');
+
+        if (this.targetElement && this.targetElement.is(':tabbable')) {
+            tabbables = tabbables.add(this.targetElement);
         }
 
-        return this.jq.find(':tabbable').add(tabbableTarget);
+        return tabbables;
     }
-
 });

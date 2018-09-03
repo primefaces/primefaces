@@ -23,7 +23,7 @@ import org.primefaces.application.resource.MoveScriptsToBottomResponseWriter;
 import org.primefaces.application.resource.MoveScriptsToBottomState;
 
 /**
- * Custom {@link FacesContextWrapper} to init and release our {@link RequestContext}.
+ * Custom {@link FacesContextWrapper} to init and release our {@link PrimeRequestContext}.
  */
 public class PrimeFacesContext extends FacesContextWrapper {
 
@@ -33,12 +33,13 @@ public class PrimeFacesContext extends FacesContextWrapper {
     private MoveScriptsToBottomState moveScriptsToBottomState;
     private PrimeExternalContext externalContext;
 
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeFacesContext(FacesContext wrapped) {
         this.wrapped = wrapped;
 
-        RequestContext requestContext = new DefaultRequestContext(wrapped);
-        RequestContext.setCurrentInstance(requestContext, wrapped);
-        
+        PrimeRequestContext requestContext = new PrimeRequestContext(wrapped);
+        PrimeRequestContext.setCurrentInstance(requestContext, wrapped);
+
         moveScriptsToBottom = requestContext.getApplicationContext().getConfig().isMoveScriptsToBottom();
         if (moveScriptsToBottom) {
             moveScriptsToBottomState = new MoveScriptsToBottomState();
@@ -62,7 +63,7 @@ public class PrimeFacesContext extends FacesContextWrapper {
             getWrapped().setResponseWriter(writer);
         }
     }
-    
+
     @Override
     public FacesContext getWrapped() {
         return wrapped;
@@ -70,7 +71,7 @@ public class PrimeFacesContext extends FacesContextWrapper {
 
     @Override
     public void release() {
-        RequestContext requestContext = RequestContext.getCurrentInstance(wrapped);
+        PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(wrapped);
         if (requestContext != null) {
             requestContext.release();
         }

@@ -25,8 +25,9 @@ public class PastClientValidationConstraint implements ClientValidationConstrain
     private static final String MESSAGE_METADATA = "data-p-past-msg";
     private static final String MESSAGE_ID = "{javax.validation.constraints.Past.message}";
 
+    @Override
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
-        Map<String, Object> metadata = new HashMap<String, Object>();
+        Map<String, Object> metadata = new HashMap<>();
         Map attrs = constraintDescriptor.getAttributes();
         Object message = attrs.get(ATTR_MESSAGE);
 
@@ -37,6 +38,7 @@ public class PastClientValidationConstraint implements ClientValidationConstrain
         return metadata;
     }
 
+    @Override
     public String getValidatorId() {
         return Past.class.getSimpleName();
     }

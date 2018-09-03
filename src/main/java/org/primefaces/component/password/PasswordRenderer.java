@@ -20,11 +20,12 @@ import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import org.primefaces.context.RequestContext;
 
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class PasswordRenderer extends InputRenderer {
@@ -58,15 +59,15 @@ public class PasswordRenderer extends InputRenderer {
         String clientId = password.getClientId(context);
         boolean feedback = password.isFeedback();
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Password", password.resolveWidgetVar(), clientId);
+        wb.init("Password", password.resolveWidgetVar(), clientId);
 
         if (feedback) {
             wb.attr("feedback", true)
                     .attr("inline", password.isInline())
-                    .attr("promptLabel", escapeText(password.getPromptLabel()))
-                    .attr("weakLabel", escapeText(password.getWeakLabel()))
-                    .attr("goodLabel", escapeText(password.getGoodLabel()))
-                    .attr("strongLabel", escapeText(password.getStrongLabel()));
+                    .attr("promptLabel", password.getPromptLabel())
+                    .attr("weakLabel", password.getWeakLabel())
+                    .attr("goodLabel", password.getGoodLabel())
+                    .attr("strongLabel", password.getStrongLabel());
         }
 
         wb.finish();
@@ -92,18 +93,24 @@ public class PasswordRenderer extends InputRenderer {
         }
 
         String valueToRender = ComponentUtils.getValueToRender(context, password);
-        if (!ComponentUtils.isValueBlank(valueToRender) && password.isRedisplay()) {
+        if (!LangUtils.isValueBlank(valueToRender) && password.isRedisplay()) {
             writer.writeAttribute("value", valueToRender, null);
         }
 
         renderPassThruAttributes(context, password, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, password, HTML.INPUT_TEXT_EVENTS);
 
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (password.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
-        if (password.isRequired()) writer.writeAttribute("aria-required", "true", null);
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (password.isReadonly()) {
+            writer.writeAttribute("readonly", "readonly", null);
+        }
+        if (password.isRequired()) {
+            writer.writeAttribute("aria-required", "true", null);
+        }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, password);
         }
 

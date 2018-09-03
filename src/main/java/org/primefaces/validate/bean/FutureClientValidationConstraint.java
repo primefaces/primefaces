@@ -25,8 +25,9 @@ public class FutureClientValidationConstraint implements ClientValidationConstra
     private static final String MESSAGE_METADATA = "data-p-future-msg";
     private static final String MESSAGE_ID = "{javax.validation.constraints.Future.message}";
 
+    @Override
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
-        Map<String, Object> metadata = new HashMap<String, Object>();
+        Map<String, Object> metadata = new HashMap<>();
         Map attrs = constraintDescriptor.getAttributes();
         Object message = attrs.get(ATTR_MESSAGE);
 
@@ -37,6 +38,7 @@ public class FutureClientValidationConstraint implements ClientValidationConstra
         return metadata;
     }
 
+    @Override
     public String getValidatorId() {
         return Future.class.getSimpleName();
     }

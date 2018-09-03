@@ -42,8 +42,12 @@ public class LightBoxRenderer extends CoreRenderer {
 
         writer.startElement("div", lb);
         writer.writeAttribute("id", clientId, "id");
-        if (lb.getStyle() != null) writer.writeAttribute("style", lb.getStyle(), null);
-        if (lb.getStyleClass() != null) writer.writeAttribute("class", lb.getStyleClass(), null);
+        if (lb.getStyle() != null) {
+            writer.writeAttribute("style", lb.getStyle(), null);
+        }
+        if (lb.getStyleClass() != null) {
+            writer.writeAttribute("class", lb.getStyleClass(), null);
+        }
 
         renderChildren(context, lb);
 
@@ -69,7 +73,7 @@ public class LightBoxRenderer extends CoreRenderer {
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("LightBox", lb.resolveWidgetVar(), clientId)
+        wb.init("LightBox", lb.resolveWidgetVar(), clientId)
                 .attr("mode", mode)
                 .attr("width", lb.getWidth(), null)
                 .attr("height", lb.getHeight(), null)

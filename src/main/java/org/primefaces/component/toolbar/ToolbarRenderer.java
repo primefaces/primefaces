@@ -16,9 +16,11 @@
 package org.primefaces.component.toolbar;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.separator.UISeparator;
 import org.primefaces.renderkit.CoreRenderer;
 

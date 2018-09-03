@@ -41,7 +41,11 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
         }).click(function(e) {
             var header = $(this);
 
-            if(header.hasClass('ui-state-active'))
+            if (!$this.cfg.multiple) {
+                $this.collapseActiveSibling(header);
+            }
+
+            if (header.hasClass('ui-state-active'))
                 $this.collapseRootSubmenu($(this));
             else
                 $this.expandRootSubmenu($(this), false);
@@ -99,7 +103,7 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
             var keyCode = $.ui.keyCode,
             key = e.which;
 
-            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+            if(key === keyCode.SPACE || key === keyCode.ENTER) {
                 $(this).trigger('click');
                 e.preventDefault();
             }
@@ -193,7 +197,6 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                 case keyCode.SPACE:
                     var currentLink = $this.focusedItem.children('.ui-menuitem-link');
                     //IE fix
@@ -233,6 +236,10 @@ PrimeFaces.widget.PanelMenu = PrimeFaces.widget.BaseWidget.extend({
                $this.removeFocusedItem();
             }
         });
+    },
+
+    collapseActiveSibling: function(header) {
+        this.collapseRootSubmenu(header.parent().siblings().children('.ui-panelmenu-header.ui-state-active').eq(0));
     },
 
     searchDown: function(item) {

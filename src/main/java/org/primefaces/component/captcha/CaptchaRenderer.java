@@ -17,8 +17,8 @@ package org.primefaces.component.captcha;
 
 import java.io.IOException;
 import java.util.Map;
-import javax.faces.FacesException;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -28,7 +28,7 @@ import org.primefaces.util.WidgetBuilder;
 
 public class CaptchaRenderer extends CoreRenderer {
 
-    private final static String RESPONSE_FIELD = "g-recaptcha-response";
+    private static final String RESPONSE_FIELD = "g-recaptcha-response";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -62,18 +62,25 @@ public class CaptchaRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, Captcha captcha, String publicKey) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = captcha.getClientId(context);
-
         captcha.setRequired(true);
-
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
+
+        if (captcha.getSize() != null && "invisible".equals(captcha.getSize())) {
+            writer.writeAttribute("class", "g-recaptcha", null);
+            writer.writeAttribute("data-sitekey", publicKey, null);
+            writer.writeAttribute("data-size", "invisible", null);
+        }
+
+        renderDynamicPassThruAttributes(context, captcha);
+
         writer.endElement("div");
     }
 
     protected void encodeScript(FacesContext context, Captcha captcha, String publicKey) throws IOException {
         String clientId = captcha.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("Captcha", captcha.resolveWidgetVar(), clientId);
+        wb.init("Captcha", captcha.resolveWidgetVar(), clientId);
 
         wb.attr("sitekey", publicKey)
                 .attr("theme", captcha.getTheme(), "light")

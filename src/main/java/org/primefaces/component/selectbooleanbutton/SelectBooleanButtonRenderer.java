@@ -22,7 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -41,7 +41,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         decodeBehaviors(context, button);
 
         String clientId = button.getClientId(context);
-        String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
         if (submittedValue != null && submittedValue.equalsIgnoreCase("on")) {
             button.setSubmittedValue(true);
@@ -75,7 +75,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("type", "button", null);
-        writer.writeAttribute("class",styleClass, null);
+        writer.writeAttribute("class", styleClass, null);
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
         }
@@ -102,7 +102,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
             writer.writeAttribute("disabled", "disabled", null);
         }
 
-        if (RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isClientSideValidationEnabled()) {
+        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, button);
         }
 
@@ -142,15 +142,15 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
     }
 
     protected void encodeScript(FacesContext context, SelectBooleanButton button) throws IOException {
-        
+
         String onLabel = button.getOnLabel();
         String offLabel = button.getOffLabel();
-        
+
         String clientId = button.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectBooleanButton", button.resolveWidgetVar(), clientId)
-                .attr("onLabel", isValueBlank(onLabel) ? "ui-button" : escapeText(onLabel))
-                .attr("offLabel", isValueBlank(offLabel) ? "ui-button" : escapeText(offLabel))
+                .attr("onLabel", isValueBlank(onLabel) ? "ui-button" : onLabel)
+                .attr("offLabel", isValueBlank(offLabel) ? "ui-button" : offLabel)
                 .attr("onIcon", button.getOnIcon(), null)
                 .attr("offIcon", button.getOffIcon(), null);
 

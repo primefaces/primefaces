@@ -107,11 +107,14 @@ public class TextEditorRenderer extends CoreRenderer {
 
         String style = editor.getStyle();
         String styleClass = editor.getStyleClass();
+        styleClass = (styleClass != null) ? TextEditor.EDITOR_CLASS + " " + styleClass : TextEditor.EDITOR_CLASS;
 
         writer.startElement("div", editor);
-        writer.writeAttribute("id", clientId , null);
-        if (style != null) writer.writeAttribute("style", style, null);
-        if (styleClass != null) writer.writeAttribute("class", editor.getStyleClass(), null);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("class", styleClass, null);
+        if (style != null) {
+            writer.writeAttribute("style", style, null);
+        }
 
         if (toolbar != null && editor.isToolbarVisible()) {
             writer.startElement("div", editor);
@@ -143,7 +146,7 @@ public class TextEditorRenderer extends CoreRenderer {
     private void encodeScript(FacesContext context, TextEditor editor) throws IOException {
         String clientId = editor.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("TextEditor", editor.resolveWidgetVar(), clientId)
+        wb.init("TextEditor", editor.resolveWidgetVar(), clientId)
                 .attr("toolbarVisible", editor.isToolbarVisible())
                 .attr("readOnly", editor.isReadonly(), false)
                 .attr("placeholder", editor.getPlaceholder(), null)

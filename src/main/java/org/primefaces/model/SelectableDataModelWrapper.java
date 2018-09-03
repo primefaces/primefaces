@@ -26,10 +26,12 @@ public class SelectableDataModelWrapper extends ListDataModel implements Selecta
         setWrappedData(data);
     }
 
+    @Override
     public Object getRowData(String rowKey) {
         return original.getRowData(rowKey);
     }
 
+    @Override
     public Object getRowKey(Object object) {
         return original.getRowKey(object);
     }

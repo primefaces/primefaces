@@ -32,6 +32,7 @@ public class ChartModel implements Serializable {
     private String extender;
     private boolean resetAxesOnResize = true;
     private String dataRenderMode = "value";
+    private String legendLabel;
 
     public String getTitle() {
         return title;
@@ -128,12 +129,20 @@ public class ChartModel implements Serializable {
     public void setLegendEscapeHtml(boolean legendEscapeHtml) {
         this.legendEscapeHtml = legendEscapeHtml;
     }
-    
+
     public String getDataRenderMode() {
         return dataRenderMode;
     }
 
     public void setDataRenderMode(String dataRenderMode) {
         this.dataRenderMode = dataRenderMode;
+    }
+
+    public String getLegendLabel() {
+        return legendLabel;
+    }
+
+    public void setLegendLabel(String legendLabel) {
+        this.legendLabel = legendLabel;
     }
 }

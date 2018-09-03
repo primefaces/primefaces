@@ -25,6 +25,7 @@ public class DialogViewHandler extends ViewHandlerWrapper {
 
     private ViewHandler wrapped;
 
+    @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public DialogViewHandler(ViewHandler wrapped) {
         this.wrapped = wrapped;
     }

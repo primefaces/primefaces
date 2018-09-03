@@ -15,8 +15,8 @@
  */
 package org.primefaces.component.outputlabel;
 
-import org.primefaces.util.EditableValueHolderState;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,21 +26,20 @@ import javax.el.ValueExpression;
 import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.component.UISelectBoolean;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.metadata.ConstraintDescriptor;
+
 import org.primefaces.component.api.InputHolder;
-import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.CompositeUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.*;
 
 public class OutputLabelRenderer extends CoreRenderer {
 
@@ -106,14 +105,13 @@ public class OutputLabelRenderer extends CoreRenderer {
                             styleClass.append(" ui-state-error");
                         }
 
-                        
                         if ("auto".equals(indicateRequired)) {
                             state.setRequired(input.isRequired());
 
                             // fallback if required=false
                             if (!state.isRequired()) {
-                                PrimeConfiguration config = RequestContext.getCurrentInstance(context).getApplicationContext().getConfig();
-                                if (config.isBeanValidationAvailable() && isNotNullDefined(input, context)) {
+                                PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
+                                if (applicationContext.getConfig().isBeanValidationEnabled() && isBeanValidationDefined(input, context)) {
                                     state.setRequired(true);
                                 }
                             }
@@ -166,30 +164,40 @@ public class OutputLabelRenderer extends CoreRenderer {
         writer.endElement("span");
     }
 
-    protected boolean isNotNullDefined(UIInput input, FacesContext context) {
-
-        // skip @NotNull check
-        // see GitHub #14
-        if (!RequestContext.getCurrentInstance(context).getApplicationContext().getConfig().isInterpretEmptyStringAsNull()) {
-            return false;
-        }
-
+    protected boolean isBeanValidationDefined(UIInput input, FacesContext context) {
         try {
-            Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(
-                    context,
-                    RequestContext.getCurrentInstance(context),
+            PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
+            Set<ConstraintDescriptor<?>> constraints = BeanValidationMetadataExtractor.extractDefaultConstraintDescriptors(context,
+                    applicationContext,
                     ValueExpressionAnalyzer.getExpression(context.getELContext(), input.getValueExpression("value")));
-            if (constraints != null && !constraints.isEmpty()) {
-                for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
-                    if (constraintDescriptor.getAnnotation().annotationType().equals(NotNull.class)) {
-                        return true;
-                    }
+
+            if (constraints == null || constraints.isEmpty()) {
+                return false;
+            }
+
+            for (ConstraintDescriptor<?> constraintDescriptor : constraints) {
+                Class<? extends Annotation> annotationType = constraintDescriptor.getAnnotation().annotationType();
+                // GitHub #14 skip @NotNull check
+                if (annotationType.equals(NotNull.class)) {
+                    return applicationContext.getConfig().isInterpretEmptyStringAsNull();
+                }
+
+                // GitHub #3052 @NotBlank,@NotEmpty Hibernate and BeanValidator 2.0
+                String annotationClassName = annotationType.getSimpleName();
+                if ("NotBlank".equals(annotationClassName) || "NotEmpty".equals(annotationClassName)) {
+                    return true;
+                }
+
+                // GitHub #3986
+                if (input instanceof UISelectBoolean && annotationType.equals(AssertTrue.class)) {
+                    return true;
                 }
             }
         }
         catch (PropertyNotFoundException e) {
-            String message = "Skip evaluating @NotNull for outputLabel and referenced component \"" + input.getClientId(context) + "\" because"
-                    + " the ValueExpression of the \"value\" attribute"
+            String message = "Skip evaluating [@NotNull,@NotBlank,@NotEmpty,@AssertTrue] for outputLabel and referenced component \""
+                    + input.getClientId(context)
+                    + "\" because the ValueExpression of the \"value\" attribute"
                     + " isn't resolvable completely (e.g. a sub-expression returns null)";
             LOG.log(Level.FINE, message);
         }
@@ -199,7 +207,7 @@ public class OutputLabelRenderer extends CoreRenderer {
 
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
-        //Do nothing
+        // Do nothing
     }
 
     @Override

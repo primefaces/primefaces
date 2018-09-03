@@ -43,7 +43,7 @@ import javax.faces.view.facelets.TagException;
 import javax.faces.view.facelets.TagHandler;
 
 import org.primefaces.behavior.ajax.AjaxBehaviorHandler;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeApplicationContext;
 
 public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         extends TagHandler implements BehaviorHolderAttachedObjectHandler {
@@ -87,13 +87,16 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
             }
 
             boolean supportedEvent = false;
-            for (AttachedObjectTarget target : targetList) {
-                if (target instanceof BehaviorHolderAttachedObjectTarget) {
-                    BehaviorHolderAttachedObjectTarget behaviorTarget = (BehaviorHolderAttachedObjectTarget) target;
-                    if ((null != eventName && eventName.equals(behaviorTarget.getName()))
-                            || (null == eventName && behaviorTarget.isDefaultEvent())) {
-                        supportedEvent = true;
-                        break;
+            if (targetList != null) {
+                for (int i = 0; i < targetList.size(); i++) {
+                    AttachedObjectTarget target = targetList.get(i);
+                    if (target instanceof BehaviorHolderAttachedObjectTarget) {
+                        BehaviorHolderAttachedObjectTarget behaviorTarget = (BehaviorHolderAttachedObjectTarget) target;
+                        if ((null != eventName && eventName.equals(behaviorTarget.getName()))
+                                || (null == eventName && behaviorTarget.isDefaultEvent())) {
+                            supportedEvent = true;
+                            break;
+                        }
                     }
                 }
             }
@@ -107,7 +110,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
                 else {
                     addAttachedObjectHandlerToMyFaces(parent, faceletContext);
                 }
-            } 
+            }
             else {
                 if (!tagApplied) {
                     throw new TagException(tag, "Composite component does not support event " + eventName);
@@ -116,7 +119,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         }
         else if (parent instanceof ClientBehaviorHolder) {
             applyAttachedObject(faceletContext, parent);
-        } 
+        }
         else {
             throw new TagException(this.tag, "Unable to attach behavior to non-ClientBehaviorHolder parent");
         }
@@ -203,7 +206,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
     protected void addAttachedObjectHandlerToMojarra(UIComponent component) {
 
         String key = MOJARRA_ATTACHED_OBJECT_HANDLERS_KEY;
-        if (RequestContext.getCurrentInstance().getApplicationContext().getConfig().isAtLeastJSF22()) {
+        if (PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment().isAtLeastJsf22()) {
             key = MOJARRA_22_ATTACHED_OBJECT_HANDLERS_KEY;
         }
 

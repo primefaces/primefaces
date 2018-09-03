@@ -19,10 +19,12 @@ import java.util.Map;
 
 public class DoubleConverter extends javax.faces.convert.DoubleConverter implements ClientConverter {
 
+    @Override
     public Map<String, Object> getMetadata() {
         return null;
     }
 
+    @Override
     public String getConverterId() {
         return DoubleConverter.CONVERTER_ID;
     }

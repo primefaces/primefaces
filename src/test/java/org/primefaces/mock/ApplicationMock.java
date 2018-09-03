@@ -44,7 +44,7 @@ public class ApplicationMock extends Application {
 
     @Override
     public void setActionListener(ActionListener listener) {
-        
+
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ApplicationMock extends Application {
 
     @Override
     public void setDefaultLocale(Locale locale) {
-        
+
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ApplicationMock extends Application {
 
     @Override
     public void setDefaultRenderKitId(String renderKitId) {
-        
+
     }
 
     @Override
@@ -74,7 +74,7 @@ public class ApplicationMock extends Application {
 
     @Override
     public void setMessageBundle(String bundle) {
-        
+
     }
 
     @Override
@@ -84,7 +84,7 @@ public class ApplicationMock extends Application {
 
     @Override
     public void setNavigationHandler(NavigationHandler handler) {
-        
+
     }
 
     @Override
@@ -94,7 +94,7 @@ public class ApplicationMock extends Application {
 
     @Override
     public void setPropertyResolver(PropertyResolver resolver) {
-        
+
     }
 
     @Override
@@ -104,7 +104,7 @@ public class ApplicationMock extends Application {
 
     @Override
     public void setVariableResolver(VariableResolver resolver) {
-        
+
     }
 
     @Override
@@ -114,7 +114,7 @@ public class ApplicationMock extends Application {
 
     @Override
     public void setViewHandler(ViewHandler handler) {
-        
+
     }
 
     @Override
@@ -124,12 +124,12 @@ public class ApplicationMock extends Application {
 
     @Override
     public void setStateManager(StateManager manager) {
-        
+
     }
 
     @Override
     public void addComponent(String componentType, String componentClass) {
-        
+
     }
 
     @Override
@@ -149,12 +149,12 @@ public class ApplicationMock extends Application {
 
     @Override
     public void addConverter(String converterId, String converterClass) {
-        
+
     }
 
     @Override
     public void addConverter(Class<?> targetClass, String converterClass) {
-        
+
     }
 
     @Override
@@ -189,12 +189,12 @@ public class ApplicationMock extends Application {
 
     @Override
     public void setSupportedLocales(Collection<Locale> locales) {
-        
+
     }
 
     @Override
     public void addValidator(String validatorId, String validatorClass) {
-        
+
     }
 
     @Override
@@ -211,11 +211,11 @@ public class ApplicationMock extends Application {
     public ValueBinding createValueBinding(String ref) throws ReferenceSyntaxException {
         return null;
     }
-    
+
     @Override
     public void publishEvent(FacesContext context,
                              Class<? extends SystemEvent> systemEventClass,
                              Object source) {
-        
+
     }
 }

@@ -15,19 +15,21 @@
  */
 package org.primefaces.component.breadcrumb;
 
+import java.io.IOException;
+import java.util.List;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.List;
-
 public class BreadCrumbRenderer extends BaseMenuRenderer {
 
+    @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         BreadCrumb breadCrumb = (BreadCrumb) menu;
@@ -35,7 +37,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         String styleClass = breadCrumb.getStyleClass();
         styleClass = styleClass == null ? BreadCrumb.CONTAINER_CLASS : BreadCrumb.CONTAINER_CLASS + " " + styleClass;
         int elementCount = menu.getElementsCount();
-        List<MenuElement> menuElements = (List<MenuElement>) menu.getElements();
+        List<MenuElement> menuElements = menu.getElements();
         boolean isIconHome = breadCrumb.getHomeDisplay().equals("icon");
 
         //home icon for first item

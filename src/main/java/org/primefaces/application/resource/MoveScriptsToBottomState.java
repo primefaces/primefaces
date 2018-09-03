@@ -17,38 +17,49 @@ package org.primefaces.application.resource;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class MoveScriptsToBottomState implements Serializable {
-    
-    private List<String> includes;
-    private List<String> inlines;
+
+    private HashMap<String, ArrayList<String>> includes;
+    private HashMap<String, ArrayList<String>> inlines;
     private int savedInlineTags;
 
     public MoveScriptsToBottomState() {
-        includes = new ArrayList<String>(20);
-        inlines = new ArrayList<String>(50);
-        savedInlineTags = 0;
+        includes = new HashMap<>(1);
+        inlines = new HashMap<>(1);
+        savedInlineTags = -1;
     }
-    
-    public void addInclude(StringBuilder src) {
+
+    public void addInclude(String type, StringBuilder src) {
         if (src.length() > 0) {
-            includes.add(src.toString());
+            ArrayList<String> includeList = includes.get(type);
+            if (includeList == null) {
+                includeList = new ArrayList<>(20);
+                includes.put(type, includeList);
+            }
+            includeList.add(src.toString());
         }
     }
-    
-    public void addInline(StringBuilder content) {
+
+    public void addInline(String type, StringBuilder content) {
         if (content.length() > 0) {
-            inlines.add(content.toString());
+            ArrayList<String> inlineList = inlines.get(type);
+            if (inlineList == null) {
+                inlineList = new ArrayList<>(100);
+                inlines.put(type, inlineList);
+            }
+            inlineList.add(content.toString());
+
             savedInlineTags++;
         }
     }
 
-    public List<String> getIncludes() {
+    public HashMap<String, ArrayList<String>> getIncludes() {
         return includes;
     }
 
-    public List<String> getInlines() {
+    public HashMap<String, ArrayList<String>> getInlines() {
         return inlines;
     }
 

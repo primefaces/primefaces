@@ -18,9 +18,9 @@ package org.primefaces.component.imageswitch;
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
-
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -53,7 +53,7 @@ public class ImageSwitchRenderer extends CoreRenderer {
         writer.endElement("div");
 
         WidgetBuilder wb = getWidgetBuilder(context);
-        wb.initWithDomReady("ImageSwitch", imageSwitch.resolveWidgetVar(), clientId)
+        wb.init("ImageSwitch", imageSwitch.resolveWidgetVar(), clientId)
                 .attr("fx", imageSwitch.getEffect())
                 .attr("speed", imageSwitch.getSpeed())
                 .attr("timeout", slideshowSpeed)

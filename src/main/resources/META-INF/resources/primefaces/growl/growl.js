@@ -26,8 +26,10 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
         
         this.jq.css('z-index', ++PrimeFaces.zindex);
 
-        //clear previous messages
-        this.removeAll();
+        if(!this.cfg.keepAlive) {
+            //clear previous messages
+            this.removeAll();
+        }
 
         $.each(msgs, function(index, msg) {
             _self.renderMessage(msg);

@@ -17,5 +17,5 @@ package org.primefaces.component.api;
 
 public interface Widget {
 
-    public String resolveWidgetVar();
+    String resolveWidgetVar();
 }

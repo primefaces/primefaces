@@ -27,17 +27,9 @@ PrimeFaces.widget.SelectBooleanCheckbox = PrimeFaces.widget.BaseWidget.extend({
             });
 
             this.input.on('focus.selectBooleanCheckbox', function() {
-                if($(this).prop('checked')) {
-                    $this.box.removeClass('ui-state-active');
-                }
-
                 $this.box.addClass('ui-state-focus');
             })
             .on('blur.selectBooleanCheckbox', function() {
-                if($(this).prop('checked')) {
-                    $this.box.addClass('ui-state-active');
-                }
-
                 $this.box.removeClass('ui-state-focus');
             })
             .on('change.selectBooleanCheckbox', function(e) {

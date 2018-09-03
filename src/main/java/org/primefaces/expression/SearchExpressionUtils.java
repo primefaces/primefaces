@@ -35,7 +35,7 @@ public class SearchExpressionUtils {
     public static boolean isHintSet(int hints, int hint) {
         return (hints & hint) != 0;
     }
-    
+
      // used by p:resolveClientId
     public static String resolveClientId(String expression, UIComponent source) {
         return SearchExpressionFacade.resolveClientId(
@@ -43,7 +43,7 @@ public class SearchExpressionUtils {
                 source,
                 expression);
     }
-    
+
     // used by p:resolveClientIds
     public static String resolveClientIds(String expressions, UIComponent source) {
         return SearchExpressionFacade.resolveClientIds(
@@ -51,7 +51,7 @@ public class SearchExpressionUtils {
                 source,
                 expressions);
     }
-    
+
     // used by p:resolveWidgetVar
     public static String resolveWidgetVar(String expression, UIComponent component) {
         UIComponent resolvedComponent = SearchExpressionFacade.resolveComponent(

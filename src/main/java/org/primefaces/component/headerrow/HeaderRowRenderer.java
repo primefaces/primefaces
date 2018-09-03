@@ -16,9 +16,11 @@
 package org.primefaces.component.headerrow;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.renderkit.CoreRenderer;
@@ -37,17 +39,26 @@ public class HeaderRowRenderer extends CoreRenderer {
         writer.writeAttribute("class", DataTable.HEADER_ROW_CLASS, null);
 
         boolean isFirstColumn = true;
-        for (UIComponent kid : row.getChildren()) {
-            if (kid.isRendered() && kid instanceof Column) {
-                Column column = (Column) kid;
+        for (int i = 0; i < row.getChildCount(); i++) {
+            UIComponent child = row.getChildren().get(i);
+            if (child.isRendered() && child instanceof Column) {
+                Column column = (Column) child;
                 String style = column.getStyle();
                 String styleClass = column.getStyleClass();
 
                 writer.startElement("td", null);
-                if (style != null) writer.writeAttribute("style", style, null);
-                if (styleClass != null) writer.writeAttribute("class", styleClass, null);
-                if (column.getRowspan() != 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
-                if (column.getColspan() != 1) writer.writeAttribute("colspan", column.getColspan(), null);
+                if (style != null) {
+                    writer.writeAttribute("style", style, null);
+                }
+                if (styleClass != null) {
+                    writer.writeAttribute("class", styleClass, null);
+                }
+                if (column.getRowspan() != 1) {
+                    writer.writeAttribute("rowspan", column.getRowspan(), null);
+                }
+                if (column.getColspan() != 1) {
+                    writer.writeAttribute("colspan", column.getColspan(), null);
+                }
 
                 if (isExpandableRowGroups && isFirstColumn) {
                     String ariaLabel = MessageFactory.getMessage(DataTable.ROW_GROUP_TOGGLER, null);

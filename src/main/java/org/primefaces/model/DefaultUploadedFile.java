@@ -15,12 +15,15 @@
  */
 package org.primefaces.model;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 
 import org.apache.commons.fileupload.FileItem;
+import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.util.BoundedInputStream;
+import org.primefaces.util.FileUploadUtils;
+import org.primefaces.util.SafeFile;
 
 /**
  *
@@ -29,36 +32,44 @@ import org.apache.commons.fileupload.FileItem;
 public class DefaultUploadedFile implements UploadedFile, Serializable {
 
     private FileItem fileItem;
+    private Long sizeLimit;
 
     public DefaultUploadedFile() {
     }
 
-    public DefaultUploadedFile(FileItem fileItem) {
+    public DefaultUploadedFile(FileItem fileItem, FileUpload fileUpload) {
         this.fileItem = fileItem;
+        this.sizeLimit = fileUpload.getSizeLimit();
     }
 
+    @Override
     public String getFileName() {
-        return fileItem.getName();
+        return FileUploadUtils.getValidFilename(fileItem.getName());
     }
 
+    @Override
     public InputStream getInputstream() throws IOException {
-        return fileItem.getInputStream();
+        return sizeLimit == null ? fileItem.getInputStream() : new BoundedInputStream(fileItem.getInputStream(), sizeLimit);
     }
 
+    @Override
     public long getSize() {
         return fileItem.getSize();
     }
 
+    @Override
     public byte[] getContents() {
         return fileItem.get();
     }
 
+    @Override
     public String getContentType() {
         return fileItem.getContentType();
     }
 
+    @Override
     public void write(String filePath) throws Exception {
-        fileItem.write(new File(filePath));
+        fileItem.write(new SafeFile(filePath));
     }
 
 }

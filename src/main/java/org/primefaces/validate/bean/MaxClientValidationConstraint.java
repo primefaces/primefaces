@@ -26,8 +26,9 @@ public class MaxClientValidationConstraint implements ClientValidationConstraint
     public static final String MESSAGE_METADATA = "data-p-max-msg";
     private static final String MESSAGE_ID = "{javax.validation.constraints.Max.message}";
 
+    @Override
     public Map<String, Object> getMetadata(ConstraintDescriptor constraintDescriptor) {
-        Map<String, Object> metadata = new HashMap<String, Object>();
+        Map<String, Object> metadata = new HashMap<>();
         Map attrs = constraintDescriptor.getAttributes();
         Object message = attrs.get(ATTR_MESSAGE);
 
@@ -40,6 +41,7 @@ public class MaxClientValidationConstraint implements ClientValidationConstraint
         return metadata;
     }
 
+    @Override
     public String getValidatorId() {
         return Max.class.getSimpleName();
     }
