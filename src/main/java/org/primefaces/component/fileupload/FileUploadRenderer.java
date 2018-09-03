@@ -26,6 +26,7 @@ import javax.faces.convert.ConverterException;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -113,7 +114,7 @@ public class FileUploadRenderer extends CoreRenderer {
             wb.init("SimpleFileUpload", fileUpload.resolveWidgetVar(), clientId)
                     .attr("skinSimple", fileUpload.isSkinSimple(), false)
                     .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
-                    .attr("invalidSizeMessage", escapeText(fileUpload.getInvalidSizeMessage()), null);
+                    .attr("invalidSizeMessage", EscapeUtils.forJavaScript(fileUpload.getInvalidSizeMessage()), null);
         }
 
         wb.finish();

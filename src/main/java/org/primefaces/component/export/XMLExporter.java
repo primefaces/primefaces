@@ -21,7 +21,6 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.XMLUtils;
 
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
@@ -140,8 +139,7 @@ public class XMLExporter extends Exporter {
             throw new FacesException("No suitable xml tag found for " + column);
         }
 
-        // #459 return columnTag.replaceAll(" ", "_");
-        return XMLUtils.escapeTag(columnTag);
+        return EscapeUtils.forXml(columnTag);
     }
 
     protected void addColumnValue(StringBuilder builder, List<UIComponent> components, String tag, UIColumn column) throws IOException {

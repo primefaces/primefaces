@@ -23,6 +23,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -137,8 +138,13 @@ public class TriStateCheckboxRenderer extends InputRenderer {
         String stateTwoTitle = checkbox.getStateTwoTitle() == null ? "" : checkbox.getStateTwoTitle();
         String stateThreeTitle = checkbox.getStateThreeTitle() == null ? "" : checkbox.getStateThreeTitle();
 
-        String statesTitles = "{\"titles\": [\"" + escapeText(stateOneTitle) + "\",\"" + escapeText(stateTwoTitle) + "\",\"" +
-                escapeText(stateThreeTitle) + "\"]}";
+        String statesTitles = "{\"titles\": [\""
+                + EscapeUtils.forJavaScript(stateOneTitle)
+                + "\",\""
+                + EscapeUtils.forJavaScript(stateTwoTitle)
+                + "\",\""
+                + EscapeUtils.forJavaScript(stateThreeTitle)
+                + "\"]}";
 
         String iconClass = "ui-chkbox-icon ui-c"; //HTML.CHECKBOX_ICON_CLASS;
         String activeTitle = "";

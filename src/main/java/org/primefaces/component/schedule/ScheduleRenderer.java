@@ -33,6 +33,7 @@ import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 import org.primefaces.model.ScheduleRenderingMode;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class ScheduleRenderer extends CoreRenderer {
@@ -109,7 +110,7 @@ public class ScheduleRenderer extends CoreRenderer {
 
                 writer.write("{");
                 writer.write("\"id\": \"" + event.getId() + "\"");
-                writer.write(",\"title\": \"" + escapeText(event.getTitle()) + "\"");
+                writer.write(",\"title\": \"" + EscapeUtils.forJavaScript(event.getTitle()) + "\"");
                 writer.write(",\"start\": \"" + iso.format(event.getStartDate()) + "\"");
                 writer.write(",\"end\": \"" + iso.format(event.getEndDate()) + "\"");
                 writer.write(",\"allDay\":" + event.isAllDay());
@@ -118,10 +119,10 @@ public class ScheduleRenderer extends CoreRenderer {
                     writer.write(",\"className\":\"" + className + "\"");
                 }
                 if (description != null) {
-                    writer.write(",\"description\":\"" + escapeText(description) + "\"");
+                    writer.write(",\"description\":\"" + EscapeUtils.forJavaScript(description) + "\"");
                 }
                 if (url != null) {
-                    writer.write(",\"url\":\"" + escapeText(url) + "\"");
+                    writer.write(",\"url\":\"" + EscapeUtils.forJavaScript(url) + "\"");
                 }
                 if (renderingMode != null) {
                     writer.write(",\"rendering\":\"" + renderingMode.getRendering() + "\"");

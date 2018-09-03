@@ -26,6 +26,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.UINotificationRenderer;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -94,8 +95,8 @@ public class GrowlRenderer extends UINotificationRenderer {
                     first = false;
                 }
 
-                String summary = escapeText(message.getSummary());
-                String detail = escapeText(message.getDetail());
+                String summary = EscapeUtils.forJavaScript(message.getSummary());
+                String detail = EscapeUtils.forJavaScript(message.getDetail());
 
                 writer.write("{");
 

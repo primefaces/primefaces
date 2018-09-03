@@ -28,6 +28,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.behavior.ajax.AjaxBehavior;
 import org.primefaces.model.map.*;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class GMapRenderer extends CoreRenderer {
@@ -187,7 +188,7 @@ public class GMapRenderer extends CoreRenderer {
 
         writer.write(",id:'" + marker.getId() + "'");
         if (marker.getTitle() != null) {
-            writer.write(",title:\"" + escapeText(marker.getTitle()) + "\"");
+            writer.write(",title:\"" + EscapeUtils.forJavaScript(marker.getTitle()) + "\"");
         }
         if (marker.getIcon() != null) {
             writer.write(",icon:'" + marker.getIcon() + "'");
