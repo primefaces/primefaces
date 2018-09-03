@@ -74,7 +74,6 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         //button
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", styleClass, null);
         if (disabled) {
             writer.writeAttribute("disabled", "disabled", null);
