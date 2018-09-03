@@ -17,10 +17,12 @@ package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
 import java.util.Map;
+
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.component.datatable.DataTable;
@@ -45,7 +47,7 @@ public class RowEditFeature implements DataTableFeature {
         String clientId = table.getClientId(context);
         int editedRowId = Integer.parseInt(params.get(clientId + "_rowEditIndex"));
         table.setRowIndex(editedRowId);
-        
+
         if (table.isRowEditRequest(context)) {
             String action = params.get(clientId + "_rowEditAction");
 

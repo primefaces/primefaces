@@ -17,7 +17,9 @@ package org.primefaces.component.datatable.feature;
 
 import java.io.IOException;
 import java.util.Map;
+
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 import org.primefaces.component.datatable.TableState;
@@ -34,7 +36,7 @@ public class DraggableColumnsFeature implements DataTableFeature {
         }
 
         table.setColumns(table.findOrderedColumns(columnOrderParam));
-        
+
         if (table.isMultiViewState()) {
             TableState ts = table.getTableState(true);
             ts.setOrderedColumnsAsString(columnOrderParam);

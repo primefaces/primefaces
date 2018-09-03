@@ -27,6 +27,7 @@ import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
+
 import org.primefaces.context.PrimeApplicationContext;
 
 /**
@@ -73,7 +74,7 @@ public class ImportEnumTagHandler extends TagHandler {
      * Gets the {@link Class} from the {@link TagAttribute}.
      *
      * @param attribute The {@link TagAttribute}.
-     * @param ctx The {@link FaceletContext}.
+     * @param ctx       The {@link FaceletContext}.
      * @return The {@link Class}.
      */
     protected Class<?> getClassFromAttribute(TagAttribute attribute, FaceletContext ctx) {
@@ -91,8 +92,8 @@ public class ImportEnumTagHandler extends TagHandler {
      * Get all enum values of the given {@link Class}.
      *
      * @param facesContext The {@link FacesContext}.
-     * @param type The enum class.
-     * @param allSuffix The suffix to access a array with all enum values.
+     * @param type         The enum class.
+     * @param allSuffix    The suffix to access a array with all enum values.
      * @return A {@link Map} with the enum values.
      */
     protected Map<String, Object> getEnumValues(FacesContext facesContext, Class<?> type, String allSuffix) {

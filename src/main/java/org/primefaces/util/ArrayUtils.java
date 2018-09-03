@@ -24,16 +24,16 @@ public class ArrayUtils {
         if (array == null || array.length == 0) {
             return false;
         }
-        
+
         for (int i = 0; i < array.length; i++) {
             if (array[i].equals(object)) {
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
     public static boolean containsIgnoreCase(String[] array, String searchedText) {
 
         if (array == null || array.length == 0) {

@@ -100,6 +100,7 @@ public class FileUploadRenderer extends CoreRenderer {
                     .nativeAttr("onAdd", fileUpload.getOnAdd())
                     .callback("onstart", "function()", fileUpload.getOnstart())
                     .callback("onerror", "function()", fileUpload.getOnerror())
+                    .callback("oncancel", "function()", fileUpload.getOncancel())
                     .callback("oncomplete", "function(args)", fileUpload.getOncomplete());
 
             String allowTypes = fileUpload.getAllowTypes();
@@ -282,6 +283,7 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("tabindex", "-1", null);
+        writer.writeAttribute("aria-hidden", "true", null);
 
         if (fileUpload.isMultiple()) {
             writer.writeAttribute("multiple", "multiple", null);
@@ -305,6 +307,7 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.writeAttribute("type", "file", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("name", clientId, null);
+        writer.writeAttribute("aria-hidden", "true", null);
 
         if (fileUpload.isMultiple()) {
             writer.writeAttribute("multiple", "multiple", null);

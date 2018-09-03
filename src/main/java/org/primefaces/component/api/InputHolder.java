@@ -23,20 +23,20 @@ public interface InputHolder {
     /**
      * @return Client id of the input element
      */
-    public String getInputClientId();
+    String getInputClientId();
 
     /**
      * @return Client id of the validatable input element
      */
-    public String getValidatableInputClientId();
+    String getValidatableInputClientId();
 
     /**
      * @return Client id of the label for aria
      */
-    public String getLabelledBy();
+    String getLabelledBy();
 
     /**
      * @return Sets the id of the label for aria
      */
-    public void setLabelledBy(String id);
+    void setLabelledBy(String id);
 }

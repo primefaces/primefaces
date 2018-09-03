@@ -21,7 +21,7 @@
         PrimeFaces.skinInput(this.jq);
 
         //Hide overlay on resize
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, null, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', null, function() {
             $.keypad._hideKeypad();
         });
     }

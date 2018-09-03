@@ -32,7 +32,7 @@ public class AgentUtils {
             return userAgent.contains("Edge");
         }
     }
-    
+
     public static boolean isIE(FacesContext context) {
         String userAgent = context.getExternalContext().getRequestHeaderMap().get("User-Agent");
 

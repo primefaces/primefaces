@@ -22,7 +22,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.config.PrimeConfiguration;
 
 /**
- * Helper to generate javascript code of an ajax call
+ * Helper to generate scripts for widgets.
  */
 public class WidgetBuilder {
 
@@ -61,7 +61,7 @@ public class WidgetBuilder {
 
     public WidgetBuilder init(String widgetClass, String widgetVar, String id) throws IOException {
         this.renderScriptBlock(id);
-        
+
         // AJAX case: since jQuery 3 document ready ($(function() {})) are executed async
         //            this would mean that our oncomplete handlers are probably called before the scripts in the update nodes
         // or
@@ -95,7 +95,7 @@ public class WidgetBuilder {
         return this;
     }
 
-    private void renderScriptBlock(String id) throws IOException {
+    protected void renderScriptBlock(String id) throws IOException {
         ResponseWriter rw = context.getResponseWriter();
         rw.startElement("script", null);
         rw.writeAttribute("id", id + "_s", null);
@@ -106,11 +106,11 @@ public class WidgetBuilder {
      * This should only be used internally if the selector is directly used by jQuery on the client.
      * If PFS is used and specified by the user, {@link #attr(java.lang.String, java.lang.String)} should be used
      * as the users have to escape colons like @(myForm\:myId).
-     * 
+     *
      * @param name
      * @param value
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     public WidgetBuilder selectorAttr(String name, String value) throws IOException {
         if (value != null) {
@@ -124,7 +124,7 @@ public class WidgetBuilder {
 
         return this;
     }
-    
+
     public WidgetBuilder attr(String name, String value) throws IOException {
         if (value != null) {
             ResponseWriter rw = context.getResponseWriter();

@@ -22,5 +22,5 @@ import java.util.Collection;
  */
 public interface MixedClientBehaviorHolder {
 
-    public Collection<String> getUnobstrusiveEventNames();
+    Collection<String> getUnobstrusiveEventNames();
 }

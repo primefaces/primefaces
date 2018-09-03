@@ -50,8 +50,8 @@ PrimeFaces.widget.KeyFilter = PrimeFaces.widget.BaseWidget.extend({
 
         if (cfg.preventPaste) {
             //disable paste
-            input.bind('paste', function(e) {
-                    e.preventDefault();
+            input.on('paste', function(e) {
+                e.preventDefault();
             });
         }
     }

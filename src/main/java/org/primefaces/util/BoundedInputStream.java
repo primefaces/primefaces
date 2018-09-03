@@ -36,7 +36,7 @@ public class BoundedInputStream extends InputStream {
 
     // changed by PrimeFaces: copied from org.apache.commons.io.IOUtils.EOF
     private static final int EOF = -1;
-    
+
     /** the wrapped input stream */
     private final InputStream in;
 
@@ -47,7 +47,7 @@ public class BoundedInputStream extends InputStream {
     private long pos = 0;
 
     /** the marked position */
-    private long mark = EOF; 
+    private long mark = EOF;
 
     /** flag if close should be propagated */
     private boolean propagateClose = true;
@@ -116,17 +116,17 @@ public class BoundedInputStream extends InputStream {
      */
     @Override
     public int read(final byte[] b, final int off, final int len) throws IOException {
-        if (max>=0 && pos>=max) {
+        if (max >= 0 && pos >= max) {
             return EOF;
         }
-        final long maxRead = max>=0 ? Math.min(len, max-pos) : len;
-        final int bytesRead = in.read(b, off, (int)maxRead);
+        final long maxRead = max >= 0 ? Math.min(len, max - pos) : len;
+        final int bytesRead = in.read(b, off, (int) maxRead);
 
-        if (bytesRead==EOF) {
+        if (bytesRead == EOF) {
             return EOF;
         }
 
-        pos+=bytesRead;
+        pos += bytesRead;
         return bytesRead;
     }
 
@@ -138,9 +138,9 @@ public class BoundedInputStream extends InputStream {
      */
     @Override
     public long skip(final long n) throws IOException {
-        final long toSkip = max>=0 ? Math.min(n, max-pos) : n;
+        final long toSkip = max >= 0 ? Math.min(n, max - pos) : n;
         final long skippedBytes = in.skip(toSkip);
-        pos+=skippedBytes;
+        pos += skippedBytes;
         return skippedBytes;
     }
 
@@ -149,7 +149,7 @@ public class BoundedInputStream extends InputStream {
      */
     @Override
     public int available() throws IOException {
-        if (max>=0 && pos>=max) {
+        if (max >= 0 && pos >= max) {
             return 0;
         }
         return in.available();

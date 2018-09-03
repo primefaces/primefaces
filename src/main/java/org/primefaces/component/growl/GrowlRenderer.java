@@ -23,14 +23,15 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.UINotificationRenderer;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class GrowlRenderer extends UINotificationRenderer {
-    
-    private final static Logger logger = Logger.getLogger(GrowlRenderer.class.getName());
+
+    private static final Logger logger = Logger.getLogger(GrowlRenderer.class.getName());
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -56,10 +57,10 @@ public class GrowlRenderer extends UINotificationRenderer {
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Growl", growl.resolveWidgetVar(), clientId)
-            .attr("sticky", growl.isSticky())
-            .attr("life", growl.getLife())
-            .attr("escape", growl.isEscape())
-            .attr("keepAlive", growl.isKeepAlive());
+                .attr("sticky", growl.isSticky())
+                .attr("life", growl.getLife())
+                .attr("escape", growl.isEscape())
+                .attr("keepAlive", growl.isKeepAlive());
 
         writer.write(",msgs:");
         encodeMessages(context, growl);

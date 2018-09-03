@@ -17,6 +17,7 @@ package org.primefaces.component.selectoneradio;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
@@ -29,6 +30,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
+
 import org.primefaces.component.radiobutton.RadioButton;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.SelectOneRenderer;
@@ -181,7 +183,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     protected void encodeSelectItems(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems, String layout)
             throws IOException {
-        
+
         if (layout.equals("lineDirection")) {
             encodeLineLayout(context, radio, selectItems);
         }
@@ -293,8 +295,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     }
 
     protected void encodeOption(FacesContext context, SelectOneRadio radio, SelectItem option, String id, String name,
-            Converter converter, boolean selected, boolean disabled) throws IOException {
-        
+                                Converter converter, boolean selected, boolean disabled) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, radio, converter, option.getValue());
         String styleClass = radio.isPlain() ? HTML.RADIOBUTTON_NATIVE_CLASS : HTML.RADIOBUTTON_CLASS;
@@ -311,8 +313,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     }
 
     protected void encodeOptionInput(FacesContext context, SelectOneRadio radio, String id, String name, boolean checked,
-            boolean disabled, String value) throws IOException {
-        
+                                     boolean disabled, String value) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
@@ -346,8 +348,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     }
 
     protected void encodeOptionLabel(FacesContext context, SelectOneRadio radio, String containerClientId, SelectItem option,
-            boolean disabled) throws IOException {
-        
+                                     boolean disabled) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         String label = option.getLabel();
 
@@ -394,8 +396,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     protected boolean isSelected(FacesContext context, SelectOneRadio radio, SelectItem selectItem, String currentValue) {
         String itemStrValue = getOptionAsString(context, radio, radio.getConverter(), selectItem.getValue());
         return (itemStrValue == null || "".equals(itemStrValue))
-                ? currentValue == null || "".equals(currentValue)
-                : itemStrValue.equals(currentValue);
+               ? currentValue == null || "".equals(currentValue)
+               : itemStrValue.equals(currentValue);
     }
 
     protected void encodeRadioButton(FacesContext context, SelectOneRadio radio, RadioButton button) throws IOException {

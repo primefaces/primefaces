@@ -1166,7 +1166,12 @@ $('selector').tabs(); // And instantiate it */
 			var thisInst = inst;
 			var activeClasses = this._keyDownClass +
 				(inst.options.useThemeRoller ? ' ui-state-active' : '');
-			html.find('button').mousedown(function() { $(this).addClass(activeClasses); }).
+			
+			// PF #3255
+			var buttons = html.find('button');
+			PrimeFaces.skinButton(buttons);
+
+			buttons.mousedown(function() { $(this).addClass(activeClasses); }).
 				mouseup(function() { $(this).removeClass(activeClasses); }).
 				mouseout(function() { $(this).removeClass(activeClasses); }).
 				filter('.' + this._keyClass).

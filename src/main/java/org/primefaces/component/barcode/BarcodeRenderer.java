@@ -21,10 +21,12 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
 import javax.faces.application.Resource;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.application.resource.DynamicContentType;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.Constants;
@@ -58,7 +60,7 @@ public class BarcodeRenderer extends CoreRenderer {
             Map<String, Object> session = context.getExternalContext().getSessionMap();
             Map<String, String> barcodeMapping = (Map) session.get(Constants.BARCODE_MAPPING);
             if (barcodeMapping == null) {
-                barcodeMapping = new HashMap<String, String>();
+                barcodeMapping = new HashMap<>();
                 session.put(Constants.BARCODE_MAPPING, barcodeMapping);
             }
             barcodeMapping.put(sessionKey, (String) value);

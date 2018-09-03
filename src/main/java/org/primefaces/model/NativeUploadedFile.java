@@ -26,6 +26,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import javax.faces.FacesException;
 import javax.servlet.http.Part;
+import org.primefaces.util.FileUploadUtils;
+import org.primefaces.util.SafeFile;
 
 public class NativeUploadedFile implements UploadedFile, Serializable {
 
@@ -48,7 +50,7 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
 
     @Override
     public String getFileName() {
-        return filename;
+        return FileUploadUtils.getValidFilename(filename);
     }
 
     @Override
@@ -103,7 +105,8 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
 
     @Override
     public void write(String filePath) throws Exception {
-        part.write(filePath);
+        SafeFile file = new SafeFile(filePath);
+        part.write(file.getPath());
     }
 
     public Part getPart() {
@@ -177,6 +180,9 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
 
     private String decode(String encoded) {
         try {
+            // GitHub #3916 escape + and % before decode
+            encoded = encoded.replaceAll("%(?![0-9a-fA-F]{2})", "%25");
+            encoded = encoded.replaceAll("\\+", "%2B");
             return URLDecoder.decode(encoded, "UTF-8");
         }
         catch (UnsupportedEncodingException ex) {

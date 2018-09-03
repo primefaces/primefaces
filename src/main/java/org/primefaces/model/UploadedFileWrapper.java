@@ -20,6 +20,8 @@ import java.io.InputStream;
 import javax.faces.FacesWrapper;
 import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
+import org.primefaces.util.FileUploadUtils;
+import org.primefaces.util.SafeFile;
 
 /**
  * Wrapper to avoid a UploadedFile to beeing saved in the ViewState.
@@ -38,7 +40,7 @@ public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedF
 
     @Override
     public String getFileName() {
-        return getWrapped().getFileName();
+        return FileUploadUtils.getValidFilename(getWrapped().getFileName());
     }
 
     @Override
@@ -63,7 +65,8 @@ public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedF
 
     @Override
     public void write(String filePath) throws Exception {
-        getWrapped().write(filePath);
+        SafeFile file = new SafeFile(filePath);
+        getWrapped().write(file.getPath());
     }
 
     @Override

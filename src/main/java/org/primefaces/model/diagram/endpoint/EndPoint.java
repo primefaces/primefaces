@@ -46,7 +46,7 @@ public abstract class EndPoint implements Serializable {
     public abstract String getType();
 
     public abstract String toJS(StringBuilder sb);
-    
+
     public String getId() {
         return id;
     }
