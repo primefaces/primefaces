@@ -40,7 +40,7 @@ import java.util.Map;
 public class PrimePartialResponseWriter extends PartialResponseWriter {
 
     private static final Map<String, String> CALLBACK_EXTENSION_PARAMS;
-    
+
     static {
         Map<String, String> callbackExtensionParams = new HashMap<>();
         callbackExtensionParams.put("ln", "primefaces");
@@ -295,10 +295,10 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                         ArrayList<ResourceUtils.ResourceInfo> initialResources = DynamicResourcesPhaseListener.getInitialResources(context);
                         ArrayList<ResourceUtils.ResourceInfo> currentResources = ResourceUtils.getComponentResources(context);
                         if (initialResources != null && currentResources != null && currentResources.size() > initialResources.size()) {
-                            
+
                             ArrayList<ResourceUtils.ResourceInfo> newResources = new ArrayList<>(currentResources);
                             newResources.removeAll(initialResources);
-                            
+
                             boolean updateStarted = false;
                             for (int i = 0; i < newResources.size(); i++) {
                                 ResourceUtils.ResourceInfo resourceInfo = newResources.get(i);
