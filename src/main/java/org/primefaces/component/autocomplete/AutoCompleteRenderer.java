@@ -30,9 +30,9 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class AutoCompleteRenderer extends InputRenderer {
@@ -85,7 +85,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         String inputValue = params.get(clientId + "_input");
 
         if (!isValueBlank(inputValue)) {
-            submittedValues = ArrayUtils.concat(submittedValues, new String[]{inputValue});
+            submittedValues = LangUtils.concat(submittedValues, new String[]{inputValue});
         }
 
         if (submittedValues.length > 0) {
