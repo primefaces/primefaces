@@ -164,11 +164,11 @@ public abstract class CoreRenderer extends Renderer {
 
                 if (hasEventBehaviors) {
                     String clientId = ((UIComponent) component).getClientId(context);
-                    
+
                     List<ClientBehaviorContext.Parameter> params = new ArrayList<>();
                     params.add(new ClientBehaviorContext.Parameter(
                             Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.OBSTRUSIVE));
-                    
+
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
                             context, (UIComponent) component, behaviorEvent, clientId, params);
                     int size = eventBehaviors.size();
