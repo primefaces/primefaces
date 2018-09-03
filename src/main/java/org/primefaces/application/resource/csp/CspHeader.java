@@ -19,19 +19,19 @@ package org.primefaces.application.resource.csp;
  * Some constants for Content-Security-Policy headers and directives
  */
 public enum CspHeader {
-    
+
     CSP_HEADER("Content-Security-Policy"),
     CSP_REPORT_ONLY_HEADER("Content-Security-Policy-Report-Only"),
-    
+
     SCRIPT_SRC_DIRECTIVE("script-src"),
     REPORT_URI_DIRECTIVE("report-uri"),
-    
+
     COOKIE_NAME("CSP");
-    
-    final String name; 
-    
+
+    final String name;
+
     CspHeader(String name) {
         this.name = name;
     }
-    
+
 }

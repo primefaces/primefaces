@@ -183,5 +183,4 @@ public class CspFilter implements Filter {
         headerBuilder.append(' ').append(CspHeader.REPORT_URI_DIRECTIVE.name).append(' ').append(reportUri).append(';');
         return headerBuilder.toString().trim();
     }
-    
 }
