@@ -799,4 +799,25 @@ public abstract class CoreRenderer extends Renderer {
     protected boolean isGrouped() {
         return false;
     }
+
+    /**
+     * Used by script-only widget to fix #3265 and allow updating of the component.
+     *
+     * @param context the {@link FacesContext}.
+     * @param component the widget without actual HTML markup.
+     * @param clientId the component clientId.
+     * @throws IOException
+     */
+    protected void renderDummyMarkup(FacesContext context, UIComponent component, String clientId) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("style", "display: none;", null);
+
+        renderPassThruAttributes(context, component, null);
+
+        writer.endElement("div");
+    }
+
 }
