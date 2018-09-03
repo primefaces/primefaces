@@ -23,7 +23,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.primefaces.component.fileupload.FileUpload;
 import org.primefaces.util.BoundedInputStream;
 import org.primefaces.util.FileUploadUtils;
-import org.primefaces.util.SafeFile;
+import org.owasp.esapi.SafeFile;
 
 /**
  *

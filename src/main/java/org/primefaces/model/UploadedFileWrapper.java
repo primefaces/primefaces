@@ -21,7 +21,7 @@ import javax.faces.FacesWrapper;
 import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
 import org.primefaces.util.FileUploadUtils;
-import org.primefaces.util.SafeFile;
+import org.owasp.esapi.SafeFile;
 
 /**
  * Wrapper to avoid a UploadedFile to beeing saved in the ViewState.

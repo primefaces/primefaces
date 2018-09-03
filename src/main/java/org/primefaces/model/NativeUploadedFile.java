@@ -27,7 +27,7 @@ import java.net.URLDecoder;
 import javax.faces.FacesException;
 import javax.servlet.http.Part;
 import org.primefaces.util.FileUploadUtils;
-import org.primefaces.util.SafeFile;
+import org.owasp.esapi.SafeFile;
 
 public class NativeUploadedFile implements UploadedFile, Serializable {
 
