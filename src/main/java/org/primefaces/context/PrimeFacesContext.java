@@ -48,7 +48,7 @@ public class PrimeFacesContext extends FacesContextWrapper {
         if (moveScriptsToBottom) {
             moveScriptsToBottomState = new MoveScriptsToBottomState();
         }
-        
+
         cspConfiguration = requestContext.getApplicationContext().getConfig().getCspConfiguration();
     }
 

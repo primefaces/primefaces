@@ -90,16 +90,16 @@ public class CspFilter implements Filter {
         }
 
         /**
-         * Content-Security-Policy header cannot be set before collection of nonce/hash information in {@link CspScriptsResponseWriter}. 
-         * Therefore as a workaround we have to increase the response buffer size. 
+         * Content-Security-Policy header cannot be set before collection of nonce/hash information in {@link CspScriptsResponseWriter}.
+         * Therefore as a workaround we have to increase the response buffer size.
          * Otherwise, sending headers after the first flush occurred will not have any effects.
-         * See {@link javax.servlet.ServletResponse#setBufferSize(int)}. 
+         * See {@link javax.servlet.ServletResponse#setBufferSize(int)}.
          * @param bufferSize the buffer size to use
          */
         private void configureResponse(int bufferSize) {
             setBufferSize(bufferSize);
         }
-        
+
         @Override
         protected void onResponseCommitted() {
             writeHeader();
@@ -114,7 +114,7 @@ public class CspFilter implements Filter {
                 return;
             }
             CspScripts scripts = (CspScripts) request.getSession().getAttribute(CspScripts.class.getName());
-            if (scripts != null && (!scripts.getNonces().isEmpty() || !scripts.getSha256Hashes().isEmpty() || 
+            if (scripts != null && (!scripts.getNonces().isEmpty() || !scripts.getSha256Hashes().isEmpty() ||
                     configuration.getHostWhitelist() != null && !configuration.getHostWhitelist().isEmpty())) {
                 CspHeader header = configuration.isReportOnly() ? CspHeader.CSP_REPORT_ONLY_HEADER : CspHeader.CSP_HEADER;
                 String headerValue = getHeaderValue(request, scripts);
@@ -123,7 +123,7 @@ public class CspFilter implements Filter {
                 writeCookie(headerValue);
             }
         }
-        
+
         private void writeCookie(String headerValue) {
             if (configuration.isJavascriptDebuggingCookie()) {
                 try {
@@ -150,9 +150,8 @@ public class CspFilter implements Filter {
                     throw new IllegalStateException(ex);
                 }
             }
-            
         }
-        
+
     }
 
     /**

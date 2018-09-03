@@ -25,10 +25,10 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 /**
- * Holder for the Content-Security-Policy (CSP) configuration configured via <code>context-param</code>s in the web application's web.xml. 
+ * Holder for the Content-Security-Policy (CSP) configuration configured via <code>context-param</code>s in the web application's web.xml.
  */
 public class CspConfiguration {
-    
+
     private final boolean enabled;
     private final boolean scripts;
     private final Set<String> hostWhitelist;
@@ -37,24 +37,24 @@ public class CspConfiguration {
     private final boolean javascriptDebuggingCookie;
 
     public CspConfiguration(ExternalContext context) {
-        this(context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_ENABLED), 
+        this(context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_ENABLED),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_SUPPORTED_DIRECTIVES),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_HOST_WHITELIST),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_REPORT_URI),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_REPORT_ONLY),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_JAVASCRIPT_DEBUGGING_COOKIE));
     }
-    
+
     public CspConfiguration(ServletContext context) {
         this(context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_ENABLED),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_SUPPORTED_DIRECTIVES),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_HOST_WHITELIST),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_REPORT_URI),
                 context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_REPORT_ONLY),
-                context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_JAVASCRIPT_DEBUGGING_COOKIE));       
+                context.getInitParameter(Constants.ContextParams.CONTENT_SECURITY_POLICY_JAVASCRIPT_DEBUGGING_COOKIE));
     }
-    
-    CspConfiguration(String enabledStr, String supportedDirectives, String hostWhitelistStr, String reportUri, String reportOnlyStr, 
+
+    CspConfiguration(String enabledStr, String supportedDirectives, String hostWhitelistStr, String reportUri, String reportOnlyStr,
             String javascriptDebuggingCookieStr) {
         enabled = Boolean.parseBoolean(enabledStr);
 
@@ -65,7 +65,7 @@ public class CspConfiguration {
                 cspSupportedDirectives.add(tok.nextToken().trim().toLowerCase());
             }
             scripts = cspSupportedDirectives.contains(CspHeader.SCRIPT_SRC_DIRECTIVE.name);
-        } 
+        }
         else {
             scripts = false;
         }
@@ -80,12 +80,12 @@ public class CspConfiguration {
         hostWhitelist = Collections.unmodifiableSet(cspHostWhitelist);
 
         this.reportUri = reportUri;
-        
+
         reportOnly = Boolean.parseBoolean(reportOnlyStr);
-        
+
         javascriptDebuggingCookie = Boolean.parseBoolean(javascriptDebuggingCookieStr);
     }
-    
+
     public boolean isEnabled() {
         return enabled;
     }
@@ -97,7 +97,7 @@ public class CspConfiguration {
     public Set<String> getHostWhitelist() {
         return hostWhitelist;
     }
-    
+
     public String getReportUri() {
         return reportUri;
     }
@@ -109,5 +109,5 @@ public class CspConfiguration {
     public boolean isJavascriptDebuggingCookie() {
         return javascriptDebuggingCookie;
     }
-    
+
 }
