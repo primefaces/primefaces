@@ -212,6 +212,13 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- will be shaded; use 2.4 as later versions would require multiple files to shade -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>
@@ -675,12 +682,22 @@
                             <pattern>org.owasp.esapi</pattern>
                             <shadedPattern>org.primefaces.shaded.owasp.esapi</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>org.apache.commons.io</pattern>
+                            <shadedPattern>org.primefaces.shaded.commons.io</shadedPattern>
+                        </relocation>
                     </relocations>
                     <filters>
                         <filter>
                             <artifact>org.owasp.esapi:esapi</artifact>
                             <includes>
                                 <include>org/owasp/esapi/SafeFile.class</include>
+                            </includes>
+                        </filter>
+                        <filter>
+                            <artifact>commons-io:commons-io</artifact>
+                            <includes>
+                                <include>org/apache/commons/io/input/BoundedInputStream.class</include>
                             </includes>
                         </filter>
                     </filters>

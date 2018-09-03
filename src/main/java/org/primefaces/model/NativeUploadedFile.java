@@ -16,7 +16,6 @@
 package org.primefaces.model;
 
 import org.primefaces.component.fileupload.FileUpload;
-import org.primefaces.util.BoundedInputStream;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,6 +25,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import javax.faces.FacesException;
 import javax.servlet.http.Part;
+import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.util.FileUploadUtils;
 import org.owasp.esapi.SafeFile;
 

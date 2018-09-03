@@ -20,8 +20,8 @@ import java.io.InputStream;
 import java.io.Serializable;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.component.fileupload.FileUpload;
-import org.primefaces.util.BoundedInputStream;
 import org.primefaces.util.FileUploadUtils;
 import org.owasp.esapi.SafeFile;
 
