@@ -21,7 +21,7 @@ import org.primefaces.model.charts.ChartModel;
 /**
  * Defines the radar model used to create radar chart component.
  */
-public class RadarChartModel implements ChartModel {
+public class RadarChartModel extends ChartModel {
 
     private ChartData data;
     private RadarChartOptions options;

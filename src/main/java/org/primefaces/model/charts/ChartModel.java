@@ -15,11 +15,21 @@
  */
 package org.primefaces.model.charts;
 
-public interface ChartModel {
+public abstract class ChartModel {
 
-    public String getType();
+    private String extender;
 
-    public ChartData getData();
+    public String getExtender() {
+        return extender;
+    }
 
-    public Object getOptions();
+    public void setExtender(String extender) {
+        this.extender = extender;
+    }
+
+    public abstract String getType();
+
+    public abstract ChartData getData();
+
+    public abstract Object getOptions();
 }

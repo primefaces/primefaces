@@ -21,7 +21,7 @@ import org.primefaces.model.charts.ChartModel;
 /**
  * Defines the donut model used to create donut chart component.
  */
-public class DonutChartModel implements ChartModel {
+public class DonutChartModel extends ChartModel {
 
     private ChartData data;
     private DonutChartOptions options;

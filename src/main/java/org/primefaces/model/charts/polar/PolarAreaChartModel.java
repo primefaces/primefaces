@@ -21,7 +21,7 @@ import org.primefaces.model.charts.ChartModel;
 /**
  * Defines the polarArea model used to create polarArea chart component.
  */
-public class PolarAreaChartModel implements ChartModel {
+public class PolarAreaChartModel extends ChartModel {
 
     private ChartData data;
     private PolarAreaChartOptions options;

@@ -66,6 +66,11 @@ public class ChartRenderer extends CoreRenderer {
         encodeOptions(context, chart, model.getType(), options);
 
         writer.write("}");
+
+        String extender = model.getExtender();
+        if (extender != null) {
+            writer.write(",\"extender\":" + extender);
+        }
     }
 
     protected void encodeData(FacesContext context, UIComponent chart, ChartData data) throws IOException {

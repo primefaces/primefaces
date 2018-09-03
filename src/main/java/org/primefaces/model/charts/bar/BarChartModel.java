@@ -21,7 +21,7 @@ import org.primefaces.model.charts.ChartModel;
 /**
  * Defines the bar model used to create bar chart component.
  */
-public class BarChartModel implements ChartModel {
+public class BarChartModel extends ChartModel {
 
     private ChartData data;
     private BarChartOptions options;
