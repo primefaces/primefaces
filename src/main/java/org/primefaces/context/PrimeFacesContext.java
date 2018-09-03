@@ -43,7 +43,7 @@ public class PrimeFacesContext extends FacesContextWrapper {
 
         PrimeRequestContext requestContext = new PrimeRequestContext(wrapped);
         PrimeRequestContext.setCurrentInstance(requestContext, wrapped);
-        
+
         moveScriptsToBottom = requestContext.getApplicationContext().getConfig().isMoveScriptsToBottom();
         if (moveScriptsToBottom) {
             moveScriptsToBottomState = new MoveScriptsToBottomState();
@@ -73,7 +73,7 @@ public class PrimeFacesContext extends FacesContextWrapper {
             getWrapped().setResponseWriter(writer);
         }
     }
-    
+
     @Override
     public FacesContext getWrapped() {
         return wrapped;

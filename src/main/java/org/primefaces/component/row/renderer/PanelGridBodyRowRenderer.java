@@ -16,8 +16,10 @@
 package org.primefaces.component.row.renderer;
 
 import java.io.IOException;
+
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.panelgrid.PanelGrid;
 import org.primefaces.component.row.Row;
 import org.primefaces.renderkit.CoreRenderer;

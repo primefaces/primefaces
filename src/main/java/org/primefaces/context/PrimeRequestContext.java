@@ -42,7 +42,7 @@ import org.primefaces.util.WidgetBuilder;
 public class PrimeRequestContext {
 
     public static final String INSTANCE_KEY = PrimeRequestContext.class.getName();
-        
+
     private final static String CALLBACK_PARAMS_KEY = "CALLBACK_PARAMS";
     private final static String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
 
@@ -57,7 +57,7 @@ public class PrimeRequestContext {
     public PrimeRequestContext(FacesContext context) {
         this.context = context;
     }
-    
+
     public static PrimeRequestContext getCurrentInstance() {
         return getCurrentInstance(FacesContext.getCurrentInstance());
     }
@@ -66,14 +66,14 @@ public class PrimeRequestContext {
         if (facesContext == null) {
             return null;
         }
-        
+
         PrimeRequestContext context = (PrimeRequestContext) facesContext.getAttributes().get(INSTANCE_KEY);
 
         if (context == null) {
             context = new PrimeRequestContext(facesContext);
             setCurrentInstance(context, facesContext);
         }
-        
+
         return context;
     }
 
@@ -87,7 +87,7 @@ public class PrimeRequestContext {
             facesContext.getAttributes().put(INSTANCE_KEY, context);
         }
     }
-    
+
     /**
      * @return all callback parameters added in the current request.
      */
@@ -95,12 +95,12 @@ public class PrimeRequestContext {
     public Map<String, Object> getCallbackParams() {
         Map<String, Object> callbackParams =
             (Map<String, Object>) context.getAttributes().get(CALLBACK_PARAMS_KEY);
-        
+
         if (callbackParams == null) {
             callbackParams = new HashMap<>();
             context.getAttributes().put(CALLBACK_PARAMS_KEY, callbackParams);
         }
-        
+
         return callbackParams;
     }
 
@@ -111,12 +111,12 @@ public class PrimeRequestContext {
     public List<String> getScriptsToExecute() {
         List<String> scriptsToExecute =
             (List<String>) context.getAttributes().get(EXECUTE_SCRIPT_KEY);
-        
+
         if (scriptsToExecute == null) {
             scriptsToExecute = new ArrayList<>();
             context.getAttributes().put(EXECUTE_SCRIPT_KEY, scriptsToExecute);
         }
-        
+
         return scriptsToExecute;
     }
 

@@ -23,12 +23,7 @@ import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.component.ActionSource;
 import javax.faces.component.UIComponent;
-import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.FaceletContext;
-import javax.faces.view.facelets.FaceletException;
-import javax.faces.view.facelets.TagAttribute;
-import javax.faces.view.facelets.TagConfig;
-import javax.faces.view.facelets.TagHandler;
+import javax.faces.view.facelets.*;
 
 public class DataExporterTagHandler extends TagHandler {
 
@@ -46,17 +41,17 @@ public class DataExporterTagHandler extends TagHandler {
 
     public DataExporterTagHandler(TagConfig tagConfig) {
         super(tagConfig);
-        this.target = getRequiredAttribute("target");
-        this.type = getRequiredAttribute("type");
-        this.fileName = getRequiredAttribute("fileName");
-        this.pageOnly = getAttribute("pageOnly");
-        this.selectionOnly = getAttribute("selectionOnly");
-        this.encoding = getAttribute("encoding");
-        this.preProcessor = getAttribute("preProcessor");
-        this.postProcessor = getAttribute("postProcessor");
-        this.repeat = getAttribute("repeat");
-        this.options = getAttribute("options");
-        this.onTableRender = getAttribute("onTableRender");
+        target = getRequiredAttribute("target");
+        type = getRequiredAttribute("type");
+        fileName = getRequiredAttribute("fileName");
+        pageOnly = getAttribute("pageOnly");
+        selectionOnly = getAttribute("selectionOnly");
+        encoding = getAttribute("encoding");
+        preProcessor = getAttribute("preProcessor");
+        postProcessor = getAttribute("postProcessor");
+        repeat = getAttribute("repeat");
+        options = getAttribute("options");
+        onTableRender = getAttribute("onTableRender");
     }
 
     @Override

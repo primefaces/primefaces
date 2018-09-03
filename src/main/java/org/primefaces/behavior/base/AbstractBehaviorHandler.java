@@ -44,7 +44,6 @@ import javax.faces.view.facelets.TagHandler;
 
 import org.primefaces.behavior.ajax.AjaxBehaviorHandler;
 import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
 
 public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         extends TagHandler implements BehaviorHolderAttachedObjectHandler {
@@ -111,7 +110,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
                 else {
                     addAttachedObjectHandlerToMyFaces(parent, faceletContext);
                 }
-            } 
+            }
             else {
                 if (!tagApplied) {
                     throw new TagException(tag, "Composite component does not support event " + eventName);
@@ -120,7 +119,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         }
         else if (parent instanceof ClientBehaviorHolder) {
             applyAttachedObject(faceletContext, parent);
-        } 
+        }
         else {
             throw new TagException(this.tag, "Unable to attach behavior to non-ClientBehaviorHolder parent");
         }

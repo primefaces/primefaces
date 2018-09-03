@@ -20,7 +20,7 @@ import javax.faces.context.FacesContext;
 import org.primefaces.config.PrimeConfiguration;
 
 public class PrimeConfigurationMock extends PrimeConfiguration {
-    
+
     // context params
     private boolean validateEmptyFields = false;
     private boolean partialSubmitEnabled = false;
@@ -41,9 +41,9 @@ public class PrimeConfigurationMock extends PrimeConfiguration {
 
     // web.xml
     private Map<String, String> errorPages = null;
-    
+
     public PrimeConfigurationMock(FacesContext context) {
-        
+
     }
 
     @Override

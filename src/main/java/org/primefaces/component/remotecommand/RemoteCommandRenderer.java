@@ -16,17 +16,17 @@
 package org.primefaces.component.remotecommand;
 
 import java.io.IOException;
-import javax.faces.FacesException;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
+
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.context.PrimeRequestContext;
-
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentTraversalUtils;
@@ -54,10 +54,10 @@ public class RemoteCommandRenderer extends CoreRenderer {
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         RemoteCommand command = (RemoteCommand) component;
-        AjaxSource source = (AjaxSource) command;
+        AjaxSource source = command;
         String clientId = command.getClientId(context);
         String name = resolveName(command, context);
-        UIComponent form = (UIComponent) ComponentTraversalUtils.closestForm(context, command);
+        UIComponent form = ComponentTraversalUtils.closestForm(context, command);
         if (form == null) {
             throw new FacesException("RemoteCommand '" + name + "'must be inside a form.");
         }

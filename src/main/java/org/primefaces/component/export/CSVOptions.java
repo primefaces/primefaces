@@ -16,15 +16,15 @@
 package org.primefaces.component.export;
 
 public class CSVOptions implements ExporterOptions {
-    
-    public static final CSVOptions STANDARD = new  CSVOptions('"', ',', "\r\n");
-    
-    public static final CSVOptions EXCEL = new  CSVOptions('"', ',', "\n");
-    
-    public static final CSVOptions EXCEL_NORTHERN_EUROPE = new  CSVOptions('"', ';', "\n");
-    
-    public static final CSVOptions TABS = new  CSVOptions('"', '\t', "\n");
-    
+
+    public static final CSVOptions STANDARD = new CSVOptions('"', ',', "\r\n");
+
+    public static final CSVOptions EXCEL = new CSVOptions('"', ',', "\n");
+
+    public static final CSVOptions EXCEL_NORTHERN_EUROPE = new CSVOptions('"', ';', "\n");
+
+    public static final CSVOptions TABS = new CSVOptions('"', '\t', "\n");
+
     private static final String STYLING_NOT_SUPPORTED = "CSV does not support styling.";
 
     private final char quoteChar;
@@ -34,15 +34,15 @@ public class CSVOptions implements ExporterOptions {
     private final String endOfLineSymbols;
 
     private final String quoteString;
-    
+
     private final String doubleQuoteString;
-    
+
     public CSVOptions(char quoteChar, char delimiterChar, String endOfLineSymbols) {
         this.quoteChar = quoteChar;
         this.delimiterChar = delimiterChar;
         this.endOfLineSymbols = endOfLineSymbols;
         quoteString = Character.toString(quoteChar);
-        doubleQuoteString = quoteString + quoteString; 
+        doubleQuoteString = quoteString + quoteString;
     }
 
     public char getQuoteChar() {

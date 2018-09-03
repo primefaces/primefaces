@@ -76,7 +76,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.minimized = false;
         this.maximized = false;
 
-        this.init(cfg);
+        this._super(cfg);
     },
 
     initSize: function() {
@@ -540,7 +540,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     bindResizeListener: function() {
         var $this = this;
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, null, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', null, function() {
             if ($this.cfg.fitViewport) {
                 $this.fitViewport();
             }

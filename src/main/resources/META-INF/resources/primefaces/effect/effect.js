@@ -23,7 +23,7 @@ PrimeFaces.widget.Effect = PrimeFaces.widget.BaseWidget.extend({
             this.runner.call();
         } 
         else {
-            this.source.bind(this.cfg.event, this.runner);
+            this.source.on(this.cfg.event, this.runner);
         }
         
         this.removeScriptElement(this.id);

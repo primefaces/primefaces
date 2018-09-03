@@ -181,7 +181,7 @@ PrimeFaces.widget.Carousel = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         if(this.cfg.responsive) {
-            PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, null, function() {
+            PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', null, function() {
                 if($this.cfg.vertical) {
                     $this.calculateItemHeights();
                 }

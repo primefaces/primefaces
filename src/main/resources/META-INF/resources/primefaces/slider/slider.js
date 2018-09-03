@@ -34,17 +34,17 @@ PrimeFaces.widget.Slider = PrimeFaces.widget.BaseWidget.extend({
     bindEvents: function() {
         var $this = this;
 
-        this.jq.bind('slide', function(event, ui) {
+        this.jq.on('slide', function(event, ui) {
             $this.onSlide(event, ui);
         });
 
         if(this.cfg.onSlideStart) {
-            this.jq.bind('slidestart', function(event, ui) {
+            this.jq.on('slidestart', function(event, ui) {
                 $this.cfg.onSlideStart.call(this, event, ui);
             });
         }
 
-        this.jq.bind('slidestop', function(event, ui) {
+        this.jq.on('slidestop', function(event, ui) {
             $this.onSlideEnd(event, ui);
         });
 

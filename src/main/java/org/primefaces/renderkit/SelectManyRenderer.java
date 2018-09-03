@@ -35,11 +35,11 @@ public abstract class SelectManyRenderer extends SelectRenderer {
 
         String submitParam = getSubmitParam(context, selectMany);
         Map<String, String[]> params = context.getExternalContext().getRequestParameterValuesMap();
-        
+
         String[] submittedValues = params.containsKey(submitParam) ? params.get(submitParam) : new String[0];
         submittedValues = validateSubmittedValues(context, selectMany, (Object[]) getValues(selectMany), submittedValues);
         selectMany.setSubmittedValue(submittedValues);
-        
+
         decodeBehaviors(context, selectMany);
     }
 

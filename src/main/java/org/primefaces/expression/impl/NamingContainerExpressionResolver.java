@@ -18,7 +18,6 @@ package org.primefaces.expression.impl;
 import javax.faces.component.NamingContainer;
 
 import org.primefaces.expression.SearchExpressionResolver;
-import org.primefaces.expression.impl.base.AbstractClosestExpressionResolver;
 
 /**
  * {@link SearchExpressionResolver} for the "@namingcontainer" keyword.

@@ -21,11 +21,11 @@ import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
-
 import org.primefaces.util.WidgetBuilder;
 
 public class DockRenderer extends BaseMenuRenderer {
@@ -70,7 +70,7 @@ public class DockRenderer extends BaseMenuRenderer {
 
     protected void encodeMenuItems(FacesContext context, Dock dock) throws IOException {
         if (dock.getElementsCount() > 0) {
-            List<MenuElement> menuElements = (List<MenuElement>) dock.getElements();
+            List<MenuElement> menuElements = dock.getElements();
 
             for (MenuElement element : menuElements) {
                 if (element.isRendered() && element instanceof MenuItem) {
@@ -109,8 +109,8 @@ public class DockRenderer extends BaseMenuRenderer {
 
         if (menuitem.getValue() != null) {
             if (menuitem.isEscape()) {
-                writer.writeText((String) menuitem.getValue(), "value");
-            } 
+                writer.writeText(menuitem.getValue(), "value");
+            }
             else {
                 writer.write((String) menuitem.getValue());
             }

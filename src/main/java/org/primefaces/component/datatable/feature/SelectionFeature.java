@@ -32,24 +32,19 @@ import org.primefaces.util.LangUtils;
 
 public class SelectionFeature implements DataTableFeature {
 
-    private final static String ALL_SELECTOR = "@all";
+    private static final String ALL_SELECTOR = "@all";
 
     @Override
     public void decode(FacesContext context, DataTable table) {
         String clientId = table.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String selection = params.get(clientId + "_selection");
-        boolean checked = Boolean.valueOf(params.get(clientId + "_checked"));
         Object originalValue = table.getValue();
         Object filteredValue = table.getFilteredValue();
         boolean isFiltered = (filteredValue != null);
 
-        if (isFiltered && (!checked && table.isLiveScroll())) {
+        if (isFiltered) {
             table.setValue(null);
-        }
-        
-        if (checked) {
-            selection = "@all";
         }
 
         if (table.isSingleSelectionMode()) {
@@ -93,7 +88,7 @@ public class SelectionFeature implements DataTableFeature {
                 table.setSelection(Array.newInstance(clazz.getComponentType(), 0));
             }
             else {
-                table.setSelection(new ArrayList<Object>());
+                table.setSelection(new ArrayList<>());
             }
         }
         else {

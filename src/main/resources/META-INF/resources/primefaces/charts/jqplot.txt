@@ -4,6 +4,7 @@
 -barrenderer
 -donutrenderer
 -enhancedlegendrenderer
+-enhancedpielegendrenderer
 -bubblerenderer
 -ohlcrenderer
 -metergaugerenderer

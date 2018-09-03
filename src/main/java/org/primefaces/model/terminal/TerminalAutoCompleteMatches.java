@@ -51,14 +51,14 @@ public class TerminalAutoCompleteMatches extends JSONObject {
 
     public void extendBaseCommand(String argument) {
         String baseCommand = getBaseCommand();
-        
+
         if (baseCommand.isEmpty()) {
             baseCommand = argument;
         }
         else {
             baseCommand = baseCommand + " " + argument;
         }
-        
+
         setBaseCommand(baseCommand);
     }
 

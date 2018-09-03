@@ -19,14 +19,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
-import org.primefaces.component.calendar.converter.PatternConverter;
 import org.primefaces.component.calendar.converter.DatePatternConverter;
+import org.primefaces.component.calendar.converter.PatternConverter;
 import org.primefaces.component.calendar.converter.TimePatternConverter;
 
 /**
@@ -34,10 +35,10 @@ import org.primefaces.component.calendar.converter.TimePatternConverter;
  */
 public class CalendarUtils {
 
-    private final static PatternConverter[] PATTERN_CONVERTERS =
-            new PatternConverter[] { new TimePatternConverter(), new DatePatternConverter() };
+    private static final PatternConverter[] PATTERN_CONVERTERS =
+            new PatternConverter[]{new TimePatternConverter(), new DatePatternConverter()};
 
-    public static String getValueAsString(FacesContext context, Calendar calendar) {
+    public static final String getValueAsString(FacesContext context, Calendar calendar) {
         Object submittedValue = calendar.getSubmittedValue();
         if (submittedValue != null) {
             return submittedValue.toString();
@@ -92,7 +93,7 @@ public class CalendarUtils {
         throw new FacesException("Value could be either String or java.util.Date");
     }
 
-    public static String getValueAsString(FacesContext context, Calendar calendar, Object value) {
+    public static final String getValueAsString(FacesContext context, Calendar calendar, Object value) {
         if (value == null) {
             return null;
         }
@@ -128,7 +129,7 @@ public class CalendarUtils {
         }
     }
 
-    public static String getTimeOnlyValueAsString(FacesContext context, Calendar calendar) {
+    public static final String getTimeOnlyValueAsString(FacesContext context, Calendar calendar) {
         Object value = calendar.getValue();
         if (value == null) {
             return null;
@@ -171,7 +172,7 @@ public class CalendarUtils {
      * @param pattern Pattern to be converted
      * @return converted pattern
      */
-    public static String convertPattern(String pattern) {
+    public static final String convertPattern(String pattern) {
         if (pattern == null) {
             return null;
         }

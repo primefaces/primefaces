@@ -17,18 +17,18 @@ package org.primefaces.component.export;
 
 public interface ExporterOptions {
 
-    public String getFacetFontStyle();
+    String getFacetFontStyle();
 
-    public String getFacetFontColor();
+    String getFacetFontColor();
 
-    public String getFacetBgColor();
+    String getFacetBgColor();
 
-    public String getFacetFontSize();
+    String getFacetFontSize();
 
-    public String getCellFontStyle();
+    String getCellFontStyle();
 
-    public String getCellFontColor();
+    String getCellFontColor();
 
-    public String getCellFontSize();
+    String getCellFontSize();
 
 }

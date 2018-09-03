@@ -95,6 +95,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             this.bindKeyEvents();
 
             this.updateButtonsState();
+            
+            this.updateListRole();
         }
     },
 
@@ -282,7 +284,6 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                 case keyCode.SPACE:
                     if($this.focusedItem && $this.focusedItem.hasClass('ui-state-highlight')) {
                         $this.focusedItem.trigger('dblclick.pickList');
@@ -431,14 +432,14 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             var key = e.which,
             keyCode = $.ui.keyCode;
 
-            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+            if((key === keyCode.ENTER)) {
                 e.preventDefault();
             }
         }).bind('keyup', function(e) {
             var key = e.which,
             keyCode = $.ui.keyCode;
 
-            if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+            if((key === keyCode.ENTER)) {
                 $this.filter(this.value, $this.getFilteredList($(this)));
 
                 e.preventDefault();
@@ -480,7 +481,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
         var key = e.which,
         keyCode = $.ui.keyCode;
 
-        if((key === keyCode.ENTER||key === keyCode.NUMPAD_ENTER)) {
+        if((key === keyCode.ENTER)) {
             e.preventDefault();
         }
     },
@@ -500,7 +501,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     filter: function(value, list) {
         var filterValue = $.trim(value).toLowerCase(),
         items = list.children('li.ui-picklist-item'),
-        animated = this.isAnimated();
+        animated = this.isAnimated(),
+        $this = this;
 
         if(filterValue === '') {
             items.filter(':hidden').show();
@@ -512,19 +514,30 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 matches = this.filterMatcher(itemLabel, filterValue);
 
                 if(matches) {
-                    if(animated)
-                        item.fadeIn('fast');
-                    else
+                    if(animated) {
+                        item.fadeIn('fast', function() {
+                            $this.updateListRole();
+                        });
+                    }
+                    else {
                         item.show();
+                        this.updateListRole();
+                    }
                 }
                 else {
-                    if(animated)
-                        item.fadeOut('fast');
-                    else
+                    if(animated) {
+                        item.fadeOut('fast', function() {
+                            $this.updateListRole();
+                        });
+                    }
+                    else {
                         item.hide();
+                        this.updateListRole();
+                    }
                 }
             }
         }
+        
     },
 
     startsWithFilter: function(value, filter) {
@@ -753,6 +766,8 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                         $this.saveState();
                         $this.fireTransferEvent(items, from, to, type);
                     }
+                    
+                    $this.updateListRole();
                 });
             });
         }
@@ -769,6 +784,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
             this.saveState();
             this.fireTransferEvent(items, from, to, type);
+            this.updateListRole();
         }
     },
 
@@ -905,6 +921,11 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
 
     enableButton: function (button) {
         button.removeAttr('disabled').removeClass('ui-state-disabled');
+    },
+    
+    updateListRole: function() {
+        this.sourceList.children('li:visible').length > 0 ? this.sourceList.attr('role', 'menu') : this.sourceList.removeAttr('role');
+        this.targetList.children('li:visible').length > 0 ? this.targetList.attr('role', 'menu') : this.targetList.removeAttr('role');
     }
 
 });

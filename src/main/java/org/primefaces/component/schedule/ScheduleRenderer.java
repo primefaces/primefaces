@@ -23,9 +23,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Logger;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
@@ -35,7 +37,7 @@ import org.primefaces.util.WidgetBuilder;
 
 public class ScheduleRenderer extends CoreRenderer {
 
-    private final static Logger LOG = Logger.getLogger(ScheduleRenderer.class.getName());
+    private static final Logger LOG = Logger.getLogger(ScheduleRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -66,7 +68,7 @@ public class ScheduleRenderer extends CoreRenderer {
 
     protected void encodeEvents(FacesContext context, Schedule schedule) throws IOException {
         String clientId = schedule.getClientId(context);
-        ScheduleModel model = (ScheduleModel) schedule.getValue();
+        ScheduleModel model = schedule.getValue();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         if (model instanceof LazyScheduleModel) {
@@ -98,7 +100,7 @@ public class ScheduleRenderer extends CoreRenderer {
         writer.write("\"events\" : [");
 
         if (model != null) {
-            for (Iterator<ScheduleEvent> iterator = model.getEvents().iterator(); iterator.hasNext();) {
+            for (Iterator<ScheduleEvent> iterator = model.getEvents().iterator(); iterator.hasNext(); ) {
                 ScheduleEvent event = iterator.next();
                 String className = event.getStyleClass();
                 String description = event.getDescription();
@@ -143,7 +145,7 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("defaultView", schedule.getView())
                 .attr("locale", schedule.calculateLocale(context).toString())
                 .attr("tooltip", schedule.isTooltip(), false)
-                .attr("eventLimit", ((ScheduleModel) schedule.getValue()).isEventLimit(), false)
+                .attr("eventLimit", schedule.getValue().isEventLimit(), false)
                 .attr("lazyFetching", false);
 
         Object initialDate = schedule.getInitialDate();
@@ -259,8 +261,12 @@ public class ScheduleRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        if (schedule.getStyle() != null) writer.writeAttribute("style", schedule.getStyle(), "style");
-        if (schedule.getStyleClass() != null) writer.writeAttribute("class", schedule.getStyleClass(), "style");
+        if (schedule.getStyle() != null) {
+            writer.writeAttribute("style", schedule.getStyle(), "style");
+        }
+        if (schedule.getStyleClass() != null) {
+            writer.writeAttribute("class", schedule.getStyleClass(), "style");
+        }
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId + "_container", null);

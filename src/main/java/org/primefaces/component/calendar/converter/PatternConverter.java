@@ -17,5 +17,5 @@ package org.primefaces.component.calendar.converter;
 
 public interface PatternConverter {
 
-    public String convert(String pattern);
+    String convert(String pattern);
 }

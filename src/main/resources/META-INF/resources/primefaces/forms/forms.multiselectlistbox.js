@@ -41,9 +41,8 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
 
            if(!item.hasClass('ui-state-highlight')){
                $this.showOptionGroup(item);
-               $this.triggerChange();
            }
-       })
+       });
     },
 
     unbindEvents: function() {
@@ -74,6 +73,9 @@ PrimeFaces.widget.MultiSelectListbox = PrimeFaces.widget.BaseWidget.extend({
                groupContainer.show(this.cfg.effect);
            else
                groupContainer.show();
+       }
+       else {
+           this.triggerChange();
        }
     },
 

@@ -265,7 +265,7 @@ public class TabViewRenderer extends CoreRenderer {
         }
 
         UIComponent actions = tab.getFacet("actions");
-        if (actions != null && actions.isRendered())  {
+        if (actions != null && actions.isRendered()) {
             writer.startElement("li", null);
             writer.writeAttribute("class", "ui-tabs-actions", null);
             writer.writeAttribute("aria-hidden", String.valueOf(!active), null);

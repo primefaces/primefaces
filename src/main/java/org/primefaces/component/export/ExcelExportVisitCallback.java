@@ -20,16 +20,17 @@ import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
+
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.primefaces.component.datatable.DataTable;
 
 public class ExcelExportVisitCallback implements VisitCallback {
 
-    private ExcelExporter exporter;
-    private boolean pageOnly;
-    private boolean selectionOnly;
-    private Workbook workbook;
+    private final ExcelExporter exporter;
+    private final boolean pageOnly;
+    private final boolean selectionOnly;
+    private final Workbook workbook;
 
     public ExcelExportVisitCallback(ExcelExporter exporter, Workbook workbook, boolean pageOnly, boolean selectionOnly) {
         this.exporter = exporter;

@@ -35,10 +35,20 @@ public class ConfirmBehavior extends AbstractBehavior {
         beforeShow(String.class),
         escape(Boolean.class);
 
-        public final Class<?> expectedType;
+        private final Class<?> expectedType;
 
         PropertyKeys(Class<?> expectedType) {
             this.expectedType = expectedType;
+        }
+
+        /**
+         * Holds the type which ought to be passed to
+         * {@link javax.faces.view.facelets.TagAttribute#getObject(javax.faces.view.facelets.FaceletContext, java.lang.Class) }
+         * when creating the behavior.
+         * @return the expectedType the expected object type
+         */
+        public Class<?> getExpectedType() {
+            return expectedType;
         }
     }
 
@@ -54,7 +64,7 @@ public class ConfirmBehavior extends AbstractBehavior {
         String headerText = JSONObject.quote(this.getHeader());
         String messageText = JSONObject.quote(this.getMessage());
         String beforeShow = JSONObject.quote(this.getBeforeShow());
-        
+
         if (component instanceof Confirmable) {
             String sourceProperty = (source == null) ? "source:this" : "source:\"" + source + "\"";
             String script = "PrimeFaces.confirm({" + sourceProperty
@@ -110,7 +120,7 @@ public class ConfirmBehavior extends AbstractBehavior {
     public void setDisabled(boolean disabled) {
         setLiteral(PropertyKeys.disabled, disabled);
     }
-    
+
     public String getBeforeShow() {
         return eval(PropertyKeys.beforeShow, null);
     }

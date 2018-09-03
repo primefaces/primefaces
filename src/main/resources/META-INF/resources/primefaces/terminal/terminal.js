@@ -45,7 +45,6 @@ PrimeFaces.widget.Terminal = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                     $this.processCommand();
 
                     e.preventDefault();

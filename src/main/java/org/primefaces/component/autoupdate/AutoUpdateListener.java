@@ -16,6 +16,7 @@
 package org.primefaces.component.autoupdate;
 
 import java.util.ArrayList;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
@@ -28,17 +29,30 @@ import javax.faces.event.ComponentSystemEventListener;
 public class AutoUpdateListener implements ComponentSystemEventListener {
 
     private static final String COMPONENTS = AutoUpdateListener.class.getName() + ".COMPONENTS";
-    
+
     private final boolean disabled;
-    
+
     public AutoUpdateListener() {
-        this.disabled = false;
+        disabled = false;
     }
-    
+
     public AutoUpdateListener(boolean disabled) {
         this.disabled = disabled;
     }
-    
+
+    public static ArrayList<String> getOrCreateAutoUpdateComponentClientIds(FacesContext context) {
+        ArrayList<String> clientIds = getAutoUpdateComponentClientIds(context);
+        if (clientIds == null) {
+            clientIds = new ArrayList<>();
+            context.getViewRoot().getAttributes().put(COMPONENTS, clientIds);
+        }
+        return clientIds;
+    }
+
+    public static ArrayList<String> getAutoUpdateComponentClientIds(FacesContext context) {
+        return (ArrayList<String>) context.getViewRoot().getAttributes().get(COMPONENTS);
+    }
+
     @Override
     public void processEvent(ComponentSystemEvent cse) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -53,18 +67,5 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
                 clientIds.add(clientId);
             }
         }
-    }
-
-    public static ArrayList<String> getOrCreateAutoUpdateComponentClientIds(FacesContext context) {
-        ArrayList<String> clientIds = getAutoUpdateComponentClientIds(context);
-        if (clientIds == null) {
-            clientIds = new ArrayList<String>();
-            context.getViewRoot().getAttributes().put(COMPONENTS, clientIds);
-        }
-        return clientIds;
-    }
-    
-    public static ArrayList<String> getAutoUpdateComponentClientIds(FacesContext context) {
-        return (ArrayList<String>) context.getViewRoot().getAttributes().get(COMPONENTS);
     }
 }

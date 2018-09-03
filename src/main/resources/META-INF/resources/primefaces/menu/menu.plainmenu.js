@@ -104,7 +104,6 @@ PrimeFaces.widget.PlainMenu = PrimeFaces.widget.Menu.extend({
                     break;
 
                     case keyCode.ENTER:
-                    case keyCode.NUMPAD_ENTER:
                         currentLink.trigger('click');
                         $this.jq.blur();
                         var href = currentLink.attr('href');

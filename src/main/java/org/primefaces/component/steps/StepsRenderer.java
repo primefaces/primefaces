@@ -20,13 +20,14 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
-
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
@@ -114,7 +115,7 @@ public class StepsRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String title = menuitem.getTitle();
         String style = menuitem.getStyle();
-        String styleClass = this.getLinkStyleClass(menuitem);
+        String styleClass = getLinkStyleClass(menuitem);
 
         writer.startElement("a", null);
         writer.writeAttribute("tabindex", "-1", null);
@@ -161,20 +162,20 @@ public class StepsRenderer extends BaseMenuRenderer {
                     String menuClientId = steps.getClientId(context);
                     Map<String, List<String>> params = menuitem.getParams();
                     if (params == null) {
-                        params = new LinkedHashMap<String, List<String>>();
+                        params = new LinkedHashMap<>();
                     }
-                    List<String> idParams = new ArrayList<String>();
+                    List<String> idParams = new ArrayList<>();
                     idParams.add(menuitem.getId());
                     params.put(menuClientId + "_menuid", idParams);
 
                     command = menuitem.isAjax()
-                            ? buildAjaxRequest(context, steps, (AjaxSource) menuitem, form, params)
-                            : buildNonAjaxRequest(context, steps, form, menuClientId, params, true);
+                              ? buildAjaxRequest(context, steps, (AjaxSource) menuitem, form, params)
+                              : buildNonAjaxRequest(context, steps, form, menuClientId, params, true);
                 }
                 else {
                     command = menuitem.isAjax()
-                            ? buildAjaxRequest(context, (AjaxSource) menuitem, form) 
-                            : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
+                              ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
+                              : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
                 }
 
                 onclick = (onclick == null) ? command : onclick + ";" + command;

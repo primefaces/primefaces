@@ -17,9 +17,11 @@ package org.primefaces.component.signature;
 
 import java.io.IOException;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -56,8 +58,12 @@ public class SignatureRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        if (style != null) writer.writeAttribute("style", style, null);
-        if (styleClass != null) writer.writeAttribute("class", styleClass, null);
+        if (style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+        if (styleClass != null) {
+            writer.writeAttribute("class", styleClass, null);
+        }
 
         encodeInputField(context, signature, clientId + "_value", signature.getValue());
 

@@ -16,10 +16,12 @@
 package org.primefaces.component.paginator;
 
 import java.io.IOException;
+
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.api.Pageable;
 
 public interface PaginatorElementRenderer {
 
-    public void render(FacesContext context, Pageable pageable) throws IOException;
+    void render(FacesContext context, Pageable pageable) throws IOException;
 }

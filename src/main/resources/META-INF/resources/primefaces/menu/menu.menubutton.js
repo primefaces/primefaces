@@ -100,7 +100,6 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                 case keyCode.SPACE:
                     if($this.menu.is(':visible'))
                         $this.menuitems.filter('.ui-state-hover').children('a').trigger('click');
@@ -119,7 +118,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
         });
 
         if (!$this.cfg.disabled) {
-            PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id, $this.menu,
+            PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.menu,
                 function() { return $this.button; },
                 function(e) {
                     $this.button.removeClass('ui-state-focus ui-state-hover');
@@ -127,7 +126,7 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
                 });
         }
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.menu, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.menu, function() {
             $this.alignPanel();
         });
 

@@ -17,8 +17,10 @@ package org.primefaces.component.chart.renderer;
 
 import java.io.IOException;
 import java.util.Iterator;
+
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
@@ -32,11 +34,11 @@ public class LineRenderer extends CartesianPlotRenderer {
         CartesianChartModel model = (CartesianChartModel) chart.getModel();
 
         writer.write(",data:[");
-        for (Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
+        for (Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext(); ) {
             ChartSeries series = it.next();
 
             writer.write("[");
-            for (Iterator<Object> x = series.getData().keySet().iterator(); x.hasNext();) {
+            for (Iterator<Object> x = series.getData().keySet().iterator(); x.hasNext(); ) {
                 Object xValue = x.next();
                 Number yValue = series.getData().get(xValue);
                 String yValueAsString = (yValue == null) ? "null" : escapeChartData(yValue);
@@ -67,8 +69,8 @@ public class LineRenderer extends CartesianPlotRenderer {
         LineChartModel model = (LineChartModel) chart.getModel();
 
         writer.write(",series:[");
-        for (Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext();) {
-            ChartSeries series = (ChartSeries) it.next();
+        for (Iterator<ChartSeries> it = model.getSeries().iterator(); it.hasNext(); ) {
+            ChartSeries series = it.next();
             series.encode(writer);
 
             if (it.hasNext()) {
@@ -78,11 +80,21 @@ public class LineRenderer extends CartesianPlotRenderer {
 
         writer.write("]");
 
-        if (model.isStacked()) writer.write(",stackSeries:true");
-        if (model.isBreakOnNull()) writer.write(",breakOnNull:true");
-        if (model.isZoom()) writer.write(",zoom:true");
-        if (model.isAnimate()) writer.write(",animate:true");
-        if (model.isShowPointLabels()) writer.write(",showPointLabels:true");
+        if (model.isStacked()) {
+            writer.write(",stackSeries:true");
+        }
+        if (model.isBreakOnNull()) {
+            writer.write(",breakOnNull:true");
+        }
+        if (model.isZoom()) {
+            writer.write(",zoom:true");
+        }
+        if (model.isAnimate()) {
+            writer.write(",animate:true");
+        }
+        if (model.isShowPointLabels()) {
+            writer.write(",showPointLabels:true");
+        }
 
         if (model.isShowDatatip()) {
             writer.write(",datatip:true");

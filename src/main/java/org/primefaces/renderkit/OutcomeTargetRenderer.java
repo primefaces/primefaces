@@ -145,7 +145,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
 
     protected String getTargetURL(FacesContext context, UIOutcomeTarget outcomeTarget) {
         String url;
-        
+
         String href = outcomeTarget.getHref();
         if (href != null) {
             url = context.getExternalContext().encodeRedirectURL(href, outcomeTarget.getParams());
