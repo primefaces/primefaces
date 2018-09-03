@@ -51,13 +51,13 @@ public class CspScriptsPartialResponseWriter extends PrimePartialResponseWriter 
         cspWriter.elementsToHandle.clear();
         super.endInsert();
     }
-    
+
     @Override
     public void startUpdate(String targetId) throws IOException {
         cspWriter.elementsToHandle.clear();
         super.startUpdate(targetId);
     }
-    
+
     @Override
     public void endUpdate() throws IOException {
         cspWriter.writeJavascriptHandlers();
@@ -74,10 +74,10 @@ public class CspScriptsPartialResponseWriter extends PrimePartialResponseWriter 
 
     @Override
     public void endEval() throws IOException {
-        //TODO move scripts written to partial-response <eval> to script tag to avoid CSP violation?        
+        //TODO move scripts written to partial-response <eval> to script tag to avoid CSP violation?
         super.endEval();
     }
-    
+
     @Override
     public void startElement(String name, UIComponent component) throws IOException {
         cspWriter.startElement(name, component);
@@ -132,7 +132,7 @@ public class CspScriptsPartialResponseWriter extends PrimePartialResponseWriter 
     public void write(char[] cbuf, int off, int len) throws IOException {
         cspWriter.write(cbuf, off, len);
     }
-    
+
     @Override
     public ResponseWriter cloneWithWriter(Writer writer) {
         return getWrapped().cloneWithWriter(writer);

@@ -65,13 +65,13 @@ public class CspScriptsResponseWriter extends ResponseWriterWrapper {
     private static final String EVENT_HANDLER_ATTRIBUTE_PREFIX = "on";
 
     private static final String EVENT_HANDLER_TEMPLATE = "pf.csp1(\"%s\",\"%s\",function(e){pf.csp0(e);%s});";
-    
+
     final Stack<ElementState> elements;
 
     final Set<ElementState> elementsToHandle;
     final Set<String> nonces;
     final Set<String> sha256Hashes;
-    
+
     public CspScriptsResponseWriter(ResponseWriter wrapped) {
         super(wrapped);
         elements = new Stack<>();
@@ -190,7 +190,7 @@ public class CspScriptsResponseWriter extends ResponseWriterWrapper {
 
     /**
      * <p>Generate a cryptographically secure pseudo-random nonce (aka number used once) in Base64-encoded form.</p>
-     * For the moment we generate only one nonce per session and reuse it for all script blocks since user agents seem to ignore nonces 
+     * For the moment we generate only one nonce per session and reuse it for all script blocks since user agents seem to ignore nonces
      * added incrementally in upcoming XHR response header directives and therefore would refuse to execute our scripts.
      * @return the nonce
      */
@@ -217,7 +217,7 @@ public class CspScriptsResponseWriter extends ResponseWriterWrapper {
         sha256Hashes.add(sha256Hash);
         return sha256Hash;
     }
-    
+
     /**
      * Write javascript collected from event/URI handlers to a separate <code>script</code> block.
      */
@@ -290,5 +290,5 @@ public class CspScriptsResponseWriter extends ResponseWriterWrapper {
         }
 
     }
-    
+
 }

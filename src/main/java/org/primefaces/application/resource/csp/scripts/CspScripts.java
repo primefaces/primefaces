@@ -22,7 +22,7 @@ import java.util.Set;
  * Holder for all nonces and hashes that have been generated and are ready to be used for constructing the response header.
  */
 public class CspScripts implements Serializable {
-    
+
     private final Set<String> nonces;
     private final Set<String> sha256Hashes;
 
@@ -38,5 +38,5 @@ public class CspScripts implements Serializable {
     public Set<String> getSha256Hashes() {
         return sha256Hashes;
     }
-    
+
 }

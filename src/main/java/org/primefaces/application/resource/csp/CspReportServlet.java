@@ -40,7 +40,7 @@ import java.util.logging.Logger;
 public class CspReportServlet extends HttpServlet {
 
     public static final String URL = "/csp-report";
-    
+
     private static final Logger LOG = Logger.getLogger(CspReportServlet.class.getName());
 
     @Override
@@ -72,5 +72,5 @@ public class CspReportServlet extends HttpServlet {
             return json.toString();
         }
     }
-    
+
 }
