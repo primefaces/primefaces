@@ -30,6 +30,7 @@ public class BarChartDataSet extends ChartDataSet {
     private String label;
     private String xaxisID;
     private String yaxisID;
+    private String stack;
     private Object backgroundColor;
     private Object borderColor;
     private Object borderWidth;
@@ -110,6 +111,24 @@ public class BarChartDataSet extends ChartDataSet {
      */
     public void setYaxisID(String yaxisID) {
         this.yaxisID = yaxisID;
+    }
+
+    /**
+     * Gets the stack
+     *
+     * @return stack
+     */
+    public String getStack() {
+        return stack;
+    }
+
+    /**
+     * Sets the stack
+     *
+     * @param stack The ID of the group to which this dataset belongs to (when stacked, each group will be a separate stack)
+     */
+    public void setStack(String stack) {
+        this.stack = stack;
     }
 
     /**
@@ -264,6 +283,7 @@ public class BarChartDataSet extends ChartDataSet {
         ChartUtils.writeDataValue(fsw, "label", this.label, true);
         ChartUtils.writeDataValue(fsw, "xAxisID", this.xaxisID, true);
         ChartUtils.writeDataValue(fsw, "yAxisID", this.yaxisID, true);
+        ChartUtils.writeDataValue(fsw, "stack", this.stack, true);
         ChartUtils.writeDataValue(fsw, "backgroundColor", this.backgroundColor, true);
         ChartUtils.writeDataValue(fsw, "borderColor", this.borderColor, true);
         ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);
