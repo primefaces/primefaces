@@ -33,7 +33,7 @@ if (!PrimeFaces.expressions) {
                                 elements = elements.add(
                                         $(document.getElementById(widget.id)));
                             } else {
-                                PrimeFaces.error("Widget for widgetVar \"" + widgetVar + "\" not avaiable");
+                                PrimeFaces.widgetNotAvailable(widgetVar);
                             }
                         }
                         // PFS
@@ -74,7 +74,7 @@ if (!PrimeFaces.expressions) {
                                     ids.push(widget.id);
                                 }
                             } else {
-                                PrimeFaces.error("Widget for widgetVar \"" + widgetVar + "\" not avaiable");
+                                PrimeFaces.widgetNotAvailable(widgetVar);
                             }
                         }
                         // PFS

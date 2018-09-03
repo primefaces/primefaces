@@ -31,7 +31,7 @@ import org.primefaces.util.WidgetBuilder;
 public class ColorPickerRenderer extends CoreRenderer {
 
     private static final Pattern COLOR_HEX_PATTERN = Pattern.compile("([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})");
-    
+
     @Override
     public void decode(FacesContext context, UIComponent component) {
         ColorPicker colorPicker = (ColorPicker) component;
@@ -40,11 +40,11 @@ public class ColorPickerRenderer extends CoreRenderer {
 
         if (params.containsKey(paramName)) {
             String submittedValue = params.get(paramName);
-            
+
             if (!COLOR_HEX_PATTERN.matcher(submittedValue).matches()) {
                 return;
             }
-            
+
             Converter converter = colorPicker.getConverter();
             if (converter != null) {
                 colorPicker.setSubmittedValue(

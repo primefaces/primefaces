@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.tieredmenu.TieredMenuRenderer;
@@ -84,7 +85,7 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
         writer.startElement("span", menu);
         writer.writeAttribute("class", SlideMenu.BACKWARD_ICON_CLASS, null);
         writer.endElement("span");
-        writer.write(menu.getBackLabel());
+        writer.writeText(menu.getBackLabel(), "backLabel");
         writer.endElement("div");
 
         //wrapper

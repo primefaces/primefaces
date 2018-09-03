@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.primefaces.util.FileUploadUtils;
 
 public class NativeUploadedFileTest {
 
@@ -24,6 +25,7 @@ public class NativeUploadedFileTest {
 
         // Assert
         Assert.assertEquals("hello.png", output);
+        Assert.assertEquals(FileUploadUtils.getValidFilename(output), "hello.png");
     }
 
     @Test
@@ -36,6 +38,7 @@ public class NativeUploadedFileTest {
 
         // Assert
         Assert.assertEquals("Test;123.txt", output);
+        Assert.assertEquals(FileUploadUtils.getValidFilename(output), "Test;123.txt");
     }
 
     @Test
@@ -48,6 +51,7 @@ public class NativeUploadedFileTest {
 
         // Assert
         Assert.assertEquals("Test; \"123.txt", output);
+        Assert.assertEquals(FileUploadUtils.getValidFilename("Test; \"123.txt"), "Test; \"123.txt");
     }
 
     @Test
@@ -60,6 +64,33 @@ public class NativeUploadedFileTest {
 
         // Assert
         Assert.assertEquals("Test;123.txt", output);
+        Assert.assertEquals(FileUploadUtils.getValidFilename(output), "Test;123.txt");
+    }
+
+    @Test
+    public void testPercent() {
+        // Arrange
+        final String input = "form-data; name=\"XXX:XXX\"; filename=\"test%.jpg\"; charset=\"UTF-8\"";
+
+        // Act
+        final String output = file.getContentDispositionFileName(input);
+
+        // Assert
+        Assert.assertEquals("test%.jpg", output);
+        Assert.assertEquals(FileUploadUtils.getValidFilename(output), "test%.jpg");
+    }
+
+    @Test
+    public void testPlus() {
+        // Arrange
+        final String input = "form-data; name=\"XXX:XXX\"; filename=\"test+.jpg\"; charset=\"UTF-8\"";
+
+        // Act
+        final String output = file.getContentDispositionFileName(input);
+
+        // Assert
+        Assert.assertEquals("test+.jpg", output);
+        Assert.assertEquals(FileUploadUtils.getValidFilename(output), "test+.jpg");
     }
 
     @Test
@@ -72,6 +103,7 @@ public class NativeUploadedFileTest {
 
         // Assert
         Assert.assertEquals("hello\\\\.png", output);
+        Assert.assertEquals(FileUploadUtils.getValidFilename(output), "hello\\\\.png");
     }
 
     @Test
@@ -84,6 +116,7 @@ public class NativeUploadedFileTest {
 
         // Assert
         Assert.assertEquals("\\\\", output);
+        Assert.assertEquals(FileUploadUtils.getValidFilename(output), "\\\\");
     }
 
     @Test
@@ -96,6 +129,7 @@ public class NativeUploadedFileTest {
 
         // Assert
         Assert.assertEquals("\\", output);
+        Assert.assertEquals(FileUploadUtils.getValidFilename(output), "\\");
     }
 
     @Test
@@ -108,6 +142,7 @@ public class NativeUploadedFileTest {
 
         // Assert
         Assert.assertEquals("\"\"", output);
+        Assert.assertEquals(FileUploadUtils.getValidFilename(output), "\"\"");
     }
 
     @Test
@@ -120,6 +155,7 @@ public class NativeUploadedFileTest {
 
         // Assert
         Assert.assertEquals("hello\t\b\t\n.png", output);
+        Assert.assertEquals(FileUploadUtils.getValidFilename(output), "hello\t\b\t\n.png");
     }
 
     @Test

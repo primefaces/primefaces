@@ -69,14 +69,17 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
         }
     }
 
+    @Override
     public String getType() {
         return type;
     }
 
+    @Override
     public void setType(String type) {
         this.type = type;
     }
 
+    @Override
     public Object getData() {
         return data;
     }
@@ -85,6 +88,7 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
         this.data = data;
     }
 
+    @Override
     public List<TreeNode> getChildren() {
         return children;
     }
@@ -100,26 +104,32 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
         }
     }
 
+    @Override
     public TreeNode getParent() {
         return parent;
     }
 
+    @Override
     public void setParent(TreeNode parent) {
         this.parent = parent;
     }
 
+    @Override
     public void clearParent() {
         this.parent = null;
     }
 
+    @Override
     public boolean isExpanded() {
         return expanded;
     }
 
+    @Override
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
     }
 
+    @Override
     public boolean isSelected() {
         return this.selected;
     }
@@ -133,6 +143,7 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
         }
     }
 
+    @Override
     public void setSelected(boolean value) {
         this.selected = value;
         this.partialSelected = false;
@@ -181,26 +192,32 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
         }
     }
 
+    @Override
     public boolean isSelectable() {
         return selectable;
     }
 
+    @Override
     public void setSelectable(boolean selectable) {
         this.selectable = selectable;
     }
 
+    @Override
     public int getChildCount() {
         return children.size();
     }
 
+    @Override
     public String getRowKey() {
         return rowKey;
     }
 
+    @Override
     public void setRowKey(String rowKey) {
         this.rowKey = rowKey;
     }
 
+    @Override
     public boolean isLeaf() {
         if (children == null) {
             return true;
@@ -248,7 +265,7 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
         else if (!rowKey.equals(other.rowKey)) {
             return false;
         }
-        
+
         return true;
     }
 
@@ -262,10 +279,12 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
         }
     }
 
+    @Override
     public boolean isPartialSelected() {
         return partialSelected;
     }
 
+    @Override
     public void setPartialSelected(boolean value) {
         this.partialSelected = value;
     }

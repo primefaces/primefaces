@@ -24,8 +24,8 @@ import javax.faces.application.ResourceHandler;
 import javax.faces.application.ResourceHandlerWrapper;
 import javax.faces.context.FacesContext;
 import org.primefaces.application.resource.barcode.BarcodeHandler;
-import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 public class PrimeResourceHandler extends ResourceHandlerWrapper {
 
@@ -84,7 +84,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String handlerType = params.get(Constants.DYNAMIC_CONTENT_TYPE_PARAM);
 
-        if (ComponentUtils.isValueBlank(handlerType)) {
+        if (LangUtils.isValueBlank(handlerType)) {
             super.handleResourceRequest(context);
         }
         else {

@@ -16,13 +16,16 @@
 package org.primefaces.component.paginator;
 
 import java.io.IOException;
+
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIData;
 import org.primefaces.util.MessageFactory;
 
 public class FirstPageLinkRenderer extends PageLinkRenderer implements PaginatorElementRenderer {
 
+    @Override
     public void render(FacesContext context, Pageable pageable) throws IOException {
         boolean disabled = pageable.getPage() == 0;
 

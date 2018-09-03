@@ -35,11 +35,13 @@ public class DroppableRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Droppable droppable = (Droppable) component;
+        String clientId = droppable.getClientId(context);
+
+        renderDummyMarkup(context, component, clientId);
 
         UIComponent target = SearchExpressionFacade.resolveComponent(
                 context, droppable, droppable.getFor(), SearchExpressionHint.PARENT_FALLBACK);
 
-        String clientId = droppable.getClientId(context);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Droppable", droppable.resolveWidgetVar(), clientId)
                 .attr("target", target.getClientId(context))

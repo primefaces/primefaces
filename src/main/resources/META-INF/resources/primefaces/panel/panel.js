@@ -20,10 +20,10 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
 
             if(this.cfg.toggleableHeader) {
                 this.header.on('click', function() {
-                    if(!$this.isTitlebarClicked) { 
+                    if(!$this.isTitlebarClicked) {
                         $this.toggle();
                     }
-                    
+
                     $this.isTitlebarClicked = false;
                 });
             }
@@ -133,17 +133,7 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.collapsed = collapsed;
         this.toggleStateHolder.val(collapsed);
 
-        this.fireToggleEvent();
-    },
-
-    fireToggleEvent: function() {
-        if(this.cfg.behaviors) {
-            var toggleBehavior = this.cfg.behaviors['toggle'];
-
-            if(toggleBehavior) {
-                toggleBehavior.call(this);
-            }
-        }
+        this.callBehavior('toggle');
     },
 
     close: function() {
@@ -152,16 +142,11 @@ PrimeFaces.widget.Panel = PrimeFaces.widget.BaseWidget.extend({
         }
 
         var $this = this;
-        this.jq.fadeOut(this.cfg.closeSpeed,
-            function(e) {
-                if($this.cfg.behaviors) {
-                    var closeBehavior = $this.cfg.behaviors['close'];
-                    if(closeBehavior) {
-                        closeBehavior.call($this);
-                    }
-                }
+        this.jq.fadeOut(this.cfg.closeSpeed, function(e) {
+            if($this.hasBehavior('close')) {
+                $this.callBehavior('close');
             }
-        );
+        });
     },
 
     show: function() {

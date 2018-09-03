@@ -23,7 +23,7 @@ import static org.junit.Assert.assertSame;
 import org.junit.Test;
 
 public class ComponentTraversalUtilsTest {
-    
+
 	@Test
 	public void closestForm() {
 		UIForm outerForm = new UIForm();
@@ -53,5 +53,5 @@ public class ComponentTraversalUtilsTest {
 		UIComponent result = ComponentTraversalUtils.closestNamingContainer(cmp);
 		assertSame("Expected closest surrounding UIForm", innerContainer, result);
 	}
-    
+
 }

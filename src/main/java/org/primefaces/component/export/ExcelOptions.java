@@ -48,14 +48,15 @@ public class ExcelOptions implements ExporterOptions {
     }
 
     public ExcelOptions(String facetFontStyle, String facetFontColor, String facetBgColor, String facetFontSize, String cellFontStyle,
-            String cellFontColor, String cellFontSize) {
-        
+                        String cellFontColor, String cellFontSize) {
+
         this(facetFontStyle, facetFontColor, facetBgColor, facetFontSize);
         this.cellFontStyle = cellFontStyle;
         this.cellFontColor = cellFontColor;
         this.cellFontSize = cellFontSize;
     }
 
+    @Override
     public String getFacetFontStyle() {
         return facetFontStyle;
     }
@@ -64,6 +65,7 @@ public class ExcelOptions implements ExporterOptions {
         this.facetFontStyle = facetFontStyle;
     }
 
+    @Override
     public String getFacetFontColor() {
         return facetFontColor;
     }
@@ -72,6 +74,7 @@ public class ExcelOptions implements ExporterOptions {
         this.facetFontColor = facetFontColor;
     }
 
+    @Override
     public String getFacetBgColor() {
         return facetBgColor;
     }
@@ -80,6 +83,7 @@ public class ExcelOptions implements ExporterOptions {
         this.facetBgColor = facetBgColor;
     }
 
+    @Override
     public String getFacetFontSize() {
         return facetFontSize;
     }
@@ -88,6 +92,7 @@ public class ExcelOptions implements ExporterOptions {
         this.facetFontSize = facetFontSize;
     }
 
+    @Override
     public String getCellFontStyle() {
         return cellFontStyle;
     }
@@ -96,6 +101,7 @@ public class ExcelOptions implements ExporterOptions {
         this.cellFontStyle = cellFontStyle;
     }
 
+    @Override
     public String getCellFontColor() {
         return cellFontColor;
     }
@@ -104,6 +110,7 @@ public class ExcelOptions implements ExporterOptions {
         this.cellFontColor = cellFontColor;
     }
 
+    @Override
     public String getCellFontSize() {
         return cellFontSize;
     }

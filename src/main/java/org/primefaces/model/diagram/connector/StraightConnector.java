@@ -45,10 +45,12 @@ public class StraightConnector extends Connector {
         this.gap = gap;
     }
 
+    @Override
     public String getType() {
         return "Straight";
     }
 
+    @Override
     public String toJS(StringBuilder sb) {
         return sb.append("['Straight',{stub:").append(stub).append(",gap:").append(gap).append("}]").toString();
     }

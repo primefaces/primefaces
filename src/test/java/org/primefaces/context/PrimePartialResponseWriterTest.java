@@ -28,34 +28,34 @@ import org.primefaces.json.JSONObject;
 import org.primefaces.mock.FacesContextMock;
 
 public class PrimePartialResponseWriterTest {
-    
+
     @Before
     public void init()
     {
         FacesContext context = new FacesContextMock(new HashMap<Object, Object>());
     }
-    
+
     @Test
     public void testEncodeJSONArray() throws IOException, JSONException {
         CollectingPartialResponseWriter partialResponseWriter = new CollectingPartialResponseWriter();
         PrimePartialResponseWriter primePartialResponseWriter = new PrimePartialResponseWriter(partialResponseWriter);
-        
+
         JSONArray jsonArray = new JSONArray();
         jsonArray.put("test");
         jsonArray.put(12);
         jsonArray.put(1);
         jsonArray.put("test123&");
-        
+
         primePartialResponseWriter.encodeJSONArray("myArray", jsonArray);
         
         Assert.assertEquals("\"myArray\":[&#34;test&#34;,12,1" + ",&#34;test123&amp;&#34;]", partialResponseWriter.toString());
     }
-    
+
     @Test
     public void testEncodeJSONObject() throws IOException, JSONException {
         CollectingPartialResponseWriter partialResponseWriter = new CollectingPartialResponseWriter();
         PrimePartialResponseWriter primePartialResponseWriter = new PrimePartialResponseWriter(partialResponseWriter);
-        
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("myStrVal", "Hello<>World!");
         jsonObject.put("isThatTrue", false);
@@ -64,19 +64,19 @@ public class PrimePartialResponseWriterTest {
         
         Assert.assertEquals("\"myObj\":{&#34;myStrVal&#34;:&#34;Hello&lt;&gt;World!&#34;,&#34;isThatTrue&#34;:false}", partialResponseWriter.toString());
     }
-    
+
     @Test
     public void testEncodeJSONValue() throws IOException, JSONException {
         CollectingPartialResponseWriter partialResponseWriter = new CollectingPartialResponseWriter();
         PrimePartialResponseWriter primePartialResponseWriter = new PrimePartialResponseWriter(partialResponseWriter);
-        
+
         primePartialResponseWriter.encodeJSONValue("myVal", "test123>");
         Assert.assertEquals("&#34;myVal&#34;:&#34;test123&gt;&#34;", partialResponseWriter.toString());
         
         
         partialResponseWriter = new CollectingPartialResponseWriter();
         primePartialResponseWriter = new PrimePartialResponseWriter(partialResponseWriter);
-        
+
         primePartialResponseWriter.encodeJSONValue("myVal2", 123);
         Assert.assertEquals("&#34;myVal2&#34;:123", partialResponseWriter.toString());
     }

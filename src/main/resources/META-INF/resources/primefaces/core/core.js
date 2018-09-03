@@ -76,7 +76,7 @@
 
         attachBehaviors : function(element, behaviors) {
             $.each(behaviors, function(event, fn) {
-                element.bind(event, function(e) {
+                element.on(event, function(e) {
                     fn.call(element, e);
                 });
             });
@@ -151,7 +151,7 @@
             }).blur(function() {
                 $(this).removeClass('ui-state-focus ui-state-active');
             }).keydown(function(e) {
-                if(e.which === $.ui.keyCode.SPACE || e.which === $.ui.keyCode.ENTER || e.which === $.ui.keyCode.NUMPAD_ENTER) {
+                if(e.which === $.ui.keyCode.SPACE || e.which === $.ui.keyCode.ENTER) {
                     $(this).addClass('ui-state-active');
                 }
             }).keyup(function() {
@@ -219,6 +219,10 @@
         isDevelopmentProjectStage: function() {
             return PrimeFaces.settings.projectStage === 'Development';
         },
+        
+        widgetNotAvailable: function(widgetVar) {
+           PrimeFaces.error("Widget for var '" + widgetVar + "' not available!");
+        },
 
         setCaretToEnd: function(element) {
             if(element) {
@@ -262,7 +266,9 @@
         },
 
         escapeHTML: function(value) {
-            return value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            return String(value).replace(/[&<>"'`=\/]/g, function (s) {
+                return PrimeFaces.entityMap[s];
+            });
         },
 
         clearSelection: function() {
@@ -302,6 +308,14 @@
         cw : function(widgetName, widgetVar, cfg) {
             this.createWidget(widgetName, widgetVar, cfg);
         },
+        
+
+        /**
+         * @deprecated moved to PrimeFaces.resources.getFacesResource
+         */
+        getFacesResource : function(name, library, version) {
+           return PrimeFaces.resources.getFacesResource(name, library, version);
+        },
 
         createWidget : function(widgetName, widgetVar, cfg) {
             cfg.widgetVar = widgetVar;
@@ -324,42 +338,8 @@
             // widget script not loaded
             else {
                 // should be loaded by our dynamic resource handling, log a error
-                PrimeFaces.error("Widget not available: " + widgetName);
+                PrimeFaces.widgetNotAvailable(widgetName);
             }
-        },
-
-        /**
-         * Builds a resource URL for given parameters.
-         *
-         * @param {string} name The name of the resource. For example: primefaces.js
-         * @param {string} library The library of the resource. For example: primefaces
-         * @param {string} version The version of the library. For example: 5.1
-         * @returns {string} The resource URL.
-         */
-        getFacesResource : function(name, library, version) {
-
-            // just get sure - name shoudln't start with a slash
-            if (name.indexOf('/') === 0)
-            {
-                name = name.substring(1, name.length);
-            }
-
-            var scriptURI = $('script[src*="/' + PrimeFaces.RESOURCE_IDENTIFIER + '/core.js"]').attr('src');
-            // portlet
-            if (!scriptURI) {
-                scriptURI = $('script[src*="' + PrimeFaces.RESOURCE_IDENTIFIER + '=core.js"]').attr('src');
-            }
-
-            scriptURI = scriptURI.replace('core.js', name);
-            scriptURI = scriptURI.replace('ln=primefaces', 'ln=' + library);
-
-            if (version) {
-                var extractedVersion = new RegExp('[?&]v=([^&]*)').exec(scriptURI)[1];
-                scriptURI = scriptURI.replace('v=' + extractedVersion, 'v=' + version);
-            }
-
-            var prefix = window.location.protocol + '//' + window.location.host;
-            return scriptURI.indexOf(prefix) >= 0 ? scriptURI : prefix + scriptURI;
         },
 
         inArray: function(arr, item) {
@@ -374,17 +354,6 @@
 
         isNumber: function(value) {
             return typeof value === 'number' && isFinite(value);
-        },
-
-        getScript: function(url, callback) {
-            $.ajax({
-                type: "GET",
-                url: url,
-                success: callback,
-                dataType: "script",
-                cache: true,
-                async: true
-            });
         },
 
         focus: function(id, context) {
@@ -700,11 +669,22 @@
 
     PrimeFaces.locales['en'] = PrimeFaces.locales['en_US'];
 
+    PrimeFaces.entityMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '/': '&#x2F;',
+        '`': '&#x60;',
+        '=': '&#x3D;'
+    };
+
     PF = function(widgetVar) {
     	var widgetInstance = PrimeFaces.widgets[widgetVar];
 
     	if (!widgetInstance) {
-	        PrimeFaces.error("Widget for var '" + widgetVar + "' not available!");
+	        PrimeFaces.widgetNotAvailable(widgetVar);
     	}
 
         return widgetInstance;

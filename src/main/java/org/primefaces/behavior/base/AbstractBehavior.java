@@ -33,8 +33,8 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
         super();
 
         int propertiesCount = getAllProperties().length;
-        literals = new HashMap<String, Object>(propertiesCount);
-        bindings = new HashMap<String, ValueExpression>(propertiesCount);
+        literals = new HashMap<>(propertiesCount);
+        bindings = new HashMap<>(propertiesCount);
     }
 
     public void setLiteral(String attr, Object val) {
@@ -113,7 +113,7 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
                 values = null;
             }
             else {
-                values = new Object[] { superState };
+                values = new Object[]{superState};
             }
         }
         else {

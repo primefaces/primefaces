@@ -48,8 +48,7 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
         };
 
         if(this.hasBehavior('load')) {
-            var loadContentBehavior = this.cfg.behaviors['load'];
-            loadContentBehavior.call(this, options);
+            this.callBehavior('load', options);
         }
         else {
             PrimeFaces.ajax.Request.handle(options);
@@ -59,9 +58,9 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
     bindScrollMonitor: function() {
         var $this = this;
 
-        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id, function() {
+        PrimeFaces.utils.registerScrollHandler(this, 'scroll.' + this.id + '_align', function() {
             if ($this.visible()) {
-                PrimeFaces.utils.unbdingScrollHandler('scroll.' + $this.id);
+                PrimeFaces.utils.unbindScrollHandler($this, 'scroll.' + $this.id + '_align');
                 $this.loadContent();
             }
         });
@@ -77,5 +76,5 @@ PrimeFaces.widget.OutputPanel = PrimeFaces.widget.BaseWidget.extend({
         if((top >= scrollTop && top <= (scrollTop + height)) || (bottom >= scrollTop && bottom <= (scrollTop + height))) {
             return true;
         }
-    },
+    }
 });

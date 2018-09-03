@@ -4,18 +4,11 @@
     "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
 <module name="Checker">
 
-	<module name="SuppressionFilter">
-		<property name="file" value="checkstyle-suppressions.xml"/>
-	</module>
-
     <module name="FileTabCharacter"/>
 
-    <!-- allow usage of CHECKSTYLE:OFF and CHECKSTYLE:ON -->
-    <module name="SuppressionCommentFilter"/>
-
     <module name="TreeWalker">
-
-        <module name="FileContentsHolder"/>
+        <!-- allow usage of CHECKSTYLE:OFF and CHECKSTYLE:ON -->
+        <module name="SuppressionCommentFilter"/>
 
         <property name="cacheFile" value="${checkstyle.cache.file}"/>
 
@@ -29,62 +22,65 @@
         <!-- Checks for Naming Conventions.                  -->
         <!-- See http://checkstyle.sf.net/config_naming.html -->
         <module name="MemberName">
-		<property name="format" value="^[a-z_](_?[a-zA-Z0-9]+)*$"/>
+            <property name="format" value="^[a-z_](_?[a-zA-Z0-9]+)*$"/>
         </module>
 
         <module name="ConstantName">
-          <!-- Normal rules, except that:
-             -  * any name can start with an underscore.
-             -  * "log" is allowed; this is a traditional name for log objects
-             -  * names ending with "ThreadLocal" are allowed so that threadlocal vars don't have to be
-             -    all-caps. They are static final, but are not really constants. Yes, type prefixes
-             -    on variable names sucks ("hungarian notation") but checkstyle doesn't allow 
-             -    name rules to vary by the type of the constant, and no other alternative seems
-             -    any better.
-             -->
-          <property name="format" 
-             value="^((log)|(logger)|([a-z][a-zA-Z]*ThreadLocal)|([A-Z][A-Z0-9]*(_[A-Z0-9]+)*))$"/>
+            <!-- Normal rules, except that:
+            -  * any name can start with an underscore.
+            -  * "log" is allowed; this is a traditional name for log objects
+            -  * names ending with "ThreadLocal" are allowed so that threadlocal vars don't have to be
+            -    all-caps. They are static final, but are not really constants. Yes, type prefixes
+            -    on variable names sucks ("hungarian notation") but checkstyle doesn't allow
+            -    name rules to vary by the type of the constant, and no other alternative seems
+            -    any better.
+            -->
+            <property name="format"
+                      value="^((log)|(logger)|([a-z][a-zA-Z]*ThreadLocal)|([A-Z][A-Z0-9]*(_[A-Z0-9]+)*))$"/>
         </module>
 
         <module name="LocalVariableName">
-		<property name="format" value="^[a-z_](_?[a-zA-Z0-9]+)*$"/>
-	</module>
+            <property name="format" value="^[a-z_](_?[a-zA-Z0-9]+)*$"/>
+        </module>
         <module name="MethodName"/>
         <module name="PackageName"/>
         <module name="LocalFinalVariableName"/>
         <module name="ParameterName">
-		<property name="format" value="^[a-z_](_?[a-zA-Z0-9]+)*$"/>
-	</module>
+            <property name="format" value="^[a-z_](_?[a-zA-Z0-9]+)*$"/>
+        </module>
         <module name="StaticVariableName"/>
         <module name="TypeName">
-			<property name="format" value="^[A-Z][a-zA-Z0-9_]*$" />
-		</module>
+            <property name="format" value="^[A-Z][a-zA-Z0-9_]*$" />
+        </module>
 
         <module name="IllegalImport"/>
         <module name="RedundantImport"/>
         <module name="UnusedImports">
-			<property name="processJavadoc" value="true"/>
-		</module>
+            <property name="processJavadoc" value="true"/>
+        </module>
 
         <module name="LineLength">
-          <property name="max" value="160" />
-          <property name="ignorePattern" value="@version|@see"/>
+            <property name="max" value="160"/>
+            <property name="ignorePattern" value="@version|@see|\w*_CLASS"/>
         </module>
         <module name="MethodLength">
-          <property name="max" value="300" />
+            <property name="max" value="300" />
         </module>
         <module name="ParameterNumber">
-          <property name="max" value="10" />
+            <property name="max" value="10" />
         </module>
 
         <module name="NeedBraces">
-		<property name="allowSingleLineStatement" value="true" />
-	</module>
+            <property name="allowSingleLineStatement" value="true" />
+        </module>
         <module name="LeftCurly">
         </module>
         <module name="RightCurly">
-          <property name="option" value="alone"/>
+            <property name="option" value="alone"/>
         </module>
+
+        <module name="WhitespaceAfter" />
+        <module name="NoWhitespaceAfter" />
 
         <!-- Checks for common coding problems               -->
         <!-- See http://checkstyle.sf.net/config_coding.html -->
@@ -100,7 +96,7 @@
         <module name="com.puppycrawl.tools.checkstyle.checks.design.DesignForExtensionCheck">
             <property name="severity" value="ignore"/>
         </module>
-        
+
         <!-- module name="FinalClass"/ -->
         <!-- module name="HideUtilityClassConstructor"/ -->
         <!-- module name="InterfaceIsType"/ -->
@@ -113,16 +109,23 @@
         </module>
 
 
+        <module name="Regexp">
+            <property name="format" value="[ \t]+$"/>
+            <property name="illegalPattern" value="true"/>
+            <property name="message" value="Trailing whitespace"/>
+        </module>
+
+
         <!-- Miscellaneous other checks.                   -->
         <!-- See http://checkstyle.sf.net/config_misc.html -->
         <!-- module name="ArrayTypeStyle"/ -->
         <!-- module name="FinalParameters"/ -->
         <!-- Line with Trailing Spaces (disabled as it's to noisy)
-        <module name="GenericIllegalRegexp">
-            <property name="format" value="\s+$"/>
-            <property name="message" value="Line has trailing spaces."/>
-        </module>
-          -->
+      <module name="GenericIllegalRegexp">
+          <property name="format" value="\s+$"/>
+          <property name="message" value="Line has trailing spaces."/>
+      </module>
+        -->
         <module name="UpperEll"/>
 
         <module name="WhitespaceAround">

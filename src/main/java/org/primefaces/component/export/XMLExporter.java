@@ -15,6 +15,19 @@
  */
 package org.primefaces.component.export;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.Collections;
+import java.util.List;
+
+import javax.el.MethodExpression;
+import javax.faces.FacesException;
+import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
 import org.primefaces.component.datatable.DataTable;
@@ -39,8 +52,9 @@ public class XMLExporter extends Exporter {
 
     @Override
     public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
-        
+                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+                       MethodExpression onTableRender) throws IOException {
+
         ExternalContext externalContext = context.getExternalContext();
         configureResponse(externalContext, filename);
         StringBuilder builder = new StringBuilder();
@@ -80,15 +94,17 @@ public class XMLExporter extends Exporter {
 
     @Override
     public void export(FacesContext facesContext, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
-        
+                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+                       MethodExpression onTableRender) throws IOException {
+
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void export(FacesContext facesContext, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options) throws IOException {
-        
+                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+                       MethodExpression onTableRender) throws IOException {
+
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -123,7 +139,7 @@ public class XMLExporter extends Exporter {
     }
 
     protected String getColumnTag(UIColumn column) {
-        String headerText = column.getHeaderText();
+        String headerText = (column.getExportHeaderValue() != null) ? column.getExportHeaderValue() : column.getHeaderText();
         UIComponent facet = column.getFacet("header");
         String columnTag;
 

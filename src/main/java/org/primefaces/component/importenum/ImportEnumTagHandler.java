@@ -19,9 +19,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.el.ELContext;
-import javax.el.ExpressionFactory;
-import javax.el.ValueExpression;
 import javax.faces.FacesException;
 import javax.faces.application.ProjectStage;
 import javax.faces.component.UIComponent;
@@ -30,8 +27,8 @@ import javax.faces.view.facelets.FaceletContext;
 import javax.faces.view.facelets.TagAttribute;
 import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
+
 import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.util.SharedStringBuilder;
 
 /**
  * {@link TagHandler} for the <code>ImportEnum</code> component.
@@ -39,7 +36,6 @@ import org.primefaces.util.SharedStringBuilder;
 public class ImportEnumTagHandler extends TagHandler {
 
     private static final String DEFAULT_ALL_SUFFIX = "ALL_VALUES";
-    private static final String SB_VAR = ImportEnumTagHandler.class.getName() + "#var";
 
     private final TagAttribute typeTagAttribute;
     private final TagAttribute varTagAttribute;
@@ -71,26 +67,14 @@ public class ImportEnumTagHandler extends TagHandler {
             var = varTagAttribute.getValue(ctx);
         }
 
-        if (var.charAt(0) != '#') {
-            StringBuilder varBuilder = SharedStringBuilder.get(facesContext, SB_VAR, var.length() + 3);
-            varBuilder.append("#{").append(var).append("}");
-
-            var = varBuilder.toString();
-        }
-
-        // Assign enum values to alias/var expression
-        ELContext elContext = facesContext.getELContext();
-        ExpressionFactory expressionFactory = facesContext.getApplication().getExpressionFactory();
-
-        ValueExpression aliasValueExpression = expressionFactory.createValueExpression(elContext, var, Map.class);
-        aliasValueExpression.setValue(elContext, enumValues);
+        ctx.setAttribute(var, enumValues);
     }
 
     /**
      * Gets the {@link Class} from the {@link TagAttribute}.
      *
      * @param attribute The {@link TagAttribute}.
-     * @param ctx The {@link FaceletContext}.
+     * @param ctx       The {@link FaceletContext}.
      * @return The {@link Class}.
      */
     protected Class<?> getClassFromAttribute(TagAttribute attribute, FaceletContext ctx) {
@@ -108,8 +92,8 @@ public class ImportEnumTagHandler extends TagHandler {
      * Get all enum values of the given {@link Class}.
      *
      * @param facesContext The {@link FacesContext}.
-     * @param type The enum class.
-     * @param allSuffix The suffix to access a array with all enum values.
+     * @param type         The enum class.
+     * @param allSuffix    The suffix to access a array with all enum values.
      * @return A {@link Map} with the enum values.
      */
     protected Map<String, Object> getEnumValues(FacesContext facesContext, Class<?> type, String allSuffix) {
@@ -126,7 +110,7 @@ public class ImportEnumTagHandler extends TagHandler {
                 enums = cache.get(type);
             }
             else {
-                enums = new EnumHashMap<String, Object>(type);
+                enums = new EnumHashMap<>(type);
 
                 for (Object value : type.getEnumConstants()) {
                     Enum<?> currentEnum = (Enum<?>) value;

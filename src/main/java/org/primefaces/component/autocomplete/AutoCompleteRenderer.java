@@ -16,12 +16,7 @@
 package org.primefaces.component.autocomplete;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -123,7 +118,7 @@ public class AutoCompleteRenderer extends InputRenderer {
 
     @SuppressWarnings("unchecked")
     public void encodeResults(FacesContext context, UIComponent component, String query) throws IOException {
-        AutoComplete ac = (AutoComplete) component;        
+        AutoComplete ac = (AutoComplete) component;
         List results = ac.getSuggestions();
         int maxResults = ac.getMaxResults();
 
@@ -359,13 +354,13 @@ public class AutoCompleteRenderer extends InputRenderer {
         if (ac.getPanelStyle() != null) {
             writer.writeAttribute("style", ac.getPanelStyle(), null);
         }
-        
+
         if (ac.isDynamic() && ac.isDynamicLoadRequest(context)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String query = params.get(ac.getClientId(context) + "_query");
             encodeResults(context, ac, query);
         }
-        
+
         writer.endElement("span");
     }
 
@@ -388,7 +383,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             }
         }
 
-        List<String> stringValues = new ArrayList<String>();
+        List<String> stringValues = new ArrayList<>();
         boolean disabled = ac.isDisabled();
         String title = ac.getTitle();
 
@@ -489,7 +484,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         if (ac.isDropdown()) {
             encodeDropDown(context, ac);
         }
-        
+
         if (!ac.isDynamic()) {
             encodePanel(context, ac);
         }
@@ -572,8 +567,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                 if (pojo) {
                     requestMap.put(var, item);
                     String value = converter == null ? String.valueOf(ac.getItemValue()) : converter.getAsString(context, ac, ac.getItemValue());
-                    writer.writeAttribute("data-item-value", escapeText(value), null);
-                    writer.writeAttribute("data-item-label", escapeText(ac.getItemLabel()), null);
+                    writer.writeAttribute("data-item-value", value, null);
+                    writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
                     writer.writeAttribute("data-item-class", ac.getItemStyleClass(), null);
                     writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
 
@@ -637,8 +632,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                 if (pojo) {
                     requestMap.put(var, item);
                     String value = converter == null ? String.valueOf(ac.getItemValue()) : converter.getAsString(context, ac, ac.getItemValue());
-                    writer.writeAttribute("data-item-value", escapeText(value), null);
-                    writer.writeAttribute("data-item-label", escapeText(ac.getItemLabel()), null);
+                    writer.writeAttribute("data-item-value", value, null);
+                    writer.writeAttribute("data-item-label", ac.getItemLabel(), null);
                     writer.writeAttribute("data-item-class", ac.getItemStyleClass(), null);
                     writer.writeAttribute("data-item-group", ac.getGroupBy(), null);
 
@@ -649,8 +644,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                     writer.writeText(ac.getItemLabel(), null);
                 }
                 else {
-                    writer.writeAttribute("data-item-label", escapeText(item.toString()), null);
-                    writer.writeAttribute("data-item-value", escapeText(item.toString()), null);
+                    writer.writeAttribute("data-item-label", item.toString(), null);
+                    writer.writeAttribute("data-item-value", item.toString(), null);
                     writer.writeAttribute("data-item-class", ac.getItemStyleClass(), null);
 
                     writer.writeText(item, null);
@@ -710,8 +705,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                     .attr("effectDuration", ac.getEffectDuration(), Integer.MAX_VALUE);
         }
 
-        wb.attr("emptyMessage", escapeText(ac.getEmptyMessage()), null)
-                .attr("resultsMessage", escapeText(ac.getResultsMessage()), null);
+        wb.attr("emptyMessage", ac.getEmptyMessage(), null)
+                .attr("resultsMessage", ac.getResultsMessage(), null);
 
         if (ac.getFacet("itemtip") != null) {
             wb.attr("itemtip", true, false)

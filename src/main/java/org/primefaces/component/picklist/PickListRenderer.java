@@ -25,8 +25,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import org.primefaces.component.column.Column;
 
+import org.primefaces.component.column.Column;
 import org.primefaces.model.DualListModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.renderkit.RendererUtils;
@@ -90,7 +90,7 @@ public class PickListRenderer extends CoreRenderer {
 
         //Source List
         encodeList(context, pickList, clientId + "_source", PickList.SOURCE_CLASS, model.getSource(),
-                pickList.getFacet("sourceCaption"), pickList.isShowSourceFilter());
+                pickList.getFacet("sourceCaption"), pickList.isShowSourceFilter(), true);
 
         //Buttons
         writer.startElement("div", null);
@@ -114,7 +114,7 @@ public class PickListRenderer extends CoreRenderer {
 
         //Target List
         encodeList(context, pickList, clientId + "_target", PickList.TARGET_CLASS, model.getTarget(),
-                pickList.getFacet("targetCaption"), pickList.isShowTargetFilter());
+                pickList.getFacet("targetCaption"), pickList.isShowTargetFilter(), false);
 
         //Target List Reorder Buttons
         if (pickList.isShowTargetControls()) {
@@ -136,6 +136,8 @@ public class PickListRenderer extends CoreRenderer {
                 .attr("showSourceControls", pickList.isShowSourceControls(), false)
                 .attr("showTargetControls", pickList.isShowTargetControls(), false)
                 .attr("disabled", pickList.isDisabled(), false)
+                .attr("filterEvent", pickList.getFilterEvent(), null)
+                .attr("filterDelay", pickList.getFilterDelay(), Integer.MAX_VALUE)
                 .attr("filterMatchMode", pickList.getFilterMatchMode(), null)
                 .nativeAttr("filterFunction", pickList.getFilterFunction(), null)
                 .attr("showCheckbox", pickList.isShowCheckbox(), false)
@@ -192,27 +194,22 @@ public class PickListRenderer extends CoreRenderer {
         //text
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        if (tooltip) {
-            writer.write(title);
-        }
-        else {
-            writer.writeText(title, null);
-        }
+        writer.writeText(title, null);
         writer.endElement("span");
 
         writer.endElement("button");
     }
 
     protected void encodeList(FacesContext context, PickList pickList, String listId, String styleClass, List model, UIComponent caption,
-            boolean filter) throws IOException {
-        
+                              boolean filter, boolean isSource) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", PickList.LIST_WRAPPER_CLASS, null);
 
         if (filter) {
-            encodeFilter(context, pickList, listId + "_filter");
+            encodeFilter(context, pickList, listId + "_filter", isSource);
         }
 
         if (caption != null) {
@@ -256,11 +253,11 @@ public class PickListRenderer extends CoreRenderer {
         Converter converter = pickList.getConverter();
         boolean showCheckbox = pickList.isShowCheckbox();
 
-        for (Iterator it = model.iterator(); it.hasNext();) {
+        for (Iterator it = model.iterator(); it.hasNext(); ) {
             Object item = it.next();
             context.getExternalContext().getRequestMap().put(var, item);
             String itemValue = converter != null ?
-                    converter.getAsString(context, pickList, pickList.getItemValue()) : pickList.getItemValue().toString();
+                               converter.getAsString(context, pickList, pickList.getItemValue()) : pickList.getItemValue().toString();
             String itemLabel = pickList.getItemLabel();
             String itemClass = pickList.isItemDisabled() ? PickList.ITEM_CLASS + " " + PickList.ITEM_DISABLED_CLASS : PickList.ITEM_CLASS;
 
@@ -288,8 +285,12 @@ public class PickListRenderer extends CoreRenderer {
                         Column column = (Column) kid;
 
                         writer.startElement("td", null);
-                        if (column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
-                        if (column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
+                        if (column.getStyle() != null) {
+                            writer.writeAttribute("style", column.getStyle(), null);
+                        }
+                        if (column.getStyleClass() != null) {
+                            writer.writeAttribute("class", column.getStyleClass(), null);
+                        }
 
                         renderChildren(context, column);
                         writer.endElement("td");
@@ -334,8 +335,10 @@ public class PickListRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeFilter(FacesContext context, PickList pickList, String name) throws IOException {
+    protected void encodeFilter(FacesContext context, PickList pickList, String name, boolean isSource) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
+
+        String styleClass = PickList.FILTER_CLASS + (isSource ? " ui-source-filter-input" : " ui-target-filter-input");
 
         writer.startElement("div", null);
         writer.writeAttribute("class", PickList.FILTER_CONTAINER, null);
@@ -344,7 +347,7 @@ public class PickListRenderer extends CoreRenderer {
         writer.writeAttribute("id", name, null);
         writer.writeAttribute("name", name, null);
         writer.writeAttribute("type", "text", null);
-        writer.writeAttribute("class", PickList.FILTER_CLASS, null);
+        writer.writeAttribute("class", styleClass, null);
         writer.endElement("input");
 
         writer.startElement("span", null);

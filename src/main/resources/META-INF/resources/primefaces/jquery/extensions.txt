@@ -26,4 +26,4 @@ jquery.maskedinput.js:
 
 jquery.ui.pfextensions:
 - Added gotoToday selection fix (https://github.com/primefaces/primefaces/issues/1420)
-- Re-Added keyCode.NUMPAD_ENTER (https://github.com/primefaces/primefaces/issues/2448)
+- Sortable performance fix (/https://github.com/primefaces/primefaces/issues/3675)

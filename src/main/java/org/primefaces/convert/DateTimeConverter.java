@@ -27,6 +27,7 @@ public class DateTimeConverter extends javax.faces.convert.DateTimeConverter imp
 
     private Map<String, Object> metadata;
 
+    @Override
     public Map<String, Object> getMetadata() {
         if (metadata == null) {
             String pattern = this.getPattern();
@@ -65,6 +66,7 @@ public class DateTimeConverter extends javax.faces.convert.DateTimeConverter imp
         return metadata;
     }
 
+    @Override
     public String getConverterId() {
         return DateTimeConverter.CONVERTER_ID;
     }

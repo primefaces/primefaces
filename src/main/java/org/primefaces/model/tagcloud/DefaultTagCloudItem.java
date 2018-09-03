@@ -39,6 +39,7 @@ public class DefaultTagCloudItem implements TagCloudItem, Serializable {
         this.url = url;
     }
 
+    @Override
     public String getLabel() {
         return label;
     }
@@ -47,6 +48,7 @@ public class DefaultTagCloudItem implements TagCloudItem, Serializable {
         this.label = label;
     }
 
+    @Override
     public int getStrength() {
         return strength;
     }
@@ -55,6 +57,7 @@ public class DefaultTagCloudItem implements TagCloudItem, Serializable {
         this.strength = strength;
     }
 
+    @Override
     public String getUrl() {
         return url;
     }

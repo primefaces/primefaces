@@ -60,10 +60,20 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         form(String.class),
         skipChildren(Boolean.class);
 
-        public final Class<?> expectedType;
+        private final Class<?> expectedType;
 
         PropertyKeys(Class<?> expectedType) {
             this.expectedType = expectedType;
+        }
+
+        /**
+         * Holds the type which ought to be passed to
+         * {@link javax.faces.view.facelets.TagAttribute#getObject(javax.faces.view.facelets.FaceletContext, java.lang.Class) }
+         * when creating the behavior.
+         * @return the expectedType the expected object type
+         */
+        public Class<?> getExpectedType() {
+            return expectedType;
         }
     }
 
@@ -267,13 +277,13 @@ public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
         return true;
     }
 
-    
+
     @Override
     protected Enum<?>[] getAllProperties() {
         return PropertyKeys.values();
     }
 
-    
+
     public void addAjaxBehaviorListener(AjaxBehaviorListener listener) {
         addBehaviorListener(listener);
     }

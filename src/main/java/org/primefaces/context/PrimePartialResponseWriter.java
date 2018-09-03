@@ -20,6 +20,7 @@ import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
 import org.primefaces.util.BeanUtils;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.CollectionUtils;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.ResourceUtils;
@@ -41,7 +42,7 @@ import java.util.Map;
 public class PrimePartialResponseWriter extends PartialResponseWriter {
 
     private static final Map<String, String> CALLBACK_EXTENSION_PARAMS;
-    
+
     static {
         Map<String, String> callbackExtensionParams = new HashMap<>();
         callbackExtensionParams.put("ln", "primefaces");
@@ -209,17 +210,22 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                 String paramName = it.next();
                 Object paramValue = params.get(paramName);
 
-                if (paramValue instanceof JSONObject) {
-                    encodeJSONObject(paramName, (JSONObject) paramValue);
-                }
-                else if (paramValue instanceof JSONArray) {
-                    encodeJSONArray(paramName, (JSONArray) paramValue);
-                }
-                else if (BeanUtils.isBean(paramValue)) {
-                    encodeJSONObject(paramName, new JSONObject(paramValue));
+                if (paramValue == null) {
+                    encodeJSONValue(paramName, null);
                 }
                 else {
-                    encodeJSONValue(paramName, paramValue);
+                    if (paramValue instanceof JSONObject) {
+                        encodeJSONObject(paramName, (JSONObject) paramValue);
+                    }
+                    else if (paramValue instanceof JSONArray) {
+                        encodeJSONArray(paramName, (JSONArray) paramValue);
+                    }
+                    else if (BeanUtils.isBean(paramValue)) {
+                        encodeJSONObject(paramName, new JSONObject(paramValue));
+                    }
+                    else {
+                        encodeJSONValue(paramName, paramValue);
+                    }
                 }
 
                 if (it.hasNext()) {
@@ -291,28 +297,23 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                         ArrayList<ResourceUtils.ResourceInfo> initialResources = DynamicResourcesPhaseListener.getInitialResources(context);
                         ArrayList<ResourceUtils.ResourceInfo> currentResources = ResourceUtils.getComponentResources(context);
                         if (initialResources != null && currentResources != null && currentResources.size() > initialResources.size()) {
-                            startEval();
 
                             ArrayList<ResourceUtils.ResourceInfo> newResources = new ArrayList<>(currentResources);
                             newResources.removeAll(initialResources);
 
-                            getWrapped().write("if(window.PrimeFaces){");
-
-                            ArrayList<String> stylesheets = ResourceUtils.filterStylesheets(context, newResources);
-                            if (stylesheets != null && !stylesheets.isEmpty()) {
-                                String script = "PrimeFaces.ajax.Utils.loadStylesheets(['" + CollectionUtils.join(stylesheets, "','") + "']);";
-                                getWrapped().write(script);
+                            boolean updateStarted = false;
+                            for (int i = 0; i < newResources.size(); i++) {
+                                ResourceUtils.ResourceInfo resourceInfo = newResources.get(i);
+                                if (!updateStarted) {
+                                    ((PartialResponseWriter) getWrapped()).startUpdate("javax.faces.Resource");
+                                    updateStarted = true;
+                                }
+                                resourceInfo.getResource().encodeAll(context);
                             }
 
-                            ArrayList<String> scripts = ResourceUtils.filterScripts(context, newResources);
-                            if (scripts != null && !scripts.isEmpty()) {
-                                String script = "PrimeFaces.ajax.Utils.loadScripts(['" + CollectionUtils.join(scripts, "','") + "']);";
-                                getWrapped().write(script);
+                            if (updateStarted) {
+                                ((PartialResponseWriter) getWrapped()).endUpdate();
                             }
-
-                            getWrapped().write("}");
-
-                            endEval();
                         }
                     }
                 }

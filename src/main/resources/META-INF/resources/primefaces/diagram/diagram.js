@@ -14,13 +14,13 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
 
     init: function(cfg) {
         this._super(cfg);
-        
+
         this.renderDeferred();
-    },   
-    
+    },
+
     _render: function() {
         var $this = this;
-        
+
         jsPlumb.ready(function() {
             $this.canvas = jsPlumb.getInstance({
                 Container: $this.jq.attr('id'),
@@ -35,35 +35,35 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
             $this.canvas.doWhileSuspended(function() {
                 $this.initEndPoints();
                 $this.initConnections();
-                
+
                 $this.canvas.draggable($this.jq.children('.ui-diagram-draggable'), {
                     containment: $this.cfg.containment
                 });
             });
-            
+
             $this.bindEvents();
         });
     },
-    
+
     initEndPoints: function() {
         for(var i = 0; i < this.cfg.endPoints.length; i++) {
             var endPoint = this.cfg.endPoints[i];
-                        
+
             this.canvas.addEndpoint(endPoint.element, endPoint);
         }
     },
-    
+
     initConnections: function() {
         if(this.cfg.connections) {
-            for(var i = 0; i < this.cfg.connections.length; i++) {      
+            for(var i = 0; i < this.cfg.connections.length; i++) {
                 this.canvas.connect(this.cfg.connections[i]);
             }
         }
     },
-    
+
     bindEvents: function() {
         var $this = this;
-        
+
         this.canvas.bind('connection', function(info) {
             $this.onConnect(info);
         });
@@ -78,7 +78,7 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
             $this.onConnectionChange(info);
         });
     },
-    
+
     onConnect: function(info) {
         var options = {
             source: this.id,
@@ -91,23 +91,21 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
                 {name: this.id + '_targetEndPointId', value: info.targetEndpoint.getUuid()}
             ]
         };
-        
+
         if(this.connectionChanged) {
             options.params.push({name: this.id + '_connectionChanged', value: true});
         } else {
             this.connectionChanged = false;
         }
-        
-        if(this.hasBehavior('connect')) {
-            var behavior = this.cfg.behaviors['connect'];
 
-            behavior.call(this, options);
-        } 
+        if(this.hasBehavior('connect')) {
+            this.callBehavior('connect', options);
+        }
         else {
-            PrimeFaces.ajax.Request.handle(options); 
+            PrimeFaces.ajax.Request.handle(options);
         }
     },
-    
+
     onDisconnect: function(info) {
         var options = {
             source: this.id,
@@ -120,20 +118,18 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
                 {name: this.id + '_targetEndPointId', value: info.targetEndpoint.getUuid()}
             ]
         };
-        
-        if(this.hasBehavior('disconnect')) {
-            var behavior = this.cfg.behaviors['disconnect'];
 
-            behavior.call(this, options);
-        } 
+        if(this.hasBehavior('disconnect')) {
+            this.callBehavior('disconnect', options);
+        }
         else {
-            PrimeFaces.ajax.Request.handle(options); 
+            PrimeFaces.ajax.Request.handle(options);
         }
     },
-    
+
     onConnectionChange: function(info) {
         this.connectionChanged = true;
-        
+
         var options = {
             source: this.id,
             process: this.id,
@@ -149,14 +145,12 @@ PrimeFaces.widget.Diagram = PrimeFaces.widget.DeferredWidget.extend({
                 {name: this.id + '_newTargetEndPointId', value: info.newTargetEndpoint.getUuid()}
             ]
         };
-        
-        if(this.hasBehavior('connectionChange')) {
-            var behavior = this.cfg.behaviors['connectionChange'];
 
-            behavior.call(this, options);
-        } 
+        if(this.hasBehavior('connectionChange')) {
+            this.callBehavior('connectionChange', options);
+        }
         else {
-            PrimeFaces.ajax.Request.handle(options); 
+            PrimeFaces.ajax.Request.handle(options);
         }
     }
 

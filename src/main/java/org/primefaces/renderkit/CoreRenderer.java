@@ -15,25 +15,16 @@
  */
 package org.primefaces.renderkit;
 
-import org.primefaces.component.api.AjaxSource;
-import org.primefaces.component.api.ClientBehaviorRenderingMode;
-import org.primefaces.component.api.MixedClientBehaviorHolder;
-import org.primefaces.context.PrimeApplicationContext;
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.convert.ClientConverter;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.util.AjaxRequestBuilder;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.EscapeUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.Jsf22Helper;
-import org.primefaces.util.SharedStringBuilder;
-import org.primefaces.util.WidgetBuilder;
-import org.primefaces.validate.ClientValidator;
-import org.primefaces.validate.bean.BeanValidationMetadata;
-import org.primefaces.validate.bean.BeanValidationMetadataMapper;
-
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.el.PropertyNotFoundException;
 import javax.faces.application.Resource;
 import javax.faces.component.EditableValueHolder;
@@ -48,16 +39,27 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.render.Renderer;
 import javax.faces.validator.Validator;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.primefaces.component.api.AjaxSource;
+import org.primefaces.component.api.ClientBehaviorRenderingMode;
+import org.primefaces.component.api.MixedClientBehaviorHolder;
+import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.convert.ClientConverter;
+import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.util.AjaxRequestBuilder;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.SharedStringBuilder;
+import org.primefaces.util.WidgetBuilder;
+import org.primefaces.validate.ClientValidator;
+import org.primefaces.validate.bean.BeanValidationMetadata;
+import org.primefaces.validate.bean.BeanValidationMetadataMapper;
+import org.primefaces.util.Jsf22Helper;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.ResourceUtils;
 
 public abstract class CoreRenderer extends Renderer {
 
@@ -94,13 +96,9 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected String getResourceURL(FacesContext context, String value) {
-        return ComponentUtils.getResourceURL(context, value);
+        return ResourceUtils.getResourceURL(context, value);
     }
 
-    protected String getHrefURL(String baseUrl, Map<String, List<String>> params) {
-        return ComponentUtils.getHrefURL(baseUrl, params);
-    }
-    
     protected String getResourceRequestPath(FacesContext context, String resourceName) {
         Resource resource = context.getApplication().getResourceHandler().createResource(resourceName, "primefaces");
 
@@ -166,11 +164,11 @@ public abstract class CoreRenderer extends Renderer {
 
                 if (hasEventBehaviors) {
                     String clientId = ((UIComponent) component).getClientId(context);
-                    
-                    List<ClientBehaviorContext.Parameter> params = new ArrayList<ClientBehaviorContext.Parameter>();
+
+                    List<ClientBehaviorContext.Parameter> params = new ArrayList<>();
                     params.add(new ClientBehaviorContext.Parameter(
                             Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.OBSTRUSIVE));
-                    
+
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
                             context, (UIComponent) component, behaviorEvent, clientId, params);
                     int size = eventBehaviors.size();
@@ -405,7 +403,7 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     public boolean isValueBlank(String value) {
-        return ComponentUtils.isValueBlank(value);
+        return LangUtils.isValueBlank(value);
     }
 
     protected String buildAjaxRequest(FacesContext context, AjaxSource source, UIComponent form) {
@@ -444,7 +442,7 @@ public abstract class CoreRenderer extends Renderer {
     protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam, boolean submit) {
         StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
         String formId = form.getClientId(context);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
 
         if (decodeParam != null) {
             params.put(decodeParam, decodeParam);
@@ -485,14 +483,15 @@ public abstract class CoreRenderer extends Renderer {
                 request.append(",'").append(target).append("'");
             }
 
-            request.append(");return false;");
+            request.append(");PrimeFaces.onPost();return false;");
         }
+        else {
+            if (!params.isEmpty()) {
+                request.append(";");
+            }
 
-        if (!submit && !params.isEmpty()) {
-            request.append(";");
+            request.append("PrimeFaces.onPost();");
         }
-
-        request.append("PrimeFaces.onPost();");
 
         return request.toString();
     }
@@ -506,7 +505,7 @@ public abstract class CoreRenderer extends Renderer {
             Collection<String> eventNames = (component instanceof MixedClientBehaviorHolder)
                     ? ((MixedClientBehaviorHolder) component).getUnobstrusiveEventNames() : clientBehaviors.keySet();
             String clientId = ((UIComponent) component).getClientId(context);
-            List<ClientBehaviorContext.Parameter> params = new ArrayList<ClientBehaviorContext.Parameter>();
+            List<ClientBehaviorContext.Parameter> params = new ArrayList<>();
             params.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
 
             writer.write(",behaviors:{");
@@ -714,7 +713,7 @@ public abstract class CoreRenderer extends Renderer {
                 }
                 if (beanValidationMetadata.getValidatorIds() != null) {
                     if (validatorIds == null) {
-                        validatorIds = new ArrayList<String>();
+                        validatorIds = new ArrayList<>();
                     }
                     validatorIds.addAll(beanValidationMetadata.getValidatorIds());
                 }
@@ -733,7 +732,7 @@ public abstract class CoreRenderer extends Renderer {
                 if (validator instanceof ClientValidator) {
                     ClientValidator clientValidator = (ClientValidator) validator;
                     if (validatorIds == null) {
-                        validatorIds = new ArrayList<String>();
+                        validatorIds = new ArrayList<>();
                     }
                     validatorIds.add(clientValidator.getValidatorId());
                     Map<String, Object> metadata = clientValidator.getMetadata();
@@ -799,5 +798,25 @@ public abstract class CoreRenderer extends Renderer {
 
     protected boolean isGrouped() {
         return false;
+    }
+
+    /**
+     * Used by script-only widget to fix #3265 and allow updating of the component.
+     *
+     * @param context the {@link FacesContext}.
+     * @param component the widget without actual HTML markup.
+     * @param clientId the component clientId.
+     * @throws IOException
+     */
+    protected void renderDummyMarkup(FacesContext context, UIComponent component, String clientId) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        writer.startElement("div", null);
+        writer.writeAttribute("id", clientId, null);
+        writer.writeAttribute("style", "display: none;", null);
+
+        renderPassThruAttributes(context, component, null);
+
+        writer.endElement("div");
     }
 }

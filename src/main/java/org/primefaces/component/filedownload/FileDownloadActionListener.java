@@ -53,6 +53,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
         this.monitorKey = monitorKey;
     }
 
+    @Override
     public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
         FacesContext context = FacesContext.getCurrentInstance();
         ELContext elContext = context.getELContext();
@@ -91,7 +92,9 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
                 outputStream.write(buffer, 0, length);
             }
 
-            externalContext.setResponseStatus(200);
+            if (!externalContext.isResponseCommitted()) {
+                externalContext.setResponseStatus(200);
+            }
             externalContext.responseFlushBuffer();
             context.responseComplete();
         }
@@ -110,10 +113,17 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
         }
     }
 
+    @Override
     public boolean isTransient() {
         return false;
     }
 
+    @Override
+    public void setTransient(boolean value) {
+
+    }
+
+    @Override
     public void restoreState(FacesContext facesContext, Object state) {
         Object values[] = (Object[]) state;
 
@@ -122,6 +132,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
         monitorKey = (ValueExpression) values[2];
     }
 
+    @Override
     public Object saveState(FacesContext facesContext) {
         Object values[] = new Object[3];
 
@@ -129,10 +140,6 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
         values[1] = contentDisposition;
         values[2] = monitorKey;
 
-        return ((Object[]) values);
-    }
-
-    public void setTransient(boolean value) {
-
+        return (values);
     }
 }

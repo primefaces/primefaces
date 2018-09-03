@@ -45,7 +45,17 @@ public class BarChartSeries extends ChartSeries {
         writer.write("{");
         writer.write("label:\"" + EscapeUtils.forJavaScript(this.getLabel()) + "\"");
 
-        writer.write(",renderer: $.jqplot." + this.getRenderer());
+        writer.write(",renderer: $.jqplot." + getRenderer());
+
+        AxisType xaxis = getXaxis();
+        if (xaxis != null) {
+            writer.write(",xaxis:\"" + xaxis + "\"");
+        }
+
+        AxisType yaxis = getYaxis();
+        if (yaxis != null) {
+            writer.write(",yaxis:\"" + yaxis + "\"");
+        }
 
         if (disableStack) writer.write(",disableStack:true");
 

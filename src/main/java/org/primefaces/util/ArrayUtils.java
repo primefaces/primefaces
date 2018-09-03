@@ -20,7 +20,21 @@ public class ArrayUtils {
     private ArrayUtils() {
     }
 
-    public static boolean contains(String[] array, String searchedText) {
+    public static boolean contains(Object[] array, Object object) {
+        if (array == null || array.length == 0) {
+            return false;
+        }
+
+        for (int i = 0; i < array.length; i++) {
+            if (array[i].equals(object)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean containsIgnoreCase(String[] array, String searchedText) {
 
         if (array == null || array.length == 0) {
             return false;

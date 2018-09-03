@@ -25,6 +25,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class TabViewRenderer extends CoreRenderer {
@@ -35,7 +36,7 @@ public class TabViewRenderer extends CoreRenderer {
         TabView tabView = (TabView) component;
         String activeIndexValue = params.get(tabView.getClientId(context) + "_activeIndex");
 
-        if (!ComponentUtils.isValueBlank(activeIndexValue)) {
+        if (!LangUtils.isValueBlank(activeIndexValue)) {
             tabView.setActiveIndex(Integer.parseInt(activeIndexValue));
         }
 
@@ -248,7 +249,7 @@ public class TabViewRenderer extends CoreRenderer {
         if (titleFacet == null) {
             String tabTitle = tab.getTitle();
             if (tabTitle != null) {
-                writer.write(tabTitle);
+                writer.writeText(tabTitle, null);
             }
         }
         else {
@@ -264,7 +265,7 @@ public class TabViewRenderer extends CoreRenderer {
         }
 
         UIComponent actions = tab.getFacet("actions");
-        if (actions != null && actions.isRendered())  {
+        if (actions != null && actions.isRendered()) {
             writer.startElement("li", null);
             writer.writeAttribute("class", "ui-tabs-actions", null);
             writer.writeAttribute("aria-hidden", String.valueOf(!active), null);

@@ -40,7 +40,7 @@ public class BeanPropertyComparator implements Comparator {
 
     public BeanPropertyComparator(ValueExpression sortBy, String var, SortOrder sortOrder, MethodExpression sortFunction,
             boolean caseSensitive, Locale locale, int nullSortOrder) {
-        
+
         this.sortBy = sortBy;
         this.var = var;
         this.asc = sortOrder.equals(SortOrder.ASCENDING);
@@ -52,6 +52,7 @@ public class BeanPropertyComparator implements Comparator {
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public int compare(Object obj1, Object obj2) {
         try {
             FacesContext context = FacesContext.getCurrentInstance();

@@ -67,10 +67,12 @@ public class FlowChartConnector extends Connector {
         this.alwaysRespectStubs = alwaysRespectStubs;
     }
 
+    @Override
     public String getType() {
         return "Flowchart";
     }
 
+    @Override
     public String toJS(StringBuilder sb) {
         return sb.append("['Flowchart',{stub:").append(stub).append(",gap:").append(gap).append(",cornerRadius:").append(cornerRadius)
                 .append(",alwaysRespectStubs:").append(alwaysRespectStubs).append("}]").toString();

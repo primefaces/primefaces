@@ -1,5 +1,5 @@
 PrimeFaces.widget.Knob = PrimeFaces.widget.BaseWidget.extend({
-	
+
     init: function(cfg) {
         this._super(cfg);
 
@@ -12,10 +12,10 @@ PrimeFaces.widget.Knob = PrimeFaces.widget.BaseWidget.extend({
         this.createKnob();
 
 	},
-    
+
     createKnob: function() {
         var $this = this;
-        
+
         this.themeObject = PrimeFaces.widget.Knob.colorThemes[this.colorTheme || 'aristo'];
 
         this.jq.data('fgcolor', this.cfg.fgColor || this.themeObject.fgColor);
@@ -29,14 +29,14 @@ PrimeFaces.widget.Knob = PrimeFaces.widget.BaseWidget.extend({
                     $this.cfg.onchange(value);
                 }
 
-                if ($this.cfg.behaviors && $this.cfg.behaviors['change']) {
+                if ($this.hasBehavior('change')) {
                     var ext = {
                         params: [
                             {name: $this.id + '_hidden', value: value}
                         ]
                     };
 
-                    $this.cfg.behaviors['change'].call($this, ext);
+                    $this.callBehavior('change', ext);
                 }
             },
             format : function(value) {
@@ -79,22 +79,22 @@ PrimeFaces.widget.Knob = PrimeFaces.widget.BaseWidget.extend({
             }
         });
     },
-    
+
     setValue: function(value) {
         this.input.val(value);
         this.jq.val(value).trigger('change');
     },
-    
+
     getValue: function() {
         return parseInt(this.jq.val());
     },
-    
+
     increment: function() {
         var value = this.getValue() + this.step;
         value = value <= this.max ? value : this.max;
         this.setValue(value);
     },
-    
+
     decrement: function() {
         var value = this.getValue() - this.step;
         value = value >= this.min ? value : this.min;

@@ -18,10 +18,12 @@ package org.primefaces.component.inputtextarea;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
+
 import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.event.AutoCompleteEvent;
@@ -84,7 +86,7 @@ public class InputTextareaRenderer extends InputRenderer {
         for (Object item : items) {
             writer.startElement("li", null);
             writer.writeAttribute("class", AutoComplete.ITEM_CLASS, null);
-            writer.writeAttribute("data-item-value", escapeText(item.toString()), null);
+            writer.writeAttribute("data-item-value", item.toString(), null);
             writer.writeText(item, null);
 
             writer.endElement("li");
@@ -107,7 +109,7 @@ public class InputTextareaRenderer extends InputRenderer {
             UIComponent counterComponent = SearchExpressionFacade.resolveComponent(context, inputTextarea, counter);
 
             wb.attr("counter", counterComponent.getClientId(context))
-                    .attr("counterTemplate", escapeText(inputTextarea.getCounterTemplate()), null);
+                    .attr("counterTemplate", inputTextarea.getCounterTemplate(), null);
         }
 
         if (inputTextarea.getCompleteMethod() != null) {
@@ -131,10 +133,18 @@ public class InputTextareaRenderer extends InputRenderer {
         renderPassThruAttributes(context, inputTextarea, HTML.TEXTAREA_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, inputTextarea, HTML.INPUT_TEXT_EVENTS);
 
-        if (inputTextarea.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
-        if (inputTextarea.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
-        if (inputTextarea.getStyle() != null) writer.writeAttribute("style", inputTextarea.getStyle(), null);
-        if (inputTextarea.isRequired()) writer.writeAttribute("aria-required", "true", null);
+        if (inputTextarea.isDisabled()) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (inputTextarea.isReadonly()) {
+            writer.writeAttribute("readonly", "readonly", null);
+        }
+        if (inputTextarea.getStyle() != null) {
+            writer.writeAttribute("style", inputTextarea.getStyle(), null);
+        }
+        if (inputTextarea.isRequired()) {
+            writer.writeAttribute("aria-required", "true", null);
+        }
 
         writer.writeAttribute("class", createStyleClass(inputTextarea), "styleClass");
 

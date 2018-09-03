@@ -28,6 +28,7 @@ import org.primefaces.expression.SearchExpressionConstants;
 
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 import org.primefaces.visit.ResetInputContextCallback;
 import org.primefaces.visit.ResetInputVisitCallback;
 
@@ -86,9 +87,9 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
     }
 
     /**
-     * Visit the current renderIds and, if the component is 
-     * an instance of {@link EditableValueHolder}, 
-     * call its {@link EditableValueHolder#resetValue} method.  
+     * Visit the current renderIds and, if the component is
+     * an instance of {@link EditableValueHolder},
+     * call its {@link EditableValueHolder#resetValue} method.
      * Use {@link #visitTree} to do the visiting.</p>
      *
      * @param context The current {@link FacesContext}.
@@ -102,7 +103,7 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
             ResetInputContextCallback contextCallback = null;
 
             for (String renderId : context.getPartialViewContext().getRenderIds()) {
-                if (ComponentUtils.isValueBlank(renderId) || renderId.trim().equals(SearchExpressionConstants.NONE_KEYWORD)) {
+                if (LangUtils.isValueBlank(renderId) || renderId.trim().equals(SearchExpressionConstants.NONE_KEYWORD)) {
                     continue;
                 }
 

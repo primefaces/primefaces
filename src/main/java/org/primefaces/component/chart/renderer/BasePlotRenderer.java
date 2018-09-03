@@ -15,6 +15,8 @@
  */
 package org.primefaces.component.chart.renderer;
 
+import java.io.IOException;
+
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.ChartModel;
 import org.primefaces.model.chart.LegendPlacement;
@@ -90,10 +92,10 @@ public abstract class BasePlotRenderer {
         if (!model.isResetAxesOnResize()) {
             writer.write(",resetAxesOnResize:" + false);
         }
-        
+
         writer.write(",dataRenderMode:\"" + model.getDataRenderMode() + "\"");
     }
-    
+
     protected String escapeChartData(Object value) {
         // default to "null" if null
         String result = String.valueOf(value);

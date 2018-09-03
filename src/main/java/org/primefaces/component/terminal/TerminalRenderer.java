@@ -17,10 +17,14 @@ package org.primefaces.component.terminal;
 
 import java.io.IOException;
 import java.util.Arrays;
+
 import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
+import org.primefaces.model.terminal.TerminalAutoCompleteMatches;
+import org.primefaces.model.terminal.TerminalAutoCompleteModel;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -29,9 +33,12 @@ public class TerminalRenderer extends CoreRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         Terminal terminal = (Terminal) component;
-           
+
         if (terminal.isCommandRequest()) {
             handleCommand(context, terminal);
+        }
+        else if (terminal.isAutoCompleteRequest()) {
+            autoCompleteCommand(context, terminal);
         }
         else {
             encodeMarkup(context, terminal);
@@ -40,7 +47,6 @@ public class TerminalRenderer extends CoreRenderer {
     }
 
     protected void encodeMarkup(FacesContext context, Terminal terminal) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = terminal.getClientId(context);
         String style = terminal.getStyle();
         String styleClass = terminal.getStyleClass();
@@ -48,14 +54,16 @@ public class TerminalRenderer extends CoreRenderer {
         String welcomeMessage = terminal.getWelcomeMessage();
         String prompt = terminal.getPrompt();
         String inputId = clientId + "_input";
-        
+
+        ResponseWriter writer = context.getResponseWriter();
+
         writer.startElement("div", terminal);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        
+
         if (welcomeMessage != null) {
             writer.startElement("div", null);
             if (terminal.isEscape()) {
@@ -66,11 +74,11 @@ public class TerminalRenderer extends CoreRenderer {
             }
             writer.endElement("div");
         }
-        
+
         writer.startElement("div", null);
         writer.writeAttribute("class", Terminal.CONTENT_CLASS, null);
         writer.endElement("div");
-        
+
         writer.startElement("div", null);
         writer.startElement("span", null);
         writer.writeAttribute("class", Terminal.PROMPT_CLASS, null);
@@ -81,7 +89,7 @@ public class TerminalRenderer extends CoreRenderer {
             writer.write(prompt);
         }
         writer.endElement("span");
-        
+
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
@@ -89,7 +97,7 @@ public class TerminalRenderer extends CoreRenderer {
         writer.writeAttribute("autocomplete", "off", null);
         writer.writeAttribute("class", Terminal.INPUT_CLASS, null);
         writer.endElement("input");
-        
+
         writer.endElement("div");
         writer.endElement("div");
     }
@@ -100,19 +108,42 @@ public class TerminalRenderer extends CoreRenderer {
         wb.init("Terminal", terminal.resolveWidgetVar(), clientId);
         wb.finish();
     }
-    
+
     protected void handleCommand(FacesContext context, Terminal terminal) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String clientId = terminal.getClientId(context);
-        String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
-        String tokens[] = value.split(" ");
+        String tokens[] = getValueTokens(context, terminal);
         String command = tokens[0];
         String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
 
         MethodExpression commandHandler = terminal.getCommandHandler();
         String result = (String) commandHandler.invoke(context.getELContext(), new Object[]{command, args});
 
-        writer.write(result);
+        ResponseWriter writer = context.getResponseWriter();
+        writer.writeText(result, null);
+    }
+
+    protected void autoCompleteCommand(FacesContext context, Terminal terminal) throws IOException {
+        String tokens[] = getValueTokens(context, terminal);
+        String command = tokens[0];
+        String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
+
+        TerminalAutoCompleteModel autoCompleteModel = terminal.getAutoCompleteModel();
+        ResponseWriter writer = context.getResponseWriter();
+        if (autoCompleteModel == null) {
+            writer.write("null");
+        }
+        else {
+            TerminalAutoCompleteMatches matches = terminal.traverseAutoCompleteModel(autoCompleteModel, command, args);
+            writer.writeText(matches.toString(), null);
+        }
+    }
+
+    private String[] getValueTokens(FacesContext context, Terminal terminal) {
+        String clientId = terminal.getClientId(context);
+        String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
+        String tokens[] = value.trim().split(" ");
+
+        return tokens;
     }
 
 }
+

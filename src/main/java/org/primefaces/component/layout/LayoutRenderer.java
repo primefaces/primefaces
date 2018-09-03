@@ -42,8 +42,12 @@ public class LayoutRenderer extends CoreRenderer {
             writer.startElement("div", layout);
             writer.writeAttribute("id", clientId, "id");
 
-            if (layout.getStyle() != null) writer.writeAttribute("style", layout.getStyle(), "style");
-            if (layout.getStyleClass() != null) writer.writeAttribute("class", layout.getStyleClass(), "styleClass");
+            if (layout.getStyle() != null) {
+                writer.writeAttribute("style", layout.getStyle(), "style");
+            }
+            if (layout.getStyleClass() != null) {
+                writer.writeAttribute("class", layout.getStyleClass(), "styleClass");
+            }
         }
     }
 
@@ -55,7 +59,7 @@ public class LayoutRenderer extends CoreRenderer {
         if (layout.isElementLayout()) {
             writer.endElement("div");
         }
-        
+
         encodeScript(context, layout);
     }
 

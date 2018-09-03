@@ -20,6 +20,8 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.context.ResponseWriterWrapper;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
@@ -27,15 +29,19 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     private final MoveScriptsToBottomState state;
 
     private boolean inScript;
+    private String scriptType;
     private StringBuilder include;
     private StringBuilder inline;
+    private boolean scriptsRendered;
 
     @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public MoveScriptsToBottomResponseWriter(ResponseWriter wrapped, MoveScriptsToBottomState state) {
         this.wrapped = wrapped;
         this.state = state;
-        
+
         inScript = false;
+        scriptsRendered = false;
+
         include = new StringBuilder(50);
         inline = new StringBuilder(75);
     }
@@ -64,17 +70,17 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
             getWrapped().write(cbuf);
         }
     }
-    
+
     @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
         if (inScript) {
             inline.append(cbuf, off, len);
         }
         else {
-            getWrapped().write(cbuf);
+            getWrapped().write(cbuf, off, len);
         }
     }
-    
+
     @Override
     public void write(String str) throws IOException {
         if (inScript) {
@@ -82,6 +88,16 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
         }
         else {
             getWrapped().write(str);
+        }
+    }
+
+    @Override
+    public void writeText(char[] cbuf, int off, int len) throws IOException {
+        if (inScript) {
+            inline.append(cbuf, off, len);
+        }
+        else {
+            getWrapped().writeText(cbuf, off, len);
         }
     }
 
@@ -96,12 +112,28 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     }
 
     @Override
+    public void writeText(Object text, UIComponent component, String property) throws IOException {
+        if (inScript) {
+            inline.append(text);
+        }
+        else {
+            getWrapped().writeText(text, property);
+        }
+    }
+
+    @Override
     public void writeAttribute(String name, Object value, String property) throws IOException {
         if (inScript) {
-            if ("src".equals(name)) {
+            if ("src".equalsIgnoreCase(name)) {
                 String strValue = (String) value;
                 if (strValue != null && !strValue.trim().isEmpty()) {
                     include.append(strValue);
+                }
+            }
+            else if ("type".equalsIgnoreCase(name)) {
+                String strValue = (String) value;
+                if (strValue != null && !strValue.trim().isEmpty()) {
+                    scriptType = strValue;
                 }
             }
         }
@@ -113,10 +145,16 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     @Override
     public void writeURIAttribute(String name, Object value, String property) throws IOException {
         if (inScript) {
-            if ("src".equals(name)) {
+            if ("src".equalsIgnoreCase(name)) {
                 String strValue = (String) value;
                 if (strValue != null && !strValue.trim().isEmpty()) {
                     include.append(strValue);
+                }
+            }
+            else if ("type".equalsIgnoreCase(name)) {
+                String strValue = (String) value;
+                if (strValue != null && !strValue.trim().isEmpty()) {
+                    scriptType = strValue;
                 }
             }
         }
@@ -127,8 +165,9 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
     @Override
     public void startElement(String name, UIComponent component) throws IOException {
-        if ("script".equals(name)) {
+        if ("script".equalsIgnoreCase(name)) {
             inScript = true;
+            scriptType = "text/javascript";
         }
         else {
             getWrapped().startElement(name, component);
@@ -137,55 +176,79 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
     @Override
     public void endElement(String name) throws IOException {
-        if ("script".equals(name)) {
+        if ("script".equalsIgnoreCase(name)) {
             inScript = false;
 
-            state.addInline(inline);
-            state.addInclude(include);
+            state.addInline(scriptType, inline);
+            state.addInclude(scriptType, include);
 
+            scriptType = null;
             include.setLength(0);
             inline.setLength(0);
         }
-        else if ("body".equals(name)) {
-            for (int i = 0; i < state.getIncludes().size(); i++) {
-                String src = state.getIncludes().get(i);
-                if (src != null && !src.isEmpty()) {
+        else if ("body".equalsIgnoreCase(name) || ("html".equalsIgnoreCase(name) && !scriptsRendered)) {
+
+            for (Map.Entry<String, ArrayList<String>> entry : state.getIncludes().entrySet()) {
+                String type = entry.getKey();
+                ArrayList<String> includes = entry.getValue();
+
+                for (int i = 0; i < includes.size(); i++) {
+                    String src = includes.get(i);
+                    if (src != null && !src.isEmpty()) {
+                        getWrapped().startElement("script", null);
+                        getWrapped().writeAttribute("type", type, null);
+                        getWrapped().writeAttribute("src", src, null);
+                        getWrapped().endElement("script");
+                    }
+                }
+            }
+
+            for (Map.Entry<String, ArrayList<String>> entry : state.getInlines().entrySet()) {
+                String type = entry.getKey();
+                ArrayList<String> inlines = entry.getValue();
+                String merged = mergeAndMinimizeInlineScripts(type, inlines);
+
+                if (merged != null && !merged.trim().isEmpty()) {
                     getWrapped().startElement("script", null);
-                    getWrapped().writeAttribute("type", "text/javascript", null);
-                    getWrapped().writeAttribute("src", src, null);
+                    getWrapped().writeAttribute("type", type, null);
+                    getWrapped().write(merged);
                     getWrapped().endElement("script");
                 }
             }
 
-            getWrapped().startElement("script", null);
-            getWrapped().writeAttribute("type", "text/javascript", null);
-            
-            getWrapped().write(mergeAndMinimizeInlineScripts());
-            getWrapped().endElement("script");
-
             getWrapped().endElement(name);
+
+            scriptsRendered = true;
         }
         else {
             getWrapped().endElement(name);
         }
     }
 
-    protected String mergeAndMinimizeInlineScripts() {
-            
-        StringBuilder script = new StringBuilder(state.getInlines().size() * 100);
-        for (int i = 0; i < state.getInlines().size(); i++) {
-            script.append(state.getInlines().get(i));
-            script.append(";\n");
+    protected String mergeAndMinimizeInlineScripts(String type, ArrayList<String> inlines) {
+        StringBuilder script = new StringBuilder(inlines.size() * 100);
+        for (int i = 0; i < inlines.size(); i++) {
+            if (i > 0) {
+                script.append("\n");
+            }
+            script.append(inlines.get(i));
+            script.append(";");
         }
-        
-        String minimized = script.toString();
-        minimized = minimized.replace("PrimeFaces.settings", "pf.settings")
-            .replace("PrimeFaces.cw", "pf.cw")
-            .replace("PrimeFaces.ab", "pf.ab")
-            .replace("window.PrimeFaces", "pf")
-            .replace(";;", ";");
 
-        minimized = "var pf=window.PrimeFaces;" + minimized;
+        String minimized = script.toString();
+
+        if ("text/javascript".equalsIgnoreCase(type)) {
+            minimized = minimized.replace(";;", ";");
+
+            if (minimized.contains("PrimeFaces")) {
+                minimized = minimized.replace("PrimeFaces.settings", "pf.settings")
+                    .replace("PrimeFaces.cw", "pf.cw")
+                    .replace("PrimeFaces.ab", "pf.ab")
+                    .replace("window.PrimeFaces", "pf");
+
+                minimized = "var pf=window.PrimeFaces;" + minimized;
+            }
+        }
 
         return minimized;
     }

@@ -29,7 +29,7 @@ public class DatePatternConverter implements PatternConverter {
         }
 
         //month
-        if (pattern.contains("MMMM")) { // name 
+        if (pattern.contains("MMMM")) { // name
             pattern = pattern.replaceAll("MMMM*", "MM");
         }
         else if (pattern.contains("MMM")) {

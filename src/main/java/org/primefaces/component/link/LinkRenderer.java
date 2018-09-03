@@ -16,9 +16,11 @@
 package org.primefaces.component.link;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.HTML;
 
@@ -61,7 +63,7 @@ public class LinkRenderer extends OutcomeTargetRenderer {
             writer.writeAttribute("href", targetURL, null);
             writer.writeAttribute("class", styleClass, "styleClass");
             renderPassThruAttributes(context, link, HTML.LINK_ATTRS_WITHOUT_EVENTS);
-            renderDomEvents(context, link, HTML.COMMON_EVENTS);
+            renderDomEvents(context, link, HTML.OUTPUT_EVENTS);
             renderContent(context, link);
             writer.endElement("a");
         }

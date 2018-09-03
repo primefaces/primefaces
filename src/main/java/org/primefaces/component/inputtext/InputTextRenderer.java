@@ -16,9 +16,11 @@
 package org.primefaces.component.inputtext;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -38,7 +40,7 @@ public class InputTextRenderer extends InputRenderer {
         decodeBehaviors(context, inputText);
 
         String clientId = inputText.getClientId(context);
-        String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if (submittedValue != null) {
             inputText.setSubmittedValue(submittedValue);
@@ -73,13 +75,22 @@ public class InputTextRenderer extends InputRenderer {
             writer.writeAttribute("value", valueToRender, null);
         }
 
+        renderRTLDirection(context, inputText);
         renderPassThruAttributes(context, inputText, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, inputText, HTML.INPUT_TEXT_EVENTS);
 
-        if (inputText.isDisabled()) writer.writeAttribute("disabled", "disabled", null);
-        if (inputText.isReadonly()) writer.writeAttribute("readonly", "readonly", null);
-        if (inputText.getStyle() != null) writer.writeAttribute("style", inputText.getStyle(), null);
-        if (inputText.isRequired()) writer.writeAttribute("aria-required", "true", null);
+        if (inputText.isDisabled()) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (inputText.isReadonly()) {
+            writer.writeAttribute("readonly", "readonly", null);
+        }
+        if (inputText.getStyle() != null) {
+            writer.writeAttribute("style", inputText.getStyle(), null);
+        }
+        if (inputText.isRequired()) {
+            writer.writeAttribute("aria-required", "true", null);
+        }
 
         writer.writeAttribute("class", createStyleClass(inputText), "styleClass");
 

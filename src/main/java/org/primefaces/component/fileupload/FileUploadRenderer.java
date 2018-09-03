@@ -16,12 +16,13 @@
 package org.primefaces.component.fileupload;
 
 import java.io.IOException;
-import javax.faces.FacesException;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
+
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
@@ -89,15 +90,17 @@ public class FileUploadRenderer extends CoreRenderer {
                     .attr("process", SearchExpressionFacade.resolveClientIds(context, fileUpload, process), null)
                     .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
                     .attr("fileLimit", fileUpload.getFileLimit(), Integer.MAX_VALUE)
-                    .attr("invalidFileMessage", escapeText(fileUpload.getInvalidFileMessage()), null)
-                    .attr("invalidSizeMessage", escapeText(fileUpload.getInvalidSizeMessage()), null)
-                    .attr("fileLimitMessage", escapeText(fileUpload.getFileLimitMessage()), null)
-                    .attr("messageTemplate", escapeText(fileUpload.getMessageTemplate()), null)
+                    .attr("invalidFileMessage", fileUpload.getInvalidFileMessage(), null)
+                    .attr("invalidSizeMessage", fileUpload.getInvalidSizeMessage(), null)
+                    .attr("fileLimitMessage", fileUpload.getFileLimitMessage(), null)
+                    .attr("messageTemplate", fileUpload.getMessageTemplate(), null)
                     .attr("previewWidth", fileUpload.getPreviewWidth(), 80)
                     .attr("disabled", fileUpload.isDisabled(), false)
                     .attr("sequentialUploads", fileUpload.isSequential(), false)
+                    .nativeAttr("onAdd", fileUpload.getOnAdd())
                     .callback("onstart", "function()", fileUpload.getOnstart())
                     .callback("onerror", "function()", fileUpload.getOnerror())
+                    .callback("oncancel", "function()", fileUpload.getOncancel())
                     .callback("oncomplete", "function(args)", fileUpload.getOncomplete());
 
             String allowTypes = fileUpload.getAllowTypes();
@@ -198,7 +201,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
             //button icon
             writer.startElement("span", null);
-            writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " ui-icon-plusthick", null);
+            writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + fileUpload.getChooseIcon(), null);
             writer.endElement("span");
 
             //text
@@ -214,7 +217,7 @@ public class FileUploadRenderer extends CoreRenderer {
 
             writer.endElement("span");
 
-            encodeInputField(context, fileUpload, fileUpload.getClientId(context));
+            encodeInputField(context, fileUpload, clientId);
 
             writer.endElement("span");
 
@@ -225,7 +228,7 @@ public class FileUploadRenderer extends CoreRenderer {
             writer.endElement("span");
         }
         else {
-            encodeSimpleInputField(context, fileUpload, fileUpload.getClientId(context), style, styleClass);
+            encodeSimpleInputField(context, fileUpload, clientId, style, styleClass);
         }
     }
 
@@ -280,6 +283,7 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("tabindex", "-1", null);
+        writer.writeAttribute("aria-hidden", "true", null);
 
         if (fileUpload.isMultiple()) {
             writer.writeAttribute("multiple", "multiple", null);
@@ -303,6 +307,7 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.writeAttribute("type", "file", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("name", clientId, null);
+        writer.writeAttribute("aria-hidden", "true", null);
 
         if (fileUpload.isMultiple()) {
             writer.writeAttribute("multiple", "multiple", null);

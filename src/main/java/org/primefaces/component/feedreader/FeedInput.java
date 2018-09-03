@@ -15,12 +15,13 @@
  */
 package org.primefaces.component.feedreader;
 
-import com.rometools.rome.feed.synd.SyndFeed;
-import com.rometools.rome.io.SyndFeedInput;
-import com.rometools.rome.io.XmlReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.io.SyndFeedInput;
+import com.rometools.rome.io.XmlReader;
 
 public class FeedInput {
 

@@ -107,7 +107,6 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 case keyCode.DOWN:
                 case keyCode.RIGHT:
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                 case keyCode.TAB:
                 case keyCode.SPACE:
                 case 17: //keyCode.CONTROL:
@@ -184,7 +183,6 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                     if(overlayVisible) {
                         _self.items.filter('.ui-state-highlight').trigger('click');
 
@@ -220,7 +218,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         //hide panel when outside is clicked
-        $(document.body).bind('mousedown.ui-inputtextarea', function (e) {
+        $(document.body).on('mousedown.ui-inputtextarea', function (e) {
             if(_self.panel.is(":hidden")) {
                 return;
             }
@@ -238,7 +236,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         });
 
         //Hide overlay on resize
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, _self.panel, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', _self.panel, function() {
             _self.hide();
         });
 
@@ -250,7 +248,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         var _self = this;
 
         //visuals and click handler for items
-        this.items.bind('mouseover', function() {
+        this.items.on('mouseover', function() {
             var item = $(this);
 
             if(!item.hasClass('ui-state-highlight')) {
@@ -258,7 +256,7 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
                 item.addClass('ui-state-highlight');
             }
         })
-        .bind('click', function(event) {
+        .on('click', function(event) {
             var item = $(this),
             itemValue = item.attr('data-item-value'),
             insertValue = itemValue.substring(_self.query.length);
@@ -274,18 +272,14 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     invokeItemSelectBehavior: function(event, itemValue) {
-        if(this.cfg.behaviors) {
-            var itemSelectBehavior = this.cfg.behaviors['itemSelect'];
+        if(this.hasBehavior('itemSelect')) {
+            var ext = {
+                params : [
+                    {name: this.id + '_itemSelect', value: itemValue}
+                ]
+            };
 
-            if(itemSelectBehavior) {
-                var ext = {
-                    params : [
-                        {name: this.id + '_itemSelect', value: itemValue}
-                    ]
-                };
-
-                itemSelectBehavior.call(this, ext);
-            }
+            this.callBehavior('itemSelect', ext);
         }
     },
 

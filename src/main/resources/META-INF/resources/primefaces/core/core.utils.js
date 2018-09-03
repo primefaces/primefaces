@@ -9,14 +9,27 @@ if (!PrimeFaces.utils) {
         },
 
         /**
+         * Cleanup the "detached" overlay.
+         * If you update a component, the overlay is rendered below the component markup but moved to the "appendTo" via our scripts.
+         * After the AJAX update, we have now 2 overlays with the same id:
+         * 1) below the root element
+         * 2) the old, detached overlay, below the "appendTo"
+         *
+         * We now need to remove the detached overlay.
+         */
+        cleanupDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
+            if (widget.cfg.appendTo) {
+                var overlays = $("[id='" + overlayId + "']");
+                if (overlays.length > 1) {
+                    appendTo.children("[id='" + overlayId + "']").remove();
+                }
+            }
+        },
+
+        /**
          * Removes the overlay from the appendTo overlay container.
          */
         removeDynamicOverlay: function(widget, overlay, overlayId, appendTo) {
-
-            // if the id contains a ':'
-            appendTo.children(PrimeFaces.escapeClientId(overlayId)).not(overlay).remove();
-
-            // if the id does NOT contain a ':'
             appendTo.children("[id='" + overlayId + "']").not(overlay).remove();
         },
 
@@ -138,12 +151,12 @@ if (!PrimeFaces.utils) {
          */
         registerHideOverlayHandler: function(widget, hideNamespace, overlay, resolveIgnoredElementsCallback, hideCallback) {
 
-            widget.destroyListeners.push(function() {
+            widget.addDestroyListener(function() {
                 $(document).off(hideNamespace);
             });
 
-            $(document).off(hideNamespace).on(hideNamespace, function (e) {
-                if (overlay.is(":hidden")) {
+            $(document).off(hideNamespace).on(hideNamespace, function(e) {
+                if (overlay.is(':hidden') || overlay.css('visibility') === 'hidden') {
                     return;
                 }
 
@@ -151,7 +164,7 @@ if (!PrimeFaces.utils) {
 
                 // do nothing when the element should be ignored
                 if (resolveIgnoredElementsCallback) {
-                    var elementsToIgnore = resolveIgnoredElementsCallback();
+                    var elementsToIgnore = resolveIgnoredElementsCallback(e);
                     if (elementsToIgnore) {
                         if (elementsToIgnore.is($eventTarget) || elementsToIgnore.has($eventTarget).length > 0) {
                             return;
@@ -182,7 +195,7 @@ if (!PrimeFaces.utils) {
 
         registerResizeHandler: function(widget, resizeNamespace, element, resizeCallback) {
 
-            widget.destroyListeners.push(function() {
+            widget.addDestroyListener(function() {
                 $(window).off(resizeNamespace);
             });
 
@@ -196,29 +209,49 @@ if (!PrimeFaces.utils) {
         },
 
         registerDynamicOverlay: function(widget, overlay, overlayId) {
-            widget.destroyListeners.push(function() {
-                var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
-                PrimeFaces.utils.removeDynamicOverlay(widget, overlay, overlayId, appendTo);
-            });
 
-            var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
-            PrimeFaces.utils.appendDynamicOverlay(widget, overlay, overlayId, appendTo);
+            if (widget.cfg.appendTo) {
+                var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
+                PrimeFaces.utils.appendDynamicOverlay(widget, overlay, overlayId, appendTo);
+
+                widget.addDestroyListener(function() {
+                    var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
+                    PrimeFaces.utils.removeDynamicOverlay(widget, overlay, overlayId, appendTo);
+                });
+
+                widget.addRefreshListener(function() {
+                    var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
+                    PrimeFaces.utils.cleanupDynamicOverlay(widget, overlay, overlayId, appendTo);
+                });
+            }
+
+            return overlay;
         },
 
 
         registerScrollHandler: function(widget, scrollNamespace, scrollCallback) {
 
-            widget.destroyListeners.push(function() {
-                $(window).off(scrollNamespace);
+            var scrollParent = widget.getJQ().scrollParent();
+            if (scrollParent.is('body')) {
+                scrollParent = $(window);
+            }
+
+            widget.addDestroyListener(function() {
+                scrollParent.off(scrollNamespace);
             });
 
-            $(window).off(scrollNamespace).on(scrollNamespace, function(e) {
+            scrollParent.off(scrollNamespace).on(scrollNamespace, function(e) {
                 scrollCallback(e);
             });
         },
 
-        unbdingScrollHandler: function(scrollNamespace) {
-            $(window).off(scrollNamespace);
+        unbindScrollHandler: function(widget, scrollNamespace) {
+            var scrollParent = widget.getJQ().scrollParent();
+            if (scrollParent.is('body')) {
+                scrollParent = $(window);
+            }
+
+            scrollParent.off(scrollNamespace);
         }
     };
 

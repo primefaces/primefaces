@@ -21,7 +21,7 @@ public class SharedStringBuilder {
 
     /**
      * Get a shared {@link StringBuilder} instance.
-     * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveClientId} calls would create 
+     * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveClientId} calls would create
      * 300 {@link StringBuilder} instances!
      *
      * @param context The {@link FacesContext}
@@ -45,7 +45,7 @@ public class SharedStringBuilder {
 
     /**
      * Get a shared {@link StringBuilder} instance.
-     * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveClientId} calls would create 
+     * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveClientId} calls would create
      * 300 {@link StringBuilder} instances!
      *
      * @param context The {@link FacesContext}
@@ -55,10 +55,10 @@ public class SharedStringBuilder {
     public static StringBuilder get(FacesContext context, String key) {
         return get(context, key, 16);
     }
-    
+
     /**
      * Get a shared {@link StringBuilder} instance.
-     * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveClientId} calls would create 
+     * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveClientId} calls would create
      * 300 {@link StringBuilder} instances!
      *
      * @param key The key for the {@link FacesContext} attributes.
@@ -67,10 +67,10 @@ public class SharedStringBuilder {
     public static StringBuilder get(String key) {
         return get(FacesContext.getCurrentInstance(), key);
     }
-    
+
     /**
      * Get a shared {@link StringBuilder} instance.
-     * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveClientId} calls would create 
+     * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveClientId} calls would create
      * 300 {@link StringBuilder} instances!
      *
      * @param key The key for the {@link FacesContext} attributes.

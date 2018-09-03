@@ -27,7 +27,7 @@ public class PrimeFacesContextFactory extends FacesContextFactory {
 
     private FacesContextFactory wrapped;
 
-    // #6212 - don't remove it 
+    // #6212 - don't remove it
     @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeFacesContextFactory() {
 
@@ -51,6 +51,7 @@ public class PrimeFacesContextFactory extends FacesContextFactory {
         return new PrimeFacesContext(wrappedContext);
     }
 
+    @Override
     public FacesContextFactory getWrapped() {
         return wrapped;
     }

@@ -36,8 +36,12 @@ public class SeparatorRenderer extends CoreRenderer {
         writer.writeAttribute("id", separator.getClientId(context), "id");
         writer.writeAttribute("class", styleClass, "styleClass");
 
-        if (separator.getTitle() != null) writer.writeAttribute("title", separator.getTitle(), "title");
-        if (separator.getStyle() != null) writer.writeAttribute("style", separator.getStyle(), "style");
+        if (separator.getTitle() != null) {
+            writer.writeAttribute("title", separator.getTitle(), "title");
+        }
+        if (separator.getStyle() != null) {
+            writer.writeAttribute("style", separator.getStyle(), "style");
+        }
 
         writer.endElement("hr");
     }

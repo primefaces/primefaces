@@ -24,6 +24,7 @@ public class LinearAxis extends Axis {
         super(label);
     }
 
+    @Override
     public String getRenderer() {
         return "LinearAxisRenderer";
     }

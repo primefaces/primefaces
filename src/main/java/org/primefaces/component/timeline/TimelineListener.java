@@ -36,7 +36,7 @@ public class TimelineListener implements SystemEventListener {
         Map<String, TimelineUpdater> map
                 = (Map<String, TimelineUpdater>) context.getAttributes().get(TimelineUpdater.class.getName());
         if (map == null) {
-            map = new HashMap<String, TimelineUpdater>();
+            map = new HashMap<>();
             context.getAttributes().put(TimelineUpdater.class.getName(), map);
         }
 

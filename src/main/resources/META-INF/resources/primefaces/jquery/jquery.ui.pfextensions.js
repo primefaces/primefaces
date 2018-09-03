@@ -138,10 +138,6 @@
 
 
 (function () {
-    $.extend($.ui.keyCode, {
-        NUMPAD_ENTER: 108
-    });
-
     $.fn.extend({
         focus: (function (orig) {
             return function (delay, fn) {
@@ -206,6 +202,129 @@
     });
 })();
 
+// GitHub PrimeFaces #3675 performance
+$.widget( "ui.sortable", $.ui.sortable, {
+    _setHandleClassName: function() {
+        this._removeClass( this.element.find( ".ui-sortable-handle" ), "ui-sortable-handle" );
+        $.each( this.items, function() {
+                        (this.instance.options.handle 
+                        ? this.item.find( this.instance.options.handle ) 
+                        : this.item
+                        ).addClass('ui-sortable-handle');
+        } );
+    }
+});
 
+(function() {
+    $.extend(Object.getPrototypeOf($.timepicker), {
+            _controls: {
+                // slider methods
+                slider: {
+                        create: function (tp_inst, obj, unit, val, min, max, step) {
+                                var rtl = tp_inst._defaults.isRTL; // if rtl go -60->0 instead of 0->60
+                                return obj.prop('slide', null).slider({
+                                        orientation: "horizontal",
+                                        value: rtl ? val * -1 : val,
+                                        min: rtl ? max * -1 : min,
+                                        max: rtl ? min * -1 : max,
+                                        step: step,
+                                        slide: function (event, ui) {
+                                                tp_inst.control.value(tp_inst, $(this), unit, rtl ? ui.value * -1 : ui.value);
+                                                tp_inst._onTimeChange();
+                                        },
+                                        stop: function (event, ui) {
+                                                tp_inst._onSelectHandler();
+                                        }
+                                });
+                        },
+                        options: function (tp_inst, obj, unit, opts, val) {
+                                if (tp_inst._defaults.isRTL) {
+                                        if (typeof(opts) === 'string') {
+                                                if (opts === 'min' || opts === 'max') {
+                                                        if (val !== undefined) {
+                                                                return obj.slider(opts, val * -1);
+                                                        }
+                                                        return Math.abs(obj.slider(opts));
+                                                }
+                                                return obj.slider(opts);
+                                        }
+                                        var min = opts.min,
+                                                max = opts.max;
+                                        opts.min = opts.max = null;
+                                        if (min !== undefined) {
+                                                opts.max = min * -1;
+                                        }
+                                        if (max !== undefined) {
+                                                opts.min = max * -1;
+                                        }
+                                        return obj.slider(opts);
+                                }
+                                if (typeof(opts) === 'string' && val !== undefined) {
+                                        return obj.slider(opts, val);
+                                }
+                                return obj.slider(opts);
+                        },
+                        value: function (tp_inst, obj, unit, val) {
+                                if (tp_inst._defaults.isRTL) {
+                                        if (val !== undefined) {
+                                                return obj.slider('value', val * -1);
+                                        }
+                                        return Math.abs(obj.slider('value'));
+                                }
+                                if (val !== undefined) {
+                                        return obj.slider('value', val);
+                                }
+                                return obj.slider('value');
+                        }
+                },
+                // select methods
+                select: {
+                        create: function (tp_inst, obj, unit, val, min, max, step) {
+                                var sel = '<select class="ui-timepicker-select ui-state-default ui-corner-all" data-unit="' + unit + '" data-min="' + min + '" data-max="' + max + '" data-step="' + step + '" aria-label="select ' + unit + '">',
+                                        format = tp_inst._defaults.pickerTimeFormat || tp_inst._defaults.timeFormat;
 
+                                for (var i = min; i <= max; i += step) {
+                                        sel += '<option value="' + i + '"' + (i === val ? ' selected' : '') + '>';
+                                        if (unit === 'hour') {
+                                                sel += $.datepicker.formatTime($.trim(format.replace(/[^ht ]/ig, '')), {hour: i}, tp_inst._defaults);
+                                        }
+                                        else if (unit === 'millisec' || unit === 'microsec' || i >= 10) { sel += i; }
+                                        else {sel += '0' + i.toString(); }
+                                        sel += '</option>';
+                                }
+                                sel += '</select>';
+
+                                obj.children('select').remove();
+
+                                $(sel).appendTo(obj).change(function (e) {
+                                        tp_inst._onTimeChange();
+                                        tp_inst._onSelectHandler();
+                                        tp_inst._afterInject();
+                                });
+
+                                return obj;
+                        },
+                        options: function (tp_inst, obj, unit, opts, val) {
+                                var o = {},
+                                        $t = obj.children('select');
+                                if (typeof(opts) === 'string') {
+                                        if (val === undefined) {
+                                                return $t.data(opts);
+                                        }
+                                        o[opts] = val;
+                                }
+                                else { o = opts; }
+                                return tp_inst.control.create(tp_inst, obj, $t.data('unit'), $t.val(), o.min>=0 ? o.min : $t.data('min'), o.max || $t.data('max'), o.step || $t.data('step'));
+                        },
+                        value: function (tp_inst, obj, unit, val) {
+                                var $t = obj.children('select');
+                                if (val !== undefined) {
+                                        return $t.val(val);
+                                }
+                                return $t.val();
+                        }
+                }
+        } // end _controls
+    });
+})();
 

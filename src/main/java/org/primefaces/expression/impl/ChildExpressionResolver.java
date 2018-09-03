@@ -32,6 +32,7 @@ public class ChildExpressionResolver implements SearchExpressionResolver {
 
     private static final Pattern PATTERN = Pattern.compile("@child\\((\\d+)\\)");
 
+    @Override
     public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
 
         Matcher matcher = PATTERN.matcher(expression);

@@ -17,10 +17,11 @@ package org.primefaces.component.tieredmenu;
 
 import java.io.IOException;
 import java.util.List;
-import javax.faces.component.UIComponent;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
@@ -32,6 +33,7 @@ import org.primefaces.util.WidgetBuilder;
 
 public class TieredMenuRenderer extends BaseMenuRenderer {
 
+    @Override
     protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         TieredMenu menu = (TieredMenu) abstractMenu;
         String clientId = menu.getClientId(context);
@@ -48,6 +50,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         wb.finish();
     }
 
+    @Override
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         TieredMenu menu = (TieredMenu) abstractMenu;
         String style = menu.getStyle();
