@@ -15,14 +15,15 @@
  */
 package org.primefaces.application;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import javax.el.ELException;
-import javax.faces.FacesException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.primefaces.application.exceptionhandler.PrimeExceptionHandler;
+
+import javax.el.ELException;
+import javax.faces.FacesException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PrimeExceptionHandlerTest extends PrimeExceptionHandler {
 

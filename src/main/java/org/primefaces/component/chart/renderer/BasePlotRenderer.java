@@ -15,8 +15,6 @@
  */
 package org.primefaces.component.chart.renderer;
 
-import java.io.IOException;
-
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.ChartModel;
 import org.primefaces.model.chart.LegendPlacement;

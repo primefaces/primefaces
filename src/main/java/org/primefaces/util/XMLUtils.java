@@ -29,7 +29,6 @@ public class XMLUtils {
      *
      * @param intag the source for the element name
      * @return valid XML element name
-     * 
      * @deprecated Use {@link EscapeUtils}
      */
     @Deprecated
@@ -78,7 +77,6 @@ public class XMLUtils {
      *
      * @param value the value to escape
      * @return the escaped XML string
-     * 
      * @deprecated Use {@link EscapeUtils}
      */
     @Deprecated

@@ -60,7 +60,7 @@ public class ComponentUtils {
 
     // marker for a undefined value when a null check is not reliable enough
     private static final Object UNDEFINED_VALUE = new Object();
-    
+
     private static final Pattern PATTERN_NEW_LINE = Pattern.compile("(\r\n|\n\r|\r|\n)");
 
     public static String getValueToRender(FacesContext context, UIComponent component) {
@@ -192,8 +192,6 @@ public class ComponentUtils {
         return SearchExpressionUtils.resolveWidgetVar(expression, component);
     }
 
-    
-
     public static boolean isValueBlank(String value) {
         return value == null || value.trim().isEmpty();
     }
@@ -296,7 +294,7 @@ public class ComponentUtils {
             return context.getExternalContext().encodeResourceURL(url);
         }
     }
-    
+
     /**
      * Generate an <code>href</code> URL considering a base URL and some other parameters.
      * This method consider existing query string and fragment in the base URL.
@@ -396,8 +394,6 @@ public class ComponentUtils {
         }
     }
 
-    
-
     public static String replaceNewLineWithHtml(String text) {
         if (text == null) {
             return null;
@@ -414,7 +410,6 @@ public class ComponentUtils {
     /**
      * Duplicate code from json-simple project under apache license
      * http://code.google.com/p/json-simple/source/browse/trunk/src/org/json/simple/JSONValue.java
-     * 
      * @deprecated Use {@link EscapeUtils}
      */
     @Deprecated
@@ -517,7 +512,6 @@ public class ComponentUtils {
      *
      * @param string The string to be escaped.
      * @return The escaped string.
-     * 
      * @deprecated Use {@link EscapeUtils}
      */
     @Deprecated
@@ -673,10 +667,10 @@ public class ComponentUtils {
         if (facet.getChildren().isEmpty()) {
             return true;
         }
-        
+
         return shouldRenderChildren(facet);
     }
-    
+
     /**
      * Checks if the component's children are rendered
      * @param component The component to check
