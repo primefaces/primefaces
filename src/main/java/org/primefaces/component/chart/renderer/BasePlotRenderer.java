@@ -15,15 +15,14 @@
  */
 package org.primefaces.component.chart.renderer;
 
-import java.io.IOException;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.ChartModel;
 import org.primefaces.model.chart.LegendPlacement;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EscapeUtils;
+
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
 
 public abstract class BasePlotRenderer {
 
@@ -44,7 +43,7 @@ public abstract class BasePlotRenderer {
         String extender = model.getExtender();
 
         if (title != null) {
-            writer.write(",title:\"" + ComponentUtils.escapeText(title) + "\"");
+            writer.write(",title:\"" + EscapeUtils.forJavaScript(title) + "\"");
         }
 
         if (!model.isShadow()) {
@@ -101,7 +100,7 @@ public abstract class BasePlotRenderer {
 
         // do NOT quote numbers but quote all other objects
         if (value instanceof Number == false) {
-            result = "\"" + ComponentUtils.escapeText(result) + "\"";
+            result = "\"" + EscapeUtils.forJavaScript(result) + "\"";
         }
 
         return result;

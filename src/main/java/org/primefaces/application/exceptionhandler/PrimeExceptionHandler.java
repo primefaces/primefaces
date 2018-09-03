@@ -47,6 +47,7 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.EscapeUtils;
 
 public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
@@ -226,7 +227,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                 writer.write(handlerComponent.getOnexception());
                 writer.write("};hf.call(this,\""
                         + info.getType() + "\",\""
-                        + ComponentUtils.escapeText(info.getMessage())
+                        + EscapeUtils.forJavaScript(info.getMessage())
                         + "\",\""
                         + info.getFormattedTimestamp()
                         + "\");");
@@ -253,7 +254,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         try (StringWriter sw = new StringWriter()) {
             PrintWriter pw = new PrintWriter(sw);
             rootCause.printStackTrace(pw);
-            info.setFormattedStackTrace(ComponentUtils.escapeXml(sw.toString()).replaceAll("(\r\n|\n)", "<br/>"));
+            info.setFormattedStackTrace(EscapeUtils.forXml(sw.toString()).replaceAll("(\r\n|\n)", "<br/>"));
             pw.close();
         }
 

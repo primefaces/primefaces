@@ -29,7 +29,9 @@ public class XMLUtils {
      *
      * @param intag the source for the element name
      * @return valid XML element name
+     * @deprecated Use {@link EscapeUtils}
      */
+    @Deprecated
     public static String escapeTag(String intag) {
         if (XMLChar.isValidName(intag) || intag == null || intag.length() == 0) {
             return intag;
@@ -75,7 +77,9 @@ public class XMLUtils {
      *
      * @param value the value to escape
      * @return the escaped XML string
+     * @deprecated Use {@link EscapeUtils}
      */
+    @Deprecated
     public static String escapeXml(String value) {
         StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE, value.length());
 

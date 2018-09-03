@@ -15,6 +15,7 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.util.EscapeUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -462,7 +463,7 @@ public abstract class CoreRenderer extends Renderer {
 
             for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
                 String key = it.next();
-                String value = ComponentUtils.escapeText(String.valueOf(params.get(key))) ;
+                String value = EscapeUtils.forJavaScript(String.valueOf(params.get(key))) ;
 
                 request.append("'").append(key).append("':'").append(value).append("'");
 
@@ -607,8 +608,12 @@ public abstract class CoreRenderer extends Renderer {
         writer.endElement("script");
     }
 
+    /**
+     * @deprecated Use {@link EscapeUtils}
+     */
+    @Deprecated
     protected String escapeText(String text) {
-        return ComponentUtils.escapeText(text);
+        return EscapeUtils.forJavaScript(text);
     }
 
     protected String getEventBehaviors(FacesContext context, ClientBehaviorHolder cbh, String event,
@@ -814,4 +819,5 @@ public abstract class CoreRenderer extends Renderer {
 
         writer.endElement("div");
     }
+
 }
