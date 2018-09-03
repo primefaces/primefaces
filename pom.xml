@@ -198,7 +198,7 @@
             <groupId>org.owasp.encoder</groupId>
             <artifactId>encoder</artifactId>
             <version>1.2.1</version>
-            <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
@@ -292,30 +292,7 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>1.15</version>
-                <executions>
-                    <execution>
-                        <id>aggregate-download-licenses</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>aggregate-download-licenses</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>add-third-party</id>
-                        <goals>
-                            <goal>add-third-party</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludedScopes>test</excludedScopes>
-                </configuration>
-            </plugin>
-            
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -346,7 +323,7 @@
                             </resources>
                         </configuration>
                     </execution>
-                </executions>                
+                </executions>
             </plugin>
 
             <plugin>
@@ -647,20 +624,23 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.1.0</version>
+                <configuration>
+                    <shadedArtifactAttached>false</shadedArtifactAttached>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
+                    <relocations>
+                        <relocation>
+                            <pattern>org.owasp.encoder</pattern>
+                            <shadedPattern>org.primefaces.shaded.owasp.encoder</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
                 <executions>
                     <execution>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>
-                        <configuration>
-                            <relocations>
-                                <relocation>
-                                    <pattern>org.owasp.encoder</pattern>
-                                    <shadedPattern>primefaces.shaded.org.owasp.encoder</shadedPattern>
-                                </relocation>
-                            </relocations>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -748,7 +728,7 @@
                         <artifactId>maven-javadoc-plugin</artifactId>
                         <version>2.10.4</version>
                         <configuration>
-                            <sourcepath>${basedir}/src/main/java;${basedir}/target/generated-sources/maven-jsf-plugin</sourcepath>
+                            <sourcepath>${basedir}/src/main/java</sourcepath>
                             <additionalparam>-Xdoclint:none</additionalparam>
                         </configuration>
                         <executions>
