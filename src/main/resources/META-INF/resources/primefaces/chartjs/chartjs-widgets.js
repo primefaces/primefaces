@@ -6,6 +6,10 @@ PrimeFaces.widget.BaseChart = PrimeFaces.widget.DeferredWidget.extend({
         this.canvas = this.jq.children('canvas');
         this.ctx = this.canvas[0].getContext('2d');
         
+        if(this.cfg.extender) {
+            this.cfg.extender.call(this);
+        }
+        
         this.renderDeferred(); 
     },
     
