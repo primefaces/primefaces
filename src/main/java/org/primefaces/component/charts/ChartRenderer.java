@@ -30,6 +30,7 @@ import org.primefaces.model.charts.optionconfig.elements.Elements;
 import org.primefaces.model.charts.optionconfig.title.Title;
 import org.primefaces.model.charts.optionconfig.tooltip.Tooltip;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.EscapeUtils;
 
 public class ChartRenderer extends CoreRenderer {
 
@@ -128,7 +129,7 @@ public class ChartRenderer extends CoreRenderer {
 
                 Object item = labelList.get(i);
                 if (item instanceof String) {
-                    writer.write("\"" + item + "\"");
+                    writer.write("\"" + EscapeUtils.forJavaScript((String) item) + "\"");
                 }
                 else {
                     writeLabels(context, item);

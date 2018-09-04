@@ -58,7 +58,8 @@ public class ChartUtils {
                     writeText += "{\"x\":" + point.getX() + ",\"y\":" + point.getY() + ",\"r\":" + point.getR() + "}";
                 }
                 else if (item instanceof String) {
-                    writeText = (i == 0) ? "\"" + item + "\"" : ",\"" + item + "\"";
+                    String escapedText = EscapeUtils.forJavaScript((String) item);
+                    writeText = (i == 0) ? "\"" + escapedText + "\"" : ",\"" + escapedText + "\"";
                 }
                 else {
                     writeText = (i == 0) ? item : "," + item;
@@ -70,7 +71,7 @@ public class ChartUtils {
         }
         else {
             if (value instanceof String) {
-                fsw.write("\"" + value + "\"");
+                fsw.write("\"" + EscapeUtils.forJavaScript((String) value) + "\"");
             }
             else {
                 fsw.write("" + value);
