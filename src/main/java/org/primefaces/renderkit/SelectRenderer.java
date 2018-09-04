@@ -15,8 +15,6 @@
  */
 package org.primefaces.renderkit;
 
-import org.primefaces.util.ArrayUtils;
-
 import javax.el.ELException;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
@@ -39,6 +37,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.RandomAccess;
+
+import org.primefaces.util.LangUtils;
 
 public abstract class SelectRenderer extends InputRenderer {
 
@@ -333,17 +333,17 @@ public abstract class SelectRenderer extends InputRenderer {
                 String selectItemVal = getOptionAsString(context, component, component.getConverter(), selectItem.getValue());
 
                 if (selectItem.isDisabled()) {
-                    if (ArrayUtils.contains(submittedValues, selectItemVal) && !ArrayUtils.contains(oldValues, selectItemVal)) {
+                    if (LangUtils.contains(submittedValues, selectItemVal) && !LangUtils.contains(oldValues, selectItemVal)) {
                         // disabled select item has been selected
                         // throw new FacesException("Disabled select item has been submitted. ClientId: " + component.getClientId(context));
                         // ignore it silently for now
                     }
-                    else if (ArrayUtils.contains(oldValues, selectItemVal)) {
+                    else if (LangUtils.contains(oldValues, selectItemVal)) {
                         validSubmittedValues.add(selectItemVal);
                     }
                 }
                 else {
-                    if (ArrayUtils.contains(submittedValues, selectItemVal)) {
+                    if (LangUtils.contains(submittedValues, selectItemVal)) {
                         validSubmittedValues.add(selectItemVal);
                     }
                 }

@@ -193,12 +193,12 @@ if (!PrimeFaces.widget) {
 
         //@Override
         refresh: function(cfg) {
-            this._super(cfg);
-
             PrimeFaces.utils.removeModal(this.id);
 
             this.appendTo = null;
             this.modalOverlay = null;
+            
+            this._super(cfg);
         },
 
         //@Override

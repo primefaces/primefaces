@@ -28,8 +28,8 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.FacesEvent;
 
 import org.primefaces.event.SelectEvent;
-import org.primefaces.util.CollectionUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -43,9 +43,9 @@ public class InputTextarea extends InputTextareaBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.InputTextarea";
     public static final String STYLE_CLASS = "ui-inputfield ui-inputtextarea ui-widget ui-state-default ui-corner-all";
 
-    private static final Collection<String> EVENT_NAMES = CollectionUtils.unmodifiableList("blur", "change", "valueChange", "click", "dblclick",
+    private static final Collection<String> EVENT_NAMES = LangUtils.unmodifiableList("blur", "change", "valueChange", "click", "dblclick",
             "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "itemSelect");
-    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = CollectionUtils.unmodifiableList("itemSelect");
+    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect");
     private List suggestions = null;
 
     @Override

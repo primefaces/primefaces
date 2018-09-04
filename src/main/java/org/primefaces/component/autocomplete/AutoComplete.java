@@ -32,9 +32,9 @@ import javax.faces.event.FacesEvent;
 import org.primefaces.component.column.Column;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
-import org.primefaces.util.CollectionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "components.css"),
@@ -67,10 +67,10 @@ public class AutoComplete extends AutoCompleteBase {
     public static final String MORE_TEXT_LIST_CLASS = "ui-autocomplete-item ui-autocomplete-moretext ui-corner-all";
     public static final String MORE_TEXT_TABLE_CLASS = "ui-autocomplete-item ui-autocomplete-moretext ui-widget-content ui-corner-all";
 
-    private static final Collection<String> EVENT_NAMES = CollectionUtils.unmodifiableList("blur", "change", "valueChange", "click", "dblclick",
+    private static final Collection<String> EVENT_NAMES = LangUtils.unmodifiableList("blur", "change", "valueChange", "click", "dblclick",
             "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select", "itemSelect", "itemUnselect",
             "query", "moreText", "clear");
-    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = CollectionUtils.unmodifiableList("itemSelect", "itemUnselect", "query",
+    private static final Collection<String> UNOBSTRUSIVE_EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "itemUnselect", "query",
             "moreText", "clear");
     private List suggestions = null;
 
