@@ -22,7 +22,6 @@ import java.io.Serializable;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.component.fileupload.FileUpload;
-import org.primefaces.util.FileUploadUtils;
 import org.owasp.esapi.SafeFile;
 
 /**
@@ -44,7 +43,7 @@ public class DefaultUploadedFile implements UploadedFile, Serializable {
 
     @Override
     public String getFileName() {
-        return FileUploadUtils.getValidFilename(fileItem.getName());
+        return fileItem.getName();
     }
 
     @Override

@@ -20,7 +20,6 @@ import java.io.InputStream;
 import javax.faces.FacesWrapper;
 import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
-import org.primefaces.util.FileUploadUtils;
 import org.owasp.esapi.SafeFile;
 
 /**
@@ -40,7 +39,7 @@ public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedF
 
     @Override
     public String getFileName() {
-        return FileUploadUtils.getValidFilename(getWrapped().getFileName());
+        return getWrapped().getFileName();
     }
 
     @Override

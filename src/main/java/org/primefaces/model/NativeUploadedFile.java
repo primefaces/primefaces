@@ -26,7 +26,6 @@ import java.net.URLDecoder;
 import javax.faces.FacesException;
 import javax.servlet.http.Part;
 import org.apache.commons.io.input.BoundedInputStream;
-import org.primefaces.util.FileUploadUtils;
 import org.owasp.esapi.SafeFile;
 
 public class NativeUploadedFile implements UploadedFile, Serializable {
@@ -50,7 +49,7 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
 
     @Override
     public String getFileName() {
-        return FileUploadUtils.getValidFilename(filename);
+        return filename;
     }
 
     @Override
