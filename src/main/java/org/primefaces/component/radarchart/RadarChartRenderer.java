@@ -33,7 +33,7 @@ public class RadarChartRenderer extends ChartRenderer {
         String style = chart.getStyle();
         String styleClass = chart.getStyleClass();
 
-        encodeMarkup(context, chart, clientId, style, styleClass);
+        encodeMarkup(context, clientId, style, styleClass);
         encodeScript(context, chart);
     }
 
@@ -43,14 +43,14 @@ public class RadarChartRenderer extends ChartRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("RadarChart", chart.resolveWidgetVar(), clientId);
 
-        encodeConfig(context, chart, (ChartModel) chart.getModel());
+        encodeConfig(context, (ChartModel) chart.getModel());
         encodeClientBehaviors(context, chart);
 
         wb.finish();
     }
 
     @Override
-    protected void encodeOptions(FacesContext context, UIComponent chart, String type, Object options) throws IOException {
+    protected void encodeOptions(FacesContext context, String type, Object options) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         if (options == null) {

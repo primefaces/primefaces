@@ -39,7 +39,7 @@ public class ChartRenderer extends CoreRenderer {
         super.decodeBehaviors(context, component);
     }
 
-    protected void encodeMarkup(FacesContext context, UIComponent chart, String clientId, String style, String styleClass) throws IOException {
+    protected void encodeMarkup(FacesContext context, String clientId, String style, String styleClass) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         styleClass = (styleClass != null) ? "ui-chart " + styleClass : "ui-chart";
 
@@ -55,7 +55,7 @@ public class ChartRenderer extends CoreRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeConfig(FacesContext context, UIComponent chart, ChartModel model) throws IOException {
+    protected void encodeConfig(FacesContext context, ChartModel model) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         ChartData data = model.getData();
         Object options = model.getOptions();
@@ -63,8 +63,8 @@ public class ChartRenderer extends CoreRenderer {
         writer.write(",\"config\":{");
 
         writer.write("\"type\":\"" + model.getType() + "\"");
-        encodeData(context, chart, data);
-        encodeOptions(context, chart, model.getType(), options);
+        encodeData(context, data);
+        encodeOptions(context, model.getType(), options);
 
         writer.write("}");
 
@@ -74,7 +74,7 @@ public class ChartRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeData(FacesContext context, UIComponent chart, ChartData data) throws IOException {
+    protected void encodeData(FacesContext context, ChartData data) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         if (data == null) {
@@ -88,7 +88,7 @@ public class ChartRenderer extends CoreRenderer {
         writer.write("\"datasets\":[");
 
         for (int i = 0; i < dataSetList.size(); i++) {
-            ChartDataSet dataSet = (ChartDataSet) dataSetList.get(i);
+            ChartDataSet dataSet = dataSetList.get(i);
 
             if (dataSet != null) {
                 if (i != 0) {
@@ -139,7 +139,7 @@ public class ChartRenderer extends CoreRenderer {
         }
     }
 
-    protected void encodeOptions(FacesContext context, UIComponent chart, String type, Object options) throws IOException {
+    protected void encodeOptions(FacesContext context, String type, Object options) throws IOException {
         // implemented by chart components
     }
 
@@ -174,8 +174,7 @@ public class ChartRenderer extends CoreRenderer {
                 RadialScales rScales = (RadialScales) scales;
                 String preString;
                 if (rScales.getAngelLines() != null) {
-                    preString = hasComma ? "," : "";
-                    writer.write(preString + "\"angleLines\":" + rScales.getAngelLines().encode());
+                    writer.write("\"angleLines\":" + rScales.getAngelLines().encode());
                     hasComma = true;
                 }
 
