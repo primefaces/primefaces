@@ -117,10 +117,6 @@ public class ChartRenderer extends CoreRenderer {
             ResponseWriter writer = context.getResponseWriter();
             List labelList = (List) labels;
 
-            if (labelList == null) {
-                return;
-            }
-
             writer.write("[");
             for (int i = 0; i < labelList.size(); i++) {
                 if (i != 0) {
