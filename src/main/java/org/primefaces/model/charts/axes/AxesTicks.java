@@ -156,6 +156,7 @@ public class AxesTicks implements Serializable {
         ChartUtils.writeDataValue(fsw, "fontStyle", this.fontStyle, true);
         ChartUtils.writeDataValue(fsw, "reverse", this.reverse, true);
 
+        fsw.close();
         return fsw.toString();
     }
 }

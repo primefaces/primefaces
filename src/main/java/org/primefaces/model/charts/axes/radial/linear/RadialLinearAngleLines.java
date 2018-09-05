@@ -100,6 +100,7 @@ public class RadialLinearAngleLines implements Serializable {
 
         fsw.write("}");
 
+        fsw.close();
         return fsw.toString();
     }
 }

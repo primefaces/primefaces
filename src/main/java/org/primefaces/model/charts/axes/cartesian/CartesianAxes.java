@@ -164,6 +164,7 @@ public abstract class CartesianAxes {
             fsw.write(",\"scaleLabel\":" + this.scaleLabel.encode());
         }
 
+        fsw.close();
         return fsw.toString();
     }
 }

@@ -657,6 +657,7 @@ public class Tooltip implements Serializable {
         ChartUtils.writeDataValue(fsw, "borderColor", this.borderColor, true);
         ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);
 
+        fsw.close();
         return fsw.toString();
     }
 }

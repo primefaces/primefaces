@@ -282,6 +282,7 @@ public class BubbleChartDataSet extends ChartDataSet {
 
         fsw.write("}");
 
+        fsw.close();
         return fsw.toString();
     }
 }

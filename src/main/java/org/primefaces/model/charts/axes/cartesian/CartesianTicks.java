@@ -183,6 +183,7 @@ public abstract class CartesianTicks {
         ChartUtils.writeDataValue(fsw, "mirror", this.mirror, true);
         ChartUtils.writeDataValue(fsw, "padding", this.padding, true);
 
+        fsw.close();
         return fsw.toString();
     }
 }

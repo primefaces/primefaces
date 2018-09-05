@@ -257,6 +257,7 @@ public class ElementsLine implements Serializable {
         ChartUtils.writeDataValue(fsw, "fill", this.fill, true);
         ChartUtils.writeDataValue(fsw, "stepped", this.stepped, true);
 
+        fsw.close();
         return fsw.toString();
     }
 }

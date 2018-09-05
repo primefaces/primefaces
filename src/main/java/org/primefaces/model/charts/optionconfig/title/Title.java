@@ -217,6 +217,7 @@ public class Title implements Serializable {
         ChartUtils.writeDataValue(fsw, "lineHeight", this.lineHeight, true);
         ChartUtils.writeDataValue(fsw, "text", this.text, true);
 
+        fsw.close();
         return fsw.toString();
     }
 }

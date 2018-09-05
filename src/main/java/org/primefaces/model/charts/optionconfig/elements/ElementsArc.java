@@ -96,6 +96,7 @@ public class ElementsArc implements Serializable {
         ChartUtils.writeDataValue(fsw, "backgroundColor", this.backgroundColor, true);
         ChartUtils.writeDataValue(fsw, "borderColor", this.borderColor, true);
 
+        fsw.close();
         return fsw.toString();
     }
 }

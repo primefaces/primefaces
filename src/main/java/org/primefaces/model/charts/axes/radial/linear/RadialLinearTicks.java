@@ -262,6 +262,7 @@ public class RadialLinearTicks extends AxesTicks {
 
         fsw.write("}");
 
+        fsw.close();
         return fsw.toString();
     }
 }

@@ -88,6 +88,7 @@ public class CartesianCategoryAxes extends CartesianAxes {
             fsw.write("}");
         }
 
+        fsw.close();
         return fsw.toString();
     }
 }

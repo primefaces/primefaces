@@ -199,6 +199,7 @@ public class CartesianScaleLabel {
         ChartUtils.writeDataValue(fsw, "padding", this.padding, true);
 
         fsw.write("}");
+        fsw.close();
 
         return fsw.toString();
     }

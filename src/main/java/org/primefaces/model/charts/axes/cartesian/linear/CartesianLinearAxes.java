@@ -87,6 +87,7 @@ public class CartesianLinearAxes extends CartesianAxes {
             fsw.write("}");
         }
 
+        fsw.close();
         return fsw.toString();
     }
 }

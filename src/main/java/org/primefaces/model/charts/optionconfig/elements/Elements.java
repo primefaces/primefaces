@@ -147,6 +147,7 @@ public class Elements implements Serializable {
             fsw.write("}");
         }
 
+        fsw.close();
         return fsw.toString();
     }
 }

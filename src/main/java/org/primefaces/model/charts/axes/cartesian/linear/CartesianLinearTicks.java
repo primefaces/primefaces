@@ -178,6 +178,7 @@ public class CartesianLinearTicks extends CartesianTicks {
         ChartUtils.writeDataValue(fsw, "suggestedMax", this.suggestedMax, true);
         ChartUtils.writeDataValue(fsw, "suggestedMin", this.suggestedMin, true);
 
+        fsw.close();
         return fsw.toString();
     }
 }

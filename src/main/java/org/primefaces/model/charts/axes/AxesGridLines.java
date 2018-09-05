@@ -317,6 +317,7 @@ public class AxesGridLines implements Serializable {
         ChartUtils.writeDataValue(fsw, "offsetGridLines", this.offsetGridLines, true);
 
         fsw.write("}");
+        fsw.close();
 
         return fsw.toString();
     }

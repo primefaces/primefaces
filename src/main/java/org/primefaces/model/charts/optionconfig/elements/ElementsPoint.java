@@ -196,6 +196,7 @@ public class ElementsPoint implements Serializable {
         ChartUtils.writeDataValue(fsw, "hoverRadius", this.hoverRadius, true);
         ChartUtils.writeDataValue(fsw, "hoverBorderWidth", this.hoverBorderWidth, true);
 
+        fsw.close();
         return fsw.toString();
     }
 }

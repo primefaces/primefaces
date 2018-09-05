@@ -116,6 +116,7 @@ public class ElementsRectangle implements Serializable {
         ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);
         ChartUtils.writeDataValue(fsw, "borderColor", this.borderColor, true);
 
+        fsw.close();
         return fsw.toString();
     }
 }

@@ -99,6 +99,7 @@ public class CartesianCategoryTicks extends CartesianTicks {
         ChartUtils.writeDataValue(fsw, "min", this.min, true);
         ChartUtils.writeDataValue(fsw, "max", this.max, true);
 
+        fsw.close();
         return fsw.toString();
     }
 }

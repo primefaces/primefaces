@@ -194,7 +194,6 @@ public class ChartRenderer extends CoreRenderer {
                 if (rScales.getTicks() != null) {
                     preString = hasComma ? "," : "";
                     writer.write(preString + "\"ticks\":" + rScales.getTicks().encode());
-                    hasComma = true;
                 }
             }
 

@@ -586,6 +586,7 @@ public class LineChartDataSet extends ChartDataSet {
 
         fsw.write("}");
 
+        fsw.close();
         return fsw.toString();
     }
 }

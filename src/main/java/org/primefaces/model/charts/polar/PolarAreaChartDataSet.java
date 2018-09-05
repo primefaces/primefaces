@@ -183,6 +183,7 @@ public class PolarAreaChartDataSet extends ChartDataSet {
 
         fsw.write("}");
 
+        fsw.close();
         return fsw.toString();
     }
 }

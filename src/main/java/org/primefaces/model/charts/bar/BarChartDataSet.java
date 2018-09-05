@@ -294,6 +294,7 @@ public class BarChartDataSet extends ChartDataSet {
 
         fsw.write("}");
 
+        fsw.close();
         return fsw.toString();
     }
 }

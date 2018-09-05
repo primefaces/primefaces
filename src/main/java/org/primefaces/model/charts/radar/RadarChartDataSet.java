@@ -463,6 +463,7 @@ public class RadarChartDataSet extends ChartDataSet {
 
         fsw.write("}");
 
+        fsw.close();
         return fsw.toString();
     }
 }
