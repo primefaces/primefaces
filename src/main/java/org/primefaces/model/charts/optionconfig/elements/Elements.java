@@ -107,47 +107,51 @@ public class Elements implements Serializable {
      * Write the options of Elements
      *
      * @return options as JSON object
-     * @throws java.io.IOException if writer is null
+     * @throws java.io.IOException If an I/O error occurs
      */
     public String encode() throws IOException {
         FastStringWriter fsw = new FastStringWriter();
         boolean hasComma = false;
         String preString;
 
-        if (this.point != null) {
-            fsw.write("\"point\":{");
-            fsw.write(this.point.encode());
-            fsw.write("}");
+        try {
+            if (this.point != null) {
+                fsw.write("\"point\":{");
+                fsw.write(this.point.encode());
+                fsw.write("}");
 
-            hasComma = true;
+                hasComma = true;
+            }
+
+            if (this.line != null) {
+                preString = hasComma ? "," : "";
+                fsw.write(preString + "\"line\":{");
+                fsw.write(this.line.encode());
+                fsw.write("}");
+
+                hasComma = true;
+            }
+
+            if (this.rectangle != null) {
+                preString = hasComma ? "," : "";
+                fsw.write(preString + "\"rectangle\":{");
+                fsw.write(this.rectangle.encode());
+                fsw.write("}");
+
+                hasComma = true;
+            }
+
+            if (this.arc != null) {
+                preString = hasComma ? "," : "";
+                fsw.write(preString + "\"arc\":{");
+                fsw.write(this.arc.encode());
+                fsw.write("}");
+            }
         }
-
-        if (this.line != null) {
-            preString = hasComma ? "," : "";
-            fsw.write(preString + "\"line\":{");
-            fsw.write(this.line.encode());
-            fsw.write("}");
-
-            hasComma = true;
+        finally {
+            fsw.close();
         }
-
-        if (this.rectangle != null) {
-            preString = hasComma ? "," : "";
-            fsw.write(preString + "\"rectangle\":{");
-            fsw.write(this.rectangle.encode());
-            fsw.write("}");
-
-            hasComma = true;
-        }
-
-        if (this.arc != null) {
-            preString = hasComma ? "," : "";
-            fsw.write(preString + "\"arc\":{");
-            fsw.write(this.arc.encode());
-            fsw.write("}");
-        }
-
-        fsw.close();
+        
         return fsw.toString();
     }
 }
