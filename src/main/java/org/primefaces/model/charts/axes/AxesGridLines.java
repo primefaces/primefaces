@@ -296,28 +296,38 @@ public class AxesGridLines implements Serializable {
         this.offsetGridLines = offsetGridLines;
     }
 
+    /**
+     * Write the common ticks options of axes
+     *
+     * @return options as JSON object
+     * @throws java.io.IOException If an I/O error occurs
+     */
     public String encode() throws IOException {
         FastStringWriter fsw = new FastStringWriter();
 
-        fsw.write("{");
+        try {
+            fsw.write("{");
 
-        ChartUtils.writeDataValue(fsw, "display", this.display, false);
-        ChartUtils.writeDataValue(fsw, "color", this.color, true);
-        ChartUtils.writeDataValue(fsw, "borderDash", this.borderDash, true);
-        ChartUtils.writeDataValue(fsw, "borderDashOffset", this.borderDashOffset, true);
-        ChartUtils.writeDataValue(fsw, "lineWidth", this.lineWidth, true);
-        ChartUtils.writeDataValue(fsw, "drawBorder", this.drawBorder, true);
-        ChartUtils.writeDataValue(fsw, "drawOnChartArea", this.drawOnChartArea, true);
-        ChartUtils.writeDataValue(fsw, "drawTicks", this.drawTicks, true);
-        ChartUtils.writeDataValue(fsw, "tickMarkLength", this.tickMarkLength, true);
-        ChartUtils.writeDataValue(fsw, "zeroLineWidth", this.zeroLineWidth, true);
-        ChartUtils.writeDataValue(fsw, "zeroLineColor", this.zeroLineColor, true);
-        ChartUtils.writeDataValue(fsw, "zeroLineBorderDash", this.zeroLineBorderDash, true);
-        ChartUtils.writeDataValue(fsw, "zeroLineBorderDashOffset", this.zeroLineBorderDashOffset, true);
-        ChartUtils.writeDataValue(fsw, "offsetGridLines", this.offsetGridLines, true);
+            ChartUtils.writeDataValue(fsw, "display", this.display, false);
+            ChartUtils.writeDataValue(fsw, "color", this.color, true);
+            ChartUtils.writeDataValue(fsw, "borderDash", this.borderDash, true);
+            ChartUtils.writeDataValue(fsw, "borderDashOffset", this.borderDashOffset, true);
+            ChartUtils.writeDataValue(fsw, "lineWidth", this.lineWidth, true);
+            ChartUtils.writeDataValue(fsw, "drawBorder", this.drawBorder, true);
+            ChartUtils.writeDataValue(fsw, "drawOnChartArea", this.drawOnChartArea, true);
+            ChartUtils.writeDataValue(fsw, "drawTicks", this.drawTicks, true);
+            ChartUtils.writeDataValue(fsw, "tickMarkLength", this.tickMarkLength, true);
+            ChartUtils.writeDataValue(fsw, "zeroLineWidth", this.zeroLineWidth, true);
+            ChartUtils.writeDataValue(fsw, "zeroLineColor", this.zeroLineColor, true);
+            ChartUtils.writeDataValue(fsw, "zeroLineBorderDash", this.zeroLineBorderDash, true);
+            ChartUtils.writeDataValue(fsw, "zeroLineBorderDashOffset", this.zeroLineBorderDashOffset, true);
+            ChartUtils.writeDataValue(fsw, "offsetGridLines", this.offsetGridLines, true);
 
-        fsw.write("}");
-        fsw.close();
+            fsw.write("}");
+        }
+        finally {
+            fsw.close();
+        }
 
         return fsw.toString();
     }

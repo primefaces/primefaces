@@ -240,24 +240,28 @@ public class ElementsLine implements Serializable {
      * Write the line options of Elements
      *
      * @return options as JSON object
-     * @throws java.io.IOException if writer is null
+     * @throws java.io.IOException If an I/O error occurs
      */
     public String encode() throws IOException {
         FastStringWriter fsw = new FastStringWriter();
 
-        ChartUtils.writeDataValue(fsw, "tension", this.tension, false);
-        ChartUtils.writeDataValue(fsw, "backgroundColor", this.backgroundColor, true);
-        ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);
-        ChartUtils.writeDataValue(fsw, "borderColor", this.borderColor, true);
-        ChartUtils.writeDataValue(fsw, "borderCapStyle", this.borderCapStyle, true);
-        ChartUtils.writeDataValue(fsw, "borderDash", this.borderDash, true);
-        ChartUtils.writeDataValue(fsw, "borderDashOffset", this.borderDashOffset, true);
-        ChartUtils.writeDataValue(fsw, "borderJoinStyle", this.borderJoinStyle, true);
-        ChartUtils.writeDataValue(fsw, "capBezierPoints", this.capBezierPoints, true);
-        ChartUtils.writeDataValue(fsw, "fill", this.fill, true);
-        ChartUtils.writeDataValue(fsw, "stepped", this.stepped, true);
+        try {
+            ChartUtils.writeDataValue(fsw, "tension", this.tension, false);
+            ChartUtils.writeDataValue(fsw, "backgroundColor", this.backgroundColor, true);
+            ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);
+            ChartUtils.writeDataValue(fsw, "borderColor", this.borderColor, true);
+            ChartUtils.writeDataValue(fsw, "borderCapStyle", this.borderCapStyle, true);
+            ChartUtils.writeDataValue(fsw, "borderDash", this.borderDash, true);
+            ChartUtils.writeDataValue(fsw, "borderDashOffset", this.borderDashOffset, true);
+            ChartUtils.writeDataValue(fsw, "borderJoinStyle", this.borderJoinStyle, true);
+            ChartUtils.writeDataValue(fsw, "capBezierPoints", this.capBezierPoints, true);
+            ChartUtils.writeDataValue(fsw, "fill", this.fill, true);
+            ChartUtils.writeDataValue(fsw, "stepped", this.stepped, true);
+        }
+        finally {
+            fsw.close();
+        }
 
-        fsw.close();
         return fsw.toString();
     }
 }

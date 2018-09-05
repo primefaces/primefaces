@@ -87,20 +87,24 @@ public class RadialLinearAngleLines implements Serializable {
      * Write the options of angled lines on radial linear type
      *
      * @return options as JSON object
-     * @throws java.io.IOException if writer is null
+     * @throws java.io.IOException If an I/O error occurs
      */
     public String encode() throws IOException {
         FastStringWriter fsw = new FastStringWriter();
 
-        fsw.write("{");
+        try {
+            fsw.write("{");
 
-        ChartUtils.writeDataValue(fsw, "display", this.display, false);
-        ChartUtils.writeDataValue(fsw, "color", this.color, true);
-        ChartUtils.writeDataValue(fsw, "lineWidth", this.lineWidth, true);
+            ChartUtils.writeDataValue(fsw, "display", this.display, false);
+            ChartUtils.writeDataValue(fsw, "color", this.color, true);
+            ChartUtils.writeDataValue(fsw, "lineWidth", this.lineWidth, true);
 
-        fsw.write("}");
+            fsw.write("}");
+        }
+        finally {
+            fsw.close();
+        }
 
-        fsw.close();
         return fsw.toString();
     }
 }

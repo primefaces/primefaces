@@ -106,17 +106,21 @@ public class ElementsRectangle implements Serializable {
      * Write the rectangle options of Elements
      *
      * @return options as JSON object
-     * @throws java.io.IOException if writer is null
+     * @throws java.io.IOException If an I/O error occurs
      */
     public String encode() throws IOException {
         FastStringWriter fsw = new FastStringWriter();
 
-        ChartUtils.writeDataValue(fsw, "borderSkipped", this.borderSkipped, false);
-        ChartUtils.writeDataValue(fsw, "backgroundColor", this.backgroundColor, true);
-        ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);
-        ChartUtils.writeDataValue(fsw, "borderColor", this.borderColor, true);
+        try {
+            ChartUtils.writeDataValue(fsw, "borderSkipped", this.borderSkipped, false);
+            ChartUtils.writeDataValue(fsw, "backgroundColor", this.backgroundColor, true);
+            ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);
+            ChartUtils.writeDataValue(fsw, "borderColor", this.borderColor, true);
+        }
+        finally {
+            fsw.close();
+        }
 
-        fsw.close();
         return fsw.toString();
     }
 }

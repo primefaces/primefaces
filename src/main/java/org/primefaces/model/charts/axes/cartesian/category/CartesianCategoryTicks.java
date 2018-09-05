@@ -88,18 +88,22 @@ public class CartesianCategoryTicks extends CartesianTicks {
      * Write the options of cartesian category ticks
      *
      * @return options as JSON object
-     * @throws java.io.IOException if writer is null
+     * @throws java.io.IOException If an I/O error occurs
      */
     @Override
     public String encode() throws IOException {
         FastStringWriter fsw = new FastStringWriter();
 
-        fsw.write(super.encode());
-        ChartUtils.writeDataValue(fsw, "labels", this.labels, true);
-        ChartUtils.writeDataValue(fsw, "min", this.min, true);
-        ChartUtils.writeDataValue(fsw, "max", this.max, true);
+        try {
+            fsw.write(super.encode());
+            ChartUtils.writeDataValue(fsw, "labels", this.labels, true);
+            ChartUtils.writeDataValue(fsw, "min", this.min, true);
+            ChartUtils.writeDataValue(fsw, "max", this.max, true);
+        }
+        finally {
+            fsw.close();
+        }
 
-        fsw.close();
         return fsw.toString();
     }
 }

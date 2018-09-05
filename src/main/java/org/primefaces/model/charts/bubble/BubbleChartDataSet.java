@@ -259,30 +259,34 @@ public class BubbleChartDataSet extends ChartDataSet {
      * Write the options of this dataSet
      *
      * @return options as JSON object
-     * @throws java.io.IOException if writer is null
+     * @throws java.io.IOException If an I/O error occurs
      */
     @Override
     public String encode() throws IOException {
         FastStringWriter fsw = new FastStringWriter();
 
-        fsw.write("{");
+        try {
+            fsw.write("{");
 
-        ChartUtils.writeDataValue(fsw, "type", "bubble", false);
-        ChartUtils.writeDataValue(fsw, "data", this.data, true);
-        ChartUtils.writeDataValue(fsw, "label", this.label, true);
-        ChartUtils.writeDataValue(fsw, "backgroundColor", this.backgroundColor, true);
-        ChartUtils.writeDataValue(fsw, "borderColor", this.borderColor, true);
-        ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);
-        ChartUtils.writeDataValue(fsw, "hoverBackgroundColor", this.hoverBackgroundColor, true);
-        ChartUtils.writeDataValue(fsw, "hoverBorderColor", this.hoverBorderColor, true);
-        ChartUtils.writeDataValue(fsw, "hoverBorderWidth", this.hoverBorderWidth, true);
-        ChartUtils.writeDataValue(fsw, "hitRadius", this.hitRadius, true);
-        ChartUtils.writeDataValue(fsw, "pointStyle", this.pointStyle, true);
-        ChartUtils.writeDataValue(fsw, "radius", this.radius, true);
+            ChartUtils.writeDataValue(fsw, "type", "bubble", false);
+            ChartUtils.writeDataValue(fsw, "data", this.data, true);
+            ChartUtils.writeDataValue(fsw, "label", this.label, true);
+            ChartUtils.writeDataValue(fsw, "backgroundColor", this.backgroundColor, true);
+            ChartUtils.writeDataValue(fsw, "borderColor", this.borderColor, true);
+            ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);
+            ChartUtils.writeDataValue(fsw, "hoverBackgroundColor", this.hoverBackgroundColor, true);
+            ChartUtils.writeDataValue(fsw, "hoverBorderColor", this.hoverBorderColor, true);
+            ChartUtils.writeDataValue(fsw, "hoverBorderWidth", this.hoverBorderWidth, true);
+            ChartUtils.writeDataValue(fsw, "hitRadius", this.hitRadius, true);
+            ChartUtils.writeDataValue(fsw, "pointStyle", this.pointStyle, true);
+            ChartUtils.writeDataValue(fsw, "radius", this.radius, true);
 
-        fsw.write("}");
+            fsw.write("}");
+        }
+        finally {
+            fsw.close();
+        }
 
-        fsw.close();
         return fsw.toString();
     }
 }

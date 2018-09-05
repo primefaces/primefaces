@@ -106,19 +106,24 @@ public class RadialLinearPointLabels implements Serializable {
      * Write the options of point labels on radial linear type
      *
      * @return options as JSON object
-     * @throws java.io.IOException if writer is null
+     * @throws java.io.IOException If an I/O error occurs
      */
     public String encode() throws IOException {
         FastStringWriter fsw = new FastStringWriter();
 
-        fsw.write("{");
+        try {
+            fsw.write("{");
 
-        ChartUtils.writeDataValue(fsw, "fontSize", this.fontSize, false);
-        ChartUtils.writeDataValue(fsw, "fontColor", this.fontColor, true);
-        ChartUtils.writeDataValue(fsw, "fontFamily", this.fontFamily, true);
-        ChartUtils.writeDataValue(fsw, "fontStyle", this.fontStyle, true);
+            ChartUtils.writeDataValue(fsw, "fontSize", this.fontSize, false);
+            ChartUtils.writeDataValue(fsw, "fontColor", this.fontColor, true);
+            ChartUtils.writeDataValue(fsw, "fontFamily", this.fontFamily, true);
+            ChartUtils.writeDataValue(fsw, "fontStyle", this.fontStyle, true);
 
-        fsw.write("}");
+            fsw.write("}");
+        }
+        finally {
+            fsw.close();
+        }
 
         return fsw.toString();
     }

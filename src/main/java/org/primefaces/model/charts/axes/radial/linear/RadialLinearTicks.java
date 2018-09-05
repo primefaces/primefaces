@@ -239,30 +239,34 @@ public class RadialLinearTicks extends AxesTicks {
      * Write the radial linear ticks
      *
      * @return options as JSON object
-     * @throws java.io.IOException if writer is null
+     * @throws java.io.IOException If an I/O error occurs
      */
     @Override
     public String encode() throws IOException {
         FastStringWriter fsw = new FastStringWriter();
 
-        fsw.write("{");
-        fsw.write(super.encode());
+        try {
+            fsw.write("{");
+            fsw.write(super.encode());
 
-        ChartUtils.writeDataValue(fsw, "beginAtZero", this.beginAtZero, true);
-        ChartUtils.writeDataValue(fsw, "backdropColor", this.backdropColor, true);
-        ChartUtils.writeDataValue(fsw, "backdropPaddingX", this.backdropPaddingX, true);
-        ChartUtils.writeDataValue(fsw, "backdropPaddingY", this.backdropPaddingY, true);
-        ChartUtils.writeDataValue(fsw, "min", this.min, true);
-        ChartUtils.writeDataValue(fsw, "max", this.max, true);
-        ChartUtils.writeDataValue(fsw, "maxTicksLimit", this.maxTicksLimit, true);
-        ChartUtils.writeDataValue(fsw, "stepSize", this.stepSize, true);
-        ChartUtils.writeDataValue(fsw, "suggestedMax", this.suggestedMax, true);
-        ChartUtils.writeDataValue(fsw, "suggestedMin", this.suggestedMin, true);
-        ChartUtils.writeDataValue(fsw, "showLabelBackdrop", this.showLabelBackdrop, true);
+            ChartUtils.writeDataValue(fsw, "beginAtZero", this.beginAtZero, true);
+            ChartUtils.writeDataValue(fsw, "backdropColor", this.backdropColor, true);
+            ChartUtils.writeDataValue(fsw, "backdropPaddingX", this.backdropPaddingX, true);
+            ChartUtils.writeDataValue(fsw, "backdropPaddingY", this.backdropPaddingY, true);
+            ChartUtils.writeDataValue(fsw, "min", this.min, true);
+            ChartUtils.writeDataValue(fsw, "max", this.max, true);
+            ChartUtils.writeDataValue(fsw, "maxTicksLimit", this.maxTicksLimit, true);
+            ChartUtils.writeDataValue(fsw, "stepSize", this.stepSize, true);
+            ChartUtils.writeDataValue(fsw, "suggestedMax", this.suggestedMax, true);
+            ChartUtils.writeDataValue(fsw, "suggestedMin", this.suggestedMin, true);
+            ChartUtils.writeDataValue(fsw, "showLabelBackdrop", this.showLabelBackdrop, true);
 
-        fsw.write("}");
+            fsw.write("}");
+        }
+        finally {
+            fsw.close();
+        }
 
-        fsw.close();
         return fsw.toString();
     }
 }

@@ -202,22 +202,26 @@ public class Title implements Serializable {
      * Write the options of Title
      *
      * @return options as JSON object
-     * @throws java.io.IOException if writer is null
+     * @throws java.io.IOException If an I/O error occurs
      */
     public String encode() throws IOException {
         FastStringWriter fsw = new FastStringWriter();
 
-        ChartUtils.writeDataValue(fsw, "display", this.display, false);
-        ChartUtils.writeDataValue(fsw, "position", this.position, true);
-        ChartUtils.writeDataValue(fsw, "fontSize", this.fontSize, true);
-        ChartUtils.writeDataValue(fsw, "fontFamily", this.fontFamily, true);
-        ChartUtils.writeDataValue(fsw, "fontColor", this.fontColor, true);
-        ChartUtils.writeDataValue(fsw, "fontStyle", this.fontStyle, true);
-        ChartUtils.writeDataValue(fsw, "padding", this.padding, true);
-        ChartUtils.writeDataValue(fsw, "lineHeight", this.lineHeight, true);
-        ChartUtils.writeDataValue(fsw, "text", this.text, true);
+        try {
+            ChartUtils.writeDataValue(fsw, "display", this.display, false);
+            ChartUtils.writeDataValue(fsw, "position", this.position, true);
+            ChartUtils.writeDataValue(fsw, "fontSize", this.fontSize, true);
+            ChartUtils.writeDataValue(fsw, "fontFamily", this.fontFamily, true);
+            ChartUtils.writeDataValue(fsw, "fontColor", this.fontColor, true);
+            ChartUtils.writeDataValue(fsw, "fontStyle", this.fontStyle, true);
+            ChartUtils.writeDataValue(fsw, "padding", this.padding, true);
+            ChartUtils.writeDataValue(fsw, "lineHeight", this.lineHeight, true);
+            ChartUtils.writeDataValue(fsw, "text", this.text, true);
+        }
+        finally {
+            fsw.close();
+        }
 
-        fsw.close();
         return fsw.toString();
     }
 }

@@ -620,44 +620,48 @@ public class Tooltip implements Serializable {
      * Write the options of Tooltip
      *
      * @return options as JSON object
-     * @throws java.io.IOException if writer is null
+     * @throws java.io.IOException If an I/O error occurs
      */
     public String encode() throws IOException {
         FastStringWriter fsw = new FastStringWriter();
 
-        ChartUtils.writeDataValue(fsw, "enabled", this.enabled, false);
-        ChartUtils.writeDataValue(fsw, "mode", this.mode, true);
-        ChartUtils.writeDataValue(fsw, "intersect", this.intersect, true);
-        ChartUtils.writeDataValue(fsw, "position", this.position, true);
-        ChartUtils.writeDataValue(fsw, "backgroundColor", this.backgroundColor, true);
-        ChartUtils.writeDataValue(fsw, "titleFontFamily", this.titleFontFamily, true);
-        ChartUtils.writeDataValue(fsw, "titleFontSize", this.titleFontSize, true);
-        ChartUtils.writeDataValue(fsw, "titleFontStyle", this.titleFontStyle, true);
-        ChartUtils.writeDataValue(fsw, "titleFontColor", this.titleFontColor, true);
-        ChartUtils.writeDataValue(fsw, "titleSpacing", this.titleSpacing, true);
-        ChartUtils.writeDataValue(fsw, "titleMarginBottom", this.titleMarginBottom, true);
-        ChartUtils.writeDataValue(fsw, "bodyFontFamily", this.bodyFontFamily, true);
-        ChartUtils.writeDataValue(fsw, "bodyFontSize", this.bodyFontSize, true);
-        ChartUtils.writeDataValue(fsw, "bodyFontStyle", this.bodyFontStyle, true);
-        ChartUtils.writeDataValue(fsw, "bodyFontColor", this.bodyFontColor, true);
-        ChartUtils.writeDataValue(fsw, "bodySpacing", this.bodySpacing, true);
-        ChartUtils.writeDataValue(fsw, "footerFontFamily", this.footerFontFamily, true);
-        ChartUtils.writeDataValue(fsw, "footerFontSize", this.footerFontSize, true);
-        ChartUtils.writeDataValue(fsw, "footerFontStyle", this.footerFontStyle, true);
-        ChartUtils.writeDataValue(fsw, "footerFontColor", this.footerFontColor, true);
-        ChartUtils.writeDataValue(fsw, "footerSpacing", this.footerSpacing, true);
-        ChartUtils.writeDataValue(fsw, "footerMarginTop", this.footerMarginTop, true);
-        ChartUtils.writeDataValue(fsw, "xPadding", this.xpadding, true);
-        ChartUtils.writeDataValue(fsw, "yPadding", this.ypadding, true);
-        ChartUtils.writeDataValue(fsw, "caretPadding", this.caretPadding, true);
-        ChartUtils.writeDataValue(fsw, "caretSize", this.caretSize, true);
-        ChartUtils.writeDataValue(fsw, "cornerRadius", this.cornerRadius, true);
-        ChartUtils.writeDataValue(fsw, "multiKeyBackground", this.multiKeyBackground, true);
-        ChartUtils.writeDataValue(fsw, "displayColors", this.displayColors, true);
-        ChartUtils.writeDataValue(fsw, "borderColor", this.borderColor, true);
-        ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);
+        try {
+            ChartUtils.writeDataValue(fsw, "enabled", this.enabled, false);
+            ChartUtils.writeDataValue(fsw, "mode", this.mode, true);
+            ChartUtils.writeDataValue(fsw, "intersect", this.intersect, true);
+            ChartUtils.writeDataValue(fsw, "position", this.position, true);
+            ChartUtils.writeDataValue(fsw, "backgroundColor", this.backgroundColor, true);
+            ChartUtils.writeDataValue(fsw, "titleFontFamily", this.titleFontFamily, true);
+            ChartUtils.writeDataValue(fsw, "titleFontSize", this.titleFontSize, true);
+            ChartUtils.writeDataValue(fsw, "titleFontStyle", this.titleFontStyle, true);
+            ChartUtils.writeDataValue(fsw, "titleFontColor", this.titleFontColor, true);
+            ChartUtils.writeDataValue(fsw, "titleSpacing", this.titleSpacing, true);
+            ChartUtils.writeDataValue(fsw, "titleMarginBottom", this.titleMarginBottom, true);
+            ChartUtils.writeDataValue(fsw, "bodyFontFamily", this.bodyFontFamily, true);
+            ChartUtils.writeDataValue(fsw, "bodyFontSize", this.bodyFontSize, true);
+            ChartUtils.writeDataValue(fsw, "bodyFontStyle", this.bodyFontStyle, true);
+            ChartUtils.writeDataValue(fsw, "bodyFontColor", this.bodyFontColor, true);
+            ChartUtils.writeDataValue(fsw, "bodySpacing", this.bodySpacing, true);
+            ChartUtils.writeDataValue(fsw, "footerFontFamily", this.footerFontFamily, true);
+            ChartUtils.writeDataValue(fsw, "footerFontSize", this.footerFontSize, true);
+            ChartUtils.writeDataValue(fsw, "footerFontStyle", this.footerFontStyle, true);
+            ChartUtils.writeDataValue(fsw, "footerFontColor", this.footerFontColor, true);
+            ChartUtils.writeDataValue(fsw, "footerSpacing", this.footerSpacing, true);
+            ChartUtils.writeDataValue(fsw, "footerMarginTop", this.footerMarginTop, true);
+            ChartUtils.writeDataValue(fsw, "xPadding", this.xpadding, true);
+            ChartUtils.writeDataValue(fsw, "yPadding", this.ypadding, true);
+            ChartUtils.writeDataValue(fsw, "caretPadding", this.caretPadding, true);
+            ChartUtils.writeDataValue(fsw, "caretSize", this.caretSize, true);
+            ChartUtils.writeDataValue(fsw, "cornerRadius", this.cornerRadius, true);
+            ChartUtils.writeDataValue(fsw, "multiKeyBackground", this.multiKeyBackground, true);
+            ChartUtils.writeDataValue(fsw, "displayColors", this.displayColors, true);
+            ChartUtils.writeDataValue(fsw, "borderColor", this.borderColor, true);
+            ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);
+        }
+        finally {
+            fsw.close();
+        }
 
-        fsw.close();
         return fsw.toString();
     }
 }

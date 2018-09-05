@@ -170,20 +170,24 @@ public abstract class CartesianTicks {
      * Write the common ticks options
      *
      * @return options as JSON object
-     * @throws java.io.IOException if writer is null
+     * @throws java.io.IOException If an I/O error occurs
      */
     public String encode() throws IOException {
         FastStringWriter fsw = new FastStringWriter();
 
-        ChartUtils.writeDataValue(fsw, "autoSkip", this.autoSkip, false);
-        ChartUtils.writeDataValue(fsw, "autoSkipPadding", this.autoSkipPadding, true);
-        ChartUtils.writeDataValue(fsw, "labelOffset", this.labelOffset, true);
-        ChartUtils.writeDataValue(fsw, "maxRotation", this.maxRotation, true);
-        ChartUtils.writeDataValue(fsw, "minRotation", this.minRotation, true);
-        ChartUtils.writeDataValue(fsw, "mirror", this.mirror, true);
-        ChartUtils.writeDataValue(fsw, "padding", this.padding, true);
+        try {
+            ChartUtils.writeDataValue(fsw, "autoSkip", this.autoSkip, false);
+            ChartUtils.writeDataValue(fsw, "autoSkipPadding", this.autoSkipPadding, true);
+            ChartUtils.writeDataValue(fsw, "labelOffset", this.labelOffset, true);
+            ChartUtils.writeDataValue(fsw, "maxRotation", this.maxRotation, true);
+            ChartUtils.writeDataValue(fsw, "minRotation", this.minRotation, true);
+            ChartUtils.writeDataValue(fsw, "mirror", this.mirror, true);
+            ChartUtils.writeDataValue(fsw, "padding", this.padding, true);
+        }
+        finally {
+            fsw.close();
+        }
 
-        fsw.close();
         return fsw.toString();
     }
 }

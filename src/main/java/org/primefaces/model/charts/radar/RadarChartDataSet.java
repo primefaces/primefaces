@@ -430,40 +430,44 @@ public class RadarChartDataSet extends ChartDataSet {
      * Write the options of this dataSet
      *
      * @return options as JSON object
-     * @throws java.io.IOException if writer is null
+     * @throws java.io.IOException If an I/O error occurs
      */
     @Override
     public String encode() throws IOException {
         FastStringWriter fsw = new FastStringWriter();
 
-        fsw.write("{");
+        try {
+            fsw.write("{");
 
-        ChartUtils.writeDataValue(fsw, "type", "radar", false);
-        ChartUtils.writeDataValue(fsw, "data", this.data, true);
-        ChartUtils.writeDataValue(fsw, "label", this.label, true);
-        ChartUtils.writeDataValue(fsw, "backgroundColor", this.backgroundColor, true);
-        ChartUtils.writeDataValue(fsw, "borderColor", this.borderColor, true);
-        ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);
-        ChartUtils.writeDataValue(fsw, "borderDash", this.borderDash, true);
-        ChartUtils.writeDataValue(fsw, "borderDashOffset", this.borderDashOffset, true);
-        ChartUtils.writeDataValue(fsw, "borderCapStyle", this.borderCapStyle, true);
-        ChartUtils.writeDataValue(fsw, "borderJoinStyle", this.borderJoinStyle, true);
-        ChartUtils.writeDataValue(fsw, "fill", this.fill, true);
-        ChartUtils.writeDataValue(fsw, "lineTension", this.lineTension, true);
-        ChartUtils.writeDataValue(fsw, "pointBackgroundColor", this.pointBackgroundColor, true);
-        ChartUtils.writeDataValue(fsw, "pointBorderColor", this.pointBorderColor, true);
-        ChartUtils.writeDataValue(fsw, "pointBorderWidth", this.pointBorderWidth, true);
-        ChartUtils.writeDataValue(fsw, "pointRadius", this.pointRadius, true);
-        ChartUtils.writeDataValue(fsw, "pointStyle", this.pointStyle, true);
-        ChartUtils.writeDataValue(fsw, "pointHitRadius", this.pointHitRadius, true);
-        ChartUtils.writeDataValue(fsw, "pointHoverBackgroundColor", this.pointHoverBackgroundColor, true);
-        ChartUtils.writeDataValue(fsw, "pointHoverBorderColor", this.pointHoverBorderColor, true);
-        ChartUtils.writeDataValue(fsw, "pointHoverBorderWidth", this.pointHoverBorderWidth, true);
-        ChartUtils.writeDataValue(fsw, "pointHoverRadius", this.pointHoverRadius, true);
+            ChartUtils.writeDataValue(fsw, "type", "radar", false);
+            ChartUtils.writeDataValue(fsw, "data", this.data, true);
+            ChartUtils.writeDataValue(fsw, "label", this.label, true);
+            ChartUtils.writeDataValue(fsw, "backgroundColor", this.backgroundColor, true);
+            ChartUtils.writeDataValue(fsw, "borderColor", this.borderColor, true);
+            ChartUtils.writeDataValue(fsw, "borderWidth", this.borderWidth, true);
+            ChartUtils.writeDataValue(fsw, "borderDash", this.borderDash, true);
+            ChartUtils.writeDataValue(fsw, "borderDashOffset", this.borderDashOffset, true);
+            ChartUtils.writeDataValue(fsw, "borderCapStyle", this.borderCapStyle, true);
+            ChartUtils.writeDataValue(fsw, "borderJoinStyle", this.borderJoinStyle, true);
+            ChartUtils.writeDataValue(fsw, "fill", this.fill, true);
+            ChartUtils.writeDataValue(fsw, "lineTension", this.lineTension, true);
+            ChartUtils.writeDataValue(fsw, "pointBackgroundColor", this.pointBackgroundColor, true);
+            ChartUtils.writeDataValue(fsw, "pointBorderColor", this.pointBorderColor, true);
+            ChartUtils.writeDataValue(fsw, "pointBorderWidth", this.pointBorderWidth, true);
+            ChartUtils.writeDataValue(fsw, "pointRadius", this.pointRadius, true);
+            ChartUtils.writeDataValue(fsw, "pointStyle", this.pointStyle, true);
+            ChartUtils.writeDataValue(fsw, "pointHitRadius", this.pointHitRadius, true);
+            ChartUtils.writeDataValue(fsw, "pointHoverBackgroundColor", this.pointHoverBackgroundColor, true);
+            ChartUtils.writeDataValue(fsw, "pointHoverBorderColor", this.pointHoverBorderColor, true);
+            ChartUtils.writeDataValue(fsw, "pointHoverBorderWidth", this.pointHoverBorderWidth, true);
+            ChartUtils.writeDataValue(fsw, "pointHoverRadius", this.pointHoverRadius, true);
 
-        fsw.write("}");
+            fsw.write("}");
+        }
+        finally {
+            fsw.close();
+        }
 
-        fsw.close();
         return fsw.toString();
     }
 }

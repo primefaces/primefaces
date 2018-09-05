@@ -70,25 +70,29 @@ public class CartesianCategoryAxes extends CartesianAxes {
      * Write the options of cartesian category axes
      *
      * @return options as JSON object
-     * @throws java.io.IOException if writer is null
+     * @throws java.io.IOException If an I/O error occurs
      */
     @Override
     public String encode() throws IOException {
         FastStringWriter fsw = new FastStringWriter();
 
-        fsw.write(super.encode());
+        try {
+            fsw.write(super.encode());
 
-        if (this.type != null) {
-            fsw.write(",\"type\":\"" + this.type + "\"");
+            if (this.type != null) {
+                fsw.write(",\"type\":\"" + this.type + "\"");
+            }
+
+            if (this.ticks != null) {
+                fsw.write(",\"ticks\":{");
+                fsw.write(this.ticks.encode());
+                fsw.write("}");
+            }
+        }
+        finally {
+            fsw.close();
         }
 
-        if (this.ticks != null) {
-            fsw.write(",\"ticks\":{");
-            fsw.write(this.ticks.encode());
-            fsw.write("}");
-        }
-
-        fsw.close();
         return fsw.toString();
     }
 }
