@@ -61,6 +61,10 @@
             <id>sudheer.jonna</id>
             <name>Sudheer Jonna</name>
         </developer>
+        <developer>
+            <id>Rapster</id>
+            <name>Sébastien Lepage</name>
+        </developer>
     </developers>
 
     <properties>
