@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<faces-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0"
+              xmlns="http://java.sun.com/xml/ns/javaee"
               xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
 
     <name>primefaces</name>
@@ -258,6 +258,11 @@
     <component>
         <component-type>org.primefaces.component.Chart</component-type>
         <component-class>org.primefaces.component.chart.Chart</component-class>
+    </component>
+
+    <component>
+        <component-type>org.primefaces.component.ChartJS</component-type>
+        <component-class>org.primefaces.component.chartjs.ChartJS</component-class>
     </component>
 
     <component>
@@ -1075,6 +1080,11 @@
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.ChartRenderer</renderer-type>
             <renderer-class>org.primefaces.component.chart.ChartRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.ChartJSRenderer</renderer-type>
+            <renderer-class>org.primefaces.component.chartjs.ChartJSRenderer</renderer-class>
         </renderer>
         <renderer>
             <component-family>org.primefaces.component</component-family>
