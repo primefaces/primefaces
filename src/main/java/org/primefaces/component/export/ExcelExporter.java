@@ -60,7 +60,7 @@ public class ExcelExporter extends Exporter {
             sheetName = "Sheet";
         }
 
-        Sheet sheet = wb.createSheet(sheetName);
+        Sheet sheet = createSheet(wb, sheetName);
 
         if (preProcessor != null) {
             preProcessor.invoke(context.getELContext(), new Object[]{wb});
@@ -103,7 +103,7 @@ public class ExcelExporter extends Exporter {
                 sheetName = "Sheet" + String.valueOf(i + 1);
             }
 
-            Sheet sheet = wb.createSheet(sheetName);
+            Sheet sheet = createSheet(wb, sheetName);
             applyOptions(wb, table, sheet, options);
             exportTable(context, table, sheet, pageOnly, selectionOnly);
 
@@ -247,6 +247,10 @@ public class ExcelExporter extends Exporter {
 
     protected Workbook createWorkBook() {
         return new HSSFWorkbook();
+    }
+
+    protected Sheet createSheet(Workbook wb, String sheetName) {
+        return wb.createSheet(sheetName);
     }
 
     protected void writeExcelToResponse(ExternalContext externalContext, Workbook generatedExcel, String filename) throws IOException {
