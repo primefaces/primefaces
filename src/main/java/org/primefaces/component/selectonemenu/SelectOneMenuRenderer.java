@@ -60,7 +60,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem item = selectItems.get(i);
                 if (item.getLabel().equalsIgnoreCase(editorInput)) {
-                    menu.setSubmittedValue(item.getValue());
+                    menu.setSubmittedValue(getOptionAsString(context, menu, menu.getConverter(), item.getValue()));
                     break;
                 }
             }
