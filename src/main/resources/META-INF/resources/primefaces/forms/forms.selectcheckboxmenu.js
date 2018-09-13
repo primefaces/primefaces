@@ -518,6 +518,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         }
 
         this.updateToggler();
+        this.alignPanel();
     },
 
     setupFilterMatcher: function() {
