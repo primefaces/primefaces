@@ -18,6 +18,7 @@ package org.primefaces.model;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.input.BoundedInputStream;
@@ -44,6 +45,11 @@ public class DefaultUploadedFile implements UploadedFile, Serializable {
     @Override
     public String getFileName() {
         return fileItem.getName();
+    }
+
+    @Override
+    public List<String> getFileNames() {
+        return null;
     }
 
     @Override

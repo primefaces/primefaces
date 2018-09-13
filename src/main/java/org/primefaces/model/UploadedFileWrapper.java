@@ -17,6 +17,7 @@ package org.primefaces.model;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import javax.faces.FacesWrapper;
 import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
@@ -40,6 +41,11 @@ public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedF
     @Override
     public String getFileName() {
         return getWrapped().getFileName();
+    }
+
+    @Override
+    public List<String> getFileNames() {
+        return getWrapped().getFileNames();
     }
 
     @Override

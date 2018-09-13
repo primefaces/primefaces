@@ -23,6 +23,8 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.List;
 import javax.faces.FacesException;
 import javax.servlet.http.Part;
 import org.apache.commons.io.input.BoundedInputStream;
@@ -37,6 +39,8 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     private String filename;
     private byte[] cachedContent;
     private Long sizeLimit;
+    private List<Part> parts;
+    private List<String> filenames;
 
     public NativeUploadedFile() {
     }
@@ -47,9 +51,20 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
         this.sizeLimit = fileUpload.getSizeLimit();
     }
 
+    public NativeUploadedFile(List<Part> parts, FileUpload fileUpload) {
+        this.parts = parts;
+        this.filenames = resolveFilenames(parts);
+        this.sizeLimit = fileUpload.getSizeLimit();
+    }
+
     @Override
     public String getFileName() {
         return filename;
+    }
+
+    @Override
+    public List<String> getFileNames() {
+        return filenames;
     }
 
     @Override
@@ -105,7 +120,17 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     @Override
     public void write(String filePath) throws Exception {
         SafeFile file = new SafeFile(filePath);
-        part.write(file.getPath());
+        String path = file.getPath();
+
+        if (parts != null) {
+            for (int i = 0; i < parts.size(); i++) {
+                Part p = parts.get(i);
+                p.write(path);
+            }
+        }
+        else {
+            part.write(path);
+        }
     }
 
     public Part getPart() {
@@ -114,6 +139,16 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
 
     private String resolveFilename(Part part) {
         return getContentDispositionFileName(part.getHeader("content-disposition"));
+    }
+
+    private List<String> resolveFilenames(List<Part> parts) {
+        filenames = new ArrayList<>();
+        for (int i = 0; i < parts.size(); i++) {
+            Part p = parts.get(i);
+            filenames.add(resolveFilename(p));
+        }
+
+        return filenames;
     }
 
     protected String getContentDispositionFileName(final String line) {
