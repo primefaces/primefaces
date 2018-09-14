@@ -139,7 +139,7 @@ public class XMLExporter extends Exporter {
             throw new FacesException("No suitable xml tag found for " + column);
         }
 
-        return EscapeUtils.forXml(columnTag);
+        return EscapeUtils.forXmlTag(columnTag);
     }
 
     protected void addColumnValue(StringBuilder builder, List<UIComponent> components, String tag, UIColumn column) throws IOException {
