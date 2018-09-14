@@ -133,6 +133,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Dialog.CONTENT_CLASS, null);
+        writer.writeAttribute("id", dialog.getClientId(context) + "_content", null);
 
         //severity
         writer.startElement("span", null);
