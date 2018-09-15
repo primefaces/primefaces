@@ -364,14 +364,22 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     },
 
     generateItems: function(list, input) {
+        var _self = this;
+       
         list.children('.ui-picklist-item').each(function() {
             var item = $(this),
-            itemValue = PrimeFaces.escapeHTML(item.attr('data-item-value')),
-            itemLabel = item.attr('data-item-label'),
-            escapedItemLabel = (itemLabel) ? PrimeFaces.escapeHTML(itemLabel) : '',
+            itemValue = item.attr('data-item-value'),
+            itemLabel = item.attr('data-item-label') ? item.attr('data-item-label') : '',
             option = $('<option selected="selected"></option>');
+            
+            if (_self.cfg.escape) {
+               itemValue = PrimeFaces.escapeHTML(itemValue);
+               itemLabel = PrimeFaces.escapeHTML(itemLabel);
+               option.prop('value', itemValue).text(itemLabel);
+            } else {
+               option.prop('value', itemValue).html(itemLabel);
+            }
 
-            option.prop('value', itemValue).text(escapedItemLabel);
             input.append(option);
         });
     },

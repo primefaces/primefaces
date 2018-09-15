@@ -14054,6 +14054,12 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
+            <description><![CDATA[Defines if labels of the component is escaped or not.]]></description>
+            <name>escape</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
             <description><![CDATA[Text of add button. Default is "Add".]]></description>
             <name>addLabel</name>
             <required>false</required>

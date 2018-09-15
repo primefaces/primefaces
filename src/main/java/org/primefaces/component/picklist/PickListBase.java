@@ -40,6 +40,7 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
         disabled,
         effect,
         effectSpeed,
+        escape,
         addLabel,
         addAllLabel,
         removeLabel,
@@ -337,6 +338,14 @@ abstract class PickListBase extends UIInput implements Widget, ClientBehaviorHol
 
     public void setFilterDelay(int filterDelay) {
         getStateHelper().put(PropertyKeys.filterDelay, filterDelay);
+    }
+
+    public boolean isEscape() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+    }
+
+    public void setEscape(boolean escape) {
+        getStateHelper().put(PropertyKeys.escape, escape);
     }
 
     @Override

@@ -133,6 +133,7 @@ public class PickListRenderer extends CoreRenderer {
         wb.init("PickList", pickList.resolveWidgetVar(), clientId)
                 .attr("effect", pickList.getEffect())
                 .attr("effectSpeed", pickList.getEffectSpeed())
+                .attr("escape", pickList.isEscape())
                 .attr("showSourceControls", pickList.isShowSourceControls(), false)
                 .attr("showTargetControls", pickList.isShowTargetControls(), false)
                 .attr("disabled", pickList.isDisabled(), false)
