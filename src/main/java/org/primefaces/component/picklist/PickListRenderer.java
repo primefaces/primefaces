@@ -307,7 +307,12 @@ public class PickListRenderer extends CoreRenderer {
                     RendererUtils.encodeCheckbox(context, false);
                 }
 
-                writer.writeText(itemLabel, null);
+                if (pickList.isEscape()) {
+                    writer.writeText(itemLabel, null);
+                }
+                else {
+                    writer.write(itemLabel);
+                }
             }
 
             writer.endElement("li");
