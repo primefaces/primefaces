@@ -21,7 +21,6 @@ import java.util.List;
 import javax.faces.FacesWrapper;
 import javax.faces.component.StateHolder;
 import javax.faces.context.FacesContext;
-import org.owasp.esapi.SafeFile;
 
 /**
  * Wrapper to avoid a UploadedFile to beeing saved in the ViewState.
@@ -70,8 +69,7 @@ public class UploadedFileWrapper implements UploadedFile, FacesWrapper<UploadedF
 
     @Override
     public void write(String filePath) throws Exception {
-        SafeFile file = new SafeFile(filePath);
-        getWrapped().write(file.getPath());
+        getWrapped().write(filePath);
     }
 
     @Override

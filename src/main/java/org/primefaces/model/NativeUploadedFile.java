@@ -28,7 +28,7 @@ import java.util.List;
 import javax.faces.FacesException;
 import javax.servlet.http.Part;
 import org.apache.commons.io.input.BoundedInputStream;
-import org.owasp.esapi.SafeFile;
+import org.primefaces.util.FileUploadUtils;
 
 public class NativeUploadedFile implements UploadedFile, Serializable {
 
@@ -119,17 +119,16 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
 
     @Override
     public void write(String filePath) throws Exception {
-        SafeFile file = new SafeFile(filePath);
-        String path = file.getPath();
+        String validFilePath = FileUploadUtils.getValidFilePath(filePath);
 
         if (parts != null) {
             for (int i = 0; i < parts.size(); i++) {
                 Part p = parts.get(i);
-                p.write(path);
+                p.write(validFilePath);
             }
         }
         else {
-            part.write(path);
+            part.write(validFilePath);
         }
     }
 
@@ -138,7 +137,7 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     }
 
     private String resolveFilename(Part part) {
-        return getContentDispositionFileName(part.getHeader("content-disposition"));
+        return FileUploadUtils.getValidFilename(getContentDispositionFileName(part.getHeader("content-disposition")));
     }
 
     private List<String> resolveFilenames(List<Part> parts) {
