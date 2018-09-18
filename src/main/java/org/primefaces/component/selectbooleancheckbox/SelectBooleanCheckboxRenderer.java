@@ -22,7 +22,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -126,9 +125,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
             writer.writeAttribute("tabindex", checkbox.getTabindex(), null);
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, checkbox);
-        }
+        renderValidationMetadata(context, checkbox);
 
         renderOnchange(context, checkbox);
         renderDomEvents(context, checkbox, HTML.BLUR_FOCUS_EVENTS);

@@ -21,7 +21,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -135,9 +134,7 @@ public class InputSwitchRenderer extends InputRenderer {
             writer.writeAttribute("tabindex", inputSwitch.getTabindex(), null);
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, inputSwitch);
-        }
+        renderValidationMetadata(context, inputSwitch);
 
         renderOnchange(context, inputSwitch);
         renderDomEvents(context, inputSwitch, HTML.BLUR_FOCUS_EVENTS);
