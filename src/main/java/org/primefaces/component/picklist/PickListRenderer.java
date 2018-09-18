@@ -208,6 +208,11 @@ public class PickListRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", PickList.LIST_WRAPPER_CLASS, null);
 
+        // only render required on target list
+        if (!isSource) {
+            renderRequired(context, pickList);
+        }
+
         if (filter) {
             encodeFilter(context, pickList, listId + "_filter", isSource);
         }
@@ -364,8 +369,8 @@ public class PickListRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId + "_ariaRegion", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
         writer.writeAttribute("role", "region", null);
-        writer.writeAttribute("aria-live", "polite", null);
-        writer.writeAttribute("aria-atomic", "true", null);
+        writer.writeAttribute(HTML.ARIA_LIVE, "polite", null);
+        writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);
         writer.endElement("div");
     }
 

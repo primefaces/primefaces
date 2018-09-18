@@ -97,18 +97,9 @@ public class PasswordRenderer extends InputRenderer {
             writer.writeAttribute("value", valueToRender, null);
         }
 
+        renderAccessibilityAttributes(context, password);
         renderPassThruAttributes(context, password, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, password, HTML.INPUT_TEXT_EVENTS);
-
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
-        if (password.isReadonly()) {
-            writer.writeAttribute("readonly", "readonly", null);
-        }
-        if (password.isRequired()) {
-            writer.writeAttribute("aria-required", "true", null);
-        }
 
         if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, password);

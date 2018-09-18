@@ -203,15 +203,9 @@ public class InputNumberRenderer extends InputRenderer {
         writer.writeAttribute("type", inputNumber.getType(), null);
         writer.writeAttribute("value", valueToRender, null);
 
+        renderAccessibilityAttributes(context, inputNumber);
         renderPassThruAttributes(context, inputNumber, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, inputNumber, HTML.INPUT_TEXT_EVENTS);
-
-        if (inputNumber.isReadonly()) {
-            writer.writeAttribute("readonly", "readonly", "readonly");
-        }
-        if (inputNumber.isDisabled()) {
-            writer.writeAttribute("disabled", "disabled", "disabled");
-        }
 
         if (!isValueBlank(style)) {
             writer.writeAttribute("style", style, null);

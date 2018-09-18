@@ -37,6 +37,7 @@ import org.primefaces.component.paginator.PaginatorElementRenderer;
 import org.primefaces.component.paginator.PrevPageLinkRenderer;
 import org.primefaces.component.paginator.RowsPerPageDropdownRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
@@ -92,7 +93,7 @@ public class DataRenderer extends CoreRenderer {
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "navigation", null);
-        writer.writeAttribute("aria-label", ariaMessage, null);
+        writer.writeAttribute(HTML.ARIA_LABEL, ariaMessage, null);
 
         if (leftTopContent != null && isTop) {
             writer.startElement("div", null);

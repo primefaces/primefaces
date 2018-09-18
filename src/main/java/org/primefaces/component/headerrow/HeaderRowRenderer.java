@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.HTML;
 import org.primefaces.util.MessageFactory;
 
 public class HeaderRowRenderer extends CoreRenderer {
@@ -65,8 +66,8 @@ public class HeaderRowRenderer extends CoreRenderer {
 
                     writer.startElement("a", null);
                     writer.writeAttribute("class", DataTable.ROW_GROUP_TOGGLER_CLASS, null);
-                    writer.writeAttribute("aria-expanded", String.valueOf(true), null);
-                    writer.writeAttribute("aria-label", ariaLabel, null);
+                    writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(true), null);
+                    writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
                     writer.writeAttribute("href", "#", null);
                     writer.startElement("span", null);
                     writer.writeAttribute("class", DataTable.ROW_GROUP_TOGGLER_ICON_CLASS, null);

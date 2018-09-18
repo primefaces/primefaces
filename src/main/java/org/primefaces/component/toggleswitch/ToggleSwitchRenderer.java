@@ -75,12 +75,12 @@ public class ToggleSwitchRenderer extends InputRenderer {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleClass");
         writer.writeAttribute("role", "checkbox", null);
-        writer.writeAttribute("aria-checked", checked, null);
+        writer.writeAttribute(HTML.ARIA_CHECKED, checked, null);
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
 
-        encodeInput(context, toggleSwitch, clientId, checked, disabled);
+        encodeInput(context, toggleSwitch, clientId, checked);
         encodeSlider(context);
 
         writer.endElement("div");
@@ -94,7 +94,7 @@ public class ToggleSwitchRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeInput(FacesContext context, ToggleSwitch toggleSwitch, String clientId, boolean checked, boolean disabled) throws IOException {
+    protected void encodeInput(FacesContext context, ToggleSwitch toggleSwitch, String clientId, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
 
@@ -109,17 +109,13 @@ public class ToggleSwitchRenderer extends InputRenderer {
         if (checked) {
             writer.writeAttribute("checked", "checked", null);
         }
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
-        if (toggleSwitch.getTabindex() != null) {
-            writer.writeAttribute("tabindex", toggleSwitch.getTabindex(), null);
-        }
 
         if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             renderValidationMetadata(context, toggleSwitch);
         }
 
+        renderAccessibilityAttributes(context, toggleSwitch);
+        renderPassThruAttributes(context, toggleSwitch, HTML.TAB_INDEX);
         renderOnchange(context, toggleSwitch);
         renderDomEvents(context, toggleSwitch, HTML.BLUR_FOCUS_EVENTS);
 
