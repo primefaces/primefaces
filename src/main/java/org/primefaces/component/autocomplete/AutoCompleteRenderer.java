@@ -26,7 +26,6 @@ import javax.faces.convert.ConverterException;
 import javax.faces.event.PhaseId;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
@@ -245,9 +244,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             requestMap.remove(var);
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, ac);
-        }
+        renderValidationMetadata(context, ac);
 
         writer.endElement("input");
     }
@@ -282,9 +279,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, ac);
-        }
+        renderValidationMetadata(context, ac);
 
         for (int i = 0; i < values.size(); i++) {
             String value = values.get(i);

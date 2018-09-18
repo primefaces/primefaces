@@ -32,7 +32,6 @@ import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.radiobutton.RadioButton;
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
@@ -340,9 +339,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             writer.writeAttribute("disabled", "disabled", null);
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, radio);
-        }
+        renderValidationMetadata(context, radio);
 
         writer.endElement("input");
 

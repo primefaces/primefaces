@@ -32,7 +32,6 @@ import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -199,9 +198,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         renderOnchange(context, menu);
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, menu);
-        }
+        renderValidationMetadata(context, menu);
 
         encodeSelectItems(context, menu, selectItems, values, submittedValues, converter);
 

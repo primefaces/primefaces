@@ -28,7 +28,6 @@ import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -115,10 +114,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         renderAccessibilityAttributes(context, listbox);
         renderPassThruAttributes(context, listbox, HTML.TAB_INDEX);
         renderDomEvents(context, listbox, SelectOneListbox.DOM_EVENTS);
-
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, listbox);
-        }
+        renderValidationMetadata(context, listbox);
 
         encodeSelectItems(context, listbox, selectItems);
 

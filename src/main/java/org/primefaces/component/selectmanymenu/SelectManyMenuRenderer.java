@@ -28,7 +28,6 @@ import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -118,10 +117,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         renderAccessibilityAttributes(context, menu);
         renderPassThruAttributes(context, menu, HTML.TAB_INDEX);
         renderDomEvents(context, menu, SelectManyMenu.DOM_EVENTS);
-
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, menu);
-        }
+        renderValidationMetadata(context, menu);
 
         encodeSelectItems(context, menu, selectItems);
 

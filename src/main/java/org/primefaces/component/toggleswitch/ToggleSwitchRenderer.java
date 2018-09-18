@@ -21,7 +21,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -110,9 +109,7 @@ public class ToggleSwitchRenderer extends InputRenderer {
             writer.writeAttribute("checked", "checked", null);
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, toggleSwitch);
-        }
+        renderValidationMetadata(context, toggleSwitch);
 
         renderAccessibilityAttributes(context, toggleSwitch);
         renderPassThruAttributes(context, toggleSwitch, HTML.TAB_INDEX);

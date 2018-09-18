@@ -21,7 +21,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -130,10 +129,7 @@ public class SpinnerRenderer extends InputRenderer {
         renderAccessibilityAttributes(context, spinner);
         renderPassThruAttributes(context, spinner, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, spinner, HTML.INPUT_TEXT_EVENTS);
-
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, spinner);
-        }
+        renderValidationMetadata(context, spinner);
 
         writer.endElement("input");
     }

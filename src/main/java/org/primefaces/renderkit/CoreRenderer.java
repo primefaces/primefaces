@@ -707,6 +707,10 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected void renderValidationMetadata(FacesContext context, EditableValueHolder component) throws IOException {
+        if (!PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
+            return; //GitHub #4049: short circuit method
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         UIComponent comp = (UIComponent) component;
 
