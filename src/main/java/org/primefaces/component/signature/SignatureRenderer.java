@@ -65,6 +65,8 @@ public class SignatureRenderer extends CoreRenderer {
             writer.writeAttribute("class", styleClass, null);
         }
 
+        renderAccessibilityAttributes(context, signature);
+
         encodeInputField(context, signature, clientId + "_value", signature.getValue());
 
         if (signature.getValueExpression(Signature.PropertyKeys.base64Value.toString()) != null) {

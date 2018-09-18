@@ -40,10 +40,7 @@ public abstract class InputRenderer extends CoreRenderer {
     }
 
     protected boolean shouldDecode(UIComponent component) {
-        boolean disabled = Boolean.parseBoolean(String.valueOf(component.getAttributes().get("disabled")));
-        boolean readonly = Boolean.parseBoolean(String.valueOf(component.getAttributes().get("readonly")));
-
-        return !disabled && !readonly;
+        return !isDisabled(component) && !isReadOnly(component);
     }
 
     public <T extends UIComponent & RTLAware> void renderRTLDirection(FacesContext context, T component) throws IOException {
@@ -51,4 +48,5 @@ public abstract class InputRenderer extends CoreRenderer {
             context.getResponseWriter().writeAttribute("dir", "rtl", null);
         }
     }
+
 }

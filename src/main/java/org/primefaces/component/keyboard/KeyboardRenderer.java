@@ -105,22 +105,14 @@ public class KeyboardRenderer extends InputRenderer {
             writer.writeAttribute("value", valueToRender, "value");
         }
 
+        renderAccessibilityAttributes(context, keyboard);
         renderPassThruAttributes(context, keyboard, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, keyboard, HTML.INPUT_TEXT_EVENTS);
 
         writer.writeAttribute("class", styleClass, "styleClass");
 
-        if (keyboard.isDisabled()) {
-            writer.writeAttribute("disabled", "disabled", "disabled");
-        }
-        if (keyboard.isReadonly()) {
-            writer.writeAttribute("readonly", "readonly", "readonly");
-        }
         if (keyboard.getStyle() != null) {
             writer.writeAttribute("style", keyboard.getStyle(), "style");
-        }
-        if (keyboard.isRequired()) {
-            writer.writeAttribute("aria-required", "true", null);
         }
 
         if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {

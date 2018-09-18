@@ -369,7 +369,7 @@ public class TreeRenderer extends CoreRenderer {
             writer.writeAttribute("tabindex", tree.getTabindex(), null);
         }
 
-        writer.writeAttribute("aria-multiselectable", String.valueOf(multiselectable), null);
+        writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, String.valueOf(multiselectable), null);
         if (tree.getStyle() != null) {
             writer.writeAttribute("style", tree.getStyle(), null);
         }
@@ -694,10 +694,10 @@ public class TreeRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", contentClass, null);
         writer.writeAttribute("role", "treeitem", null);
-        writer.writeAttribute("aria-expanded", String.valueOf(expanded), null);
-        writer.writeAttribute("aria-selected", String.valueOf(selected), null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
+        writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(selected), null);
         if (checkbox) {
-            writer.writeAttribute("aria-checked", String.valueOf(selected), null);
+            writer.writeAttribute(HTML.ARIA_CHECKED, String.valueOf(selected), null);
         }
 
         //state icon
@@ -723,7 +723,7 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         writer.writeAttribute("role", "treeitem", null);
-        writer.writeAttribute("aria-label", uiTreeNode.getAriaLabel(), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, uiTreeNode.getAriaLabel(), null);
         uiTreeNode.encodeAll(context);
         writer.endElement("span");
 

@@ -83,11 +83,10 @@ public class CheckboxRenderer extends InputRenderer {
         writer.writeAttribute("class", "ui-chkbox-clone", null);
         writer.writeAttribute("data-itemindex", checkbox.getItemIndex(), null);
 
+        renderAccessibilityAttributes(context, selectManyCheckbox, disabled, selectManyCheckbox.isReadonly());
+
         if (tabindex != null) {
             writer.writeAttribute("tabindex", tabindex, null);
-        }
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
         }
 
         String onchange = buildEvent(context, selectManyCheckbox, checkbox, "onchange", "change", "valueChange");

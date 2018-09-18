@@ -122,14 +122,15 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleclass");
         writer.writeAttribute("role", "combobox", null);
-        writer.writeAttribute("aria-haspopup", "true", null);
-        writer.writeAttribute("aria-expanded", "false", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
         if (title != null) {
             writer.writeAttribute("title", title, "title");
         }
+        renderAccessibilityAttributes(context, menu);
 
         encodeInput(context, menu, clientId, selectItems, values, submittedValues, converter);
         encodeLabel(context, menu, selectItems);
@@ -144,7 +145,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
         String focusId = clientId + "_focus";
-        String labelledBy = menu.getLabelledBy();
 
         //input for accessibility
         writer.startElement("div", null);
@@ -155,18 +155,11 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", focusId, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        //for keyboard accessibility and ScreenReader
-        writer.writeAttribute("aria-expanded", "false", null);
-        if (labelledBy != null) {
-            writer.writeAttribute("aria-labelledby", labelledBy, null);
-        }
-        if (menu.getTabindex() != null) {
-            writer.writeAttribute("tabindex", menu.getTabindex(), null);
-        }
-        if (menu.isDisabled()) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
 
+        //for keyboard accessibility and ScreenReader
+        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
+        renderAccessibilityAttributes(context, menu);
+        renderPassThruAttributes(context, menu, HTML.TAB_INDEX);
         renderDomEvents(context, menu, HTML.BLUR_FOCUS_EVENTS);
 
         writer.endElement("input");
@@ -193,7 +186,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("tabindex", "-1", null);
-        writer.writeAttribute("aria-hidden", "true", null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
         if (menu.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         }

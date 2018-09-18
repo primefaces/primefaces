@@ -25,6 +25,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
@@ -202,7 +203,7 @@ public class DialogRenderer extends CoreRenderer {
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", anchorClass, null);
         if (ariaLabel != null) {
-            writer.writeAttribute("aria-label", ariaLabel, null);
+            writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
         }
 
         writer.startElement("span", null);

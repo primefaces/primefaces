@@ -30,6 +30,7 @@ import javax.el.PropertyNotFoundException;
 import javax.faces.application.Resource;
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.component.UIParameter;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.behavior.ClientBehavior;
@@ -103,6 +104,52 @@ public abstract class CoreRenderer extends Renderer {
         Resource resource = context.getApplication().getResourceHandler().createResource(resourceName, "primefaces");
 
         return resource.getRequestPath();
+    }
+
+    /**
+     * Adds the following attributes to an HTML DOM element.
+     * <pre>
+     * "aria-required" if the component is required
+     * "aria-labelledby" if the component has a labelledby attribute
+     * "disabled" and "aria-disabled" if the component is disabled
+     * "readonly" and "aria-readonly" if the component is readonly
+     * </pre>
+     * @param context the {@link FacesContext}
+     * @param component the {@link UIInput} component to add attributes for
+     * @throws IOException if any error occurs writing the response
+     */
+    protected <T extends UIInput> void renderAccessibilityAttributes(FacesContext context, T component) throws IOException {
+        renderAccessibilityAttributes(context, component, isDisabled(component), isReadOnly(component));
+    }
+
+    protected <T extends UIInput> void renderAccessibilityAttributes(FacesContext context, T component, boolean disabled, boolean readonly)
+                throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        if (component.isRequired()) {
+            writer.writeAttribute(HTML.ARIA_REQUIRED, "true", null);
+        }
+
+        String labelledBy = (String) component.getAttributes().get("labelledby");
+        if (labelledBy != null) {
+            writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, null);
+        }
+
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+            writer.writeAttribute(HTML.ARIA_DISABLED, "true", null);
+        }
+
+        if (readonly) {
+            writer.writeAttribute("readonly", "readonly", null);
+            writer.writeAttribute(HTML.ARIA_READONLY, "true", null);
+        }
+    }
+
+    protected void renderRequired(FacesContext context, UIInput component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        if (component.isRequired()) {
+            writer.writeAttribute(HTML.ARIA_REQUIRED, "true", null);
+        }
     }
 
     protected void renderPassThruAttributes(FacesContext context, UIComponent component, String[] attrs) throws IOException {
@@ -798,6 +845,14 @@ public abstract class CoreRenderer extends Renderer {
 
     protected boolean isGrouped() {
         return false;
+    }
+
+    protected <T extends UIComponent> boolean isDisabled(T component) {
+        return Boolean.parseBoolean(String.valueOf(component.getAttributes().get("disabled")));
+    }
+
+    protected <T extends UIComponent> boolean isReadOnly(T component) {
+        return Boolean.parseBoolean(String.valueOf(component.getAttributes().get("readonly")));
     }
 
     /**

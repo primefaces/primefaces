@@ -86,6 +86,8 @@ public class RatingRenderer extends InputRenderer {
             writer.writeAttribute("style", style, null);
         }
 
+        renderAccessibilityAttributes(context, rating);
+
         if (rating.isCancel() && !disabled && !readonly) {
             encodeIcon(context, Rating.CANCEL_CLASS);
         }
