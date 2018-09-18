@@ -21,7 +21,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -123,9 +122,7 @@ public class KeyboardRenderer extends InputRenderer {
             writer.writeAttribute("aria-required", "true", null);
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, keyboard);
-        }
+        renderValidationMetadata(context, keyboard);
 
         writer.endElement("input");
     }
