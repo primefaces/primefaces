@@ -31,36 +31,35 @@ public class FileUploadUtils {
     private static final Pattern INVALID_FILENAME_PATTERN = Pattern.compile("([\\/:*?\"<>|])");
 
     public static String getValidFilename(String filename) {
-        if (filename != null) {
-            if (isSystemWindows()) {
-                if (!filename.contains("\\\\")) {
-                    String[] parts = filename.substring(FilenameUtils.getPrefixLength(filename)).split(Pattern.quote(File.separator));
-                    for (String part : parts) {
-                        if (INVALID_FILENAME_PATTERN.matcher(part).find()) {
-                            throw new FacesException("Invalid filename: " + filename);
-                        }
+        if (LangUtils.isValueBlank(filename)) {
+            throw new FacesException("Filename is required.");
+        }
+
+        if (isSystemWindows()) {
+            if (!filename.contains("\\\\")) {
+                String[] parts = filename.substring(FilenameUtils.getPrefixLength(filename)).split(Pattern.quote(File.separator));
+                for (String part : parts) {
+                    if (INVALID_FILENAME_PATTERN.matcher(part).find()) {
+                        throw new FacesException("Invalid filename: " + filename);
                     }
                 }
-                else {
-                    throw new FacesException("Invalid filename: " + filename);
-                }
-            }
-
-            String name = FilenameUtils.getName(filename);
-            String extension = FilenameUtils.EXTENSION_SEPARATOR_STR + FilenameUtils.getExtension(filename);
-
-            if (extension.isEmpty()) {
-                throw new FacesException("File must have an extension");
-            }
-            else if (name.isEmpty() || extension.equals(name)) {
-                throw new FacesException("Filename can not be the empty string");
             }
             else {
-                return name;
+                throw new FacesException("Invalid filename: " + filename);
             }
         }
 
-        return filename;
+        String name = FilenameUtils.getName(filename);
+        String extension = FilenameUtils.EXTENSION_SEPARATOR_STR + FilenameUtils.getExtension(filename);
+
+        if (extension.isEmpty()) {
+            throw new FacesException("File must have an extension");
+        }
+        else if (name.isEmpty() || extension.equals(name)) {
+            throw new FacesException("Filename can not be the empty string");
+        }
+
+        return name;
     }
 
     public static String getValidFilePath(String filePath) throws ValidationException {
