@@ -17,6 +17,7 @@ package org.primefaces.renderkit;
 
 import java.io.IOException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
@@ -39,7 +40,7 @@ public abstract class InputRenderer extends CoreRenderer {
         }
     }
 
-    protected boolean shouldDecode(UIComponent component) {
+    protected boolean shouldDecode(UIInput component) {
         return !isDisabled(component) && !isReadOnly(component);
     }
 

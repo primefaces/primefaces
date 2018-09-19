@@ -851,11 +851,11 @@ public abstract class CoreRenderer extends Renderer {
         return false;
     }
 
-    protected <T extends UIComponent> boolean isDisabled(T component) {
+    protected <T extends UIInput> boolean isDisabled(T component) {
         return Boolean.parseBoolean(String.valueOf(component.getAttributes().get("disabled")));
     }
 
-    protected <T extends UIComponent> boolean isReadOnly(T component) {
+    protected <T extends UIInput> boolean isReadOnly(T component) {
         return Boolean.parseBoolean(String.valueOf(component.getAttributes().get("readonly")));
     }
 

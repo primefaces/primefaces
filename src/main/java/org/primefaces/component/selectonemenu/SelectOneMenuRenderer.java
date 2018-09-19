@@ -42,11 +42,11 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        if (!shouldDecode(component)) {
+        SelectOneMenu menu = (SelectOneMenu) component;
+        if (!shouldDecode(menu)) {
             return;
         }
 
-        SelectOneMenu menu = (SelectOneMenu) component;
         if (menu.isEditable()) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
