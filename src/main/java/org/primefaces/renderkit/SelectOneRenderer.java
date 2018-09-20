@@ -24,11 +24,10 @@ public abstract class SelectOneRenderer extends SelectRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        if (!shouldDecode(component)) {
+        UISelectOne selectOne = (UISelectOne) component;
+        if (!shouldDecode(selectOne)) {
             return;
         }
-
-        UISelectOne selectOne = (UISelectOne) component;
 
         String clientId = getSubmitParam(context, selectOne);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();

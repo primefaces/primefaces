@@ -85,9 +85,6 @@ public class CheckboxRenderer extends InputRenderer {
         if (tabindex != null) {
             writer.writeAttribute("tabindex", tabindex, null);
         }
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
 
         String onchange = buildEvent(context, selectManyCheckbox, checkbox, "onchange", "change", "valueChange");
         if (!isValueBlank(onchange)) {
@@ -98,6 +95,7 @@ public class CheckboxRenderer extends InputRenderer {
             writer.writeAttribute("onclick", onclick, null);
         }
 
+        renderAccessibilityAttributes(context, selectManyCheckbox, disabled, selectManyCheckbox.isReadonly());
         renderValidationMetadata(context, selectManyCheckbox);
 
         writer.endElement("input");

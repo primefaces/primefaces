@@ -30,7 +30,7 @@ public class RatingRenderer extends InputRenderer {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Rating rating = (Rating) component;
-        if (rating.isDisabled() || rating.isReadonly()) {
+        if (!shouldDecode(rating)) {
             return;
         }
 
@@ -85,6 +85,8 @@ public class RatingRenderer extends InputRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }
+
+        renderAccessibilityAttributes(context, rating);
 
         if (rating.isCancel() && !disabled && !readonly) {
             encodeIcon(context, Rating.CANCEL_CLASS);

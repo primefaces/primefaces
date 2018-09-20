@@ -61,7 +61,7 @@ public class InputNumberRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         InputNumber inputNumber = (InputNumber) component;
 
-        if (inputNumber.isDisabled() || inputNumber.isReadonly()) {
+        if (!shouldDecode(inputNumber)) {
             return;
         }
 
@@ -200,22 +200,15 @@ public class InputNumberRenderer extends InputRenderer {
         writer.writeAttribute("type", inputNumber.getType(), null);
         writer.writeAttribute("value", valueToRender, null);
 
-        renderPassThruAttributes(context, inputNumber, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
-        renderDomEvents(context, inputNumber, HTML.INPUT_TEXT_EVENTS);
-
-        if (inputNumber.isReadonly()) {
-            writer.writeAttribute("readonly", "readonly", "readonly");
-        }
-        if (inputNumber.isDisabled()) {
-            writer.writeAttribute("disabled", "disabled", "disabled");
-        }
-
         if (!isValueBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
 
         writer.writeAttribute("class", styleClass, null);
 
+        renderAccessibilityAttributes(context, inputNumber);
+        renderPassThruAttributes(context, inputNumber, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, inputNumber, HTML.INPUT_TEXT_EVENTS);
         renderValidationMetadata(context, inputNumber);
 
         writer.endElement("input");

@@ -27,11 +27,10 @@ public abstract class SelectManyRenderer extends SelectRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        if (!shouldDecode(component)) {
+        UISelectMany selectMany = (UISelectMany) component;
+        if (!shouldDecode(selectMany)) {
             return;
         }
-
-        UISelectMany selectMany = (UISelectMany) component;
 
         String submitParam = getSubmitParam(context, selectMany);
         Map<String, String[]> params = context.getExternalContext().getRequestParameterValuesMap();

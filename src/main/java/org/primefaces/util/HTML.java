@@ -19,6 +19,8 @@ public class HTML {
 
     public static final String[] CLICK_EVENT = {"onclick"};
 
+    public static final String[] TAB_INDEX = {"tabindex"};
+
     public static final String[] BLUR_FOCUS_EVENTS = {
         "onblur",
         "onfocus"
@@ -177,6 +179,22 @@ public class HTML {
 
     public static final String[] SELECT_ATTRS = LangUtils.concat(
             SELECT_ATTRS_WITHOUT_EVENTS, COMMON_EVENTS, CHANGE_SELECT_EVENTS, BLUR_FOCUS_EVENTS);
+
+    public final static String ARIA_ATOMIC = "aria-atomic";
+    public final static String ARIA_CHECKED = "aria-checked";
+    public final static String ARIA_DESCRIBEDBY = "aria-describedby";
+    public final static String ARIA_DISABLED = "aria-disabled";
+    public final static String ARIA_EXPANDED = "aria-expanded";
+    public final static String ARIA_HASPOPUP = "aria-haspopup";
+    public final static String ARIA_HIDDEN = "aria-hidden";
+    public final static String ARIA_INVALID = "aria-invalid";
+    public final static String ARIA_LABEL = "aria-label";
+    public final static String ARIA_LABELLEDBY = "aria-labelledby";
+    public final static String ARIA_LIVE = "aria-live";
+    public final static String ARIA_MULITSELECTABLE = "aria-multiselectable";
+    public final static String ARIA_READONLY = "aria-readonly";
+    public final static String ARIA_REQUIRED = "aria-required";
+    public final static String ARIA_SELECTED = "aria-selected";
 
     public static final String BUTTON_TEXT_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only";
     public static final String BUTTON_ICON_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only";

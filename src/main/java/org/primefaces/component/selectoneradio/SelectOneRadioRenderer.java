@@ -114,6 +114,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
+        renderRequired(context, radio);
 
         Converter converter = radio.getConverter();
         String name = radio.getClientId(context);
@@ -175,6 +176,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
+        renderRequired(context, radio);
         encodeSelectItems(context, radio, selectItems, layout);
 
         writer.endElement("table");

@@ -42,7 +42,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         String clientId = ac.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        if (ac.isDisabled() || ac.isReadonly()) {
+        if (!shouldDecode(ac)) {
             return;
         }
 
@@ -179,7 +179,6 @@ public class AutoCompleteRenderer extends InputRenderer {
         String inputStyle = ac.getInputStyle();
         String inputStyleClass = ac.getInputStyleClass();
         inputStyleClass = (inputStyleClass == null) ? styleClass : styleClass + " " + inputStyleClass;
-        String labelledBy = ac.getLabelledBy();
         String autocompleteProp = (ac.getAutocomplete() != null) ? ac.getAutocomplete() : "off";
 
         writer.startElement("input", null);
@@ -189,14 +188,11 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("class", inputStyleClass, null);
         writer.writeAttribute("autocomplete", autocompleteProp, null);
 
-        if (labelledBy != null) {
-            writer.writeAttribute("aria-labelledby", labelledBy, null);
-        }
-
         if (inputStyle != null) {
             writer.writeAttribute("style", inputStyle, null);
         }
 
+        renderAccessibilityAttributes(context, ac);
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, ac, HTML.INPUT_TEXT_EVENTS);
 
@@ -246,16 +242,6 @@ public class AutoCompleteRenderer extends InputRenderer {
             }
 
             requestMap.remove(var);
-        }
-
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
-        if (ac.isReadonly()) {
-            writer.writeAttribute("readonly", "readonly", null);
-        }
-        if (ac.isRequired()) {
-            writer.writeAttribute("aria-required", "true", null);
         }
 
         renderValidationMetadata(context, ac);
@@ -458,16 +444,8 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("autocomplete", autocompleteProp, null);
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", "disabled");
-        }
-        if (ac.isReadonly()) {
-            writer.writeAttribute("readonly", "readonly", null);
-        }
-        if (ac.isRequired()) {
-            writer.writeAttribute("aria-required", "true", null);
-        }
 
+        renderAccessibilityAttributes(context, ac);
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, ac, HTML.INPUT_TEXT_EVENTS);
 

@@ -69,6 +69,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             writer.startElement("span", checkbox);
             writer.writeAttribute("id", checkbox.getClientId(context), "id");
             writer.writeAttribute("class", "ui-helper-hidden", null);
+            renderRequired(context, checkbox);
             encodeCustomLayout(context, checkbox);
             writer.endElement("span");
         }
@@ -109,6 +110,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
+        renderRequired(context, checkbox);
 
         List<SelectItem> selectItems = getSelectItems(context, checkbox);
         Converter converter = checkbox.getConverter();
@@ -194,6 +196,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
+        renderRequired(context, checkbox);
         encodeSelectItems(context, checkbox, layout);
 
         writer.endElement("table");

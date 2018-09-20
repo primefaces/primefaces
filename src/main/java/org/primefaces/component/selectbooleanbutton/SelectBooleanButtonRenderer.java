@@ -33,7 +33,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         SelectBooleanButton button = (SelectBooleanButton) component;
 
-        if (button.isDisabled()) {
+        if (!shouldDecode(button)) {
             return;
         }
 
@@ -96,19 +96,12 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         if (checked) {
             writer.writeAttribute("checked", "checked", null);
         }
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
 
         renderValidationMetadata(context, button);
-
+        renderAccessibilityAttributes(context, button);
+        renderPassThruAttributes(context, button, HTML.TAB_INDEX);
         renderOnchange(context, button);
         renderDomEvents(context, button, HTML.BLUR_FOCUS_EVENTS);
-
-        // tabindex
-        if (button.getTabindex() != null) {
-            writer.writeAttribute("tabindex", button.getTabindex(), null);
-        }
 
         writer.endElement("input");
 

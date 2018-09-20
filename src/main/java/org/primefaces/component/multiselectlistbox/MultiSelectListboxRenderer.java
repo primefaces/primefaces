@@ -69,6 +69,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
+        renderAccessibilityAttributes(context, listbox);
         encodeInput(context, listbox);
         encodeLists(context, listbox, selectItems);
 
