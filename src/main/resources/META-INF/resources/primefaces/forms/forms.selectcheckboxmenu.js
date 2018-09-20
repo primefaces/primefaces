@@ -550,11 +550,14 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             var el = this.items.eq(i);
 
             if(el.is(':visible')) {
-                this.inputs.eq(i).prop('checked', true).attr('aria-checked', true);
-                this.check(el.children('.ui-chkbox').children('.ui-chkbox-box'));
+                var input = this.inputs.eq(i);
+                if(!input[0].disabled) {
+                    input.prop('checked', true).attr('aria-checked', true);
+                    this.check(el.children('.ui-chkbox').children('.ui-chkbox-box'));
 
-                if(this.cfg.multiple) {
-                    this.createMultipleItem(el);
+                    if (this.cfg.multiple) {
+                        this.createMultipleItem(el);
+                    }
                 }
             }
         }
@@ -583,11 +586,14 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             var el = this.items.eq(i);
 
             if(el.is(':visible')) {
-                this.inputs.eq(i).prop('checked', false).attr('aria-checked', false);
-                this.uncheck(el.children('.ui-chkbox').children('.ui-chkbox-box'));
+                var input = this.inputs.eq(i);
+                if(!input[0].disabled) {
+                    this.inputs.eq(i).prop('checked', false).attr('aria-checked', false);
+                    this.uncheck(el.children('.ui-chkbox').children('.ui-chkbox-box'));
 
-                if(this.cfg.multiple) {
-                    this.multiItemContainer.children().remove();
+                    if (this.cfg.multiple) {
+                        this.multiItemContainer.children().remove();
+                    }
                 }
             }
         }
