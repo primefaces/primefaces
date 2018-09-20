@@ -72,7 +72,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
-        renderRequired(context, button);
+        renderAccessibilityAttributes(context, button);
         encodeSelectItems(context, button, selectItems);
 
         writer.endElement("div");
