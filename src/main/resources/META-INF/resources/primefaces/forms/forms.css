@@ -223,13 +223,8 @@
     width: auto;
     zoom: 1;
     cursor: pointer;
-    padding-right: 2em;
+    padding-right: 22px;
     vertical-align: top;
-}
-
-.ui-selectonemenu.ui-state-hover,
-.ui-selectonemenu.ui-state-focus {
-    background-color: transparent;
 }
 
 .ui-selectonemenu .ui-selectonemenu-trigger {
