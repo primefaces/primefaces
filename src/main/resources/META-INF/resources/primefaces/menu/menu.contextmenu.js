@@ -54,7 +54,12 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
         PrimeFaces.utils.registerHideOverlayHandler(this, 'click.' + this.id + '_hide', this.jq,
             function(e) { return e.which == 3 ? $this.jqTarget : null; },
-            function(e) { $this.hide(); });
+            function(e) { 
+                var $eventTarget = $(e.target);
+                if(!($this.jq.is($eventTarget) || $this.jq.has($eventTarget).length > 0)) {
+                    $this.hide(); 
+                }
+            });
 
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', this.jq, function() {
             $this.hide();

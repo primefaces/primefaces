@@ -107,8 +107,11 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.menu, null,
             function(e) {
-                $this.button.removeClass('ui-state-focus ui-state-hover');
-                $this.hide();
+                var $eventTarget = $(e.target);
+                if(!($this.menu.is($eventTarget) || $this.menu.has($eventTarget).length > 0)) {
+                    $this.button.removeClass('ui-state-focus ui-state-hover');
+                    $this.hide();
+                }
             });
 
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.menu, function() {
