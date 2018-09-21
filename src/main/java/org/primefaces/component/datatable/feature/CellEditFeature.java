@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
@@ -35,7 +34,6 @@ public class CellEditFeature implements DataTableFeature {
 
     @Override
     public void encode(FacesContext context, DataTableRenderer renderer, DataTable table) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String clientId = table.getClientId(context);
         String[] cellInfo = params.get(clientId + "_cellInfo").split(",");

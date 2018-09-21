@@ -17,7 +17,6 @@ package org.primefaces.config;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
@@ -29,8 +28,6 @@ import org.primefaces.util.Constants;
  * Container for all config parameters.
  */
 public class PrimeConfiguration {
-
-    private static final Logger LOG = Logger.getLogger(PrimeConfiguration.class.getName());
 
     // context params
     private boolean validateEmptyFields = false;

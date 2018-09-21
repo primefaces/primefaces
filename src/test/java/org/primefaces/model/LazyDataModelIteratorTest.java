@@ -121,6 +121,7 @@ public class LazyDataModelIteratorTest {
         Iterator<Integer> it = dataModel.iterator("foo", SortOrder.ASCENDING, Collections.singletonMap("foo", (Object) "bar"));
         while (it.hasNext()) {
             Integer item = it.next();
+            Assert.assertNotNull(item);
         }
         Assert.assertEquals(1, dataModel.singleSortingLoadCounter);
     }
@@ -134,6 +135,7 @@ public class LazyDataModelIteratorTest {
         Iterator<Integer> it = dataModel.iterator(Arrays.asList(new SortMeta()), Collections.singletonMap("foo", (Object) "bar"));
         while (it.hasNext()) {
             Integer item = it.next();
+            Assert.assertNotNull(item);
         }
         Assert.assertEquals(1, dataModel.multiSortingLoadCounter);
     }

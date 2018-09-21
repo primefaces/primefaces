@@ -16,7 +16,6 @@
 package org.primefaces.component.dialog;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -29,8 +28,6 @@ import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
 public class DialogRenderer extends CoreRenderer {
-
-    private static final Logger LOG = Logger.getLogger(DialogRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {

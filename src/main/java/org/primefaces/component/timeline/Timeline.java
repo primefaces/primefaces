@@ -16,7 +16,6 @@
 package org.primefaces.component.timeline;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -46,8 +45,6 @@ import org.primefaces.visit.UIDataContextCallback;
 public class Timeline extends TimelineBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Timeline";
-
-    private static final Logger logger = Logger.getLogger(Timeline.class.getName());
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("add", TimelineAddEvent.class)

@@ -58,12 +58,6 @@ public class SearchExpressionFacadeTest {
         return SearchExpressionFacade.resolveClientId(context, source, expression);
     }
 
-    private String resolveClientId(UIComponent source, String expression, int options) {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        return SearchExpressionFacade.resolveClientId(context, source, expression, options);
-    }
-
     private List<UIComponent> resolveComponents(UIComponent source, String expression) {
         FacesContext context = FacesContext.getCurrentInstance();
 

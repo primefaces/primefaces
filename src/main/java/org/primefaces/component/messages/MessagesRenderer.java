@@ -17,7 +17,6 @@ package org.primefaces.component.messages;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Logger;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -30,8 +29,6 @@ import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.renderkit.UINotificationRenderer;
 
 public class MessagesRenderer extends UINotificationRenderer {
-
-    private static final Logger logger = Logger.getLogger(MessagesRenderer.class.getName());
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {

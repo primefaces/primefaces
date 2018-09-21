@@ -152,7 +152,7 @@ public class InputNumberTest {
         setupValues("", false, null, "10.0", true);
         renderer.decode(context, inputNumber);
         double submittedValue = Double.parseDouble(inputNumber.getSubmittedValue().toString());
-        Assert.assertEquals("10.0", inputNumber.getSubmittedValue());
+        Assert.assertEquals("10.0", String.valueOf(submittedValue));
     }
 
     @Test

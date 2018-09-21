@@ -16,7 +16,6 @@
 package org.primefaces.component.inputmask;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import javax.faces.component.UIComponent;
@@ -30,8 +29,6 @@ import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
 public class InputMaskRenderer extends InputRenderer {
-
-    private static final Logger logger = Logger.getLogger(InputMaskRenderer.class.getName());
 
     private static final String REGEX_METACHARS = "<([{\\^-=$!|]})?*+.>";
     private static final String SB_PATTERN = InputMaskRenderer.class.getName() + "#translateMaskIntoRegex";

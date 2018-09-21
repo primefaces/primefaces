@@ -18,7 +18,6 @@ package org.primefaces.util;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.application.Resource;
@@ -31,8 +30,6 @@ public class ResourceUtils {
 
     public static final String RENDERER_SCRIPT = "javax.faces.resource.Script";
     public static final String RENDERER_STYLESHEET = "javax.faces.resource.Stylesheet";
-
-    private static final Logger LOG = Logger.getLogger(ResourceUtils.class.getName());
 
     public static String getResourceURL(FacesContext context, String value) {
         if (LangUtils.isValueBlank(value)) {

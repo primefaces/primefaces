@@ -1212,7 +1212,6 @@ public class DataTableRenderer extends DataRenderer {
 
         boolean encodeSummaryRow = (summaryRow != null && groupByVE != null);
         boolean encodeHeaderRow = (headerRow != null && groupByVE != null);
-        boolean sameGroup = false;
 
         for (int i = first; i < last; i++) {
             table.setRowIndex(i);
