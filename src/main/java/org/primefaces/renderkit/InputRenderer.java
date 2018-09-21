@@ -67,7 +67,7 @@ public abstract class InputRenderer extends CoreRenderer {
      * @param component the {@link UIInput} component to add attributes for
      * @throws IOException if any error occurs writing the response
      */
-    protected void renderRequired(FacesContext context, UIInput component) throws IOException {
+    protected void renderARIARequired(FacesContext context, UIInput component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         if (component.isRequired()) {
             writer.writeAttribute(HTML.ARIA_REQUIRED, "true", null);
@@ -94,7 +94,7 @@ public abstract class InputRenderer extends CoreRenderer {
                 throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        renderRequired(context, component);
+        renderARIARequired(context, component);
 
         String labelledBy = (String) component.getAttributes().get("labelledby");
         if (labelledBy != null) {

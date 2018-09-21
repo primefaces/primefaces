@@ -213,7 +213,7 @@ public class PickListRenderer extends InputRenderer {
 
         // only render required on target list
         if (!isSource) {
-            renderRequired(context, pickList);
+            renderARIARequired(context, pickList);
         }
 
         if (filter) {
