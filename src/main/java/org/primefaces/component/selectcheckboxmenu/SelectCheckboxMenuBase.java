@@ -46,7 +46,8 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
         showHeader,
         updateLabel,
         multiple,
-        dynamic
+        dynamic,
+        labelSeparator
     }
 
     public SelectCheckboxMenuBase() {
@@ -201,5 +202,13 @@ abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox implements 
     @Override
     public String resolveWidgetVar() {
         return ComponentUtils.resolveWidgetVar(getFacesContext(), this);
+    }
+
+    public String getLabelSeparator() {
+        return (String) getStateHelper().eval(PropertyKeys.labelSeparator, ",");
+    }
+
+    public void setLabelSeparator(String labelSeparator) {
+        getStateHelper().put(PropertyKeys.labelSeparator, labelSeparator);
     }
 }
