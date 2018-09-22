@@ -75,7 +75,6 @@ public class CheckboxTreeNodeTest {
         TreeNode document = root.getChildren().get(0);
         TreeNode work = document.getChildren().get(0);
         TreeNode expenses = work.getChildren().get(0);
-        TreeNode resume = work.getChildren().get(1);
 
         expenses.setSelected(true);
 

@@ -63,7 +63,6 @@ public class GMapRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, GMap map) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = map.getClientId(context);
         String widgetVar = map.resolveWidgetVar();
         GMapInfoWindow infoWindow = map.getInfoWindow();

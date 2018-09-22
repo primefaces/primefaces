@@ -17,8 +17,6 @@ package org.primefaces.component.api;
 
 public class RepeatStatus {
 
-    private static final long serialVersionUID = 1L;
-
     private final int count;
     private final int index;
     private final boolean first;
