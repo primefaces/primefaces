@@ -75,9 +75,24 @@ public abstract class InputRenderer extends CoreRenderer {
     }
 
     /**
+     * Adds "aria-invalid" if the component is invalid.
+     *
+     * @param context the {@link FacesContext}
+     * @param component the {@link UIInput} component to add attributes for
+     * @throws IOException if any error occurs writing the response
+     */
+    protected void renderARIAInvalid(FacesContext context, UIInput component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        if (!component.isValid()) {
+            writer.writeAttribute(HTML.ARIA_INVALID, "true", null);
+        }
+    }
+
+    /**
      * Adds the following accessibility attributes to an HTML DOM element.
      * <pre>
      * "aria-required" if the component is required
+     * "aria-invalid" if the component is invalid
      * "aria-labelledby" if the component has a labelledby attribute
      * "disabled" and "aria-disabled" if the component is disabled
      * "readonly" and "aria-readonly" if the component is readonly
@@ -95,6 +110,7 @@ public abstract class InputRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         renderARIARequired(context, component);
+        renderARIAInvalid(context, component);
 
         String labelledBy = (String) component.getAttributes().get("labelledby");
         if (labelledBy != null) {
