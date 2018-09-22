@@ -578,7 +578,7 @@ public class TreeTableRenderer extends DataRenderer {
         writer.writeAttribute("id", tt.getClientId(context) + "_node_" + rowKey, null);
         writer.writeAttribute("class", rowStyleClass, null);
         writer.writeAttribute("role", "row", null);
-        writer.writeAttribute("aria-expanded", String.valueOf(treeNode.isExpanded()), null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(treeNode.isExpanded()), null);
         writer.writeAttribute("data-rk", rowKey, null);
 
         if (parentRowKey != null) {
@@ -586,7 +586,7 @@ public class TreeTableRenderer extends DataRenderer {
         }
 
         if (selectionEnabled) {
-            writer.writeAttribute("aria-selected", String.valueOf(selected), null);
+            writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(selected), null);
         }
 
         for (int i = 0; i < columns.size(); i++) {
@@ -724,7 +724,7 @@ public class TreeTableRenderer extends DataRenderer {
         writer.writeAttribute("id", column.getContainerClientId(context), null);
         writer.writeAttribute("class", columnClass, null);
         writer.writeAttribute("role", "columnheader", null);
-        writer.writeAttribute("aria-label", ariaHeaderLabel, null);
+        writer.writeAttribute(HTML.ARIA_LABEL, ariaHeaderLabel, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
         }

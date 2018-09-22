@@ -32,7 +32,7 @@ public class SpinnerRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         Spinner spinner = (Spinner) component;
 
-        if (spinner.isDisabled() || spinner.isReadonly()) {
+        if (!shouldDecode(spinner)) {
             return;
         }
 
@@ -111,7 +111,6 @@ public class SpinnerRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = spinner.getClientId(context) + "_input";
         String inputClass = spinner.isValid() ? Spinner.INPUT_CLASS : Spinner.INPUT_CLASS + " ui-state-error";
-        String labelledBy = spinner.getLabelledBy();
 
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, null);
@@ -127,22 +126,9 @@ public class SpinnerRenderer extends InputRenderer {
             writer.writeAttribute("value", valueToRender, null);
         }
 
+        renderAccessibilityAttributes(context, spinner);
         renderPassThruAttributes(context, spinner, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, spinner, HTML.INPUT_TEXT_EVENTS);
-
-        if (spinner.isDisabled()) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
-        if (spinner.isReadonly()) {
-            writer.writeAttribute("readonly", "readonly", null);
-        }
-        if (spinner.isRequired()) {
-            writer.writeAttribute("aria-required", "true", null);
-        }
-        if (labelledBy != null) {
-            writer.writeAttribute("aria-labelledby", labelledBy, null);
-        }
-
         renderValidationMetadata(context, spinner);
 
         writer.endElement("input");

@@ -17,12 +17,15 @@ package org.primefaces.renderkit;
 
 import java.io.IOException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import org.primefaces.component.api.RTLAware;
 
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 
 public abstract class InputRenderer extends CoreRenderer {
 
@@ -39,11 +42,16 @@ public abstract class InputRenderer extends CoreRenderer {
         }
     }
 
-    protected boolean shouldDecode(UIComponent component) {
-        boolean disabled = Boolean.parseBoolean(String.valueOf(component.getAttributes().get("disabled")));
-        boolean readonly = Boolean.parseBoolean(String.valueOf(component.getAttributes().get("readonly")));
+    protected <T extends UIInput> boolean isDisabled(T component) {
+        return Boolean.parseBoolean(String.valueOf(component.getAttributes().get("disabled")));
+    }
 
-        return !disabled && !readonly;
+    protected <T extends UIInput> boolean isReadOnly(T component) {
+        return Boolean.parseBoolean(String.valueOf(component.getAttributes().get("readonly")));
+    }
+
+    protected boolean shouldDecode(UIInput component) {
+        return !isDisabled(component) && !isReadOnly(component);
     }
 
     public <T extends UIComponent & RTLAware> void renderRTLDirection(FacesContext context, T component) throws IOException {
@@ -51,4 +59,57 @@ public abstract class InputRenderer extends CoreRenderer {
             context.getResponseWriter().writeAttribute("dir", "rtl", null);
         }
     }
+
+    /**
+     * Adds "aria-required" if the component is required.
+     *
+     * @param context the {@link FacesContext}
+     * @param component the {@link UIInput} component to add attributes for
+     * @throws IOException if any error occurs writing the response
+     */
+    protected void renderARIARequired(FacesContext context, UIInput component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        if (component.isRequired()) {
+            writer.writeAttribute(HTML.ARIA_REQUIRED, "true", null);
+        }
+    }
+
+    /**
+     * Adds the following accessibility attributes to an HTML DOM element.
+     * <pre>
+     * "aria-required" if the component is required
+     * "aria-labelledby" if the component has a labelledby attribute
+     * "disabled" and "aria-disabled" if the component is disabled
+     * "readonly" and "aria-readonly" if the component is readonly
+     * </pre>
+     * @param context the {@link FacesContext}
+     * @param component the {@link UIInput} component to add attributes for
+     * @throws IOException if any error occurs writing the response
+     */
+    protected <T extends UIInput> void renderAccessibilityAttributes(FacesContext context, T component) throws IOException {
+        renderAccessibilityAttributes(context, component, isDisabled(component), isReadOnly(component));
+    }
+
+    protected <T extends UIInput> void renderAccessibilityAttributes(FacesContext context, T component, boolean disabled, boolean readonly)
+                throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        renderARIARequired(context, component);
+
+        String labelledBy = (String) component.getAttributes().get("labelledby");
+        if (labelledBy != null) {
+            writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelledBy, null);
+        }
+
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+            writer.writeAttribute(HTML.ARIA_DISABLED, "true", null);
+        }
+
+        if (readonly) {
+            writer.writeAttribute("readonly", "readonly", null);
+            writer.writeAttribute(HTML.ARIA_READONLY, "true", null);
+        }
+    }
+
 }

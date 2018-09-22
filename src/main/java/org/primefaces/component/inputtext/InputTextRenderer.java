@@ -32,7 +32,7 @@ public class InputTextRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         InputText inputText = (InputText) component;
 
-        if (inputText.isDisabled() || inputText.isReadonly()) {
+        if (!shouldDecode(inputText)) {
             return;
         }
 
@@ -74,25 +74,16 @@ public class InputTextRenderer extends InputRenderer {
             writer.writeAttribute("value", valueToRender, null);
         }
 
-        renderRTLDirection(context, inputText);
-        renderPassThruAttributes(context, inputText, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
-        renderDomEvents(context, inputText, HTML.INPUT_TEXT_EVENTS);
-
-        if (inputText.isDisabled()) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
-        if (inputText.isReadonly()) {
-            writer.writeAttribute("readonly", "readonly", null);
-        }
         if (inputText.getStyle() != null) {
             writer.writeAttribute("style", inputText.getStyle(), null);
-        }
-        if (inputText.isRequired()) {
-            writer.writeAttribute("aria-required", "true", null);
         }
 
         writer.writeAttribute("class", createStyleClass(inputText), "styleClass");
 
+        renderAccessibilityAttributes(context, inputText);
+        renderRTLDirection(context, inputText);
+        renderPassThruAttributes(context, inputText, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, inputText, HTML.INPUT_TEXT_EVENTS);
         renderValidationMetadata(context, inputText);
 
         writer.endElement("input");

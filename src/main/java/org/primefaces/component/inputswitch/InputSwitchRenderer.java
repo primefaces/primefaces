@@ -32,7 +32,7 @@ public class InputSwitchRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         InputSwitch inputSwitch = (InputSwitch) component;
 
-        if (inputSwitch.isDisabled()) {
+        if (!shouldDecode(inputSwitch)) {
             return;
         }
 
@@ -60,7 +60,6 @@ public class InputSwitchRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, InputSwitch inputSwitch) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         boolean checked = Boolean.valueOf(ComponentUtils.getValueToRender(context, inputSwitch));
-        boolean disabled = inputSwitch.isDisabled();
         boolean showLabels = inputSwitch.isShowLabels();
         String clientId = inputSwitch.getClientId(context);
         String style = inputSwitch.getStyle();
@@ -81,7 +80,7 @@ public class InputSwitchRenderer extends InputRenderer {
         encodeOption(context, inputSwitch.getOffLabel(), InputSwitch.OFF_LABEL_CLASS, showLabels);
         encodeOption(context, inputSwitch.getOnLabel(), InputSwitch.ON_LABEL_CLASS, showLabels);
         encodeHandle(context);
-        encodeInput(context, inputSwitch, clientId, checked, disabled);
+        encodeInput(context, inputSwitch, clientId, checked);
 
         writer.endElement("div");
     }
@@ -112,7 +111,7 @@ public class InputSwitchRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeInput(FacesContext context, InputSwitch inputSwitch, String clientId, boolean checked, boolean disabled) throws IOException {
+    protected void encodeInput(FacesContext context, InputSwitch inputSwitch, String clientId, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
 
@@ -127,15 +126,10 @@ public class InputSwitchRenderer extends InputRenderer {
         if (checked) {
             writer.writeAttribute("checked", "checked", null);
         }
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
-        if (inputSwitch.getTabindex() != null) {
-            writer.writeAttribute("tabindex", inputSwitch.getTabindex(), null);
-        }
 
         renderValidationMetadata(context, inputSwitch);
-
+        renderAccessibilityAttributes(context, inputSwitch);
+        renderPassThruAttributes(context, inputSwitch, HTML.TAB_INDEX);
         renderOnchange(context, inputSwitch);
         renderDomEvents(context, inputSwitch, HTML.BLUR_FOCUS_EVENTS);
 

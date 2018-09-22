@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class RibbonRenderer extends CoreRenderer {
@@ -97,7 +98,7 @@ public class RibbonRenderer extends CoreRenderer {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", headerClass, null);
                     writer.writeAttribute("role", "tab", null);
-                    writer.writeAttribute("aria-expanded", String.valueOf(active), null);
+                    writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
 
                     writer.startElement("a", null);
                     writer.writeAttribute("href", tab.getClientId(context), null);

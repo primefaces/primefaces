@@ -34,7 +34,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
     public void decode(final FacesContext context, final UIComponent component) {
         TriStateCheckbox checkbox = (TriStateCheckbox) component;
 
-        if (checkbox.isDisabled()) {
+        if (!shouldDecode(checkbox)) {
             return;
         }
 
@@ -80,7 +80,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
-        encodeInput(context, checkbox, clientId, valCheck, disabled);
+        encodeInput(context, checkbox, clientId, valCheck);
         encodeOutput(context, checkbox, valCheck, disabled);
         encodeItemLabel(context, checkbox);
 
@@ -88,7 +88,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
     }
 
     protected void encodeInput(final FacesContext context, final TriStateCheckbox checkbox, final String clientId,
-                               final int valCheck, final boolean disabled) throws IOException {
+                               final int valCheck) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
 
@@ -98,12 +98,8 @@ public class TriStateCheckboxRenderer extends InputRenderer {
         writer.startElement("input", null);
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
-
         writer.writeAttribute("value", valCheck, null);
-
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
+        renderAccessibilityAttributes(context, checkbox);
 
         if (checkbox.getOnchange() != null) {
             writer.writeAttribute("onchange", checkbox.getOnchange(), null);

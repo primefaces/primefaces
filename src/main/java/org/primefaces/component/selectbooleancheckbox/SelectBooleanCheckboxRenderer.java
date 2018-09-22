@@ -33,7 +33,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         SelectBooleanCheckbox checkbox = (SelectBooleanCheckbox) component;
 
-        if (checkbox.isDisabled()) {
+        if (!shouldDecode(checkbox)) {
             return;
         }
 
@@ -84,17 +84,16 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
             writer.writeAttribute("title", title, "title");
         }
 
-        encodeInput(context, checkbox, clientId, checked, disabled);
+        encodeInput(context, checkbox, clientId, checked);
         encodeOutput(context, checkbox, checked, disabled);
         encodeItemLabel(context, checkbox, clientId);
 
         writer.endElement("div");
     }
 
-    protected void encodeInput(FacesContext context, SelectBooleanCheckbox checkbox, String clientId, boolean checked, boolean disabled) throws IOException {
+    protected void encodeInput(FacesContext context, SelectBooleanCheckbox checkbox, String clientId, boolean checked) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String inputId = clientId + "_input";
-        String labelledBy = checkbox.getLabelledBy();
 
         writer.startElement("div", checkbox);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
@@ -104,29 +103,19 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute("aria-hidden", "true", null);
-
-        if (labelledBy != null) {
-            writer.writeAttribute("aria-labelledby", labelledBy, null);
-        }
+        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
 
         if (checked) {
             writer.writeAttribute("checked", "checked", null);
-            writer.writeAttribute("aria-checked", "true", null);
+            writer.writeAttribute(HTML.ARIA_CHECKED, "true", null);
         }
         else {
-            writer.writeAttribute("aria-checked", "false", null);
-        }
-
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
-        if (checkbox.getTabindex() != null) {
-            writer.writeAttribute("tabindex", checkbox.getTabindex(), null);
+            writer.writeAttribute(HTML.ARIA_CHECKED, "false", null);
         }
 
         renderValidationMetadata(context, checkbox);
-
+        renderAccessibilityAttributes(context, checkbox);
+        renderPassThruAttributes(context, checkbox, HTML.TAB_INDEX);
         renderOnchange(context, checkbox);
         renderDomEvents(context, checkbox, HTML.BLUR_FOCUS_EVENTS);
 

@@ -78,7 +78,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         writer.writeAttribute("name", buttonId, null);
         writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", buttonClass, null);
-        writer.writeAttribute("aria-label", button.getAriaLabel(), "ariaLabel");
+        writer.writeAttribute(HTML.ARIA_LABEL, button.getAriaLabel(), "ariaLabel");
         if (button.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         }

@@ -27,6 +27,7 @@ import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.separator.UISeparator;
 import org.primefaces.model.menu.*;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class MegaMenuRenderer extends BaseMenuRenderer {
@@ -127,7 +128,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", style, null);
         }
         writer.writeAttribute("role", "menuitem", null);
-        writer.writeAttribute("aria-haspopup", "true", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
 
         //title
         writer.startElement("a", null);

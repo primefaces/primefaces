@@ -40,7 +40,7 @@ public class CalendarRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         Calendar calendar = (Calendar) component;
 
-        if (calendar.isDisabled() || calendar.isReadonly()) {
+        if (!shouldDecode(calendar)) {
             return;
         }
 
@@ -97,7 +97,6 @@ public class CalendarRenderer extends InputRenderer {
     protected void encodeInput(FacesContext context, Calendar calendar, String id, String value, boolean popup) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String type = popup ? calendar.getType() : "hidden";
-        String labelledBy = calendar.getLabelledBy();
         String inputStyle = calendar.getInputStyle();
         String inputStyleClass = calendar.getInputStyleClass();
 
@@ -106,19 +105,21 @@ public class CalendarRenderer extends InputRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", type, null);
 
-        if (calendar.isRequired()) {
-            writer.writeAttribute("aria-required", "true", null);
-        }
-
         if (!isValueBlank(value)) {
             writer.writeAttribute("value", value, null);
         }
 
+        boolean readonly = false;
+        boolean disabled = false;
+
         if (popup) {
             inputStyleClass = (inputStyleClass == null) ? Calendar.INPUT_STYLE_CLASS
                                                         : Calendar.INPUT_STYLE_CLASS + " " + inputStyleClass;
+            readonly = calendar.isReadonly() || calendar.isReadonlyInput();
+
             if (calendar.isDisabled()) {
                 inputStyleClass = inputStyleClass + " ui-state-disabled";
+                disabled = true;
             }
             if (!calendar.isValid()) {
                 inputStyleClass = inputStyleClass + " ui-state-error";
@@ -129,21 +130,12 @@ public class CalendarRenderer extends InputRenderer {
             if (inputStyle != null) {
                 writer.writeAttribute("style", inputStyle, null);
             }
-            if (calendar.isReadonly() || calendar.isReadonlyInput()) {
-                writer.writeAttribute("readonly", "readonly", null);
-            }
-            if (calendar.isDisabled()) {
-                writer.writeAttribute("disabled", "disabled", null);
-            }
 
             renderPassThruAttributes(context, calendar, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
             renderDomEvents(context, calendar, HTML.INPUT_TEXT_EVENTS);
         }
 
-        if (labelledBy != null) {
-            writer.writeAttribute("aria-labelledby", labelledBy, null);
-        }
-
+        renderAccessibilityAttributes(context, calendar, disabled, readonly);
         renderValidationMetadata(context, calendar);
 
         writer.endElement("input");
