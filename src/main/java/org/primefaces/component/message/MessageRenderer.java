@@ -155,7 +155,7 @@ public class MessageRenderer extends UINotificationRenderer {
     }
 
     protected void encodeScript(FacesContext context, Message uiMessage, UIComponent target) throws IOException {
-        boolean tooltip = uiMessage.getDisplay().equals("tooltip") ;
+        boolean tooltip = "tooltip".equals(uiMessage.getDisplay());
         if (tooltip || uiMessage.isShowDetail()) {
             String clientId = uiMessage.getClientId(context);
             String targetClientId = (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
