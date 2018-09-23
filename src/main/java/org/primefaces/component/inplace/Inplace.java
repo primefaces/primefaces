@@ -45,6 +45,8 @@ public class Inplace extends InplaceBase {
     public static final String EDITOR_CLASS = "ui-inplace-editor";
     public static final String SAVE_BUTTON_CLASS = "ui-inplace-save";
     public static final String CANCEL_BUTTON_CLASS = "ui-inplace-cancel";
+    public static final String DISPLAY_INLINE = "inline";
+    public static final String DISPLAY_NONE = "none";
 
     private static final Map<String, Class<? extends BehaviorEvent>> BEHAVIOR_EVENT_MAPPING = MapBuilder.<String, Class<? extends BehaviorEvent>>builder()
             .put("save", null)

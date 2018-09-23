@@ -16,8 +16,10 @@
 package org.primefaces.component.inplace;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -54,8 +56,8 @@ public class InplaceRenderer extends CoreRenderer {
         String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
 
         boolean validationFailed = context.isValidationFailed() && !inplace.isValid();
-        String displayStyle = validationFailed ? "none" : "inline";
-        String contentStyle = validationFailed ? "inline" : "none";
+        String displayStyle = validationFailed ? Inplace.DISPLAY_NONE : Inplace.DISPLAY_INLINE;
+        String contentStyle = validationFailed ? Inplace.DISPLAY_INLINE : Inplace.DISPLAY_NONE;
 
         UIComponent outputFacet = inplace.getFacet("output");
         UIComponent inputFacet = inplace.getFacet("input");
@@ -75,6 +77,9 @@ public class InplaceRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId + "_display", "id");
         writer.writeAttribute("class", displayClass, null);
         writer.writeAttribute("style", "display:" + displayStyle, null);
+        if (hasRequiredChildren(inplace)) {
+            writer.writeAttribute(HTML.ARIA_REQUIRED, Boolean.toString(Inplace.DISPLAY_INLINE.equals(displayStyle)), null);
+        }
 
         if (outputFacet != null) {
             outputFacet.encodeAll(context);
@@ -192,5 +197,17 @@ public class InplaceRenderer extends CoreRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
+    }
+
+    private boolean hasRequiredChildren(Inplace inplace) {
+        Iterator itr = inplace.getChildren().iterator();
+        while (itr.hasNext()) {
+            UIComponent c = (UIComponent) itr.next();
+            if (c instanceof UIInput && ((UIInput) c).isRequired()) {
+                // at least one input component with attribute required found
+                return true;
+            }
+        }
+        return false;
     }
 }
