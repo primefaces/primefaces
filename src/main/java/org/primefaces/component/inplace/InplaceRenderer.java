@@ -16,7 +16,7 @@
 package org.primefaces.component.inplace;
 
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -200,9 +200,9 @@ public class InplaceRenderer extends CoreRenderer {
     }
 
     private boolean hasRequiredChildren(Inplace inplace) {
-        Iterator itr = inplace.getChildren().iterator();
-        while (itr.hasNext()) {
-            UIComponent c = (UIComponent) itr.next();
+        List<UIComponent> children = inplace.getChildren();
+        for (int i = 0; i < children.size(); i++) {
+            UIComponent c = children.get(i);
             if (c instanceof UIInput && ((UIInput) c).isRequired()) {
                 // at least one input component with attribute required found
                 return true;
