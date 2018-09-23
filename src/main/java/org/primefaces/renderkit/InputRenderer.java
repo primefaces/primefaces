@@ -112,4 +112,19 @@ public abstract class InputRenderer extends CoreRenderer {
         }
     }
 
+    /**
+     * Adds ARIA attributes if the component is "role=combobox".
+     *
+     * @param context the {@link FacesContext}
+     * @param component the {@link UIInput} component to add attributes for
+     * @throws IOException if any error occurs writing the response
+     * @see https://www.w3.org/TR/wai-aria-practices/#combobox
+     */
+    protected void renderARIACombobox(FacesContext context, UIInput component) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        writer.writeAttribute("role", "combobox", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
+    }
+
 }

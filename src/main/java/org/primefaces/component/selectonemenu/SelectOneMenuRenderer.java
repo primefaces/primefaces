@@ -120,15 +120,13 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleclass");
-        writer.writeAttribute("role", "combobox", null);
-        writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
-        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
         if (title != null) {
             writer.writeAttribute("title", title, "title");
         }
+        renderARIACombobox(context, menu);
         renderAccessibilityAttributes(context, menu);
 
         encodeInput(context, menu, clientId, selectItems, values, submittedValues, converter);

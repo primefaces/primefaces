@@ -79,6 +79,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             writer.writeAttribute("title", title, "title");
         }
 
+        renderARIACombobox(context, menu);
         renderAccessibilityAttributes(context, menu);
         encodeKeyboardTarget(context, menu);
         encodeInputs(context, menu, selectItems);
