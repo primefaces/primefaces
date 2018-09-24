@@ -278,7 +278,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
      * <p>
      * The saved state info only covers those fields that are expected to vary between rows of a table. Other fields are not modified.
      */
-    @SuppressWarnings("unchecked")
     private void restoreDescendantComponentStates(UIComponent parent, boolean iterateFacets, Object state,
                                                   boolean restoreChildFacets) {
         int descendantStateIndex = -1;

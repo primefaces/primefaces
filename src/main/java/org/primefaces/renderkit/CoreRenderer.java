@@ -73,7 +73,7 @@ public abstract class CoreRenderer extends Renderer {
     protected void renderChildren(FacesContext context, UIComponent component) throws IOException {
         if (component.getChildCount() > 0) {
             for (int i = 0; i < component.getChildCount(); i++) {
-                UIComponent child = (UIComponent) component.getChildren().get(i);
+                UIComponent child = component.getChildren().get(i);
                 renderChild(context, child);
             }
         }
@@ -163,14 +163,14 @@ public abstract class CoreRenderer extends Renderer {
                 }
 
                 if (hasEventBehaviors) {
-                    String clientId = ((UIComponent) component).getClientId(context);
+                    String clientId = component.getClientId(context);
 
                     List<ClientBehaviorContext.Parameter> params = new ArrayList<>();
                     params.add(new ClientBehaviorContext.Parameter(
                             Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.OBSTRUSIVE));
 
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
-                            context, (UIComponent) component, behaviorEvent, clientId, params);
+                            context, component, behaviorEvent, clientId, params);
                     int size = eventBehaviors.size();
                     boolean chained = false;
 
@@ -309,8 +309,8 @@ public abstract class CoreRenderer extends Renderer {
                     for (int i = 0; i < behaviors.size(); i++) {
                         ClientBehavior behavior = behaviors.get(i);
                         if (cbc == null) {
-                            cbc = ClientBehaviorContext.createClientBehaviorContext(
-                                    context, (UIComponent) component, behaviorEventName, component.getClientId(context), Collections.EMPTY_LIST);
+                            cbc = ClientBehaviorContext.createClientBehaviorContext(context, component, behaviorEventName,
+                                    component.getClientId(context), Collections.<ClientBehaviorContext.Parameter>emptyList());
                         }
                         String script = behavior.getScript(cbc);
 
@@ -339,7 +339,7 @@ public abstract class CoreRenderer extends Renderer {
             else {
                 if (hasBehaviors) {
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
-                            context, (UIComponent) component, behaviorEventName, component.getClientId(context), Collections.EMPTY_LIST);
+                            context, component, behaviorEventName, component.getClientId(context), Collections.<ClientBehaviorContext.Parameter>emptyList());
                     ClientBehavior behavior = behaviors.get(0);
                     String script = behavior.getScript(cbc);
                     if (script != null) {
@@ -374,7 +374,7 @@ public abstract class CoreRenderer extends Renderer {
         }
 
         if (value instanceof Boolean) {
-            return ((Boolean) value).booleanValue();
+            return (Boolean) value;
         }
         else if (value instanceof Number) {
             Number number = (Number) value;
@@ -667,7 +667,7 @@ public abstract class CoreRenderer extends Renderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent comp = (UIComponent) component;
 
-        Converter converter = null;
+        Converter converter;
 
         try {
             converter = ComponentUtils.getConverter(context, comp);
