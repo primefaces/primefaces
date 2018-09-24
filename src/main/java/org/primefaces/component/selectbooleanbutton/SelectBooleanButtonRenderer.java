@@ -74,15 +74,13 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, null);
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
         if (title != null) {
             writer.writeAttribute("title", title, null);
         }
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
+        renderAccessibilityAttributes(context, button);
 
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);

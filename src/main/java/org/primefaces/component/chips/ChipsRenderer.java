@@ -107,6 +107,7 @@ public class ChipsRenderer extends InputRenderer {
         if (inputStyle != null) {
             writer.writeAttribute("style", inputStyle, null);
         }
+        renderAccessibilityAttributes(context, chips);
 
         if (values != null && !values.isEmpty()) {
             Converter converter = ComponentUtils.getConverter(context, chips);
@@ -143,8 +144,13 @@ public class ChipsRenderer extends InputRenderer {
         writer.writeAttribute("class", "ui-widget", null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("autocomplete", "off", null);
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", "disabled");
+        }
+        if (chips.isReadonly()) {
+            writer.writeAttribute("readonly", "readonly", "readonly");
+        }
 
-        renderAccessibilityAttributes(context, chips);
         renderPassThruAttributes(context, chips, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, chips, HTML.INPUT_TEXT_EVENTS);
 
