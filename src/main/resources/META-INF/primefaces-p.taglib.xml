@@ -16732,6 +16732,12 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description><![CDATA[Label to be shown in updateLabel mode when no item is selected. If not set the label is shown.]]></description>
+            <name>emptyLabel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
     </tag>
     <tag>
         <tag-name>selectOneListbox</tag-name>
