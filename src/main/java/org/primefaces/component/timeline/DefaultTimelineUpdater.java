@@ -104,8 +104,6 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
         FacesContext fc = event.getFacesContext();
         StringBuilder sb = new StringBuilder();
-        FastStringWriter fsw = new FastStringWriter();
-        FastStringWriter fswHtml = new FastStringWriter();
 
         Timeline timeline = (Timeline) fc.getViewRoot().findComponent(id);
         TimelineRenderer timelineRenderer = ComponentUtils.getUnwrappedRenderer(
@@ -125,7 +123,9 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
         TimeZone targetTZ = ComponentUtils.resolveTimeZone(timeline.getTimeZone());
         TimeZone browserTZ = ComponentUtils.resolveTimeZone(timeline.getBrowserTimeZone());
 
-        try {
+        try (FastStringWriter fsw = new FastStringWriter();
+             FastStringWriter fswHtml = new FastStringWriter()) {
+
             boolean renderComponent = false;
             for (CrudOperationData crudOperationData : crudOperationDatas) {
                 switch (crudOperationData.getCrudOperation()) {

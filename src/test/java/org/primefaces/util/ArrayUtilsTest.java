@@ -26,7 +26,7 @@ public class ArrayUtilsTest {
 		String[] arr1 = new String[]{"a","b","c"};
 		String[] arr2 = new String[]{"d","e","f"};
 
-		String[] result = ArrayUtils.concat(arr1, arr2);
+		String[] result = LangUtils.concat(arr1, arr2);
 
 		assertEquals(3, arr1.length);
 		assertEquals(3, arr2.length);

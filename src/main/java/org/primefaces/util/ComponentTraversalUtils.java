@@ -46,7 +46,7 @@ public class ComponentTraversalUtils {
 
         Iterator<UIComponent> kids = base.getFacetsAndChildren();
         while (kids.hasNext() && (result == null)) {
-            UIComponent kid = (UIComponent) kids.next();
+            UIComponent kid = kids.next();
             if (type.isAssignableFrom(kid.getClass())) {
                 result = (T) kid;
                 break;
@@ -67,7 +67,7 @@ public class ComponentTraversalUtils {
 
         Iterator<UIComponent> kids = base.getFacetsAndChildren();
         while (kids.hasNext()) {
-            UIComponent kid = (UIComponent) kids.next();
+            UIComponent kid = kids.next();
             if (type.isAssignableFrom(kid.getClass())) {
                 result.add((T) kid);
             }
@@ -112,7 +112,7 @@ public class ComponentTraversalUtils {
 
         Iterator<UIComponent> kids = base.getFacetsAndChildren();
         while (kids.hasNext() && (result == null)) {
-            UIComponent kid = (UIComponent) kids.next();
+            UIComponent kid = kids.next();
             if (id.equals(kid.getId())) {
                 result = kid;
                 break;
@@ -160,7 +160,7 @@ public class ComponentTraversalUtils {
     }
 
     public static UniqueIdVendor closestUniqueIdVendor(UIComponent component) {
-        return (UniqueIdVendor) closest(UniqueIdVendor.class, component);
+        return closest(UniqueIdVendor.class, component);
     }
 
     public static UIComponent closestNamingContainer(UIComponent component) {

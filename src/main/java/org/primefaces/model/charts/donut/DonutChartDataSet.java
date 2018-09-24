@@ -13,15 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.util;
+package org.primefaces.model.charts.donut;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import org.primefaces.model.charts.pie.PieChartDataSet;
 
-public class CollectionUtils {
+/**
+ * Used to provide DataSet objects to Donut chart component.
+ */
+public class DonutChartDataSet extends PieChartDataSet {
 
-    public static final <T> List<T> unmodifiableList(T... args) {
-        return Collections.unmodifiableList(Arrays.asList(args));
+    /**
+     * Gets the type
+     *
+     * @return type of current chart
+     */
+    @Override
+    public String getType() {
+        return "doughnut";
     }
 }

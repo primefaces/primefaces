@@ -25,7 +25,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
 
 import org.primefaces.component.autocomplete.AutoComplete;
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
@@ -39,7 +38,7 @@ public class InputTextareaRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         InputTextarea inputTextarea = (InputTextarea) component;
 
-        if (inputTextarea.isDisabled() || inputTextarea.isReadonly()) {
+        if (!shouldDecode(inputTextarea)) {
             return;
         }
 
@@ -130,27 +129,16 @@ public class InputTextareaRenderer extends InputRenderer {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("name", clientId, null);
 
-        renderPassThruAttributes(context, inputTextarea, HTML.TEXTAREA_ATTRS_WITHOUT_EVENTS);
-        renderDomEvents(context, inputTextarea, HTML.INPUT_TEXT_EVENTS);
-
-        if (inputTextarea.isDisabled()) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
-        if (inputTextarea.isReadonly()) {
-            writer.writeAttribute("readonly", "readonly", null);
-        }
         if (inputTextarea.getStyle() != null) {
             writer.writeAttribute("style", inputTextarea.getStyle(), null);
-        }
-        if (inputTextarea.isRequired()) {
-            writer.writeAttribute("aria-required", "true", null);
         }
 
         writer.writeAttribute("class", createStyleClass(inputTextarea), "styleClass");
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, inputTextarea);
-        }
+        renderAccessibilityAttributes(context, inputTextarea);
+        renderPassThruAttributes(context, inputTextarea, HTML.TEXTAREA_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, inputTextarea, HTML.INPUT_TEXT_EVENTS);
+        renderValidationMetadata(context, inputTextarea);
 
         String valueToRender = ComponentUtils.getValueToRender(context, inputTextarea);
         if (valueToRender != null) {

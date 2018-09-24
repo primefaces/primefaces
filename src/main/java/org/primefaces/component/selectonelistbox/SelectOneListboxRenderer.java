@@ -28,9 +28,9 @@ import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneListboxRenderer extends SelectOneRenderer {
@@ -70,6 +70,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
+        renderAccessibilityAttributes(context, listbox);
 
         if (listbox.isFilter()) {
             encodeFilter(context, listbox);
@@ -102,7 +103,6 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
         String inputid = clientId + "_input";
-        String labelledBy = listbox.getLabelledBy();
 
         writer.startElement("div", listbox);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
@@ -112,19 +112,10 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", inputid, null);
         writer.writeAttribute("size", "2", null);   //prevent browser to send value when no item is selected
 
+        renderAccessibilityAttributes(context, listbox);
+        renderPassThruAttributes(context, listbox, HTML.TAB_INDEX);
         renderDomEvents(context, listbox, SelectOneListbox.DOM_EVENTS);
-
-        if (listbox.getTabindex() != null) {
-            writer.writeAttribute("tabindex", listbox.getTabindex(), null);
-        }
-
-        if (labelledBy != null) {
-            writer.writeAttribute("aria-labelledby", labelledBy, null);
-        }
-
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, listbox);
-        }
+        renderValidationMetadata(context, listbox);
 
         encodeSelectItems(context, listbox, selectItems);
 

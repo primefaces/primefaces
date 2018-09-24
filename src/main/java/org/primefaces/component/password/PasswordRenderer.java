@@ -21,7 +21,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -34,7 +33,7 @@ public class PasswordRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         Password password = (Password) component;
 
-        if (password.isDisabled() || password.isReadonly()) {
+        if (!shouldDecode(password)) {
             return;
         }
 
@@ -97,22 +96,10 @@ public class PasswordRenderer extends InputRenderer {
             writer.writeAttribute("value", valueToRender, null);
         }
 
+        renderAccessibilityAttributes(context, password);
         renderPassThruAttributes(context, password, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, password, HTML.INPUT_TEXT_EVENTS);
-
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
-        if (password.isReadonly()) {
-            writer.writeAttribute("readonly", "readonly", null);
-        }
-        if (password.isRequired()) {
-            writer.writeAttribute("aria-required", "true", null);
-        }
-
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, password);
-        }
+        renderValidationMetadata(context, password);
 
         writer.endElement("input");
     }

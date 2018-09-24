@@ -16,14 +16,12 @@
 package org.primefaces.component.inputmask;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -32,8 +30,6 @@ import org.primefaces.util.WidgetBuilder;
 
 public class InputMaskRenderer extends InputRenderer {
 
-    private static final Logger logger = Logger.getLogger(InputMaskRenderer.class.getName());
-
     private static final String REGEX_METACHARS = "<([{\\^-=$!|]})?*+.>";
     private static final String SB_PATTERN = InputMaskRenderer.class.getName() + "#translateMaskIntoRegex";
 
@@ -41,7 +37,7 @@ public class InputMaskRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         InputMask inputMask = (InputMask) component;
 
-        if (inputMask.isDisabled() || inputMask.isReadonly()) {
+        if (!shouldDecode(inputMask)) {
             return;
         }
 
@@ -156,27 +152,17 @@ public class InputMaskRenderer extends InputRenderer {
             writer.writeAttribute("value", valueToRender, null);
         }
 
+        renderAccessibilityAttributes(context, inputMask);
         renderPassThruAttributes(context, inputMask, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, inputMask, HTML.INPUT_TEXT_EVENTS);
 
-        if (inputMask.isDisabled()) {
-            writer.writeAttribute("disabled", "disabled", "disabled");
-        }
-        if (inputMask.isReadonly()) {
-            writer.writeAttribute("readonly", "readonly", "readonly");
-        }
         if (inputMask.getStyle() != null) {
             writer.writeAttribute("style", inputMask.getStyle(), "style");
-        }
-        if (inputMask.isRequired()) {
-            writer.writeAttribute("aria-required", "true", null);
         }
 
         writer.writeAttribute("class", styleClass, "styleClass");
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, inputMask);
-        }
+        renderValidationMetadata(context, inputMask);
 
         writer.endElement("input");
     }

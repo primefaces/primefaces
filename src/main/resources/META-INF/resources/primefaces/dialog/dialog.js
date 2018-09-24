@@ -527,7 +527,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.jq.attr({
             'role': 'dialog'
             ,'aria-labelledby': this.id + '_title'
+            ,'aria-describedby': this.id + '_content'
             ,'aria-hidden': !this.cfg.visible
+            ,'aria-modal': this.cfg.modal
         });
 
         this.titlebar.children('a.ui-dialog-titlebar-icon').attr('role', 'button');

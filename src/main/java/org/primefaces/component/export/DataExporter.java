@@ -18,7 +18,6 @@ package org.primefaces.component.export;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -34,8 +33,6 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.expression.SearchExpressionFacade;
 
 public class DataExporter implements ActionListener, StateHolder {
-
-    private static final Logger LOGGER = Logger.getLogger(DataExporter.class.getName());
 
     private ValueExpression target;
 

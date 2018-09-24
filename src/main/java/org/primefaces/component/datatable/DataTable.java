@@ -336,7 +336,7 @@ public class DataTable extends DataTableBase {
             else if (eventName.equals("page")) {
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
-                int page = rows > 0 ? (int) (first / rows) : 0;
+                int page = rows > 0 ? (first / rows) : 0;
 
                 wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
             }
@@ -366,7 +366,7 @@ public class DataTable extends DataTableBase {
             else if (eventName.equals("virtualScroll")) {
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
-                int page = rows > 0 ? (int) (first / rows) : 0;
+                int page = rows > 0 ? (first / rows) : 0;
 
                 wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
             }

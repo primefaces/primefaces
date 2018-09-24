@@ -28,6 +28,7 @@ import javax.faces.context.ResponseWriter;
 import org.primefaces.behavior.ajax.AjaxBehavior;
 import org.primefaces.model.map.*;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class GMapRenderer extends CoreRenderer {
@@ -62,7 +63,6 @@ public class GMapRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, GMap map) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         String clientId = map.getClientId(context);
         String widgetVar = map.resolveWidgetVar();
         GMapInfoWindow infoWindow = map.getInfoWindow();
@@ -187,7 +187,7 @@ public class GMapRenderer extends CoreRenderer {
 
         writer.write(",id:'" + marker.getId() + "'");
         if (marker.getTitle() != null) {
-            writer.write(",title:\"" + escapeText(marker.getTitle()) + "\"");
+            writer.write(",title:\"" + EscapeUtils.forJavaScript(marker.getTitle()) + "\"");
         }
         if (marker.getIcon() != null) {
             writer.write(",icon:'" + marker.getIcon() + "'");

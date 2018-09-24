@@ -58,7 +58,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
                 if ($eventTarget.is('.ui-menuitem-link') || $eventTarget.closest('.ui-menuitem-link').length) {
                     $this.itemMouseDown = true;
                 }
-                else {
+                else if(!($this.jq.is($eventTarget) || $this.jq.has($eventTarget).length > 0)) {
                     $this.hide(e);
                 }
             });

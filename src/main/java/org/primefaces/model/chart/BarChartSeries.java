@@ -15,9 +15,10 @@
  */
 package org.primefaces.model.chart;
 
+import org.primefaces.util.EscapeUtils;
+
 import java.io.IOException;
 import java.io.Writer;
-import org.primefaces.util.ComponentUtils;
 
 public class BarChartSeries extends ChartSeries {
 
@@ -42,7 +43,7 @@ public class BarChartSeries extends ChartSeries {
     @Override
     public void encode(Writer writer) throws IOException {
         writer.write("{");
-        writer.write("label:\"" + ComponentUtils.escapeText(getLabel()) + "\"");
+        writer.write("label:\"" + EscapeUtils.forJavaScript(this.getLabel()) + "\"");
 
         writer.write(",renderer: $.jqplot." + getRenderer());
 

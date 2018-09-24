@@ -15,25 +15,24 @@
  */
 package org.primefaces.component.export;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.util.Collections;
-import java.util.List;
+import org.primefaces.component.api.DynamicColumn;
+import org.primefaces.component.api.UIColumn;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.EscapeUtils;
 
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.component.api.DynamicColumn;
-import org.primefaces.component.api.UIColumn;
-import org.primefaces.component.datatable.DataTable;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.XMLUtils;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.Collections;
+import java.util.List;
 
 public class XMLExporter extends Exporter {
 
@@ -140,8 +139,7 @@ public class XMLExporter extends Exporter {
             throw new FacesException("No suitable xml tag found for " + column);
         }
 
-        // #459 return columnTag.replaceAll(" ", "_");
-        return XMLUtils.escapeTag(columnTag);
+        return EscapeUtils.forXmlTag(columnTag);
     }
 
     protected void addColumnValue(StringBuilder builder, List<UIComponent> components, String tag, UIColumn column) throws IOException {
@@ -150,14 +148,14 @@ public class XMLExporter extends Exporter {
         builder.append("\t\t<" + tag + ">");
 
         if (column.getExportFunction() != null) {
-            builder.append(XMLUtils.escapeXml(exportColumnByFunction(context, column)));
+            builder.append(EscapeUtils.forXml(exportColumnByFunction(context, column)));
         }
         else {
             for (UIComponent component : components) {
                 if (component.isRendered()) {
                     String value = exportValue(context, component);
                     if (value != null) {
-                        builder.append(XMLUtils.escapeXml(value));
+                        builder.append(EscapeUtils.forXml(value));
                     }
                 }
             }

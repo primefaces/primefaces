@@ -17,10 +17,13 @@ package org.primefaces.model;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 public interface UploadedFile {
 
     public String getFileName();
+
+    public List<String> getFileNames();
 
     public InputStream getInputstream() throws IOException;
 

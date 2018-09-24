@@ -263,7 +263,7 @@ public class TimelineRenderer extends CoreRenderer {
                         // restore writer
                         context.setResponseWriter(writer);
                         // extract the content of the group, first buffer and then render it
-                        groupsContent.put(foundGroup.getId(), prefix + escapeText(fswHtml.toString()));
+                        groupsContent.put(foundGroup.getId(), prefix + EscapeUtils.forJavaScript(fswHtml.toString()));
                         fsw.write(",\"group\":\"" + groupsContent.get(foundGroup.getId()) + "\"");
                         fswHtml.reset();
                     }
@@ -310,7 +310,7 @@ public class TimelineRenderer extends CoreRenderer {
             // restore writer
             context.setResponseWriter(writer);
             // extract the content of the event
-            fsw.write(escapeText(fswHtml.toString()));
+            fsw.write(EscapeUtils.forJavaScript(fswHtml.toString()));
             fswHtml.reset();
         }
         else if (event.getData() != null) {

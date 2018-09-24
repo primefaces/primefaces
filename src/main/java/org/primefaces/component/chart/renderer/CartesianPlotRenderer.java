@@ -15,18 +15,17 @@
  */
 package org.primefaces.component.chart.renderer;
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map;
-
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-
 import org.primefaces.component.chart.Chart;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.CartesianChartModel;
-import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EscapeUtils;
+
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 
 public abstract class CartesianPlotRenderer extends BasePlotRenderer {
 
@@ -77,7 +76,7 @@ public abstract class CartesianPlotRenderer extends BasePlotRenderer {
         int tickCount = axis.getTickCount();
 
         writer.write(axisType.toString() + ": {");
-        writer.write("label:\"" + ComponentUtils.escapeText(label) + "\"");
+        writer.write("label:\"" + EscapeUtils.forJavaScript(label) + "\"");
 
         if (min != null) {
             if (min instanceof String) {

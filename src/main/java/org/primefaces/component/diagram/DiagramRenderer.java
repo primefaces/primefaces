@@ -154,7 +154,6 @@ public class DiagramRenderer extends CoreRenderer {
 
     protected void encodeScript(FacesContext context, Diagram diagram) throws IOException {
         String clientId = diagram.getClientId(context);
-        StringBuilder sb = SharedStringBuilder.get(SB_DIAGRAM);
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("Diagram", diagram.resolveWidgetVar(), clientId);
 

@@ -16,7 +16,6 @@
 package org.primefaces.component.outputpanel;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -29,8 +28,6 @@ public class OutputPanelRenderer extends CoreRenderer {
 
     private static final String BLOCK = "div";
     private static final String INLINE = "span";
-
-    private static final Logger logger = Logger.getLogger(OutputPanelRenderer.class.getName());
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {

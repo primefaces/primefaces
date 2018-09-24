@@ -13,17 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.util;
+package org.primefaces.model.charts.hbar;
 
-public class ClassUtils {
+import org.primefaces.model.charts.bar.BarChartDataSet;
 
-    public static Class tryToLoadClassForName(String name) {
-        try {
-            return Class.forName(name);
-        }
-        catch (ClassNotFoundException e) {
-            //do nothing - it's just a try
-            return null;
-        }
+/**
+ * Used to provide DataSet objects to HorizontalBar chart component.
+ */
+public class HorizontalBarChartDataSet extends BarChartDataSet {
+
+    /**
+     * Gets the type
+     *
+     * @return type of current chart
+     */
+    @Override
+    public String getType() {
+        return "horizontalBar";
     }
 }
+

@@ -17,7 +17,6 @@ package org.primefaces.component.messages;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Logger;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -28,10 +27,9 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.expression.SearchExpressionHint;
 import org.primefaces.renderkit.UINotificationRenderer;
+import org.primefaces.util.HTML;
 
 public class MessagesRenderer extends UINotificationRenderer {
-
-    private static final Logger logger = Logger.getLogger(MessagesRenderer.class.getName());
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -109,7 +107,7 @@ public class MessagesRenderer extends UINotificationRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        writer.writeAttribute("aria-live", "polite", null);
+        writer.writeAttribute(HTML.ARIA_LIVE, "polite", null);
 
         if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
             writer.writeAttribute("data-global", String.valueOf(globalOnly), null);
@@ -168,7 +166,7 @@ public class MessagesRenderer extends UINotificationRenderer {
             writer.startElement("li", null);
 
             writer.writeAttribute("role", "alert", null);
-            writer.writeAttribute("aria-atomic", "true", null);
+            writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);
 
             String summary = message.getSummary() != null ? message.getSummary() : "";
             String detail = message.getDetail() != null ? message.getDetail() : summary;

@@ -15,16 +15,15 @@
  */
 package org.primefaces.component.chart.renderer;
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
+import org.primefaces.component.chart.Chart;
+import org.primefaces.model.chart.MeterGaugeChartModel;
+import org.primefaces.util.EscapeUtils;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-
-import org.primefaces.component.chart.Chart;
-import org.primefaces.model.chart.MeterGaugeChartModel;
-import org.primefaces.util.ComponentUtils;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
 public class MeterGaugeRenderer extends BasePlotRenderer {
 
@@ -52,7 +51,7 @@ public class MeterGaugeRenderer extends BasePlotRenderer {
         encodeNumberList(context, "ticks", model.getTicks());
 
         if (gaugeLabel != null) {
-            writer.write(",gaugeLabel:\"" + ComponentUtils.escapeText(gaugeLabel) + "\"");
+            writer.write(",gaugeLabel:\"" + EscapeUtils.forJavaScript(gaugeLabel) + "\"");
             writer.write(",gaugeLabelPosition:\"" + model.getGaugeLabelPosition() + "\"");
         }
 

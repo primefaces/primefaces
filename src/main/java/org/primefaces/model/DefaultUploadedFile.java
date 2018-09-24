@@ -15,15 +15,16 @@
  */
 package org.primefaces.model;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.component.fileupload.FileUpload;
-import org.primefaces.util.BoundedInputStream;
 import org.primefaces.util.FileUploadUtils;
-import org.primefaces.util.SafeFile;
 
 /**
  *
@@ -48,6 +49,11 @@ public class DefaultUploadedFile implements UploadedFile, Serializable {
     }
 
     @Override
+    public List<String> getFileNames() {
+        return null;
+    }
+
+    @Override
     public InputStream getInputstream() throws IOException {
         return sizeLimit == null ? fileItem.getInputStream() : new BoundedInputStream(fileItem.getInputStream(), sizeLimit);
     }
@@ -69,7 +75,8 @@ public class DefaultUploadedFile implements UploadedFile, Serializable {
 
     @Override
     public void write(String filePath) throws Exception {
-        fileItem.write(new SafeFile(filePath));
+        String validFilePath = FileUploadUtils.getValidFilePath(filePath);
+        fileItem.write(new File(validFilePath));
     }
 
 }

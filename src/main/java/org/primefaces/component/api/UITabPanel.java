@@ -16,7 +16,6 @@
 package org.primefaces.component.api;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.sql.ResultSet;
 import java.util.*;
 
@@ -279,7 +278,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
      * <p>
      * The saved state info only covers those fields that are expected to vary between rows of a table. Other fields are not modified.
      */
-    @SuppressWarnings("unchecked")
     private void restoreDescendantComponentStates(UIComponent parent, boolean iterateFacets, Object state,
                                                   boolean restoreChildFacets) {
         int descendantStateIndex = -1;
@@ -1344,81 +1342,6 @@ public class UITabPanel extends UIPanel implements NamingContainer {
         }
 
         return Boolean.valueOf(paramValue);
-    }
-
-    // from RI
-    private static final class SavedState implements Serializable {
-
-        private static final long serialVersionUID = 2920252657338389849L;
-        private boolean _localValueSet;
-        private Object _submittedValue;
-        private boolean _valid = true;
-        private Object _value;
-
-        public SavedState(EditableValueHolder evh) {
-            _value = evh.getLocalValue();
-            _localValueSet = evh.isLocalValueSet();
-            _valid = evh.isValid();
-            _submittedValue = evh.getSubmittedValue();
-        }
-
-        Object getSubmittedValue() {
-            return (_submittedValue);
-        }
-
-        void setSubmittedValue(Object submittedValue) {
-            _submittedValue = submittedValue;
-        }
-
-        boolean isValid() {
-            return (_valid);
-        }
-
-        void setValid(boolean valid) {
-            _valid = valid;
-        }
-
-        Object getValue() {
-            return _value;
-        }
-
-        public void setValue(Object value) {
-            _value = value;
-        }
-
-        boolean isLocalValueSet() {
-            return _localValueSet;
-        }
-
-        public void setLocalValueSet(boolean localValueSet) {
-            _localValueSet = localValueSet;
-        }
-
-        @Override
-        public String toString() {
-            return ("submittedValue: " + _submittedValue + " value: " + _value + " localValueSet: " + _localValueSet);
-        }
-
-        public void restoreState(EditableValueHolder evh) {
-            evh.setValue(_value);
-            evh.setValid(_valid);
-            evh.setSubmittedValue(_submittedValue);
-            evh.setLocalValueSet(_localValueSet);
-        }
-
-        public void populate(EditableValueHolder evh) {
-            _value = evh.getLocalValue();
-            _valid = evh.isValid();
-            _submittedValue = evh.getSubmittedValue();
-            _localValueSet = evh.isLocalValueSet();
-        }
-
-        public void apply(EditableValueHolder evh) {
-            evh.setValue(_value);
-            evh.setValid(_valid);
-            evh.setSubmittedValue(_submittedValue);
-            evh.setLocalValueSet(_localValueSet);
-        }
     }
 
     private final class IndexedEvent extends FacesEvent {

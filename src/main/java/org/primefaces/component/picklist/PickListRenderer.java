@@ -28,16 +28,19 @@ import javax.faces.convert.ConverterException;
 
 import org.primefaces.component.column.Column;
 import org.primefaces.model.DualListModel;
-import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.renderkit.RendererUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
-public class PickListRenderer extends CoreRenderer {
+public class PickListRenderer extends InputRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
         PickList pickList = (PickList) component;
+        if (!shouldDecode(pickList)) {
+            return;
+        }
         String clientId = pickList.getClientId(context);
         Map<String, String[]> params = context.getExternalContext().getRequestParameterValuesMap();
 
@@ -208,6 +211,11 @@ public class PickListRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", PickList.LIST_WRAPPER_CLASS, null);
 
+        // only render required on target list
+        if (!isSource) {
+            renderARIARequired(context, pickList);
+        }
+
         if (filter) {
             encodeFilter(context, pickList, listId + "_filter", isSource);
         }
@@ -364,8 +372,8 @@ public class PickListRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId + "_ariaRegion", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
         writer.writeAttribute("role", "region", null);
-        writer.writeAttribute("aria-live", "polite", null);
-        writer.writeAttribute("aria-atomic", "true", null);
+        writer.writeAttribute(HTML.ARIA_LIVE, "polite", null);
+        writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);
         writer.endElement("div");
     }
 

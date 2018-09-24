@@ -23,7 +23,6 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.radiobutton.RadioButtonRenderer;
 import org.primefaces.component.selectmanycheckbox.SelectManyCheckbox;
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.HTML;
@@ -86,9 +85,6 @@ public class CheckboxRenderer extends InputRenderer {
         if (tabindex != null) {
             writer.writeAttribute("tabindex", tabindex, null);
         }
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
 
         String onchange = buildEvent(context, selectManyCheckbox, checkbox, "onchange", "change", "valueChange");
         if (!isValueBlank(onchange)) {
@@ -99,9 +95,8 @@ public class CheckboxRenderer extends InputRenderer {
             writer.writeAttribute("onclick", onclick, null);
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, selectManyCheckbox);
-        }
+        renderAccessibilityAttributes(context, selectManyCheckbox, disabled, selectManyCheckbox.isReadonly());
+        renderValidationMetadata(context, selectManyCheckbox);
 
         writer.endElement("input");
         writer.endElement("div");

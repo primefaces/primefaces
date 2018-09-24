@@ -172,11 +172,6 @@ if (!PrimeFaces.utils) {
                     }
                 }
 
-                // do nothing when the clicked element is a child of the overlay
-                if (overlay.is($eventTarget) || overlay.has($eventTarget).length > 0) {
-                    return;
-                }
-
                 // old check:
                 /*
                 var offset = overlay.offset();

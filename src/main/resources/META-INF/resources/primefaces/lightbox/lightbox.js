@@ -249,8 +249,11 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.utils.registerHideOverlayHandler(this, hideEvent + '.' + this.id + '_hide', $this.panel,
             function() { return $this.links.add($this.closeIcon); },
             function(e) {
-                e.preventDefault();
-                $this.hide();
+                var $eventTarget = $(e.target);
+                if(!($this.panel.is($eventTarget) || $this.panel.has($eventTarget).length > 0)) {
+                    e.preventDefault();
+                    $this.hide();
+                }
             });
 
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.panel, function() {

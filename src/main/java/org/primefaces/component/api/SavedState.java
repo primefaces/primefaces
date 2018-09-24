@@ -17,8 +17,15 @@ package org.primefaces.component.api;
 
 import java.io.Serializable;
 
+import javax.faces.component.EditableValueHolder;
+
+/**
+ * Keeps state of a component implementing {@link javax.faces.component.EditableValueHolder}.
+ */
 @SuppressWarnings({"SerializableHasSerializationMethods", "NonSerializableFieldInSerializableClass"})
 public class SavedState implements Serializable {
+
+    public static final SavedState NULL_STATE = new SavedState();
 
     private static final long serialVersionUID = 4325654657465654768L;
 
@@ -26,7 +33,29 @@ public class SavedState implements Serializable {
     private boolean submitted;
     private boolean valid = true;
     private Object value;
-    private boolean localValueSet;
+    private boolean localValueSet = false;
+
+    public SavedState() {
+        super();
+    }
+
+    public SavedState(EditableValueHolder evh) {
+        populate(evh);
+    }
+
+    public void populate(EditableValueHolder evh) {
+        value = evh.getLocalValue();
+        valid = evh.isValid();
+        submittedValue = evh.getSubmittedValue();
+        localValueSet = evh.isLocalValueSet();
+    }
+
+    public void restoreState(EditableValueHolder evh) {
+        evh.setValue(value);
+        evh.setValid(valid);
+        evh.setSubmittedValue(submittedValue);
+        evh.setLocalValueSet(localValueSet);
+    }
 
     public Object getSubmittedValue() {
         return (this.submittedValue);
@@ -66,5 +95,50 @@ public class SavedState implements Serializable {
 
     public void setSubmitted(boolean submitted) {
         this.submitted = submitted;
+    }
+
+    @Override
+    public String toString() {
+        return ("submittedValue: " + submittedValue + " value: " + value
+                + " localValueSet: " + localValueSet);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (localValueSet ? 1231 : 1237);
+        result = prime * result + (submitted ? 1231 : 1237);
+        result = prime * result + ((submittedValue == null) ? 0 : submittedValue.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        SavedState other = (SavedState) obj;
+        if (localValueSet != other.localValueSet) {
+            return false;
+        }
+        if (submitted != other.submitted) {
+            return false;
+        }
+        if (submittedValue == null) {
+            if (other.submittedValue != null) {
+                return false;
+            }
+        }
+        else if (!submittedValue.equals(other.submittedValue)) {
+            return false;
+        }
+        return true;
     }
 }

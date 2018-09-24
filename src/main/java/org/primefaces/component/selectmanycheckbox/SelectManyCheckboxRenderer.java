@@ -31,7 +31,6 @@ import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
 
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
@@ -70,6 +69,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             writer.startElement("span", checkbox);
             writer.writeAttribute("id", checkbox.getClientId(context), "id");
             writer.writeAttribute("class", "ui-helper-hidden", null);
+            renderARIARequired(context, checkbox);
             encodeCustomLayout(context, checkbox);
             writer.endElement("span");
         }
@@ -110,6 +110,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
+        renderARIARequired(context, checkbox);
 
         List<SelectItem> selectItems = getSelectItems(context, checkbox);
         Converter converter = checkbox.getConverter();
@@ -195,6 +196,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
+        renderARIARequired(context, checkbox);
         encodeSelectItems(context, checkbox, layout);
 
         writer.endElement("table");
@@ -227,9 +229,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             writer.writeAttribute("disabled", "disabled", null);
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, checkbox);
-        }
+        renderValidationMetadata(context, checkbox);
 
         writer.endElement("input");
 

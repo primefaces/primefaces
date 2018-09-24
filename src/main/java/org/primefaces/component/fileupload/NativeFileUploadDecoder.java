@@ -16,6 +16,9 @@
 package org.primefaces.component.fileupload;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
@@ -51,13 +54,35 @@ public class NativeFileUploadDecoder {
     private static void decodeSimple(FacesContext context, FileUpload fileUpload, HttpServletRequest request, String inputToDecodeId)
             throws IOException, ServletException {
 
-        Part part = request.getPart(inputToDecodeId);
+        if (fileUpload.isMultiple()) {
+            Iterable<Part> parts = request.getParts();
+            List<Part> uploadedInputParts = new ArrayList<>();
 
-        if (part != null && isValidFile(fileUpload, part)) {
-            fileUpload.setSubmittedValue(new UploadedFileWrapper(new NativeUploadedFile(part, fileUpload)));
+            Iterator<Part> iterator = parts.iterator();
+            while (iterator.hasNext()) {
+                Part p = iterator.next();
+
+                if (p.getName().equals(inputToDecodeId)) {
+                    uploadedInputParts.add(p);
+                }
+            }
+
+            if (uploadedInputParts.size() > 0 && isValidFile(fileUpload, uploadedInputParts)) {
+                fileUpload.setSubmittedValue(new UploadedFileWrapper(new NativeUploadedFile(uploadedInputParts, fileUpload)));
+            }
+            else {
+                fileUpload.setSubmittedValue("");
+            }
         }
         else {
-            fileUpload.setSubmittedValue("");
+            Part part = request.getPart(inputToDecodeId);
+
+            if (part != null && isValidFile(fileUpload, part)) {
+                fileUpload.setSubmittedValue(new UploadedFileWrapper(new NativeUploadedFile(part, fileUpload)));
+            }
+            else {
+                fileUpload.setSubmittedValue("");
+            }
         }
     }
 
@@ -75,4 +100,13 @@ public class NativeFileUploadDecoder {
         return fileUpload.getSizeLimit() == null || part.getSize() <= fileUpload.getSizeLimit();
     }
 
+    private static boolean isValidFile(FileUpload fileUpload, List<Part> parts) {
+        long totalPartSize = 0;
+        for (int i = 0; i < parts.size(); i++) {
+            Part p = parts.get(i);
+            totalPartSize += p.getSize();
+        }
+
+        return fileUpload.getSizeLimit() == null || totalPartSize <= fileUpload.getSizeLimit();
+    }
 }

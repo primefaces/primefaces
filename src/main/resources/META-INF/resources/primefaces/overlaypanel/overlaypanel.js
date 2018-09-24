@@ -128,7 +128,12 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
         if(this.cfg.dismissable && !this.cfg.modal) {
             PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.jq,
                 function() { return $this.target; },
-                function(e) { $this.hide(); });
+                function(e) { 
+                    var $eventTarget = $(e.target);
+                    if(!($this.jq.is($eventTarget) || $this.jq.has($eventTarget).length > 0)) {
+                        $this.hide();
+                    }
+                });
         }
 
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {

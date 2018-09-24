@@ -268,7 +268,7 @@ public class TreeTable extends TreeTableBase {
             else if (eventName.equals("page")) {
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
-                int page = rows > 0 ? (int) (first / rows) : 0;
+                int page = rows > 0 ? (first / rows) : 0;
 
                 wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -434,6 +434,10 @@ public class TreeTable extends TreeTableBase {
         return columns;
     }
 
+    public void setColumns(List<UIColumn> columns) {
+        this.columns = columns;
+    }
+
     public Columns getDynamicColumns() {
         return dynamicColumns;
     }
@@ -593,6 +597,38 @@ public class TreeTable extends TreeTableBase {
 
     public void setFilterMetadata(List filterMetadata) {
         this.filterMetadata = filterMetadata;
+    }
+
+    @Override
+    protected void preDecode(FacesContext context) {
+        resetDynamicColumns();
+        super.preDecode(context);
+    }
+
+    @Override
+    protected void preValidate(FacesContext context) {
+        resetDynamicColumns();
+        super.preValidate(context);
+    }
+
+    @Override
+    protected void preUpdate(FacesContext context) {
+        resetDynamicColumns();
+        super.preUpdate(context);
+    }
+
+    @Override
+    protected void preEncode(FacesContext context) {
+        resetDynamicColumns();
+        super.preEncode(context);
+    }
+
+    private void resetDynamicColumns() {
+        Columns dynamicCols = this.getDynamicColumns();
+        if (dynamicCols != null && isNestedWithinIterator()) {
+            dynamicCols.setRowIndex(-1);
+            this.setColumns(null);
+        }
     }
 
 }

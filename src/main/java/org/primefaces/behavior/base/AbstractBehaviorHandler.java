@@ -214,7 +214,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         List<AttachedObjectHandler> result = (List<AttachedObjectHandler>) attrs.get(key);
 
         if (result == null) {
-            result = new ArrayList<AttachedObjectHandler>();
+            result = new ArrayList<>();
             attrs.put(key, result);
         }
 

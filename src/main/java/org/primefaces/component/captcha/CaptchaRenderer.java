@@ -47,7 +47,6 @@ public class CaptchaRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         Captcha captcha = (Captcha) component;
         String publicKey = getPublicKey(context, captcha);
 

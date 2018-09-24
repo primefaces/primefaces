@@ -61,6 +61,10 @@
             <id>sudheer.jonna</id>
             <name>Sudheer Jonna</name>
         </developer>
+        <developer>
+            <id>Rapster</id>
+            <name>Sébastien Lepage</name>
+        </developer>
     </developers>
 
     <properties>
@@ -193,12 +197,37 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Text Editor -->
+        <!-- will be included and relocated by shade plugin -->
+        <dependency>
+            <groupId>org.owasp.encoder</groupId>
+            <artifactId>encoder</artifactId>
+            <version>1.2.1</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.owasp.esapi</groupId>
+            <artifactId>esapi</artifactId>
+            <version>2.1.0.1</version>
+            <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
             <artifactId>owasp-java-html-sanitizer</artifactId>
             <version>20180219.1</version>
-        </dependency>        
+        </dependency>     
+        <!-- will be shaded; use 2.4 as later versions would require multiple files to shade -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>
@@ -245,7 +274,7 @@
                 <configuration>
                     <consoleOutput>true</consoleOutput>
                     <configLocation>./checkstyle.xml</configLocation>
-                    <excludes>**/UIData.java,**/Base64.java,**/UITabPanel.java,**/json/**,**/UITree.java,**/UIRepeat.java,**/AbstractBehaviorHandler.java</excludes>
+                    <excludes>**/UIData.java,**/UITabPanel.java,**/json/**,**/UITree.java,**/UIRepeat.java,**/AbstractBehaviorHandler.java</excludes>
                 </configuration>
                 <executions>
                     <execution>
@@ -261,9 +290,9 @@
                 </executions>
                 <dependencies>
                     <dependency>
-                      <groupId>com.puppycrawl.tools</groupId>
-                      <artifactId>checkstyle</artifactId>
-                      <version>8.11</version>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>8.11</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -291,6 +320,32 @@
                 </executions>
             </plugin>
 
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>1.16</version>
+                <executions>
+                    <execution>
+                        <id>aggregate-download-licenses</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>aggregate-download-licenses</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>add-third-party</id>
+                        <goals>
+                            <goal>add-third-party</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludedScopes>test,provided</excludedScopes>
+                </configuration>
+            </plugin>
+
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -298,12 +353,30 @@
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <nonFilteredFileExtensions>
-                       <nonFilteredFileExtension>eot</nonFilteredFileExtension>
-                       <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
-                       <nonFilteredFileExtension>woff</nonFilteredFileExtension>
-                       <nonFilteredFileExtension>woff2</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>eot</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>woff</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>woff2</nonFilteredFileExtension>
                     </nonFilteredFileExtensions>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}/META-INF/resources</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/generated-resources</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -599,6 +672,54 @@
                     </aggregations>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <shadedArtifactAttached>false</shadedArtifactAttached>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
+                    <minimizeJar>true</minimizeJar>
+                    <relocations>
+                        <relocation>
+                            <pattern>org.owasp.encoder</pattern>
+                            <shadedPattern>org.primefaces.shaded.owasp.encoder</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.owasp.esapi</pattern>
+                            <shadedPattern>org.primefaces.shaded.owasp.esapi</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.apache.commons.io</pattern>
+                            <shadedPattern>org.primefaces.shaded.commons.io</shadedPattern>
+                        </relocation>
+                    </relocations>
+                    <filters>
+                        <filter>
+                            <artifact>org.owasp.esapi:esapi</artifact>
+                            <includes>
+                                <include>org/owasp/esapi/SafeFile.class</include>
+                            </includes>
+                        </filter>
+                        <filter>
+                            <artifact>commons-io:commons-io</artifact>
+                            <includes>
+                                <include>org/apache/commons/io/input/BoundedInputStream.class</include>
+                            </includes>
+                        </filter>
+                    </filters>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -683,7 +804,7 @@
                         <artifactId>maven-javadoc-plugin</artifactId>
                         <version>2.10.4</version>
                         <configuration>
-                            <sourcepath>${basedir}/src/main/java;${basedir}/target/generated-sources/maven-jsf-plugin</sourcepath>
+                            <sourcepath>${basedir}/src/main/java</sourcepath>
                             <additionalparam>-Xdoclint:none</additionalparam>
                         </configuration>
                         <executions>
@@ -729,6 +850,7 @@
                                 <exclude>**/texteditor.js</exclude>
                                 <exclude>**/jquery.js</exclude>
                                 <exclude>**/0-fullcalendar.min.js</exclude>
+                                <exclude>**/chartjs.js</exclude>
                             </excludes>
                             <includes>
                                 <include>**/*.js</include>

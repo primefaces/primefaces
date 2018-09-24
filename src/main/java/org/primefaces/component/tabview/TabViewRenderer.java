@@ -228,9 +228,9 @@ public class TabViewRenderer extends CoreRenderer {
         writer.startElement("li", tab);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "tab", null);
-        writer.writeAttribute("aria-expanded", String.valueOf(active), null);
-        writer.writeAttribute("aria-selected", String.valueOf(active), null);
-        writer.writeAttribute("aria-label", tab.getAriaLabel(), null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(active), null);
+        writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(active), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, tab.getAriaLabel(), null);
         writer.writeAttribute("data-index", index, null);
         if (tab.getTitleStyle() != null) {
             writer.writeAttribute("style", tab.getTitleStyle(), null);
@@ -268,7 +268,7 @@ public class TabViewRenderer extends CoreRenderer {
         if (actions != null && actions.isRendered()) {
             writer.startElement("li", null);
             writer.writeAttribute("class", "ui-tabs-actions", null);
-            writer.writeAttribute("aria-hidden", String.valueOf(!active), null);
+            writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
             actions.encodeAll(context);
             writer.endElement("li");
         }
@@ -324,7 +324,7 @@ public class TabViewRenderer extends CoreRenderer {
         writer.writeAttribute("id", tab.getClientId(context), null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "tabpanel", null);
-        writer.writeAttribute("aria-hidden", String.valueOf(!active), null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, String.valueOf(!active), null);
         writer.writeAttribute("data-index", index, null);
 
         if (dynamic) {

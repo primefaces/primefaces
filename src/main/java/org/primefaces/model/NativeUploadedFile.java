@@ -16,7 +16,6 @@
 package org.primefaces.model;
 
 import org.primefaces.component.fileupload.FileUpload;
-import org.primefaces.util.BoundedInputStream;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -24,10 +23,12 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.List;
 import javax.faces.FacesException;
 import javax.servlet.http.Part;
+import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.util.FileUploadUtils;
-import org.primefaces.util.SafeFile;
 
 public class NativeUploadedFile implements UploadedFile, Serializable {
 
@@ -38,6 +39,8 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     private String filename;
     private byte[] cachedContent;
     private Long sizeLimit;
+    private List<Part> parts;
+    private List<String> filenames;
 
     public NativeUploadedFile() {
     }
@@ -48,9 +51,20 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
         this.sizeLimit = fileUpload.getSizeLimit();
     }
 
+    public NativeUploadedFile(List<Part> parts, FileUpload fileUpload) {
+        this.parts = parts;
+        this.filenames = resolveFilenames(parts);
+        this.sizeLimit = fileUpload.getSizeLimit();
+    }
+
     @Override
     public String getFileName() {
-        return FileUploadUtils.getValidFilename(filename);
+        return filename;
+    }
+
+    @Override
+    public List<String> getFileNames() {
+        return filenames;
     }
 
     @Override
@@ -105,8 +119,17 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
 
     @Override
     public void write(String filePath) throws Exception {
-        SafeFile file = new SafeFile(filePath);
-        part.write(file.getPath());
+        String validFilePath = FileUploadUtils.getValidFilePath(filePath);
+
+        if (parts != null) {
+            for (int i = 0; i < parts.size(); i++) {
+                Part p = parts.get(i);
+                p.write(validFilePath);
+            }
+        }
+        else {
+            part.write(validFilePath);
+        }
     }
 
     public Part getPart() {
@@ -114,7 +137,17 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
     }
 
     private String resolveFilename(Part part) {
-        return getContentDispositionFileName(part.getHeader("content-disposition"));
+        return FileUploadUtils.getValidFilename(getContentDispositionFileName(part.getHeader("content-disposition")));
+    }
+
+    private List<String> resolveFilenames(List<Part> parts) {
+        filenames = new ArrayList<>();
+        for (int i = 0; i < parts.size(); i++) {
+            Part p = parts.get(i);
+            filenames.add(resolveFilename(p));
+        }
+
+        return filenames;
     }
 
     protected String getContentDispositionFileName(final String line) {
