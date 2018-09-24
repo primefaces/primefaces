@@ -313,10 +313,10 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.panel,
             function() { return $this.triggers; },
-            function(e) { 
+            function(e) {
                 var $eventTarget = $(e.target);
                 if(!($this.panel.is($eventTarget) || $this.panel.has($eventTarget).length > 0)) {
-                    $this.hide(true); 
+                    $this.hide(true);
                 }
             });
 
@@ -556,7 +556,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             if(el.is(':visible')) {
                 var input = this.inputs.eq(i);
-                if(!input[0].disabled) {
+                var inputNative = input[0];
+
+                if(!inputNative.disabled) {
                     input.prop('checked', true).attr('aria-checked', true);
                     this.check(el.children('.ui-chkbox').children('.ui-chkbox-box'));
 
@@ -592,7 +594,9 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
             if(el.is(':visible')) {
                 var input = this.inputs.eq(i);
-                if(!input[0].disabled) {
+                var inputNative = input[0];
+
+                if(!inputNative.disabled) {
                     this.inputs.eq(i).prop('checked', false).attr('aria-checked', false);
                     this.uncheck(el.children('.ui-chkbox').children('.ui-chkbox-box'));
 
