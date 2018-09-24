@@ -19,6 +19,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         this.cfg.showHeader = (this.cfg.showHeader === undefined) ? true : this.cfg.showHeader;
         this.cfg.dynamic = this.cfg.dynamic === true ? true : false;
         this.isDynamicLoaded = false;
+        this.cfg.labelSeparator = (this.cfg.labelSeparator === undefined) ? ',' : this.cfg.labelSeparator;
 
         if(!this.disabled) {
             if(this.cfg.multiple) {
@@ -826,7 +827,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
         if(checkedItems && checkedItems.length) {
             for(var i = 0; i < checkedItems.length; i++) {
                 if(i != 0) {
-                    labelText = labelText + ',';
+                    labelText = labelText + this.cfg.labelSeparator;
                 }
                 labelText = labelText + $(checkedItems[i]).next().text();
             }
