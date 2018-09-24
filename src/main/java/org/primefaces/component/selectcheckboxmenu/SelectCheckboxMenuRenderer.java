@@ -209,7 +209,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         String label = menu.getLabel();
         String labelClass = !valid ? SelectCheckboxMenu.LABEL_CLASS + " ui-state-error" : SelectCheckboxMenu.LABEL_CLASS;
         if (label == null) {
-            label = "&nbsp;";
+            label = "";
         }
 
         writer.startElement("span", null);
