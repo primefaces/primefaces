@@ -42,11 +42,11 @@ public abstract class InputRenderer extends CoreRenderer {
         }
     }
 
-    protected <T extends UIInput> boolean isDisabled(T component) {
+    protected boolean isDisabled(UIInput component) {
         return Boolean.parseBoolean(String.valueOf(component.getAttributes().get("disabled")));
     }
 
-    protected <T extends UIInput> boolean isReadOnly(T component) {
+    protected boolean isReadOnly(UIInput component) {
         return Boolean.parseBoolean(String.valueOf(component.getAttributes().get("readonly")));
     }
 
@@ -86,11 +86,11 @@ public abstract class InputRenderer extends CoreRenderer {
      * @param component the {@link UIInput} component to add attributes for
      * @throws IOException if any error occurs writing the response
      */
-    protected <T extends UIInput> void renderAccessibilityAttributes(FacesContext context, T component) throws IOException {
+    protected void renderAccessibilityAttributes(FacesContext context, UIInput component) throws IOException {
         renderAccessibilityAttributes(context, component, isDisabled(component), isReadOnly(component));
     }
 
-    protected <T extends UIInput> void renderAccessibilityAttributes(FacesContext context, T component, boolean disabled, boolean readonly)
+    protected void renderAccessibilityAttributes(FacesContext context, UIInput component, boolean disabled, boolean readonly)
                 throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
