@@ -918,7 +918,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Code describing the language used in the generated markup for this component.]]></description>
+            <description><![CDATA[Code describing the language used in the generated markup.]]></description>
             <name>lang</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -1690,7 +1690,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Code describing the language used in the generated markup for this component.]]></description>
+            <description><![CDATA[Code describing the language used in the generated markup.]]></description>
             <name>lang</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -2016,7 +2016,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Code describing the language used in the generated markup for this component.]]></description>
+            <description><![CDATA[Code describing the language used in the generated markup.]]></description>
             <name>lang</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -3063,7 +3063,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Code describing the language used in the generated markup for this component.]]></description>
+            <description><![CDATA[Code describing the language used in the generated markup.]]></description>
             <name>lang</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -4105,7 +4105,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Code describing the language used in the generated markup for this component.]]></description>
+            <description><![CDATA[Code describing the language used in the generated markup.]]></description>
             <name>lang</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -8731,7 +8731,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Code describing the language used in the generated markup for this component.]]></description>
+            <description><![CDATA[Code describing the language used in the generated markup.]]></description>
             <name>lang</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -9018,7 +9018,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Code describing the language used in the generated markup for this component.]]></description>
+            <description><![CDATA[Code describing the language used in the generated markup.]]></description>
             <name>lang</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -9520,7 +9520,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Code describing the language used in the generated markup for this component.]]></description>
+            <description><![CDATA[Code describing the language used in the generated markup.]]></description>
             <name>lang</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -9784,7 +9784,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Code describing the language used in the generated markup for this component.]]></description>
+            <description><![CDATA[Code describing the language used in the generated markup.]]></description>
             <name>lang</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -10096,7 +10096,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Code describing the language used in the generated markup for this component.]]></description>
+            <description><![CDATA[Code describing the language used in the generated markup.]]></description>
             <name>lang</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -13557,7 +13557,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Code describing the language used in the generated markup for this component.]]></description>
+            <description><![CDATA[Code describing the language used in the generated markup.]]></description>
             <name>lang</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -18001,7 +18001,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Code describing the language used in the generated markup for this component.]]></description>
+            <description><![CDATA[Code describing the language used in the generated markup.]]></description>
             <name>lang</name>
             <required>false</required>
             <type>java.lang.String</type>
@@ -18342,7 +18342,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Code describing the language used in the generated markup for this component.]]></description>
+            <description><![CDATA[Code describing the language used in the generated markup.]]></description>
             <name>lang</name>
             <required>false</required>
             <type>java.lang.String</type>
