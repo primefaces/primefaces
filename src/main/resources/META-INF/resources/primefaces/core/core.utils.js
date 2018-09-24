@@ -211,7 +211,8 @@ if (!PrimeFaces.utils) {
 
                 widget.addDestroyListener(function() {
                     var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
-                    PrimeFaces.utils.removeDynamicOverlay(widget, overlay, overlayId, appendTo);
+                    // pass null as overlay - as every! overlay with this overlayId can be removed on destroying the whole widget
+                    PrimeFaces.utils.removeDynamicOverlay(widget, null, overlayId, appendTo);
                 });
 
                 widget.addRefreshListener(function() {

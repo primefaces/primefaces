@@ -221,7 +221,7 @@ abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, 
     }
 
     public String getAppendTo() {
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
+        return (String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
     }
 
     public void setAppendTo(String appendTo) {
