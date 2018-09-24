@@ -36,10 +36,12 @@ PrimeFaces.widget.TreeTable = PrimeFaces.widget.DeferredWidget.extend({
         this.bindEvents();
     },
 
+    //@override
     refresh: function(cfg) {
         this.columnWidthsFixed = false;
         this.scrollStateVal = this.scrollStateHolder ? this.scrollStateHolder.val() : null;
-        this.init(cfg);
+        
+        this._super(cfg);
     },
 
     bindEvents: function() {

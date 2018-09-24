@@ -29,7 +29,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
     refresh: function(cfg) {
         PrimeFaces.utils.removeDynamicOverlay(this, this.panel, this.id + '_panel', $(document.body));
 
-        this.init(cfg);
+        this._super(cfg);
     },
 
     createPanel: function() {

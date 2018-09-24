@@ -29,6 +29,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.bindEvents();
     },
 
+    //@override
     refresh: function(cfg) {
         var jqs = $('[id=' + cfg.id.replace(/:/g,"\\:") + ']');
         if(jqs.length > 1) {
@@ -37,7 +38,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
         this.widthAligned = false;
 
-        this.init(cfg);
+        this._super(cfg);
     },
 
     render: function() {

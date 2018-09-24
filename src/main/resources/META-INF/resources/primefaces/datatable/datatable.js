@@ -129,13 +129,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
-    /**
-     * @Override
-     */
+    //@override
     refresh: function(cfg) {
         this.columnWidthsFixed = false;
 
-        this.init(cfg);
+        this._super(cfg);
     },
 
     /**

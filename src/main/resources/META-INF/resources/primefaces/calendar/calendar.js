@@ -142,7 +142,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
             $.datepicker._hideDatepicker();
         }
 
-        this.init(cfg);
+        this._super(cfg);
     },
 
     configureLocale: function() {

@@ -39,13 +39,14 @@ PrimeFaces.widget.InputTextarea = PrimeFaces.widget.DeferredWidget.extend({
         }
     },
 
+    //@override
     refresh: function(cfg) {
         //remove autocomplete panel
         if(cfg.autoComplete) {
             $(PrimeFaces.escapeClientId(cfg.id + '_panel')).remove();
         }
 
-        this.init(cfg);
+        this._super(cfg);
     },
 
     setupAutoResize: function() {

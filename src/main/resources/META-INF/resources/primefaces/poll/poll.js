@@ -17,7 +17,7 @@ PrimeFaces.widget.Poll = PrimeFaces.widget.BaseWidget.extend({
     refresh: function(cfg) {
         this.stop();
 
-        this.init(cfg);
+        this._super(cfg);
     },
 
     //@Override

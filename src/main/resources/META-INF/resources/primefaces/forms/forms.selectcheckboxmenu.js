@@ -71,7 +71,7 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
     //@override
     refresh: function(cfg) {
-        this.init(cfg);
+        this._super(cfg);
     },
 
     _renderPanel: function() {
