@@ -274,6 +274,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("multiple", "multiple", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("tabindex", "-1", null);
 
         if (ac.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");
