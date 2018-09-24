@@ -16,10 +16,8 @@
 package org.primefaces.component.inplace;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
