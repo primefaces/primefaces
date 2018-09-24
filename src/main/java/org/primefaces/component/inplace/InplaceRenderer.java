@@ -77,9 +77,6 @@ public class InplaceRenderer extends CoreRenderer {
         writer.writeAttribute("id", clientId + "_display", "id");
         writer.writeAttribute("class", displayClass, null);
         writer.writeAttribute("style", "display:" + displayStyle, null);
-        if (hasRequiredChildren(inplace)) {
-            writer.writeAttribute(HTML.ARIA_REQUIRED, Boolean.toString(Inplace.DISPLAY_INLINE.equals(displayStyle)), null);
-        }
 
         if (outputFacet != null) {
             outputFacet.encodeAll(context);
@@ -197,17 +194,5 @@ public class InplaceRenderer extends CoreRenderer {
     @Override
     public boolean getRendersChildren() {
         return true;
-    }
-
-    private boolean hasRequiredChildren(Inplace inplace) {
-        List<UIComponent> children = inplace.getChildren();
-        for (int i = 0; i < children.size(); i++) {
-            UIComponent c = children.get(i);
-            if (c instanceof UIInput && ((UIInput) c).isRequired()) {
-                // at least one input component with attribute required found
-                return true;
-            }
-        }
-        return false;
     }
 }
