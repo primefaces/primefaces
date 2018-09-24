@@ -147,7 +147,6 @@ public class ColorPickerRenderer extends InputRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId + "_inline", "id");
-        renderAccessibilityAttributes(context, colorPicker);
         writer.endElement("div");
     }
 

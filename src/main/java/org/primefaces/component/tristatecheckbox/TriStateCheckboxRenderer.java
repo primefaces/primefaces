@@ -79,7 +79,6 @@ public class TriStateCheckboxRenderer extends InputRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        renderAccessibilityAttributes(context, checkbox);
 
         encodeInput(context, checkbox, clientId, valCheck);
         encodeOutput(context, checkbox, valCheck, disabled);

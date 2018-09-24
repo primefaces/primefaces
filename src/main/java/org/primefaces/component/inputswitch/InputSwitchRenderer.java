@@ -76,7 +76,6 @@ public class InputSwitchRenderer extends InputRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        renderAccessibilityAttributes(context, inputSwitch);
 
         encodeOption(context, inputSwitch.getOffLabel(), InputSwitch.OFF_LABEL_CLASS, showLabels);
         encodeOption(context, inputSwitch.getOnLabel(), InputSwitch.ON_LABEL_CLASS, showLabels);

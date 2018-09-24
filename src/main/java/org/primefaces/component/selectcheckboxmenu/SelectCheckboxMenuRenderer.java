@@ -80,7 +80,6 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         }
 
         renderARIACombobox(context, menu);
-        renderAccessibilityAttributes(context, menu);
         encodeKeyboardTarget(context, menu);
         encodeInputs(context, menu, selectItems);
         if (menu.isMultiple()) {
@@ -170,15 +169,13 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         if (checked) {
             writer.writeAttribute("checked", "checked", null);
         }
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
         if (option.getDescription() != null) {
             writer.writeAttribute("title", option.getDescription(), null);
         }
         if (menu.getOnchange() != null) {
             writer.writeAttribute("onchange", menu.getOnchange(), null);
         }
+        renderAccessibilityAttributes(context, menu);
 
         writer.endElement("input");
 
