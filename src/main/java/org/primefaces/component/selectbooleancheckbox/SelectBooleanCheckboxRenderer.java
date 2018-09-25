@@ -83,7 +83,6 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
         if (title != null) {
             writer.writeAttribute("title", title, "title");
         }
-        renderAccessibilityAttributes(context, checkbox);
 
         encodeInput(context, checkbox, clientId, checked);
         encodeOutput(context, checkbox, checked, disabled);

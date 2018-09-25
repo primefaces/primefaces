@@ -70,7 +70,6 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        renderAccessibilityAttributes(context, listbox);
 
         if (listbox.isFilter()) {
             encodeFilter(context, listbox);
