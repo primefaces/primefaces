@@ -129,7 +129,7 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
             PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.jq,
                 function() { return $this.target; },
                 function(e, eventTarget) {
-                    if(!($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0)) {
+                    if(!($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0 || eventTarget.closest('.ui-input-overlay').length > 0)) {
                         $this.hide();
                     }
                 });
