@@ -69,7 +69,6 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
-        renderAccessibilityAttributes(context, listbox);
         encodeInput(context, listbox);
         encodeLists(context, listbox, selectItems);
 
@@ -99,6 +98,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
 
         writer.startElement("ul", listbox);
         writer.writeAttribute("class", listStyleClass, null);
+        renderARIARequired(context, listbox);
 
         if (items != null) {
             encodeListItems(context, listbox, items);
@@ -173,6 +173,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
         if (valueToRender != null) {
             writer.writeAttribute("value", valueToRender, null);
         }
+        renderAccessibilityAttributes(context, listbox);
         writer.endElement("input");
     }
 

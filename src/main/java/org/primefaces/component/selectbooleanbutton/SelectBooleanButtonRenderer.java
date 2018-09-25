@@ -80,7 +80,6 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
-        renderAccessibilityAttributes(context, button);
 
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);

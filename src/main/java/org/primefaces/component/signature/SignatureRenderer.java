@@ -68,8 +68,6 @@ public class SignatureRenderer extends InputRenderer {
             writer.writeAttribute("class", styleClass, null);
         }
 
-        renderAccessibilityAttributes(context, signature);
-
         encodeInputField(context, signature, clientId + "_value", signature.getValue());
 
         if (signature.getValueExpression(Signature.PropertyKeys.base64Value.toString()) != null) {
@@ -111,6 +109,7 @@ public class SignatureRenderer extends InputRenderer {
         if (value != null) {
             writer.writeAttribute("value", value, null);
         }
+        renderAccessibilityAttributes(context, signature);
         writer.endElement("input");
     }
 }

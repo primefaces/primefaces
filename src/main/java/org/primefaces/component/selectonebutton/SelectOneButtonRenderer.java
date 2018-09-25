@@ -71,7 +71,6 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
-        renderAccessibilityAttributes(context, button);
         encodeSelectItems(context, button, selectItems);
 
         writer.endElement("div");
@@ -146,10 +145,8 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         if (selected) {
             writer.writeAttribute("checked", "checked", null);
         }
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
 
+        renderAccessibilityAttributes(context, button);
         writer.endElement("input");
 
         //item label

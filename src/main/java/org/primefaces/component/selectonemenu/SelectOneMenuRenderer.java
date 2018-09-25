@@ -127,7 +127,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.writeAttribute("title", title, "title");
         }
         renderARIACombobox(context, menu);
-        renderAccessibilityAttributes(context, menu);
 
         encodeInput(context, menu, clientId, selectItems, values, submittedValues, converter);
         encodeLabel(context, menu, selectItems);
