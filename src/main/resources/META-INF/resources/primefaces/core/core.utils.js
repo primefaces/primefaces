@@ -172,7 +172,17 @@ if (!PrimeFaces.utils) {
                     }
                 }
 
-                // old check:
+
+                // this checks were moved to the used components
+
+                // do nothing when the clicked element is a child of the overlay
+                /*
+                if (overlay.is($eventTarget) || overlay.has($eventTarget).length > 0) {
+                    return;
+                }
+                */
+
+                // OLD WAY: do nothing when the clicked element is a child of the overlay
                 /*
                 var offset = overlay.offset();
                 if (e.pageX < offset.left
