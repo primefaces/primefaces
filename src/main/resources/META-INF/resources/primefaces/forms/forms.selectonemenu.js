@@ -234,9 +234,8 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
         PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.panel,
             function() { return  $this.label.add($this.menuIcon); },
-            function(e) {
-                var $eventTarget = $(e.target);
-                if(!($this.panel.is($eventTarget) || $this.panel.has($eventTarget).length > 0)) {
+            function(e, eventTarget) {
+                if(!($this.panel.is(eventTarget) || $this.panel.has(eventTarget).length > 0)) {
                     $this.hide();
                     setTimeout(function() {
                         $this.revert();

@@ -327,9 +327,8 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.panel,
             function() { return $this.triggers; },
-            function(e) {
-                var $eventTarget = $(e.target);
-                if(!($this.panel.is($eventTarget) || $this.panel.has($eventTarget).length > 0)) {
+            function(e, eventTarget) {
+                if(!($this.panel.is(eventTarget) || $this.panel.has(eventTarget).length > 0)) {
                     $this.hide(true);
                 }
             });

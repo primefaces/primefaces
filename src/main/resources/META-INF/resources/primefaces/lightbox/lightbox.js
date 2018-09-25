@@ -248,9 +248,8 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         var hideEvent = PrimeFaces.env.ios ? 'touchstart' : 'click';
         PrimeFaces.utils.registerHideOverlayHandler(this, hideEvent + '.' + this.id + '_hide', $this.panel,
             function() { return $this.links.add($this.closeIcon); },
-            function(e) {
-                var $eventTarget = $(e.target);
-                if(!($this.panel.is($eventTarget) || $this.panel.has($eventTarget).length > 0)) {
+            function(e, eventTarget) {
+                if(!($this.panel.is(eventTarget) || $this.panel.has(eventTarget).length > 0)) {
                     e.preventDefault();
                     $this.hide();
                 }

@@ -106,9 +106,8 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
         });
 
         PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.menu, null,
-            function(e) {
-                var $eventTarget = $(e.target);
-                if(!($this.menu.is($eventTarget) || $this.menu.has($eventTarget).length > 0)) {
+            function(e, eventTarget) {
+                if(!($this.menu.is(eventTarget) || $this.menu.has(eventTarget).length > 0)) {
                     $this.button.removeClass('ui-state-focus ui-state-hover');
                     $this.hide();
                 }

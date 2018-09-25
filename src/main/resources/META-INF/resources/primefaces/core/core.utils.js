@@ -183,7 +183,7 @@ if (!PrimeFaces.utils) {
                 }
                 */
 
-                hideCallback(e);
+                hideCallback(e, $eventTarget);
             });
         },
 
