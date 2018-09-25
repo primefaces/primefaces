@@ -21,6 +21,12 @@ PrimeFaces.widget.Knob = PrimeFaces.widget.BaseWidget.extend({
         this.jq.data('fgcolor', this.cfg.fgColor || this.themeObject.fgColor);
         this.jq.data('bgcolor', this.cfg.bgColor || this.themeObject.bgColor);
 
+        /* PrimeFaces Github #4085 */
+        this.jq.css({
+            'pointer-events': 'none',
+            '-moz-user-select': 'none'
+        });
+        
         this.jq.knob({
             release : function(value) {
                 $this.input.val(value);
