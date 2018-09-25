@@ -845,7 +845,11 @@ PrimeFaces.widget.SelectCheckboxMenu = PrimeFaces.widget.BaseWidget.extend({
             }
         }
         else {
-            labelText = this.defaultLabel;
+            if (this.cfg.emptyLabel) {
+                labelText = this.cfg.emptyLabel;
+            } else {
+                labelText = this.defaultLabel;
+            }
         }
 
         this.label.text(labelText);
