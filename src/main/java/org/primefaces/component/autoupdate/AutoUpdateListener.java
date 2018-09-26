@@ -73,7 +73,7 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
         return (ArrayList<String>) context.getViewRoot().getAttributes().get(COMPONENT_CLIENT_IDS);
     }
 
-    public static void configure(UIComponent component, boolean disabled) {
+    public static void subscribe(UIComponent component, boolean disabled) {
         // PostAddToViewEvent should work for stateless views
         //                  but fails for MyFaces ViewPooling
         //                  and sometimes on postbacks as PostAddToViewEvent should actually ony be called once

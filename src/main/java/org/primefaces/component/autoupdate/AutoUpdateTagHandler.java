@@ -40,6 +40,6 @@ public class AutoUpdateTagHandler extends TagHandler {
             disabled = disabledAttribute.getBoolean(faceletContext);
         }
 
-        AutoUpdateListener.configure(parent, disabled);
+        AutoUpdateListener.subscribe(parent, disabled);
     }
 }
