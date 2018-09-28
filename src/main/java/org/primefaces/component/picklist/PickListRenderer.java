@@ -136,6 +136,7 @@ public class PickListRenderer extends InputRenderer {
         wb.init("PickList", pickList.resolveWidgetVar(), clientId)
                 .attr("effect", pickList.getEffect())
                 .attr("effectSpeed", pickList.getEffectSpeed())
+                .attr("escape", pickList.isEscape())
                 .attr("showSourceControls", pickList.isShowSourceControls(), false)
                 .attr("showTargetControls", pickList.isShowTargetControls(), false)
                 .attr("disabled", pickList.isDisabled(), false)
@@ -314,7 +315,12 @@ public class PickListRenderer extends InputRenderer {
                     RendererUtils.encodeCheckbox(context, false);
                 }
 
-                writer.writeText(itemLabel, null);
+                if (pickList.isEscape()) {
+                    writer.writeText(itemLabel, null);
+                }
+                else {
+                    writer.write(itemLabel);
+                }
             }
 
             writer.endElement("li");
