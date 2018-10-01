@@ -14,6 +14,7 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         this.pageLinks = this.pagesContainer.children('.ui-paginator-page');
         this.rppSelect = this.jq.children('.ui-paginator-rpp-options');
         this.jtpSelect = this.jq.children('.ui-paginator-jtp-select');
+        this.jtpInput = this.jq.children('.ui-paginator-jtp-input');
         this.firstLink = this.jq.children('.ui-paginator-first');
         this.prevLink  = this.jq.children('.ui-paginator-prev');
         this.nextLink  = this.jq.children('.ui-paginator-next');
@@ -77,11 +78,19 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        //jump to page
+        //jump to page dropdown
         PrimeFaces.skinSelect(this.jtpSelect);
         this.jtpSelect.change(function(e) {
             if(!$(this).hasClass("ui-state-disabled")){
                 $this.setPage(parseInt($(this).val()));
+            }
+        });
+
+        //jump to page input
+        PrimeFaces.skinInput(this.jtpInput);
+        this.jtpInput.change(function(e) {
+            if(!$(this).hasClass("ui-state-disabled")){
+                $this.setPage(parseInt($(this).val() - 1));
             }
         });
 
@@ -229,6 +238,11 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
                 this.jtpSelect.html(jtpOptions);
             }
             this.jtpSelect.children('option[value=' + (this.cfg.page) + ']').prop('selected','selected');
+        }
+
+        //jump to page input
+        if(this.jtpInput.length > 0) {
+            this.jtpInput.val(this.cfg.page + 1);
         }
 
         //page links

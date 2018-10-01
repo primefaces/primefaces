@@ -30,6 +30,7 @@ import org.primefaces.component.api.UIData;
 import org.primefaces.component.paginator.CurrentPageReportRenderer;
 import org.primefaces.component.paginator.FirstPageLinkRenderer;
 import org.primefaces.component.paginator.JumpToPageDropdownRenderer;
+import org.primefaces.component.paginator.JumpToPageInputRenderer;
 import org.primefaces.component.paginator.LastPageLinkRenderer;
 import org.primefaces.component.paginator.NextPageLinkRenderer;
 import org.primefaces.component.paginator.PageLinksRenderer;
@@ -54,6 +55,7 @@ public class DataRenderer extends CoreRenderer {
         PAGINATOR_ELEMENTS.put("{PageLinks}", new PageLinksRenderer());
         PAGINATOR_ELEMENTS.put("{RowsPerPageDropdown}", new RowsPerPageDropdownRenderer());
         PAGINATOR_ELEMENTS.put("{JumpToPageDropdown}", new JumpToPageDropdownRenderer());
+        PAGINATOR_ELEMENTS.put("{JumpToPageInput}", new JumpToPageInputRenderer());
     }
 
     public static void addPaginatorElement(String element, PaginatorElementRenderer renderer) {

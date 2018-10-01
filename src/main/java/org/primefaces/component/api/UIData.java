@@ -56,6 +56,7 @@ import javax.faces.render.Renderer;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
+import org.primefaces.component.inputtext.InputText;
 import org.primefaces.model.CollectionDataModel;
 import org.primefaces.model.IterableDataModel;
 import org.primefaces.util.ComponentTraversalUtils;
@@ -75,7 +76,8 @@ public class UIData extends javax.faces.component.UIData {
     public static final String PAGINATOR_CURRENT_CLASS = "ui-paginator-current";
     public static final String PAGINATOR_RPP_OPTIONS_CLASS = "ui-paginator-rpp-options ui-widget ui-state-default ui-corner-left";
     public static final String PAGINATOR_RPP_LABEL_CLASS = "ui-paginator-rpp-label ui-helper-hidden";
-    public static final String PAGINATOR_JTP_CLASS = "ui-paginator-jtp-select ui-widget ui-state-default ui-corner-left";
+    public static final String PAGINATOR_JTP_SELECT_CLASS = "ui-paginator-jtp-select ui-widget ui-state-default ui-corner-left";
+    public static final String PAGINATOR_JTP_INPUT_CLASS = "ui-paginator-jtp-input " + InputText.STYLE_CLASS;
     public static final String PAGINATOR_FIRST_PAGE_LINK_CLASS = "ui-paginator-first ui-state-default ui-corner-all";
     public static final String PAGINATOR_FIRST_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-first";
     public static final String PAGINATOR_PREV_PAGE_LINK_CLASS = "ui-paginator-prev ui-state-default ui-corner-all";
