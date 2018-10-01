@@ -566,6 +566,10 @@
             var s = this, mwTimerStop,
                 mwTimerRelease,
                 mw = function (e) {
+                    // PrimeFaces #4098
+                        e.stopImmediatePropagation();
+                        e.stopPropagation();
+                        
                     e.preventDefault();
 
                     var ori = e.originalEvent,
