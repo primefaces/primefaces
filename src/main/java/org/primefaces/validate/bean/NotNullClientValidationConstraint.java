@@ -37,7 +37,7 @@ public class NotNullClientValidationConstraint implements ClientValidationConstr
             metadata.put(MESSAGE_METADATA, message);
         }
 
-        metadata.put(HTML.VALIDATION_METADATA.REQUIRED, Boolean.TRUE);
+        metadata.put(HTML.VALIDATION_METADATA.REQUIRED, "true");
 
         return metadata;
     }
