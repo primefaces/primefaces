@@ -95,7 +95,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             this.bindKeyEvents();
 
             this.updateButtonsState();
-            
+
             this.updateListRole();
         }
     },
@@ -223,9 +223,11 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             }
 
             setTimeout(function() {
-                PrimeFaces.scrollInView(list, $this.focusedItem);
-                $this.focusedItem.addClass('ui-picklist-outline');
-                $this.ariaRegion.text($this.focusedItem.data('item-label'));
+                if ($this.focusedItem) {
+                    PrimeFaces.scrollInView(list, $this.focusedItem);
+                    $this.focusedItem.addClass('ui-picklist-outline');
+                    $this.ariaRegion.text($this.focusedItem.data('item-label'));
+                }
             }, 100);
         })
         .on('blur.pickList', listSelector, null, function() {
@@ -370,7 +372,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
             itemValue = item.attr('data-item-value'),
             itemLabel = item.attr('data-item-label') ? PrimeFaces.escapeHTML(item.attr('data-item-label')) : '',
             option = $('<option selected="selected"></option>');
-            
+
             if ($this.cfg.escape) {
                itemValue = PrimeFaces.escapeHTML(itemValue);
             }
@@ -540,7 +542,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
         }
-        
+
     },
 
     startsWithFilter: function(value, filter) {
@@ -769,7 +771,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                         $this.saveState();
                         $this.fireTransferEvent(items, from, to, type);
                     }
-                    
+
                     $this.updateListRole();
                 });
             });
@@ -925,7 +927,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
     enableButton: function (button) {
         button.removeAttr('disabled').removeClass('ui-state-disabled');
     },
-    
+
     updateListRole: function() {
         this.sourceList.children('li:visible').length > 0 ? this.sourceList.attr('role', 'menu') : this.sourceList.removeAttr('role');
         this.targetList.children('li:visible').length > 0 ? this.targetList.attr('role', 'menu') : this.targetList.removeAttr('role');
