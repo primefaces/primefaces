@@ -674,7 +674,12 @@ if (window.PrimeFaces) {
             newValue = submittedValue;
         }
 
-        if(valid && element.data('p-required') && (newValue === null || newValue === '')) {
+        var required = element.data('p-required');
+        if (required) {
+           element.attr('aria-required', true);
+        }
+
+        if(valid && required && (newValue === null || newValue === '')) {
             var requiredMessageStr = element.data('p-rmsg'),
             requiredMsg = (requiredMessageStr) ? {summary:requiredMessageStr,detail:requiredMessageStr} : vc.getMessage('javax.faces.component.UIInput.REQUIRED', vc.getLabel(element));
             vc.addMessage(element, requiredMsg);
@@ -709,10 +714,14 @@ if (window.PrimeFaces) {
         var highlighterType = element.data('p-hl')||'default',
         highlighter = PrimeFaces.validator.Highlighter.types[highlighterType];
 
-        if(valid)
+        if(valid) {
             highlighter.unhighlight(element);
-        else
+            element.attr('aria-invalid', false);
+        }
+        else {
             highlighter.highlight(element);
+            element.attr('aria-invalid', true);
+        }
     };
 
     PrimeFaces.validateInstant = function(el) {
