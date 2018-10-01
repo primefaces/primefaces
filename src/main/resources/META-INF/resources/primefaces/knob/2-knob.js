@@ -16,6 +16,8 @@ PrimeFaces.widget.Knob = PrimeFaces.widget.BaseWidget.extend({
     refresh: function(cfg) {
         if (this.knob) {
             this.knob.children('canvas').remove();
+            this.input.remove();
+            this.knob.children('input').unwrap();
         }
         
         this.init(cfg);
