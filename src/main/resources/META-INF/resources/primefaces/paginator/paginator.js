@@ -90,7 +90,14 @@ PrimeFaces.widget.Paginator = PrimeFaces.widget.BaseWidget.extend({
         PrimeFaces.skinInput(this.jtpInput);
         this.jtpInput.change(function(e) {
             if(!$(this).hasClass("ui-state-disabled")){
-                $this.setPage(parseInt($(this).val() - 1));
+                var page = parseInt($(this).val());
+                if (isNaN(page) || page > $this.cfg.pageCount || page < 1) {
+                    // restore old value if invalid
+                    $(this).val($this.cfg.page + 1);
+                }
+                else {
+                    $this.setPage(page - 1);
+                }
             }
         });
 
