@@ -16,7 +16,6 @@
 package org.primefaces.component.outputpanel;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -27,10 +26,8 @@ import org.primefaces.util.WidgetBuilder;
 
 public class OutputPanelRenderer extends CoreRenderer {
 
-    private final static String BLOCK = "div";
-    private final static String INLINE = "span";
-    
-    private final static Logger logger = Logger.getLogger(OutputPanelRenderer.class.getName());
+    private static final String BLOCK = "div";
+    private static final String INLINE = "span";
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -83,7 +80,7 @@ public class OutputPanelRenderer extends CoreRenderer {
         }
 
         encodeClientBehaviors(context, panel);
-        
+
         wb.finish();
     }
 

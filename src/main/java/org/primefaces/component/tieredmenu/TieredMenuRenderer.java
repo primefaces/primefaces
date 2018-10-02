@@ -17,10 +17,11 @@ package org.primefaces.component.tieredmenu;
 
 import java.io.IOException;
 import java.util.List;
-import javax.faces.component.UIComponent;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
@@ -28,6 +29,7 @@ import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
 import org.primefaces.model.menu.Submenu;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class TieredMenuRenderer extends BaseMenuRenderer {
@@ -129,7 +131,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                         writer.writeAttribute("style", style, null);
                     }
                     writer.writeAttribute("role", "menuitem", null);
-                    writer.writeAttribute("aria-haspopup", "true", null);
+                    writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
                     encodeSubmenu(context, menu, submenu);
                     writer.endElement("li");
                 }

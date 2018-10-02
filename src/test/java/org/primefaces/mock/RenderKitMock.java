@@ -13,7 +13,7 @@ public class RenderKitMock extends RenderKit{
 
 	@Override
 	public void addRenderer(String arg0, String arg1, Renderer arg2) {
-		
+
 	}
 
 	@Override

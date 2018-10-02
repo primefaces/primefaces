@@ -19,10 +19,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.component.fileupload.FileUpload;
-import org.primefaces.util.BoundedInputStream;
+import org.primefaces.util.FileUploadUtils;
 
 /**
  *
@@ -32,7 +34,7 @@ public class DefaultUploadedFile implements UploadedFile, Serializable {
 
     private FileItem fileItem;
     private Long sizeLimit;
-    
+
     public DefaultUploadedFile() {
     }
 
@@ -43,7 +45,12 @@ public class DefaultUploadedFile implements UploadedFile, Serializable {
 
     @Override
     public String getFileName() {
-        return fileItem.getName();
+        return FileUploadUtils.getValidFilename(fileItem.getName());
+    }
+
+    @Override
+    public List<String> getFileNames() {
+        return null;
     }
 
     @Override
@@ -68,7 +75,8 @@ public class DefaultUploadedFile implements UploadedFile, Serializable {
 
     @Override
     public void write(String filePath) throws Exception {
-        fileItem.write(new File(filePath));
+        String validFilePath = FileUploadUtils.getValidFilePath(filePath);
+        fileItem.write(new File(validFilePath));
     }
 
 }

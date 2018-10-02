@@ -5,7 +5,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         this._super(cfg);
         this.cfg.selectionMode = this.cfg.selectionMode||'multiple';
 
-        var _self = this,
+        var $this = this,
         documentTarget = (this.cfg.target === undefined);
 
         //event
@@ -16,14 +16,13 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
         this.jqTarget = $(this.jqTargetId);
 
         //append to body
-        if(!this.jq.parent().is(document.body)) {
-            this.jq.appendTo('body');
-        }
+        this.cfg.appendTo = '@(body)';
+        PrimeFaces.utils.registerDynamicOverlay(this, this.jq, this.jqId);
 
         //attach contextmenu
         if(documentTarget) {
             $(document).off('contextmenu.ui-contextmenu').on('contextmenu.ui-contextmenu', function(e) {
-                _self.show(e);
+                $this.show(e);
             });
         }
         else {
@@ -47,49 +46,37 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
                 var event = this.cfg.event + '.ui-contextmenu';
 
                 $(document).off(event, this.jqTargetId).on(event, this.jqTargetId, null, function(e) {
-                    _self.show(e);
+                    $this.show(e);
                 });
             }
         }
+
+
+        PrimeFaces.utils.registerHideOverlayHandler(this, 'click.' + this.id + '_hide', this.jq,
+            function(e) { return e.which == 3 ? $this.jqTarget : null; },
+            function(e, eventTarget) {
+                if(!($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0)) {
+                    $this.hide();
+                }
+            });
+
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', this.jq, function() {
+            $this.hide();
+        });
     },
 
-    refresh: function(cfg) {
-        var jqs = $('[id=' + cfg.id.replace(/:/g,"\\:") + ']');
-        if(jqs.length > 1) {
-            $(document.body).children(this.jqId).remove();
-        }
-
-        this.init(cfg);
-    },
-
+    // @Override
     bindItemEvents: function() {
         this._super();
 
-        var _self = this;
+        var $this = this;
 
         //hide menu on item click
         this.links.on('click', function(e) {
             var target = $(e.target),
                 submenuLink = target.hasClass('ui-submenu-link') ? target : target.closest('.ui-submenu-link');
 
-            if(submenuLink.length) {
-                return;
-            }
-
-            _self.hide();
-        });
-    },
-
-    bindDocumentHandler: function() {
-        var $this = this,
-        clickNS = 'click.' + this.id;
-
-        //hide overlay when document is clicked
-        $(document.body).off(clickNS).on(clickNS, function(e) {
-            var target = $(e.target),
-                link = target.hasClass('ui-menuitem-link') ? target : target.closest('.ui-menuitem-link');
-
-            if($this.jq.is(":hidden") || link.is('.ui-menuitem-link,.ui-state-disabled')) {
+            if (submenuLink.length) {
                 return;
             }
 
@@ -135,23 +122,19 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
             'z-index': ++PrimeFaces.zindex
         }).show();
 
-        this.bindWindowResizeEvent();
-        this.bindDocumentHandler();
-
         e.preventDefault();
         e.stopPropagation();
     },
 
     hide: function() {
-        var _self = this;
+        var $this = this;
 
         //hide submenus
         this.jq.find('li.ui-menuitem-active').each(function() {
-            _self.deactivate($(this), true);
+            $this.deactivate($(this), true);
         });
 
         this.jq.fadeOut('fast');
-        this.unbindEvents();
     },
 
     isVisible: function() {
@@ -160,20 +143,6 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
     getTarget: function() {
         return this.jqTarget;
-    },
-
-    bindWindowResizeEvent: function() {
-        var $this = this;
-
-        //Hide contextMenu on resize
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.jq, function() {
-            $this.hide();
-        });
-    },
-
-    unbindEvents: function() {
-        $(window).off('resize.' + this.id);
-        $(document.body).off('click.' + this.id);
     }
 
 });

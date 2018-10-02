@@ -25,7 +25,7 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
 
     //@override
     refresh: function(cfg) {
-        this.init(cfg);
+        this._super(cfg);
     },
 
     bindEvents: function() {
@@ -88,7 +88,6 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
                 break;
 
                 case keyCode.ENTER:
-                case keyCode.NUMPAD_ENTER:
                 case keyCode.SPACE:
                     if($this.menu.is(':visible'))
                         $this.menuitems.filter('.ui-state-hover').children('a').trigger('click');
@@ -106,13 +105,15 @@ PrimeFaces.widget.SplitButton = PrimeFaces.widget.BaseWidget.extend({
             }
         });
 
-        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id, $this.menu, null,
-            function(e) {
-                $this.button.removeClass('ui-state-focus ui-state-hover');
-                $this.hide();
+        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.menu, null,
+            function(e, eventTarget) {
+                if(!($this.menu.is(eventTarget) || $this.menu.has(eventTarget).length > 0)) {
+                    $this.button.removeClass('ui-state-focus ui-state-hover');
+                    $this.hide();
+                }
             });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.menu, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.menu, function() {
             $this.alignPanel();
         });
     },

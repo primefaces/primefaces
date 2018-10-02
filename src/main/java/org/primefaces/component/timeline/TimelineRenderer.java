@@ -15,26 +15,18 @@
  */
 package org.primefaces.component.timeline;
 
-import org.primefaces.renderkit.CoreRenderer;
+import java.io.IOException;
+import java.util.*;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
+
 import org.primefaces.model.timeline.TimelineEvent;
 import org.primefaces.model.timeline.TimelineGroup;
 import org.primefaces.model.timeline.TimelineModel;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.DateUtils;
-import org.primefaces.util.FastStringWriter;
-import org.primefaces.util.LangUtils;
-import org.primefaces.util.WidgetBuilder;
+import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.*;
 
 public class TimelineRenderer extends CoreRenderer {
 
@@ -92,7 +84,7 @@ public class TimelineRenderer extends CoreRenderer {
         UIComponent groupFacet = timeline.getFacet("group");
         if (groups != null && groupFacet != null) {
             // buffer for groups' content
-            groupsContent = new HashMap<String, String>();
+            groupsContent = new HashMap<>();
         }
 
         List<TimelineEvent> events = model.getEvents();
@@ -157,7 +149,7 @@ public class TimelineRenderer extends CoreRenderer {
         wb.attr("groupMinHeight", timeline.getGroupMinHeight());
 
         if (timeline.getGroupsWidth() != null) {
-            wb.attr("groupsWidth'", timeline.getGroupsWidth());
+            wb.attr("groupsWidth", timeline.getGroupsWidth());
         }
 
         wb.attr("snapEvents", timeline.isSnapEvents());
@@ -198,13 +190,13 @@ public class TimelineRenderer extends CoreRenderer {
 
         writer.write("}");
         encodeClientBehaviors(context, timeline);
-        
+
         wb.finish();
     }
 
     public String encodeEvent(FacesContext context, FastStringWriter fsw, FastStringWriter fswHtml, Timeline timeline,
-            TimeZone browserTZ, TimeZone targetTZ, List<TimelineGroup> groups, UIComponent groupFacet,
-            Map<String, String> groupsContent, TimelineEvent event) throws IOException {
+                              TimeZone browserTZ, TimeZone targetTZ, List<TimelineGroup> groups, UIComponent groupFacet,
+                              Map<String, String> groupsContent, TimelineEvent event) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         fsw.write("{\"start\":" + encodeDate(browserTZ, targetTZ, event.getStartDate()));
@@ -271,7 +263,7 @@ public class TimelineRenderer extends CoreRenderer {
                         // restore writer
                         context.setResponseWriter(writer);
                         // extract the content of the group, first buffer and then render it
-                        groupsContent.put(foundGroup.getId(), prefix + escapeText(fswHtml.toString()));
+                        groupsContent.put(foundGroup.getId(), prefix + EscapeUtils.forJavaScript(fswHtml.toString()));
                         fsw.write(",\"group\":\"" + groupsContent.get(foundGroup.getId()) + "\"");
                         fswHtml.reset();
                     }
@@ -318,7 +310,7 @@ public class TimelineRenderer extends CoreRenderer {
             // restore writer
             context.setResponseWriter(writer);
             // extract the content of the event
-            fsw.write(escapeText(fswHtml.toString()));
+            fsw.write(EscapeUtils.forJavaScript(fswHtml.toString()));
             fswHtml.reset();
         }
         else if (event.getData() != null) {

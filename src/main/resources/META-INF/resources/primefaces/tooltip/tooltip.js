@@ -23,6 +23,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.removeScriptElement(this.id);
     },
 
+    //@override
     refresh: function(cfg) {
         if(cfg.target) {
             var targetTooltip = $(document.body).children(PrimeFaces.escapeClientId(cfg.id));
@@ -92,7 +93,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
                         }
                     });
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.tooltip', $this.jq, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.tooltip' + '_align', $this.jq, function() {
             $this.align();
         });
 
@@ -147,7 +148,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.target.removeAttr('title');
 
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.jq, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
             $this.align();
         });
     },

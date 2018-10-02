@@ -1,98 +1,98 @@
 /**
  * Title: jqPlot Charts
- *
+ * 
  * Pure JavaScript plotting plugin for jQuery.
- *
+ * 
  * About: Version
- *
- * version: 1.0.8
- * revision: 1250
- *
+ * 
+ * version: 1.0.9 
+ * revision: d96a669
+ * 
  * About: Copyright & License
- *
- * Copyright (c) 2009-2013 Chris Leonello
- * jqPlot is currently available for use in all personal or commercial projects
- * under both the MIT and GPL version 2.0 licenses. This means that you can
+ * 
+ * Copyright (c) 2009-2016 Chris Leonello
+ * jqPlot is currently available for use in all personal or commercial projects 
+ * under both the MIT and GPL version 2.0 licenses. This means that you can 
  * choose the license that best suits your project and use it accordingly.
- *
- * See <GPL Version 2> and <MIT License> contained within this distribution for further information.
+ * 
+ * See <GPL Version 2> and <MIT License> contained within this distribution for further information. 
  *
  * The author would appreciate an email letting him know of any substantial
- * use of jqPlot.  You can reach the author at: chris at jqplot dot com
+ * use of jqPlot.  You can reach the author at: chris at jqplot dot com 
  * or see http://www.jqplot.com/info.php.  This is, of course, not required.
  *
  * If you are feeling kind and generous, consider supporting the project by
  * making a donation at: http://www.jqplot.com/donate.php.
  *
  * sprintf functions contained in jqplot.sprintf.js by Ash Searle:
- *
+ * 
  *     version 2007.04.27
  *     author Ash Searle
  *     http://hexmen.com/blog/2007/03/printf-sprintf/
  *     http://hexmen.com/js/sprintf.js
  *     The author (Ash Searle) has placed this code in the public domain:
  *     "This code is unrestricted: you are free to use it however you like."
- *
- *
+ * 
+ * 
  * About: Introduction
- *
- * jqPlot requires jQuery (1.4+ required for certain features). jQuery 1.4.2 is included in the distribution.
- * To use jqPlot include jQuery, the jqPlot jQuery plugin, the jqPlot css file and optionally
+ * 
+ * jqPlot requires jQuery (1.4+ required for certain features). jQuery 1.4.2 is included in the distribution.  
+ * To use jqPlot include jQuery, the jqPlot jQuery plugin, the jqPlot css file and optionally 
  * the excanvas script for IE support in your web page:
- *
+ * 
  * > <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="excanvas.js"></script><![endif]-->
  * > <script language="javascript" type="text/javascript" src="jquery-1.4.4.min.js"></script>
  * > <script language="javascript" type="text/javascript" src="jquery.jqplot.min.js"></script>
  * > <link rel="stylesheet" type="text/css" href="jquery.jqplot.css" />
- *
+ * 
  * jqPlot can be customized by overriding the defaults of any of the objects which make
  * up the plot. The general usage of jqplot is:
- *
+ * 
  * > chart = $.jqplot('targetElemId', [dataArray,...], {optionsObject});
- *
+ * 
  * The options available to jqplot are detailed in <jqPlot Options> in the jqPlotOptions.txt file.
- *
- * An actual call to $.jqplot() may look like the
+ * 
+ * An actual call to $.jqplot() may look like the 
  * examples below:
- *
+ * 
  * > chart = $.jqplot('chartdiv',  [[[1, 2],[3,5.12],[5,13.1],[7,33.6],[9,85.9],[11,219.9]]]);
- *
+ * 
  * or
- *
+ * 
  * > dataArray = [34,12,43,55,77];
  * > chart = $.jqplot('targetElemId', [dataArray, ...], {title:'My Plot', axes:{yaxis:{min:20, max:100}}});
- *
+ * 
  * For more inforrmation, see <jqPlot Usage>.
- *
+ * 
  * About: Usage
- *
+ * 
  * See <jqPlot Usage>
- *
- * About: Available Options
- *
+ * 
+ * About: Available Options 
+ * 
  * See <jqPlot Options> for a list of options available thorugh the options object (not complete yet!)
- *
+ * 
  * About: Options Usage
- *
+ * 
  * See <Options Tutorial>
- *
+ * 
  * About: Changes
- *
+ * 
  * See <Change Log>
- *
+ * 
  */
 
 (function($) {
     // make sure undefined is undefined
     var undefined;
-
+    
     $.fn.emptyForce = function() {
       for ( var i = 0, elem; (elem = $(this)[i]) != null; i++ ) {
         // Remove element nodes and prevent memory leaks
         if ( elem.nodeType === 1 ) {
           $.cleanData( elem.getElementsByTagName("*") );
         }
-
+  
         // Remove any remaining nodes
         if ($.jqplot.use_excanvas) {
           elem.outerHTML = "";
@@ -105,10 +105,10 @@
 
         elem = null;
       }
-
+  
       return $(this);
     };
-
+  
     $.fn.removeChildForce = function(parent) {
       while ( parent.firstChild ) {
         this.removeChildForce( parent.firstChild );
@@ -130,12 +130,12 @@
         }
 
         return this.each(function(index) {
-            var tid,
-                plot,
+            var tid, 
+                plot, 
                 $this = $(this),
                 dl = datas.length,
                 ol = options.length,
-                data,
+                data, 
                 opts;
 
             if (index < dl) {
@@ -170,17 +170,17 @@
     /**
      * Namespace: $.jqplot
      * jQuery function called by the user to create a plot.
-     *
+     *  
      * Parameters:
      * target - ID of target element to render the plot into.
      * data - an array of data series.
      * options - user defined options object.  See the individual classes for available options.
-     *
+     * 
      * Properties:
      * config - object to hold configuration information for jqPlot plot object.
-     *
+     * 
      * attributes:
-     * enablePlugins - False to disable plugins by default.  Plugins must then be explicitly
+     * enablePlugins - False to disable plugins by default.  Plugins must then be explicitly 
      *   enabled in the individual plot options.  Default: false.
      *   This property sets the "show" property of certain plugins to true or false.
      *   Only plugins that can be immediately active upon loading are affected.  This includes
@@ -216,7 +216,7 @@
         var plot = new jqPlot();
         // remove any error class that may be stuck on target.
         $('#'+target).removeClass('jqplot-error');
-
+        
         if ($.jqplot.config.catchErrors) {
             try {
                 plot.init(target, _data, _options);
@@ -236,7 +236,7 @@
                 document.getElementById(target).style.fontWeight = $.jqplot.config.errorFontWeight;
             }
         }
-        else {
+        else {        
             plot.init(target, _data, _options);
             plot.draw();
             plot.themeEngine.init.call(plot);
@@ -244,8 +244,8 @@
         }
     };
 
-    $.jqplot.version = "1.0.8";
-    $.jqplot.revision = "1250";
+    $.jqplot.version = "1.0.9";
+    $.jqplot.revision = "d96a669";
 
     $.jqplot.targetCounter = 1;
 
@@ -259,13 +259,13 @@
             $.jqplot.CanvasManager.canvases = [];
             $.jqplot.CanvasManager.free = [];
         }
-
+        
         var myCanvases = [];
-
+        
         this.getCanvas = function() {
             var canvas;
             var makeNew = true;
-
+            
             if (!$.jqplot.use_excanvas) {
                 for (var i = 0, l = $.jqplot.CanvasManager.canvases.length; i < l; i++) {
                     if ($.jqplot.CanvasManager.free[i] === true) {
@@ -284,17 +284,36 @@
                 myCanvases.push($.jqplot.CanvasManager.canvases.length);
                 $.jqplot.CanvasManager.canvases.push(canvas);
                 $.jqplot.CanvasManager.free.push(false);
-            }
-
+            }   
+            
             return canvas;
         };
-
+        
         // this method has to be used after settings the dimesions
         // on the element returned by getCanvas()
         this.initCanvas = function(canvas) {
             if ($.jqplot.use_excanvas) {
                 return window.G_vmlCanvasManager.initElement(canvas);
             }
+
+            var cctx = canvas.getContext('2d');
+
+            var canvasBackingScale = 1;
+            if (window.devicePixelRatio > 1 && (cctx.webkitBackingStorePixelRatio === undefined || 
+                                                cctx.webkitBackingStorePixelRatio < 2)) {
+                canvasBackingScale = window.devicePixelRatio;
+            }
+            var oldWidth = canvas.width;
+            var oldHeight = canvas.height;
+
+            canvas.width = canvasBackingScale * canvas.width;
+            canvas.height = canvasBackingScale * canvas.height;
+            canvas.style.width = oldWidth + 'px';
+            canvas.style.height = oldHeight + 'px';
+            cctx.save();
+
+            cctx.scale(canvasBackingScale, canvasBackingScale);
+
             return canvas;
         };
 
@@ -310,7 +329,7 @@
                 // excanvas can't be reused, but properly unset
                 window.G_vmlCanvasManager.uninitElement($.jqplot.CanvasManager.canvases[idx]);
                 $.jqplot.CanvasManager.canvases[idx] = null;
-            }
+            } 
             else {
                 var canvas = $.jqplot.CanvasManager.canvases[idx];
                 canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
@@ -324,17 +343,17 @@
                 $.jqplot.CanvasManager.free[idx] = true;
             }
         };
-
+        
     };
 
-
+            
     // Convienence function that won't hang IE or FF without FireBug.
     $.jqplot.log = function() {
         if (window.console) {
             window.console.log.apply(window.console, arguments);
         }
     };
-
+        
     $.jqplot.config = {
         addDomReference: false,
         enablePlugins:false,
@@ -359,29 +378,29 @@
         srcLocation: 'jqplot/src/',
         pluginLocation: 'jqplot/src/plugins/'
     };
-
-
+    
+    
     $.jqplot.arrayMax = function( array ){
         return Math.max.apply( Math, array );
     };
-
+    
     $.jqplot.arrayMin = function( array ){
         return Math.min.apply( Math, array );
     };
-
+    
     $.jqplot.enablePlugins = $.jqplot.config.enablePlugins;
-
+    
     // canvas related tests taken from modernizer:
     // Copyright (c) 2009 - 2010 Faruk Ates.
     // http://www.modernizr.com
-
+    
     $.jqplot.support_canvas = function() {
         if (typeof $.jqplot.support_canvas.result == 'undefined') {
-            $.jqplot.support_canvas.result = !!document.createElement('canvas').getContext;
+            $.jqplot.support_canvas.result = !!document.createElement('canvas').getContext; 
         }
         return $.jqplot.support_canvas.result;
     };
-
+            
     $.jqplot.support_canvas_text = function() {
         if (typeof $.jqplot.support_canvas_text.result == 'undefined') {
             if (window.G_vmlCanvasManager !== undefined && window.G_vmlCanvasManager._version > 887) {
@@ -390,17 +409,17 @@
             else {
                 $.jqplot.support_canvas_text.result = !!(document.createElement('canvas').getContext && typeof document.createElement('canvas').getContext('2d').fillText == 'function');
             }
-
+             
         }
         return $.jqplot.support_canvas_text.result;
     };
-
+    
     $.jqplot.use_excanvas = ((!$.support.boxModel || !$.support.objectAll || !$support.leadingWhitespace) && !$.jqplot.support_canvas()) ? true : false;
-
+    
     /**
-     *
+     * 
      * Hooks: jqPlot Pugin Hooks
-     *
+     * 
      * $.jqplot.preInitHooks - called before initialization.
      * $.jqplot.postInitHooks - called after initialization.
      * $.jqplot.preParseOptionsHooks - called before user options are parsed.
@@ -422,9 +441,9 @@
      *     listeners to the event canvas which lays on top of the grid area.
      * $.jqplot.preDrawSeriesShadowHooks - called before series shadows are drawn.
      * $.jqplot.postDrawSeriesShadowHooks - called after series shadows are drawn.
-     *
+     * 
      */
-
+    
     $.jqplot.preInitHooks = [];
     $.jqplot.postInitHooks = [];
     $.jqplot.preParseOptionsHooks = [];
@@ -450,7 +469,7 @@
         this._plotHeight;
         this._plotDimensions = {height:null, width:null};
     };
-
+    
     $.jqplot.ElemContainer.prototype.createElement = function(el, offsets, clss, cssopts, attrib) {
         this._offsets = offsets;
         var klass = clss || 'jqplot';
@@ -463,7 +482,7 @@
         elem = null;
         return this._elem;
     };
-
+    
     $.jqplot.ElemContainer.prototype.getWidth = function() {
         if (this._elem) {
             return this._elem.outerWidth(true);
@@ -472,7 +491,7 @@
             return null;
         }
     };
-
+    
     $.jqplot.ElemContainer.prototype.getHeight = function() {
         if (this._elem) {
             return this._elem.outerHeight(true);
@@ -481,7 +500,7 @@
             return null;
         }
     };
-
+    
     $.jqplot.ElemContainer.prototype.getPosition = function() {
         if (this._elem) {
             return this._elem.position();
@@ -490,36 +509,36 @@
             return {top:null, left:null, bottom:null, right:null};
         }
     };
-
+    
     $.jqplot.ElemContainer.prototype.getTop = function() {
         return this.getPosition().top;
     };
-
+    
     $.jqplot.ElemContainer.prototype.getLeft = function() {
         return this.getPosition().left;
     };
-
+    
     $.jqplot.ElemContainer.prototype.getBottom = function() {
         return this._elem.css('bottom');
     };
-
+    
     $.jqplot.ElemContainer.prototype.getRight = function() {
         return this._elem.css('right');
     };
-
+    
 
     /**
      * Class: Axis
      * An individual axis object.  Cannot be instantiated directly, but created
-     * by the Plot object.  Axis properties can be set or overridden by the
+     * by the Plot object.  Axis properties can be set or overridden by the 
      * options passed in from the user.
-     *
+     * 
      */
     function Axis(name) {
         $.jqplot.ElemContainer.call(this);
         // Group: Properties
         //
-        // Axes options are specified within an axes object at the top level of the
+        // Axes options are specified within an axes object at the top level of the 
         // plot options like so:
         // > {
         // >    axes: {
@@ -529,7 +548,7 @@
         // >        y2axis: {ticks:[22, 44, 66, 88]}
         // >        }
         // > }
-        // There are 2 x axes, 'xaxis' and 'x2axis', and
+        // There are 2 x axes, 'xaxis' and 'x2axis', and 
         // 9 yaxes, 'yaxis', 'y2axis'. 'y3axis', ...  Any or all of which may be specified.
         this.name = name;
         this._series = [];
@@ -537,7 +556,7 @@
         // Wether to display the axis on the graph.
         this.show = false;
         // prop: tickRenderer
-        // A class of a rendering engine for creating the ticks labels displayed on the plot,
+        // A class of a rendering engine for creating the ticks labels displayed on the plot, 
         // See <$.jqplot.AxisTickRenderer>.
         this.tickRenderer = $.jqplot.AxisTickRenderer;
         // prop: tickOptions
@@ -591,7 +610,7 @@
         // number of units between ticks.  Mutually exclusive with numberTicks.
         this.tickInterval;
         // prop: renderer
-        // A class of a rendering engine that handles tick generation,
+        // A class of a rendering engine that handles tick generation, 
         // scaling input data to pixel grid units and drawing the axis element.
         this.renderer = $.jqplot.LinearAxisRenderer;
         // prop: rendererOptions
@@ -663,13 +682,13 @@
         // hold original user options.
         this._options = {};
     }
-
+    
     Axis.prototype = new $.jqplot.ElemContainer();
     Axis.prototype.constructor = Axis;
-
+    
     Axis.prototype.init = function() {
         if ($.isFunction(this.renderer)) {
-            this.renderer = new this.renderer();
+            this.renderer = new this.renderer();  
         }
         // set the axis name
         this.tickOptions.axis = this.name;
@@ -684,7 +703,7 @@
         if (this.tickOptions.showLabel == null) {
             this.tickOptions.showLabel = this.showTicks;
         }
-
+        
         if (this.label == null || this.label == '') {
             this.showLabel = false;
         }
@@ -712,7 +731,7 @@
         if (this.padMin == null) {
             this.padMin = (this.pad-1)/2 + 1;
         }
-        // now that padMin and padMax are correctly set, reset pad in case user has supplied
+        // now that padMin and padMax are correctly set, reset pad in case user has supplied 
         // padMin and/or padMax
         this.pad = this.padMax + this.padMin - 1;
         if (this.min != null || this.max != null) {
@@ -726,9 +745,9 @@
             this.syncTicks = false;
         }
         this.renderer.init.call(this, this.rendererOptions);
-
+        
     };
-
+    
     Axis.prototype.draw = function(ctx, plot) {
         // Memory Leaks patch
         if (this.__ticks) {
@@ -736,13 +755,13 @@
         }
 
         return this.renderer.draw.call(this, ctx, plot);
-
+        
     };
-
+    
     Axis.prototype.set = function() {
         this.renderer.set.call(this);
     };
-
+    
     Axis.prototype.pack = function(pos, offsets) {
         if (this.show) {
             this.renderer.pack.call(this, pos, offsets);
@@ -756,17 +775,17 @@
             this.__ticks = this._ticks;
         }
     };
-
+    
     // reset the axis back to original values if it has been scaled, zoomed, etc.
     Axis.prototype.reset = function() {
         this.renderer.reset.call(this);
     };
-
+    
     Axis.prototype.resetScale = function(opts) {
         $.extend(true, this, {min: null, max: null, numberTicks: null, tickInterval: null, _ticks: [], ticks: []}, opts);
         this.resetDataBounds();
     };
-
+    
     Axis.prototype.resetDataBounds = function() {
         // Go through all the series attached to this axis and find
         // the min/max bounds for this axis.
@@ -790,8 +809,8 @@
                     minyidx = 3;
                     maxyidx = 2;
                 }
-
-                for (var j=0, l=d.length; j<l; j++) {
+                
+                for (var j=0, l=d.length; j<l; j++) { 
                     if (this.name == 'xaxis' || this.name == 'x2axis') {
                         if ((d[j][0] != null && d[j][0] < db.min) || db.min == null) {
                             db.min = d[j][0];
@@ -799,19 +818,19 @@
                         if ((d[j][0] != null && d[j][0] > db.max) || db.max == null) {
                             db.max = d[j][0];
                         }
-                    }
+                    }              
                     else {
-                        if (d[j][minyidx] != '-' && ((d[j][minyidx] != null && d[j][minyidx] < db.min) || db.min == null)) {
+                        if ((d[j][minyidx] != null && d[j][minyidx] < db.min) || db.min == null) {
                             db.min = d[j][minyidx];
                         }
-                        if (d[j][maxyidx] != '-' && ((d[j][maxyidx] != null && d[j][maxyidx] > db.max) || db.max == null)) {
+                        if ((d[j][maxyidx] != null && d[j][maxyidx] > db.max) || db.max == null) {
                             db.max = d[j][maxyidx];
                         }
-                    }
+                    }              
                 }
 
                 // Hack to not pad out bottom of bar plots unless user has specified a padding.
-                // every series will have a chance to set doforce to false.  once it is set to
+                // every series will have a chance to set doforce to false.  once it is set to 
                 // false, it cannot be reset to true.
                 // If any series attached to axis is not a bar, wont force 0.
                 if (doforce && s.renderer.constructor !== $.jqplot.BarRenderer) {
@@ -823,7 +842,7 @@
                 }
 
                 else if (doforce && s.renderer.constructor === $.jqplot.BarRenderer) {
-                    if (s.barDirection == 'vertical' && this.name != 'xaxis' && this.name != 'x2axis') {
+                    if (s.barDirection == 'vertical' && this.name != 'xaxis' && this.name != 'x2axis') { 
                         if (this._options.pad != null || this._options.padMin != null) {
                             doforce = false;
                         }
@@ -848,13 +867,13 @@
     /**
      * Class: Legend
      * Legend object.  Cannot be instantiated directly, but created
-     * by the Plot object.  Legend properties can be set or overridden by the
+     * by the Plot object.  Legend properties can be set or overridden by the 
      * options passed in from the user.
      */
     function Legend(options) {
         $.jqplot.ElemContainer.call(this);
         // Group: Properties
-
+        
         // prop: show
         // Wether to display the legend on the graph.
         this.show = false;
@@ -873,18 +892,18 @@
         this.showSwatches = true;
         // prop: placement
         // "insideGrid" places legend inside the grid area of the plot.
-        // "outsideGrid" places the legend outside the grid but inside the plot container,
+        // "outsideGrid" places the legend outside the grid but inside the plot container, 
         // shrinking the grid to accomodate the legend.
-        // "inside" synonym for "insideGrid",
+        // "inside" synonym for "insideGrid", 
         // "outside" places the legend ouside the grid area, but does not shrink the grid which
         // can cause the legend to overflow the plot container.
         this.placement = "insideGrid";
         // prop: xoffset
-        // DEPRECATED.  Set the margins on the legend using the marginTop, marginLeft, etc.
+        // DEPRECATED.  Set the margins on the legend using the marginTop, marginLeft, etc. 
         // properties or via CSS margin styling of the .jqplot-table-legend class.
         this.xoffset = 0;
         // prop: yoffset
-        // DEPRECATED.  Set the margins on the legend using the marginTop, marginLeft, etc.
+        // DEPRECATED.  Set the margins on the legend using the marginTop, marginLeft, etc. 
         // properties or via CSS margin styling of the .jqplot-table-legend class.
         this.yoffset = 0;
         // prop: border
@@ -898,7 +917,7 @@
         this.textColor;
         // prop: fontFamily
         // css font-family spec for the legend text.
-        this.fontFamily;
+        this.fontFamily; 
         // prop: fontSize
         // css font-size spec for the legend text.
         this.fontSize ;
@@ -917,22 +936,22 @@
         // Used with series specific legend renderers for pie, donut, mekko charts, etc.
         this.preDraw = false;
         // prop: marginTop
-        // CSS margin for the legend DOM element. This will set an element
+        // CSS margin for the legend DOM element. This will set an element 
         // CSS style for the margin which will override any style sheet setting.
         // The default will be taken from the stylesheet.
         this.marginTop = null;
         // prop: marginRight
-        // CSS margin for the legend DOM element. This will set an element
+        // CSS margin for the legend DOM element. This will set an element 
         // CSS style for the margin which will override any style sheet setting.
         // The default will be taken from the stylesheet.
         this.marginRight = null;
         // prop: marginBottom
-        // CSS margin for the legend DOM element. This will set an element
+        // CSS margin for the legend DOM element. This will set an element 
         // CSS style for the margin which will override any style sheet setting.
         // The default will be taken from the stylesheet.
         this.marginBottom = null;
         // prop: marginLeft
-        // CSS margin for the legend DOM element. This will set an element
+        // CSS margin for the legend DOM element. This will set an element 
         // CSS style for the margin which will override any style sheet setting.
         // The default will be taken from the stylesheet.
         this.marginLeft = null;
@@ -941,24 +960,24 @@
         // in legend text.  "<" becomes &lt; and so on, so html tags are not rendered.
         this.escapeHtml = false;
         this._series = [];
-
+        
         $.extend(true, this, options);
     }
-
+    
     Legend.prototype = new $.jqplot.ElemContainer();
     Legend.prototype.constructor = Legend;
-
+    
     Legend.prototype.setOptions = function(options) {
         $.extend(true, this, options);
-
+        
         // Try to emulate deprecated behaviour
         // if user has specified xoffset or yoffset, copy these to
         // the margin properties.
-
+        
         if (this.placement ==  'inside') {
             this.placement = 'insideGrid';
         }
-
+        
         if (this.xoffset >0) {
             if (this.placement == 'insideGrid') {
                 switch (this.location) {
@@ -1004,7 +1023,7 @@
             }
             this.xoffset = 0;
         }
-
+        
         if (this.yoffset >0) {
             if (this.placement == 'outside') {
                 switch (this.location) {
@@ -1050,26 +1069,26 @@
             }
             this.yoffset = 0;
         }
-
+        
         // TO-DO:
         // Handle case where offsets are < 0.
         //
     };
-
+    
     Legend.prototype.init = function() {
         if ($.isFunction(this.renderer)) {
-            this.renderer = new this.renderer();
+            this.renderer = new this.renderer();  
         }
         this.renderer.init.call(this, this.rendererOptions);
     };
-
+    
     Legend.prototype.draw = function(offsets, plot) {
         for (var i=0; i<$.jqplot.preDrawLegendHooks.length; i++){
             $.jqplot.preDrawLegendHooks[i].call(this, offsets);
         }
         return this.renderer.draw.call(this, offsets, plot);
     };
-
+    
     Legend.prototype.pack = function(offsets) {
         this.renderer.pack.call(this, offsets);
     };
@@ -1077,16 +1096,16 @@
     /**
      * Class: Title
      * Plot Title object.  Cannot be instantiated directly, but created
-     * by the Plot object.  Title properties can be set or overridden by the
+     * by the Plot object.  Title properties can be set or overridden by the 
      * options passed in from the user.
-     *
+     * 
      * Parameters:
      * text - text of the title.
      */
     function Title(text) {
         $.jqplot.ElemContainer.call(this);
         // Group: Properties
-
+        
         // prop: text
         // text of the title;
         this.text = text;
@@ -1111,27 +1130,27 @@
         this.renderer = $.jqplot.DivTitleRenderer;
         // prop: rendererOptions
         // renderer specific options passed to the renderer.
-        this.rendererOptions = {};
+        this.rendererOptions = {};   
         // prop: escapeHtml
         // True to escape special characters with their html entity equivalents
         // in title text.  "<" becomes &lt; and so on, so html tags are not rendered.
         this.escapeHtml = false;
     }
-
+    
     Title.prototype = new $.jqplot.ElemContainer();
     Title.prototype.constructor = Title;
-
+    
     Title.prototype.init = function() {
         if ($.isFunction(this.renderer)) {
-            this.renderer = new this.renderer();
+            this.renderer = new this.renderer();  
         }
         this.renderer.init.call(this, this.rendererOptions);
     };
-
+    
     Title.prototype.draw = function(width) {
         return this.renderer.draw.call(this, width);
     };
-
+    
     Title.prototype.pack = function() {
         this.renderer.pack.call(this);
     };
@@ -1140,7 +1159,7 @@
     /**
      * Class: Series
      * An individual data series object.  Cannot be instantiated directly, but created
-     * by the Plot object.  Series properties can be set or overridden by the
+     * by the Plot object.  Series properties can be set or overridden by the 
      * options passed in from the user.
      */
     function Series(options) {
@@ -1171,7 +1190,7 @@
         this._yaxis;
         this.gridBorderWidth = 2.0;
         // prop: renderer
-        // A class of a renderer which will draw the series,
+        // A class of a renderer which will draw the series, 
         // see <$.jqplot.LineRenderer>.
         this.renderer = $.jqplot.LineRenderer;
         // prop: rendererOptions
@@ -1203,8 +1222,8 @@
         this.lineCap = 'round';
         // prop: linePattern
         // line pattern 'dashed', 'dotted', 'solid', some combination
-        // of '-' and '.' characters such as '.-.' or a numerical array like
-        // [draw, skip, draw, skip, ...] such as [1, 10] to draw a dotted line,
+        // of '-' and '.' characters such as '.-.' or a numerical array like 
+        // [draw, skip, draw, skip, ...] such as [1, 10] to draw a dotted line, 
         // [1, 10, 20, 10] to draw a dot-dash line, and so on.
         this.linePattern = 'solid';
         this.shadow = true;
@@ -1307,11 +1326,12 @@
         this._sumy = 0;
         this._sumx = 0;
         this._type = '';
+        this.step = false;
     }
-
+    
     Series.prototype = new $.jqplot.ElemContainer();
     Series.prototype.constructor = Series;
-
+    
     Series.prototype.init = function(index, gridbw, plot) {
         // weed out any null values in the data.
         this.index = index;
@@ -1319,14 +1339,9 @@
         var d = this.data;
         var temp = [], i, l;
         for (i=0, l=d.length; i<l; i++) {
-
             if (! this.breakOnNull) {
-                if (d[i] == null || d[i][0] == null) {
+                if (d[i] == null || d[i][0] == null || d[i][1] == null) {
                     continue;
-                }
-                else if (d[i][1] == null) {
-                    d[i][1] = "-";
-                    temp.push(d[i]);
                 }
                 else {
                     temp.push(d[i]);
@@ -1363,7 +1378,7 @@
             this.fillColor = 'rgba('+comp[0]+','+comp[1]+','+comp[2]+','+this.fillAlpha+')';
         }
         if ($.isFunction(this.renderer)) {
-            this.renderer = new this.renderer();
+            this.renderer = new this.renderer();  
         }
         this.renderer.init.call(this, this.rendererOptions, plot);
         this.markerRenderer = new this.markerRenderer();
@@ -1377,16 +1392,16 @@
         // the markerRenderer is called within its own scope, don't want to overwrite series options!!
         this.markerRenderer.init(this.markerOptions);
     };
-
+    
     // data - optional data point array to draw using this series renderer
     // gridData - optional grid data point array to draw using this series renderer
     // stackData - array of cumulative data for stacked plots.
     Series.prototype.draw = function(sctx, opts, plot) {
         var options = (opts == undefined) ? {} : opts;
         sctx = (sctx == undefined) ? this.canvas._ctx : sctx;
-
+        
         var j, data, gridData;
-
+        
         // hooks get called even if series not shown
         // we don't clear canvas here, it would wipe out all other series as well.
         for (j=0; j<$.jqplot.preDrawSeriesHooks.length; j++) {
@@ -1415,20 +1430,20 @@
 
             this.renderer.draw.call(this, sctx, gridData, options, plot);
         }
-
+        
         for (j=0; j<$.jqplot.postDrawSeriesHooks.length; j++) {
             $.jqplot.postDrawSeriesHooks[j].call(this, sctx, options, plot);
         }
-
+        
         sctx = opts = plot = j = data = gridData = null;
     };
-
+    
     Series.prototype.drawShadow = function(sctx, opts, plot) {
         var options = (opts == undefined) ? {} : opts;
         sctx = (sctx == undefined) ? this.shadowCanvas._ctx : sctx;
-
+        
         var j, data, gridData;
-
+        
         // hooks get called even if series not shown
         // we don't clear canvas here, it would wipe out all other series as well.
         for (j=0; j<$.jqplot.preDrawSeriesShadowHooks.length; j++) {
@@ -1448,18 +1463,18 @@
                 data = this._plotData;
             }
             gridData = options.gridData || this.renderer.makeGridData.call(this, data, plot);
-
+        
             this.renderer.drawShadow.call(this, sctx, gridData, options, plot);
         }
-
+        
         for (j=0; j<$.jqplot.postDrawSeriesShadowHooks.length; j++) {
             $.jqplot.postDrawSeriesShadowHooks[j].call(this, sctx, options);
         }
-
+        
         sctx = opts = plot = j = data = gridData = null;
-
+        
     };
-
+    
     // toggles series display on plot, e.g. show/hide series
     Series.prototype.toggleDisplay = function(ev, callback) {
         var s, speed;
@@ -1520,22 +1535,22 @@
             }
         }
     };
-
+    
 
 
     /**
      * Class: Grid
-     *
+     * 
      * Object representing the grid on which the plot is drawn.  The grid in this
      * context is the area bounded by the axes, the area which will contain the series.
      * Note, the series are drawn on their own canvas.
-     * The Grid object cannot be instantiated directly, but is created by the Plot object.
+     * The Grid object cannot be instantiated directly, but is created by the Plot object.  
      * Grid properties can be set or overridden by the options passed in from the user.
      */
     function Grid() {
         $.jqplot.ElemContainer.call(this);
         // Group: Properties
-
+        
         // prop: drawGridlines
         // whether to draw the gridlines on the plot.
         this.drawGridlines = true;
@@ -1595,34 +1610,34 @@
         this.rendererOptions = {};
         this._offsets = {top:null, bottom:null, left:null, right:null};
     }
-
+    
     Grid.prototype = new $.jqplot.ElemContainer();
     Grid.prototype.constructor = Grid;
-
+    
     Grid.prototype.init = function() {
         if ($.isFunction(this.renderer)) {
-            this.renderer = new this.renderer();
+            this.renderer = new this.renderer();  
         }
         this.renderer.init.call(this, this.rendererOptions);
     };
-
+    
     Grid.prototype.createElement = function(offsets,plot) {
         this._offsets = offsets;
         return this.renderer.createElement.call(this, plot);
     };
-
+    
     Grid.prototype.draw = function() {
         this.renderer.draw.call(this);
     };
-
+    
     $.jqplot.GenericCanvas = function() {
         $.jqplot.ElemContainer.call(this);
-        this._ctx;
+        this._ctx;  
     };
-
+    
     $.jqplot.GenericCanvas.prototype = new $.jqplot.ElemContainer();
     $.jqplot.GenericCanvas.prototype.constructor = $.jqplot.GenericCanvas;
-
+    
     $.jqplot.GenericCanvas.prototype.createElement = function(offsets, clss, plotDimensions, plot) {
         this._offsets = offsets;
         var klass = 'jqplot';
@@ -1632,49 +1647,49 @@
         var elem;
 
         elem = plot.canvasManager.getCanvas();
-
+        
         // if new plotDimensions supplied, use them.
         if (plotDimensions != null) {
             this._plotDimensions = plotDimensions;
         }
-
+        
         elem.width = this._plotDimensions.width - this._offsets.left - this._offsets.right;
         elem.height = this._plotDimensions.height - this._offsets.top - this._offsets.bottom;
         this._elem = $(elem);
         this._elem.css({ position: 'absolute', left: this._offsets.left, top: this._offsets.top });
-
+        
         this._elem.addClass(klass);
-
+        
         elem = plot.canvasManager.initCanvas(elem);
-
+        
         elem = null;
         return this._elem;
     };
-
+    
     $.jqplot.GenericCanvas.prototype.setContext = function() {
         this._ctx = this._elem.get(0).getContext("2d");
         return this._ctx;
     };
-
+    
     // Memory Leaks patch
     $.jqplot.GenericCanvas.prototype.resetCanvas = function() {
       if (this._elem) {
         if ($.jqplot.use_excanvas && window.G_vmlCanvasManager.uninitElement !== undefined) {
            window.G_vmlCanvasManager.uninitElement(this._elem.get(0));
         }
-
+        
         //this._elem.remove();
         this._elem.emptyForce();
       }
-
+      
       this._ctx = null;
     };
-
+    
     $.jqplot.HooksManager = function () {
         this.hooks =[];
         this.args = [];
     };
-
+    
     $.jqplot.HooksManager.prototype.addOnce = function(fn, args) {
         args = args || [];
         var havehook = false;
@@ -1688,17 +1703,17 @@
             this.args.push(args);
         }
     };
-
+    
     $.jqplot.HooksManager.prototype.add = function(fn, args) {
         args = args || [];
         this.hooks.push(fn);
         this.args.push(args);
     };
-
+    
     $.jqplot.EventListenerManager = function () {
         this.hooks =[];
     };
-
+    
     $.jqplot.EventListenerManager.prototype.addOnce = function(ev, fn) {
         var havehook = false, h, i;
         for (var i=0, l=this.hooks.length; i<l; i++) {
@@ -1711,7 +1726,7 @@
             this.hooks.push([ev, fn]);
         }
     };
-
+    
     $.jqplot.EventListenerManager.prototype.add = function(ev, fn) {
         this.hooks.push([ev, fn]);
     };
@@ -1746,7 +1761,7 @@
         // animation in these situations can cause problems.
         this.animateReplot = false;
         // prop: axes
-        // up to 4 axes are supported, each with its own options,
+        // up to 4 axes are supported, each with its own options, 
         // See <Axis> for axis specific options.
         this.axes = {xaxis: new Axis('xaxis'), yaxis: new Axis('yaxis'), x2axis: new Axis('x2axis'), y2axis: new Axis('y2axis'), y3axis: new Axis('y3axis'), y4axis: new Axis('y4axis'), y5axis: new Axis('y5axis'), y6axis: new Axis('y6axis'), y7axis: new Axis('y7axis'), y8axis: new Axis('y8axis'), y9axis: new Axis('y9axis'), yMidAxis: new Axis('yMidAxis')};
         this.baseCanvas = new $.jqplot.GenericCanvas();
@@ -1756,7 +1771,7 @@
         // prop: data
         // user's data.  Data should *NOT* be specified in the options object,
         // but be passed in as the second argument to the $.jqplot() function.
-        // The data property is described here soley for reference.
+        // The data property is described here soley for reference. 
         // The data should be in the form of an array of 2D or 1D arrays like
         // > [ [[x1, y1], [x2, y2],...], [y1, y2, ...] ].
         this.data = [];
@@ -1826,7 +1841,7 @@
         this.legend = new Legend();
         // prop: noDataIndicator
         // Options to set up a mock plot with a data loading indicator if no data is specified.
-        this.noDataIndicator = {
+        this.noDataIndicator = {    
             show: false,
             indicator: 'Loading Data...',
             axes: {
@@ -1844,7 +1859,7 @@
                 }
             }
         };
-        // prop: negativeSeriesColors
+        // prop: negativeSeriesColors 
         // colors to use for portions of the line below zero.
         this.negativeSeriesColors = $.jqplot.config.defaultNegativeColors;
         // container to hold all of the merged options.  Convienence for plugins.
@@ -1880,7 +1895,7 @@
         // a shortcut for axis syncTicks options.  Not implemented yet.
         this.syncYTicks = true;
         // the jquery object for the dom target.
-        this.target = null;
+        this.target = null; 
         // The id of the dom element to render the plot into
         this.targetId = null;
         // prop textColor
@@ -1910,7 +1925,7 @@
         // merged with the the appropriate data from _stackData according to the stackAxis.
         this._plotData = [];
         this._width = null;
-        this._height = null;
+        this._height = null; 
         this._plotDimensions = {height:null, width:null};
         this._gridPadding = {top:null, right:null, bottom:null, left:null};
         this._defaultGridPadding = {top:10, right:10, bottom:23, left:10};
@@ -1934,14 +1949,14 @@
         this.eventListenerHooks = new $.jqplot.EventListenerManager();
         this.preDrawSeriesShadowHooks = new $.jqplot.HooksManager();
         this.postDrawSeriesShadowHooks = new $.jqplot.HooksManager();
-
+        
         this.colorGenerator = new $.jqplot.ColorGenerator();
         this.negativeColorGenerator = new $.jqplot.ColorGenerator();
 
         this.canvasManager = new $.jqplot.CanvasManager();
 
         this.themeEngine = new $.jqplot.ThemeEngine();
-
+        
         var seriesColorsIndex = 0;
 
         // Group: methods
@@ -1958,7 +1973,7 @@
             for (var i=0; i<this.preInitHooks.hooks.length; i++) {
                 this.preInitHooks.hooks[i].call(this, target, data, options);
             }
-
+            
             this.targetId = '#'+target;
             this.target = $('#'+target);
 
@@ -1973,7 +1988,7 @@
             if (!this.target.get(0)) {
                 throw new Error("No plot target specified");
             }
-
+            
             // make sure the target is positioned by some means and set css
             if (this.target.css('position') == 'static') {
                 this.target.css('position', 'relative');
@@ -1981,7 +1996,7 @@
             if (!this.target.hasClass('jqplot-target')) {
                 this.target.addClass('jqplot-target');
             }
-
+            
             // if no height or width specified, use a default.
             if (!this.target.height()) {
                 var h;
@@ -2021,7 +2036,7 @@
             for (var i=0, l=_axisNames.length; i<l; i++) {
                 this.axes[_axisNames[i]] = new Axis(_axisNames[i]);
             }
-
+            
             this._plotDimensions.height = this._height;
             this._plotDimensions.width = this._width;
             this.grid._plotDimensions = this._plotDimensions;
@@ -2032,7 +2047,7 @@
             if (this._height <=0 || this._width <=0 || !this._height || !this._width) {
                 throw new Error("Canvas dimension not set");
             }
-
+            
             if (options.dataRenderer && $.isFunction(options.dataRenderer)) {
                 if (options.dataRendererOptions) {
                     this.dataRendererOptions = options.dataRendererOptions;
@@ -2040,28 +2055,28 @@
                 this.dataRenderer = options.dataRenderer;
                 data = this.dataRenderer(data, this, this.dataRendererOptions);
             }
-
+            
             if (options.noDataIndicator && $.isPlainObject(options.noDataIndicator)) {
                 $.extend(true, this.noDataIndicator, options.noDataIndicator);
             }
-
+            
             if (data == null || $.isArray(data) == false || data.length == 0 || $.isArray(data[0]) == false || data[0].length == 0) {
-
+                
                 if (this.noDataIndicator.show == false) {
                     throw new Error("No data specified");
                 }
-
+                
                 else {
                     // have to be descructive here in order for plot to not try and render series.
                     // This means that $.jqplot() will have to be called again when there is data.
                     //delete options.series;
-
+                    
                     for (var ax in this.noDataIndicator.axes) {
                         for (var prop in this.noDataIndicator.axes[ax]) {
                             this.axes[ax][prop] = this.noDataIndicator.axes[ax][prop];
                         }
                     }
-
+                    
                     this.postDrawHooks.add(function() {
                         var eh = this.eventCanvas.getHeight();
                         var ew = this.eventCanvas.getWidth();
@@ -2071,7 +2086,7 @@
                         temp.width(ew);
                         temp.css('top', this.eventCanvas._offsets.top);
                         temp.css('left', this.eventCanvas._offsets.left);
-
+                        
                         var temp2 = $('<div class="jqplot-noData-contents" style="text-align:center; position:relative; margin-left:auto; margin-right:auto;"></div>');
                         temp.append(temp2);
                         temp2.html(this.noDataIndicator.indicator);
@@ -2084,12 +2099,12 @@
 
                 }
             }
-
+            
             // make a copy of the data
             this.data = $.extend(true, [], data);
-
+            
             this.parseOptions(options);
-
+            
             if (this.textColor) {
                 this.target.css('color', this.textColor);
             }
@@ -2099,7 +2114,7 @@
             if (this.fontSize) {
                 this.target.css('font-size', this.fontSize);
             }
-
+            
             this.title.init();
             this.legend.init();
             this._sumy = 0;
@@ -2146,13 +2161,13 @@
                     }
                 }
             }
-
+            
             if (this.sortData) {
                 sortData(this.series);
             }
             this.grid.init();
             this.grid._axes = this.axes;
-
+            
             this.legend._series = this.series;
 
             for (var i=0; i<$.jqplot.postInitHooks.length; i++) {
@@ -2162,8 +2177,8 @@
             for (var i=0; i<this.postInitHooks.hooks.length; i++) {
                 this.postInitHooks.hooks[i].call(this, target, this.data, options);
             }
-        };
-
+        };  
+        
         // method: resetAxesScale
         // Reset the specified axes min, max, numberTicks and tickInterval properties to null
         // or reset these properties on all axes if no list of axes is provided.
@@ -2208,14 +2223,14 @@
             for (var i=0; i<this.preInitHooks.hooks.length; i++) {
                 this.preInitHooks.hooks[i].call(this, target, tdata, options);
             }
-
+            
             this._height = this.target.height();
             this._width = this.target.width();
-
+            
             if (this._height <=0 || this._width <=0 || !this._height || !this._width) {
                 throw new Error("Target dimension not set");
             }
-
+            
             this._plotDimensions.height = this._height;
             this._plotDimensions.width = this._width;
             this.grid._plotDimensions = this._plotDimensions;
@@ -2225,8 +2240,8 @@
             this.legend._plotDimensions = this._plotDimensions;
 
             var name,
-                t,
-                j,
+                t, 
+                j, 
                 axis;
 
             for (var i=0, l=_axisNames.length; i<l; i++) {
@@ -2255,7 +2270,7 @@
                 this.axes[name]._plotWidth = this._width;
                 this.axes[name]._plotHeight = this._height;
             }
-
+            
             if (data) {
                 if (options.dataRenderer && $.isFunction(options.dataRenderer)) {
                     if (options.dataRendererOptions) {
@@ -2264,7 +2279,7 @@
                     this.dataRenderer = options.dataRenderer;
                     data = this.dataRenderer(data, this, this.dataRendererOptions);
                 }
-
+                
                 // make a copy of the data
                 this.data = $.extend(true, [], data);
             }
@@ -2272,9 +2287,9 @@
             if (opts) {
                 this.parseOptions(options);
             }
-
+            
             this.title._plotWidth = this._width;
-
+            
             if (this.textColor) {
                 this.target.css('color', this.textColor);
             }
@@ -2334,13 +2349,13 @@
                     }
                 }
             }
-
+            
             if (this.sortData) {
                 sortData(this.series);
             }
             this.grid.init();
             this.grid._axes = this.axes;
-
+            
             this.legend._series = this.series;
 
             for (var i=0, l=$.jqplot.postInitHooks.length; i<l; i++) {
@@ -2355,7 +2370,7 @@
 
 
         // method: quickInit
-        //
+        // 
         // Quick reinitialization plot for replotting.
         // Does not parse options ore recreate axes and series.
         // not called directly.
@@ -2364,14 +2379,14 @@
             // If plot doesn't have height and width for some
             // reason, set it by other means.  Plot must not have
             // a display:none attribute, however.
-
+            
             this._height = this.target.height();
             this._width = this.target.width();
-
+            
             if (this._height <=0 || this._width <=0 || !this._height || !this._width) {
                 throw new Error("Target dimension not set");
             }
-
+            
             this._plotDimensions.height = this._height;
             this._plotDimensions.width = this._width;
             this.grid._plotDimensions = this._plotDimensions;
@@ -2379,14 +2394,14 @@
             this.baseCanvas._plotDimensions = this._plotDimensions;
             this.eventCanvas._plotDimensions = this._plotDimensions;
             this.legend._plotDimensions = this._plotDimensions;
-
+            
             for (var n in this.axes) {
                 this.axes[n]._plotWidth = this._width;
                 this.axes[n]._plotHeight = this._height;
             }
-
+            
             this.title._plotWidth = this._width;
-
+            
             if (this.textColor) {
                 this.target.css('color', this.textColor);
             }
@@ -2396,7 +2411,7 @@
             if (this.fontSize) {
                 this.target.css('font-size', this.fontSize);
             }
-
+            
             this._sumy = 0;
             this._sumx = 0;
             this.computePlotData();
@@ -2413,7 +2428,7 @@
             }
 
             var name;
-
+            
             for (var j=0; j<12; j++) {
                 name = _axisNames[j];
                 // Memory Leaks patch : clear ticks elements
@@ -2431,21 +2446,21 @@
                   }
                 }
                 t = null;
-
+                
                 this.axes[name]._plotDimensions = this._plotDimensions;
                 this.axes[name]._ticks = [];
                 // this.axes[name].renderer.init.call(this.axes[name], {});
             }
-
+            
             if (this.sortData) {
                 sortData(this.series);
             }
-
+            
             this.grid._axes = this.axes;
-
+            
             this.legend._series = this.series;
         };
-
+        
         // sort the series data in increasing order.
         function sortData(series) {
             var d, sd, pd, ppd, ret;
@@ -2478,7 +2493,7 @@
                         }
                     }
                 }
-
+               
             }
         }
 
@@ -2527,7 +2542,7 @@
                                     this._plotData[index][k][sidx] += prevval;
                                     this._stackData[index][k][sidx] += prevval;
                                     break;
-                                }
+                                } 
                             }
                         }
                     }
@@ -2556,7 +2571,7 @@
             }
 
         };
-
+        
         // populate the _stackData and _plotData arrays for the plot and the series.
         this.populatePlotData = function(series, index) {
             // if a stacked chart, compute the stacked data
@@ -2623,13 +2638,13 @@
                 series._sumx += series.data[i][0];
             }
         };
-
+        
         // function to safely return colors from the color array and wrap around at the end.
         this.getNextSeriesColor = (function(t) {
             var idx = 0;
             var sc = t.seriesColors;
-
-            return function () {
+            
+            return function () { 
                 if (idx < sc.length) {
                     return sc[idx++];
                 }
@@ -2639,7 +2654,7 @@
                 }
             };
         })(this);
-
+    
         this.parseOptions = function(options){
             for (var i=0; i<this.preParseOptionsHooks.hooks.length; i++) {
                 this.preParseOptionsHooks.hooks[i].call(this, options);
@@ -2654,7 +2669,7 @@
             this.stackSeries = opts.stackSeries;
             if ($.isPlainObject(opts.fillBetween)) {
 
-                var temp = ['series1', 'series2', 'color', 'baseSeries', 'fill'],
+                var temp = ['series1', 'series2', 'color', 'baseSeries', 'fill'], 
                     tempi;
 
                 for (var i=0, l=temp.length; i<l; i++) {
@@ -2694,9 +2709,9 @@
             //     this.data = [];
             //     for (var i=0; i<this.options.series.length; i++) {
             //         this.data.push(this.options.series.data);
-            //     }
+            //     }    
             // }
-
+                
             var normalizeData = function(data, dir, start) {
                 // return data as an array of point arrays,
                 // in form [[x1,y1...], [x2,y2...], ...]
@@ -2709,13 +2724,13 @@
                     // [[1, data[0]], [2, data[1]], ...]
                     for (i=0, l=data.length; i<l; i++) {
                         if (dir == 'vertical') {
-                            temp.push([start + i, data[i]]);
+                            temp.push([start + i, data[i]]);   
                         }
                         else {
                             temp.push([data[i], start+i]);
                         }
                     }
-                }
+                }            
                 else {
                     // we have a properly formatted data series, copy it.
                     $.extend(true, temp, data);
@@ -2785,7 +2800,7 @@
                 }
                 // temp.rendererOptions.show = temp.show;
                 // $.extend(true, temp.renderer, {color:this.seriesColors[i]}, this.rendererOptions);
-                this.series.push(temp);
+                this.series.push(temp);  
                 for (var j=0; j<$.jqplot.postParseSeriesOptionsHooks.length; j++) {
                     $.jqplot.postParseSeriesOptionsHooks[j].call(this.series[i], this.options.seriesDefaults, this.options.series[i]);
                 }
@@ -2793,7 +2808,7 @@
                     this.postParseSeriesOptionsHooks.hooks[j].call(this.series[i], this.options.seriesDefaults, this.options.series[i]);
                 }
             }
-
+            
             // copy the grid and title options into this object.
             $.extend(true, this.grid, this.options.grid);
             // if axis border properties aren't set, set default.
@@ -2804,7 +2819,7 @@
                     axis.borderWidth =this.grid.borderWidth;
                 }
             }
-
+            
             if (typeof this.options.title == 'string') {
                 this.title.text = this.options.title;
             }
@@ -2813,7 +2828,7 @@
             }
             this.title._plotWidth = this._width;
             this.legend.setOptions(this.options.legend);
-
+            
             for (var i=0; i<$.jqplot.postParseOptionsHooks.length; i++) {
                 $.jqplot.postParseOptionsHooks[i].call(this, options);
             }
@@ -2821,7 +2836,7 @@
                 this.postParseOptionsHooks.hooks[i].call(this, options);
             }
         };
-
+        
         // method: destroy
         // Releases all resources occupied by the plot
         this.destroy = function() {
@@ -2831,13 +2846,13 @@
             }
             // Couple of posts on Stack Overflow indicate that empty() doesn't
             // always cear up the dom and release memory.  Sometimes setting
-            // innerHTML property to null is needed.  Particularly on IE, may
+            // innerHTML property to null is needed.  Particularly on IE, may 
             // have to directly set it to null, bypassing $.
             this.target.empty();
 
             this.target[0].innerHTML = '';
         };
-
+        
         // method: replot
         // Does a reinitialization of the plot followed by
         // a redraw.  Method could be used to interactively
@@ -2860,7 +2875,7 @@
             delete opts.resetAxes;
 
             this.target.trigger('jqplotPreReplot');
-
+            
             if (clear) {
                 this.destroy();
             }
@@ -2879,7 +2894,7 @@
             this.draw();
             this.target.trigger('jqplotPostReplot');
         };
-
+        
         // method: redraw
         // Empties the plot target div and redraws the plot.
         // This enables plot data and properties to be changed
@@ -2887,7 +2902,7 @@
         // redraw *will not* reinitialize any plot elements.
         // That is, axes will not be autoscaled and defaults
         // will not be reapplied to any plot elements.  redraw
-        // is used primarily with zooming.
+        // is used primarily with zooming. 
         //
         // Parameters:
         // clear - false to not clear (empty) the plot container before redrawing (default: true).
@@ -2918,7 +2933,7 @@
             this.draw();
             this.target.trigger('jqplotPostRedraw');
         };
-
+        
         // method: draw
         // Draws all elements of the plot into the container.
         // Does not clear the container before drawing.
@@ -2940,13 +2955,13 @@
                 this.baseCanvas.setContext();
                 this.target.append(this.title.draw());
                 this.title.pack({top:0, left:0});
-
+                
                 // make room  for the legend between the grid and the edge.
                 // pass a dummy offsets object and a reference to the plot.
                 var legendElem = this.legend.draw({}, this);
-
+                
                 var gridPadding = {top:0, left:0, bottom:0, right:0};
-
+                
                 if (this.legend.placement == "outsideGrid") {
                     // temporarily append the legend to get dimensions
                     this.target.append(legendElem);
@@ -2973,7 +2988,7 @@
                     }
                     legendElem = legendElem.detach();
                 }
-
+                
                 var ax = this.axes;
                 var name;
                 // draw the yMidAxis first, so xaxis of pyramid chart can adjust itself if needed.
@@ -3005,7 +3020,7 @@
                 if (ax.xaxis.show) {
                     gridPadding.bottom += ax.xaxis.getHeight();
                 }
-
+                
                 // end of gridPadding adjustments.
 
                 // if user passed in gridDimensions option, check against calculated gridPadding
@@ -3031,9 +3046,9 @@
                         this._gridPadding[arr[n]] = this._defaultGridPadding[arr[n]];
                     }
                 }
-
+                
                 var legendPadding = this._gridPadding;
-
+                
                 if (this.legend.placement === 'outsideGrid') {
                     legendPadding = {top:this.title.getHeight(), left: 0, right: 0, bottom: 0};
                     if (this.legend.location === 's') {
@@ -3041,7 +3056,7 @@
                         legendPadding.right = this._gridPadding.right;
                     }
                 }
-
+                
                 ax.xaxis.pack({position:'absolute', bottom:this._gridPadding.bottom - ax.xaxis.getHeight(), left:0, width:this._width}, {min:this._gridPadding.left, max:this._width - this._gridPadding.right});
                 ax.yaxis.pack({position:'absolute', top:0, left:this._gridPadding.left - ax.yaxis.getWidth(), height:this._height}, {min:this._height - this._gridPadding.bottom, max: this._gridPadding.top});
                 ax.x2axis.pack({position:'absolute', top:this._gridPadding.top - ax.x2axis.getHeight(), left:0, width:this._width}, {min:this._gridPadding.left, max:this._width - this._gridPadding.right});
@@ -3050,10 +3065,10 @@
                 }
                 var ltemp = (this._width - this._gridPadding.left - this._gridPadding.right)/2.0 + this._gridPadding.left - ax.yMidAxis.getWidth()/2.0;
                 ax.yMidAxis.pack({position:'absolute', top:0, left:ltemp, zIndex:9, textAlign: 'center'}, {min:this._height - this._gridPadding.bottom, max: this._gridPadding.top});
-
+            
                 this.target.append(this.grid.createElement(this._gridPadding, this));
                 this.grid.draw();
-
+                
                 var series = this.series;
                 var seriesLength = series.length;
                 // put the shadow canvases behind the series canvases so shadows don't overlap on stacked bars.
@@ -3065,7 +3080,7 @@
                     series[j].shadowCanvas.setContext();
                     series[j].shadowCanvas._elem.data('seriesIndex', j);
                 }
-
+                
                 for (i=0, l=seriesLength; i<l; i++) {
                     // draw series in order of stacking.  This affects only
                     // order in which canvases are added to dom.
@@ -3080,12 +3095,12 @@
                 this.eventCanvas.setContext();
                 this.eventCanvas._ctx.fillStyle = 'rgba(0,0,0,0)';
                 this.eventCanvas._ctx.fillRect(0,0,this.eventCanvas._ctx.canvas.width, this.eventCanvas._ctx.canvas.height);
-
+            
                 // bind custom event handlers to regular events.
                 this.bindCustomEvents();
-
+            
                 // draw legend before series if the series needs to know the legend dimensions.
-                if (this.legend.preDraw) {
+                if (this.legend.preDraw) {  
                     this.eventCanvas._elem.before(legendElem);
                     this.legend.pack(legendPadding);
                     if (this.legend._elem) {
@@ -3100,16 +3115,16 @@
                     if (seriesLength) {
                         $(series[seriesLength-1].canvas._elem).after(legendElem);
                     }
-                    this.legend.pack(legendPadding);
+                    this.legend.pack(legendPadding);                
                 }
-
+            
                 // register event listeners on the overlay canvas
                 for (var i=0, l=$.jqplot.eventListenerHooks.length; i<l; i++) {
                     // in the handler, this will refer to the eventCanvas dom element.
                     // make sure there are references back into plot objects.
                     this.eventCanvas._elem.bind($.jqplot.eventListenerHooks[i][0], {plot:this}, $.jqplot.eventListenerHooks[i][1]);
                 }
-
+            
                 // register event listeners on the overlay canvas
                 for (var i=0, l=this.eventListenerHooks.hooks.length; i<l; i++) {
                     // in the handler, this will refer to the eventCanvas dom element.
@@ -3118,8 +3133,33 @@
                 }
 
                 var fb = this.fillBetween;
-                if (fb.fill && fb.series1 !== fb.series2 && fb.series1 < seriesLength && fb.series2 < seriesLength && series[fb.series1]._type === 'line' && series[fb.series2]._type === 'line') {
+                if(typeof fb.series1 == 'number'){
+                    if(fb.fill&&fb.series1!==fb.series2&&fb.series1<seriesLength&&fb.series2<seriesLength&&series[fb.series1]._type==="line"&&series[fb.series2]._type==="line")
                     this.doFillBetweenLines();
+                }
+                else{
+                    if(fb.series1 != null && fb.series2 != null){
+                        var doFb = false;
+                        if(fb.series1.length === fb.series2.length){
+                            var tempSeries1 = 0;
+                            var tempSeries2 = 0;
+                            
+                            for(var cnt = 0; cnt < fb.series1.length; cnt++){
+                                tempSeries1 = fb.series1[cnt];
+                                tempSeries2 = fb.series2[cnt];
+                                if(tempSeries1!==tempSeries2&&tempSeries1<seriesLength&&tempSeries2<seriesLength&&series[tempSeries1]._type==="line"&&series[tempSeries2]._type==="line"){
+                                    doFb = true;
+                                }
+                                else{
+                                    doFb = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if(fb.fill && doFb){
+                            this.doFillBetweenLines();
+                        }
+                    }
                 }
 
                 for (var i=0, l=$.jqplot.postDrawHooks.length; i<l; i++) {
@@ -3129,12 +3169,12 @@
                 for (var i=0, l=this.postDrawHooks.hooks.length; i<l; i++) {
                     this.postDrawHooks.hooks[i].apply(this, this.postDrawHooks.args[i]);
                 }
-
+            
                 if (this.target.is(':visible')) {
                     this._drawCount += 1;
                 }
 
-                var temps,
+                var temps, 
                     tempr,
                     sel,
                     _els;
@@ -3154,46 +3194,56 @@
                     }
                 }
                 _els = null;
-
+            
                 this.target.trigger('jqplotPostDraw', [this]);
             }
         };
 
         jqPlot.prototype.doFillBetweenLines = function () {
             var fb = this.fillBetween;
+            var series = this.series;
             var sid1 = fb.series1;
             var sid2 = fb.series2;
-            // first series should always be lowest index
-            var id1 = (sid1 < sid2) ? sid1 : sid2;
-            var id2 = (sid2 >  sid1) ? sid2 : sid1;
+            var id1 = 0, id2 = 0;
 
-            var series1 = this.series[id1];
-            var series2 = this.series[id2];
-
-            if (series2.renderer.smooth) {
-                var tempgd = series2.renderer._smoothedData.slice(0).reverse();
+            function fill(id1, id2){
+                var series1 = series[id1];
+                var series2 = series[id2];
+                if (series2.renderer.smooth)
+                    var tempgd = series2.renderer._smoothedData.slice(0).reverse();
+                else
+                    var tempgd = series2.gridData.slice(0).reverse();
+                if (series1.renderer.smooth)
+                    var gd = series1.renderer._smoothedData.concat(tempgd);
+                else
+                    var gd = series1.gridData.concat(tempgd);
+                var color = fb.color !== null ? fb.color : series[sid1].fillColor;
+                var baseSeries = fb.baseSeries !== null ? fb.baseSeries : id1;
+                var sr =
+                    series[baseSeries].renderer.shapeRenderer;
+                var opts =
+                {
+                    fillStyle : color,
+                    fill : true,
+                    closePath : true
+                };
+                sr.draw(series1.shadowCanvas._ctx, gd, opts)
             }
-            else {
-                var tempgd = series2.gridData.slice(0).reverse();
-            }
 
-            if (series1.renderer.smooth) {
-                var gd = series1.renderer._smoothedData.concat(tempgd);
+            if(typeof sid1 == 'number' && typeof sid2 == 'number'){
+                id1 = sid1 < sid2 ? sid1 : sid2;
+                id2 = sid2 > sid1 ? sid2 : sid1;
+                fill(id1, id2);
             }
-            else {
-                var gd = series1.gridData.concat(tempgd);
+            else{
+                for(var cnt = 0; cnt < sid1.length ; cnt++){
+                    id1 = sid1[cnt] < sid2[cnt] ? sid1[cnt] : sid2[cnt];
+                    id2 = sid2[cnt] > sid1[cnt] ? sid2[cnt] : sid1[cnt];
+                    fill(id1, id2);
+                }
             }
-
-            var color = (fb.color !== null) ? fb.color : this.series[sid1].fillColor;
-            var baseSeries = (fb.baseSeries !== null) ? fb.baseSeries : id1;
-
-            // now apply a fill to the shape on the lower series shadow canvas,
-            // so it is behind both series.
-            var sr = this.series[baseSeries].renderer.shapeRenderer;
-            var opts = {fillStyle: color, fill: true, closePath: true};
-            sr.draw(series1.shadowCanvas._ctx, gd, opts);
         };
-
+        
         this.bindCustomEvents = function() {
             this.eventCanvas._elem.bind('click', {plot:this}, this.onClick);
             this.eventCanvas._elem.bind('dblclick', {plot:this}, this.onDblClick);
@@ -3211,7 +3261,7 @@
                 this.eventCanvas._elem.bind('mouseup', {plot:this}, this.onMouseUp);
             }
         };
-
+        
         function getEventPosition(ev) {
             var plot = ev.data.plot;
             var go = plot.eventCanvas._elem.offset();
@@ -3229,8 +3279,8 @@
 
             return {offsets:go, gridPos:gridPos, dataPos:dataPos};
         }
-
-
+        
+        
         // function to check if event location is over a area area
         function checkIntersection(gridpos, plot) {
             var series = plot.series;
@@ -3248,7 +3298,7 @@
                         for (j=0; j<s._barPoints.length; j++) {
                             points = s._barPoints[j];
                             p = s.gridData[j];
-                            if (x>points[0][0] && x<points[2][0] && y>points[2][1] && y<points[0][1]) {
+                            if (x>points[0][0] && x<points[2][0] && (y>points[2][1] && y<points[0][1] || y<points[2][1] && y>points[0][1])) {
                                 return {seriesIndex:s.index, pointIndex:j, gridData:p, data:s.data[j], points:s._barPoints[j]};
                             }
                         }
@@ -3264,7 +3314,7 @@
                             }
                         }
                         break;
-
+                    
                     case $.jqplot.DonutRenderer:
                         sa = s.startAngle/180*Math.PI;
                         x = gridpos.x - s._center[0];
@@ -3297,7 +3347,7 @@
                                 theta -= 2*Math.PI;
                             }
                         }
-
+            
                         sm = s.sliceMargin/180*Math.PI;
                         if (r < s._radius && r > s._innerRadius) {
                             for (j=0; j<s.gridData.length; j++) {
@@ -3309,7 +3359,7 @@
                             }
                         }
                         break;
-
+                        
                     case $.jqplot.PieRenderer:
                         sa = s.startAngle/180*Math.PI;
                         x = gridpos.x - s._center[0];
@@ -3342,7 +3392,7 @@
                                 theta -= 2*Math.PI;
                             }
                         }
-
+            
                         sm = s.sliceMargin/180*Math.PI;
                         if (r < s._radius) {
                             for (j=0; j<s.gridData.length; j++) {
@@ -3354,12 +3404,12 @@
                             }
                         }
                         break;
-
+                        
                     case $.jqplot.BubbleRenderer:
                         x = gridpos.x;
                         y = gridpos.y;
                         var ret = null;
-
+                        
                         if (s.show) {
                             for (var j=0; j<s.gridData.length; j++) {
                                 p = s.gridData[j];
@@ -3374,7 +3424,7 @@
                             }
                         }
                         break;
-
+                        
                     case $.jqplot.FunnelRenderer:
                         x = gridpos.x;
                         y = gridpos.y;
@@ -3384,17 +3434,17 @@
                             lex,
                             rex,
                             cv;
-
+    
                         // equations of right and left sides, returns x, y values given height of section (y value and 2 points)
-
+    
                         function findedge (l, p1 , p2) {
                             var m = (p1[1] - p2[1])/(p1[0] - p2[0]);
                             var b = p1[1] - m*p1[0];
                             var y = l + p1[1];
-
+        
                             return [(y - b)/m, y];
                         }
-
+    
                         // check each section
                         lex = findedge(y, vfirst[0], vlast[3]);
                         rex = findedge(y, vfirst[1], vlast[2]);
@@ -3403,9 +3453,9 @@
                             if (y >= cv[0][1] && y <= cv[3][1] && x >= lex[0] && x <= rex[0]) {
                                 return {seriesIndex:s.index, pointIndex:j, gridData:null, data:s.data[j]};
                             }
-                        }
-                        break;
-
+                        }         
+                        break;           
+                    
                     case $.jqplot.LineRenderer:
                         x = gridpos.x;
                         y = gridpos.y;
@@ -3414,14 +3464,14 @@
                             if ((s.fill || (s.renderer.bands.show && s.renderer.bands.fill)) && (!plot.plugins.highlighter || !plot.plugins.highlighter.show)) {
                                 // first check if it is in bounding box
                                 var inside = false;
-                                if (x>s._boundingBox[0][0] && x<s._boundingBox[1][0] && y>s._boundingBox[1][1] && y<s._boundingBox[0][1]) {
-                                    // now check the crossing number
-
+                                if (x>s._boundingBox[0][0] && x<s._boundingBox[1][0] && y>s._boundingBox[1][1] && y<s._boundingBox[0][1]) { 
+                                    // now check the crossing number   
+                                    
                                     var numPoints = s._areaPoints.length;
                                     var ii;
                                     var j = numPoints-1;
 
-                                    for(var ii=0; ii < numPoints; ii++) {
+                                    for(var ii=0; ii < numPoints; ii++) { 
                                         var vertex1 = [s._areaPoints[ii][0], s._areaPoints[ii][1]];
                                         var vertex2 = [s._areaPoints[j][0], s._areaPoints[j][1]];
 
@@ -3432,13 +3482,13 @@
                                         }
 
                                         j = ii;
-                                    }
+                                    }        
                                 }
                                 if (inside) {
                                     return {seriesIndex:i, pointIndex:null, gridData:s.gridData, data:s.data, points:s._areaPoints};
                                 }
                                 break;
-
+                                
                             }
 
                             else {
@@ -3468,7 +3518,7 @@
                                                 return {seriesIndex: i, pointIndex:j, gridData:p, data:s.data[j]};
                                             }
                                         }
-
+                            
                                     }
                                     else if (p[0] != null && p[1] != null){
                                         d = Math.sqrt( (x-p[0]) * (x-p[0]) + (y-p[1]) * (y-p[1]) );
@@ -3477,11 +3527,11 @@
                                            return {seriesIndex: i, pointIndex:j, gridData:p, data:s.data[j]};
                                         }
                                     }
-                                }
+                                } 
                             }
                         }
                         break;
-
+                        
                     default:
                         x = gridpos.x;
                         y = gridpos.y;
@@ -3513,7 +3563,7 @@
                                             return {seriesIndex: i, pointIndex:j, gridData:p, data:s.data[j]};
                                         }
                                     }
-
+                            
                                 }
                                 else {
                                     d = Math.sqrt( (x-p[0]) * (x-p[0]) + (y-p[1]) * (y-p[1]) );
@@ -3522,17 +3572,17 @@
                                        return {seriesIndex: i, pointIndex:j, gridData:p, data:s.data[j]};
                                     }
                                 }
-                            }
+                            } 
                         }
                         break;
                 }
             }
-
+            
             return null;
         }
-
-
-
+        
+        
+        
         this.onClick = function(ev) {
             // Event passed in is normalized and will have data attribute.
             // Event passed out is unnormalized.
@@ -3544,7 +3594,7 @@
             evt.pageY = ev.pageY;
             $(this).trigger(evt, [positions.gridPos, positions.dataPos, neighbor, p]);
         };
-
+        
         this.onDblClick = function(ev) {
             // Event passed in is normalized and will have data attribute.
             // Event passed out is unnormalized.
@@ -3556,7 +3606,7 @@
             evt.pageY = ev.pageY;
             $(this).trigger(evt, [positions.gridPos, positions.dataPos, neighbor, p]);
         };
-
+        
         this.onMouseDown = function(ev) {
             var positions = getEventPosition(ev);
             var p = ev.data.plot;
@@ -3566,7 +3616,7 @@
             evt.pageY = ev.pageY;
             $(this).trigger(evt, [positions.gridPos, positions.dataPos, neighbor, p]);
         };
-
+        
         this.onMouseUp = function(ev) {
             var positions = getEventPosition(ev);
             var evt = $.Event('jqplotMouseUp');
@@ -3574,7 +3624,7 @@
             evt.pageY = ev.pageY;
             $(this).trigger(evt, [positions.gridPos, positions.dataPos, null, ev.data.plot]);
         };
-
+        
         this.onRightClick = function(ev) {
             var positions = getEventPosition(ev);
             var p = ev.data.plot;
@@ -3594,7 +3644,7 @@
                 }
             }
         };
-
+        
         this.onMouseMove = function(ev) {
             var positions = getEventPosition(ev);
             var p = ev.data.plot;
@@ -3604,7 +3654,7 @@
             evt.pageY = ev.pageY;
             $(this).trigger(evt, [positions.gridPos, positions.dataPos, neighbor, p]);
         };
-
+        
         this.onMouseEnter = function(ev) {
             var positions = getEventPosition(ev);
             var p = ev.data.plot;
@@ -3614,7 +3664,7 @@
             evt.relatedTarget = ev.relatedTarget;
             $(this).trigger(evt, [positions.gridPos, positions.dataPos, null, p]);
         };
-
+        
         this.onMouseLeave = function(ev) {
             var positions = getEventPosition(ev);
             var p = ev.data.plot;
@@ -3624,7 +3674,7 @@
             evt.relatedTarget = ev.relatedTarget;
             $(this).trigger(evt, [positions.gridPos, positions.dataPos, null, p]);
         };
-
+        
         // method: drawSeries
         // Redraws all or just one series on the plot.  No axis scaling
         // is performed and no other elements on the plot are redrawn.
@@ -3647,14 +3697,14 @@
                 series.draw(ctx, options, this);
                 if (series.renderer.constructor == $.jqplot.BezierCurveRenderer) {
                     if (idx < this.series.length - 1) {
-                        this.drawSeries(idx+1);
+                        this.drawSeries(idx+1); 
                     }
                 }
             }
-
+            
             else {
                 // if call series drawShadow method first, in case all series shadows
-                // should be drawn before any series.  This will ensure, like for
+                // should be drawn before any series.  This will ensure, like for 
                 // stacked bar plots, that shadows don't overlap series.
                 for (i=0; i<this.series.length; i++) {
                     // first clear the canvas
@@ -3669,7 +3719,7 @@
             }
             options = idx = i = series = ctx = null;
         };
-
+        
         // method: moveSeriesToFront
         // This method requires jQuery 1.4+
         // Moves the specified series canvas in front of all other series canvases.
@@ -3679,7 +3729,7 @@
         // Parameters:
         // idx - 0 based index of the series to move.  This will be the index of the series
         // as it was first passed into the jqplot function.
-        this.moveSeriesToFront = function (idx) {
+        this.moveSeriesToFront = function (idx) { 
             idx = parseInt(idx, 10);
             var stackIndex = $.inArray(idx, this.seriesStack);
             // if already in front, return
@@ -3699,7 +3749,7 @@
             this.seriesStack.splice(stackIndex, 1);
             this.seriesStack.push(idx);
         };
-
+        
         // method: moveSeriesToBack
         // This method requires jQuery 1.4+
         // Moves the specified series canvas behind all other series canvases.
@@ -3723,7 +3773,7 @@
             this.seriesStack.splice(stackIndex, 1);
             this.seriesStack.unshift(idx);
         };
-
+        
         // method: restorePreviousSeriesOrder
         // This method requires jQuery 1.4+
         // Restore the series canvas order to its previous state.
@@ -3747,7 +3797,7 @@
             this.seriesStack = this.previousSeriesStack.slice(0);
             this.previousSeriesStack = temp;
         };
-
+        
         // method: restoreOriginalSeriesOrder
         // This method requires jQuery 1.4+
         // Restore the series canvas order to its original order
@@ -3769,13 +3819,13 @@
                 this.series[i-1].canvas._elem.after(serelem);
             }
         };
-
+        
         this.activateTheme = function (name) {
             this.themeEngine.activate(this, name);
         };
     }
-
-
+    
+    
     // conpute a highlight color or array of highlight colors from given colors.
     $.jqplot.computeHighlightColors  = function(colors) {
         var ret;
@@ -3816,12 +3866,12 @@
         }
         return ret;
     };
-
+        
    $.jqplot.ColorGenerator = function(colors) {
         colors = colors || $.jqplot.config.defaultColors;
         var idx = 0;
-
-        this.next = function () {
+        
+        this.next = function () { 
             if (idx < colors.length) {
                 return colors[idx++];
             }
@@ -3830,8 +3880,8 @@
                 return colors[idx++];
             }
         };
-
-        this.previous = function () {
+        
+        this.previous = function () { 
             if (idx > 0) {
                 return colors[idx--];
             }
@@ -3840,17 +3890,17 @@
                 return colors[idx];
             }
         };
-
+        
         // get a color by index without advancing pointer.
         this.get = function(i) {
             var idx = i - colors.length * Math.floor(i/colors.length);
             return colors[idx];
         };
-
+        
         this.setColors = function(c) {
             colors = c;
         };
-
+        
         this.reset = function() {
             idx = 0;
         };
@@ -3880,7 +3930,7 @@
         rgb += ')';
         return rgb;
     };
-
+    
     // convert an rgb color spec to a hex spec.  ignore any alpha specification.
     $.jqplot.rgb2hex = function(s) {
         var pat = /rgba?\( *([0-9]{1,3}\.?[0-9]*%?) *, *([0-9]{1,3}\.?[0-9]*%?) *, *([0-9]{1,3}\.?[0-9]*%?) *(?:, *[0-9.]*)?\)/;
@@ -3904,11 +3954,11 @@
         }
         return h;
     };
-
+    
     // given a css color spec, return an rgb css color spec
     $.jqplot.normalize2rgb = function(s, a) {
         if (s.search(/^ *rgba?\(/) != -1) {
-            return s;
+            return s; 
         }
         else if (s.search(/^ *#?[0-9a-fA-F]?[0-9a-fA-F]/) != -1) {
             return $.jqplot.hex2rgb(s, a);
@@ -3917,7 +3967,7 @@
             throw new Error('Invalid color spec');
         }
     };
-
+    
     // extract the r, g, b, a color components out of a css color spec.
     $.jqplot.getColorComponents = function(s) {
         // check to see if a color keyword.
@@ -3937,7 +3987,7 @@
         ret[3] = parseFloat(m[4]) ? parseFloat(m[4]) : 1.0;
         return ret;
     };
-
+    
     $.jqplot.colorKeywordMap = {
         aliceblue: 'rgb(240, 248, 255)',
         antiquewhite: 'rgb(250, 235, 215)',
@@ -4088,7 +4138,7 @@
         yellowgreen: 'rgb(154, 205, 50)'
     };
 
-
+    
 
 
     // class: $.jqplot.AxisLabelRenderer
@@ -4111,17 +4161,17 @@
         // prop: escapeHTML
         // true to escape HTML entities in the label.
         this.escapeHTML = false;
-
+        
         $.extend(true, this, options);
     };
-
+    
     $.jqplot.AxisLabelRenderer.prototype = new $.jqplot.ElemContainer();
     $.jqplot.AxisLabelRenderer.prototype.constructor = $.jqplot.AxisLabelRenderer;
-
+    
     $.jqplot.AxisLabelRenderer.prototype.init = function(options) {
         $.extend(true, this, options);
     };
-
+    
     $.jqplot.AxisLabelRenderer.prototype.draw = function(ctx, plot) {
         // Memory Leaks patch
         if (this._elem) {
@@ -4130,11 +4180,11 @@
         }
 
         this._elem = $('<div style="position:absolute;" class="jqplot-'+this.axis+'-label"></div>');
-
+        
         if (Number(this.label)) {
             this._elem.css('white-space', 'nowrap');
         }
-
+        
         if (!this.escapeHTML) {
             this._elem.html(this.label);
         }
@@ -4150,10 +4200,10 @@
         if (this.textColor) {
             this._elem.css('color', this.textColor);
         }
-
+        
         return this._elem;
     };
-
+    
     $.jqplot.AxisLabelRenderer.prototype.pack = function() {
     };
 
@@ -4223,17 +4273,17 @@
         this.escapeHTML = false;
         this._elem;
         this._breakTick = false;
-
+        
         $.extend(true, this, options);
     };
-
+    
     $.jqplot.AxisTickRenderer.prototype.init = function(options) {
         $.extend(true, this, options);
     };
-
+    
     $.jqplot.AxisTickRenderer.prototype = new $.jqplot.ElemContainer();
     $.jqplot.AxisTickRenderer.prototype.constructor = $.jqplot.AxisTickRenderer;
-
+    
     $.jqplot.AxisTickRenderer.prototype.setTick = function(value, axisName, isMinor) {
         this.value = value;
         this.axis = axisName;
@@ -4242,7 +4292,7 @@
         }
         return this;
     };
-
+    
     $.jqplot.AxisTickRenderer.prototype.draw = function() {
         if (this.label === null) {
             this.label = this.prefix + this.formatter(this.formatString, this.value) + this.suffix;
@@ -4251,7 +4301,7 @@
         if (Number(this.label)) {
             style['whitSpace'] = 'nowrap';
         }
-
+        
         // Memory Leaks patch
         if (this._elem) {
             this._elem.emptyForce();
@@ -4260,14 +4310,14 @@
 
         this._elem = $(document.createElement('div'));
         this._elem.addClass("jqplot-"+this.axis+"-tick");
-
+        
         if (!this.escapeHTML) {
             this._elem.html(this.label);
         }
         else {
             this._elem.text(this.label);
         }
-
+        
         this._elem.css(style);
 
         for (var s in this._styles) {
@@ -4285,10 +4335,10 @@
         if (this._breakTick) {
           this._elem.addClass('jqplot-breakTick');
         }
-
+        
         return this._elem;
     };
-
+        
     $.jqplot.DefaultTickFormatter = function (format, val) {
         if (typeof val == 'number') {
             if (!format) {
@@ -4300,7 +4350,7 @@
             return String(val);
         }
     };
-
+        
     $.jqplot.PercentTickFormatter = function (format, val) {
         if (typeof val == 'number') {
             val = 100 * val;
@@ -4313,17 +4363,17 @@
             return String(val);
         }
     };
-
+    
     $.jqplot.AxisTickRenderer.prototype.pack = function() {
     };
-
+     
     // Class: $.jqplot.CanvasGridRenderer
     // The default jqPlot grid renderer, creating a grid on a canvas element.
     // The renderer has no additional options beyond the <Grid> class.
     $.jqplot.CanvasGridRenderer = function(){
         this.shadowRenderer = new $.jqplot.ShadowRenderer();
     };
-
+    
     // called with context of Grid object
     $.jqplot.CanvasGridRenderer.prototype.init = function(options) {
         this._ctx;
@@ -4332,7 +4382,7 @@
         var sopts = {lineJoin:'miter', lineCap:'round', fill:false, isarc:false, angle:this.shadowAngle, offset:this.shadowOffset, alpha:this.shadowAlpha, depth:this.shadowDepth, lineWidth:this.shadowWidth, closePath:false, strokeStyle:this.shadowColor};
         this.renderer.shadowRenderer.init(sopts);
     };
-
+    
     // called with context of Grid.
     $.jqplot.CanvasGridRenderer.prototype.createElement = function(plot) {
         var elem;
@@ -4343,11 +4393,11 @@
             window.G_vmlCanvasManager.uninitElement(elem);
             elem = null;
           }
-
+          
           this._elem.emptyForce();
           this._elem = null;
         }
-
+      
         elem = plot.canvasManager.getCanvas();
 
         var w = this._plotDimensions.width;
@@ -4357,7 +4407,7 @@
         this._elem = $(elem);
         this._elem.addClass('jqplot-grid-canvas');
         this._elem.css({ position: 'absolute', left: 0, top: 0 });
-
+        
         elem = plot.canvasManager.initCanvas(elem);
 
         this._top = this._offsets.top;
@@ -4370,7 +4420,7 @@
         elem = null;
         return this._elem;
     };
-
+    
     $.jqplot.CanvasGridRenderer.prototype.draw = function() {
         this._ctx = this._elem.get(0).getContext("2d");
         var ctx = this._ctx;
@@ -4380,7 +4430,7 @@
         ctx.clearRect(0, 0, this._plotDimensions.width, this._plotDimensions.height);
         ctx.fillStyle = this.backgroundColor || this.background;
         ctx.fillRect(this._left, this._top, this._width, this._height);
-
+        
         ctx.save();
         ctx.lineJoin = 'miter';
         ctx.lineCap = 'butt';
@@ -4632,9 +4682,9 @@
             axis = null;
             ticks =  null;
         }
-
+        
         ctx.restore();
-
+        
         function drawLine(bx, by, ex, ey, opts) {
             ctx.save();
             opts = opts || {};
@@ -4647,7 +4697,7 @@
                 ctx.restore();
             }
         }
-
+        
         if (this.shadow) {
             var points = [[this._left, this._bottom], [this._right, this._bottom], [this._right, this._top]];
             this.renderer.shadowRenderer.draw(ctx, points);
@@ -4663,21 +4713,21 @@
         // ctx.lineWidth = this.borderWidth;
         // ctx.strokeStyle = this.borderColor;
         // ctx.strokeRect(this._left, this._top, this._width, this._height);
-
+        
         ctx.restore();
         ctx =  null;
         axes = null;
     };
-
+ 
     // Class: $.jqplot.DivTitleRenderer
-    // The default title renderer for jqPlot.  This class has no options beyond the <Title> class.
+    // The default title renderer for jqPlot.  This class has no options beyond the <Title> class. 
     $.jqplot.DivTitleRenderer = function() {
     };
-
+    
     $.jqplot.DivTitleRenderer.prototype.init = function(options) {
         $.extend(true, this, options);
     };
-
+    
     $.jqplot.DivTitleRenderer.prototype.draw = function() {
         // Memory Leaks patch
         if (this._elem) {
@@ -4750,14 +4800,14 @@
         }
 
         elem = null;
-
+        
         return this._elem;
     };
-
+    
     $.jqplot.DivTitleRenderer.prototype.pack = function() {
         // nothing to do here
     };
-
+  
 
     var dotlen = 0.1;
 
@@ -4875,7 +4925,7 @@
         this.shapeRenderer = new $.jqplot.ShapeRenderer();
         this.shadowRenderer = new $.jqplot.ShadowRenderer();
     };
-
+    
     // called with scope of series.
     $.jqplot.LineRenderer.prototype.init = function(options, plot) {
         // Group: Properties
@@ -4914,7 +4964,7 @@
         //
         // bandData can be input in 3 forms.  jqPlot will figure out which is the
         // low band line and which is the high band line for all forms:
-        //
+        // 
         // A 2 dimensional array like [[yl1, yl2, ...], [yu1, yu2, ...]] where
         // [yl1, yl2, ...] are y values of the lower line and
         // [yu1, yu2, ...] are y values of the upper line.
@@ -4929,7 +4979,7 @@
         //
         // Can be of form [[yl1, yu1], [yl2, yu2], [yl3, yu3], ...] where
         // there must be 3 or more arrays and there must be the same number of arrays
-        // as there are data points in the series.  In this case,
+        // as there are data points in the series.  In this case, 
         // [yl1, yu1] specifies the lower and upper y values for the 1st
         // data point and so on.  The bands will inherit the x
         // values from the series.
@@ -4960,18 +5010,18 @@
             _max: null,
             // prop: interval
             // User specified interval above and below line for bands [default: '3%''].
-            // Can be a value like 3 or a string like '3%'
+            // Can be a value like 3 or a string like '3%' 
             // or an upper/lower array like [1, -2] or ['2%', '-1.5%']
             interval: '3%'
         };
 
 
         var lopts = {highlightMouseOver: options.highlightMouseOver, highlightMouseDown: options.highlightMouseDown, highlightColor: options.highlightColor};
-
+        
         delete (options.highlightMouseOver);
         delete (options.highlightMouseDown);
         delete (options.highlightColor);
-
+        
         $.extend(true, this.renderer, options);
 
         this.renderer.options = options;
@@ -5018,15 +5068,15 @@
                 shadow_offset = 1.25 * Math.atan((this.lineWidth/2.5))/0.785398163;
             }
         }
-
+        
         var sopts = {lineJoin:this.lineJoin, lineCap:this.lineCap, fill:this.fill, isarc:false, angle:this.shadowAngle, offset:shadow_offset, alpha:this.shadowAlpha, depth:this.shadowDepth, lineWidth:this.lineWidth, linePattern:this.linePattern, closePath:this.fill};
         this.renderer.shadowRenderer.init(sopts);
         this._areaPoints = [];
         this._boundingBox = [[],[]];
-
+        
         if (!this.isTrendline && this.fill || this.renderer.bands.show) {
             // Group: Properties
-            //
+            //        
             // prop: highlightMouseOver
             // True to highlight area on a filled plot when moused over.
             // This must be false to enable highlightMouseDown to highlight when clicking on an area on a filled plot.
@@ -5042,9 +5092,9 @@
             if (lopts.highlightMouseDown && lopts.highlightMouseOver == null) {
                 lopts.highlightMouseOver = false;
             }
-
+        
             $.extend(true, this, {highlightMouseOver: lopts.highlightMouseOver, highlightMouseDown: lopts.highlightMouseDown, highlightColor: lopts.highlightColor});
-
+            
             if (!this.highlightColor) {
                 var fc = (this.renderer.bands.show) ? this.renderer.bands.fillColor : this.fillColor;
                 this.highlightColor = $.jqplot.computeHighlightColors(fc);
@@ -5054,7 +5104,7 @@
                 this.highlighter.show = false;
             }
         }
-
+        
         if (!this.isTrendline && plot) {
             plot.plugins.lineRenderer = {};
             plot.postInitHooks.addOnce(postInit);
@@ -5294,7 +5344,7 @@
         var smooth = this.renderer.smooth;
         var dim = this.canvas.getWidth();
         var xp = this._xaxis.series_p2u;
-        var yp = this._yaxis.series_p2u;
+        var yp = this._yaxis.series_p2u; 
         var steps =null;
         var _steps = null;
         var dist = gd.length/dim;
@@ -5361,7 +5411,7 @@
             else if (num == nmax) {
                 // Last point has 0 2nd derivative
                 gxx[1] = 3 / 2 * (yy[nmax] - yy[nmax - 1]) / dxx(xx[nmax], xx[nmax - 1]) - gxx[0] / 2;
-            }
+            }   
 
             // Calc second derivative at points
             ggxx[0] = -2 * (gxx[1] + 2 * gxx[0]) / dxx(xx[num], xx[num - 1]) + 6 * (yy[num] - yy[num - 1]) / Math.pow(dxx(xx[num], xx[num - 1]), 2);
@@ -5415,7 +5465,7 @@
         var tension = this.renderer.tension;
         var dim = this.canvas.getWidth();
         var xp = this._xaxis.series_p2u;
-        var yp = this._yaxis.series_p2u;
+        var yp = this._yaxis.series_p2u; 
         var steps =null;
         var _steps = null;
         var a = null;
@@ -5458,7 +5508,7 @@
 
                 a1 = stretch * tanh(temp) - stretch * tanh(shift) + min;
 
-                // if have both left and right line segments, will use  minimum tension.
+                // if have both left and right line segments, will use  minimum tension. 
                 if (i > 0) {
                     slope2 = Math.abs((gd[i][1] - gd[i-1][1]) / (gd[i][0] - gd[i-1][0]));
                 }
@@ -5477,23 +5527,23 @@
                 h1 = (1 + 2*s)*Math.pow((1-s),2);
                 h2 = s*Math.pow((1-s),2);
                 h3 = Math.pow(s,2)*(3-2*s);
-                h4 = Math.pow(s,2)*(s-1);
-
-                if (gd[i-1]) {
-                    TiX = a * (gd[i+1][0] - gd[i-1][0]);
+                h4 = Math.pow(s,2)*(s-1);     
+                
+                if (gd[i-1]) {  
+                    TiX = a * (gd[i+1][0] - gd[i-1][0]); 
                     TiY = a * (gd[i+1][1] - gd[i-1][1]);
                 } else {
-                    TiX = a * (gd[i+1][0] - gd[i][0]);
-                    TiY = a * (gd[i+1][1] - gd[i][1]);
+                    TiX = a * (gd[i+1][0] - gd[i][0]); 
+                    TiY = a * (gd[i+1][1] - gd[i][1]);                                  
                 }
-                if (gd[i+2]) {
-                    Ti1X = a * (gd[i+2][0] - gd[i][0]);
+                if (gd[i+2]) {  
+                    Ti1X = a * (gd[i+2][0] - gd[i][0]); 
                     Ti1Y = a * (gd[i+2][1] - gd[i][1]);
                 } else {
-                    Ti1X = a * (gd[i+1][0] - gd[i][0]);
-                    Ti1Y = a * (gd[i+1][1] - gd[i][1]);
+                    Ti1X = a * (gd[i+1][0] - gd[i][0]); 
+                    Ti1Y = a * (gd[i+1][1] - gd[i][1]);                                 
                 }
-
+                
                 pX = h1*gd[i][0] + h3*gd[i+1][0] + h2*TiX + h4*Ti1X;
                 pY = h1*gd[i][1] + h3*gd[i+1][1] + h2*TiY + h4*Ti1Y;
                 p = [pX, pY];
@@ -5507,7 +5557,7 @@
 
         return [_smoothedData, _smoothedPlotData];
     }
-
+    
     // setGridData
     // converts the user data values to grid coordinates and stores them
     // in the gridData array.
@@ -5549,7 +5599,7 @@
             // else if there is a null, preserve it.
             else if (pdata[i] != null && pdata[i][0] == null) {
                 this._prevGridData.push([null, yp.call(this._yaxis, pdata[i][1])]);
-            }
+            }  
             else if (pdata[i] != null && pdata[i][0] != null && pdata[i][1] == null) {
                 this._prevGridData.push([xp.call(this._xaxis, pdata[i][0]), null]);
             }
@@ -5605,7 +5655,7 @@
             }
         }
     };
-
+    
     // makeGridData
     // converts any arbitrary data values to grid coordinates and
     // returns them.  This method exists so that plugins can use a series'
@@ -5629,6 +5679,9 @@
         for (var i=0; i<data.length; i++) {
             // if not a line series or if no nulls in data, push the converted point onto the array.
             if (data[i][0] != null && data[i][1] != null) {
+                if (this.step && i>0) {
+                    gd.push([xp.call(this._xaxis, data[i][0]), yp.call(this._yaxis, data[i-1][1])]);
+                }
                 gd.push([xp.call(this._xaxis, data[i][0]), yp.call(this._yaxis, data[i][1])]);
             }
             // else if there is a null, preserve it.
@@ -5692,7 +5745,7 @@
         }
         return gd;
     };
-
+    
 
     // called within scope of series.
     $.jqplot.LineRenderer.prototype.draw = function(ctx, gd, options, plot) {
@@ -5709,7 +5762,7 @@
             if (showLine) {
                 // if we fill, we'll have to add points to close the curve.
                 if (fill) {
-                    if (this.fillToZero) {
+                    if (this.fillToZero) { 
                         // have to break line up into shapes at axis crossings
                         var negativeColor = this.negativeColor;
                         if (! this.useNegativeColors) {
@@ -5717,14 +5770,14 @@
                         }
                         var isnegative = false;
                         var posfs = opts.fillStyle;
-
+                    
                         // if stoking line as well as filling, get a copy of line data.
                         if (fillAndStroke) {
                             var fasgd = gd.slice(0);
                         }
                         // if not stacked, fill down to axis
                         if (this.index == 0 || !this._stack) {
-
+                        
                             var tempgd = [];
                             var pd = (this.renderer.smooth) ? this.renderer._smoothedPlotData : this._plotData;
                             this._areaPoints = [];
@@ -5732,11 +5785,11 @@
                             var pxzero = this._xaxis.series_u2p(this.fillToValue);
 
                             opts.closePath = true;
-
+                            
                             if (this.fillAxis == 'y') {
                                 tempgd.push([gd[0][0], pyzero]);
                                 this._areaPoints.push([gd[0][0], pyzero]);
-
+                                
                                 for (var i=0; i<gd.length-1; i++) {
                                     tempgd.push(gd[i]);
                                     this._areaPoints.push(gd[i]);
@@ -5750,7 +5803,7 @@
                                             isnegative = false;
                                             opts.fillStyle = posfs;
                                         }
-
+                                        
                                         var xintercept = gd[i][0] + (gd[i+1][0] - gd[i][0]) * (pyzero-gd[i][1])/(gd[i+1][1] - gd[i][1]);
                                         tempgd.push([xintercept, pyzero]);
                                         this._areaPoints.push([xintercept, pyzero]);
@@ -5762,7 +5815,7 @@
                                         // now empty temp array and continue
                                         tempgd = [[xintercept, pyzero]];
                                         // this._areaPoints = [[xintercept, pyzero]];
-                                    }
+                                    }   
                                 }
                                 if (pd[gd.length-1][1] < 0) {
                                     isnegative = true;
@@ -5774,23 +5827,23 @@
                                 }
                                 tempgd.push(gd[gd.length-1]);
                                 this._areaPoints.push(gd[gd.length-1]);
-                                tempgd.push([gd[gd.length-1][0], pyzero]);
-                                this._areaPoints.push([gd[gd.length-1][0], pyzero]);
+                                tempgd.push([gd[gd.length-1][0], pyzero]); 
+                                this._areaPoints.push([gd[gd.length-1][0], pyzero]); 
                             }
                             // now draw the last area.
                             if (shadow) {
                                 this.renderer.shadowRenderer.draw(ctx, tempgd, opts);
                             }
                             this.renderer.shapeRenderer.draw(ctx, tempgd, opts);
-
-
+                            
+                            
                             // var gridymin = this._yaxis.series_u2p(0);
                             // // IE doesn't return new length on unshift
                             // gd.unshift([gd[0][0], gridymin]);
                             // len = gd.length;
-                            // gd.push([gd[len - 1][0], gridymin]);
+                            // gd.push([gd[len - 1][0], gridymin]);                   
                         }
-                        // if stacked, fill to line below
+                        // if stacked, fill to line below 
                         else {
                             var prev = this._prevGridData;
                             for (var i=prev.length; i>0; i--) {
@@ -5807,7 +5860,7 @@
                     /////////////////////////
                     // Not filled to zero
                     ////////////////////////
-                    else {
+                    else {                    
                         // if stoking line as well as filling, get a copy of line data.
                         if (fillAndStroke) {
                             var fasgd = gd.slice(0);
@@ -5819,9 +5872,9 @@
                             // IE doesn't return new length on unshift
                             gd.unshift([gd[0][0], gridymin]);
                             var len = gd.length;
-                            gd.push([gd[len - 1][0], gridymin]);
+                            gd.push([gd[len - 1][0], gridymin]);                   
                         }
-                        // if stacked, fill to line below
+                        // if stacked, fill to line below 
                         else {
                             var prev = this._prevGridData;
                             for (var i=prev.length; i>0; i--) {
@@ -5829,12 +5882,12 @@
                             }
                         }
                         this._areaPoints = gd;
-
+                        
                         if (shadow) {
                             this.renderer.shadowRenderer.draw(ctx, gd, opts);
                         }
-
-                        this.renderer.shapeRenderer.draw(ctx, gd, opts);
+            
+                        this.renderer.shapeRenderer.draw(ctx, gd, opts);                        
                     }
                     if (fillAndStroke) {
                         var fasopts = $.extend(true, {}, opts, {fill:false, closePath:false});
@@ -5885,7 +5938,7 @@
                     if (shadow) {
                         this.renderer.shadowRenderer.draw(ctx, gd, opts);
                     }
-
+    
                     this.renderer.shapeRenderer.draw(ctx, gd, opts);
                 }
             }
@@ -5913,7 +5966,7 @@
             }
 
             this._boundingBox = [[xmin, ymax], [xmax, ymin]];
-
+        
             // now draw the markers
             if (this.markerRenderer.show && !fill) {
                 if (this.renderer.smooth) {
@@ -5926,14 +5979,14 @@
                 }
             }
         }
-
+        
         ctx.restore();
-    };
-
+    };  
+    
     $.jqplot.LineRenderer.prototype.drawShadow = function(ctx, gd, options) {
         // This is a no-op, shadows drawn with lines.
     };
-
+    
     // called with scope of plot.
     // make sure to not leave anything highlighted.
     function postInit(target, data, options) {
@@ -5945,26 +5998,26 @@
                 }
             }
         }
-    }
-
+    }  
+    
     // called within context of plot
     // create a canvas which we can draw on.
     // insert it before the eventCanvas, so eventCanvas will still capture events.
     function postPlotDraw() {
-        // Memory Leaks patch
+        // Memory Leaks patch    
         if (this.plugins.lineRenderer && this.plugins.lineRenderer.highlightCanvas) {
           this.plugins.lineRenderer.highlightCanvas.resetCanvas();
           this.plugins.lineRenderer.highlightCanvas = null;
         }
-
+        
         this.plugins.lineRenderer.highlightedSeriesIndex = null;
         this.plugins.lineRenderer.highlightCanvas = new $.jqplot.GenericCanvas();
-
+        
         this.eventCanvas._elem.before(this.plugins.lineRenderer.highlightCanvas.createElement(this._gridPadding, 'jqplot-lineRenderer-highlight-canvas', this._plotDimensions, this));
         this.plugins.lineRenderer.highlightCanvas.setContext();
         this.eventCanvas._elem.bind('mouseleave', {plot:this}, function (ev) { unhighlight(ev.data.plot); });
-    }
-
+    } 
+    
     function highlight (plot, sidx, pidx, points) {
         var s = plot.series[sidx];
         var canvas = plot.plugins.lineRenderer.highlightCanvas;
@@ -5979,7 +6032,7 @@
         s.renderer.shapeRenderer.draw(canvas._ctx, points, opts);
         canvas = null;
     }
-
+    
     function unhighlight (plot) {
         var canvas = plot.plugins.lineRenderer.highlightCanvas;
         canvas._ctx.clearRect(0,0, canvas._ctx.canvas.width, canvas._ctx.canvas.height);
@@ -5990,8 +6043,8 @@
         plot.target.trigger('jqplotDataUnhighlight');
         canvas = null;
     }
-
-
+    
+    
     function handleMove(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var ins = [neighbor.seriesIndex, neighbor.pointIndex, neighbor.data];
@@ -6012,7 +6065,7 @@
             unhighlight (plot);
         }
     }
-
+    
     function handleMouseDown(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var ins = [neighbor.seriesIndex, neighbor.pointIndex, neighbor.data];
@@ -6029,14 +6082,14 @@
             unhighlight (plot);
         }
     }
-
+    
     function handleMouseUp(ev, gridpos, datapos, neighbor, plot) {
         var idx = plot.plugins.lineRenderer.highlightedSeriesIndex;
         if (idx != null && plot.series[idx].highlightMouseDown) {
             unhighlight(plot);
         }
     }
-
+    
     function handleClick(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var ins = [neighbor.seriesIndex, neighbor.pointIndex, neighbor.data];
@@ -6047,7 +6100,7 @@
             plot.target.trigger(evt, ins);
         }
     }
-
+    
     function handleRightClick(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var ins = [neighbor.seriesIndex, neighbor.pointIndex, neighbor.data];
@@ -6062,20 +6115,20 @@
             plot.target.trigger(evt, ins);
         }
     }
-
-
+    
+    
     // class: $.jqplot.LinearAxisRenderer
     // The default jqPlot axis renderer, creating a numeric axis.
     $.jqplot.LinearAxisRenderer = function() {
     };
-
+    
     // called with scope of axis object.
     $.jqplot.LinearAxisRenderer.prototype.init = function(options){
         // prop: breakPoints
         // EXPERIMENTAL!! Use at your own risk!
         // Works only with linear axes and the default tick renderer.
         // Array of [start, stop] points to create a broken axis.
-        // Broken axes have a "jump" in them, which is an immediate
+        // Broken axes have a "jump" in them, which is an immediate 
         // transition from a smaller value to a larger value.
         // Currently, axis ticks MUST be manually assigned if using breakPoints
         // by using the axis ticks array option.
@@ -6111,7 +6164,7 @@
         // are set:  autoscale, min, max, numberTicks or tickInterval.
         this.forceTickAt100 = false;
         // prop: tickInset
-        // Controls the amount to inset the first and last ticks from
+        // Controls the amount to inset the first and last ticks from 
         // the edges of the grid, in multiples of the tick interval.
         // 0 is no inset, 0.5 is one half a tick interval, 1 is a full
         // tick interval, etc.
@@ -6142,7 +6195,7 @@
         }
         this.resetDataBounds();
     };
-
+    
     // called with scope of axis
     $.jqplot.LinearAxisRenderer.prototype.draw = function(ctx, plot) {
         if (this.show) {
@@ -6162,19 +6215,19 @@
                 this._elem.emptyForce();
                 this._elem = null;
             }
-
+            
             this._elem = $(document.createElement('div'));
             this._elem.addClass('jqplot-axis jqplot-'+this.name);
             this._elem.css('position', 'absolute');
 
-
+            
             if (this.name == 'xaxis' || this.name == 'x2axis') {
                 this._elem.width(this._plotDimensions.width);
             }
             else {
                 this._elem.height(this._plotDimensions.height);
             }
-
+            
             // create a _label object.
             this.labelOptions.axis = this.name;
             this._label = new this.labelRenderer(this.labelOptions);
@@ -6183,7 +6236,7 @@
                 elem.appendTo(this._elem);
                 elem = null;
             }
-
+    
             var t = this._ticks;
             var tick;
             for (var i=0; i<t.length; i++) {
@@ -6197,7 +6250,7 @@
         }
         return this._elem;
     };
-
+    
     // called with scope of an axis
     $.jqplot.LinearAxisRenderer.prototype.reset = function() {
         this.min = this._options.min;
@@ -6211,9 +6264,9 @@
 
         // this._ticks = this.__ticks;
     };
-
+    
     // called with scope of axis
-    $.jqplot.LinearAxisRenderer.prototype.set = function() {
+    $.jqplot.LinearAxisRenderer.prototype.set = function() { 
         var dim = 0;
         var temp;
         var w = 0;
@@ -6238,10 +6291,10 @@
             }
             tick = null;
             t = null;
-
+            
             if (lshow) {
                 w = this._label._elem.outerWidth(true);
-                h = this._label._elem.outerHeight(true);
+                h = this._label._elem.outerHeight(true); 
             }
             if (this.name == 'xaxis') {
                 dim = dim + h;
@@ -6265,9 +6318,9 @@
                     this._label._elem.css('width', w+'px');
                 }
             }
-        }
-    };
-
+        }  
+    };    
+    
     // called with scope of axis
     $.jqplot.LinearAxisRenderer.prototype.createTicks = function(plot) {
         // we're are operating on an axis here
@@ -6289,10 +6342,10 @@
 
         var threshold = 30;
         this._scalefact =  (Math.max(dim, threshold+1) - threshold)/300.0;
-
+        
         // if we already have ticks, use them.
         // ticks must be in order of increasing value.
-
+        
         if (userTicks.length) {
             // ticks could be 1D or 2D array of [val, val, ,,,] or [[val, label], [val, label], ...] or mixed
             for (i=0; i<userTicks.length; i++){
@@ -6328,7 +6381,7 @@
                     t.axis = this.name;
                     this._ticks.push(t);
                 }
-
+                
                 else {
                     t.value = ut;
                     if (this.breakPoints) {
@@ -6352,7 +6405,7 @@
             this.max = this._ticks[this.numberTicks-1].value;
             this.tickInterval = (this.max - this.min) / (this.numberTicks - 1);
         }
-
+        
         // we don't have any ticks yet, let's make some!
         else {
             if (name == 'xaxis' || name == 'x2axis') {
@@ -6374,7 +6427,7 @@
                     _numberTicks = plot.axes.yaxis.numberTicks;
                 }
             }
-
+        
             min = ((this.min != null) ? this.min : db.min);
             max = ((this.max != null) ? this.max : db.max);
 
@@ -6422,10 +6475,10 @@
                 // var threshold = 30;
                 // var tdim = Math.max(dim, threshold+1);
                 // this._scalefact =  (tdim-threshold)/300.0;
-                var ret = $.jqplot.LinearTickGenerator(min, max, this._scalefact, _numberTicks, keepMin, keepMax);
+                var ret = $.jqplot.LinearTickGenerator(min, max, this._scalefact, _numberTicks, keepMin, keepMax); 
                 // calculate a padded max and min, points should be less than these
                 // so that they aren't too close to the edges of the plot.
-                // User can adjust how much padding is allowed with pad, padMin and PadMax options.
+                // User can adjust how much padding is allowed with pad, padMin and PadMax options. 
                 // If min or max is set, don't pad that end of axis.
                 var tumin = (this.min != null) ? min : min + range*(this.padMin - 1);
                 var tumax = (this.max != null) ? max : max - range*(this.padMax - 1);
@@ -6448,7 +6501,7 @@
 
             // User has specified some axis scale related option, can use auto algorithm
             else {
-
+                
                 // if min and max are same, space them out a bit
                 if (min == max) {
                     var adj = 0.05;
@@ -6458,7 +6511,7 @@
                     min -= adj;
                     max += adj;
                 }
-
+                
                 // autoscale.  Can't autoscale if min or max is supplied.
                 // Will use numberTicks and tickInterval if supplied.  Ticks
                 // across multiple axes may not line up depending on how
@@ -6503,7 +6556,7 @@
                                     }
                                 }
                             }
-
+                            
                             // if not a bar and filling, use appropriate method.
                             else if (s.fill) {
                                 if (vmin >= 0 && (s.fillToZero || dp > 0.1)) {
@@ -6518,7 +6571,7 @@
                                     forceZeroLine = false;
                                 }
                             }
-
+                            
                             // if not a bar and not filling, only change existing state
                             // if it doesn't make sense
                             else if (vmin < 0) {
@@ -6526,7 +6579,7 @@
                             }
                         }
                     }
-
+                    
                     // check if we need make axis min at 0.
                     if (forceMinZero) {
                         // compute number of ticks
@@ -6543,7 +6596,7 @@
                         this.tickInterval = Math.ceil(ti/temp) * temp;
                         this.max = this.tickInterval * (this.numberTicks - 1);
                     }
-
+                    
                     // check if we need to make sure there is a tick at 0.
                     else if (forceZeroLine) {
                         // compute number of ticks
@@ -6556,9 +6609,9 @@
                         this.max = this.tickInterval * ntmax;
                         this.min = -this.tickInterval * ntmin;
                     }
-
+                    
                     // if nothing else, do autoscaling which will try to line up ticks across axes.
-                    else {
+                    else {  
                         if (this.numberTicks == null){
                             if (this.tickInterval) {
                                 this.numberTicks = 3 + Math.ceil(range / this.tickInterval);
@@ -6567,7 +6620,7 @@
                                 this.numberTicks = 2 + Math.ceil((dim-(this.tickSpacing-1))/this.tickSpacing);
                             }
                         }
-
+                
                         if (this.tickInterval == null) {
                             // get a tick interval
                             ti = range/(this.numberTicks - 1);
@@ -6583,13 +6636,13 @@
                         else {
                             temp = 1 / this.tickInterval;
                         }
-
+                        
                         // try to compute a nicer, more even tick interval
                         // temp = Math.pow(10, Math.floor(Math.log(ti)/Math.LN10));
                         // this.tickInterval = Math.ceil(ti/temp) * temp;
                         rrange = this.tickInterval * (this.numberTicks - 1);
                         margin = (rrange - range)/2;
-
+           
                         if (this.min == null) {
                             this.min = Math.floor(temp*(min-margin))/temp;
                         }
@@ -6617,7 +6670,7 @@
 
                     this._autoFormatString = fstr;
                 }
-
+                
                 // Use the default algorithm which pads each axis to make the chart
                 // centered nicely on the grid.
                 else {
@@ -6625,7 +6678,7 @@
                     rmin = (this.min != null) ? this.min : min - range*(this.padMin - 1);
                     rmax = (this.max != null) ? this.max : max + range*(this.padMax - 1);
                     range = rmax - rmin;
-
+        
                     if (this.numberTicks == null){
                         // if tickInterval is specified by user, we will ignore computed maximum.
                         // max will be equal or greater to fit even # of ticks.
@@ -6639,14 +6692,14 @@
                             this.numberTicks = 2;
                         }
                     }
-
+                
                     if (this.tickInterval == null) {
                         this.tickInterval = range / (this.numberTicks-1);
                     }
-
+                    
                     if (this.max == null) {
                         rmax = rmin + this.tickInterval*(this.numberTicks - 1);
-                    }
+                    }        
                     if (this.min == null) {
                         rmin = rmax - this.tickInterval*(this.numberTicks - 1);
                     }
@@ -6673,14 +6726,14 @@
                     this.min = rmin;
                     this.max = rmax;
                 }
-
+                
                 if (this.renderer.constructor == $.jqplot.LinearAxisRenderer && this._autoFormatString == '') {
                     // fix for misleading tick display with small range and low precision.
                     range = this.max - this.min;
                     // figure out precision
                     var temptick = new this.tickRenderer(this.tickOptions);
                     // use the tick formatString or, the default.
-                    var fs = temptick.formatString || $.jqplot.config.defaultTickFormatString;
+                    var fs = temptick.formatString || $.jqplot.config.defaultTickFormatString; 
                     var fs = fs.match($.jqplot.sprintf.regex)[0];
                     var precision = 0;
                     if (fs) {
@@ -6747,9 +6800,9 @@
                         }
                     }
                 }
-
+                
             }
-
+            
             if (this._overrideFormatString && this._autoFormatString != '') {
                 this.tickOptions = this.tickOptions || {};
                 this.tickOptions.formatString = this._autoFormatString;
@@ -6783,9 +6836,9 @@
 
         ticks = null;
     };
-
+    
     // Used to reset just the values of the ticks and then repack, which will
-    // recalculate the positioning functions.  It is assuemd that the
+    // recalculate the positioning functions.  It is assuemd that the 
     // number of ticks is the same and the values of the new array are at the
     // proper interval.
     // This method needs to be called with the scope of an axis object, like:
@@ -6809,40 +6862,40 @@
         }
         // Not implemented yet.
         // else if ($.isPlainObject(opts)) {
-        //
+        // 
         // }
     };
-
+    
     // called with scope of axis
     $.jqplot.LinearAxisRenderer.prototype.pack = function(pos, offsets) {
         // Add defaults for repacking from resetTickValues function.
         pos = pos || {};
         offsets = offsets || this._offsets;
-
+        
         var ticks = this._ticks;
         var max = this.max;
         var min = this.min;
         var offmax = offsets.max;
         var offmin = offsets.min;
         var lshow = (this._label == null) ? false : this._label.show;
-
+        
         for (var p in pos) {
             this._elem.css(p, pos[p]);
         }
-
+        
         this._offsets = offsets;
         // pixellength will be + for x axes and - for y axes becasue pixels always measured from top left.
         var pixellength = offmax - offmin;
         var unitlength = max - min;
-
+        
         // point to unit and unit to point conversions references to Plot DOM element top left corner.
         if (this.breakPoints) {
             unitlength = unitlength - this.breakPoints[1] + this.breakPoints[0];
-
+            
             this.p2u = function(p){
                 return (p - offmin) * unitlength / pixellength + min;
             };
-
+        
             this.u2p = function(u){
                 if (u > this.breakPoints[0] && u < this.breakPoints[1]){
                     u = this.breakPoints[0];
@@ -6854,7 +6907,7 @@
                     return (u - this.breakPoints[1] + this.breakPoints[0] - min) * pixellength / unitlength + offmin;
                 }
             };
-
+                
             if (this.name.charAt(0) == 'x'){
                 this.series_u2p = function(u){
                     if (u > this.breakPoints[0] && u < this.breakPoints[1]){
@@ -6871,7 +6924,7 @@
                     return p * unitlength / pixellength + min;
                 };
             }
-
+        
             else {
                 this.series_u2p = function(u){
                     if (u > this.breakPoints[0] && u < this.breakPoints[1]){
@@ -6893,11 +6946,11 @@
             this.p2u = function(p){
                 return (p - offmin) * unitlength / pixellength + min;
             };
-
+        
             this.u2p = function(u){
                 return (u - min) * pixellength / unitlength + offmin;
             };
-
+                
             if (this.name == 'xaxis' || this.name == 'x2axis'){
                 this.series_u2p = function(u){
                     return (u - min) * pixellength / unitlength;
@@ -6906,7 +6959,7 @@
                     return p * unitlength / pixellength + min;
                 };
             }
-
+        
             else {
                 this.series_u2p = function(u){
                     return (u - max) * pixellength / unitlength;
@@ -6916,14 +6969,14 @@
                 };
             }
         }
-
+        
         if (this.show) {
             if (this.name == 'xaxis' || this.name == 'x2axis') {
                 for (var i=0; i<ticks.length; i++) {
                     var t = ticks[i];
                     if (t.show && t.showLabel) {
                         var shim;
-
+                        
                         if (t.constructor == $.jqplot.CanvasAxisTickRenderer && t.angle) {
                             // will need to adjust auto positioning based on which axis this is.
                             var temp = (this.name == 'xaxis') ? 1 : -1;
@@ -6975,7 +7028,7 @@
             else {
                 for (var i=0; i<ticks.length; i++) {
                     var t = ticks[i];
-                    if (t.show && t.showLabel) {
+                    if (t.show && t.showLabel) {                        
                         var shim;
                         if (t.constructor == $.jqplot.CanvasAxisTickRenderer && t.angle) {
                             // will need to adjust auto positioning based on which axis this is.
@@ -7016,7 +7069,7 @@
                         else {
                             shim = -t.getHeight()/2;
                         }
-
+                        
                         var val = this.u2p(t.value) + shim + 'px';
                         t._elem.css('top', val);
                         t.pack();
@@ -7030,7 +7083,7 @@
                     }
                     else {
                         this._label._elem.css('right', '0px');
-                    }
+                    }   
                     this._label.pack();
                 }
             }
@@ -7042,23 +7095,23 @@
 
     /**
     * The following code was generaously given to me a while back by Scott Prahl.
-    * He did a good job at computing axes min, max and number of ticks for the
+    * He did a good job at computing axes min, max and number of ticks for the 
     * case where the user has not set any scale related parameters (tickInterval,
     * numberTicks, min or max).  I had ignored this use case for a long time,
     * focusing on the more difficult case where user has set some option controlling
     * tick generation.  Anyway, about time I got this into jqPlot.
     * Thanks Scott!!
     */
-
+    
     /**
     * Copyright (c) 2010 Scott Prahl
-    * The next three routines are currently available for use in all personal
-    * or commercial projects under both the MIT and GPL version 2.0 licenses.
-    * This means that you can choose the license that best suits your project
-    * and use it accordingly.
+    * The next three routines are currently available for use in all personal 
+    * or commercial projects under both the MIT and GPL version 2.0 licenses. 
+    * This means that you can choose the license that best suits your project 
+    * and use it accordingly. 
     */
 
-    // A good format string depends on the interval. If the interval is greater
+    // A good format string depends on the interval. If the interval is greater 
     // than 1 then there is no need to show any decimal digits. If it is < 1.0, then
     // use the magnitude of the interval to determine the number of digits to show.
     function bestFormatString (interval)
@@ -7082,8 +7135,8 @@
             var expv = -Math.floor(Math.log(interval)/Math.LN10);
             fstr = '%.' + expv + 'f';
         }
-
-        return fstr;
+        
+        return fstr; 
     }
 
     var _factors = [0.1, 0.2, 0.3, 0.4, 0.5, 0.8, 1, 2, 3, 4, 5];
@@ -7109,7 +7162,7 @@
     };
 
     // Given a fixed minimum and maximum and a target number ot ticks
-    // figure out the best interval and
+    // figure out the best interval and 
     // return min, max, number ticks, format string and tick interval
     function bestConstrainedInterval(min, max, nttarget) {
         // run through possible number to ticks and see which interval is best
@@ -7169,7 +7222,7 @@
         var residual = minimum / magnitude;
         var interval;
         // "nicest" ranges are 1, 2, 5 or powers of these.
-        // for magnitudes below 1, only allow these.
+        // for magnitudes below 1, only allow these. 
         if (magnitude < 1) {
             if (residual > 5) {
                 interval = 10 * magnitude;
@@ -7185,7 +7238,7 @@
             }
         }
         // for large ranges (whole integers), allow intervals like 3, 4 or powers of these.
-        // this helps a lot with poor choices for number of ticks.
+        // this helps a lot with poor choices for number of ticks. 
         else {
             if (residual > 5) {
                 interval = 10 * magnitude;
@@ -7242,9 +7295,9 @@
         }
         else {
             fact = 5;
-        }
+        } 
 
-        return fact*magnitude;
+        return fact*magnitude; 
     }
 
     function bestLinearComponents(range, scalefact) {
@@ -7283,7 +7336,7 @@
         // }
         else {
             fact = 5;
-        }
+        } 
 
         interval = fact * magnitude;
 
@@ -7317,7 +7370,7 @@
         var ss = bestLinearInterval(axis_max - axis_min, scalefact);
 
         var gsf = $.jqplot.getSignificantFigures;
-
+        
         if (numberTicks == null) {
 
             // Figure out the axis min, max and number of ticks
@@ -7406,7 +7459,7 @@
     // The default jqPlot marker renderer, rendering the points on the line.
     $.jqplot.MarkerRenderer = function(options){
         // Group: Properties
-
+        
         // prop: show
         // whether or not to show the marker.
         this.show = true;
@@ -7443,10 +7496,10 @@
         // prop: shapeRenderer
         // Renderer that will draw the marker.
         this.shapeRenderer = new $.jqplot.ShapeRenderer();
-
+        
         $.extend(true, this, options);
     };
-
+    
     $.jqplot.MarkerRenderer.prototype.init = function(options) {
         $.extend(true, this, options);
         var sdopt = {angle:this.shadowAngle, offset:this.shadowOffset, alpha:this.shadowAlpha, lineWidth:this.lineWidth, depth:this.shadowDepth, closePath:true};
@@ -7458,7 +7511,7 @@
             sdopt.closePath = false;
         }
         this.shadowRenderer.init(sdopt);
-
+        
         var shopt = {fill:false, isarc:false, strokeStyle:this.color, fillStyle:this.color, lineWidth:this.lineWidth, closePath:true};
         if (this.style.indexOf('filled') != -1) {
             shopt.fill = true;
@@ -7469,7 +7522,7 @@
         }
         this.shapeRenderer.init(shopt);
     };
-
+    
     $.jqplot.MarkerRenderer.prototype.drawDiamond = function(x, y, ctx, fill, options) {
         var stretch = 1.2;
         var dx = this.size/2/stretch;
@@ -7480,7 +7533,7 @@
         }
         this.shapeRenderer.draw(ctx, points, options);
     };
-
+    
     $.jqplot.MarkerRenderer.prototype.drawPlus = function(x, y, ctx, fill, options) {
         var stretch = 1.0;
         var dx = this.size/2*stretch;
@@ -7495,7 +7548,7 @@
         this.shapeRenderer.draw(ctx, points1, opts);
         this.shapeRenderer.draw(ctx, points2, opts);
     };
-
+    
     $.jqplot.MarkerRenderer.prototype.drawX = function(x, y, ctx, fill, options) {
         var stretch = 1.0;
         var dx = this.size/2*stretch;
@@ -7510,7 +7563,7 @@
         this.shapeRenderer.draw(ctx, points1, opts);
         this.shapeRenderer.draw(ctx, points2, opts);
     };
-
+    
     $.jqplot.MarkerRenderer.prototype.drawDash = function(x, y, ctx, fill, options) {
         var stretch = 1.0;
         var dx = this.size/2*stretch;
@@ -7521,7 +7574,7 @@
         }
         this.shapeRenderer.draw(ctx, points, options);
     };
-
+    
     $.jqplot.MarkerRenderer.prototype.drawLine = function(p1, p2, ctx, fill, options) {
         var points = [p1, p2];
         if (this.shadow) {
@@ -7529,7 +7582,7 @@
         }
         this.shapeRenderer.draw(ctx, points, options);
     };
-
+    
     $.jqplot.MarkerRenderer.prototype.drawSquare = function(x, y, ctx, fill, options) {
         var stretch = 1.0;
         var dx = this.size/2/stretch;
@@ -7540,7 +7593,7 @@
         }
         this.shapeRenderer.draw(ctx, points, options);
     };
-
+    
     $.jqplot.MarkerRenderer.prototype.drawCircle = function(x, y, ctx, fill, options) {
         var radius = this.size/2;
         var end = 2*Math.PI;
@@ -7550,7 +7603,7 @@
         }
         this.shapeRenderer.draw(ctx, points, options);
     };
-
+    
     $.jqplot.MarkerRenderer.prototype.draw = function(x, y, ctx, options) {
         options = options || {};
         // hack here b/c shape renderer uses canvas based color style options
@@ -7599,12 +7652,12 @@
             }
         }
     };
-
+    
     // class: $.jqplot.shadowRenderer
     // The default jqPlot shadow renderer, rendering shadows behind shapes.
-    $.jqplot.ShadowRenderer = function(options){
+    $.jqplot.ShadowRenderer = function(options){ 
         // Group: Properties
-
+        
         // prop: angle
         // Angle of the shadow in degrees.  Measured counter-clockwise from the x axis.
         this.angle = 45;
@@ -7636,14 +7689,14 @@
         // prop: isarc
         // whether the shadow is an arc or not.
         this.isarc = false;
-
+        
         $.extend(true, this, options);
     };
-
+    
     $.jqplot.ShadowRenderer.prototype.init = function(options) {
         $.extend(true, this, options);
     };
-
+    
     // function: draw
     // draws an transparent black (i.e. gray) shadow.
     //
@@ -7670,7 +7723,7 @@
             ctx.translate(Math.cos(this.angle*Math.PI/180)*offset, Math.sin(this.angle*Math.PI/180)*offset);
             ctxPattern.beginPath();
             if (isarc) {
-                ctx.arc(points[0], points[1], points[2], points[3], points[4], true);
+                ctx.arc(points[0], points[1], points[2], points[3], points[4], true);                
             }
             else if (fillRect) {
                 if (fillRect) {
@@ -7694,7 +7747,7 @@
                         move = true;
                     }
                 }
-
+                
             }
             if (closePath) {
                 ctxPattern.closePath();
@@ -7708,19 +7761,19 @@
         }
         ctx.restore();
     };
-
+    
     // class: $.jqplot.shapeRenderer
     // The default jqPlot shape renderer.  Given a set of points will
     // plot them and either stroke a line (fill = false) or fill them (fill = true).
     // If a filled shape is desired, closePath = true must also be set to close
     // the shape.
     $.jqplot.ShapeRenderer = function(options){
-
+        
         this.lineWidth = 1.5;
         // prop: linePattern
         // line pattern 'dashed', 'dotted', 'solid', some combination
-        // of '-' and '.' characters such as '.-.' or a numerical array like
-        // [draw, skip, draw, skip, ...] such as [1, 10] to draw a dotted line,
+        // of '-' and '.' characters such as '.-.' or a numerical array like 
+        // [draw, skip, draw, skip, ...] such as [1, 10] to draw a dotted line, 
         // [1, 10, 20, 10] to draw a dot-dash line, and so on.
         this.linePattern = 'solid';
         // prop: lineJoin
@@ -7752,20 +7805,20 @@
         this.strokeStyle = '#999999';
         // prop: fillStyle
         // css color spec for the fill style.
-        this.fillStyle = '#999999';
-
+        this.fillStyle = '#999999'; 
+        
         $.extend(true, this, options);
     };
-
+    
     $.jqplot.ShapeRenderer.prototype.init = function(options) {
         $.extend(true, this, options);
     };
-
+    
     // function: draw
     // draws the shape.
     //
     // ctx - canvas drawing context
-    // points - array of points for shapes or
+    // points - array of points for shapes or 
     // [x, y, width, height] for rectangles or
     // [x, y, radius, start angle (rad), end angle (rad)] for circles and arcs.
     $.jqplot.ShapeRenderer.prototype.draw = function(ctx, points, options) {
@@ -7786,7 +7839,7 @@
         ctx.fillStyle = opts.fillStyle || this.fillStyle;
         ctx.beginPath();
         if (isarc) {
-            ctx.arc(points[0], points[1], points[2], points[3], points[4], true);
+            ctx.arc(points[0], points[1], points[2], points[3], points[4], true);   
             if (closePath) {
                 ctx.closePath();
             }
@@ -7843,17 +7896,17 @@
         }
         ctx.restore();
     };
-
+    
     // class $.jqplot.TableLegendRenderer
     // The default legend renderer for jqPlot.
     $.jqplot.TableLegendRenderer = function(){
         //
     };
-
+    
     $.jqplot.TableLegendRenderer.prototype.init = function(options) {
         $.extend(true, this, options);
     };
-
+        
     $.jqplot.TableLegendRenderer.prototype.addrow = function (label, color, pad, reverse) {
         var rs = (pad) ? this.rowSpacing+'px' : '0px';
         var tr;
@@ -7912,7 +7965,7 @@
         tr = null;
         elem = null;
     };
-
+    
     // called with scope of legend
     $.jqplot.TableLegendRenderer.prototype.draw = function() {
         if (this._elem) {
@@ -7955,9 +8008,9 @@
             if (this.marginRight != null) {
                 ss['marginRight'] = this.marginRight;
             }
-
-
-            var pad = false,
+            
+        
+            var pad = false, 
                 reverse = false,
                 s;
             for (var i = 0; i< series.length; i++) {
@@ -7984,7 +8037,7 @@
                         if (item) {
                             this.renderer.addrow.call(this, item.label, item.color, pad);
                             pad = true;
-                        }
+                        } 
                     }
                     lt = null;
                 }
@@ -7992,9 +8045,9 @@
         }
         return this._elem;
     };
-
+    
     $.jqplot.TableLegendRenderer.prototype.pack = function(offsets) {
-        if (this.show) {
+        if (this.show) {       
             if (this.placement == 'insideGrid') {
                 switch (this.location) {
                     case 'nw':
@@ -8045,7 +8098,7 @@
                         this._elem.css({right:a, bottom:b});
                         break;
                 }
-
+                
             }
             else if (this.placement == 'outside'){
                 switch (this.location) {
@@ -8133,7 +8186,7 @@
                         break;
                 }
             }
-        }
+        } 
     };
 
     /**
@@ -8141,19 +8194,19 @@
      * Theme Engine provides a programatic way to change some of the  more
      * common jqplot styling options such as fonts, colors and grid options.
      * A theme engine instance is created with each plot.  The theme engine
-     * manages a collection of themes which can be modified, added to, or
+     * manages a collection of themes which can be modified, added to, or 
      * applied to the plot.
-     *
+     * 
      * The themeEngine class is not instantiated directly.
      * When a plot is initialized, the current plot options are scanned
      * an a default theme named "Default" is created.  This theme is
      * used as the basis for other themes added to the theme engine and
      * is always available.
-     *
+     * 
      * A theme is a simple javascript object with styling parameters for
      * various entities of the plot.  A theme has the form:
-     *
-     *
+     * 
+     * 
      * > {
      * >     _name:f "Default",
      * >     target: {
@@ -8254,17 +8307,17 @@
      * >         }
      * >     }
      * > }
-     *
+     * 
      * "seriesStyles" is a style object that will be applied to all series in the plot.
      * It will forcibly override any styles applied on the individual series.  "axesStyles" is
      * a style object that will be applied to all axes in the plot.  It will also forcibly
      * override any styles on the individual axes.
-     *
+     * 
      * The example shown above has series options for a line series.  Options for other
      * series types are shown below:
-     *
+     * 
      * Bar Series:
-     *
+     * 
      * > {
      * >     color: "#4bb2c5",
      * >     seriesColors: ["#4bb2c5", "#EAA228", "#c5b47f", "#579575", "#839557", "#958c12", "#953579", "#4b5de4", "#d8b83f", "#ff5800", "#0085cc", "#c747a3", "#cddf54", "#FBD178", "#26B4E3", "#bd70c7"],
@@ -8275,9 +8328,9 @@
      * >     barWidth: 15.09375,
      * >     highlightColors: ["rgb(129,201,214)", "rgb(129,201,214)", "rgb(129,201,214)", "rgb(129,201,214)", "rgb(129,201,214)", "rgb(129,201,214)", "rgb(129,201,214)", "rgb(129,201,214)"]
      * > }
-     *
+     * 
      * Pie Series:
-     *
+     * 
      * > {
      * >     seriesColors: ["#4bb2c5", "#EAA228", "#c5b47f", "#579575", "#839557", "#958c12", "#953579", "#4b5de4", "#d8b83f", "#ff5800", "#0085cc", "#c747a3", "#cddf54", "#FBD178", "#26B4E3", "#bd70c7"],
      * >     padding: 20,
@@ -8288,9 +8341,9 @@
      * >     lineWidth: 2.5,
      * >     highlightColors: ["rgb(129,201,214)", "rgb(240,189,104)", "rgb(214,202,165)", "rgb(137,180,158)", "rgb(168,180,137)", "rgb(180,174,89)", "rgb(180,113,161)", "rgb(129,141,236)", "rgb(227,205,120)", "rgb(255,138,76)", "rgb(76,169,219)", "rgb(215,126,190)", "rgb(220,232,135)", "rgb(200,167,96)", "rgb(103,202,235)", "rgb(208,154,215)"]
      * > }
-     *
+     * 
      * Funnel Series:
-     *
+     * 
      * > {
      * >     color: "#4bb2c5",
      * >     lineWidth: 2,
@@ -8305,27 +8358,27 @@
      * >     seriesColors: ["#4bb2c5", "#EAA228", "#c5b47f", "#579575", "#839557", "#958c12", "#953579", "#4b5de4", "#d8b83f", "#ff5800", "#0085cc", "#c747a3", "#cddf54", "#FBD178", "#26B4E3", "#bd70c7"],
      * >     highlightColors: ["rgb(147,208,220)", "rgb(242,199,126)", "rgb(220,210,178)", "rgb(154,191,172)", "rgb(180,191,154)", "rgb(191,186,112)", "rgb(191,133,174)", "rgb(147,157,238)", "rgb(231,212,139)", "rgb(255,154,102)", "rgb(102,181,224)", "rgb(221,144,199)", "rgb(225,235,152)", "rgb(200,167,96)", "rgb(124,210,238)", "rgb(215,169,221)"]
      * > }
-     *
+     * 
      */
     $.jqplot.ThemeEngine = function(){
         // Group: Properties
         //
         // prop: themes
-        // hash of themes managed by the theme engine.
+        // hash of themes managed by the theme engine.  
         // Indexed by theme name.
         this.themes = {};
         // prop: activeTheme
         // Pointer to currently active theme
         this.activeTheme=null;
-
+        
     };
-
+    
     // called with scope of plot
     $.jqplot.ThemeEngine.prototype.init = function() {
         // get the Default theme from the current plot settings.
         var th = new $.jqplot.Theme({_name:'Default'});
         var n, i, nn;
-
+        
         for (n in th.target) {
             if (n == "textColor") {
                 th.target[n] = this.target.css('color');
@@ -8334,7 +8387,7 @@
                 th.target[n] = this.target.css(n);
             }
         }
-
+        
         if (this.title.show && this.title._elem) {
             for (n in th.title) {
                 if (n == "textColor") {
@@ -8345,7 +8398,7 @@
                 }
             }
         }
-
+        
         for (n in th.grid) {
             th.grid[n] = this.grid[n];
         }
@@ -8363,7 +8416,7 @@
             }
         }
         var s;
-
+        
         for (i=0; i<this.series.length; i++) {
             s = this.series[i];
             if (s.renderer.constructor == $.jqplot.LineRenderer) {
@@ -8429,19 +8482,19 @@
     };
     /**
      * Group: methods
-     *
+     * 
      * method: get
-     *
+     * 
      * Get and return the named theme or the active theme if no name given.
-     *
+     * 
      * parameter:
-     *
+     * 
      * name - name of theme to get.
-     *
+     * 
      * returns:
-     *
+     * 
      * Theme instance of given name.
-     */
+     */   
     $.jqplot.ThemeEngine.prototype.get = function(name) {
         if (!name) {
             // return the active theme
@@ -8451,22 +8504,22 @@
             return this.themes[name];
         }
     };
-
+    
     function numericalOrder(a,b) { return a-b; }
-
+    
     /**
      * method: getThemeNames
-     *
+     * 
      * Return the list of theme names in this manager in alpha-numerical order.
-     *
+     * 
      * parameter:
-     *
+     * 
      * None
-     *
+     * 
      * returns:
-     *
+     * 
      * A the list of theme names in this manager in alpha-numerical order.
-     */
+     */       
     $.jqplot.ThemeEngine.prototype.getThemeNames = function() {
         var tn = [];
         for (var n in this.themes) {
@@ -8477,17 +8530,17 @@
 
     /**
      * method: getThemes
-     *
+     * 
      * Return a list of themes in alpha-numerical order by name.
-     *
+     * 
      * parameter:
-     *
+     * 
      * None
-     *
+     * 
      * returns:
-     *
+     * 
      * A list of themes in alpha-numerical order by name.
-     */
+     */ 
     $.jqplot.ThemeEngine.prototype.getThemes = function() {
         var tn = [];
         var themes = [];
@@ -8500,7 +8553,7 @@
         }
         return themes;
     };
-
+    
     $.jqplot.ThemeEngine.prototype.activate = function(plot, name) {
         // sometimes need to redraw whole plot.
         var redrawPlot = false;
@@ -8515,7 +8568,7 @@
             this.activeTheme = th;
             var val, checkBorderColor = false, checkBorderWidth = false;
             var arr = ['xaxis', 'x2axis', 'yaxis', 'y2axis'];
-
+            
             for (i=0; i<arr.length; i++) {
                 var ax = arr[i];
                 if (th.axesStyles.borderColor != null) {
@@ -8525,7 +8578,7 @@
                     plot.axes[ax].borderWidth = th.axesStyles.borderWidth;
                 }
             }
-
+            
             for (var axname in plot.axes) {
                 var axis = plot.axes[axname];
                 if (axis.show) {
@@ -8575,10 +8628,10 @@
                             }
                         }
                     }
-
+                    
                 }
-            }
-
+            }            
+            
             for (var n in th.grid) {
                 if (th.grid[n] != null) {
                     plot.grid[n] = th.grid[n];
@@ -8587,8 +8640,8 @@
             if (!redrawPlot) {
                 plot.grid.draw();
             }
-
-            if (plot.legend.show) {
+            
+            if (plot.legend.show) { 
                 for (n in th.legend) {
                     if (th.legend[n] != null) {
                         plot.legend[n] = th.legend[n];
@@ -8602,7 +8655,7 @@
                     }
                 }
             }
-
+            
             var i;
             for (i=0; i<th.series.length; i++) {
                 var opts = {};
@@ -8631,21 +8684,21 @@
                     }
                 }
             }
-
+            
             if (redrawPlot) {
                 plot.target.empty();
                 plot.draw();
             }
-
+            
             for (n in th.target) {
                 if (th.target[n] != null) {
                     plot.target.css(n, th.target[n]);
                 }
             }
         }
-
+        
     };
-
+    
     $.jqplot.ThemeEngine.prototype._add = function(theme, name) {
         if (name) {
             theme._name = name;
@@ -8660,22 +8713,22 @@
             throw new Error("jqplot.ThemeEngine Error: Theme already in use");
         }
     };
-
+    
     // method remove
     // Delete the named theme, return true on success, false on failure.
-
+    
 
     /**
      * method: remove
-     *
+     * 
      * Remove the given theme from the themeEngine.
-     *
+     * 
      * parameters:
-     *
+     * 
      * name - name of the theme to remove.
-     *
+     * 
      * returns:
-     *
+     * 
      * true on success, false on failure.
      */
     $.jqplot.ThemeEngine.prototype.remove = function(name) {
@@ -8687,16 +8740,16 @@
 
     /**
      * method: newTheme
-     *
+     * 
      * Create a new theme based on the default theme, adding it the themeEngine.
-     *
+     * 
      * parameters:
-     *
+     * 
      * name - name of the new theme.
      * obj - optional object of styles to be applied to this new theme.
-     *
+     * 
      * returns:
-     *
+     * 
      * new Theme object.
      */
     $.jqplot.ThemeEngine.prototype.newTheme = function(name, obj) {
@@ -8715,25 +8768,25 @@
         $.jqplot.extend(th, obj);
         return th;
     };
-
+    
     // function clone(obj) {
     //     return eval(obj.toSource());
     // }
-
+    
     function clone(obj){
         if(obj == null || typeof(obj) != 'object'){
             return obj;
         }
-
+    
         var temp = new obj.constructor();
         for(var key in obj){
             temp[key] = clone(obj[key]);
-        }
+        }   
         return temp;
     }
-
+    
     $.jqplot.clone = clone;
-
+    
     function merge(obj1, obj2) {
         if (obj2 ==  null || typeof(obj2) != 'object') {
             return;
@@ -8753,9 +8806,9 @@
             }
         }
     }
-
+    
     $.jqplot.merge = merge;
-
+    
         // Use the jQuery 1.3.2 extend function since behaviour in jQuery 1.4 seems problematic
     $.jqplot.extend = function() {
         // copy reference to target object
@@ -8788,7 +8841,7 @@
 
                     // Recurse if we're merging object values
                     if ( deep && copy && typeof copy === "object" && !copy.nodeType ) {
-                        target[ name ] = $.jqplot.extend( deep,
+                        target[ name ] = $.jqplot.extend( deep, 
                             // Never move original objects, clone them
                             src || ( copy.length != null ? [ ] : { } )
                         , copy );
@@ -8806,16 +8859,16 @@
 
     /**
      * method: rename
-     *
+     * 
      * Rename a theme.
-     *
+     * 
      * parameters:
-     *
+     * 
      * oldName - current name of the theme.
      * newName - desired name of the theme.
-     *
+     * 
      * returns:
-     *
+     * 
      * new Theme object.
      */
     $.jqplot.ThemeEngine.prototype.rename = function (oldName, newName) {
@@ -8835,17 +8888,17 @@
 
     /**
      * method: copy
-     *
+     * 
      * Create a copy of an existing theme in the themeEngine, adding it the themeEngine.
-     *
+     * 
      * parameters:
-     *
+     * 
      * sourceName - name of the existing theme.
      * targetName - name of the copy.
      * obj - optional object of style parameter to apply to the new theme.
-     *
+     * 
      * returns:
-     *
+     * 
      * new Theme object.
      */
     $.jqplot.ThemeEngine.prototype.copy = function (sourceName, targetName, obj) {
@@ -8868,8 +8921,8 @@
             return th;
         }
     };
-
-
+    
+    
     $.jqplot.Theme = function(name, obj) {
         if (typeof(name) == 'object') {
             obj = obj || name;
@@ -8913,14 +8966,14 @@
             $.jqplot.extend(true, this, obj);
         }
     };
-
+    
     var AxisProperties = function() {
         this.borderColor = null;
         this.borderWidth = null;
         this.ticks = new AxisTicks();
         this.label = new AxisLabel();
     };
-
+    
     var AxisTicks = function() {
         this.show = null;
         this.showGridline = null;
@@ -8932,7 +8985,7 @@
         this.fontSize = null;
         this.fontFamily = null;
     };
-
+    
     var AxisLabel = function() {
         this.textColor = null;
         this.whiteSpace = null;
@@ -8940,7 +8993,7 @@
         this.fontFamily = null;
         this.fontWeight = null;
     };
-
+    
     var LineSeriesProperties = function() {
         this.color=null;
         this.lineWidth=null;
@@ -8950,7 +9003,7 @@
         this.showMarker=null;
         this.markerOptions = new MarkerOptions();
     };
-
+    
     var MarkerOptions = function() {
         this.show = null;
         this.style = null;
@@ -8959,7 +9012,7 @@
         this.color = null;
         this.shadow = null;
     };
-
+    
     var BarSeriesProperties = function() {
         this.color=null;
         this.seriesColors=null;
@@ -8970,7 +9023,7 @@
         this.barWidth=null;
         this.highlightColors=null;
     };
-
+    
     var PieSeriesProperties = function() {
         this.seriesColors=null;
         this.padding=null;
@@ -8981,7 +9034,7 @@
         this.lineWidth=null;
         this.highlightColors=null;
     };
-
+    
     var DonutSeriesProperties = function() {
         this.seriesColors=null;
         this.padding=null;
@@ -8995,7 +9048,7 @@
         this.ringMargin=null;
         this.highlightColors=null;
     };
-
+    
     var FunnelSeriesProperties = function() {
         this.color=null;
         this.lineWidth=null;
@@ -9005,7 +9058,7 @@
         this.seriesColors=null;
         this.highlightColors=null;
     };
-
+    
     var MeterSeriesProperties = function() {
         this.padding=null;
         this.backgroundColor=null;
@@ -9019,7 +9072,7 @@
         this.needleThickness=null;
         this.needlePad=null;
     };
-
+        
 
 
 
@@ -9048,7 +9101,7 @@
     /**
      * Namespace: $.fn
      * jQuery namespace to attach functions to jQuery elements.
-     *
+     *  
      */
 
     $.fn.jqplotToImageCanvas = function(options) {
@@ -9066,7 +9119,7 @@
         if ($.jqplot.use_excanvas) {
             return null;
         }
-
+        
         var newCanvas = document.createElement("canvas");
         var h = $(this).outerHeight(true);
         var w = $(this).outerWidth(true);
@@ -9078,9 +9131,9 @@
         // have to check if any elements are hanging outside of plot area before rendering,
         // since changing width of canvas will erase canvas.
 
-        var clses = ['jqplot-table-legend', 'jqplot-xaxis-tick', 'jqplot-x2axis-tick', 'jqplot-yaxis-tick', 'jqplot-y2axis-tick', 'jqplot-y3axis-tick',
+        var clses = ['jqplot-table-legend', 'jqplot-xaxis-tick', 'jqplot-x2axis-tick', 'jqplot-yaxis-tick', 'jqplot-y2axis-tick', 'jqplot-y3axis-tick', 
         'jqplot-y4axis-tick', 'jqplot-y5axis-tick', 'jqplot-y6axis-tick', 'jqplot-y7axis-tick', 'jqplot-y8axis-tick', 'jqplot-y9axis-tick',
-        'jqplot-xaxis-label', 'jqplot-x2axis-label', 'jqplot-yaxis-label', 'jqplot-y2axis-label', 'jqplot-y3axis-label', 'jqplot-y4axis-label',
+        'jqplot-xaxis-label', 'jqplot-x2axis-label', 'jqplot-yaxis-label', 'jqplot-y2axis-label', 'jqplot-y3axis-label', 'jqplot-y4axis-label', 
         'jqplot-y5axis-label', 'jqplot-y6axis-label', 'jqplot-y7axis-label', 'jqplot-y8axis-label', 'jqplot-y9axis-label' ];
 
         var temptop, templeft, tempbottom, tempright;
@@ -9111,7 +9164,7 @@
         newCanvas.width = w + Number(x_offset);
         newCanvas.height = h + Number(y_offset);
 
-        var newContext = newCanvas.getContext("2d");
+        var newContext = newCanvas.getContext("2d"); 
 
         newContext.save();
         newContext.fillStyle = backgroundColor;
@@ -9144,11 +9197,11 @@
 
             for (var i=0; i<wl; i++) {
                 w += words[i];
-                if (context.measureText(w).width > tagwidth) {
+                if (context.measureText(w).width > tagwidth) { /* PrimeFaces Github #1555 instead of 'if (context.measureText(w).width > tagwidth && w.length > words[i].length)' */
                     breaks.push(i);
                     w = '';
                     i--;
-                }
+                }   
             }
             if (breaks.length === 0) {
                 // center text if necessary
@@ -9181,7 +9234,7 @@
                 }
                 context.fillText(w, templeft, temptop);
             }
-
+            
             if($(el).is('td.jqplot-table-legend-label') && $(el).hasClass('jqplot-series-hidden')) {
                 context.strokeStyle = $(el).css('color');
                 context.moveTo(templeft, top + (lineheight/2));
@@ -9197,7 +9250,7 @@
             var left = x_offset + p.left + parseInt(css.marginLeft, 10) + parseInt(css.borderLeftWidth, 10) + parseInt(css.paddingLeft, 10);
             var top = y_offset + p.top + parseInt(css.marginTop, 10) + parseInt(css.borderTopWidth, 10)+ parseInt(css.paddingTop, 10);
             var w = newCanvas.width;
-            // var left = x_offset + p.left + $(el).css('marginLeft') + $(el).css('borderLeftWidth')
+            // var left = x_offset + p.left + $(el).css('marginLeft') + $(el).css('borderLeftWidth') 
 
             // somehow in here, for divs within divs, the width of the inner div should be used instead of the canvas.
 
@@ -9235,7 +9288,7 @@
                     newContext.strokeRect(l, t, elem.innerWidth(), elem.innerHeight());
 
                     // now fill the swatch
-
+                    
                     l += parseInt(elem.css('padding-left'), 10);
                     t += parseInt(elem.css('padding-top'), 10);
                     var h = elem.innerHeight() - 2 * parseInt(elem.css('padding-top'), 10);
@@ -9300,7 +9353,7 @@
         return str;
     };
 
-    // Not guaranteed to work, even on canvas supporting browsers due to
+    // Not guaranteed to work, even on canvas supporting browsers due to 
     // limitations with location.href and browser support.
     $.fn.jqplotSaveImage = function() {
         var imgData = $(this).jqplotToImageStr({});
@@ -9323,45 +9376,45 @@
             w = null;
         }
     };
+    
 
 
 
-
-    /**
+    /** 
      * @description
      * <p>Object with extended date parsing and formatting capabilities.
-     * This library borrows many concepts and ideas from the Date Instance
+     * This library borrows many concepts and ideas from the Date Instance 
      * Methods by Ken Snyder along with some parts of Ken's actual code.</p>
      *
-     * <p>jsDate takes a different approach by not extending the built-in
-     * Date Object, improving date parsing, allowing for multiple formatting
+     * <p>jsDate takes a different approach by not extending the built-in 
+     * Date Object, improving date parsing, allowing for multiple formatting 
      * syntaxes and multiple and more easily expandable localization.</p>
-     *
+     * 
      * @author Chris Leonello
      * @date #date#
      * @version #VERSION#
-     * @copyright (c) 2010-2013 Chris Leonello
-     * jsDate is currently available for use in all personal or commercial projects
-     * under both the MIT and GPL version 2.0 licenses. This means that you can
+     * @copyright (c) 2010-2015 Chris Leonello
+     * jsDate is currently available for use in all personal or commercial projects 
+     * under both the MIT and GPL version 2.0 licenses. This means that you can 
      * choose the license that best suits your project and use it accordingly.
-     *
+     * 
      * <p>Ken's original Date Instance Methods and copyright notice:</p>
      * <pre>
      * Ken Snyder (ken d snyder at gmail dot com)
      * 2008-09-10
-     * version 2.0.2 (http://kendsnyder.com/sandbox/date/)
+     * version 2.0.2 (http://kendsnyder.com/sandbox/date/)     
      * Creative Commons Attribution License 3.0 (http://creativecommons.org/licenses/by/3.0/)
      * </pre>
-     *
+     * 
      * @class
      * @name jsDate
      * @param  {String | Number | Array | Date&nbsp;Object | Options&nbsp;Object} arguments Optional arguments, either a parsable date/time string,
      * a JavaScript timestamp, an array of numbers of form [year, month, day, hours, minutes, seconds, milliseconds],
      * a Date object, or an options object of form {syntax: "perl", date:some Date} where all options are optional.
      */
-
+     
     var jsDate = function () {
-
+    
         this.syntax = jsDate.config.syntax;
         this._type = "jsDate";
         this.proxy = new Date();
@@ -9401,7 +9454,7 @@
                 break;
         }
     };
-
+    
     /**
      * @namespace Configuration options that will be used as defaults for all instances on the page.
      * @property {String} defaultLocale The default locale to use [en].
@@ -9413,15 +9466,15 @@
         syntax: 'perl',
         defaultCentury: 1900
     };
-
+        
     /**
      * Add an arbitrary amount to the currently stored date
-     *
-     * @param {Number} number
+     * 
+     * @param {Number} number      
      * @param {String} unit
-     * @returns {jsDate}
+     * @returns {jsDate}       
      */
-
+     
     jsDate.prototype.add = function(number, unit) {
         var factor = multipliers[unit] || multipliers.day;
         if (typeof factor == 'number') {
@@ -9431,13 +9484,13 @@
         }
         return this;
     };
-
+        
     /**
      * Create a new jqplot.date object with the same date
-     *
+     * 
      * @returns {jsDate}
-     */
-
+     */  
+     
     jsDate.prototype.clone = function() {
             return new jsDate(this.proxy.getTime());
     };
@@ -9454,13 +9507,13 @@
 
     /**
      * Find the difference between this jsDate and another date.
-     *
+     * 
      * @param {String| Number| Array| jsDate&nbsp;Object| Date&nbsp;Object} dateObj
      * @param {String} unit
      * @param {Boolean} allowDecimal
      * @returns {Number} Number of units difference between dates.
      */
-
+     
     jsDate.prototype.diff = function(dateObj, unit, allowDecimal) {
         // ensure we have a Date object
         dateObj = new jsDate(dateObj);
@@ -9477,85 +9530,85 @@
             var unitDiff = factor.diff(this.proxy, dateObj.proxy);
         }
         // if decimals are not allowed, round toward zero
-        return (allowDecimal ? unitDiff : Math[unitDiff > 0 ? 'floor' : 'ceil'](unitDiff));
+        return (allowDecimal ? unitDiff : Math[unitDiff > 0 ? 'floor' : 'ceil'](unitDiff));          
     };
-
+    
     /**
      * Get the abbreviated name of the current week day
-     *
+     * 
      * @returns {String}
-     */
-
+     */   
+     
     jsDate.prototype.getAbbrDayName = function() {
         return jsDate.regional[this.locale]["dayNamesShort"][this.proxy.getDay()];
     };
-
+    
     /**
      * Get the abbreviated name of the current month
-     *
+     * 
      * @returns {String}
      */
-
+     
     jsDate.prototype.getAbbrMonthName = function() {
         return jsDate.regional[this.locale]["monthNamesShort"][this.proxy.getMonth()];
     };
-
+    
     /**
      * Get UPPER CASE AM or PM for the current time
-     *
+     * 
      * @returns {String}
      */
-
+     
     jsDate.prototype.getAMPM = function() {
         return this.proxy.getHours() >= 12 ? 'PM' : 'AM';
     };
-
+    
     /**
      * Get lower case am or pm for the current time
-     *
+     * 
      * @returns {String}
      */
-
+     
     jsDate.prototype.getAmPm = function() {
         return this.proxy.getHours() >= 12 ? 'pm' : 'am';
     };
-
+    
     /**
      * Get the century (19 for 20th Century)
      *
      * @returns {Integer} Century (19 for 20th century).
      */
-    jsDate.prototype.getCentury = function() {
+    jsDate.prototype.getCentury = function() { 
         return parseInt(this.proxy.getFullYear()/100, 10);
     };
-
+    
     /**
      * Implements Date functionality
      */
     jsDate.prototype.getDate = function() {
         return this.proxy.getDate();
     };
-
+    
     /**
      * Implements Date functionality
      */
     jsDate.prototype.getDay = function() {
         return this.proxy.getDay();
     };
-
+    
     /**
      * Get the Day of week 1 (Monday) thru 7 (Sunday)
-     *
+     * 
      * @returns {Integer} Day of week 1 (Monday) thru 7 (Sunday)
      */
-    jsDate.prototype.getDayOfWeek = function() {
-        var dow = this.proxy.getDay();
-        return dow===0?7:dow;
+    jsDate.prototype.getDayOfWeek = function() { 
+        var dow = this.proxy.getDay(); 
+        return dow===0?7:dow; 
     };
-
+    
     /**
      * Get the day of the year
-     *
+     * 
      * @returns {Integer} 1 - 366, day of the year
      */
     jsDate.prototype.getDayOfYear = function() {
@@ -9565,17 +9618,17 @@
         d = null;
         return parseInt(ms/60000/60/24, 10)+1;
     };
-
+    
     /**
      * Get the name of the current week day
-     *
+     * 
      * @returns {String}
-     */
-
+     */  
+     
     jsDate.prototype.getDayName = function() {
         return jsDate.regional[this.locale]["dayNames"][this.proxy.getDay()];
     };
-
+    
     /**
      * Get the week number of the given year, starting with the first Sunday as the first week
      * @returns {Integer} Week number (13 for the 13th full week of the year).
@@ -9587,20 +9640,20 @@
         var woy = parseInt((doy+rdow)/7, 10);
         return woy;
     };
-
+    
     /**
      * Implements Date functionality
      */
     jsDate.prototype.getFullYear = function() {
         return this.proxy.getFullYear();
     };
-
+    
     /**
      * Get the GMT offset in hours and minutes (e.g. +06:30)
-     *
+     * 
      * @returns {String}
      */
-
+     
     jsDate.prototype.getGmtOffset = function() {
         // divide the minutes offset by 60
         var hours = this.proxy.getTimezoneOffset() / 60;
@@ -9611,26 +9664,26 @@
         // add the +/- to the padded number of hours to : to the padded minutes
         return prefix + addZeros(Math.floor(hours), 2) + ':' + addZeros((hours % 1) * 60, 2);
     };
-
+    
     /**
      * Implements Date functionality
      */
     jsDate.prototype.getHours = function() {
         return this.proxy.getHours();
     };
-
+    
     /**
      * Get the current hour on a 12-hour scheme
-     *
+     * 
      * @returns {Integer}
      */
-
+     
     jsDate.prototype.getHours12  = function() {
         var hours = this.proxy.getHours();
         return hours > 12 ? hours - 12 : (hours == 0 ? 12 : hours);
     };
-
-
+    
+    
     jsDate.prototype.getIsoWeek = function() {
         var d = this.proxy;
         var woy = this.getWeekOfYear();
@@ -9638,7 +9691,7 @@
         // First week is 01 and not 00 as in the case of %U and %W,
         // so we add 1 to the final result except if day 1 of the year
         // is a Monday (then %W returns 01).
-        // We also need to subtract 1 if the day 1 of the year is
+        // We also need to subtract 1 if the day 1 of the year is 
         // Friday-Sunday, so the resulting equation becomes:
         var idow = woy + (dow1_1 > 4 || dow1_1 <= 1 ? 0 : 1);
         if(idow == 53 && (new Date('' + d.getFullYear() + '/12/31')).getDay() < 4)
@@ -9653,99 +9706,99 @@
         d = null;
         return idow;
     };
-
+    
     /**
      * Implements Date functionality
      */
     jsDate.prototype.getMilliseconds = function() {
         return this.proxy.getMilliseconds();
     };
-
+    
     /**
      * Implements Date functionality
      */
     jsDate.prototype.getMinutes = function() {
         return this.proxy.getMinutes();
     };
-
+    
     /**
      * Implements Date functionality
      */
     jsDate.prototype.getMonth = function() {
         return this.proxy.getMonth();
     };
-
+    
     /**
      * Get the name of the current month
-     *
+     * 
      * @returns {String}
      */
-
+     
     jsDate.prototype.getMonthName = function() {
         return jsDate.regional[this.locale]["monthNames"][this.proxy.getMonth()];
     };
-
+    
     /**
      * Get the number of the current month, 1-12
-     *
+     * 
      * @returns {Integer}
      */
-
+     
     jsDate.prototype.getMonthNumber = function() {
         return this.proxy.getMonth() + 1;
     };
-
+    
     /**
      * Implements Date functionality
      */
     jsDate.prototype.getSeconds = function() {
         return this.proxy.getSeconds();
     };
-
+    
     /**
      * Return a proper two-digit year integer
-     *
+     * 
      * @returns {Integer}
      */
-
+     
     jsDate.prototype.getShortYear = function() {
         return this.proxy.getYear() % 100;
     };
-
+    
     /**
      * Implements Date functionality
      */
     jsDate.prototype.getTime = function() {
         return this.proxy.getTime();
     };
-
+    
     /**
      * Get the timezone abbreviation
      *
      * @returns {String} Abbreviation for the timezone
      */
     jsDate.prototype.getTimezoneAbbr = function() {
-        return this.proxy.toString().replace(/^.*\(([^)]+)\)$/, '$1');
+        return this.proxy.toString().replace(/^.*\(([^)]+)\)$/, '$1'); 
     };
-
+    
     /**
      * Get the browser-reported name for the current timezone (e.g. MDT, Mountain Daylight Time)
-     *
+     * 
      * @returns {String}
      */
     jsDate.prototype.getTimezoneName = function() {
         var match = /(?:\((.+)\)$| ([A-Z]{3}) )/.exec(this.toString());
         return match[1] || match[2] || 'GMT' + this.getGmtOffset();
-    };
-
+    }; 
+    
     /**
      * Implements Date functionality
      */
     jsDate.prototype.getTimezoneOffset = function() {
         return this.proxy.getTimezoneOffset();
     };
-
-
+    
+    
     /**
      * Get the week number of the given year, starting with the first Monday as the first week
      * @returns {Integer} Week number (13 for the 13th week of the year).
@@ -9756,40 +9809,40 @@
         var woy = parseInt((doy+rdow)/7, 10);
         return woy;
     };
-
+    
     /**
      * Get the current date as a Unix timestamp
-     *
+     * 
      * @returns {Integer}
      */
-
+     
     jsDate.prototype.getUnix = function() {
         return Math.round(this.proxy.getTime() / 1000, 0);
-    };
-
+    }; 
+    
     /**
      * Implements Date functionality
      */
     jsDate.prototype.getYear = function() {
         return this.proxy.getYear();
     };
-
+    
     /**
      * Return a date one day ahead (or any other unit)
-     *
+     * 
      * @param {String} unit Optional, year | month | day | week | hour | minute | second | millisecond
      * @returns {jsDate}
      */
-
+     
     jsDate.prototype.next = function(unit) {
         unit = unit || 'day';
         return this.clone().add(1, unit);
     };
-
+    
     /**
      * Set the jsDate instance to a new date.
      *
-     * @param  {String | Number | Array | Date Object | jsDate Object | Options Object} arguments Optional arguments,
+     * @param  {String | Number | Array | Date Object | jsDate Object | Options Object} arguments Optional arguments, 
      * either a parsable date/time string,
      * a JavaScript timestamp, an array of numbers of form [year, month, day, hours, minutes, seconds, milliseconds],
      * a Date object, jsDate Object or an options object of form {syntax: "perl", date:some Date} where all options are optional.
@@ -9828,129 +9881,129 @@
         }
         return this;
     };
-
+    
     /**
      * Sets the day of the month for a specified date according to local time.
-     * @param {Integer} dayValue An integer from 1 to 31, representing the day of the month.
+     * @param {Integer} dayValue An integer from 1 to 31, representing the day of the month. 
      */
     jsDate.prototype.setDate = function(n) {
         this.proxy.setDate(n);
         return this;
     };
-
+    
     /**
      * Sets the full year for a specified date according to local time.
-     * @param {Integer} yearValue The numeric value of the year, for example, 1995.
-     * @param {Integer} monthValue Optional, between 0 and 11 representing the months January through December.
-     * @param {Integer} dayValue Optional, between 1 and 31 representing the day of the month. If you specify the dayValue parameter, you must also specify the monthValue.
+     * @param {Integer} yearValue The numeric value of the year, for example, 1995.  
+     * @param {Integer} monthValue Optional, between 0 and 11 representing the months January through December.  
+     * @param {Integer} dayValue Optional, between 1 and 31 representing the day of the month. If you specify the dayValue parameter, you must also specify the monthValue. 
      */
     jsDate.prototype.setFullYear = function() {
         this.proxy.setFullYear.apply(this.proxy, arguments);
         return this;
     };
-
+    
     /**
      * Sets the hours for a specified date according to local time.
-     *
-     * @param {Integer} hoursValue An integer between 0 and 23, representing the hour.
-     * @param {Integer} minutesValue Optional, An integer between 0 and 59, representing the minutes.
-     * @param {Integer} secondsValue Optional, An integer between 0 and 59, representing the seconds.
-     * If you specify the secondsValue parameter, you must also specify the minutesValue.
-     * @param {Integer} msValue Optional, A number between 0 and 999, representing the milliseconds.
-     * If you specify the msValue parameter, you must also specify the minutesValue and secondsValue.
+     * 
+     * @param {Integer} hoursValue An integer between 0 and 23, representing the hour.  
+     * @param {Integer} minutesValue Optional, An integer between 0 and 59, representing the minutes.  
+     * @param {Integer} secondsValue Optional, An integer between 0 and 59, representing the seconds. 
+     * If you specify the secondsValue parameter, you must also specify the minutesValue.  
+     * @param {Integer} msValue Optional, A number between 0 and 999, representing the milliseconds. 
+     * If you specify the msValue parameter, you must also specify the minutesValue and secondsValue. 
      */
     jsDate.prototype.setHours = function() {
         this.proxy.setHours.apply(this.proxy, arguments);
         return this;
     };
-
+    
     /**
      * Implements Date functionality
-     */
+     */ 
     jsDate.prototype.setMilliseconds = function(n) {
         this.proxy.setMilliseconds(n);
         return this;
     };
-
+    
     /**
      * Implements Date functionality
-     */
+     */ 
     jsDate.prototype.setMinutes = function() {
         this.proxy.setMinutes.apply(this.proxy, arguments);
         return this;
     };
-
+    
     /**
      * Implements Date functionality
-     */
+     */ 
     jsDate.prototype.setMonth = function() {
         this.proxy.setMonth.apply(this.proxy, arguments);
         return this;
     };
-
+    
     /**
      * Implements Date functionality
-     */
+     */ 
     jsDate.prototype.setSeconds = function() {
         this.proxy.setSeconds.apply(this.proxy, arguments);
         return this;
     };
-
+    
     /**
      * Implements Date functionality
-     */
+     */ 
     jsDate.prototype.setTime = function(n) {
         this.proxy.setTime(n);
         return this;
     };
-
+    
     /**
      * Implements Date functionality
-     */
+     */ 
     jsDate.prototype.setYear = function() {
         this.proxy.setYear.apply(this.proxy, arguments);
         return this;
     };
-
+    
     /**
      * Provide a formatted string representation of this date.
-     *
-     * @param {String} formatString A format string.
+     * 
+     * @param {String} formatString A format string.  
      * See: {@link jsDate.formats}.
      * @returns {String} Date String.
      */
-
+            
     jsDate.prototype.strftime = function(formatString) {
         formatString = formatString || this.formatString || jsDate.regional[this.locale]['formatString'];
         return jsDate.strftime(this, formatString, this.syntax);
     };
-
+        
     /**
      * Return a String representation of this jsDate object.
      * @returns {String} Date string.
      */
-
+    
     jsDate.prototype.toString = function() {
         return this.proxy.toString();
     };
-
+        
     /**
      * Convert the current date to an 8-digit integer (%Y%m%d)
-     *
+     * 
      * @returns {Integer}
      */
-
+     
     jsDate.prototype.toYmdInt = function() {
         return (this.proxy.getFullYear() * 10000) + (this.getMonthNumber() * 100) + this.proxy.getDate();
     };
-
+    
     /**
      * @namespace Holds localizations for month/day names.
      * <p>jsDate attempts to detect locale when loaded and defaults to 'en'.
      * If a localization is detected which is not available, jsDate defaults to 'en'.
      * Additional localizations can be added after jsDate loads.  After adding a localization,
      * call the jsDate.regional.getLocale() method.  Currently, en, fr and de are defined.</p>
-     *
+     * 
      * <p>Localizations must be an object and have the following properties defined:  monthNames, monthNamesShort, dayNames, dayNamesShort and Localizations are added like:</p>
      * <pre class="code">
      * jsDate.regional['en'] = {
@@ -9963,7 +10016,7 @@
      * <p>After adding localizations, call <code>jsDate.regional.getLocale();</code> to update the locale setting with the
      * new localizations.</p>
      */
-
+     
     jsDate.regional = {
         'en': {
             monthNames: ['January','February','March','April','May','June','July','August','September','October','November','December'],
@@ -9972,7 +10025,7 @@
             dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             formatString: '%Y-%m-%d %H:%M:%S'
         },
-
+        
         'fr': {
             monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
             monthNamesShort: ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'],
@@ -9980,7 +10033,7 @@
             dayNamesShort: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
             formatString: '%Y-%m-%d %H:%M:%S'
         },
-
+        
         'de': {
             monthNames: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
             monthNamesShort: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
@@ -9988,7 +10041,7 @@
             dayNamesShort: ['So','Mo','Di','Mi','Do','Fr','Sa'],
             formatString: '%Y-%m-%d %H:%M:%S'
         },
-
+        
         'es': {
             monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio', 'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
             monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun', 'Jul','Ago','Sep','Oct','Nov','Dic'],
@@ -9996,7 +10049,7 @@
             dayNamesShort: ['Dom','Lun','Mar','Mi&eacute;','Juv','Vie','S&aacute;b'],
             formatString: '%Y-%m-%d %H:%M:%S'
         },
-
+        
         'ru': {
             monthNames: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
             monthNamesShort: ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'],
@@ -10004,7 +10057,7 @@
             dayNamesShort: ['вск','пнд','втр','срд','чтв','птн','сбт'],
             formatString: '%Y-%m-%d %H:%M:%S'
         },
-
+        
         'ar': {
             monthNames: ['كانون الثاني', 'شباط', 'آذار', 'نيسان', 'آذار', 'حزيران','تموز', 'آب', 'أيلول',   'تشرين الأول', 'تشرين الثاني', 'كانون الأول'],
             monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'],
@@ -10012,15 +10065,15 @@
             dayNamesShort: ['سبت', 'أحد', 'اثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة'],
             formatString: '%Y-%m-%d %H:%M:%S'
         },
-
+        
         'pt': {
             monthNames: ['Janeiro','Fevereiro','Mar&ccedil;o','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
             monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
             dayNames: ['Domingo','Segunda-feira','Ter&ccedil;a-feira','Quarta-feira','Quinta-feira','Sexta-feira','S&aacute;bado'],
             dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','S&aacute;b'],
-            formatString: '%Y-%m-%d %H:%M:%S'
+            formatString: '%Y-%m-%d %H:%M:%S'   
         },
-
+        
         'pt-BR': {
             monthNames: ['Janeiro','Fevereiro','Mar&ccedil;o','Abril','Maio','Junho', 'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
             monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
@@ -10028,7 +10081,7 @@
             dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','S&aacute;b'],
             formatString: '%Y-%m-%d %H:%M:%S'
         },
-
+        
         'pl': {
             monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'],
             monthNamesShort: ['Sty', 'Lut', 'Mar', 'Kwi', 'Maj', 'Cze','Lip', 'Sie', 'Wrz', 'Paź', 'Lis', 'Gru'],
@@ -10047,39 +10100,47 @@
 
         'sv': {
             monthNames: ['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'],
-          monthNamesShort: ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'],
+            monthNamesShort: ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'],
             dayNames: ['söndag','måndag','tisdag','onsdag','torsdag','fredag','lördag'],
             dayNamesShort: ['sön','mån','tis','ons','tor','fre','lör'],
             formatString: '%Y-%m-%d %H:%M:%S'
+        },
+
+        'it': {
+            monthNames: ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'],
+            monthNamesShort: ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'],
+            dayNames: ['Domenica','Lunedi','Martedi','Mercoledi','Giovedi','Venerdi','Sabato'],
+            dayNamesShort: ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'],
+            formatString: '%d-%m-%Y %H:%M:%S'
         }
-
+    
     };
-
+    
     // Set english variants to 'en'
     jsDate.regional['en-US'] = jsDate.regional['en-GB'] = jsDate.regional['en'];
-
+    
     /**
      * Try to determine the users locale based on the lang attribute of the html page.  Defaults to 'en'
      * if it cannot figure out a locale of if the locale does not have a localization defined.
      * @returns {String} locale
      */
-
+     
     jsDate.regional.getLocale = function () {
         var l = jsDate.config.defaultLocale;
-
+        
         if ( document && document.getElementsByTagName('html') && document.getElementsByTagName('html')[0].lang ) {
             l = document.getElementsByTagName('html')[0].lang;
             if (!jsDate.regional.hasOwnProperty(l)) {
                 l = jsDate.config.defaultLocale;
             }
         }
-
+        
         return l;
     };
-
+    
     // ms in day
     var day = 24 * 60 * 60 * 1000;
-
+    
     // padd a number with zeros
     var addZeros = function(num, digits) {
         num = String(num);
@@ -10136,7 +10197,7 @@
             diff: function(d1, d2) {
                 return multipliers.month.diff(d1, d2) / 12;
             }
-        }
+        }        
     };
     //
     // Alias each multiplier with an 's' to allow 'year' and 'years' for example.
@@ -10147,7 +10208,7 @@
             multipliers[unit + 's'] = multipliers[unit];
         }
     }
-
+    
     //
     // take a jsDate instance and a format code and return the formatted value.
     // This is a somewhat modified version of Ken Snyder's method.
@@ -10164,9 +10225,9 @@
                 nbr = addZeros(nbr, getter[1]);
             }
             return nbr;
-        }
+        }       
     };
-
+    
     /**
      * @static
      * Static function for convert a date to a string according to a given format.  Also acts as namespace for strftime format codes.
@@ -10175,8 +10236,8 @@
      * var formattedDate = jsDate.strftime('Feb 8, 2006 8:48:32', '%Y-%m-%d %H:%M:%S');
      * </pre>
      * @param {String | Number | Array | jsDate&nbsp;Object | Date&nbsp;Object} date A parsable date string, JavaScript time stamp, Array of form [year, month, day, hours, minutes, seconds, milliseconds], jsDate Object or Date object.
-     * @param {String} formatString String with embedded date formatting codes.
-     * See: {@link jsDate.formats}.
+     * @param {String} formatString String with embedded date formatting codes.  
+     * See: {@link jsDate.formats}. 
      * @param {String} syntax Optional syntax to use [default perl].
      * @param {String} locale Optional locale to use.
      * @returns {String} Formatted representation of the date.
@@ -10187,7 +10248,7 @@
     jsDate.strftime = function(d, formatString, syntax, locale) {
         var syn = 'perl';
         var loc = jsDate.regional.getLocale();
-
+        
         // check if syntax and locale are available or reversed
         if (syntax && jsDate.formats.hasOwnProperty(syntax)) {
             syn = syntax;
@@ -10195,14 +10256,14 @@
         else if (syntax && jsDate.regional.hasOwnProperty(syntax)) {
             loc = syntax;
         }
-
+        
         if (locale && jsDate.formats.hasOwnProperty(locale)) {
             syn = locale;
         }
         else if (locale && jsDate.regional.hasOwnProperty(locale)) {
             loc = locale;
         }
-
+        
         if (get_type(d) != "[object Object]" || d._type != "jsDate") {
             d = new jsDate(d);
             d.locale = loc;
@@ -10211,8 +10272,8 @@
             formatString = d.formatString || jsDate.regional[loc]['formatString'];
         }
         // default the format string to year-month-day
-        var source = formatString || '%Y-%m-%d',
-            result = '',
+        var source = formatString || '%Y-%m-%d', 
+            result = '', 
             match;
         // replace each format code
         while (source.length > 0) {
@@ -10227,13 +10288,13 @@
         }
         return result;
     };
-
+    
     /**
      * @namespace
-     * Namespace to hold format codes and format shortcuts.  "perl" and "php" format codes
+     * Namespace to hold format codes and format shortcuts.  "perl" and "php" format codes 
      * and shortcuts are defined by default.  Additional codes and shortcuts can be
      * added like:
-     *
+     * 
      * <pre class="code">
      * jsDate.formats["perl"] = {
      *     "codes": {
@@ -10247,71 +10308,71 @@
      *     }
      * };
      * </pre>
-     *
+     * 
      * <p>Additionally, ISO and SQL shortcuts are defined and can be accesses via:
      * <code>jsDate.formats.ISO</code> and <code>jsDate.formats.SQL</code>
      */
-
+    
     jsDate.formats = {
         ISO:'%Y-%m-%dT%H:%M:%S.%N%G',
         SQL:'%Y-%m-%d %H:%M:%S'
     };
-
+    
     /**
      * Perl format codes and shortcuts for strftime.
-     *
-     * A hash (object) of codes where each code must be an array where the first member is
+     * 
+     * A hash (object) of codes where each code must be an array where the first member is 
      * the name of a Date.prototype or jsDate.prototype function to call
      * and optionally a second member indicating the number to pass to addZeros()
-     *
+     * 
      * <p>The following format codes are defined:</p>
-     *
+     * 
      * <pre class="code">
      * Code    Result                    Description
-     * == Years ==
+     * == Years ==           
      * %Y      2008                      Four-digit year
      * %y      08                        Two-digit year
-     *
-     * == Months ==
+     * 
+     * == Months ==          
      * %m      09                        Two-digit month
      * %#m     9                         One or two-digit month
      * %B      September                 Full month name
      * %b      Sep                       Abbreviated month name
-     *
-     * == Days ==
+     * 
+     * == Days ==            
      * %d      05                        Two-digit day of month
      * %#d     5                         One or two-digit day of month
      * %e      5                         One or two-digit day of month
      * %A      Sunday                    Full name of the day of the week
      * %a      Sun                       Abbreviated name of the day of the week
      * %w      0                         Number of the day of the week (0 = Sunday, 6 = Saturday)
-     *
-     * == Hours ==
+     * 
+     * == Hours ==           
      * %H      23                        Hours in 24-hour format (two digits)
      * %#H     3                         Hours in 24-hour integer format (one or two digits)
      * %I      11                        Hours in 12-hour format (two digits)
      * %#I     3                         Hours in 12-hour integer format (one or two digits)
      * %p      PM                        AM or PM
-     *
-     * == Minutes ==
+     * 
+     * == Minutes ==         
      * %M      09                        Minutes (two digits)
      * %#M     9                         Minutes (one or two digits)
-     *
-     * == Seconds ==
+     * 
+     * == Seconds ==         
      * %S      02                        Seconds (two digits)
      * %#S     2                         Seconds (one or two digits)
      * %s      1206567625723             Unix timestamp (Seconds past 1970-01-01 00:00:00)
-     *
-     * == Milliseconds ==
+     * 
+     * == Milliseconds ==    
      * %N      008                       Milliseconds (three digits)
      * %#N     8                         Milliseconds (one to three digits)
-     *
-     * == Timezone ==
+     * 
+     * == Timezone ==        
      * %O      360                       difference in minutes between local time and GMT
      * %Z      Mountain Standard Time    Name of timezone as reported by browser
      * %G      06:00                     Hours and minutes between GMT
-     *
-     * == Shortcuts ==
+     * 
+     * == Shortcuts ==       
      * %F      2008-03-26                %Y-%m-%d
      * %T      05:06:30                  %H:%M:%S
      * %X      05:06:30                  %H:%M:%S
@@ -10321,29 +10382,29 @@
      * %v      3-Sep-2008                %e-%b-%Y
      * %R      15:31                     %H:%M
      * %r      03:31:00 PM               %I:%M:%S %p
-     *
-     * == Characters ==
+     * 
+     * == Characters ==      
      * %n      \n                        Newline
      * %t      \t                        Tab
      * %%      %                         Percent Symbol
      * </pre>
-     *
+     * 
      * <p>Formatting shortcuts that will be translated into their longer version.
      * Be sure that format shortcuts do not refer to themselves: this will cause an infinite loop.</p>
-     *
+     * 
      * <p>Format codes and format shortcuts can be redefined after the jsDate
      * module is imported.</p>
-     *
+     * 
      * <p>Note that if you redefine the whole hash (object), you must supply a "matcher"
      * regex for the parser.  The default matcher is:</p>
-     *
+     * 
      * <code>/()%(#?(%|[a-z]))/i</code>
-     *
+     * 
      * <p>which corresponds to the Perl syntax used by default.</p>
-     *
+     * 
      * <p>By customizing the matcher and format codes, nearly any strftime functionality is possible.</p>
      */
-
+     
     jsDate.formats.perl = {
         codes: {
             //
@@ -10387,9 +10448,9 @@
             // timezone
             O: 'TimezoneOffset',
             Z: 'TimezoneName',
-            G: 'GmtOffset'
+            G: 'GmtOffset'  
         },
-
+        
         shortcuts: {
             // date
             F: '%Y-%m-%d',
@@ -10411,19 +10472,19 @@
             '%': '%'
         }
     };
-
+    
     /**
      * PHP format codes and shortcuts for strftime.
-     *
-     * A hash (object) of codes where each code must be an array where the first member is
+     * 
+     * A hash (object) of codes where each code must be an array where the first member is 
      * the name of a Date.prototype or jsDate.prototype function to call
      * and optionally a second member indicating the number to pass to addZeros()
-     *
+     * 
      * <p>The following format codes are defined:</p>
-     *
+     * 
      * <pre class="code">
      * Code    Result                    Description
-     * === Days ===
+     * === Days ===        
      * %a      Sun through Sat           An abbreviated textual representation of the day
      * %A      Sunday - Saturday         A full textual representation of the day
      * %d      01 to 31                  Two-digit day of the month (with leading zeros)
@@ -10431,25 +10492,25 @@
      * %j      001 to 366                Day of the year, 3 digits with leading zeros
      * %u      1 - 7 (Mon - Sun)         ISO-8601 numeric representation of the day of the week
      * %w      0 - 6 (Sun - Sat)         Numeric representation of the day of the week
-     *
-     * === Week ===
+     *                                  
+     * === Week ===                     
      * %U      13                        Full Week number, starting with the first Sunday as the first week
-     * %V      01 through 53             ISO-8601:1988 week number, starting with the first week of the year
+     * %V      01 through 53             ISO-8601:1988 week number, starting with the first week of the year 
      *                                   with at least 4 weekdays, with Monday being the start of the week
-     * %W      46                        A numeric representation of the week of the year,
+     * %W      46                        A numeric representation of the week of the year, 
      *                                   starting with the first Monday as the first week
-     * === Month ===
+     * === Month ===                    
      * %b      Jan through Dec           Abbreviated month name, based on the locale
      * %B      January - December        Full month name, based on the locale
      * %h      Jan through Dec           Abbreviated month name, based on the locale (an alias of %b)
      * %m      01 - 12 (Jan - Dec)       Two digit representation of the month
-     *
-     * === Year ===
+     * 
+     * === Year ===                     
      * %C      19                        Two digit century (year/100, truncated to an integer)
      * %y      09 for 2009               Two digit year
      * %Y      2038                      Four digit year
-     *
-     * === Time ===
+     * 
+     * === Time ===                     
      * %H      00 through 23             Two digit representation of the hour in 24-hour format
      * %I      01 through 12             Two digit representation of the hour in 12-hour format
      * %l      1 through 12              Hour in 12-hour format, with a space preceeding single digits
@@ -10463,20 +10524,20 @@
      * %X      03:59:16                  Preferred time representation based on locale, without the date
      * %z      -0500 or EST              Either the time zone offset from UTC or the abbreviation
      * %Z      -0500 or EST              The time zone offset/abbreviation option NOT given by %z
-     *
-     * === Time and Date ===
+     * 
+     * === Time and Date ===            
      * %D      02/05/09                  Same as %m/%d/%y
      * %F      2009-02-05                Same as %Y-%m-%d (commonly used in database datestamps)
      * %s      305815200                 Unix Epoch Time timestamp (same as the time() function)
      * %x      02/05/09                  Preferred date representation, without the time
-     *
-     * === Miscellaneous ===
+     * 
+     * === Miscellaneous ===            
      * %n        ---                     A newline character (\n)
      * %t        ---                     A Tab character (\t)
      * %%        ---                     A literal percentage character (%)
      * </pre>
      */
-
+ 
     jsDate.formats.php = {
         codes: {
             //
@@ -10520,7 +10581,7 @@
             z: 'GmtOffset',
             Z: 'TimezoneAbbr'
         },
-
+        
         shortcuts: {
             D: '%m/%d/%y',
             F: '%Y-%m-%d',
@@ -10533,7 +10594,7 @@
             n: '\n',
             '%': '%'
         }
-    };
+    };   
     //
     // Conceptually, the logic implemented here is similar to Ken Snyder's Date Instance Methods.
     // I use his idea of a set of parsers which can be regular expressions or functions,
@@ -10556,87 +10617,87 @@
         if (typeof date == 'number') {
             return new Date(date);
         }
-
+        
         // Before passing strings into Date.parse(), have to normalize them for certain conditions.
-        // If strings are not formatted staccording to the EcmaScript spec, results from Date parse will be implementation dependent.
-        //
-        // For example:
-        //  * FF and Opera assume 2 digit dates are pre y2k, Chome assumes <50 is pre y2k, 50+ is 21st century.
+        // If strings are not formatted staccording to the EcmaScript spec, results from Date parse will be implementation dependent.  
+        // 
+        // For example: 
+        //  * FF and Opera assume 2 digit dates are pre y2k, Chome assumes <50 is pre y2k, 50+ is 21st century.  
         //  * Chrome will correctly parse '1984-1-25' into localtime, FF and Opera will not parse.
         //  * Both FF, Chrome and Opera will parse '1984/1/25' into localtime.
-
+        
         // remove leading and trailing spaces
         var parsable = String(date).replace(/^\s*(.+)\s*$/g, '$1');
-
+        
         // replace dahses (-) with slashes (/) in dates like n[nnn]/n[n]/n[nnn]
         parsable = parsable.replace(/^([0-9]{1,4})-([0-9]{1,2})-([0-9]{1,4})/, "$1/$2/$3");
-
+        
         /////////
         // Need to check for '15-Dec-09' also.
         // FF will not parse, but Chrome will.
         // Chrome will set date to 2009 as well.
         /////////
-
+        
         // first check for 'dd-mmm-yyyy' or 'dd/mmm/yyyy' like '15-Dec-2010'
         parsable = parsable.replace(/^(3[01]|[0-2]?\d)[-\/]([a-z]{3,})[-\/](\d{4})/i, "$1 $2 $3");
-
+        
         // Now check for 'dd-mmm-yy' or 'dd/mmm/yy' and normalize years to default century.
         var match = parsable.match(/^(3[01]|[0-2]?\d)[-\/]([a-z]{3,})[-\/](\d{2})\D*/i);
         if (match && match.length > 3) {
             var m3 = parseFloat(match[3]);
             var ny = jsDate.config.defaultCentury + m3;
             ny = String(ny);
-
+            
             // now replace 2 digit year with 4 digit year
             parsable = parsable.replace(/^(3[01]|[0-2]?\d)[-\/]([a-z]{3,})[-\/](\d{2})\D*/i, match[1] +' '+ match[2] +' '+ ny);
-
+            
         }
-
+        
         // Check for '1/19/70 8:14PM'
         // where starts with mm/dd/yy or yy/mm/dd and have something after
         // Check if 1st postiion is greater than 31, assume it is year.
         // Assme all 2 digit years are 1900's.
         // Finally, change them into US style mm/dd/yyyy representations.
         match = parsable.match(/^([0-9]{1,2})[-\/]([0-9]{1,2})[-\/]([0-9]{1,2})[^0-9]/);
-
+        
         function h1(parsable, match) {
             var m1 = parseFloat(match[1]);
             var m2 = parseFloat(match[2]);
             var m3 = parseFloat(match[3]);
             var cent = jsDate.config.defaultCentury;
             var ny, nd, nm, str;
-
+            
             if (m1 > 31) { // first number is a year
                 nd = m3;
                 nm = m2;
                 ny = cent + m1;
             }
-
+            
             else { // last number is the year
                 nd = m2;
                 nm = m1;
                 ny = cent + m3;
             }
-
+            
             str = nm+'/'+nd+'/'+ny;
-
+            
             // now replace 2 digit year with 4 digit year
             return  parsable.replace(/^([0-9]{1,2})[-\/]([0-9]{1,2})[-\/]([0-9]{1,2})/, str);
-
+        
         }
-
+        
         if (match && match.length > 3) {
             parsable = h1(parsable, match);
         }
-
+        
         // Now check for '1/19/70' with nothing after and do as above
         var match = parsable.match(/^([0-9]{1,2})[-\/]([0-9]{1,2})[-\/]([0-9]{1,2})$/);
-
+        
         if (match && match.length > 3) {
             parsable = h1(parsable, match);
         }
-
-
+                
+        
         var i = 0;
         var length = jsDate.matchers.length;
         var pattern,
@@ -10661,7 +10722,7 @@
         }
         return NaN;
     };
-
+    
 
     /**
      * @static
@@ -10672,7 +10733,7 @@
     */
     //
     // handy utility method Borrowed right from Ken Snyder's Date Instance Mehtods.
-    //
+    // 
     jsDate.daysInMonth = function(year, month) {
         if (month == 2) {
             return new Date(year, 1, 29).getDate() == 29 ? 29 : 28;
@@ -10691,7 +10752,7 @@
         // convert yyyy-mm-dd to mm/dd/yyyy (ISO date to US date).
         [/([1-9]\d{3})\s*-\s*(1[0-2]|0\d)\s*-\s*(3[01]|[0-2]\d)/, '$2/$3/$1'],
         // Handle 12 hour or 24 hour time with milliseconds am/pm and optional date part.
-        function(str) {
+        function(str) { 
             var match = str.match(/^(?:(.+)\s+)?([012]?\d)(?:\s*\:\s*(\d\d))?(?:\s*\:\s*(\d\d(\.\d*)?))?\s*(am|pm)?\s*$/i);
             //                   opt. date      hour       opt. minute     opt. second       opt. msec   opt. am or pm
             if (match) {
@@ -10751,27 +10812,27 @@
                     nd = m3;
                     ny = cent + m1;
                 }
-
+                
                 else { // last number is the year
                     nd = m1;
                     ny = cent + m3;
                 }
-
+                
                 var nm = inArray(match[2], jsDate.regional[jsDate.regional.getLocale()]["monthNamesShort"]);
-
+                
                 if (nm == -1) {
                     nm = inArray(match[2], jsDate.regional[jsDate.regional.getLocale()]["monthNames"]);
                 }
-
+            
                 d.setFullYear(ny, nm, nd);
                 d.setHours(0,0,0,0);
                 return d;
             }
-
+            
             else {
                 return str;
             }
-        }
+        }      
     ];
 
     //
@@ -10790,7 +10851,7 @@
 
         return -1;
     }
-
+    
     //
     // Thanks to Kangax, Christian Sciberras and Stack Overflow for this method.
     //
@@ -10798,18 +10859,18 @@
         if(thing===null) return "[object Null]"; // special case
         return Object.prototype.toString.call(thing);
     }
-
+    
     $.jsDate = jsDate;
 
-
+      
     /**
      * JavaScript printf/sprintf functions.
-     *
+     * 
      * This code has been adapted from the publicly available sprintf methods
      * by Ash Searle. His original header follows:
      *
      *     This code is unrestricted: you are free to use it however you like.
-     *
+     *     
      *     The functions should work as expected, performing left or right alignment,
      *     truncating strings, outputting numbers with a required precision etc.
      *
@@ -10832,22 +10893,22 @@
      *     Not implemented (yet):
      *     - vector flag
      *     - size (bytes, words, long-words etc.)
-     *
+     *     
      *     Will not implement:
      *     - %n or %p (no pass-by-reference in JavaScript)
      *
      *     @version 2007.04.27
-     *     @author Ash Searle
-     *
+     *     @author Ash Searle 
+     * 
      * You can see the original work and comments on his blog:
      * http://hexmen.com/blog/2007/03/printf-sprintf/
      * http://hexmen.com/js/sprintf.js
      */
-
+     
      /**
       * @Modifications 2009.05.26
       * @author Chris Leonello
-      *
+      * 
       * Added %p %P specifier
       * Acts like %g or %G but will not add more significant digits to the output than present in the input.
       * Example:
@@ -10857,7 +10918,7 @@
       * Format: '%.4g', Input: 12.0, Output: 12.00
       * Format: '%.4p', Input: 4.321e-5, Output: 4.321e-5
       * Format: '%.4g', Input: 4.321e-5, Output: 4.3210e-5
-      *
+      * 
       * Example:
       * >>> $.jqplot.sprintf('%.2f, %d', 23.3452, 43.23)
       * "23.35, 43"
@@ -10876,7 +10937,7 @@
             for (var i=10; i>0; i--) {
                 if (value_str == (value_str = value_str.replace(/^(\d+)(\d{3})/, "$1"+$.jqplot.sprintf.thousandsSeparator+"$2"))) break;
             }
-            return value_str;
+            return value_str; 
         }
 
         function justify(value, prefix, leftJustify, minWidth, zeroPad, htmlSpace) {
@@ -10930,13 +10991,13 @@
 
             if (!minWidth) {
                 minWidth = 0;
-            }
+            } 
             else if (minWidth == '*') {
                 minWidth = +a[i++];
-            }
+            } 
             else if (minWidth.charAt(0) == '*') {
                 minWidth = +a[minWidth.slice(1, -1)];
-            }
+            } 
             else {
                 minWidth = +minWidth;
             }
@@ -10953,13 +11014,13 @@
 
             if (!precision) {
                 precision = 'fFeE'.indexOf(type) > -1 ? 6 : (type == 'd') ? 0 : void(0);
-            }
+            } 
             else if (precision == '*') {
                 precision = +a[i++];
-            }
+            } 
             else if (precision.charAt(0) == '*') {
                 precision = +a[precision.slice(1, -1)];
-            }
+            } 
             else {
                 precision = +precision;
             }
@@ -11016,17 +11077,17 @@
                       var method = ['toExponential', 'toFixed', 'toPrecision']['efg'.indexOf(type.toLowerCase())];
                       var textTransform = ['toString', 'toUpperCase']['eEfFgG'.indexOf(type) % 2];
                       var number_str = Math.abs(number)[method](precision);
-
+                      
                       // Apply the decimal mark properly by splitting the number by the
                       //   decimalMark, applying thousands separator, and then placing it
                       //   back in.
                       var parts = number_str.toString().split('.');
                       parts[0] = thousandSeparation ? thousand_separate(parts[0]) : parts[0];
                       number_str = parts.join($.jqplot.sprintf.decimalMark);
-
+                      
                       value = prefix + number_str;
                       var justified = justify(value, prefix, leftJustify, minWidth, zeroPad, htmlSpace)[textTransform]();
-
+                      
                       return justified;
                   }
             case 'p':
@@ -11042,7 +11103,7 @@
                 var parts = String(Number(Math.abs(number)).toExponential()).split(/e|E/);
                 var sd = (parts[0].indexOf('.') != -1) ? parts[0].length - 1 : String(number).length;
                 var zeros = (parts[1] < 0) ? -parts[1] - 1 : 0;
-
+                
                 if (Math.abs(number) < 1) {
                     if (sd + zeros  <= precision) {
                         value = prefix + Math.abs(number).toPrecision(sd);
@@ -11075,7 +11136,7 @@
     // change the thousands separator or else this won't work since a simple String
     // replace is used (replacing all periods with the mark specified here).
     $.jqplot.sprintf.decimalMark = '.';
-
+    
     $.jqplot.sprintf.regex = /%%|%(\d+\$)?([-+#0&\' ]*)(\*\d+\$|\*|\d+)?(\.(\*\d+\$|\*|\d+))?([nAscboxXuidfegpEGP])/g;
 
     $.jqplot.getSignificantFigures = function(number) {
@@ -11096,7 +11157,7 @@
         return $.jqplot.getSignificantFigures(number).digitsRight;
     };
 
-
+  
 
 
     var backCompat = $.uiBackCompat !== false;
@@ -11427,17 +11488,17 @@
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.8
- * Revision: 1250
+ * Version: 1.0.9
+ * Revision: d96a669
  *
- * Copyright (c) 2009-2013 Chris Leonello
- * jqPlot is currently available for use in all personal or commercial projects
- * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL
- * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can
- * choose the license that best suits your project and use it accordingly.
+ * Copyright (c) 2009-2016 Chris Leonello
+ * jqPlot is currently available for use in all personal or commercial projects 
+ * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
+ * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
+ * choose the license that best suits your project and use it accordingly. 
  *
- * Although not required, the author would appreciate an email letting him
- * know of any substantial use of jqPlot.  You can reach the author at:
+ * Although not required, the author would appreciate an email letting him 
+ * know of any substantial use of jqPlot.  You can reach the author at: 
  * chris at jqplot dot com or see http://www.jqplot.com/info.php .
  *
  * If you are feeling kind and generous, consider supporting the project by
@@ -11451,18 +11512,18 @@
  *     http://hexmen.com/js/sprintf.js
  *     The author (Ash Searle) has placed this code in the public domain:
  *     "This code is unrestricted: you are free to use it however you like."
- *
+ * 
  */
-(function($) {
+(function($) {   
     /**
     *  class: $.jqplot.CategoryAxisRenderer
     *  A plugin for jqPlot to render a category style axis, with equal pixel spacing between y data values of a series.
-    *
+    *  
     *  To use this renderer, include the plugin in your source
     *  > <script type="text/javascript" language="javascript" src="plugins/jqplot.categoryAxisRenderer.js"></script>
-    *
+    *  
     *  and supply the appropriate options to your plot
-    *
+    *  
     *  > {axes:{xaxis:{renderer:$.jqplot.CategoryAxisRenderer}}}
     **/
     $.jqplot.CategoryAxisRenderer = function(options) {
@@ -11480,15 +11541,15 @@
         // With sortMergedLabels set to false, tick labels will be:
         // > [2006, 2008, 2009, 2007]
         //
-        // Note, this property is specified on the renderOptions for the
+        // Note, this property is specified on the renderOptions for the 
         // axes when creating a plot:
         // > axes:{xaxis:{renderer:$.jqplot.CategoryAxisRenderer, rendererOptions:{sortMergedLabels:true}}}
         this.sortMergedLabels = false;
     };
-
+    
     $.jqplot.CategoryAxisRenderer.prototype = new $.jqplot.LinearAxisRenderer();
     $.jqplot.CategoryAxisRenderer.prototype.constructor = $.jqplot.CategoryAxisRenderer;
-
+    
     $.jqplot.CategoryAxisRenderer.prototype.init = function(options){
         this.groups = 1;
         this.groupLabels = [];
@@ -11497,7 +11558,7 @@
         this._barsPerGroup = null;
         this.reverse = false;
         // prop: tickRenderer
-        // A class of a rendering engine for creating the ticks labels displayed on the plot,
+        // A class of a rendering engine for creating the ticks labels displayed on the plot, 
         // See <$.jqplot.AxisTickRenderer>.
         // this.tickRenderer = $.jqplot.AxisTickRenderer;
         // this.labelRenderer = $.jqplot.AxisLabelRenderer;
@@ -11511,8 +11572,8 @@
                 this.groups = s.groups;
             }
             var d = s.data;
-
-            for (var j=0; j<d.length; j++) {
+            
+            for (var j=0; j<d.length; j++) { 
                 if (this.name == 'xaxis' || this.name == 'x2axis') {
                     if (d[j][0] < db.min || db.min == null) {
                         db.min = d[j][0];
@@ -11520,7 +11581,7 @@
                     if (d[j][0] > db.max || db.max == null) {
                         db.max = d[j][0];
                     }
-                }
+                }              
                 else {
                     if (d[j][1] < db.min || db.min == null) {
                         db.min = d[j][1];
@@ -11528,15 +11589,15 @@
                     if (d[j][1] > db.max || db.max == null) {
                         db.max = d[j][1];
                     }
-                }
+                }              
             }
         }
-
+        
         if (this.groupLabels.length) {
             this.groups = this.groupLabels.length;
         }
     };
-
+ 
 
     $.jqplot.CategoryAxisRenderer.prototype.createTicks = function() {
         // we're are operating on an axis here
@@ -11599,19 +11660,19 @@
             else {
                 dim = this._plotDimensions.height;
             }
-
+            
             // if min, max and number of ticks specified, user can't specify interval.
             if (this.min != null && this.max != null && this.numberTicks != null) {
                 this.tickInterval = null;
             }
-
+            
             // if max, min, and interval specified and interval won't fit, ignore interval.
             if (this.min != null && this.max != null && this.tickInterval != null) {
                 if (parseInt((this.max-this.min)/this.tickInterval, 10) != (this.max-this.min)/this.tickInterval) {
                     this.tickInterval = null;
                 }
             }
-
+        
             // find out how many categories are in the lines and collect labels
             var labels = [];
             var numcats = 0;
@@ -11629,12 +11690,12 @@
                     }
                     if ($.inArray(val, labels) == -1) {
                         isMerged = true;
-                        numcats += 1;
+                        numcats += 1;      
                         labels.push(val);
                     }
                 }
             }
-
+            
             if (isMerged && this.sortMergedLabels) {
                 if (typeof labels[0] == "string") {
                     labels.sort();
@@ -11642,10 +11703,10 @@
                     labels.sort(function(a,b) { return a - b; });
                 }
             }
-
+            
             // keep a reference to these tick labels to use for redrawing plot (see bug #57)
             this.ticks = labels;
-
+            
             // now bin the data values to the right lables.
             for (var i=0; i<this._series.length; i++) {
                 var s = this._series[i];
@@ -11667,7 +11728,7 @@
                     }
                 }
             }
-
+            
             // adjust with blanks if we have groups
             if (this.groups > 1 && !this._grouped) {
                 var l = labels.length;
@@ -11678,7 +11739,7 @@
                 }
                 this._grouped = true;
             }
-
+        
             max = numcats + 0.5;
             if (this.numberTicks == null) {
                 this.numberTicks = 2*numcats + 1;
@@ -11688,7 +11749,7 @@
             this.min = min;
             this.max = max;
             var track = 0;
-
+            
             // todo: adjust this so more ticks displayed.
             var maxVisibleTicks = parseInt(3+dim/10, 10);
             var skip = parseInt(numcats/maxVisibleTicks, 10);
@@ -11715,7 +11776,7 @@
                     else {
                         t.showLabel = true;
                         track = 0;
-                    }
+                    } 
                     t.label = t.formatter(t.formatString, labels[(i-1)/2]);
                     t.showMark = false;
                     t.showGridline = false;
@@ -11724,9 +11785,9 @@
                 this._ticks.push(t);
             }
         }
-
+        
     };
-
+    
     // called with scope of axis
     $.jqplot.CategoryAxisRenderer.prototype.draw = function(ctx, plot) {
         if (this.show) {
@@ -11747,14 +11808,14 @@
             }
 
             this._elem = this._elem || $('<div class="jqplot-axis jqplot-'+this.name+'" style="position:absolute;"></div>');
-
+            
             if (this.name == 'xaxis' || this.name == 'x2axis') {
                 this._elem.width(this._plotDimensions.width);
             }
             else {
                 this._elem.height(this._plotDimensions.height);
             }
-
+            
             // create a _label object.
             this.labelOptions.axis = this.name;
             this._label = new this.labelRenderer(this.labelOptions);
@@ -11762,7 +11823,7 @@
                 var elem = this._label.draw(ctx, plot);
                 elem.appendTo(this._elem);
             }
-
+    
             var t = this._ticks;
             for (var i=0; i<t.length; i++) {
                 var tick = t[i];
@@ -11771,7 +11832,7 @@
                     elem.appendTo(this._elem);
                 }
             }
-
+        
             this._groupLabels = [];
             // now make group labels
             for (var i=0; i<this.groupLabels.length; i++)
@@ -11784,9 +11845,9 @@
         }
         return this._elem;
     };
-
+    
     // called with scope of axis
-    $.jqplot.CategoryAxisRenderer.prototype.set = function() {
+    $.jqplot.CategoryAxisRenderer.prototype.set = function() { 
         var dim = 0;
         var temp;
         var w = 0;
@@ -11808,7 +11869,7 @@
                     }
                 }
             }
-
+            
             var dim2 = 0;
             for (var i=0; i<this._groupLabels.length; i++) {
                 var l = this._groupLabels[i];
@@ -11822,10 +11883,10 @@
                     dim2 = temp;
                 }
             }
-
+            
             if (lshow) {
                 w = this._label._elem.outerWidth(true);
-                h = this._label._elem.outerHeight(true);
+                h = this._label._elem.outerHeight(true); 
             }
             if (this.name == 'xaxis') {
                 dim += dim2 + h;
@@ -11849,9 +11910,9 @@
                     this._label._elem.css('width', w+'px');
                 }
             }
-        }
+        }  
     };
-
+    
     // called with scope of axis
     $.jqplot.CategoryAxisRenderer.prototype.pack = function(pos, offsets) {
         var ticks = this._ticks;
@@ -11865,15 +11926,15 @@
         for (var p in pos) {
             this._elem.css(p, pos[p]);
         }
-
+        
         this._offsets = offsets;
         // pixellength will be + for x axes and - for y axes becasue pixels always measured from top left.
         var pixellength = offmax - offmin;
         var unitlength = max - min;
-
+        
         if (!this.reverse) {
             // point to unit and unit to point conversions references to Plot DOM element top left corner.
-
+            
             this.u2p = function(u){
                 return (u - min) * pixellength / unitlength + offmin;
             };
@@ -11881,7 +11942,7 @@
             this.p2u = function(p){
                 return (p - offmin) * unitlength / pixellength + min;
             };
-
+                    
             if (this.name == 'xaxis' || this.name == 'x2axis'){
                 this.series_u2p = function(u){
                     return (u - min) * pixellength / unitlength;
@@ -11890,7 +11951,7 @@
                     return p * unitlength / pixellength + min;
                 };
             }
-
+            
             else {
                 this.series_u2p = function(u){
                     return (u - max) * pixellength / unitlength;
@@ -11903,7 +11964,7 @@
 
         else {
             // point to unit and unit to point conversions references to Plot DOM element top left corner.
-
+            
             this.u2p = function(u){
                 return offmin + (max - u) * pixellength / unitlength;
             };
@@ -11911,7 +11972,7 @@
             this.p2u = function(p){
                 return min + (p - offmin) * unitlength / pixellength;
             };
-
+                    
             if (this.name == 'xaxis' || this.name == 'x2axis'){
                 this.series_u2p = function(u){
                     return (max - u) * pixellength / unitlength;
@@ -11920,7 +11981,7 @@
                     return p * unitlength / pixellength + max;
                 };
             }
-
+            
             else {
                 this.series_u2p = function(u){
                     return (min - u) * pixellength / unitlength;
@@ -11931,15 +11992,15 @@
             }
 
         }
-
-
+            
+        
         if (this.show) {
             if (this.name == 'xaxis' || this.name == 'x2axis') {
                 for (i=0; i<ticks.length; i++) {
                     var t = ticks[i];
                     if (t.show && t.showLabel) {
                         var shim;
-
+                        
                         if (t.constructor == $.jqplot.CanvasAxisTickRenderer && t.angle) {
                             // will need to adjust auto positioning based on which axis this is.
                             var temp = (this.name == 'xaxis') ? 1 : -1;
@@ -11976,7 +12037,7 @@
                         t.pack();
                     }
                 }
-
+                
                 var labeledge=['bottom', 0];
                 if (lshow) {
                     var w = this._label._elem.outerWidth(true);
@@ -11991,7 +12052,7 @@
                     }
                     this._label.pack();
                 }
-
+                
                 // draw the group labels
                 var step = parseInt(this._ticks.length/this.groups, 10) + 1;
                 for (i=0; i<this._groupLabels.length; i++) {
@@ -12014,7 +12075,7 @@
             else {
                 for (i=0; i<ticks.length; i++) {
                     var t = ticks[i];
-                    if (t.show && t.showLabel) {
+                    if (t.show && t.showLabel) {                        
                         var shim;
                         if (t.constructor == $.jqplot.CanvasAxisTickRenderer && t.angle) {
                             // will need to adjust auto positioning based on which axis this is.
@@ -12055,13 +12116,13 @@
                         else {
                             shim = -t.getHeight()/2;
                         }
-
+                        
                         var val = this.u2p(t.value) + shim + 'px';
                         t._elem.css('top', val);
                         t.pack();
                     }
                 }
-
+                
                 var labeledge=['left', 0];
                 if (lshow) {
                     var h = this._label._elem.outerHeight(true);
@@ -12073,10 +12134,10 @@
                     else {
                         this._label._elem.css('right', '0px');
                         labeledge = ['right', this._label._elem.outerWidth(true)];
-                    }
+                    }   
                     this._label.pack();
                 }
-
+                
                 // draw the group labels, position top here, do left after label position.
                 var step = parseInt(this._ticks.length/this.groups, 10) + 1; // step is one more than before as we don't want to have overlaps in loops
                 for (i=0; i<this._groupLabels.length; i++) {
@@ -12094,30 +12155,30 @@
                     mid = mid/count;
                     this._groupLabels[i].css({'top':mid - this._groupLabels[i].outerHeight()/2});
                     this._groupLabels[i].css(labeledge[0], labeledge[1]);
-
+                    
                 }
             }
         }
-    };
-
-
+    };    
+    
+    
 })(jQuery);
 
 /**
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.8
- * Revision: 1250
+ * Version: 1.0.9
+ * Revision: d96a669
  *
- * Copyright (c) 2009-2013 Chris Leonello
- * jqPlot is currently available for use in all personal or commercial projects
- * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL
- * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can
- * choose the license that best suits your project and use it accordingly.
+ * Copyright (c) 2009-2016 Chris Leonello
+ * jqPlot is currently available for use in all personal or commercial projects 
+ * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
+ * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
+ * choose the license that best suits your project and use it accordingly. 
  *
- * Although not required, the author would appreciate an email letting him
- * know of any substantial use of jqPlot.  You can reach the author at:
+ * Although not required, the author would appreciate an email letting him 
+ * know of any substantial use of jqPlot.  You can reach the author at: 
  * chris at jqplot dot com or see http://www.jqplot.com/info.php .
  *
  * If you are feeling kind and generous, consider supporting the project by
@@ -12131,7 +12192,7 @@
  *     http://hexmen.com/js/sprintf.js
  *     The author (Ash Searle) has placed this code in the public domain:
  *     "This code is unrestricted: you are free to use it however you like."
- *
+ * 
  */
 (function($) {
     /**
@@ -12139,15 +12200,15 @@
      * Plugin renderer to draw a pie chart.
      * x values, if present, will be used as slice labels.
      * y values give slice size.
-     *
-     * To use this renderer, you need to include the
+     * 
+     * To use this renderer, you need to include the 
      * pie renderer plugin, for example:
-     *
+     * 
      * > <script type="text/javascript" src="plugins/jqplot.pieRenderer.js"></script>
-     *
+     * 
      * Properties described here are passed into the $.jqplot function
      * as options on the series renderer.  For example:
-     *
+     * 
      * > plot2 = $.jqplot('chart2', [s1, s2], {
      * >     seriesDefaults: {
      * >         renderer:$.jqplot.PieRenderer,
@@ -12157,17 +12218,21 @@
      * >          }
      * >      }
      * > });
-     *
+     * 
      * A pie plot will trigger events on the plot target
      * according to user interaction.  All events return the event object,
-     * the series index, the point (slice) index, and the point data for
+     * the series index, the point (slice) index, and the point data for 
      * the appropriate slice.
-     *
+     * 
      * 'jqplotDataMouseOver' - triggered when user mouseing over a slice.
      * 'jqplotDataHighlight' - triggered the first time user mouses over a slice,
-     * if highlighting is enabled.
+     *   if highlighting is enabled.
      * 'jqplotDataUnhighlight' - triggered when a user moves the mouse out of
-     * a highlighted slice.
+     *   a highlighted slice.
+     * 'jqplotLegendHighlight' - triggered the first time user mouses over a legend,
+     *   if highlighting is enabled.
+     * 'jqplotLegendUnhighlight' - triggered when a user moves the mouse out of
+     *   a highlighted legend.
      * 'jqplotDataClick' - triggered when the user clicks on a slice.
      * 'jqplotDataRightClick' - tiggered when the user right clicks on a slice if
      * the "captureRightClick" option is set to true on the plot.
@@ -12175,10 +12240,10 @@
     $.jqplot.PieRenderer = function(){
         $.jqplot.LineRenderer.call(this);
     };
-
+    
     $.jqplot.PieRenderer.prototype = new $.jqplot.LineRenderer();
     $.jqplot.PieRenderer.prototype.constructor = $.jqplot.PieRenderer;
-
+    
     // called with scope of a series
     $.jqplot.PieRenderer.prototype.init = function(options, plot) {
         // Group: Properties
@@ -12196,14 +12261,14 @@
         // true or false, whether to fil the slices.
         this.fill = true;
         // prop: shadowOffset
-        // offset of the shadow from the slice and offset of
+        // offset of the shadow from the slice and offset of 
         // each succesive stroke of the shadow from the last.
         this.shadowOffset = 2;
         // prop: shadowAlpha
         // transparency of the shadow (0 = transparent, 1 = opaque)
         this.shadowAlpha = 0.07;
         // prop: shadowDepth
-        // number of strokes to apply to the shadow,
+        // number of strokes to apply to the shadow, 
         // each stroke offset shadowOffset from the last.
         this.shadowDepth = 5;
         // prop: highlightMouseOver
@@ -12243,7 +12308,7 @@
         // False to set the inside facing edge of the label at its position.
         this.dataLabelCenterOn = true;
         // prop: startAngle
-        // Angle to start drawing pie in degrees.
+        // Angle to start drawing pie in degrees.  
         // According to orientation of canvas coordinate system:
         // 0 = on the positive x axis
         // -90 = on the positive y axis.
@@ -12251,15 +12316,19 @@
         // 180 or - 180 = on the negative x axis.
         this.startAngle = 0;
         this.tickRenderer = $.jqplot.PieTickRenderer;
+        // prop: showSlice
+        // Array for whether the pie chart slice for a data element should be displayed.
+        // Containsg true or false for each data element.  If not specified, defaults to true.
+        this.showSlice = [];
         // Used as check for conditions where pie shouldn't be drawn.
         this._drawData = true;
         this._type = 'pie';
-
+        
         // if user has passed in highlightMouseDown option and not set highlightMouseOver, disable highlightMouseOver
         if (options.highlightMouseDown && options.highlightMouseOver == null) {
             options.highlightMouseOver = false;
         }
-
+        
         $.extend(true, this, options);
 
         if (this.sliceMargin < 0) {
@@ -12272,7 +12341,7 @@
         this._sliceAngles = [];
         // index of the currenty highlighted point, if any
         this._highlightedPoint = null;
-
+        
         // set highlight colors if none provided
         if (this.highlightColors.length == 0) {
             for (var i=0; i<this.seriesColors.length; i++){
@@ -12287,9 +12356,9 @@
                 this.highlightColors.push('rgb('+newrgb[0]+','+newrgb[1]+','+newrgb[2]+')');
             }
         }
-
+        
         this.highlightColorGenerator = new $.jqplot.ColorGenerator(this.highlightColors);
-
+        
         plot.postParseOptionsHooks.addOnce(postParseOptions);
         plot.postInitHooks.addOnce(postInit);
         plot.eventListenerHooks.addOnce('jqplotMouseMove', handleMove);
@@ -12299,7 +12368,7 @@
         plot.eventListenerHooks.addOnce('jqplotRightClick', handleRightClick);
         plot.postDrawHooks.addOnce(postPlotDraw);
     };
-
+    
     $.jqplot.PieRenderer.prototype.setGridData = function(plot) {
         // set gridData property.  This will hold angle in radians of each data point.
         var stack = [];
@@ -12312,6 +12381,9 @@
             if (this.data[i][1] != 0) {
                 // we have data, O.K. to draw.
                 this._drawData = true;
+                if (this.showSlice[i] === undefined) {
+                  this.showSlice[i] = true;
+                }
             }
             stack.push(this.data[i][1]);
             td.push([this.data[i][0]]);
@@ -12321,14 +12393,14 @@
             tot += this.data[i][1];
         }
         var fact = Math.PI*2/stack[stack.length - 1];
-
+        
         for (var i=0; i<stack.length; i++) {
             td[i][1] = stack[i] * fact;
             td[i][2] = this.data[i][1]/tot;
         }
         this.gridData = td;
     };
-
+    
     $.jqplot.PieRenderer.prototype.makeGridData = function(data, plot) {
         var stack = [];
         var td = [];
@@ -12349,7 +12421,7 @@
             tot += data[i][1];
         }
         var fact = Math.PI*2/stack[stack.length - 1];
-
+        
         for (var i=0; i<stack.length; i++) {
             td[i][1] = stack[i] * fact;
             td[i][2] = data[i][1]/tot;
@@ -12376,7 +12448,7 @@
 
         return rprime;
     }
-
+    
     $.jqplot.PieRenderer.prototype.drawSlice = function (ctx, ang1, ang2, color, isShadow) {
         if (this._drawData) {
             var r = this._radius;
@@ -12388,21 +12460,21 @@
             }
             ctx.save();
             ctx.translate(this._center[0], this._center[1]);
-
+            
             var rprime = calcRPrime(ang1, ang2, this.sliceMargin, this.fill, this.lineWidth);
 
             var transx = rprime * Math.cos((ang1 + ang2) / 2.0);
             var transy = rprime * Math.sin((ang1 + ang2) / 2.0);
 
             if ((ang2 - ang1) <= Math.PI) {
-                r -= rprime;
+                r -= rprime;  
             }
             else {
                 r += rprime;
             }
 
             ctx.translate(transx, transy);
-
+            
             if (isShadow) {
                 for (var i=0, l=this.shadowDepth; i<l; i++) {
                     ctx.save();
@@ -12413,13 +12485,13 @@
                     ctx.restore();
                 }
             }
-
+    
             else {
                 doDraw(r);
             }
             ctx.restore();
         }
-
+    
         function doDraw (rad) {
             // Fix for IE and Chrome that can't seem to draw circles correctly.
             // ang2 should always be <= 2 pi since that is the way the data is converted.
@@ -12434,16 +12506,16 @@
             // ugly line on unfilled pies.
             if (ang1 >= ang2) {
                 return;
-            }
-
-            ctx.beginPath();
+            }            
+        
+            ctx.beginPath();  
             ctx.fillStyle = color;
             ctx.strokeStyle = color;
             ctx.lineWidth = lineWidth;
             ctx.arc(0, 0, rad, ang1, ang2, false);
             ctx.lineTo(0,0);
             ctx.closePath();
-
+        
             if (fill) {
                 ctx.fill();
             }
@@ -12452,7 +12524,7 @@
             }
         }
     };
-
+    
     // called with scope of series
     $.jqplot.PieRenderer.prototype.draw = function (ctx, gd, options, plot) {
         var i;
@@ -12462,6 +12534,8 @@
         var offy = 0;
         var trans = 1;
         var colorGenerator = new $.jqplot.ColorGenerator(this.seriesColors);
+        var sliceColor;
+
         if (options.legendInfo && options.legendInfo.placement == 'insideGrid') {
             var li = options.legendInfo;
             switch (li.location) {
@@ -12497,16 +12571,20 @@
                     break;
             }
         }
-
+        
         var shadow = (opts.shadow != undefined) ? opts.shadow : this.shadow;
         var fill = (opts.fill != undefined) ? opts.fill : this.fill;
-        var cw = ctx.canvas.width;
-        var ch = ctx.canvas.height;
+        
+        //see http://stackoverflow.com/questions/20221461/hidpi-retina-plot-drawing
+        var cw = parseInt(ctx.canvas.style.width);
+        var ch = parseInt(ctx.canvas.style.height);
+        //
+        
         var w = cw - offx - 2 * this.padding;
         var h = ch - offy - 2 * this.padding;
         var mindim = Math.min(w,h);
         var d = mindim;
-
+        
         // Fixes issue #272.  Thanks hugwijst!
         // reset slice angles array.
         this._sliceAngles = [];
@@ -12515,7 +12593,7 @@
         if (this.fill == false) {
             sm += this.lineWidth;
         }
-
+        
         var rprime;
         var maxrprime = 0;
 
@@ -12532,7 +12610,7 @@
             rprime = calcRPrime(ang1, ang2, this.sliceMargin, this.fill, this.lineWidth);
 
             if (Math.abs(ang2-ang1) > Math.PI) {
-                maxrprime = Math.max(rprime, maxrprime);
+                maxrprime = Math.max(rprime, maxrprime);  
             }
         }
 
@@ -12560,60 +12638,64 @@
                 this.renderer.drawSlice.call (this, ctx, this._sliceAngles[i][0], this._sliceAngles[i][1], shadowColor, true);
             }
         }
-
+        
         for (var i=0; i<gd.length; i++) {
 
-            this.renderer.drawSlice.call (this, ctx, this._sliceAngles[i][0], this._sliceAngles[i][1], colorGenerator.next(), false);
+            sliceColor = colorGenerator.next();
 
-            if (this.showDataLabels && gd[i][2]*100 >= this.dataLabelThreshold) {
-                var fstr, avgang = (this._sliceAngles[i][0] + this._sliceAngles[i][1])/2, label;
-
-                if (this.dataLabels == 'label') {
-                    fstr = this.dataLabelFormatString || '%s';
-                    label = $.jqplot.sprintf(fstr, gd[i][0]);
+            if (this.showSlice[i]) {
+                this.renderer.drawSlice.call (this, ctx, this._sliceAngles[i][0], this._sliceAngles[i][1], sliceColor, false);
+            
+                if (this.showDataLabels && gd[i][2]*100 >= this.dataLabelThreshold) {
+                    var fstr, avgang = (this._sliceAngles[i][0] + this._sliceAngles[i][1])/2, label;
+                
+                    if (this.dataLabels == 'label') {
+                        fstr = this.dataLabelFormatString || '%s';
+                        label = $.jqplot.sprintf(fstr, gd[i][0]);
+                    }
+                    else if (this.dataLabels == 'value') {
+                        fstr = this.dataLabelFormatString || '%d';
+                        label = $.jqplot.sprintf(fstr, this.data[i][1]);
+                    }
+                    else if (this.dataLabels == 'percent') {
+                        fstr = this.dataLabelFormatString || '%d%%';
+                        label = $.jqplot.sprintf(fstr, gd[i][2]*100);
+                    }
+                    else if (this.dataLabels.constructor == Array) {
+                        fstr = this.dataLabelFormatString || '%s';
+                        label = $.jqplot.sprintf(fstr, this.dataLabels[i]);
+                    }
+                
+                    var fact = (this._radius ) * this.dataLabelPositionFactor + this.sliceMargin + this.dataLabelNudge;
+                
+                    var x = this._center[0] + Math.cos(avgang) * fact + this.canvas._offsets.left;
+                    var y = this._center[1] + Math.sin(avgang) * fact + this.canvas._offsets.top;
+                
+                    var labelelem = $('<div class="jqplot-pie-series jqplot-data-label" style="position:absolute;">' + label + '</div>').insertBefore(plot.eventCanvas._elem);
+                    if (this.dataLabelCenterOn) {
+                        x -= labelelem.width()/2;
+                        y -= labelelem.height()/2;
+                    }
+                    else {
+                        x -= labelelem.width() * Math.sin(avgang/2);
+                        y -= labelelem.height()/2;
+                    }
+                    x = Math.round(x);
+                    y = Math.round(y);
+                    labelelem.css({left: x, top: y});
                 }
-                else if (this.dataLabels == 'value') {
-                    fstr = this.dataLabelFormatString || '%d';
-                    label = $.jqplot.sprintf(fstr, this.data[i][1]);
-                }
-                else if (this.dataLabels == 'percent') {
-                    fstr = this.dataLabelFormatString || '%d%%';
-                    label = $.jqplot.sprintf(fstr, gd[i][2]*100);
-                }
-                else if (this.dataLabels.constructor == Array) {
-                    fstr = this.dataLabelFormatString || '%s';
-                    label = $.jqplot.sprintf(fstr, this.dataLabels[i]);
-                }
-
-                var fact = (this._radius ) * this.dataLabelPositionFactor + this.sliceMargin + this.dataLabelNudge;
-
-                var x = this._center[0] + Math.cos(avgang) * fact + this.canvas._offsets.left;
-                var y = this._center[1] + Math.sin(avgang) * fact + this.canvas._offsets.top;
-
-                var labelelem = $('<div class="jqplot-pie-series jqplot-data-label" style="position:absolute;">' + label + '</div>').insertBefore(plot.eventCanvas._elem);
-                if (this.dataLabelCenterOn) {
-                    x -= labelelem.width()/2;
-                    y -= labelelem.height()/2;
-                }
-                else {
-                    x -= labelelem.width() * Math.sin(avgang/2);
-                    y -= labelelem.height()/2;
-                }
-                x = Math.round(x);
-                y = Math.round(y);
-                labelelem.css({left: x, top: y});
             }
-        }
+        }            
     };
-
+    
     $.jqplot.PieAxisRenderer = function() {
         $.jqplot.LinearAxisRenderer.call(this);
     };
-
+    
     $.jqplot.PieAxisRenderer.prototype = new $.jqplot.LinearAxisRenderer();
     $.jqplot.PieAxisRenderer.prototype.constructor = $.jqplot.PieAxisRenderer;
-
-
+        
+    
     // There are no traditional axes on a pie chart.  We just need to provide
     // dummy objects with properties so the plot will render.
     // called with scope of axis object.
@@ -12632,19 +12714,19 @@
         this.showTicks = false;
         this.ticks = [];
         this.showMark = false;
-        this.show = false;
+        this.show = false; 
     };
-
-
-
-
+    
+    
+    
+    
     $.jqplot.PieLegendRenderer = function(){
         $.jqplot.TableLegendRenderer.call(this);
     };
-
+    
     $.jqplot.PieLegendRenderer.prototype = new $.jqplot.TableLegendRenderer();
     $.jqplot.PieLegendRenderer.prototype.constructor = $.jqplot.PieLegendRenderer;
-
+    
     /**
      * Class: $.jqplot.PieLegendRenderer
      * Legend Renderer specific to pie plots.  Set by default
@@ -12659,9 +12741,12 @@
         // prop: numberColumns
         // Maximum number of columns in the legend.  0 or null for unlimited.
         this.numberColumns = null;
+        // prop: width
+        // Fixed with of legend.  0 or null for auto size
+        this.width = null;
         $.extend(true, this, options);
     };
-
+    
     // called with context of legend
     $.jqplot.PieLegendRenderer.prototype.draw = function() {
         var legend = this;
@@ -12705,14 +12790,14 @@
 
             // Pie charts legends don't go by number of series, but by number of data points
             // in the series.  Refactor things here for that.
-
-            var pad = false,
+            
+            var pad = false, 
                 reverse = false,
-                nr,
+                nr, 
                 nc;
             var s = series[0];
             var colorGenerator = new $.jqplot.ColorGenerator(s.seriesColors);
-
+            
             if (s.show) {
                 var pd = s.data;
                 if (this.numberRows) {
@@ -12732,28 +12817,41 @@
                     nr = pd.length;
                     nc = 1;
                 }
-
+                
                 var i, j;
-                var tr, td1, td2;
-                var lt, rs, color;
-                var idx = 0;
-                var div0, div1;
-
+                var tr, td1, td2; 
+                var lt, tt, rs, color;
+                var idx = 0; 
+                var div0, div1;   
+                
                 for (i=0; i<nr; i++) {
                     tr = $(document.createElement('tr'));
                     tr.addClass('jqplot-table-legend');
-
+                    
                     if (reverse){
                         tr.prependTo(this._elem);
                     }
-
+                    
                     else{
                         tr.appendTo(this._elem);
                     }
-
+                    
                     for (j=0; j<nc; j++) {
-                        if (idx < pd.length){
-                            lt = this.labels[idx] || pd[idx][0].toString();
+                        if (idx < pd.length) {
+                            tt = '';
+                            if (this.labels[idx]) {
+                                lt = this.labels[idx];
+                            }
+                            else {
+                                if (typeof pd[idx][0] === 'object') {
+                                    lt = pd[idx][0][0].toString();
+                                    tt = pd[idx][0][1].toString();
+                                }
+                                else  {
+                                    lt = pd[idx][0].toString();
+                                }
+                            }
+                            //lt = this.labels[idx] || pd[idx][0].toString();
                             color = colorGenerator.next();
                             if (!reverse){
                                 if (i>0){
@@ -12781,6 +12879,9 @@
 
                             div0 = $(document.createElement('div'));
                             div0.addClass('jqplot-table-legend-swatch-outline');
+                            if (tt !== '') {
+                                div0.attr("title", tt);
+                            }
                             div1 = $(document.createElement('div'));
                             div1.addClass('jqplot-table-legend-swatch');
                             div1.css({backgroundColor: color, borderColor: color});
@@ -12794,7 +12895,7 @@
                                 td2.text(lt);
                             }
                             else {
-                                td2.html(lt);
+                                td2.html('<a title="' + tt + '">' + lt + "</a>");
                             }
                             if (reverse) {
                                 td2.prependTo(tr);
@@ -12807,13 +12908,13 @@
                             pad = true;
                         }
                         idx++;
-                    }
+                    }   
                 }
             }
         }
-        return this._elem;
+        return this._elem;                
     };
-
+    
     $.jqplot.PieRenderer.prototype.handleMove = function(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var ins = [neighbor.seriesIndex, neighbor.pointIndex, neighbor.data];
@@ -12827,10 +12928,10 @@
             unhighlight (plot);
         }
     };
-
-
+    
+    
     // this.eventCanvas._elem.bind($.jqplot.eventListenerHooks[i][0], {plot:this}, $.jqplot.eventListenerHooks[i][1]);
-
+    
     // setup default renderers for axes and legend so user doesn't have to
     // called with scope of plot
     function preInit(target, data, options) {
@@ -12850,15 +12951,15 @@
                 }
             }
         }
-
+        
         if (setopts) {
             options.axesDefaults.renderer = $.jqplot.PieAxisRenderer;
-            options.legend.renderer = $.jqplot.PieLegendRenderer;
+            options.legend.renderer = options.legend.renderer || $.jqplot.PieLegendRenderer;
             options.legend.preDraw = true;
             options.seriesDefaults.pointLabels = {show: false};
         }
     }
-
+    
     function postInit(target, data, options) {
         for (var i=0; i<this.series.length; i++) {
             if (this.series[i].renderer.constructor == $.jqplot.PieRenderer) {
@@ -12869,7 +12970,7 @@
             }
         }
     }
-
+    
     // called with scope of plot
     function postParseOptions(options) {
         for (var i=0; i<this.series.length; i++) {
@@ -12877,16 +12978,18 @@
             this.series[i].colorGenerator = $.jqplot.colorGenerator;
         }
     }
-
+    
     function highlight (plot, sidx, pidx) {
-        var s = plot.series[sidx];
-        var canvas = plot.plugins.pieRenderer.highlightCanvas;
-        canvas._ctx.clearRect(0,0,canvas._ctx.canvas.width, canvas._ctx.canvas.height);
-        s._highlightedPoint = pidx;
-        plot.plugins.pieRenderer.highlightedSeriesIndex = sidx;
-        s.renderer.drawSlice.call(s, canvas._ctx, s._sliceAngles[pidx][0], s._sliceAngles[pidx][1], s.highlightColorGenerator.get(pidx), false);
+        if (plot.series[sidx].showSlice[pidx]) {
+            var s = plot.series[sidx];
+            var canvas = plot.plugins.pieRenderer.highlightCanvas;
+            canvas._ctx.clearRect(0,0,canvas._ctx.canvas.width, canvas._ctx.canvas.height);
+            s._highlightedPoint = pidx;
+            plot.plugins.pieRenderer.highlightedSeriesIndex = sidx;
+            s.renderer.drawSlice.call(s, canvas._ctx, s._sliceAngles[pidx][0], s._sliceAngles[pidx][1], s.highlightColorGenerator.get(pidx), false);
+        }
     }
-
+    
     function unhighlight (plot) {
         var canvas = plot.plugins.pieRenderer.highlightCanvas;
         canvas._ctx.clearRect(0,0, canvas._ctx.canvas.width, canvas._ctx.canvas.height);
@@ -12896,7 +12999,7 @@
         plot.plugins.pieRenderer.highlightedSeriesIndex = null;
         plot.target.trigger('jqplotDataUnhighlight');
     }
-
+ 
     function handleMove(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var ins = [neighbor.seriesIndex, neighbor.pointIndex, neighbor.data];
@@ -12916,8 +13019,8 @@
         else if (neighbor == null) {
             unhighlight (plot);
         }
-    }
-
+    } 
+    
     function handleMouseDown(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var ins = [neighbor.seriesIndex, neighbor.pointIndex, neighbor.data];
@@ -12934,14 +13037,14 @@
             unhighlight (plot);
         }
     }
-
+    
     function handleMouseUp(ev, gridpos, datapos, neighbor, plot) {
         var idx = plot.plugins.pieRenderer.highlightedSeriesIndex;
         if (idx != null && plot.series[idx].highlightMouseDown) {
             unhighlight(plot);
         }
     }
-
+    
     function handleClick(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var ins = [neighbor.seriesIndex, neighbor.pointIndex, neighbor.data];
@@ -12952,7 +13055,7 @@
             plot.target.trigger(evt, ins);
         }
     }
-
+    
     function handleRightClick(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var ins = [neighbor.seriesIndex, neighbor.pointIndex, neighbor.data];
@@ -12966,13 +13069,13 @@
             evt.pageY = ev.pageY;
             plot.target.trigger(evt, ins);
         }
-    }
-
+    }    
+    
     // called within context of plot
     // create a canvas which we can draw on.
     // insert it before the eventCanvas, so eventCanvas will still capture events.
     function postPlotDraw() {
-        // Memory Leaks patch
+        // Memory Leaks patch    
         if (this.plugins.pieRenderer && this.plugins.pieRenderer.highlightCanvas) {
             this.plugins.pieRenderer.highlightCanvas.resetCanvas();
             this.plugins.pieRenderer.highlightCanvas = null;
@@ -12980,7 +13083,7 @@
 
         this.plugins.pieRenderer = {highlightedSeriesIndex:null};
         this.plugins.pieRenderer.highlightCanvas = new $.jqplot.GenericCanvas();
-
+        
         // do we have any data labels?  if so, put highlight canvas before those
         var labels = $(this.targetId+' .jqplot-data-label');
         if (labels.length) {
@@ -12990,37 +13093,37 @@
         else {
             this.eventCanvas._elem.before(this.plugins.pieRenderer.highlightCanvas.createElement(this._gridPadding, 'jqplot-pieRenderer-highlight-canvas', this._plotDimensions, this));
         }
-
+        
         var hctx = this.plugins.pieRenderer.highlightCanvas.setContext();
         this.eventCanvas._elem.bind('mouseleave', {plot:this}, function (ev) { unhighlight(ev.data.plot); });
     }
-
+    
     $.jqplot.preInitHooks.push(preInit);
-
+    
     $.jqplot.PieTickRenderer = function() {
         $.jqplot.AxisTickRenderer.call(this);
     };
-
+    
     $.jqplot.PieTickRenderer.prototype = new $.jqplot.AxisTickRenderer();
     $.jqplot.PieTickRenderer.prototype.constructor = $.jqplot.PieTickRenderer;
-
+    
 })(jQuery);
 
 /**
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.8
- * Revision: 1250
+ * Version: 1.0.9
+ * Revision: d96a669
  *
- * Copyright (c) 2009-2013 Chris Leonello
- * jqPlot is currently available for use in all personal or commercial projects
- * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL
- * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can
- * choose the license that best suits your project and use it accordingly.
+ * Copyright (c) 2009-2016 Chris Leonello
+ * jqPlot is currently available for use in all personal or commercial projects 
+ * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
+ * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
+ * choose the license that best suits your project and use it accordingly. 
  *
- * Although not required, the author would appreciate an email letting him
- * know of any substantial use of jqPlot.  You can reach the author at:
+ * Although not required, the author would appreciate an email letting him 
+ * know of any substantial use of jqPlot.  You can reach the author at: 
  * chris at jqplot dot com or see http://www.jqplot.com/info.php .
  *
  * If you are feeling kind and generous, consider supporting the project by
@@ -13034,21 +13137,21 @@
  *     http://hexmen.com/js/sprintf.js
  *     The author (Ash Searle) has placed this code in the public domain:
  *     "This code is unrestricted: you are free to use it however you like."
- *
+ * 
  */
 (function($) {
-
+    
     // Class: $.jqplot.BarRenderer
     // A plugin renderer for jqPlot to draw a bar plot.
     // Draws series as a line.
-
+    
     $.jqplot.BarRenderer = function(){
         $.jqplot.LineRenderer.call(this);
     };
-
+    
     $.jqplot.BarRenderer.prototype = new $.jqplot.LineRenderer();
     $.jqplot.BarRenderer.prototype.constructor = $.jqplot.BarRenderer;
-
+    
     // called with scope of series.
     $.jqplot.BarRenderer.prototype.init = function(options, plot) {
         // Group: Properties
@@ -13066,11 +13169,11 @@
         // Width of the bar in pixels (auto by devaul).  null = calculated automatically.
         this.barWidth = null;
         // prop: shadowOffset
-        // offset of the shadow from the slice and offset of
+        // offset of the shadow from the slice and offset of 
         // each succesive stroke of the shadow from the last.
         this.shadowOffset = 2;
         // prop: shadowDepth
-        // number of strokes to apply to the shadow,
+        // number of strokes to apply to the shadow, 
         // each stroke offset shadowOffset from the last.
         this.shadowDepth = 5;
         // prop: shadowAlpha
@@ -13102,10 +13205,10 @@
         // an array of colors to use when highlighting a bar.
         this.highlightColors = [];
         // prop: transposedData
-        // NOT IMPLEMENTED YET.  True if this is a horizontal bar plot and
-        // x and y values are "transposed".  Tranposed, or "swapped", data is
-        // required prior to rev. 894 builds of jqPlot with horizontal bars.
-        // Allows backward compatability of bar renderer horizontal bars with
+        // NOT IMPLEMENTED YET.  True if this is a horizontal bar plot and 
+        // x and y values are "transposed".  Tranposed, or "swapped", data is 
+        // required prior to rev. 894 builds of jqPlot with horizontal bars. 
+        // Allows backward compatability of bar renderer horizontal bars with 
         // old style data sets.
         this.transposedData = true;
         this.renderer.animation = {
@@ -13115,17 +13218,17 @@
             _supported: true
         };
         this._type = 'bar';
-
+        
         // if user has passed in highlightMouseDown option and not set highlightMouseOver, disable highlightMouseOver
         if (options.highlightMouseDown && options.highlightMouseOver == null) {
             options.highlightMouseOver = false;
         }
-
+        
         //////
         // This is probably wrong here.
         // After going back and forth on whether renderer should be the thing
         // or extend the thing, it seems that it it best if it is a property
-        // on the thing.  This should be something that is commonized
+        // on the thing.  This should be something that is commonized 
         // among series renderers in the future.
         //////
         $.extend(true, this, options);
@@ -13140,12 +13243,12 @@
         if (this.barDirection === 'horizontal' && this.rendererOptions.animation && this.rendererOptions.animation.direction == null) {
             this.renderer.animation.direction = 'left';
         }
-
+        
         if (this.waterfall) {
             this.fillToZero = false;
             this.disableStack = true;
         }
-
+        
         if (this.barDirection == 'vertical' ) {
             this._primaryAxis = '_xaxis';
             this._stackAxis = 'y';
@@ -13163,23 +13266,23 @@
         // Array of actual data colors used for each data point.
         this._dataColors = [];
         this._barPoints = [];
-
+        
         // set the shape renderer options
         var opts = {lineJoin:'miter', lineCap:'round', fill:true, isarc:false, strokeStyle:this.color, fillStyle:this.color, closePath:this.fill};
         this.renderer.shapeRenderer.init(opts);
         // set the shadow renderer options
         var sopts = {lineJoin:'miter', lineCap:'round', fill:true, isarc:false, angle:this.shadowAngle, offset:this.shadowOffset, alpha:this.shadowAlpha, depth:this.shadowDepth, closePath:this.fill};
         this.renderer.shadowRenderer.init(sopts);
-
+        
         plot.postInitHooks.addOnce(postInit);
         plot.postDrawHooks.addOnce(postPlotDraw);
         plot.eventListenerHooks.addOnce('jqplotMouseMove', handleMove);
         plot.eventListenerHooks.addOnce('jqplotMouseDown', handleMouseDown);
         plot.eventListenerHooks.addOnce('jqplotMouseUp', handleMouseUp);
         plot.eventListenerHooks.addOnce('jqplotClick', handleClick);
-        plot.eventListenerHooks.addOnce('jqplotRightClick', handleRightClick);
+        plot.eventListenerHooks.addOnce('jqplotRightClick', handleRightClick); 
     };
-
+    
     // called with scope of series
     function barPreInit(target, data, seriesDefaults, options) {
         if (this.rendererOptions.barDirection == 'horizontal') {
@@ -13224,9 +13327,9 @@
             }
         }
     }
-
+    
     $.jqplot.preSeriesInitHooks.push(barPreInit);
-
+    
     // needs to be called with scope of series, not renderer.
     $.jqplot.BarRenderer.prototype.calcSeriesNumbers = function() {
         var nvals = 0;
@@ -13237,7 +13340,7 @@
         for (var i=0; i < paxis._series.length; i++) {
             series = paxis._series[i];
             if (series === this) {
-                 pos = nseries;
+                pos = i;
             }
             // is the series rendered as a bar?
             if (series.renderer.constructor == $.jqplot.BarRenderer) {
@@ -13333,7 +13436,7 @@
         return start;
     }
 
-
+    
     $.jqplot.BarRenderer.prototype.draw = function(ctx, gridData, options, plot) {
         var i;
         // Ughhh, have to make a copy of options b/c it may be modified later.
@@ -13349,17 +13452,17 @@
         // clear out data colors.
         this._dataColors = [];
         this._barPoints = [];
-
-        if (this.barWidth == null) {
+        
+        if (this.barWidth == null || this.rendererOptions.barWidth == null) {//check pull request https://bitbucket.org/cleonello/jqplot/pull-request/61/fix-for-issue-513/diff
             this.renderer.setBarWidth.call(this);
         }
-
+        
         var temp = this._plotSeriesInfo = this.renderer.calcSeriesNumbers.call(this);
         var nvals = temp[0];
         var nseries = temp[1];
         var pos = temp[2];
         var points = [];
-
+        
         if (this._stack) {
             this._barNudge = 0;
         }
@@ -13375,9 +13478,9 @@
             }
             var positiveColor = opts.fillStyle;
             var base;
-            var xstart;
+            var xstart; 
             var ystart;
-
+            
             if (this.barDirection == 'vertical') {
                 for (var i=0; i<gridData.length; i++) {
                     if (!this._stack && this.data[i][1] == null) {
@@ -13385,7 +13488,7 @@
                     }
                     points = [];
                     base = gridData[i][0] + this._barNudge;
-
+                    
                     // stacked
                     if (this._stack && this._prevGridData.length) {
                         ystart = getStart(this.index, i, this._plotData[i][1], plot, 'y');
@@ -13446,15 +13549,15 @@
                             opts.fillStyle = positiveColor;
                         }
                     }
-
-                    if (!this.fillToZero || this._plotData[i][1] >= 0) {
+                    
+                    if (!this.fillToZero || this._plotData[i][1] >= 0) { 
                         points.push([base-this.barWidth/2, ystart]);
                         points.push([base-this.barWidth/2, gridData[i][1]]);
                         points.push([base+this.barWidth/2, gridData[i][1]]);
                         points.push([base+this.barWidth/2, ystart]);
                     }
                     // for negative bars make sure points are always ordered clockwise
-                    else {
+                    else {              
                         points.push([base-this.barWidth/2, gridData[i][1]]);
                         points.push([base-this.barWidth/2, ystart]);
                         points.push([base+this.barWidth/2, ystart]);
@@ -13471,10 +13574,10 @@
                     }
                     var clr = opts.fillStyle || this.color;
                     this._dataColors.push(clr);
-                    this.renderer.shapeRenderer.draw(ctx, points, opts);
+                    this.renderer.shapeRenderer.draw(ctx, points, opts); 
                 }
             }
-
+            
             else if (this.barDirection == 'horizontal'){
                 for (var i=0; i<gridData.length; i++) {
                     if (!this._stack && this.data[i][0] == null) {
@@ -13483,7 +13586,7 @@
                     points = [];
                     base = gridData[i][1] - this._barNudge;
                     xstart;
-
+                    
                     if (this._stack && this._prevGridData.length) {
                         xstart = getStart(this.index, i, this._plotData[i][0], plot, 'x');
                     }
@@ -13540,9 +13643,9 @@
                         }
                         else {
                             opts.fillStyle = positiveColor;
-                        }
+                        }                    
                     }
-
+                    
 
                     if (!this.fillToZero || this._plotData[i][0] >= 0) {
                         points.push([xstart, base + this.barWidth / 2]);
@@ -13568,14 +13671,14 @@
                     var clr = opts.fillStyle || this.color;
                     this._dataColors.push(clr);
                     this.renderer.shapeRenderer.draw(ctx, points, opts);
-                }
+                } 
             }
-        }
-
+        }                
+        
         if (this.highlightColors.length == 0) {
             this.highlightColors = $.jqplot.computeHighlightColors(this._dataColors);
         }
-
+        
         else if (typeof(this.highlightColors) == 'string') {
             var temp = this.highlightColors;
             this.highlightColors = [];
@@ -13583,10 +13686,10 @@
                 this.highlightColors.push(temp);
             }
         }
-
+        
     };
-
-
+    
+     
     // for stacked plots, shadows will be pre drawn by drawShadow.
     $.jqplot.BarRenderer.prototype.drawShadow = function(ctx, gridData, options, plot) {
         var i;
@@ -13599,17 +13702,17 @@
         var xp = this._xaxis.series_u2p;
         var yp = this._yaxis.series_u2p;
         var pointx, points, pointy, nvals, nseries, pos;
-
+        
         if (this._stack && this.shadow) {
             if (this.barWidth == null) {
                 this.renderer.setBarWidth.call(this);
             }
-
+        
             var temp = this._plotSeriesInfo = this.renderer.calcSeriesNumbers.call(this);
             nvals = temp[0];
             nseries = temp[1];
             pos = temp[2];
-
+        
             if (this._stack) {
                 this._barNudge = 0;
             }
@@ -13617,7 +13720,7 @@
                 this._barNudge = (-Math.abs(nseries/2 - 0.5) + pos) * (this.barWidth + this.barPadding);
             }
             if (showLine) {
-
+            
                 if (this.barDirection == 'vertical') {
                     for (var i=0; i<gridData.length; i++) {
                         if (this.data[i][1] == null) {
@@ -13626,7 +13729,7 @@
                         points = [];
                         var base = gridData[i][0] + this._barNudge;
                         var ystart;
-
+                    
                         if (this._stack && this._prevGridData.length) {
                             ystart = getStart(this.index, i, this._plotData[i][1], plot, 'y');
                         }
@@ -13638,7 +13741,7 @@
                                 ystart = ctx.canvas.height;
                             }
                         }
-
+                    
                         points.push([base-this.barWidth/2, ystart]);
                         points.push([base-this.barWidth/2, gridData[i][1]]);
                         points.push([base+this.barWidth/2, gridData[i][1]]);
@@ -13646,7 +13749,7 @@
                         this.renderer.shadowRenderer.draw(ctx, points, opts);
                     }
                 }
-
+            
                 else if (this.barDirection == 'horizontal'){
                     for (var i=0; i<gridData.length; i++) {
                         if (this.data[i][0] == null) {
@@ -13655,7 +13758,7 @@
                         points = [];
                         var base = gridData[i][1] - this._barNudge;
                         var xstart;
-
+                    
                         if (this._stack && this._prevGridData.length) {
                             xstart = getStart(this.index, i, this._plotData[i][0], plot, 'x');
                         }
@@ -13667,19 +13770,19 @@
                                 xstart = 0;
                             }
                         }
-
+                    
                         points.push([xstart, base+this.barWidth/2]);
                         points.push([gridData[i][0], base+this.barWidth/2]);
                         points.push([gridData[i][0], base-this.barWidth/2]);
                         points.push([xstart, base-this.barWidth/2]);
                         this.renderer.shadowRenderer.draw(ctx, points, opts);
-                    }
+                    }  
                 }
-            }
-
+            }   
+            
         }
     };
-
+    
     function postInit(target, data, options) {
         for (var i=0; i<this.series.length; i++) {
             if (this.series[i].renderer.constructor == $.jqplot.BarRenderer) {
@@ -13690,26 +13793,26 @@
             }
         }
     }
-
+    
     // called within context of plot
     // create a canvas which we can draw on.
     // insert it before the eventCanvas, so eventCanvas will still capture events.
     function postPlotDraw() {
-        // Memory Leaks patch
+        // Memory Leaks patch    
         if (this.plugins.barRenderer && this.plugins.barRenderer.highlightCanvas) {
 
             this.plugins.barRenderer.highlightCanvas.resetCanvas();
             this.plugins.barRenderer.highlightCanvas = null;
         }
-
+         
         this.plugins.barRenderer = {highlightedSeriesIndex:null};
         this.plugins.barRenderer.highlightCanvas = new $.jqplot.GenericCanvas();
-
+        
         this.eventCanvas._elem.before(this.plugins.barRenderer.highlightCanvas.createElement(this._gridPadding, 'jqplot-barRenderer-highlight-canvas', this._plotDimensions, this));
         this.plugins.barRenderer.highlightCanvas.setContext();
         this.eventCanvas._elem.bind('mouseleave', {plot:this}, function (ev) { unhighlight(ev.data.plot); });
-    }
-
+    }   
+    
     function highlight (plot, sidx, pidx, points) {
         var s = plot.series[sidx];
         var canvas = plot.plugins.barRenderer.highlightCanvas;
@@ -13720,7 +13823,7 @@
         s.renderer.shapeRenderer.draw(canvas._ctx, points, opts);
         canvas = null;
     }
-
+    
     function unhighlight (plot) {
         var canvas = plot.plugins.barRenderer.highlightCanvas;
         canvas._ctx.clearRect(0,0, canvas._ctx.canvas.width, canvas._ctx.canvas.height);
@@ -13731,8 +13834,8 @@
         plot.target.trigger('jqplotDataUnhighlight');
         canvas =  null;
     }
-
-
+    
+    
     function handleMove(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var ins = [neighbor.seriesIndex, neighbor.pointIndex, neighbor.data];
@@ -13754,7 +13857,7 @@
             unhighlight (plot);
         }
     }
-
+    
     function handleMouseDown(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var ins = [neighbor.seriesIndex, neighbor.pointIndex, neighbor.data];
@@ -13771,14 +13874,14 @@
             unhighlight (plot);
         }
     }
-
+    
     function handleMouseUp(ev, gridpos, datapos, neighbor, plot) {
         var idx = plot.plugins.barRenderer.highlightedSeriesIndex;
         if (idx != null && plot.series[idx].highlightMouseDown) {
             unhighlight(plot);
         }
     }
-
+    
     function handleClick(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var ins = [neighbor.seriesIndex, neighbor.pointIndex, neighbor.data];
@@ -13789,7 +13892,7 @@
             plot.target.trigger(evt, ins);
         }
     }
-
+    
     function handleRightClick(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var ins = [neighbor.seriesIndex, neighbor.pointIndex, neighbor.data];
@@ -13804,25 +13907,25 @@
             plot.target.trigger(evt, ins);
         }
     }
-
-
+    
+    
 })(jQuery);
 
 /**
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.8
- * Revision: 1250
+ * Version: 1.0.9
+ * Revision: d96a669
  *
- * Copyright (c) 2009-2013 Chris Leonello
- * jqPlot is currently available for use in all personal or commercial projects
- * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL
- * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can
- * choose the license that best suits your project and use it accordingly.
+ * Copyright (c) 2009-2016 Chris Leonello
+ * jqPlot is currently available for use in all personal or commercial projects 
+ * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
+ * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
+ * choose the license that best suits your project and use it accordingly. 
  *
- * Although not required, the author would appreciate an email letting him
- * know of any substantial use of jqPlot.  You can reach the author at:
+ * Although not required, the author would appreciate an email letting him 
+ * know of any substantial use of jqPlot.  You can reach the author at: 
  * chris at jqplot dot com or see http://www.jqplot.com/info.php .
  *
  * If you are feeling kind and generous, consider supporting the project by
@@ -13836,7 +13939,7 @@
  *     http://hexmen.com/js/sprintf.js
  *     The author (Ash Searle) has placed this code in the public domain:
  *     "This code is unrestricted: you are free to use it however you like."
- *
+ * 
  */
 (function($) {
     /**
@@ -13844,15 +13947,15 @@
      * Plugin renderer to draw a donut chart.
      * x values, if present, will be used as slice labels.
      * y values give slice size.
-     *
-     * To use this renderer, you need to include the
+     * 
+     * To use this renderer, you need to include the 
      * donut renderer plugin, for example:
-     *
+     * 
      * > <script type="text/javascript" src="plugins/jqplot.donutRenderer.js"></script>
-     *
+     * 
      * Properties described here are passed into the $.jqplot function
      * as options on the series renderer.  For example:
-     *
+     * 
      * > plot2 = $.jqplot('chart2', [s1, s2], {
      * >     seriesDefaults: {
      * >         renderer:$.jqplot.DonutRenderer,
@@ -13863,12 +13966,12 @@
      * >          }
      * >      }
      * > });
-     *
+     * 
      * A donut plot will trigger events on the plot target
      * according to user interaction.  All events return the event object,
-     * the series index, the point (slice) index, and the point data for
+     * the series index, the point (slice) index, and the point data for 
      * the appropriate slice.
-     *
+     * 
      * 'jqplotDataMouseOver' - triggered when user mouseing over a slice.
      * 'jqplotDataHighlight' - triggered the first time user mouses over a slice,
      * if highlighting is enabled.
@@ -13881,10 +13984,10 @@
     $.jqplot.DonutRenderer = function(){
         $.jqplot.LineRenderer.call(this);
     };
-
+    
     $.jqplot.DonutRenderer.prototype = new $.jqplot.LineRenderer();
     $.jqplot.DonutRenderer.prototype.constructor = $.jqplot.DonutRenderer;
-
+    
     // called with scope of a series
     $.jqplot.DonutRenderer.prototype.init = function(options, plot) {
         // Group: Properties
@@ -13914,14 +14017,14 @@
         // true or false, whether to fil the slices.
         this.fill = true;
         // prop: shadowOffset
-        // offset of the shadow from the slice and offset of
+        // offset of the shadow from the slice and offset of 
         // each succesive stroke of the shadow from the last.
         this.shadowOffset = 2;
         // prop: shadowAlpha
         // transparency of the shadow (0 = transparent, 1 = opaque)
         this.shadowAlpha = 0.07;
         // prop: shadowDepth
-        // number of strokes to apply to the shadow,
+        // number of strokes to apply to the shadow, 
         // each stroke offset shadowOffset from the last.
         this.shadowDepth = 5;
         // prop: highlightMouseOver
@@ -13942,6 +14045,9 @@
         // prop: showDataLabels
         // true to show data labels on slices.
         this.showDataLabels = false;
+        // prop: totalLabel
+        // true to show total label in the centre
+        this.totalLabel = false;
         // prop: dataLabelFormatString
         // Format string for data labels.  If none, '%s' is used for "label" and for arrays, '%d' for value and '%d%%' for percentage.
         this.dataLabelFormatString = null;
@@ -13957,7 +14063,7 @@
         // Number of pixels to slide the label away from (+) or toward (-) the center of the pie.
         this.dataLabelNudge = 0;
         // prop: startAngle
-        // Angle to start drawing donut in degrees.
+        // Angle to start drawing donut in degrees.  
         // According to orientation of canvas coordinate system:
         // 0 = on the positive x axis
         // -90 = on the positive y axis.
@@ -13968,12 +14074,12 @@
         // Used as check for conditions where donut shouldn't be drawn.
         this._drawData = true;
         this._type = 'donut';
-
+        
         // if user has passed in highlightMouseDown option and not set highlightMouseOver, disable highlightMouseOver
         if (options.highlightMouseDown && options.highlightMouseOver == null) {
             options.highlightMouseOver = false;
         }
-
+        
         $.extend(true, this, options);
         if (this.diameter != null) {
             this.diameter = this.diameter - this.sliceMargin;
@@ -13991,7 +14097,7 @@
         this._sliceAngles = [];
         // index of the currenty highlighted point, if any
         this._highlightedPoint = null;
-
+        
         // set highlight colors if none provided
         if (this.highlightColors.length == 0) {
             for (var i=0; i<this.seriesColors.length; i++){
@@ -14006,7 +14112,7 @@
                 this.highlightColors.push('rgb('+newrgb[0]+','+newrgb[1]+','+newrgb[2]+')');
             }
         }
-
+        
         plot.postParseOptionsHooks.addOnce(postParseOptions);
         plot.postInitHooks.addOnce(postInit);
         plot.eventListenerHooks.addOnce('jqplotMouseMove', handleMove);
@@ -14015,10 +14121,10 @@
         plot.eventListenerHooks.addOnce('jqplotClick', handleClick);
         plot.eventListenerHooks.addOnce('jqplotRightClick', handleRightClick);
         plot.postDrawHooks.addOnce(postPlotDraw);
-
-
+        
+        
     };
-
+    
     $.jqplot.DonutRenderer.prototype.setGridData = function(plot) {
         // set gridData property.  This will hold angle in radians of each data point.
         var stack = [];
@@ -14040,14 +14146,14 @@
             tot += this.data[i][1];
         }
         var fact = Math.PI*2/stack[stack.length - 1];
-
+        
         for (var i=0; i<stack.length; i++) {
             td[i][1] = stack[i] * fact;
             td[i][2] = this.data[i][1]/tot;
         }
         this.gridData = td;
     };
-
+    
     $.jqplot.DonutRenderer.prototype.makeGridData = function(data, plot) {
         var stack = [];
         var td = [];
@@ -14068,14 +14174,15 @@
             tot += data[i][1];
         }
         var fact = Math.PI*2/stack[stack.length - 1];
-
+        
         for (var i=0; i<stack.length; i++) {
             td[i][1] = stack[i] * fact;
             td[i][2] = data[i][1]/tot;
         }
+        this._totalAmount = tot;        
         return td;
     };
-
+    
     $.jqplot.DonutRenderer.prototype.drawSlice = function (ctx, ang1, ang2, color, isShadow) {
         var r = this._diameter / 2;
         var ri = r - this._thickness;
@@ -14084,7 +14191,7 @@
         ctx.save();
         ctx.translate(this._center[0], this._center[1]);
         // ctx.translate(this.sliceMargin*Math.cos((ang1+ang2)/2), this.sliceMargin*Math.sin((ang1+ang2)/2));
-
+        
         if (isShadow) {
             for (var i=0; i<this.shadowDepth; i++) {
                 ctx.save();
@@ -14092,11 +14199,11 @@
                 doDraw();
             }
         }
-
+        
         else {
             doDraw();
         }
-
+        
         function doDraw () {
             // Fix for IE and Chrome that can't seem to draw circles correctly.
             // ang2 should always be <= 2 pi since that is the way the data is converted.
@@ -14111,7 +14218,7 @@
             if (ang1 >= ang2) {
                 return;
             }
-            ctx.beginPath();
+            ctx.beginPath();  
             ctx.fillStyle = color;
             ctx.strokeStyle = color;
             // ctx.lineWidth = lineWidth;
@@ -14126,16 +14233,16 @@
                 ctx.stroke();
             }
         }
-
+        
         if (isShadow) {
             for (var i=0; i<this.shadowDepth; i++) {
                 ctx.restore();
             }
         }
-
+        
         ctx.restore();
     };
-
+    
     // called with scope of series
     $.jqplot.DonutRenderer.prototype.draw = function (ctx, gd, options, plot) {
         var i;
@@ -14180,18 +14287,19 @@
                     break;
             }
         }
-
+        
         var shadow = (opts.shadow != undefined) ? opts.shadow : this.shadow;
         var showLine = (opts.showLine != undefined) ? opts.showLine : this.showLine;
         var fill = (opts.fill != undefined) ? opts.fill : this.fill;
-        var cw = ctx.canvas.width;
-        var ch = ctx.canvas.height;
+        //see http://stackoverflow.com/questions/20221461/hidpi-retina-plot-drawing
+        var cw = parseInt(ctx.canvas.style.width);
+        var ch = parseInt(ctx.canvas.style.height);
         var w = cw - offx - 2 * this.padding;
         var h = ch - offy - 2 * this.padding;
         var mindim = Math.min(w,h);
         var d = mindim;
         var ringmargin =  (this.ringMargin == null) ? this.sliceMargin * 2.0 : this.ringMargin;
-
+        
         for (var i=0; i<this._previousSeries.length; i++) {
             d -= 2.0 * this._previousSeries[i]._thickness + 2.0 * ringmargin;
         }
@@ -14203,12 +14311,15 @@
         else {
             this._thickness = this.thickness || mindim / 2 / (this._numberSeries + 1) * 0.85;
         }
-
+        if (this._diameter < 6) {
+            $.jqplot.log("Diameter of donut too small, not rendering.");
+            return;
+        }
         var r = this._radius = this._diameter/2;
         this._innerRadius = this._radius - this._thickness;
         var sa = this.startAngle / 180 * Math.PI;
         this._center = [(cw - trans * offx)/2 + trans * offx, (ch - trans*offy)/2 + trans * offy];
-
+        
         if (this.shadow) {
             var shadowColor = 'rgba(0,0,0,'+this.shadowAlpha+')';
             for (var i=0; i<gd.length; i++) {
@@ -14217,7 +14328,7 @@
                 ang1 += this.sliceMargin/180*Math.PI;
                 this.renderer.drawSlice.call (this, ctx, ang1, gd[i][1]+sa, shadowColor, true);
             }
-
+            
         }
         for (var i=0; i<gd.length; i++) {
             var ang1 = (i == 0) ? sa : gd[i-1][1] + sa;
@@ -14226,10 +14337,10 @@
             var ang2 = gd[i][1] + sa;
             this._sliceAngles.push([ang1, ang2]);
             this.renderer.drawSlice.call (this, ctx, ang1, ang2, this.seriesColors[i], false);
-
+            
             if (this.showDataLabels && gd[i][2]*100 >= this.dataLabelThreshold) {
                 var fstr, avgang = (ang1+ang2)/2, label;
-
+                
                 if (this.dataLabels == 'label') {
                     fstr = this.dataLabelFormatString || '%s';
                     label = $.jqplot.sprintf(fstr, gd[i][0]);
@@ -14246,12 +14357,12 @@
                     fstr = this.dataLabelFormatString || '%s';
                     label = $.jqplot.sprintf(fstr, this.dataLabels[i]);
                 }
-
+                
                 var fact = this._innerRadius + this._thickness * this.dataLabelPositionFactor + this.sliceMargin + this.dataLabelNudge;
-
+                
                 var x = this._center[0] + Math.cos(avgang) * fact + this.canvas._offsets.left;
                 var y = this._center[1] + Math.sin(avgang) * fact + this.canvas._offsets.top;
-
+                
                 var labelelem = $('<span class="jqplot-donut-series jqplot-data-label" style="position:absolute;">' + label + '</span>').insertBefore(plot.eventCanvas._elem);
                 x -= labelelem.width()/2;
                 y -= labelelem.height()/2;
@@ -14260,17 +14371,20 @@
                 labelelem.css({left: x, top: y});
             }
         }
-
+        if (this.totalLabel) {
+            var totalLabel = $('<div class="jqplot-data-label" style="position:absolute">' + this._totalAmount + '</div>').insertAfter(plot.eventCanvas._elem);
+            totalLabel.css({left: this._center[0], top: this._center[1]});
+        }
     };
-
+    
     $.jqplot.DonutAxisRenderer = function() {
         $.jqplot.LinearAxisRenderer.call(this);
     };
-
+    
     $.jqplot.DonutAxisRenderer.prototype = new $.jqplot.LinearAxisRenderer();
     $.jqplot.DonutAxisRenderer.prototype.constructor = $.jqplot.DonutAxisRenderer;
-
-
+        
+    
     // There are no traditional axes on a donut chart.  We just need to provide
     // dummy objects with properties so the plot will render.
     // called with scope of axis object.
@@ -14289,19 +14403,19 @@
         this.showTicks = false;
         this.ticks = [];
         this.showMark = false;
-        this.show = false;
+        this.show = false; 
     };
-
-
-
-
+    
+    
+    
+    
     $.jqplot.DonutLegendRenderer = function(){
         $.jqplot.TableLegendRenderer.call(this);
     };
-
+    
     $.jqplot.DonutLegendRenderer.prototype = new $.jqplot.TableLegendRenderer();
     $.jqplot.DonutLegendRenderer.prototype.constructor = $.jqplot.DonutLegendRenderer;
-
+    
     /**
      * Class: $.jqplot.DonutLegendRenderer
      * Legend Renderer specific to donut plots.  Set by default
@@ -14318,7 +14432,7 @@
         this.numberColumns = null;
         $.extend(true, this, options);
     };
-
+    
     // called with context of legend
     $.jqplot.DonutLegendRenderer.prototype.draw = function() {
         var legend = this;
@@ -14337,13 +14451,13 @@
             this._elem = $('<table class="jqplot-table-legend" style="'+ss+'"></table>');
             // Donut charts legends don't go by number of series, but by number of data points
             // in the series.  Refactor things here for that.
-
-            var pad = false,
+            
+            var pad = false, 
                 reverse = false,
                 nr, nc;
             var s = series[0];
             var colorGenerator = new $.jqplot.ColorGenerator(s.seriesColors);
-
+            
             if (s.show) {
                 var pd = s.data;
                 if (this.numberRows) {
@@ -14363,10 +14477,10 @@
                     nr = pd.length;
                     nc = 1;
                 }
-
+                
                 var i, j, tr, td1, td2, lt, rs, color;
-                var idx = 0;
-
+                var idx = 0;    
+                
                 for (i=0; i<nr; i++) {
                     if (reverse){
                         tr = $('<tr class="jqplot-table-legend"></tr>').prependTo(this._elem);
@@ -14395,7 +14509,7 @@
                                 }
                             }
                             rs = (pad) ? this.rowSpacing : '0';
-
+                
                             td1 = $('<td class="jqplot-table-legend" style="text-align:center;padding-top:'+rs+';">'+
                                 '<div><div class="jqplot-table-legend-swatch" style="border-color:'+color+';"></div>'+
                                 '</div></td>');
@@ -14417,13 +14531,13 @@
                             pad = true;
                         }
                         idx++;
-                    }
+                    }   
                 }
             }
         }
-        return this._elem;
+        return this._elem;                
     };
-
+    
     // setup default renderers for axes and legend so user doesn't have to
     // called with scope of plot
     function preInit(target, data, options) {
@@ -14443,7 +14557,7 @@
                 }
             }
         }
-
+        
         if (setopts) {
             options.axesDefaults.renderer = $.jqplot.DonutAxisRenderer;
             options.legend.renderer = $.jqplot.DonutLegendRenderer;
@@ -14451,7 +14565,7 @@
             options.seriesDefaults.pointLabels = {show: false};
         }
     }
-
+    
     // called with scope of plot.
     function postInit(target, data, options) {
         // if multiple series, add a reference to the previous one so that
@@ -14475,7 +14589,7 @@
             }
         }
     }
-
+    
     var postParseOptionsRun = false;
     // called with scope of plot
     function postParseOptions(options) {
@@ -14484,7 +14598,7 @@
             this.series[i].colorGenerator = $.jqplot.colorGenerator;
         }
     }
-
+    
     function highlight (plot, sidx, pidx) {
         var s = plot.series[sidx];
         var canvas = plot.plugins.donutRenderer.highlightCanvas;
@@ -14493,7 +14607,7 @@
         plot.plugins.donutRenderer.highlightedSeriesIndex = sidx;
         s.renderer.drawSlice.call(s, canvas._ctx, s._sliceAngles[pidx][0], s._sliceAngles[pidx][1], s.highlightColors[pidx], false);
     }
-
+    
     function unhighlight (plot) {
         var canvas = plot.plugins.donutRenderer.highlightCanvas;
         canvas._ctx.clearRect(0,0, canvas._ctx.canvas.width, canvas._ctx.canvas.height);
@@ -14503,7 +14617,7 @@
         plot.plugins.donutRenderer.highlightedSeriesIndex = null;
         plot.target.trigger('jqplotDataUnhighlight');
     }
-
+ 
     function handleMove(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var ins = [neighbor.seriesIndex, neighbor.pointIndex, neighbor.data];
@@ -14523,8 +14637,8 @@
         else if (neighbor == null) {
             unhighlight (plot);
         }
-    }
-
+    } 
+    
     function handleMouseDown(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var ins = [neighbor.seriesIndex, neighbor.pointIndex, neighbor.data];
@@ -14541,14 +14655,14 @@
             unhighlight (plot);
         }
     }
-
+    
     function handleMouseUp(ev, gridpos, datapos, neighbor, plot) {
         var idx = plot.plugins.donutRenderer.highlightedSeriesIndex;
         if (idx != null && plot.series[idx].highlightMouseDown) {
             unhighlight(plot);
         }
     }
-
+    
     function handleClick(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var ins = [neighbor.seriesIndex, neighbor.pointIndex, neighbor.data];
@@ -14559,7 +14673,7 @@
             plot.target.trigger(evt, ins);
         }
     }
-
+    
     function handleRightClick(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var ins = [neighbor.seriesIndex, neighbor.pointIndex, neighbor.data];
@@ -14573,13 +14687,13 @@
             evt.pageY = ev.pageY;
             plot.target.trigger(evt, ins);
         }
-    }
-
+    }    
+    
     // called within context of plot
     // create a canvas which we can draw on.
     // insert it before the eventCanvas, so eventCanvas will still capture events.
     function postPlotDraw() {
-        // Memory Leaks patch
+        // Memory Leaks patch    
         if (this.plugins.donutRenderer && this.plugins.donutRenderer.highlightCanvas) {
             this.plugins.donutRenderer.highlightCanvas.resetCanvas();
             this.plugins.donutRenderer.highlightCanvas = null;
@@ -14600,33 +14714,33 @@
         var hctx = this.plugins.donutRenderer.highlightCanvas.setContext();
         this.eventCanvas._elem.bind('mouseleave', {plot:this}, function (ev) { unhighlight(ev.data.plot); });
     }
-
+    
     $.jqplot.preInitHooks.push(preInit);
-
+    
     $.jqplot.DonutTickRenderer = function() {
         $.jqplot.AxisTickRenderer.call(this);
     };
-
+    
     $.jqplot.DonutTickRenderer.prototype = new $.jqplot.AxisTickRenderer();
     $.jqplot.DonutTickRenderer.prototype.constructor = $.jqplot.DonutTickRenderer;
-
+    
 })(jQuery);
-
+    
 /**
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.8
- * Revision: 1250
+ * Version: 1.0.9
+ * Revision: d96a669
  *
- * Copyright (c) 2009-2013 Chris Leonello
- * jqPlot is currently available for use in all personal or commercial projects
- * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL
- * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can
- * choose the license that best suits your project and use it accordingly.
+ * Copyright (c) 2009-2016 Chris Leonello
+ * jqPlot is currently available for use in all personal or commercial projects 
+ * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
+ * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
+ * choose the license that best suits your project and use it accordingly. 
  *
- * Although not required, the author would appreciate an email letting him
- * know of any substantial use of jqPlot.  You can reach the author at:
+ * Although not required, the author would appreciate an email letting him 
+ * know of any substantial use of jqPlot.  You can reach the author at: 
  * chris at jqplot dot com or see http://www.jqplot.com/info.php .
  *
  * If you are feeling kind and generous, consider supporting the project by
@@ -14640,7 +14754,7 @@
  *     http://hexmen.com/js/sprintf.js
  *     The author (Ash Searle) has placed this code in the public domain:
  *     "This code is unrestricted: you are free to use it however you like."
- *
+ * 
  */
 (function($) {
     // class $.jqplot.EnhancedLegendRenderer
@@ -14648,10 +14762,10 @@
     $.jqplot.EnhancedLegendRenderer = function(){
         $.jqplot.TableLegendRenderer.call(this);
     };
-
+    
     $.jqplot.EnhancedLegendRenderer.prototype = new $.jqplot.TableLegendRenderer();
     $.jqplot.EnhancedLegendRenderer.prototype.constructor = $.jqplot.EnhancedLegendRenderer;
-
+    
     // called with scope of legend.
     $.jqplot.EnhancedLegendRenderer.prototype.init = function(options) {
         // prop: numberRows
@@ -14662,7 +14776,7 @@
         this.numberColumns = null;
         // prop: seriesToggle
         // false to not enable series on/off toggling on the legend.
-        // true or a fadein/fadeout speed (number of milliseconds or 'fast', 'normal', 'slow')
+        // true or a fadein/fadeout speed (number of milliseconds or 'fast', 'normal', 'slow') 
         // to enable show/hide of series on click of legend item.
         this.seriesToggle = 'normal';
         // prop: seriesToggleReplot
@@ -14672,16 +14786,16 @@
         // Set to an options object (e.g. {resetAxes: true}) for replot options.
         this.seriesToggleReplot = false;
         // prop: disableIEFading
-        // true to toggle series with a show/hide method only and not allow fading in/out.
+        // true to toggle series with a show/hide method only and not allow fading in/out.  
         // This is to overcome poor performance of fade in some versions of IE.
         this.disableIEFading = true;
         $.extend(true, this, options);
-
+        
         if (this.seriesToggle) {
             $.jqplot.postDrawHooks.push(postDraw);
         }
     };
-
+    
     // called with scope of legend
     $.jqplot.EnhancedLegendRenderer.prototype.draw = function(offsets, plot) {
         var legend = this;
@@ -14702,8 +14816,8 @@
             if (this.seriesToggle) {
                 this._elem.css('z-index', '3');
             }
-
-            var pad = false,
+        
+            var pad = false, 
                 reverse = false,
                 nr, nc;
             if (this.numberRows) {
@@ -14723,7 +14837,7 @@
                 nr = series.length;
                 nc = 1;
             }
-
+                
             var i, j, tr, td1, td2, lt, rs, div, div0, div1;
             var idx = 0;
             // check to see if we need to reverse
@@ -14731,13 +14845,17 @@
                 if (nc == 1 && series[i]._stack || series[i].renderer.constructor == $.jqplot.BezierCurveRenderer){
                     reverse = true;
                 }
-            }
-
+            }    
+                
             for (i=0; i<nr; i++) {
                 tr = $(document.createElement('tr'));
                 tr.addClass('jqplot-table-legend');
-                tr.appendTo(this._elem);
-
+                if (reverse){
+                    tr.prependTo(this._elem);
+                }
+                else{
+                    tr.appendTo(this._elem);
+                }
                 for (j=0; j<nc; j++) {
                     if (idx < series.length && (series[idx].show || series[idx].showLabel)){
                         s = series[idx];
@@ -14777,7 +14895,7 @@
                             td2 = $(document.createElement('td'));
                             td2.addClass('jqplot-table-legend jqplot-table-legend-label');
                             td2.css('paddingTop', rs);
-
+                    
                             // td1 = $('<td class="jqplot-table-legend" style="text-align:center;padding-top:'+rs+';">'+
                             //     '<div><div class="jqplot-table-legend-swatch" style="background-color:'+color+';border-color:'+color+';"></div>'+
                             //     '</div></td>');
@@ -14796,7 +14914,7 @@
                                 if (this.showSwatches) {td1.appendTo(tr);}
                                 if (this.showLabels) {td2.appendTo(tr);}
                             }
-
+                            
                             if (this.seriesToggle) {
 
                                 // add an overlay for clicking series on/off
@@ -14810,7 +14928,7 @@
                                     if (!$.jqplot.use_excanvas || !this.disableIEFading) {
                                         speed = this.seriesToggle;
                                     }
-                                }
+                                } 
                                 if (this.showSwatches) {
                                     td1.bind('click', {series:s, speed:speed, plot: plot, replot:this.seriesToggleReplot}, handleToggle);
                                     td1.addClass('jqplot-seriesToggle');
@@ -14826,14 +14944,14 @@
                                     td2.addClass('jqplot-series-hidden');
                                 }
                             }
-
+                            
                             pad = true;
                         }
                     }
                     idx++;
                 }
-
-                td1 = td2 = div0 = div1 = null;
+                
+                td1 = td2 = div0 = div1 = null;   
             }
         }
         return this._elem;
@@ -14904,7 +15022,7 @@
 
         s.toggleDisplay(ev, doLegendToggle);
     };
-
+    
     // called with scope of plot.
     var postDraw = function () {
         if (this.legend.renderer.constructor == $.jqplot.EnhancedLegendRenderer && this.legend.seriesToggle){
@@ -14918,17 +15036,17 @@
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.8
- * Revision: 1250
+ * Version: 1.0.9
+ * Revision: d96a669
  *
- * Copyright (c) 2009-2013 Chris Leonello
- * jqPlot is currently available for use in all personal or commercial projects
- * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL
- * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can
- * choose the license that best suits your project and use it accordingly.
+ * Copyright (c) 2009-2016 Chris Leonello
+ * jqPlot is currently available for use in all personal or commercial projects 
+ * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
+ * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
+ * choose the license that best suits your project and use it accordingly. 
  *
- * Although not required, the author would appreciate an email letting him
- * know of any substantial use of jqPlot.  You can reach the author at:
+ * Although not required, the author would appreciate an email letting him 
+ * know of any substantial use of jqPlot.  You can reach the author at: 
  * chris at jqplot dot com or see http://www.jqplot.com/info.php .
  *
  * If you are feeling kind and generous, consider supporting the project by
@@ -14942,7 +15060,269 @@
  *     http://hexmen.com/js/sprintf.js
  *     The author (Ash Searle) has placed this code in the public domain:
  *     "This code is unrestricted: you are free to use it however you like."
+ * 
+ */
+(function($) {
+    // class $.jqplot.EnhancedPieLegendRenderer
+    // Legend renderer which can specify the number of rows and/or columns in the legend
+    // Similar to EnhancedLegendRenderer, but for pie charts
+    $.jqplot.EnhancedPieLegendRenderer = function(){
+        $.jqplot.TableLegendRenderer.call(this);
+    };
+    
+    $.jqplot.EnhancedPieLegendRenderer.prototype = new $.jqplot.TableLegendRenderer();
+    $.jqplot.EnhancedPieLegendRenderer.prototype.constructor = $.jqplot.EnhancedPieLegendRenderer;
+    
+    // called with scope of legend.
+    $.jqplot.EnhancedPieLegendRenderer.prototype.init = function(options) {
+        // prop: numberRows
+        // Maximum number of rows in the legend.  0 or null for unlimited.
+        this.numberRows = null;
+        // prop: numberColumns
+        // Maximum number of columns in the legend.  0 or null for unlimited.
+        this.numberColumns = null;
+        // prop: seriesToggle
+        // false to not enable series on/off toggling on the legend.
+        // true or a fadein/fadeout speed (number of milliseconds or 'fast', 'normal', 'slow') 
+        // to enable show/hide of series on click of legend item.
+        this.seriesToggle = 'normal';
+        // prop: seriesToggleReplot
+        // True to replot the chart after toggling series on/off.
+        // This will set the series show property to false.
+        // This allows for rescaling or other maniplation of chart.
+        // Set to an options object (e.g. {resetAxes: true}) for replot options.
+        this.seriesToggleReplot = false;
+        // prop: disableIEFading
+        // true to toggle series with a show/hide method only and not allow fading in/out.  
+        // This is to overcome poor performance of fade in some versions of IE.
+        this.disableIEFading = true;
+        // prop: toolTips
+        // optional array of toolTip text corresponding to each pie slice
+        this.toolTips = [];
+        $.extend(true, this, options);
+        
+        if (this.seriesToggle) {
+            $.jqplot.postDrawHooks.push(postDraw);
+        }
+    };
+    
+    // called with scope of legend
+    $.jqplot.EnhancedPieLegendRenderer.prototype.draw = function(offsets, plot) {
+        var legend = this;
+        if (this.show) {
+            var series = this._series;
+            var s;
+            var ss = 'position:absolute;';
+            ss += (this.background) ? 'background:'+this.background+';' : '';
+            ss += (this.border) ? 'border:'+this.border+';' : '';
+            ss += (this.fontSize) ? 'font-size:'+this.fontSize+';' : '';
+            ss += (this.fontFamily) ? 'font-family:'+this.fontFamily+';' : '';
+            ss += (this.textColor) ? 'color:'+this.textColor+';' : '';
+            ss += (this.marginTop != null) ? 'margin-top:'+this.marginTop+';' : '';
+            ss += (this.marginBottom != null) ? 'margin-bottom:'+this.marginBottom+';' : '';
+            ss += (this.marginLeft != null) ? 'margin-left:'+this.marginLeft+';' : '';
+            ss += (this.marginRight != null) ? 'margin-right:'+this.marginRight+';' : '';
+            this._elem = $('<table class="jqplot-table-legend" style="'+ss+'"></table>');
+            if (this.seriesToggle) {
+                this._elem.css('z-index', '3');
+            }
+        
+            var pad = false, 
+                reverse = false,
+                nr, nc;
+            var s = series[0];
+            var slen = s.data.length;
+            var colorGenerator = new $.jqplot.ColorGenerator(s.seriesColors);
+
+            if (this.numberRows) {
+                nr = this.numberRows;
+                if (!this.numberColumns){
+                    nc = Math.ceil(slen/nr);
+                }
+                else{
+                    nc = this.numberColumns;
+                }
+            }
+            else if (this.numberColumns) {
+                nc = this.numberColumns;
+                nr = Math.ceil(slen/this.numberColumns);
+            }
+            else {
+                nr = slen;
+                nc = 1;
+            }
+                
+            var i, j, tr, td1, td2, lt, rs, div, div0, div1;
+            var idx = 0;
+            // check to see if we need to reverse
+            for (i=series.length-1; i>=0; i--) {
+                if (nc == 1 && series[i]._stack || series[i].renderer.constructor == $.jqplot.BezierCurveRenderer){
+                    reverse = true;
+                }
+            }    
+                
+            for (i=0; i<nr; i++) {
+                tr = $(document.createElement('tr'));
+                tr.addClass('jqplot-table-legend');
+                if (reverse){
+                    tr.prependTo(this._elem);
+                }
+                else{
+                    tr.appendTo(this._elem);
+                }
+                for (j=0; j<nc; j++) {
+                    if (idx < slen){
+                        lt = this.labels[idx] || s.data[idx][0].toString();
+                        tt = this.toolTips[idx];
+                        if (lt) {
+                            var color = colorGenerator.next();
+                            if (!reverse){
+                                if (i>0){
+                                    pad = true;
+                                }
+                                else{
+                                    pad = false;
+                                }
+                            }
+                            else{
+                                if (i == nr -1){
+                                    pad = false;
+                                }
+                                else{
+                                    pad = true;
+                                }
+                            }
+                            rs = (pad) ? this.rowSpacing : '0';
+
+                            td1 = $(document.createElement('td'));
+                            td1.addClass('jqplot-table-legend jqplot-table-legend-swatch');
+                            td1.css({textAlign: 'center', paddingTop: rs});
+
+                            div0 = $(document.createElement('div'));
+                            div0.addClass('jqplot-table-legend-swatch-outline');
+                            if (tt !== undefined) {
+                                div0.attr("title", tt);
+                            }
+
+                            div1 = $(document.createElement('div'));
+                            div1.addClass('jqplot-table-legend-swatch');
+                            div1.css({backgroundColor: color, borderColor: color});
+
+                            td1.append(div0.append(div1));
+
+                            td2 = $(document.createElement('td'));
+                            td2.addClass('jqplot-table-legend jqplot-table-legend-label');
+                            td2.css('paddingTop', rs);
+                            if (tt !== undefined) {
+                                td2.attr("title", tt);
+                            }
+                    
+                            if (this.escapeHtml){
+                                td2.text(lt);
+                            }
+                            else {
+                                td2.html(lt);
+                            }
+                            if (reverse) {
+                                if (this.showLabels) {td2.prependTo(tr);}
+                                if (this.showSwatches) {td1.prependTo(tr);}
+                            }
+                            else {
+                                if (this.showSwatches) {td1.appendTo(tr);}
+                                if (this.showLabels) {td2.appendTo(tr);}
+                            }
+                            
+                            if (this.seriesToggle) {
+
+                                var speed;
+                                if (typeof(this.seriesToggle) === 'string' || typeof(this.seriesToggle) === 'number') {
+                                    if (!$.jqplot.use_excanvas || !this.disableIEFading) {
+                                        speed = this.seriesToggle;
+                                    }
+                                } 
+                                if (this.showSwatches) {
+                                    td1.bind('click', {series:s, index:idx, speed:speed, plot: plot, replot:this.seriesToggleReplot}, handleToggle);
+                                    td1.addClass('jqplot-seriesToggle');
+                                }
+                                if (this.showLabels)  {
+                                    td2.bind('click', {series:s, index:idx, speed:speed, plot: plot, replot:this.seriesToggleReplot}, handleToggle);
+                                    td2.addClass('jqplot-seriesToggle');
+                                }
+
+                                // for slices that are already hidden, add the hidden class
+                                if (s.showSlice[idx] === false && s.showLabel) {
+                                    td1.addClass('jqplot-series-hidden');
+                                    td2.addClass('jqplot-series-hidden');
+                                }
+                            }
+                            
+                            pad = true;
+                        }
+                    }
+                    idx++;
+                }
+                
+                td1 = td2 = div0 = div1 = null;   
+            }
+        }
+        return this._elem;
+    };
+
+    var handleToggle = function (ev) {
+        var d = ev.data,
+            replot = d.replot,
+            plot = d.plot,
+            idx = d.index;
+
+        d.series.showSlice[idx] = (d.series.showSlice[idx] === false) ? true : false;
+    
+        var opts = {};
+
+        if ($.isPlainObject(replot)) {
+            $.extend(true, opts, replot);
+        }
+
+        plot.replot(opts);
+    };
+
+    // called with scope of plot.
+    var postDraw = function () {
+        if (this.legend.renderer.constructor == $.jqplot.EnhancedPieLegendRenderer && this.legend.seriesToggle) {
+            var e = this.legend._elem.detach();
+            this.eventCanvas._elem.after(e);
+        }
+    };
+})(jQuery);
+
+/**
+ * jqPlot
+ * Pure JavaScript plotting plugin using jQuery
  *
+ * Version: 1.0.9
+ * Revision: d96a669
+ *
+ * Copyright (c) 2009-2016 Chris Leonello
+ * jqPlot is currently available for use in all personal or commercial projects 
+ * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
+ * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
+ * choose the license that best suits your project and use it accordingly. 
+ *
+ * Although not required, the author would appreciate an email letting him 
+ * know of any substantial use of jqPlot.  You can reach the author at: 
+ * chris at jqplot dot com or see http://www.jqplot.com/info.php .
+ *
+ * If you are feeling kind and generous, consider supporting the project by
+ * making a donation at: http://www.jqplot.com/donate.php .
+ *
+ * sprintf functions contained in jqplot.sprintf.js by Ash Searle:
+ *
+ *     version 2007.04.27
+ *     author Ash Searle
+ *     http://hexmen.com/blog/2007/03/printf-sprintf/
+ *     http://hexmen.com/js/sprintf.js
+ *     The author (Ash Searle) has placed this code in the public domain:
+ *     "This code is unrestricted: you are free to use it however you like."
+ * 
  */
 (function($) {
     var arrayMax = function( array ){
@@ -14957,30 +15337,30 @@
      * Plugin renderer to draw a bubble chart.  A Bubble chart has data points displayed as
      * colored circles with an optional text label inside.  To use
      * the bubble renderer, you must include the bubble renderer like:
-     *
+     * 
      * > <script language="javascript" type="text/javascript" src="../src/plugins/jqplot.bubbleRenderer.js"></script>
-     *
-     * Data must be supplied in
+     * 
+     * Data must be supplied in 
      * the form:
-     *
+     * 
      * > [[x1, y1, r1, <label or {label:'text', color:color}>], ...]
-     *
-     * where the label or options
-     * object is optional.
-     *
+     * 
+     * where the label or options 
+     * object is optional.  
+     * 
      * Note that all bubble colors will be the same
      * unless the "varyBubbleColors" option is set to true.  Colors can be specified in the data array
      * or in the seriesColors array option on the series.  If no colors are defined, the default jqPlot
      * series of 16 colors are used.  Colors are automatically cycled around again if there are more
      * bubbles than colors.
-     *
-     * Bubbles are autoscaled by default to fit within the chart area while maintaining
+     * 
+     * Bubbles are autoscaled by default to fit within the chart area while maintaining 
      * relative sizes.  If the "autoscaleBubbles" option is set to false, the r(adius) values
      * in the data array a treated as literal pixel values for the radii of the bubbles.
-     *
+     * 
      * Properties are passed into the bubble renderer in the rendererOptions object of
      * the series options like:
-     *
+     * 
      * > seriesDefaults: {
      * >     renderer: $.jqplot.BubbleRenderer,
      * >     rendererOptions: {
@@ -14988,15 +15368,15 @@
      * >         varyBubbleColors: false
      * >     }
      * > }
-     *
+     * 
      */
     $.jqplot.BubbleRenderer = function(){
         $.jqplot.LineRenderer.call(this);
     };
-
+    
     $.jqplot.BubbleRenderer.prototype = new $.jqplot.LineRenderer();
     $.jqplot.BubbleRenderer.prototype.constructor = $.jqplot.BubbleRenderer;
-
+    
     // called with scope of a series
     $.jqplot.BubbleRenderer.prototype.init = function(options, plot) {
         // Group: Properties
@@ -15051,7 +15431,7 @@
         // prop: showLabels
         // True to show labels on bubbles (if any), false to not show.
         this.showLabels = true;
-        // array of [point index, radius] which will be sorted in descending order to plot
+        // array of [point index, radius] which will be sorted in descending order to plot 
         // largest points below smaller points.
         this.radii = [];
         this.maxRadius = 0;
@@ -15061,26 +15441,26 @@
         this.labels = [];
         this.bubbleCanvases = [];
         this._type = 'bubble';
-
+        
         // if user has passed in highlightMouseDown option and not set highlightMouseOver, disable highlightMouseOver
         if (options.highlightMouseDown && options.highlightMouseOver == null) {
             options.highlightMouseOver = false;
         }
-
+        
         $.extend(true, this, options);
-
+        
         if (this.highlightAlpha == null) {
             this.highlightAlpha = this.bubbleAlpha;
             if (this.bubbleGradients) {
                 this.highlightAlpha = 0.35;
             }
         }
-
+        
         this.autoscaleMultiplier = this.autoscaleMultiplier * Math.pow(this.data.length, this.autoscalePointsFactor);
-
+        
         // index of the currenty highlighted point, if any
         this._highlightedPoint = null;
-
+        
         // adjust the series colors for options colors passed in with data or for alpha.
         // note, this can leave undefined holes in the seriesColors array.
         var comps;
@@ -15093,29 +15473,29 @@
                     color = d[3]['color'];
                 }
             }
-
+            
             if (color == null) {
                 if (this.seriesColors[i] != null) {
                     color = this.seriesColors[i];
                 }
             }
-
+            
             if (color && this.bubbleAlpha < 1.0) {
                 comps = $.jqplot.getColorComponents(color);
                 color = 'rgba('+comps[0]+', '+comps[1]+', '+comps[2]+', '+this.bubbleAlpha+')';
             }
-
+            
             if (color) {
                 this.seriesColors[i] = color;
             }
         }
-
+        
         if (!this.varyBubbleColors) {
             this.seriesColors = [this.color];
         }
-
+        
         this.colorGenerator = new $.jqplot.ColorGenerator(this.seriesColors);
-
+        
         // set highlight colors if none provided
         if (this.highlightColors.length == 0) {
             for (var i=0; i<this.seriesColors.length; i++){
@@ -15130,25 +15510,25 @@
                 this.highlightColors.push('rgba('+newrgb[0]+','+newrgb[1]+','+newrgb[2]+', '+this.highlightAlpha+')');
             }
         }
-
+        
         this.highlightColorGenerator = new $.jqplot.ColorGenerator(this.highlightColors);
-
+        
         var sopts = {fill:true, isarc:true, angle:this.shadowAngle, alpha:this.shadowAlpha, closePath:true};
-
+        
         this.renderer.shadowRenderer.init(sopts);
-
+        
         this.canvas = new $.jqplot.DivCanvas();
         this.canvas._plotDimensions = this._plotDimensions;
-
+        
         plot.eventListenerHooks.addOnce('jqplotMouseMove', handleMove);
         plot.eventListenerHooks.addOnce('jqplotMouseDown', handleMouseDown);
         plot.eventListenerHooks.addOnce('jqplotMouseUp', handleMouseUp);
         plot.eventListenerHooks.addOnce('jqplotClick', handleClick);
         plot.eventListenerHooks.addOnce('jqplotRightClick', handleRightClick);
         plot.postDrawHooks.addOnce(postPlotDraw);
-
+        
     };
-
+    
 
     // converts the user data values to grid coordinates and stores them
     // in the gridData array.
@@ -15178,10 +15558,10 @@
                 this.gridData[i][2] = r * val;
             }
         }
-
+        
         this.radii.sort(function(a, b) { return b[1] - a[1]; });
     };
-
+    
     // converts any arbitrary data values to grid coordinates and
     // returns them.  This method exists so that plugins can use a series'
     // linerenderer to generate grid data points without overwriting the
@@ -15214,7 +15594,7 @@
         this.radii.sort(function(a, b) { return b[1] - a[1]; });
         return gd;
     };
-
+    
     // called with scope of series
     $.jqplot.BubbleRenderer.prototype.draw = function (ctx, gd, options) {
         if (this.plugins.pointLabels) {
@@ -15239,10 +15619,10 @@
                     t = d[3];
                 }
             }
-
+            
             // color = (this.varyBubbleColors) ? this.colorGenerator.get(idx) : this.color;
             color = this.colorGenerator.get(idx);
-
+            
             // If we're drawing a shadow, expand the canvas dimensions to accomodate.
             var canvasRadius = gd[2];
             var offset, depth;
@@ -15261,7 +15641,7 @@
                 this.renderer.shadowRenderer.draw(ctx, [x, y, gd[2], 0, 2*Math.PI], {offset: offset, depth: depth});
             }
             this.bubbleCanvases[idx].draw(gd[2], color, this.bubbleGradients, this.shadowAngle/180*Math.PI);
-
+            
             // now draw label.
             if (t && this.showLabels) {
                 tel = $('<div style="position:absolute;" class="jqplot-bubble-label"></div>');
@@ -15282,15 +15662,15 @@
         }
     };
 
-
+    
     $.jqplot.DivCanvas = function() {
         $.jqplot.ElemContainer.call(this);
-        this._ctx;
+        this._ctx;  
     };
-
+    
     $.jqplot.DivCanvas.prototype = new $.jqplot.ElemContainer();
     $.jqplot.DivCanvas.prototype.constructor = $.jqplot.DivCanvas;
-
+    
     $.jqplot.DivCanvas.prototype.createElement = function(offsets, clss, plotDimensions) {
         this._offsets = offsets;
         var klass = 'jqplot-DivCanvas';
@@ -15309,16 +15689,16 @@
         if (plotDimensions != undefined) {
             this._plotDimensions = plotDimensions;
         }
-
+        
         var w = this._plotDimensions.width - this._offsets.left - this._offsets.right + 'px';
         var h = this._plotDimensions.height - this._offsets.top - this._offsets.bottom + 'px';
         this._elem = $(elem);
         this._elem.css({ position: 'absolute', width:w, height:h, left: this._offsets.left, top: this._offsets.top });
-
+        
         this._elem.addClass(klass);
         return this._elem;
     };
-
+    
     $.jqplot.DivCanvas.prototype.setContext = function() {
         this._ctx = {
             canvas:{
@@ -15329,17 +15709,17 @@
         };
         return this._ctx;
     };
-
+    
     $.jqplot.BubbleCanvas = function() {
         $.jqplot.ElemContainer.call(this);
         this._ctx;
     };
-
+    
     $.jqplot.BubbleCanvas.prototype = new $.jqplot.ElemContainer();
     $.jqplot.BubbleCanvas.prototype.constructor = $.jqplot.BubbleCanvas;
-
+    
     // initialize with the x,y pont of bubble center and the bubble radius.
-    $.jqplot.BubbleCanvas.prototype.createElement = function(x, y, r) {
+    $.jqplot.BubbleCanvas.prototype.createElement = function(x, y, r) {     
         var klass = 'jqplot-bubble-point';
 
         var elem;
@@ -15350,23 +15730,23 @@
         else {
             elem = document.createElement('canvas');
         }
-
+        
         elem.width = (r != null) ? 2*r : elem.width;
         elem.height = (r != null) ? 2*r : elem.height;
         this._elem = $(elem);
         var l = (x != null && r != null) ? x - r : this._elem.css('left');
         var t = (y != null && r != null) ? y - r : this._elem.css('top');
         this._elem.css({ position: 'absolute', left: l, top: t });
-
+        
         this._elem.addClass(klass);
         if ($.jqplot.use_excanvas) {
             window.G_vmlCanvasManager.init_(document);
             elem = window.G_vmlCanvasManager.initElement(elem);
         }
-
+        
         return this._elem;
     };
-
+    
     $.jqplot.BubbleCanvas.prototype.draw = function(r, color, gradients, angle) {
         var ctx = this._ctx;
         // r = Math.floor(r*1.04);
@@ -15407,19 +15787,19 @@
         }
         ctx.restore();
     };
-
+    
     $.jqplot.BubbleCanvas.prototype.setContext = function() {
         this._ctx = this._elem.get(0).getContext("2d");
         return this._ctx;
     };
-
+    
     $.jqplot.BubbleAxisRenderer = function() {
         $.jqplot.LinearAxisRenderer.call(this);
     };
-
+    
     $.jqplot.BubbleAxisRenderer.prototype = new $.jqplot.LinearAxisRenderer();
     $.jqplot.BubbleAxisRenderer.prototype.constructor = $.jqplot.BubbleAxisRenderer;
-
+        
     // called with scope of axis object.
     $.jqplot.BubbleAxisRenderer.prototype.init = function(options){
         $.extend(true, this, options);
@@ -15439,8 +15819,8 @@
         for (var i=0; i<this._series.length; i++) {
             var s = this._series[i];
             var d = s._plotData;
-
-            for (var j=0; j<d.length; j++) {
+            
+            for (var j=0; j<d.length; j++) { 
                 if (this.name == 'xaxis' || this.name == 'x2axis') {
                     if (d[j][0] < db.min || db.min == null) {
                         db.min = d[j][0];
@@ -15458,7 +15838,7 @@
                         maxMaxRadius = s.maxRadius;
                         maxMult = s.autoscaleMultiplier;
                     }
-                }
+                }              
                 else {
                     if (d[j][1] < db.min || db.min == null) {
                         db.min = d[j][1];
@@ -15476,24 +15856,24 @@
                         maxMaxRadius = s.maxRadius;
                         maxMult = s.autoscaleMultiplier;
                     }
-                }
+                }              
             }
         }
-
+        
         var minRatio = minr/minMaxRadius;
         var maxRatio = maxr/maxMaxRadius;
-
+        
         // need to estimate the effect of the radius on total axis span and adjust axis accordingly.
         var span = db.max - db.min;
         // var dim = (this.name == 'xaxis' || this.name == 'x2axis') ? this._plotDimensions.width : this._plotDimensions.height;
         var dim = Math.min(this._plotDimensions.width, this._plotDimensions.height);
-
+        
         var minfact = minRatio * minMult/3 * span;
         var maxfact = maxRatio * maxMult/3 * span;
         db.max += maxfact;
         db.min -= minfact;
     };
-
+    
     function highlight (plot, sidx, pidx) {
         plot.plugins.bubbleRenderer.highlightLabelCanvas.empty();
         var s = plot.series[sidx];
@@ -15502,7 +15882,7 @@
         ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
         s._highlightedPoint = pidx;
         plot.plugins.bubbleRenderer.highlightedSeriesIndex = sidx;
-
+        
         var color = s.highlightColorGenerator.get(pidx);
         var x = s.gridData[pidx][0],
             y = s.gridData[pidx][1],
@@ -15515,7 +15895,7 @@
         ctx.arc(x, y, r, 0, 2*Math.PI, 0);
         ctx.closePath();
         ctx.fill();
-        ctx.restore();
+        ctx.restore();        
         // bring label to front
         if (s.labels[pidx]) {
             plot.plugins.bubbleRenderer.highlightLabel = s.labels[pidx].clone();
@@ -15523,7 +15903,7 @@
             plot.plugins.bubbleRenderer.highlightLabel.addClass('jqplot-bubble-label-highlight');
         }
     }
-
+    
     function unhighlight (plot) {
         var canvas = plot.plugins.bubbleRenderer.highlightCanvas;
         var sidx = plot.plugins.bubbleRenderer.highlightedSeriesIndex;
@@ -15535,8 +15915,8 @@
         plot.plugins.bubbleRenderer.highlightedSeriesIndex = null;
         plot.target.trigger('jqplotDataUnhighlight');
     }
-
-
+    
+ 
     function handleMove(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var si = neighbor.seriesIndex;
@@ -15558,8 +15938,8 @@
         else if (neighbor == null) {
             unhighlight (plot);
         }
-    }
-
+    } 
+    
     function handleMouseDown(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var si = neighbor.seriesIndex;
@@ -15578,14 +15958,14 @@
             unhighlight (plot);
         }
     }
-
+    
     function handleMouseUp(ev, gridpos, datapos, neighbor, plot) {
         var idx = plot.plugins.bubbleRenderer.highlightedSeriesIndex;
         if (idx != null && plot.series[idx].highlightMouseDown) {
             unhighlight(plot);
         }
     }
-
+    
     function handleClick(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var si = neighbor.seriesIndex;
@@ -15598,7 +15978,7 @@
             plot.target.trigger(evt, ins);
         }
     }
-
+    
     function handleRightClick(ev, gridpos, datapos, neighbor, plot) {
         if (neighbor) {
             var si = neighbor.seriesIndex;
@@ -15615,17 +15995,17 @@
             plot.target.trigger(evt, ins);
         }
     }
-
+    
     // called within context of plot
     // create a canvas which we can draw on.
     // insert it before the eventCanvas, so eventCanvas will still capture events.
     function postPlotDraw() {
-        // Memory Leaks patch
+        // Memory Leaks patch    
         if (this.plugins.bubbleRenderer && this.plugins.bubbleRenderer.highlightCanvas) {
             this.plugins.bubbleRenderer.highlightCanvas.resetCanvas();
             this.plugins.bubbleRenderer.highlightCanvas = null;
         }
-
+        
         this.plugins.bubbleRenderer = {highlightedSeriesIndex:null};
         this.plugins.bubbleRenderer.highlightCanvas = new $.jqplot.GenericCanvas();
         this.plugins.bubbleRenderer.highlightLabel = null;
@@ -15638,11 +16018,11 @@
 
         this.eventCanvas._elem.before(this.plugins.bubbleRenderer.highlightCanvas.createElement(this._gridPadding, 'jqplot-bubbleRenderer-highlight-canvas', this._plotDimensions, this));
         this.eventCanvas._elem.before(this.plugins.bubbleRenderer.highlightLabelCanvas);
-
+        
         var hctx = this.plugins.bubbleRenderer.highlightCanvas.setContext();
     }
 
-
+    
     // setup default renderers for axes and legend so user doesn't have to
     // called with scope of plot
     function preInit(target, data, options) {
@@ -15661,32 +16041,32 @@
                 }
             }
         }
-
+        
         if (setopts) {
             options.axesDefaults.renderer = $.jqplot.BubbleAxisRenderer;
             options.sortData = false;
         }
     }
-
+    
     $.jqplot.preInitHooks.push(preInit);
-
+    
 })(jQuery);
-
+ 
 /**
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.8
- * Revision: 1250
+ * Version: 1.0.9
+ * Revision: d96a669
  *
- * Copyright (c) 2009-2013 Chris Leonello
- * jqPlot is currently available for use in all personal or commercial projects
- * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL
- * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can
- * choose the license that best suits your project and use it accordingly.
+ * Copyright (c) 2009-2016 Chris Leonello
+ * jqPlot is currently available for use in all personal or commercial projects 
+ * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
+ * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
+ * choose the license that best suits your project and use it accordingly. 
  *
- * Although not required, the author would appreciate an email letting him
- * know of any substantial use of jqPlot.  You can reach the author at:
+ * Although not required, the author would appreciate an email letting him 
+ * know of any substantial use of jqPlot.  You can reach the author at: 
  * chris at jqplot dot com or see http://www.jqplot.com/info.php .
  *
  * If you are feeling kind and generous, consider supporting the project by
@@ -15700,43 +16080,43 @@
  *     http://hexmen.com/js/sprintf.js
  *     The author (Ash Searle) has placed this code in the public domain:
  *     "This code is unrestricted: you are free to use it however you like."
- *
+ * 
  */
 (function($) {
     /**
      * Class: $.jqplot.OHLCRenderer
      * jqPlot Plugin to draw Open Hi Low Close, Candlestick and Hi Low Close charts.
-     *
-     * To use this plugin, include the renderer js file in
+     * 
+     * To use this plugin, include the renderer js file in 
      * your source:
-     *
+     * 
      * > <script type="text/javascript" src="plugins/jqplot.ohlcRenderer.js"></script>
-     *
+     * 
      * You will most likely want to use a date axis renderer
      * for the x axis also, so include the date axis render js file also:
-     *
+     * 
      * > <script type="text/javascript" src="plugins/jqplot.dateAxisRenderer.js"></script>
-     *
+     * 
      * Then you set the renderer in the series options on your plot:
-     *
+     * 
      * > series: [{renderer:$.jqplot.OHLCRenderer}]
-     *
+     * 
      * For OHLC and candlestick charts, data should be specified
      * like so:
-     *
+     * 
      * > dat = [['07/06/2009',138.7,139.68,135.18,135.4], ['06/29/2009',143.46,144.66,139.79,140.02], ...]
-     *
+     * 
      * If the data array has only 4 values per point instead of 5,
      * the renderer will create a Hi Low Close chart instead.  In that case,
      * data should be supplied like:
-     *
+     * 
      * > dat = [['07/06/2009',139.68,135.18,135.4], ['06/29/2009',144.66,139.79,140.02], ...]
-     *
+     * 
      * To generate a candlestick chart instead of an OHLC chart,
      * set the "candlestick" option to true:
-     *
+     * 
      * > series: [{renderer:$.jqplot.OHLCRenderer, rendererOptions:{candleStick:true}}],
-     *
+     * 
      */
     $.jqplot.OHLCRenderer = function(){
         // subclass line renderer to make use of some of its methods.
@@ -15747,7 +16127,7 @@
         this.candleStick = false;
         // prop: tickLength
         // length of the line in pixels indicating open and close price.
-        // Default will auto calculate based on plot width and
+        // Default will auto calculate based on plot width and 
         // number of points displayed.
         this.tickLength = 'auto';
         // prop: bodyWidth
@@ -15789,10 +16169,10 @@
         this._tickLength;
         this._bodyWidth;
     };
-
+    
     $.jqplot.OHLCRenderer.prototype = new $.jqplot.LineRenderer();
     $.jqplot.OHLCRenderer.prototype.constructor = $.jqplot.OHLCRenderer;
-
+    
     // called with scope of series.
     $.jqplot.OHLCRenderer.prototype.init = function(options) {
         options = options || {};
@@ -15809,28 +16189,28 @@
         if (d[0].length < 5) {
             this.renderer.hlc = true;
 
-            for (var j=0; j<d.length; j++) {
+            for (var j=0; j<d.length; j++) { 
                 if (d[j][2] < db.min || db.min == null) {
                     db.min = d[j][2];
                 }
                 if (d[j][1] > db.max || db.max == null) {
                     db.max = d[j][1];
-                }
+                }             
             }
         }
         else {
-            for (var j=0; j<d.length; j++) {
+            for (var j=0; j<d.length; j++) { 
                 if (d[j][3] < db.min || db.min == null) {
                     db.min = d[j][3];
                 }
                 if (d[j][2] > db.max || db.max == null) {
                     db.max = d[j][2];
-                }
+                }             
             }
         }
-
+        
     };
-
+    
     // called within scope of series.
     $.jqplot.OHLCRenderer.prototype.draw = function(ctx, gd, options) {
         var d = this.data;
@@ -15855,7 +16235,7 @@
         if (this.show) {
             var x, open, hi, low, close;
             // need to get widths based on number of points shown,
-            // not on total number of points.  Use the results
+            // not on total number of points.  Use the results 
             // to speed up drawing in next step.
             for (var i=0; i<d.length; i++) {
                 if (d[i][0] < xmin) {
@@ -15869,13 +16249,13 @@
             var dwidth = this.gridData[xmaxidx-1][0] - this.gridData[xminidx][0];
             var nvisiblePoints = xmaxidx - xminidx;
             try {
-                var dinterval = Math.abs(this._xaxis.series_u2p(parseInt(this._xaxis._intervalStats[0].sortedIntervals[0].interval, 10)) - this._xaxis.series_u2p(0));
+                var dinterval = Math.abs(this._xaxis.series_u2p(parseInt(this._xaxis._intervalStats[0].sortedIntervals[0].interval, 10)) - this._xaxis.series_u2p(0)); 
             }
 
             catch (e) {
                 var dinterval = dwidth / nvisiblePoints;
             }
-
+            
             if (r.candleStick) {
                 if (typeof(r.bodyWidth) == 'number') {
                     r._bodyWidth = r.bodyWidth;
@@ -15892,7 +16272,7 @@
                     r._tickLength = Math.min(10, dinterval/3.5);
                 }
             }
-
+            
             for (var i=xminidx; i<xmaxidx; i++) {
                 x = xp(d[i][0]);
                 if (r.hlc) {
@@ -15923,8 +16303,8 @@
                             o.color = r.upBodyColor;
                         }
                         ops = $.extend(true, {}, opts, o);
-                        r.shapeRenderer.draw(ctx, [[x, hi], [x, close]], ops);
-                        r.shapeRenderer.draw(ctx, [[x, open], [x, low]], ops);
+                        r.shapeRenderer.draw(ctx, [[x, hi], [x, close]], ops); 
+                        r.shapeRenderer.draw(ctx, [[x, open], [x, low]], ops); 
                         o = {};
                         b = close;
                         h = open - close;
@@ -15953,11 +16333,11 @@
                             o.color = r.downBodyColor;
                         }
                         ops = $.extend(true, {}, opts, o);
-                        r.shapeRenderer.draw(ctx, [[x, hi], [x, open]], ops);
+                        r.shapeRenderer.draw(ctx, [[x, hi], [x, open]], ops); 
                         r.shapeRenderer.draw(ctx, [[x, close], [x, low]], ops);
-
+                         
                         o = {};
-
+                        
                         b = open;
                         h = close - open;
                         // if color specified, use it
@@ -15982,7 +16362,7 @@
                             o.color = r.wickColor;
                         }
                         ops = $.extend(true, {}, opts, o);
-                        r.shapeRenderer.draw(ctx, [[x, hi], [x, low]], ops);
+                        r.shapeRenderer.draw(ctx, [[x, hi], [x, low]], ops); 
                         o = {};
                         o.fillRect = false;
                         o.strokeRect = false;
@@ -16002,32 +16382,32 @@
                     }
                     // draw open tick
                     if (!r.hlc) {
-                        r.shapeRenderer.draw(ctx, [[x-r._tickLength, open], [x, open]], opts);
+                        r.shapeRenderer.draw(ctx, [[x-r._tickLength, open], [x, open]], opts);    
                     }
                     opts.color = prevColor;
                     // draw wick
                     if (r.wickColor) {
                         opts.color = r.wickColor;
                     }
-                    r.shapeRenderer.draw(ctx, [[x, hi], [x, low]], opts);
+                    r.shapeRenderer.draw(ctx, [[x, hi], [x, low]], opts); 
                     opts.color  = prevColor;
                     // draw close tick
                     if (r.closeColor) {
                         opts.color = r.closeColor;
                     }
-                    r.shapeRenderer.draw(ctx, [[x, close], [x+r._tickLength, close]], opts);
+                    r.shapeRenderer.draw(ctx, [[x, close], [x+r._tickLength, close]], opts); 
                     opts.color = prevColor;
                 }
             }
         }
-
+        
         ctx.restore();
-    };
-
+    };  
+    
     $.jqplot.OHLCRenderer.prototype.drawShadow = function(ctx, gd, options) {
         // This is a no-op, shadows drawn with lines.
     };
-
+    
     // called with scope of plot.
     $.jqplot.OHLCRenderer.checkOptions = function(target, data, options) {
         // provide some sensible highlighter options by default
@@ -16041,26 +16421,26 @@
             };
         }
     };
-
+    
     //$.jqplot.preInitHooks.push($.jqplot.OHLCRenderer.checkOptions);
-
-})(jQuery);
+    
+})(jQuery);    
 
 /**
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.8
- * Revision: 1250
+ * Version: 1.0.9
+ * Revision: d96a669
  *
- * Copyright (c) 2009-2013 Chris Leonello
- * jqPlot is currently available for use in all personal or commercial projects
- * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL
- * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can
- * choose the license that best suits your project and use it accordingly.
+ * Copyright (c) 2009-2016 Chris Leonello
+ * jqPlot is currently available for use in all personal or commercial projects 
+ * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
+ * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
+ * choose the license that best suits your project and use it accordingly. 
  *
- * Although not required, the author would appreciate an email letting him
- * know of any substantial use of jqPlot.  You can reach the author at:
+ * Although not required, the author would appreciate an email letting him 
+ * know of any substantial use of jqPlot.  You can reach the author at: 
  * chris at jqplot dot com or see http://www.jqplot.com/info.php .
  *
  * If you are feeling kind and generous, consider supporting the project by
@@ -16074,23 +16454,23 @@
  *     http://hexmen.com/js/sprintf.js
  *     The author (Ash Searle) has placed this code in the public domain:
  *     "This code is unrestricted: you are free to use it however you like."
- *
+ * 
  */
 (function($) {
     /**
      * Class: $.jqplot.MeterGaugeRenderer
      * Plugin renderer to draw a meter gauge chart.
-     *
+     * 
      * Data consists of a single series with 1 data point to position the gauge needle.
-     *
-     * To use this renderer, you need to include the
+     * 
+     * To use this renderer, you need to include the 
      * meter gauge renderer plugin, for example:
-     *
+     * 
      * > <script type="text/javascript" src="plugins/jqplot.meterGaugeRenderer.js"></script>
-     *
+     * 
      * Properties described here are passed into the $.jqplot function
      * as options on the series renderer.  For example:
-     *
+     * 
      * > plot0 = $.jqplot('chart0',[[18]],{
      * >     title: 'Network Speed',
      * >     seriesDefaults: {
@@ -16100,16 +16480,16 @@
      * >         }
      * >     }
      * > });
-     *
+     * 
      * A meterGauge plot does not support events.
      */
     $.jqplot.MeterGaugeRenderer = function(){
         $.jqplot.LineRenderer.call(this);
     };
-
+    
     $.jqplot.MeterGaugeRenderer.prototype = new $.jqplot.LineRenderer();
     $.jqplot.MeterGaugeRenderer.prototype.constructor = $.jqplot.MeterGaugeRenderer;
-
+    
     // called with scope of a series
     $.jqplot.MeterGaugeRenderer.prototype.init = function(options) {
         // Group: Properties
@@ -16122,14 +16502,14 @@
         // calculated by default.
         this.padding = null;
         // prop: shadowOffset
-        // offset of the shadow from the gauge ring and offset of
+        // offset of the shadow from the gauge ring and offset of 
         // each succesive stroke of the shadow from the last.
         this.shadowOffset = 2;
         // prop: shadowAlpha
         // transparency of the shadow (0 = transparent, 1 = opaque)
         this.shadowAlpha = 0.07;
         // prop: shadowDepth
-        // number of strokes to apply to the shadow,
+        // number of strokes to apply to the shadow, 
         // each stroke offset shadowOffset from the last.
         this.shadowDepth = 4;
         // prop: background
@@ -16189,7 +16569,7 @@
         // ticks spaced every 1, 2, 2.5, 5, 10, 20, .1, .2, .25, .5, etc.
         this.tickPositions = [1, 2, 2.5, 5, 10];
         // prop: tickSpacing
-        // Degrees between ticks.  This is a target number, if
+        // Degrees between ticks.  This is a target number, if 
         // incompatible span and ticks are supplied, a suitable
         // spacing close to this value will be computed.
         this.tickSpacing = 30;
@@ -16213,12 +16593,12 @@
         // as if the meter is "pegged".
         this.pegNeedle = true;
         this._type = 'meterGauge';
-
+        
         $.extend(true, this, options);
         this.type = null;
         this.numberTicks = null;
         this.tickInterval = null;
-        // span, the sweep (in degrees) from min to max.  This gauge is
+        // span, the sweep (in degrees) from min to max.  This gauge is 
         // a semi-circle.
         this.span = 180;
         // get rid of this nonsense
@@ -16235,14 +16615,14 @@
         this._tickPoints = [];
         // reference to label element.
         this._labelElem = null;
-
+        
         // start the gauge at the beginning of the span
         this.startAngle = (90 + (360 - this.span)/2) * Math.PI/180;
         this.endAngle = (90 - (360 - this.span)/2) * Math.PI/180;
-
+        
         this.setmin = !!(this.min == null);
         this.setmax = !!(this.max == null);
-
+        
         // if given intervals and is an array of values, create labels and colors.
         if (this.intervals.length) {
             if (this.intervals[0].length == null || this.intervals.length == 1) {
@@ -16256,7 +16636,7 @@
                 }
             }
         }
-
+        
         // compute min, max and ticks if not supplied:
         if (this.ticks.length) {
             if (this.ticks[0].length == null || this.ticks[0].length == 1) {
@@ -16280,7 +16660,7 @@
                 this.numberMinorTicks = 1;
             }
         }
-
+        
         else if (this.intervals.length) {
             this.min = (this.min == null) ? 0 : this.min;
             this.setmin = false;
@@ -16294,7 +16674,7 @@
                 this.setmax = false;
             }
         }
-
+        
         else {
             // no ticks and no intervals supplied, put needle in middle
             this.min = (this.min == null) ? 0 : this.min;
@@ -16308,7 +16688,7 @@
             }
         }
     };
-
+    
     $.jqplot.MeterGaugeRenderer.prototype.setGridData = function(plot) {
         // set gridData property.  This will hold angle in radians of each data point.
         var stack = [];
@@ -16322,13 +16702,13 @@
             }
         }
         var fact = Math.PI*2/stack[stack.length - 1];
-
+        
         for (var i=0; i<stack.length; i++) {
             td[i][1] = stack[i] * fact;
         }
         this.gridData = td;
     };
-
+    
     $.jqplot.MeterGaugeRenderer.prototype.makeGridData = function(data, plot) {
         var stack = [];
         var td = [];
@@ -16341,14 +16721,14 @@
             }
         }
         var fact = Math.PI*2/stack[stack.length - 1];
-
+        
         for (var i=0; i<stack.length; i++) {
             td[i][1] = stack[i] * fact;
         }
         return td;
     };
 
-
+        
     function getnmt(pos, interval, fact) {
         var temp;
         for (var i=pos.length-1; i>=0; i--) {
@@ -16359,7 +16739,7 @@
         }
         return null;
     }
-
+    
     // called with scope of series
     $.jqplot.MeterGaugeRenderer.prototype.draw = function (ctx, gd, options) {
         var i;
@@ -16403,15 +16783,15 @@
                     break;
             }
         }
-
-
-
+        
+        
+            
         // pre-draw so can get its dimensions.
         if (this.label) {
             this._labelElem = $('<div class="jqplot-meterGauge-label" style="position:absolute;">'+this.label+'</div>');
             this.canvas._elem.after(this._labelElem);
         }
-
+        
         var shadow = (opts.shadow != undefined) ? opts.shadow : this.shadow;
         var showLine = (opts.showLine != undefined) ? opts.showLine : this.showLine;
         var fill = (opts.fill != undefined) ? opts.fill : this.fill;
@@ -16427,7 +16807,7 @@
         }
         var mindim = Math.min(w,h);
         var d = mindim;
-
+            
         if (!this.diameter) {
             if (this.semiCircular) {
                 if ( w >= 2*h) {
@@ -16464,24 +16844,24 @@
             if (this._labelElem && this.labelPosition == 'bottom') {
                 this._center[1] -= this._labelElem.outerHeight(true);
             }
-
+            
         }
 
         this._radius = this.diameter/2;
-
+        
         this.tickSpacing = 6000/this.diameter;
-
+        
         if (!this.hubRadius) {
             this.hubRadius = this.diameter/18;
         }
-
+        
         this.shadowOffset = 0.5 + this.ringWidth/9;
         this.shadowWidth = this.ringWidth*1;
-
+        
         this.tickPadding = 3 + Math.pow(this.diameter/20, 0.7);
         this.tickOuterRadius = this._radius - this.ringWidth/2 - this.tickPadding;
         this.tickLength = (this.showTicks) ? this._radius/13 : 0;
-
+        
         if (this.ticks.length == 0) {
             // no ticks, lets make some.
             var max = this.max,
@@ -16494,21 +16874,21 @@
             (tp > 2 && tp <= 2.5) ? tp = 2.5 : tp = Math.ceil(tp);
             var t = this.tickPositions;
             var tpindex, nt;
-
+    
             for (i=0; i<t.length; i++) {
-                if (tp == t[i] || i && t[i-1] < tp && tp < t[i]) {
+                if (tp == t[i] || i && t[i-1] < tp && tp < t[i]) { 
                     ti = t[i]*Math.pow(10, tf);
                     tpindex = i;
                 }
             }
-
+        
             for (i=0; i<t.length; i++) {
-                if (tp == t[i] || i && t[i-1] < tp && tp < t[i]) {
+                if (tp == t[i] || i && t[i-1] < tp && tp < t[i]) { 
                     ti = t[i]*Math.pow(10, tf);
                     nt = Math.ceil((max - min) / ti);
                 }
             }
-
+        
             // both max and min are free
             if (setmax && setmin) {
                 var tmin = (min > 0) ? min - min % ti : min - min % ti - ti;
@@ -16537,17 +16917,17 @@
                 }
                 nt += 1;
                 var tmax = min + (nt - 1) * ti;
-                if (max >= tmax) {
+                if (max >= tmax) { 
                     tmax += ti;
                     nt += 1;
                 }
                 // now tmax should always be mroe than dataMax
-                if (tmax - max < 0.23*ti) {
+                if (tmax - max < 0.23*ti) { 
                     tmax += ti;
                     nt += 1;
                 }
                 this.max = max = tmax;
-                this.min = min;
+                this.min = min;    
 
                 this.tickInterval = ti;
                 this.numberTicks = nt;
@@ -16557,12 +16937,12 @@
                     this.ticks.push([it, it]);
                 }
                 this.max = this.ticks[nt-1][1];
-
-                this.tickFactor = tf;
+            
+                this.tickFactor = tf;      
                 // determine number of minor ticks
 
-                this.numberMinorTicks = getnmt(this.tickPositions, this.tickInterval, this.tickFactor);
-
+                this.numberMinorTicks = getnmt(this.tickPositions, this.tickInterval, this.tickFactor);     
+        
                 if (!this.numberMinorTicks) {
                     this.numberMinorTicks = getnmt(this.tickPositions, this.tickInterval, this.tickFactor-1);
                 }
@@ -16586,16 +16966,16 @@
                     this.ticks.push([it, it]);
                 }
                 this.max = this.ticks[this.numberTicks-1][1];
-
+            
                 this.tickFactor = tf;
                 // determine number of minor ticks
                 this.numberMinorTicks = getnmt(this.tickPositions, this.tickInterval, this.tickFactor);
-
+        
                 if (!this.numberMinorTicks) {
                     this.numberMinorTicks = getnmt(this.tickPositions, this.tickInterval, this.tickFactor-1);
                 }
             }
-
+            
             // not setting max or min
             if (!setmax && !setmin) {
                 var range = this.max - this.min;
@@ -16626,11 +17006,11 @@
                 }
                 // determine number of minor ticks
                 this.numberMinorTicks = getnmt(this.tickPositions, this.tickInterval, this.tickFactor);
-
+        
                 if (!this.numberMinorTicks) {
                     this.numberMinorTicks = getnmt(this.tickPositions, this.tickInterval, this.tickFactor-1);
                 }
-
+                
                 if (!this.numberMinorTicks) {
                     this.numberMinorTicks = 1;
                     var nums = [4, 5, 3, 6, 2];
@@ -16644,14 +17024,14 @@
                 }
             }
         }
-
+        
 
         var r = this._radius,
             sa = this.startAngle,
-            ea = this.endAngle,
+            ea = this.endAngle,       
             pi = Math.PI,
             hpi = Math.PI/2;
-
+            
         if (this.semiCircular) {
             var overAngle = Math.atan(this.innerPad/r),
                 outersa = this.outerStartAngle = sa - overAngle,
@@ -16659,28 +17039,28 @@
                 hubsa = this.hubStartAngle = sa - Math.atan(this.innerPad/this.hubRadius*2),
                 hubea = this.hubEndAngle = ea + Math.atan(this.innerPad/this.hubRadius*2);
 
-            ctx.save();
-
+            ctx.save();            
+            
             ctx.translate(this._center[0], this._center[1]);
             ctx.lineJoin = "round";
             ctx.lineCap = "round";
-
+            
             // draw the innerbackground
             ctx.save();
-            ctx.beginPath();
+            ctx.beginPath();  
             ctx.fillStyle = this.background;
             ctx.arc(0, 0, r, outersa, outerea, false);
             ctx.closePath();
             ctx.fill();
             ctx.restore();
-
+            
             // draw the shadow
             // the outer ring.
             var shadowColor = 'rgba(0,0,0,'+this.shadowAlpha+')';
             ctx.save();
             for (var i=0; i<this.shadowDepth; i++) {
                 ctx.translate(this.shadowOffset*Math.cos(this.shadowAngle/180*Math.PI), this.shadowOffset*Math.sin(this.shadowAngle/180*Math.PI));
-                ctx.beginPath();
+                ctx.beginPath();  
                 ctx.strokeStyle = shadowColor;
                 ctx.lineWidth = this.shadowWidth;
                 ctx.arc(0 ,0, r, outersa, outerea, false);
@@ -16688,40 +17068,40 @@
                 ctx.stroke();
             }
             ctx.restore();
-
+            
             // the inner hub.
             ctx.save();
             var tempd = parseInt((this.shadowDepth+1)/2, 10);
             for (var i=0; i<tempd; i++) {
                 ctx.translate(this.shadowOffset*Math.cos(this.shadowAngle/180*Math.PI), this.shadowOffset*Math.sin(this.shadowAngle/180*Math.PI));
-                ctx.beginPath();
+                ctx.beginPath();  
                 ctx.fillStyle = shadowColor;
                 ctx.arc(0 ,0, this.hubRadius, hubsa, hubea, false);
                 ctx.closePath();
                 ctx.fill();
             }
             ctx.restore();
-
+            
             // draw the outer ring.
             ctx.save();
-            ctx.beginPath();
+            ctx.beginPath();  
             ctx.strokeStyle = this.ringColor;
             ctx.lineWidth = this.ringWidth;
             ctx.arc(0 ,0, r, outersa, outerea, false);
             ctx.closePath();
             ctx.stroke();
             ctx.restore();
-
+            
             // draw the hub
-
+            
             ctx.save();
-            ctx.beginPath();
+            ctx.beginPath();  
             ctx.fillStyle = this.ringColor;
             ctx.arc(0 ,0, this.hubRadius,hubsa, hubea, false);
             ctx.closePath();
             ctx.fill();
             ctx.restore();
-
+            
             // draw the ticks
             if (this.showTicks) {
                 ctx.save();
@@ -16731,7 +17111,7 @@
                     nmt = this.numberMinorTicks,
                     ts = this.span * Math.PI / 180 / (this.ticks.length-1),
                     mts = ts/(nmt + 1);
-
+                
                 for (i = 0; i<this.ticks.length; i++) {
                     ctx.beginPath();
                     ctx.lineWidth = 1.5 + this.diameter/360;
@@ -16748,12 +17128,12 @@
                             ctx.moveTo(-orad * Math.cos(ts*i+mts*j+sa), orad * Math.sin(ts*i+mts*j+sa));
                             ctx.lineTo(-(orad-mtl) * Math.cos(ts*i+mts*j+sa), (orad-mtl) * Math.sin(ts*i+mts*j+sa));
                             ctx.stroke();
-                        }
+                        }   
                     }
                 }
                 ctx.restore();
             }
-
+            
             // draw the tick labels
             if (this.showTickLabels) {
                 var elem, l, t, ew, eh, dim, maxdim=0;
@@ -16771,7 +17151,7 @@
                     maxdim = (dim > maxdim) ? dim : maxdim;
                 }
             }
-
+            
             // draw the gauge label
             if (this.label && this.labelPosition == 'inside') {
                 var l = this._center[0] + this.canvas._offsets.left;
@@ -16783,16 +17163,16 @@
                 t -= this._labelElem.outerHeight(true)/2;
                 this._labelElem.css({left:l, top:t});
             }
-
+            
             else if (this.label && this.labelPosition == 'bottom') {
                 var l = this._center[0] + this.canvas._offsets.left - this._labelElem.outerWidth(true)/2;
                 var t = this._center[1] + this.canvas._offsets.top + this.innerPad + this.ringWidth + this.padding + this.labelHeightAdjust;
                 this._labelElem.css({left:l, top:t});
-
+                
             }
-
+            
             // draw the intervals
-
+            
             ctx.save();
             var inner = this.intervalInnerRadius || this.hubRadius * 1.5;
             if (this.intervalOuterRadius == null) {
@@ -16828,7 +17208,7 @@
                 ctx.fill();
             }
             ctx.restore();
-
+            
             // draw the needle
             var datapoint = this.data[0][1];
             var dataspan = this.max - this.min;
@@ -16841,8 +17221,8 @@
                 }
             }
             var dataang = (datapoint - this.min)/dataspan * this.span * Math.PI/180 + this.startAngle;
-
-
+            
+            
             ctx.save();
             ctx.beginPath();
             ctx.fillStyle = this.ringColor;
@@ -16851,7 +17231,7 @@
             this.needleThickness = (this.needleThickness < 2) ? 2 : this.needleThickness;
             var endwidth = this.needleThickness * 0.4;
 
-
+            
             var dl = this.needleLength/10;
             var dt = (this.needleThickness - endwidth)/10;
             var templ;
@@ -16862,22 +17242,22 @@
                 ctx.lineTo(dl*(i+1)*Math.cos(dataang), dl*(i+1)*Math.sin(dataang));
                 ctx.stroke();
             }
-
+            
             ctx.restore();
         }
         else {
             this._center = [(cw - trans * offx)/2 + trans * offx, (ch - trans*offy)/2 + trans * offy];
-        }
+        }               
     };
-
+    
     $.jqplot.MeterGaugeAxisRenderer = function() {
         $.jqplot.LinearAxisRenderer.call(this);
     };
-
+    
     $.jqplot.MeterGaugeAxisRenderer.prototype = new $.jqplot.LinearAxisRenderer();
     $.jqplot.MeterGaugeAxisRenderer.prototype.constructor = $.jqplot.MeterGaugeAxisRenderer;
-
-
+        
+    
     // There are no traditional axes on a gauge chart.  We just need to provide
     // dummy objects with properties so the plot will render.
     // called with scope of axis object.
@@ -16896,16 +17276,16 @@
         this.showTicks = false;
         this.ticks = [];
         this.showMark = false;
-        this.show = false;
+        this.show = false; 
     };
-
+    
     $.jqplot.MeterGaugeLegendRenderer = function(){
         $.jqplot.TableLegendRenderer.call(this);
     };
-
+    
     $.jqplot.MeterGaugeLegendRenderer.prototype = new $.jqplot.TableLegendRenderer();
     $.jqplot.MeterGaugeLegendRenderer.prototype.constructor = $.jqplot.MeterGaugeLegendRenderer;
-
+    
     /**
      * Class: $.jqplot.MeterGaugeLegendRenderer
      *Meter gauges don't typically have a legend, this overrides the default legend renderer.
@@ -16917,7 +17297,7 @@
         this.numberColumns = null;
         $.extend(true, this, options);
     };
-
+    
     // called with context of legend
     $.jqplot.MeterGaugeLegendRenderer.prototype.draw = function() {
         if (this.show) {
@@ -16935,12 +17315,12 @@
             this._elem = $('<table class="jqplot-table-legend" style="'+ss+'"></table>');
             // MeterGauge charts legends don't go by number of series, but by number of data points
             // in the series.  Refactor things here for that.
-
-            var pad = false,
+            
+            var pad = false, 
                 reverse = false,
                 nr, nc;
             var s = series[0];
-
+            
             if (s.show) {
                 var pd = s.data;
                 if (this.numberRows) {
@@ -16960,10 +17340,10 @@
                     nr = pd.length;
                     nc = 1;
                 }
-
+                
                 var i, j, tr, td1, td2, lt, rs, color;
-                var idx = 0;
-
+                var idx = 0;    
+                
                 for (i=0; i<nr; i++) {
                     if (reverse){
                         tr = $('<tr class="jqplot-table-legend"></tr>').prependTo(this._elem);
@@ -16993,7 +17373,7 @@
                                 }
                             }
                             rs = (pad) ? this.rowSpacing : '0';
-
+                
                             td1 = $('<td class="jqplot-table-legend" style="text-align:center;padding-top:'+rs+';">'+
                                 '<div><div class="jqplot-table-legend-swatch" style="border-color:'+color+';"></div>'+
                                 '</div></td>');
@@ -17015,14 +17395,14 @@
                             pad = true;
                         }
                         idx++;
-                    }
+                    }   
                 }
             }
         }
-        return this._elem;
+        return this._elem;                
     };
-
-
+    
+    
     // setup default renderers for axes and legend so user doesn't have to
     // called with scope of plot
     function preInit(target, data, options) {
@@ -17032,7 +17412,7 @@
         options.legend = options.legend || {};
         options.seriesDefaults = options.seriesDefaults || {};
         options.grid = options.grid || {};
-
+           
         // only set these if there is a gauge series
         var setopts = false;
         if (options.seriesDefaults.renderer == $.jqplot.MeterGaugeRenderer) {
@@ -17045,7 +17425,7 @@
                 }
             }
         }
-
+        
         if (setopts) {
             options.axesDefaults.renderer = $.jqplot.MeterGaugeAxisRenderer;
             options.legend.renderer = $.jqplot.MeterGaugeLegendRenderer;
@@ -17056,39 +17436,39 @@
             options.grid.shadow = (options.grid.shadow != null) ? options.grid.shadow : false;
         }
     }
-
+    
     // called with scope of plot
     function postParseOptions(options) {
         //
     }
-
+    
     $.jqplot.preInitHooks.push(preInit);
     $.jqplot.postParseOptionsHooks.push(postParseOptions);
-
+    
     $.jqplot.MeterGaugeTickRenderer = function() {
         $.jqplot.AxisTickRenderer.call(this);
     };
-
+    
     $.jqplot.MeterGaugeTickRenderer.prototype = new $.jqplot.AxisTickRenderer();
     $.jqplot.MeterGaugeTickRenderer.prototype.constructor = $.jqplot.MeterGaugeTickRenderer;
-
+    
 })(jQuery);
 
 /**
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.8
- * Revision: 1250
+ * Version: 1.0.9
+ * Revision: d96a669
  *
- * Copyright (c) 2009-2013 Chris Leonello
- * jqPlot is currently available for use in all personal or commercial projects
- * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL
- * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can
- * choose the license that best suits your project and use it accordingly.
+ * Copyright (c) 2009-2016 Chris Leonello
+ * jqPlot is currently available for use in all personal or commercial projects 
+ * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
+ * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
+ * choose the license that best suits your project and use it accordingly. 
  *
- * Although not required, the author would appreciate an email letting him
- * know of any substantial use of jqPlot.  You can reach the author at:
+ * Although not required, the author would appreciate an email letting him 
+ * know of any substantial use of jqPlot.  You can reach the author at: 
  * chris at jqplot dot com or see http://www.jqplot.com/info.php .
  *
  * If you are feeling kind and generous, consider supporting the project by
@@ -17105,20 +17485,20 @@
  *
  * included jsDate library by Chris Leonello:
  *
- * Copyright (c) 2010-2013 Chris Leonello
+ * Copyright (c) 2010-2015 Chris Leonello
  *
- * jsDate is currently available for use in all personal or commercial projects
- * under both the MIT and GPL version 2.0 licenses. This means that you can
+ * jsDate is currently available for use in all personal or commercial projects 
+ * under both the MIT and GPL version 2.0 licenses. This means that you can 
  * choose the license that best suits your project and use it accordingly.
  *
- * jsDate borrows many concepts and ideas from the Date Instance
+ * jsDate borrows many concepts and ideas from the Date Instance 
  * Methods by Ken Snyder along with some parts of Ken's actual code.
- *
+ * 
  * Ken's original Date Instance Methods and copyright notice:
- *
+ * 
  * Ken Snyder (ken d snyder at gmail dot com)
  * 2008-09-10
- * version 2.0.2 (http://kendsnyder.com/sandbox/date/)
+ * version 2.0.2 (http://kendsnyder.com/sandbox/date/)     
  * Creative Commons Attribution License 3.0 (http://creativecommons.org/licenses/by/3.0/)
  *
  * jqplotToImage function based on Larry Siden's export-jqplot-to-png.js.
@@ -17128,11 +17508,11 @@
  * Larry's original code can be found here:
  *
  * https://github.com/lsiden/export-jqplot-to-png
- *
- *
+ * 
+ * 
  */
 
-(function($) {
+(function($) {    
     // This code is a modified version of the canvastext.js code, copyright below:
     //
     // This code is released to the public domain by Jim Studt, 2007.
@@ -17142,7 +17522,7 @@
         this.fontStyle = 'normal';  // normal, italic, oblique [not implemented]
         this.fontVariant = 'normal';    // normal, small caps [not implemented]
         this.fontWeight = 'normal'; // normal, bold, bolder, lighter, 100 - 900
-        this.fontSize = '10px';
+        this.fontSize = '10px'; 
         this.fontFamily = 'sans-serif';
         this.fontStretch = 1.0;
         this.fillStyle = '#666666';
@@ -17158,13 +17538,13 @@
         this.normalizedFontSize = this.normalizeFontSize(this.fontSize);
         this.setHeight();
     };
-
+    
     $.jqplot.CanvasTextRenderer.prototype.init = function(options) {
         $.extend(true, this, options);
         this.normalizedFontSize = this.normalizeFontSize(this.fontSize);
         this.setHeight();
     };
-
+    
     // convert css spec into point size
     // returns float
     $.jqplot.CanvasTextRenderer.prototype.normalizeFontSize = function(sz) {
@@ -17187,8 +17567,8 @@
             return n/this.pt2px;
         }
     };
-
-
+    
+    
     $.jqplot.CanvasTextRenderer.prototype.fontWeight2Float = function(w) {
         // w = normal | bold | bolder | lighter | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900
         // return values adjusted for Hershey font.
@@ -17212,39 +17592,39 @@
                 default:
                     return 1;
                     break;
-             }
+             }   
         }
     };
-
+    
     $.jqplot.CanvasTextRenderer.prototype.getText = function() {
         return this.text;
     };
-
+    
     $.jqplot.CanvasTextRenderer.prototype.setText = function(t, ctx) {
         this.text = t;
         this.setWidth(ctx);
         return this;
     };
-
+    
     $.jqplot.CanvasTextRenderer.prototype.getWidth = function(ctx) {
         return this.width;
     };
-
+    
     $.jqplot.CanvasTextRenderer.prototype.setWidth = function(ctx, w) {
         if (!w) {
             this.width = this.measure(ctx, this.text);
         }
         else {
-            this.width = w;
+            this.width = w;   
         }
         return this;
     };
-
+    
     // return height in pixels.
     $.jqplot.CanvasTextRenderer.prototype.getHeight = function(ctx) {
         return this.height;
     };
-
+    
     // w - height in pt
     // set heigh in px
     $.jqplot.CanvasTextRenderer.prototype.setHeight = function(w) {
@@ -17253,7 +17633,7 @@
             this.height = this.normalizedFontSize * this.pt2px;
         }
         else {
-            this.height = w;
+            this.height = w;   
         }
         return this;
     };
@@ -17277,7 +17657,7 @@
     {
         var total = 0;
         var len = str.length;
-
+ 
         for (var i = 0; i < len; i++) {
             var c = this.letter(str.charAt(i));
             if (c) {
@@ -17298,7 +17678,7 @@
 
          ctx.save();
          var tx, ty;
-
+         
          // 1st quadrant
          if ((-Math.PI/2 <= this.angle && this.angle <= 0) || (Math.PI*3/2 <= this.angle && this.angle <= Math.PI*2)) {
              tx = 0;
@@ -17319,7 +17699,7 @@
              tx = Math.sin(this.angle) * this.height - Math.cos(this.angle)*this.width;
              ty = -Math.cos(this.angle) * this.height;
          }
-
+         
          ctx.strokeStyle = this.fillStyle;
          ctx.fillStyle = this.fillStyle;
          ctx.translate(tx, ty);
@@ -17328,7 +17708,7 @@
          // multiplier was 2.0
          var fact = (this.normalizedFontSize > 30) ? 2.0 : 2 + (30 - this.normalizedFontSize)/20;
          ctx.lineWidth = fact * mag * this.fontWeight2Float(this.fontWeight);
-
+         
          for ( var i = 0; i < len; i++) {
             var c = this.letter( str.charAt(i));
             if ( !c) {
@@ -17456,7 +17836,7 @@
          '}': { width: 14, points: [[5,25],[7,24],[8,23],[9,21],[9,19],[8,17],[7,16],[6,14],[6,12],[8,10],[-1,-1],[7,24],[8,22],[8,20],[7,18],[6,17],[5,15],[5,13],[6,11],[10,9],[6,7],[5,5],[5,3],[6,1],[7,0],[8,-2],[8,-4],[7,-6],[-1,-1],[8,8],[6,6],[6,4],[7,2],[8,1],[9,-1],[9,-3],[8,-5],[7,-6],[5,-7]] },
          '~': { width: 24, points: [[3,6],[3,8],[4,11],[6,12],[8,12],[10,11],[14,8],[16,7],[18,7],[20,8],[21,10],[-1,-1],[3,8],[4,10],[6,11],[8,11],[10,10],[14,7],[16,6],[18,6],[20,7],[21,10],[21,12]] }
      };
-
+     
     $.jqplot.CanvasFontRenderer = function(options) {
         options = options || {};
         if (!options.pt2px) {
@@ -17464,7 +17844,7 @@
         }
         $.jqplot.CanvasTextRenderer.call(this, options);
     };
-
+    
     $.jqplot.CanvasFontRenderer.prototype = new $.jqplot.CanvasTextRenderer({});
     $.jqplot.CanvasFontRenderer.prototype.constructor = $.jqplot.CanvasFontRenderer;
 
@@ -17488,7 +17868,7 @@
 
          ctx.save();
          var tx, ty;
-
+         
          // 1st quadrant
          if ((-Math.PI/2 <= this.angle && this.angle <= 0) || (Math.PI*3/2 <= this.angle && this.angle <= Math.PI*2)) {
              tx = 0;
@@ -17521,24 +17901,24 @@
 
          ctx.restore();
     };
-
+    
 })(jQuery);
 
 /**
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.8
- * Revision: 1250
+ * Version: 1.0.9
+ * Revision: d96a669
  *
- * Copyright (c) 2009-2013 Chris Leonello
- * jqPlot is currently available for use in all personal or commercial projects
- * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL
- * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can
- * choose the license that best suits your project and use it accordingly.
+ * Copyright (c) 2009-2016 Chris Leonello
+ * jqPlot is currently available for use in all personal or commercial projects 
+ * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
+ * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
+ * choose the license that best suits your project and use it accordingly. 
  *
- * Although not required, the author would appreciate an email letting him
- * know of any substantial use of jqPlot.  You can reach the author at:
+ * Although not required, the author would appreciate an email letting him 
+ * know of any substantial use of jqPlot.  You can reach the author at: 
  * chris at jqplot dot com or see http://www.jqplot.com/info.php .
  *
  * If you are feeling kind and generous, consider supporting the project by
@@ -17552,7 +17932,7 @@
  *     http://hexmen.com/js/sprintf.js
  *     The author (Ash Searle) has placed this code in the public domain:
  *     "This code is unrestricted: you are free to use it however you like."
- *
+ * 
  */
 (function($) {
     /**
@@ -17562,15 +17942,15 @@
     * to draw the text on the canvas.  Two modes of rendering the text are available.
     * If the browser has native font support for canvas fonts (currently Mozila 3.5
     * and Safari 4), you can enable text rendering with the canvas fillText method.
-    * You do so by setting the "enableFontSupport" option to true.
-    *
+    * You do so by setting the "enableFontSupport" option to true. 
+    * 
     * Browsers lacking native font support will have the text drawn on the canvas
     * using the Hershey font metrics.  Even if the "enableFontSupport" option is true
     * non-supporting browsers will still render with the Hershey font.
     */
     $.jqplot.CanvasAxisTickRenderer = function(options) {
         // Group: Properties
-
+        
         // prop: mark
         // tick mark on the axis.  One of 'inside', 'outside', 'cross', '' or null.
         this.mark = 'outside';
@@ -17625,7 +18005,7 @@
         // CSS spec for fontWeight
         this.fontWeight = 'normal';
         // prop: fontStretch
-        // Multiplier to condense or expand font width.
+        // Multiplier to condense or expand font width.  
         // Applies only to browsers which don't support canvas native font rendering.
         this.fontStretch = 1.0;
         // prop: textColor
@@ -17638,45 +18018,45 @@
         this.enableFontSupport = true;
         // prop: pt2px
         // Point to pixel scaling factor, used for computing height of bounding box
-        // around a label.  The labels text renderer has a default setting of 1.4, which
+        // around a label.  The labels text renderer has a default setting of 1.4, which 
         // should be suitable for most fonts.  Leave as null to use default.  If tops of
         // letters appear clipped, increase this.  If bounding box seems too big, decrease.
         // This is an issue only with the native font renderering capabilities of Mozilla
         // 3.5 and Safari 4 since they do not provide a method to determine the font height.
         this.pt2px = null;
-
+        
         this._elem;
         this._ctx;
         this._plotWidth;
         this._plotHeight;
         this._plotDimensions = {height:null, width:null};
-
+        
         $.extend(true, this, options);
-
+        
         var ropts = {fontSize:this.fontSize, fontWeight:this.fontWeight, fontStretch:this.fontStretch, fillStyle:this.textColor, angle:this.getAngleRad(), fontFamily:this.fontFamily};
         if (this.pt2px) {
             ropts.pt2px = this.pt2px;
         }
-
+        
         if (this.enableFontSupport) {
             if ($.jqplot.support_canvas_text()) {
                 this._textRenderer = new $.jqplot.CanvasFontRenderer(ropts);
             }
-
+            
             else {
-                this._textRenderer = new $.jqplot.CanvasTextRenderer(ropts);
+                this._textRenderer = new $.jqplot.CanvasTextRenderer(ropts); 
             }
         }
         else {
-            this._textRenderer = new $.jqplot.CanvasTextRenderer(ropts);
+            this._textRenderer = new $.jqplot.CanvasTextRenderer(ropts); 
         }
     };
-
+    
     $.jqplot.CanvasAxisTickRenderer.prototype.init = function(options) {
         $.extend(true, this, options);
         this._textRenderer.init({fontSize:this.fontSize, fontWeight:this.fontWeight, fontStretch:this.fontStretch, fillStyle:this.textColor, angle:this.getAngleRad(), fontFamily:this.fontFamily});
     };
-
+    
     // return width along the x axis
     // will check first to see if an element exists.
     // if not, will return the computed text box width.
@@ -17692,7 +18072,7 @@
             return w;
         }
     };
-
+    
     // return height along the y axis.
     $.jqplot.CanvasAxisTickRenderer.prototype.getHeight = function(ctx) {
         if (this._elem) {
@@ -17716,13 +18096,13 @@
             return null;
         }
     };
-
+    
     $.jqplot.CanvasAxisTickRenderer.prototype.getAngleRad = function() {
         var a = this.angle * Math.PI/180;
         return a;
     };
-
-
+    
+    
     $.jqplot.CanvasAxisTickRenderer.prototype.setTick = function(value, axisName, isMinor) {
         this.value = value;
         if (isMinor) {
@@ -17730,18 +18110,18 @@
         }
         return this;
     };
-
+    
     $.jqplot.CanvasAxisTickRenderer.prototype.draw = function(ctx, plot) {
         if (!this.label) {
             this.label = this.prefix + this.formatter(this.formatString, this.value);
         }
-
+        
         // Memory Leaks patch
         if (this._elem) {
             if ($.jqplot.use_excanvas && window.G_vmlCanvasManager.uninitElement !== undefined) {
                 window.G_vmlCanvasManager.uninitElement(this._elem.get(0));
             }
-
+            
             this._elem.emptyForce();
             this._elem = null;
         }
@@ -17771,28 +18151,28 @@
         elem = null;
         return this._elem;
     };
-
+    
     $.jqplot.CanvasAxisTickRenderer.prototype.pack = function() {
         this._textRenderer.draw(this._elem.get(0).getContext("2d"), this.label);
     };
-
+    
 })(jQuery);
 
 /**
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.8
- * Revision: 1250
+ * Version: 1.0.9
+ * Revision: d96a669
  *
- * Copyright (c) 2009-2013 Chris Leonello
- * jqPlot is currently available for use in all personal or commercial projects
- * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL
- * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can
- * choose the license that best suits your project and use it accordingly.
+ * Copyright (c) 2009-2016 Chris Leonello
+ * jqPlot is currently available for use in all personal or commercial projects 
+ * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
+ * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
+ * choose the license that best suits your project and use it accordingly. 
  *
- * Although not required, the author would appreciate an email letting him
- * know of any substantial use of jqPlot.  You can reach the author at:
+ * Although not required, the author would appreciate an email letting him 
+ * know of any substantial use of jqPlot.  You can reach the author at: 
  * chris at jqplot dot com or see http://www.jqplot.com/info.php .
  *
  * If you are feeling kind and generous, consider supporting the project by
@@ -17806,7 +18186,7 @@
  *     http://hexmen.com/js/sprintf.js
  *     The author (Ash Searle) has placed this code in the public domain:
  *     "This code is unrestricted: you are free to use it however you like."
- *
+ * 
  */
 (function($) {
     /**
@@ -17816,16 +18196,16 @@
     * to draw the text on the canvas.  Two modes of rendering the text are available.
     * If the browser has native font support for canvas fonts (currently Mozila 3.5
     * and Safari 4), you can enable text rendering with the canvas fillText method.
-    * You do so by setting the "enableFontSupport" option to true.
-    *
+    * You do so by setting the "enableFontSupport" option to true. 
+    * 
     * Browsers lacking native font support will have the text drawn on the canvas
     * using the Hershey font metrics.  Even if the "enableFontSupport" option is true
     * non-supporting browsers will still render with the Hershey font.
-    *
+    * 
     */
     $.jqplot.CanvasAxisLabelRenderer = function(options) {
         // Group: Properties
-
+        
         // prop: angle
         // angle of text, measured clockwise from x axis.
         this.angle = 0;
@@ -17852,7 +18232,7 @@
         // CSS spec for fontWeight:  normal, bold, bolder, lighter or a number 100 - 900
         this.fontWeight = 'normal';
         // prop: fontStretch
-        // Multiplier to condense or expand font width.
+        // Multiplier to condense or expand font width.  
         // Applies only to browsers which don't support canvas native font rendering.
         this.fontStretch = 1.0;
         // prop: textColor
@@ -17865,49 +18245,49 @@
         this.enableFontSupport = true;
         // prop: pt2px
         // Point to pixel scaling factor, used for computing height of bounding box
-        // around a label.  The labels text renderer has a default setting of 1.4, which
+        // around a label.  The labels text renderer has a default setting of 1.4, which 
         // should be suitable for most fonts.  Leave as null to use default.  If tops of
         // letters appear clipped, increase this.  If bounding box seems too big, decrease.
         // This is an issue only with the native font renderering capabilities of Mozilla
         // 3.5 and Safari 4 since they do not provide a method to determine the font height.
         this.pt2px = null;
-
+        
         this._elem;
         this._ctx;
         this._plotWidth;
         this._plotHeight;
         this._plotDimensions = {height:null, width:null};
-
+        
         $.extend(true, this, options);
-
+        
         if (options.angle == null && this.axis != 'xaxis' && this.axis != 'x2axis') {
             this.angle = -90;
         }
-
+        
         var ropts = {fontSize:this.fontSize, fontWeight:this.fontWeight, fontStretch:this.fontStretch, fillStyle:this.textColor, angle:this.getAngleRad(), fontFamily:this.fontFamily};
         if (this.pt2px) {
             ropts.pt2px = this.pt2px;
         }
-
+        
         if (this.enableFontSupport) {
             if ($.jqplot.support_canvas_text()) {
                 this._textRenderer = new $.jqplot.CanvasFontRenderer(ropts);
             }
-
+            
             else {
-                this._textRenderer = new $.jqplot.CanvasTextRenderer(ropts);
+                this._textRenderer = new $.jqplot.CanvasTextRenderer(ropts); 
             }
         }
         else {
-            this._textRenderer = new $.jqplot.CanvasTextRenderer(ropts);
+            this._textRenderer = new $.jqplot.CanvasTextRenderer(ropts); 
         }
     };
-
+    
     $.jqplot.CanvasAxisLabelRenderer.prototype.init = function(options) {
         $.extend(true, this, options);
         this._textRenderer.init({fontSize:this.fontSize, fontWeight:this.fontWeight, fontStretch:this.fontStretch, fillStyle:this.textColor, angle:this.getAngleRad(), fontFamily:this.fontFamily});
     };
-
+    
     // return width along the x axis
     // will check first to see if an element exists.
     // if not, will return the computed text box width.
@@ -17923,7 +18303,7 @@
             return w;
         }
     };
-
+    
     // return height along the y axis.
     $.jqplot.CanvasAxisLabelRenderer.prototype.getHeight = function(ctx) {
         if (this._elem) {
@@ -17937,19 +18317,19 @@
             return w;
         }
     };
-
+    
     $.jqplot.CanvasAxisLabelRenderer.prototype.getAngleRad = function() {
         var a = this.angle * Math.PI/180;
         return a;
     };
-
+    
     $.jqplot.CanvasAxisLabelRenderer.prototype.draw = function(ctx, plot) {
           // Memory Leaks patch
           if (this._elem) {
               if ($.jqplot.use_excanvas && window.G_vmlCanvasManager.uninitElement !== undefined) {
                   window.G_vmlCanvasManager.uninitElement(this._elem.get(0));
               }
-
+            
               this._elem.emptyForce();
               this._elem = null;
           }
@@ -17965,21 +18345,21 @@
         elem.height = h;
         elem.style.width = w;
         elem.style.height = h;
-
+        
         elem = plot.canvasManager.initCanvas(elem);
 
         this._elem = $(elem);
         this._elem.css({ position: 'absolute'});
         this._elem.addClass('jqplot-'+this.axis+'-label');
-
+        
         elem = null;
         return this._elem;
     };
-
+    
     $.jqplot.CanvasAxisLabelRenderer.prototype.pack = function() {
         this._textRenderer.draw(this._elem.get(0).getContext("2d"), this.label);
     };
-
+    
 })(jQuery);
 
 
@@ -17987,17 +18367,17 @@
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.8
- * Revision: 1250
+ * Version: 1.0.9
+ * Revision: d96a669
  *
- * Copyright (c) 2009-2013 Chris Leonello
- * jqPlot is currently available for use in all personal or commercial projects
- * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL
- * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can
- * choose the license that best suits your project and use it accordingly.
+ * Copyright (c) 2009-2016 Chris Leonello
+ * jqPlot is currently available for use in all personal or commercial projects 
+ * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
+ * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
+ * choose the license that best suits your project and use it accordingly. 
  *
- * Although not required, the author would appreciate an email letting him
- * know of any substantial use of jqPlot.  You can reach the author at:
+ * Although not required, the author would appreciate an email letting him 
+ * know of any substantial use of jqPlot.  You can reach the author at: 
  * chris at jqplot dot com or see http://www.jqplot.com/info.php .
  *
  * If you are feeling kind and generous, consider supporting the project by
@@ -18011,10 +18391,10 @@
  *     http://hexmen.com/js/sprintf.js
  *     The author (Ash Searle) has placed this code in the public domain:
  *     "This code is unrestricted: you are free to use it however you like."
- *
+ * 
  */
 (function($) {
-
+    
     /**
      * Class: $.jqplot.Cursor
      * Plugin class representing the cursor as displayed on the plot.
@@ -18074,7 +18454,7 @@
         // prop: zoom
         // Enable plot zooming.
         this.zoom = false;
-        // zoomProxy and zoomTarget properties are not directly set by user.
+        // zoomProxy and zoomTarget properties are not directly set by user.  
         // They Will be set through call to zoomProxy method.
         this.zoomProxy = false;
         this.zoomTarget = false;
@@ -18132,9 +18512,9 @@
         this.onGrid = false;
         $.extend(true, this, options);
     };
-
+    
     $.jqplot.Cursor.cursorLegendFormatString = '%s x:%s, y:%s';
-
+    
     // called with scope of plot
     $.jqplot.Cursor.init = function (target, data, opts){
         // add a cursor attribute to the plot
@@ -18146,26 +18526,26 @@
             $.jqplot.eventListenerHooks.push(['jqplotMouseEnter', handleMouseEnter]);
             $.jqplot.eventListenerHooks.push(['jqplotMouseLeave', handleMouseLeave]);
             $.jqplot.eventListenerHooks.push(['jqplotMouseMove', handleMouseMove]);
-
-            if (c.showCursorLegend) {
+            
+            if (c.showCursorLegend) {              
                 opts.legend = opts.legend || {};
                 opts.legend.renderer =  $.jqplot.CursorLegendRenderer;
                 opts.legend.formatString = this.plugins.cursor.cursorLegendFormatString;
                 opts.legend.show = true;
             }
-
+            
             if (c.zoom) {
                 $.jqplot.eventListenerHooks.push(['jqplotMouseDown', handleMouseDown]);
-
+                
                 if (c.clickReset) {
                     $.jqplot.eventListenerHooks.push(['jqplotClick', handleClick]);
                 }
-
+                
                 if (c.dblClickReset) {
                     $.jqplot.eventListenerHooks.push(['jqplotDblClick', handleDblClick]);
-                }
+                }             
             }
-
+    
             this.resetZoom = function() {
                 var axes = this.axes;
                 if (!c.zoomProxy) {
@@ -18188,7 +18568,7 @@
                 this.plugins.cursor._zoom.isZoomed = false;
                 this.target.trigger('jqplotResetZoom', [this, this.plugins.cursor]);
             };
-
+            
 
             if (c.showTooltipDataPosition) {
                 c.showTooltipUnitPosition = false;
@@ -18199,28 +18579,28 @@
             }
         }
     };
-
+    
     // called with context of plot
     $.jqplot.Cursor.postDraw = function() {
         var c = this.plugins.cursor;
-
+        
         // Memory Leaks patch
         if (c.zoomCanvas) {
             c.zoomCanvas.resetCanvas();
             c.zoomCanvas = null;
         }
-
+        
         if (c.cursorCanvas) {
             c.cursorCanvas.resetCanvas();
             c.cursorCanvas = null;
         }
-
+        
         if (c._tooltipElem) {
             c._tooltipElem.emptyForce();
             c._tooltipElem = null;
         }
 
-
+        
         if (c.zoom) {
             c.zoomCanvas = new $.jqplot.GenericCanvas();
             this.eventCanvas._elem.before(c.zoomCanvas.createElement(this._gridPadding, 'jqplot-zoom-canvas', this._plotDimensions, this));
@@ -18232,8 +18612,8 @@
         elem = null;
         c._tooltipElem.addClass('jqplot-cursor-tooltip');
         c._tooltipElem.css({position:'absolute', display:'none'});
-
-
+        
+        
         if (c.zoomCanvas) {
             c.zoomCanvas._elem.before(c._tooltipElem);
         }
@@ -18268,7 +18648,7 @@
             }
         }
     };
-
+    
     // Group: methods
     //
     // method: $.jqplot.Cursor.zoomProxy
@@ -18286,19 +18666,19 @@
         tc.dblClickReset = false;
         cc.zoom = true;
         cc.zoomProxy = true;
-
+              
         controllerPlot.target.bind('jqplotZoom', plotZoom);
         controllerPlot.target.bind('jqplotResetZoom', plotReset);
 
         function plotZoom(ev, gridpos, datapos, plot, cursor) {
             tc.doZoom(gridpos, datapos, targetPlot, cursor);
-        }
+        } 
 
         function plotReset(ev, plot, cursor) {
             targetPlot.resetZoom();
         }
     };
-
+    
     $.jqplot.Cursor.prototype.resetZoom = function(plot, cursor) {
         var axes = plot.axes;
         var cax = cursor._zoom.axes;
@@ -18307,7 +18687,7 @@
                 // axes[ax]._ticks = [];
                 // axes[ax].min = cax[ax].min;
                 // axes[ax].max = cax[ax].max;
-                // axes[ax].numberTicks = cax[ax].numberTicks;
+                // axes[ax].numberTicks = cax[ax].numberTicks; 
                 // axes[ax].tickInterval = cax[ax].tickInterval;
                 // // for date axes
                 // axes[ax].daTickInterval = cax[ax].daTickInterval;
@@ -18327,11 +18707,11 @@
         }
         plot.target.trigger('jqplotResetZoom', [plot, cursor]);
     };
-
+    
     $.jqplot.Cursor.resetZoom = function(plot) {
         plot.resetZoom();
     };
-
+    
     $.jqplot.Cursor.prototype.doZoom = function (gridpos, datapos, plot, cursor) {
         var c = cursor;
         var axes = plot.axes;
@@ -18358,10 +18738,10 @@
                     }
 
 
-                    if ((c.constrainZoomTo == 'none') || (c.constrainZoomTo == 'x' && ax.charAt(0) == 'x') || (c.constrainZoomTo == 'y' && ax.charAt(0) == 'y')) {
+                    if ((c.constrainZoomTo == 'none') || (c.constrainZoomTo == 'x' && ax.charAt(0) == 'x') || (c.constrainZoomTo == 'y' && ax.charAt(0) == 'y')) {   
                         dp = datapos[ax];
-                        if (dp != null) {
-                            if (dp > start[ax]) {
+                        if (dp != null) {           
+                            if (dp > start[ax]) { 
                                 newmin = start[ax];
                                 newmax = dp;
                             }
@@ -18385,7 +18765,7 @@
                                     _numberTicks = plot.axes.yaxis.numberTicks;
                                 }
                             }
-
+                            
                             if (this.looseZoom && (axes[ax].renderer.constructor === $.jqplot.LinearAxisRenderer || axes[ax].renderer.constructor === $.jqplot.LogAxisRenderer )) { //} || axes[ax].renderer.constructor === $.jqplot.DateAxisRenderer)) {
 
                                 ret = $.jqplot.LinearTickGenerator(newmin, newmax, curax._scalefact, _numberTicks);
@@ -18429,7 +18809,7 @@
                             axes[ax]._ticks = [];
                         }
                     }
-
+                            
                     // if ((c.constrainZoomTo == 'x' && ax.charAt(0) == 'y' && c.autoscaleConstraint) || (c.constrainZoomTo == 'y' && ax.charAt(0) == 'x' && c.autoscaleConstraint)) {
                     //     dp = datapos[ax];
                     //     if (dp != null) {
@@ -18446,10 +18826,10 @@
             plot.target.trigger('jqplotZoom', [gridpos, datapos, plot, cursor]);
         }
     };
-
+    
     $.jqplot.preInitHooks.push($.jqplot.Cursor.init);
     $.jqplot.postDrawHooks.push($.jqplot.Cursor.postDraw);
-
+    
     function updateTooltip(gridpos, datapos, plot) {
         var c = plot.plugins.cursor;
         var s = '';
@@ -18481,12 +18861,12 @@
                 addbr = true;
             }
         }
-
+        
         if (c.showTooltipDataPosition) {
-            var series = plot.series;
+            var series = plot.series; 
             var ret = getIntersectingPoints(plot, gridpos.x, gridpos.y);
             var addbr = false;
-
+        
             for (var i = 0; i< series.length; i++) {
                 if (series[i].show) {
                     var idx = series[i].index;
@@ -18516,11 +18896,11 @@
                     }
                 }
             }
-
+            
         }
         c._tooltipElem.html(s);
     }
-
+    
     function moveLine(gridpos, plot) {
         var c = plot.plugins.cursor;
         var ctx = c.cursorCanvas._ctx;
@@ -18562,11 +18942,11 @@
                 else {
                     $(cells[i]).html($.jqplot.sprintf(c.cursorLegendFormatString, label, sx, sy));
                 }
-            }
+            }        
         }
         ctx = null;
     }
-
+        
     function getIntersectingPoints(plot, x, y) {
         var ret = {indices:[], data:[]};
         var s, i, d0, d, j, r, p;
@@ -18589,14 +18969,14 @@
                             ret.data.push({seriesIndex: i, pointIndex:j, gridData:p, data:s.data[j]});
                         }
                     }
-                }
+                } 
             }
         }
         return ret;
     }
-
+    
     function moveTooltip(gridpos, plot) {
-        var c = plot.plugins.cursor;
+        var c = plot.plugins.cursor;  
         var elem = c._tooltipElem;
         switch (c.tooltipLocation) {
             case 'nw':
@@ -18636,17 +19016,17 @@
                 var y = gridpos.y + plot._gridPadding.top + c.tooltipOffset;
                 break;
         }
-
+            
         elem.css('left', x);
         elem.css('top', y);
         elem = null;
     }
-
-    function positionTooltip(plot) {
+    
+    function positionTooltip(plot) { 
         // fake a grid for positioning
-        var grid = plot._gridPadding;
+        var grid = plot._gridPadding; 
         var c = plot.plugins.cursor;
-        var elem = c._tooltipElem;
+        var elem = c._tooltipElem;  
         switch (c.tooltipLocation) {
             case 'nw':
                 var a = grid.left + c.tooltipOffset;
@@ -18698,7 +19078,7 @@
         }
         elem = null;
     }
-
+    
     function handleClick (ev, gridpos, datapos, neighbor, plot) {
         ev.preventDefault();
         ev.stopImmediatePropagation();
@@ -18716,7 +19096,7 @@
         }
         return false;
     }
-
+    
     function handleDblClick (ev, gridpos, datapos, neighbor, plot) {
         ev.preventDefault();
         ev.stopImmediatePropagation();
@@ -18734,7 +19114,7 @@
         }
         return false;
     }
-
+    
     function handleMouseLeave(ev, gridpos, datapos, neighbor, plot) {
         var c = plot.plugins.cursor;
         c.onGrid = false;
@@ -18765,12 +19145,12 @@
                     else {
                         $(cells[i]).html($.jqplot.sprintf(c.cursorLegendFormatString, label, undefined, undefined));
                     }
-
-                }
+                
+                }        
             }
         }
     }
-
+    
     function handleMouseEnter(ev, gridpos, datapos, neighbor, plot) {
         var c = plot.plugins.cursor;
         c.onGrid = true;
@@ -18792,8 +19172,8 @@
             }
         }
 
-    }
-
+    }    
+    
     function handleMouseMove(ev, gridpos, datapos, neighbor, plot) {
         var c = plot.plugins.cursor;
         if (c.show) {
@@ -18808,7 +19188,7 @@
             }
         }
     }
-
+            
     function getEventPosition(ev) {
         var plot = ev.data.plot;
         var go = plot.eventCanvas._elem.offset();
@@ -18828,8 +19208,8 @@
         }
 
         return {offsets:go, gridPos:gridPos, dataPos:dataPos};
-    }
-
+    }    
+    
     function handleZoomMove(ev) {
         var plot = ev.data.plot;
         var c = plot.plugins.cursor;
@@ -18874,7 +19254,7 @@
             ctx = null;
         }
     }
-
+    
     function handleMouseDown(ev, gridpos, datapos, neighbor, plot) {
         var c = plot.plugins.cursor;
         if(plot.plugins.mobile){
@@ -18914,16 +19294,16 @@
             for (var ax in datapos) {
                 // get zoom starting position.
                 c._zoom.axes.start[ax] = datapos[ax];
-            }
+            }  
            if(plot.plugins.mobile){
-                $(document).bind('vmousemove.jqplotCursor', {plot:plot}, handleZoomMove);
+                $(document).bind('vmousemove.jqplotCursor', {plot:plot}, handleZoomMove);              
             } else {
-                $(document).bind('mousemove.jqplotCursor', {plot:plot}, handleZoomMove);
+                $(document).bind('mousemove.jqplotCursor', {plot:plot}, handleZoomMove);              
             }
 
         }
     }
-
+    
     function handleMouseUp(ev) {
         var plot = ev.data.plot;
         var c = plot.plugins.cursor;
@@ -18934,13 +19314,13 @@
             var height = c.zoomCanvas._ctx.canvas.height;
             var width = c.zoomCanvas._ctx.canvas.width;
             var axes = plot.axes;
-
+            
             if (c.constrainOutsideZoom && !c.onGrid) {
                 if (xpos < 0) { xpos = 0; }
                 else if (xpos > width) { xpos = width; }
                 if (ypos < 0) { ypos = 0; }
                 else if (ypos > height) { ypos = height; }
-
+                
                 for (var axis in datapos) {
                     if (datapos[axis]) {
                         if (axis.charAt(0) == 'x') {
@@ -18952,7 +19332,7 @@
                     }
                 }
             }
-
+            
             if (c.constrainZoomTo == 'x') {
                 ypos = height;
             }
@@ -18961,14 +19341,14 @@
             }
             c._zoom.end = [xpos, ypos];
             c._zoom.gridpos = {x:xpos, y:ypos};
-
+            
             c.doZoom(c._zoom.gridpos, datapos, plot, c);
         }
         c._zoom.started = false;
         c._zoom.zooming = false;
-
+        
         $(document).unbind('mousemove.jqplotCursor', handleZoomMove);
-
+        
         if (document.onselectstart != undefined && c._oldHandlers.onselectstart != null){
             document.onselectstart = c._oldHandlers.onselectstart;
             c._oldHandlers.onselectstart = null;
@@ -18983,7 +19363,7 @@
         }
 
     }
-
+    
     function drawZoomBox() {
         var start = this._zoom.start;
         var end = this._zoom.end;
@@ -19015,15 +19395,15 @@
         ctx.strokeRect(l,t,w,h);
         ctx = null;
     }
-
+    
     $.jqplot.CursorLegendRenderer = function(options) {
         $.jqplot.TableLegendRenderer.call(this, options);
         this.formatString = '%s';
     };
-
+    
     $.jqplot.CursorLegendRenderer.prototype = new $.jqplot.TableLegendRenderer();
     $.jqplot.CursorLegendRenderer.prototype.constructor = $.jqplot.CursorLegendRenderer;
-
+    
     // called in context of a Legend
     $.jqplot.CursorLegendRenderer.prototype.draw = function() {
         if (this._elem) {
@@ -19038,7 +19418,7 @@
             elem = null;
             this._elem.addClass('jqplot-legend jqplot-cursor-legend');
             this._elem.css('position', 'absolute');
-
+        
             var pad = false;
             for (var i = 0; i< series.length; i++) {
                 s = series[i];
@@ -19058,7 +19438,7 @@
                         if (item) {
                             addrow.call(this, item.label, item.color, pad);
                             pad = true;
-                        }
+                        } 
                     }
                 }
             }
@@ -19066,7 +19446,7 @@
             delete series;
             delete s;
         }
-
+        
         function addrow(label, color, pad, idx) {
             var rs = (pad) ? this.rowSpacing : '0';
             var tr = $('<tr class="jqplot-legend jqplot-cursor-legend"></tr>').appendTo(this._elem);
@@ -19089,24 +19469,24 @@
         }
         return this._elem;
     };
-
+    
 })(jQuery);
 
 /**
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.8
- * Revision: 1250
+ * Version: 1.0.9
+ * Revision: d96a669
  *
- * Copyright (c) 2009-2013 Chris Leonello
- * jqPlot is currently available for use in all personal or commercial projects
- * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL
- * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can
- * choose the license that best suits your project and use it accordingly.
+ * Copyright (c) 2009-2016 Chris Leonello
+ * jqPlot is currently available for use in all personal or commercial projects 
+ * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
+ * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
+ * choose the license that best suits your project and use it accordingly. 
  *
- * Although not required, the author would appreciate an email letting him
- * know of any substantial use of jqPlot.  You can reach the author at:
+ * Although not required, the author would appreciate an email letting him 
+ * know of any substantial use of jqPlot.  You can reach the author at: 
  * chris at jqplot dot com or see http://www.jqplot.com/info.php .
  *
  * If you are feeling kind and generous, consider supporting the project by
@@ -19120,42 +19500,42 @@
  *     http://hexmen.com/js/sprintf.js
  *     The author (Ash Searle) has placed this code in the public domain:
  *     "This code is unrestricted: you are free to use it however you like."
- *
+ * 
  */
 (function($) {
     $.jqplot.eventListenerHooks.push(['jqplotMouseMove', handleMove]);
-
+    
     /**
      * Class: $.jqplot.Highlighter
      * Plugin which will highlight data points when they are moused over.
-     *
+     * 
      * To use this plugin, include the js
      * file in your source:
-     *
+     * 
      * > <script type="text/javascript" src="plugins/jqplot.highlighter.js"></script>
-     *
+     * 
      * A tooltip providing information about the data point is enabled by default.
      * To disable the tooltip, set "showTooltip" to false.
-     *
+     * 
      * You can control what data is displayed in the tooltip with various
      * options.  The "tooltipAxes" option controls whether the x, y or both
      * data values are displayed.
-     *
+     * 
      * Some chart types (e.g. hi-low-close) have more than one y value per
      * data point. To display the additional values in the tooltip, set the
      * "yvalues" option to the desired number of y values present (3 for a hlc chart).
-     *
+     * 
      * By default, data values will be formatted with the same formatting
      * specifiers as used to format the axis ticks.  A custom format code
-     * can be supplied with the tooltipFormatString option.  This will apply
-     * to all values in the tooltip.
-     *
+     * can be supplied with the tooltipFormatString option.  This will apply 
+     * to all values in the tooltip.  
+     * 
      * For more complete control, the "formatString" option can be set.  This
      * Allows conplete control over tooltip formatting.  Values are passed to
      * the format string in an order determined by the "tooltipAxes" and "yvalues"
-     * options.  So, if you have a hi-low-close chart and you just want to display
+     * options.  So, if you have a hi-low-close chart and you just want to display 
      * the hi-low-close values in the tooltip, you could set a formatString like:
-     *
+     * 
      * > highlighter: {
      * >     tooltipAxes: 'y',
      * >     yvalues: 3,
@@ -19164,7 +19544,7 @@
      * >         <tr><td>low:</td><td>%s</td></tr>
      * >         <tr><td>close:</td><td>%s</td></tr></table>'
      * > }
-     *
+     * 
      */
     $.jqplot.Highlighter = function(options) {
         // Group: Properties
@@ -19231,7 +19611,7 @@
         // indicated by tooltipAxes option.  So, you could have a tooltip like:
         // 'Date: %s, number of cats: %d' to format the whole tooltip at one go.
         // If useAxesFormatters is true, values will be formatted according to
-        // Axes formatters and you can populate your tooltip string with
+        // Axes formatters and you can populate your tooltip string with 
         // %s placeholders.
         this.formatString = null;
         // prop: yvalues
@@ -19250,32 +19630,32 @@
 
         $.extend(true, this, options);
     };
-
+    
     var locations = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'];
     var locationIndicies = {'nw':0, 'n':1, 'ne':2, 'e':3, 'se':4, 's':5, 'sw':6, 'w':7};
     var oppositeLocations = ['se', 's', 'sw', 'w', 'nw', 'n', 'ne', 'e'];
-
+    
     // axis.renderer.tickrenderer.formatter
-
+    
     // called with scope of plot
     $.jqplot.Highlighter.init = function (target, data, opts){
         var options = opts || {};
         // add a highlighter attribute to the plot
         this.plugins.highlighter = new $.jqplot.Highlighter(options.highlighter);
     };
-
+    
     // called within scope of series
     $.jqplot.Highlighter.parseOptions = function (defaults, options) {
-        // Add a showHighlight option to the series
+        // Add a showHighlight option to the series 
         // and set it to true by default.
         this.showHighlight = true;
     };
-
+    
     // called within context of plot
     // create a canvas which we can draw on.
     // insert it before the eventCanvas, so eventCanvas will still capture events.
     $.jqplot.Highlighter.postPlotDraw = function() {
-        // Memory Leaks patch
+        // Memory Leaks patch    
         if (this.plugins.highlighter && this.plugins.highlighter.highlightCanvas) {
             this.plugins.highlighter.highlightCanvas.resetCanvas();
             this.plugins.highlighter.highlightCanvas = null;
@@ -19287,7 +19667,7 @@
         }
 
         this.plugins.highlighter.highlightCanvas = new $.jqplot.GenericCanvas();
-
+        
         this.eventCanvas._elem.before(this.plugins.highlighter.highlightCanvas.createElement(this._gridPadding, 'jqplot-highlight-canvas', this._plotDimensions, this));
         this.plugins.highlighter.highlightCanvas.setContext();
 
@@ -19296,14 +19676,14 @@
         elem = null;
         this.plugins.highlighter._tooltipElem.addClass('jqplot-highlighter-tooltip');
         this.plugins.highlighter._tooltipElem.css({position:'absolute', display:'none'});
-
+        
         this.eventCanvas._elem.before(this.plugins.highlighter._tooltipElem);
     };
-
+    
     $.jqplot.preInitHooks.push($.jqplot.Highlighter.init);
     $.jqplot.preParseSeriesOptionsHooks.push($.jqplot.Highlighter.parseOptions);
     $.jqplot.postDrawHooks.push($.jqplot.Highlighter.postPlotDraw);
-
+    
     function draw(plot, neighbor) {
         var hl = plot.plugins.highlighter;
         var s = plot.series[neighbor.seriesIndex];
@@ -19330,7 +19710,7 @@
         }
         mr.draw(x_pos, y_pos, hl.highlightCanvas._ctx);
     }
-
+    
     function showTooltip(plot, series, neighbor) {
         // neighbor looks like: {seriesIndex: i, pointIndex:j, gridData:p, data:s.data[j]}
         // gridData should be x,y pixel coords on the grid.
@@ -19377,7 +19757,7 @@
                         ystrs.unshift(opts.formatString);
                         str = $.jqplot.sprintf.apply($.jqplot.sprintf, ystrs);
                         break;
-                }
+                } 
             }
             else {
                 switch (opts.tooltipAxes) {
@@ -19407,8 +19787,8 @@
                             str += opts.tooltipSeparator + ystrs[i];
                         }
                         break;
-
-                }
+                    
+                }                
             }
         }
         else {
@@ -19429,7 +19809,7 @@
                 }
                 else if (opts.tooltipAxes == 'y') {
                     str = $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[1]);
-                }
+                } 
             }
         }
         if ($.isFunction(opts.tooltipContentEditor)) {
@@ -19441,7 +19821,7 @@
         var gridpos = {x:neighbor.gridData[0], y:neighbor.gridData[1]};
         var ms = 0;
         var fact = 0.707;
-        if (series.markerRenderer.show == true) {
+        if (series.markerRenderer.show == true) { 
             ms = (series.markerRenderer.size + opts.sizeAdjust)/2;
         }
 
@@ -19487,7 +19867,7 @@
                 var x = gridpos.x + plot._gridPadding.left - elem.outerWidth(true) - opts.tooltipOffset - fact * ms;
                 var y = gridpos.y + plot._gridPadding.top - opts.tooltipOffset - elem.outerHeight(true) - fact * ms;
                 break;
-        }
+        } 
         if (series.renderer.constructor == $.jqplot.BarRenderer) {
     	    if (series.barDirection == 'vertical') {
     	        x += series._barNudge;
@@ -19495,7 +19875,7 @@
     	    else {
     	        y -= series._barNudge;
     	    }
-    	}
+    	}     
         elem.css('left', x);
         elem.css('top', y);
         if (opts.fadeTooltip) {
@@ -19506,9 +19886,9 @@
             elem.show();
         }
         elem = null;
-
+        
     }
-
+    
     function handleMove(ev, gridpos, datapos, neighbor, plot) {
         var hl = plot.plugins.highlighter;
         var c = plot.plugins.cursor;
@@ -19570,8 +19950,8 @@
                     }
                     if (hl.bringSeriesToFront) {
                         plot.moveSeriesToFront(neighbor.seriesIndex);
-                    }
-                }
+                    }                    
+                }                
             }
         }
     }
@@ -19581,17 +19961,17 @@
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.0
- * Revision: 1095
+ * Version: 1.0.9
+ * Revision: d96a669
  *
- * Copyright (c) 2009-2011 Chris Leonello
- * jqPlot is currently available for use in all personal or commercial projects
- * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL
- * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can
- * choose the license that best suits your project and use it accordingly.
+ * Copyright (c) 2009-2016 Chris Leonello
+ * jqPlot is currently available for use in all personal or commercial projects 
+ * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
+ * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
+ * choose the license that best suits your project and use it accordingly. 
  *
- * Although not required, the author would appreciate an email letting him
- * know of any substantial use of jqPlot.  You can reach the author at:
+ * Although not required, the author would appreciate an email letting him 
+ * know of any substantial use of jqPlot.  You can reach the author at: 
  * chris at jqplot dot com or see http://www.jqplot.com/info.php .
  *
  * If you are feeling kind and generous, consider supporting the project by
@@ -19605,33 +19985,33 @@
  *     http://hexmen.com/js/sprintf.js
  *     The author (Ash Searle) has placed this code in the public domain:
  *     "This code is unrestricted: you are free to use it however you like."
- *
+ * 
  */
-(function($) {
+(function($) {  
     /**
      * Class: $.jqplot.DateAxisRenderer
      * A plugin for a jqPlot to render an axis as a series of date values.
      * This renderer has no options beyond those supplied by the <Axis> class.
-     * It supplies it's own tick formatter, so the tickOptions.formatter option
+     * It supplies its own tick formatter, so the tickOptions.formatter option
      * should not be overridden.
-     *
+     * 
      * Thanks to Ken Synder for his enhanced Date instance methods which are
      * included with this code <http://kendsnyder.com/sandbox/date/>.
-     *
+     * 
      * To use this renderer, include the plugin in your source
      * > <script type="text/javascript" language="javascript" src="plugins/jqplot.dateAxisRenderer.js"></script>
-     *
+     * 
      * and supply the appropriate options to your plot
-     *
+     * 
      * > {axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer}}}
-     *
-     * Dates can be passed into the axis in almost any recognizable value and
+     * 
+     * Dates can be passed into the axis in almost any recognizable value and 
      * will be parsed.  They will be rendered on the axis in the format
      * specified by tickOptions.formatString.  e.g. tickOptions.formatString = '%Y-%m-%d'.
-     *
-     * Accecptable format codes
+     * 
+     * Accecptable format codes 
      * are:
-     *
+     * 
      * > Code    Result                  Description
      * >             == Years ==
      * > %Y      2008                Four-digit year
@@ -19682,7 +20062,7 @@
      * >             == Characters ==
      * > %n      \n                  Newline
      * > %t      \t                  Tab
-     * > %%      %                   Percent Symbol
+     * > %%      %                   Percent Symbol 
      */
     $.jqplot.DateAxisRenderer = function() {
         $.jqplot.LinearAxisRenderer.call(this);
@@ -19722,26 +20102,26 @@
 
         return [bestTi, bestfmt];
     }
-
+    
     $.jqplot.DateAxisRenderer.prototype = new $.jqplot.LinearAxisRenderer();
     $.jqplot.DateAxisRenderer.prototype.constructor = $.jqplot.DateAxisRenderer;
-
+    
     $.jqplot.DateTickFormatter = function(format, val) {
         if (!format) {
             format = '%Y/%m/%d';
         }
         return $.jsDate.strftime(val, format);
     };
-
+    
     $.jqplot.DateAxisRenderer.prototype.init = function(options){
         // prop: tickRenderer
-        // A class of a rendering engine for creating the ticks labels displayed on the plot,
+        // A class of a rendering engine for creating the ticks labels displayed on the plot, 
         // See <$.jqplot.AxisTickRenderer>.
         // this.tickRenderer = $.jqplot.AxisTickRenderer;
         // this.labelRenderer = $.jqplot.AxisLabelRenderer;
         this.tickOptions.formatter = $.jqplot.DateTickFormatter;
         // prop: tickInset
-        // Controls the amount to inset the first and last ticks from
+        // Controls the amount to inset the first and last ticks from 
         // the edges of the grid, in multiples of the tick interval.
         // 0 is no inset, 0.5 is one half a tick interval, 1 is a full
         // tick interval, etc.
@@ -19757,18 +20137,18 @@
         this.baselineColor = null;
         this.daTickInterval = null;
         this._daTickInterval = null;
-
+        
         $.extend(true, this, options);
-
+        
         var db = this._dataBounds,
-            stats,
+            stats, 
             sum,
             s,
             d,
             pd,
             sd,
             intv;
-
+        
         // Go through all the series attached to this axis and find
         // the min/max bounds for this axis.
         for (var i=0; i<this._series.length; i++) {
@@ -19779,8 +20159,8 @@
             pd = s._plotData;
             sd = s._stackData;
             intv = 0;
-
-            for (var j=0; j<d.length; j++) {
+            
+            for (var j=0; j<d.length; j++) { 
                 if (this.name == 'xaxis' || this.name == 'x2axis') {
                     d[j][0] = new $.jsDate(d[j][0]).getTime();
                     pd[j][0] = new $.jsDate(d[j][0]).getTime();
@@ -19802,8 +20182,8 @@
                         }
                     }
                     sum += intv;
-
-                }
+                    
+                }              
                 else {
                     d[j][1] = new $.jsDate(d[j][1]).getTime();
                     pd[j][1] = new $.jsDate(d[j][1]).getTime();
@@ -19825,7 +20205,7 @@
                         }
                     }
                 }
-                sum += intv;
+                sum += intv;              
             }
 
             if (s.renderer.bands) {
@@ -19836,8 +20216,8 @@
                             bd[j][0] = new $.jsDate(bd[j][0]).getTime();
                             if ((bd[j][0] != null && bd[j][0] > db.max) || db.max == null) {
                                 db.max = bd[j][0];
-                            }
-                        }
+                            }                        
+                        }              
                         else {
                             bd[j][1] = new $.jsDate(bd[j][1]).getTime();
                             if ((bd[j][1] != null && bd[j][1] > db.max) || db.max == null) {
@@ -19853,8 +20233,8 @@
                             bd[j][0] = new $.jsDate(bd[j][0]).getTime();
                             if ((bd[j][0] != null && bd[j][0] < db.min) || db.min == null) {
                                 db.min = bd[j][0];
-                            }
-                        }
+                            }                       
+                        }              
                         else {
                             bd[j][1] = new $.jsDate(bd[j][1]).getTime();
                             if ((bd[j][1] != null && bd[j][1] < db.min) || db.min == null) {
@@ -19864,7 +20244,7 @@
                     }
                 }
             }
-
+            
             var tempf = 0,
                 tempn=0;
             for (var n in stats.frequencies) {
@@ -19873,7 +20253,7 @@
             stats.sortedIntervals.sort(function(a, b){
                 return b.frequency - a.frequency;
             });
-
+            
             stats.min = $.jqplot.arrayMin(stats.intervals);
             stats.max = $.jqplot.arrayMax(stats.intervals);
             stats.mean = sum/d.length;
@@ -19881,9 +20261,9 @@
             stats = sum = s = d = pd = sd = null;
         }
         db = null;
-
+        
     };
-
+    
     // called with scope of an axis
     $.jqplot.DateAxisRenderer.prototype.reset = function() {
         this.min = this._options.min;
@@ -19897,7 +20277,7 @@
         this.daTickInterval = this._daTickInterval;
         // this._ticks = this.__ticks;
     };
-
+    
     $.jqplot.DateAxisRenderer.prototype.createTicks = function(plot) {
         // we're are operating on an axis here
         var ticks = this._ticks;
@@ -19913,14 +20293,35 @@
         var tt, i;
         var threshold = 30;
         var insetMult = 1;
+        var daTickInterval = null;
+        
+        // if user specified a tick interval, convert to usable.
+        if (this.tickInterval != null)
+        {
+            // if interval is a number or can be converted to one, use it.
+            // Assume it is in SECONDS!!!
+            if (Number(this.tickInterval)) {
+                daTickInterval = [Number(this.tickInterval), 'seconds'];
+            }
+            // else, parse out something we can build from.
+            else if (typeof this.tickInterval == "string") {
+                var parts = this.tickInterval.split(' ');
+                if (parts.length == 1) {
+                    daTickInterval = [1, parts[0]];
+                }
+                else if (parts.length == 2) {
+                    daTickInterval = [parts[0], parts[1]];
+                }
+            }
+        }
 
         var tickInterval = this.tickInterval;
-
+        
         // if we already have ticks, use them.
         // ticks must be in order of increasing value.
-
-        min = ((this.min != null) ? new $.jsDate(this.min).getTime() : db.min);
-        max = ((this.max != null) ? new $.jsDate(this.max).getTime() : db.max);
+        
+        min = new $.jsDate((this.min != null) ? this.min : db.min).getTime();
+        max = new $.jsDate((this.max != null) ? this.max : db.max).getTime();
 
         // see if we're zooming.  if we are, don't use the min and max we're given,
         // but compute some nice ones.  They will be reset later.
@@ -19937,7 +20338,7 @@
         if (this.tickOptions == null || !this.tickOptions.formatString) {
             this._overrideFormatString = true;
         }
-
+        
         if (userTicks.length) {
             // ticks could be 1D or 2D array of [val, val, ,,,] or [[val, label], [val, label], ...] or mixed
             for (i=0; i<userTicks.length; i++){
@@ -19956,7 +20357,7 @@
                     t.setTick(t.value, this.name);
                     this._ticks.push(t);
                 }
-
+                
                 else {
                     t.value = new $.jsDate(ut).getTime();
                     if (!this.showTicks) {
@@ -20010,14 +20411,14 @@
              }
              if(this.showTickMarks) {
                  this._ticks[1].showTickMarks = true;
-             }
+             }                   
         }
         // if user specified min and max are null, we set those to make best ticks.
         else if (this.min == null && this.max == null) {
 
             var opts = $.extend(true, {}, this.tickOptions, {name: this.name, value: null});
 
-            // want to find a nice interval
+            // want to find a nice interval 
             var nttarget,
                 titarget;
 
@@ -20038,16 +20439,16 @@
             }
 
             // If tickInterval is specified, we'll try to honor it.
-            // Not gauranteed to get this interval, but we'll get as close as
+            // Not guaranteed to get this interval, but we'll get as close as
             // we can.
             // tickInterval will be used before numberTicks, that is if
             // both are specified, numberTicks will be ignored.
             else if (this.tickInterval) {
-                titarget = this.tickInterval;
+                titarget = new $.jsDate(0).add(daTickInterval[0], daTickInterval[1]).getTime();
             }
 
             // if numberTicks specified, try to honor it.
-            // Not gauranteed, but will try to get close.
+            // Not guaranteed, but will try to get close.
             else if (this.numberTicks) {
                 nttarget = this.numberTicks;
                 titarget = (max - min) / (nttarget - 1);
@@ -20059,9 +20460,8 @@
                 var tempti = ret[0];
                 this._autoFormatString = ret[1];
 
-                min = Math.floor(min/tempti) * tempti;
                 min = new $.jsDate(min);
-                min = min.getTime() + min.getUtcOffset();
+                min = Math.floor((min.getTime() - min.getUtcOffset())/tempti) * tempti + min.getUtcOffset();
 
                 nttarget = Math.ceil((max - min) / tempti) + 1;
                 this.min = min;
@@ -20078,7 +20478,7 @@
                 for (var i=0; i<nttarget; i++) {
                     opts.value = this.min + i * tempti;
                     t = new this.tickRenderer(opts);
-
+                    
                     if (this._overrideFormatString && this._autoFormatString != '') {
                         t.formatString = this._autoFormatString;
                     }
@@ -20136,7 +20536,7 @@
                         opts.value = mstart.add(intv, 'month').getTime();
                     }
                     t = new this.tickRenderer(opts);
-
+                    
                     if (this._overrideFormatString && this._autoFormatString != '') {
                         t.formatString = this._autoFormatString;
                     }
@@ -20184,7 +20584,7 @@
                         opts.value = mstart.add(intv, 'year').getTime();
                     }
                     t = new this.tickRenderer(opts);
-
+                    
                     if (this._overrideFormatString && this._autoFormatString != '') {
                         t.formatString = this._autoFormatString;
                     }
@@ -20205,40 +20605,24 @@
         ////////
         // Some option(s) specified, work around that.
         ////////
-
-        else {
+        
+        else {      
             if (name == 'xaxis' || name == 'x2axis') {
                 dim = this._plotDimensions.width;
             }
             else {
                 dim = this._plotDimensions.height;
             }
-
+            
             // if min, max and number of ticks specified, user can't specify interval.
             if (this.min != null && this.max != null && this.numberTicks != null) {
                 this.tickInterval = null;
             }
-
-            // if user specified a tick interval, convert to usable.
-            if (this.tickInterval != null)
-            {
-                // if interval is a number or can be converted to one, use it.
-                // Assume it is in SECONDS!!!
-                if (Number(this.tickInterval)) {
-                    this.daTickInterval = [Number(this.tickInterval), 'seconds'];
-                }
-                // else, parse out something we can build from.
-                else if (typeof this.tickInterval == "string") {
-                    var parts = this.tickInterval.split(' ');
-                    if (parts.length == 1) {
-                        this.daTickInterval = [1, parts[0]];
-                    }
-                    else if (parts.length == 2) {
-                        this.daTickInterval = [parts[0], parts[1]];
-                    }
-                }
+            
+            if (this.tickInterval != null && daTickInterval != null) {
+                this.daTickInterval = daTickInterval;
             }
-
+            
             // if min and max are same, space them out a bit
             if (min == max) {
                 var adj = 24*60*60*500;  // 1/2 day
@@ -20247,18 +20631,18 @@
             }
 
             range = max - min;
-
+            
             var optNumTicks = 2 + parseInt(Math.max(0, dim-100)/100, 10);
-
-
+            
+            
             var rmin, rmax;
-
+            
             rmin = (this.min != null) ? new $.jsDate(this.min).getTime() : min - range/2*(this.padMin - 1);
             rmax = (this.max != null) ? new $.jsDate(this.max).getTime() : max + range/2*(this.padMax - 1);
             this.min = rmin;
             this.max = rmax;
             range = this.max - this.min;
-
+            
             if (this.numberTicks == null){
                 // if tickInterval is specified by user, we will ignore computed maximum.
                 // max will be equal or greater to fit even # of ticks.
@@ -20275,7 +20659,7 @@
                     this.numberTicks = 2;
                 }
             }
-
+            
             insetMult = range / (this.numberTicks-1)/1000;
 
             if (this.daTickInterval == null) {
@@ -20306,29 +20690,29 @@
         }
 
         if (this._daTickInterval == null) {
-            this._daTickInterval = this.daTickInterval;
+            this._daTickInterval = this.daTickInterval;    
         }
 
         ticks = null;
     };
-
+   
 })(jQuery);
 
 /**
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
- * Version: 1.0.0
- * Revision: 1095
+ * Version: 1.0.9
+ * Revision: d96a669
  *
- * Copyright (c) 2009-2011 Chris Leonello
- * jqPlot is currently available for use in all personal or commercial projects
- * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL
- * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can
- * choose the license that best suits your project and use it accordingly.
+ * Copyright (c) 2009-2016 Chris Leonello
+ * jqPlot is currently available for use in all personal or commercial projects 
+ * under both the MIT (http://www.opensource.org/licenses/mit-license.php) and GPL 
+ * version 2.0 (http://www.gnu.org/licenses/gpl-2.0.html) licenses. This means that you can 
+ * choose the license that best suits your project and use it accordingly. 
  *
- * Although not required, the author would appreciate an email letting him
- * know of any substantial use of jqPlot.  You can reach the author at:
+ * Although not required, the author would appreciate an email letting him 
+ * know of any substantial use of jqPlot.  You can reach the author at: 
  * chris at jqplot dot com or see http://www.jqplot.com/info.php .
  *
  * If you are feeling kind and generous, consider supporting the project by
@@ -20342,54 +20726,54 @@
  *     http://hexmen.com/js/sprintf.js
  *     The author (Ash Searle) has placed this code in the public domain:
  *     "This code is unrestricted: you are free to use it however you like."
- *
+ * 
  */
 (function($) {
-
+    
     /**
      * Class: $.jqplot.PointLabels
      * Plugin for putting labels at the data points.
-     *
+     * 
      * To use this plugin, include the js
      * file in your source:
-     *
+     * 
      * > <script type="text/javascript" src="plugins/jqplot.pointLabels.js"></script>
-     *
+     * 
      * By default, the last value in the data ponit array in the data series is used
-     * for the label.  For most series renderers, extra data can be added to the
+     * for the label.  For most series renderers, extra data can be added to the 
      * data point arrays and the last value will be used as the label.
-     *
-     * For instance,
+     * 
+     * For instance, 
      * this series:
-     *
+     * 
      * > [[1,4], [3,5], [7,2]]
-     *
+     * 
      * Would, by default, use the y values in the labels.
      * Extra data can be added to the series like so:
-     *
+     * 
      * > [[1,4,'mid'], [3 5,'hi'], [7,2,'low']]
-     *
+     * 
      * And now the point labels would be 'mid', 'low', and 'hi'.
-     *
+     * 
      * Options to the point labels and a custom labels array can be passed into the
      * "pointLabels" option on the series option like so:
-     *
+     * 
      * > series:[{pointLabels:{
      * >    labels:['mid', 'hi', 'low'],
      * >    location:'se',
      * >    ypadding: 12
      * >    }
      * > }]
-     *
+     * 
      * A custom labels array in the options takes precendence over any labels
      * in the series data.  If you have a custom labels array in the options,
      * but still want to use values from the series array as labels, set the
      * "labelsFromSeries" option to true.
-     *
-     * By default, html entities (<, >, etc.) are escaped in point labels.
-     * If you want to include actual html markup in the labels,
+     * 
+     * By default, html entities (<, >, etc.) are escaped in point labels.  
+     * If you want to include actual html markup in the labels, 
      * set the "escapeHTML" option to false.
-     *
+     * 
      */
     $.jqplot.PointLabels = function(options) {
         // Group: Properties
@@ -20443,14 +20827,14 @@
         // true to not show a label for a value which is 0.
         this.hideZeros = false;
         this._elems = [];
-
+        
         $.extend(true, this, options);
     };
-
+    
     var locations = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'];
     var locationIndicies = {'nw':0, 'n':1, 'ne':2, 'e':3, 'se':4, 's':5, 'sw':6, 'w':7};
     var oppositeLocations = ['se', 's', 'sw', 'w', 'nw', 'n', 'ne', 'e'];
-
+    
     // called with scope of a series
     $.jqplot.PointLabels.init = function (target, data, seriesDefaults, opts, plot){
         var options = $.extend(true, {}, seriesDefaults, opts);
@@ -20462,22 +20846,22 @@
         this.plugins.pointLabels = new $.jqplot.PointLabels(options.pointLabels);
         this.plugins.pointLabels.setLabels.call(this);
     };
-
+    
     // called with scope of series
-    $.jqplot.PointLabels.prototype.setLabels = function() {
-        var p = this.plugins.pointLabels;
+    $.jqplot.PointLabels.prototype.setLabels = function() {   
+        var p = this.plugins.pointLabels; 
         var labelIdx;
         if (p.seriesLabelIndex != null) {
             labelIdx = p.seriesLabelIndex;
         }
         else if (this.renderer.constructor === $.jqplot.BarRenderer && this.barDirection === 'horizontal') {
-            labelIdx = 0;
+           labelIdx = (this._plotData[0].length < 3) ? 0 : this._plotData[0].length -1;
         }
         else {
             labelIdx = (this._plotData.length === 0) ? 0 : this._plotData[0].length -1;
         }
         p._labels = [];
-        if (p.labels.length === 0 || p.labelsFromSeries) {
+        if (p.labels.length === 0 || p.labelsFromSeries) {    
             if (p.stackedValue) {
                 if (this._plotData.length && this._plotData[0].length){
                     // var idx = p.seriesLabelIndex || this._plotData[0].length -1;
@@ -20487,7 +20871,8 @@
                 }
             }
             else {
-                var d = this._plotData;
+                // var d = this._plotData;
+                var d = this.data;
                 if (this.renderer.constructor === $.jqplot.BarRenderer && this.waterfall) {
                     d = this._data;
                 }
@@ -20504,12 +20889,12 @@
             p._labels = p.labels;
         }
     };
-
+    
     $.jqplot.PointLabels.prototype.xOffset = function(elem, location, padding) {
         location = location || this.location;
         padding = padding || this.xpadding;
         var offset;
-
+        
         switch (location) {
             case 'nw':
                 offset = -elem.outerWidth(true) - this.xpadding;
@@ -20539,14 +20924,14 @@
                 offset = -elem.outerWidth(true) - this.xpadding;
                 break;
         }
-        return offset;
+        return offset; 
     };
-
+    
     $.jqplot.PointLabels.prototype.yOffset = function(elem, location, padding) {
         location = location || this.location;
         padding = padding || this.xpadding;
         var offset;
-
+        
         switch (location) {
             case 'nw':
                 offset = -elem.outerHeight(true) - this.ypadding;
@@ -20576,9 +20961,9 @@
                 offset = -elem.outerHeight(true) - this.ypadding;
                 break;
         }
-        return offset;
+        return offset; 
     };
-
+    
     // called with scope of series
     $.jqplot.PointLabels.draw = function (sctx, options, plot) {
         var p = this.plugins.pointLabels;
@@ -20588,33 +20973,34 @@
         for (var i=0; i<p._elems.length; i++) {
             // Memory Leaks patch
             // p._elems[i].remove();
-            p._elems[i].emptyForce();
+            if(p._elems[i]) {
+                p._elems[i].emptyForce();
+            }
         }
         p._elems.splice(0, p._elems.length);
 
         if (p.show) {
             var ax = '_'+this._stackAxis+'axis';
-
+        
             if (!p.formatString) {
                 p.formatString = this[ax]._ticks[0].formatString;
                 p.formatter = this[ax]._ticks[0].formatter;
             }
-
+        
             var pd = this._plotData;
+            var ppd = this._prevPlotData;
             var xax = this._xaxis;
             var yax = this._yaxis;
             var elem, helem;
 
             for (var i=0, l=p._labels.length; i < l; i++) {
                 var label = p._labels[i];
-
-                if (p.hideZeros && parseInt(p._labels[i], 10) == 0) {
-                    label = '';
+                
+                if (label == null || (p.hideZeros && parseFloat(label) == 0)) {
+                    continue;
                 }
-
-                if (label != null) {
-                    label = p.formatter(p.formatString, label);
-                }
+                
+                label = p.formatter(p.formatString, label);
 
                 helem = document.createElement('div');
                 p._elems[i] = $(helem);
@@ -20636,8 +21022,23 @@
                 if ((this.fillToZero && pd[i][1] < 0) || (this.fillToZero && this._type === 'bar' && this.barDirection === 'horizontal' && pd[i][0] < 0) || (this.waterfall && parseInt(label, 10)) < 0) {
                     location = oppositeLocations[locationIndicies[location]];
                 }
+
+
                 var ell = xax.u2p(pd[i][0]) + p.xOffset(elem, location);
                 var elt = yax.u2p(pd[i][1]) + p.yOffset(elem, location);
+
+                // we have stacked chart but are not showing stacked values,
+                // place labels in center.
+                /* PrimeFaces Github #3821 */
+                /*if (this._stack && !p.stackedValue) {
+                    if (this.barDirection === "vertical") {
+                        elt = (this._barPoints[i][0][1] + this._barPoints[i][1][1]) / 2 + plot._gridPadding.top - 0.5 * elem.outerHeight(true);
+                    }
+                    else {
+                        ell = (this._barPoints[i][2][0] + this._barPoints[i][0][0]) / 2 + plot._gridPadding.left - 0.5 * elem.outerWidth(true);
+                    }
+                }*/
+
                 if (this.renderer.constructor == $.jqplot.BarRenderer) {
                     if (this.barDirection == "vertical") {
                         ell += this._barNudge;
@@ -20673,8 +21074,7 @@
 
         }
     };
-
+    
     $.jqplot.postSeriesInitHooks.push($.jqplot.PointLabels.init);
     $.jqplot.postDrawSeriesHooks.push($.jqplot.PointLabels.draw);
-
 })(jQuery);

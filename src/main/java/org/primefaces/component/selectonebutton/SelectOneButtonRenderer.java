@@ -17,6 +17,7 @@ package org.primefaces.component.selectonebutton;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.component.UISelectOne;
@@ -26,6 +27,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
+
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -104,8 +106,8 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
     }
 
     protected void encodeOption(FacesContext context, SelectOneButton button, SelectItem option, String id, String name, Converter converter,
-            boolean selected, boolean disabled, int idx, int size) throws IOException {
-        
+                                boolean selected, boolean disabled, int idx, int size) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, button, converter, option.getValue());
 
@@ -127,7 +129,9 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", buttonStyle, null);
         writer.writeAttribute("tabindex", button.getTabindex(), null);
-        if (option.getDescription() != null) writer.writeAttribute("title", option.getDescription(), null);
+        if (option.getDescription() != null) {
+            writer.writeAttribute("title", option.getDescription(), null);
+        }
 
         //input
         writer.startElement("input", null);
@@ -138,22 +142,24 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
         writer.writeAttribute("tabindex", "-1", null);
 
-        if (selected) writer.writeAttribute("checked", "checked", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
+        if (selected) {
+            writer.writeAttribute("checked", "checked", null);
+        }
 
+        renderAccessibilityAttributes(context, button);
         writer.endElement("input");
 
         //item label
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
-        
+
         if (option.isEscape()) {
             writer.writeText(option.getLabel(), "itemLabel");
         }
         else {
             writer.write(option.getLabel());
         }
-        
+
         writer.endElement("span");
 
         writer.endElement("div");

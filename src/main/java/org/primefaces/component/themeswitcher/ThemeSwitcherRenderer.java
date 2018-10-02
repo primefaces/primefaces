@@ -18,6 +18,7 @@ package org.primefaces.component.themeswitcher;
 import java.io.IOException;
 
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.component.selectonemenu.SelectOneMenuRenderer;
 import org.primefaces.util.WidgetBuilder;

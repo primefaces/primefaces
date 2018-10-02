@@ -16,7 +16,6 @@
 package org.primefaces.mock.pf;
 
 import javax.faces.context.FacesContext;
-import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 
 public class PrimeApplicationContextMock extends PrimeApplicationContext {

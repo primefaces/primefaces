@@ -62,9 +62,9 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
     public void handle(FacesContext context) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         ExternalContext externalContext = context.getExternalContext();
-        String sessionKey = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
+        String sessionKey = params.get(Constants.DYNAMIC_CONTENT_PARAM);
         Map<String, Object> session = externalContext.getSessionMap();
-        Map<String, String> barcodeMapping = (Map) session.get(Constants.BARCODE_MAPPING);
+        Map<String, String> barcodeMapping = (Map<String, String>) session.get(Constants.BARCODE_MAPPING);
         String value = barcodeMapping.get(sessionKey);
 
         if (value != null) {

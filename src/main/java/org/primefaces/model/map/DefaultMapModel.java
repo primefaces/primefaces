@@ -32,7 +32,7 @@ public class DefaultMapModel implements MapModel, Serializable {
     private final static String CIRCLE_ID_PREFIX = "circle_";
 
     private final static String RECTANGLE_ID_PREFIX = "rectangle_";
-    
+
     private List<Marker> markers;
     private List<Polyline> polylines;
     private List<Polygon> polygons;

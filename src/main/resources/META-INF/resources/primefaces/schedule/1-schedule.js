@@ -98,7 +98,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 var ext = {
                     params: [
                         {name: $this.id + '_movedEventId', value: calEvent.id},
-                        {name: $this.id + '_dayDelta', value: delta.days()},
+                        {name: $this.id + '_dayDelta', value: delta._days},
                         {name: $this.id + '_minuteDelta', value: (delta._milliseconds/60000)}
                     ]
                 };
@@ -112,7 +112,7 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
                 var ext = {
                     params: [
                         {name: $this.id + '_resizedEventId', value: calEvent.id},
-                        {name: $this.id + '_dayDelta', value: delta.days()},
+                        {name: $this.id + '_dayDelta', value: delta._days},
                         {name: $this.id + '_minuteDelta', value: (delta._milliseconds/60000)}
                     ]
                 };
@@ -191,7 +191,8 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     bindViewChangeListener: function() {
-        var viewButtons = this.jqc.find('> .fc-toolbar button:not(.fc-prev-button,.fc-next-button,.fc-today-button)'),
+        var excludedClasses = '.fc-prev-button,.fc-next-button,.fc-prevYear-button,.fc-nextYear-button,.fc-today-button';
+        var viewButtons = this.jqc.find('> .fc-toolbar button:not(' + excludedClasses + ')'),
             $this = this;
 
         viewButtons.each(function(i) {

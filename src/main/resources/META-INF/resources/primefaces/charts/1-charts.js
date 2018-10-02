@@ -255,7 +255,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
             this.plot.destroy();
         }
 
-        this.init(cfg);
+        this._super(cfg);
     },
 
     //@Override
@@ -287,7 +287,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
 
         this.cfg.resetAxesOnResize = (this.cfg.resetAxesOnResize === false) ? false : true;
 
-        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, $this.jq, function() {
+        PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.jq, function() {
             var replotOptions = {
                 resetAxes: $this.cfg.resetAxesOnResize
             };
@@ -319,7 +319,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
         //legend config
         if(this.cfg.legendPosition) {
             this.cfg.legend = {
-                renderer: $.jqplot.EnhancedLegendRenderer,
+                renderer: this.cfg.type === 'pie' ? $.jqplot.EnhancedPieLegendRenderer : $.jqplot.EnhancedLegendRenderer,
                 show: true,
                 escapeHtml: this.cfg.escapeHtml,
                 location: this.cfg.legendPosition,

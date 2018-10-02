@@ -15,7 +15,6 @@
  */
 package org.primefaces.util;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,20 +22,15 @@ import java.util.List;
  */
 public class BeanUtils {
 
-    private static List<Class<?>> primitiveTypes;
-
-    static {
-        primitiveTypes = new ArrayList<Class<?>>();
-        primitiveTypes.add(Boolean.class);
-        primitiveTypes.add(Byte.class);
-        primitiveTypes.add(Character.class);
-        primitiveTypes.add(Double.class);
-        primitiveTypes.add(Float.class);
-        primitiveTypes.add(Integer.class);
-        primitiveTypes.add(Long.class);
-        primitiveTypes.add(Short.class);
-        primitiveTypes.add(String.class);
-    }
+    private static final List<Class<?>> PRIMITIVES = LangUtils.<Class<?>>unmodifiableList(Boolean.class,
+            Byte.class,
+            Character.class,
+            Double.class,
+            Float.class,
+            Integer.class,
+            Long.class,
+            Short.class,
+            String.class);
 
     public static boolean isBean(Class<?> valueClass) {
         if (valueClass.isArray()) {
@@ -46,10 +40,10 @@ public class BeanUtils {
             return false;
         }
         else {
-            return !primitiveTypes.contains(valueClass);
+            return !PRIMITIVES.contains(valueClass);
         }
     }
-    
+
     public static boolean isBean(Object value) {
         if (value instanceof Boolean || value instanceof String || value instanceof Number) {
             return false;

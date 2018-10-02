@@ -16,8 +16,12 @@
 package org.primefaces.component.export;
 
 import java.io.IOException;
+
 import javax.faces.context.ExternalContext;
+
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 /**
@@ -40,5 +44,13 @@ public class ExcelXStreamExporter extends ExcelXExporter {
     protected void writeExcelToResponse(ExternalContext externalContext, Workbook generatedExcel, String filename) throws IOException {
         super.writeExcelToResponse(externalContext, generatedExcel, filename);
         ((SXSSFWorkbook) generatedExcel).dispose();
+    }
+
+    @Override
+    protected Sheet createSheet(Workbook wb, String sheetName) {
+        SXSSFWorkbook workbook = (SXSSFWorkbook) wb;
+        SXSSFSheet sheet =  workbook.createSheet(sheetName);
+        sheet.trackAllColumnsForAutoSizing();
+        return sheet;
     }
 }

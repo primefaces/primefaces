@@ -17,18 +17,17 @@ package org.primefaces.component.megamenu;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.separator.UISeparator;
-import org.primefaces.model.menu.MenuColumn;
-import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.MenuItem;
-import org.primefaces.model.menu.Separator;
-import org.primefaces.model.menu.Submenu;
+import org.primefaces.model.menu.*;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class MegaMenuRenderer extends BaseMenuRenderer {
@@ -93,7 +92,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
     protected void encodeRootItems(FacesContext context, MegaMenu menu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        List<MenuElement> elements = (List<MenuElement>) menu.getElements();
+        List<MenuElement> elements = menu.getElements();
 
         for (MenuElement element : elements) {
             if (element.isRendered()) {
@@ -129,7 +128,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", style, null);
         }
         writer.writeAttribute("role", "menuitem", null);
-        writer.writeAttribute("aria-haspopup", "true", null);
+        writer.writeAttribute(HTML.ARIA_HASPOPUP, "true", null);
 
         //title
         writer.startElement("a", null);
@@ -160,7 +159,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
         //submenus
         if (submenu.getElementsCount() > 0) {
-            List<MenuElement> submenuElements = (List<MenuElement>) submenu.getElements();
+            List<MenuElement> submenuElements = submenu.getElements();
             writer.startElement("ul", null);
             writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
             writer.writeAttribute("role", "menu", null);
@@ -191,8 +190,12 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("td", null);
-        if (column.getStyle() != null) writer.writeAttribute("style", column.getStyle(), null);
-        if (column.getStyleClass() != null) writer.writeAttribute("class", column.getStyleClass(), null);
+        if (column.getStyle() != null) {
+            writer.writeAttribute("style", column.getStyle(), null);
+        }
+        if (column.getStyleClass() != null) {
+            writer.writeAttribute("class", column.getStyleClass(), null);
+        }
 
         if (column.getElementsCount() > 0) {
             List columnElements = column.getElements();
@@ -245,7 +248,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
         //menuitems
         if (submenu.getElementsCount() > 0) {
-            List<MenuElement> submenuElements = (List<MenuElement>) submenu.getElements();
+            List<MenuElement> submenuElements = submenu.getElements();
             for (MenuElement submenuElement : submenuElements) {
                 if (submenuElement.isRendered()) {
                     if (submenuElement instanceof MenuItem) {

@@ -76,7 +76,7 @@
 
         attachBehaviors : function(element, behaviors) {
             $.each(behaviors, function(event, fn) {
-                element.bind(event, function(e) {
+                element.on(event, function(e) {
                     fn.call(element, e);
                 });
             });
@@ -151,7 +151,7 @@
             }).blur(function() {
                 $(this).removeClass('ui-state-focus ui-state-active');
             }).keydown(function(e) {
-                if(e.which === $.ui.keyCode.SPACE || e.which === $.ui.keyCode.ENTER || e.which === $.ui.keyCode.NUMPAD_ENTER) {
+                if(e.which === $.ui.keyCode.SPACE || e.which === $.ui.keyCode.ENTER) {
                     $(this).addClass('ui-state-active');
                 }
             }).keyup(function() {
@@ -218,6 +218,10 @@
 
         isDevelopmentProjectStage: function() {
             return PrimeFaces.settings.projectStage === 'Development';
+        },
+
+        widgetNotAvailable: function(widgetVar) {
+           PrimeFaces.error("Widget for var '" + widgetVar + "' not available!");
         },
 
         setCaretToEnd: function(element) {
@@ -305,6 +309,14 @@
             this.createWidget(widgetName, widgetVar, cfg);
         },
 
+
+        /**
+         * @deprecated moved to PrimeFaces.resources.getFacesResource
+         */
+        getFacesResource : function(name, library, version) {
+           return PrimeFaces.resources.getFacesResource(name, library, version);
+        },
+
         createWidget : function(widgetName, widgetVar, cfg) {
             cfg.widgetVar = widgetVar;
 
@@ -326,53 +338,8 @@
             // widget script not loaded
             else {
                 // should be loaded by our dynamic resource handling, log a error
-                PrimeFaces.error("Widget not available: " + widgetName);
+                PrimeFaces.widgetNotAvailable(widgetName);
             }
-        },
-
-        /**
-         * Builds a resource URL for given parameters.
-         *
-         * @param {string} name The name of the resource. For example: primefaces.js
-         * @param {string} library The library of the resource. For example: primefaces
-         * @param {string} version The version of the library. For example: 5.1
-         * @returns {string} The resource URL.
-         */
-        getFacesResource : function(name, library, version) {
-
-            // just get sure - name shoudln't start with a slash
-            if (name.indexOf('/') === 0)
-            {
-                name = name.substring(1, name.length);
-            }
-
-            var scriptURI = $('script[src*="/' + PrimeFaces.RESOURCE_IDENTIFIER + '/core.js"]').attr('src');
-            // portlet
-            if (!scriptURI) {
-                scriptURI = $('script[src*="' + PrimeFaces.RESOURCE_IDENTIFIER + '=core.js"]').attr('src');
-            }
-
-            scriptURI = scriptURI.replace('core.js', name);
-
-            // In a portlet environment, url parameters may be namespaced.
-            var namespace = '';
-            var urlParametersAreNamespaced = !(scriptURI.indexOf('?ln=primefaces') > -1 ||
-                    scriptURI.indexOf('&ln=primefaces') > -1);
-
-            if (urlParametersAreNamespaced) {
-                namespace = new RegExp('[?&]([^&=]+)ln=primefaces($|&)').exec(scriptURI)[1];
-            }
-
-            // If the parameters are namespaced, the namespace must be included when replacing parameters.
-            scriptURI = scriptURI.replace(namespace + 'ln=primefaces', namespace + 'ln=' + library);
-
-            if (version) {
-                var extractedVersion = new RegExp('[?&]' + namespace + 'v=([^&]*)').exec(scriptURI)[1];
-                scriptURI = scriptURI.replace(namespace + 'v=' + extractedVersion, namespace + 'v=' + version);
-            }
-
-            var prefix = window.location.protocol + '//' + window.location.host;
-            return scriptURI.indexOf(prefix) >= 0 ? scriptURI : prefix + scriptURI;
         },
 
         inArray: function(arr, item) {
@@ -480,7 +447,7 @@
          *  Aligns container scrollbar to keep item in container viewport, algorithm copied from jquery-ui menu widget
          */
         scrollInView: function(container, item) {
-            if(item.length === 0) {
+            if(item === null || item.length === 0) {
                 return;
             }
 
@@ -717,7 +684,7 @@
     	var widgetInstance = PrimeFaces.widgets[widgetVar];
 
     	if (!widgetInstance) {
-	        PrimeFaces.error("Widget for var '" + widgetVar + "' not available!");
+	        PrimeFaces.widgetNotAvailable(widgetVar);
     	}
 
         return widgetInstance;

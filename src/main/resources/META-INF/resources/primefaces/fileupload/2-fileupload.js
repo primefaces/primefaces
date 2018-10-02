@@ -87,7 +87,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                     if(validMsg) {
                         $this.showMessage({
                             summary: validMsg,
-                            filename: PrimeFaces.escapeHTML(file.name),
+                            filename: file.name,
                             filesize: file.size
                         });
                         
@@ -123,6 +123,12 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 }
             },
             fail: function(e, data) {
+                if (data.errorThrown === 'abort') {
+                    if ($this.cfg.oncancel) {
+                        $this.cfg.oncancel.call($this);
+                    }
+                    return;
+                }
                 if($this.cfg.onerror) {
                     $this.cfg.onerror.call($this);
                 }
@@ -269,7 +275,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             var keyCode = $.ui.keyCode,
             key = e.which;
 
-            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+            if(key === keyCode.SPACE || key === keyCode.ENTER) {
                 $this.chooseButton.children('input').trigger('click');
                 $(this).blur();
                 e.preventDefault();
@@ -339,6 +345,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                 .on('click.fileupload', this.rowCancelActionSelector, null, function(e) {
                     var row = $(this).closest('.ui-fileupload-row'),
                     removedFile = $this.files.splice(row.index(), 1);
+                    removedFile[0].ajaxRequest.abort();
                     removedFile[0].row = null;
 
                     $this.removeFileRow(row);
@@ -354,7 +361,8 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
 
     upload: function() {
         for(var i = 0; i < this.files.length; i++) {
-            this.files[i].row.data('filedata').submit();
+            this.files[i].ajaxRequest = this.files[i].row.data('filedata');
+            this.files[i].ajaxRequest.submit();
         }
     },
 
@@ -463,7 +471,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
             detail = this.cfg.messageTemplate.replace('{name}', msg.filename).replace('{size}', this.formatSize(msg.filesize));
         }
 
-        this.messageList.append('<li><span class="ui-messages-error-summary">' + summary + '</span><span class="ui-messages-error-detail">' + detail + '</span></li>');
+        this.messageList.append('<li><span class="ui-messages-error-summary">' + PrimeFaces.escapeHTML(summary) + '</span><span class="ui-messages-error-detail">' + PrimeFaces.escapeHTML(detail) + '</span></li>');
         this.messageContainer.show();
     },
 
@@ -525,9 +533,9 @@ PrimeFaces.widget.SimpleFileUpload = PrimeFaces.widget.BaseWidget.extend({
             var file = files.length > 0 ? files[files.length - 1] : null;
             var validMsg = $this.validate($this.input[0], file); 
             if(validMsg) {
-                $this.display.text(PrimeFaces.escapeHTML(validMsg));
+                $this.display.text(validMsg);
             } else {
-                $this.display.text(PrimeFaces.escapeHTML($this.input.val().replace(/\\/g, '/').replace(/.*\//, '')));
+                $this.display.text($this.input.val().replace(/\\/g, '/').replace(/.*\//, ''));
             }
         })
         .on('focus.fileupload', function() {

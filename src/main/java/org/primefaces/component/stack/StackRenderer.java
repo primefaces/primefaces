@@ -21,6 +21,7 @@ import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.model.menu.MenuElement;
@@ -69,8 +70,12 @@ public class StackRenderer extends BaseMenuRenderer {
                     String containerStyleClass = menuItem.getContainerStyleClass();
 
                     writer.startElement("li", null);
-                    if (containerStyle != null) writer.writeAttribute("style", containerStyle, null);
-                    if (containerStyleClass != null) writer.writeAttribute("class", containerStyleClass, null);
+                    if (containerStyle != null) {
+                        writer.writeAttribute("style", containerStyle, null);
+                    }
+                    if (containerStyleClass != null) {
+                        writer.writeAttribute("class", containerStyleClass, null);
+                    }
 
                     encodeMenuItem(context, stack, menuItem);
                     writer.endElement("li");

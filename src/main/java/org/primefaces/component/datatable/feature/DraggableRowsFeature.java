@@ -20,8 +20,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
 import javax.el.MethodExpression;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableRenderer;
 
@@ -51,7 +53,6 @@ public class DraggableRowsFeature implements DataTableFeature {
             int fromIndex = Integer.parseInt(params.get(clientId + "_fromIndex"));
             int toIndex = Integer.parseInt(params.get(clientId + "_toIndex"));
             table.setRowIndex(fromIndex);
-            Object rowData = table.getRowData();
             Object value = table.getValue();
 
             if (value instanceof List) {

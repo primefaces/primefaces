@@ -15,6 +15,20 @@
  */
 package org.primefaces.context;
 
+import org.primefaces.application.resource.DynamicResourcesPhaseListener;
+import org.primefaces.json.JSONArray;
+import org.primefaces.json.JSONException;
+import org.primefaces.json.JSONObject;
+import org.primefaces.util.BeanUtils;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.ResourceUtils;
+
+import javax.faces.component.NamingContainer;
+import javax.faces.component.UINamingContainer;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
+import javax.faces.context.PartialResponseWriter;
+import javax.faces.event.AbortProcessingException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,24 +36,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UINamingContainer;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
-import javax.faces.context.PartialResponseWriter;
-import javax.faces.event.AbortProcessingException;
-import org.primefaces.application.resource.DynamicResourcesPhaseListener;
-import org.primefaces.json.JSONArray;
-import org.primefaces.json.JSONException;
-import org.primefaces.json.JSONObject;
-import org.primefaces.util.BeanUtils;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.ResourceUtils;
 
 public class PrimePartialResponseWriter extends PartialResponseWriter {
 
     private static final Map<String, String> CALLBACK_EXTENSION_PARAMS;
-    
+
     static {
         Map<String, String> callbackExtensionParams = new HashMap<>();
         callbackExtensionParams.put("ln", "primefaces");
@@ -171,7 +172,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
     public void encodeJSONObject(String paramName, JSONObject jsonObject) throws IOException, JSONException {
         String json = jsonObject.toString();
-        json = ComponentUtils.escapeXml(json);
+        json = EscapeUtils.forXml(json);
 
         getWrapped().write("\"");
         getWrapped().write(paramName);
@@ -181,7 +182,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
     public void encodeJSONArray(String paramName, JSONArray jsonArray) throws IOException, JSONException {
         String json = jsonArray.toString();
-        json = ComponentUtils.escapeXml(json);
+        json = EscapeUtils.forXml(json);
 
         getWrapped().write("\"");
         getWrapped().write(paramName);
@@ -191,7 +192,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
 
     public void encodeJSONValue(String paramName, Object paramValue) throws IOException, JSONException {
         String json = new JSONObject().put(paramName, paramValue).toString();
-        json = ComponentUtils.escapeXml(json);
+        json = EscapeUtils.forXml(json);
 
         getWrapped().write(json.substring(1, json.length() - 1));
     }
@@ -294,10 +295,10 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                         ArrayList<ResourceUtils.ResourceInfo> initialResources = DynamicResourcesPhaseListener.getInitialResources(context);
                         ArrayList<ResourceUtils.ResourceInfo> currentResources = ResourceUtils.getComponentResources(context);
                         if (initialResources != null && currentResources != null && currentResources.size() > initialResources.size()) {
-                            
+
                             ArrayList<ResourceUtils.ResourceInfo> newResources = new ArrayList<>(currentResources);
                             newResources.removeAll(initialResources);
-                            
+
                             boolean updateStarted = false;
                             for (int i = 0; i < newResources.size(); i++) {
                                 ResourceUtils.ResourceInfo resourceInfo = newResources.get(i);

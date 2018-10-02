@@ -17,27 +17,43 @@ package org.primefaces.component.export;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.*;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.el.MethodExpression;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.api.DynamicColumn;
 import org.primefaces.component.api.UIColumn;
-
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 
 public class CSVExporter extends Exporter {
 
+    private CSVOptions csvOptions;
+
+    public CSVExporter(ExporterOptions options) {
+        csvOptions = CSVOptions.EXCEL;
+        if (options != null) {
+            if (options instanceof CSVOptions) {
+                csvOptions = (CSVOptions) options;
+            }
+            else {
+                throw new IllegalArgumentException("Options must be an instance of CSVOptions.");
+            }
+        }
+    }
+
     @Override
     public void export(FacesContext context, DataTable table, String filename, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-            MethodExpression onTableRender) throws IOException {
-        
+                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+                       MethodExpression onTableRender) throws IOException {
+
         ExternalContext externalContext = context.getExternalContext();
         configureResponse(externalContext, filename, encodingType);
         StringBuilder builder = new StringBuilder();
@@ -74,15 +90,15 @@ public class CSVExporter extends Exporter {
 
     @Override
     public void export(FacesContext facesContext, List<String> clientIds, String outputFileName, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-            MethodExpression onTableRender) throws IOException {
+                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+                       MethodExpression onTableRender) throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void export(FacesContext facesContext, String outputFileName, List<DataTable> tables, boolean pageOnly, boolean selectionOnly,
-            String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
-            MethodExpression onTableRender) throws IOException {
+                       String encodingType, MethodExpression preProcessor, MethodExpression postProcessor, ExporterOptions options,
+                       MethodExpression onTableRender) throws IOException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -96,7 +112,7 @@ public class CSVExporter extends Exporter {
 
             if (col.isRendered() && col.isExportable()) {
                 if (firstCellWritten) {
-                    builder.append(",");
+                    builder.append(csvOptions.getDelimiterChar());
                 }
 
                 UIComponent facet = col.getFacet(columnType.facet());
@@ -127,7 +143,7 @@ public class CSVExporter extends Exporter {
             }
         }
 
-        builder.append("\n");
+        builder.append(csvOptions.getEndOfLineSymbols());
     }
 
     @Override
@@ -142,7 +158,7 @@ public class CSVExporter extends Exporter {
 
             if (col.isRendered() && col.isExportable()) {
                 if (firstCellWritten) {
-                    builder.append(",");
+                    builder.append(csvOptions.getDelimiterChar());
                 }
 
                 try {
@@ -167,12 +183,12 @@ public class CSVExporter extends Exporter {
     }
 
     protected void addColumnValues(StringBuilder builder, List<UIColumn> columns) throws IOException {
-        for (Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext();) {
+        for (Iterator<UIColumn> iterator = columns.iterator(); iterator.hasNext(); ) {
             UIColumn col = iterator.next();
             addColumnValue(builder, col.getChildren(), col);
 
             if (iterator.hasNext()) {
-                builder.append(",");
+                builder.append(csvOptions.getDelimiterChar());
             }
         }
     }
@@ -184,20 +200,20 @@ public class CSVExporter extends Exporter {
     }
 
     protected void addColumnValue(StringBuilder builder, String value) throws IOException {
-        value = (value == null) ? "" : value.replaceAll("\"", "\"\"");
+        value = (value == null) ? "" : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());
 
-        builder.append("\"" + value + "\"");
+        builder.append(csvOptions.getQuoteChar()).append(value).append(csvOptions.getQuoteChar());
     }
 
     protected void addColumnValue(StringBuilder builder, List<UIComponent> components, UIColumn column) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        builder.append("\"");
+        builder.append(csvOptions.getQuoteChar());
 
         if (column.getExportFunction() != null) {
             String value = exportColumnByFunction(context, column);
             //escape double quotes
-            value = value == null ? "" : value.replaceAll("\"", "\"\"");
+            value = value == null ? "" : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());
 
             builder.append(value);
         }
@@ -207,18 +223,18 @@ public class CSVExporter extends Exporter {
                     String value = exportValue(context, component);
 
                     //escape double quotes
-                    value = value == null ? "" : value.replaceAll("\"", "\"\"");
+                    value = value == null ? "" : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());
 
                     builder.append(value);
                 }
             }
         }
 
-        builder.append("\"");
+        builder.append(csvOptions.getQuoteChar());
     }
 
     @Override
     protected void postRowExport(DataTable table, Object document) {
-        ((StringBuilder) document).append("\n");
+        ((StringBuilder) document).append(csvOptions.getEndOfLineSymbols());
     }
 }

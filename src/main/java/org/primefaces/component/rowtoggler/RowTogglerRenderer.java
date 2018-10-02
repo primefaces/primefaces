@@ -16,11 +16,14 @@
 package org.primefaces.component.rowtoggler;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.HTML;
 import org.primefaces.util.MessageFactory;
 
 public class RowTogglerRenderer extends CoreRenderer {
@@ -42,8 +45,8 @@ public class RowTogglerRenderer extends CoreRenderer {
         writer.writeAttribute("class", togglerClass, null);
         writer.writeAttribute("tabindex", toggler.getTabindex(), null);
         writer.writeAttribute("role", "button", null);
-        writer.writeAttribute("aria-expanded", String.valueOf(expanded), null);
-        writer.writeAttribute("aria-label", ariaLabel, null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
 
         if (!iconOnly) {
             writeLabel(writer, expandLabel, !expanded);

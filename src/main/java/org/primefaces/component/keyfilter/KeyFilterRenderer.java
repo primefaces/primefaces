@@ -16,9 +16,10 @@
 package org.primefaces.component.keyfilter;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
@@ -33,7 +34,6 @@ public class KeyFilterRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         KeyFilter keyFilter = (KeyFilter) component;
 
         UIComponent target;

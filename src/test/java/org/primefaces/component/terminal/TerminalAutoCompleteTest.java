@@ -34,11 +34,11 @@ public class TerminalAutoCompleteTest {
     @Before
     public void setup() {
         terminal = new Terminal();
-        
+
         model = new TerminalAutoCompleteModel();
 
         TerminalCommand git = model.addCommand("git");
-        
+
         git.addArgument("checkout");
         git.addArgument("commit");
         git.addArgument("rebase");
@@ -95,7 +95,7 @@ public class TerminalAutoCompleteTest {
         assertBaseCommand(TerminalAutoCompleteMatches, "git");
         assertMatches(TerminalAutoCompleteMatches, "commit", "checkout");
     }
-    
+
     @Test
     public void givenGitCThenReturnsCommit() {
         // given
@@ -109,7 +109,7 @@ public class TerminalAutoCompleteTest {
         assertBaseCommand(TerminalAutoCompleteMatches, "git");
         assertMatches(TerminalAutoCompleteMatches, "commit");
     }
-    
+
     @Test
     public void givenGitPThenReturnsPullAndPush() {
         // given
@@ -123,7 +123,7 @@ public class TerminalAutoCompleteTest {
         assertBaseCommand(TerminalAutoCompleteMatches, "git");
         assertMatches(TerminalAutoCompleteMatches, "pull", "push");
     }
-    
+
     @Test
     public void givenGitRThenReturnsRebase() {
         // given
@@ -151,7 +151,7 @@ public class TerminalAutoCompleteTest {
         assertBaseCommand(TerminalAutoCompleteMatches, "git push");
         assertMatches(TerminalAutoCompleteMatches, "origin");
     }
-    
+
     @Test
     public void givenGitPushOriginThenReturnsGitPushOriginMaster() {
         // given

@@ -23,11 +23,12 @@ import javax.faces.application.FacesMessage.Severity;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.api.InputHolder;
 import org.primefaces.context.PrimeApplicationContext;
-
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.UINotificationRenderer;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class MessageRenderer extends UINotificationRenderer {
@@ -57,7 +58,7 @@ public class MessageRenderer extends UINotificationRenderer {
 
         writer.startElement("div", uiMessage);
         writer.writeAttribute("id", uiMessage.getClientId(context), null);
-        writer.writeAttribute("aria-live", "polite", null);
+        writer.writeAttribute(HTML.ARIA_LIVE, "polite", null);
 
         if (style != null) {
             writer.writeAttribute("style", style, null);
@@ -104,7 +105,7 @@ public class MessageRenderer extends UINotificationRenderer {
 
                 writer.writeAttribute("class", styleClass, null);
                 writer.writeAttribute("role", "alert", null);
-                writer.writeAttribute("aria-atomic", "true", null);
+                writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);
 
                 if (!display.equals("text")) {
                     encodeIcon(writer, severityKey, msg.getDetail(), iconOnly);

@@ -80,25 +80,25 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
         Application application = ctx.getFacesContext().getApplication();
         AjaxBehavior behavior = (AjaxBehavior) application.createBehavior(AjaxBehavior.BEHAVIOR_ID);
 
-        setBehaviorAttribute(ctx, behavior, this.process, AjaxBehavior.PropertyKeys.process.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.update, AjaxBehavior.PropertyKeys.update.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.onstart, AjaxBehavior.PropertyKeys.onstart.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.onerror, AjaxBehavior.PropertyKeys.onerror.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.onsuccess, AjaxBehavior.PropertyKeys.onsuccess.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.oncomplete, AjaxBehavior.PropertyKeys.oncomplete.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.disabled, AjaxBehavior.PropertyKeys.disabled.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.immediate, AjaxBehavior.PropertyKeys.immediate.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.global, AjaxBehavior.PropertyKeys.global.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.async, AjaxBehavior.PropertyKeys.async.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.partialSubmit, AjaxBehavior.PropertyKeys.partialSubmit.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.listener, AjaxBehavior.PropertyKeys.listener.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.resetValues, AjaxBehavior.PropertyKeys.resetValues.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.ignoreAutoUpdate, AjaxBehavior.PropertyKeys.ignoreAutoUpdate.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.delay, AjaxBehavior.PropertyKeys.delay.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.timeout, AjaxBehavior.PropertyKeys.timeout.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.partialSubmitFilter, AjaxBehavior.PropertyKeys.partialSubmitFilter.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.form, AjaxBehavior.PropertyKeys.form.expectedType);
-        setBehaviorAttribute(ctx, behavior, this.skipChildren, AjaxBehavior.PropertyKeys.skipChildren.expectedType);
+        setBehaviorAttribute(ctx, behavior, this.process, AjaxBehavior.PropertyKeys.process.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.update, AjaxBehavior.PropertyKeys.update.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.onstart, AjaxBehavior.PropertyKeys.onstart.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.onerror, AjaxBehavior.PropertyKeys.onerror.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.onsuccess, AjaxBehavior.PropertyKeys.onsuccess.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.oncomplete, AjaxBehavior.PropertyKeys.oncomplete.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.disabled, AjaxBehavior.PropertyKeys.disabled.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.immediate, AjaxBehavior.PropertyKeys.immediate.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.global, AjaxBehavior.PropertyKeys.global.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.async, AjaxBehavior.PropertyKeys.async.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.partialSubmit, AjaxBehavior.PropertyKeys.partialSubmit.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.listener, AjaxBehavior.PropertyKeys.listener.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.resetValues, AjaxBehavior.PropertyKeys.resetValues.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.ignoreAutoUpdate, AjaxBehavior.PropertyKeys.ignoreAutoUpdate.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.delay, AjaxBehavior.PropertyKeys.delay.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.timeout, AjaxBehavior.PropertyKeys.timeout.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.partialSubmitFilter, AjaxBehavior.PropertyKeys.partialSubmitFilter.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.form, AjaxBehavior.PropertyKeys.form.getExpectedType());
+        setBehaviorAttribute(ctx, behavior, this.skipChildren, AjaxBehavior.PropertyKeys.skipChildren.getExpectedType());
 
         if (listener != null) {
 

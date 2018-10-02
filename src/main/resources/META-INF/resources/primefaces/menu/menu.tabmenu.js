@@ -35,7 +35,7 @@ PrimeFaces.widget.TabMenu = PrimeFaces.widget.Menu.extend({
             var keyCode = $.ui.keyCode,
             key = e.which;
 
-            if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+            if(key === keyCode.SPACE || key === keyCode.ENTER) {
                 var currentLink = $(this).children('a');
                 currentLink.trigger('click');
                 var href = currentLink.attr('href');

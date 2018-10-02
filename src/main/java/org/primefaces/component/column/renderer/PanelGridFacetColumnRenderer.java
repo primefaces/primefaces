@@ -16,8 +16,10 @@
 package org.primefaces.component.column.renderer;
 
 import java.io.IOException;
+
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.column.Column;
 import org.primefaces.component.panelgrid.PanelGrid;
 import org.primefaces.renderkit.CoreRenderer;
@@ -36,9 +38,15 @@ public class PanelGridFacetColumnRenderer extends CoreRenderer implements Helper
         writer.writeAttribute("role", "columnheader", null);
         writer.writeAttribute("class", styleClass, null);
 
-        if (style != null) writer.writeAttribute("style", style, null);
-        if (column.getColspan() > 1) writer.writeAttribute("colspan", column.getColspan(), null);
-        if (column.getRowspan() > 1) writer.writeAttribute("rowspan", column.getRowspan(), null);
+        if (style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+        if (column.getColspan() > 1) {
+            writer.writeAttribute("colspan", column.getColspan(), null);
+        }
+        if (column.getRowspan() > 1) {
+            writer.writeAttribute("rowspan", column.getRowspan(), null);
+        }
 
         renderChildren(context, column);
 

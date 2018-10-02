@@ -30,9 +30,9 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
 import org.primefaces.component.inputtext.InputText;
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -61,7 +61,7 @@ public class InputNumberRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         InputNumber inputNumber = (InputNumber) component;
 
-        if (inputNumber.isDisabled() || inputNumber.isReadonly()) {
+        if (!shouldDecode(inputNumber)) {
             return;
         }
 
@@ -170,9 +170,7 @@ public class InputNumberRenderer extends InputRenderer {
             writer.writeAttribute("onkeyup", inputNumber.getOnkeyup(), null);
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, inputNumber);
-        }
+        renderValidationMetadata(context, inputNumber);
 
         writer.endElement("input");
 
@@ -202,25 +200,16 @@ public class InputNumberRenderer extends InputRenderer {
         writer.writeAttribute("type", inputNumber.getType(), null);
         writer.writeAttribute("value", valueToRender, null);
 
-        renderPassThruAttributes(context, inputNumber, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
-        renderDomEvents(context, inputNumber, HTML.INPUT_TEXT_EVENTS);
-
-        if (inputNumber.isReadonly()) {
-            writer.writeAttribute("readonly", "readonly", "readonly");
-        }
-        if (inputNumber.isDisabled()) {
-            writer.writeAttribute("disabled", "disabled", "disabled");
-        }
-
         if (!isValueBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
 
         writer.writeAttribute("class", styleClass, null);
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, inputNumber);
-        }
+        renderAccessibilityAttributes(context, inputNumber);
+        renderPassThruAttributes(context, inputNumber, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, inputNumber, HTML.INPUT_TEXT_EVENTS);
+        renderValidationMetadata(context, inputNumber);
 
         writer.endElement("input");
     }
@@ -255,17 +244,17 @@ public class InputNumberRenderer extends InputRenderer {
         boolean padControl = inputNumber.isPadControl();
 
         String options = "";
-        options += isValueBlank(decimalSeparator) ? "" : "aDec:\"" + escapeText(decimalSeparator) + "\",";
+        options += isValueBlank(decimalSeparator) ? "" : "aDec:\"" + EscapeUtils.forJavaScript(decimalSeparator) + "\",";
         //empty thousandSeparator must be explicity defined.
-        options += isValueBlank(thousandSeparator) ? "aSep:''," : "aSep:\"" + escapeText(thousandSeparator) + "\",";
-        options += isValueBlank(symbol) ? "" : "aSign:\"" + escapeText(symbol) + "\",";
-        options += isValueBlank(symbolPosition) ? "" : "pSign:\"" + escapeText(symbolPosition) + "\",";
-        options += isValueBlank(minValue) ? "" : "vMin:\"" + escapeText(minValue) + "\",";
-        options += isValueBlank(maxValue) ? "" : "vMax:\"" + escapeText(maxValue) + "\",";
-        options += isValueBlank(roundMethod) ? "" : "mRound:\"" + escapeText(roundMethod) + "\",";
-        options += isValueBlank(decimalPlaces) ? "" : "mDec:\"" + escapeText(decimalPlaces) + "\",";
-        options += "wEmpty:\"" + escapeText(emptyValue) + "\",";
-        options += "lZero:\"" + escapeText(lZero) + "\",";
+        options += isValueBlank(thousandSeparator) ? "aSep:''," : "aSep:\"" + EscapeUtils.forJavaScript(thousandSeparator) + "\",";
+        options += isValueBlank(symbol) ? "" : "aSign:\"" + EscapeUtils.forJavaScript(symbol) + "\",";
+        options += isValueBlank(symbolPosition) ? "" : "pSign:\"" + EscapeUtils.forJavaScript(symbolPosition) + "\",";
+        options += isValueBlank(minValue) ? "" : "vMin:\"" + EscapeUtils.forJavaScript(minValue) + "\",";
+        options += isValueBlank(maxValue) ? "" : "vMax:\"" + EscapeUtils.forJavaScript(maxValue) + "\",";
+        options += isValueBlank(roundMethod) ? "" : "mRound:\"" + EscapeUtils.forJavaScript(roundMethod) + "\",";
+        options += isValueBlank(decimalPlaces) ? "" : "mDec:\"" + EscapeUtils.forJavaScript(decimalPlaces) + "\",";
+        options += "wEmpty:\"" + EscapeUtils.forJavaScript(emptyValue) + "\",";
+        options += "lZero:\"" + EscapeUtils.forJavaScript(lZero) + "\",";
         options += "aPad:" + padControl + ",";
 
         //if all options are empty return empty

@@ -34,14 +34,33 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private String onclick;
     private String style;
     private String styleClass;
+    /**
+     * The URL to redirect to after the menu item has been clicked. Similar to
+     * {@code outcome} which allows to specify a navigation case, but the value
+     * is not touched (no prepending of the contextPath, not appending the
+     * sessionId or windowId), just encoded.
+     *
+     * Specifying a {@code url} which is not {@code null} causes {@code command}
+     * to be ignored.
+     */
     private String url;
     private String target;
     private boolean ajax = true;
     private Object value;
+    /**
+     * The JSF outcome of a navigation case which is resolved by the configured
+     * {@code NavigationHandler}. Similar to {@code url}, but {@code url}
+     * allows to specify fully qualified URLs.
+     */
     private String outcome;
     private boolean includeViewParams;
     private String fragment;
     private Map<String, List<String>> params;
+    /**
+     * A method expression in the form of a string which is called after the
+     * menu item has been clicked. It is ignored when {@code url} is not
+     * {@code null}.
+     */
     private String command;
     private boolean rendered = true;
     private String onstart;
@@ -69,18 +88,39 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
     private boolean escape = true;
     private String rel;
 
+    /**
+     * Creates a new menu item without value.
+     */
     public DefaultMenuItem() {
     }
 
+    /**
+     * Creates a new menu item with the specified
+     * @param value the value of the item used as label
+     */
     public DefaultMenuItem(Object value) {
         this.value = value;
     }
 
+    /**
+     * Creates a new menu item with the specified
+     * @param value the value of the item used as label
+     * @param icon the icon to be displayed next to the label
+     */
     public DefaultMenuItem(Object value, String icon) {
         this.value = value;
         this.icon = icon;
     }
 
+    /**
+     * Creates a menu item with the specified
+     * @param value the value of the item used as label
+     * @param icon the icon to be displayed next to the label
+     * @param url a URL to redirect to after the menu item has been clicked
+     * (specifying a {@code url} which is not {@code null} causes
+     * {@code command} to be ignored) (another form of redirection is provided
+     * by the {@code outcome} property)
+     */
     public DefaultMenuItem(Object value, String icon, String url) {
         this.value = value;
         this.icon = icon;

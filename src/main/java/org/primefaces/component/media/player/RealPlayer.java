@@ -17,7 +17,7 @@ package org.primefaces.component.media.player;
 
 public class RealPlayer implements MediaPlayer {
 
-    private static final String[] SUPPORTED_TYPES = new String[] { "ra", "ram", "rm", "rpm", "rv", "smi", "smil" };
+    private static final String[] SUPPORTED_TYPES = new String[]{"ra", "ram", "rm", "rpm", "rv", "smi", "smil"};
 
     @Override
     public String getClassId() {

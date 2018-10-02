@@ -16,14 +16,12 @@
 package org.primefaces.component.inputmask;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -32,23 +30,21 @@ import org.primefaces.util.WidgetBuilder;
 
 public class InputMaskRenderer extends InputRenderer {
 
-    private final static Logger logger = Logger.getLogger(InputMaskRenderer.class.getName());
-
-    private final static String REGEX_METACHARS = "<([{\\^-=$!|]})?*+.>";
-    private final static String SB_PATTERN = InputMaskRenderer.class.getName() + "#translateMaskIntoRegex";
+    private static final String REGEX_METACHARS = "<([{\\^-=$!|]})?*+.>";
+    private static final String SB_PATTERN = InputMaskRenderer.class.getName() + "#translateMaskIntoRegex";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
         InputMask inputMask = (InputMask) component;
 
-        if (inputMask.isDisabled() || inputMask.isReadonly()) {
+        if (!shouldDecode(inputMask)) {
             return;
         }
 
         decodeBehaviors(context, inputMask);
 
         String clientId = inputMask.getClientId(context);
-        String submittedValue = (String) context.getExternalContext().getRequestParameterMap().get(clientId);
+        String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId);
 
         if (submittedValue != null) {
             Pattern pattern = translateMaskIntoRegex(context, inputMask);
@@ -68,8 +64,8 @@ public class InputMaskRenderer extends InputRenderer {
      * 9 - Represents a numeric character (0-9)
      * * - Represents an alphanumeric character (A-Z,a-z,0-9)
      * ? - Makes the following input optional
-     * 
-     * @param context The {@link FacesContext}
+     *
+     * @param context   The {@link FacesContext}
      * @param inputMask The component
      * @return The generated {@link Pattern}
      */
@@ -156,19 +152,17 @@ public class InputMaskRenderer extends InputRenderer {
             writer.writeAttribute("value", valueToRender, null);
         }
 
+        renderAccessibilityAttributes(context, inputMask);
         renderPassThruAttributes(context, inputMask, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, inputMask, HTML.INPUT_TEXT_EVENTS);
 
-        if (inputMask.isDisabled()) writer.writeAttribute("disabled", "disabled", "disabled");
-        if (inputMask.isReadonly()) writer.writeAttribute("readonly", "readonly", "readonly");
-        if (inputMask.getStyle() != null) writer.writeAttribute("style", inputMask.getStyle(), "style");
-        if (inputMask.isRequired()) writer.writeAttribute("aria-required", "true", null);
+        if (inputMask.getStyle() != null) {
+            writer.writeAttribute("style", inputMask.getStyle(), "style");
+        }
 
         writer.writeAttribute("class", styleClass, "styleClass");
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, inputMask);
-        }
+        renderValidationMetadata(context, inputMask);
 
         writer.endElement("input");
     }

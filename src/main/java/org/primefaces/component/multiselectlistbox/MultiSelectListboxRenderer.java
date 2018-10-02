@@ -17,6 +17,7 @@ package org.primefaces.component.multiselectlistbox;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
@@ -26,6 +27,7 @@ import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
+
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -89,13 +91,14 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
             writer.writeAttribute("class", MultiSelectListbox.LIST_HEADER_CLASS, null);
             writer.writeText(header, null);
             writer.endElement("div");
-        } 
+        }
         else {
             listStyleClass = listStyleClass + " ui-corner-all";
         }
 
         writer.startElement("ul", listbox);
         writer.writeAttribute("class", listStyleClass, null);
+        renderARIARequired(context, listbox);
 
         if (items != null) {
             encodeListItems(context, listbox, items);
@@ -170,6 +173,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
         if (valueToRender != null) {
             writer.writeAttribute("value", valueToRender, null);
         }
+        renderAccessibilityAttributes(context, listbox);
         writer.endElement("input");
     }
 

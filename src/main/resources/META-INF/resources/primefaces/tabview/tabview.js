@@ -60,7 +60,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
             var $this = this;
 
-            PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id, null, function() {
+            PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', null, function() {
                 $this.initScrolling();
             });
         }
@@ -192,7 +192,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
             key = e.which,
             element = $(this);
 
-            if((key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) && !element.hasClass('ui-state-disabled')) {
+            if((key === keyCode.SPACE || key === keyCode.ENTER) && !element.hasClass('ui-state-disabled')) {
                 $this.select(element.index());
                 e.preventDefault();
             }
@@ -204,7 +204,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                 var keyCode = $.ui.keyCode,
                 key = e.which;
 
-                if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+                if(key === keyCode.SPACE || key === keyCode.ENTER) {
                     $this.scroll(100);
                     e.preventDefault();
                 }
@@ -214,7 +214,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
                 var keyCode = $.ui.keyCode,
                 key = e.which;
 
-                if(key === keyCode.SPACE || key === keyCode.ENTER || key === keyCode.NUMPAD_ENTER) {
+                if(key === keyCode.SPACE || key === keyCode.ENTER) {
                     $this.scroll(-100);
                     e.preventDefault();
                 }
@@ -340,6 +340,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
         //aria
         oldPanel.attr('aria-hidden', true);
+        oldPanel.addClass('ui-helper-hidden');
         oldHeader.attr('aria-expanded', false);
         oldHeader.attr('aria-selected', false);
         if(oldActions.length != 0) {
@@ -347,6 +348,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         newPanel.attr('aria-hidden', false);
+        newPanel.removeClass('ui-helper-hidden');
         newHeader.attr('aria-expanded', true);
         newHeader.attr('aria-selected', true);
         if(newActions.length != 0) {

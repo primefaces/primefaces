@@ -23,8 +23,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.el.ValueExpression;
 import javax.faces.FacesException;
@@ -59,8 +57,6 @@ public class ComponentUtils {
 
     // marker for a undefined value when a null check is not reliable enough
     private static final Object UNDEFINED_VALUE = new Object();
-    
-    private static final Pattern PATTERN_NEW_LINE = Pattern.compile("(\r\n|\n\r|\r|\n)");
 
     public static String getValueToRender(FacesContext context, UIComponent component) {
         return getValueToRender(context, component, UNDEFINED_VALUE);
@@ -191,9 +187,6 @@ public class ComponentUtils {
         return SearchExpressionUtils.resolveWidgetVar(expression, component);
     }
 
-    
-
-
     public static boolean isRTL(FacesContext context, RTLAware component) {
         boolean globalValue = PrimeRequestContext.getCurrentInstance(context).isRTL();
 
@@ -301,25 +294,12 @@ public class ComponentUtils {
         }
     }
 
-    
-
-    public static String replaceNewLineWithHtml(String text) {
-        if (text == null) {
-            return null;
-        }
-
-        Matcher match = PATTERN_NEW_LINE.matcher(text);
-        if (match.find()) {
-            return match.replaceAll("<br/>");
-        }
-
-        return text;
-    }
-
     /**
      * Duplicate code from json-simple project under apache license
      * http://code.google.com/p/json-simple/source/browse/trunk/src/org/json/simple/JSONValue.java
+     * @deprecated Use {@link EscapeUtils}
      */
+    @Deprecated
     public static String escapeText(String text) {
         if (text == null) {
             return null;
@@ -373,6 +353,10 @@ public class ComponentUtils {
         return sb.toString();
     }
 
+    /**
+     * @deprecated Use {@link EscapeUtils}
+     */
+    @Deprecated
     public static String escapeEcmaScriptText(String text) {
         if (text == null) {
             return null;
@@ -415,7 +399,9 @@ public class ComponentUtils {
      *
      * @param string The string to be escaped.
      * @return The escaped string.
+     * @deprecated Use {@link EscapeUtils}
      */
+    @Deprecated
     public static String escapeXml(String string) {
         StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE, string.length());
         for (int i = 0, length = string.length(); i < length; i++) {
@@ -568,10 +554,10 @@ public class ComponentUtils {
         if (facet.getChildren().isEmpty()) {
             return true;
         }
-        
+
         return shouldRenderChildren(facet);
     }
-    
+
     /**
      * Checks if the component's children are rendered
      * @param component The component to check

@@ -24,7 +24,7 @@ import org.primefaces.facelets.MethodRule;
 public class TerminalHandler extends ComponentHandler {
 
     private static final MethodRule COMMAND_HANDLER =
-            new MethodRule("commandHandler", String.class, new Class[]{ String.class, String[].class });
+            new MethodRule("commandHandler", String.class, new Class[]{String.class, String[].class});
 
     public TerminalHandler(ComponentConfig config) {
         super(config);

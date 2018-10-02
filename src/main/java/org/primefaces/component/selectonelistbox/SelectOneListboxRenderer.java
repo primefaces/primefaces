@@ -17,6 +17,7 @@ package org.primefaces.component.selectonelistbox;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
@@ -25,10 +26,11 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 import javax.faces.render.Renderer;
+
 import org.primefaces.component.column.Column;
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneListboxRenderer extends SelectOneRenderer {
@@ -97,10 +99,9 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
 
     protected void encodeInput(FacesContext context, SelectOneListbox listbox, String clientId, List<SelectItem> selectItems)
             throws IOException {
-        
+
         ResponseWriter writer = context.getResponseWriter();
         String inputid = clientId + "_input";
-        String labelledBy = listbox.getLabelledBy();
 
         writer.startElement("div", listbox);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
@@ -110,19 +111,10 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", inputid, null);
         writer.writeAttribute("size", "2", null);   //prevent browser to send value when no item is selected
 
+        renderAccessibilityAttributes(context, listbox);
+        renderPassThruAttributes(context, listbox, HTML.TAB_INDEX);
         renderDomEvents(context, listbox, SelectOneListbox.DOM_EVENTS);
-
-        if (listbox.getTabindex() != null) {
-            writer.writeAttribute("tabindex", listbox.getTabindex(), null);
-        }
-
-        if (labelledBy != null) {
-            writer.writeAttribute("aria-labelledby", labelledBy, null);
-        }
-
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, listbox);
-        }
+        renderValidationMetadata(context, listbox);
 
         encodeSelectItems(context, listbox, selectItems);
 
@@ -137,7 +129,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         Object values = getValues(listbox);
         Object submittedValues = getSubmittedValues(listbox);
         boolean customContent = listbox.getVar() != null;
-        
+
         writer.startElement("div", listbox);
         writer.writeAttribute("class", SelectOneListbox.LIST_CONTAINER_CLASS, null);
         writer.writeAttribute("style", "height:" + calculateWrapperHeight(listbox, countSelectItems(selectItems)), null);
@@ -167,8 +159,8 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
     }
 
     protected void encodeItem(FacesContext context, SelectOneListbox listbox, SelectItem option, Object values, Object submittedValues,
-            Converter converter, boolean customContent) throws IOException {
-        
+                              Converter converter, boolean customContent) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, listbox, converter, option.getValue());
         boolean disabled = option.isDisabled() || listbox.isDisabled();
@@ -207,11 +199,11 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
             for (UIComponent child : listbox.getChildren()) {
                 if (child instanceof Column && child.isRendered()) {
                     writer.startElement("td", null);
-                    
+
                     writer.startElement("span", null);
                     renderChildren(context, child);
                     writer.endElement("span");
-                    
+
                     writer.endElement("td");
                 }
             }
@@ -221,7 +213,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         else {
             writer.startElement("li", null);
             writer.writeAttribute("class", itemClass, null);
-            
+
             writer.startElement("span", null);
             if (option.isEscape()) {
                 writer.writeText(option.getLabel(), null);
@@ -248,8 +240,8 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
     }
 
     protected void encodeOption(FacesContext context, SelectOneListbox listbox, SelectItem option, Object values, Object submittedValues,
-            Converter converter) throws IOException {
-        
+                                Converter converter) throws IOException {
+
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, listbox, converter, option.getValue());
         boolean disabled = option.isDisabled() || listbox.isDisabled();
@@ -272,8 +264,12 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
 
         writer.startElement("option", null);
         writer.writeAttribute("value", itemValueAsString, null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
-        if (selected) writer.writeAttribute("selected", "selected", null);
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
+        if (selected) {
+            writer.writeAttribute("selected", "selected", null);
+        }
 
         if (option.isEscape()) {
             writer.writeText(option.getLabel(), null);
@@ -304,7 +300,9 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        if (disabled) writer.writeAttribute("disabled", "disabled", null);
+        if (disabled) {
+            writer.writeAttribute("disabled", "disabled", null);
+        }
 
         writer.endElement("input");
 
@@ -316,14 +314,14 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
 
         if (height != Integer.MAX_VALUE) {
             return height + "px";
-        } 
+        }
         else if (itemSize > 10) {
             return 200 + "px";
         }
 
         return "auto";
     }
-    
+
     @Override
     protected String getSubmitParam(FacesContext context, UISelectOne selectOne) {
         return selectOne.getClientId(context) + "_input";

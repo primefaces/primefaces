@@ -22,35 +22,35 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.validation.Validation;
-import org.primefaces.util.ClassUtils;
+import org.primefaces.util.LangUtils;
 
 public class PrimeEnvironment {
-    
+
     private static final Logger LOG = Logger.getLogger(PrimeEnvironment.class.getName());
-    
+
     private boolean beanValidationAvailable = false;
-    
+
     private boolean atLeastEl22 = false;
-    
+
     private boolean atLeastJsf23 = false;
     private boolean atLeastJsf22 = false;
     private boolean atLeastJsf21 = false;
-    
+
     private boolean atLeastBv11 = false;
 
     private String buildVersion = null;
-    
+
     public PrimeEnvironment() {
-        atLeastEl22 = ClassUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
+        atLeastEl22 = LangUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
 
-        atLeastJsf23 = ClassUtils.tryToLoadClassForName("javax.faces.component.UIImportConstants") != null;
-        atLeastJsf22 = ClassUtils.tryToLoadClassForName("javax.faces.flow.Flow") != null;
-        atLeastJsf21 = ClassUtils.tryToLoadClassForName("javax.faces.component.TransientStateHolder") != null;
+        atLeastJsf23 = LangUtils.tryToLoadClassForName("javax.faces.component.UIImportConstants") != null;
+        atLeastJsf22 = LangUtils.tryToLoadClassForName("javax.faces.flow.Flow") != null;
+        atLeastJsf21 = LangUtils.tryToLoadClassForName("javax.faces.component.TransientStateHolder") != null;
 
-        atLeastBv11 = ClassUtils.tryToLoadClassForName("javax.validation.executable.ExecutableValidator") != null;
+        atLeastBv11 = LangUtils.tryToLoadClassForName("javax.validation.executable.ExecutableValidator") != null;
 
         beanValidationAvailable = checkIfBeanValidationIsAvailable();
-        
+
         buildVersion = resolveBuildVersion();
         // This should only happen if PF + the webapp is openend and started in the same netbeans instance
         // Fallback to a UID to void a empty version in the resourceUrls
@@ -58,9 +58,9 @@ public class PrimeEnvironment {
             buildVersion = UUID.randomUUID().toString().replace("-", "").substring(0, 10);
         }
     }
-    
+
     protected boolean checkIfBeanValidationIsAvailable() {
-        boolean available = ClassUtils.tryToLoadClassForName("javax.validation.Validation") != null;
+        boolean available = LangUtils.tryToLoadClassForName("javax.validation.Validation") != null;
 
         if (available) {
             // Trial-error approach to check for Bean Validation impl existence.
@@ -77,7 +77,7 @@ public class PrimeEnvironment {
 
         return available;
     }
-    
+
     protected String resolveBuildVersion() {
 
         Properties buildProperties = new Properties();
@@ -98,7 +98,7 @@ public class PrimeEnvironment {
             catch (IOException e) {
             }
         }
-        
+
         return null;
     }
 

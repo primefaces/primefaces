@@ -16,13 +16,8 @@
 package org.primefaces.component.menu;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
@@ -32,27 +27,25 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.PhaseId;
+
 import org.primefaces.behavior.confirm.ConfirmBehavior;
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.event.MenuActionEvent;
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.model.menu.MenuElement;
-import org.primefaces.model.menu.MenuGroup;
-import org.primefaces.model.menu.MenuItem;
-import org.primefaces.model.menu.MenuModel;
-import org.primefaces.model.menu.Separator;
+import org.primefaces.model.menu.*;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
 public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
 
     public static final String SEPARATOR = "_";
-    
+
     private static final String SB_BUILD_NON_AJAX_REQUEST = BaseMenuRenderer.class.getName() + "#buildNonAjaxRequest";
 
     @Override
@@ -144,7 +137,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             writer.writeAttribute("title", title, null);
         }
 
-        String styleClass = this.getLinkStyleClass(menuitem);
+        String styleClass = getLinkStyleClass(menuitem);
         if (disabled) {
             styleClass = styleClass + " ui-state-disabled";
         }
@@ -190,20 +183,20 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
                     String menuClientId = menu.getClientId(context);
                     Map<String, List<String>> params = menuitem.getParams();
                     if (params == null) {
-                        params = new LinkedHashMap<String, List<String>>();
+                        params = new LinkedHashMap<>();
                     }
-                    List<String> idParams = new ArrayList<String>();
+                    List<String> idParams = new ArrayList<>();
                     idParams.add(menuitem.getId());
                     params.put(menuClientId + "_menuid", idParams);
 
                     command = menuitem.isAjax()
-                            ? buildAjaxRequest(context, menu, (AjaxSource) menuitem, form, params)
-                            : buildNonAjaxRequest(context, menu, form, menuClientId, params, true);
+                              ? buildAjaxRequest(context, menu, (AjaxSource) menuitem, form, params)
+                              : buildNonAjaxRequest(context, menu, form, menuClientId, params, true);
                 }
                 else {
                     command = menuitem.isAjax()
-                            ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
-                            : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
+                              ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
+                              : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
                 }
 
                 onclick = (onclick == null) ? command : onclick + ";" + command;
@@ -321,8 +314,8 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
     }
 
     protected String buildAjaxRequest(FacesContext context, AbstractMenu menu, AjaxSource source, UIComponent form,
-            Map<String, List<String>> params) {
-        
+                                      Map<String, List<String>> params) {
+
         String clientId = menu.getClientId(context);
 
         AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
@@ -354,11 +347,11 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
     }
 
     protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam,
-            Map<String, List<String>> parameters, boolean submit) {
-        
+                                         Map<String, List<String>> parameters, boolean submit) {
+
         StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
         String formId = form.getClientId(context);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
 
         if (decodeParam != null) {
             params.put(decodeParam, decodeParam);
@@ -372,7 +365,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         }
 
         if (parameters != null && !parameters.isEmpty()) {
-            for (Iterator<String> it = parameters.keySet().iterator(); it.hasNext();) {
+            for (Iterator<String> it = parameters.keySet().iterator(); it.hasNext(); ) {
                 String paramName = it.next();
                 params.put(paramName, parameters.get(paramName).get(0));
             }
@@ -382,12 +375,12 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         if (!params.isEmpty()) {
             request.append("PrimeFaces.addSubmitParam(\"").append(formId).append("\",{");
 
-            for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
+            for (Iterator<String> it = params.keySet().iterator(); it.hasNext(); ) {
                 String key = it.next();
                 Object value = params.get(key);
-                String valueStr = value == null ? null : escapeText(value.toString());
+                String valueStr = value == null ? null : EscapeUtils.forJavaScript(value.toString());
 
-                request.append("\"").append(escapeText(key)).append("\":\"").append(valueStr).append("\"");
+                request.append("\"").append(EscapeUtils.forJavaScript(key)).append("\":\"").append(valueStr).append("\"");
 
                 if (it.hasNext()) {
                     request.append(",");

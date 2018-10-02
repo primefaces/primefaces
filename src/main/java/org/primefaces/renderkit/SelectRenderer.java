@@ -15,8 +15,6 @@
  */
 package org.primefaces.renderkit;
 
-import org.primefaces.util.ArrayUtils;
-
 import javax.el.ELException;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
@@ -39,6 +37,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.RandomAccess;
+
+import org.primefaces.util.LangUtils;
 
 public abstract class SelectRenderer extends InputRenderer {
 
@@ -201,7 +201,7 @@ public abstract class SelectRenderer extends InputRenderer {
 
         return null;
     }
-    
+
     protected Object coerceToModelType(FacesContext ctx, Object value, Class itemValueType) {
         Object newValue;
         try {
@@ -217,6 +217,10 @@ public abstract class SelectRenderer extends InputRenderer {
 
     protected boolean isSelected(FacesContext context, UIComponent component, Object itemValue, Object valueArray, Converter converter) {
         if (itemValue == null && valueArray == null) {
+            return true;
+        }
+
+        if (itemValue == valueArray) {
             return true;
         }
 
@@ -288,12 +292,12 @@ public abstract class SelectRenderer extends InputRenderer {
     }
 
     /**
-     * Restores checked, disabled select items (#3296) and checks if at least one disabled select item has been submitted - 
+     * Restores checked, disabled select items (#3296) and checks if at least one disabled select item has been submitted -
      * this may occur with client side manipulation (#3264)
      * @return <code>newSubmittedValues</code> merged with checked, disabled <code>oldValues</code>
      * @throws javax.faces.FacesException if client side manipulation has been detected, in order to reject the submission
      */
-    protected String[] validateSubmittedValues(FacesContext context, UIInput component, Object[] oldValues, String... submittedValues) 
+    protected String[] validateSubmittedValues(FacesContext context, UIInput component, Object[] oldValues, String... submittedValues)
             throws FacesException {
         List<String> validSubmittedValues = doValidateSubmittedValues(
                 context,
@@ -310,9 +314,9 @@ public abstract class SelectRenderer extends InputRenderer {
             Object[] oldValues,
             List<SelectItem> selectItems,
             String... submittedValues) {
-        
+
         List<String> validSubmittedValues = new ArrayList<>();
-        
+
         // loop attached SelectItems - other values are not allowed
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
@@ -329,23 +333,23 @@ public abstract class SelectRenderer extends InputRenderer {
                 String selectItemVal = getOptionAsString(context, component, component.getConverter(), selectItem.getValue());
 
                 if (selectItem.isDisabled()) {
-                    if (ArrayUtils.contains(submittedValues, selectItemVal) && !ArrayUtils.contains(oldValues, selectItemVal)) {
+                    if (LangUtils.contains(submittedValues, selectItemVal) && !LangUtils.contains(oldValues, selectItemVal)) {
                         // disabled select item has been selected
                         // throw new FacesException("Disabled select item has been submitted. ClientId: " + component.getClientId(context));
                         // ignore it silently for now
                     }
-                    else if (ArrayUtils.contains(oldValues, selectItemVal)) {
+                    else if (LangUtils.contains(oldValues, selectItemVal)) {
                         validSubmittedValues.add(selectItemVal);
                     }
-                } 
+                }
                 else {
-                    if (ArrayUtils.contains(submittedValues, selectItemVal)) {
+                    if (LangUtils.contains(submittedValues, selectItemVal)) {
                         validSubmittedValues.add(selectItemVal);
                     }
                 }
             }
         }
-        
+
         return validSubmittedValues;
     }
 }

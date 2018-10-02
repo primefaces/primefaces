@@ -17,8 +17,8 @@ package org.primefaces.component.captcha;
 
 import java.io.IOException;
 import java.util.Map;
-import javax.faces.FacesException;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -28,7 +28,7 @@ import org.primefaces.util.WidgetBuilder;
 
 public class CaptchaRenderer extends CoreRenderer {
 
-    private final static String RESPONSE_FIELD = "g-recaptcha-response";
+    private static final String RESPONSE_FIELD = "g-recaptcha-response";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -47,7 +47,6 @@ public class CaptchaRenderer extends CoreRenderer {
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         Captcha captcha = (Captcha) component;
         String publicKey = getPublicKey(context, captcha);
 
@@ -65,7 +64,7 @@ public class CaptchaRenderer extends CoreRenderer {
         captcha.setRequired(true);
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
-        
+
         if (captcha.getSize() != null && "invisible".equals(captcha.getSize())) {
             writer.writeAttribute("class", "g-recaptcha", null);
             writer.writeAttribute("data-sitekey", publicKey, null);

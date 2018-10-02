@@ -58,13 +58,13 @@ public class ResetInputActionListener implements ActionListener, Serializable {
         boolean resetModel = false;
         if (clearModel != null) {
             resetModel = clearModel.isLiteralText()
-                    ? Boolean.valueOf(clearModel.getValue(context.getELContext()).toString())
-                    : (Boolean) clearModel.getValue(context.getELContext());
+                         ? Boolean.valueOf(clearModel.getValue(context.getELContext()).toString())
+                         : (Boolean) clearModel.getValue(context.getELContext());
         }
-        
+
         ResetInputVisitCallback visitCallback = resetModel
-                ? ResetInputVisitCallback.INSTANCE_CLEAR_MODEL
-                : ResetInputVisitCallback.INSTANCE;
+                                                ? ResetInputVisitCallback.INSTANCE_CLEAR_MODEL
+                                                : ResetInputVisitCallback.INSTANCE;
 
         List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), expressions);
         for (int i = 0; i < components.size(); i++) {

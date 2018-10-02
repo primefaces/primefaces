@@ -58,6 +58,8 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                     if ($this.cfg.showTodayButton === false) {
                         $(input).datepicker("widget").find(".ui-datepicker-current").hide();
                     }
+                    
+                    $this.alignPanel();
                 }, 1);
 
                 // touch support - prevents keyboard popup
@@ -71,6 +73,10 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                     return $this.cfg.preShow.call($this, input, inst);
                 }
             };
+            
+            PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $('#ui-datepicker-div'), function() {
+                $this.alignPanel();
+            });
         }
 
         // touch support - prevents keyboard popup
@@ -137,12 +143,23 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    alignPanel: function () {
+        if($.datepicker._lastInput && (this.id + '_input') === $.datepicker._lastInput.id) {
+            $('#ui-datepicker-div').css({left: '', top: ''}).position({
+                my: 'left top'
+                , at: 'left bottom'
+                , of: this.input
+                , collision: 'flipfit'
+            });
+        }
+    },
+    
     refresh: function(cfg) {
         if(cfg.popup && $.datepicker._lastInput && (cfg.id + '_input') === $.datepicker._lastInput.id) {
             $.datepicker._hideDatepicker();
         }
 
-        this.init(cfg);
+        this._super(cfg);
     },
 
     configureLocale: function() {
