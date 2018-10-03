@@ -526,7 +526,18 @@ public class TreeRenderer extends CoreRenderer {
         //icon
         encodeIcon(context, uiTreeNode, expanded);
 
+        //label
+        writer.startElement("span", null);
+        writer.writeAttribute("class", Tree.NODE_LABEL_CLASS, null);
+        if (!tree.isDisabled()) {
+            writer.writeAttribute("tabindex", "-1", null);
+        }
+
+        writer.writeAttribute("role", "treeitem", null);
+        writer.writeAttribute("aria-label", uiTreeNode.getAriaLabel(), null);
         uiTreeNode.encodeAll(context);
+        writer.endElement("span");
+
         writer.endElement("div");
         writer.endElement("td");
 
