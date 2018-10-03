@@ -16,12 +16,17 @@
 package org.primefaces.component.splitbutton;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.component.behavior.ClientBehaviorHolder;
@@ -35,6 +40,7 @@ import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
@@ -47,6 +53,8 @@ import org.primefaces.util.*;
 public class SplitButtonRenderer extends OutcomeTargetRenderer {
 
     private static final String SB_BUILD_ONCLICK = SplitButtonRenderer.class.getName() + "#buildOnclick";
+
+    private static final String SB_BUILD_NON_AJAX_REQUEST = SplitButtonRenderer.class.getName() + "#buildNonAjaxRequest";
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -239,7 +247,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         writer.startElement("ul", null);
         writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
 
-        encodeElements(context, button.getElements(), false);
+        encodeElements(context, button, button.getElements(), false);
 
         writer.endElement("ul");
         writer.endElement("div");
@@ -247,7 +255,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeElements(FacesContext context, List<MenuElement> elements, boolean isSubmenu) throws IOException {
+    protected void encodeElements(FacesContext context, SplitButton button, List<MenuElement> elements, boolean isSubmenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         for (MenuElement element : elements) {
@@ -268,11 +276,11 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
                     if (containerStyle != null) {
                         writer.writeAttribute("style", containerStyle, null);
                     }
-                    encodeMenuItem(context, menuItem);
+                    encodeMenuItem(context, button, menuItem);
                     writer.endElement("li");
                 }
                 else if (element instanceof Submenu) {
-                    encodeSubmenu(context, (Submenu) element);
+                    encodeSubmenu(context, button, (Submenu) element);
                 }
                 else if (element instanceof Separator) {
                     encodeSeparator(context, (Separator) element);
@@ -281,7 +289,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         }
     }
 
-    protected void encodeMenuItem(FacesContext context, MenuItem menuitem) throws IOException {
+    protected void encodeMenuItem(FacesContext context, SplitButton button, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String icon = menuitem.getIcon();
         String title = menuitem.getTitle();
@@ -329,14 +337,31 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
                 else {
                     writer.writeAttribute("href", "#", null);
 
-                    UIComponent form = ComponentTraversalUtils.closestForm(context, (UIComponent) menuitem);
+                    UIComponent form = ComponentTraversalUtils.closestForm(context, button);
                     if (form == null) {
                         throw new FacesException("MenuItem must be inside a form element");
                     }
 
-                    String command = menuitem.isAjax()
-                            ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
-                            : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
+                    String command;
+                    if (menuitem.isDynamic()) {
+                        String buttonClientId = button.getClientId(context);
+                        Map<String, List<String>> params = menuitem.getParams();
+                        if (params == null) {
+                            params = new LinkedHashMap<String, List<String>>();
+                        }
+                        List<String> idParams = new ArrayList<String>();
+                        idParams.add(menuitem.getId());
+                        params.put(buttonClientId + "_menuid", idParams);
+
+                        command = menuitem.isAjax()
+                                ? buildAjaxRequest(context, button, (AjaxSource) menuitem, form, params)
+                                : buildNonAjaxRequest(context, button, form, buttonClientId, params, true);
+                    }
+                    else {
+                        command = menuitem.isAjax()
+                                ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
+                                : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
+                    }
 
                     onclick = (onclick == null) ? command : onclick + ";" + command;
                 }
@@ -369,7 +394,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         }
     }
 
-    protected void encodeSubmenu(FacesContext context, Submenu submenu) throws IOException {
+    protected void encodeSubmenu(FacesContext context, SplitButton button, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String label = submenu.getLabel();
         String style = submenu.getStyle();
@@ -392,7 +417,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
 
         writer.endElement("li");
 
-        encodeElements(context, submenu.getElements(), true);
+        encodeElements(context, button, submenu.getElements(), true);
     }
 
     protected void encodeSeparator(FacesContext context, Separator separator) throws IOException {
@@ -465,5 +490,88 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
                 }
             }
         }
+    }
+
+    protected String buildAjaxRequest(FacesContext context, SplitButton button, AjaxSource source, UIComponent form,
+            Map<String, List<String>> params) {
+
+        String clientId = button.getClientId(context);
+
+        AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
+
+        builder.init()
+                .source(clientId)
+                .process(button, source.getProcess())
+                .update(button, source.getUpdate())
+                .async(source.isAsync())
+                .global(source.isGlobal())
+                .delay(source.getDelay())
+                .timeout(source.getTimeout())
+                .partialSubmit(source.isPartialSubmit(), source.isPartialSubmitSet(), source.getPartialSubmitFilter())
+                .resetValues(source.isResetValues(), source.isResetValuesSet())
+                .ignoreAutoUpdate(source.isIgnoreAutoUpdate())
+                .onstart(source.getOnstart())
+                .onerror(source.getOnerror())
+                .onsuccess(source.getOnsuccess())
+                .oncomplete(source.getOncomplete())
+                .params(params);
+
+        if (form != null) {
+            builder.form(form.getClientId(context));
+        }
+
+        builder.preventDefault();
+
+        return builder.build();
+    }
+
+    protected String buildNonAjaxRequest(FacesContext context, UIComponent component, UIComponent form, String decodeParam,
+            Map<String, List<String>> parameters, boolean submit) {
+
+        StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
+        String formId = form.getClientId(context);
+        Map<String, Object> params = new HashMap<String, Object>();
+
+        if (decodeParam != null) {
+            params.put(decodeParam, decodeParam);
+        }
+
+        for (UIComponent child : component.getChildren()) {
+            if (child instanceof UIParameter && child.isRendered()) {
+                UIParameter param = (UIParameter) child;
+                params.put(param.getName(), param.getValue());
+            }
+        }
+
+        if (parameters != null && !parameters.isEmpty()) {
+            for (Iterator<String> it = parameters.keySet().iterator(); it.hasNext();) {
+                String paramName = it.next();
+                params.put(paramName, parameters.get(paramName).get(0));
+            }
+        }
+
+        //append params
+        if (!params.isEmpty()) {
+            request.append("PrimeFaces.addSubmitParam('").append(formId).append("',{");
+
+            for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
+                String key = it.next();
+                Object value = params.get(key);
+
+                request.append("'").append(key).append("':'").append(value).append("'");
+
+                if (it.hasNext()) {
+                    request.append(",");
+                }
+            }
+
+            request.append("})");
+        }
+
+        if (submit) {
+            request.append(".submit('").append(formId).append("');return false;");
+        }
+
+        return request.toString();
     }
 }
