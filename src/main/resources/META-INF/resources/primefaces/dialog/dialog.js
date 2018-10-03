@@ -28,7 +28,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.cfg.position = this.cfg.position||'center';
         this.parent = this.jq.parent();
 
-        this.initSize();
 
         //events
         this.bindEvents();
@@ -133,6 +132,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
             this._show();
         }
+
+        this.initSize();
     },
 
     _show: function() {
