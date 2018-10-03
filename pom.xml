@@ -694,12 +694,16 @@
                             <artifact>org.owasp.esapi:esapi</artifact>
                             <includes>
                                 <include>org/owasp/esapi/SafeFile.class</include>
+                                <include>org/owasp/esapi/Logger.class</include>
                                 <include>org/owasp/esapi/errors/ValidationException.class</include>
+                                <include>org/owasp/esapi/errors/EnterpriseSecurityException.class</include>
+                                
                             </includes>
                         </filter>
                         <filter>
                             <artifact>commons-io:commons-io</artifact>
                             <includes>
+                                <include>org/apache/commons/io/FilenameUtils.class</include>
                                 <include>org/apache/commons/io/input/BoundedInputStream.class</include>
                             </includes>
                         </filter>
