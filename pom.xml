@@ -302,8 +302,6 @@
                     </includes>
                     <excludes>
                         <exclude>**/json/JSON*.java</exclude>
-                        <exclude>**/BoundedInputStream.java</exclude>
-                        <exclude>**/SafeFile.java</exclude>
                     </excludes>
                 </configuration>
                 <executions>
@@ -696,6 +694,7 @@
                             <artifact>org.owasp.esapi:esapi</artifact>
                             <includes>
                                 <include>org/owasp/esapi/SafeFile.class</include>
+                                <include>org/owasp/esapi/errors/ValidationException.class</include>
                             </includes>
                         </filter>
                         <filter>
