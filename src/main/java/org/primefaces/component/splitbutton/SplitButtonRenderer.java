@@ -30,13 +30,17 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
 import org.primefaces.behavior.confirm.ConfirmBehavior;
+import org.primefaces.component.api.AjaxSource;
+import org.primefaces.component.api.UIOutcomeTarget;
 import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
-import org.primefaces.component.menuitem.UIMenuItem;
-import org.primefaces.component.separator.UISeparator;
 import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
+import org.primefaces.model.menu.MenuModel;
+import org.primefaces.model.menu.Separator;
+import org.primefaces.model.menu.Submenu;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.*;
 
@@ -62,6 +66,10 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         SplitButton button = (SplitButton) component;
+        MenuModel model = button.getModel();
+        if (model != null && button.getElementsCount() > 0) {
+            model.generateUniqueIds();
+        }
 
         encodeMarkup(context, button);
         encodeScript(context, button);
@@ -84,7 +92,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         }
 
         encodeDefaultButton(context, button, buttonId);
-        if (ComponentUtils.shouldRenderChildren(button)) {
+        if (button.getElementsCount() > 0) {
             encodeMenuIcon(context, button, menuButtonId);
             encodeMenu(context, button, menuId);
         }
@@ -175,6 +183,13 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SplitButton", button.resolveWidgetVar(), clientId);
         wb.attr("appendTo", SearchExpressionFacade.resolveClientId(context, button, button.getAppendTo()), null);
+
+        if (button.isFilter()) {
+            wb.attr("filter", true)
+                    .attr("filterMatchMode", button.getFilterMatchMode(), null)
+                    .nativeAttr("filterFunction", button.getFilterFunction(), null);
+        }
+
         wb.finish();
     }
 
@@ -214,39 +229,65 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         writer.writeAttribute("class", menuStyleClass, "styleClass");
         writer.writeAttribute("role", "menu", null);
 
+        if (button.isFilter()) {
+            encodeFilter(context, button);
+        }
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", SplitButton.LIST_WRAPPER_CLASS, "styleClass");
+
         writer.startElement("ul", null);
         writer.writeAttribute("class", MenuButton.LIST_CLASS, "styleClass");
 
-        for (int i = 0; i < button.getChildCount(); i++) {
-            UIComponent child = button.getChildren().get(i);
-            if (child.isRendered()) {
-                if (child instanceof UIMenuItem) {
-                    UIMenuItem item = (UIMenuItem) child;
-
-                    writer.startElement("li", null);
-                    writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                    writer.writeAttribute("role", "menuitem", null);
-                    encodeMenuItem(context, item);
-                    writer.endElement("li");
-                }
-                else if (child instanceof UISeparator) {
-                    encodeSeparator(context, (UISeparator) child);
-                }
-            }
-        }
+        encodeElements(context, button.getElements(), false);
 
         writer.endElement("ul");
         writer.endElement("div");
 
+        writer.endElement("div");
     }
 
-    protected void encodeMenuItem(FacesContext context, UIMenuItem menuitem) throws IOException {
+    protected void encodeElements(FacesContext context, List<MenuElement> elements, boolean isSubmenu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        for (MenuElement element : elements) {
+            if (element.isRendered()) {
+                if (element instanceof MenuItem) {
+                    MenuItem menuItem = (MenuItem) element;
+                    String containerStyle = menuItem.getContainerStyle();
+                    String containerStyleClass = menuItem.getContainerStyleClass();
+                    containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : Menu.MENUITEM_CLASS + " " + containerStyleClass;
+
+                    if (isSubmenu) {
+                        containerStyleClass = containerStyleClass + " " + Menu.SUBMENU_CHILD_CLASS;
+                    }
+
+                    writer.startElement("li", null);
+                    writer.writeAttribute("class", containerStyleClass, null);
+                    writer.writeAttribute("role", "menuitem", null);
+                    if (containerStyle != null) {
+                        writer.writeAttribute("style", containerStyle, null);
+                    }
+                    encodeMenuItem(context, menuItem);
+                    writer.endElement("li");
+                }
+                else if (element instanceof Submenu) {
+                    encodeSubmenu(context, (Submenu) element);
+                }
+                else if (element instanceof Separator) {
+                    encodeSeparator(context, (Separator) element);
+                }
+            }
+        }
+    }
+
+    protected void encodeMenuItem(FacesContext context, MenuItem menuitem) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String icon = menuitem.getIcon();
         String title = menuitem.getTitle();
 
         if (menuitem.shouldRenderChildren()) {
-            renderChildren(context, menuitem);
+            renderChildren(context, (UIComponent) menuitem);
         }
         else {
             boolean disabled = menuitem.isDisabled();
@@ -277,7 +318,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
 
                 //GET
                 if (menuitem.getUrl() != null || menuitem.getOutcome() != null) {
-                    String targetURL = getTargetURL(context, menuitem);
+                    String targetURL = getTargetURL(context, (UIOutcomeTarget) menuitem);
                     writer.writeAttribute("href", targetURL, null);
 
                     if (menuitem.getTarget() != null) {
@@ -288,14 +329,14 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
                 else {
                     writer.writeAttribute("href", "#", null);
 
-                    UIComponent form = ComponentTraversalUtils.closestForm(context, menuitem);
+                    UIComponent form = ComponentTraversalUtils.closestForm(context, (UIComponent) menuitem);
                     if (form == null) {
                         throw new FacesException("MenuItem must be inside a form element");
                     }
 
                     String command = menuitem.isAjax()
-                            ? buildAjaxRequest(context, menuitem, form)
-                            : buildNonAjaxRequest(context, (menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
+                            ? buildAjaxRequest(context, (AjaxSource) menuitem, form)
+                            : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
 
                     onclick = (onclick == null) ? command : onclick + ";" + command;
                 }
@@ -328,7 +369,33 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         }
     }
 
-    protected void encodeSeparator(FacesContext context, UISeparator separator) throws IOException {
+    protected void encodeSubmenu(FacesContext context, Submenu submenu) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String label = submenu.getLabel();
+        String style = submenu.getStyle();
+        String styleClass = submenu.getStyleClass();
+        styleClass = styleClass == null ? Menu.SUBMENU_TITLE_CLASS : Menu.SUBMENU_TITLE_CLASS + " " + styleClass;
+
+        writer.startElement("li", null);
+        writer.writeAttribute("class", styleClass, null);
+        if (style != null) {
+            writer.writeAttribute("style", style, null);
+        }
+
+        writer.startElement("h3", null);
+
+        if (label != null) {
+            writer.writeText(label, "value");
+        }
+
+        writer.endElement("h3");
+
+        writer.endElement("li");
+
+        encodeElements(context, submenu.getElements(), true);
+    }
+
+    protected void encodeSeparator(FacesContext context, Separator separator) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String style = separator.getStyle();
         String styleClass = separator.getStyleClass();
@@ -342,6 +409,33 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         }
 
         writer.endElement("li");
+    }
+
+    protected void encodeFilter(FacesContext context, SplitButton button) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+        String id = button.getClientId(context) + "_filter";
+
+        writer.startElement("div", null);
+        writer.writeAttribute("class", "ui-splitbuttonmenu-filter-container", null);
+
+        writer.startElement("input", null);
+        writer.writeAttribute("class", "ui-splitbuttonmenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all", null);
+        writer.writeAttribute("id", id, null);
+        writer.writeAttribute("name", id, null);
+        writer.writeAttribute("type", "text", null);
+        writer.writeAttribute("autocomplete", "off", null);
+
+        if (button.getFilterPlaceholder() != null) {
+            writer.writeAttribute("placeholder", button.getFilterPlaceholder(), null);
+        }
+
+        writer.startElement("span", null);
+        writer.writeAttribute("class", "ui-icon ui-icon-search", id);
+        writer.endElement("span");
+
+        writer.endElement("input");
+
+        writer.endElement("div");
     }
 
     @Override

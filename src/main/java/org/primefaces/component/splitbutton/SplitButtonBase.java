@@ -19,6 +19,7 @@ import javax.faces.component.html.HtmlCommandButton;
 
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Widget;
+import org.primefaces.model.menu.MenuModel;
 import org.primefaces.util.ComponentUtils;
 
 
@@ -51,7 +52,12 @@ abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, 
         appendTo,
         partialSubmitFilter,
         menuStyleClass,
-        form
+        form,
+        model,
+        filter,
+        filterMatchMode,
+        filterFunction,
+        filterPlaceholder
     }
 
     public SplitButtonBase() {
@@ -252,6 +258,46 @@ abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, 
 
     public void setForm(String form) {
         getStateHelper().put(PropertyKeys.form, form);
+    }
+
+    public MenuModel getModel() {
+        return (MenuModel) getStateHelper().eval(PropertyKeys.model, null);
+    }
+
+    public void setModel(MenuModel _model) {
+        getStateHelper().put(PropertyKeys.model, _model);
+    }
+
+    public boolean isFilter() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filter, false);
+    }
+
+    public void setFilter(boolean _filter) {
+        getStateHelper().put(PropertyKeys.filter, _filter);
+    }
+
+    public String getFilterMatchMode() {
+        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
+    }
+
+    public void setFilterMatchMode(String _filterMatchMode) {
+        getStateHelper().put(PropertyKeys.filterMatchMode, _filterMatchMode);
+    }
+
+    public String getFilterFunction() {
+        return (String) getStateHelper().eval(PropertyKeys.filterFunction, null);
+    }
+
+    public void setFilterFunction(String _filterFunction) {
+        getStateHelper().put(PropertyKeys.filterFunction, _filterFunction);
+    }
+
+    public String getFilterPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.filterPlaceholder, null);
+    }
+
+    public void setFilterPlaceholder(String _filterPlaceholder) {
+        getStateHelper().put(PropertyKeys.filterPlaceholder, _filterPlaceholder);
     }
 
     @Override

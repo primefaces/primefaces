@@ -18543,6 +18543,37 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <name>model</name>
+            <required>false</required>
+            <type>org.primefaces.model.menu.MenuModel</type>
+            <description>A menu model instance to create the items of splitButton programmatically.</description>
+        </attribute>
+        <attribute>
+            <name>filter</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+            <defaultValue>false</defaultValue>
+            <description>Displays an input filter for the list.</description>
+        </attribute>
+        <attribute>
+            <name>filterMatchMode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Match mode for filtering, valid values are startsWith (default), contains, endsWith and custom.</description>
+        </attribute>
+        <attribute>
+            <name>filterFunction</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Client side function to use in custom filterMatchMode.</description>
+        </attribute>
+        <attribute>
+            <name>filterPlaceholder</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <description>Watermark displayed in the filter input field before the user enters a value in an HTML5 browser.</description>
+        </attribute>
     </tag>
     <tag>
         <tag-name>spotlight</tag-name>
