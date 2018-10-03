@@ -102,8 +102,8 @@ public class OrderList extends OrderListBase {
 
                 if (eventName.equals("select")) {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
-                    boolean metaKey = Boolean.valueOf(params.get(clientId + "_metaKey"));
-                    boolean ctrlKey = Boolean.valueOf(params.get(clientId + "_ctrlKey"));
+                    boolean metaKey = Boolean.parseBoolean(params.get(clientId + "_metaKey"));
+                    boolean ctrlKey = Boolean.parseBoolean(params.get(clientId + "_ctrlKey"));
                     wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), list.get(itemIndex), metaKey, ctrlKey);
                 }
                 else if (eventName.equals("unselect")) {

@@ -61,7 +61,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, SelectBooleanButton button) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = button.getClientId(context);
-        boolean checked = Boolean.valueOf(ComponentUtils.getValueToRender(context, button));
+        boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, button));
         boolean disabled = button.isDisabled();
         String inputId = clientId + "_input";
         String label = checked ? button.getOnLabel() : button.getOffLabel();

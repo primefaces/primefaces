@@ -1341,7 +1341,7 @@ public class UITabPanel extends UIPanel implements NamingContainer {
             return true;
         }
 
-        return Boolean.valueOf(paramValue);
+        return Boolean.parseBoolean(paramValue);
     }
 
     private final class IndexedEvent extends FacesEvent {

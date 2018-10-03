@@ -58,7 +58,7 @@ public class ResetInputActionListener implements ActionListener, Serializable {
         boolean resetModel = false;
         if (clearModel != null) {
             resetModel = clearModel.isLiteralText()
-                         ? Boolean.valueOf(clearModel.getValue(context.getELContext()).toString())
+                         ? Boolean.parseBoolean(clearModel.getValue(context.getELContext()).toString())
                          : (Boolean) clearModel.getValue(context.getELContext());
         }
 

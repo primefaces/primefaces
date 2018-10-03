@@ -383,7 +383,7 @@ public class DataTable extends DataTableBase {
                 wrapperEvent = new ColumnResizeEvent(this, behaviorEvent.getBehavior(), width, height, findColumn(columnId));
             }
             else if (eventName.equals("toggleSelect")) {
-                boolean checked = Boolean.valueOf(params.get(clientId + "_checked"));
+                boolean checked = Boolean.parseBoolean(params.get(clientId + "_checked"));
 
                 wrapperEvent = new ToggleSelectEvent(this, behaviorEvent.getBehavior(), checked);
             }
@@ -1042,7 +1042,7 @@ public class DataTable extends DataTableBase {
     protected boolean shouldSkipChildren(FacesContext context) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String paramValue = params.get(Constants.RequestParams.SKIP_CHILDREN_PARAM);
-        if (paramValue != null && Boolean.valueOf(paramValue) == false) {
+        if (paramValue != null && Boolean.parseBoolean(paramValue) == false) {
             return false;
         }
         else {
@@ -1317,7 +1317,7 @@ public class DataTable extends DataTableBase {
                 for (int i = 0; i < colsArr.length; i++) {
                     String temp = colsArr[i];
                     int sepIndex = temp.lastIndexOf("_");
-                    togglableColsMap.put(temp.substring(0, sepIndex), Boolean.valueOf(temp.substring(sepIndex + 1, temp.length())));
+                    togglableColsMap.put(temp.substring(0, sepIndex), Boolean.parseBoolean(temp.substring(sepIndex + 1, temp.length())));
                 }
             }
         }

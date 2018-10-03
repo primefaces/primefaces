@@ -187,7 +187,7 @@ public class PickList extends PickListBase {
 
             if (eventName.equals("transfer")) {
                 String[] items = paramValues.get(clientId + "_transferred");
-                boolean isAdd = Boolean.valueOf(params.get(clientId + "_add"));
+                boolean isAdd = Boolean.parseBoolean(params.get(clientId + "_add"));
                 List transferredItems = new ArrayList();
                 populateModel(context, items, transferredItems);
                 TransferEvent transferEvent = new TransferEvent(this, behaviorEvent.getBehavior(), transferredItems, isAdd);

@@ -59,7 +59,7 @@ public class InputSwitchRenderer extends InputRenderer {
 
     protected void encodeMarkup(FacesContext context, InputSwitch inputSwitch) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean checked = Boolean.valueOf(ComponentUtils.getValueToRender(context, inputSwitch));
+        boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, inputSwitch));
         boolean showLabels = inputSwitch.isShowLabels();
         String clientId = inputSwitch.getClientId(context);
         String style = inputSwitch.getStyle();

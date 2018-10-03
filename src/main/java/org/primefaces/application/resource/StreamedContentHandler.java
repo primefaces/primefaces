@@ -43,7 +43,7 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
 
         if (resourceKey != null && library != null && library.equals(Constants.LIBRARY)) {
             StreamedContent streamedContent = null;
-            boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
+            boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
 
             try {
                 ExternalContext externalContext = context.getExternalContext();

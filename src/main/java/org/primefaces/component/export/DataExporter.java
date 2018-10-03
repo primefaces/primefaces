@@ -91,21 +91,21 @@ public class DataExporter implements ActionListener, StateHolder {
         boolean repeating = false;
         if (repeat != null) {
             repeating = repeat.isLiteralText()
-                        ? Boolean.valueOf(repeat.getValue(context.getELContext()).toString())
+                        ? Boolean.parseBoolean(repeat.getValue(context.getELContext()).toString())
                         : (Boolean) repeat.getValue(context.getELContext());
         }
 
         boolean isPageOnly = false;
         if (pageOnly != null) {
             isPageOnly = pageOnly.isLiteralText()
-                         ? Boolean.valueOf(pageOnly.getValue(context.getELContext()).toString())
+                         ? Boolean.parseBoolean(pageOnly.getValue(context.getELContext()).toString())
                          : (Boolean) pageOnly.getValue(context.getELContext());
         }
 
         boolean isSelectionOnly = false;
         if (selectionOnly != null) {
             isSelectionOnly = selectionOnly.isLiteralText()
-                              ? Boolean.valueOf(selectionOnly.getValue(context.getELContext()).toString())
+                              ? Boolean.parseBoolean(selectionOnly.getValue(context.getELContext()).toString())
                               : (Boolean) selectionOnly.getValue(context.getELContext());
         }
 

@@ -100,7 +100,7 @@ public class Panel extends PanelBase {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName.equals("toggle")) {
-                boolean collapsed = Boolean.valueOf(params.get(clientId + "_collapsed"));
+                boolean collapsed = Boolean.parseBoolean(params.get(clientId + "_collapsed"));
                 Visibility visibility = collapsed ? Visibility.HIDDEN : Visibility.VISIBLE;
 
                 ToggleEvent eventToQueue = new ToggleEvent(this, behaviorEvent.getBehavior(), visibility);

@@ -65,7 +65,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, SelectBooleanCheckbox checkbox) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = checkbox.getClientId(context);
-        boolean checked = Boolean.valueOf(ComponentUtils.getValueToRender(context, checkbox));
+        boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, checkbox));
         boolean disabled = checkbox.isDisabled();
         String title = checkbox.getTitle();
 

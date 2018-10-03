@@ -60,7 +60,7 @@ public class ToggleSwitchRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, ToggleSwitch toggleSwitch) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = toggleSwitch.getClientId(context);
-        boolean checked = Boolean.valueOf(ComponentUtils.getValueToRender(context, toggleSwitch));
+        boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, toggleSwitch));
         boolean disabled = toggleSwitch.isDisabled();
         String style = toggleSwitch.getStyle();
         String styleClass = toggleSwitch.getStyleClass();

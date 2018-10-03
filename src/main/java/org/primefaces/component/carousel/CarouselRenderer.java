@@ -40,7 +40,7 @@ public class CarouselRenderer extends CoreRenderer {
         }
 
         if (params.containsKey(collapsedParam)) {
-            carousel.setCollapsed(Boolean.valueOf(params.get(collapsedParam)));
+            carousel.setCollapsed(Boolean.parseBoolean(params.get(collapsedParam)));
         }
     }
 

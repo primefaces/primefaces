@@ -73,7 +73,7 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
                 String format = params.get("fmt");
                 String hrp = params.get("hrp");
                 int orientation = Integer.parseInt(params.get("ori"));
-                boolean cache = Boolean.valueOf(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
+                boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
 
                 generator.getBarcodeBean().setMsgPosition(HumanReadablePlacement.byName(hrp));
 

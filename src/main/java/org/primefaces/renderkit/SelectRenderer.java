@@ -150,9 +150,9 @@ public abstract class SelectRenderer extends InputRenderer {
         }
 
         String itemLabel = itemLabelValue == null ? String.valueOf(value) : String.valueOf(itemLabelValue);
-        boolean disabled = itemDisabled == null ? false : Boolean.valueOf(itemDisabled.toString());
-        boolean escaped = itemEscaped == null ? true : Boolean.valueOf(itemEscaped.toString());
-        boolean noSelectionOption = noSelection == null ? false : Boolean.valueOf(noSelection.toString());
+        boolean disabled = itemDisabled == null ? false : Boolean.parseBoolean(itemDisabled.toString());
+        boolean escaped = itemEscaped == null ? true : Boolean.parseBoolean(itemEscaped.toString());
+        boolean noSelectionOption = noSelection == null ? false : Boolean.parseBoolean(noSelection.toString());
 
         if (var != null) {
             requestMap.remove(var);

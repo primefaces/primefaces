@@ -201,7 +201,7 @@ public class Tree extends TreeBase {
                 }
 
                 int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
-                boolean isDroppedNodeCopy = Boolean.valueOf(params.get(clientId + "_isDroppedNodeCopy"));
+                boolean isDroppedNodeCopy = Boolean.parseBoolean(params.get(clientId + "_isDroppedNodeCopy"));
 
                 if (isMultipleDrag()) {
                     wrapperEvent = new TreeDragDropEvent(this, behaviorEvent.getBehavior(), dragNodes, dropNode, dndIndex, isDroppedNodeCopy);
@@ -394,7 +394,7 @@ public class Tree extends TreeBase {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String clientId = getClientId(context);
             int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
-            boolean isDroppedNodeCopy = Boolean.valueOf(params.get(clientId + "_isDroppedNodeCopy"));
+            boolean isDroppedNodeCopy = Boolean.parseBoolean(params.get(clientId + "_isDroppedNodeCopy"));
             TreeDragDropInfo info;
 
             if (isMultipleDrag()) {

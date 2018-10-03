@@ -134,7 +134,7 @@ public class Layout extends LayoutBase {
             FacesEvent wrapperEvent = null;
 
             if (eventName.equals("toggle")) {
-                boolean collapsed = Boolean.valueOf(params.get(clientId + "_collapsed"));
+                boolean collapsed = Boolean.parseBoolean(params.get(clientId + "_collapsed"));
                 LayoutUnit unit = getLayoutUnitByPosition(params.get(clientId + "_unit"));
                 Visibility visibility = collapsed ? Visibility.HIDDEN : Visibility.VISIBLE;
                 unit.setCollapsed(collapsed);
