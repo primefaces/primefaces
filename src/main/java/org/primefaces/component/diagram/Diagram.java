@@ -93,21 +93,21 @@ public class Diagram extends DiagramBase {
 
             if (model != null) {
                 if (eventName.equals("connect") || eventName.equals("disconnect")) {
-                    FacesEvent facesEvent = null;
+                    FacesEvent wrapperEvent = null;
                     Element sourceElement = model.findElement(params.get(clientId + "_sourceId"));
                     Element targetElement = model.findElement(params.get(clientId + "_targetId"));
                     EndPoint sourceEndPoint = model.findEndPoint(sourceElement, params.get(clientId + "_sourceEndPointId"));
                     EndPoint targetEndPoint = model.findEndPoint(targetElement, params.get(clientId + "_targetEndPointId"));
 
                     if (eventName.equals("connect")) {
-                        facesEvent = new ConnectEvent(this, behaviorEvent.getBehavior(), sourceElement, targetElement, sourceEndPoint, targetEndPoint);
+                        wrapperEvent = new ConnectEvent(this, behaviorEvent.getBehavior(), sourceElement, targetElement, sourceEndPoint, targetEndPoint);
                     }
                     else if (eventName.equals("disconnect")) {
-                        facesEvent = new DisconnectEvent(this, behaviorEvent.getBehavior(), sourceElement, targetElement, sourceEndPoint, targetEndPoint);
+                        wrapperEvent = new DisconnectEvent(this, behaviorEvent.getBehavior(), sourceElement, targetElement, sourceEndPoint, targetEndPoint);
                     }
 
-                    facesEvent.setPhaseId(behaviorEvent.getPhaseId());
-                    super.queueEvent(facesEvent);
+                    wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
+                    super.queueEvent(wrapperEvent);
                 }
                 else if (eventName.equals("connectionChange")) {
                     Element originalSourceElement = model.findElement(params.get(clientId + "_originalSourceId"));
