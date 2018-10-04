@@ -264,40 +264,40 @@ abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, 
         return (MenuModel) getStateHelper().eval(PropertyKeys.model, null);
     }
 
-    public void setModel(MenuModel _model) {
-        getStateHelper().put(PropertyKeys.model, _model);
+    public void setModel(MenuModel model) {
+        getStateHelper().put(PropertyKeys.model, model);
     }
 
     public boolean isFilter() {
         return (Boolean) getStateHelper().eval(PropertyKeys.filter, false);
     }
 
-    public void setFilter(boolean _filter) {
-        getStateHelper().put(PropertyKeys.filter, _filter);
+    public void setFilter(boolean filter) {
+        getStateHelper().put(PropertyKeys.filter, filter);
     }
 
     public String getFilterMatchMode() {
         return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
     }
 
-    public void setFilterMatchMode(String _filterMatchMode) {
-        getStateHelper().put(PropertyKeys.filterMatchMode, _filterMatchMode);
+    public void setFilterMatchMode(String filterMatchMode) {
+        getStateHelper().put(PropertyKeys.filterMatchMode, filterMatchMode);
     }
 
     public String getFilterFunction() {
         return (String) getStateHelper().eval(PropertyKeys.filterFunction, null);
     }
 
-    public void setFilterFunction(String _filterFunction) {
-        getStateHelper().put(PropertyKeys.filterFunction, _filterFunction);
+    public void setFilterFunction(String filterFunction) {
+        getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
     }
 
     public String getFilterPlaceholder() {
         return (String) getStateHelper().eval(PropertyKeys.filterPlaceholder, null);
     }
 
-    public void setFilterPlaceholder(String _filterPlaceholder) {
-        getStateHelper().put(PropertyKeys.filterPlaceholder, _filterPlaceholder);
+    public void setFilterPlaceholder(String filterPlaceholder) {
+        getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
     }
 
     @Override
