@@ -94,6 +94,8 @@ PrimeFaces.widget.Knob = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
         });
+        
+        this.knob.addClass(this.cfg.styleClass);
     },
 
     setValue: function (value) {

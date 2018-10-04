@@ -111,12 +111,14 @@ public class KnobRenderer extends CoreRenderer {
     private void encodeScript(FacesContext context, Knob knob) throws IOException {
         String clientId = knob.getClientId();
         String widgetVar = knob.resolveWidgetVar();
+        String styleClass = knob.getStyleClass() != null ? "ui-knob " + knob.getStyleClass() : "ui-knob";
 
         WidgetBuilder wb = getWidgetBuilder(context);
 
         wb.init("Knob", widgetVar, clientId);
         wb.attr("labelTemplate", knob.getLabelTemplate())
                 .attr("colorTheme", knob.getColorTheme())
+                .attr("styleClass", styleClass)
                 .callback("onchange", "function(value)", knob.getOnchange());
 
         if (knob.getForegroundColor() != null) {

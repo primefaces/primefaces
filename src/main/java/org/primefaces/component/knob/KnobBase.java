@@ -46,7 +46,8 @@ abstract class KnobBase extends UIInput implements Widget, ClientBehaviorHolder,
         cursor,
         labelTemplate,
         onchange,
-        lineCap
+        lineCap,
+        styleClass
     }
 
     public KnobBase() {
@@ -184,6 +185,14 @@ abstract class KnobBase extends UIInput implements Widget, ClientBehaviorHolder,
 
     public void setLineCap(String lineCap) {
         getStateHelper().put(PropertyKeys.lineCap, lineCap);
+    }
+
+    public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+    public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
     @Override
