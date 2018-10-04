@@ -28,7 +28,8 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.cfg.position = this.cfg.position||'center';
         this.parent = this.jq.parent();
 
-
+        this.initSize();
+        
         //events
         this.bindEvents();
 
@@ -118,10 +119,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             this.loadContents();
         }
         else {
-            if (this.cfg.fitViewport) {
-                this.fitViewport();
-            }
-
             if (this.positionInitialized === false) {
                 this.jqEl.style.visibility = "hidden";
                 this.jqEl.style.display = "block";
@@ -132,8 +129,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
             this._show();
         }
-
-        this.initSize();
     },
 
     _show: function() {
@@ -166,6 +161,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
 
     postShow: function() {
+        if (this.cfg.fitViewport) {
+            this.fitViewport();
+        }
+        
         this.callBehavior('open');
 
         PrimeFaces.invokeDeferredRenders(this.id);
