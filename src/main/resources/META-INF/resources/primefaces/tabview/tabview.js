@@ -226,15 +226,15 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         if(this.headerContainer.length) {
             var overflown = ((this.lastTab.position().left + this.lastTab.width()) - this.firstTab.position().left) > this.navscroller.innerWidth();
             if (overflown) {
-                this.navscroller.css('padding-left', '18px');
-                this.navcrollerLeft.attr('tabindex', this.tabindex).show();
-                this.navcrollerRight.attr('tabindex', this.tabindex).show();
+                this.navscroller.removeClass('ui-tabs-navscroller-btn-hidden');
+                this.navcrollerLeft.attr('tabindex', this.tabindex);
+                this.navcrollerRight.attr('tabindex', this.tabindex);
                 this.restoreScrollState();
             }
             else {
-                this.navscroller.css('padding-left', '0px');
-                this.navcrollerLeft.attr('tabindex', this.tabindex).hide();
-                this.navcrollerRight.attr('tabindex', this.tabindex).hide();
+                this.navscroller.addClass('ui-tabs-navscroller-btn-hidden');
+                this.navcrollerLeft.attr('tabindex', this.tabindex);
+                this.navcrollerRight.attr('tabindex', this.tabindex);
             }
         }
     },
