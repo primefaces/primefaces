@@ -81,7 +81,7 @@ public class WidgetBuilder {
     public WidgetBuilder initWithDomReady(String widgetClass, String widgetVar, String id) throws IOException {
         return init(widgetClass, widgetVar, id);
     }
-       
+
     public WidgetBuilder initWithWindowLoad(String widgetClass, String widgetVar, String id) throws IOException {
 
         this.renderScriptBlock(id);
