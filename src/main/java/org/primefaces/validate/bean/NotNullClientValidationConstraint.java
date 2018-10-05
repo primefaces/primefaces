@@ -20,8 +20,6 @@ import java.util.Map;
 import javax.validation.constraints.NotNull;
 import javax.validation.metadata.ConstraintDescriptor;
 
-import org.primefaces.util.HTML;
-
 public class NotNullClientValidationConstraint implements ClientValidationConstraint {
 
     private static final String MESSAGE_METADATA = "data-p-notnull-msg";
@@ -36,8 +34,6 @@ public class NotNullClientValidationConstraint implements ClientValidationConstr
         if (!message.equals(MESSAGE_ID)) {
             metadata.put(MESSAGE_METADATA, message);
         }
-
-        metadata.put(HTML.VALIDATION_METADATA.REQUIRED, "true");
 
         return metadata;
     }
