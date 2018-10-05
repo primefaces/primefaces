@@ -29,14 +29,18 @@ abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorH
     public static final String DEFAULT_RENDERER = "org.primefaces.component.TextEditorRenderer";
 
     public enum PropertyKeys {
-
         widgetVar,
         height,
         readonly,
         style,
         styleClass,
         placeholder,
-        toolbarVisible
+        toolbarVisible,
+        allowBlocks,
+        allowFormatting,
+        allowLinks,
+        allowStyles,
+        allowImages
     }
 
     public TextEditorBase() {
@@ -102,6 +106,46 @@ abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorH
 
     public void setToolbarVisible(boolean toolbarVisible) {
         getStateHelper().put(PropertyKeys.toolbarVisible, toolbarVisible);
+    }
+
+    public boolean isAllowBlocks() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowBlocks, true);
+    }
+
+    public void setAllowBlocks(boolean allowBlocks) {
+        getStateHelper().put(PropertyKeys.allowBlocks, allowBlocks);
+    }
+
+    public boolean isAllowFormatting() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowFormatting, true);
+    }
+
+    public void setAllowFormatting(boolean allowFormatting) {
+        getStateHelper().put(PropertyKeys.allowFormatting, allowFormatting);
+    }
+
+    public boolean isAllowLinks() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowLinks, true);
+    }
+
+    public void setAllowLinks(boolean allowLinks) {
+        getStateHelper().put(PropertyKeys.allowLinks, allowLinks);
+    }
+
+    public boolean isAllowStyles() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowStyles, true);
+    }
+
+    public void setAllowStyles(boolean allowStyles) {
+        getStateHelper().put(PropertyKeys.allowStyles, allowStyles);
+    }
+
+    public boolean isAllowImages() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowImages, true);
+    }
+
+    public void setAllowImages(boolean allowImages) {
+        getStateHelper().put(PropertyKeys.allowImages, allowImages);
     }
 
     @Override
