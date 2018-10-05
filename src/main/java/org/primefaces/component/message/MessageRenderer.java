@@ -48,7 +48,6 @@ public class MessageRenderer extends UINotificationRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String display = uiMessage.getDisplay();
         boolean iconOnly = display.equals("icon");
-        boolean escape = uiMessage.isEscape();
         String style = uiMessage.getStyle();
         String containerClass = display.equals("tooltip") ? "ui-message ui-helper-hidden" : "ui-message";
         String styleClass = uiMessage.getStyleClass();
@@ -113,10 +112,10 @@ public class MessageRenderer extends UINotificationRenderer {
 
                 if (!iconOnly) {
                     if (uiMessage.isShowSummary()) {
-                        encodeText(writer, msg.getSummary(), severityKey + "-summary", escape);
+                        encodeText(context, uiMessage, msg.getSummary(), severityKey + "-summary");
                     }
                     if (uiMessage.isShowDetail()) {
-                        encodeText(writer, msg.getDetail(), severityKey + "-detail", escape);
+                        encodeText(context, uiMessage, msg.getDetail(), severityKey + "-detail");
                     }
                 }
 
@@ -130,11 +129,13 @@ public class MessageRenderer extends UINotificationRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeText(ResponseWriter writer, String text, String severity, boolean escape) throws IOException {
+    protected void encodeText(FacesContext context, Message uiMessage, String text, String severity) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-message-" + severity, null);
+        writer.writeAttribute("id", uiMessage.getClientId(context) + '_' + severity, null);
 
-        if (escape) {
+        if (uiMessage.isEscape()) {
             writer.writeText(text, null);
         }
         else {
@@ -154,13 +155,15 @@ public class MessageRenderer extends UINotificationRenderer {
     }
 
     protected void encodeScript(FacesContext context, Message uiMessage, UIComponent target) throws IOException {
-        if (uiMessage.getDisplay().equals("tooltip")) {
+        boolean tooltip = "tooltip".equals(uiMessage.getDisplay());
+        if (tooltip || uiMessage.isShowDetail()) {
             String clientId = uiMessage.getClientId(context);
             String targetClientId = (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
             WidgetBuilder wb = getWidgetBuilder(context);
 
             wb.init("Message", uiMessage.resolveWidgetVar(), clientId)
                     .attr("target", targetClientId)
+                    .attr("tooltip", tooltip, false)
                     .finish();
         }
     }
