@@ -152,6 +152,11 @@
 
 .ui-tabs .ui-tabs-navscroller {
     overflow: hidden;
+    padding-left: 18px;
+}
+
+.ui-tabs .ui-tabs-navscroller.ui-tabs-navscroller-btn-hidden {
+    padding-left: 0;
 }
 
 .ui-tabs-scrollable .ui-tabs-nav li {
@@ -163,6 +168,9 @@
     height: 28px;
     z-index: 100;
     cursor: pointer;
+}
+
+.ui-tabs .ui-tabs-navscroller.ui-tabs-navscroller-btn-hidden .ui-tabs-navscroller-btn {
     display: none;
 }
 
