@@ -111,6 +111,7 @@ public class PanelGridRenderer extends CoreRenderer {
     }
 
     public void encodeDynamicBody(FacesContext context, PanelGrid grid, int columns) throws IOException {
+        boolean rowIsClosed = true;
         ResponseWriter writer = context.getResponseWriter();
         String columnClassesValue = grid.getColumnClasses();
         String[] columnClasses = columnClassesValue == null ? new String[0] : columnClassesValue.split(",");
@@ -123,6 +124,7 @@ public class PanelGridRenderer extends CoreRenderer {
 
             int colMod = i % columns;
             if (colMod == 0) {
+                rowIsClosed = false;
                 writer.startElement("tr", null);
                 writer.writeAttribute("class", PanelGrid.TABLE_ROW_CLASS, null);
                 writer.writeAttribute("role", "row", null);
@@ -143,6 +145,10 @@ public class PanelGridRenderer extends CoreRenderer {
             if (colMod == 0) {
                 writer.endElement("tr");
             }
+        }
+
+        if (!rowIsClosed) {
+            writer.endElement("tr");
         }
     }
 
