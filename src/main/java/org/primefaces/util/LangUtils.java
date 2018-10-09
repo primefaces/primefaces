@@ -21,6 +21,10 @@ import java.util.List;
 
 public class LangUtils {
 
+    public static boolean isValueEmpty(String value) {
+        return value == null || value.isEmpty();
+    }
+
     public static boolean isValueBlank(String value) {
         return value == null || value.trim().isEmpty();
     }

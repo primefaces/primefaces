@@ -25,6 +25,7 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class InplaceRenderer extends CoreRenderer {
@@ -119,7 +120,7 @@ public class InplaceRenderer extends CoreRenderer {
         else {
             String value = ComponentUtils.getValueToRender(context, inplace.getChildren().get(0));
 
-            if (value == null || isValueBlank(value)) {
+            if (LangUtils.isValueBlank(value)) {
                 if (emptyLabel != null) {
                     return emptyLabel;
                 }
