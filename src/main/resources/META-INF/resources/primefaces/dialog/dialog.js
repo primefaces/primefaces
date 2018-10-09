@@ -308,6 +308,14 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         this.resizers = this.jq.children('.ui-resizable-handle');
     },
+    
+    /**
+     * Client side API convenience call to reset the dialog position based on
+     * the "position" requested.
+     */
+    resetPosition: function() {
+       this.initPosition();
+    },
 
     initPosition: function() {
         var $this = this;
