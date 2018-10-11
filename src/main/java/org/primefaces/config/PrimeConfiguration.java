@@ -145,7 +145,7 @@ public class PrimeConfiguration {
     protected void initConfigFromWebXml(FacesContext context) {
         errorPages = WebXmlParser.getErrorPages(context);
         if (errorPages == null) {
-            errorPages = new HashMap<String, String>();
+            errorPages = new HashMap<>();
         }
     }
 

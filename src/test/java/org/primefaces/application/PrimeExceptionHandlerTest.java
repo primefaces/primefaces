@@ -66,7 +66,7 @@ public class PrimeExceptionHandlerTest extends PrimeExceptionHandler {
 
     private Map<String, String> getErrorPages()
     {
-        Map<String, String> errorPages = new HashMap<String, String>();
+        Map<String, String> errorPages = new HashMap<>();
         errorPages.put(FacesException.class.getName(), FacesException.class.getName());
         errorPages.put(IOException.class.getName(), IOException.class.getName());
         errorPages.put(RuntimeException.class.getName(), RuntimeException.class.getName());

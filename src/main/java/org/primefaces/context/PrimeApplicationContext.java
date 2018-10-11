@@ -125,13 +125,7 @@ public class PrimeApplicationContext {
                 try {
                     cacheProvider = (CacheProvider) Class.forName(cacheProviderConfigValue).newInstance();
                 }
-                catch (ClassNotFoundException ex) {
-                    throw new FacesException(ex);
-                }
-                catch (InstantiationException ex) {
-                    throw new FacesException(ex);
-                }
-                catch (IllegalAccessException ex) {
+                catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
                     throw new FacesException(ex);
                 }
             }
