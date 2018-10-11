@@ -469,7 +469,7 @@ public class AutoCompleteRenderer extends InputRenderer {
     }
 
     protected void encodeSuggestions(FacesContext context, AutoComplete ac, List items) throws IOException {
-        boolean customContent = ac.getColums().size() > 0;
+        boolean customContent = !ac.getColums().isEmpty();
         Converter converter = ComponentUtils.getConverter(context, ac);
 
         if (customContent) {

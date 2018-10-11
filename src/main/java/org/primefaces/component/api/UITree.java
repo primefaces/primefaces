@@ -291,7 +291,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                 String selectionMode = getSelectionMode();
                 if (selectionMode != null) {
                     if (selectionMode.equals("single")) {
-                        if (preselection.size() > 0) {
+                        if (!preselection.isEmpty()) {
                             ve.setValue(FacesContext.getCurrentInstance().getELContext(), preselection.get(0));
                         }
                     }

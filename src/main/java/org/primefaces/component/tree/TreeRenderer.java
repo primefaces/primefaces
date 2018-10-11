@@ -641,7 +641,7 @@ public class TreeRenderer extends CoreRenderer {
 
         List<String> filteredRowKeys = tree.getFilteredRowKeys();
         boolean match = false;
-        if (filter && filteredRowKeys.size() > 0) {
+        if (filter && !filteredRowKeys.isEmpty()) {
             for (String filteredRowKey : filteredRowKeys) {
                 String rowKeyExt = rowKey + "_";
                 String filteredRowKeyExt = filteredRowKey + "_";

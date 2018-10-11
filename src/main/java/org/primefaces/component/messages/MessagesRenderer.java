@@ -120,7 +120,7 @@ public class MessagesRenderer extends UINotificationRenderer {
         for (String severity : messagesMap.keySet()) {
             List<FacesMessage> severityMessages = messagesMap.get(severity);
 
-            if (severityMessages.size() > 0) {
+            if (!severityMessages.isEmpty()) {
                 encodeSeverityMessages(context, uiMessages, severity, severityMessages);
             }
         }

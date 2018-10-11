@@ -123,7 +123,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     protected boolean isLogException(FacesContext context, Throwable rootCause) {
 
         if (context.isProjectStage(ProjectStage.Production)) {
-            if (rootCause != null && rootCause instanceof ViewExpiredException) {
+            if (rootCause instanceof ViewExpiredException) {
                 return false;
             }
         }
@@ -201,7 +201,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             if (!LangUtils.isValueBlank(handlerComponent.getUpdate())) {
                 List<UIComponent> updates = SearchExpressionFacade.resolveComponents(context, handlerComponent, handlerComponent.getUpdate());
 
-                if (updates != null && updates.size() > 0) {
+                if (updates != null && !updates.isEmpty()) {
                     context.setResponseWriter(writer);
 
                     for (int i = 0; i < updates.size(); i++) {

@@ -64,7 +64,7 @@ public class MetadataTransformerExecutor implements SystemEventListener {
                 BV_INPUT_METADATA_TRANSFORMER.transform(context, applicationContext, component);
             }
 
-            if (METADATA_TRANSFORMERS.size() > 0) {
+            if (!METADATA_TRANSFORMERS.isEmpty()) {
                 for (int i = 0; i < METADATA_TRANSFORMERS.size(); i++) {
                     METADATA_TRANSFORMERS.get(i).transform(context, applicationContext, component);
                 }

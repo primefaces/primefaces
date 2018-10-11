@@ -67,7 +67,7 @@ public class NativeFileUploadDecoder {
                 }
             }
 
-            if (uploadedInputParts.size() > 0 && isValidFile(fileUpload, uploadedInputParts)) {
+            if (!uploadedInputParts.isEmpty() && isValidFile(fileUpload, uploadedInputParts)) {
                 fileUpload.setSubmittedValue(new UploadedFileWrapper(new NativeUploadedFile(uploadedInputParts, fileUpload)));
             }
             else {

@@ -78,7 +78,7 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
             }
 
             sb.append(",options:{");
-            if (options != null && options.size() > 0) {
+            if (options != null && !options.isEmpty()) {
                 for (Iterator<String> it = options.keySet().iterator(); it.hasNext();) {
                     String optionName = it.next();
                     Object optionValue = options.get(optionName);
