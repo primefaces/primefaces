@@ -165,7 +165,7 @@ public class DataExporter implements ActionListener, StateHolder {
 
     @Override
     public void restoreState(FacesContext context, Object state) {
-        Object values[] = (Object[]) state;
+        Object[] values = (Object[]) state;
 
         target = (ValueExpression) values[0];
         type = (ValueExpression) values[1];
@@ -182,7 +182,7 @@ public class DataExporter implements ActionListener, StateHolder {
 
     @Override
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[11];
+        Object[] values = new Object[11];
 
         values[0] = target;
         values[1] = type;

@@ -122,7 +122,6 @@
 
         <!-- Miscellaneous other checks.                   -->
         <!-- See http://checkstyle.sf.net/config_misc.html -->
-        <!-- module name="ArrayTypeStyle"/ -->
         <!-- module name="FinalParameters"/ -->
         <!-- Line with Trailing Spaces (disabled as it's to noisy)
       <module name="GenericIllegalRegexp">
@@ -131,6 +130,8 @@
       </module>
         -->
         <module name="UpperEll"/>
+		
+		<module name="ArrayTypeStyle"/>
 
         <module name="WhitespaceAround">
             <property name="tokens" value=""/>

@@ -125,7 +125,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 
     @Override
     public void restoreState(FacesContext facesContext, Object state) {
-        Object values[] = (Object[]) state;
+        Object[] values = (Object[]) state;
 
         value = (ValueExpression) values[0];
         contentDisposition = (ValueExpression) values[1];
@@ -134,7 +134,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
 
     @Override
     public Object saveState(FacesContext facesContext) {
-        Object values[] = new Object[3];
+        Object[] values = new Object[3];
 
         values[0] = value;
         values[1] = contentDisposition;
