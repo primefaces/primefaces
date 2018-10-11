@@ -109,10 +109,8 @@ public class SliderRenderer extends CoreRenderer {
         if (target == null) {
             return null;
         }
-        else {
-            UIComponent targetComponent = SearchExpressionFacade.resolveComponent(context, slider, target);
 
-            return targetComponent;
-        }
+        UIComponent targetComponent = SearchExpressionFacade.resolveComponent(context, slider, target);
+        return targetComponent;
     }
 }

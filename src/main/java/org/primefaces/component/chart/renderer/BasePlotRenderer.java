@@ -99,7 +99,7 @@ public abstract class BasePlotRenderer {
         String result = String.valueOf(value);
 
         // do NOT quote numbers but quote all other objects
-        if (value instanceof Number == false) {
+        if (!(value instanceof Number)) {
             result = "\"" + EscapeUtils.forJavaScript(result) + "\"";
         }
 

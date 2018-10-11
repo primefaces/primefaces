@@ -109,8 +109,8 @@ public class GMap extends GMapBase {
             }
             else if (eventName.equals("markerDrag")) {
                 Marker marker = (Marker) getModel().findOverlay(params.get(clientId + "_markerId"));
-                double lat = Double.valueOf(params.get(clientId + "_lat"));
-                double lng = Double.valueOf(params.get(clientId + "_lng"));
+                double lat = Double.parseDouble(params.get(clientId + "_lat"));
+                double lng = Double.parseDouble(params.get(clientId + "_lng"));
                 marker.setLatlng(new LatLng(lat, lng));
 
                 wrapperEvent = new MarkerDragEvent(this, behaviorEvent.getBehavior(), marker);
@@ -135,8 +135,8 @@ public class GMap extends GMapBase {
                     addresses.add(results[i]);
                 }
 
-                double lat = Double.valueOf(params.get(clientId + "_lat"));
-                double lng = Double.valueOf(params.get(clientId + "_lng"));
+                double lat = Double.parseDouble(params.get(clientId + "_lat"));
+                double lng = Double.parseDouble(params.get(clientId + "_lng"));
                 LatLng coord = new LatLng(lat, lng);
 
                 wrapperEvent = new ReverseGeocodeEvent(this, behaviorEvent.getBehavior(), coord, addresses);

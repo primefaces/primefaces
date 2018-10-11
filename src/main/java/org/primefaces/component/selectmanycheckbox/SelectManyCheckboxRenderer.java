@@ -116,7 +116,11 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         Converter converter = checkbox.getConverter();
         Object values = getValues(checkbox);
         Object submittedValues = getSubmittedValues(checkbox);
-        int idx = 0, groupIdx = 0, colMod;
+
+        int idx = 0;
+        int groupIdx = 0;
+        int colMod = 0;
+
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
             if (selectItem instanceof SelectItemGroup) {
@@ -383,7 +387,8 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         int columns = checkbox.getColumns();
 
         if (columns != 0) {
-            int idx = 0, colMod;
+            int idx = 0;
+            int colMod;
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
                 colMod = idx % columns;

@@ -50,7 +50,7 @@ public class MediaRenderer extends CoreRenderer {
         String sourceParam = player.getSourceParam();
 
         Object value = media.getValue();
-        if (value != null && value instanceof StreamedContent && player.getType().equals("application/pdf")) {
+        if (value instanceof StreamedContent && player.getType().equals("application/pdf")) {
             StreamedContent streamedContent = (StreamedContent) value;
             if (streamedContent.getName() != null) {
                 int index = src.indexOf("?");

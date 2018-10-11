@@ -786,7 +786,7 @@ public class UIData extends javax.faces.component.UIData {
 
         Object current = getValue();
         if (current == null) {
-            setDataModel(new ListDataModel(Collections.EMPTY_LIST));
+            setDataModel(new ListDataModel(Collections.emptyList()));
         }
         else if (current instanceof DataModel) {
             setDataModel((DataModel) current);
@@ -1309,7 +1309,7 @@ public class UIData extends javax.faces.component.UIData {
             return;
         }
 
-        Object values[] = (Object[]) state;
+        Object[] values = (Object[]) state;
         super.restoreState(context, values[0]);
         Object restoredRowStates = UIComponentBase.restoreAttachedState(context, values[1]);
         if (restoredRowStates == null) {
@@ -1331,7 +1331,7 @@ public class UIData extends javax.faces.component.UIData {
                 return null;
             }
             else {
-                Object values[] = null;
+                Object[] values = null;
                 Object attachedState = UIComponentBase.saveAttachedState(context, _rowDeltaStates);
                 if (superState != null || attachedState != null) {
                     values = new Object[]{superState, attachedState};
@@ -1340,7 +1340,7 @@ public class UIData extends javax.faces.component.UIData {
             }
         }
         else {
-            Object values[] = new Object[2];
+            Object[] values = new Object[2];
             values[0] = super.saveState(context);
             values[1] = UIComponentBase.saveAttachedState(context, _rowDeltaStates);
             return values;

@@ -122,7 +122,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String currentValue = ComponentUtils.getValueToRender(context, radio);
 
         if (columns > 0) {
-            int idx = 0, colMod;
+            int idx = 0;
+            int colMod;
 
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
@@ -262,7 +263,8 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String currentValue = ComponentUtils.getValueToRender(context, radio);
 
         if (columns > 0) {
-            int idx = 0, colMod;
+            int idx = 0;
+            int colMod;
 
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);

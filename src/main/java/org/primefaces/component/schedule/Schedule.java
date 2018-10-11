@@ -153,8 +153,8 @@ public class Schedule extends ScheduleBase {
             else if (eventName.equals("eventResize")) {
                 String resizedEventId = params.get(clientId + "_resizedEventId");
                 ScheduleEvent resizedEvent = getValue().getEvent(resizedEventId);
-                int dayDelta = Integer.valueOf(params.get(clientId + "_dayDelta"));
-                int minuteDelta = Integer.valueOf(params.get(clientId + "_minuteDelta"));
+                int dayDelta = Integer.parseInt(params.get(clientId + "_dayDelta"));
+                int minuteDelta = Integer.parseInt(params.get(clientId + "_minuteDelta"));
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(resizedEvent.getEndDate());
