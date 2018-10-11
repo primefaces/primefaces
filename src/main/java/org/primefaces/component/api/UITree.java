@@ -65,20 +65,6 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         skipChildren,
         showUnselectableCheckbox,
         nodeVar;
-
-        String toString;
-
-        PropertyKeys(String toString) {
-            this.toString = toString;
-        }
-
-        PropertyKeys() {
-        }
-
-        @Override
-        public String toString() {
-            return ((toString != null) ? toString : super.toString());
-        }
     }
 
     public String getRowKey() {

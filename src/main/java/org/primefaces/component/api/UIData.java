@@ -116,20 +116,6 @@ public class UIData extends javax.faces.component.UIData {
         saved,
         lazy,
         rowStatePreserved;
-
-        String toString;
-
-        PropertyKeys(String toString) {
-            this.toString = toString;
-        }
-
-        PropertyKeys() {
-        }
-
-        @Override
-        public String toString() {
-            return ((toString != null) ? toString : super.toString());
-        }
     }
 
     public boolean isPaginator() {
