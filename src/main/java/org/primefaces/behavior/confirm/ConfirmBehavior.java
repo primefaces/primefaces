@@ -25,7 +25,7 @@ import org.primefaces.json.JSONObject;
 
 public class ConfirmBehavior extends AbstractBehavior {
 
-    public final static String BEHAVIOR_ID = "org.primefaces.behavior.ConfirmBehavior";
+    public static final String BEHAVIOR_ID = "org.primefaces.behavior.ConfirmBehavior";
 
     public enum PropertyKeys {
         header(String.class),

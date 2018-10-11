@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class BaseMenuModel implements MenuModel, Serializable {
 
-    public final static String ID_SEPARATOR = "_";
+    public static final String ID_SEPARATOR = "_";
 
     private List<MenuElement> elements;
 

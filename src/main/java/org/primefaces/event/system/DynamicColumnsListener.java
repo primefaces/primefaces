@@ -30,7 +30,6 @@ public class DynamicColumnsListener implements SystemEventListener {
         Columns columns = (Columns) event.getSource();
         UIComponent parent = columns.getParent();
 
-        //todo: consider an interface
         if (parent instanceof DataTable) {
             ((DataTable) parent).setDynamicColumns(columns);
         }

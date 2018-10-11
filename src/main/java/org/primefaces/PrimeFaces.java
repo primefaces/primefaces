@@ -43,7 +43,7 @@ public class PrimeFaces {
 
     private static final Logger LOG = Logger.getLogger(PrimeFaces.class.getName());
 
-    // TODO - there are 2 possible solutions
+    // There are 2 possible solutions
     // 1) the current static solution + use Faces/RequestContext#getCurrentInstance each time
     // 2) make PrimeFaces requestScoped and receive Faces/RequestContext only once
     private static PrimeFaces instance = new PrimeFaces();
