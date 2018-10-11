@@ -43,8 +43,8 @@ public class PrimeRequestContext {
 
     public static final String INSTANCE_KEY = PrimeRequestContext.class.getName();
 
-    private final static String CALLBACK_PARAMS_KEY = "CALLBACK_PARAMS";
-    private final static String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
+    private static final String CALLBACK_PARAMS_KEY = "CALLBACK_PARAMS";
+    private static final String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
 
     private WidgetBuilder widgetBuilder;
     private AjaxRequestBuilder ajaxRequestBuilder;

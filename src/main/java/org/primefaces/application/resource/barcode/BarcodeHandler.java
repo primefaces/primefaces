@@ -39,7 +39,7 @@ import org.w3c.dom.DocumentFragment;
 
 public class BarcodeHandler extends BaseDynamicContentHandler {
 
-    private final static Logger LOG = Logger.getLogger(BarcodeHandler.class.getName());
+    private static final Logger LOG = Logger.getLogger(BarcodeHandler.class.getName());
 
     private final Map<String, BarcodeGenerator> generators;
 

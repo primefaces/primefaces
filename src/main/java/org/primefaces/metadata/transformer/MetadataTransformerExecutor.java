@@ -31,9 +31,9 @@ import org.primefaces.context.PrimeApplicationContext;
 
 public class MetadataTransformerExecutor implements SystemEventListener {
 
-    private final static List<MetadataTransformer> METADATA_TRANSFORMERS = new ArrayList<MetadataTransformer>();
+    private static final List<MetadataTransformer> METADATA_TRANSFORMERS = new ArrayList<MetadataTransformer>();
 
-    private final static MetadataTransformer BV_INPUT_METADATA_TRANSFORMER = new BeanValidationInputMetadataTransformer();
+    private static final MetadataTransformer BV_INPUT_METADATA_TRANSFORMER = new BeanValidationInputMetadataTransformer();
 
     @Override
     public void processEvent(SystemEvent event) throws AbortProcessingException {

@@ -39,11 +39,11 @@ import org.primefaces.webapp.MultipartRequest;
 
 public class FileUploadFilter implements Filter {
 
-    private final static Logger logger = Logger.getLogger(FileUploadFilter.class.getName());
+    private static final Logger logger = Logger.getLogger(FileUploadFilter.class.getName());
 
-    private final static String THRESHOLD_SIZE_PARAM = "thresholdSize";
+    private static final String THRESHOLD_SIZE_PARAM = "thresholdSize";
 
-    private final static String UPLOAD_DIRECTORY_PARAM = "uploadDirectory";
+    private static final String UPLOAD_DIRECTORY_PARAM = "uploadDirectory";
 
     private String thresholdSize;
 

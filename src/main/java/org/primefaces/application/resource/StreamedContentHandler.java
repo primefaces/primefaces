@@ -33,7 +33,7 @@ import org.primefaces.util.Constants;
 
 public class StreamedContentHandler extends BaseDynamicContentHandler {
 
-    private final static Logger LOG = Logger.getLogger(StreamedContentHandler.class.getName());
+    private static final Logger LOG = Logger.getLogger(StreamedContentHandler.class.getName());
 
     @Override
     public void handle(FacesContext context) throws IOException {

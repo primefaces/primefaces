@@ -27,7 +27,7 @@ import org.primefaces.config.PrimeEnvironment;
 
 public class PostConstructApplicationEventListener implements SystemEventListener {
 
-    private final static Logger logger = Logger.getLogger(PostConstructApplicationEventListener.class.getName());
+    private static final Logger logger = Logger.getLogger(PostConstructApplicationEventListener.class.getName());
 
     @Override
     public boolean isListenerForSource(Object source) {

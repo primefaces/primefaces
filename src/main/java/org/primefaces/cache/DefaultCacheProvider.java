@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  */
 public class DefaultCacheProvider implements CacheProvider {
 
-    private final static Logger LOG = Logger.getLogger(DefaultCacheProvider.class.getName());
+    private static final Logger LOG = Logger.getLogger(DefaultCacheProvider.class.getName());
 
     private ConcurrentMap<String, ConcurrentMap<String, Object>> cache;
 

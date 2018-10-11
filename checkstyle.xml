@@ -59,6 +59,8 @@
             <property name="processJavadoc" value="true"/>
         </module>
 
+        <module name="ModifierOrderCheck" />
+
         <module name="LineLength">
             <property name="max" value="160"/>
             <property name="ignorePattern" value="@version|@see|\w*_CLASS"/>
