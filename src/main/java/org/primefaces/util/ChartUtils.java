@@ -25,6 +25,9 @@ import org.primefaces.model.charts.bubble.BubblePoint;
  */
 public class ChartUtils {
 
+    private ChartUtils() {
+    }
+
     /**
      * Write the value of chartJs options
      *

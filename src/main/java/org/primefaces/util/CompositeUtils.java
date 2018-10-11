@@ -27,6 +27,9 @@ import javax.faces.view.EditableValueHolderAttachedObjectTarget;
 
 public class CompositeUtils {
 
+    private CompositeUtils() {
+    }
+
     public static boolean isComposite(UIComponent component) {
         return UIComponent.isCompositeComponent(component);
     }

@@ -31,6 +31,9 @@ public class ResourceUtils {
     public static final String RENDERER_SCRIPT = "javax.faces.resource.Script";
     public static final String RENDERER_STYLESHEET = "javax.faces.resource.Stylesheet";
 
+    private ResourceUtils() {
+    }
+
     public static String getResourceURL(FacesContext context, String value) {
         if (LangUtils.isValueBlank(value)) {
             return Constants.EMPTY_STRING;

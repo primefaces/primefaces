@@ -19,6 +19,9 @@ import javax.faces.FacesException;
 
 public class ExporterFactory {
 
+    private ExporterFactory() {
+    }
+
     public static Exporter getExporterForType(String type, ExporterOptions options) {
         Exporter exporter = null;
 

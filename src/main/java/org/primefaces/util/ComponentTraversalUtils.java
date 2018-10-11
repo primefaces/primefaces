@@ -27,6 +27,9 @@ import javax.faces.context.FacesContext;
 
 public class ComponentTraversalUtils {
 
+    private ComponentTraversalUtils() {
+    }
+
     public static <T> T closest(Class<T> type, UIComponent base) {
         UIComponent parent = base.getParent();
 

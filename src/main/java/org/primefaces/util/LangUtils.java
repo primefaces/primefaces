@@ -21,6 +21,9 @@ import java.util.List;
 
 public class LangUtils {
 
+    private LangUtils() {
+    }
+
     public static boolean isValueEmpty(String value) {
         return value == null || value.isEmpty();
     }

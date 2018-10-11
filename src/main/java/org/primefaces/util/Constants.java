@@ -87,4 +87,7 @@ public class Constants {
     public static final String HELPER_RENDERER = "org.primefaces.HELPER_RENDERER";
 
     public static final String TABLE_STATE = "primefaces.TABLE_STATE";
+
+    private Constants() {
+    }
 }

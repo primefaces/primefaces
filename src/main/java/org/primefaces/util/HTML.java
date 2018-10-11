@@ -254,4 +254,7 @@ public class HTML {
         public static final String HIGHLIGHTER = "data-p-hl";
         public static final String GROUPED = "data-p-grouped";
     }
+
+    private HTML() {
+    }
 }

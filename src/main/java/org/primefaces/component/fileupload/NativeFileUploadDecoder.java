@@ -32,6 +32,9 @@ import org.primefaces.model.UploadedFileWrapper;
 
 public class NativeFileUploadDecoder {
 
+    private NativeFileUploadDecoder() {
+    }
+
     public static void decode(FacesContext context, FileUpload fileUpload, String inputToDecodeId) {
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 

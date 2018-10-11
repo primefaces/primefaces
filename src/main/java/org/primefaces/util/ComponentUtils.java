@@ -58,6 +58,9 @@ public class ComponentUtils {
     // marker for a undefined value when a null check is not reliable enough
     private static final Object UNDEFINED_VALUE = new Object();
 
+    private ComponentUtils() {
+    }
+
     public static String getValueToRender(FacesContext context, UIComponent component) {
         return getValueToRender(context, component, UNDEFINED_VALUE);
     }

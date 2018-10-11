@@ -60,6 +60,8 @@
         </module>
 
         <module name="ModifierOrderCheck" />
+		
+		<module name="HideUtilityClassConstructor"/>
 
         <module name="LineLength">
             <property name="max" value="160"/>

@@ -19,6 +19,9 @@ import javax.faces.context.FacesContext;
 
 public class SharedStringBuilder {
 
+    private SharedStringBuilder() {
+    }
+
     /**
      * Get a shared {@link StringBuilder} instance.
      * This is required as e.g. 100 e.g. {@link org.primefaces.expression.SearchExpressionFacade#resolveClientId} calls would create

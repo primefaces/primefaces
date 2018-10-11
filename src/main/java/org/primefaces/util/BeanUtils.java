@@ -32,6 +32,9 @@ public class BeanUtils {
             Short.class,
             String.class);
 
+    private BeanUtils() {
+    }
+
     public static boolean isBean(Class<?> valueClass) {
         if (valueClass.isArray()) {
             return isBean(valueClass.getComponentType());

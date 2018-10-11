@@ -20,6 +20,9 @@ import java.util.TimeZone;
 
 public class DateUtils {
 
+    private DateUtils() {
+    }
+
     // convert from local date to UTC
     public static Date toUtcDate(TimeZone browserTZ, TimeZone targetTZ, String localDate) {
         if (localDate == null) {

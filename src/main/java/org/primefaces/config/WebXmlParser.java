@@ -41,6 +41,9 @@ public class WebXmlParser {
 
     private static final Logger LOGGER = Logger.getLogger(WebXmlParser.class.getName());
 
+    private WebXmlParser() {
+    }
+
     public static Map<String, String> getErrorPages(FacesContext context) {
 
         Map<String, String> webXmlErrorPages = getWebXmlErrorPages(context);

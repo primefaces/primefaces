@@ -30,6 +30,9 @@ public class FileUploadUtils {
 
     private static final Pattern INVALID_FILENAME_PATTERN = Pattern.compile("([\\/:*?\"<>|])");
 
+    private FileUploadUtils() {
+    }
+
     public static String getValidFilename(String filename) {
         if (LangUtils.isValueBlank(filename)) {
             throw new FacesException("Filename is required.");

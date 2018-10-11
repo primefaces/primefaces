@@ -43,6 +43,9 @@ public class SearchExpressionFacade {
 
     private static final char[] EXPRESSION_SEPARATORS = new char[]{',', ' '};
 
+    private SearchExpressionFacade() {
+    }
+
     /**
      * Resolves a list of {@link UIComponent}s for the given expression or expressions.
      *

@@ -21,11 +21,7 @@ import javax.faces.context.FacesContext;
 
 public class LocaleUtils {
 
-    /**
-     * Prevent instantiation.
-     */
     private LocaleUtils() {
-        // prevent instantiation
     }
 
     /**

@@ -30,6 +30,9 @@ import org.primefaces.el.ValueExpressionAnalyzer;
 
 public class BeanValidationMetadataExtractor {
 
+    private BeanValidationMetadataExtractor() {
+    }
+
     public static Set<ConstraintDescriptor<?>> extractAllConstraintDescriptors(FacesContext context, PrimeApplicationContext applicationContext,
             ValueExpression ve) {
 

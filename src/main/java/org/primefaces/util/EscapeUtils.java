@@ -22,9 +22,8 @@ import org.owasp.encoder.Encode;
  * <p>Utility methods contained herein must be used strictly for the appropriate context, e.g. HTML, HTML attribute, JS string.</p>
  * <p>Method calls are delegated to safe and well-tried whitelisting encoders from owasp-java-encoding.</p>
  */
-public final class EscapeUtils {
+public class EscapeUtils {
 
-    /** no instances */
     private EscapeUtils() {
     }
 

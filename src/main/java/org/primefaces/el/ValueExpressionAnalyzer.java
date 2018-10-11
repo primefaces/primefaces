@@ -24,6 +24,9 @@ import org.primefaces.context.PrimeApplicationContext;
 
 public class ValueExpressionAnalyzer {
 
+    private ValueExpressionAnalyzer() {
+    }
+
     public static ValueReference getReference(ELContext elContext, ValueExpression expression) {
 
         if (expression == null) {
