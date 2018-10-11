@@ -36,7 +36,7 @@
             -    any better.
             -->
             <property name="format"
-                      value="^((log)|(logger)|([a-z][a-zA-Z]*ThreadLocal)|([A-Z][A-Z0-9]*(_[A-Z0-9]+)*))$"/>
+                      value="^(([a-z][a-zA-Z]*ThreadLocal)|([A-Z][A-Z0-9]*(_[A-Z0-9]+)*))$"/>
         </module>
 
         <module name="LocalVariableName">

@@ -51,7 +51,7 @@ import org.primefaces.util.EscapeUtils;
 
 public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
-    private static final Logger LOG = Logger.getLogger(PrimeExceptionHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PrimeExceptionHandler.class.getName());
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     private final ExceptionHandler wrapped;
@@ -104,7 +104,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                     }
                 }
                 catch (Exception ex) {
-                    LOG.log(Level.SEVERE, "Could not handle exception!", ex);
+                    LOGGER.log(Level.SEVERE, "Could not handle exception!", ex);
                 }
             }
 
@@ -117,7 +117,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     }
 
     protected void logException(Throwable rootCause) {
-        LOG.log(Level.SEVERE, rootCause.getMessage(), rootCause);
+        LOGGER.log(Level.SEVERE, rootCause.getMessage(), rootCause);
     }
 
     protected boolean isLogException(FacesContext context, Throwable rootCause) {
@@ -180,7 +180,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             handlerComponent = findHandlerComponent(context, rootCause);
         }
         catch (Exception ex) {
-            LOG.log(Level.WARNING, "Could not build view or lookup a AjaxExceptionHandler component!", ex);
+            LOGGER.log(Level.WARNING, "Could not build view or lookup a AjaxExceptionHandler component!", ex);
         }
 
         context.getAttributes().put(ExceptionInfo.ATTRIBUTE_NAME, info);

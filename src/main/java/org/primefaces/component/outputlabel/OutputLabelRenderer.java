@@ -43,7 +43,7 @@ import org.primefaces.util.*;
 
 public class OutputLabelRenderer extends CoreRenderer {
 
-    private static final Logger LOG = Logger.getLogger(OutputLabelRenderer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(OutputLabelRenderer.class.getName());
 
     private static final String SB_STYLE_CLASS = OutputLabelRenderer.class.getName() + "#styleClass";
 
@@ -199,7 +199,7 @@ public class OutputLabelRenderer extends CoreRenderer {
                     + input.getClientId(context)
                     + "\" because the ValueExpression of the \"value\" attribute"
                     + " isn't resolvable completely (e.g. a sub-expression returns null)";
-            LOG.log(Level.FINE, message);
+            LOGGER.log(Level.FINE, message);
         }
 
         return false;

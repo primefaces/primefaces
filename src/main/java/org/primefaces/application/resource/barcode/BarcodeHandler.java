@@ -39,7 +39,7 @@ import org.w3c.dom.DocumentFragment;
 
 public class BarcodeHandler extends BaseDynamicContentHandler {
 
-    private static final Logger LOG = Logger.getLogger(BarcodeHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BarcodeHandler.class.getName());
 
     private final Map<String, BarcodeGenerator> generators;
 
@@ -110,7 +110,7 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
                 externalContext.setResponseStatus(200);
             }
             catch (Exception e) {
-                LOG.log(Level.SEVERE, "Error in streaming barcode resource. {0}", new Object[]{e.getMessage()});
+                LOGGER.log(Level.SEVERE, "Error in streaming barcode resource. {0}", new Object[]{e.getMessage()});
             }
             finally {
                 externalContext.responseFlushBuffer();

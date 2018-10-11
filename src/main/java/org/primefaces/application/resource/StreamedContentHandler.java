@@ -33,7 +33,7 @@ import org.primefaces.util.Constants;
 
 public class StreamedContentHandler extends BaseDynamicContentHandler {
 
-    private static final Logger LOG = Logger.getLogger(StreamedContentHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(StreamedContentHandler.class.getName());
 
     @Override
     public void handle(FacesContext context) throws IOException {
@@ -102,7 +102,7 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
 
             }
             catch (Exception e) {
-                LOG.log(Level.SEVERE, "Error in streaming dynamic resource.", e);
+                LOGGER.log(Level.SEVERE, "Error in streaming dynamic resource.", e);
                 throw new IOException(e);
             }
             finally {

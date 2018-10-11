@@ -49,7 +49,7 @@ import org.primefaces.metadata.BeanValidationMetadataExtractor;
 
 public class BeanValidationMetadataMapper {
 
-    private static final Logger LOG = Logger.getLogger(BeanValidationMetadataMapper.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BeanValidationMetadataMapper.class.getName());
 
     private static final Map<Class<? extends Annotation>, ClientValidationConstraint> CONSTRAINT_MAPPING
             = new HashMap<Class<? extends Annotation>, ClientValidationConstraint>();
@@ -155,7 +155,7 @@ public class BeanValidationMetadataMapper {
             String message = "Skip resolving of CSV BV metadata for component \"" + component.getClientId(context) + "\" because"
                     + " the ValueExpression of the \"value\" attribute"
                     + " isn't resolvable completely (e.g. a sub-expression returns null)";
-            LOG.log(Level.FINE, message);
+            LOGGER.log(Level.FINE, message);
         }
 
         if (metadata == null && validatorIds == null) {

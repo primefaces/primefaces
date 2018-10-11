@@ -36,7 +36,7 @@ public class Button extends ButtonBase {
 
     public static final String COMPONENT_TYPE = "org.primefaces.component.Button";
 
-    private static final Logger logger = Logger.getLogger(Button.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Button.class.getName());
 
     public String resolveIcon() {
         String icon = getIcon();
@@ -45,7 +45,7 @@ public class Button extends ButtonBase {
             icon = getImage();
 
             if (icon != null) {
-                logger.info("image attribute is deprecated to define an icon, use icon attribute instead.");
+                LOGGER.info("image attribute is deprecated to define an icon, use icon attribute instead.");
             }
         }
 

@@ -29,7 +29,7 @@ import org.primefaces.util.LangUtils;
 
 public class PrimeResourceHandler extends ResourceHandlerWrapper {
 
-    private static final Logger LOG = Logger.getLogger(PrimeResourceHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PrimeResourceHandler.class.getName());
 
     private final Map<String, DynamicContentHandler> handlers;
 
@@ -90,7 +90,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         else {
             DynamicContentHandler handler = handlers.get(handlerType);
             if (handler == null) {
-                LOG.warning("No dynamic resource handler registered for: " + handlerType + ". Do you miss a dependency?");
+                LOGGER.warning("No dynamic resource handler registered for: " + handlerType + ". Do you miss a dependency?");
                 super.handleResourceRequest(context);
             }
             else {

@@ -39,7 +39,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
     private static final String PREVENT_RENDER = Boolean.TRUE.toString();
 
-    private static final Logger LOG = Logger.getLogger(DefaultTimelineUpdater.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DefaultTimelineUpdater.class.getName());
 
     private String widgetVar;
     private List<CrudOperationData> crudOperationDatas;
@@ -191,7 +191,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
             PrimeFaces.current().executeScript(sb.toString());
         }
         catch (IOException e) {
-            LOG.log(Level.WARNING, "Timeline with id " + id + " could not be updated, at least one CRUD operation failed", e);
+            LOGGER.log(Level.WARNING, "Timeline with id " + id + " could not be updated, at least one CRUD operation failed", e);
         }
     }
 

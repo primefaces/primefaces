@@ -63,7 +63,7 @@ import org.primefaces.util.ResourceUtils;
 
 public abstract class CoreRenderer extends Renderer {
 
-    private static final Logger LOG = Logger.getLogger(CoreRenderer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CoreRenderer.class.getName());
 
     private static final String SB_RENDER_DOM_EVENTS = CoreRenderer.class.getName() + "#renderDomEvents";
     private static final String SB_BUILD_NON_AJAX_REQUEST = CoreRenderer.class.getName() + "#buildNonAjaxRequest";
@@ -676,7 +676,7 @@ public abstract class CoreRenderer extends Renderer {
             String message = "Skip rendering of CSV metadata for component \"" + comp.getClientId(context) + "\" because"
                     + " the ValueExpression of the \"value\" attribute"
                     + " isn't resolvable completely (e.g. a sub-expression returns null)";
-            LOG.log(Level.FINE, message);
+            LOGGER.log(Level.FINE, message);
             return;
         }
 

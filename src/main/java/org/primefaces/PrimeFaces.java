@@ -41,7 +41,7 @@ import java.util.logging.Logger;
 
 public class PrimeFaces {
 
-    private static final Logger LOG = Logger.getLogger(PrimeFaces.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PrimeFaces.class.getName());
 
     // There are 2 possible solutions
     // 1) the current static solution + use Faces/RequestContext#getCurrentInstance each time
@@ -292,7 +292,7 @@ public class PrimeFaces {
                     facesContext.getPartialViewContext().getRenderIds().add(clientId);
                 }
                 catch (ComponentNotFoundException e) {
-                    LOG.log(Level.WARNING,
+                    LOGGER.log(Level.WARNING,
                             "PrimeFaces.current().ajax().update() called but component can't be resolved!"
                             + "Expression will just be added to the renderIds.", e);
 

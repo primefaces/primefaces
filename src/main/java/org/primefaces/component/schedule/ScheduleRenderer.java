@@ -38,7 +38,7 @@ import org.primefaces.util.WidgetBuilder;
 
 public class ScheduleRenderer extends CoreRenderer {
 
-    private static final Logger LOG = Logger.getLogger(ScheduleRenderer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ScheduleRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -171,28 +171,28 @@ public class ScheduleRenderer extends CoreRenderer {
         String slotDuration = schedule.getSlotDuration();
         int slotMinutes = schedule.getSlotMinutes();
         if (slotMinutes != 30) {
-            LOG.warning("slotMinutes is deprecated, use slotDuration instead.");
+            LOGGER.warning("slotMinutes is deprecated, use slotDuration instead.");
             slotDuration = "00:" + slotMinutes + ":00";
         }
 
         String scrollTime = schedule.getScrollTime();
         int firstHour = schedule.getFirstHour();
         if (firstHour != 6) {
-            LOG.warning("firstHour is deprecated, use scrollTime instead.");
+            LOGGER.warning("firstHour is deprecated, use scrollTime instead.");
             scrollTime = firstHour + ":00:00";
         }
 
         String clientTimezone = schedule.getClientTimeZone();
         boolean ignoreTimezone = schedule.isIgnoreTimezone();
         if (!ignoreTimezone) {
-            LOG.warning("ignoreTimezone is deprecated, use clientTimezone instead with 'local' setting.");
+            LOGGER.warning("ignoreTimezone is deprecated, use clientTimezone instead with 'local' setting.");
             clientTimezone = "local";
         }
 
         String slotLabelFormat = schedule.getSlotLabelFormat();
         String axisFormat = schedule.getAxisFormat();
         if (axisFormat != null) {
-            LOG.warning("axisFormat is deprecated, use slotLabelFormat instead.");
+            LOGGER.warning("axisFormat is deprecated, use slotLabelFormat instead.");
             slotLabelFormat = axisFormat;
         }
 

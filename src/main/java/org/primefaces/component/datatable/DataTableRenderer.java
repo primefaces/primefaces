@@ -51,7 +51,7 @@ import org.primefaces.util.*;
 
 public class DataTableRenderer extends DataRenderer {
 
-    private static final Logger logger = Logger.getLogger(DataTableRenderer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DataTableRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -1682,7 +1682,7 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeSubTable(FacesContext context, DataTable table, SubTable subTable, int first, int last) throws IOException {
-        logger.info("SubTable has been deprecated, use row grouping instead");
+        LOGGER.info("SubTable has been deprecated, use row grouping instead");
         for (int i = first; i < last; i++) {
             table.setRowIndex(i);
             if (!table.isRowAvailable()) {

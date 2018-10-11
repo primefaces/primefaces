@@ -25,13 +25,13 @@ import java.util.logging.Logger;
  */
 public class DefaultCacheProvider implements CacheProvider {
 
-    private static final Logger LOG = Logger.getLogger(DefaultCacheProvider.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DefaultCacheProvider.class.getName());
 
     private ConcurrentMap<String, ConcurrentMap<String, Object>> cache;
 
     public DefaultCacheProvider() {
         cache = new ConcurrentHashMap<>();
-        LOG.warning("DefaultCacheProvider is for development purposes only, prefer another provider such as EhCache and HazelCast in production.");
+        LOGGER.warning("DefaultCacheProvider is for development purposes only, prefer another provider such as EhCache and HazelCast in production.");
     }
 
     @Override

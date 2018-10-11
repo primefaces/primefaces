@@ -52,7 +52,7 @@ public class Carousel extends CarouselBase {
     public static final String RESPONSIVE_DROPDOWN_CLASS = "ui-carousel-dropdown-responsive ui-widget ui-state-default ui-corner-left";
     public static final String TOGGLER_LINK_CLASS = "ui-carousel-titlebar-icon ui-corner-all ui-state-default";
 
-    private static final Logger logger = Logger.getLogger(Carousel.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Carousel.class.getName());
 
     public int getRenderedChildCount() {
         int i = 0;
@@ -71,6 +71,6 @@ public class Carousel extends CarouselBase {
         super.setRows(rows);
         setNumVisible(rows);
 
-        logger.log(Level.WARNING, "rows is deprecated, use numVisible instead.");
+        LOGGER.log(Level.WARNING, "rows is deprecated, use numVisible instead.");
     }
 }

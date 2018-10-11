@@ -26,7 +26,7 @@ import org.primefaces.util.LangUtils;
 
 public class PrimeEnvironment {
 
-    private static final Logger LOG = Logger.getLogger(PrimeEnvironment.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PrimeEnvironment.class.getName());
 
     private boolean beanValidationAvailable = false;
 
@@ -70,7 +70,7 @@ public class PrimeEnvironment {
                 Validation.buildDefaultValidatorFactory().getValidator();
             }
             catch (Throwable t) {
-                LOG.log(Level.FINE, "BV not available - Could not build default ValidatorFactory.");
+                LOGGER.log(Level.FINE, "BV not available - Could not build default ValidatorFactory.");
                 available = false;
             }
         }
@@ -88,7 +88,7 @@ public class PrimeEnvironment {
             return buildProperties.getProperty("version");
         }
         catch (Exception e) {
-            LOG.log(Level.SEVERE, "PrimeFaces version not resolvable - Could not load pom.properties.");
+            LOGGER.log(Level.SEVERE, "PrimeFaces version not resolvable - Could not load pom.properties.");
         }
 
         if (is != null) {

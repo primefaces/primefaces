@@ -27,7 +27,7 @@ import org.primefaces.config.PrimeEnvironment;
 
 public class PostConstructApplicationEventListener implements SystemEventListener {
 
-    private static final Logger logger = Logger.getLogger(PostConstructApplicationEventListener.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PostConstructApplicationEventListener.class.getName());
 
     @Override
     public boolean isListenerForSource(Object source) {
@@ -39,7 +39,7 @@ public class PostConstructApplicationEventListener implements SystemEventListene
         // temp manually instantiate as the ApplicationContext is not available yet
         PrimeEnvironment environment = new PrimeEnvironment();
 
-        logger.log(Level.INFO,
+        LOGGER.log(Level.INFO,
                 "Running on PrimeFaces {0}",
                 environment.getBuildVersion());
 
