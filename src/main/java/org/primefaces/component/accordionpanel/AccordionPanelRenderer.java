@@ -158,7 +158,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         String activeIndex = acco.getActiveIndex();
         List<String> activeIndexes = activeIndex == null
-                                     ? Collections.EMPTY_LIST
+                                     ? Collections.<String>emptyList()
                                      : Arrays.asList(activeIndex.split(","));
 
         if (var == null) {

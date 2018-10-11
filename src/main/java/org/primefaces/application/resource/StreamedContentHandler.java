@@ -39,7 +39,7 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
     public void handle(FacesContext context) throws IOException {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String library = params.get("ln");
-        String resourceKey = (String) params.get(Constants.DYNAMIC_CONTENT_PARAM);
+        String resourceKey = params.get(Constants.DYNAMIC_CONTENT_PARAM);
 
         if (resourceKey != null && library != null && library.equals(Constants.LIBRARY)) {
             StreamedContent streamedContent = null;
