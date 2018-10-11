@@ -40,11 +40,11 @@ public class DefaultMapModel implements MapModel, Serializable {
     private List<Rectangle> rectangles;
 
     public DefaultMapModel() {
-        markers = new ArrayList<Marker>();
-        polylines = new ArrayList<Polyline>();
-        polygons = new ArrayList<Polygon>();
-        circles = new ArrayList<Circle>();
-        rectangles = new ArrayList<Rectangle>();
+        markers = new ArrayList<>();
+        polylines = new ArrayList<>();
+        polygons = new ArrayList<>();
+        circles = new ArrayList<>();
+        rectangles = new ArrayList<>();
     }
 
     @Override

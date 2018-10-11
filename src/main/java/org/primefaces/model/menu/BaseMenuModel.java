@@ -29,7 +29,7 @@ public class BaseMenuModel implements MenuModel, Serializable {
     private List<MenuElement> elements;
 
     public BaseMenuModel() {
-        elements = new ArrayList<MenuElement>();
+        elements = new ArrayList<>();
     }
 
     @Override

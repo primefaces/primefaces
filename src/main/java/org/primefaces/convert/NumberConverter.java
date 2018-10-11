@@ -31,7 +31,7 @@ public class NumberConverter extends javax.faces.convert.NumberConverter impleme
             int minFractionDigits = this.getMinFractionDigits();
             boolean integerOnly = this.isIntegerOnly();
 
-            metadata = new HashMap<String, Object>();
+            metadata = new HashMap<>();
 
             metadata.put(HTML.VALIDATION_METADATA.NUMBER_TYPE, type);
 

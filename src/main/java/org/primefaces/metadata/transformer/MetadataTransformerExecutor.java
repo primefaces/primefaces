@@ -31,7 +31,7 @@ import org.primefaces.context.PrimeApplicationContext;
 
 public class MetadataTransformerExecutor implements SystemEventListener {
 
-    private static final List<MetadataTransformer> METADATA_TRANSFORMERS = new ArrayList<MetadataTransformer>();
+    private static final List<MetadataTransformer> METADATA_TRANSFORMERS = new ArrayList<>();
 
     private static final MetadataTransformer BV_INPUT_METADATA_TRANSFORMER = new BeanValidationInputMetadataTransformer();
 

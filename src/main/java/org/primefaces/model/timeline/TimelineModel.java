@@ -39,11 +39,11 @@ public class TimelineModel implements Serializable {
     private List<TimelineGroup> groups;
 
     public TimelineModel() {
-        events = new ArrayList<TimelineEvent>();
+        events = new ArrayList<>();
     }
 
     public TimelineModel(List<TimelineEvent> events) {
-        this.events = new ArrayList<TimelineEvent>();
+        this.events = new ArrayList<>();
 
         if (events != null && !events.isEmpty()) {
             for (TimelineEvent event : events) {
@@ -73,7 +73,7 @@ public class TimelineModel implements Serializable {
      */
     public void addGroup(TimelineGroup group) {
         if (groups == null) {
-            groups = new ArrayList<TimelineGroup>();
+            groups = new ArrayList<>();
         }
 
         groups.add(group);
@@ -110,7 +110,7 @@ public class TimelineModel implements Serializable {
      */
     public void addAllGroups(Collection<TimelineGroup> groups) {
         if (groups == null) {
-            groups = new ArrayList<TimelineGroup>();
+            groups = new ArrayList<>();
         }
 
         groups.addAll(groups);
@@ -295,7 +295,7 @@ public class TimelineModel implements Serializable {
 
             if (isOverlapping(event, e)) {
                 if (overlappedEvents == null) {
-                    overlappedEvents = new ArrayList<TimelineEvent>();
+                    overlappedEvents = new ArrayList<>();
                 }
 
                 overlappedEvents.add(e);
@@ -307,7 +307,7 @@ public class TimelineModel implements Serializable {
         }
 
         // order overlapped events according to their start / end dates
-        TreeSet<TimelineEvent> orderedOverlappedEvents = new TreeSet<TimelineEvent>(new TimelineEventComparator());
+        TreeSet<TimelineEvent> orderedOverlappedEvents = new TreeSet<>(new TimelineEventComparator());
         orderedOverlappedEvents.addAll(overlappedEvents);
 
         return orderedOverlappedEvents;

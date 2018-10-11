@@ -28,8 +28,8 @@ public class CartesianScales implements Serializable {
     private List<CartesianAxes> yAxes;
 
     public CartesianScales() {
-        xAxes = new ArrayList<CartesianAxes>();
-        yAxes = new ArrayList<CartesianAxes>();
+        xAxes = new ArrayList<>();
+        yAxes = new ArrayList<>();
     }
 
     /**

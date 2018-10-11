@@ -100,7 +100,7 @@ public class CellEditEvent extends AbstractAjaxBehaviorEvent {
 
                 //multiple
                 if (inputFacet instanceof UIPanel) {
-                    List<Object> values = new ArrayList<Object>();
+                    List<Object> values = new ArrayList<>();
                     for (UIComponent kid : inputFacet.getChildren()) {
                         if (kid instanceof ValueHolder) {
                             values.add(((ValueHolder) kid).getValue());

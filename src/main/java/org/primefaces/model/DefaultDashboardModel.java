@@ -24,7 +24,7 @@ public class DefaultDashboardModel implements DashboardModel, Serializable {
     private List<DashboardColumn> columns;
 
     public DefaultDashboardModel() {
-        columns = new ArrayList<DashboardColumn>();
+        columns = new ArrayList<>();
     }
 
     @Override

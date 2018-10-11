@@ -530,7 +530,7 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
 
         StringBuilder request = SharedStringBuilder.get(context, SB_BUILD_NON_AJAX_REQUEST);
         String formId = form.getClientId(context);
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
 
         if (decodeParam != null) {
             params.put(decodeParam, decodeParam);

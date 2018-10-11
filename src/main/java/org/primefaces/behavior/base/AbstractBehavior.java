@@ -177,7 +177,7 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
 
         Enum<?>[] allProperties = getAllProperties();
 
-        Map<String, Object> map = new HashMap<String, Object>(allProperties.length);
+        Map<String, Object> map = new HashMap<>(allProperties.length);
         for (int i = 0; i < allProperties.length; i++) {
             Object val = values[i];
 

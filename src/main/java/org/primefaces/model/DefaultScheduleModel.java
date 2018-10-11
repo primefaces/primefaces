@@ -26,7 +26,7 @@ public class DefaultScheduleModel implements ScheduleModel, Serializable {
     private boolean eventLimit = false;
 
     public DefaultScheduleModel() {
-        events = new ArrayList<ScheduleEvent>();
+        events = new ArrayList<>();
     }
 
     public DefaultScheduleModel(List<ScheduleEvent> events) {
@@ -85,7 +85,7 @@ public class DefaultScheduleModel implements ScheduleModel, Serializable {
 
     @Override
     public void clear() {
-        events = new ArrayList<ScheduleEvent>();
+        events = new ArrayList<>();
     }
 
     @Override

@@ -52,7 +52,7 @@ public class TerminalCommand implements Serializable {
         TerminalCommand argument = new TerminalCommand(argumentText);
 
         if (this.arguments == null) {
-            this.arguments = new ArrayList<TerminalCommand>();
+            this.arguments = new ArrayList<>();
         }
 
         this.arguments.add(argument);

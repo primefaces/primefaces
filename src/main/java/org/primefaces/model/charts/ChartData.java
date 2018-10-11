@@ -28,7 +28,7 @@ public class ChartData implements Serializable {
     private Object labels;
 
     public ChartData() {
-        dataSet = new ArrayList<ChartDataSet>();
+        dataSet = new ArrayList<>();
     }
 
     public ChartData(List<ChartDataSet> dataSet, Object labels) {
