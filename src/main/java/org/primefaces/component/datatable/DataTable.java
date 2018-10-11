@@ -531,7 +531,7 @@ public class DataTable extends DataTableBase {
     public void loadLazyData() {
         DataModel model = getDataModel();
 
-        if (model != null && model instanceof LazyDataModel) {
+        if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
             List<?> data = null;
 
@@ -578,7 +578,7 @@ public class DataTable extends DataTableBase {
     public void loadLazyScrollData(int offset, int rows) {
         DataModel model = getDataModel();
 
-        if (model != null && model instanceof LazyDataModel) {
+        if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
 
             List<?> data = null;

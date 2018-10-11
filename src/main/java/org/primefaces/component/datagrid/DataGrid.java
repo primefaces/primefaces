@@ -75,7 +75,7 @@ public class DataGrid extends DataGridBase {
     public void loadLazyData() {
         DataModel model = getDataModel();
 
-        if (model != null && model instanceof LazyDataModel) {
+        if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
 
             List<?> data = lazyModel.load(getFirst(), getRows(), null, null, null);
