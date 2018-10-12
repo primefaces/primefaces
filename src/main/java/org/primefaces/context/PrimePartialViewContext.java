@@ -31,7 +31,6 @@ import javax.faces.context.PartialResponseWriter;
 import javax.faces.context.PartialViewContext;
 import javax.faces.context.PartialViewContextWrapper;
 import javax.faces.event.PhaseId;
-import java.util.logging.Logger;
 
 public class PrimePartialViewContext extends PartialViewContextWrapper {
 
