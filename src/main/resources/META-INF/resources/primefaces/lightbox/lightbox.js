@@ -29,7 +29,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
     refresh: function(cfg) {
         PrimeFaces.utils.removeDynamicOverlay(this, this.panel, this.id + '_panel', $(document.body));
 
-        this.init(cfg);
+        this._super(cfg);
     },
 
     createPanel: function() {
@@ -248,9 +248,11 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         var hideEvent = PrimeFaces.env.ios ? 'touchstart' : 'click';
         PrimeFaces.utils.registerHideOverlayHandler(this, hideEvent + '.' + this.id + '_hide', $this.panel,
             function() { return $this.links.add($this.closeIcon); },
-            function(e) {
-                e.preventDefault();
-                $this.hide();
+            function(e, eventTarget) {
+                if(!($this.panel.is(eventTarget) || $this.panel.has(eventTarget).length > 0)) {
+                    e.preventDefault();
+                    $this.hide();
+                }
             });
 
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.panel, function() {

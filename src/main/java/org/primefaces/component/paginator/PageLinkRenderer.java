@@ -21,6 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.api.Pageable;
+import org.primefaces.util.HTML;
 
 public class PageLinkRenderer {
 
@@ -34,7 +35,7 @@ public class PageLinkRenderer {
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
         writer.writeAttribute("class", styleClass, null);
-        writer.writeAttribute("aria-label", ariaLabel, null);
+        writer.writeAttribute(HTML.ARIA_LABEL, ariaLabel, null);
         writer.writeAttribute("tabindex", tabindex, null);
 
         writer.startElement("span", null);

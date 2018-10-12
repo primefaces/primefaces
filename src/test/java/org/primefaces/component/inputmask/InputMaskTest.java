@@ -20,7 +20,6 @@ import org.junit.Test;
 
 import java.util.regex.Pattern;
 
-import static org.junit.Assert.assertEquals;
 import org.primefaces.mock.FacesContextMock;
 
 public class InputMaskTest {

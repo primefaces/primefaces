@@ -16,7 +16,7 @@
 package org.primefaces.model.filter;
 
 import java.util.Locale;
-import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 public class StartsWithFilterConstraint implements FilterConstraint {
 
@@ -24,7 +24,7 @@ public class StartsWithFilterConstraint implements FilterConstraint {
     public boolean applies(Object value, Object filter, Locale locale) {
         String filterText = (filter == null) ? null : filter.toString().trim().toLowerCase(locale);
 
-        if (filterText == null || filterText.equals(Constants.EMPTY_STRING)) {
+        if (LangUtils.isValueEmpty(filterText)) {
             return true;
         }
 

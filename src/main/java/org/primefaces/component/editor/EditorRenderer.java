@@ -33,7 +33,7 @@ import org.primefaces.util.WidgetBuilder;
 
 public class EditorRenderer extends CoreRenderer {
 
-    private static final Logger logger = Logger.getLogger(EditorRenderer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(EditorRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -104,7 +104,7 @@ public class EditorRenderer extends CoreRenderer {
         }
 
         if (editor.getMaxlength() != Integer.MAX_VALUE) {
-            logger.info("Maxlength option is deprecated and will be removed in a future version.");
+            LOGGER.info("Maxlength option is deprecated and will be removed in a future version.");
         }
 
         wb.finish();

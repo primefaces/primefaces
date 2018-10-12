@@ -33,7 +33,7 @@ public class MeterGaugeChartModel extends ChartModel {
     private int labelHeightAdjust = -25;
 
     public MeterGaugeChartModel() {
-        intervals = new ArrayList<Number>();
+        intervals = new ArrayList<>();
     }
 
     public MeterGaugeChartModel(Number value, List<Number> intervals) {

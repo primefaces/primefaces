@@ -21,7 +21,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -33,7 +32,7 @@ public class KeyboardRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         Keyboard keyboard = (Keyboard) component;
 
-        if (keyboard.isDisabled() || keyboard.isReadonly()) {
+        if (!shouldDecode(keyboard)) {
             return;
         }
 
@@ -105,27 +104,16 @@ public class KeyboardRenderer extends InputRenderer {
             writer.writeAttribute("value", valueToRender, "value");
         }
 
-        renderPassThruAttributes(context, keyboard, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
-        renderDomEvents(context, keyboard, HTML.INPUT_TEXT_EVENTS);
-
         writer.writeAttribute("class", styleClass, "styleClass");
 
-        if (keyboard.isDisabled()) {
-            writer.writeAttribute("disabled", "disabled", "disabled");
-        }
-        if (keyboard.isReadonly()) {
-            writer.writeAttribute("readonly", "readonly", "readonly");
-        }
         if (keyboard.getStyle() != null) {
             writer.writeAttribute("style", keyboard.getStyle(), "style");
         }
-        if (keyboard.isRequired()) {
-            writer.writeAttribute("aria-required", "true", null);
-        }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, keyboard);
-        }
+        renderAccessibilityAttributes(context, keyboard);
+        renderPassThruAttributes(context, keyboard, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
+        renderDomEvents(context, keyboard, HTML.INPUT_TEXT_EVENTS);
+        renderValidationMetadata(context, keyboard);
 
         writer.endElement("input");
     }

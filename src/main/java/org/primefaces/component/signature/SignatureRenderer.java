@@ -22,14 +22,17 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.WidgetBuilder;
 
-public class SignatureRenderer extends CoreRenderer {
+public class SignatureRenderer extends InputRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Signature signature = (Signature) component;
+        if (!shouldDecode(signature)) {
+            return;
+        }
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String value = params.get(signature.getClientId(context) + "_value");
         String base64Value = params.get(signature.getClientId(context) + "_base64");
@@ -106,6 +109,7 @@ public class SignatureRenderer extends CoreRenderer {
         if (value != null) {
             writer.writeAttribute("value", value, null);
         }
+        renderAccessibilityAttributes(context, signature);
         writer.endElement("input");
     }
 }

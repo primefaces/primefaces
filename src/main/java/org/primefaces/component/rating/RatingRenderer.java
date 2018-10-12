@@ -30,7 +30,7 @@ public class RatingRenderer extends InputRenderer {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Rating rating = (Rating) component;
-        if (rating.isDisabled() || rating.isReadonly()) {
+        if (!shouldDecode(rating)) {
             return;
         }
 
@@ -95,7 +95,7 @@ public class RatingRenderer extends InputRenderer {
             encodeIcon(context, starClass);
         }
 
-        encodeInput(context, clientId + "_input", valueToRender);
+        encodeInput(context, rating, clientId + "_input", valueToRender);
 
         writer.endElement("div");
     }
@@ -112,7 +112,7 @@ public class RatingRenderer extends InputRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeInput(FacesContext context, String id, String value) throws IOException {
+    protected void encodeInput(FacesContext context, Rating rating, String id, String value) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("input", null);
@@ -123,6 +123,7 @@ public class RatingRenderer extends InputRenderer {
         if (value != null) {
             writer.writeAttribute("value", value, null);
         }
+        renderAccessibilityAttributes(context, rating);
         writer.endElement("input");
     }
 }

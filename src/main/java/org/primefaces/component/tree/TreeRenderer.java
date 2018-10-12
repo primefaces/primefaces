@@ -129,7 +129,7 @@ public class TreeRenderer extends CoreRenderer {
         String dropNodeRowKey = params.get(clientId + "_dropNode");
         String dragSource = params.get(clientId + "_dragSource");
         int dndIndex = Integer.parseInt(params.get(clientId + "_dndIndex"));
-        boolean isDroppedNodeCopy = Boolean.valueOf(params.get(clientId + "_isDroppedNodeCopy"));
+        boolean isDroppedNodeCopy = Boolean.parseBoolean(params.get(clientId + "_isDroppedNodeCopy"));
         String[] dragNodeRowKeyArr = dragNodeRowKey.split(",");
         List<TreeNode> dragNodeList = new ArrayList<>();
         TreeNode dropNode;
@@ -369,7 +369,7 @@ public class TreeRenderer extends CoreRenderer {
             writer.writeAttribute("tabindex", tree.getTabindex(), null);
         }
 
-        writer.writeAttribute("aria-multiselectable", String.valueOf(multiselectable), null);
+        writer.writeAttribute(HTML.ARIA_MULITSELECTABLE, String.valueOf(multiselectable), null);
         if (tree.getStyle() != null) {
             writer.writeAttribute("style", tree.getStyle(), null);
         }
@@ -526,7 +526,18 @@ public class TreeRenderer extends CoreRenderer {
         //icon
         encodeIcon(context, uiTreeNode, expanded);
 
+        //label
+        writer.startElement("span", null);
+        writer.writeAttribute("class", Tree.NODE_LABEL_CLASS, null);
+        if (!tree.isDisabled()) {
+            writer.writeAttribute("tabindex", "-1", null);
+        }
+
+        writer.writeAttribute("role", "treeitem", null);
+        writer.writeAttribute("aria-label", uiTreeNode.getAriaLabel(), null);
         uiTreeNode.encodeAll(context);
+        writer.endElement("span");
+
         writer.endElement("div");
         writer.endElement("td");
 
@@ -630,7 +641,7 @@ public class TreeRenderer extends CoreRenderer {
 
         List<String> filteredRowKeys = tree.getFilteredRowKeys();
         boolean match = false;
-        if (filter && filteredRowKeys.size() > 0) {
+        if (filter && !filteredRowKeys.isEmpty()) {
             for (String filteredRowKey : filteredRowKeys) {
                 String rowKeyExt = rowKey + "_";
                 String filteredRowKeyExt = filteredRowKey + "_";
@@ -694,10 +705,10 @@ public class TreeRenderer extends CoreRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", contentClass, null);
         writer.writeAttribute("role", "treeitem", null);
-        writer.writeAttribute("aria-expanded", String.valueOf(expanded), null);
-        writer.writeAttribute("aria-selected", String.valueOf(selected), null);
+        writer.writeAttribute(HTML.ARIA_EXPANDED, String.valueOf(expanded), null);
+        writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(selected), null);
         if (checkbox) {
-            writer.writeAttribute("aria-checked", String.valueOf(selected), null);
+            writer.writeAttribute(HTML.ARIA_CHECKED, String.valueOf(selected), null);
         }
 
         //state icon
@@ -723,7 +734,7 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         writer.writeAttribute("role", "treeitem", null);
-        writer.writeAttribute("aria-label", uiTreeNode.getAriaLabel(), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, uiTreeNode.getAriaLabel(), null);
         uiTreeNode.encodeAll(context);
         writer.endElement("span");
 

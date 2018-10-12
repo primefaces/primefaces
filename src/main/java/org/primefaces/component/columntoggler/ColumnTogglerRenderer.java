@@ -35,7 +35,7 @@ public class ColumnTogglerRenderer extends CoreRenderer {
         ColumnToggler columnToggler = (ColumnToggler) component;
         UIComponent datasource = columnToggler.getDataSourceComponent();
 
-        if (datasource != null && datasource instanceof DataTable) {
+        if (datasource instanceof DataTable) {
             DataTable table = ((DataTable) datasource);
             boolean isMultiViewState = table.isMultiViewState();
             if (isMultiViewState) {

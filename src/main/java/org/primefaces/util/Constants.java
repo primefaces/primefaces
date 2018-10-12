@@ -62,7 +62,7 @@ public class Constants {
 
     public static final String DOWNLOAD_COOKIE = "primefaces.download";
 
-    public final static String LIBRARY = "primefaces";
+    public static final String LIBRARY = "primefaces";
 
     public static final String DYNAMIC_CONTENT_PARAM = "pfdrid";
     public static final String DYNAMIC_CONTENT_CACHE_PARAM = "pfdrid_c";
@@ -71,26 +71,29 @@ public class Constants {
 
     public static final String BARCODE_MAPPING = "primefaces.barcodeMapping";
 
-    public final static String FRAGMENT_ID = "primefaces.fragment";
+    public static final String FRAGMENT_ID = "primefaces.fragment";
 
     public static class DIALOG_FRAMEWORK {
 
-        public final static String OUTCOME = "dialog.outcome";
-        public final static String OPTIONS = "dialog.options";
-        public final static String PARAMS = "dialog.params";
-        public final static String SOURCE_COMPONENT = "dialog.source.component";
-        public final static String SOURCE_WIDGET = "dialog.source.widget";
-        public final static String CONVERSATION_PARAM = "pfdlgcid";
-        public final static String INCLUDE_VIEW_PARAMS = "includeViewParams";
+        public static final String OUTCOME = "dialog.outcome";
+        public static final String OPTIONS = "dialog.options";
+        public static final String PARAMS = "dialog.params";
+        public static final String SOURCE_COMPONENT = "dialog.source.component";
+        public static final String SOURCE_WIDGET = "dialog.source.widget";
+        public static final String CONVERSATION_PARAM = "pfdlgcid";
+        public static final String INCLUDE_VIEW_PARAMS = "includeViewParams";
     }
 
     public static final String EMPTY_STRING = "";
 
-    public final static String CLIENT_BEHAVIOR_RENDERING_MODE = "CLIENT_BEHAVIOR_RENDERING_MODE";
+    public static final String CLIENT_BEHAVIOR_RENDERING_MODE = "CLIENT_BEHAVIOR_RENDERING_MODE";
 
-    public final static String DEFAULT_CACHE_REGION = "primefaces.DEFAULT_CACHE_REGION";
+    public static final String DEFAULT_CACHE_REGION = "primefaces.DEFAULT_CACHE_REGION";
 
     public static final String HELPER_RENDERER = "org.primefaces.HELPER_RENDERER";
 
     public static final String TABLE_STATE = "primefaces.TABLE_STATE";
+
+    private Constants() {
+    }
 }

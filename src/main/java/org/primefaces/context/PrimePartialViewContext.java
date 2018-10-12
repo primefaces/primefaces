@@ -35,8 +35,6 @@ import java.util.logging.Logger;
 
 public class PrimePartialViewContext extends PartialViewContextWrapper {
 
-    private static final Logger LOG = Logger.getLogger(PrimePartialViewContext.class.getName());
-
     private PartialViewContext wrapped;
     private PartialResponseWriter writer = null;
     private CspConfiguration cspConfiguration;

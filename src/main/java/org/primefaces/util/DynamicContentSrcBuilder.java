@@ -39,6 +39,9 @@ public class DynamicContentSrcBuilder {
 
     private static final String SB_BUILD = DynamicContentSrcBuilder.class.getName() + "#build";
 
+    private DynamicContentSrcBuilder() {
+    }
+
     public static String build(FacesContext context, Object value, UIComponent component, boolean cache, DynamicContentType type, boolean stream)
             throws UnsupportedEncodingException {
 

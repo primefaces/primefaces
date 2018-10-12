@@ -35,7 +35,7 @@ import org.primefaces.component.api.AjaxSource;
     })
 public class AjaxBehavior extends AbstractBehavior implements AjaxSource {
 
-    public final static String BEHAVIOR_ID = "org.primefaces.component.AjaxBehavior";
+    public static final String BEHAVIOR_ID = "org.primefaces.component.AjaxBehavior";
 
     private static final Set<ClientBehaviorHint> HINTS = Collections.unmodifiableSet(EnumSet.of(ClientBehaviorHint.SUBMITTING));
 

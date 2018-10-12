@@ -24,7 +24,7 @@ public class TerminalAutoCompleteModel implements Serializable {
     private List<TerminalCommand> commands;
 
     public TerminalAutoCompleteModel() {
-        this.commands = new ArrayList<TerminalCommand>();
+        this.commands = new ArrayList<>();
     }
 
     public List<TerminalCommand> getCommands() {

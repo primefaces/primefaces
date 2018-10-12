@@ -15,18 +15,19 @@
  */
 package org.primefaces.application;
 
+import org.primefaces.PrimeFaces;
+import org.primefaces.util.Constants;
+import org.primefaces.util.EscapeUtils;
+
+import javax.faces.application.ConfigurableNavigationHandler;
+import javax.faces.application.NavigationCase;
+import javax.faces.context.FacesContext;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import javax.faces.application.ConfigurableNavigationHandler;
-import javax.faces.application.NavigationCase;
-import javax.faces.context.FacesContext;
-import org.primefaces.PrimeFaces;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
 
 public class DialogNavigationHandler extends ConfigurableNavigationHandler {
 
@@ -58,7 +59,7 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
             }
 
             String url = context.getApplication().getViewHandler().getBookmarkableURL(context, toViewId, params, includeViewParams);
-            url = ComponentUtils.escapeEcmaScriptText(url);
+            url = EscapeUtils.forJavaScript(url);
 
             StringBuilder sb = new StringBuilder();
             String sourceComponentId = (String) attrs.get(Constants.DIALOG_FRAMEWORK.SOURCE_COMPONENT);
@@ -67,7 +68,7 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
             if (pfdlgcid == null) {
                 pfdlgcid = UUID.randomUUID().toString();
             }
-            pfdlgcid = ComponentUtils.escapeEcmaScriptText(pfdlgcid);
+            pfdlgcid = EscapeUtils.forJavaScript(pfdlgcid);
 
             sb.append("PrimeFaces.openDialog({url:'").append(url).append("',pfdlgcid:'").append(pfdlgcid)
                     .append("',sourceComponentId:'").append(sourceComponentId).append("'");
@@ -77,14 +78,14 @@ public class DialogNavigationHandler extends ConfigurableNavigationHandler {
             }
 
             sb.append(",options:{");
-            if (options != null && options.size() > 0) {
+            if (options != null && !options.isEmpty()) {
                 for (Iterator<String> it = options.keySet().iterator(); it.hasNext();) {
                     String optionName = it.next();
                     Object optionValue = options.get(optionName);
 
                     sb.append(optionName).append(":");
                     if (optionValue instanceof String) {
-                        sb.append("'").append(ComponentUtils.escapeEcmaScriptText((String) optionValue)).append("'");
+                        sb.append("'").append(EscapeUtils.forJavaScript((String) optionValue)).append("'");
                     }
                     else {
                         sb.append(optionValue);

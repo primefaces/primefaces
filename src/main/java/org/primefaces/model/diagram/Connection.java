@@ -35,7 +35,7 @@ public class Connection implements Serializable {
     private boolean detachable = true;
 
     public Connection() {
-        overlays = new ArrayList<Overlay>();
+        overlays = new ArrayList<>();
     }
 
     public Connection(EndPoint source, EndPoint target) {

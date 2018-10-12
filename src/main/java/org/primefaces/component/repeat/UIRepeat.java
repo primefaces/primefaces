@@ -16,7 +16,6 @@
 package org.primefaces.component.repeat;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.sql.ResultSet;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -38,6 +37,7 @@ import javax.faces.event.*;
 import javax.faces.model.*;
 import javax.faces.render.Renderer;
 
+import org.primefaces.component.api.SavedState;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.model.IterableDataModel;
 
@@ -48,7 +48,6 @@ public class UIRepeat extends UINamingContainer {
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
     private static final DataModel EMPTY_MODEL = new ListDataModel<>(Collections.emptyList());
-    private static final SavedState NullState = new SavedState();
     // our data
     private Object value;
     private transient DataModel model;
@@ -374,7 +373,7 @@ public class UIRepeat extends UINamingContainer {
             String clientId = c.getClientId(faces);
             SavedState ss = getChildState().get(clientId);
             if (ss != null) {
-                ss.apply(evh);
+                ss.restoreState(evh);
             }
             else {
                 String childId = clientId.substring(initialClientId.length() + 1);
@@ -382,10 +381,10 @@ public class UIRepeat extends UINamingContainer {
                 childId = initialClientId + getSeparatorChar(faces) + childId;
                 if (initialChildState.containsKey(childId)) {
                     SavedState initialState = initialChildState.get(childId);
-                    initialState.apply(evh);
+                    initialState.restoreState(evh);
                 }
                 else {
-                    NullState.apply(evh);
+                    SavedState.NULL_STATE.restoreState(evh);
                 }
             }
         }
@@ -991,69 +990,6 @@ public class UIRepeat extends UINamingContainer {
             }
         }
         return true;
-    }
-
-    // from RI
-    private static final class SavedState implements Serializable {
-
-        private static final long serialVersionUID = 2920252657338389849L;
-        private Object submittedValue;
-        private boolean valid = true;
-        private Object value;
-        private boolean localValueSet;
-
-        Object getSubmittedValue() {
-            return (submittedValue);
-        }
-
-        void setSubmittedValue(Object submittedValue) {
-            this.submittedValue = submittedValue;
-        }
-
-        boolean isValid() {
-            return (valid);
-        }
-
-        void setValid(boolean valid) {
-            this.valid = valid;
-        }
-
-        Object getValue() {
-            return (value);
-        }
-
-        public void setValue(Object value) {
-            this.value = value;
-        }
-
-        boolean isLocalValueSet() {
-            return (localValueSet);
-        }
-
-        public void setLocalValueSet(boolean localValueSet) {
-            this.localValueSet = localValueSet;
-        }
-
-        @Override
-        public String toString() {
-            return ("submittedValue: " + submittedValue + " value: " + value
-                    + " localValueSet: " + localValueSet);
-        }
-
-        public void populate(EditableValueHolder evh) {
-            value = evh.getLocalValue();
-            valid = evh.isValid();
-            submittedValue = evh.getSubmittedValue();
-            localValueSet = evh.isLocalValueSet();
-        }
-
-        public void apply(EditableValueHolder evh) {
-            evh.setValue(value);
-            evh.setValid(valid);
-            evh.setSubmittedValue(submittedValue);
-            evh.setLocalValueSet(localValueSet);
-        }
-
     }
 
     private static final class IndexedEvent extends FacesEvent {

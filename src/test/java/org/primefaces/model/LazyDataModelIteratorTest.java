@@ -18,7 +18,7 @@ public class LazyDataModelIteratorTest {
         LazyDataModelImpl dataModel = new LazyDataModelImpl();
         dataModel.setPageSize(3);
         dataModel.totalItems = 10;
-        List<Integer> items = new ArrayList<Integer>();
+        List<Integer> items = new ArrayList<>();
         for (Integer item : dataModel) {
             System.out.println(item);
             items.add(item);
@@ -33,7 +33,7 @@ public class LazyDataModelIteratorTest {
         LazyDataModelImpl dataModel = new LazyDataModelImpl();
         dataModel.setPageSize(20);
         dataModel.totalItems = 20;
-        List<Integer> items = new ArrayList<Integer>();
+        List<Integer> items = new ArrayList<>();
         for (Integer item : dataModel) {
             System.out.println(item);
             items.add(item);
@@ -48,7 +48,7 @@ public class LazyDataModelIteratorTest {
         LazyDataModelImpl dataModel = new LazyDataModelImpl();
         dataModel.setPageSize(10);
         dataModel.totalItems = 9;
-        List<Integer> items = new ArrayList<Integer>();
+        List<Integer> items = new ArrayList<>();
         for (Integer item : dataModel) {
             System.out.println(item);
             items.add(item);
@@ -63,7 +63,7 @@ public class LazyDataModelIteratorTest {
         LazyDataModelImpl dataModel = new LazyDataModelImpl();
         dataModel.setPageSize(10);
         dataModel.totalItems = 0;
-        List<Integer> items = new ArrayList<Integer>();
+        List<Integer> items = new ArrayList<>();
         for (Integer item : dataModel) {
             System.out.println(item);
             items.add(item);
@@ -78,7 +78,7 @@ public class LazyDataModelIteratorTest {
         LazyDataModelImpl dataModel = new LazyDataModelImpl();
         dataModel.setPageSize(10);
         dataModel.totalItems = 5;
-        List<Integer> items = new ArrayList<Integer>();
+        List<Integer> items = new ArrayList<>();
         Iterator<Integer> it = dataModel.iterator();
         while (it.hasNext()) {
             Integer item = it.next();
@@ -121,6 +121,7 @@ public class LazyDataModelIteratorTest {
         Iterator<Integer> it = dataModel.iterator("foo", SortOrder.ASCENDING, Collections.singletonMap("foo", (Object) "bar"));
         while (it.hasNext()) {
             Integer item = it.next();
+            Assert.assertNotNull(item);
         }
         Assert.assertEquals(1, dataModel.singleSortingLoadCounter);
     }
@@ -134,6 +135,7 @@ public class LazyDataModelIteratorTest {
         Iterator<Integer> it = dataModel.iterator(Arrays.asList(new SortMeta()), Collections.singletonMap("foo", (Object) "bar"));
         while (it.hasNext()) {
             Integer item = it.next();
+            Assert.assertNotNull(item);
         }
         Assert.assertEquals(1, dataModel.multiSortingLoadCounter);
     }
@@ -151,7 +153,7 @@ public class LazyDataModelIteratorTest {
         public List<Integer> load(int first, int pageSize, List<SortMeta> multiSortMeta, Map<String, Object> filters) {
             System.out.println(String.format("Loading %d items from offset %d", pageSize, first));
             multiSortingLoadCounter++;
-            List<Integer> page = new ArrayList<Integer>();
+            List<Integer> page = new ArrayList<>();
             for(int i = first; i < first + pageSize && i < totalItems; i++) {
                 page.add(i);
             }
@@ -162,7 +164,7 @@ public class LazyDataModelIteratorTest {
         public List<Integer> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
             System.out.println(String.format("Loading %d items from offset %d", pageSize, first));
             singleSortingLoadCounter++;
-            List<Integer> page = new ArrayList<Integer>();
+            List<Integer> page = new ArrayList<>();
             for(int i = first; i < first + pageSize && i < totalItems; i++) {
                 page.add(i);
             }

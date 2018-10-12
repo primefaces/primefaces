@@ -17,7 +17,6 @@ package org.primefaces.component.growl;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.logging.Logger;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -26,12 +25,11 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.UINotificationRenderer;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
 public class GrowlRenderer extends UINotificationRenderer {
-
-    private static final Logger logger = Logger.getLogger(GrowlRenderer.class.getName());
 
     @Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
@@ -94,8 +92,8 @@ public class GrowlRenderer extends UINotificationRenderer {
                     first = false;
                 }
 
-                String summary = escapeText(message.getSummary());
-                String detail = escapeText(message.getDetail());
+                String summary = EscapeUtils.forJavaScript(message.getSummary());
+                String detail = EscapeUtils.forJavaScript(message.getDetail());
 
                 writer.write("{");
 

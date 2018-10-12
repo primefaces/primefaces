@@ -15,8 +15,10 @@
  */
 package org.primefaces.component.splitbutton;
 
+import java.util.List;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
+import org.primefaces.model.menu.MenuModel;
 
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -40,6 +42,7 @@ public class SplitButton extends SplitButtonBase {
     public static final String BUTTON_TEXT_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-left ui-button-text-only";
     public static final String BUTTON_ICON_ONLY_BUTTON_CLASS = "ui-button ui-widget ui-state-default ui-corner-left ui-button-icon-only";
     public static final String SPLITBUTTON_CONTAINER_CLASS = "ui-menu ui-splitbuttonmenu ui-menu-dynamic ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-shadow";
+    public static final String LIST_WRAPPER_CLASS = "ui-splitbuttonmenu-list-wrapper";
 
     public String resolveStyleClass() {
         boolean iconBlank = LangUtils.isValueBlank(getIcon());
@@ -89,5 +92,21 @@ public class SplitButton extends SplitButtonBase {
     @Override
     public boolean isAjaxified() {
         return isAjax();
+    }
+
+    public List getElements() {
+        MenuModel model = getModel();
+        if (model != null) {
+            return model.getElements();
+        }
+        else {
+            return getChildren();
+        }
+    }
+
+    public int getElementsCount() {
+        List elements = getElements();
+
+        return (elements == null) ? 0 : elements.size();
     }
 }

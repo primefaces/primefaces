@@ -36,4 +36,7 @@ public class SearchExpressionConstants {
     public static final String ROOT_KEYWORD =               KEYWORD_PREFIX + "root";
 
     public static final String PFS_PREFIX =                 KEYWORD_PREFIX + "(";
+
+    private SearchExpressionConstants() {
+    }
 }

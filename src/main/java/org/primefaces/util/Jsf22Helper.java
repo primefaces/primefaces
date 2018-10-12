@@ -25,6 +25,9 @@ import javax.faces.context.ResponseWriter;
 // helper to avoid java.lang.NoClassDefFoundError's in older environments
 public class Jsf22Helper {
 
+    private Jsf22Helper() {
+    }
+
     public static void renderPassThroughAttributes(FacesContext context, UIComponent component) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         Map<String, Object> passthroughAttributes = component.getPassThroughAttributes(false);

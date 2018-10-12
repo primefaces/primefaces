@@ -58,6 +58,9 @@ public class ComponentUtils {
     // marker for a undefined value when a null check is not reliable enough
     private static final Object UNDEFINED_VALUE = new Object();
 
+    private ComponentUtils() {
+    }
+
     public static String getValueToRender(FacesContext context, UIComponent component) {
         return getValueToRender(context, component, UNDEFINED_VALUE);
     }
@@ -187,9 +190,6 @@ public class ComponentUtils {
         return SearchExpressionUtils.resolveWidgetVar(expression, component);
     }
 
-
-
-
     public static boolean isRTL(FacesContext context, RTLAware component) {
         boolean globalValue = PrimeRequestContext.getCurrentInstance(context).isRTL();
 
@@ -300,7 +300,9 @@ public class ComponentUtils {
     /**
      * Duplicate code from json-simple project under apache license
      * http://code.google.com/p/json-simple/source/browse/trunk/src/org/json/simple/JSONValue.java
+     * @deprecated Use {@link EscapeUtils}
      */
+    @Deprecated
     public static String escapeText(String text) {
         if (text == null) {
             return null;
@@ -354,6 +356,10 @@ public class ComponentUtils {
         return sb.toString();
     }
 
+    /**
+     * @deprecated Use {@link EscapeUtils}
+     */
+    @Deprecated
     public static String escapeEcmaScriptText(String text) {
         if (text == null) {
             return null;
@@ -396,7 +402,9 @@ public class ComponentUtils {
      *
      * @param string The string to be escaped.
      * @return The escaped string.
+     * @deprecated Use {@link EscapeUtils}
      */
+    @Deprecated
     public static String escapeXml(String string) {
         StringBuilder sb = SharedStringBuilder.get(SB_ESCAPE, string.length());
         for (int i = 0, length = string.length(); i < length; i++) {

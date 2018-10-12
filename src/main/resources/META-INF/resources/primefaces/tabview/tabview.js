@@ -226,15 +226,15 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         if(this.headerContainer.length) {
             var overflown = ((this.lastTab.position().left + this.lastTab.width()) - this.firstTab.position().left) > this.navscroller.innerWidth();
             if (overflown) {
-                this.navscroller.css('padding-left', '18px');
-                this.navcrollerLeft.attr('tabindex', this.tabindex).show();
-                this.navcrollerRight.attr('tabindex', this.tabindex).show();
+                this.navscroller.removeClass('ui-tabs-navscroller-btn-hidden');
+                this.navcrollerLeft.attr('tabindex', this.tabindex);
+                this.navcrollerRight.attr('tabindex', this.tabindex);
                 this.restoreScrollState();
             }
             else {
-                this.navscroller.css('padding-left', '0px');
-                this.navcrollerLeft.attr('tabindex', this.tabindex).hide();
-                this.navcrollerRight.attr('tabindex', this.tabindex).hide();
+                this.navscroller.addClass('ui-tabs-navscroller-btn-hidden');
+                this.navcrollerLeft.attr('tabindex', this.tabindex);
+                this.navcrollerRight.attr('tabindex', this.tabindex);
             }
         }
     },
@@ -340,6 +340,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
 
         //aria
         oldPanel.attr('aria-hidden', true);
+        oldPanel.addClass('ui-helper-hidden');
         oldHeader.attr('aria-expanded', false);
         oldHeader.attr('aria-selected', false);
         if(oldActions.length != 0) {
@@ -347,6 +348,7 @@ PrimeFaces.widget.TabView = PrimeFaces.widget.DeferredWidget.extend({
         }
 
         newPanel.attr('aria-hidden', false);
+        newPanel.removeClass('ui-helper-hidden');
         newHeader.attr('aria-expanded', true);
         newHeader.attr('aria-selected', true);
         if(newActions.length != 0) {

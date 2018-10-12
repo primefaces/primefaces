@@ -53,12 +53,11 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.jq,
             function() { return $this.trigger; },
-            function(e) {
-                var $eventTarget = $(e.target);
-                if ($eventTarget.is('.ui-menuitem-link') || $eventTarget.closest('.ui-menuitem-link').length) {
+            function(e, eventTarget) {
+                if (eventTarget.is('.ui-menuitem-link') || eventTarget.closest('.ui-menuitem-link').length) {
                     $this.itemMouseDown = true;
                 }
-                else {
+                else if(!($this.jq.is(eventTarget) || $this.jq.has(eventTarget).length > 0)) {
                     $this.hide(e);
                 }
             });

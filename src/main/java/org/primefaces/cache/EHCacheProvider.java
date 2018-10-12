@@ -58,8 +58,8 @@ public class EHCacheProvider implements CacheProvider {
     public void clear() {
         String[] cacheNames = getCacheManager().getCacheNames();
         if (cacheNames != null) {
-            for (int i = 0; i < cacheNames.length; i++) {
-                Cache cache = getRegion(cacheNames[i]);
+            for (String cacheName : cacheNames) {
+                Cache cache = getRegion(cacheName);
                 cache.removeAll();
             }
         }

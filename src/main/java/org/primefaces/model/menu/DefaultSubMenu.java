@@ -31,18 +31,18 @@ public class DefaultSubMenu implements Submenu, Serializable {
     private boolean expanded = false;
 
     public DefaultSubMenu() {
-        elements = new ArrayList<MenuElement>();
+        elements = new ArrayList<>();
     }
 
     public DefaultSubMenu(String label) {
         this.label = label;
-        elements = new ArrayList<MenuElement>();
+        elements = new ArrayList<>();
     }
 
     public DefaultSubMenu(String label, String icon) {
         this.label = label;
         this.icon = icon;
-        elements = new ArrayList<MenuElement>();
+        elements = new ArrayList<>();
     }
 
     @Override

@@ -255,7 +255,7 @@ PrimeFaces.widget.Chart = PrimeFaces.widget.DeferredWidget.extend({
             this.plot.destroy();
         }
 
-        this.init(cfg);
+        this._super(cfg);
     },
 
     //@Override

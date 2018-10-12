@@ -28,9 +28,9 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
 import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class ChipsRenderer extends InputRenderer {
@@ -40,7 +40,7 @@ public class ChipsRenderer extends InputRenderer {
         Chips chips = (Chips) component;
         String clientId = chips.getClientId(context);
 
-        if (chips.isDisabled() || chips.isReadonly()) {
+        if (!shouldDecode(chips)) {
             return;
         }
 
@@ -51,7 +51,7 @@ public class ChipsRenderer extends InputRenderer {
         String inputValue = params.get(clientId + "_input");
 
         if (!isValueBlank(inputValue)) {
-            submittedValues = ArrayUtils.concat(submittedValues, new String[]{inputValue});
+            submittedValues = LangUtils.concat(submittedValues, new String[]{inputValue});
         }
 
         if (submittedValues.length > 0) {
@@ -107,6 +107,7 @@ public class ChipsRenderer extends InputRenderer {
         if (inputStyle != null) {
             writer.writeAttribute("style", inputStyle, null);
         }
+        renderARIARequired(context, chips);
 
         if (values != null && !values.isEmpty()) {
             Converter converter = ComponentUtils.getConverter(context, chips);
@@ -143,13 +144,8 @@ public class ChipsRenderer extends InputRenderer {
         writer.writeAttribute("class", "ui-widget", null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("autocomplete", "off", null);
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", "disabled");
-        }
-        if (chips.isReadonly()) {
-            writer.writeAttribute("readonly", "readonly", "readonly");
-        }
 
+        renderAccessibilityAttributes(context, chips);
         renderPassThruAttributes(context, chips, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, chips, HTML.INPUT_TEXT_EVENTS);
 

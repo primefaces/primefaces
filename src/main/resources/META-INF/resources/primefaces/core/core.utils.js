@@ -172,12 +172,17 @@ if (!PrimeFaces.utils) {
                     }
                 }
 
+
+                // this checks were moved to the used components
+
                 // do nothing when the clicked element is a child of the overlay
+                /*
                 if (overlay.is($eventTarget) || overlay.has($eventTarget).length > 0) {
                     return;
                 }
+                */
 
-                // old check:
+                // OLD WAY: do nothing when the clicked element is a child of the overlay
                 /*
                 var offset = overlay.offset();
                 if (e.pageX < offset.left
@@ -188,7 +193,7 @@ if (!PrimeFaces.utils) {
                 }
                 */
 
-                hideCallback(e);
+                hideCallback(e, $eventTarget);
             });
         },
 
@@ -216,7 +221,8 @@ if (!PrimeFaces.utils) {
 
                 widget.addDestroyListener(function() {
                     var appendTo = PrimeFaces.utils.resolveDynamicOverlayContainer(widget);
-                    PrimeFaces.utils.removeDynamicOverlay(widget, overlay, overlayId, appendTo);
+                    // pass null as overlay - as every! overlay with this overlayId can be removed on destroying the whole widget
+                    PrimeFaces.utils.removeDynamicOverlay(widget, null, overlayId, appendTo);
                 });
 
                 widget.addRefreshListener(function() {

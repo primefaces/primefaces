@@ -29,6 +29,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
         this.bindEvents();
     },
 
+    //@override
     refresh: function(cfg) {
         var jqs = $('[id=' + cfg.id.replace(/:/g,"\\:") + ']');
         if(jqs.length > 1) {
@@ -37,7 +38,7 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
         this.widthAligned = false;
 
-        this.init(cfg);
+        this._super(cfg);
     },
 
     render: function() {
@@ -142,9 +143,12 @@ PrimeFaces.widget.ColumnToggler = PrimeFaces.widget.DeferredWidget.extend({
 
         this.bindKeyEvents();
 
-        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.panel,
-            null,
-            function(e) { $this.hide(); });
+        PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.panel, null,
+            function(e, eventTarget) {
+                if(!($this.panel.is(eventTarget) || $this.panel.has(eventTarget).length > 0)) {
+                    $this.hide();
+                }
+            });
 
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.panel, function() {
             $this.alignPanel();

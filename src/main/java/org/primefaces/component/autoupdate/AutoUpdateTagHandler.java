@@ -20,14 +20,9 @@ import java.io.IOException;
 import javax.el.ELException;
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.event.PostAddToViewEvent;
-import javax.faces.event.PreRenderComponentEvent;
 import javax.faces.view.facelets.*;
 
 public class AutoUpdateTagHandler extends TagHandler {
-
-    private static final AutoUpdateListener LISTENER = new AutoUpdateListener(false);
-    private static final AutoUpdateListener LISTENER_DISABLED = new AutoUpdateListener(true);
 
     private final TagAttribute disabledAttribute;
 
@@ -45,13 +40,6 @@ public class AutoUpdateTagHandler extends TagHandler {
             disabled = disabledAttribute.getBoolean(faceletContext);
         }
 
-        // PostAddToViewEvent should work for stateless views
-        //                  but fails for MyFaces ViewPooling
-        //                  and sometimes on postbacks as PostAddToViewEvent should actually ony be called once
-        parent.subscribeToEvent(PostAddToViewEvent.class, disabled ? LISTENER_DISABLED : LISTENER);
-
-        // PreRenderComponentEvent should work for normal cases and MyFaces ViewPooling
-        //                      but likely fails for stateless view as we save the clientIds in the viewRoot
-        parent.subscribeToEvent(PreRenderComponentEvent.class, disabled ? LISTENER_DISABLED : LISTENER);
+        AutoUpdateListener.subscribe(parent, disabled);
     }
 }

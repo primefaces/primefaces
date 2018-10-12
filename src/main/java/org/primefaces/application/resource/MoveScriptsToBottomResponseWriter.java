@@ -62,7 +62,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
     }
 
     @Override
-    public void write(char cbuf[]) throws IOException {
+    public void write(char[] cbuf) throws IOException {
         if (inScript) {
             inline.append(cbuf);
         }

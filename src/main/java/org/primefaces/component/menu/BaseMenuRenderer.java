@@ -38,6 +38,7 @@ import org.primefaces.model.menu.*;
 import org.primefaces.renderkit.OutcomeTargetRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentTraversalUtils;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.SharedStringBuilder;
 import org.primefaces.util.WidgetBuilder;
 
@@ -377,9 +378,9 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
             for (Iterator<String> it = params.keySet().iterator(); it.hasNext(); ) {
                 String key = it.next();
                 Object value = params.get(key);
-                String valueStr = value == null ? null : escapeText(value.toString());
+                String valueStr = value == null ? null : EscapeUtils.forJavaScript(value.toString());
 
-                request.append("\"").append(escapeText(key)).append("\":\"").append(valueStr).append("\"");
+                request.append("\"").append(EscapeUtils.forJavaScript(key)).append("\":\"").append(valueStr).append("\"");
 
                 if (it.hasNext()) {
                     request.append(",");

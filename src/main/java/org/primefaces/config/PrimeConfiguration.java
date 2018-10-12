@@ -30,8 +30,6 @@ import java.util.logging.Logger;
  */
 public class PrimeConfiguration {
 
-    private static final Logger LOG = Logger.getLogger(PrimeConfiguration.class.getName());
-
     // context params
     private boolean validateEmptyFields = false;
     private boolean partialSubmitEnabled = false;

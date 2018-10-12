@@ -35,13 +35,16 @@ import org.primefaces.util.SharedStringBuilder;
  */
 public class SearchExpressionFacade {
 
-    private static final Logger LOG = Logger.getLogger(SearchExpressionFacade.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SearchExpressionFacade.class.getName());
 
     private static final String SHARED_EXPRESSION_BUFFER_KEY = SearchExpressionFacade.class.getName() + ".SHARED_EXPRESSION_BUFFER";
     private static final String SHARED_SPLIT_BUFFER_KEY = SearchExpressionFacade.class.getName() + ".SHARED_SPLIT_BUFFER_KEY";
     private static final String SHARED_CLIENT_ID_EXPRESSION_BUFFER_KEY = SearchExpressionFacade.class.getName() + ".SHARED_CLIENT_ID_EXPRESSION_BUFFER_KEY";
 
     private static final char[] EXPRESSION_SEPARATORS = new char[]{',', ' '};
+
+    private SearchExpressionFacade() {
+    }
 
     /**
      * Resolves a list of {@link UIComponent}s for the given expression or expressions.
@@ -273,7 +276,7 @@ public class SearchExpressionFacade {
     protected static void validateRenderer(FacesContext context, UIComponent source, UIComponent component, String expression, int hints) {
         if (SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.VALIDATE_RENDERER) && context.isProjectStage(ProjectStage.Development)) {
             if (LangUtils.isValueBlank(component.getRendererType())) {
-                LOG.warning("Can not update component \"" + component.getClass().getName()
+                LOGGER.warning("Can not update component \"" + component.getClass().getName()
                         + "\" with id \"" + component.getClientId(context)
                         + "\" without a attached renderer. Expression \"" + expression
                         + "\" referenced from \"" + source.getClientId(context) + "\"");

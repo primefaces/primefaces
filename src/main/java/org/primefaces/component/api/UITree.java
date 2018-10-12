@@ -15,6 +15,7 @@
  */
 package org.primefaces.component.api;
 
+import java.io.IOException;
 import java.util.*;
 
 import javax.el.ValueExpression;
@@ -50,6 +51,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     private boolean rtl;
 
     private List<TreeNode> preselection;
+    
+    private Boolean isNested = null;
 
     public enum PropertyKeys {
         var,
@@ -62,20 +65,6 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         skipChildren,
         showUnselectableCheckbox,
         nodeVar;
-
-        String toString;
-
-        PropertyKeys(String toString) {
-            this.toString = toString;
-        }
-
-        PropertyKeys() {
-        }
-
-        @Override
-        public String toString() {
-            return ((toString != null) ? toString : super.toString());
-        }
     }
 
     public String getRowKey() {
@@ -288,7 +277,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                 String selectionMode = getSelectionMode();
                 if (selectionMode != null) {
                     if (selectionMode.equals("single")) {
-                        if (preselection.size() > 0) {
+                        if (!preselection.isEmpty()) {
                             ve.setValue(FacesContext.getCurrentInstance().getELContext(), preselection.get(0));
                         }
                     }
@@ -417,6 +406,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
         pushComponentToEL(context, this);
 
+        preDecode(context);
         Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
         if (saved == null) {
             getStateHelper().remove(PropertyKeys.saved);
@@ -444,6 +434,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         pushComponentToEL(context, this);
         Application application = context.getApplication();
         application.publishEvent(context, PreValidateEvent.class, this);
+        preValidate(context);
         processNodes(context, PhaseId.PROCESS_VALIDATIONS);
         validateSelection(context);
         application.publishEvent(context, PostValidateEvent.class, this);
@@ -493,6 +484,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
 
         pushComponentToEL(context, this);
+
+        preUpdate(context);
 
         processNodes(context, PhaseId.UPDATE_MODEL_VALUES);
 
@@ -928,6 +921,45 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             //JSF 2.0
             Object skipHint = context.getAttributes().get("javax.faces.visit.SKIP_ITERATION");
             return !Boolean.TRUE.equals(skipHint);
+        }
+    }
+    
+    @Override
+    public void encodeBegin(FacesContext context) throws IOException {
+
+        preEncode(context);
+        
+        super.encodeBegin(context);
+    }
+    
+    protected void preDecode(FacesContext context) {
+    }
+    
+    protected void preValidate(FacesContext context) {
+    }
+    
+    protected void preUpdate(FacesContext context) {
+    }
+    
+    protected void preEncode(FacesContext context) {
+    }
+    
+    protected Boolean isNestedWithinIterator() {
+        if (isNested == null) {
+            UIComponent parent = this;
+            while (null != (parent = parent.getParent())) {
+                if (parent instanceof javax.faces.component.UIData || parent.getClass().getName().endsWith("UIRepeat")
+                        || (parent instanceof UITabPanel && ((UITabPanel) parent).isRepeating())) {
+                    isNested = Boolean.TRUE;
+                    break;
+                }
+            }
+            if (isNested == null) {
+                isNested = Boolean.FALSE;
+            }
+            return isNested;
+        } else {
+            return isNested;
         }
     }
 }

@@ -35,7 +35,7 @@ public class DateTimeConverter extends javax.faces.convert.DateTimeConverter imp
             String dateStyle = this.getDateStyle();
             String timeStyle = this.getTimeStyle();
 
-            metadata = new HashMap<String, Object>();
+            metadata = new HashMap<>();
 
             if (pattern != null) {
                 metadata.put(HTML.VALIDATION_METADATA.PATTERN, CalendarUtils.convertPattern(pattern));

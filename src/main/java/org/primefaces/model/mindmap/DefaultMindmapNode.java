@@ -38,7 +38,7 @@ public class DefaultMindmapNode implements MindmapNode, Serializable {
 
     public DefaultMindmapNode(String label) {
         this.label = label;
-        this.children = new ArrayList<MindmapNode>();
+        this.children = new ArrayList<>();
         this.selectable = true;
     }
 

@@ -33,7 +33,7 @@ public class Polygon extends Overlay {
     private double fillOpacity = 1.0;
 
     public Polygon() {
-        paths = new ArrayList<LatLng>();
+        paths = new ArrayList<>();
     }
 
     public Polygon(List<LatLng> paths) {

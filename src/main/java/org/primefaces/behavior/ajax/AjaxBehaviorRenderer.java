@@ -67,7 +67,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
                 for (int i = 0; i < behaviorParameters.size(); i++) {
                     ClientBehaviorContext.Parameter behaviorParameter =
                             ((ArrayList<ClientBehaviorContext.Parameter>) behaviorParameters).get(i);
-                    if (behaviorParameter.getValue() != null && behaviorParameter.getValue() instanceof ClientBehaviorRenderingMode) {
+                    if (behaviorParameter.getValue() instanceof ClientBehaviorRenderingMode) {
                         renderingMode = (ClientBehaviorRenderingMode) behaviorParameter.getValue();
                         break;
                     }
@@ -75,7 +75,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
             }
             else {
                 for (ClientBehaviorContext.Parameter behaviorParameter : behaviorParameters) {
-                    if (behaviorParameter.getValue() != null && behaviorParameter.getValue() instanceof ClientBehaviorRenderingMode) {
+                    if (behaviorParameter.getValue() instanceof ClientBehaviorRenderingMode) {
                         renderingMode = (ClientBehaviorRenderingMode) behaviorParameter.getValue();
                         break;
                     }

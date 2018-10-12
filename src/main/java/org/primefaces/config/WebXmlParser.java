@@ -39,7 +39,10 @@ import org.xml.sax.InputSource;
 
 public class WebXmlParser {
 
-    private static final Logger LOG = Logger.getLogger(WebXmlParser.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(WebXmlParser.class.getName());
+
+    private WebXmlParser() {
+    }
 
     public static Map<String, String> getErrorPages(FacesContext context) {
 
@@ -68,7 +71,7 @@ public class WebXmlParser {
             }
         }
         catch (Throwable e) {
-            LOG.log(Level.SEVERE, "Could not load or parse web.xml", e);
+            LOGGER.log(Level.SEVERE, "Could not load or parse web.xml", e);
         }
 
         return null;
@@ -99,12 +102,12 @@ public class WebXmlParser {
                     }
                 }
                 catch (Throwable e) {
-                    LOG.log(Level.SEVERE, "Could not load or parse web-fragment.xml", e);
+                    LOGGER.log(Level.SEVERE, "Could not load or parse web-fragment.xml", e);
                 }
             }
         }
         catch (IOException e) {
-            LOG.log(Level.SEVERE, "Could not get web-fragment.xml's from ClassLoader", e);
+            LOGGER.log(Level.SEVERE, "Could not get web-fragment.xml's from ClassLoader", e);
         }
 
         return webFragmentXmlsErrorPages;
@@ -138,7 +141,7 @@ public class WebXmlParser {
                 factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
             }
             catch (Throwable e) {
-                LOG.warning("DocumentBuilderFactory#setFeature not implemented. Skipping...");
+                LOGGER.warning("DocumentBuilderFactory#setFeature not implemented. Skipping...");
             }
 
             boolean absolute = false;

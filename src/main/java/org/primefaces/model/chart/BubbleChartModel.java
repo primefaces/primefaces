@@ -26,7 +26,7 @@ public class BubbleChartModel extends CartesianChartModel {
     private boolean showLabels = true;
 
     public BubbleChartModel() {
-        data = new ArrayList<BubbleChartSeries>();
+        data = new ArrayList<>();
     }
 
     public BubbleChartModel(List<BubbleChartSeries> data) {

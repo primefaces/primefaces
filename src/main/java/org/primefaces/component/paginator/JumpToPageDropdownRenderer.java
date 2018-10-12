@@ -32,7 +32,7 @@ public class JumpToPageDropdownRenderer implements PaginatorElementRenderer {
         int pageCount = pageable.getPageCount();
 
         writer.startElement("select", null);
-        writer.writeAttribute("class", UIData.PAGINATOR_JTP_CLASS, null);
+        writer.writeAttribute("class", UIData.PAGINATOR_JTP_SELECT_CLASS, null);
         writer.writeAttribute("value", pageable.getPage(), null);
 
         for (int i = 0; i < pageCount; i++) {

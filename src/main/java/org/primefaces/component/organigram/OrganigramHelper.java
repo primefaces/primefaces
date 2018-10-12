@@ -22,6 +22,9 @@ import org.primefaces.model.OrganigramNode;
  */
 public final class OrganigramHelper {
 
+    private OrganigramHelper() {
+    }
+
     /**
      * Finds a {@link OrganigramNode} for the given rowKey.
      *

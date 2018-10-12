@@ -25,6 +25,7 @@ import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class InplaceRenderer extends CoreRenderer {
@@ -54,8 +55,8 @@ public class InplaceRenderer extends CoreRenderer {
         String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
 
         boolean validationFailed = context.isValidationFailed() && !inplace.isValid();
-        String displayStyle = validationFailed ? "none" : "inline";
-        String contentStyle = validationFailed ? "inline" : "none";
+        String displayStyle = validationFailed ? Inplace.DISPLAY_NONE : Inplace.DISPLAY_INLINE;
+        String contentStyle = validationFailed ? Inplace.DISPLAY_INLINE : Inplace.DISPLAY_NONE;
 
         UIComponent outputFacet = inplace.getFacet("output");
         UIComponent inputFacet = inplace.getFacet("input");
@@ -119,7 +120,7 @@ public class InplaceRenderer extends CoreRenderer {
         else {
             String value = ComponentUtils.getValueToRender(context, inplace.getChildren().get(0));
 
-            if (value == null || isValueBlank(value)) {
+            if (LangUtils.isValueBlank(value)) {
                 if (emptyLabel != null) {
                     return emptyLabel;
                 }

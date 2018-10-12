@@ -38,6 +38,9 @@ public class CalendarUtils {
     private static final PatternConverter[] PATTERN_CONVERTERS =
             new PatternConverter[]{new TimePatternConverter(), new DatePatternConverter()};
 
+    private CalendarUtils() {
+    }
+
     public static final String getValueAsString(FacesContext context, Calendar calendar) {
         Object submittedValue = calendar.getSubmittedValue();
         if (submittedValue != null) {

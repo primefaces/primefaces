@@ -24,6 +24,9 @@ import org.primefaces.util.ComponentUtils;
 
 public class SearchExpressionUtils {
 
+    private SearchExpressionUtils() {
+    }
+
     public static VisitContext createVisitContext(FacesContext context, int hints) {
         if (isHintSet(hints, SearchExpressionHint.SKIP_UNRENDERED)) {
             return VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);

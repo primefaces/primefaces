@@ -21,6 +21,9 @@ import org.primefaces.expression.impl.Jsf23WidgetVarSearchKeywordResolver;
 // helper to avoid java.lang.NoClassDefFoundError's in older environments
 public class Jsf23Helper {
 
+    private Jsf23Helper() {
+    }
+
     public static void addSearchKeywordResolvers() {
         FacesContext.getCurrentInstance()
                             .getApplication()

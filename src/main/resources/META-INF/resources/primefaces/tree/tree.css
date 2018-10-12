@@ -93,6 +93,10 @@
     vertical-align: bottom;
 }
 
+.ui-tree.ui-tree-horizontal .ui-treenode-label {
+    outline: 0 none;
+}
+
 .ui-tree-horizontal .ui-treenode-content {
     font-weight: normal;
 }

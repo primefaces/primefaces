@@ -56,7 +56,7 @@ public class Collector implements ActionListener, StateHolder {
         if (addTo != null) {
             Collection collection = (Collection) addTo.getValue(elContext);
             Object uniqueValue = (unique != null) ? unique.getValue(elContext) : null;
-            boolean checkUniqueness = (uniqueValue == null) ? true : (Boolean.valueOf(uniqueValue.toString())).booleanValue();
+            boolean checkUniqueness = (uniqueValue == null) ? true : Boolean.parseBoolean(uniqueValue.toString());
 
             if (checkUniqueness) {
                 if (!collection.contains(val)) {

@@ -219,7 +219,7 @@
         isDevelopmentProjectStage: function() {
             return PrimeFaces.settings.projectStage === 'Development';
         },
-        
+
         widgetNotAvailable: function(widgetVar) {
            PrimeFaces.error("Widget for var '" + widgetVar + "' not available!");
         },
@@ -308,7 +308,7 @@
         cw : function(widgetName, widgetVar, cfg) {
             this.createWidget(widgetName, widgetVar, cfg);
         },
-        
+
 
         /**
          * @deprecated moved to PrimeFaces.resources.getFacesResource
@@ -447,7 +447,7 @@
          *  Aligns container scrollbar to keep item in container viewport, algorithm copied from jquery-ui menu widget
          */
         scrollInView: function(container, item) {
-            if(item.length === 0) {
+            if(item === null || item.length === 0) {
                 return;
             }
 

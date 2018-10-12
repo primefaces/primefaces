@@ -56,6 +56,7 @@ import javax.faces.render.Renderer;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.columngroup.ColumnGroup;
 import org.primefaces.component.columns.Columns;
+import org.primefaces.component.inputtext.InputText;
 import org.primefaces.model.CollectionDataModel;
 import org.primefaces.model.IterableDataModel;
 import org.primefaces.util.ComponentTraversalUtils;
@@ -75,7 +76,8 @@ public class UIData extends javax.faces.component.UIData {
     public static final String PAGINATOR_CURRENT_CLASS = "ui-paginator-current";
     public static final String PAGINATOR_RPP_OPTIONS_CLASS = "ui-paginator-rpp-options ui-widget ui-state-default ui-corner-left";
     public static final String PAGINATOR_RPP_LABEL_CLASS = "ui-paginator-rpp-label ui-helper-hidden";
-    public static final String PAGINATOR_JTP_CLASS = "ui-paginator-jtp-select ui-widget ui-state-default ui-corner-left";
+    public static final String PAGINATOR_JTP_SELECT_CLASS = "ui-paginator-jtp-select ui-widget ui-state-default ui-corner-left";
+    public static final String PAGINATOR_JTP_INPUT_CLASS = "ui-paginator-jtp-input " + InputText.STYLE_CLASS;
     public static final String PAGINATOR_FIRST_PAGE_LINK_CLASS = "ui-paginator-first ui-state-default ui-corner-all";
     public static final String PAGINATOR_FIRST_PAGE_ICON_CLASS = "ui-icon ui-icon-seek-first";
     public static final String PAGINATOR_PREV_PAGE_LINK_CLASS = "ui-paginator-prev ui-state-default ui-corner-all";
@@ -114,20 +116,6 @@ public class UIData extends javax.faces.component.UIData {
         saved,
         lazy,
         rowStatePreserved;
-
-        String toString;
-
-        PropertyKeys(String toString) {
-            this.toString = toString;
-        }
-
-        PropertyKeys() {
-        }
-
-        @Override
-        public String toString() {
-            return ((toString != null) ? toString : super.toString());
-        }
     }
 
     public boolean isPaginator() {
@@ -798,7 +786,7 @@ public class UIData extends javax.faces.component.UIData {
 
         Object current = getValue();
         if (current == null) {
-            setDataModel(new ListDataModel(Collections.EMPTY_LIST));
+            setDataModel(new ListDataModel(Collections.emptyList()));
         }
         else if (current instanceof DataModel) {
             setDataModel((DataModel) current);
@@ -1321,7 +1309,7 @@ public class UIData extends javax.faces.component.UIData {
             return;
         }
 
-        Object values[] = (Object[]) state;
+        Object[] values = (Object[]) state;
         super.restoreState(context, values[0]);
         Object restoredRowStates = UIComponentBase.restoreAttachedState(context, values[1]);
         if (restoredRowStates == null) {
@@ -1343,7 +1331,7 @@ public class UIData extends javax.faces.component.UIData {
                 return null;
             }
             else {
-                Object values[] = null;
+                Object[] values = null;
                 Object attachedState = UIComponentBase.saveAttachedState(context, _rowDeltaStates);
                 if (superState != null || attachedState != null) {
                     values = new Object[]{superState, attachedState};
@@ -1352,7 +1340,7 @@ public class UIData extends javax.faces.component.UIData {
             }
         }
         else {
-            Object values[] = new Object[2];
+            Object[] values = new Object[2];
             values[0] = super.saveState(context);
             values[1] = UIComponentBase.saveAttachedState(context, _rowDeltaStates);
             return values;

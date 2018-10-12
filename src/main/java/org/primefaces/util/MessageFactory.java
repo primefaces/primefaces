@@ -43,7 +43,7 @@ public class MessageFactory {
         return facesMessage;
     }
 
-    public static FacesMessage getMessage(Locale locale, String messageId, Object params[]) {
+    public static FacesMessage getMessage(Locale locale, String messageId, Object[] params) {
         String summary = null;
         String detail = null;
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -103,13 +103,13 @@ public class MessageFactory {
         return new FacesMessage(summary, detail);
     }
 
-    public static String getMessage(String messageId, Object params[]) {
+    public static String getMessage(String messageId, Object[] params) {
         FacesMessage message = getMessage(getLocale(), messageId, params);
 
         return message.getSummary();
     }
 
-    public static String getFormattedText(Locale locale, String message, Object params[]) {
+    public static String getFormattedText(Locale locale, String message, Object[] params) {
         MessageFormat messageFormat = null;
 
         if (params == null || message == null) {

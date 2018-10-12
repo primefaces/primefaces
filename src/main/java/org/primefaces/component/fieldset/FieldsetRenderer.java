@@ -36,7 +36,7 @@ public class FieldsetRenderer extends CoreRenderer {
         String toggleStateParam = clientId + "_collapsed";
 
         if (params.containsKey(toggleStateParam)) {
-            fieldset.setCollapsed(Boolean.valueOf(params.get(toggleStateParam)));
+            fieldset.setCollapsed(Boolean.parseBoolean(params.get(toggleStateParam)));
         }
 
         decodeBehaviors(context, component);

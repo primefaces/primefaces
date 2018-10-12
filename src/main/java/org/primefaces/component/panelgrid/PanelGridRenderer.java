@@ -115,6 +115,9 @@ public class PanelGridRenderer extends CoreRenderer {
         String columnClassesValue = grid.getColumnClasses();
         String[] columnClasses = columnClassesValue == null ? new String[0] : columnClassesValue.split(",");
 
+        int openendRows = 0;
+        int closedRows = 0;
+
         int i = 0;
         for (UIComponent child : grid.getChildren()) {
             if (!child.isRendered()) {
@@ -123,6 +126,8 @@ public class PanelGridRenderer extends CoreRenderer {
 
             int colMod = i % columns;
             if (colMod == 0) {
+                openendRows++;
+
                 writer.startElement("tr", null);
                 writer.writeAttribute("class", PanelGrid.TABLE_ROW_CLASS, null);
                 writer.writeAttribute("role", "row", null);
@@ -141,8 +146,15 @@ public class PanelGridRenderer extends CoreRenderer {
             colMod = i % columns;
 
             if (colMod == 0) {
+                closedRows++;
+
                 writer.endElement("tr");
             }
+        }
+
+        // special handling for #4122, when the child count is not a multiple of the columns count
+        if (openendRows > closedRows) {
+            writer.endElement("tr");
         }
     }
 

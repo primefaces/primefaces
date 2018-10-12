@@ -36,7 +36,7 @@
             -    any better.
             -->
             <property name="format"
-                      value="^((log)|(logger)|([a-z][a-zA-Z]*ThreadLocal)|([A-Z][A-Z0-9]*(_[A-Z0-9]+)*))$"/>
+                      value="^(([a-z][a-zA-Z]*ThreadLocal)|([A-Z][A-Z0-9]*(_[A-Z0-9]+)*))$"/>
         </module>
 
         <module name="LocalVariableName">
@@ -58,6 +58,10 @@
         <module name="UnusedImports">
             <property name="processJavadoc" value="true"/>
         </module>
+
+        <module name="ModifierOrderCheck" />
+		
+		<module name="HideUtilityClassConstructor"/>
 
         <module name="LineLength">
             <property name="max" value="160"/>
@@ -118,7 +122,6 @@
 
         <!-- Miscellaneous other checks.                   -->
         <!-- See http://checkstyle.sf.net/config_misc.html -->
-        <!-- module name="ArrayTypeStyle"/ -->
         <!-- module name="FinalParameters"/ -->
         <!-- Line with Trailing Spaces (disabled as it's to noisy)
       <module name="GenericIllegalRegexp">
@@ -127,6 +130,8 @@
       </module>
         -->
         <module name="UpperEll"/>
+		
+		<module name="ArrayTypeStyle"/>
 
         <module name="WhitespaceAround">
             <property name="tokens" value=""/>

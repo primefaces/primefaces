@@ -23,6 +23,7 @@ PrimeFaces.widget.Tooltip = PrimeFaces.widget.BaseWidget.extend({
         this.removeScriptElement(this.id);
     },
 
+    //@override
     refresh: function(cfg) {
         if(cfg.target) {
             var targetTooltip = $(document.body).children(PrimeFaces.escapeClientId(cfg.id));

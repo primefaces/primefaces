@@ -48,7 +48,7 @@ public class DynamicResourcesPhaseListener implements PhaseListener {
             return;
         }
 
-        // skip update=@all as the head will all resources will already be rendered
+        // skip update=@all as the head, with all resources, will already be rendered
         if (context.getPartialViewContext().isRenderAll()) {
             return;
         }

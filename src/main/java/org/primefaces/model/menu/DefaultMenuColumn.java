@@ -28,7 +28,7 @@ public class DefaultMenuColumn implements MenuColumn, Serializable {
     private boolean rendered = true;
 
     public DefaultMenuColumn() {
-        elements = new ArrayList<MenuElement>();
+        elements = new ArrayList<>();
     }
 
     @Override

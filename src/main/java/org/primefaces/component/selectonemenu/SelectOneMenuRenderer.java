@@ -32,7 +32,6 @@ import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
@@ -43,11 +42,11 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
-        if (!shouldDecode(component)) {
+        SelectOneMenu menu = (SelectOneMenu) component;
+        if (!shouldDecode(menu)) {
             return;
         }
 
-        SelectOneMenu menu = (SelectOneMenu) component;
         if (menu.isEditable()) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
@@ -60,7 +59,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem item = selectItems.get(i);
                 if (item.getLabel().equalsIgnoreCase(editorInput)) {
-                    menu.setSubmittedValue(item.getValue());
+                    menu.setSubmittedValue(getOptionAsString(context, menu, menu.getConverter(), item.getValue()));
                     break;
                 }
             }
@@ -121,15 +120,13 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
         writer.writeAttribute("class", styleClass, "styleclass");
-        writer.writeAttribute("role", "combobox", null);
-        writer.writeAttribute("aria-haspopup", "true", null);
-        writer.writeAttribute("aria-expanded", "false", null);
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
         if (title != null) {
             writer.writeAttribute("title", title, "title");
         }
+        renderARIACombobox(context, menu);
 
         encodeInput(context, menu, clientId, selectItems, values, submittedValues, converter);
         encodeLabel(context, menu, selectItems);
@@ -144,7 +141,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         ResponseWriter writer = context.getResponseWriter();
         String focusId = clientId + "_focus";
-        String labelledBy = menu.getLabelledBy();
 
         //input for accessibility
         writer.startElement("div", null);
@@ -155,18 +151,11 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("name", focusId, null);
         writer.writeAttribute("type", "text", null);
         writer.writeAttribute("autocomplete", "off", null);
-        //for keyboard accessibility and ScreenReader
-        writer.writeAttribute("aria-expanded", "false", null);
-        if (labelledBy != null) {
-            writer.writeAttribute("aria-labelledby", labelledBy, null);
-        }
-        if (menu.getTabindex() != null) {
-            writer.writeAttribute("tabindex", menu.getTabindex(), null);
-        }
-        if (menu.isDisabled()) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
 
+        //for keyboard accessibility and ScreenReader
+        writer.writeAttribute(HTML.ARIA_EXPANDED, "false", null);
+        renderAccessibilityAttributes(context, menu);
+        renderPassThruAttributes(context, menu, HTML.TAB_INDEX);
         renderDomEvents(context, menu, HTML.BLUR_FOCUS_EVENTS);
 
         writer.endElement("input");
@@ -193,7 +182,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("tabindex", "-1", null);
-        writer.writeAttribute("aria-hidden", "true", null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
         if (menu.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", null);
         }
@@ -206,9 +195,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         renderOnchange(context, menu);
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, menu);
-        }
+        renderValidationMetadata(context, menu);
 
         encodeSelectItems(context, menu, selectItems, values, submittedValues, converter);
 

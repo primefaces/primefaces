@@ -51,7 +51,7 @@ import org.primefaces.util.*;
 
 public class DataTableRenderer extends DataRenderer {
 
-    private static final Logger logger = Logger.getLogger(DataTableRenderer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DataTableRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -428,7 +428,7 @@ public class DataTableRenderer extends DataRenderer {
 
         if (summary != null) {
             writer.writeAttribute("summary", summary, null);
-            writer.writeAttribute("aria-describedby", clientId + "_summary", null);
+            writer.writeAttribute(HTML.ARIA_DESCRIBEDBY, clientId + "_summary", null);
         }
 
         encodeThead(context, table);
@@ -711,7 +711,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("class", columnClass, null);
         writer.writeAttribute("role", "columnheader", null);
-        writer.writeAttribute("aria-label", ariaHeaderLabel, null);
+        writer.writeAttribute(HTML.ARIA_LABEL, ariaHeaderLabel, null);
         writer.writeAttribute("scope", "col", null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
@@ -882,7 +882,7 @@ public class DataTableRenderer extends DataRenderer {
                 writer.writeAttribute("class", filterStyleClass, null);
                 writer.writeAttribute("value", filterValue, null);
                 writer.writeAttribute("autocomplete", "off", null);
-                writer.writeAttribute("aria-labelledby", ariaLabelId, null);
+                writer.writeAttribute(HTML.ARIA_LABELLEDBY, ariaLabelId, null);
 
                 if (disableTabbing) {
                     writer.writeAttribute("tabindex", "-1", null);
@@ -905,7 +905,7 @@ public class DataTableRenderer extends DataRenderer {
                 writer.writeAttribute("id", filterId, null);
                 writer.writeAttribute("name", filterId, null);
                 writer.writeAttribute("class", filterStyleClass, null);
-                writer.writeAttribute("aria-labelledby", ariaLabelId, null);
+                writer.writeAttribute(HTML.ARIA_LABELLEDBY, ariaLabelId, null);
 
                 if (disableTabbing) {
                     writer.writeAttribute("tabindex", "-1", null);
@@ -1212,7 +1212,6 @@ public class DataTableRenderer extends DataRenderer {
 
         boolean encodeSummaryRow = (summaryRow != null && groupByVE != null);
         boolean encodeHeaderRow = (headerRow != null && groupByVE != null);
-        boolean sameGroup = false;
 
         for (int i = first; i < last; i++) {
             table.setRowIndex(i);
@@ -1325,7 +1324,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", rowStyleClass, null);
         writer.writeAttribute("role", "row", null);
         if (selectionEnabled) {
-            writer.writeAttribute("aria-selected", String.valueOf(selected), null);
+            writer.writeAttribute(HTML.ARIA_SELECTED, String.valueOf(selected), null);
         }
 
         for (int i = columnStart; i < columnEnd; i++) {
@@ -1647,8 +1646,8 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("input", null);
         writer.writeAttribute("type", "checkbox", null);
         writer.writeAttribute("name", table.getClientId(context) + "_checkbox", null);
-        writer.writeAttribute("aria-label", ariaRowLabel, null);
-        writer.writeAttribute("aria-checked", String.valueOf(checked), null);
+        writer.writeAttribute(HTML.ARIA_LABEL, ariaRowLabel, null);
+        writer.writeAttribute(HTML.ARIA_CHECKED, String.valueOf(checked), null);
 
         if (checked) {
             writer.writeAttribute("checked", "checked", null);
@@ -1669,7 +1668,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.startElement("input", null);
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("name", table.getClientId(context) + "_radio", null);
-        writer.writeAttribute("aria-label", ariaRowLabel, null);
+        writer.writeAttribute(HTML.ARIA_LABEL, ariaRowLabel, null);
 
         if (checked) {
             writer.writeAttribute("checked", "checked", null);
@@ -1683,7 +1682,7 @@ public class DataTableRenderer extends DataRenderer {
     }
 
     protected void encodeSubTable(FacesContext context, DataTable table, SubTable subTable, int first, int last) throws IOException {
-        logger.info("SubTable has been deprecated, use row grouping instead");
+        LOGGER.info("SubTable has been deprecated, use row grouping instead");
         for (int i = first; i < last; i++) {
             table.setRowIndex(i);
             if (!table.isRowAvailable()) {

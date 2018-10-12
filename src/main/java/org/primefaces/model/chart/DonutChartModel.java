@@ -33,7 +33,7 @@ public class DonutChartModel extends ChartModel {
     private String datatipEditor;
 
     public DonutChartModel() {
-        data = new ArrayList<Map<String, Number>>();
+        data = new ArrayList<>();
     }
 
     public DonutChartModel(List<Map<String, Number>> data) {

@@ -42,7 +42,7 @@ import org.primefaces.component.row.Row;
 import org.primefaces.event.data.PostFilterEvent;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.filter.*;
-import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 public class FilterFeature implements DataTableFeature {
 
@@ -257,7 +257,7 @@ public class FilterFeature implements DataTableFeature {
                 continue;
             }
 
-            if (filterValue.toString().trim().equals(Constants.EMPTY_STRING)) {
+            if (LangUtils.isValueBlank(filterValue.toString())) {
                 continue;
             }
 

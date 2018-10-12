@@ -22,11 +22,11 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.validation.Validation;
-import org.primefaces.util.ClassUtils;
+import org.primefaces.util.LangUtils;
 
 public class PrimeEnvironment {
 
-    private static final Logger LOG = Logger.getLogger(PrimeEnvironment.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PrimeEnvironment.class.getName());
 
     private boolean beanValidationAvailable = false;
 
@@ -41,13 +41,13 @@ public class PrimeEnvironment {
     private String buildVersion = null;
 
     public PrimeEnvironment() {
-        atLeastEl22 = ClassUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
+        atLeastEl22 = LangUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
 
-        atLeastJsf23 = ClassUtils.tryToLoadClassForName("javax.faces.component.UIImportConstants") != null;
-        atLeastJsf22 = ClassUtils.tryToLoadClassForName("javax.faces.flow.Flow") != null;
-        atLeastJsf21 = ClassUtils.tryToLoadClassForName("javax.faces.component.TransientStateHolder") != null;
+        atLeastJsf23 = LangUtils.tryToLoadClassForName("javax.faces.component.UIImportConstants") != null;
+        atLeastJsf22 = LangUtils.tryToLoadClassForName("javax.faces.flow.Flow") != null;
+        atLeastJsf21 = LangUtils.tryToLoadClassForName("javax.faces.component.TransientStateHolder") != null;
 
-        atLeastBv11 = ClassUtils.tryToLoadClassForName("javax.validation.executable.ExecutableValidator") != null;
+        atLeastBv11 = LangUtils.tryToLoadClassForName("javax.validation.executable.ExecutableValidator") != null;
 
         beanValidationAvailable = checkIfBeanValidationIsAvailable();
 
@@ -60,7 +60,7 @@ public class PrimeEnvironment {
     }
 
     protected boolean checkIfBeanValidationIsAvailable() {
-        boolean available = ClassUtils.tryToLoadClassForName("javax.validation.Validation") != null;
+        boolean available = LangUtils.tryToLoadClassForName("javax.validation.Validation") != null;
 
         if (available) {
             // Trial-error approach to check for Bean Validation impl existence.
@@ -70,7 +70,7 @@ public class PrimeEnvironment {
                 Validation.buildDefaultValidatorFactory().getValidator();
             }
             catch (Throwable t) {
-                LOG.log(Level.FINE, "BV not available - Could not build default ValidatorFactory.");
+                LOGGER.log(Level.FINE, "BV not available - Could not build default ValidatorFactory.");
                 available = false;
             }
         }
@@ -88,7 +88,7 @@ public class PrimeEnvironment {
             return buildProperties.getProperty("version");
         }
         catch (Exception e) {
-            LOG.log(Level.SEVERE, "PrimeFaces version not resolvable - Could not load pom.properties.");
+            LOGGER.log(Level.SEVERE, "PrimeFaces version not resolvable - Could not load pom.properties.");
         }
 
         if (is != null) {

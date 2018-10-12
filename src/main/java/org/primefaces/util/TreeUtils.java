@@ -25,6 +25,9 @@ import org.primefaces.model.TreeNodeList;
  */
 public class TreeUtils {
 
+    private TreeUtils() {
+    }
+
     /**
      * Sorts children of a node using a comparator
      *

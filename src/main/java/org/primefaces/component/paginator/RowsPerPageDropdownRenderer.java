@@ -25,11 +25,12 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.component.api.Pageable;
 import org.primefaces.component.api.UIData;
+import org.primefaces.util.HTML;
 import org.primefaces.util.MessageFactory;
 
 public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
 
-    private static final Logger logger = Logger.getLogger(RowsPerPageDropdownRenderer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RowsPerPageDropdownRenderer.class.getName());
 
     @Override
     public void render(FacesContext context, Pageable pageable) throws IOException {
@@ -43,7 +44,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
             String[] options = pageable.getRowsPerPageTemplate().split("[,]+");
             String label = pageable.getRowsPerPageLabel();
             if (label != null) {
-                logger.info("RowsPerPageLabel attribute is deprecated, use 'primefaces.paginator.aria.ROWS_PER_PAGE' key instead to override default message.");
+                LOGGER.info("RowsPerPageLabel attribute is deprecated, use 'primefaces.paginator.aria.ROWS_PER_PAGE' key instead to override default message.");
             }
             else {
                 label = MessageFactory.getMessage(UIData.ROWS_PER_PAGE_LABEL, null);
@@ -69,7 +70,7 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
             writer.writeAttribute("id", ddId, null);
             writer.writeAttribute("name", ddName, null);
             if (label != null) {
-                writer.writeAttribute("aria-labelledby", labelId, null);
+                writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelId, null);
             }
             writer.writeAttribute("class", UIData.PAGINATOR_RPP_OPTIONS_CLASS, null);
             writer.writeAttribute("value", pageable.getRows(), null);

@@ -47,10 +47,11 @@ import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.EscapeUtils;
 
 public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
-    private static final Logger LOG = Logger.getLogger(PrimeExceptionHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PrimeExceptionHandler.class.getName());
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     private final ExceptionHandler wrapped;
@@ -103,7 +104,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                     }
                 }
                 catch (Exception ex) {
-                    LOG.log(Level.SEVERE, "Could not handle exception!", ex);
+                    LOGGER.log(Level.SEVERE, "Could not handle exception!", ex);
                 }
             }
 
@@ -116,13 +117,13 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     }
 
     protected void logException(Throwable rootCause) {
-        LOG.log(Level.SEVERE, rootCause.getMessage(), rootCause);
+        LOGGER.log(Level.SEVERE, rootCause.getMessage(), rootCause);
     }
 
     protected boolean isLogException(FacesContext context, Throwable rootCause) {
 
         if (context.isProjectStage(ProjectStage.Production)) {
-            if (rootCause != null && rootCause instanceof ViewExpiredException) {
+            if (rootCause instanceof ViewExpiredException) {
                 return false;
             }
         }
@@ -179,7 +180,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             handlerComponent = findHandlerComponent(context, rootCause);
         }
         catch (Exception ex) {
-            LOG.log(Level.WARNING, "Could not build view or lookup a AjaxExceptionHandler component!", ex);
+            LOGGER.log(Level.WARNING, "Could not build view or lookup a AjaxExceptionHandler component!", ex);
         }
 
         context.getAttributes().put(ExceptionInfo.ATTRIBUTE_NAME, info);
@@ -200,7 +201,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             if (!LangUtils.isValueBlank(handlerComponent.getUpdate())) {
                 List<UIComponent> updates = SearchExpressionFacade.resolveComponents(context, handlerComponent, handlerComponent.getUpdate());
 
-                if (updates != null && updates.size() > 0) {
+                if (updates != null && !updates.isEmpty()) {
                     context.setResponseWriter(writer);
 
                     for (int i = 0; i < updates.size(); i++) {
@@ -226,7 +227,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                 writer.write(handlerComponent.getOnexception());
                 writer.write("};hf.call(this,\""
                         + info.getType() + "\",\""
-                        + ComponentUtils.escapeText(info.getMessage())
+                        + EscapeUtils.forJavaScript(info.getMessage())
                         + "\",\""
                         + info.getFormattedTimestamp()
                         + "\");");
@@ -253,7 +254,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         try (StringWriter sw = new StringWriter()) {
             PrintWriter pw = new PrintWriter(sw);
             rootCause.printStackTrace(pw);
-            info.setFormattedStackTrace(ComponentUtils.escapeXml(sw.toString()).replaceAll("(\r\n|\n)", "<br/>"));
+            info.setFormattedStackTrace(EscapeUtils.forXml(sw.toString()).replaceAll("(\r\n|\n)", "<br/>"));
             pw.close();
         }
 

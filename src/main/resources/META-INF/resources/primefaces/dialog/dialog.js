@@ -29,7 +29,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.parent = this.jq.parent();
 
         this.initSize();
-
+        
         //events
         this.bindEvents();
 
@@ -97,7 +97,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
 
         var margin = this.jq.outerHeight(true) - this.jq.outerHeight();
         var headerHeight = this.titlebar.outerHeight(true);
-        var contentPadding = this.content.innerHeight() - this.content.height();;
+        var contentPadding = this.content.innerHeight() - this.content.height();
         var footerHeight = this.footer.outerHeight(true) || 0;
 
         var maxHeight = windowHeight - (margin + headerHeight + contentPadding + footerHeight);
@@ -119,10 +119,6 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
             this.loadContents();
         }
         else {
-            if (this.cfg.fitViewport) {
-                this.fitViewport();
-            }
-
             if (this.positionInitialized === false) {
                 this.jqEl.style.visibility = "hidden";
                 this.jqEl.style.display = "block";
@@ -165,6 +161,10 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
     },
 
     postShow: function() {
+        if (this.cfg.fitViewport) {
+            this.fitViewport();
+        }
+        
         this.callBehavior('open');
 
         PrimeFaces.invokeDeferredRenders(this.id);
@@ -307,6 +307,14 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         });
 
         this.resizers = this.jq.children('.ui-resizable-handle');
+    },
+    
+    /**
+     * Client side API convenience call to reset the dialog position based on
+     * the "position" requested.
+     */
+    resetPosition: function() {
+       this.initPosition();
     },
 
     initPosition: function() {
@@ -455,6 +463,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.jq.appendTo(zone).css('position', 'static');
         this.jq.css({'height':'auto', 'width':'auto', 'float': 'left'});
         this.content.hide();
+        this.footer.hide();
         this.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-minus').addClass('ui-icon-plus');
         this.minimized = true;
 
@@ -527,7 +536,9 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.jq.attr({
             'role': 'dialog'
             ,'aria-labelledby': this.id + '_title'
+            ,'aria-describedby': this.id + '_content'
             ,'aria-hidden': !this.cfg.visible
+            ,'aria-modal': this.cfg.modal
         });
 
         this.titlebar.children('a.ui-dialog-titlebar-icon').attr('role', 'button');
@@ -560,6 +571,7 @@ PrimeFaces.widget.Dialog = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.jq.appendTo(this.parent).removeClass('ui-dialog-minimized').css({'position':'fixed', 'float':'none'});
         this.restoreState();
         this.content.show();
+        this.footer.show();
         this.minimizeIcon.removeClass('ui-state-hover').children('.ui-icon').removeClass('ui-icon-plus').addClass('ui-icon-minus');
         this.minimized = false;
 

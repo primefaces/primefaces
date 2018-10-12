@@ -20,7 +20,7 @@ import java.util.Collection;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 
-import org.primefaces.util.CollectionUtils;
+import org.primefaces.util.LangUtils;
 
 @ResourceDependencies({
         @ResourceDependency(library = "primefaces", name = "texteditor/texteditor.css"),
@@ -35,7 +35,7 @@ public class TextEditor extends TextEditorBase {
 
     public static final String EDITOR_CLASS = "ui-texteditor";
 
-    private static final Collection<String> EVENT_NAMES = CollectionUtils.unmodifiableList("blur", "change", "click", "dblclick", "focus", "keydown",
+    private static final Collection<String> EVENT_NAMES = LangUtils.unmodifiableList("blur", "change", "click", "dblclick", "focus", "keydown",
             "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select");
 
     @Override

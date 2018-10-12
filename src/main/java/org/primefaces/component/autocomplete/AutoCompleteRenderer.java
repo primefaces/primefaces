@@ -26,13 +26,12 @@ import javax.faces.convert.ConverterException;
 import javax.faces.event.PhaseId;
 
 import org.primefaces.component.column.Column;
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.event.AutoCompleteEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.ArrayUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class AutoCompleteRenderer extends InputRenderer {
@@ -43,7 +42,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         String clientId = ac.getClientId(context);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        if (ac.isDisabled() || ac.isReadonly()) {
+        if (!shouldDecode(ac)) {
             return;
         }
 
@@ -85,7 +84,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         String inputValue = params.get(clientId + "_input");
 
         if (!isValueBlank(inputValue)) {
-            submittedValues = ArrayUtils.concat(submittedValues, new String[]{inputValue});
+            submittedValues = LangUtils.concat(submittedValues, new String[]{inputValue});
         }
 
         if (submittedValues.length > 0) {
@@ -180,7 +179,6 @@ public class AutoCompleteRenderer extends InputRenderer {
         String inputStyle = ac.getInputStyle();
         String inputStyleClass = ac.getInputStyleClass();
         inputStyleClass = (inputStyleClass == null) ? styleClass : styleClass + " " + inputStyleClass;
-        String labelledBy = ac.getLabelledBy();
         String autocompleteProp = (ac.getAutocomplete() != null) ? ac.getAutocomplete() : "off";
 
         writer.startElement("input", null);
@@ -190,14 +188,11 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("class", inputStyleClass, null);
         writer.writeAttribute("autocomplete", autocompleteProp, null);
 
-        if (labelledBy != null) {
-            writer.writeAttribute("aria-labelledby", labelledBy, null);
-        }
-
         if (inputStyle != null) {
             writer.writeAttribute("style", inputStyle, null);
         }
 
+        renderAccessibilityAttributes(context, ac);
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, ac, HTML.INPUT_TEXT_EVENTS);
 
@@ -249,19 +244,7 @@ public class AutoCompleteRenderer extends InputRenderer {
             requestMap.remove(var);
         }
 
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
-        if (ac.isReadonly()) {
-            writer.writeAttribute("readonly", "readonly", null);
-        }
-        if (ac.isRequired()) {
-            writer.writeAttribute("aria-required", "true", null);
-        }
-
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, ac);
-        }
+        renderValidationMetadata(context, ac);
 
         writer.endElement("input");
     }
@@ -291,14 +274,13 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("multiple", "multiple", null);
         writer.writeAttribute("class", "ui-helper-hidden-accessible", null);
+        writer.writeAttribute("tabindex", "-1", null);
 
         if (ac.isDisabled()) {
             writer.writeAttribute("disabled", "disabled", "disabled");
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, ac);
-        }
+        renderValidationMetadata(context, ac);
 
         for (int i = 0; i < values.size(); i++) {
             String value = values.get(i);
@@ -463,16 +445,8 @@ public class AutoCompleteRenderer extends InputRenderer {
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("autocomplete", autocompleteProp, null);
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", "disabled");
-        }
-        if (ac.isReadonly()) {
-            writer.writeAttribute("readonly", "readonly", null);
-        }
-        if (ac.isRequired()) {
-            writer.writeAttribute("aria-required", "true", null);
-        }
 
+        renderAccessibilityAttributes(context, ac);
         renderPassThruAttributes(context, ac, HTML.INPUT_TEXT_ATTRS_WITHOUT_EVENTS);
         renderDomEvents(context, ac, HTML.INPUT_TEXT_EVENTS);
 
@@ -495,7 +469,7 @@ public class AutoCompleteRenderer extends InputRenderer {
     }
 
     protected void encodeSuggestions(FacesContext context, AutoComplete ac, List items) throws IOException {
-        boolean customContent = ac.getColums().size() > 0;
+        boolean customContent = !ac.getColums().isEmpty();
         Converter converter = ComponentUtils.getConverter(context, ac);
 
         if (customContent) {

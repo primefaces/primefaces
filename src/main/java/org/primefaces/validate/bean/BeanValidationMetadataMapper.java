@@ -46,28 +46,30 @@ import javax.validation.constraints.Size;
 import javax.validation.metadata.ConstraintDescriptor;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.metadata.BeanValidationMetadataExtractor;
+import org.primefaces.util.MapBuilder;
 
 public class BeanValidationMetadataMapper {
 
-    private static final Logger LOG = Logger.getLogger(BeanValidationMetadataMapper.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BeanValidationMetadataMapper.class.getName());
 
     private static final Map<Class<? extends Annotation>, ClientValidationConstraint> CONSTRAINT_MAPPING
-            = new HashMap<Class<? extends Annotation>, ClientValidationConstraint>();
+            = MapBuilder.<Class<? extends Annotation>, ClientValidationConstraint>builder()
+                    .put(NotNull.class, new NotNullClientValidationConstraint())
+                    .put(Null.class, new NullClientValidationConstraint())
+                    .put(Size.class, new SizeClientValidationConstraint())
+                    .put(Min.class, new MinClientValidationConstraint())
+                    .put(Max.class, new MaxClientValidationConstraint())
+                    .put(DecimalMin.class, new DecimalMinClientValidationConstraint())
+                    .put(DecimalMax.class, new DecimalMaxClientValidationConstraint())
+                    .put(AssertTrue.class, new AssertTrueClientValidationConstraint())
+                    .put(AssertFalse.class, new AssertFalseClientValidationConstraint())
+                    .put(Digits.class, new DigitsClientValidationConstraint())
+                    .put(Past.class, new PastClientValidationConstraint())
+                    .put(Future.class, new FutureClientValidationConstraint())
+                    .put(Pattern.class, new PatternClientValidationConstraint())
+                    .build();
 
-    static {
-        CONSTRAINT_MAPPING.put(NotNull.class, new NotNullClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Null.class, new NullClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Size.class, new SizeClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Min.class, new MinClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Max.class, new MaxClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(DecimalMin.class, new DecimalMinClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(DecimalMax.class, new DecimalMaxClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(AssertTrue.class, new AssertTrueClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(AssertFalse.class, new AssertFalseClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Digits.class, new DigitsClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Past.class, new PastClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Future.class, new FutureClientValidationConstraint());
-        CONSTRAINT_MAPPING.put(Pattern.class, new PatternClientValidationConstraint());
+    private BeanValidationMetadataMapper() {
     }
 
     public static BeanValidationMetadata resolveValidationMetadata(FacesContext context, UIComponent component, PrimeApplicationContext applicationContext)
@@ -155,7 +157,7 @@ public class BeanValidationMetadataMapper {
             String message = "Skip resolving of CSV BV metadata for component \"" + component.getClientId(context) + "\" because"
                     + " the ValueExpression of the \"value\" attribute"
                     + " isn't resolvable completely (e.g. a sub-expression returns null)";
-            LOG.log(Level.FINE, message);
+            LOGGER.log(Level.FINE, message);
         }
 
         if (metadata == null && validatorIds == null) {

@@ -134,7 +134,7 @@ public class Layout extends LayoutBase {
             FacesEvent wrapperEvent = null;
 
             if (eventName.equals("toggle")) {
-                boolean collapsed = Boolean.valueOf(params.get(clientId + "_collapsed"));
+                boolean collapsed = Boolean.parseBoolean(params.get(clientId + "_collapsed"));
                 LayoutUnit unit = getLayoutUnitByPosition(params.get(clientId + "_unit"));
                 Visibility visibility = collapsed ? Visibility.HIDDEN : Visibility.VISIBLE;
                 unit.setCollapsed(collapsed);
@@ -150,8 +150,8 @@ public class Layout extends LayoutBase {
             else if (eventName.equals("resize")) {
                 LayoutUnit unit = getLayoutUnitByPosition(params.get(clientId + "_unit"));
                 String position = unit.getPosition();
-                int width = Integer.valueOf(params.get(clientId + "_width"));
-                int height = Integer.valueOf(params.get(clientId + "_height"));
+                int width = Integer.parseInt(params.get(clientId + "_width"));
+                int height = Integer.parseInt(params.get(clientId + "_height"));
 
                 if (position.equals("west") || position.equals("east")) {
                     unit.setSize(String.valueOf(width));

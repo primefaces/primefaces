@@ -149,13 +149,11 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         if (selected) {
             writer.writeAttribute("checked", "checked", null);
         }
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
         if (tabindex != null) {
             writer.writeAttribute("tabindex", tabindex, null);
         }
 
+        renderAccessibilityAttributes(context, button);
         writer.endElement("input");
 
         //item label

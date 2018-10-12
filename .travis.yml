@@ -16,7 +16,7 @@ addons:
   sonarcloud:
     organization: "primefaces"
     token:
-      secure: "SSvE7GhNv3rdsDLwnFSt++Hbc65OtWD1So2ISRLm4y9qSxsov/nGuOjSvx4C9d+fBdzAJ6Cyyrgz1ARJ2m2HMBz3azmoHwvRonyD8zTqTu8qD+tteZt1M9t02F9DKLLFojML491ozlo0xOwqNptl/QURFnlzZ2yRBtKpPYDfqOw="
+      secure: "K7yf1BzI2ie7pqfsL+YIk4drf4m8j6gCsOA4W0n4Qst0Za/pVdncErhgxW4ZVgE8TjZvKymEPTQfr8TvogbyLiXXQACnamJ7G5p6qIWvIJ7tCZSVcUMznuKumsu4OnXsb7yu3RuN0p883UuOAB0FTLjyo3wOH0P70PK6Nil69dI="
     branches:
     - master
 cache:

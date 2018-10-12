@@ -35,9 +35,9 @@ import org.primefaces.component.column.Column;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.util.CollectionUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
 
 @ResourceDependencies({
@@ -65,7 +65,7 @@ public class SelectOneMenu extends SelectOneMenuBase {
     public static final String FILTER_CLASS = "ui-selectonemenu-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public static final String FILTER_ICON_CLASS = "ui-icon ui-icon-search";
 
-    private static final Collection<String> EVENT_NAMES = CollectionUtils.unmodifiableList("itemSelect", "blur", "change", "valueChange", "click",
+    private static final Collection<String> EVENT_NAMES = LangUtils.unmodifiableList("itemSelect", "blur", "change", "valueChange", "click",
             "dblclick", "focus", "keydown", "keypress", "keyup", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "select");
 
     @Override

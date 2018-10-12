@@ -15,12 +15,16 @@
  */
 package org.primefaces;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.primefaces.component.datatable.TableState;
+import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.expression.ComponentNotFoundException;
+import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.Constants;
+import org.primefaces.util.EscapeUtils;
+import org.primefaces.util.LangUtils;
+import org.primefaces.visit.ResetInputVisitCallback;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -28,20 +32,18 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialViewContext;
-import org.primefaces.component.datatable.TableState;
-import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.expression.ComponentNotFoundException;
-import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.Constants;
-import org.primefaces.util.LangUtils;
-import org.primefaces.visit.ResetInputVisitCallback;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PrimeFaces {
 
-    private static final Logger LOG = Logger.getLogger(PrimeFaces.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PrimeFaces.class.getName());
 
-    // TODO - there are 2 possible solutions
+    // There are 2 possible solutions
     // 1) the current static solution + use Faces/RequestContext#getCurrentInstance each time
     // 2) make PrimeFaces requestScoped and receive Faces/RequestContext only once
     private static PrimeFaces instance = new PrimeFaces();
@@ -224,7 +226,7 @@ public class PrimeFaces {
         public void closeDynamic(Object data) {
             FacesContext facesContext = getFacesContext();
             Map<String, String> params = facesContext.getExternalContext().getRequestParameterMap();
-            String pfdlgcid = ComponentUtils.escapeEcmaScriptText(params.get(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM));
+            String pfdlgcid = EscapeUtils.forJavaScript(params.get(Constants.DIALOG_FRAMEWORK.CONVERSATION_PARAM));
 
             if (data != null) {
                 Map<String, Object> session = facesContext.getExternalContext().getSessionMap();
@@ -240,8 +242,8 @@ public class PrimeFaces {
          * @param message the {@link FacesMessage} to be displayed.
          */
         public void showMessageDynamic(FacesMessage message) {
-            String summary = ComponentUtils.escapeText(message.getSummary());
-            String detail = ComponentUtils.escapeText(message.getDetail());
+            String summary = EscapeUtils.forJavaScript(message.getSummary());
+            String detail = EscapeUtils.forJavaScript(message.getDetail());
 
             executeScript("PrimeFaces.showMessageInDialog({severity:\"" + message.getSeverity()
                     + "\",summary:\"" + summary
@@ -290,7 +292,7 @@ public class PrimeFaces {
                     facesContext.getPartialViewContext().getRenderIds().add(clientId);
                 }
                 catch (ComponentNotFoundException e) {
-                    LOG.log(Level.WARNING,
+                    LOGGER.log(Level.WARNING,
                             "PrimeFaces.current().ajax().update() called but component can't be resolved!"
                             + "Expression will just be added to the renderIds.", e);
 

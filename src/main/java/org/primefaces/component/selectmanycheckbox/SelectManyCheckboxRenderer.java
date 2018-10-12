@@ -31,7 +31,6 @@ import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.faces.render.Renderer;
 
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.SelectManyRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.GridLayoutUtils;
@@ -70,6 +69,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             writer.startElement("span", checkbox);
             writer.writeAttribute("id", checkbox.getClientId(context), "id");
             writer.writeAttribute("class", "ui-helper-hidden", null);
+            renderARIARequired(context, checkbox);
             encodeCustomLayout(context, checkbox);
             writer.endElement("span");
         }
@@ -110,12 +110,17 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         if (style != null) {
             writer.writeAttribute("style", style, "style");
         }
+        renderARIARequired(context, checkbox);
 
         List<SelectItem> selectItems = getSelectItems(context, checkbox);
         Converter converter = checkbox.getConverter();
         Object values = getValues(checkbox);
         Object submittedValues = getSubmittedValues(checkbox);
-        int idx = 0, groupIdx = 0, colMod;
+
+        int idx = 0;
+        int groupIdx = 0;
+        int colMod = 0;
+
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
             if (selectItem instanceof SelectItemGroup) {
@@ -195,6 +200,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             writer.writeAttribute("style", style, "style");
         }
 
+        renderARIARequired(context, checkbox);
         encodeSelectItems(context, checkbox, layout);
 
         writer.endElement("table");
@@ -227,9 +233,7 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
             writer.writeAttribute("disabled", "disabled", null);
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, checkbox);
-        }
+        renderValidationMetadata(context, checkbox);
 
         writer.endElement("input");
 
@@ -383,7 +387,8 @@ public class SelectManyCheckboxRenderer extends SelectManyRenderer {
         int columns = checkbox.getColumns();
 
         if (columns != 0) {
-            int idx = 0, colMod;
+            int idx = 0;
+            int colMod;
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectItem selectItem = selectItems.get(i);
                 colMod = idx % columns;

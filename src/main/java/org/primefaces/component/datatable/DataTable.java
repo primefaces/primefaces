@@ -336,7 +336,7 @@ public class DataTable extends DataTableBase {
             else if (eventName.equals("page")) {
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
-                int page = rows > 0 ? (int) (first / rows) : 0;
+                int page = rows > 0 ? (first / rows) : 0;
 
                 wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
             }
@@ -366,7 +366,7 @@ public class DataTable extends DataTableBase {
             else if (eventName.equals("virtualScroll")) {
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
-                int page = rows > 0 ? (int) (first / rows) : 0;
+                int page = rows > 0 ? (first / rows) : 0;
 
                 wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
             }
@@ -383,7 +383,7 @@ public class DataTable extends DataTableBase {
                 wrapperEvent = new ColumnResizeEvent(this, behaviorEvent.getBehavior(), width, height, findColumn(columnId));
             }
             else if (eventName.equals("toggleSelect")) {
-                boolean checked = Boolean.valueOf(params.get(clientId + "_checked"));
+                boolean checked = Boolean.parseBoolean(params.get(clientId + "_checked"));
 
                 wrapperEvent = new ToggleSelectEvent(this, behaviorEvent.getBehavior(), checked);
             }
@@ -531,7 +531,7 @@ public class DataTable extends DataTableBase {
     public void loadLazyData() {
         DataModel model = getDataModel();
 
-        if (model != null && model instanceof LazyDataModel) {
+        if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
             List<?> data = null;
 
@@ -578,7 +578,7 @@ public class DataTable extends DataTableBase {
     public void loadLazyScrollData(int offset, int rows) {
         DataModel model = getDataModel();
 
-        if (model != null && model instanceof LazyDataModel) {
+        if (model instanceof LazyDataModel) {
             LazyDataModel lazyModel = (LazyDataModel) model;
 
             List<?> data = null;
@@ -1042,7 +1042,7 @@ public class DataTable extends DataTableBase {
     protected boolean shouldSkipChildren(FacesContext context) {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String paramValue = params.get(Constants.RequestParams.SKIP_CHILDREN_PARAM);
-        if (paramValue != null && Boolean.valueOf(paramValue) == false) {
+        if (paramValue != null && Boolean.parseBoolean(paramValue) == false) {
             return false;
         }
         else {
@@ -1317,7 +1317,7 @@ public class DataTable extends DataTableBase {
                 for (int i = 0; i < colsArr.length; i++) {
                     String temp = colsArr[i];
                     int sepIndex = temp.lastIndexOf("_");
-                    togglableColsMap.put(temp.substring(0, sepIndex), Boolean.valueOf(temp.substring(sepIndex + 1, temp.length())));
+                    togglableColsMap.put(temp.substring(0, sepIndex), Boolean.parseBoolean(temp.substring(sepIndex + 1, temp.length())));
                 }
             }
         }

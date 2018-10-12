@@ -20,10 +20,8 @@ import java.util.Map;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import javax.faces.context.FacesContext;
 import javax.faces.event.BehaviorEvent;
 
-import org.primefaces.util.Constants;
 import org.primefaces.util.MapBuilder;
 
 @ResourceDependencies({
@@ -50,9 +48,5 @@ public class IdleMonitor extends IdleMonitorBase {
     @Override
     public Collection<String> getEventNames() {
         return EVENT_NAMES;
-    }
-
-    private boolean isSelfRequest(FacesContext context) {
-        return getClientId(context).equals(context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_SOURCE_PARAM));
     }
 }

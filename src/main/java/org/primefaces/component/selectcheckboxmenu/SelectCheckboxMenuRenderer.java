@@ -79,6 +79,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             writer.writeAttribute("title", title, "title");
         }
 
+        renderARIACombobox(context, menu);
         encodeKeyboardTarget(context, menu);
         encodeInputs(context, menu, selectItems);
         if (menu.isMultiple()) {
@@ -168,15 +169,13 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         if (checked) {
             writer.writeAttribute("checked", "checked", null);
         }
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
         if (option.getDescription() != null) {
             writer.writeAttribute("title", option.getDescription(), null);
         }
         if (menu.getOnchange() != null) {
             writer.writeAttribute("onchange", menu.getOnchange(), null);
         }
+        renderAccessibilityAttributes(context, menu);
 
         writer.endElement("input");
 
@@ -207,7 +206,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         String label = menu.getLabel();
         String labelClass = !valid ? SelectCheckboxMenu.LABEL_CLASS + " ui-state-error" : SelectCheckboxMenu.LABEL_CLASS;
         if (label == null) {
-            label = "&nbsp;";
+            label = "";
         }
 
         writer.startElement("span", null);
@@ -311,6 +310,8 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
                 .attr("scrollHeight", menu.getScrollHeight(), Integer.MAX_VALUE)
                 .attr("showHeader", menu.isShowHeader(), true)
                 .attr("updateLabel", menu.isUpdateLabel(), false)
+                .attr("labelSeparator", menu.getLabelSeparator(), ",")
+                .attr("emptyLabel", menu.getEmptyLabel())
                 .attr("multiple", menu.isMultiple(), false)
                 .attr("dynamic", menu.isDynamic(), false)
                 .attr("appendTo", SearchExpressionFacade.resolveClientId(context, menu, menu.getAppendTo()), null);

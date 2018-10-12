@@ -160,7 +160,11 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
 
         PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.panel,
             function() { return $this.itemtip; },
-            function(e) { $this.hide(); });
+            function(e, eventTarget) {
+                if(!($this.panel.is(eventTarget) || $this.panel.has(eventTarget).length > 0)) {
+                    $this.hide();
+                }
+            });
 
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', $this.panel, function() {
              $this.alignPanel();
@@ -170,38 +174,18 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
     bindDropdownEvents: function() {
         var $this = this;
 
-        this.dropdown.mouseover(function() {
-            $(this).addClass('ui-state-hover');
-        }).mouseout(function() {
-            $(this).removeClass('ui-state-hover');
-        }).mousedown(function() {
-            if($this.active) {
-                $(this).addClass('ui-state-active');
-            }
-        }).mouseup(function() {
-            if($this.active) {
-                $(this).removeClass('ui-state-active');
+        PrimeFaces.skinButton(this.dropdown);
 
+        this.dropdown.mouseup(function() {
+            if($this.active) {
                 $this.searchWithDropdown();
                 $this.input.focus();
-            }
-        }).focus(function() {
-            $(this).addClass('ui-state-focus');
-        }).blur(function() {
-            $(this).removeClass('ui-state-focus');
-        }).keydown(function(e) {
-            var keyCode = $.ui.keyCode,
-            key = e.which;
-
-            if(key === keyCode.SPACE || key === keyCode.ENTER) {
-                $(this).addClass('ui-state-active');
             }
         }).keyup(function(e) {
             var keyCode = $.ui.keyCode,
             key = e.which;
 
             if(key === keyCode.SPACE || key === keyCode.ENTER) {
-                $(this).removeClass('ui-state-active');
                 $this.searchWithDropdown();
                 $this.input.focus();
                 e.preventDefault();

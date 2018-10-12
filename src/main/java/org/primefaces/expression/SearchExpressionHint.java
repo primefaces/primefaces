@@ -30,4 +30,7 @@ public class SearchExpressionHint {
     public static final int PARENT_FALLBACK = 0x4;
 
     public static final int SKIP_UNRENDERED = 0x8;
+
+    private SearchExpressionHint() {
+    }
 }

@@ -110,7 +110,7 @@ public class TerminalRenderer extends CoreRenderer {
     }
 
     protected void handleCommand(FacesContext context, Terminal terminal) throws IOException {
-        String tokens[] = getValueTokens(context, terminal);
+        String[] tokens = getValueTokens(context, terminal);
         String command = tokens[0];
         String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
 
@@ -122,7 +122,7 @@ public class TerminalRenderer extends CoreRenderer {
     }
 
     protected void autoCompleteCommand(FacesContext context, Terminal terminal) throws IOException {
-        String tokens[] = getValueTokens(context, terminal);
+        String[] tokens = getValueTokens(context, terminal);
         String command = tokens[0];
         String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
 
@@ -140,7 +140,7 @@ public class TerminalRenderer extends CoreRenderer {
     private String[] getValueTokens(FacesContext context, Terminal terminal) {
         String clientId = terminal.getClientId(context);
         String value = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
-        String tokens[] = value.trim().split(" ");
+        String[] tokens = value.trim().split(" ");
 
         return tokens;
     }

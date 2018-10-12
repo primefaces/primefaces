@@ -306,9 +306,11 @@ PrimeFaces.widget.Clock = PrimeFaces.widget.BaseWidget.extend({
         }
     },
 
+    //@override
     refresh: function(cfg) {
         clearInterval(this.interval);
-        this.init(cfg);
+        
+        this._super(cfg);
     },
 
     isClient: function() {

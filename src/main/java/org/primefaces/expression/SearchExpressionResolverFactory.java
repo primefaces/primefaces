@@ -41,7 +41,7 @@ import org.primefaces.expression.impl.WidgetVarExpressionResolver;
  */
 public class SearchExpressionResolverFactory {
 
-    private static final HashMap<String, SearchExpressionResolver> RESOLVER_MAPPING = new HashMap<String, SearchExpressionResolver>();
+    private static final HashMap<String, SearchExpressionResolver> RESOLVER_MAPPING = new HashMap<>();
 
     private static final FindComponentExpressionResolver FIND_COMPONENT_EXPRESSION_RESOLVER = new FindComponentExpressionResolver();
 

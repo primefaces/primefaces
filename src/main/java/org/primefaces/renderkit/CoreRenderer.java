@@ -15,6 +15,7 @@
  */
 package org.primefaces.renderkit;
 
+import org.primefaces.util.EscapeUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,7 +63,7 @@ import org.primefaces.util.ResourceUtils;
 
 public abstract class CoreRenderer extends Renderer {
 
-    private static final Logger LOG = Logger.getLogger(CoreRenderer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CoreRenderer.class.getName());
 
     private static final String SB_RENDER_DOM_EVENTS = CoreRenderer.class.getName() + "#renderDomEvents";
     private static final String SB_BUILD_NON_AJAX_REQUEST = CoreRenderer.class.getName() + "#buildNonAjaxRequest";
@@ -72,7 +73,7 @@ public abstract class CoreRenderer extends Renderer {
     protected void renderChildren(FacesContext context, UIComponent component) throws IOException {
         if (component.getChildCount() > 0) {
             for (int i = 0; i < component.getChildCount(); i++) {
-                UIComponent child = (UIComponent) component.getChildren().get(i);
+                UIComponent child = component.getChildren().get(i);
                 renderChild(context, child);
             }
         }
@@ -162,14 +163,14 @@ public abstract class CoreRenderer extends Renderer {
                 }
 
                 if (hasEventBehaviors) {
-                    String clientId = ((UIComponent) component).getClientId(context);
+                    String clientId = component.getClientId(context);
 
                     List<ClientBehaviorContext.Parameter> params = new ArrayList<>();
                     params.add(new ClientBehaviorContext.Parameter(
                             Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.OBSTRUSIVE));
 
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
-                            context, (UIComponent) component, behaviorEvent, clientId, params);
+                            context, component, behaviorEvent, clientId, params);
                     int size = eventBehaviors.size();
                     boolean chained = false;
 
@@ -308,8 +309,8 @@ public abstract class CoreRenderer extends Renderer {
                     for (int i = 0; i < behaviors.size(); i++) {
                         ClientBehavior behavior = behaviors.get(i);
                         if (cbc == null) {
-                            cbc = ClientBehaviorContext.createClientBehaviorContext(
-                                    context, (UIComponent) component, behaviorEventName, component.getClientId(context), Collections.EMPTY_LIST);
+                            cbc = ClientBehaviorContext.createClientBehaviorContext(context, component, behaviorEventName,
+                                    component.getClientId(context), Collections.<ClientBehaviorContext.Parameter>emptyList());
                         }
                         String script = behavior.getScript(cbc);
 
@@ -338,7 +339,7 @@ public abstract class CoreRenderer extends Renderer {
             else {
                 if (hasBehaviors) {
                     ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
-                            context, (UIComponent) component, behaviorEventName, component.getClientId(context), Collections.EMPTY_LIST);
+                            context, component, behaviorEventName, component.getClientId(context), Collections.<ClientBehaviorContext.Parameter>emptyList());
                     ClientBehavior behavior = behaviors.get(0);
                     String script = behavior.getScript(cbc);
                     if (script != null) {
@@ -373,7 +374,7 @@ public abstract class CoreRenderer extends Renderer {
         }
 
         if (value instanceof Boolean) {
-            return ((Boolean) value).booleanValue();
+            return (Boolean) value;
         }
         else if (value instanceof Number) {
             Number number = (Number) value;
@@ -462,7 +463,7 @@ public abstract class CoreRenderer extends Renderer {
 
             for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
                 String key = it.next();
-                String value = ComponentUtils.escapeText(String.valueOf(params.get(key))) ;
+                String value = EscapeUtils.forJavaScript(String.valueOf(params.get(key))) ;
 
                 request.append("'").append(key).append("':'").append(value).append("'");
 
@@ -607,8 +608,12 @@ public abstract class CoreRenderer extends Renderer {
         writer.endElement("script");
     }
 
+    /**
+     * @deprecated Use {@link EscapeUtils}
+     */
+    @Deprecated
     protected String escapeText(String text) {
-        return ComponentUtils.escapeText(text);
+        return EscapeUtils.forJavaScript(text);
     }
 
     protected String getEventBehaviors(FacesContext context, ClientBehaviorHolder cbh, String event,
@@ -655,10 +660,14 @@ public abstract class CoreRenderer extends Renderer {
     }
 
     protected void renderValidationMetadata(FacesContext context, EditableValueHolder component) throws IOException {
+        if (!PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
+            return; //GitHub #4049: short circuit method
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         UIComponent comp = (UIComponent) component;
 
-        Converter converter = null;
+        Converter converter;
 
         try {
             converter = ComponentUtils.getConverter(context, comp);
@@ -667,7 +676,7 @@ public abstract class CoreRenderer extends Renderer {
             String message = "Skip rendering of CSV metadata for component \"" + comp.getClientId(context) + "\" because"
                     + " the ValueExpression of the \"value\" attribute"
                     + " isn't resolvable completely (e.g. a sub-expression returns null)";
-            LOG.log(Level.FINE, message);
+            LOGGER.log(Level.FINE, message);
             return;
         }
 
@@ -814,4 +823,5 @@ public abstract class CoreRenderer extends Renderer {
 
         writer.endElement("div");
     }
+
 }

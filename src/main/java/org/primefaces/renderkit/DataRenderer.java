@@ -30,6 +30,7 @@ import org.primefaces.component.api.UIData;
 import org.primefaces.component.paginator.CurrentPageReportRenderer;
 import org.primefaces.component.paginator.FirstPageLinkRenderer;
 import org.primefaces.component.paginator.JumpToPageDropdownRenderer;
+import org.primefaces.component.paginator.JumpToPageInputRenderer;
 import org.primefaces.component.paginator.LastPageLinkRenderer;
 import org.primefaces.component.paginator.NextPageLinkRenderer;
 import org.primefaces.component.paginator.PageLinksRenderer;
@@ -37,6 +38,7 @@ import org.primefaces.component.paginator.PaginatorElementRenderer;
 import org.primefaces.component.paginator.PrevPageLinkRenderer;
 import org.primefaces.component.paginator.RowsPerPageDropdownRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
 import org.primefaces.util.MessageFactory;
 import org.primefaces.util.WidgetBuilder;
 
@@ -53,6 +55,7 @@ public class DataRenderer extends CoreRenderer {
         PAGINATOR_ELEMENTS.put("{PageLinks}", new PageLinksRenderer());
         PAGINATOR_ELEMENTS.put("{RowsPerPageDropdown}", new RowsPerPageDropdownRenderer());
         PAGINATOR_ELEMENTS.put("{JumpToPageDropdown}", new JumpToPageDropdownRenderer());
+        PAGINATOR_ELEMENTS.put("{JumpToPageInput}", new JumpToPageInputRenderer());
     }
 
     public static void addPaginatorElement(String element, PaginatorElementRenderer renderer) {
@@ -92,7 +95,7 @@ public class DataRenderer extends CoreRenderer {
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("role", "navigation", null);
-        writer.writeAttribute("aria-label", ariaMessage, null);
+        writer.writeAttribute(HTML.ARIA_LABEL, ariaMessage, null);
 
         if (leftTopContent != null && isTop) {
             writer.startElement("div", null);

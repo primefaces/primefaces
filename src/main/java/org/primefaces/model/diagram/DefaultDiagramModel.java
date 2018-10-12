@@ -40,8 +40,8 @@ public class DefaultDiagramModel implements DiagramModel, Serializable {
 
     public DefaultDiagramModel() {
         elements = new ElementList();
-        connections = new ArrayList<Connection>();
-        defaultConnectionOverlays = new ArrayList<Overlay>();
+        connections = new ArrayList<>();
+        defaultConnectionOverlays = new ArrayList<>();
     }
 
     @Override

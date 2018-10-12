@@ -22,7 +22,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 
-import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
@@ -34,7 +33,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
     public void decode(FacesContext context, UIComponent component) {
         SelectBooleanButton button = (SelectBooleanButton) component;
 
-        if (button.isDisabled()) {
+        if (!shouldDecode(button)) {
             return;
         }
 
@@ -62,7 +61,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
     protected void encodeMarkup(FacesContext context, SelectBooleanButton button) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = button.getClientId(context);
-        boolean checked = Boolean.valueOf(ComponentUtils.getValueToRender(context, button));
+        boolean checked = Boolean.parseBoolean(ComponentUtils.getValueToRender(context, button));
         boolean disabled = button.isDisabled();
         String inputId = clientId + "_input";
         String label = checked ? button.getOnLabel() : button.getOffLabel();
@@ -74,11 +73,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         //button
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, "id");
-        writer.writeAttribute("type", "button", null);
         writer.writeAttribute("class", styleClass, null);
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
         if (title != null) {
             writer.writeAttribute("title", title, null);
         }
@@ -98,21 +93,12 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         if (checked) {
             writer.writeAttribute("checked", "checked", null);
         }
-        if (disabled) {
-            writer.writeAttribute("disabled", "disabled", null);
-        }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getConfig().isClientSideValidationEnabled()) {
-            renderValidationMetadata(context, button);
-        }
-
+        renderValidationMetadata(context, button);
+        renderAccessibilityAttributes(context, button);
+        renderPassThruAttributes(context, button, HTML.TAB_INDEX);
         renderOnchange(context, button);
         renderDomEvents(context, button, HTML.BLUR_FOCUS_EVENTS);
-
-        // tabindex
-        if (button.getTabindex() != null) {
-            writer.writeAttribute("tabindex", button.getTabindex(), null);
-        }
 
         writer.endElement("input");
 

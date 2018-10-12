@@ -19,6 +19,7 @@ import javax.faces.component.html.HtmlCommandButton;
 
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.component.api.Widget;
+import org.primefaces.model.menu.MenuModel;
 import org.primefaces.util.ComponentUtils;
 
 
@@ -51,7 +52,12 @@ abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, 
         appendTo,
         partialSubmitFilter,
         menuStyleClass,
-        form
+        form,
+        model,
+        filter,
+        filterMatchMode,
+        filterFunction,
+        filterPlaceholder
     }
 
     public SplitButtonBase() {
@@ -221,7 +227,7 @@ abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, 
     }
 
     public String getAppendTo() {
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
+        return (String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
     }
 
     public void setAppendTo(String appendTo) {
@@ -252,6 +258,46 @@ abstract class SplitButtonBase extends HtmlCommandButton implements AjaxSource, 
 
     public void setForm(String form) {
         getStateHelper().put(PropertyKeys.form, form);
+    }
+
+    public MenuModel getModel() {
+        return (MenuModel) getStateHelper().eval(PropertyKeys.model, null);
+    }
+
+    public void setModel(MenuModel model) {
+        getStateHelper().put(PropertyKeys.model, model);
+    }
+
+    public boolean isFilter() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filter, false);
+    }
+
+    public void setFilter(boolean filter) {
+        getStateHelper().put(PropertyKeys.filter, filter);
+    }
+
+    public String getFilterMatchMode() {
+        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
+    }
+
+    public void setFilterMatchMode(String filterMatchMode) {
+        getStateHelper().put(PropertyKeys.filterMatchMode, filterMatchMode);
+    }
+
+    public String getFilterFunction() {
+        return (String) getStateHelper().eval(PropertyKeys.filterFunction, null);
+    }
+
+    public void setFilterFunction(String filterFunction) {
+        getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
+    }
+
+    public String getFilterPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.filterPlaceholder, null);
+    }
+
+    public void setFilterPlaceholder(String filterPlaceholder) {
+        getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
     }
 
     @Override

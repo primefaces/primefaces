@@ -98,7 +98,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
         Map<String, List<String>> navCaseParams = navCase.getParameters();
         if (navCaseParams != null && !navCaseParams.isEmpty()) {
             if (params == null) {
-                params = new LinkedHashMap<String, List<String>>();
+                params = new LinkedHashMap<>();
             }
 
             for (Map.Entry<String, List<String>> entry : navCaseParams.entrySet()) {
@@ -148,7 +148,7 @@ public class OutcomeTargetRenderer extends CoreRenderer {
 
         String href = outcomeTarget.getHref();
         if (href != null) {
-            url = context.getExternalContext().encodeRedirectURL(href, outcomeTarget.getParams());
+            url = "#".equals(href) ? "#" : context.getExternalContext().encodeRedirectURL(href, outcomeTarget.getParams());
         }
         else {
             NavigationCase navCase = findNavigationCase(context, outcomeTarget);

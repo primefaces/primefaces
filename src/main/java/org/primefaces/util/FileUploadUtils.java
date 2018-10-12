@@ -16,31 +16,89 @@
 package org.primefaces.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.regex.Pattern;
 import javax.faces.FacesException;
+import org.apache.commons.io.FilenameUtils;
+import org.owasp.esapi.SafeFile;
+import org.owasp.esapi.errors.ValidationException;
 
-/**
+ /**
  * Utilities for FileUpload components.
  */
 public class FileUploadUtils {
-    /* Restrict character set of filename */
-    private static final Pattern INVALID_FILENAME_PATTERN = Pattern.compile("([\\\\/:*?<>|])");
-    /**
-     * Check the filename according to pattern
-     * If the filename does not match the pattern([\\\\/:*?<>|]), it throws an exception.
-     *
-     * @param filename The name of file
-     * @return
-     */
+
+    private static final Pattern INVALID_FILENAME_PATTERN = Pattern.compile("([\\/:*?\"<>|])");
+
+    private FileUploadUtils() {
+    }
+
     public static String getValidFilename(String filename) {
-        if (filename != null) {
-            String[] parts = filename.split(Pattern.quote(File.separator));
-            for (String part : parts) {
-                if (INVALID_FILENAME_PATTERN.matcher(part).find()) {
-                    throw new FacesException("Invalid filename: " + filename);
+        if (LangUtils.isValueBlank(filename)) {
+            throw new FacesException("Filename is required.");
+        }
+
+        if (isSystemWindows()) {
+            if (!filename.contains("\\\\")) {
+                String[] parts = filename.substring(FilenameUtils.getPrefixLength(filename)).split(Pattern.quote(File.separator));
+                for (String part : parts) {
+                    if (INVALID_FILENAME_PATTERN.matcher(part).find()) {
+                        throw new FacesException("Invalid filename: " + filename);
+                    }
                 }
             }
+            else {
+                throw new FacesException("Invalid filename: " + filename);
+            }
         }
-        return filename;
+
+        String name = FilenameUtils.getName(filename);
+        String extension = FilenameUtils.EXTENSION_SEPARATOR_STR + FilenameUtils.getExtension(filename);
+
+        if (extension.isEmpty()) {
+            throw new FacesException("File must have an extension");
+        }
+        else if (name.isEmpty() || extension.equals(name)) {
+            throw new FacesException("Filename can not be the empty string");
+        }
+
+        return name;
+    }
+
+    public static String getValidFilePath(String filePath) throws ValidationException {
+        if (filePath == null || filePath.trim().equals("")) {
+            throw new FacesException("Path can not be the empty string or null");
+        }
+
+        try {
+            SafeFile file = new SafeFile(filePath);
+            File parentFile = file.getParentFile();
+
+            if (!file.exists()) {
+                throw new ValidationException("Invalid directory", "Invalid directory, \"" + file + "\" does not exist.");
+            }
+            if (!parentFile.exists()) {
+                throw new ValidationException("Invalid directory", "Invalid directory, specified parent does not exist.");
+            }
+            if (!parentFile.isDirectory()) {
+                throw new ValidationException("Invalid directory", "Invalid directory, specified parent is not a directory.");
+            }
+            if (!file.getCanonicalPath().startsWith(parentFile.getCanonicalPath())) {
+                throw new ValidationException("Invalid directory", "Invalid directory, \"" + file + "\" does not inside specified parent.");
+            }
+
+            if (!file.getCanonicalPath().equals(filePath)) {
+                throw new ValidationException("Invalid directory", "Invalid directory name does not match the canonical path");
+            }
+        }
+        catch (IOException ex) {
+            throw new ValidationException("Invalid directory", "Failure to validate directory path");
+        }
+
+        return filePath;
+    }
+
+    public static boolean isSystemWindows() {
+        return File.separatorChar == '\\';
     }
 }

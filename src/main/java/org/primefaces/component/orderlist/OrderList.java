@@ -73,13 +73,6 @@ public class OrderList extends OrderListBase {
         return EVENT_NAMES;
     }
 
-    private Map<String, AjaxBehaviorEvent> getCustomEvents() {
-        if (customEvents == null) {
-            customEvents = new HashMap<>();
-        }
-
-        return customEvents;
-    }
 
     @Override
     public void queueEvent(FacesEvent event) {
@@ -98,7 +91,7 @@ public class OrderList extends OrderListBase {
     public void validate(FacesContext context) {
         super.validate(context);
 
-        if (isValid() && customEvents != null) {
+        if (isValid()) {
             for (Iterator<String> customEventIter = customEvents.keySet().iterator(); customEventIter.hasNext(); ) {
                 String eventName = customEventIter.next();
                 AjaxBehaviorEvent behaviorEvent = customEvents.get(eventName);
@@ -109,8 +102,8 @@ public class OrderList extends OrderListBase {
 
                 if (eventName.equals("select")) {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
-                    boolean metaKey = Boolean.valueOf(params.get(clientId + "_metaKey"));
-                    boolean ctrlKey = Boolean.valueOf(params.get(clientId + "_ctrlKey"));
+                    boolean metaKey = Boolean.parseBoolean(params.get(clientId + "_metaKey"));
+                    boolean ctrlKey = Boolean.parseBoolean(params.get(clientId + "_ctrlKey"));
                     wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), list.get(itemIndex), metaKey, ctrlKey);
                 }
                 else if (eventName.equals("unselect")) {

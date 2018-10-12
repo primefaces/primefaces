@@ -72,8 +72,6 @@ public class MoveScriptsToBottomResponseWriterTest {
 
         verify(wrappedWriter).startElement("script", null);
         verify(wrappedWriter).write("inline;");
-        // TODO not sure
-        // verify(wrappedWriter).writeText("inline", null);
         verify(wrappedWriter).endElement("script");
 
         writer.endElement("html");
@@ -168,10 +166,7 @@ public class MoveScriptsToBottomResponseWriterTest {
 
         writer.endElement("body");
 
-        // TODO not sure
-        // FIXME normally we would expect writeText instead of write to be called
         verify(wrappedWriter).write(contains("pf.settings pf.cw pf.ab pf ;"));
-        //verify(wrappedWriter).writeText(contains("pf.settings pf.cw pf.ab pf ;"), null);
     }
 
     @Test
@@ -224,11 +219,7 @@ public class MoveScriptsToBottomResponseWriterTest {
         Assert.assertEquals(1, state.getInlines().get("text/javascript").size());
         verify(wrappedWriter, times(2)).startElement("script", null);
         verify(wrappedWriter).writeAttribute("src", "include", null);
-
-        // TODO not sure
-        // FIXME normally we would expect writeText instead of write to be called
         verify(wrappedWriter).write(contains("inline"));
-        // verify(wrappedWriter).writeText("inline", null);
     }
 
 }

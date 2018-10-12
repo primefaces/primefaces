@@ -120,9 +120,11 @@ PrimeFaces.widget.MenuButton = PrimeFaces.widget.BaseWidget.extend({
         if (!$this.cfg.disabled) {
             PrimeFaces.utils.registerHideOverlayHandler(this, 'mousedown.' + this.id + '_hide', $this.menu,
                 function() { return $this.button; },
-                function(e) {
-                    $this.button.removeClass('ui-state-focus ui-state-hover');
-                    $this.hide();
+                function(e, eventTarget) {
+                    if(!($this.menu.is(eventTarget) || $this.menu.has(eventTarget).length > 0)) {
+                        $this.button.removeClass('ui-state-focus ui-state-hover');
+                        $this.hide();
+                    }
                 });
         }
 

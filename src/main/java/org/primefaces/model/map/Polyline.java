@@ -31,7 +31,7 @@ public class Polyline extends Overlay {
     private String icons;
 
     public Polyline() {
-        paths = new ArrayList<LatLng>();
+        paths = new ArrayList<>();
     }
 
     public Polyline(List<LatLng> paths) {

@@ -26,6 +26,7 @@ import javax.faces.convert.ConverterException;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
 
@@ -113,7 +114,7 @@ public class FileUploadRenderer extends CoreRenderer {
             wb.init("SimpleFileUpload", fileUpload.resolveWidgetVar(), clientId)
                     .attr("skinSimple", fileUpload.isSkinSimple(), false)
                     .attr("maxFileSize", fileUpload.getSizeLimit(), Long.MAX_VALUE)
-                    .attr("invalidSizeMessage", escapeText(fileUpload.getInvalidSizeMessage()), null);
+                    .attr("invalidSizeMessage", EscapeUtils.forJavaScript(fileUpload.getInvalidSizeMessage()), null);
         }
 
         wb.finish();
@@ -247,7 +248,7 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.writeAttribute("class", cssClass, null);
         writer.writeAttribute("tabindex", tabindex, null);
         writer.writeAttribute("role", "button", null);
-        writer.writeAttribute("aria-labelledby", clientId + "_label", null);
+        writer.writeAttribute(HTML.ARIA_LABELLEDBY, clientId + "_label", null);
 
         //button icon
         writer.startElement("span", null);
@@ -283,7 +284,7 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.writeAttribute("id", inputId, null);
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("tabindex", "-1", null);
-        writer.writeAttribute("aria-hidden", "true", null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
 
         if (fileUpload.isMultiple()) {
             writer.writeAttribute("multiple", "multiple", null);
@@ -307,7 +308,7 @@ public class FileUploadRenderer extends CoreRenderer {
         writer.writeAttribute("type", "file", null);
         writer.writeAttribute("id", clientId, null);
         writer.writeAttribute("name", clientId, null);
-        writer.writeAttribute("aria-hidden", "true", null);
+        writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
 
         if (fileUpload.isMultiple()) {
             writer.writeAttribute("multiple", "multiple", null);

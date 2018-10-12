@@ -39,13 +39,13 @@ public class PanelRenderer extends CoreRenderer {
         //Restore toggle state
         String collapsedParam = params.get(clientId + "_collapsed");
         if (collapsedParam != null) {
-            panel.setCollapsed(Boolean.valueOf(collapsedParam));
+            panel.setCollapsed(Boolean.parseBoolean(collapsedParam));
         }
 
         //Restore visibility state
         String visibleParam = params.get(clientId + "_visible");
         if (visibleParam != null) {
-            panel.setVisible(Boolean.valueOf(visibleParam));
+            panel.setVisible(Boolean.parseBoolean(visibleParam));
         }
 
         decodeBehaviors(context, component);

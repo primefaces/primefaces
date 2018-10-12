@@ -33,12 +33,12 @@ public class CartesianChartModel extends ChartModel {
     private String datatipEditor;
 
     public CartesianChartModel() {
-        series = new ArrayList<ChartSeries>();
+        series = new ArrayList<>();
         createAxes();
     }
 
     protected void createAxes() {
-        axes = new HashMap<AxisType, Axis>();
+        axes = new HashMap<>();
         axes.put(AxisType.X, new LinearAxis());
         axes.put(AxisType.Y, new LinearAxis());
     }
