@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.xml.XMLConstants;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -101,6 +102,7 @@ public class BarcodeHandler extends BaseDynamicContentHandler {
                     DocumentFragment frag = svgCanvasProvider.getDOMFragment();
 
                     TransformerFactory factory = TransformerFactory.newInstance();
+                    factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
                     Transformer trans = factory.newTransformer();
                     Source src = new javax.xml.transform.dom.DOMSource(frag);
                     Result res = new javax.xml.transform.stream.StreamResult(out);
