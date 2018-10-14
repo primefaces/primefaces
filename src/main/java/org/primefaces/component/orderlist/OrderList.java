@@ -16,6 +16,7 @@
 package org.primefaces.component.orderlist;
 
 import java.util.*;
+import javax.faces.FacesException;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -112,6 +113,10 @@ public class OrderList extends OrderListBase {
                 }
                 else if (eventName.equals("reorder")) {
                     wrapperEvent = behaviorEvent;
+                }
+
+                if (wrapperEvent == null) {
+                    throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
                 }
 
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());

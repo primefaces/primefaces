@@ -17,6 +17,7 @@ package org.primefaces.component.layout;
 
 import java.util.Collection;
 import java.util.Map;
+import javax.faces.FacesException;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -161,6 +162,10 @@ public class Layout extends LayoutBase {
                 }
 
                 wrapperEvent = new ResizeEvent(unit, behaviorEvent.getBehavior(), width, height);
+            }
+
+            if (wrapperEvent == null) {
+                throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());

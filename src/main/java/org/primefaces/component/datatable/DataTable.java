@@ -433,6 +433,10 @@ public class DataTable extends DataTableBase {
                 wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), getRowData(rowkey));
             }
 
+            if (wrapperEvent == null) {
+                throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
+            }
+
             wrapperEvent.setPhaseId(event.getPhaseId());
 
             super.queueEvent(wrapperEvent);

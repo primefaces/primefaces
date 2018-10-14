@@ -18,6 +18,7 @@ package org.primefaces.component.schedule;
 import java.util.*;
 
 import javax.el.ValueExpression;
+import javax.faces.FacesException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.context.FacesContext;
@@ -167,6 +168,10 @@ public class Schedule extends ScheduleBase {
             }
             else if (eventName.equals("viewChange")) {
                 wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), getView());
+            }
+
+            if (wrapperEvent == null) {
+                throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());

@@ -16,6 +16,7 @@
 package org.primefaces.component.picklist;
 
 import java.util.*;
+import javax.faces.FacesException;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.application.ResourceDependencies;
@@ -202,6 +203,10 @@ public class PickList extends PickListBase {
                 }
                 else if (eventName.equals("reorder")) {
                     wrapperEvent = behaviorEvent;
+                }
+
+                if (wrapperEvent == null) {
+                    throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
                 }
 
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());

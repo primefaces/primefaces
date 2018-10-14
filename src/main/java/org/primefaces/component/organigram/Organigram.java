@@ -17,6 +17,7 @@ package org.primefaces.component.organigram;
 
 import java.util.Collection;
 import java.util.Map;
+import javax.faces.FacesException;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -115,6 +116,10 @@ public class Organigram extends OrganigramBase {
 
                     wrapperEvent = new OrganigramNodeDragDropEvent(this, behaviorEvent.getBehavior(), dragNode, dropNode, sourceNode);
                 }
+            }
+
+            if (wrapperEvent == null) {
+                throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());

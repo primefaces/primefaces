@@ -18,6 +18,7 @@ package org.primefaces.component.tree;
 import java.util.*;
 
 import javax.el.MethodExpression;
+import javax.faces.FacesException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.UIComponent;
@@ -217,6 +218,10 @@ public class Tree extends TreeBase {
             }
             else if (eventName.equals("filter")) {
                 wrapperEvent = behaviorEvent;
+            }
+
+            if (wrapperEvent == null) {
+                throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());

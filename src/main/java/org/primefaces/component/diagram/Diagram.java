@@ -17,6 +17,7 @@ package org.primefaces.component.diagram;
 
 import java.util.Collection;
 import java.util.Map;
+import javax.faces.FacesException;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
@@ -104,6 +105,10 @@ public class Diagram extends DiagramBase {
                     }
                     else if (eventName.equals("disconnect")) {
                         wrapperEvent = new DisconnectEvent(this, behaviorEvent.getBehavior(), sourceElement, targetElement, sourceEndPoint, targetEndPoint);
+                    }
+
+                    if (wrapperEvent == null) {
+                        throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
                     }
 
                     wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
