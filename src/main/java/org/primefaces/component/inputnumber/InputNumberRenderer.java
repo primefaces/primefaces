@@ -71,8 +71,8 @@ public class InputNumberRenderer extends InputRenderer {
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(inputId);
 
         if (submittedValue == null) {
-			return;
-		}
+            return;
+        }
 
         try {
             if (LangUtils.isValueBlank(submittedValue)) {
