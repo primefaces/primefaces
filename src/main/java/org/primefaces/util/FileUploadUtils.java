@@ -35,7 +35,7 @@ public class FileUploadUtils {
 
     public static String getValidFilename(String filename) {
         if (LangUtils.isValueBlank(filename)) {
-            throw new FacesException("Filename is required.");
+            return null;
         }
 
         if (isSystemWindows()) {
@@ -55,7 +55,7 @@ public class FileUploadUtils {
         String name = FilenameUtils.getName(filename);
         String extension = FilenameUtils.EXTENSION_SEPARATOR_STR + FilenameUtils.getExtension(filename);
 
-        if (extension.isEmpty()) {
+        if (extension.equals(FilenameUtils.EXTENSION_SEPARATOR_STR)) {
             throw new FacesException("File must have an extension");
         }
         else if (name.isEmpty() || extension.equals(name)) {
