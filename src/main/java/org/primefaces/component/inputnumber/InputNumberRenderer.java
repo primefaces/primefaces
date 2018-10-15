@@ -70,6 +70,10 @@ public class InputNumberRenderer extends InputRenderer {
         String inputId = inputNumber.getClientId(context) + "_hinput";
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(inputId);
 
+        if (submittedValue == null) {
+            return;
+        }
+
         try {
             if (LangUtils.isValueBlank(submittedValue)) {
                 ValueExpression valueExpression = inputNumber.getValueExpression("value");
@@ -82,9 +86,6 @@ public class InputNumberRenderer extends InputRenderer {
                     else if (type != null && type.isPrimitive() && !LangUtils.isValueBlank(inputNumber.getMaxValue())) {
                         // avoid coercion of null or empty string to 0 which may be out of [minValue, maxValue] range
                         submittedValue = String.valueOf(new BigDecimal(inputNumber.getMaxValue()).doubleValue());
-                    }
-                    else {
-                        submittedValue = "";
                     }
                 }
             }
