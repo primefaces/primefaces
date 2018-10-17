@@ -4,7 +4,7 @@
 
 [Full Changelog](https://github.com/primefaces/primefaces/compare/6_2...HEAD)
 
-Implemented New Features and Enhancements:
+**Implemented New Features and Enhancements:**
 
 - Upgrade to AutoSize 4.0.2 [\#4137](https://github.com/primefaces/primefaces/issues/4137)
 - Dialog: provide client side API to change position \(and center on the screen\) [\#4120](https://github.com/primefaces/primefaces/issues/4120)
@@ -414,7 +414,7 @@ Implemented New Features and Enhancements:
 ## [6_2](https://github.com/primefaces/primefaces/tree/6_2) (2018-02-28)
 [Full Changelog](https://github.com/primefaces/primefaces/compare/6_2_RC1...6_2)
 
-Implemented New Features and Enhancements:
+**Implemented New Features and Enhancements:**
 
 - Hascode method of CheckBoxTreeNode do not use the rowkey attribute [\#3374](https://github.com/primefaces/primefaces/issues/3374)
 - Added ui-menu-overlay class to overlay menu component [\#3363](https://github.com/primefaces/primefaces/issues/3363)
@@ -531,7 +531,7 @@ Implemented New Features and Enhancements:
 ## [6_2_RC1](https://github.com/primefaces/primefaces/tree/6_2_RC1) (2018-01-10)
 [Full Changelog](https://github.com/primefaces/primefaces/compare/6_1...6_2_RC1)
 
-Implemented New Features and Enhancements:
+**Implemented New Features and Enhancements:**
 
 - Added ui-reflow-headertext class to DataTable for Reflow mode [\#3136](https://github.com/primefaces/primefaces/issues/3136)
 - SelectOneButton: improve server-side rendering [\#3125](https://github.com/primefaces/primefaces/issues/3125)
@@ -1039,7 +1039,7 @@ Implemented New Features and Enhancements:
 ## [6_1](https://github.com/primefaces/primefaces/tree/6_1) (2017-04-19)
 [Full Changelog](https://github.com/primefaces/primefaces/compare/6_1_RC3...6_1)
 
-Implemented New Features and Enhancements:
+**Implemented New Features and Enhancements:**
 
 - Improve input styling on Chips [\#2281](https://github.com/primefaces/primefaces/issues/2281)
 - Improve omega styling for disabled day on Calendar [\#2279](https://github.com/primefaces/primefaces/issues/2279)
@@ -1054,7 +1054,7 @@ Implemented New Features and Enhancements:
 ## [6_1_RC3](https://github.com/primefaces/primefaces/tree/6_1_RC3) (2017-04-14)
 [Full Changelog](https://github.com/primefaces/primefaces/compare/6_1_RC2...6_1_RC3)
 
-Implemented New Features and Enhancements:
+**Implemented New Features and Enhancements:**
 
 - JSF 2.3: SEF \(@next, @previous, @child\) should also skip UILeaf / markup components [\#2266](https://github.com/primefaces/primefaces/issues/2266)
 - XSS issue on Terminal [\#2265](https://github.com/primefaces/primefaces/issues/2265)
@@ -1146,7 +1146,7 @@ Implemented New Features and Enhancements:
 ## [6_1_RC1](https://github.com/primefaces/primefaces/tree/6_1_RC1) (2017-02-27)
 [Full Changelog](https://github.com/primefaces/primefaces/compare/6_0...6_1_RC1)
 
-Implemented New Features and Enhancements:
+**Implemented New Features and Enhancements:**
 
 - p:lifecycle has not set ignoreAutoUpdate=true [\#2112](https://github.com/primefaces/primefaces/issues/2112)
 - Virtual Scrolling for DataTable [\#2105](https://github.com/primefaces/primefaces/issues/2105)
@@ -1413,7 +1413,7 @@ Implemented New Features and Enhancements:
 ## [6_0](https://github.com/primefaces/primefaces/tree/6_0) (2016-06-07)
 [Full Changelog](https://github.com/primefaces/primefaces/compare/6_0_RC4...6_0)
 
-Implemented New Features and Enhancements:
+**Implemented New Features and Enhancements:**
 
 - MenuButton - "ui-button" displayed in case no value set [\#1473](https://github.com/primefaces/primefaces/issues/1473)
 - globalTooltip support to Elements on Diagram [\#1468](https://github.com/primefaces/primefaces/issues/1468)
@@ -1438,7 +1438,7 @@ Implemented New Features and Enhancements:
 ## [6_0_RC4](https://github.com/primefaces/primefaces/tree/6_0_RC4) (2016-05-30)
 [Full Changelog](https://github.com/primefaces/primefaces/compare/6_0_RC3...6_0_RC4)
 
-Implemented New Features and Enhancements:
+**Implemented New Features and Enhancements:**
 
 - moreText support to AutoComplete with columns [\#1457](https://github.com/primefaces/primefaces/issues/1457)
 - New Grid CSS [\#1454](https://github.com/primefaces/primefaces/issues/1454)
@@ -1476,7 +1476,7 @@ Implemented New Features and Enhancements:
 ## [6_0_RC3](https://github.com/primefaces/primefaces/tree/6_0_RC3) (2016-05-03)
 [Full Changelog](https://github.com/primefaces/primefaces/compare/6_0_RC2...6_0_RC3)
 
-Implemented New Features and Enhancements:
+**Implemented New Features and Enhancements:**
 
 - Improve omega styling for messages [\#1382](https://github.com/primefaces/primefaces/issues/1382)
 - Upgrade to Timepicker 1.6.3 [\#1371](https://github.com/primefaces/primefaces/issues/1371)
@@ -1516,7 +1516,7 @@ Implemented New Features and Enhancements:
 ## [6_0_RC1](https://github.com/primefaces/primefaces/tree/6_0_RC1) (2016-04-25)
 [Full Changelog](https://github.com/primefaces/primefaces/compare/5_3...6_0_RC1)
 
-Implemented New Features and Enhancements:
+**Implemented New Features and Enhancements:**
 
 - \[perf\] avoid lists instances in \#getUnobstrusiveEventNames [\#1310](https://github.com/primefaces/primefaces/issues/1310)
 - Hidden container support to AccordionPanel on PF-Mobile [\#1307](https://github.com/primefaces/primefaces/issues/1307)
@@ -1778,7 +1778,7 @@ Implemented New Features and Enhancements:
 ## [5_3](https://github.com/primefaces/primefaces/tree/5_3) (2015-10-18)
 [Full Changelog](https://github.com/primefaces/primefaces/compare/5_3_RC2...5_3)
 
-Implemented New Features and Enhancements:
+**Implemented New Features and Enhancements:**
 
 - Bundle Message support to Header Checkbox for Screen Reader on DataTable [\#796](https://github.com/primefaces/primefaces/issues/796)
 - Keyboard accessibility for Header Checkbox on Datatable [\#795](https://github.com/primefaces/primefaces/issues/795)
@@ -1801,7 +1801,7 @@ Implemented New Features and Enhancements:
 ## [5_3_RC2](https://github.com/primefaces/primefaces/tree/5_3_RC2) (2015-10-09)
 [Full Changelog](https://github.com/primefaces/primefaces/compare/5_3_RC1...5_3_RC2)
 
-Implemented New Features and Enhancements:
+**Implemented New Features and Enhancements:**
 
 - Refactor ui-fluid [\#770](https://github.com/primefaces/primefaces/issues/770)
 - Align component breakpoints with layouts [\#765](https://github.com/primefaces/primefaces/issues/765)
@@ -1832,7 +1832,7 @@ Implemented New Features and Enhancements:
 ## [5_3_RC1](https://github.com/primefaces/primefaces/tree/5_3_RC1) (2015-09-24)
 [Full Changelog](https://github.com/primefaces/primefaces/compare/5_2...5_3_RC1)
 
-Implemented New Features and Enhancements:
+**Implemented New Features and Enhancements:**
 
 - Improve Spotlight Performance [\#707](https://github.com/primefaces/primefaces/issues/707)
 - Focus support for Client side validaton [\#703](https://github.com/primefaces/primefaces/issues/703)
