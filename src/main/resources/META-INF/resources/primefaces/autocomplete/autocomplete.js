@@ -298,6 +298,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
                         }
 
                         if (highlightedItem.length > 0) {
+                            $(this).trigger('change');
                             highlightedItem.click();
                             $this.itemSelectedWithEnter = true;
                         }
