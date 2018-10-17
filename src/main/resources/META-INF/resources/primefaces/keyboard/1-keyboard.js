@@ -1,4 +1,4 @@
-﻿/**
+/**
  * PrimeFaces Keyboard Widget
  */
  PrimeFaces.widget.Keyboard = PrimeFaces.widget.BaseWidget.extend({

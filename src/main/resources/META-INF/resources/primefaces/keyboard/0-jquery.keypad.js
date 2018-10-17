@@ -1,9 +1,9 @@
-﻿/* http://keith-wood.name/keypad.html
+/* http://keith-wood.name/keypad.html
    Keypad field entry extension for jQuery v2.1.0.
    Written by Keith Wood (kbwood{at}iinet.com.au) August 2008.
-   Available under the MIT (http://keith-wood.name/licence.html) license. 
+   Available under the MIT (http://keith-wood.name/licence.html) license.
    Please attribute the author if you use it. */
-   
+
 /* globals JQClass */
 /*! Simple JavaScript Inheritance
  * By John Resig http://ejohn.org/
@@ -19,7 +19,7 @@
 
 	// Collection of derived classes
 	JQClass.classes = {};
- 
+
 	// Create a new JQClass that inherits from this class
 	JQClass.extend = function extender(prop) {
 		var base = this.prototype;
@@ -236,7 +236,7 @@
 } */
 		_postAttach: function(elem, inst) { // jshint unused:false
 		},
-		
+
 		/** Retrieve metadata configuration from the element.
 			Metadata is specified as an attribute:
 			<code>data-&lt;pluginName>="&lt;option name>: '&lt;value>', ..."</code>.
@@ -415,7 +415,7 @@ $('selector').tabs(); // And instantiate it */
 		/** The name of the plugin.
 			@default 'keypad' */
 		name: pluginName,
-		
+
 		/** Don't deep merge options - causes problems with arrays.
 			@default false */
 		deepMerge: false,
@@ -693,7 +693,7 @@ $('selector').tabs(); // And instantiate it */
 					// pop-up keypad when button clicked
 					var buttonStatus = inst.options.buttonStatus;
 					var buttonImage = inst.options.buttonImage;
-					var trigger = $(inst.options.buttonImageOnly ? 
+					var trigger = $(inst.options.buttonImageOnly ?
 						$('<img src="' + buttonImage + '" alt="' +
 						buttonStatus + '" title="' + buttonStatus + '"/>') :
 					$('<button type="button" title="' + buttonStatus + '"></button>').
@@ -1071,12 +1071,12 @@ $('selector').tabs(); // And instantiate it */
 				while (true) {
 					if (range.compareEndPoints('StartToEnd', range) === 0) {
 						break;
-					} 
+					}
 					else {
 						range.moveEnd('character', -1);
 						if (range.text === origText) {
 							text += '\r\n';
-						} 
+						}
 						else {
 							break;
 						}
@@ -1166,7 +1166,7 @@ $('selector').tabs(); // And instantiate it */
 			var thisInst = inst;
 			var activeClasses = this._keyDownClass +
 				(inst.options.useThemeRoller ? ' ui-state-active' : '');
-			
+
 			// PF #3255
 			var buttons = html.find('button');
 			PrimeFaces.skinButton(buttons);
