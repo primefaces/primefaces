@@ -53,6 +53,7 @@ public class Organigram extends OrganigramBase {
             .put("expand", OrganigramNodeExpandEvent.class)
             .put("collapse", OrganigramNodeCollapseEvent.class)
             .put("dragdrop", OrganigramNodeDragDropEvent.class)
+            .put("contextmenu", OrganigramNodeSelectEvent.class)
             .build();
     private static final Collection<String> EVENT_NAMES = BEHAVIOR_EVENT_MAPPING.keySet();
 
