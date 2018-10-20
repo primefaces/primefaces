@@ -65,8 +65,6 @@ public class DataListRenderer extends DataRenderer {
                     list.restoreListState();
 
                     if ((firstOld != list.getFirst()) || (rowsOld != list.getRows())) {
-                        //TODO: check whether page (first) is valid (rowCount may have changed)
-
                         if (list.isLazy()) {
                             list.loadLazyData();
                         }
