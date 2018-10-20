@@ -88,6 +88,8 @@ public class Constants {
 
     public static final String TABLE_STATE = "primefaces.TABLE_STATE";
 
+    public static final String LIST_STATE = "primefaces.LIST_STATE";
+
     private Constants() {
     }
 }
