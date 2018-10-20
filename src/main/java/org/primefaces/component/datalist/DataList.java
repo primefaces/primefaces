@@ -215,14 +215,14 @@ public class DataList extends DataListBase {
     public ListState getListState(boolean create) {
         FacesContext fc = getFacesContext();
         Map<String, Object> sessionMap = fc.getExternalContext().getSessionMap();
-        Map<String, ListState> dlState = (Map) sessionMap.get(Constants.LIST_STATE);
+        Map<String, ListState> dlState = (Map) sessionMap.get(Constants.DATALIST_STATE);
         String viewId = fc.getViewRoot().getViewId().replaceFirst("^/*", "");
         String stateKey = viewId + "_" + getClientId(fc);
         ListState ls;
 
         if (dlState == null) {
             dlState = new HashMap<>();
-            sessionMap.put(Constants.LIST_STATE, dlState);
+            sessionMap.put(Constants.DATALIST_STATE, dlState);
         }
 
         ls = dlState.get(stateKey);
