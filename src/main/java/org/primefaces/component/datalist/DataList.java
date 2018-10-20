@@ -196,4 +196,42 @@ public class DataList extends DataListBase {
         }
     }
 
+    @Override
+    public boolean isMultiViewState() {
+        return super.isMultiViewState();
+    }
+
+    public void restoreListState() {
+        ListState ls = getListState(false);
+        if (ls != null) {
+            if (isPaginator()) {
+                setFirst(ls.getFirst());
+                int rows = (ls.getRows() == 0) ? getRows() : ls.getRows();
+                setRows(rows);
+            }
+        }
+    }
+
+    public ListState getListState(boolean create) {
+        FacesContext fc = getFacesContext();
+        Map<String, Object> sessionMap = fc.getExternalContext().getSessionMap();
+        Map<String, ListState> dlState = (Map) sessionMap.get(Constants.DATALIST_STATE);
+        String viewId = fc.getViewRoot().getViewId().replaceFirst("^/*", "");
+        String stateKey = viewId + "_" + getClientId(fc);
+        ListState ls;
+
+        if (dlState == null) {
+            dlState = new HashMap<>();
+            sessionMap.put(Constants.DATALIST_STATE, dlState);
+        }
+
+        ls = dlState.get(stateKey);
+        if (ls == null && create) {
+            ls = new ListState();
+            dlState.put(stateKey, ls);
+        }
+
+        return ls;
+    }
+
 }
