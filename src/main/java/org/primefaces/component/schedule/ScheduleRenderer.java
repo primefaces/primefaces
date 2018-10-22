@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Logger;
@@ -28,12 +27,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import org.primefaces.json.JSONArray;
+import org.primefaces.json.JSONObject;
 import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
-import org.primefaces.model.ScheduleRenderingMode;
 import org.primefaces.renderkit.CoreRenderer;
-import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class ScheduleRenderer extends CoreRenderer {
@@ -92,51 +91,37 @@ public class ScheduleRenderer extends CoreRenderer {
     }
 
     protected void encodeEventsAsJSON(FacesContext context, Schedule schedule, ScheduleModel model) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
         TimeZone timeZone = schedule.calculateTimeZone();
 
         SimpleDateFormat iso = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
         iso.setTimeZone(timeZone);
-        writer.write("{");
-        writer.write("\"events\" : [");
+
+        JSONArray jsonEvents = new JSONArray();
 
         if (model != null) {
-            for (Iterator<ScheduleEvent> iterator = model.getEvents().iterator(); iterator.hasNext(); ) {
-                ScheduleEvent event = iterator.next();
-                String className = event.getStyleClass();
-                String description = event.getDescription();
-                String url = event.getUrl();
-                ScheduleRenderingMode renderingMode = event.getRenderingMode();
+            for (ScheduleEvent event : model.getEvents()) {
+                JSONObject jsonObject = new JSONObject();
 
-                writer.write("{");
-                writer.write("\"id\": \"" + event.getId() + "\"");
-                writer.write(",\"title\": \"" + EscapeUtils.forJavaScript(event.getTitle()) + "\"");
-                writer.write(",\"start\": \"" + iso.format(event.getStartDate()) + "\"");
-                writer.write(",\"end\": \"" + iso.format(event.getEndDate()) + "\"");
-                writer.write(",\"allDay\":" + event.isAllDay());
-                writer.write(",\"editable\":" + event.isEditable());
-                if (className != null) {
-                    writer.write(",\"className\":\"" + className + "\"");
-                }
-                if (description != null) {
-                    writer.write(",\"description\":\"" + EscapeUtils.forJavaScript(description) + "\"");
-                }
-                if (url != null) {
-                    writer.write(",\"url\":\"" + EscapeUtils.forJavaScript(url) + "\"");
-                }
-                if (renderingMode != null) {
-                    writer.write(",\"rendering\":\"" + renderingMode.getRendering() + "\"");
-                }
+                jsonObject.put("id", event.getId());
+                jsonObject.put("title", event.getTitle());
+                jsonObject.put("start", iso.format(event.getStartDate()));
+                jsonObject.put("end", iso.format(event.getEndDate()));
+                jsonObject.put("allDay", event.isAllDay());
+                jsonObject.put("editable", event.isEditable());
+                jsonObject.put("className", event.getStyleClass());
+                jsonObject.put("description", event.getDescription());
+                jsonObject.put("url", event.getUrl());
+                jsonObject.put("rendering", event.getRenderingMode());
 
-                writer.write("}");
-
-                if (iterator.hasNext()) {
-                    writer.write(",");
-                }
+                jsonEvents.put(jsonObject);
             }
         }
 
-        writer.write("]}");
+        JSONObject jsonResponse = new JSONObject();
+        jsonResponse.put("events", jsonEvents);
+
+        ResponseWriter writer = context.getResponseWriter();
+        writer.write(jsonResponse.toString());
     }
 
     protected void encodeScript(FacesContext context, Schedule schedule) throws IOException {
