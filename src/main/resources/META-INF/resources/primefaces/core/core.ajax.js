@@ -676,6 +676,10 @@ if (!PrimeFaces.ajax) {
         Response: {
 
             handle: function(xml, status, xhr, updateHandler) {
+                if (xml === undefined || xml === null) {
+                    return;
+                }
+
                 var partialResponseNode = xml.getElementsByTagName("partial-response")[0];
 
                 for (var i = 0; i < partialResponseNode.childNodes.length; i++) {
