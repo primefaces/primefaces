@@ -4,8 +4,7 @@
 PrimeFaces.widget.Sticky = PrimeFaces.widget.BaseWidget.extend({
 
     init: function(cfg) {
-        this.cfg = cfg;
-        this.id = this.cfg.id;
+        this._super(cfg);
         this.target = $(PrimeFaces.escapeClientId(this.cfg.target));
         this.cfg.margin = this.cfg.margin||0;
 
