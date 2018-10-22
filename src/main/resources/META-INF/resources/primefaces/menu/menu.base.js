@@ -23,7 +23,7 @@ PrimeFaces.widget.Menu = PrimeFaces.widget.BaseWidget.extend({
         this.trigger.data('primefaces-overlay-target', true).find('*').data('primefaces-overlay-target', true);
 
         this.cfg.appendTo = '@(body)';
-        PrimeFaces.utils.registerDynamicOverlay(this, this.jq, this.jqId);
+        PrimeFaces.utils.registerDynamicOverlay(this, this.jq, this.id);
 
         this.cfg.pos = {
             my: this.cfg.my

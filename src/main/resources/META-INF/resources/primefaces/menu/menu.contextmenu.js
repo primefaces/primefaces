@@ -17,7 +17,7 @@ PrimeFaces.widget.ContextMenu = PrimeFaces.widget.TieredMenu.extend({
 
         //append to body
         this.cfg.appendTo = '@(body)';
-        PrimeFaces.utils.registerDynamicOverlay(this, this.jq, this.jqId);
+        PrimeFaces.utils.registerDynamicOverlay(this, this.jq, this.id);
 
         //attach contextmenu
         if(documentTarget) {
