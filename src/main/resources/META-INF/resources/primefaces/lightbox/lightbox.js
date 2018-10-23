@@ -7,6 +7,7 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
         this._super(cfg);
 
         this.links = this.jq.children(':not(.ui-lightbox-inline)');
+        this.cfg.appendTo = this.cfg.appendTo || '@(body)';
 
         this.createPanel();
 
