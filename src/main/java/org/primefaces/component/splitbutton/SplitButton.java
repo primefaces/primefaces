@@ -47,9 +47,10 @@ public class SplitButton extends SplitButtonBase {
     public String resolveStyleClass() {
         boolean iconBlank = LangUtils.isValueBlank(getIcon());
         boolean valueBlank = getValue() == null;
+        boolean modelBlank = getModel() == null;
         String styleClass = "";
 
-        if (!ComponentUtils.shouldRenderChildren(this)) {
+        if (!ComponentUtils.shouldRenderChildren(this) && modelBlank) {
             if (!valueBlank && iconBlank) {
                 styleClass = HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
             }
