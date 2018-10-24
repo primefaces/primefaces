@@ -1582,8 +1582,4 @@ public class DataTable extends DataTableBase {
     }
 
 
-    @Override
-    public boolean isMultiViewState() {
-        return super.isMultiViewState();
-    }
 }
