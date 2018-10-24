@@ -76,7 +76,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
                         encodeDisabledMenuItem(context, item);
                     }
                     else {
-                        encodeMenuItem(context, menu, item);
+                        encodeMenuItem(context, menu, item, menu.getTabindex());
                     }
 
                     writer.endElement("li");

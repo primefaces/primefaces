@@ -100,7 +100,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
                     writer.startElement("li", null);
                     writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                     writer.writeAttribute("role", "menuitem", null);
-                    encodeMenuItem(context, menu, (MenuItem) element);
+                    encodeMenuItem(context, menu, (MenuItem) element, "-1");
                     writer.endElement("li");
                 }
                 else if (element instanceof Submenu) {
@@ -255,7 +255,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                         writer.writeAttribute("role", "menuitem", null);
-                        encodeMenuItem(context, menu, (MenuItem) submenuElement);
+                        encodeMenuItem(context, menu, (MenuItem) submenuElement, "-1");
                         writer.endElement("li");
                     }
                     else if (submenuElement instanceof Separator) {

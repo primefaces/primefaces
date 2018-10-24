@@ -31,7 +31,8 @@ abstract class BreadCrumbBase extends AbstractMenu implements Widget {
         model,
         style,
         styleClass,
-        homeDisplay;
+        homeDisplay,
+        tabindex;
     }
 
     public BreadCrumbBase() {
@@ -74,6 +75,16 @@ abstract class BreadCrumbBase extends AbstractMenu implements Widget {
 
     public void setHomeDisplay(String homeDisplay) {
         getStateHelper().put(PropertyKeys.homeDisplay, homeDisplay);
+    }
+
+    @Override
+    public String getTabindex() {
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
+    }
+
+    @Override
+    public void setTabindex(String tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 
     @Override

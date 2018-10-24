@@ -121,7 +121,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         return (styleClass == null) ? AbstractMenu.MENUITEM_LINK_CLASS : AbstractMenu.MENUITEM_LINK_CLASS + " " + styleClass;
     }
 
-    protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
+    protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem, String tabindex) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String title = menuitem.getTitle();
         String style = menuitem.getStyle();
@@ -129,7 +129,7 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         String rel = menuitem.getRel();
 
         writer.startElement("a", null);
-        writer.writeAttribute("tabindex", "-1", null);
+        writer.writeAttribute("tabindex", tabindex, null);
         if (shouldRenderId(menuitem)) {
             writer.writeAttribute("id", menuitem.getClientId(), null);
         }

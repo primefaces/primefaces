@@ -113,7 +113,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                     if (containerStyle != null) {
                         writer.writeAttribute("style", containerStyle, null);
                     }
-                    encodeMenuItem(context, menu, menuItem);
+                    encodeMenuItem(context, menu, menuItem, "-1");
                     writer.endElement("li");
                 }
                 else if (element instanceof Submenu) {

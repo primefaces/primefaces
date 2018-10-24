@@ -134,7 +134,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
                         if (containerStyle != null) {
                             writer.writeAttribute("style", containerStyle, null);
                         }
-                        encodeMenuItem(context, menu, menuItem);
+                        encodeMenuItem(context, menu, menuItem, "-1");
                         writer.endElement("li");
                     }
                     else if (element instanceof Submenu) {
@@ -205,7 +205,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
                     if (element instanceof MenuItem) {
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
-                        encodeMenuItem(context, menu, (MenuItem) element);
+                        encodeMenuItem(context, menu, (MenuItem) element, "-1");
                         writer.endElement("li");
                     }
                     else if (element instanceof Submenu) {

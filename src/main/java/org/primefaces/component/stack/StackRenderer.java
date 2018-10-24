@@ -77,7 +77,7 @@ public class StackRenderer extends BaseMenuRenderer {
                         writer.writeAttribute("class", containerStyleClass, null);
                     }
 
-                    encodeMenuItem(context, stack, menuItem);
+                    encodeMenuItem(context, stack, menuItem, "-1");
                     writer.endElement("li");
                 }
             }

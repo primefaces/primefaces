@@ -132,7 +132,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
                         writer.startElement("li", null);
                         writer.writeAttribute("class", Menu.MENUITEM_CLASS, null);
                         writer.writeAttribute("role", "menuitem", null);
-                        encodeMenuItem(context, button, (MenuItem) element);
+                        encodeMenuItem(context, button, (MenuItem) element, "-1");
                         writer.endElement("li");
                     }
                     else if (element instanceof Separator) {

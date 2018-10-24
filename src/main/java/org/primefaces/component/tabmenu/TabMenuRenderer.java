@@ -102,7 +102,7 @@ public class TabMenuRenderer extends BaseMenuRenderer {
             writer.writeAttribute("style", containerStyle, null);
         }
 
-        encodeMenuItem(context, menu, item);
+        encodeMenuItem(context, menu, item, "-1");
 
         writer.endElement("li");
     }

@@ -74,7 +74,7 @@ public class DockRenderer extends BaseMenuRenderer {
 
             for (MenuElement element : menuElements) {
                 if (element.isRendered() && element instanceof MenuItem) {
-                    encodeMenuItem(context, dock, (MenuItem) element);
+                    encodeMenuItem(context, dock, (MenuItem) element, "-1");
                 }
             }
         }
