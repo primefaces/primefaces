@@ -4064,15 +4064,16 @@ PrimeFaces.widget.FrozenDataTable = PrimeFaces.widget.DataTable.extend({
     },
 
     setScrollWidth: function(width) {
+        this.scrollHeader.width(width);
+        this.scrollBody.css('margin-right', 0).width(width);
+        this.scrollFooter.width(width);
+        
         var $this = this,
         headerWidth = width + this.frozenLayout.width();
 
         this.jq.children('.ui-widget-header').each(function() {
             $this.setOuterWidth($(this), headerWidth);
         });
-        this.scrollHeader.width(width);
-        this.scrollBody.css('margin-right', 0).width(width);
-        this.scrollFooter.width(width);
     },
 
     fixColumnWidths: function() {
