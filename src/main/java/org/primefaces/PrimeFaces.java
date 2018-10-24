@@ -190,18 +190,6 @@ public class PrimeFaces {
         }
     }
 
-    public void clearDataListStates() {
-        getFacesContext().getExternalContext().getSessionMap().remove(Constants.DATALIST_STATE);
-    }
-
-    public void clearDataListState(String key) {
-        Map<String, Object> sessionMap = getFacesContext().getExternalContext().getSessionMap();
-        Map<String, TableState> dtState = (Map) sessionMap.get(Constants.DATALIST_STATE);
-        if (dtState != null) {
-            dtState.remove(key);
-        }
-    }
-
     /**
      * Returns the dialog helpers.
      *
