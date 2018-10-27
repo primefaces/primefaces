@@ -194,7 +194,7 @@ public class PrimeFaces {
 
     /**
      * Removes the multiViewState for one specific DataList within the current session.
-     * @param key Key of the DataList. See {@link org.primefaces.component.datalist.DataList#getListState(boolean)} State} for the namebuild of this key.
+     * @param key Key of the DataList. See {@link org.primefaces.component.datalist.DataList#getListState(boolean)}} for the namebuild of this key.
      */
     public void clearDataListState(String key) {
         Map<String, Object> sessionMap = getFacesContext().getExternalContext().getSessionMap();
