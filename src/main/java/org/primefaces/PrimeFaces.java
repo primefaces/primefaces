@@ -166,10 +166,17 @@ public class PrimeFaces {
         resetInputs(Arrays.asList(expressions));
     }
 
+    /**
+     * Removes the multiViewState for all DataTables within the current session.
+     */
     public void clearTableStates() {
         getFacesContext().getExternalContext().getSessionMap().remove(Constants.TABLE_STATE);
     }
 
+    /**
+     * Removes the multiViewState for one specific DataTable within the current session.
+     * @param key Key of the DataTable. See {@link org.primefaces.component.datatable.DataTable#getTableState(boolean)} for the namebuild of this key.
+     */
     public void clearTableState(String key) {
         Map<String, Object> sessionMap = getFacesContext().getExternalContext().getSessionMap();
         Map<String, TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);
@@ -178,10 +185,17 @@ public class PrimeFaces {
         }
     }
 
+    /**
+     * Removes the multiViewState for all DataLists within the current session.
+     */
     public void clearDataListStates() {
         getFacesContext().getExternalContext().getSessionMap().remove(Constants.DATALIST_STATE);
     }
 
+    /**
+     * Removes the multiViewState for one specific DataList within the current session.
+     * @param key Key of the DataList. See {@link org.primefaces.component.datalist.DataList#getListState(boolean)} State} for the namebuild of this key.
+     */
     public void clearDataListState(String key) {
         Map<String, Object> sessionMap = getFacesContext().getExternalContext().getSessionMap();
         Map<String, TableState> dtState = (Map) sessionMap.get(Constants.DATALIST_STATE);
