@@ -17,6 +17,8 @@ package org.primefaces.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 
@@ -31,6 +33,7 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
     private String description;
     private String url;
     private ScheduleRenderingMode renderingMode;
+    private Map<String, Object> dynamicProperties;
 
     public DefaultScheduleEvent() {
     }
@@ -160,6 +163,18 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 
     public void setRenderingMode(ScheduleRenderingMode renderingMode) {
         this.renderingMode = renderingMode;
+    }
+
+    @Override
+    public Map<String, Object> getDynamicProperties() {
+        return dynamicProperties;
+    }
+
+    public Object setDynamicProperty(String key, Object value) {
+        if (dynamicProperties == null) {
+            dynamicProperties = new HashMap<>();
+        }
+        return dynamicProperties.put(key, value);
     }
 
     @Override

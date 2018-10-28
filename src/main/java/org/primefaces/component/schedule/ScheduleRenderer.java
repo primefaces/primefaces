@@ -113,6 +113,17 @@ public class ScheduleRenderer extends CoreRenderer {
                 jsonObject.put("url", event.getUrl());
                 jsonObject.put("rendering", event.getRenderingMode());
 
+                if (event.getDynamicProperties() != null) {
+                    for (Map.Entry<String, Object> dynaProperty : event.getDynamicProperties().entrySet()) {
+                        String key = dynaProperty.getKey();
+                        Object value = dynaProperty.getValue();
+                        if (value instanceof Date) {
+                            value = iso.format((Date) value);
+                        }
+                        jsonObject.put(key, value);
+                    }
+                }
+
                 jsonEvents.put(jsonObject);
             }
         }

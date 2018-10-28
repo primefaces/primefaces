@@ -16,6 +16,7 @@
 package org.primefaces.model;
 
 import java.util.Date;
+import java.util.Map;
 
 public interface ScheduleEvent {
 
@@ -42,4 +43,6 @@ public interface ScheduleEvent {
     public String getUrl();
 
     public ScheduleRenderingMode getRenderingMode();
+
+    public Map<String, Object> getDynamicProperties();
 }
