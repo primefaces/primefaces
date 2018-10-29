@@ -39,7 +39,8 @@ abstract class DataListBase extends UIData implements Widget, ClientBehaviorHold
         styleClass,
         varStatus,
         emptyMessage,
-        itemStyleClass
+        itemStyleClass,
+        multiViewState
     }
 
     public DataListBase() {
@@ -113,6 +114,14 @@ abstract class DataListBase extends UIData implements Widget, ClientBehaviorHold
 
     public void setItemStyleClass(String itemStyleClass) {
         getStateHelper().put(PropertyKeys.itemStyleClass, itemStyleClass);
+    }
+
+    public boolean isMultiViewState() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
+    }
+
+    public void setMultiViewState(boolean multiViewState) {
+        getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
     }
 
     @Override

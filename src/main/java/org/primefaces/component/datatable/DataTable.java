@@ -1540,14 +1540,13 @@ public class DataTable extends DataTableBase {
         Map<String, TableState> dtState = (Map) sessionMap.get(Constants.TABLE_STATE);
         String viewId = fc.getViewRoot().getViewId().replaceFirst("^/*", "");
         String stateKey = viewId + "_" + getClientId(fc);
-        TableState ts;
 
         if (dtState == null) {
             dtState = new HashMap<>();
             sessionMap.put(Constants.TABLE_STATE, dtState);
         }
 
-        ts = dtState.get(stateKey);
+        TableState ts = dtState.get(stateKey);
         if (ts == null && create) {
             ts = new TableState();
             dtState.put(stateKey, ts);

@@ -16,6 +16,7 @@
 package org.primefaces.component.datalist;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -193,6 +194,36 @@ public class DataList extends DataListBase {
                 process(context, descriptionFacet, phaseId);
             }
         }
+    }
+
+    public void restoreDataListState() {
+        DataListState ls = getDataListState(false);
+        if (ls != null && isPaginator()) {
+            setFirst(ls.getFirst());
+            int rows = (ls.getRows() == 0) ? getRows() : ls.getRows();
+            setRows(rows);
+        }
+    }
+
+    public DataListState getDataListState(boolean create) {
+        FacesContext fc = getFacesContext();
+        Map<String, Object> sessionMap = fc.getExternalContext().getSessionMap();
+        Map<String, DataListState> dlState = (Map) sessionMap.get(Constants.DATALIST_STATE);
+        String viewId = fc.getViewRoot().getViewId().replaceFirst("^/*", "");
+        String stateKey = viewId + "_" + getClientId(fc);
+
+        if (dlState == null) {
+            dlState = new HashMap<>();
+            sessionMap.put(Constants.DATALIST_STATE, dlState);
+        }
+
+        DataListState ls = dlState.get(stateKey);
+        if (ls == null && create) {
+            ls = new DataListState();
+            dlState.put(stateKey, ls);
+        }
+
+        return ls;
     }
 
 }

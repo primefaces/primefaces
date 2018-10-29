@@ -49,8 +49,29 @@ public class DataListRenderer extends DataRenderer {
             else {
                 encodeStrictList(context, list);
             }
+
+            if (list.isMultiViewState()) {
+                DataListState ls = list.getDataListState(true);
+                ls.setFirst(list.getFirst());
+                ls.setRows(list.getRows());
+            }
         }
         else {
+            if (list.isMultiViewState()) {
+                if (list.isPaginator()) {
+                    int firstOld = list.getFirst();
+                    int rowsOld = list.getRows();
+
+                    list.restoreDataListState();
+
+                    if ((firstOld != list.getFirst()) || (rowsOld != list.getRows())) {
+                        if (list.isLazy()) {
+                            list.loadLazyData();
+                        }
+                    }
+                }
+            }
+
             encodeMarkup(context, list);
             encodeScript(context, list);
         }
