@@ -196,19 +196,19 @@ public class DataList extends DataListBase {
         }
     }
 
-    public void restoreListState() {
-        ListState ls = getListState(false);
-        if ((ls != null) && (isPaginator())) {
+    public void restoreDataListState() {
+        DataListState ls = getDataListState(false);
+        if (ls != null && isPaginator()) {
             setFirst(ls.getFirst());
             int rows = (ls.getRows() == 0) ? getRows() : ls.getRows();
             setRows(rows);
         }
     }
 
-    public ListState getListState(boolean create) {
+    public DataListState getDataListState(boolean create) {
         FacesContext fc = getFacesContext();
         Map<String, Object> sessionMap = fc.getExternalContext().getSessionMap();
-        Map<String, ListState> dlState = (Map) sessionMap.get(Constants.DATALIST_STATE);
+        Map<String, DataListState> dlState = (Map) sessionMap.get(Constants.DATALIST_STATE);
         String viewId = fc.getViewRoot().getViewId().replaceFirst("^/*", "");
         String stateKey = viewId + "_" + getClientId(fc);
 
@@ -217,9 +217,9 @@ public class DataList extends DataListBase {
             sessionMap.put(Constants.DATALIST_STATE, dlState);
         }
 
-        ListState ls = dlState.get(stateKey);
+        DataListState ls = dlState.get(stateKey);
         if (ls == null && create) {
-            ls = new ListState();
+            ls = new DataListState();
             dlState.put(stateKey, ls);
         }
 

@@ -17,7 +17,7 @@ package org.primefaces.component.datalist;
 
 import java.io.Serializable;
 
-public class ListState implements Serializable {
+public class DataListState implements Serializable {
 
     private int first;
 

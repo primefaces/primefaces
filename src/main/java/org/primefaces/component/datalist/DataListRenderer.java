@@ -51,7 +51,7 @@ public class DataListRenderer extends DataRenderer {
             }
 
             if (list.isMultiViewState()) {
-                ListState ls = list.getListState(true);
+                DataListState ls = list.getDataListState(true);
                 ls.setFirst(list.getFirst());
                 ls.setRows(list.getRows());
             }
@@ -62,7 +62,7 @@ public class DataListRenderer extends DataRenderer {
                     int firstOld = list.getFirst();
                     int rowsOld = list.getRows();
 
-                    list.restoreListState();
+                    list.restoreDataListState();
 
                     if ((firstOld != list.getFirst()) || (rowsOld != list.getRows())) {
                         if (list.isLazy()) {
