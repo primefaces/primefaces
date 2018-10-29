@@ -26,7 +26,6 @@ public class DefaultSubMenu implements Submenu, Serializable {
     private String styleClass;
     private String icon;
     private String label;
-    private boolean disabled;
     private List<MenuElement> elements;
     private boolean rendered = true;
     private boolean expanded = false;
@@ -90,16 +89,6 @@ public class DefaultSubMenu implements Submenu, Serializable {
 
     public void setLabel(String label) {
         this.label = label;
-    }
-
-
-    @Override
-    public boolean isDisabled() {
-        return disabled;
-    }
-
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
     }
 
     @Override
