@@ -27,7 +27,6 @@ abstract class UISubmenuBase extends UIComponentBase implements Submenu {
     public enum PropertyKeys {
 
         label,
-        disabled,
         icon,
         style,
         styleClass,
@@ -50,15 +49,6 @@ abstract class UISubmenuBase extends UIComponentBase implements Submenu {
 
     public void setLabel(String label) {
         getStateHelper().put(PropertyKeys.label, label);
-    }
-
-    @Override
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
     }
 
     @Override
