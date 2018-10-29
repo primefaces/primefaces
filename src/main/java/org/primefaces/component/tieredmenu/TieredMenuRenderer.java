@@ -146,12 +146,20 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String icon = submenu.getIcon();
         String label = submenu.getLabel();
+        boolean disabled = submenu.isDisabled();
 
         //title
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
-        writer.writeAttribute("class", Menu.SUBMENU_LINK_CLASS, null);
         writer.writeAttribute("tabindex", "-1", null);
+
+        String styleClass = Menu.SUBMENU_LINK_CLASS;
+        if (disabled) {
+            styleClass = styleClass + " ui-state-disabled";
+        }
+
+        writer.writeAttribute("class", styleClass, null);
+
 
         if (icon != null) {
             writer.startElement("span", null);
@@ -170,14 +178,21 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 
         writer.endElement("a");
 
-        //submenus and menuitems
-        if (submenu.getElementsCount() > 0) {
-            writer.startElement("ul", null);
-            writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
-            writer.writeAttribute("role", "menu", null);
-            encodeElements(context, menu, submenu.getElements());
-            writer.endElement("ul");
+        if (disabled) {
+            writer.writeAttribute("href", "#", null);
+            writer.writeAttribute("onclick", "return false;", null);
         }
+        else {
+            //submenus and menuitems
+            if (submenu.getElementsCount() > 0) {
+                writer.startElement("ul", null);
+                writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
+                writer.writeAttribute("role", "menu", null);
+                encodeElements(context, menu, submenu.getElements());
+                writer.endElement("ul");
+            }
+        }
+
     }
 
     protected void encodeSubmenuIcon(FacesContext context, Submenu submenu) throws IOException {
