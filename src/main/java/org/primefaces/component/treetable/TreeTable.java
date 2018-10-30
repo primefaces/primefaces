@@ -638,13 +638,13 @@ public class TreeTable extends TreeTableBase {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String columnTogglerParam = params.get(getClientId(context) + "_columnTogglerState");
         if (columnTogglerParam != null) {
-            String[] togglableColumnsArr = columnTogglerParam.split(",");
-            for (String togglableColumnAsString: togglableColumnsArr) {
-                int sepIndex = togglableColumnAsString.lastIndexOf("_");
-                UIColumn column = this.findColumn(togglableColumnAsString.substring(0, sepIndex));
+            String[] togglableColumns = columnTogglerParam.split(",");
+            for (String togglableColumn : togglableColumns) {
+                int sepIndex = togglableColumn.lastIndexOf("_");
+                UIColumn column = findColumn(togglableColumn.substring(0, sepIndex));
 
                 if (column != null) {
-                    ((Column) column).setVisible(Boolean.valueOf(togglableColumnAsString.substring(sepIndex + 1, togglableColumnAsString.length())));
+                    ((Column) column).setVisible(Boolean.valueOf(togglableColumn.substring(sepIndex + 1)));
                 }
             }
         }
