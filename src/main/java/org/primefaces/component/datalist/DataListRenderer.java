@@ -57,18 +57,14 @@ public class DataListRenderer extends DataRenderer {
             }
         }
         else {
-            if (list.isMultiViewState()) {
-                if (list.isPaginator()) {
-                    int firstOld = list.getFirst();
-                    int rowsOld = list.getRows();
+            if (list.isMultiViewState() && list.isPaginator()) {
+                int firstOld = list.getFirst();
+                int rowsOld = list.getRows();
 
-                    list.restoreDataListState();
+                list.restoreDataListState();
 
-                    if ((firstOld != list.getFirst()) || (rowsOld != list.getRows())) {
-                        if (list.isLazy()) {
-                            list.loadLazyData();
-                        }
-                    }
+                if (list.isLazy() && (firstOld != list.getFirst() || rowsOld != list.getRows())) {
+                    list.loadLazyData();
                 }
             }
 
@@ -113,7 +109,7 @@ public class DataListRenderer extends DataRenderer {
 
         if (empty) {
             writer.startElement("div", list);
-            writer.writeAttribute("class", DataList.DATALIST_EMPTYMESSAGE_CLASS, null);
+            writer.writeAttribute("class", DataList.DATALIST_EMPTY_MESSAGE_CLASS, null);
             writer.writeText(list.getEmptyMessage(), "emptyMessage");
             writer.endElement("div");
         }
