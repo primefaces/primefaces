@@ -131,7 +131,7 @@ PrimeFaces.widget.FileUpload = PrimeFaces.widget.BaseWidget.extend({
                     return;
                 }
                 if($this.cfg.onerror) {
-                    $this.cfg.onerror.call($this);
+                    $this.cfg.onerror.call($this, data.jqXHR, data.textStatus, data.jqXHR.pfArgs);
                 }
             },
             progress: function(e, data) {
