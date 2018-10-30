@@ -213,6 +213,8 @@ public class TreeTableRenderer extends DataRenderer {
         if (dynamicCols != null) {
             dynamicCols.setRowIndex(-1);
         }
+
+        tt.updateColumnsVisibility(context);
     }
 
     protected void encodeScript(FacesContext context, TreeTable tt) throws IOException {
@@ -684,9 +686,9 @@ public class TreeTableRenderer extends DataRenderer {
         String sortIcon = null;
         String style = column.getStyle();
         String width = column.getWidth();
-        boolean isColVisible = column.isVisible();
         String columnClass = sortable ? TreeTable.SORTABLE_COLUMN_HEADER_CLASS : TreeTable.COLUMN_HEADER_CLASS;
-        columnClass = !isColVisible ? columnClass + " " + TreeTable.HIDDEN_COLUMN_CLASS : columnClass;
+        columnClass = !column.isVisible() ? columnClass + " " + TreeTable.HIDDEN_COLUMN_CLASS : columnClass;
+        columnClass = !column.isToggleable() ? columnClass + " " + TreeTable.STATIC_COLUMN_CLASS : columnClass;
         String userColumnClass = column.getStyleClass();
         if (column.isResizable()) {
             columnClass = columnClass + " " + TreeTable.RESIZABLE_COLUMN_CLASS;

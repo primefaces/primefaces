@@ -88,6 +88,7 @@ public class TreeTable extends TreeTableBase {
     public static final String COLUMN_INPUT_FILTER_CLASS = "ui-column-filter ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all";
     public static final String COLUMN_CUSTOM_FILTER_CLASS = "ui-column-customfilter";
     public static final String HIDDEN_COLUMN_CLASS = "ui-helper-hidden";
+    public static final String STATIC_COLUMN_CLASS = "ui-static-column";
 
     public static final String EDITABLE_COLUMN_CLASS = "ui-editable-column";
     public static final String EDITING_ROW_CLASS = "ui-row-editing";
@@ -633,4 +634,19 @@ public class TreeTable extends TreeTableBase {
         }
     }
 
+    public void updateColumnsVisibility(FacesContext context) {
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+        String columnTogglerParam = params.get(getClientId(context) + "_columnTogglerState");
+        if (columnTogglerParam != null) {
+            String[] togglableColumnsArr = columnTogglerParam.split(",");
+            for (String togglableColumnAsString: togglableColumnsArr) {
+                int sepIndex = togglableColumnAsString.lastIndexOf("_");
+                UIColumn column = this.findColumn(togglableColumnAsString.substring(0, sepIndex));
+
+                if (column != null) {
+                    ((Column) column).setVisible(Boolean.valueOf(togglableColumnAsString.substring(sepIndex + 1, togglableColumnAsString.length())));
+                }
+            }
+        }
+    }
 }
