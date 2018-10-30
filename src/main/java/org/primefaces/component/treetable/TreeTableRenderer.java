@@ -602,6 +602,7 @@ public class TreeTableRenderer extends DataRenderer {
                 int rowspan = column.getRowspan();
                 int colspan = column.getColspan();
                 int priority = column.getPriority();
+                boolean isColVisible = column.isVisible();
 
                 if (priority > 0) {
                     columnStyleClass = (columnStyleClass == null) ? "ui-column-p-" + priority : columnStyleClass + " ui-column-p-" + priority;
@@ -609,6 +610,10 @@ public class TreeTableRenderer extends DataRenderer {
 
                 if (column.getCellEditor() != null) {
                     columnStyleClass = (columnStyleClass == null) ? TreeTable.EDITABLE_COLUMN_CLASS : TreeTable.EDITABLE_COLUMN_CLASS + " " + columnStyleClass;
+                }
+
+                if (!isColVisible) {
+                    columnStyleClass = (columnStyleClass == null) ? TreeTable.HIDDEN_COLUMN_CLASS : columnStyleClass + " " + TreeTable.HIDDEN_COLUMN_CLASS;
                 }
 
                 writer.startElement("td", null);
@@ -679,7 +684,9 @@ public class TreeTableRenderer extends DataRenderer {
         String sortIcon = null;
         String style = column.getStyle();
         String width = column.getWidth();
+        boolean isColVisible = column.isVisible();
         String columnClass = sortable ? TreeTable.SORTABLE_COLUMN_HEADER_CLASS : TreeTable.COLUMN_HEADER_CLASS;
+        columnClass = !isColVisible ? columnClass + " " + TreeTable.HIDDEN_COLUMN_CLASS : columnClass;
         String userColumnClass = column.getStyleClass();
         if (column.isResizable()) {
             columnClass = columnClass + " " + TreeTable.RESIZABLE_COLUMN_CLASS;
