@@ -990,7 +990,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
             //append to body if not already appended by user choice
             if(!this.panel.parent().is(document.body)) {
-                return null;
+                return "@(body)";
             }
         }
         
