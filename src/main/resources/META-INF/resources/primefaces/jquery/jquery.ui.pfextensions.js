@@ -132,6 +132,28 @@
         html += "</div>"; // Close datepicker_header
         return html;
     };
+    
+    $.datepicker._updateDatepicker = function (inst) {
+
+        // don't popup the datepicker if there is another instance already opened
+        var input = inst.input[0];
+        if ($.datepicker._curInst && $.datepicker._curInst !== inst && $.datepicker._datepickerShowing && $.datepicker._lastInput !== input) {
+                return;
+        }
+
+        if (typeof(inst.stay_open) !== 'boolean' || inst.stay_open === false) {
+                var $this = this;
+                setTimeout( function() {
+                    $this._base_updateDatepicker(inst);
+
+                    // Reload the time control when changing something in the input text field.
+                    var tp_inst = $this._get(inst, 'timepicker');
+                    if (tp_inst) {
+                            tp_inst._addTimePicker(inst);
+                    }
+                }, 0);
+        }
+    };
 })();
 
 
