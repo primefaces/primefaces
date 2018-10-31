@@ -18844,6 +18844,12 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
+            <description><![CDATA[Disables or enables the submenu.]]></description>
+            <name>disabled</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
             <description><![CDATA[Icon of a submenu, see menuitem to see how it is used.]]></description>
             <name>icon</name>
             <required>false</required>
