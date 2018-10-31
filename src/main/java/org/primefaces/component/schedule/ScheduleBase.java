@@ -68,7 +68,8 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
         weekNumberCalculator,
         nextDayThreshold,
         slotEventOverlap,
-        urlTarget
+        urlTarget,
+        noOpener
     }
 
     public ScheduleBase() {
@@ -383,6 +384,15 @@ abstract class ScheduleBase extends UIComponentBase implements Widget, ClientBeh
     public void setUrlTarget(String urlTarget) {
         getStateHelper().put(PropertyKeys.urlTarget, urlTarget);
     }
+
+    public boolean isNoOpener() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.noOpener, true);
+    }
+
+    public void setNoOpener(boolean noOpener) {
+        getStateHelper().put(PropertyKeys.noOpener, noOpener);
+    }
+
 
     @Override
     public String resolveWidgetVar() {
