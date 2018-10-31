@@ -15591,6 +15591,12 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description><![CDATA[Whether for URL events access to the opener window from the target site should be prevented (phishing protection), default value is true.]]></description>
+            <name>noOpener</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <tag-name>scrollPanel</tag-name>

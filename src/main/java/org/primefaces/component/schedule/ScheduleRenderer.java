@@ -213,7 +213,8 @@ public class ScheduleRenderer extends CoreRenderer {
                 .attr("weekNumbers", isShowWeekNumbers, false)
                 .attr("nextDayThreshold", schedule.getNextDayThreshold(), "09:00:00")
                 .attr("slotEventOverlap", schedule.isSlotEventOverlap(), true)
-                .attr("urlTarget", schedule.getUrlTarget(), "_blank");
+                .attr("urlTarget", schedule.getUrlTarget(), "_blank")
+                .attr("noOpener", schedule.isNoOpener(), true);
 
         String columnFormat = schedule.getColumnFormat();
         if (columnFormat != null) {

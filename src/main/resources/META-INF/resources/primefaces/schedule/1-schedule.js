@@ -79,7 +79,9 @@ PrimeFaces.widget.Schedule = PrimeFaces.widget.DeferredWidget.extend({
         this.cfg.eventClick = function(calEvent, jsEvent, view) {
             if (calEvent.url) {
                 var targetWindow = window.open('', $this.cfg.urlTarget);
-                targetWindow.opener = null;
+                if ($this.cfg.noOpener) {
+                    targetWindow.opener = null;    
+                }
                 targetWindow.location = calEvent.url;
                 return false;
             }
