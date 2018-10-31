@@ -33,7 +33,11 @@ PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
             });
 
             //adding accesibility
-            this.box.on('keydown', function(event) {
+            this.box.on('focus', function() {
+                $this.box.addClass('ui-state-focus');
+            }).on('blur', function() {
+                $this.box.removeClass('ui-state-focus');
+            }).on('keydown', function(event) {
                 switch (event.keyCode) {
                     case 38:
                         $this.toggle(1);
