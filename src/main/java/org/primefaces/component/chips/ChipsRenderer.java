@@ -89,7 +89,7 @@ public class ChipsRenderer extends InputRenderer {
         String inputStyleClass = chips.getInputStyleClass();
 
         String listClass = disabled ? Chips.CONTAINER_CLASS + " ui-state-disabled" : Chips.CONTAINER_CLASS;
-        listClass = listClass + " " + inputStyleClass;
+        listClass = (inputStyleClass == null) ? listClass : listClass + " " + inputStyleClass;
         listClass = chips.isValid() ? listClass : listClass + " ui-state-error";
 
         writer.startElement("div", null);
