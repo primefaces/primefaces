@@ -158,7 +158,9 @@ public class TriStateCheckboxRenderer extends InputRenderer {
         }
 
         writer.startElement("div", null);
-        writer.writeAttribute("tabIndex", checkbox.getTabindex() == null ? 0 : checkbox.getTabindex(), "tabindex");
+        if (!disabled) {
+            writer.writeAttribute("tabIndex", checkbox.getTabindex() == null ? 0 : checkbox.getTabindex(), "tabindex");
+        }
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("data-iconstates", statesIconsClasses, null);
         if (!LangUtils.isValueBlank(stateOneTitle) || !LangUtils.isValueBlank(stateTwoTitle) || !LangUtils.isValueBlank(stateThreeTitle)) {
