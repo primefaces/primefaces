@@ -151,16 +151,17 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         //title
         writer.startElement("a", null);
         writer.writeAttribute("href", "#", null);
-        writer.writeAttribute("class", Menu.SUBMENU_LINK_CLASS, null);
         writer.writeAttribute("tabindex", "-1", null);
 
         String styleClass = Menu.SUBMENU_LINK_CLASS;
         if (disabled) {
             styleClass = styleClass + " ui-state-disabled";
         }
-
         writer.writeAttribute("class", styleClass, null);
 
+        if (disabled) {
+            writer.writeAttribute("onclick", "return false;", null);
+        }
 
         if (icon != null) {
             writer.startElement("span", null);
@@ -177,13 +178,9 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 
         encodeSubmenuIcon(context, submenu);
 
+        writer.endElement("a");
 
-        if (disabled) {
-            writer.writeAttribute("onclick", "return false;", null);
-            writer.endElement("a");
-        }
-        else {
-            writer.endElement("a");
+        if (!disabled) {
             //submenus and menuitems
             if (submenu.getElementsCount() > 0) {
                 writer.startElement("ul", null);
