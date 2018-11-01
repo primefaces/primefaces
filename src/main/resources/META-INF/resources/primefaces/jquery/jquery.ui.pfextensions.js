@@ -239,6 +239,75 @@ $.widget( "ui.sortable", $.ui.sortable, {
 
 (function() {
     $.extend(Object.getPrototypeOf($.timepicker), {
+
+            _updateDateTime: function (dp_inst) {
+                dp_inst = this.inst || dp_inst;
+                var dtTmp = (dp_inst.currentYear > 0?
+                        new Date(dp_inst.currentYear, dp_inst.currentMonth, dp_inst.currentDay) :
+                            new Date(dp_inst.selectedYear, dp_inst.selectedMonth, dp_inst.selectedDay)),
+                            dt = $.datepicker._daylightSavingAdjust(dtTmp),
+                            dateFmt = $.datepicker._get(dp_inst, 'dateFormat'),
+                            formatCfg = $.datepicker._getFormatConfig(dp_inst),
+                            timeAvailable = dt !== null && this.timeDefined;
+                this.formattedDate = $.datepicker.formatDate(dateFmt, (dt === null ? new Date() : dt), formatCfg);
+                var formattedDateTime = this.formattedDate;
+
+                // if a slider was changed but datepicker doesn't have a value yet, set it
+                var originalValue = dp_inst.lastVal;
+                if (originalValue === "") {
+                    dp_inst.currentYear = dp_inst.selectedYear;
+                    dp_inst.currentMonth = dp_inst.selectedMonth;
+                    dp_inst.currentDay = dp_inst.selectedDay;
+                }
+
+                if (this._defaults.timeOnly === true && this._defaults.timeOnlyShowDate === false) {
+                    formattedDateTime = this.formattedTime;
+                } else if ((this._defaults.timeOnly !== true && (this._defaults.alwaysSetTime || timeAvailable)) || (this._defaults.timeOnly === true && this._defaults.timeOnlyShowDate === true)) {
+                    formattedDateTime += this._defaults.separator + this.formattedTime + this._defaults.timeSuffix;
+                }
+
+                this.formattedDateTime = formattedDateTime;
+
+                if (!this._defaults.showTimepicker) {
+                    this.$input.val(this.formattedDate);
+                } else if (this.$altInput && this._defaults.timeOnly === false && this._defaults.altFieldTimeOnly === true) {
+                    this.$altInput.val(this.formattedTime);
+                    this.$input.val(this.formattedDate);
+                } else if (this.$altInput) {
+                    this.$input.val(formattedDateTime);
+                    var altFormattedDateTime = '',
+                    altSeparator = this._defaults.altSeparator !== null ? this._defaults.altSeparator : this._defaults.separator,
+                            altTimeSuffix = this._defaults.altTimeSuffix !== null ? this._defaults.altTimeSuffix : this._defaults.timeSuffix;
+
+                    if (!this._defaults.timeOnly) {
+                        if (this._defaults.altFormat) {
+                            altFormattedDateTime = $.datepicker.formatDate(this._defaults.altFormat, (dt === null ? new Date() : dt), formatCfg);
+                        }
+                        else {
+                            altFormattedDateTime = this.formattedDate;
+                        }
+
+                        if (altFormattedDateTime) {
+                            altFormattedDateTime += altSeparator;
+                        }
+                    }
+
+                    if (this._defaults.altTimeFormat !== null) {
+                        altFormattedDateTime += $.datepicker.formatTime(this._defaults.altTimeFormat, this, this._defaults) + altTimeSuffix;
+                    }
+                    else {
+                        altFormattedDateTime += this.formattedTime + altTimeSuffix;
+                    }
+                    this.$altInput.val(altFormattedDateTime);
+                } else {
+                    this.$input.val(formattedDateTime);
+                }
+
+                if (originalValue != formattedDateTime) {
+                    this.$input.trigger("change"); // PrimeFaces https://github.com/primefaces/primefaces/issues/2811
+                }
+            },
+
             _controls: {
                 // slider methods
                 slider: {
