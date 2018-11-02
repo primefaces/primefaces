@@ -27,3 +27,4 @@ jquery.maskedinput.js:
 jquery.ui.pfextensions:
 - Added gotoToday selection fix (https://github.com/primefaces/primefaces/issues/1420)
 - Sortable performance fix (/https://github.com/primefaces/primefaces/issues/3675)
+- Timepicker Fix (https://github.com/primefaces/primefaces/issues/2811)
