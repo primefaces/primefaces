@@ -469,9 +469,11 @@
 
 body .ui-widget,
 body .ui-widget .ui-widget {
-  font-family: "Open Sans", "Helvetica Neue", sans-serif;
-  font-size: 14px;
   text-decoration: none; }
+body .ui-widget:not(.pi),
+body .ui-widget .ui-widget:not(.pi) {
+  font-family: "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 14px; }
 body .ui-icon {
   height: 1em;
   width: 1em;
@@ -764,6 +766,7 @@ body .ui-radiobutton {
     width: 20px;
     height: 20px;
     text-align: center;
+    position: relative;
     -moz-border-radius: 50%;
     -webkit-border-radius: 50%;
     border-radius: 50%;
@@ -793,7 +796,17 @@ body .ui-radiobutton {
     body .ui-radiobutton .ui-radiobutton-box .ui-radiobutton-icon {
       width: 10px;
       height: 10px;
+      display: inline-block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-left: -10px;
+      margin-top: -10px;
       vertical-align: middle;
+      -moz-transition: background-color 0.2s;
+      -o-transition: background-color 0.2s;
+      -webkit-transition: background-color 0.2s;
+      transition: background-color 0.2s;
       -moz-border-radius: 50%;
       -webkit-border-radius: 50%;
       border-radius: 50%; }
@@ -869,6 +882,16 @@ body .ui-selectmanymenu {
         -moz-border-radius: 0;
         -webkit-border-radius: 0;
         border-radius: 0; }
+        body .ui-selectonelistbox .ui-selectlistbox-listcontainer .ui-selectlistbox-list .ui-selectlistbox-item > td,
+        body .ui-selectmanymenu .ui-selectlistbox-listcontainer .ui-selectlistbox-list .ui-selectlistbox-item > td {
+          padding-top: 0.429em;
+          padding-bottom: 0.429em; }
+          body .ui-selectonelistbox .ui-selectlistbox-listcontainer .ui-selectlistbox-list .ui-selectlistbox-item > td:first-child,
+          body .ui-selectmanymenu .ui-selectlistbox-listcontainer .ui-selectlistbox-list .ui-selectlistbox-item > td:first-child {
+            padding-left: 0.857em; }
+          body .ui-selectonelistbox .ui-selectlistbox-listcontainer .ui-selectlistbox-list .ui-selectlistbox-item > td:last-child,
+          body .ui-selectmanymenu .ui-selectlistbox-listcontainer .ui-selectlistbox-list .ui-selectlistbox-item > td:last-child {
+            padding-right: 0.857em; }
         body .ui-selectonelistbox .ui-selectlistbox-listcontainer .ui-selectlistbox-list .ui-selectlistbox-item.ui-state-hover,
         body .ui-selectmanymenu .ui-selectlistbox-listcontainer .ui-selectlistbox-list .ui-selectlistbox-item.ui-state-hover {
           background-color: #4c4c4c;
@@ -1032,7 +1055,8 @@ body .ui-selectcheckboxmenu {
       padding: 0;
       color: #dedede; }
   body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-multiple-container {
-    min-height: 31px; }
+    min-height: 31px;
+    padding: 0.2145em 0.429em; }
     body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-multiple-container.ui-inputfield {
       padding-right: 28px; }
     body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-multiple-container .ui-selectcheckboxmenu-token {
@@ -1317,7 +1341,8 @@ body .ui-inplace .ui-inplace-editor {
     padding: 0.429em; }
 body .ui-rating .ui-rating-cancel {
   float: none;
-  display: inline-block; }
+  display: inline-block;
+  vertical-align: middle; }
   body .ui-rating .ui-rating-cancel a {
     font-family: 'primeicons';
     speak: none;
@@ -1349,7 +1374,8 @@ body .ui-rating .ui-rating-cancel {
       color: #d76161; }
 body .ui-rating .ui-rating-star {
   float: none;
-  display: inline-block; }
+  display: inline-block;
+  vertical-align: middle; }
   body .ui-rating .ui-rating-star a {
     font-family: 'primeicons';
     speak: none;
@@ -1551,8 +1577,21 @@ body .ui-datepicker {
     body .ui-datepicker .ui-timepicker-div dl dd {
       padding: 0.429em 0;
       margin: 0 0.714em 0.714em 40%; }
+body .ui-calendar.ui-trigger-calendar {
+  -moz-border-radius-topright: 0;
+  -webkit-border-top-right-radius: 0;
+  border-top-right-radius: 0;
+  -moz-border-radius-bottomright: 0;
+  -webkit-border-bottom-right-radius: 0;
+  border-bottom-right-radius: 0; }
 body .ui-calendar .ui-button.ui-button-icon-only {
-  width: 2.143em; }
+  width: 2.143em;
+  -moz-border-radius-topleft: 0;
+  -webkit-border-top-left-radius: 0;
+  border-top-left-radius: 0;
+  -moz-border-radius-bottomleft: 0;
+  -webkit-border-bottom-left-radius: 0;
+  border-bottom-left-radius: 0; }
   body .ui-calendar .ui-button.ui-button-icon-only .ui-icon-calendar {
     font-family: 'primeicons';
     speak: none;
@@ -1766,17 +1805,29 @@ body .keypad-popup {
   padding: 0.857em;
   border: 1px solid #191919;
   margin: 0;
-  width: auto;
+  width: auto !important;
   min-width: 150px;
   -webkit-box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
   -moz-box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16); }
+  body .keypad-popup .keypad-space {
+    margin: 1px;
+    width: 2em; }
+  body .keypad-popup .keypad-half-space {
+    margin-left: 0.5px;
+    margin-right: 0.5px; }
   body .keypad-popup button {
     background-color: #ffffff;
     border: 1px solid transparent;
     padding: 0.429em;
     margin: 1px;
     outline: 0 none; }
+    body .keypad-popup button.keypad-key {
+      width: 2em; }
+    body .keypad-popup button.keypad-special {
+      width: calc(4em + 2px); }
+    body .keypad-popup button.keypad-spacebar {
+      width: calc(12em + 10px); }
     body .keypad-popup button.ui-state-hover {
       background-color: #eaeaea;
       border: 1px solid transparent;
@@ -1921,12 +1972,34 @@ body .ui-inputgroup .ui-inputgroup-addon-checkbox {
     border-bottom-left-radius: 3px; }
   body .ui-inputgroup .ui-inputgroup-addon:last-child,
   body .ui-inputgroup .ui-inputgroup-addon-checkbox:last-child {
-    -moz-border-radius-topleft: 3px;
-    -webkit-border-top-left-radius: 3px;
-    border-top-left-radius: 3px;
-    -moz-border-radius-bottomleft: 3px;
-    -webkit-border-bottom-left-radius: 3px;
-    border-bottom-left-radius: 3px; }
+    -moz-border-radius-topright: 3px;
+    -webkit-border-top-right-radius: 3px;
+    border-top-right-radius: 3px;
+    -moz-border-radius-bottomright: 3px;
+    -webkit-border-bottom-right-radius: 3px;
+    border-bottom-right-radius: 3px; }
+body .ui-inputgroup .ui-button:first-child {
+  -moz-border-radius-topleft: 3px;
+  -webkit-border-top-left-radius: 3px;
+  border-top-left-radius: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  border-bottom-left-radius: 3px; }
+body .ui-inputgroup .ui-button:last-child {
+  -moz-border-radius-topright: 3px;
+  -webkit-border-top-right-radius: 3px;
+  border-top-right-radius: 3px;
+  -moz-border-radius-bottomright: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  border-bottom-right-radius: 3px; }
+body .ui-inputgroup .ui-autocomplete:last-child .ui-button.ui-autocomplete-dropdown,
+body .ui-inputgroup .ui-spinner:last-child .ui-spinner-button {
+  -moz-border-radius-topright: 3px;
+  -webkit-border-top-right-radius: 3px;
+  border-top-right-radius: 3px;
+  -moz-border-radius-bottomright: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  border-bottom-right-radius: 3px; }
 body .ui-inputgroup .ui-inputgroup-addon-checkbox {
   padding: 0;
   position: relative; }
@@ -1944,6 +2017,7 @@ body .ui-button {
   border: 1px solid #1ea04c;
   font-size: 14px;
   margin: 0;
+  margin-right: .1em;
   outline: 0 none;
   -moz-transition: background-color 0.2s;
   -o-transition: background-color 0.2s;
@@ -2173,8 +2247,7 @@ body .ui-splitbutton.ui-buttonset .ui-splitbutton-menubutton {
   height: 100%;
   padding: 0;
   position: absolute;
-  top: 0;
-  right: -1px; }
+  top: 0; }
   body .ui-splitbutton.ui-buttonset .ui-splitbutton-menubutton .ui-icon.ui-icon-triangle-1-s {
     position: absolute;
     margin: auto;
@@ -2199,6 +2272,39 @@ body .ui-splitbutton.ui-buttonset .ui-splitbutton-menubutton {
     font-size: 1.25em; }
     body .ui-splitbutton.ui-buttonset .ui-splitbutton-menubutton .ui-icon.ui-icon-triangle-1-s:before {
       content: ""; }
+body .ui-splitbuttonmenu .ui-splitbuttonmenu-filter-container {
+  padding: 0.429em 0.857em 0.429em 0.857em;
+  margin: 0;
+  border-bottom: 1px solid #191919;
+  background-color: #252525;
+  color: #dedede; }
+  body .ui-splitbuttonmenu .ui-splitbuttonmenu-filter-container .ui-splitbuttonmenu-filter.ui-inputfield {
+    padding: 0.429em;
+    width: 100%;
+    padding-left: 1.858em; }
+  body .ui-splitbuttonmenu .ui-splitbuttonmenu-filter-container .ui-icon {
+    font-family: 'primeicons';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-indent: 0px !important;
+    text-align: center;
+    background: none;
+    display: inline-block;
+    font-size: 1.25em;
+    position: absolute;
+    left: 1.286em;
+    top: 50%;
+    margin-top: -0.5em;
+    color: #888888; }
+    body .ui-splitbuttonmenu .ui-splitbuttonmenu-filter-container .ui-icon:before {
+      content: ""; }
 body .ui-fluid .ui-splitbutton .ui-button.ui-splitbutton-menubutton {
   width: 28px; }
 
@@ -2871,7 +2977,10 @@ body .ui-paginator {
         background-color: #4c4c4c;
         color: #dedede; }
   body .ui-paginator .ui-paginator-current, body .ui-paginator .ui-paginator-rpp-options {
-    margin: 0.429em;
+    font-size: 1em;
+    line-height: 2.286em;
+    padding: 0;
+    margin: 0 0.429em;
     display: inline-block;
     vertical-align: middle; }
 body .ui-datatable .ui-datatable-header,
@@ -3239,6 +3348,8 @@ body .ui-datalist .ui-datalist-content {
   color: #dedede;
   padding: 0.571em 1em;
   line-height: 1.5; }
+  body .ui-datalist .ui-datalist-content .ui-datalist-item a {
+    overflow: hidden; }
 body .ui-datalist .ui-paginator {
   padding: 0; }
   body .ui-datalist .ui-paginator.ui-paginator-top {
@@ -3999,8 +4110,7 @@ body .ui-carousel {
         text-align: center;
         background: none;
         display: inline-block;
-        font-size: 1.25em;
-        font-size: 16px; }
+        font-size: 1.25em; }
         body .ui-carousel .ui-carousel-page-links .ui-carousel-page-link.ui-icon-radio-off:before {
           content: ""; }
       body .ui-carousel .ui-carousel-page-links .ui-carousel-page-link.ui-icon-radio-on {
@@ -4018,8 +4128,7 @@ body .ui-carousel {
         text-align: center;
         background: none;
         display: inline-block;
-        font-size: 1.25em;
-        font-size: 16px; }
+        font-size: 1.25em; }
         body .ui-carousel .ui-carousel-page-links .ui-carousel-page-link.ui-icon-radio-on:before {
           content: ""; }
 body .ui-tree {
