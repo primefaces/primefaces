@@ -17,13 +17,21 @@ PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
         //bind events if not disabled
         if (!this.disabled) {
-            this.box.mouseover(function() {
+            this.box.on('mouseover', function(e) {
                 $this.box.addClass('ui-state-hover');
-            }).mouseout(function() {
+            })
+            .on('mouseout', function(e) {
                 $this.box.removeClass('ui-state-hover');
-            }).click(function(event) {
+            })
+            .on('click', function(e) {
                 $this.toggle(1);
                 if (event.preventDefault) { event.preventDefault(); } else { event.returnValue = false; }
+            })
+            .on('focus', function(e) {
+                $this.box.addClass('ui-state-focus');
+            })
+            .on('blur', function(e) {
+                $this.box.removeClass('ui-state-focus');
             });
 
             //toggle state on label click
