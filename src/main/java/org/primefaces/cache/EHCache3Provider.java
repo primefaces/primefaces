@@ -25,7 +25,7 @@ public class EHCache3Provider implements CacheProvider {
     private CacheManager cacheManager;
 
     public EHCache3Provider() {
-        XmlConfiguration xmlConfig = new XmlConfiguration(EHCache3Provider.class.getResource("/ehcache.xml"));
+        XmlConfiguration xmlConfig = new XmlConfiguration(this.getClass().getResource("/ehcache.xml"));
         cacheManager = CacheManagerBuilder.newCacheManager(xmlConfig);
         cacheManager.init();
     }
