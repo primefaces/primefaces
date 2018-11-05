@@ -479,7 +479,7 @@ body .ui-icon {
   width: 1em;
   font-size: 1.25em;
   display: inline-block;
-  vertical-align: baseline;
+  vertical-align: middle;
   margin: 0;
   margin-top: 0;
   position: static;
@@ -609,8 +609,8 @@ body .ui-autocomplete {
   body .ui-autocomplete .ui-autocomplete-multiple-container {
     padding: 0.2145em 0.429em; }
     body .ui-autocomplete .ui-autocomplete-multiple-container .ui-autocomplete-token {
-      padding: 0.2145em 0;
-      margin: 0 0.286em 0 0;
+      padding: 0.10725em 0;
+      margin: 0.10725em 0.286em 0.10725em 0;
       background: #007ad9;
       color: #ffffff; }
       body .ui-autocomplete .ui-autocomplete-multiple-container .ui-autocomplete-token .ui-autocomplete-token-label {
@@ -800,8 +800,8 @@ body .ui-radiobutton {
       position: absolute;
       top: 50%;
       left: 50%;
-      margin-left: -10px;
-      margin-top: -10px;
+      margin-left: -5px;
+      margin-top: -5px;
       vertical-align: middle;
       -moz-transition: background-color 0.3s;
       -o-transition: background-color 0.3s;
@@ -1060,8 +1060,8 @@ body .ui-selectcheckboxmenu {
     body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-multiple-container.ui-inputfield {
       padding-right: 28px; }
     body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-multiple-container .ui-selectcheckboxmenu-token {
-      padding: 0.2145em 0;
-      margin: 0 0.286em 0 0;
+      padding: 0.10725em 0;
+      margin: 0.10725em 0.286em 0.10725em 0;
       background: #007ad9;
       color: #ffffff; }
       body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-multiple-container .ui-selectcheckboxmenu-token .ui-selectcheckboxmenu-token-label {
@@ -1256,8 +1256,8 @@ body .ui-selectcheckboxmenu-panel {
 body .ui-chips .ui-chips-container {
   padding: 0.2145em 0.429em; }
   body .ui-chips .ui-chips-container .ui-chips-token {
-    padding: 0.2145em 0;
-    margin: 0 0.286em 0 0;
+    padding: 0.10725em 0;
+    margin: 0.10725em 0.286em 0.10725em 0;
     background: #007ad9;
     color: #ffffff; }
     body .ui-chips .ui-chips-container .ui-chips-token .ui-chips-token-label {
@@ -1849,7 +1849,7 @@ body .ui-fileupload .ui-fileupload-buttonbar {
   border: 1px solid #333333;
   background-color: #333333;
   color: #ffffff;
-  padding: 0.571em 1em; }
+  padding: 0.571em 1em 0.571em 1em; }
   body .ui-fileupload .ui-fileupload-buttonbar .ui-button {
     margin-right: 0.429em; }
     body .ui-fileupload .ui-fileupload-buttonbar .ui-button.ui-fileupload-choose .ui-icon {
@@ -2316,7 +2316,7 @@ body .ui-panel {
     border: 1px solid #333333;
     background-color: #333333;
     color: #ffffff;
-    padding: 0.571em 1em;
+    padding: 0.571em 1em 0.571em 1em;
     font-weight: 400;
     -moz-border-radius-topleft: 3px;
     -webkit-border-top-left-radius: 3px;
@@ -2422,20 +2422,18 @@ body .ui-panel {
     padding: 0.571em 1em;
     margin: 0;
     border-top: 0 none; }
-  body .ui-panel.ui-panel-collapsed-h .ui-panel-titlebar {
-    position: relative; }
-    body .ui-panel.ui-panel-collapsed-h .ui-panel-titlebar .ui-panel-titlebar-icon {
-      float: none;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      margin-left: -0.5em;
-      margin-top: -0.5em; }
+  body .ui-panel.ui-panel-collapsed-h .ui-panel-titlebar .ui-panel-titlebar-icon {
+    float: none;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    margin-left: -0.625em;
+    margin-top: -0.625em; }
 body .ui-accordion .ui-accordion-header {
   border: 1px solid #333333;
   background-color: #333333;
   color: #ffffff;
-  padding: 0.571em 1em;
+  padding: 0.571em 1em 0.571em 1em;
   font-weight: 400;
   position: static;
   margin-top: 1px;
@@ -2545,7 +2543,7 @@ body .ui-tabs {
       transition: background-color 0.3s; }
       body .ui-tabs .ui-tabs-nav .ui-tabs-header a {
         color: #ffffff;
-        padding: 0.571em 1em;
+        padding: 0.571em 1em 0.571em 1em;
         display: block; }
       body .ui-tabs .ui-tabs-nav .ui-tabs-header .ui-icon {
         color: #ffffff;
@@ -2698,7 +2696,7 @@ body .ui-panelgrid .ui-panelgrid-cell {
     border: 1px solid #333333;
     background-color: #333333;
     color: #ffffff;
-    padding: 0.571em 1em;
+    padding: 0.571em 1em 0.571em 1em;
     font-weight: 400; }
 body .ui-scrollpanel {
   border: 1px solid #c8c8c8;
@@ -2716,7 +2714,7 @@ body .ui-toolbar {
   border: 1px solid #333333;
   background-color: #333333;
   color: #ffffff;
-  padding: 0.571em 1em; }
+  padding: 0.571em 1em 0.571em 1em; }
   body .ui-toolbar .ui-button {
     margin-right: 0.429em; }
 body .ui-fieldset {
@@ -2728,7 +2726,7 @@ body .ui-fieldset {
     border: 1px solid #333333;
     background-color: #333333;
     color: #ffffff;
-    padding: 0.571em 1em;
+    padding: 0.571em 1em 0.571em 1em;
     font-weight: 400; }
     body .ui-fieldset .ui-fieldset-legend .ui-fieldset-toggler {
       display: inline-block;
@@ -2799,7 +2797,7 @@ body .ui-wizard .ui-wizard-step-titles .ui-wizard-step-title {
   border: 1px solid #333333;
   background-color: #333333;
   color: #ffffff;
-  padding: 0.571em 1em;
+  padding: 0.571em 1em 0.571em 1em;
   margin: 0;
   border-right: 0 none;
   -moz-border-radius: 0;
@@ -2988,7 +2986,7 @@ body .ui-datatable .ui-datatable-footer {
   background-color: #333333;
   border: 1px solid #333333;
   color: #ffffff;
-  padding: 0.571em 1em;
+  padding: 0.571em 1em 0.571em 1em;
   border-bottom: 0 none;
   font-weight: 400; }
 body .ui-datatable .ui-paginator {
@@ -3319,7 +3317,7 @@ body .ui-datagrid .ui-datagrid-footer {
   background-color: #333333;
   border: 1px solid #333333;
   color: #ffffff;
-  padding: 0.571em 1em;
+  padding: 0.571em 1em 0.571em 1em;
   border-bottom: 0 none;
   font-weight: 400; }
 body .ui-datagrid .ui-datagrid-content {
@@ -3339,7 +3337,7 @@ body .ui-datalist .ui-datalist-footer {
   background-color: #333333;
   border: 1px solid #333333;
   color: #ffffff;
-  padding: 0.571em 1em;
+  padding: 0.571em 1em 0.571em 1em;
   font-weight: 400;
   border-bottom: 0 none; }
 body .ui-datalist .ui-datalist-content {
@@ -3356,6 +3354,44 @@ body .ui-datalist .ui-paginator {
     border-bottom: 0 none; }
   body .ui-datalist .ui-paginator.ui-paginator-bottom {
     border-top: 0 none; }
+body .ui-datascroller .ui-datascroller-header {
+  background-color: #333333;
+  color: #ffffff;
+  border: 1px solid #333333;
+  padding: 0.571em 1em 0.571em 1em;
+  font-weight: 400;
+  border-bottom: 0 none; }
+body .ui-datascroller .ui-datascroller-content {
+  padding: 0.571em 1em;
+  border: 1px solid #c8c8c8;
+  background-color: #ffffff;
+  color: #333333;
+  padding: 0.571em 1em; }
+body .ui-datascroller .ui-datascroller-footer {
+  background-color: #ffffff;
+  color: #333333;
+  border: 1px solid #c8c8c8;
+  padding: 0.571em 1em;
+  border-top: 0 none; }
+body .ui-dataview .ui-dataview-header {
+  background-color: #333333;
+  color: #ffffff;
+  border: 1px solid #333333;
+  padding: 0.571em 1em 0.571em 1em;
+  font-weight: 400;
+  border-bottom: 0 none; }
+body .ui-dataview .ui-dataview-content {
+  padding: 0.571em 1em;
+  border: 1px solid #c8c8c8;
+  background-color: #ffffff;
+  color: #333333;
+  padding: 0.571em 1em; }
+body .ui-dataview .ui-dataview-footer {
+  background-color: #ffffff;
+  color: #333333;
+  border: 1px solid #c8c8c8;
+  padding: 0.571em 1em;
+  border-top: 0 none; }
 body .ui-picklist .ui-picklist-buttons {
   padding: 0 0.429em 0 0.429em; }
   body .ui-picklist .ui-picklist-buttons .ui-button {
@@ -3509,7 +3545,7 @@ body .ui-picklist .ui-picklist-caption {
   background-color: #333333;
   border: 1px solid #333333;
   color: #ffffff;
-  padding: 0.571em 1em;
+  padding: 0.571em 1em 0.571em 1em;
   border-bottom: 0 none;
   font-weight: 400; }
 body .ui-picklist .ui-picklist-filter-container .ui-picklist-filter {
@@ -3719,7 +3755,7 @@ body .ui-orderlist .ui-orderlist-caption {
   background-color: #333333;
   border: 1px solid #333333;
   color: #ffffff;
-  padding: 0.571em 1em;
+  padding: 0.571em 1em 0.571em 1em;
   border-bottom: 0 none;
   font-weight: 400; }
 body .ui-orderlist .ui-g > div {
@@ -3757,7 +3793,7 @@ body .ui-treetable .ui-treetable-footer {
   background-color: #333333;
   border: 1px solid #333333;
   color: #ffffff;
-  padding: 0.571em 1em;
+  padding: 0.571em 1em 0.571em 1em;
   font-weight: 400;
   border-bottom: 0 none; }
 body .ui-treetable .ui-paginator {
@@ -4015,7 +4051,7 @@ body .ui-carousel {
   body .ui-carousel .ui-carousel-header {
     background-color: #333333;
     color: #ffffff;
-    padding: 0.571em 1em;
+    padding: 0.571em 1em 0.571em 1em;
     border: 1px solid #333333;
     margin: 0;
     font-weight: 400; }
@@ -4025,7 +4061,7 @@ body .ui-carousel {
   body .ui-carousel .ui-carousel-footer {
     background-color: #333333;
     color: #ffffff;
-    padding: 0.571em 1em;
+    padding: 0.571em 1em 0.571em 1em;
     border: 1px solid #333333;
     margin: 0; }
   body .ui-carousel .ui-carousel-viewport {
@@ -4059,8 +4095,7 @@ body .ui-carousel {
       text-align: center;
       background: none;
       display: inline-block;
-      font-size: 1.25em;
-      font-size: 16px; }
+      font-size: 1.25em; }
       body .ui-carousel .ui-carousel-button.ui-carousel-next-button:before {
         content: ""; }
     body .ui-carousel .ui-carousel-button.ui-carousel-prev-button {
@@ -4078,8 +4113,7 @@ body .ui-carousel {
       text-align: center;
       background: none;
       display: inline-block;
-      font-size: 1.25em;
-      font-size: 16px; }
+      font-size: 1.25em; }
       body .ui-carousel .ui-carousel-button.ui-carousel-prev-button:before {
         content: ""; }
     body .ui-carousel .ui-carousel-button:not(.ui-state-disabled):hover {
@@ -4145,7 +4179,7 @@ body .ui-tree {
         vertical-align: middle;
         display: inline-block;
         float: none;
-        margin: 0 0.429em 0 0;
+        margin: 0 0.143em 0 0;
         color: #737373; }
         body .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-tree-toggler.ui-icon-triangle-1-e {
           font-family: 'primeicons';
@@ -4206,11 +4240,11 @@ body .ui-tree {
         body .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-tree-toggler:hover {
           color: #333333; }
       body .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-treenode-leaf-icon {
-        margin: 0 0.429em 0 0; }
+        margin: 0 0.143em 0 0; }
       body .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-treenode-icon {
         vertical-align: middle;
         display: inline-block;
-        margin: 0 0.2145em 0 0;
+        margin: 0 0.0715em 0 0;
         color: #737373; }
       body .ui-tree .ui-tree-container .ui-treenode .ui-treenode-content .ui-treenode-label {
         margin: 0;
@@ -4261,8 +4295,8 @@ body .ui-tree {
         background-color: #007ad9;
         color: #ffffff; }
       body .ui-tree.ui-tree-horizontal .ui-treenode-content .ui-tree-toggler {
-        margin-right: 0.429em;
-        vertical-align: baseline; }
+        margin: 0;
+        vertical-align: bottom; }
         body .ui-tree.ui-tree-horizontal .ui-treenode-content .ui-tree-toggler.ui-icon-minus {
           font-family: 'primeicons';
           speak: none;
@@ -4300,8 +4334,8 @@ body .ui-tree {
           body .ui-tree.ui-tree-horizontal .ui-treenode-content .ui-tree-toggler.ui-icon-plus:before {
             content: ""; }
       body .ui-tree.ui-tree-horizontal .ui-treenode-content .ui-treenode-icon {
-        vertical-align: baseline;
-        margin-right: 0.429em; }
+        margin: 0;
+        vertical-align: bottom; }
   body .ui-tree .ui-tree-filter-container .ui-icon {
     right: 7px;
     top: 7px; }
@@ -4323,7 +4357,7 @@ body .fc th {
   background-color: #333333;
   border: 1px solid #333333;
   color: #ffffff;
-  padding: 0.571em 1em; }
+  padding: 0.571em 1em 0.571em 1em; }
 body .fc td.ui-widget-content {
   background-color: #ffffff;
   border: 1px solid #c8c8c8;
@@ -4957,7 +4991,7 @@ body .ui-dialog {
     border: 1px solid #333333;
     background-color: #333333;
     color: #ffffff;
-    padding: 0.571em 1em;
+    padding: 0.571em 1em 0.571em 1em;
     font-weight: 400;
     border-bottom: 0 none; }
     body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
@@ -5118,7 +5152,7 @@ body .ui-lightbox {
     border: 1px solid #333333;
     background-color: #333333;
     color: #ffffff;
-    padding: 0.571em 1em;
+    padding: 0.571em 1em 0.571em 1em;
     font-weight: 400; }
     body .ui-lightbox .ui-lightbox-caption .ui-lightbox-caption-text {
       color: #ffffff;
@@ -5380,7 +5414,8 @@ body .ui-menu {
     margin-top: 1px; }
     body .ui-menu.ui-menu-toggleable .ui-menu-list .ui-widget-header .ui-icon {
       position: static;
-      margin-right: 0.429em; }
+      margin-right: 0.429em;
+      margin-top: -0.054em; }
     body .ui-menu.ui-menu-toggleable .ui-menu-list .ui-widget-header .ui-icon-triangle-1-e {
       font-family: 'primeicons';
       speak: none;
@@ -5428,7 +5463,7 @@ body .ui-menu {
     border-left: 0 none;
     border-right: 0 none;
     float: none;
-    padding: 0.571em 1em;
+    padding: 0.571em 1em 0.571em 1em;
     -moz-border-radius: 0;
     -webkit-border-radius: 0;
     border-radius: 0; }
@@ -5485,6 +5520,7 @@ body .ui-menu {
           color: #333333; }
       body .ui-menu .ui-menu-list .ui-menuitem .ui-menuitem-link .ui-menuitem-icon {
         margin-right: 0.429em;
+        margin-top: 0px;
         vertical-align: middle;
         float: none;
         color: #333333; }
@@ -5557,7 +5593,7 @@ body .ui-menu {
       float: right;
       margin-right: 0.429em; }
   body .ui-menu.ui-slidemenu .ui-slidemenu-backward {
-    padding: 0.571em 1em;
+    padding: 0.571em 1em 0.571em 1em;
     color: #ffffff;
     width: 100%;
     border: 0 none;
@@ -5630,7 +5666,7 @@ body .ui-tabmenu {
       transition: background-color 0.3s; }
       body .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem a {
         color: #ffffff;
-        padding: 0.571em 1em;
+        padding: 0.571em 1em 0.571em 1em;
         display: block; }
         body .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem a .ui-icon {
           color: #ffffff;
@@ -5661,7 +5697,7 @@ body .ui-panelmenu .ui-panelmenu-header {
   border: 1px solid #333333;
   background-color: #333333;
   color: #ffffff;
-  padding: 0.571em 1em;
+  padding: 0.571em 1em 0.571em 1em;
   font-weight: 400;
   position: static;
   font-size: 14px;
@@ -5884,7 +5920,7 @@ body .ui-log {
     border: 1px solid #333333;
     background-color: #333333;
     color: #ffffff;
-    padding: 0.571em 1em;
+    padding: 0.571em 1em 0.571em 1em;
     font-weight: 400;
     height: auto; }
     body .ui-log .ui-log-header .ui-log-button {
