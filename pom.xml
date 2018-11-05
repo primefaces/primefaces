@@ -196,6 +196,12 @@
             <version>2.7.4</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>3.0.2</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- will be included and relocated by shade plugin -->
         <dependency>
@@ -697,7 +703,7 @@
                                 <include>org/owasp/esapi/Logger.class</include>
                                 <include>org/owasp/esapi/errors/ValidationException.class</include>
                                 <include>org/owasp/esapi/errors/EnterpriseSecurityException.class</include>
-                                
+
                             </includes>
                         </filter>
                         <filter>
