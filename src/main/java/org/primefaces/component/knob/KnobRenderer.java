@@ -24,6 +24,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
 
 import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class KnobRenderer extends CoreRenderer {
@@ -56,7 +57,17 @@ public class KnobRenderer extends CoreRenderer {
         decodeBehaviors(context, component);
 
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(component.getClientId(context) + "_hidden");
-        ((Knob) component).setSubmittedValue(submittedValue);
+
+        Knob knob = (Knob) component;
+
+        if (!LangUtils.isValueEmpty(submittedValue)) {
+            int submittedInt = Integer.parseInt(submittedValue);
+            if (submittedInt < knob.getMin() || submittedInt > knob.getMax()) {
+                return;
+            }
+        }
+
+        knob.setSubmittedValue(submittedValue);
     }
 
     @Override
