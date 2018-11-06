@@ -23,6 +23,7 @@ import javax.faces.context.ResponseWriter;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class RatingRenderer extends InputRenderer {
@@ -36,6 +37,13 @@ public class RatingRenderer extends InputRenderer {
 
         String clientId = rating.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
+
+        if (!LangUtils.isValueEmpty(submittedValue)) {
+            int submittedStars = Integer.parseInt(submittedValue);
+            if (submittedStars < 1 || submittedStars > rating.getStars()) {
+                return;
+            }
+        }
 
         rating.setSubmittedValue(submittedValue);
 
