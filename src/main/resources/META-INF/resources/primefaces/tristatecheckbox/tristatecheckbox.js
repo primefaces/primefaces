@@ -17,53 +17,56 @@ PrimeFaces.widget.TriStateCheckbox = PrimeFaces.widget.BaseWidget.extend({
 
         //bind events if not disabled
         if (!this.disabled) {
-            this.box.on('mouseover', function(e) {
+            this.box.on('mouseover.triStateCheckbox', function () {
                 $this.box.addClass('ui-state-hover');
             })
-            .on('mouseout', function(e) {
+            .on('mouseout.triStateCheckbox', function () {
                 $this.box.removeClass('ui-state-hover');
             })
-            .on('click', function(e) {
+            .on('click.triStateCheckbox', function () {
                 $this.toggle(1);
-                if (event.preventDefault) { event.preventDefault(); } else { event.returnValue = false; }
-            })
-            .on('focus', function(e) {
+                $this.input.trigger('focus');
+            });
+            
+            this.input.on('focus.triStateCheckbox', function () {
                 $this.box.addClass('ui-state-focus');
             })
-            .on('blur', function(e) {
+            .on('blur.triStateCheckbox', function () {
                 $this.box.removeClass('ui-state-focus');
+            })
+            .on('keydown.triStateCheckbox', function (e) {
+                var keyCode = $.ui.keyCode;
+
+                switch (e.which) {
+                    case keyCode.SPACE:
+                    case keyCode.UP:
+                    case keyCode.RIGHT:
+                    case keyCode.LEFT:
+                    case keyCode.DOWN:
+                        e.preventDefault();
+                        break;
+                }
+            })            
+            .on('keyup.triStateCheckbox', function (e) {
+                var keyCode = $.ui.keyCode;
+
+                switch(e.which) {
+                    case keyCode.SPACE:
+                    case keyCode.UP:
+                    case keyCode.RIGHT:
+                        $this.toggle(1);
+                        break;
+                    case keyCode.LEFT:
+                    case keyCode.DOWN:
+                        $this.toggle(-1);
+                        break;
+                }
             });
 
             //toggle state on label click
-            this.itemLabel.click(function(event) {
+            this.itemLabel.on('click.triStateCheckbox', function() {
                 $this.toggle(1);
-                if (event.preventDefault) { event.preventDefault(); } else { event.returnValue = false; }
-            });
-
-            //adding accesibility
-            this.box.on('keydown', function(event) {
-                switch (event.keyCode) {
-                    case 38:
-                        $this.toggle(1);
-                        if (event.preventDefault) { event.preventDefault(); } else { event.returnValue = false; }
-                        break;
-                    case 40:
-                        $this.toggle(-1);
-                        if (event.preventDefault) { event.preventDefault(); } else { event.returnValue = false; }
-                        break;
-                    case 39:
-                        $this.toggle(1);
-                        if (event.preventDefault) { event.preventDefault(); } else { event.returnValue = false; }
-                        break;
-                    case 37:
-                        $this.toggle(-1);
-                        if (event.preventDefault) { event.preventDefault(); } else { event.returnValue = false; }
-                        break;
-                    case 32:
-                        $this.toggle(1);
-                        if (event.preventDefault) { event.preventDefault(); } else { event.returnValue = false; }
-                        break;
-                }
+                $this.input.trigger('focus');
             });
 
             // client behaviors
