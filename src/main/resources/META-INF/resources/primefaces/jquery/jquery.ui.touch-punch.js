@@ -12,7 +12,7 @@
 (function ($) {
 
     // Detect touch support
-    $.support.touch = 'ontouchend' in document || navigator.maxTouchPoints > 0; //PF GitHub #4212
+    $.support.touch = 'ontouchend' in document || navigator.maxTouchPoints > 0 || window.navigator.msMaxTouchPoints; //PF GitHub #4212
 
     // Ignore browsers without touch support
     if (!$.support.touch) {
