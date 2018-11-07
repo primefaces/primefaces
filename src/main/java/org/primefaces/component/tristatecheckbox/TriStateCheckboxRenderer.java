@@ -99,7 +99,11 @@ public class TriStateCheckboxRenderer extends InputRenderer {
         writer.writeAttribute("id", inputId, "id");
         writer.writeAttribute("name", inputId, null);
         writer.writeAttribute("value", valCheck, null);
+        writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute("readonly", "readonly", null);
+
         renderAccessibilityAttributes(context, checkbox);
+        renderPassThruAttributes(context, checkbox, HTML.TAB_INDEX);
 
         if (checkbox.getOnchange() != null) {
             writer.writeAttribute("onchange", checkbox.getOnchange(), null);
@@ -158,7 +162,6 @@ public class TriStateCheckboxRenderer extends InputRenderer {
         }
 
         writer.startElement("div", null);
-        writer.writeAttribute("tabIndex", checkbox.getTabindex() == null ? 0 : checkbox.getTabindex(), "tabindex");
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("data-iconstates", statesIconsClasses, null);
         if (!LangUtils.isValueBlank(stateOneTitle) || !LangUtils.isValueBlank(stateTwoTitle) || !LangUtils.isValueBlank(stateThreeTitle)) {
