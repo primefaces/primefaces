@@ -4,6 +4,9 @@
 PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
 
     init: function(cfg) {
+        // the dynamic overlay must be appended to the body
+        cfg.appendTo = '@(body)';
+
         this._super(cfg);
 
         this.links = this.jq.children(':not(.ui-lightbox-inline)');
