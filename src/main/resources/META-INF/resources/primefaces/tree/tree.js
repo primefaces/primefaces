@@ -60,7 +60,7 @@ PrimeFaces.widget.BaseTree = PrimeFaces.widget.BaseWidget.extend({
         if(this.cfg.dynamic) {
             if(this.cfg.cache && $this.getNodeChildrenContainer(node).children().length > 0) {
                 this.showNodeChildren(node);
-
+                this.fireExpandEvent(node);
                 return;
             }
 
