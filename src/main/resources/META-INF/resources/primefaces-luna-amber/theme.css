@@ -1318,6 +1318,7 @@ body .ui-inputswitch {
   border-color: #585858;
   background-color: #585858;
   color: #dedede;
+  height: 33px;
   -moz-transition: border-color 0.2s;
   -o-transition: border-color 0.2s;
   -webkit-transition: border-color 0.2s;
@@ -1326,13 +1327,14 @@ body .ui-inputswitch {
     border: 1px solid #323232;
     border-width: 0px 1px 0px 0px;
     background-color: #585858;
-    width: 1.571em !important;
-    height: 1.571em !important; }
+    width: 1.572em !important;
+    height: 33px !important; }
     body .ui-inputswitch .ui-inputswitch-handle.ui-state-focus {
       background-color: #333333; }
   body .ui-inputswitch .ui-inputswitch-on,
   body .ui-inputswitch .ui-inputswitch-off {
-    padding-top: 1px; }
+    top: 50%;
+    margin-top: calc(-32px / 2); }
   body .ui-inputswitch.ui-inputswitch-checked {
     border-color: #585858;
     background-color: #FFB300;
