@@ -1334,7 +1334,7 @@ body .ui-inputswitch {
   body .ui-inputswitch .ui-inputswitch-on,
   body .ui-inputswitch .ui-inputswitch-off {
     top: 50%;
-    margin-top: calc(-32px / 2); }
+    margin-top: calc(-30px / 2); }
   body .ui-inputswitch.ui-inputswitch-checked {
     border-color: #a6a6a6;
     background-color: #007ad9;
