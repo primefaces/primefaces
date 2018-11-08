@@ -103,6 +103,13 @@ ui-overlay-visible * {
     text-indent: 0px !important;
 }
 
+/* PrimeIcons */
+.ui-widget .ui-icon.pi, 
+.ui-icon.pi {
+    background: none repeat scroll 0 0 transparent !important;
+    text-indent: 0px !important;
+}
+
 /* FlexGrid */
 .p-grid, 
 .p-grid>div {
