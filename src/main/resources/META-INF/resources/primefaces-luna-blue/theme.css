@@ -2,6 +2,7 @@
 
 @import url("#{resource['primefaces:primeicons/primeicons.css']}");
 
+/* Luna-Blue */
 :root {
   --input-border-color:#585858;
   --input-hover-border-color:#1f7ed0;
@@ -158,7 +159,8 @@ body .ui-autocomplete {
     height: auto;
     width: 2.143em;
     right: auto;
-    font-size: 14px; }
+    font-size: 14px;
+    margin: 0; }
     body .ui-autocomplete .ui-autocomplete-dropdown .ui-button-text {
       padding: 0.429em; }
     body .ui-autocomplete .ui-autocomplete-dropdown .ui-icon {
@@ -1171,7 +1173,8 @@ body .ui-calendar .ui-button.ui-button-icon-only {
   border-top-left-radius: 0;
   -moz-border-radius-bottomleft: 0;
   -webkit-border-bottom-left-radius: 0;
-  border-bottom-left-radius: 0; }
+  border-bottom-left-radius: 0;
+  margin: 0; }
   body .ui-calendar .ui-button.ui-button-icon-only .ui-icon-calendar {
     font-family: 'primeicons';
     speak: none;
@@ -1215,7 +1218,8 @@ body .ui-spinner .ui-spinner-button.ui-button {
   background-color: #1f7ed0;
   color: #ffffff;
   border: 0 none;
-  width: 1.429em; }
+  width: 1.429em;
+  margin: 0; }
   body .ui-spinner .ui-spinner-button.ui-button.ui-state-hover {
     background-color: #1b71bb;
     color: #ffffff;
@@ -1313,39 +1317,32 @@ body .ui-inputswitch {
   border: 1px solid #585858;
   border-color: #585858;
   background-color: #585858;
+  color: #dedede;
   -moz-transition: border-color 0.2s;
   -o-transition: border-color 0.2s;
   -webkit-transition: border-color 0.2s;
   transition: border-color 0.2s; }
-  body .ui-inputswitch.ui-corner-all {
-    -moz-border-radius: 2.143em;
-    -webkit-border-radius: 2.143em;
-    border-radius: 2.143em; }
   body .ui-inputswitch .ui-inputswitch-handle {
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    border-radius: 50%;
-    border: 0 none;
-    background-color: #323232;
+    border: 1px solid #323232;
+    border-width: 0px 1px 0px 0px;
+    background-color: #585858;
     width: 1.571em !important;
     height: 1.571em !important; }
     body .ui-inputswitch .ui-inputswitch-handle.ui-state-focus {
       background-color: #333333; }
-  body .ui-inputswitch .ui-inputswitch-off span,
-  body .ui-inputswitch .ui-inputswitch-on span {
-    visibility: hidden; }
+  body .ui-inputswitch .ui-inputswitch-on,
+  body .ui-inputswitch .ui-inputswitch-off {
+    padding-top: 1px; }
   body .ui-inputswitch.ui-inputswitch-checked {
-    border-color: #1f7ed0;
-    background-color: #1f7ed0; }
+    border-color: #585858;
+    background-color: #1f7ed0;
+    color: #ffffff; }
     body .ui-inputswitch.ui-inputswitch-checked .ui-inputswitch-handle {
-      background-color: #323232; }
-      body .ui-inputswitch.ui-inputswitch-checked .ui-inputswitch-handle.ui-state-focus {
-        background-color: #1864a6; }
+      border-width: 0px 0px 0px 1px; }
     body .ui-inputswitch.ui-inputswitch-checked:not(.ui-state-disabled):hover {
-      border-color: #1f7ed0;
       background-color: #1864a6; }
   body .ui-inputswitch:not(.ui-state-disabled):hover {
-    border-color: #1f7ed0; }
+    background-color: #4c4c4c; }
 body .ui-toggleswitch {
   width: 3em;
   height: 1.75em; }
@@ -2541,6 +2538,7 @@ body .ui-layout-unit {
 body .ui-ribbon .ui-tabs-panels .ui-tabs-panel {
   padding: 0; }
   body .ui-ribbon .ui-tabs-panels .ui-tabs-panel .ui-ribbon-groups {
+    background: none;
     border: 1px solid #191919;
     border-width: 0 1px 0 0;
     background-color: #323232;
@@ -2552,11 +2550,12 @@ body .ui-ribbon .ui-tabs-panels .ui-tabs-panel {
       body .ui-ribbon .ui-tabs-panels .ui-tabs-panel .ui-ribbon-groups .ui-ribbon-group .ui-ribbon-group-content > button.ui-state-hover {
         background-color: #0c0c0c; }
     body .ui-ribbon .ui-tabs-panels .ui-tabs-panel .ui-ribbon-groups .ui-ribbon-group .ui-ribbon-group-content .ui-ribbon-bigbutton .ui-icon {
-      position: static;
-      top: auto;
-      left: auto;
-      margin-top: -20px;
-      margin-left: -10px; }
+      left: 50%;
+      margin-top: -24px;
+      margin-left: -17px; }
+      body .ui-ribbon .ui-tabs-panels .ui-tabs-panel .ui-ribbon-groups .ui-ribbon-group .ui-ribbon-group-content .ui-ribbon-bigbutton .ui-icon.ui-ribbonicon-new {
+        margin-left: -10px;
+        margin-top: -20px; }
     body .ui-ribbon .ui-tabs-panels .ui-tabs-panel .ui-ribbon-groups .ui-ribbon-group .ui-ribbon-group-content .ui-ribbon-bigbutton .ui-button-text {
       padding: 3em 0 0; }
 
