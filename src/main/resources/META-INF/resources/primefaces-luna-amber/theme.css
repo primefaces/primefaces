@@ -2567,10 +2567,9 @@ body .ui-tabs {
       body .ui-tabs .ui-tabs-nav .ui-tabs-header .ui-icon {
         color: #888888;
         position: relative;
-        right: 0.5em;
-        margin-top: 0.571em; }
+        right: 0.5em; }
         body .ui-tabs .ui-tabs-nav .ui-tabs-header .ui-icon.ui-icon-close {
-          margin: 0;
+          margin: 0.571em 0 0 0;
           float: none;
           font-family: 'primeicons';
           speak: none;
@@ -2741,7 +2740,8 @@ body .ui-toolbar {
   body .ui-toolbar .ui-button {
     margin-right: 0.429em; }
   body .ui-toolbar .ui-separator {
-    border: 0 none; }
+    border: 0 none;
+    margin-right: 0.429em; }
 body .ui-fieldset {
   border: 1px solid #191919;
   background-color: #323232;
@@ -2847,7 +2847,7 @@ body .ui-wizard .ui-wizard-step-titles .ui-wizard-step-title {
     border: 1px solid #FFB300;
     background-color: #FFB300;
     color: #212121; }
-body .ui-wizard .ui-wizard-navbar .ui-wizard-naw-next .ui-icon-arrowthick-1-e {
+body .ui-wizard .ui-wizard-navbar .ui-wizard-nav-next .ui-icon-arrowthick-1-e {
   font-family: 'primeicons';
   speak: none;
   font-style: normal;
@@ -2863,9 +2863,9 @@ body .ui-wizard .ui-wizard-navbar .ui-wizard-naw-next .ui-icon-arrowthick-1-e {
   background: none;
   display: inline-block;
   font-size: 1.25em; }
-  body .ui-wizard .ui-wizard-navbar .ui-wizard-naw-next .ui-icon-arrowthick-1-e:before {
+  body .ui-wizard .ui-wizard-navbar .ui-wizard-nav-next .ui-icon-arrowthick-1-e:before {
     content: ""; }
-body .ui-wizard .ui-wizard-navbar .ui-wizard-naw-back .ui-icon-arrowthick-1-w {
+body .ui-wizard .ui-wizard-navbar .ui-wizard-nav-back .ui-icon-arrowthick-1-w {
   font-family: 'primeicons';
   speak: none;
   font-style: normal;
@@ -2881,22 +2881,22 @@ body .ui-wizard .ui-wizard-navbar .ui-wizard-naw-back .ui-icon-arrowthick-1-w {
   background: none;
   display: inline-block;
   font-size: 1.25em; }
-  body .ui-wizard .ui-wizard-navbar .ui-wizard-naw-back .ui-icon-arrowthick-1-w:before {
+  body .ui-wizard .ui-wizard-navbar .ui-wizard-nav-back .ui-icon-arrowthick-1-w:before {
     content: ""; }
-body .ui-layout-container .ui-layout-unit {
+body .ui-layout-unit {
   border: 1px solid #191919; }
-  body .ui-layout-container .ui-layout-unit .ui-layout-unit-header {
+  body .ui-layout-unit .ui-layout-unit-header {
     border: 1px solid #191919;
     background-color: #191919;
     color: #dedede;
     padding: 0.571em 1em 0.571em 1em;
     font-weight: 400; }
-    body .ui-layout-container .ui-layout-unit .ui-layout-unit-header .ui-icon {
+    body .ui-layout-unit .ui-layout-unit-header .ui-icon {
       color: #888888;
       position: relative;
       top: 0.5em;
       right: 0.5em; }
-      body .ui-layout-container .ui-layout-unit .ui-layout-unit-header .ui-icon.ui-icon-close {
+      body .ui-layout-unit .ui-layout-unit-header .ui-icon.ui-icon-close {
         font-family: 'primeicons';
         speak: none;
         font-style: normal;
@@ -2912,11 +2912,11 @@ body .ui-layout-container .ui-layout-unit {
         background: none;
         display: inline-block;
         font-size: 1.25em; }
-        body .ui-layout-container .ui-layout-unit .ui-layout-unit-header .ui-icon.ui-icon-close:before {
+        body .ui-layout-unit .ui-layout-unit-header .ui-icon.ui-icon-close:before {
           content: ""; }
-      body .ui-layout-container .ui-layout-unit .ui-layout-unit-header .ui-icon.ui-icon-triangle-1-w {
+      body .ui-layout-unit .ui-layout-unit-header .ui-icon.ui-icon-triangle-1-w {
         margin-top: 1px; }
-      body .ui-layout-container .ui-layout-unit .ui-layout-unit-header .ui-icon.ui-icon-triangle-1-e {
+      body .ui-layout-unit .ui-layout-unit-header .ui-icon.ui-icon-triangle-1-e {
         font-family: 'primeicons';
         speak: none;
         font-style: normal;
@@ -2932,9 +2932,9 @@ body .ui-layout-container .ui-layout-unit {
         background: none;
         display: inline-block;
         font-size: 1.25em; }
-        body .ui-layout-container .ui-layout-unit .ui-layout-unit-header .ui-icon.ui-icon-triangle-1-e:before {
+        body .ui-layout-unit .ui-layout-unit-header .ui-icon.ui-icon-triangle-1-e:before {
           content: ""; }
-      body .ui-layout-container .ui-layout-unit .ui-layout-unit-header .ui-icon.ui-icon-triangle-1-s {
+      body .ui-layout-unit .ui-layout-unit-header .ui-icon.ui-icon-triangle-1-s {
         font-family: 'primeicons';
         speak: none;
         font-style: normal;
@@ -2950,9 +2950,9 @@ body .ui-layout-container .ui-layout-unit {
         background: none;
         display: inline-block;
         font-size: 1.25em; }
-        body .ui-layout-container .ui-layout-unit .ui-layout-unit-header .ui-icon.ui-icon-triangle-1-s:before {
+        body .ui-layout-unit .ui-layout-unit-header .ui-icon.ui-icon-triangle-1-s:before {
           content: ""; }
-      body .ui-layout-container .ui-layout-unit .ui-layout-unit-header .ui-icon.ui-icon-triangle-1-n {
+      body .ui-layout-unit .ui-layout-unit-header .ui-icon.ui-icon-triangle-1-n {
         font-family: 'primeicons';
         speak: none;
         font-style: normal;
@@ -2968,8 +2968,29 @@ body .ui-layout-container .ui-layout-unit {
         background: none;
         display: inline-block;
         font-size: 1.25em; }
-        body .ui-layout-container .ui-layout-unit .ui-layout-unit-header .ui-icon.ui-icon-triangle-1-n:before {
+        body .ui-layout-unit .ui-layout-unit-header .ui-icon.ui-icon-triangle-1-n:before {
           content: ""; }
+body .ui-ribbon .ui-tabs-panels .ui-tabs-panel {
+  padding: 0; }
+  body .ui-ribbon .ui-tabs-panels .ui-tabs-panel .ui-ribbon-groups {
+    border: 1px solid #191919;
+    border-width: 0 1px 0 0;
+    background-color: #323232;
+    color: #dedede; }
+    body .ui-ribbon .ui-tabs-panels .ui-tabs-panel .ui-ribbon-groups .ui-ribbon-group .ui-ribbon-group-content > button {
+      border: 1px solid #191919;
+      background-color: #323232;
+      color: #dedede; }
+      body .ui-ribbon .ui-tabs-panels .ui-tabs-panel .ui-ribbon-groups .ui-ribbon-group .ui-ribbon-group-content > button.ui-state-hover {
+        background-color: #0c0c0c; }
+    body .ui-ribbon .ui-tabs-panels .ui-tabs-panel .ui-ribbon-groups .ui-ribbon-group .ui-ribbon-group-content .ui-ribbon-bigbutton .ui-icon {
+      position: static;
+      top: auto;
+      left: auto;
+      margin-top: -20px;
+      margin-left: -10px; }
+    body .ui-ribbon .ui-tabs-panels .ui-tabs-panel .ui-ribbon-groups .ui-ribbon-group .ui-ribbon-group-content .ui-ribbon-bigbutton .ui-button-text {
+      padding: 3em 0 0; }
 
 body .ui-paginator {
   background-color: #252525;
@@ -5837,6 +5858,7 @@ body .ui-menu {
     background: #252525;
     padding: 0; }
     body .ui-menu .ui-menu-list .ui-menu-child.ui-shadow {
+      border: 1px solid #191919;
       -webkit-box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);
       -moz-box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);
       box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16); }
@@ -5882,12 +5904,14 @@ body .ui-menu {
       background: none;
       display: inline-block;
       font-size: 1.25em;
-      margin-right: 0.429em; }
+      margin-right: 0.429em;
+      margin-top: 2px; }
       body .ui-menu.ui-slidemenu .ui-slidemenu-backward .ui-icon-triangle-1-w:before {
         content: ""; }
   body .ui-menu.ui-slidemenu .ui-menu-child {
     padding: 0; }
     body .ui-menu.ui-slidemenu .ui-menu-child.ui-shadow {
+      border: 0 none;
       -webkit-box-shadow: none;
       -moz-box-shadow: none;
       box-shadow: none; }
@@ -5900,8 +5924,6 @@ body .ui-menu {
     width: 100%; }
   body .ui-menu.ui-megamenu.ui-megamenu-vertical > .ui-menu-list > .ui-menuitem > .ui-menuitem-link .ui-icon:last-child {
     float: right; }
-  body .ui-menu.ui-tieredmenu.ui-menu-list .ui-menuitem .ui-menu-child {
-    border: 1px solid #191919; }
 body .ui-tabmenu {
   padding: 0;
   position: static; }
@@ -6111,6 +6133,8 @@ body .ui-menubutton .ui-button {
   margin-right: .1em; }
   body .ui-menubutton .ui-button > .ui-icon {
     margin-top: calc(2px - 0.5em); }
+body .ui-stack .openStack li span {
+  height: 20px; }
 
 body .ui-progressbar {
   border: 0 none;
