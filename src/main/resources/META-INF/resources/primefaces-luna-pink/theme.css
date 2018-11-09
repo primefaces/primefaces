@@ -216,6 +216,7 @@ body .ui-autocomplete {
       body .ui-autocomplete .ui-autocomplete-multiple-container .ui-autocomplete-input-token input {
         font-family: "Open Sans", "Helvetica Neue", sans-serif;
         font-size: 14px;
+        color: #dedede;
         padding: 0;
         margin: 0; }
 body .ui-autocomplete-panel {
@@ -230,6 +231,9 @@ body .ui-autocomplete-panel {
     padding: 0;
     line-height: normal;
     border: 0 none; }
+    body .ui-autocomplete-panel .ui-autocomplete-items .ui-autocomplete-group {
+      color: #dedede;
+      padding: 0.429em 0.857em 0.429em 0.4285em; }
     body .ui-autocomplete-panel .ui-autocomplete-items .ui-autocomplete-item {
       border: 0 none;
       margin: 0;
@@ -609,7 +613,8 @@ body .ui-selectonemenu-panel {
         background-color: #cc285c;
         color: #ffffff; }
     body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item-group {
-      padding: 0.429em 0.857em 0.429em 0.4285em; }
+      padding: 0.429em 0.857em 0.429em 0.4285em;
+      color: #dedede; }
 body .ui-selectcheckboxmenu {
   vertical-align: initial;
   border: 1px solid #585858;
@@ -805,6 +810,9 @@ body .ui-selectcheckboxmenu-panel {
           content: ""; }
   body .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-items {
     padding: 0; }
+    body .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-items .ui-selectcheckboxmenu-item-group {
+      color: #dedede;
+      padding: 0.429em 0.857em 0.429em 0.4285em; }
     body .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-items .ui-selectcheckboxmenu-item {
       padding: 0.429em 0.857em;
       margin: 0;
@@ -866,6 +874,7 @@ body .ui-chips .ui-chips-container {
     body .ui-chips .ui-chips-container .ui-chips-input-token input {
       font-family: "Open Sans", "Helvetica Neue", sans-serif;
       font-size: 14px;
+      color: #dedede;
       padding: 0;
       margin: 0; }
 body .ui-inplace .ui-inplace-display {
@@ -1139,7 +1148,7 @@ body .ui-datepicker {
           background-color: #cc285c;
           color: #ffffff; }
       body .ui-datepicker .ui-datepicker-calendar td.ui-datepicker-today a {
-        background-color: #b72452;
+        background-color: #a32049;
         color: #ffffff; }
   body .ui-datepicker .ui-datepicker-group {
     border-right: 1px solid #191919; }
@@ -1378,6 +1387,7 @@ body .ui-toggleswitch {
     background-color: #b72452; }
   body .ui-toggleswitch.ui-toggleswitch-checked.ui-toggleswitch-focus .ui-toggleswitch-slider {
     background: #a32049; }
+body #keypad-div,
 body .keypad-popup {
   background-color: #323232;
   color: #dedede;
@@ -1389,40 +1399,72 @@ body .keypad-popup {
   -webkit-box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
   -moz-box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16); }
+  body #keypad-div .keypad-space,
   body .keypad-popup .keypad-space {
     margin: 1px;
     width: 2em; }
+  body #keypad-div .keypad-half-space,
   body .keypad-popup .keypad-half-space {
     margin-left: 0.5px;
-    margin-right: 0.5px; }
+    margin-right: 0.5px;
+    width: 1em;
+    margin: 0.125em 0.0625em; }
+  body #keypad-div button,
   body .keypad-popup button {
     background-color: #ffffff;
     border: 1px solid transparent;
     padding: 0.429em;
     margin: 1px;
     outline: 0 none; }
+    body #keypad-div button.keypad-key,
     body .keypad-popup button.keypad-key {
       width: 2em; }
+    body #keypad-div button.keypad-shift, body #keypad-div button.keypad-spacebar, body #keypad-div button.keypad-enter, body #keypad-div button.keypad-clear, body #keypad-div button.keypad-back, body #keypad-div button.keypad-close, body #keypad-div button.keypad-tab, body #keypad-div button.keypad-special,
+    body .keypad-popup button.keypad-shift,
+    body .keypad-popup button.keypad-spacebar,
+    body .keypad-popup button.keypad-enter,
+    body .keypad-popup button.keypad-clear,
+    body .keypad-popup button.keypad-back,
+    body .keypad-popup button.keypad-close,
+    body .keypad-popup button.keypad-tab,
     body .keypad-popup button.keypad-special {
       width: calc(4em + 2px); }
+    body #keypad-div button.keypad-spacebar,
     body .keypad-popup button.keypad-spacebar {
       width: calc(12em + 10px); }
+    body #keypad-div button.keypad-tab,
     body .keypad-popup button.keypad-tab {
       width: 2em; }
+    body #keypad-div button.ui-state-hover,
     body .keypad-popup button.ui-state-hover {
       background-color: #eaeaea;
       border: 1px solid transparent;
       color: #dedede; }
+    body #keypad-div button.ui-state-active,
     body .keypad-popup button.ui-state-active {
       background-color: #cc285c;
       border: 1px solid #cc285c;
       color: #ffffff; }
-    body .keypad-popup button.keypad-shift, body .keypad-popup button.keypad-spacebar, body .keypad-popup button.keypad-enter, body .keypad-popup button.keypad-clear, body .keypad-popup button.keypad-back, body .keypad-popup button.keypad-close, body .keypad-popup button.keypad-tab {
+    body #keypad-div button.keypad-shift, body #keypad-div button.keypad-spacebar, body #keypad-div button.keypad-enter, body #keypad-div button.keypad-clear, body #keypad-div button.keypad-back, body #keypad-div button.keypad-close, body #keypad-div button.keypad-tab,
+    body .keypad-popup button.keypad-shift,
+    body .keypad-popup button.keypad-spacebar,
+    body .keypad-popup button.keypad-enter,
+    body .keypad-popup button.keypad-clear,
+    body .keypad-popup button.keypad-back,
+    body .keypad-popup button.keypad-close,
+    body .keypad-popup button.keypad-tab {
       background-color: #cc285c;
       border: 1px solid transparent;
       color: #ffffff;
       font-weight: 700; }
-      body .keypad-popup button.keypad-shift.ui-state-hover, body .keypad-popup button.keypad-spacebar.ui-state-hover, body .keypad-popup button.keypad-enter.ui-state-hover, body .keypad-popup button.keypad-clear.ui-state-hover, body .keypad-popup button.keypad-back.ui-state-hover, body .keypad-popup button.keypad-close.ui-state-hover, body .keypad-popup button.keypad-tab.ui-state-hover {
+      body #keypad-div button.keypad-shift.ui-state-hover, body #keypad-div button.keypad-spacebar.ui-state-hover, body #keypad-div button.keypad-enter.ui-state-hover, body #keypad-div button.keypad-clear.ui-state-hover, body #keypad-div button.keypad-back.ui-state-hover, body #keypad-div button.keypad-close.ui-state-hover, body #keypad-div button.keypad-tab.ui-state-hover,
+      body .keypad-popup button.keypad-shift.ui-state-hover,
+      body .keypad-popup button.keypad-spacebar.ui-state-hover,
+      body .keypad-popup button.keypad-enter.ui-state-hover,
+      body .keypad-popup button.keypad-clear.ui-state-hover,
+      body .keypad-popup button.keypad-back.ui-state-hover,
+      body .keypad-popup button.keypad-close.ui-state-hover,
+      body .keypad-popup button.keypad-tab.ui-state-hover {
         background-color: #a32049;
         border: 1px solid transparent;
         color: #ffffff; }
@@ -1599,6 +1641,58 @@ body .ui-inputgroup .ui-inputgroup-addon {
     left: 50%;
     margin-top: -0.5em;
     margin-left: -0.5em; }
+body .ui-texteditor .ui-editor-toolbar {
+  border: 1px solid #191919;
+  background-color: #191919; }
+body .ui-texteditor .ui-editor-content {
+  border: 1px solid #191919; }
+  body .ui-texteditor .ui-editor-content .ql-editor {
+    background-color: #585858;
+    color: #dedede; }
+body .ui-texteditor .ql-picker.ql-expanded .ql-picker-label {
+  color: #dedede; }
+body .ui-texteditor .ql-stroke {
+  stroke: #dedede; }
+body .ui-texteditor .ql-picker-label {
+  color: #dedede; }
+body .ui-texteditor .ql-snow.ql-toolbar button:hover,
+body .ui-texteditor .ql-snow .ql-toolbar button:hover,
+body .ui-texteditor .ql-snow.ql-toolbar button.ql-active,
+body .ui-texteditor .ql-snow .ql-toolbar button.ql-active,
+body .ui-texteditor .ql-snow.ql-toolbar .ql-picker-label:hover,
+body .ui-texteditor .ql-snow .ql-toolbar .ql-picker-label:hover,
+body .ui-texteditor .ql-snow.ql-toolbar .ql-picker-label.ql-active,
+body .ui-texteditor .ql-snow .ql-toolbar .ql-picker-label.ql-active,
+body .ui-texteditor .ql-snow.ql-toolbar .ql-picker-item:hover,
+body .ui-texteditor .ql-snow .ql-toolbar .ql-picker-item:hover,
+body .ui-texteditor .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
+body .ui-texteditor .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
+  color: #dedede; }
+body .ui-texteditor .ql-snow.ql-toolbar button:hover .ql-stroke,
+body .ui-texteditor .ql-snow .ql-toolbar button:hover .ql-stroke,
+body .ui-texteditor .ql-snow.ql-toolbar button.ql-active .ql-stroke,
+body .ui-texteditor .ql-snow .ql-toolbar button.ql-active .ql-stroke,
+body .ui-texteditor .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke,
+body .ui-texteditor .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke,
+body .ui-texteditor .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+body .ui-texteditor .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+body .ui-texteditor .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke,
+body .ui-texteditor .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke,
+body .ui-texteditor .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
+body .ui-texteditor .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
+body .ui-texteditor .ql-snow.ql-toolbar button:hover .ql-stroke-miter,
+body .ui-texteditor .ql-snow .ql-toolbar button:hover .ql-stroke-miter,
+body .ui-texteditor .ql-snow.ql-toolbar button.ql-active .ql-stroke-miter,
+body .ui-texteditor .ql-snow .ql-toolbar button.ql-active .ql-stroke-miter,
+body .ui-texteditor .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
+body .ui-texteditor .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
+body .ui-texteditor .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
+body .ui-texteditor .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
+body .ui-texteditor .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
+body .ui-texteditor .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
+body .ui-texteditor .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter,
+body .ui-texteditor .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter {
+  stroke: #dedede; }
 
 body .ui-button {
   background-color: #cc285c;
@@ -5351,7 +5445,7 @@ body .ui-menu {
     border-radius: 0; }
     body .ui-menu .ui-menu-list .ui-menuitem.ui-state-hover {
       background-color: #4c4c4c;
-      color: #4c4c4c; }
+      color: #dedede; }
       body .ui-menu .ui-menu-list .ui-menuitem.ui-state-hover > .ui-menuitem-link {
         color: #dedede; }
         body .ui-menu .ui-menu-list .ui-menuitem.ui-state-hover > .ui-menuitem-link .ui-icon {
@@ -5369,7 +5463,7 @@ body .ui-menu {
         body .ui-menu .ui-menu-list .ui-menuitem .ui-menuitem-link.ui-state-hover .ui-icon {
           color: #dedede; }
         body .ui-menu .ui-menu-list .ui-menuitem .ui-menuitem-link.ui-state-hover .ui-menuitem-text {
-          color: #4c4c4c; }
+          color: #dedede; }
       body .ui-menu .ui-menu-list .ui-menuitem .ui-menuitem-link .ui-menuitem-icon {
         margin-right: 0.429em;
         margin-top: 0px;
@@ -5651,7 +5745,7 @@ body .ui-panelmenu .ui-panelmenu-content {
       body .ui-panelmenu .ui-panelmenu-content .ui-menuitem-link.ui-state-hover .ui-icon {
         color: #dedede; }
       body .ui-panelmenu .ui-panelmenu-content .ui-menuitem-link.ui-state-hover .ui-menuitem-text {
-        color: #4c4c4c; }
+        color: #dedede; }
     body .ui-panelmenu .ui-panelmenu-content .ui-menuitem-link > span.ui-icon {
       display: inline-block;
       vertical-align: middle;
