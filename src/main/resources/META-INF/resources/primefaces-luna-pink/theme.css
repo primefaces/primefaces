@@ -8,7 +8,6 @@
   --input-hover-border-color:#cc285c;
   --input-focus-border-color:#cc285c; }
 
-
 /* open-sans-300 - latin */
 @font-face {
   font-family: 'Open Sans';
@@ -2549,7 +2548,6 @@ body .ui-layout-unit {
   border: 1px solid #191919;
   background-color: #323232;
   color: #dedede;
-  padding: 0.571em 1em;
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
   border-radius: 0; }
@@ -2637,8 +2635,8 @@ body .ui-layout-unit {
           content: ""; }
     body .ui-layout-unit .ui-layout-unit-header .ui-layout-unit-header-icon.ui-state-hover .ui-icon {
       color: #dedede; }
-  body .ui-layout-unit .ui-layout-resizer {
-    background-color: #191919; }
+body .ui-layout-resizer {
+  background-color: #191919; }
 body .ui-ribbon .ui-tabs-panels .ui-tabs-panel {
   padding: 0; }
   body .ui-ribbon .ui-tabs-panels .ui-tabs-panel .ui-ribbon-groups {
