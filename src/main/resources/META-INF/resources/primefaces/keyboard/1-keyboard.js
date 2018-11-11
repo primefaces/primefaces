@@ -6,6 +6,7 @@
     init: function(cfg) {
         this._super(cfg);
 
+        var $this = this;   
         if(this.cfg.layoutTemplate)
             this.cfg.layout = PrimeFaces.widget.KeyboardUtils.createLayoutFromTemplate(this.cfg.layoutTemplate);
         else
@@ -22,7 +23,7 @@
 
         //Hide overlay on resize
         PrimeFaces.utils.registerResizeHandler(this, 'resize.' + this.id + '_align', null, function() {
-            $.keypad._hideKeypad();
+            $this.jq.keypad('hide');
         });
     }
 
