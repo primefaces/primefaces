@@ -163,10 +163,11 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
             if (hasItemLabel) {
                 LOGGER.warning("itemLabel property is deprecated. Use label instead");
                 writer.writeText(itemLabel, "itemLabel");
-            } else {
+            }
+            else {
                 writer.writeText(label, "label");
             }
-            
+
             writer.endElement("span");
         }
     }
