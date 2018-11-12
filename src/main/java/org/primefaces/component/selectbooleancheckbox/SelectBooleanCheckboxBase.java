@@ -31,7 +31,8 @@ abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbox imple
     public enum PropertyKeys {
 
         widgetVar,
-        itemLabel;
+        itemLabel,
+        escape;
     }
 
     public SelectBooleanCheckboxBase() {
@@ -67,6 +68,14 @@ abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbox imple
     @Deprecated
     public void setItemLabel(String itemLabel) {
         getStateHelper().put(PropertyKeys.itemLabel, itemLabel);
+    }
+
+    public boolean isEscape() {
+        return (Boolean) getStateHelper().eval(SelectBooleanCheckboxBase.PropertyKeys.escape, true);
+    }
+
+    public void setEscape(boolean escape) {
+        getStateHelper().put(SelectBooleanCheckboxBase.PropertyKeys.escape, escape);
     }
 
     @Override

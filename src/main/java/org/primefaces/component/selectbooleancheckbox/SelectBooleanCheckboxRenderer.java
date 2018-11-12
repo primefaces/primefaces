@@ -15,19 +15,18 @@
  */
 package org.primefaces.component.selectbooleancheckbox;
 
-import java.io.IOException;
-import java.util.logging.Logger;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.convert.ConverterException;
-
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.convert.ConverterException;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 public class SelectBooleanCheckboxRenderer extends InputRenderer {
 
@@ -148,9 +147,10 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     }
 
     protected void encodeItemLabel(FacesContext context, SelectBooleanCheckbox checkbox, String clientId) throws IOException {
-        String itemLabel = checkbox.getItemLabel();
         // See #4231 (Remove itemLabel in 7.0)
+        String itemLabel = checkbox.getItemLabel();
         String label = checkbox.getLabel();
+
         boolean hasItemLabel = !LangUtils.isValueBlank(itemLabel);
         boolean hasLabel = !LangUtils.isValueBlank(label);
 
@@ -162,10 +162,15 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
 
             if (hasItemLabel) {
                 LOGGER.warning("itemLabel property is deprecated. Use label instead");
-                writer.writeText(itemLabel, "itemLabel");
+            }
+
+            boolean escaped = checkbox.isEscape();
+            if (escaped) {
+                String property = hasItemLabel ? "itemLabel" : "label";
+                writer.writeText(label, property);
             }
             else {
-                writer.writeText(label, "label");
+                writer.write(label);
             }
 
             writer.endElement("span");
