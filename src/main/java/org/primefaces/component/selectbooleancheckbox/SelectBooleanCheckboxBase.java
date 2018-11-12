@@ -51,10 +51,20 @@ abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbox imple
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
+    /**
+     * Use HtmlSelectBooleanCheckbox#getLabel() instead
+     * @return
+     */
+    @Deprecated
     public String getItemLabel() {
         return (String) getStateHelper().eval(PropertyKeys.itemLabel, null);
     }
 
+    /**
+     * Use HtmlSelectBooleanCheckbox#setLabel() instead
+     * @param itemLabel
+     */
+    @Deprecated
     public void setItemLabel(String itemLabel) {
         getStateHelper().put(PropertyKeys.itemLabel, itemLabel);
     }

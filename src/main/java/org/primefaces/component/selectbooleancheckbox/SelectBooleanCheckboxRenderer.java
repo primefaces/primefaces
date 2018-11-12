@@ -16,6 +16,7 @@
 package org.primefaces.component.selectbooleancheckbox;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -25,9 +26,12 @@ import javax.faces.convert.ConverterException;
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectBooleanCheckboxRenderer extends InputRenderer {
+
+    private static final Logger LOGGER = Logger.getLogger(SelectBooleanCheckboxRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -144,14 +148,25 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     }
 
     protected void encodeItemLabel(FacesContext context, SelectBooleanCheckbox checkbox, String clientId) throws IOException {
-        String label = checkbox.getItemLabel();
+        String itemLabel = checkbox.getItemLabel();
+        // See #4231 (Remove itemLabel in 7.0)
+        String label = checkbox.getLabel();
+        boolean hasItemLabel = !LangUtils.isValueBlank(itemLabel);
+        boolean hasLabel = !LangUtils.isValueBlank(label);
 
-        if (label != null) {
+        if (hasItemLabel || hasLabel) {
             ResponseWriter writer = context.getResponseWriter();
 
             writer.startElement("span", null);
             writer.writeAttribute("class", HTML.CHECKBOX_LABEL_CLASS, null);
-            writer.writeText(label, "itemLabel");
+
+            if (hasItemLabel) {
+                LOGGER.warning("itemLabel property is deprecated. Use label instead");
+                writer.writeText(itemLabel, "itemLabel");
+            } else {
+                writer.writeText(label, "label");
+            }
+            
             writer.endElement("span");
         }
     }
