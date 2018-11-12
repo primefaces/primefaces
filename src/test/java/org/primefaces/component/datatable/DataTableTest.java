@@ -14,6 +14,7 @@ public class DataTableTest {
     public void testResolveStaticField() {
         DataTable table = new DataTable();
         ValueExpression exprVE = mock(ValueExpression.class);
+
         when(exprVE.getExpressionString()).thenReturn("#{car.year}");
         String field = table.resolveStaticField(exprVE);
         Assert.assertEquals("year", field);
