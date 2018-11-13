@@ -15,19 +15,22 @@
  */
 package org.primefaces.component.selectbooleancheckbox;
 
-import java.io.IOException;
+import org.primefaces.renderkit.InputRenderer;
+import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
+import org.primefaces.util.WidgetBuilder;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.ConverterException;
-
-import org.primefaces.renderkit.InputRenderer;
-import org.primefaces.util.ComponentUtils;
-import org.primefaces.util.HTML;
-import org.primefaces.util.WidgetBuilder;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 public class SelectBooleanCheckboxRenderer extends InputRenderer {
+
+    private static final Logger LOGGER = Logger.getLogger(SelectBooleanCheckboxRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -144,14 +147,32 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     }
 
     protected void encodeItemLabel(FacesContext context, SelectBooleanCheckbox checkbox, String clientId) throws IOException {
-        String label = checkbox.getItemLabel();
+        // See #4231 (Remove itemLabel in 7.0)
+        String itemLabel = checkbox.getItemLabel();
+        String label = checkbox.getLabel();
 
-        if (label != null) {
+        boolean hasItemLabel = !LangUtils.isValueBlank(itemLabel);
+        boolean hasLabel = !LangUtils.isValueBlank(label);
+
+        if (hasItemLabel || hasLabel) {
             ResponseWriter writer = context.getResponseWriter();
 
             writer.startElement("span", null);
             writer.writeAttribute("class", HTML.CHECKBOX_LABEL_CLASS, null);
-            writer.writeText(label, "itemLabel");
+
+            if (hasItemLabel) {
+                LOGGER.warning("itemLabel property is deprecated. Use label instead");
+            }
+
+            boolean escaped = checkbox.isEscape();
+            if (escaped) {
+                String property = hasItemLabel ? "itemLabel" : "label";
+                writer.writeText(label, property);
+            }
+            else {
+                writer.write(label);
+            }
+
             writer.endElement("span");
         }
     }
