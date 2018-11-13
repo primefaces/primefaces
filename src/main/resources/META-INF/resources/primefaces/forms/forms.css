@@ -96,6 +96,11 @@
     border-bottom: 0px none;
 }
 
+.ui-listbox-outline {
+    outline: 1px dotted black;
+    z-index: 1;
+}
+
 /**
  * Checkbox
  */
