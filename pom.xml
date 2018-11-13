@@ -685,14 +685,27 @@
                         <relocation>
                             <pattern>org.owasp.encoder</pattern>
                             <shadedPattern>org.primefaces.shaded.owasp.encoder</shadedPattern>
+                            <includes>
+                                <include>**</include>
+                            </includes>
                         </relocation>
                         <relocation>
                             <pattern>org.owasp.esapi</pattern>
                             <shadedPattern>org.primefaces.shaded.owasp.esapi</shadedPattern>
+                            <includes>
+                                <include>org.owasp.esapi.SafeFile</include>
+                                <include>org.owasp.esapi.Logger</include>
+                                <include>org.owasp.esapi.errors.ValidationException</include>
+                                <include>org.owasp.esapi.errors.EnterpriseSecurityException</include>
+                            </includes>
                         </relocation>
                         <relocation>
                             <pattern>org.apache.commons.io</pattern>
                             <shadedPattern>org.primefaces.shaded.commons.io</shadedPattern>
+                            <includes>
+                                <include>org.apache.commons.io.FilenameUtils</include>
+                                <include>org.apache.commons.io.input.BoundedInputStream</include>
+                            </includes>
                         </relocation>
                     </relocations>
                     <filters>
@@ -703,7 +716,6 @@
                                 <include>org/owasp/esapi/Logger.class</include>
                                 <include>org/owasp/esapi/errors/ValidationException.class</include>
                                 <include>org/owasp/esapi/errors/EnterpriseSecurityException.class</include>
-
                             </includes>
                         </filter>
                         <filter>
