@@ -130,12 +130,6 @@ public class FileUploadUtils {
      * @return <code>true</code>, if all validations regarding filename and content type passed, <code>false</code> else
      */
     public static boolean isValidType(FileUpload fileUpload, String fileName, InputStream inputStream) {
-        if (!fileUpload.isCheckContentType()) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Content type checking is disabled");
-            }
-            return true;
-        }
         try {
             /* Step 1: Let's check the filename first */
             String fileNameRegex = fileUpload.getAllowTypes();
@@ -151,6 +145,12 @@ public class FileUploadUtils {
             }
 
             /* Step 2: Proceed with content type checking */
+            if (!fileUpload.isCheckContentType()) {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Content type checking is disabled");
+                }
+                return true;
+            }
             if (LangUtils.isValueBlank(fileUpload.getAccept())) {
                 //Short circuit
                 return true;
