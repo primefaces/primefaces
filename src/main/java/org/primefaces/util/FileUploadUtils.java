@@ -15,18 +15,33 @@
  */
 package org.primefaces.util;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PushbackInputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.faces.FacesException;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.poi.util.BoundedInputStream;
 import org.owasp.esapi.SafeFile;
 import org.owasp.esapi.errors.ValidationException;
+import org.primefaces.component.fileupload.FileUpload;
 
- /**
+/**
  * Utilities for FileUpload components.
  */
 public class FileUploadUtils {
+
+    private static final Logger LOGGER = Logger.getLogger(FileUploadUtils.class.getName());
 
     private static final Pattern INVALID_FILENAME_PATTERN = Pattern.compile("([\\/:*?\"<>|])");
 
@@ -100,5 +115,117 @@ public class FileUploadUtils {
 
     public static boolean isSystemWindows() {
         return File.separatorChar == '\\';
+    }
+
+    /**
+     * Check if an uploaded file meets all specifications regarding its filename and content type. It evaluates {@link FileUpload#getAllowTypes}
+     * as well as {@link FileUpload#getAccept} and uses the installed {@link java.nio.file.spi.FileTypeDetector} implementation.
+     * For most reliable content type checking it's recommended to plug in Apache Tika as an implementation.
+     * @param fileUpload the fileUpload component
+     * @param fileName the name of the uploaded file
+     * @param inputStream the input stream to receive the file's content from
+     * @return <code>true</code>, if all validations regarding filename and content type passed, <code>false</code> else
+     */
+    public static boolean isValidType(FileUpload fileUpload, String fileName, InputStream inputStream) {
+        try {
+            /* Step 1: Let's check the filename first */
+            String fileNameRegex = fileUpload.getAllowTypes();
+            if (!LangUtils.isValueBlank(fileNameRegex) && !fileName.matches(fileNameRegex)) {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine(String.format("The uploaded filename %s does not match the specified regex %s", fileName, fileNameRegex));
+                }
+                return false;
+            }
+
+            /* Step 2: Proceed with content type checking */
+            if (LangUtils.isValueBlank(fileUpload.getAccept())) {
+                //Short circuit
+                return true;
+            }
+            String tempFilePrefix = UUID.randomUUID().toString();
+            String tempFileSuffix = "." + FilenameUtils.getExtension(fileName);
+            Path tempFile = Files.createTempFile(tempFilePrefix, tempFileSuffix);
+            try {
+                InputStream in = new PushbackInputStream(new BufferedInputStream(inputStream));
+                try (OutputStream out = new FileOutputStream(tempFile.toFile())) {
+                    IOUtils.copyLarge(in, out);
+                }
+                try {
+                    Class.forName("org.apache.tika.filetypedetector.TikaFileTypeDetector");
+                }
+                catch (Exception ex) {
+                    if (LOGGER.isLoggable(Level.WARNING)) {
+                        LOGGER.warning("Could not find Apache Tika in classpath which is recommended for reliable content type checking");
+                    }
+                }
+                String contentType = Files.probeContentType(tempFile);
+                if (contentType == null) {
+                    if (LOGGER.isLoggable(Level.WARNING)) {
+                        LOGGER.warning("Could not determine content type of uploaded file, consider plugging in an adequate FileTypeDetector implementation");
+                    }
+                    return false;
+                }
+                //Comma-separated values: file_extension|audio/*|video/*|image/*|media_type (see https://www.w3schools.com/tags/att_input_accept.asp)
+                String[] accepts = fileUpload.getAccept().split(",");
+                boolean accepted = false;
+                for (String accept : accepts) {
+                    accept = accept.trim().toLowerCase();
+                    if (accept.startsWith(".") && fileName.toLowerCase().endsWith(accept)) {
+                        accepted = true;
+                        if (LOGGER.isLoggable(Level.FINE)) {
+                            LOGGER.fine(String.format("The file extension %s of the uploaded file %s is accepted", accept, fileName));
+                        }
+                        break;
+                    }
+                    //Now we have a media type that may contain wildcards
+                    if (FilenameUtils.wildcardMatch(contentType.toLowerCase(), accept)) {
+                        accepted = true;
+                        if (LOGGER.isLoggable(Level.FINE)) {
+                            LOGGER.fine(String.format("The content type %s of the uploaded file %s is accepted by %s", contentType, fileName, accept));
+                        }
+                        break;
+                    }
+                }
+                if (!accepted) {
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine(String.format("The uploaded file %s with content type %s does not match the accept specification %s", fileName, contentType,
+                                fileUpload.getAccept()));
+                    }
+                    return false;
+                }
+            }
+            finally {
+                try {
+                    Files.delete(tempFile);
+                }
+                catch (Exception ex) {
+                    if (LOGGER.isLoggable(Level.WARNING)) {
+                        LOGGER.log(Level.WARNING, String.format("Could not delete temporary file %s, will try to delete on JVM exit",
+                                tempFile.toAbsolutePath()), ex);
+                        try {
+                            tempFile.toFile().deleteOnExit();
+                        }
+                        catch (Exception ex1) {
+                            if (LOGGER.isLoggable(Level.WARNING)) {
+                                LOGGER.log(Level.WARNING, String.format("Could not register temporary file %s for deletion on JVM exit",
+                                        tempFile.toAbsolutePath()), ex1);
+                            }
+                        }
+                    }
+                }
+            }
+
+            /* Step 3: No type violations found */
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine(String.format("The uploaded file %s meets the filename and content type specifications", fileName));
+            }
+            return true;
+        }
+        catch (IOException ex) {
+            if (LOGGER.isLoggable(Level.WARNING)) {
+                LOGGER.log(Level.WARNING, String.format("The type of the uploaded file %s could not be validated", fileName), ex);
+            }
+            return false;
+        }
     }
 }
