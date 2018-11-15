@@ -33,7 +33,7 @@ import org.primefaces.util.FileUploadUtils;
 public class NativeUploadedFile implements UploadedFile, Serializable {
 
     private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
-    private static final String FILENAME = "filename";
+    private static final String CONTENT_DISPOSITION_FILENAME_ATTR = "filename";
 
     private Part part;
     private String filename;
@@ -152,13 +152,13 @@ public class NativeUploadedFile implements UploadedFile, Serializable {
 
     protected String getContentDispositionFileName(final String line) {
         // skip to 'filename'
-        int i = line.indexOf(FILENAME);
+        int i = line.indexOf(CONTENT_DISPOSITION_FILENAME_ATTR);
         if (i == -1) {
             return null; // does not contain 'filename'
         }
 
         // skip past 'filename'
-        i += FILENAME.length();
+        i += CONTENT_DISPOSITION_FILENAME_ATTR.length();
 
         final int lineLength = line.length();
 

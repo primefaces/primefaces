@@ -77,8 +77,8 @@ public class ResourceUtils {
         return RENDERER_STYLESHEET.equals(component.getRendererType());
     }
 
-    public static ArrayList<ResourceInfo> getComponentResources(FacesContext context) {
-        ArrayList<ResourceInfo> resourceInfos = new ArrayList<>();
+    public static List<ResourceInfo> getComponentResources(FacesContext context) {
+        List<ResourceInfo> resourceInfos = new ArrayList<>();
 
         List<UIComponent> resources = context.getViewRoot().getComponentResources(context, "head");
         if (resources != null) {

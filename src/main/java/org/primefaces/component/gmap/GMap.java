@@ -94,7 +94,7 @@ public class GMap extends GMapBase {
                 String[] centerLoc = params.get(clientId + "_center").split(",");
                 String[] northeastLoc = params.get(clientId + "_northeast").split(",");
                 String[] southwestLoc = params.get(clientId + "_southwest").split(",");
-                int zoomLevel = Integer.valueOf(params.get(clientId + "_zoom"));
+                int zoomLevel = Integer.parseInt(params.get(clientId + "_zoom"));
 
                 LatLng center = new LatLng(Double.valueOf(centerLoc[0]), Double.valueOf(centerLoc[1]));
                 LatLng northeast = new LatLng(Double.valueOf(northeastLoc[0]), Double.valueOf(northeastLoc[1]));

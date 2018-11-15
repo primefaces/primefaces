@@ -15,7 +15,7 @@
  */
 package org.primefaces.application.resource;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -59,7 +59,7 @@ public class DynamicResourcesPhaseListener implements PhaseListener {
         }
 
         // collect all current resources before new components can be added to the view in later phases
-        ArrayList<ResourceUtils.ResourceInfo> initialResources = ResourceUtils.getComponentResources(context);
+        List<ResourceUtils.ResourceInfo> initialResources = ResourceUtils.getComponentResources(context);
 
         putInitialResources(context, initialResources);
     }
@@ -69,12 +69,12 @@ public class DynamicResourcesPhaseListener implements PhaseListener {
         return PhaseId.RESTORE_VIEW;
     }
 
-    public static void putInitialResources(FacesContext context, ArrayList<ResourceUtils.ResourceInfo> resources) {
+    public static void putInitialResources(FacesContext context, List<ResourceUtils.ResourceInfo> resources) {
         context.getAttributes().put(INITIAL_RESOURCES, resources);
     }
 
-    public static ArrayList<ResourceUtils.ResourceInfo> getInitialResources(FacesContext context) {
-        return (ArrayList<ResourceUtils.ResourceInfo>) context.getAttributes().get(INITIAL_RESOURCES);
+    public static List<ResourceUtils.ResourceInfo> getInitialResources(FacesContext context) {
+        return (List<ResourceUtils.ResourceInfo>) context.getAttributes().get(INITIAL_RESOURCES);
     }
 
 }
