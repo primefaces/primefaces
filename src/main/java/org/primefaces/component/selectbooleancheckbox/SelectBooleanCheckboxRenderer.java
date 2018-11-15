@@ -165,12 +165,13 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
             }
 
             boolean escaped = checkbox.isEscape();
+            String text = hasItemLabel ? itemLabel : label;
             if (escaped) {
                 String property = hasItemLabel ? "itemLabel" : "label";
-                writer.writeText(label, property);
+                writer.writeText(text, property);
             }
             else {
-                writer.write(label);
+                writer.write(text);
             }
 
             writer.endElement("span");
