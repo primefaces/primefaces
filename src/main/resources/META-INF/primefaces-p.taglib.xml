@@ -7386,6 +7386,12 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description><![CDATA[Whether content type validation should be performed, default is false.]]></description>
+            <name>validateContentType</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>        
     </tag>
     <tag>
         <tag-name>focus</tag-name>

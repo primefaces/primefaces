@@ -160,13 +160,13 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.8.2</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>2.15.0</version>
+            <version>2.23.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -704,6 +704,7 @@
                             <shadedPattern>org.primefaces.shaded.commons.io</shadedPattern>
                             <includes>
                                 <include>org.apache.commons.io.FilenameUtils</include>
+                                <include>org.apache.commons.io.IOUtils</include>
                                 <include>org.apache.commons.io.input.BoundedInputStream</include>
                             </includes>
                         </relocation>
@@ -722,6 +723,7 @@
                             <artifact>commons-io:commons-io</artifact>
                             <includes>
                                 <include>org/apache/commons/io/FilenameUtils.class</include>
+                                <include>org/apache/commons/io/IOUtils.class</include>
                                 <include>org/apache/commons/io/input/BoundedInputStream.class</include>
                             </includes>
                         </filter>

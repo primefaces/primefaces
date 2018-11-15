@@ -29,6 +29,7 @@ import javax.servlet.http.Part;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.NativeUploadedFile;
 import org.primefaces.model.UploadedFileWrapper;
+import org.primefaces.util.FileUploadUtils;
 
 public class NativeFileUploadDecoder {
 
@@ -80,8 +81,11 @@ public class NativeFileUploadDecoder {
         else {
             Part part = request.getPart(inputToDecodeId);
 
-            if (part != null && isValidFile(fileUpload, part)) {
-                fileUpload.setSubmittedValue(new UploadedFileWrapper(new NativeUploadedFile(part, fileUpload)));
+            if (part != null) {
+                NativeUploadedFile uploadedFile = new NativeUploadedFile(part, fileUpload);
+                if (isValidFile(fileUpload, uploadedFile)) {
+                    fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
+                }
             }
             else {
                 fileUpload.setSubmittedValue("");
@@ -93,21 +97,28 @@ public class NativeFileUploadDecoder {
         String clientId = fileUpload.getClientId(context);
         Part part = request.getPart(clientId);
 
-        if (part != null && isValidFile(fileUpload, part)) {
-            fileUpload.queueEvent(new FileUploadEvent(fileUpload, new NativeUploadedFile(part, fileUpload)));
+        if (part != null) {
+            NativeUploadedFile uploadedFile = new NativeUploadedFile(part, fileUpload);
+            if (isValidFile(fileUpload, uploadedFile)) {
+                fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFile));
+            }
         }
     }
 
-    private static boolean isValidFile(FileUpload fileUpload, Part part) {
-        // TODO some more checks could be performed here, e.g. allowed types
-        return fileUpload.getSizeLimit() == null || part.getSize() <= fileUpload.getSizeLimit();
+    private static boolean isValidFile(FileUpload fileUpload, NativeUploadedFile uploadedFile) throws IOException {
+        return (fileUpload.getSizeLimit() == null || uploadedFile.getSize() <= fileUpload.getSizeLimit()) && FileUploadUtils.isValidType(fileUpload,
+                uploadedFile.getFileName(), uploadedFile.getInputstream());
     }
 
-    private static boolean isValidFile(FileUpload fileUpload, List<Part> parts) {
+    private static boolean isValidFile(FileUpload fileUpload, List<Part> parts) throws IOException {
         long totalPartSize = 0;
         for (int i = 0; i < parts.size(); i++) {
             Part p = parts.get(i);
             totalPartSize += p.getSize();
+            NativeUploadedFile uploadedFile = new NativeUploadedFile(p, fileUpload);
+            if (!FileUploadUtils.isValidType(fileUpload, uploadedFile.getFileName(), uploadedFile.getInputstream())) {
+                return false;
+            }
         }
 
         return fileUpload.getSizeLimit() == null || totalPartSize <= fileUpload.getSizeLimit();
