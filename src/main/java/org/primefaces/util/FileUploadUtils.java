@@ -31,7 +31,6 @@ import java.util.regex.Pattern;
 import javax.faces.FacesException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.poi.util.BoundedInputStream;
 import org.owasp.esapi.SafeFile;
 import org.owasp.esapi.errors.ValidationException;
 import org.primefaces.component.fileupload.FileUpload;
