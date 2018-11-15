@@ -61,7 +61,8 @@ abstract class FileUploadBase extends UIInput implements Widget {
         chooseIcon,
         uploadIcon,
         cancelIcon,
-        onAdd
+        onAdd,
+        checkContentType
     }
 
     public FileUploadBase() {
@@ -335,6 +336,14 @@ abstract class FileUploadBase extends UIInput implements Widget {
 
     public void setOnAdd(String onAdd) {
         getStateHelper().put(PropertyKeys.onAdd, onAdd);
+    }
+
+    public boolean isCheckContentType() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.checkContentType, false);
+    }
+
+    public void setCheckContentType(boolean checkContentType) {
+        getStateHelper().put(PropertyKeys.checkContentType, checkContentType);
     }
 
     @Override

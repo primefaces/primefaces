@@ -29,6 +29,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.faces.FacesException;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.owasp.esapi.SafeFile;
@@ -126,14 +130,24 @@ public class FileUploadUtils {
      * @return <code>true</code>, if all validations regarding filename and content type passed, <code>false</code> else
      */
     public static boolean isValidType(FileUpload fileUpload, String fileName, InputStream inputStream) {
+        if (!fileUpload.isCheckContentType()) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Content type checking is disabled");
+            }
+            return true;
+        }
         try {
             /* Step 1: Let's check the filename first */
             String fileNameRegex = fileUpload.getAllowTypes();
-            if (!LangUtils.isValueBlank(fileNameRegex) && !fileName.matches(fileNameRegex)) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(String.format("The uploaded filename %s does not match the specified regex %s", fileName, fileNameRegex));
+            if (!LangUtils.isValueBlank(fileNameRegex)) {
+                ScriptEngine engine = new ScriptEngineManager().getEngineByName("javascript");
+                String evalJs = String.format("%s.test(\"%s\")", fileNameRegex, EscapeUtils.forJavaScriptAttribute(fileName));
+                if (!Boolean.TRUE.equals(engine.eval(evalJs))) {
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine(String.format("The uploaded filename %s does not match the specified regex %s", fileName, fileNameRegex));
+                    }
+                    return false;
                 }
-                return false;
             }
 
             /* Step 2: Proceed with content type checking */
@@ -220,7 +234,7 @@ public class FileUploadUtils {
             }
             return true;
         }
-        catch (IOException ex) {
+        catch (IOException | ScriptException ex) {
             if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.log(Level.WARNING, String.format("The type of the uploaded file %s could not be validated", fileName), ex);
             }

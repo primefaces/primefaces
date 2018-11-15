@@ -7348,7 +7348,7 @@
             <description><![CDATA[Applies theming to simple uploader, default is false.]]></description>
             <name>skinSimple</name>
             <required>false</required>
-            <type>java.lang.Boolean</type>
+            <type>java.lang.Boolean</type>re
         </attribute>
         <attribute>
             <description><![CDATA[To filter files in native file browser dialog.]]></description>
@@ -7386,6 +7386,12 @@
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
+        <attribute>
+            <description><![CDATA[Whether content type checking should be performed, default is false.]]></description>
+            <name>checkContentType</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>        
     </tag>
     <tag>
         <tag-name>focus</tag-name>
