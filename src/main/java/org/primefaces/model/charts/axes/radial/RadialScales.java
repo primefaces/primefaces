@@ -16,6 +16,7 @@
 package org.primefaces.model.charts.axes.radial;
 
 import java.io.Serializable;
+
 import org.primefaces.model.charts.axes.AxesGridLines;
 import org.primefaces.model.charts.axes.radial.linear.RadialLinearAngleLines;
 import org.primefaces.model.charts.axes.radial.linear.RadialLinearPointLabels;
@@ -25,6 +26,8 @@ import org.primefaces.model.charts.axes.radial.linear.RadialLinearTicks;
  * Used to provide scales option has radial type
  */
 public class RadialScales implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private RadialLinearAngleLines angelLines;
     private AxesGridLines gridLines;

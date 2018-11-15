@@ -17,6 +17,7 @@ package org.primefaces.model.charts.optionconfig.elements;
 
 import java.io.IOException;
 import java.io.Serializable;
+
 import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
 
@@ -24,6 +25,8 @@ import org.primefaces.util.FastStringWriter;
  * Point elements are used to represent the points in a line chart or a bubble chart.
  */
 public class ElementsPoint implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Number radius = 3;
     private String pointStyle;

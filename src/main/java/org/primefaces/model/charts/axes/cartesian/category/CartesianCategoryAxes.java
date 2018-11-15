@@ -16,6 +16,7 @@
 package org.primefaces.model.charts.axes.cartesian.category;
 
 import java.io.IOException;
+
 import org.primefaces.model.charts.axes.cartesian.CartesianAxes;
 import org.primefaces.util.FastStringWriter;
 
@@ -26,6 +27,8 @@ import org.primefaces.util.FastStringWriter;
  * Using both xLabels and yLabels together can create a chart that uses strings for both the X and Y axes. CartesianCategoryAxes extends {@link CartesianAxes}.
  */
 public class CartesianCategoryAxes extends CartesianAxes {
+
+    private static final long serialVersionUID = 1L;
 
     private String type;
     private CartesianCategoryTicks ticks;

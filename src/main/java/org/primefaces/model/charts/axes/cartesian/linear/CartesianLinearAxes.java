@@ -16,6 +16,7 @@
 package org.primefaces.model.charts.axes.cartesian.linear;
 
 import java.io.IOException;
+
 import org.primefaces.model.charts.axes.cartesian.CartesianAxes;
 import org.primefaces.util.FastStringWriter;
 
@@ -25,6 +26,8 @@ import org.primefaces.util.FastStringWriter;
  * As the name suggests, linear interpolation is used to determine where a value lies on the axis.
  */
 public class CartesianLinearAxes extends CartesianAxes {
+
+    private static final long serialVersionUID = 1L;
 
     private String type;
     private CartesianLinearTicks ticks;

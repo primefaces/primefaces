@@ -17,6 +17,7 @@ package org.primefaces.model.charts.optionconfig.elements;
 
 import java.io.IOException;
 import java.io.Serializable;
+
 import org.primefaces.util.FastStringWriter;
 
 /**
@@ -25,6 +26,8 @@ import org.primefaces.util.FastStringWriter;
  * you sometimes want to style all datasets the same way.
  */
 public class Elements implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private ElementsPoint point;
     private ElementsLine line;

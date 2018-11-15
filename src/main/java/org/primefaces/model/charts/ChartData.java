@@ -24,6 +24,8 @@ import java.util.List;
  */
 public class ChartData implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private List<ChartDataSet> dataSet;
     private Object labels;
 

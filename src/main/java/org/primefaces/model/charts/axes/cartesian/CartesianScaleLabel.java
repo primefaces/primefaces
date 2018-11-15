@@ -16,6 +16,8 @@
 package org.primefaces.model.charts.axes.cartesian;
 
 import java.io.IOException;
+import java.io.Serializable;
+
 import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
 
@@ -23,7 +25,9 @@ import org.primefaces.util.FastStringWriter;
  * The scale label configuration is nested under the scale configuration in the scaleLabel key.
  * It defines options for the scale title.
  */
-public class CartesianScaleLabel {
+public class CartesianScaleLabel implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private boolean display = false;
     private String labelString;

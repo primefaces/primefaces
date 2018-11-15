@@ -16,13 +16,17 @@
 package org.primefaces.model.charts.axes.cartesian;
 
 import java.io.IOException;
+import java.io.Serializable;
+
 import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
 
 /**
  * Common ticks options for cartesian types
  */
-public abstract class CartesianTicks {
+public abstract class CartesianTicks implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private boolean autoSkip = true;
     private Number autoSkipPadding;

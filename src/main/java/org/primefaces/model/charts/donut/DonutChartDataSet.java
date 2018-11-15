@@ -22,6 +22,8 @@ import org.primefaces.model.charts.pie.PieChartDataSet;
  */
 public class DonutChartDataSet extends PieChartDataSet {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * Gets the type
      *

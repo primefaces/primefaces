@@ -17,6 +17,7 @@ package org.primefaces.model.charts.bubble;
 
 import java.io.IOException;
 import java.util.List;
+
 import org.primefaces.model.charts.ChartDataSet;
 import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
@@ -25,6 +26,8 @@ import org.primefaces.util.FastStringWriter;
  * Used to provide DataSet objects to Bubble chart component.
  */
 public class BubbleChartDataSet extends ChartDataSet {
+
+    private static final long serialVersionUID = 1L;
 
     private List<BubblePoint> data;
     private String label;

@@ -16,6 +16,7 @@
 package org.primefaces.model.charts.axes.radial.linear;
 
 import java.io.IOException;
+
 import org.primefaces.model.charts.axes.AxesTicks;
 import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
@@ -24,6 +25,8 @@ import org.primefaces.util.FastStringWriter;
  * Used to provide radial linear ticks. RadialLinearTicks extends {@link AxesTicks}
  */
 public class RadialLinearTicks extends AxesTicks {
+
+    private static final long serialVersionUID = 1L;
 
     private String backdropColor;
     private Number backdropPaddingX;

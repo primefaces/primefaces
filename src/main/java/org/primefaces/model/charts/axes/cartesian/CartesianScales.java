@@ -24,6 +24,8 @@ import java.util.List;
  */
 public class CartesianScales implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private List<CartesianAxes> xAxes;
     private List<CartesianAxes> yAxes;
 

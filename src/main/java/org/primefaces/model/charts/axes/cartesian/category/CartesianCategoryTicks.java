@@ -17,6 +17,7 @@ package org.primefaces.model.charts.axes.cartesian.category;
 
 import java.io.IOException;
 import java.util.List;
+
 import org.primefaces.model.charts.axes.cartesian.CartesianTicks;
 import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
@@ -25,6 +26,8 @@ import org.primefaces.util.FastStringWriter;
  * Used to provide cartesian category ticks. CartesianCategoryTicks extends {@link CartesianTicks}
  */
 public class CartesianCategoryTicks extends CartesianTicks {
+
+    private static final long serialVersionUID = 1L;
 
     private List<String> labels;
     private String min;

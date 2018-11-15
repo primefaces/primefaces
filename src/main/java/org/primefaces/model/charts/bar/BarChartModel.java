@@ -23,6 +23,8 @@ import org.primefaces.model.charts.ChartModel;
  */
 public class BarChartModel extends ChartModel {
 
+    private static final long serialVersionUID = 1L;
+
     private ChartData data;
     private BarChartOptions options;
 

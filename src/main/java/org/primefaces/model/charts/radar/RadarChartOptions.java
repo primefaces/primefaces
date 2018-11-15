@@ -23,6 +23,8 @@ import org.primefaces.model.charts.axes.radial.RadialScales;
  */
 public class RadarChartOptions extends ChartOptions {
 
+    private static final long serialVersionUID = 1L;
+
     private RadialScales scales;
 
     /**

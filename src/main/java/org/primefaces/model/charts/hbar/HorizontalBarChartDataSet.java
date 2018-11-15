@@ -22,6 +22,8 @@ import org.primefaces.model.charts.bar.BarChartDataSet;
  */
 public class HorizontalBarChartDataSet extends BarChartDataSet {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * Gets the type
      *

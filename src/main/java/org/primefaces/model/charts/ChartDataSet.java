@@ -16,8 +16,11 @@
 package org.primefaces.model.charts;
 
 import java.io.IOException;
+import java.io.Serializable;
 
-public abstract class ChartDataSet {
+public abstract class ChartDataSet implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public String encode() throws IOException {
         return null;

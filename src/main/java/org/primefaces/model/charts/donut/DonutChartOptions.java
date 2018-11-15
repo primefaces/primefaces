@@ -22,4 +22,6 @@ import org.primefaces.model.charts.pie.PieChartOptions;
  */
 public class DonutChartOptions extends PieChartOptions {
 
+    private static final long serialVersionUID = 1L;
+
 }

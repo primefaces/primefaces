@@ -23,6 +23,8 @@ import org.primefaces.model.charts.axes.cartesian.CartesianScales;
  */
 public class BubbleChartOptions extends ChartOptions {
 
+    private static final long serialVersionUID = 1L;
+
     private CartesianScales scales;
 
     /**

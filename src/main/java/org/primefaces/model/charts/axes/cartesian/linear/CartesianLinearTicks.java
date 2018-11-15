@@ -16,6 +16,7 @@
 package org.primefaces.model.charts.axes.cartesian.linear;
 
 import java.io.IOException;
+
 import org.primefaces.model.charts.axes.cartesian.CartesianTicks;
 import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
@@ -24,6 +25,8 @@ import org.primefaces.util.FastStringWriter;
  * Used to provide cartesian linear ticks. CartesianLinearTicks extends {@link CartesianTicks}
  */
 public class CartesianLinearTicks extends CartesianTicks {
+
+    private static final long serialVersionUID = 1L;
 
     private boolean beginAtZero;
     private Number min;

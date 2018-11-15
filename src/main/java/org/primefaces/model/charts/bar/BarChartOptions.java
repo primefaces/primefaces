@@ -23,6 +23,8 @@ import org.primefaces.model.charts.axes.cartesian.CartesianScales;
  */
 public class BarChartOptions extends ChartOptions {
 
+    private static final long serialVersionUID = 1L;
+
     private Number barPercentage = 0.9;
     private Number categoryPercentage;
     private Number barThickness;

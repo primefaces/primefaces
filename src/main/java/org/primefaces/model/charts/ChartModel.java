@@ -15,7 +15,11 @@
  */
 package org.primefaces.model.charts;
 
-public abstract class ChartModel {
+import java.io.Serializable;
+
+public abstract class ChartModel implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String extender;
 

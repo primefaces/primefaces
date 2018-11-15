@@ -23,6 +23,8 @@ import org.primefaces.model.charts.ChartModel;
  */
 public class BubbleChartModel extends ChartModel {
 
+    private static final long serialVersionUID = 1L;
+
     private ChartData data;
     private BubbleChartOptions options;
 

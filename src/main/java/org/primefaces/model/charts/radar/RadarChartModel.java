@@ -23,6 +23,8 @@ import org.primefaces.model.charts.ChartModel;
  */
 public class RadarChartModel extends ChartModel {
 
+    private static final long serialVersionUID = 1L;
+
     private ChartData data;
     private RadarChartOptions options;
 

@@ -17,6 +17,7 @@ package org.primefaces.model.charts.optionconfig.tooltip;
 
 import java.io.IOException;
 import java.io.Serializable;
+
 import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
 
@@ -24,6 +25,8 @@ import org.primefaces.util.FastStringWriter;
  * The tooltip configuration is passed into the options.tooltips namespace.
  */
 public class Tooltip implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private boolean enabled = true;
     private String mode;

@@ -24,6 +24,8 @@ import java.io.Serializable;
  */
 public class BubblePoint implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private Number x;
     private Number y;
     private Number r;

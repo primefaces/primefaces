@@ -22,6 +22,8 @@ import org.primefaces.model.charts.ChartOptions;
  */
 public class PieChartOptions extends ChartOptions {
 
+    private static final long serialVersionUID = 1L;
+
     private Number cutoutPercentage;
     private Number rotation;
     private Number circumference;

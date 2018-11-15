@@ -23,6 +23,8 @@ import org.primefaces.model.charts.axes.radial.RadialScales;
  */
 public class PolarAreaChartOptions extends ChartOptions {
 
+    private static final long serialVersionUID = 1L;
+
     private Number startAngle;
     private boolean animateRotate = true;
     private boolean animateScale = true;

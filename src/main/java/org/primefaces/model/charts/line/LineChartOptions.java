@@ -23,6 +23,8 @@ import org.primefaces.model.charts.axes.cartesian.CartesianScales;
  */
 public class LineChartOptions extends ChartOptions {
 
+    private static final long serialVersionUID = 1L;
+
     private boolean showLines = true;
     private boolean spanGaps;
     private CartesianScales scales;

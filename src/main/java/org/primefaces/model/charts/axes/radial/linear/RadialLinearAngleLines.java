@@ -17,6 +17,7 @@ package org.primefaces.model.charts.axes.radial.linear;
 
 import java.io.IOException;
 import java.io.Serializable;
+
 import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
 
@@ -24,6 +25,8 @@ import org.primefaces.util.FastStringWriter;
  * Used to configure angled lines that radiate from the center of the chart to the point labels.
  */
 public class RadialLinearAngleLines implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private boolean display = true;
     private String color;
