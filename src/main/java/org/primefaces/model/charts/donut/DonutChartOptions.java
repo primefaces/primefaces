@@ -21,5 +21,7 @@ import org.primefaces.model.charts.pie.PieChartOptions;
  * Used to set options to Donut chart component. DonutChartOptions extends {@link PieChartOptions}
  */
 public class DonutChartOptions extends PieChartOptions {
+	
+	private static final long serialVersionUID = 1L;
 
 }

@@ -22,6 +22,8 @@ import org.primefaces.model.charts.axes.cartesian.CartesianScales;
  * Used to set options to Bubble chart component.
  */
 public class BubbleChartOptions extends ChartOptions {
+	
+	private static final long serialVersionUID = 1L;
 
     private CartesianScales scales;
 

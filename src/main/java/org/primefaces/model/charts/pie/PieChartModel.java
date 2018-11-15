@@ -22,6 +22,8 @@ import org.primefaces.model.charts.ChartModel;
  * Defines the pie model used to create pie chart component.
  */
 public class PieChartModel extends ChartModel {
+	
+	private static final long serialVersionUID = 1L;
 
     private ChartData data;
     private PieChartOptions options;

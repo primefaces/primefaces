@@ -22,6 +22,8 @@ import org.primefaces.model.charts.ChartModel;
  * Defines the line model used to create line chart component.
  */
 public class LineChartModel extends ChartModel {
+	
+	private static final long serialVersionUID = 1L;
 
     private ChartData data;
     private LineChartOptions options;

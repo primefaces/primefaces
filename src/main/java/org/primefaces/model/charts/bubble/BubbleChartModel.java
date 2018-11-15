@@ -22,6 +22,8 @@ import org.primefaces.model.charts.ChartModel;
  * Defines the bubble model used to create bubble chart component.
  */
 public class BubbleChartModel extends ChartModel {
+	
+	private static final long serialVersionUID = 1L;
 
     private ChartData data;
     private BubbleChartOptions options;

@@ -22,6 +22,8 @@ import org.primefaces.model.charts.axes.cartesian.CartesianScales;
  * Used to set options to Line chart component.
  */
 public class LineChartOptions extends ChartOptions {
+	
+	private static final long serialVersionUID = 1L;
 
     private boolean showLines = true;
     private boolean spanGaps;

@@ -22,6 +22,8 @@ import org.primefaces.model.charts.ChartModel;
  * Defines the bar model used to create bar chart component.
  */
 public class BarChartModel extends ChartModel {
+	
+	private static final long serialVersionUID = 1L;
 
     private ChartData data;
     private BarChartOptions options;
