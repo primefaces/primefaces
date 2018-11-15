@@ -275,7 +275,7 @@
                 <configuration>
                     <consoleOutput>true</consoleOutput>
                     <configLocation>./checkstyle.xml</configLocation>
-                    <excludes>**/UIData.java,**/UITabPanel.java,**/json/**,**/UITree.java,**/UIRepeat.java,**/AbstractBehaviorHandler.java</excludes>
+                    <excludes></excludes>
                 </configuration>
                 <executions>
                     <execution>

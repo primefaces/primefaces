@@ -200,8 +200,10 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Mojarra ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // CHECKSTYLE:OFF
     protected static final String MOJARRA_ATTACHED_OBJECT_HANDLERS_KEY = "javax.faces.RetargetableHandlers";
     protected static final String MOJARRA_22_ATTACHED_OBJECT_HANDLERS_KEY = "javax.faces.view.AttachedObjectHandlers";
+    // CHECKSTYLE:ON
 
     protected void addAttachedObjectHandlerToMojarra(UIComponent component) {
 
@@ -224,8 +226,10 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MyFaces ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // CHECKSTYLE:OFF
     protected static Method MYFACES_GET_COMPOSITION_CONTEXT_INSTANCE;
     protected static Method MYFACES_ADD_ATTACHED_OBJECT_HANDLER;
+    // CHECKSTYLE:ON
 
     protected void addAttachedObjectHandlerToMyFaces(UIComponent component, FaceletContext ctx) {
         try {

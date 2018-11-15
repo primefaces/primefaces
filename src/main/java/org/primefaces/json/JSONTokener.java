@@ -37,6 +37,7 @@ import java.io.StringReader;
  * @author JSON.org
  * @version 2014-05-03
  */
+//CHECKSTYLE:OFF
 public class JSONTokener {
 
     private long    character;
@@ -444,3 +445,4 @@ public class JSONTokener {
             this.line + "]";
     }
 }
+//CHECKSTYLE:ON

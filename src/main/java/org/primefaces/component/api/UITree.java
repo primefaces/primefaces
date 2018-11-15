@@ -16,19 +16,31 @@
 package org.primefaces.component.api;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.el.ValueExpression;
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.*;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIColumn;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIComponentBase;
+import javax.faces.component.UINamingContainer;
 import javax.faces.component.visit.VisitCallback;
 import javax.faces.component.visit.VisitContext;
 import javax.faces.component.visit.VisitHint;
 import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
-import javax.faces.event.*;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PostValidateEvent;
+import javax.faces.event.PreValidateEvent;
 
 import org.primefaces.component.columns.Columns;
 import org.primefaces.component.tree.UITreeNode;
@@ -51,7 +63,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     private boolean rtl;
 
     private List<TreeNode> preselection;
-    
+
     private Boolean isNested = null;
 
     public enum PropertyKeys {
@@ -923,27 +935,27 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             return !Boolean.TRUE.equals(skipHint);
         }
     }
-    
+
     @Override
     public void encodeBegin(FacesContext context) throws IOException {
 
         preEncode(context);
-        
+
         super.encodeBegin(context);
     }
-    
+
     protected void preDecode(FacesContext context) {
     }
-    
+
     protected void preValidate(FacesContext context) {
     }
-    
+
     protected void preUpdate(FacesContext context) {
     }
-    
+
     protected void preEncode(FacesContext context) {
     }
-    
+
     protected Boolean isNestedWithinIterator() {
         if (isNested == null) {
             UIComponent parent = this;
@@ -958,7 +970,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                 isNested = Boolean.FALSE;
             }
             return isNested;
-        } else {
+        }
+        else {
             return isNested;
         }
     }
