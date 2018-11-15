@@ -26,8 +26,8 @@ import org.primefaces.util.FastStringWriter;
  * Used to provide cartesian category ticks. CartesianCategoryTicks extends {@link CartesianTicks}
  */
 public class CartesianCategoryTicks extends CartesianTicks {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private List<String> labels;
     private String min;

@@ -25,8 +25,8 @@ import org.primefaces.util.FastStringWriter;
  * Arcs are used in the polar area, doughnut and pie charts.
  */
 public class ElementsArc implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private String backgroundColor;
     private String borderColor;

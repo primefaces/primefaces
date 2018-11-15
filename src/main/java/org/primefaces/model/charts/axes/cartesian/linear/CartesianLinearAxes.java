@@ -26,8 +26,8 @@ import org.primefaces.util.FastStringWriter;
  * As the name suggests, linear interpolation is used to determine where a value lies on the axis.
  */
 public class CartesianLinearAxes extends CartesianAxes {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private String type;
     private CartesianLinearTicks ticks;

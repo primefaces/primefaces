@@ -26,8 +26,8 @@ import org.primefaces.util.FastStringWriter;
  * Used to provide DataSet objects to PolarArea chart component.
  */
 public class PolarAreaChartDataSet extends ChartDataSet {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private List<Number> data;
     private List<String> backgroundColor;

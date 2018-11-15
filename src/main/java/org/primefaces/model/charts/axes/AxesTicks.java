@@ -25,8 +25,8 @@ import org.primefaces.util.FastStringWriter;
  * The tick configuration is nested under the scale configuration.
  */
 public class AxesTicks implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private boolean display = true;
     private String fontColor;

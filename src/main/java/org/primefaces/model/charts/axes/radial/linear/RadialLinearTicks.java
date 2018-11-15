@@ -25,8 +25,8 @@ import org.primefaces.util.FastStringWriter;
  * Used to provide radial linear ticks. RadialLinearTicks extends {@link AxesTicks}
  */
 public class RadialLinearTicks extends AxesTicks {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private String backdropColor;
     private Number backdropPaddingX;

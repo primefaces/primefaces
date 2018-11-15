@@ -26,8 +26,8 @@ import org.primefaces.util.FastStringWriter;
  * you sometimes want to style all datasets the same way.
  */
 public class Elements implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private ElementsPoint point;
     private ElementsLine line;

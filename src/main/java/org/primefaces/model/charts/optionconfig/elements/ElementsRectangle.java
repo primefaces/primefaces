@@ -25,8 +25,8 @@ import org.primefaces.util.FastStringWriter;
  * Rectangle elements are used to represent the bars in a bar chart.
  */
 public class ElementsRectangle implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private String backgroundColor;
     private Number borderWidth;

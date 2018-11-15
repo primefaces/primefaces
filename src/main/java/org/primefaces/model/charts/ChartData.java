@@ -23,8 +23,8 @@ import java.util.List;
  * The data configuration for Charts
  */
 public class ChartData implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private List<ChartDataSet> dataSet;
     private Object labels;

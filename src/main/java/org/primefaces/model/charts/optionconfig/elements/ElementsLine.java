@@ -26,8 +26,8 @@ import org.primefaces.util.FastStringWriter;
  * Line elements are used to represent the line in a line chart.
  */
 public class ElementsLine implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private Number tension = 0.4;
     private String backgroundColor;

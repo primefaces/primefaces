@@ -23,7 +23,7 @@ import org.primefaces.model.charts.optionconfig.tooltip.Tooltip;
 
 public abstract class ChartOptions implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     private Elements elements;
     private Title title;

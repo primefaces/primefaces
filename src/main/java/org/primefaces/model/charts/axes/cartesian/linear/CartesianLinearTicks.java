@@ -25,8 +25,8 @@ import org.primefaces.util.FastStringWriter;
  * Used to provide cartesian linear ticks. CartesianLinearTicks extends {@link CartesianTicks}
  */
 public class CartesianLinearTicks extends CartesianTicks {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private boolean beginAtZero;
     private Number min;

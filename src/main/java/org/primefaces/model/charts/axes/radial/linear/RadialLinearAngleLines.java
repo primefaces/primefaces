@@ -25,8 +25,8 @@ import org.primefaces.util.FastStringWriter;
  * Used to configure angled lines that radiate from the center of the chart to the point labels.
  */
 public class RadialLinearAngleLines implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private boolean display = true;
     private String color;

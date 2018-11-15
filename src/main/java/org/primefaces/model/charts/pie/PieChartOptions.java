@@ -21,8 +21,8 @@ import org.primefaces.model.charts.ChartOptions;
  * Used to set options to Pie chart component.
  */
 public class PieChartOptions extends ChartOptions {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private Number cutoutPercentage;
     private Number rotation;

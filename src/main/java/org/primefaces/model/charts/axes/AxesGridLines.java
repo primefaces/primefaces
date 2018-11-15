@@ -26,8 +26,8 @@ import org.primefaces.util.FastStringWriter;
  * The grid line configuration is nested under the scale configuration.
  */
 public class AxesGridLines implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private boolean display = true;
     private Object color;

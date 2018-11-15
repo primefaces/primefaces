@@ -27,8 +27,8 @@ import org.primefaces.util.FastStringWriter;
  * Using both xLabels and yLabels together can create a chart that uses strings for both the X and Y axes. CartesianCategoryAxes extends {@link CartesianAxes}.
  */
 public class CartesianCategoryAxes extends CartesianAxes {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private String type;
     private CartesianCategoryTicks ticks;

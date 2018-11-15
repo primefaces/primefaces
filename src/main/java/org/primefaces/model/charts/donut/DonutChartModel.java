@@ -22,8 +22,8 @@ import org.primefaces.model.charts.ChartModel;
  * Defines the donut model used to create donut chart component.
  */
 public class DonutChartModel extends ChartModel {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private ChartData data;
     private DonutChartOptions options;

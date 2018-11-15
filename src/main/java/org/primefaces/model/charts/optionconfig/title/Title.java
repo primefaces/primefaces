@@ -25,8 +25,8 @@ import org.primefaces.util.FastStringWriter;
  * The title configuration is passed into the options.title namespace.
  */
 public class Title implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private boolean display = false;
     private String position;

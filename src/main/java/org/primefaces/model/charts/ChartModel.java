@@ -19,7 +19,7 @@ import java.io.Serializable;
 
 public abstract class ChartModel implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     private String extender;
 

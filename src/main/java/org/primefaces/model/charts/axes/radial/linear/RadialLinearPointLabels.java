@@ -25,8 +25,8 @@ import org.primefaces.util.FastStringWriter;
  * Used to configure the point labels that are shown on the perimeter of the scale.
  */
 public class RadialLinearPointLabels implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private Object fontColor;
     private String fontFamily;

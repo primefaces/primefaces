@@ -25,8 +25,8 @@ import org.primefaces.util.FastStringWriter;
  * The tooltip configuration is passed into the options.tooltips namespace.
  */
 public class Tooltip implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private boolean enabled = true;
     private String mode;

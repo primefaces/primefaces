@@ -26,8 +26,8 @@ import org.primefaces.util.FastStringWriter;
  * Used to provide DataSet objects to Bubble chart component.
  */
 public class BubbleChartDataSet extends ChartDataSet {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private List<BubblePoint> data;
     private String label;

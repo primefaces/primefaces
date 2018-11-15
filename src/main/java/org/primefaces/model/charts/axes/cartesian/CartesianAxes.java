@@ -28,9 +28,9 @@ import org.primefaces.util.FastStringWriter;
  */
 public abstract class CartesianAxes implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
-	private String position;
+    private static final long serialVersionUID = 1L;
+
+    private String position;
     private boolean offset = false;
     private String id;
     private AxesGridLines gridLines;

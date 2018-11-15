@@ -22,8 +22,8 @@ import org.primefaces.model.charts.ChartModel;
  * Defines the radar model used to create radar chart component.
  */
 public class RadarChartModel extends ChartModel {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private ChartData data;
     private RadarChartOptions options;

@@ -23,8 +23,8 @@ import java.io.Serializable;
  * Bubble chart datasets need to contain a data array of points, each points represented by an object.
  */
 public class BubblePoint implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     private Number x;
     private Number y;

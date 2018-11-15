@@ -21,8 +21,8 @@ import org.primefaces.model.charts.pie.PieChartDataSet;
  * Used to provide DataSet objects to Donut chart component.
  */
 public class DonutChartDataSet extends PieChartDataSet {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Gets the type

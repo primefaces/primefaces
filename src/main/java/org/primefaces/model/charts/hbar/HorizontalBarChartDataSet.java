@@ -21,8 +21,8 @@ import org.primefaces.model.charts.bar.BarChartDataSet;
  * Used to provide DataSet objects to HorizontalBar chart component.
  */
 public class HorizontalBarChartDataSet extends BarChartDataSet {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Gets the type

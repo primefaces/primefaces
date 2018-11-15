@@ -21,8 +21,8 @@ import org.primefaces.model.charts.bar.BarChartModel;
  * Defines the horizontalBar model used to create horizontalBar chart component.
  */
 public class HorizontalBarChartModel extends BarChartModel {
-	
-	private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Gets the type
