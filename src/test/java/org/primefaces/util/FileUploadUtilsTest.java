@@ -22,7 +22,7 @@ public class FileUploadUtilsTest {
     @Before
     public void setup() {
         fileUpload = mock(FileUpload.class);
-        when(fileUpload.isCheckContentType()).thenReturn(true);
+        when(fileUpload.isValidateContentType()).thenReturn(true);
         inputStream = mock(InputStream.class);
     }
 

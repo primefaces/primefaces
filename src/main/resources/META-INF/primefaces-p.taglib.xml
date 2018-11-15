@@ -7387,8 +7387,8 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Whether content type checking should be performed, default is false.]]></description>
-            <name>checkContentType</name>
+            <description><![CDATA[Whether content type validation should be performed, default is false.]]></description>
+            <name>validateContentType</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>        

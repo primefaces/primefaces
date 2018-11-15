@@ -62,7 +62,7 @@ abstract class FileUploadBase extends UIInput implements Widget {
         uploadIcon,
         cancelIcon,
         onAdd,
-        checkContentType
+        validateContentType
     }
 
     public FileUploadBase() {
@@ -338,12 +338,12 @@ abstract class FileUploadBase extends UIInput implements Widget {
         getStateHelper().put(PropertyKeys.onAdd, onAdd);
     }
 
-    public boolean isCheckContentType() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.checkContentType, false);
+    public boolean isValidateContentType() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.validateContentType, false);
     }
 
-    public void setCheckContentType(boolean checkContentType) {
-        getStateHelper().put(PropertyKeys.checkContentType, checkContentType);
+    public void setValidateContentType(boolean validateContentType) {
+        getStateHelper().put(PropertyKeys.validateContentType, validateContentType);
     }
 
     @Override

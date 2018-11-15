@@ -145,7 +145,7 @@ public class FileUploadUtils {
             }
 
             /* Step 2: Proceed with content type checking */
-            if (!fileUpload.isCheckContentType()) {
+            if (!fileUpload.isValidateContentType()) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Content type checking is disabled");
                 }
