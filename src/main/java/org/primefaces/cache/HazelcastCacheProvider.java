@@ -52,7 +52,7 @@ public class HazelcastCacheProvider implements CacheProvider {
 
     @Override
     public void clear() {
-
+        // not supported by hazelcast
     }
 
     protected IMap<String, Object> getRegion(String name) {
