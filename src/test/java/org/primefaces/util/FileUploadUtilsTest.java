@@ -48,6 +48,7 @@ public class FileUploadUtilsTest {
 
         when(fileUpload.getAccept()).thenReturn("image/png");
         Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, "test.JPEG", inputStream));
+        Assert.assertTrue(FileUploadUtils.isValidType(fileUpload, "test.mp4", inputStream));
         
         when(fileUpload.isValidateContentType()).thenReturn(true);
 
