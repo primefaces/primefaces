@@ -21,6 +21,7 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.context.FacesContext;
 import javax.validation.Validation;
 import org.primefaces.util.LangUtils;
 
@@ -35,6 +36,8 @@ public class PrimeEnvironment {
     private boolean atLeastJsf23 = false;
     private boolean atLeastJsf22 = false;
     private boolean atLeastJsf21 = false;
+
+    private boolean mojarra = false;
 
     private boolean atLeastBv11 = false;
 
@@ -57,6 +60,11 @@ public class PrimeEnvironment {
         if (buildVersion == null || buildVersion.trim().isEmpty()) {
             buildVersion = UUID.randomUUID().toString().replace("-", "").substring(0, 10);
         }
+    }
+
+    public PrimeEnvironment(FacesContext context) {
+        this();
+        this.mojarra = context.getExternalContext().getApplicationMap().containsKey("com.sun.faces.ApplicationAssociate");
     }
 
     protected boolean checkIfBeanValidationIsAvailable() {
@@ -140,6 +148,10 @@ public class PrimeEnvironment {
 
     public void setAtLeastJsf21(boolean atLeastJsf21) {
         this.atLeastJsf21 = atLeastJsf21;
+    }
+
+    public boolean isMojarra() {
+        return mojarra;
     }
 
     public boolean isAtLeastBv11() {
