@@ -16,8 +16,10 @@
 package org.primefaces.model.charts.axes.cartesian.category;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.primefaces.model.charts.axes.cartesian.CartesianAxes;
+import org.primefaces.util.ChartUtils;
 import org.primefaces.util.FastStringWriter;
 
 /**
@@ -31,6 +33,7 @@ public class CartesianCategoryAxes extends CartesianAxes {
     private static final long serialVersionUID = 1L;
 
     private String type;
+    private List<String> labels;
     private CartesianCategoryTicks ticks;
 
     /**
@@ -70,6 +73,24 @@ public class CartesianCategoryAxes extends CartesianAxes {
     }
 
     /**
+     * Gets the labels
+     *
+     * @return labels
+     */
+    public List<String> getLabels() {
+        return labels;
+    }
+
+    /**
+     * Sets the labels
+     *
+     * @param labels List&#60;String&#62; list of labels to display.
+     */
+    public void setLabels(List<String> labels) {
+        this.labels = labels;
+    }
+
+    /**
      * Write the options of cartesian category axes
      *
      * @return options as JSON object
@@ -85,6 +106,8 @@ public class CartesianCategoryAxes extends CartesianAxes {
             if (this.type != null) {
                 fsw.write(",\"type\":\"" + this.type + "\"");
             }
+
+            ChartUtils.writeDataValue(fsw, "labels", this.labels, true);
 
             if (this.ticks != null) {
                 fsw.write(",\"ticks\":{");
