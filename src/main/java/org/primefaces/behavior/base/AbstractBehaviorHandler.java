@@ -35,12 +35,7 @@ import javax.faces.view.AttachedObjectHandler;
 import javax.faces.view.AttachedObjectTarget;
 import javax.faces.view.BehaviorHolderAttachedObjectHandler;
 import javax.faces.view.BehaviorHolderAttachedObjectTarget;
-import javax.faces.view.facelets.ComponentHandler;
-import javax.faces.view.facelets.FaceletContext;
-import javax.faces.view.facelets.TagAttribute;
-import javax.faces.view.facelets.TagConfig;
-import javax.faces.view.facelets.TagException;
-import javax.faces.view.facelets.TagHandler;
+import javax.faces.view.facelets.*;
 
 import org.primefaces.behavior.ajax.AjaxBehaviorHandler;
 import org.primefaces.config.PrimeEnvironment;
@@ -204,7 +199,6 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
     public String getFor() {
         return null;
     }
-
 
     protected void addAttachedObjectHandlerToMojarra(PrimeEnvironment environment, UIComponent component) {
 

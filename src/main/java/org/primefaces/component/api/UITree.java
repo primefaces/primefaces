@@ -51,7 +51,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
     private boolean rtl;
 
     private List<TreeNode> preselection;
-    
+
     private Boolean isNested = null;
 
     public enum PropertyKeys {
@@ -923,27 +923,27 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             return !Boolean.TRUE.equals(skipHint);
         }
     }
-    
+
     @Override
     public void encodeBegin(FacesContext context) throws IOException {
 
         preEncode(context);
-        
+
         super.encodeBegin(context);
     }
-    
+
     protected void preDecode(FacesContext context) {
     }
-    
+
     protected void preValidate(FacesContext context) {
     }
-    
+
     protected void preUpdate(FacesContext context) {
     }
-    
+
     protected void preEncode(FacesContext context) {
     }
-    
+
     protected Boolean isNestedWithinIterator() {
         if (isNested == null) {
             UIComponent parent = this;
@@ -958,7 +958,8 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                 isNested = Boolean.FALSE;
             }
             return isNested;
-        } else {
+        }
+        else {
             return isNested;
         }
     }

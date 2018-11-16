@@ -127,7 +127,8 @@ public class UIData extends javax.faces.component.UIData {
     }
 
     public java.lang.String getPaginatorTemplate() {
-        return (java.lang.String) getStateHelper().eval(PropertyKeys.paginatorTemplate, "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}");
+        return (java.lang.String) getStateHelper().eval(PropertyKeys.paginatorTemplate,
+                 "{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}");
     }
 
     public void setPaginatorTemplate(java.lang.String _paginatorTemplate) {
@@ -510,7 +511,8 @@ public class UIData extends javax.faces.component.UIData {
             }
 
             if (getRowIndex() != -1) {
-                _rowTransientStates.put(getContainerClientId(facesContext), saveTransientDescendantComponentStates(facesContext, null, getChildren().iterator(), false));
+                _rowTransientStates.put(getContainerClientId(facesContext),
+                               saveTransientDescendantComponentStates(facesContext, null, getChildren().iterator(), false));
             }
         }
 
@@ -1278,8 +1280,8 @@ public class UIData extends javax.faces.component.UIData {
 
     }
 
-    private Map<String, Object> saveTransientDescendantComponentStates(FacesContext facesContext, Map<String, Object> childStates, Iterator<UIComponent> childIterator,
-                                                                       boolean saveChildFacets) {
+    private Map<String, Object> saveTransientDescendantComponentStates(FacesContext facesContext, Map<String,
+                                    Object> childStates, Iterator<UIComponent> childIterator, boolean saveChildFacets) {
         while (childIterator.hasNext()) {
             UIComponent child = childIterator.next();
             if (!child.isTransient()) {
