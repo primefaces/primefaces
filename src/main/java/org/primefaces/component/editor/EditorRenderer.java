@@ -26,18 +26,25 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 
-import org.primefaces.renderkit.CoreRenderer;
+import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.AgentUtils;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.WidgetBuilder;
 
-public class EditorRenderer extends CoreRenderer {
+public class EditorRenderer extends InputRenderer {
 
     private static final Logger LOGGER = Logger.getLogger(EditorRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
         Editor editor = (Editor) component;
+
+        if (!shouldDecode(editor)) {
+            return;
+        }
+
+        decodeBehaviors(context, editor);
+
         String inputParam = editor.getClientId(context) + "_input";
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String value = params.get(inputParam);
