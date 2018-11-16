@@ -33,6 +33,7 @@ public class TextEditorRenderer extends CoreRenderer {
     @Override
     public void decode(FacesContext context, UIComponent component) {
         TextEditor editor = (TextEditor) component;
+        decodeBehaviors(context, editor);
         String inputParam = editor.getClientId(context) + "_input";
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String value = params.get(inputParam);
