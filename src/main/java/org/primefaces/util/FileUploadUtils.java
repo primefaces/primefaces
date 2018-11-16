@@ -131,114 +131,13 @@ public class FileUploadUtils {
      */
     public static boolean isValidType(FileUpload fileUpload, String fileName, InputStream inputStream) {
         try {
-            /* Step 1: Let's check the filename first */
-            String fileNameRegex = fileUpload.getAllowTypes();
-            if (!LangUtils.isValueBlank(fileNameRegex)) {
-                //We use rhino or nashorn javascript engine bundled with java to re-evaluate javascript regex that cannot be easily translated to java regex
-                //TODO If at some day nashorn will not be bundled with java (http://openjdk.java.net/jeps/335), we have to put some notes in the user guide
-                ScriptEngine engine = new ScriptEngineManager().getEngineByName("javascript");
-                String evalJs = String.format("%s.test(\"%s\")", fileNameRegex, EscapeUtils.forJavaScriptAttribute(fileName));
-                if (!Boolean.TRUE.equals(engine.eval(evalJs))) {
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine(String.format("The uploaded filename %s does not match the specified regex %s", fileName, fileNameRegex));
-                    }
-                    return false;
-                }
-            }
-
-            /* Step 2: Proceed with content type checking */
-            if (!fileUpload.isValidateContentType()) {
+            boolean validType = isValidFileName(fileUpload, fileName) && isValidFileContent(fileUpload, fileName, inputStream);
+            if (validType) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("Content type checking is disabled");
-                }
-                return true;
-            }
-            if (LangUtils.isValueBlank(fileUpload.getAccept())) {
-                //Short circuit
-                return true;
-            }
-            String tempFilePrefix = UUID.randomUUID().toString();
-            boolean tika = false;
-            try {
-                Class.forName("org.apache.tika.filetypedetector.TikaFileTypeDetector");
-                tika = true;
-            }
-            catch (Exception ex) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.warning("Could not find Apache Tika in classpath which is recommended for reliable content type checking");
+                    LOGGER.fine(String.format("The uploaded file %s meets the filename and content type specifications", fileName));
                 }
             }
-            //If Tika is in place, we drop the original file extension to avoid short circuit detection by just looking at the file extension
-            String tempFileSuffix = tika ? null : "." + FilenameUtils.getExtension(fileName);
-            Path tempFile = Files.createTempFile(tempFilePrefix, tempFileSuffix);
-            try {
-                InputStream in = new PushbackInputStream(new BufferedInputStream(inputStream));
-                try (OutputStream out = new FileOutputStream(tempFile.toFile())) {
-                    IOUtils.copyLarge(in, out);
-                }
-                String contentType = Files.probeContentType(tempFile);
-                if (contentType == null) {
-                    if (LOGGER.isLoggable(Level.WARNING)) {
-                        LOGGER.warning(String.format("Could not determine content type of uploaded file %s, consider plugging in an adequate " +
-                                "FileTypeDetector implementation", fileName));
-                    }
-                    return false;
-                }
-                //Comma-separated values: file_extension|audio/*|video/*|image/*|media_type (see https://www.w3schools.com/tags/att_input_accept.asp)
-                String[] accepts = fileUpload.getAccept().split(",");
-                boolean accepted = false;
-                for (String accept : accepts) {
-                    accept = accept.trim().toLowerCase();
-                    if (accept.startsWith(".") && fileName.toLowerCase().endsWith(accept)) {
-                        accepted = true;
-                        if (LOGGER.isLoggable(Level.FINE)) {
-                            LOGGER.fine(String.format("The file extension %s of the uploaded file %s is accepted", accept, fileName));
-                        }
-                        break;
-                    }
-                    //Now we have a media type that may contain wildcards
-                    if (FilenameUtils.wildcardMatch(contentType.toLowerCase(), accept)) {
-                        accepted = true;
-                        if (LOGGER.isLoggable(Level.FINE)) {
-                            LOGGER.fine(String.format("The content type %s of the uploaded file %s is accepted by %s", contentType, fileName, accept));
-                        }
-                        break;
-                    }
-                }
-                if (!accepted) {
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine(String.format("The uploaded file %s with content type %s does not match the accept specification %s", fileName, contentType,
-                                fileUpload.getAccept()));
-                    }
-                    return false;
-                }
-            }
-            finally {
-                try {
-                    Files.delete(tempFile);
-                }
-                catch (Exception ex) {
-                    if (LOGGER.isLoggable(Level.WARNING)) {
-                        LOGGER.log(Level.WARNING, String.format("Could not delete temporary file %s, will try to delete on JVM exit",
-                                tempFile.toAbsolutePath()), ex);
-                        try {
-                            tempFile.toFile().deleteOnExit();
-                        }
-                        catch (Exception ex1) {
-                            if (LOGGER.isLoggable(Level.WARNING)) {
-                                LOGGER.log(Level.WARNING, String.format("Could not register temporary file %s for deletion on JVM exit",
-                                        tempFile.toAbsolutePath()), ex1);
-                            }
-                        }
-                    }
-                }
-            }
-
-            /* Step 3: No type violations found */
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine(String.format("The uploaded file %s meets the filename and content type specifications", fileName));
-            }
-            return true;
+            return validType;
         }
         catch (IOException | ScriptException ex) {
             if (LOGGER.isLoggable(Level.WARNING)) {
@@ -247,4 +146,112 @@ public class FileUploadUtils {
             return false;
         }
     }
+
+    private static boolean isValidFileName(FileUpload fileUpload, String fileName) throws ScriptException {
+        String fileNameRegex = fileUpload.getAllowTypes();
+        if (!LangUtils.isValueBlank(fileNameRegex)) {
+            //We use rhino or nashorn javascript engine bundled with java to re-evaluate javascript regex that cannot be easily translated to java regex
+            //TODO If at some day nashorn will not be bundled with java (http://openjdk.java.net/jeps/335), we have to put some notes in the user guide
+            ScriptEngine engine = new ScriptEngineManager().getEngineByName("javascript");
+            String evalJs = String.format("%s.test(\"%s\")", fileNameRegex, EscapeUtils.forJavaScriptAttribute(fileName));
+            if (!Boolean.TRUE.equals(engine.eval(evalJs))) {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine(String.format("The uploaded filename %s does not match the specified regex %s", fileName, fileNameRegex));
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean isValidFileContent(FileUpload fileUpload, String fileName, InputStream inputStream) throws IOException {
+        if (!fileUpload.isValidateContentType()) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Content type checking is disabled");
+            }
+            return true;
+        }
+        if (LangUtils.isValueBlank(fileUpload.getAccept())) {
+            //Short circuit
+            return true;
+        }
+        String tempFilePrefix = UUID.randomUUID().toString();
+        boolean tika = false;
+        try {
+            Class.forName("org.apache.tika.filetypedetector.TikaFileTypeDetector");
+            tika = true;
+        }
+        catch (Exception ex) {
+            if (LOGGER.isLoggable(Level.WARNING)) {
+                LOGGER.warning("Could not find Apache Tika in classpath which is recommended for reliable content type checking");
+            }
+        }
+        //If Tika is in place, we drop the original file extension to avoid short circuit detection by just looking at the file extension
+        String tempFileSuffix = tika ? null : "." + FilenameUtils.getExtension(fileName);
+        Path tempFile = Files.createTempFile(tempFilePrefix, tempFileSuffix);
+        try {
+            InputStream in = new PushbackInputStream(new BufferedInputStream(inputStream));
+            try (OutputStream out = new FileOutputStream(tempFile.toFile())) {
+                IOUtils.copyLarge(in, out);
+            }
+            String contentType = Files.probeContentType(tempFile);
+            if (contentType == null) {
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.warning(String.format("Could not determine content type of uploaded file %s, consider plugging in an adequate " +
+                            "FileTypeDetector implementation", fileName));
+                }
+                return false;
+            }
+            //Comma-separated values: file_extension|audio/*|video/*|image/*|media_type (see https://www.w3schools.com/tags/att_input_accept.asp)
+            String[] accepts = fileUpload.getAccept().split(",");
+            boolean accepted = false;
+            for (String accept : accepts) {
+                accept = accept.trim().toLowerCase();
+                if (accept.startsWith(".") && fileName.toLowerCase().endsWith(accept)) {
+                    accepted = true;
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine(String.format("The file extension %s of the uploaded file %s is accepted", accept, fileName));
+                    }
+                    break;
+                }
+                //Now we have a media type that may contain wildcards
+                if (FilenameUtils.wildcardMatch(contentType.toLowerCase(), accept)) {
+                    accepted = true;
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine(String.format("The content type %s of the uploaded file %s is accepted by %s", contentType, fileName, accept));
+                    }
+                    break;
+                }
+            }
+            if (!accepted) {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine(String.format("The uploaded file %s with content type %s does not match the accept specification %s", fileName, contentType,
+                            fileUpload.getAccept()));
+                }
+                return false;
+            }
+        }
+        finally {
+            try {
+                Files.delete(tempFile);
+            }
+            catch (Exception ex) {
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.log(Level.WARNING, String.format("Could not delete temporary file %s, will try to delete on JVM exit",
+                            tempFile.toAbsolutePath()), ex);
+                    try {
+                        tempFile.toFile().deleteOnExit();
+                    }
+                    catch (Exception ex1) {
+                        if (LOGGER.isLoggable(Level.WARNING)) {
+                            LOGGER.log(Level.WARNING, String.format("Could not register temporary file %s for deletion on JVM exit",
+                                    tempFile.toAbsolutePath()), ex1);
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
 }
