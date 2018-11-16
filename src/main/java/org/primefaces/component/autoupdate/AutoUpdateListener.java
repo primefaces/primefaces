@@ -16,6 +16,7 @@
 package org.primefaces.component.autoupdate;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -49,7 +50,7 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
         FacesContext context = FacesContext.getCurrentInstance();
         String clientId = ((UIComponent) cse.getSource()).getClientId(context);
 
-        ArrayList<String> clientIds = getOrCreateAutoUpdateComponentClientIds(context);
+        List<String> clientIds = getOrCreateAutoUpdateComponentClientIds(context);
         if (disabled) {
             clientIds.remove(clientId);
         }
@@ -60,8 +61,8 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
         }
     }
 
-    public static ArrayList<String> getOrCreateAutoUpdateComponentClientIds(FacesContext context) {
-        ArrayList<String> clientIds = getAutoUpdateComponentClientIds(context);
+    public static List<String> getOrCreateAutoUpdateComponentClientIds(FacesContext context) {
+        List<String> clientIds = getAutoUpdateComponentClientIds(context);
         if (clientIds == null) {
             clientIds = new ArrayList<>();
             context.getViewRoot().getAttributes().put(COMPONENT_CLIENT_IDS, clientIds);
@@ -69,8 +70,8 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
         return clientIds;
     }
 
-    public static ArrayList<String> getAutoUpdateComponentClientIds(FacesContext context) {
-        return (ArrayList<String>) context.getViewRoot().getAttributes().get(COMPONENT_CLIENT_IDS);
+    public static List<String> getAutoUpdateComponentClientIds(FacesContext context) {
+        return (List<String>) context.getViewRoot().getAttributes().get(COMPONENT_CLIENT_IDS);
     }
 
     public static void subscribe(UIComponent component, boolean disabled) {

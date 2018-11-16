@@ -15,7 +15,7 @@
  */
 package org.primefaces.component.autoupdate;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -38,7 +38,7 @@ public class AutoUpdatePhaseListener implements PhaseListener {
             return;
         }
 
-        ArrayList<String> clientIds = AutoUpdateListener.getAutoUpdateComponentClientIds(context);
+        List<String> clientIds = AutoUpdateListener.getAutoUpdateComponentClientIds(context);
         if (clientIds != null && !clientIds.isEmpty()) {
             for (int i = 0; i < clientIds.size(); i++) {
                 String clientId = clientIds.get(i);

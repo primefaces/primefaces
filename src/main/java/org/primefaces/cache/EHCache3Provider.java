@@ -54,7 +54,7 @@ public class EHCache3Provider implements CacheProvider {
 
     @Override
     public void clear() {
-
+        // not supported by EHCache 3
     }
 
     protected Cache getRegion(String regionName) {

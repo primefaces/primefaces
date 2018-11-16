@@ -292,11 +292,11 @@ public class PrimePartialResponseWriter extends PartialResponseWriter {
                     if (context.isPostback()
                             && !context.getPartialViewContext().isRenderAll()
                             && !applicationContext.getEnvironment().isAtLeastJsf23()) {
-                        ArrayList<ResourceUtils.ResourceInfo> initialResources = DynamicResourcesPhaseListener.getInitialResources(context);
-                        ArrayList<ResourceUtils.ResourceInfo> currentResources = ResourceUtils.getComponentResources(context);
+                        List<ResourceUtils.ResourceInfo> initialResources = DynamicResourcesPhaseListener.getInitialResources(context);
+                        List<ResourceUtils.ResourceInfo> currentResources = ResourceUtils.getComponentResources(context);
                         if (initialResources != null && currentResources != null && currentResources.size() > initialResources.size()) {
 
-                            ArrayList<ResourceUtils.ResourceInfo> newResources = new ArrayList<>(currentResources);
+                            List<ResourceUtils.ResourceInfo> newResources = new ArrayList<>(currentResources);
                             newResources.removeAll(initialResources);
 
                             boolean updateStarted = false;

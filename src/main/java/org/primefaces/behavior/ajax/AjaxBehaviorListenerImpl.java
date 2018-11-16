@@ -61,13 +61,7 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         try {
             listener.invoke(elContext, new Object[]{});
         }
-        catch (MethodNotFoundException mnfe) {
-            processArgListener(context, elContext, event);
-        }
-        catch (IllegalArgumentException iae) {
-            processArgListener(context, elContext, event);
-        }
-        catch (ArrayIndexOutOfBoundsException ex) {
+        catch (MethodNotFoundException | IllegalArgumentException | ArrayIndexOutOfBoundsException mnfe) {
             processArgListener(context, elContext, event);
         }
     }
@@ -80,10 +74,7 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         try {
             listenerWithArg.invoke(elContext, new Object[]{event});
         }
-        catch (MethodNotFoundException mnfe) {
-            processCustomArgListener(context, elContext, event);
-        }
-        catch (IllegalArgumentException e) {
+        catch (MethodNotFoundException | IllegalArgumentException mnfe) {
             processCustomArgListener(context, elContext, event);
         }
     }

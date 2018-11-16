@@ -55,6 +55,7 @@ abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbox imple
     /**
      * Use HtmlSelectBooleanCheckbox#getLabel() instead
      * @return
+     * @deprecated Use HtmlSelectBooleanCheckbox#getLabel() instead
      */
     @Deprecated
     public String getItemLabel() {
@@ -64,6 +65,7 @@ abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbox imple
     /**
      * Use HtmlSelectBooleanCheckbox#setLabel() instead
      * @param itemLabel
+     * @deprecated Use HtmlSelectBooleanCheckbox#setLabel() instead
      */
     @Deprecated
     public void setItemLabel(String itemLabel) {

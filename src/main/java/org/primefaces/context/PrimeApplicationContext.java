@@ -51,7 +51,7 @@ public class PrimeApplicationContext {
     private Map<Class<?>, Map<String, Object>> constantsCacheMap;
 
     public PrimeApplicationContext(FacesContext context) {
-        this.environment = new PrimeEnvironment();
+        this.environment = new PrimeEnvironment(context);
         this.config = new PrimeConfiguration(context, environment);
 
         if (this.config.isBeanValidationEnabled()) {

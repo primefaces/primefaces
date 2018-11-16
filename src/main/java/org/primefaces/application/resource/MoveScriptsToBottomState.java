@@ -18,6 +18,7 @@ package org.primefaces.application.resource;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class MoveScriptsToBottomState implements Serializable {
 
@@ -55,11 +56,11 @@ public class MoveScriptsToBottomState implements Serializable {
         }
     }
 
-    public HashMap<String, ArrayList<String>> getIncludes() {
+    public Map<String, ArrayList<String>> getIncludes() {
         return includes;
     }
 
-    public HashMap<String, ArrayList<String>> getInlines() {
+    public Map<String, ArrayList<String>> getInlines() {
         return inlines;
     }
 
