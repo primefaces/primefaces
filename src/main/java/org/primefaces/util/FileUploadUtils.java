@@ -134,6 +134,8 @@ public class FileUploadUtils {
             /* Step 1: Let's check the filename first */
             String fileNameRegex = fileUpload.getAllowTypes();
             if (!LangUtils.isValueBlank(fileNameRegex)) {
+                //We use rhino or nashorn javascript engine bundled with java to re-evaluate javascript regex that cannot be easily translated to java regex
+                //TODO If at some day nashorn will not be bundled with java (http://openjdk.java.net/jeps/335), we have to put some notes in the user guide
                 ScriptEngine engine = new ScriptEngineManager().getEngineByName("javascript");
                 String evalJs = String.format("%s.test(\"%s\")", fileNameRegex, EscapeUtils.forJavaScriptAttribute(fileName));
                 if (!Boolean.TRUE.equals(engine.eval(evalJs))) {
@@ -156,25 +158,29 @@ public class FileUploadUtils {
                 return true;
             }
             String tempFilePrefix = UUID.randomUUID().toString();
-            String tempFileSuffix = "." + FilenameUtils.getExtension(fileName);
+            boolean tika = false;
+            try {
+                Class.forName("org.apache.tika.filetypedetector.TikaFileTypeDetector");
+                tika = true;
+            }
+            catch (Exception ex) {
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.warning("Could not find Apache Tika in classpath which is recommended for reliable content type checking");
+                }
+            }
+            //If Tika is in place, we drop the original file extension to avoid short circuit detection by just looking at the file extension
+            String tempFileSuffix = tika ? null : "." + FilenameUtils.getExtension(fileName);
             Path tempFile = Files.createTempFile(tempFilePrefix, tempFileSuffix);
             try {
                 InputStream in = new PushbackInputStream(new BufferedInputStream(inputStream));
                 try (OutputStream out = new FileOutputStream(tempFile.toFile())) {
                     IOUtils.copyLarge(in, out);
                 }
-                try {
-                    Class.forName("org.apache.tika.filetypedetector.TikaFileTypeDetector");
-                }
-                catch (Exception ex) {
-                    if (LOGGER.isLoggable(Level.WARNING)) {
-                        LOGGER.warning("Could not find Apache Tika in classpath which is recommended for reliable content type checking");
-                    }
-                }
                 String contentType = Files.probeContentType(tempFile);
                 if (contentType == null) {
                     if (LOGGER.isLoggable(Level.WARNING)) {
-                        LOGGER.warning("Could not determine content type of uploaded file, consider plugging in an adequate FileTypeDetector implementation");
+                        LOGGER.warning(String.format("Could not determine content type of uploaded file %s, consider plugging in an adequate " +
+                                "FileTypeDetector implementation", fileName));
                     }
                     return false;
                 }
