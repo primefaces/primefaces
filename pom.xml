@@ -275,7 +275,6 @@
                 <configuration>
                     <consoleOutput>true</consoleOutput>
                     <configLocation>./checkstyle.xml</configLocation>
-                    <excludes></excludes>
                 </configuration>
                 <executions>
                     <execution>
