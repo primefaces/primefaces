@@ -43,59 +43,24 @@ public class MessagesRenderer extends UINotificationRenderer {
         String styleClass = uiMessages.getStyleClass();
         styleClass = (styleClass == null) ? containerClass : containerClass + " " + styleClass;
 
-        String _for = uiMessages.getFor();
-        List<FacesMessage> messages = new ArrayList<>();
-        if (!isValueBlank(_for)) {
-            String forType = uiMessages.getForType();
-            Iterator<FacesMessage> messagesIterator = context.getMessages(_for);
+        List<FacesMessage> messages = collectFacesMessages(uiMessages, context);
+        if (messages != null) {
+            for (int i = 0; i < messages.size(); i++) {
+                FacesMessage message = messages.get(i);
+                FacesMessage.Severity severity = message.getSeverity();
 
-            // key case
-            if (forType == null || forType.equals("key")) {
-                while (messagesIterator.hasNext()) {
-                    messages.add(messagesIterator.next());
+                if (severity.equals(FacesMessage.SEVERITY_INFO)) {
+                    addMessage(uiMessages, message, messagesMap, "info");
                 }
-            }
-
-            // clientId / SearchExpression case
-            if (forType == null || forType.equals("expression")) {
-                UIComponent forComponent = SearchExpressionFacade.resolveComponent(
-                        context, uiMessages, _for, SearchExpressionHint.IGNORE_NO_RESULT);
-                if (forComponent != null) {
-                    String forComponentClientId = forComponent.getClientId(context);
-                    if (!_for.equals(forComponentClientId)) {
-                        messagesIterator = context.getMessages(forComponentClientId);
-                        while (messagesIterator.hasNext()) {
-                            FacesMessage next = messagesIterator.next();
-                            if (!messages.contains(next)) {
-                                messages.add(next);
-                            }
-                        }
-                    }
+                else if (severity.equals(FacesMessage.SEVERITY_WARN)) {
+                    addMessage(uiMessages, message, messagesMap, "warn");
                 }
-            }
-        }
-        else {
-            Iterator<FacesMessage> messagesIterator = uiMessages.isGlobalOnly() ? context.getMessages(null) : context.getMessages();
-            while (messagesIterator.hasNext()) {
-                messages.add(messagesIterator.next());
-            }
-        }
-
-        for (int i = 0; i < messages.size(); i++) {
-            FacesMessage message = messages.get(i);
-            FacesMessage.Severity severity = message.getSeverity();
-
-            if (severity.equals(FacesMessage.SEVERITY_INFO)) {
-                addMessage(uiMessages, message, messagesMap, "info");
-            }
-            else if (severity.equals(FacesMessage.SEVERITY_WARN)) {
-                addMessage(uiMessages, message, messagesMap, "warn");
-            }
-            else if (severity.equals(FacesMessage.SEVERITY_ERROR)) {
-                addMessage(uiMessages, message, messagesMap, "error");
-            }
-            else if (severity.equals(FacesMessage.SEVERITY_FATAL)) {
-                addMessage(uiMessages, message, messagesMap, "fatal");
+                else if (severity.equals(FacesMessage.SEVERITY_ERROR)) {
+                    addMessage(uiMessages, message, messagesMap, "error");
+                }
+                else if (severity.equals(FacesMessage.SEVERITY_FATAL)) {
+                    addMessage(uiMessages, message, messagesMap, "fatal");
+                }
             }
         }
 
@@ -222,5 +187,59 @@ public class MessagesRenderer extends UINotificationRenderer {
         writer.endElement("span");
 
         writer.endElement("a");
+    }
+
+    protected List<FacesMessage> collectFacesMessages(Messages uiMessages, FacesContext context) {
+
+        List<FacesMessage> messages = null;
+
+        String _for = uiMessages.getFor();
+
+        if (!isValueBlank(_for)) {
+            String forType = uiMessages.getForType();
+
+            // key case
+            if (forType == null || forType.equals("key")) {
+                Iterator<FacesMessage> messagesIterator = context.getMessages(_for);
+
+                while (messagesIterator.hasNext()) {
+                    if (messages == null) {
+                        messages = new ArrayList<>();
+                    }
+                    messages.add(messagesIterator.next());
+                }
+            }
+
+            // clientId / SearchExpression case
+            if (forType == null || forType.equals("expression")) {
+                UIComponent forComponent = SearchExpressionFacade.resolveComponent(context, uiMessages, _for, SearchExpressionHint.IGNORE_NO_RESULT);
+                if (forComponent != null) {
+                    String forComponentClientId = forComponent.getClientId(context);
+                    if (!_for.equals(forComponentClientId)) {
+                        Iterator<FacesMessage> messagesIterator = context.getMessages(forComponentClientId);
+                        while (messagesIterator.hasNext()) {
+                            FacesMessage next = messagesIterator.next();
+                            if (messages == null) {
+                                messages = new ArrayList<>();
+                            }
+                            if (!messages.contains(next)) {
+                                messages.add(next);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            Iterator<FacesMessage> messagesIterator = uiMessages.isGlobalOnly() ? context.getMessages(null) : context.getMessages();
+            while (messagesIterator.hasNext()) {
+                if (messages == null) {
+                    messages = new ArrayList<>();
+                }
+                messages.add(messagesIterator.next());
+            }
+        }
+
+        return messages;
     }
 }
