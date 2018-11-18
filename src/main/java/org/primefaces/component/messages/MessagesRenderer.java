@@ -190,18 +190,15 @@ public class MessagesRenderer extends UINotificationRenderer {
     }
 
     protected List<FacesMessage> collectFacesMessages(Messages uiMessages, FacesContext context) {
-
         List<FacesMessage> messages = null;
 
         String _for = uiMessages.getFor();
-
         if (!isValueBlank(_for)) {
             String forType = uiMessages.getForType();
 
             // key case
             if (forType == null || forType.equals("key")) {
                 Iterator<FacesMessage> messagesIterator = context.getMessages(_for);
-
                 while (messagesIterator.hasNext()) {
                     if (messages == null) {
                         messages = new ArrayList<>();
@@ -214,8 +211,10 @@ public class MessagesRenderer extends UINotificationRenderer {
             if (forType == null || forType.equals("expression")) {
                 UIComponent forComponent = SearchExpressionFacade.resolveComponent(context, uiMessages, _for, SearchExpressionHint.IGNORE_NO_RESULT);
                 if (forComponent != null) {
+
                     String forComponentClientId = forComponent.getClientId(context);
                     if (!_for.equals(forComponentClientId)) {
+
                         Iterator<FacesMessage> messagesIterator = context.getMessages(forComponentClientId);
                         while (messagesIterator.hasNext()) {
                             FacesMessage next = messagesIterator.next();
