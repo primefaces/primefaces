@@ -36,30 +36,32 @@ public class MessagesRenderer extends UINotificationRenderer {
         Messages uiMessages = (Messages) component;
         ResponseWriter writer = context.getResponseWriter();
         String clientId = uiMessages.getClientId(context);
-        Map<String, List<FacesMessage>> messagesMap = new HashMap<>();
         boolean globalOnly = uiMessages.isGlobalOnly();
         String containerClass = uiMessages.isShowIcon() ? Messages.CONTAINER_CLASS : Messages.ICONLESS_CONTAINER_CLASS;
         String style = uiMessages.getStyle();
         String styleClass = uiMessages.getStyleClass();
         styleClass = (styleClass == null) ? containerClass : containerClass + " " + styleClass;
 
+        Map<String, List<FacesMessage>> messagesBySeverity = null;
         List<FacesMessage> messages = collectFacesMessages(uiMessages, context);
-        if (messages != null) {
+        if (messages != null && !messages.isEmpty()) {
+            messagesBySeverity = new HashMap<>(4);
+
             for (int i = 0; i < messages.size(); i++) {
                 FacesMessage message = messages.get(i);
                 FacesMessage.Severity severity = message.getSeverity();
 
                 if (severity.equals(FacesMessage.SEVERITY_INFO)) {
-                    addMessage(uiMessages, message, messagesMap, "info");
+                    addMessage(uiMessages, message, messagesBySeverity, "info");
                 }
                 else if (severity.equals(FacesMessage.SEVERITY_WARN)) {
-                    addMessage(uiMessages, message, messagesMap, "warn");
+                    addMessage(uiMessages, message, messagesBySeverity, "warn");
                 }
                 else if (severity.equals(FacesMessage.SEVERITY_ERROR)) {
-                    addMessage(uiMessages, message, messagesMap, "error");
+                    addMessage(uiMessages, message, messagesBySeverity, "error");
                 }
                 else if (severity.equals(FacesMessage.SEVERITY_FATAL)) {
-                    addMessage(uiMessages, message, messagesMap, "fatal");
+                    addMessage(uiMessages, message, messagesBySeverity, "fatal");
                 }
             }
         }
@@ -82,24 +84,26 @@ public class MessagesRenderer extends UINotificationRenderer {
             writer.writeAttribute("data-redisplay", String.valueOf(uiMessages.isRedisplay()), null);
         }
 
-        for (String severity : messagesMap.keySet()) {
-            List<FacesMessage> severityMessages = messagesMap.get(severity);
+        if (messagesBySeverity != null) {
+            for (String severity : messagesBySeverity.keySet()) {
+                List<FacesMessage> severityMessages = messagesBySeverity.get(severity);
 
-            if (!severityMessages.isEmpty()) {
-                encodeSeverityMessages(context, uiMessages, severity, severityMessages);
+                if (!severityMessages.isEmpty()) {
+                    encodeSeverityMessages(context, uiMessages, severity, severityMessages);
+                }
             }
         }
 
         writer.endElement("div");
     }
 
-    protected void addMessage(Messages uiMessages, FacesMessage message, Map<String, List<FacesMessage>> messagesMap, String severity) {
+    protected void addMessage(Messages uiMessages, FacesMessage message, Map<String, List<FacesMessage>> messagesBySeverity, String severity) {
         if (shouldRender(uiMessages, message, severity)) {
-            List<FacesMessage> severityMessages = messagesMap.get(severity);
+            List<FacesMessage> severityMessages = messagesBySeverity.get(severity);
 
             if (severityMessages == null) {
                 severityMessages = new ArrayList<>();
-                messagesMap.put(severity, severityMessages);
+                messagesBySeverity.put(severity, severityMessages);
             }
 
             severityMessages.add(message);
