@@ -148,23 +148,13 @@ public class SortFeature implements DataTableFeature {
         ValueExpression sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
         SortOrder sortOrder = SortOrder.valueOf(table.getSortOrder().toUpperCase(Locale.ENGLISH));
         MethodExpression sortFunction = table.getSortFunction();
-        List list = null;
 
         UIColumn sortColumn = table.getSortColumn();
         if (sortColumn != null && sortColumn.isDynamic()) {
             ((DynamicColumn) sortColumn).applyStatelessModel();
         }
 
-        if (value instanceof List) {
-            list = (List) value;
-        }
-        else if (value instanceof ListDataModel) {
-            list = (List) ((ListDataModel) value).getWrappedData();
-        }
-        else {
-            throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
-        }
-
+        List list = resolveList(value);
         Collections.sort(list, new BeanPropertyComparator(
                 sortVE, table.getVar(), sortOrder, sortFunction, table.isCaseSensitiveSort(), table.resolveDataLocale(), table.getNullSortOrder()));
 
@@ -173,25 +163,15 @@ public class SortFeature implements DataTableFeature {
 
     public void multiSort(FacesContext context, DataTable table) {
         Object value = table.getValue();
-        List<SortMeta> sortMeta = table.getMultiSortMeta();
-        List list = null;
-        boolean caseSensitiveSort = table.isCaseSensitiveSort();
-        Locale locale = table.resolveDataLocale();
-        int nullSortOrder = table.getNullSortOrder();
-
         if (value == null) {
             return;
         }
 
-        if (value instanceof List) {
-            list = (List) value;
-        }
-        else if (value instanceof ListDataModel) {
-            list = (List) ((ListDataModel) value).getWrappedData();
-        }
-        else {
-            throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
-        }
+        List<SortMeta> sortMeta = table.getMultiSortMeta();
+        List list = resolveList(value);
+        boolean caseSensitiveSort = table.isCaseSensitiveSort();
+        Locale locale = table.resolveDataLocale();
+        int nullSortOrder = table.getNullSortOrder();
 
         ChainedBeanPropertyComparator chainedComparator = new ChainedBeanPropertyComparator();
         for (SortMeta meta : sortMeta) {
@@ -247,5 +227,17 @@ public class SortFeature implements DataTableFeature {
         }
 
         return sortOrder;
+    }
+
+    protected List resolveList(Object value) {
+        if (value instanceof List) {
+            return (List) value;
+        }
+        else if (value instanceof ListDataModel) {
+            return (List) ((ListDataModel) value).getWrappedData();
+        }
+        else {
+            throw new FacesException("Data type should be java.util.List or javax.faces.model.ListDataModel instance to be sortable.");
+        }
     }
 }
