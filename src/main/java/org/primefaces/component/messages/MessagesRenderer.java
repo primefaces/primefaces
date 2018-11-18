@@ -85,12 +85,8 @@ public class MessagesRenderer extends UINotificationRenderer {
         }
 
         if (messagesBySeverity != null) {
-            for (String severity : messagesBySeverity.keySet()) {
-                List<FacesMessage> severityMessages = messagesBySeverity.get(severity);
-
-                if (!severityMessages.isEmpty()) {
-                    encodeSeverityMessages(context, uiMessages, severity, severityMessages);
-                }
+            for (Map.Entry<String, List<FacesMessage>> entry : messagesBySeverity.entrySet()) {
+                encodeSeverityMessages(context, uiMessages, entry.getKey(), entry.getValue());
             }
         }
 
