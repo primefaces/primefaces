@@ -24,7 +24,8 @@ abstract class StaticMessageBase extends UIComponentBase {
     public static final String DEFAULT_RENDERER = "org.primefaces.component.StaticMessageRenderer";
 
     public enum PropertyKeys {
-        message,
+        summary,
+        detail,
         escape,
         style,
         styleClass,
@@ -56,12 +57,20 @@ abstract class StaticMessageBase extends UIComponentBase {
         getStateHelper().put(PropertyKeys.severity, severity);
     }
 
-    public String getMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.message, null);
+    public String getSummary() {
+        return (String) getStateHelper().eval(PropertyKeys.summary, null);
     }
 
-    public void setMessage(String message) {
-        getStateHelper().put(PropertyKeys.message, message);
+    public void setSummary(String summary) {
+        getStateHelper().put(PropertyKeys.summary, summary);
+    }
+
+    public String getDetail() {
+        return (String) getStateHelper().eval(PropertyKeys.detail, null);
+    }
+
+    public void setDetail(String detail) {
+        getStateHelper().put(PropertyKeys.detail, detail);
     }
 
     public String getStyle() {

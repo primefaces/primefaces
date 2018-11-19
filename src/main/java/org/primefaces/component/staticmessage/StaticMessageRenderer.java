@@ -30,8 +30,9 @@ public class StaticMessageRenderer extends UINotificationRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         boolean escape = staticMessage.isEscape();
-        String severity = staticMessage.getSeverity();
-        String message = staticMessage.getMessage();
+        String severity = staticMessage.getSeverity().toLowerCase();
+        String summary = staticMessage.getSummary();
+        String detail = staticMessage.getDetail();
 
         String styleClass = "ui-message ui-staticmessage ui-message-" + severity + " ui-widget ui-corner-all";
         String style = staticMessage.getStyle();
@@ -45,7 +46,8 @@ public class StaticMessageRenderer extends UINotificationRenderer {
         }
 
         encodeIcon(writer, severity, null, false);
-        encodeText(writer, message, severity + "-detail", escape);
+        encodeText(writer, summary, severity + "-summary", escape);
+        encodeText(writer, detail, severity + "-detail", escape);
 
         writer.endElement("div");
     }
@@ -54,11 +56,13 @@ public class StaticMessageRenderer extends UINotificationRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-message-" + severity, null);
 
-        if (escape) {
-            writer.writeText(text, null);
-        }
-        else {
-            writer.write(text);
+        if (text != null) {
+            if (escape) {
+                writer.writeText(text, null);
+            }
+            else {
+                writer.write(text);
+            }
         }
 
         writer.endElement("span");

@@ -18744,8 +18744,14 @@
             <type>javax.faces.component.UIComponent</type>
         </attribute>
         <attribute>
-            <description><![CDATA[The message string.]]></description>
-            <name>message</name>
+            <description><![CDATA[The message summary.]]></description>
+            <name>summary</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[The message detail.]]></description>
+            <name>detail</name>
             <required>false</required>
             <type>java.lang.String</type>
         </attribute>
