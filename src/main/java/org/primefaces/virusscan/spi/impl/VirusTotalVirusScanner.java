@@ -66,7 +66,7 @@ public class VirusTotalVirusScanner implements VirusScanner {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(content);
             String hash = DatatypeConverter.printHexBinary(md.digest());
-            URL url = new URL(String.format(API_ENDPOINT, EscapeUtils.forUriComponent(key), hash));
+            URL url = new URL(String.format(API_ENDPOINT, EscapeUtils.forUriComponent(key), EscapeUtils.forUriComponent(hash)));
             try (InputStream response = url.openStream()) {
                 JSONObject json = new JSONObject(IOUtils.toString(response, "UTF-8"));
                 int responseCode = json.getInt("response_code");
