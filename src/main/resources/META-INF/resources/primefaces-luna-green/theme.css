@@ -4717,7 +4717,7 @@ body .ui-message {
       vertical-align: middle; }
   body .ui-message.ui-message-fatal {
     background-color: #bcbcbc;
-    border-color: 0 none;
+    border: 0 none;
     color: #212121; }
     body .ui-message.ui-message-fatal .ui-message-fatal-icon {
       font-family: 'primeicons';
