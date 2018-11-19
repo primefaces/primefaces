@@ -15,9 +15,9 @@
  */
 package org.primefaces.application.resource.csp;
 
+import org.apache.commons.io.input.BoundedInputStream;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
-import org.primefaces.util.BoundedInputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
