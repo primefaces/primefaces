@@ -24,6 +24,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultUploadedFile;
 import org.primefaces.model.UploadedFileWrapper;
 import org.primefaces.util.FileUploadUtils;
+import org.primefaces.virusscan.VirusException;
 import org.primefaces.webapp.MultipartRequest;
 
 import java.io.IOException;
@@ -89,8 +90,17 @@ public class CommonsFileUploadDecoder {
     }
 
     private static boolean isValidFile(FileUpload fileUpload, DefaultUploadedFile uploadedFile) throws IOException {
-        return (fileUpload.getSizeLimit() == null || uploadedFile.getSize() <= fileUpload.getSizeLimit()) && FileUploadUtils.isValidType(fileUpload,
+        boolean valid = (fileUpload.getSizeLimit() == null || uploadedFile.getSize() <= fileUpload.getSizeLimit()) && FileUploadUtils.isValidType(fileUpload,
                 uploadedFile.getFileName(), uploadedFile.getInputstream());
+        if (valid) {
+            try {
+                FileUploadUtils.performVirusScan(fileUpload, uploadedFile.getInputstream());
+            }
+            catch (VirusException ex) {
+                return false;
+            }
+        }
+        return valid;
     }
 
 }
