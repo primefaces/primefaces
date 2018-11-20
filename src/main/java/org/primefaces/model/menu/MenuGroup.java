@@ -21,5 +21,5 @@ public interface MenuGroup extends MenuElement {
 
     public int getElementsCount();
 
-    public List<MenuElement> getElements();
+    public List getElements();
 }

@@ -42,7 +42,6 @@ import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.model.menu.Separator;
@@ -255,13 +254,13 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeElements(FacesContext context, SplitButton button, List<MenuElement> elements, boolean isSubmenu) throws IOException {
+    protected void encodeElements(FacesContext context, SplitButton button, List<Object> elements, boolean isSubmenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        for (MenuElement element : elements) {
-            if (element.isRendered()) {
-                if (element instanceof MenuItem) {
-                    MenuItem menuItem = (MenuItem) element;
+        for (Object element : elements) {
+            if (element instanceof MenuItem) {
+                MenuItem menuItem = (MenuItem) element;
+                if (menuItem.isRendered()) {
                     String containerStyle = menuItem.getContainerStyle();
                     String containerStyleClass = menuItem.getContainerStyleClass();
                     containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : Menu.MENUITEM_CLASS + " " + containerStyleClass;
@@ -279,12 +278,12 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
                     encodeMenuItem(context, button, menuItem);
                     writer.endElement("li");
                 }
-                else if (element instanceof Submenu) {
-                    encodeSubmenu(context, button, (Submenu) element);
-                }
-                else if (element instanceof Separator) {
-                    encodeSeparator(context, (Separator) element);
-                }
+            }
+            else if (element instanceof Submenu) {
+                encodeSubmenu(context, button, (Submenu) element);
+            }
+            else if (element instanceof Separator) {
+                encodeSeparator(context, (Separator) element);
             }
         }
     }
@@ -395,6 +394,10 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
     }
 
     protected void encodeSubmenu(FacesContext context, SplitButton button, Submenu submenu) throws IOException {
+        if (!submenu.isRendered()) {
+            return;
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         String label = submenu.getLabel();
         String style = submenu.getStyle();
@@ -421,6 +424,10 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
     }
 
     protected void encodeSeparator(FacesContext context, Separator separator) throws IOException {
+        if (!separator.isRendered()) {
+            return;
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         String style = separator.getStyle();
         String styleClass = separator.getStyleClass();
