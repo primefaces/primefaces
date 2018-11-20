@@ -554,28 +554,22 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             if($this.focusedRow) {
                 switch(key) {
                     case keyCode.UP:
-                        var prevRow = $this.focusedRow.prev('tr.ui-widget-content.ui-datatable-selectable');
-                        if(prevRow.length) {
-                            $this.unhighlightFocusedRow();
-                            $this.focusedRow = prevRow;
-                            $this.highlightFocusedRow();
-
-                            if($this.cfg.scrollable) {
-                                PrimeFaces.scrollInView($this.scrollBody, $this.focusedRow);
-                            }
-                        }
-                        e.preventDefault();
-                    break;
-
                     case keyCode.DOWN:
-                        var nextRow = $this.focusedRow.next('tr.ui-widget-content.ui-datatable-selectable');
-                        if(nextRow.length) {
-                            $this.unhighlightFocusedRow();
-                            $this.focusedRow = nextRow;
-                            $this.highlightFocusedRow();
+                        var rowSelector = 'tr.ui-widget-content.ui-datatable-selectable',
+                            row = key === keyCode.UP ? $this.focusedRow.prev(rowSelector) : $this.focusedRow.next(rowSelector);                        
+                        
+                        if(row.length) {
+                            if($this.isCheckboxSelectionEnabled()) {
+                                row.find('> td.ui-selection-column .ui-chkbox input').focus();
+                            }
+                            else {
+                                $this.unhighlightFocusedRow();
+                                $this.focusedRow = row;
+                                $this.highlightFocusedRow();
 
-                            if($this.cfg.scrollable) {
-                                PrimeFaces.scrollInView($this.scrollBody, $this.focusedRow);
+                                if($this.cfg.scrollable) {
+                                    PrimeFaces.scrollInView($this.scrollBody, $this.focusedRow);
+                                }
                             }
                         }
                         e.preventDefault();
@@ -583,15 +577,11 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
                     case keyCode.ENTER:
                     case keyCode.SPACE:
-                        if($this.focusedRowWithCheckbox) {
-                            $this.focusedRow.find('> td.ui-selection-column .ui-chkbox .ui-chkbox-box').trigger('click.dataTable');
-                        }
-                        else {
+                        if(!$this.isCheckboxSelectionEnabled()) {
                             e.target = $this.focusedRow.children().eq(0).get(0);
                             $this.onRowClick(e,$this.focusedRow.get(0));
                         }
 
-                        $this.focusedRowWithCheckbox = false;
                         e.preventDefault();
                     break;
 
@@ -727,7 +717,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
 
             this.checkAllToggler.on('mouseover', function() {
                 var box = $(this);
-                if(!box.hasClass('ui-state-disabled')&&!box.hasClass('ui-state-active')) {
+                if(!box.hasClass('ui-state-disabled')) {
                     box.addClass('ui-state-hover');
                 }
             })
@@ -744,19 +734,16 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
             var checkboxSelector = '> tr.ui-widget-content.ui-datatable-selectable > td.ui-selection-column .ui-chkbox .ui-chkbox-box';
             this.tbody.off('mouseover.dataTable mouseover.dataTable click.dataTable', checkboxSelector)
                         .on('mouseover.dataTable', checkboxSelector, null, function() {
-                            var box = $(this);
-                            if(!box.hasClass('ui-state-active')) {
-                                box.addClass('ui-state-hover');
-                            }
+                            $(this).addClass('ui-state-hover');
                         })
                         .on('mouseout.dataTable', checkboxSelector, null, function() {
                             $(this).removeClass('ui-state-hover');
                         })
                         .on('click.dataTable', checkboxSelector, null, function() {
                             var checkbox = $(this),
-                            checked = checkbox.hasClass('ui-state-active');
+                            input = checkbox.prev().children('input');
 
-                            if(checked)
+                            if(input.prop('checked'))
                                 $this.unselectRowWithCheckbox(checkbox);
                             else
                                 $this.selectRowWithCheckbox(checkbox);
@@ -769,27 +756,21 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         var input = $(this),
                         box = input.parent().next();
 
-                        if(input.prop('checked')) {
-                            box.removeClass('ui-state-active');
-                        }
-
                         box.addClass('ui-state-focus');
 
                         $this.focusedRow = input.closest('.ui-datatable-selectable');
-                        $this.focusedRowWithCheckbox = true;
+                        
+                        if ($this.cfg.scrollable) {
+                            PrimeFaces.scrollInView($this.scrollBody, $this.focusedRow);
+                        }                        
                     })
                     .on('blur.dataTable', checkboxInputSelector, null, function() {
                         var input = $(this),
                         box = input.parent().next();
 
-                        if(input.prop('checked')) {
-                            box.addClass('ui-state-active');
-                        }
-
                         box.removeClass('ui-state-focus');
 
                         $this.focusedRow = null;
-                        $this.focusedRowWithCheckbox = false;
                     })
                     .on('change.dataTable', checkboxInputSelector, null, function(e) {
                         var input = $(this),
@@ -808,20 +789,12 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         box = input.parent().next();
 
                         if(!box.hasClass('ui-state-disabled')) {
-                            if(input.prop('checked')) {
-                                box.removeClass('ui-state-active');
-                            }
-
                             box.addClass('ui-state-focus');
                         }
                     })
                     .on('blur.dataTable', function(e) {
                         var input = $(this),
                         box = input.parent().next();
-
-                        if(input.prop('checked')) {
-                            box.addClass('ui-state-active');
-                        }
 
                         box.removeClass('ui-state-focus');
                     })
@@ -830,15 +803,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
                         box = input.parent().next();
 
                         if(!box.hasClass('ui-state-disabled')) {
-                            if(!input.prop('checked')) {
-                                box.addClass('ui-state-active');
-                            }
-
                             $this.toggleCheckAll();
-
-                            if(input.prop('checked')) {
-                                box.removeClass('ui-state-active').addClass('ui-state-focus');
-                            }
                         }
                     });
     },
@@ -2088,9 +2053,7 @@ PrimeFaces.widget.DataTable = PrimeFaces.widget.DeferredWidget.extend({
     },
 
     selectCheckbox: function(checkbox) {
-        if(!checkbox.hasClass('ui-state-focus')) {
-            checkbox.addClass('ui-state-active');
-        }
+        checkbox.addClass('ui-state-active');
         checkbox.children('span.ui-chkbox-icon:first').removeClass('ui-icon-blank').addClass(' ui-icon-check');
         checkbox.prev().children('input').prop('checked', true).attr('aria-checked', true);
     },
