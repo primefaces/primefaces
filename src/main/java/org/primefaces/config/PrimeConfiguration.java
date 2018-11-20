@@ -15,19 +15,22 @@
  */
 package org.primefaces.config;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.primefaces.application.resource.csp.CspConfiguration;
+import org.primefaces.util.Constants;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.util.Constants;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Container for all config parameters.
  */
 public class PrimeConfiguration {
+
+    private static final Logger LOG = Logger.getLogger(PrimeConfiguration.class.getName());
 
     // context params
     private boolean validateEmptyFields = false;
@@ -43,6 +46,7 @@ public class PrimeConfiguration {
     private boolean interpolateClientSideValidationMessages = false;
     private boolean earlyPostParamEvaluation = false;
     private boolean moveScriptsToBottom = false;
+    private CspConfiguration cspConfiguration = null;
 
     // internal config
     private boolean stringConverterAvailable = false;
@@ -111,6 +115,8 @@ public class PrimeConfiguration {
 
         value = externalContext.getInitParameter(Constants.ContextParams.MOVE_SCRIPTS_TO_BOTTOM);
         moveScriptsToBottom = (value == null) ? false : Boolean.valueOf(value);
+
+        cspConfiguration = new CspConfiguration(externalContext);
     }
 
     protected void initValidateEmptyFields(FacesContext context, PrimeEnvironment environment) {
@@ -251,6 +257,14 @@ public class PrimeConfiguration {
 
     public void setMoveScriptsToBottom(boolean moveScriptsToBottom) {
         this.moveScriptsToBottom = moveScriptsToBottom;
+    }
+
+    public CspConfiguration getCspConfiguration() {
+        return cspConfiguration;
+    }
+
+    public void setCspConfiguration(CspConfiguration cspConfiguration) {
+        this.cspConfiguration = cspConfiguration;
     }
 
     public boolean isStringConverterAvailable() {

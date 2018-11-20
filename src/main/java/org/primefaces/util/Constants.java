@@ -37,6 +37,12 @@ public class Constants {
         public static final String INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES = "primefaces.INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES";
         public static final String EARLY_POST_PARAM_EVALUATION = "primefaces.EARLY_POST_PARAM_EVALUATION";
         public static final String MOVE_SCRIPTS_TO_BOTTOM = "primefaces.MOVE_SCRIPTS_TO_BOTTOM";
+        public static final String CONTENT_SECURITY_POLICY_ENABLED = "primefaces.csp.ENABLED";
+        public static final String CONTENT_SECURITY_POLICY_SUPPORTED_DIRECTIVES = "primefaces.csp.SUPPORTED_DIRECTIVES";
+        public static final String CONTENT_SECURITY_POLICY_REPORT_URI = "primefaces.csp.REPORT_URI";
+        public static final String CONTENT_SECURITY_POLICY_REPORT_ONLY = "primefaces.csp.REPORT_ONLY";
+        public static final String CONTENT_SECURITY_POLICY_HOST_WHITELIST = "primefaces.csp.ALLOWED_HOSTS";
+        public static final String CONTENT_SECURITY_POLICY_JAVASCRIPT_DEBUGGING_COOKIE = "primefaces.csp.JAVASCRIPT_DEBUGGING_COOKIE";
     }
 
     public static class RequestParams {
