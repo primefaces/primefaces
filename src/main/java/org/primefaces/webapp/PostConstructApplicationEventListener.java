@@ -24,6 +24,7 @@ import javax.faces.event.SystemEvent;
 import javax.faces.event.SystemEventListener;
 
 import org.primefaces.config.PrimeEnvironment;
+import org.primefaces.config.StartupPrimeEnvironment;
 
 public class PostConstructApplicationEventListener implements SystemEventListener {
 
@@ -37,7 +38,7 @@ public class PostConstructApplicationEventListener implements SystemEventListene
     @Override
     public void processEvent(SystemEvent event) throws AbortProcessingException {
         // temp manually instantiate as the ApplicationContext is not available yet
-        PrimeEnvironment environment = new PrimeEnvironment();
+        PrimeEnvironment environment = new StartupPrimeEnvironment();
 
         LOGGER.log(Level.INFO,
                 "Running on PrimeFaces {0}",
@@ -47,4 +48,5 @@ public class PostConstructApplicationEventListener implements SystemEventListene
             Jsf23Helper.addSearchKeywordResolvers();
         }
     }
+
 }
