@@ -24,6 +24,8 @@ import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
 public class TimelineRangeEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * new start time of the visible range
      */

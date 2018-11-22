@@ -26,6 +26,8 @@ import org.primefaces.component.api.UIOutcomeTarget;
 
 public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String id;
     private String icon;
     private String iconPos;

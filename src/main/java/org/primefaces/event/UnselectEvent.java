@@ -20,6 +20,8 @@ import javax.faces.component.behavior.Behavior;
 
 public class UnselectEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private Object object;
 
     public UnselectEvent(UIComponent component, Behavior behavior, Object object) {

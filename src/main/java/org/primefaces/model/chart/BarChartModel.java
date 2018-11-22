@@ -23,6 +23,8 @@ import java.util.Map;
 
 public class BarChartModel extends CartesianChartModel {
 
+    private static final long serialVersionUID = 1L;
+
     private int barPadding = 8;
     private int barMargin = 10;
     private int barWidth = 0;

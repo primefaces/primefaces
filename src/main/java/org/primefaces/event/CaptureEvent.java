@@ -21,6 +21,8 @@ import javax.faces.event.FacesListener;
 
 public class CaptureEvent extends FacesEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private byte[] data;
 
     private String rawData;

@@ -30,6 +30,8 @@ import org.primefaces.component.treetable.TreeTable;
 
 public class CellEditEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private Object oldValue;
 
     private Object newValue;

@@ -21,6 +21,8 @@ import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
 public class PageEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private int page;
 
     public PageEvent(UIComponent component, Behavior behavior, int page) {

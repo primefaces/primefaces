@@ -23,6 +23,8 @@ import org.primefaces.model.map.GeocodeResult;
 
 public class GeocodeEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private final String query;
     private final List<GeocodeResult> results;
 

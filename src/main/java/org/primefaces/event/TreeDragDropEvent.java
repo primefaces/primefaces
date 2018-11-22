@@ -21,6 +21,8 @@ import org.primefaces.model.TreeNode;
 
 public class TreeDragDropEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private TreeNode dragNode;
 
     private TreeNode[] dragNodes;

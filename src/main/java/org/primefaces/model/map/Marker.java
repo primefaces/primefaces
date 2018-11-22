@@ -17,6 +17,8 @@ package org.primefaces.model.map;
 
 public class Marker extends Overlay {
 
+    private static final long serialVersionUID = 1L;
+
     private boolean clickable = true;
 
     private String cursor;

@@ -26,6 +26,7 @@ import org.primefaces.util.ResourceUtils;
 
 public class DynamicResourcesPhaseListener implements PhaseListener {
 
+    private static final long serialVersionUID = 1L;
     private static final String INITIAL_RESOURCES = DynamicResourcesPhaseListener.class.getName() + ".INITIAL_RESOURCES";
 
     @Override

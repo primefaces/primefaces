@@ -20,6 +20,8 @@ import javax.faces.component.behavior.Behavior;
 
 public class ReorderEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private int fromIndex;
     private int toIndex;
 

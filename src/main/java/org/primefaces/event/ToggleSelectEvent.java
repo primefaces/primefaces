@@ -20,6 +20,8 @@ import javax.faces.component.behavior.Behavior;
 
 public class ToggleSelectEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private boolean selected;
 
     public ToggleSelectEvent(UIComponent component, Behavior behavior, boolean selected) {

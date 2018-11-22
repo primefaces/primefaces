@@ -20,4 +20,6 @@ package org.primefaces.model.menu;
  */
 public class DynamicMenuModel extends BaseMenuModel {
 
+    private static final long serialVersionUID = 1L;
+
 }

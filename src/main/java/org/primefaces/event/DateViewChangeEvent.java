@@ -20,6 +20,8 @@ import javax.faces.component.behavior.Behavior;
 
 public class DateViewChangeEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private int month;
     private int year;
 

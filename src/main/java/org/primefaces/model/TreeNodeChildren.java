@@ -21,6 +21,8 @@ import java.util.Iterator;
 
 public class TreeNodeChildren extends TreeNodeList {
 
+    private static final long serialVersionUID = 1L;
+
     private TreeNode parent;
 
     public TreeNodeChildren(TreeNode parent) {

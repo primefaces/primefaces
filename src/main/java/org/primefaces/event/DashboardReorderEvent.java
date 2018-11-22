@@ -20,6 +20,8 @@ import javax.faces.component.behavior.Behavior;
 
 public class DashboardReorderEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private String widgetId;
 
     private Integer itemIndex;

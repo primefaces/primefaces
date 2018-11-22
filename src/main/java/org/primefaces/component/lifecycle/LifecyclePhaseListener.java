@@ -30,6 +30,8 @@ import org.primefaces.util.LangUtils;
 
 public class LifecyclePhaseListener implements PhaseListener {
 
+    private static final long serialVersionUID = 1L;
+
     public static PhaseInfo getPhaseInfo(PhaseId id, FacesContext facesContext) {
 
         Map<String, Object> session = facesContext.getExternalContext().getSessionMap();

@@ -15,12 +15,16 @@
  */
 package org.primefaces.component.datatable;
 
+import java.io.Serializable;
+
 import javax.el.MethodExpression;
 
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
-public class MultiSortState implements java.io.Serializable {
+public class MultiSortState implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String sortKey;
 

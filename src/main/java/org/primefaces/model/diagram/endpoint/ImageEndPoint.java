@@ -17,6 +17,8 @@ package org.primefaces.model.diagram.endpoint;
 
 public class ImageEndPoint extends EndPoint {
 
+    private static final long serialVersionUID = 1L;
+
     private String path;
 
     public ImageEndPoint() {

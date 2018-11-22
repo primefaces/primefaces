@@ -20,6 +20,8 @@ import java.util.Map;
 
 public class PieChartModel extends ChartModel {
 
+    private static final long serialVersionUID = 1L;
+
     private Map<String, Number> data;
     private int diameter;
     private int sliceMargin;

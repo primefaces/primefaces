@@ -22,6 +22,8 @@ import java.util.Map;
 
 public class MoveScriptsToBottomState implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private HashMap<String, ArrayList<String>> includes;
     private HashMap<String, ArrayList<String>> inlines;
     private int savedInlineTags;

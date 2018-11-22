@@ -20,6 +20,8 @@ import java.util.List;
 
 public class Polyline extends Overlay {
 
+    private static final long serialVersionUID = 1L;
+
     private List<LatLng> paths;
 
     private String strokeColor;

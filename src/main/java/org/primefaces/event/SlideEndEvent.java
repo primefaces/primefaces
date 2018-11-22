@@ -20,6 +20,8 @@ import javax.faces.component.behavior.Behavior;
 
 public class SlideEndEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private double value;
 
     public SlideEndEvent(UIComponent component, Behavior behavior, double value) {

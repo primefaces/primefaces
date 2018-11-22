@@ -24,6 +24,8 @@ import org.primefaces.model.OrganigramNode;
  */
 public class OrganigramNodeExpandEvent extends AbstractOrganigramNodeEvent {
 
+    private static final long serialVersionUID = 1L;
+
     public OrganigramNodeExpandEvent(UIComponent component, Behavior behavior, OrganigramNode organigramNode) {
         super(component, behavior, organigramNode);
     }

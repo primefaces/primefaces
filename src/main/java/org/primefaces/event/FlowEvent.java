@@ -21,6 +21,8 @@ import javax.faces.event.FacesListener;
 
 public class FlowEvent extends FacesEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private String oldStep;
 
     private String newStep;

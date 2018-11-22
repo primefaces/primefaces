@@ -21,6 +21,8 @@ import org.primefaces.model.timeline.TimelineEvent;
 
 public class TimelineEventComparator implements Comparator<TimelineEvent>, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     @Override
     public int compare(TimelineEvent a, TimelineEvent b) {
         if (a.getStartDate().equals(b.getStartDate())) {
