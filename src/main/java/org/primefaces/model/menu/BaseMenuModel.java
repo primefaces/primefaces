@@ -26,6 +26,9 @@ public class BaseMenuModel implements MenuModel, Serializable {
 
     public static final String ID_SEPARATOR = "_";
 
+    private static final long serialVersionUID = 1L;
+
+
     private List<MenuElement> elements;
 
     public BaseMenuModel() {

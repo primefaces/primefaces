@@ -20,6 +20,8 @@ import java.util.Map;
 
 public class LimitedSizeHashMap<K, V> extends LinkedHashMap<K, V> {
 
+    private static final long serialVersionUID = 1L;
+
     private final int maxSize;
 
     public LimitedSizeHashMap(int maxSize) {

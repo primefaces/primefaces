@@ -20,6 +20,8 @@ import javax.faces.component.behavior.Behavior;
 
 public class SelectEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private Object object;
     private boolean metaKey;
     private boolean ctrlKey;

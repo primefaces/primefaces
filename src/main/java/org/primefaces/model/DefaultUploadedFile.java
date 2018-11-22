@@ -32,6 +32,8 @@ import org.primefaces.util.FileUploadUtils;
  */
 public class DefaultUploadedFile implements UploadedFile, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private FileItem fileItem;
     private Long sizeLimit;
 

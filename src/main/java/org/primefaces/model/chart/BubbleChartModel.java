@@ -20,6 +20,8 @@ import java.util.List;
 
 public class BubbleChartModel extends CartesianChartModel {
 
+    private static final long serialVersionUID = 1L;
+
     private List<BubbleChartSeries> data;
     private boolean bubbleGradients = false;
     private double bubbleAlpha = 1.0;

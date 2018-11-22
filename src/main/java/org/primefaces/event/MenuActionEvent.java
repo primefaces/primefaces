@@ -21,6 +21,8 @@ import org.primefaces.model.menu.MenuItem;
 
 public class MenuActionEvent extends ActionEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private MenuItem menuItem;
 
     public MenuActionEvent(UIComponent component, MenuItem menuItem) {

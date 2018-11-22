@@ -21,6 +21,8 @@ import java.util.List;
 
 public class TerminalCommand implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String text;
     private List<TerminalCommand> arguments;
 

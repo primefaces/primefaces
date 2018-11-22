@@ -21,6 +21,8 @@ import java.util.List;
 
 public class DefaultTagCloudModel implements TagCloudModel {
 
+    private static final long serialVersionUID = 1L;
+
     private List<TagCloudItem> tags;
 
     public DefaultTagCloudModel() {

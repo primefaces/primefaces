@@ -20,6 +20,8 @@ import javax.faces.component.behavior.Behavior;
 
 public class MoveEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private int top;
 
     private int left;

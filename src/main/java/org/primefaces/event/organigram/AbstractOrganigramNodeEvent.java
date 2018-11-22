@@ -25,6 +25,8 @@ import org.primefaces.model.OrganigramNode;
  */
 public class AbstractOrganigramNodeEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private final OrganigramNode organigramNode;
 
     public AbstractOrganigramNodeEvent(UIComponent component, Behavior behavior, OrganigramNode organigramNode) {

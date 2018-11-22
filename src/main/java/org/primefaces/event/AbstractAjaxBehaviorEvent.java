@@ -23,6 +23,8 @@ import javax.faces.event.FacesListener;
 
 public abstract class AbstractAjaxBehaviorEvent extends AjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     public AbstractAjaxBehaviorEvent(UIComponent component, Behavior behavior) {
         super(component, behavior);
     }

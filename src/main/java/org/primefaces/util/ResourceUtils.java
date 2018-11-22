@@ -126,6 +126,8 @@ public class ResourceUtils {
 
     public static class ResourceInfo implements Serializable {
 
+        private static final long serialVersionUID = 1L;
+
         private String library;
         private String name;
         private UIComponent resource;

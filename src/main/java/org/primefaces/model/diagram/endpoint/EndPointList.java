@@ -20,6 +20,8 @@ import java.util.UUID;
 
 public class EndPointList extends ArrayList<EndPoint> {
 
+    private static final long serialVersionUID = 1L;
+
     @Override
     public boolean add(EndPoint e) {
         if (e.getId() == null) {

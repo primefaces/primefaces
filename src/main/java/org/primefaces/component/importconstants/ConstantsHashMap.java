@@ -27,6 +27,8 @@ import javax.faces.FacesException;
  */
 public class ConstantsHashMap<K, V> extends HashMap<K, V> {
 
+    private static final long serialVersionUID = 1L;
+
     private final Class<?> clazz;
 
     public ConstantsHashMap(Class<?> clazz) {

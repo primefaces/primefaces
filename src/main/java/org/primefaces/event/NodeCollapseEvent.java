@@ -22,6 +22,8 @@ import org.primefaces.model.TreeNode;
 
 public class NodeCollapseEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private TreeNode treeNode;
 
     public NodeCollapseEvent(UIComponent component, Behavior behavior, TreeNode treeNode) {

@@ -23,6 +23,8 @@ import javax.el.ValueExpression;
 
 public class TableState implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private int first;
 
     private int rows;

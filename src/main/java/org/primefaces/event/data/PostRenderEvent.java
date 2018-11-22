@@ -20,6 +20,8 @@ import javax.faces.event.ComponentSystemEvent;
 
 public class PostRenderEvent extends ComponentSystemEvent {
 
+    private static final long serialVersionUID = 1L;
+
     public PostRenderEvent(UIComponent component) {
         super(component);
     }

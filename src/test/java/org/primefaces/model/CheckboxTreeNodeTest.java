@@ -24,7 +24,8 @@ public class CheckboxTreeNodeTest {
 
     private TreeNode root;
 
-    @Before
+    @SuppressWarnings("unused")
+	@Before
     public void initModel() {
         root = new CheckboxTreeNode("Files", null);
 

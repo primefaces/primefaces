@@ -23,6 +23,8 @@ import org.primefaces.model.map.LatLng;
 
 public class ReverseGeocodeEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private final LatLng latlng;
     private final List<String> addresses;
 

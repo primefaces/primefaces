@@ -19,6 +19,8 @@ import java.io.Serializable;
 
 public abstract class Axis implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String label = "";
     private Object min;
     private Object max;

@@ -141,6 +141,9 @@ public class LazyDataModelIteratorTest {
     }
 
     private static class LazyDataModelImpl extends LazyDataModel<Integer> {
+
+        private static final long serialVersionUID = 1L;
+
         int totalItems;
         int multiSortingLoadCounter;
         int singleSortingLoadCounter;

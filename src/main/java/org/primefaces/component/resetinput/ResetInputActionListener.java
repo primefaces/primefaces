@@ -33,6 +33,8 @@ import org.primefaces.visit.ResetInputVisitCallback;
 
 public class ResetInputActionListener implements ActionListener, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private ValueExpression target;
     private ValueExpression clearModel;
 

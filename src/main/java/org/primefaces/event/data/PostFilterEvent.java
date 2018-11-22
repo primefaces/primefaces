@@ -20,6 +20,8 @@ import javax.faces.event.ComponentSystemEvent;
 
 public class PostFilterEvent extends ComponentSystemEvent {
 
+    private static final long serialVersionUID = 1L;
+
     public PostFilterEvent(UIComponent component) {
         super(component);
     }

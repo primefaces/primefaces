@@ -19,6 +19,8 @@ import java.io.Serializable;
 
 public class CroppedImage implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String originalFilename;
 
     private byte[] bytes;

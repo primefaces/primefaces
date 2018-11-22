@@ -22,6 +22,8 @@ import java.util.UUID;
 
 public class DefaultScheduleModel implements ScheduleModel, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private List<ScheduleEvent> events;
     private boolean eventLimit = false;
 

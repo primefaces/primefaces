@@ -19,6 +19,8 @@ import java.io.Serializable;
 
 public class DataListState implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private int first;
 
     private int rows;

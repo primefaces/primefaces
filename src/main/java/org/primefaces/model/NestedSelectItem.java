@@ -19,4 +19,6 @@ import javax.faces.model.SelectItem;
 
 public class NestedSelectItem extends SelectItem {
 
+    private static final long serialVersionUID = 1L;
+
 }

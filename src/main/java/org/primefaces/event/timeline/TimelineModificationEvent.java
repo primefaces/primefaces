@@ -23,6 +23,8 @@ import org.primefaces.model.timeline.TimelineEvent;
 
 public class TimelineModificationEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private TimelineEvent timelineEvent;
 
     public TimelineModificationEvent(UIComponent component, Behavior behavior, TimelineEvent timelineEvent) {

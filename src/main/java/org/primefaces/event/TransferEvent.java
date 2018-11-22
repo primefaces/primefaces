@@ -21,6 +21,8 @@ import javax.faces.component.behavior.Behavior;
 
 public class TransferEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private List<?> items;
     private boolean add;
 

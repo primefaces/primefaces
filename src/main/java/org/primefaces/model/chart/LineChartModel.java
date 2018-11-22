@@ -17,6 +17,8 @@ package org.primefaces.model.chart;
 
 public class LineChartModel extends CartesianChartModel {
 
+    private static final long serialVersionUID = 1L;
+
     private boolean stacked = false;
     private boolean breakOnNull = false;
 
