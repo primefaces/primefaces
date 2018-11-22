@@ -16,11 +16,12 @@
 package org.primefaces.component.bubblechart;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.charts.ChartRenderer;
-import org.primefaces.model.charts.ChartModel;
 import org.primefaces.model.charts.bubble.BubbleChartOptions;
 import org.primefaces.util.WidgetBuilder;
 
@@ -43,7 +44,7 @@ public class BubbleChartRenderer extends ChartRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("BubbleChart", chart.resolveWidgetVar(), clientId);
 
-        encodeConfig(context, (ChartModel) chart.getModel());
+        encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);
 
         wb.finish();
@@ -66,6 +67,8 @@ public class BubbleChartRenderer extends ChartRenderer {
         encodeTitle(context, bubbleOptions.getTitle(), (bubbleOptions.getScales() != null || bubbleOptions.getElements() != null));
         encodeTooltip(context, bubbleOptions.getTooltip(), (bubbleOptions.getScales() != null
                 || bubbleOptions.getElements() != null || bubbleOptions.getTitle() != null));
+        encodeLegend(context, bubbleOptions.getLegend(), (bubbleOptions.getScales() != null
+                    || bubbleOptions.getElements() != null || bubbleOptions.getTitle() != null || bubbleOptions.getTooltip() != null));
 
         writer.write("}");
     }
