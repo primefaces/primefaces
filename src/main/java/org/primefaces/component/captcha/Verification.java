@@ -19,6 +19,7 @@ import java.io.Serializable;
 
 class Verification implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private String challenge;
     private String answer;
 

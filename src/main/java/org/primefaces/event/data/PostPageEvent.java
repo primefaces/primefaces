@@ -20,6 +20,8 @@ import javax.faces.event.ComponentSystemEvent;
 
 public class PostPageEvent extends ComponentSystemEvent {
 
+    private static final long serialVersionUID = 1L;
+
     public PostPageEvent(UIComponent component) {
         super(component);
     }

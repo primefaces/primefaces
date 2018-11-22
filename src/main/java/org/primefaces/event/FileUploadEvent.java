@@ -23,6 +23,8 @@ import org.primefaces.model.UploadedFile;
 
 public class FileUploadEvent extends FacesEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private UploadedFile file;
 
     public FileUploadEvent(UIComponent component, UploadedFile file) {

@@ -19,6 +19,8 @@ import java.io.Serializable;
 
 public class FilterState implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String columnKey;
 
     private Object filterValue;

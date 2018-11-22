@@ -21,6 +21,8 @@ import org.primefaces.component.api.UIColumn;
 
 public class ColumnResizeEvent extends ResizeEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private UIColumn column;
 
     public ColumnResizeEvent(UIComponent component, Behavior behavior, int width, int height, UIColumn column) {

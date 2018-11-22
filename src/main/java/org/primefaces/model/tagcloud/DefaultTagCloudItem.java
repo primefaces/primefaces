@@ -19,6 +19,8 @@ import java.io.Serializable;
 
 public class DefaultTagCloudItem implements TagCloudItem, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String label;
 
     private String url;

@@ -22,6 +22,8 @@ import org.primefaces.model.ScheduleEvent;
 
 public class ScheduleEntryMoveEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private ScheduleEvent scheduleEvent;
 
     private int dayDelta;

@@ -24,6 +24,8 @@ import org.primefaces.model.map.LatLngBounds;
 
 public class StateChangeEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private LatLngBounds bounds;
 
     private int zoomLevel;

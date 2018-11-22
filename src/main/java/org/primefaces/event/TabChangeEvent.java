@@ -21,6 +21,8 @@ import org.primefaces.component.tabview.Tab;
 
 public class TabChangeEvent extends AbstractAjaxBehaviorEvent implements TabEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private Tab tab;
     private Object data;
 

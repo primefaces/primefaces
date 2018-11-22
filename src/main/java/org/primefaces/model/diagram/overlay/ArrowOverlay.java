@@ -19,6 +19,8 @@ import java.io.Serializable;
 
 public class ArrowOverlay implements Overlay, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private int width = 20;
 
     private int length = 20;

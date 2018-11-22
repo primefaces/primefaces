@@ -19,6 +19,8 @@ import java.util.Date;
 
 public class LazyScheduleModel extends DefaultScheduleModel {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * Method to be used when implementing lazy loading, implementers should override to fetch events that belong to a particular period
      *

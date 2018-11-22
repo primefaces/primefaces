@@ -19,6 +19,8 @@ import java.io.Serializable;
 
 public class LatLng implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private double lat;
 
     private double lng;

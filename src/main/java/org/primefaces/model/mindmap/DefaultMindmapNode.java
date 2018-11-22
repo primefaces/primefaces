@@ -21,6 +21,8 @@ import java.util.List;
 
 public class DefaultMindmapNode implements MindmapNode, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private MindmapNode parent;
 
     private List<MindmapNode> children;

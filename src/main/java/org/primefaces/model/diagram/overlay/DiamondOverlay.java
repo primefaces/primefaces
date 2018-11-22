@@ -19,6 +19,8 @@ import java.io.Serializable;
 
 public class DiamondOverlay implements Overlay, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     @Override
     public String getType() {
         return "Diamond";

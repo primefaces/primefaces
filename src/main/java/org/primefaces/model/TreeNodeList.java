@@ -19,6 +19,8 @@ import java.util.ArrayList;
 
 public class TreeNodeList extends ArrayList<TreeNode> {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * Optimized set implementation to be used in sorting
      *

@@ -23,6 +23,8 @@ import org.primefaces.model.SortOrder;
 
 public class SortEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private UIColumn sortColumn;
 
     private boolean ascending;

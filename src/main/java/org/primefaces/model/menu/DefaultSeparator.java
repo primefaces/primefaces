@@ -19,6 +19,8 @@ import java.io.Serializable;
 
 public class DefaultSeparator implements Separator, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String id;
     private String title;
     private String style;

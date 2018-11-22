@@ -24,6 +24,8 @@ import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
 public class FilterEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private List<?> data;
 
     public FilterEvent(UIComponent component, Behavior behavior, List<?> data) {

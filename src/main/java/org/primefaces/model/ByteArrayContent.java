@@ -24,6 +24,8 @@ import java.io.Serializable;
  */
 public class ByteArrayContent implements StreamedContent, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private byte[] data;
 
     private String contentType;

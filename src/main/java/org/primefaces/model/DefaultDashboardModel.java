@@ -21,6 +21,8 @@ import java.util.List;
 
 public class DefaultDashboardModel implements DashboardModel, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private List<DashboardColumn> columns;
 
     public DefaultDashboardModel() {

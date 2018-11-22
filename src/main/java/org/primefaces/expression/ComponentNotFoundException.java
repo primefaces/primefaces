@@ -19,6 +19,8 @@ import javax.faces.FacesException;
 
 public class ComponentNotFoundException extends FacesException {
 
+    private static final long serialVersionUID = 1L;
+
     public ComponentNotFoundException() {
         super();
     }

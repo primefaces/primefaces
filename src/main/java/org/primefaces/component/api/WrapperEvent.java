@@ -26,6 +26,7 @@ import javax.faces.event.PhaseId;
 
 public class WrapperEvent extends FacesEvent {
 
+    private static final long serialVersionUID = 1L;
     private FacesEvent event = null;
     private String rowKey = null;
 

@@ -17,6 +17,8 @@ package org.primefaces.model.diagram.connector;
 
 public class FlowChartConnector extends Connector {
 
+    private static final long serialVersionUID = 1L;
+
     private int stub = 30;
 
     private int gap = 0;

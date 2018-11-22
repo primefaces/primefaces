@@ -22,6 +22,8 @@ import org.primefaces.model.Visibility;
 
 public class ToggleEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * Visibility status
      */

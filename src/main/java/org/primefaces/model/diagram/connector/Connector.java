@@ -19,6 +19,8 @@ import java.io.Serializable;
 
 public abstract class Connector implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String paintStyle;
 
     private String hoverPaintStyle;

@@ -240,6 +240,8 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
 
     class CrudOperationData implements Serializable {
 
+        private static final long serialVersionUID = 1L;
+
         private final CrudOperation crudOperation;
         private TimelineEvent event;
         private int index;

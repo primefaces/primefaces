@@ -17,6 +17,8 @@ package org.primefaces.model.chart;
 
 public class DateAxis extends Axis {
 
+    private static final long serialVersionUID = 1L;
+
     public DateAxis() {
     }
 

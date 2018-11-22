@@ -17,6 +17,8 @@ package org.primefaces.model.map;
 
 public class Rectangle extends Overlay {
 
+    private static final long serialVersionUID = 1L;
+
     private LatLngBounds bounds;
 
     private String strokeColor;

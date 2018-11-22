@@ -21,6 +21,8 @@ import javax.faces.event.PhaseId;
 
 public class RowEditEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private Object object;
 
     public RowEditEvent(UIComponent component, Behavior behavior, Object object) {

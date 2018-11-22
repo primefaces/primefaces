@@ -20,6 +20,8 @@ import javax.faces.component.behavior.Behavior;
 
 public class RateEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private Object rating;
 
     public RateEvent(UIComponent component, Behavior behavior, Object rating) {

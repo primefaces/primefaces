@@ -20,6 +20,8 @@ import java.util.UUID;
 
 class ElementList extends ArrayList<Element> {
 
+    private static final long serialVersionUID = 1L;
+
     @Override
     public boolean add(Element e) {
         if (e.getId() == null) {

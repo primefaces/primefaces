@@ -17,6 +17,8 @@ package org.primefaces.model.diagram.endpoint;
 
 public class DotEndPoint extends EndPoint {
 
+    private static final long serialVersionUID = 1L;
+
     private int radius = 10;
 
     public DotEndPoint() {

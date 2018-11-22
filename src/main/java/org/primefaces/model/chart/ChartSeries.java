@@ -25,6 +25,8 @@ import java.util.Map;
 
 public class ChartSeries implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String label;
 
     private Map<Object, Number> data = new LinkedHashMap<Object, Number>();

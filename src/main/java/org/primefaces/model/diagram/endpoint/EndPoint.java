@@ -22,6 +22,8 @@ import org.primefaces.model.diagram.overlay.Overlay;
 
 public abstract class EndPoint implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String id;
     private EndPointAnchor anchor;
     private int maxConnections = 1;

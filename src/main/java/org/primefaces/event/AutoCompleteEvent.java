@@ -21,6 +21,8 @@ import javax.faces.event.FacesListener;
 
 public class AutoCompleteEvent extends FacesEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private String query;
 
     public AutoCompleteEvent(UIComponent component, String query) {

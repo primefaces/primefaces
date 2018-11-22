@@ -35,6 +35,7 @@ import javax.faces.event.ActionListener;
 import javax.faces.event.SystemEvent;
 import javax.faces.validator.Validator;
 
+@SuppressWarnings("deprecation")
 public class ApplicationMock extends Application {
 
     @Override

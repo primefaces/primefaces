@@ -22,6 +22,8 @@ import java.util.Map;
 
 public class CartesianChartModel extends ChartModel {
 
+    private static final long serialVersionUID = 1L;
+
     protected Map<AxisType, Axis> axes;
 
     private List<ChartSeries> series;
