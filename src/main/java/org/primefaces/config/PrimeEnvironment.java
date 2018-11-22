@@ -43,6 +43,8 @@ public class PrimeEnvironment {
 
     private String buildVersion = null;
 
+    private boolean htmlSanitizerAvailable;
+
     public PrimeEnvironment() {
         atLeastEl22 = LangUtils.tryToLoadClassForName("javax.el.ValueReference") != null;
 
@@ -60,6 +62,8 @@ public class PrimeEnvironment {
         if (buildVersion == null || buildVersion.trim().isEmpty()) {
             buildVersion = UUID.randomUUID().toString().replace("-", "").substring(0, 10);
         }
+
+        htmlSanitizerAvailable = LangUtils.tryToLoadClassForName("org.owasp.html.PolicyFactory") != null;
     }
 
     public PrimeEnvironment(FacesContext context) {
@@ -114,40 +118,20 @@ public class PrimeEnvironment {
         return beanValidationAvailable;
     }
 
-    public void setBeanValidationAvailable(boolean beanValidationAvailable) {
-        this.beanValidationAvailable = beanValidationAvailable;
-    }
-
     public boolean isAtLeastEl22() {
         return atLeastEl22;
-    }
-
-    public void setAtLeastEl22(boolean atLeastEl22) {
-        this.atLeastEl22 = atLeastEl22;
     }
 
     public boolean isAtLeastJsf23() {
         return atLeastJsf23;
     }
 
-    public void setAtLeastJsf23(boolean atLeastJsf23) {
-        this.atLeastJsf23 = atLeastJsf23;
-    }
-
     public boolean isAtLeastJsf22() {
         return atLeastJsf22;
     }
 
-    public void setAtLeastJsf22(boolean atLeastJsf22) {
-        this.atLeastJsf22 = atLeastJsf22;
-    }
-
     public boolean isAtLeastJsf21() {
         return atLeastJsf21;
-    }
-
-    public void setAtLeastJsf21(boolean atLeastJsf21) {
-        this.atLeastJsf21 = atLeastJsf21;
     }
 
     public boolean isMojarra() {
@@ -166,7 +150,8 @@ public class PrimeEnvironment {
         return buildVersion;
     }
 
-    public void setBuildVersion(String buildVersion) {
-        this.buildVersion = buildVersion;
+    public boolean isHtmlSanitizerAvailable() {
+        return htmlSanitizerAvailable;
     }
+
 }

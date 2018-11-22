@@ -17,63 +17,20 @@ package org.primefaces.component.texteditor;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import org.owasp.html.HtmlPolicyBuilder;
-import org.owasp.html.PolicyFactory;
-import org.owasp.html.Sanitizers;
+import org.primefaces.context.PrimeApplicationContext;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HtmlSanitizer;
 import org.primefaces.util.WidgetBuilder;
 
 public class TextEditorRenderer extends InputRenderer {
-
-    private static final PolicyFactory HTML_IMAGES_SANITIZER = new HtmlPolicyBuilder()
-            .allowUrlProtocols("data", "http", "https")
-            .allowElements("img")
-            .allowAttributes("src")
-            .matching(Pattern.compile("^(data:image/(gif|png|jpeg)[,;]|http|https|mailto|//).+", Pattern.CASE_INSENSITIVE))
-            .onElements("img")
-            .toFactory();
-    private static final PolicyFactory HTML_LINKS_SANITIZER = Sanitizers.LINKS
-            .and(new HtmlPolicyBuilder()
-            .allowElements("a")
-            .allowAttributes("target")
-            .onElements("a")
-            .toFactory());
-    private static final PolicyFactory HTML_STYLES_SANITIZER = Sanitizers.STYLES
-            .and(new HtmlPolicyBuilder()
-            .allowElements("span")
-            .allowAttributes("class")
-            .onElements("span")
-            .toFactory());
-    private static final PolicyFactory HTML_DENY_ALL_SANITIZER = new HtmlPolicyBuilder().toFactory();
-
-    protected String sanitizeHtml(String value, TextEditor editor) {
-        PolicyFactory sanitizer = HTML_DENY_ALL_SANITIZER;
-        if (editor.isAllowBlocks()) {
-            sanitizer = sanitizer.and(Sanitizers.BLOCKS);
-        }
-        if (editor.isAllowFormatting()) {
-            sanitizer = sanitizer.and(Sanitizers.FORMATTING);
-        }
-        if (editor.isAllowLinks()) {
-            sanitizer = sanitizer.and(HTML_LINKS_SANITIZER);
-        }
-        if (editor.isAllowStyles()) {
-            sanitizer = sanitizer.and(HTML_STYLES_SANITIZER);
-        }
-        if (editor.isAllowImages()) {
-            sanitizer = sanitizer.and(HTML_IMAGES_SANITIZER);
-        }
-        return value == null ? null : sanitizer.sanitize(value);
-    }
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -87,7 +44,13 @@ public class TextEditorRenderer extends InputRenderer {
 
         String inputParam = editor.getClientId(context) + "_input";
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-        String value = sanitizeHtml(params.get(inputParam), editor);
+        String value = params.get(inputParam);
+
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isHtmlSanitizerAvailable()) {
+            value = HtmlSanitizer.sanitizeHtml(value,
+                    editor.isAllowBlocks(), editor.isAllowFormatting(),
+                    editor.isAllowLinks(), editor.isAllowStyles(), editor.isAllowImages());
+        }
 
         if (value != null && value.equals("<br/>")) {
             value = "";
