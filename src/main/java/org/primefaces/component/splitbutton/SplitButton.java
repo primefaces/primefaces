@@ -16,8 +16,19 @@
 package org.primefaces.component.splitbutton;
 
 import java.util.List;
+import javax.el.ELContext;
+import javax.el.MethodExpression;
+import javax.el.MethodNotFoundException;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.FacesEvent;
+import org.primefaces.event.MenuActionEvent;
+import org.primefaces.model.menu.MenuElement;
+import org.primefaces.model.menu.MenuGroup;
+import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
 
 import org.primefaces.util.ComponentUtils;
@@ -109,5 +120,82 @@ public class SplitButton extends SplitButtonBase {
         List elements = getElements();
 
         return (elements == null) ? 0 : elements.size();
+    }
+
+    protected MenuItem findMenuitem(List<MenuElement> elements, String id) {
+        if (elements == null || elements.isEmpty()) {
+            return null;
+        }
+        else {
+            String[] paths = id.split("_");
+
+            if (paths.length == 0) {
+                return null;
+            }
+
+            int childIndex = Integer.parseInt(paths[0]);
+            if (childIndex >= elements.size()) {
+                return null;
+            }
+
+            MenuElement childElement = elements.get(childIndex);
+
+            if (paths.length == 1) {
+                return (MenuItem) childElement;
+            }
+            else {
+                String relativeIndex = id.substring(id.indexOf("_") + 1);
+
+                return findMenuitem(((MenuGroup) childElement).getElements(), relativeIndex);
+            }
+        }
+    }
+
+    @Override
+    public void broadcast(FacesEvent event) throws AbortProcessingException {
+        if (event instanceof MenuActionEvent) {
+            FacesContext facesContext = getFacesContext();
+            ELContext eLContext = facesContext.getELContext();
+            MenuActionEvent menuActionEvent = (MenuActionEvent) event;
+            MenuItem menuItem = menuActionEvent.getMenuItem();
+            String command = menuItem.getCommand();
+
+            if (command != null) {
+                String actionExpressionString = menuItem.getCommand();
+                MethodExpression noArgExpr = facesContext.getApplication().getExpressionFactory().
+                        createMethodExpression(eLContext, actionExpressionString,
+                                String.class, new Class[0]);
+                Object invokeResult = null;
+
+                try {
+                    invokeResult = noArgExpr.invoke(eLContext, null);
+                }
+                catch (MethodNotFoundException methodNotFoundException) {
+                    try {
+                        MethodExpression argExpr = facesContext.getApplication().getExpressionFactory().
+                                createMethodExpression(eLContext, actionExpressionString,
+                                        String.class, new Class[]{ActionEvent.class});
+
+                        invokeResult = argExpr.invoke(eLContext, new Object[]{event});
+                    }
+                    catch (MethodNotFoundException methodNotFoundException2) {
+                        MethodExpression argExpr = facesContext.getApplication().getExpressionFactory().
+                                createMethodExpression(eLContext, actionExpressionString,
+                                        String.class, new Class[]{MenuActionEvent.class});
+
+                        invokeResult = argExpr.invoke(eLContext, new Object[]{event});
+                    }
+                }
+                finally {
+                    String outcome = (invokeResult != null) ? invokeResult.toString() : null;
+
+                    facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, actionExpressionString, outcome);
+                }
+            }
+
+        }
+        else {
+            super.broadcast(event);
+        }
     }
 }

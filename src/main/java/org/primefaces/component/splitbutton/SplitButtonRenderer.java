@@ -33,6 +33,7 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.PhaseId;
 
 import org.primefaces.behavior.confirm.ConfirmBehavior;
 import org.primefaces.component.api.AjaxSource;
@@ -41,6 +42,7 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
 import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.event.MenuActionEvent;
 import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
@@ -63,9 +65,26 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         }
 
         String clientId = button.getClientId(context);
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         String param = button.isAjax() ? clientId : clientId + "_button";
-        if (context.getExternalContext().getRequestParameterMap().containsKey(param)) {
+        String itemParam = clientId + "_menuid";
+
+        if (params.containsKey(itemParam)) {
+            String menuid = params.get(clientId + "_menuid");
+            MenuItem menuitem = button.findMenuitem(button.getElements(), menuid);
+            MenuActionEvent event = new MenuActionEvent(button, menuitem);
+
+            if (menuitem.isImmediate()) {
+                event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+            }
+            else {
+                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+            }
+
+            component.queueEvent(event);
+        }
+        else if (params.containsKey(param)) {
             component.queueEvent(new ActionEvent(component));
         }
     }
