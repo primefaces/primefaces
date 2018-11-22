@@ -229,13 +229,14 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        
+
         <dependency>
             <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
             <artifactId>owasp-java-html-sanitizer</artifactId>
-            <version>20180219.1</version>
-        </dependency> 
-        
+            <version>20181114.1</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- will be shaded; use 2.4 as later versions would require multiple files to shade -->
         <dependency>
             <groupId>commons-io</groupId>
