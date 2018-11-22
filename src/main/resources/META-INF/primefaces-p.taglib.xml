@@ -19540,6 +19540,36 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description><![CDATA[Whether to allow formatting to be included.]]></description>
+            <name>allowFormatting</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Whether to allow blocks to be included.]]></description>
+            <name>allowBlocks</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Whether to allow styles to be included.]]></description>
+            <name>allowStyles</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Whether to allow links to be included.]]></description>
+            <name>allowLinks</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Whether to allow images to be included.]]></description>
+            <name>allowImages</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <tag-name>themeSwitcher</tag-name>
