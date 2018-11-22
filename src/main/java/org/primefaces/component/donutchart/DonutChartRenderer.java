@@ -16,11 +16,12 @@
 package org.primefaces.component.donutchart;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.charts.ChartRenderer;
-import org.primefaces.model.charts.ChartModel;
 import org.primefaces.model.charts.donut.DonutChartOptions;
 import org.primefaces.util.WidgetBuilder;
 
@@ -43,7 +44,7 @@ public class DonutChartRenderer extends ChartRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("DonutChart", chart.resolveWidgetVar(), clientId);
 
-        encodeConfig(context, (ChartModel) chart.getModel());
+        encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);
 
         wb.finish();
@@ -81,6 +82,7 @@ public class DonutChartRenderer extends ChartRenderer {
         encodeElements(context, donutOptions.getElements(), true);
         encodeTitle(context, donutOptions.getTitle(), true);
         encodeTooltip(context, donutOptions.getTooltip(), true);
+        encodeLegend(context, donutOptions.getLegend(), true);
 
         writer.write("}");
     }

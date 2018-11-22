@@ -16,11 +16,12 @@
 package org.primefaces.component.radarchart;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.charts.ChartRenderer;
-import org.primefaces.model.charts.ChartModel;
 import org.primefaces.model.charts.radar.RadarChartOptions;
 import org.primefaces.util.WidgetBuilder;
 
@@ -43,7 +44,7 @@ public class RadarChartRenderer extends ChartRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("RadarChart", chart.resolveWidgetVar(), clientId);
 
-        encodeConfig(context, (ChartModel) chart.getModel());
+        encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);
 
         wb.finish();
@@ -66,6 +67,8 @@ public class RadarChartRenderer extends ChartRenderer {
         encodeTitle(context, radarOptions.getTitle(), (radarOptions.getScales() != null || radarOptions.getElements() != null));
         encodeTooltip(context, radarOptions.getTooltip(), (radarOptions.getScales() != null
                 || radarOptions.getElements() != null || radarOptions.getTitle() != null));
+        encodeLegend(context, radarOptions.getLegend(), (radarOptions.getScales() != null
+                    || radarOptions.getElements() != null || radarOptions.getTitle() != null || radarOptions.getTooltip() != null));
 
         writer.write("}");
     }
