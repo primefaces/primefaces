@@ -836,25 +836,6 @@ public class TreeRenderer extends CoreRenderer {
         writer.endElement("input");
     }
 
-    protected void encodeCheckbox(FacesContext context, Tree tree, TreeNode node, boolean selected) throws IOException {
-        ResponseWriter writer = context.getResponseWriter();
-        String iconClass = selected ? HTML.CHECKBOX_CHECKED_ICON_CLASS : HTML.CHECKBOX_UNCHECKED_ICON_CLASS;
-
-        writer.startElement("div", null);
-        writer.writeAttribute("class", HTML.CHECKBOX_CLASS, null);
-
-        writer.startElement("div", null);
-        writer.writeAttribute("class", HTML.CHECKBOX_BOX_CLASS, null);
-
-        writer.startElement("span", null);
-        writer.writeAttribute("class", iconClass, null);
-        writer.endElement("span");
-
-        writer.endElement("div");
-
-        writer.endElement("div");
-    }
-
     @Override
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
         //Do nothing
