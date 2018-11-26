@@ -16,11 +16,12 @@
 package org.primefaces.component.linechart;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.charts.ChartRenderer;
-import org.primefaces.model.charts.ChartModel;
 import org.primefaces.model.charts.line.LineChartOptions;
 import org.primefaces.util.WidgetBuilder;
 
@@ -43,7 +44,7 @@ public class LineChartRenderer extends ChartRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("LineChart", chart.resolveWidgetVar(), clientId);
 
-        encodeConfig(context, (ChartModel) chart.getModel());
+        encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);
 
         wb.finish();
@@ -67,6 +68,7 @@ public class LineChartRenderer extends ChartRenderer {
         encodeElements(context, lineOptions.getElements(), true);
         encodeTitle(context, lineOptions.getTitle(), true);
         encodeTooltip(context, lineOptions.getTooltip(), true);
+        encodeLegend(context, lineOptions.getLegend(), true);
 
         writer.write("}");
     }

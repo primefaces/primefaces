@@ -132,8 +132,8 @@ public class Schedule extends ScheduleBase {
             else if (eventName.equals("eventMove")) {
                 String movedEventId = params.get(clientId + "_movedEventId");
                 ScheduleEvent movedEvent = getValue().getEvent(movedEventId);
-                int dayDelta = (int) Double.parseDouble(params.get(clientId + "_dayDelta"));
-                int minuteDelta = (int) Double.parseDouble(params.get(clientId + "_minuteDelta"));
+                int dayDelta = Double.valueOf(params.get(clientId + "_dayDelta")).intValue();
+                int minuteDelta = Double.valueOf(params.get(clientId + "_minuteDelta")).intValue();
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(movedEvent.getStartDate());
@@ -154,8 +154,8 @@ public class Schedule extends ScheduleBase {
             else if (eventName.equals("eventResize")) {
                 String resizedEventId = params.get(clientId + "_resizedEventId");
                 ScheduleEvent resizedEvent = getValue().getEvent(resizedEventId);
-                int dayDelta = Integer.parseInt(params.get(clientId + "_dayDelta"));
-                int minuteDelta = Integer.parseInt(params.get(clientId + "_minuteDelta"));
+                int dayDelta = Double.valueOf(params.get(clientId + "_dayDelta")).intValue();
+                int minuteDelta = Double.valueOf(params.get(clientId + "_minuteDelta")).intValue();
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(resizedEvent.getEndDate());

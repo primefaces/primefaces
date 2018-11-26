@@ -405,7 +405,10 @@
 .ui-button-text-icon-right .ui-icon.far,
 .ui-button-icon-only .ui-icon.fas,
 .ui-button-text-icon-left .ui-icon.fas,
-.ui-button-text-icon-right .ui-icon.fas {
+.ui-button-text-icon-right .ui-icon.fas,
+.ui-button-icon-only .ui-icon.fal,
+.ui-button-text-icon-left .ui-icon.fal,
+.ui-button-text-icon-right .ui-icon.fal {
     margin-top: -7px;
 }
 

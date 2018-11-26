@@ -33,6 +33,7 @@ import javax.faces.component.behavior.ClientBehaviorHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.PhaseId;
 
 import org.primefaces.behavior.confirm.ConfirmBehavior;
 import org.primefaces.component.api.AjaxSource;
@@ -41,8 +42,8 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.Menu;
 import org.primefaces.component.menubutton.MenuButton;
 import org.primefaces.context.PrimeRequestContext;
+import org.primefaces.event.MenuActionEvent;
 import org.primefaces.expression.SearchExpressionFacade;
-import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.MenuModel;
 import org.primefaces.model.menu.Separator;
@@ -64,9 +65,26 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         }
 
         String clientId = button.getClientId(context);
+        Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         String param = button.isAjax() ? clientId : clientId + "_button";
-        if (context.getExternalContext().getRequestParameterMap().containsKey(param)) {
+        String itemParam = clientId + "_menuid";
+
+        if (params.containsKey(itemParam)) {
+            String menuid = params.get(clientId + "_menuid");
+            MenuItem menuitem = button.findMenuitem(button.getElements(), menuid);
+            MenuActionEvent event = new MenuActionEvent(button, menuitem);
+
+            if (menuitem.isImmediate()) {
+                event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+            }
+            else {
+                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+            }
+
+            component.queueEvent(event);
+        }
+        else if (params.containsKey(param)) {
             component.queueEvent(new ActionEvent(component));
         }
     }
@@ -255,13 +273,13 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
         writer.endElement("div");
     }
 
-    protected void encodeElements(FacesContext context, SplitButton button, List<MenuElement> elements, boolean isSubmenu) throws IOException {
+    protected void encodeElements(FacesContext context, SplitButton button, List<Object> elements, boolean isSubmenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        for (MenuElement element : elements) {
-            if (element.isRendered()) {
-                if (element instanceof MenuItem) {
-                    MenuItem menuItem = (MenuItem) element;
+        for (Object element : elements) {
+            if (element instanceof MenuItem) {
+                MenuItem menuItem = (MenuItem) element;
+                if (menuItem.isRendered()) {
                     String containerStyle = menuItem.getContainerStyle();
                     String containerStyleClass = menuItem.getContainerStyleClass();
                     containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : Menu.MENUITEM_CLASS + " " + containerStyleClass;
@@ -279,12 +297,12 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
                     encodeMenuItem(context, button, menuItem);
                     writer.endElement("li");
                 }
-                else if (element instanceof Submenu) {
-                    encodeSubmenu(context, button, (Submenu) element);
-                }
-                else if (element instanceof Separator) {
-                    encodeSeparator(context, (Separator) element);
-                }
+            }
+            else if (element instanceof Submenu) {
+                encodeSubmenu(context, button, (Submenu) element);
+            }
+            else if (element instanceof Separator) {
+                encodeSeparator(context, (Separator) element);
             }
         }
     }
@@ -395,6 +413,10 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
     }
 
     protected void encodeSubmenu(FacesContext context, SplitButton button, Submenu submenu) throws IOException {
+        if (!submenu.isRendered()) {
+            return;
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         String label = submenu.getLabel();
         String style = submenu.getStyle();
@@ -421,6 +443,10 @@ public class SplitButtonRenderer extends OutcomeTargetRenderer {
     }
 
     protected void encodeSeparator(FacesContext context, Separator separator) throws IOException {
+        if (!separator.isRendered()) {
+            return;
+        }
+
         ResponseWriter writer = context.getResponseWriter();
         String style = separator.getStyle();
         String styleClass = separator.getStyleClass();

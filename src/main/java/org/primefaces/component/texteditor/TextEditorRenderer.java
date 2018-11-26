@@ -17,18 +17,23 @@ package org.primefaces.component.texteditor;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+import org.primefaces.context.PrimeApplicationContext;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.HtmlSanitizer;
 import org.primefaces.util.WidgetBuilder;
 
 public class TextEditorRenderer extends InputRenderer {
+
+    private static final Logger LOGGER = Logger.getLogger(TextEditorRenderer.class.getName());
 
     @Override
     public void decode(FacesContext context, UIComponent component) {
@@ -43,6 +48,18 @@ public class TextEditorRenderer extends InputRenderer {
         String inputParam = editor.getClientId(context) + "_input";
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String value = params.get(inputParam);
+
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isHtmlSanitizerAvailable()) {
+            value = HtmlSanitizer.sanitizeHtml(value,
+                    editor.isAllowBlocks(), editor.isAllowFormatting(),
+                    editor.isAllowLinks(), editor.isAllowStyles(), editor.isAllowImages());
+        }
+        else {
+            if (!editor.isAllowBlocks() || !editor.isAllowFormatting()
+                    || !editor.isAllowLinks() || !editor.isAllowStyles() || !editor.isAllowImages()) {
+                LOGGER.warning("HTML sanitizer not available - skip sanitizing....");
+            }
+        }
 
         if (value != null && value.equals("<br/>")) {
             value = "";

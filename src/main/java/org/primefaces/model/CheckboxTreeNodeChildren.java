@@ -21,6 +21,8 @@ import java.util.Iterator;
 
 public class CheckboxTreeNodeChildren extends TreeNodeList {
 
+    private static final long serialVersionUID = 1L;
+
     private TreeNode parent;
 
     public CheckboxTreeNodeChildren(TreeNode parent) {

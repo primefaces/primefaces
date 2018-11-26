@@ -22,6 +22,8 @@ import org.primefaces.model.TreeNode;
 
 public class NodeSelectEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private TreeNode treeNode;
 
     private boolean contextMenu;

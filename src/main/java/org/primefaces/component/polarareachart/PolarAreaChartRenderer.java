@@ -16,11 +16,12 @@
 package org.primefaces.component.polarareachart;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.charts.ChartRenderer;
-import org.primefaces.model.charts.ChartModel;
 import org.primefaces.model.charts.polar.PolarAreaChartOptions;
 import org.primefaces.util.WidgetBuilder;
 
@@ -43,7 +44,7 @@ public class PolarAreaChartRenderer extends ChartRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("PolarAreaChart", chart.resolveWidgetVar(), clientId);
 
-        encodeConfig(context, (ChartModel) chart.getModel());
+        encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);
 
         wb.finish();
@@ -74,6 +75,7 @@ public class PolarAreaChartRenderer extends ChartRenderer {
         encodeElements(context, polarOptions.getElements(), true);
         encodeTitle(context, polarOptions.getTitle(), true);
         encodeTooltip(context, polarOptions.getTooltip(), true);
+        encodeLegend(context, polarOptions.getLegend(), true);
 
         writer.write("}");
     }

@@ -24,6 +24,8 @@ import org.primefaces.event.AbstractAjaxBehaviorEvent;
 
 public class TimelineAddEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private Date startDate;
     private Date endDate;
     private String group;

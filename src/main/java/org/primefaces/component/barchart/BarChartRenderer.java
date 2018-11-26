@@ -16,11 +16,12 @@
 package org.primefaces.component.barchart;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.charts.ChartRenderer;
-import org.primefaces.model.charts.ChartModel;
 import org.primefaces.model.charts.bar.BarChartOptions;
 import org.primefaces.util.WidgetBuilder;
 
@@ -43,7 +44,7 @@ public class BarChartRenderer extends ChartRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("BarChart", chart.resolveWidgetVar(), clientId);
 
-        encodeConfig(context, (ChartModel) chart.getModel());
+        encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);
 
         wb.finish();
@@ -87,6 +88,7 @@ public class BarChartRenderer extends ChartRenderer {
         encodeElements(context, barOptions.getElements(), true);
         encodeTitle(context, barOptions.getTitle(), true);
         encodeTooltip(context, barOptions.getTooltip(), true);
+        encodeLegend(context, barOptions.getLegend(), true);
 
         writer.write("}");
     }

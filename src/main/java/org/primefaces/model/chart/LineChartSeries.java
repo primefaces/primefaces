@@ -22,6 +22,8 @@ import java.io.Writer;
 
 public class LineChartSeries extends ChartSeries {
 
+    private static final long serialVersionUID = 1L;
+
     private String markerStyle = "filledCircle";
     private boolean showLine = true;
     private boolean showMarker = true;

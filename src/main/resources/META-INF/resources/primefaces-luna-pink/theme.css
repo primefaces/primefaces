@@ -4653,7 +4653,8 @@ body .ui-message {
       vertical-align: middle; }
       body .ui-message.ui-message-info .ui-message-info-icon:before {
         content: ""; }
-    body .ui-message.ui-message-info .ui-message-info-detail {
+    body .ui-message.ui-message-info .ui-message-info-detail,
+    body .ui-message.ui-message-info .ui-message-info-summary {
       margin-left: 0.429em;
       vertical-align: middle; }
   body .ui-message.ui-message-warn {
@@ -4681,7 +4682,8 @@ body .ui-message {
       vertical-align: middle; }
       body .ui-message.ui-message-warn .ui-message-warn-icon:before {
         content: ""; }
-    body .ui-message.ui-message-warn .ui-message-warn-detail {
+    body .ui-message.ui-message-warn .ui-message-warn-detail,
+    body .ui-message.ui-message-warn .ui-message-warn-summary {
       margin-left: 0.429em;
       vertical-align: middle; }
   body .ui-message.ui-message-error {
@@ -4709,12 +4711,13 @@ body .ui-message {
       vertical-align: middle; }
       body .ui-message.ui-message-error .ui-message-error-icon:before {
         content: ""; }
-    body .ui-message.ui-message-error .ui-message-error-detail {
+    body .ui-message.ui-message-error .ui-message-error-detail,
+    body .ui-message.ui-message-error .ui-message-error-summary {
       margin-left: 0.429em;
       vertical-align: middle; }
   body .ui-message.ui-message-fatal {
     background-color: #bcbcbc;
-    border-color: 0 none;
+    border: 0 none;
     color: #212121; }
     body .ui-message.ui-message-fatal .ui-message-fatal-icon {
       font-family: 'primeicons';
@@ -4737,7 +4740,8 @@ body .ui-message {
       vertical-align: middle; }
       body .ui-message.ui-message-fatal .ui-message-fatal-icon:before {
         content: ""; }
-    body .ui-message.ui-message-fatal .ui-message-fatal-detail {
+    body .ui-message.ui-message-fatal .ui-message-fatal-detail,
+    body .ui-message.ui-message-fatal .ui-message-fatal-summary {
       margin-left: 0.429em;
       vertical-align: middle; }
   body .ui-message.ui-message-icon-only {

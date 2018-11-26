@@ -54,12 +54,17 @@ public class ConfirmBehavior extends AbstractBehavior {
 
     @Override
     public String getScript(ClientBehaviorContext behaviorContext) {
+        FacesContext context = behaviorContext.getFacesContext();
+        UIComponent component = behaviorContext.getComponent();
+
         if (isDisabled()) {
+            if (component instanceof Confirmable) {
+                ((Confirmable) component).setConfirmationScript(null);
+            }
+
             return null;
         }
 
-        FacesContext context = behaviorContext.getFacesContext();
-        UIComponent component = behaviorContext.getComponent();
         String source = component.getClientId(context);
         String headerText = JSONObject.quote(this.getHeader());
         String messageText = JSONObject.quote(this.getMessage());

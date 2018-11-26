@@ -23,6 +23,8 @@ import org.primefaces.model.map.Overlay;
 
 public class OverlaySelectEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private Overlay overlay;
 
     public OverlaySelectEvent(UIComponent component, Behavior behavior, Overlay overlay) {

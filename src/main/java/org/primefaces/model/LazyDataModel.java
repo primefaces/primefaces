@@ -32,6 +32,8 @@ import javax.faces.model.DataModelListener;
  */
 public abstract class LazyDataModel<T> extends DataModel<T> implements SelectableDataModel<T>, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private int rowIndex = -1;
 
     private int rowCount;

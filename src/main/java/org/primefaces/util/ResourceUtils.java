@@ -48,6 +48,11 @@ public class ResourceUtils {
         }
     }
 
+    public static String getResourceRequestPath(FacesContext context, String resourceName) {
+        Resource resource = context.getApplication().getResourceHandler().createResource(resourceName, "primefaces");
+        return resource.getRequestPath();
+    }
+
     public static void addComponentResource(FacesContext context, String name, String library, String target) {
 
         Application application = context.getApplication();
@@ -125,6 +130,8 @@ public class ResourceUtils {
     }
 
     public static class ResourceInfo implements Serializable {
+
+        private static final long serialVersionUID = 1L;
 
         private String library;
         private String name;

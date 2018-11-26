@@ -86,7 +86,7 @@ public class MessagesRenderer extends UINotificationRenderer {
 
         if (messagesBySeverity != null) {
             for (Map.Entry<String, List<FacesMessage>> entry : messagesBySeverity.entrySet()) {
-                encodeSeverityMessages(context, uiMessages, entry.getKey(), entry.getValue());
+                encodeMessages(context, uiMessages, entry.getKey(), entry.getValue());
             }
         }
 
@@ -106,7 +106,7 @@ public class MessagesRenderer extends UINotificationRenderer {
         }
     }
 
-    protected void encodeSeverityMessages(FacesContext context, Messages uiMessages, String severity, List<FacesMessage> messages) throws IOException {
+    protected void encodeMessages(FacesContext context, Messages uiMessages, String severity, List<FacesMessage> messages) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClassPrefix = Messages.SEVERITY_PREFIX_CLASS + severity;
         boolean escape = uiMessages.isEscape();
@@ -128,50 +128,55 @@ public class MessagesRenderer extends UINotificationRenderer {
 
         for (int i = 0; i < messages.size(); i++) {
             FacesMessage message = messages.get(i);
-            writer.startElement("li", null);
-
-            writer.writeAttribute("role", "alert", null);
-            writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);
-
-            String summary = message.getSummary() != null ? message.getSummary() : "";
-            String detail = message.getDetail() != null ? message.getDetail() : summary;
-
-            if (uiMessages.isShowSummary()) {
-                writer.startElement("span", null);
-                writer.writeAttribute("class", styleClassPrefix + "-summary", null);
-
-                if (escape) {
-                    writer.writeText(summary, null);
-                }
-                else {
-                    writer.write(summary);
-                }
-
-                writer.endElement("span");
-            }
-
-            if (uiMessages.isShowDetail()) {
-                writer.startElement("span", null);
-                writer.writeAttribute("class", styleClassPrefix + "-detail", null);
-
-                if (escape) {
-                    writer.writeText(detail, null);
-                }
-                else {
-                    writer.write(detail);
-                }
-
-                writer.endElement("span");
-            }
-
-            writer.endElement("li");
-
+            encodeMessage(writer, uiMessages, message, styleClassPrefix, escape);
             message.rendered();
         }
 
         writer.endElement("ul");
 
         writer.endElement("div");
+    }
+
+    protected void encodeMessage(ResponseWriter writer, Messages uiMessages, FacesMessage message, String styleClassPrefix, boolean escape)
+            throws IOException {
+
+        writer.startElement("li", null);
+
+        writer.writeAttribute("role", "alert", null);
+        writer.writeAttribute(HTML.ARIA_ATOMIC, "true", null);
+
+        String summary = message.getSummary() != null ? message.getSummary() : "";
+        String detail = message.getDetail() != null ? message.getDetail() : summary;
+
+        if (uiMessages.isShowSummary()) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", styleClassPrefix + "-summary", null);
+
+            if (escape) {
+                writer.writeText(summary, null);
+            }
+            else {
+                writer.write(summary);
+            }
+
+            writer.endElement("span");
+        }
+
+        if (uiMessages.isShowDetail()) {
+            writer.startElement("span", null);
+            writer.writeAttribute("class", styleClassPrefix + "-detail", null);
+
+            if (escape) {
+                writer.writeText(detail, null);
+            }
+            else {
+                writer.write(detail);
+            }
+
+            writer.endElement("span");
+        }
+
+        writer.endElement("li");
     }
 
     protected void encodeCloseIcon(FacesContext context, Messages uiMessages) throws IOException {

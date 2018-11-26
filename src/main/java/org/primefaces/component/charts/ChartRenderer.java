@@ -17,9 +17,11 @@ package org.primefaces.component.charts;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.ChartDataSet;
 import org.primefaces.model.charts.ChartModel;
@@ -27,6 +29,7 @@ import org.primefaces.model.charts.axes.cartesian.CartesianAxes;
 import org.primefaces.model.charts.axes.cartesian.CartesianScales;
 import org.primefaces.model.charts.axes.radial.RadialScales;
 import org.primefaces.model.charts.optionconfig.elements.Elements;
+import org.primefaces.model.charts.optionconfig.legend.Legend;
 import org.primefaces.model.charts.optionconfig.title.Title;
 import org.primefaces.model.charts.optionconfig.tooltip.Tooltip;
 import org.primefaces.renderkit.CoreRenderer;
@@ -256,6 +259,20 @@ public class ChartRenderer extends CoreRenderer {
 
             writer.write("\"tooltip\":{");
             writer.write(tooltip.encode());
+            writer.write("}");
+        }
+    }
+
+    protected void encodeLegend(FacesContext context, Legend legend, boolean hasComma) throws IOException {
+        ResponseWriter writer = context.getResponseWriter();
+
+        if (legend != null) {
+            if (hasComma) {
+                writer.write(",");
+            }
+
+            writer.write("\"legend\":{");
+            writer.write(legend.encode());
             writer.write("}");
         }
     }

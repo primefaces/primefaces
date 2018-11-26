@@ -23,6 +23,8 @@ import org.primefaces.model.diagram.endpoint.EndPoint;
 
 public class ConnectionChangeEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private Element originalSourceElement;
     private Element newSourceElement;
     private Element originalTargetElement;

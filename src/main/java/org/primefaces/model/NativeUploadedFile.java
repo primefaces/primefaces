@@ -32,6 +32,7 @@ import org.primefaces.util.FileUploadUtils;
 
 public class NativeUploadedFile implements UploadedFile, Serializable {
 
+    private static final long serialVersionUID = 1L;
     private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
     private static final String CONTENT_DISPOSITION_FILENAME_ATTR = "filename";
 

@@ -20,6 +20,8 @@ import javax.faces.event.ComponentSystemEvent;
 
 public class PostSortEvent extends ComponentSystemEvent {
 
+    private static final long serialVersionUID = 1L;
+
     public PostSortEvent(UIComponent component) {
         super(component);
     }

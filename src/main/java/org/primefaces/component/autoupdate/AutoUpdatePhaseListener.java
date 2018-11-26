@@ -26,6 +26,8 @@ import org.primefaces.context.PrimeRequestContext;
 
 public class AutoUpdatePhaseListener implements PhaseListener {
 
+    private static final long serialVersionUID = 1L;
+
     @Override
     public void afterPhase(PhaseEvent event) {
 

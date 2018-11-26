@@ -16,11 +16,12 @@
 package org.primefaces.component.piechart;
 
 import java.io.IOException;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
 import org.primefaces.component.charts.ChartRenderer;
-import org.primefaces.model.charts.ChartModel;
 import org.primefaces.model.charts.pie.PieChartOptions;
 import org.primefaces.util.WidgetBuilder;
 
@@ -43,7 +44,7 @@ public class PieChartRenderer extends ChartRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("PieChart", chart.resolveWidgetVar(), clientId);
 
-        encodeConfig(context, (ChartModel) chart.getModel());
+        encodeConfig(context, chart.getModel());
         encodeClientBehaviors(context, chart);
 
         wb.finish();
@@ -81,6 +82,7 @@ public class PieChartRenderer extends ChartRenderer {
         encodeElements(context, pieOptions.getElements(), true);
         encodeTitle(context, pieOptions.getTitle(), true);
         encodeTooltip(context, pieOptions.getTooltip(), true);
+        encodeLegend(context, pieOptions.getLegend(), true);
 
         writer.write("}");
     }

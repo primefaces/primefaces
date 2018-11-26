@@ -24,6 +24,8 @@ import org.primefaces.model.diagram.overlay.Overlay;
 
 public class DefaultDiagramModel implements DiagramModel, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private List<Element> elements;
 
     private List<Connection> connections;

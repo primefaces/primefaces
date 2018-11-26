@@ -23,6 +23,8 @@ import org.primefaces.model.map.LatLng;
 
 public class PointSelectEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private LatLng latLng;
 
     public PointSelectEvent(UIComponent component, Behavior behavior, LatLng latLng) {

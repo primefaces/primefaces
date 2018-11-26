@@ -23,6 +23,8 @@ import java.util.UUID;
 
 public class DefaultMapModel implements MapModel, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private static final String MARKER_ID_PREFIX = "marker";
 
     private static final String POLYLINE_ID_PREFIX = "polyline_";

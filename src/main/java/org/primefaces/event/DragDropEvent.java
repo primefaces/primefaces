@@ -20,6 +20,8 @@ import javax.faces.component.behavior.Behavior;
 
 public class DragDropEvent extends AbstractAjaxBehaviorEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private String dragId;
 
     private String dropId;

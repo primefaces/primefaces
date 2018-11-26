@@ -24,6 +24,8 @@ import org.primefaces.model.OrganigramNode;
  */
 public class OrganigramNodeDragDropEvent extends AbstractOrganigramNodeEvent {
 
+    private static final long serialVersionUID = 1L;
+
     private final OrganigramNode targetOrganigramNode;
     private final OrganigramNode sourceOrganigramNode;
 

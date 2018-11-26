@@ -17,6 +17,8 @@ package org.primefaces.model.diagram.endpoint;
 
 public class RectangleEndPoint extends EndPoint {
 
+    private static final long serialVersionUID = 1L;
+
     private int width = 20;
 
     private int height = 20;

@@ -17,6 +17,8 @@ package org.primefaces.model.diagram.connector;
 
 public class StateMachineConnector extends Connector {
 
+    private static final long serialVersionUID = 1L;
+
     private int curviness = 10;
 
     private int margin = 5;

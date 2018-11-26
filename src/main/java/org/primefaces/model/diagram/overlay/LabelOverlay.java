@@ -21,6 +21,8 @@ import java.io.Serializable;
 
 public class LabelOverlay implements Overlay, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String label;
 
     private String styleClass;

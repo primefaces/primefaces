@@ -17,6 +17,8 @@ package org.primefaces.model.map;
 
 public class Circle extends Overlay {
 
+    private static final long serialVersionUID = 1L;
+
     private LatLng center;
 
     private double radius;

@@ -1344,8 +1344,8 @@ public class UITabPanel extends UIPanel implements NamingContainer {
 
     private final class IndexedEvent extends FacesEvent {
 
+        private static final long serialVersionUID = 1L;
         private final FacesEvent _target;
-
         private final int _index;
 
         public IndexedEvent(UITabPanel owner, FacesEvent target, int index) {

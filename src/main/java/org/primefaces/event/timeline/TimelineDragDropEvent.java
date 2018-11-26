@@ -22,6 +22,8 @@ import javax.faces.component.behavior.Behavior;
 
 public class TimelineDragDropEvent extends TimelineAddEvent {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * client ID of the dragged component
      */

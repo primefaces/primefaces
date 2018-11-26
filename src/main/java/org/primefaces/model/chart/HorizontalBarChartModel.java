@@ -19,6 +19,8 @@ import java.util.HashMap;
 
 public class HorizontalBarChartModel extends BarChartModel {
 
+    private static final long serialVersionUID = 1L;
+
     @Override
     public void createAxes() {
         axes = new HashMap<AxisType, Axis>();

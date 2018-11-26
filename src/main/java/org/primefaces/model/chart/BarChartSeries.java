@@ -22,6 +22,8 @@ import java.io.Writer;
 
 public class BarChartSeries extends ChartSeries {
 
+    private static final long serialVersionUID = 1L;
+
     private boolean disableStack;
 
     public BarChartSeries() {

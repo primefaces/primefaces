@@ -336,7 +336,7 @@ public class DataTable extends DataTableBase {
                 String rowKey = params.get(clientId + "_instantUnselectedRowKey");
                 wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), getRowData(rowKey));
             }
-            else if (eventName.equals("page")) {
+            else if (eventName.equals("page") || eventName.equals("virtualScroll")) {
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
                 int page = rows > 0 ? (first / rows) : 0;
@@ -365,13 +365,6 @@ public class DataTable extends DataTableBase {
             }
             else if (eventName.equals("filter")) {
                 wrapperEvent = new FilterEvent(this, behaviorEvent.getBehavior(), getFilteredValue());
-            }
-            else if (eventName.equals("virtualScroll")) {
-                int rows = getRowsToRender();
-                int first = Integer.parseInt(params.get(clientId + "_first"));
-                int page = rows > 0 ? (first / rows) : 0;
-
-                wrapperEvent = new PageEvent(this, behaviorEvent.getBehavior(), page);
             }
             else if (eventName.equals("rowEdit") || eventName.equals("rowEditCancel") || eventName.equals("rowEditInit")) {
                 int rowIndex = Integer.parseInt(params.get(clientId + "_rowEditIndex"));

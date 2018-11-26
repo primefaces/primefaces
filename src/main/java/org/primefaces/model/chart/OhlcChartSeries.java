@@ -19,6 +19,8 @@ import java.io.Serializable;
 
 public class OhlcChartSeries implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private Object value;
     private double open;
     private double high;

@@ -27,6 +27,8 @@ import javax.faces.FacesException;
  */
 public class EnumHashMap<K, V> extends HashMap<K, V> {
 
+    private static final long serialVersionUID = 1L;
+
     private final Class<?> clazz;
 
     public EnumHashMap(Class<?> clazz) {
