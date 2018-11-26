@@ -48,6 +48,11 @@ public class ResourceUtils {
         }
     }
 
+    public static String getResourceRequestPath(FacesContext context, String resourceName) {
+        Resource resource = context.getApplication().getResourceHandler().createResource(resourceName, "primefaces");
+        return resource.getRequestPath();
+    }
+
     public static void addComponentResource(FacesContext context, String name, String library, String target) {
 
         Application application = context.getApplication();
