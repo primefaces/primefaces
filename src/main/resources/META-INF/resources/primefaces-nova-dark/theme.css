@@ -5581,6 +5581,8 @@ body .ui-menu {
       margin-top: 2px; }
       body .ui-menu.ui-slidemenu .ui-slidemenu-backward .ui-icon-triangle-1-w:before {
         content: ""; }
+  body .ui-menu.ui-slidemenu .ui-menu-list .ui-menuitem .ui-menuitem-link {
+    line-height: 1em; }
   body .ui-menu.ui-slidemenu .ui-menu-child {
     padding: 0; }
     body .ui-menu.ui-slidemenu .ui-menu-child.ui-shadow {
