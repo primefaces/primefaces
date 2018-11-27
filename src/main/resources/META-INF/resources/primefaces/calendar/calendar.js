@@ -194,7 +194,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 }
             }
             else {
-                // GitHub #3670 Pass the config settings to TimePicker
+                // GitHub #3760 Pass the config settings to TimePicker
                 var settingsObj = {
                        settings : $this.cfg
                 };
