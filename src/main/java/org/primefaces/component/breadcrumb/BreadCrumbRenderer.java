@@ -121,7 +121,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         styleClass = styleClass == null ? BreadCrumb.MENUITEM_LINK_CLASS : BreadCrumb.MENUITEM_LINK_CLASS + " " + styleClass;
         styleClass += " ui-state-disabled";
 
-        writer.startElement("span", null);
+        writer.startElement("span", null); // outer span
         writer.writeAttribute("class", styleClass, null);
         if (style != null) {
             writer.writeAttribute("style", style, null);
@@ -147,8 +147,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
                 writer.write(value.toString());
             }
         }
-
-
-        writer.endElement("span");
+        writer.endElement("span"); // text span
+        writer.endElement("span"); // outer span
     }
 }
