@@ -257,7 +257,7 @@ public class ChartRenderer extends CoreRenderer {
                 writer.write(",");
             }
 
-            writer.write("\"tooltip\":{");
+            writer.write("\"tooltips\":{");
             writer.write(tooltip.encode());
             writer.write("}");
         }
