@@ -121,6 +121,10 @@ public abstract class BaseMenuRenderer extends OutcomeTargetRenderer {
         return (styleClass == null) ? AbstractMenu.MENUITEM_LINK_CLASS : AbstractMenu.MENUITEM_LINK_CLASS + " " + styleClass;
     }
 
+    protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
+        encodeMenuItem(context, menu, menuitem, "-1");
+    }
+
     protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem, String tabindex) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String title = menuitem.getTitle();
