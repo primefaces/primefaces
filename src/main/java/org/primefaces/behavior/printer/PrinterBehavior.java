@@ -17,9 +17,9 @@ package org.primefaces.behavior.printer;
 
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
-import javax.faces.component.behavior.ClientBehaviorBase;
 import javax.faces.component.behavior.ClientBehaviorContext;
 import javax.faces.context.FacesContext;
+import org.primefaces.behavior.base.AbstractBehavior;
 
 import org.primefaces.expression.SearchExpressionFacade;
 
@@ -29,16 +29,26 @@ import org.primefaces.expression.SearchExpressionFacade;
         @ResourceDependency(library = "primefaces", name = "printer/printer.js"),
         @ResourceDependency(library = "primefaces", name = "core.js")
     })
-public class PrinterBehavior extends ClientBehaviorBase {
+public class PrinterBehavior extends AbstractBehavior {
 
-    private String target;
+    public enum PropertyKeys {
+        target(String.class);
 
-    public String getTarget() {
-        return target;
-    }
+        private final Class<?> expectedType;
 
-    public void setTarget(String target) {
-        this.target = target;
+        PropertyKeys(Class<?> expectedType) {
+            this.expectedType = expectedType;
+        }
+
+        /**
+         * Holds the type which ought to be passed to
+         * {@link javax.faces.view.facelets.TagAttribute#getObject(javax.faces.view.facelets.FaceletContext, java.lang.Class) }
+         * when creating the behavior.
+         * @return the expectedType the expected object type
+         */
+        public Class<?> getExpectedType() {
+            return expectedType;
+        }
     }
 
     @Override
@@ -46,8 +56,21 @@ public class PrinterBehavior extends ClientBehaviorBase {
         FacesContext context = behaviorContext.getFacesContext();
 
         String components = SearchExpressionFacade.resolveClientId(
-                context, behaviorContext.getComponent(), target);
+                context, behaviorContext.getComponent(), getTarget());
 
         return "PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector('" + components + "').jqprint();return false;";
+    }
+
+    @Override
+    protected Enum<?>[] getAllProperties() {
+        return PropertyKeys.values();
+    }
+
+    public String getTarget() {
+        return eval(PropertyKeys.target, null);
+    }
+
+    public void setTarget(String target) {
+        put(PropertyKeys.target, target);
     }
 }

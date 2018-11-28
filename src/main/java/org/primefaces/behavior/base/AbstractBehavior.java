@@ -89,6 +89,14 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
         return eval(property.name(), unspecifiedValue);
     }
 
+    public void put(String name, Object value) {
+        setLiteral(name, value);
+    }
+
+    public void put(Enum<?> property, Object value) {
+        setLiteral(property.name(), value);
+    }
+
     protected boolean isAttributeSet(String attr) {
         return literals.containsKey(attr) || bindings.containsKey(attr);
     }

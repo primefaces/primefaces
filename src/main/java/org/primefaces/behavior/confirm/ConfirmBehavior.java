@@ -99,7 +99,7 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     public void setHeader(String header) {
-        setLiteral(PropertyKeys.header, header);
+        put(PropertyKeys.header, header);
     }
 
     public String getMessage() {
@@ -107,7 +107,7 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     public void setMessage(String message) {
-        setLiteral(PropertyKeys.message, message);
+        put(PropertyKeys.message, message);
     }
 
     public String getIcon() {
@@ -115,7 +115,7 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     public void setIcon(String icon) {
-        setLiteral(PropertyKeys.icon, icon);
+        put(PropertyKeys.icon, icon);
     }
 
     public boolean isDisabled() {
@@ -123,7 +123,7 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     public void setDisabled(boolean disabled) {
-        setLiteral(PropertyKeys.disabled, disabled);
+        put(PropertyKeys.disabled, disabled);
     }
 
     public String getBeforeShow() {
@@ -131,7 +131,7 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     public void setBeforeShow(String beforeShow) {
-        setLiteral(PropertyKeys.beforeShow, beforeShow);
+        put(PropertyKeys.beforeShow, beforeShow);
     }
 
     public boolean isEscape() {
@@ -139,6 +139,6 @@ public class ConfirmBehavior extends AbstractBehavior {
     }
 
     public void setEscape(boolean escape) {
-        setLiteral(PropertyKeys.escape, escape);
+        put(PropertyKeys.escape, escape);
     }
 }
