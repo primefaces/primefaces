@@ -28,7 +28,7 @@
 		|| window.navigator.msPointerEnabled;
 
 	// Detect touch support
-	$.support.touch = 'ontouchend' in document || pointerEnabled;
+	$.support.touch = $.support.touch = ('ontouchstart' in document || 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0);
 
 	// Ignore browsers without touch support or mouse support
 	if (!$.support.touch || !$.ui.mouse) {
