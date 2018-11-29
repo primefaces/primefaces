@@ -158,7 +158,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
             else {
                 writer.write(label);
             }
-            
+
             writer.endElement("span");
         }
     }
