@@ -198,7 +198,7 @@ PrimeFaces.widget.Calendar = PrimeFaces.widget.BaseWidget.extend({
                 var settingsObj = {
                        settings : $this.cfg
                 };
-                var newDate = _self.cfg.timeOnly ? '' : $.datepicker.formatDate($this.cfg.dateFormat, $this.getDate(), $.datepicker._getFormatConfig(settingsObj));
+                var newDate = $this.cfg.timeOnly ? '' : $.datepicker.formatDate($this.cfg.dateFormat, $this.getDate(), $.datepicker._getFormatConfig(settingsObj));
                 if($this.cfg.timeFormat) {
                    newDate += ' ' + $this.jqEl.find('.ui_tpicker_time_input')[0].value;
                 }
