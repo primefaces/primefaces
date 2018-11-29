@@ -655,11 +655,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
     _show: function() {
         var $this = this;
         
-        this.panel.css({'display':'block', 'visibility':'hidden'});
+        this.panel.css({'display':'block', 'opacity':0});
         
         this.alignPanel();
         
-        this.panel.css({'display':'none', 'visibility':'', 'z-index': ++PrimeFaces.zindex});
+        this.panel.css({'display':'none', 'opacity':'', 'z-index': ++PrimeFaces.zindex});
 
         if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
             this.panel.parent().css('z-index', PrimeFaces.zindex - 1);
