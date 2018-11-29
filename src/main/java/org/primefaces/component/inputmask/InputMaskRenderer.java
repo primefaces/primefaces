@@ -46,10 +46,10 @@ public class InputMaskRenderer extends InputRenderer {
         String clientId = inputMask.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId);
 
-        if (submittedValue != null) {
+        if (submittedValue != null && !submittedValue.isEmpty()) {
             Pattern pattern = translateMaskIntoRegex(context, inputMask);
             if (!pattern.matcher(submittedValue).matches()) {
-                submittedValue = null;
+                submittedValue = "";
             }
 
             inputMask.setSubmittedValue(submittedValue);
