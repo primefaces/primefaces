@@ -654,11 +654,11 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
 
     _show: function() {
         var $this = this;
-        
+
         this.panel.css({'display':'block', 'opacity':0});
-        
+
         this.alignPanel();
-        
+
         this.panel.css({'display':'none', 'opacity':'', 'z-index': ++PrimeFaces.zindex});
 
         if($.browser.msie && /^[6,7]\.[0-9]+/.test($.browser.version)) {
@@ -755,7 +755,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             });
         }
         else {
-            this.panel.css({left:'', top:''}).position({
+            this.panel.css({left:0, top:0}).position({
                 my: 'left top'
                 ,at: 'left bottom'
                 ,of: this.jq
@@ -980,10 +980,10 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
             handleMethod.call(this, event);
         }
     },
-    
+
     getAppendTo: function() {
         var dialog = this.jq.closest('.ui-dialog');
-        
+
         if(dialog.length == 1) {
             //set position as fixed to scroll with dialog
             this.panel.css('position', 'fixed');
@@ -993,7 +993,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
                 return "@(body)";
             }
         }
-        
+
         return this.cfg.appendTo;
     }
 
