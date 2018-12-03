@@ -941,6 +941,7 @@ PrimeFaces.widget.AutoComplete = PrimeFaces.widget.BaseWidget.extend({
             if(!this.cfg.multiple) {
                 this.hinput.val('');
             }
+            this.fireClearEvent();
         }
 
         return valid;
