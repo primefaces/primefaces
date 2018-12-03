@@ -207,7 +207,10 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
                 });
 
         var widthOffset = this.jq.width() - this.content.width();
-        this.jq.css('max-width', win.width() - widthOffset + 'px');
+        this.jq.css({
+            'max-width': win.width() - widthOffset + 'px',
+            'top': Math.max(this.jq.position().top, 0) + 'px'
+        });
     },
 
     hide: function() {
