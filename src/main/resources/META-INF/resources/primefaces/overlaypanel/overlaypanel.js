@@ -35,6 +35,9 @@ PrimeFaces.widget.OverlayPanel = PrimeFaces.widget.DynamicOverlayWidget.extend({
     refresh: function(cfg) {
         this._super(cfg);
 
+        // fix #4307
+        this.loaded = false;
+
         // see #setupDialogSupport
         if (!this.cfg.appendTo) {
             PrimeFaces.utils.removeDynamicOverlay(this, this.jq, this.id, $(document.body));
