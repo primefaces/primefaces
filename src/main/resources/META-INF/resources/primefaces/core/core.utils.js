@@ -205,7 +205,7 @@ if (!PrimeFaces.utils) {
             });
 
             $(window).off(resizeNamespace).on(resizeNamespace, function(e) {
-                if (element && element.is(":hidden")) {
+                if (element && (element.is(":hidden") || element.css('visibility') === 'hidden')) {
                     return;
                 }
 
