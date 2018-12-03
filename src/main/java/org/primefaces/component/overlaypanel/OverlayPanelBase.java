@@ -137,7 +137,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
     }
 
     public String getAppendTo() {
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
+        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
     }
 
     public void setAppendTo(String appendTo) {
