@@ -15,8 +15,6 @@
  */
 package org.primefaces.virusscan;
 
-import org.primefaces.virusscan.spi.VirusScanner;
-
 import java.io.InputStream;
 import java.io.PushbackInputStream;
 import java.util.Iterator;

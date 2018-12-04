@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.primefaces.virusscan.spi.impl;
+package org.primefaces.virusscan.impl;
 
 import org.apache.commons.io.IOUtils;
 import org.primefaces.json.JSONObject;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.virusscan.VirusException;
-import org.primefaces.virusscan.spi.VirusScanner;
+import org.primefaces.virusscan.VirusScanner;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
