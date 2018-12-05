@@ -1029,7 +1029,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
                     dragNodeKey = $this.getRowKey(targetDragNode);
 
-                    if(!transfer && dropNodeKey.indexOf(dragNodeKey) === 0) {
+                    if(!transfer && dropNodeKey && dropNodeKey.indexOf(dragNodeKey) === 0) {
                         return;
                     }
 
@@ -1162,7 +1162,7 @@ PrimeFaces.widget.VerticalTree = PrimeFaces.widget.BaseTree.extend({
 
                     dragNodeKey = $this.getRowKey(targetDragNode);
 
-                    if(!transfer && dropNodeKey.indexOf(dragNodeKey) === 0) {
+                    if(!transfer && dropNodeKey && dropNodeKey.indexOf(dragNodeKey) === 0) {
                         return;
                     }
 
