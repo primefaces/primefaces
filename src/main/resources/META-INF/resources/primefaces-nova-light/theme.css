@@ -1183,7 +1183,12 @@ body .ui-calendar .ui-button.ui-button-icon-only {
   -moz-border-radius-bottomleft: 0;
   -webkit-border-bottom-left-radius: 0;
   border-bottom-left-radius: 0;
-  margin: 0; }
+  margin: 0;
+  overflow: hidden; }
+  body .ui-calendar .ui-button.ui-button-icon-only .ui-button-text {
+    text-indent: 0;
+    white-space: nowrap;
+    visibility: hidden; }
   body .ui-calendar .ui-button.ui-button-icon-only .ui-icon-calendar {
     font-family: 'primeicons';
     speak: none;
