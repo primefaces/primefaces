@@ -21,7 +21,6 @@ import org.primefaces.component.api.MixedClientBehaviorHolder;
 import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.convert.ClientConverter;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.util.*;
 import org.primefaces.validate.ClientValidator;
 import org.primefaces.validate.bean.BeanValidationMetadata;
@@ -44,6 +43,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.component.UIForm;
 
 public abstract class CoreRenderer extends Renderer {
 
@@ -388,7 +388,11 @@ public abstract class CoreRenderer extends Renderer {
         return LangUtils.isValueBlank(value);
     }
 
-    protected String buildAjaxRequest(FacesContext context, AjaxSource source, UIComponent form) {
+    protected String buildAjaxRequest(FacesContext context, AjaxSource source) {
+        return buildAjaxRequest(context, source, null);
+    }
+
+    protected String buildAjaxRequest(FacesContext context, AjaxSource source, UIForm form) {
         UIComponent component = (UIComponent) source;
         String clientId = component.getClientId(context);
 
@@ -396,7 +400,7 @@ public abstract class CoreRenderer extends Renderer {
 
         builder.init()
                 .source(clientId)
-                .form(SearchExpressionFacade.resolveClientId(context, component, source.getForm()))
+                .form(source, component, form)
                 .process(component, source.getProcess())
                 .update(component, source.getUpdate())
                 .async(source.isAsync())
@@ -412,9 +416,35 @@ public abstract class CoreRenderer extends Renderer {
                 .oncomplete(source.getOncomplete())
                 .params(component);
 
-        if (form != null) {
-            builder.form(form.getClientId(context));
-        }
+        builder.preventDefault();
+
+        return builder.build();
+    }
+
+    protected String buildAjaxRequest(FacesContext context, UIComponent component, AjaxSource source, UIForm form,
+            Map<String, List<String>> params) {
+
+        String clientId = component.getClientId(context);
+
+        AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
+
+        builder.init()
+                .source(clientId)
+                .form(source, component, form)
+                .process(component, source.getProcess())
+                .update(component, source.getUpdate())
+                .async(source.isAsync())
+                .global(source.isGlobal())
+                .delay(source.getDelay())
+                .timeout(source.getTimeout())
+                .partialSubmit(source.isPartialSubmit(), source.isPartialSubmitSet(), source.getPartialSubmitFilter())
+                .resetValues(source.isResetValues(), source.isResetValuesSet())
+                .ignoreAutoUpdate(source.isIgnoreAutoUpdate())
+                .onstart(source.getOnstart())
+                .onerror(source.getOnerror())
+                .onsuccess(source.getOnsuccess())
+                .oncomplete(source.getOncomplete())
+                .params(params);
 
         builder.preventDefault();
 

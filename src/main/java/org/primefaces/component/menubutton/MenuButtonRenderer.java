@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -152,7 +152,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         MenuButton button = (MenuButton) abstractMenu;
         String clientId = button.getClientId(context);
 
-        UIComponent form = ComponentTraversalUtils.closestForm(context, button);
+        UIForm form = ComponentTraversalUtils.closestForm(context, button);
         if (form == null) {
             throw new FacesException("MenuButton : \"" + clientId + "\" must be inside a form element");
         }

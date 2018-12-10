@@ -23,6 +23,7 @@ import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
@@ -152,7 +153,7 @@ public class StepsRenderer extends BaseMenuRenderer {
             else {
                 writer.writeAttribute("href", "#", null);
 
-                UIComponent form = ComponentTraversalUtils.closestForm(context, steps);
+                UIForm form = ComponentTraversalUtils.closestForm(context, steps);
                 if (form == null) {
                     throw new FacesException("MenuItem must be inside a form element");
                 }

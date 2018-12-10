@@ -15,7 +15,6 @@
  */
 package org.primefaces.component.remotecommand;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
@@ -27,10 +26,8 @@ import java.io.IOException;
 
 import org.primefaces.component.api.AjaxSource;
 import org.primefaces.context.PrimeRequestContext;
-import org.primefaces.expression.SearchExpressionFacade;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
-import org.primefaces.util.ComponentTraversalUtils;
 
 public class RemoteCommandRenderer extends CoreRenderer {
 
@@ -58,17 +55,12 @@ public class RemoteCommandRenderer extends CoreRenderer {
         AjaxSource source = command;
         String clientId = command.getClientId(context);
         String name = resolveName(command, context);
-        UIComponent form = ComponentTraversalUtils.closestForm(context, command);
-        String formId = SearchExpressionFacade.resolveClientId(context, component, source.getForm());
-        if (form == null && formId == null) {
-            throw new FacesException("RemoteCommand '" + name + "' must be inside a form or reference a form via its form attribute.");
-        }
 
         AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
 
         String request = builder.init()
                 .source(clientId)
-                .form(formId != null ? formId : form.getClientId(context))
+                .form(source, command)
                 .process(component, source.getProcess())
                 .update(component, source.getUpdate())
                 .async(source.isAsync())

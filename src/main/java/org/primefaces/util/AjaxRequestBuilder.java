@@ -29,6 +29,9 @@ import javax.faces.view.facelets.FaceletException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import javax.faces.FacesException;
+import javax.faces.component.UIForm;
+import org.primefaces.component.api.AjaxSource;
 
 /**
  * Helper to generate javascript code of an ajax call
@@ -61,6 +64,36 @@ public class AjaxRequestBuilder {
         return this;
     }
 
+    public AjaxRequestBuilder form(AjaxSource source, UIComponent component, UIForm formComponent) {
+        String result;
+
+        String form = source.getForm();
+        if (LangUtils.isValueBlank(form)) {
+            if (formComponent == null) {
+                formComponent = ComponentTraversalUtils.closestForm(context, component);
+                if (formComponent == null) {
+                    throw new FacesException("Component '" + component.getClientId(context)
+                            + "' must be inside a form or reference a form via its form attribute.");
+                }
+            }
+            result = formComponent.getClientId(context);
+        }
+        else {
+            result = SearchExpressionFacade.resolveClientId(context, component, source.getForm());
+        }
+
+        if (result != null) {
+            buffer.append(",f:\"").append(result).append("\"");
+        }
+
+        return this;
+    }
+
+    public AjaxRequestBuilder form(AjaxSource source, UIComponent component) {
+        return form(source, component, null);
+    }
+
+    @Deprecated
     public AjaxRequestBuilder form(String form) {
         if (form != null) {
             buffer.append(",f:\"").append(form).append("\"");

@@ -17,7 +17,6 @@ package org.primefaces.component.poll;
 
 import java.io.IOException;
 
-import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -26,7 +25,6 @@ import javax.faces.event.PhaseId;
 import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.AjaxRequestBuilder;
-import org.primefaces.util.ComponentTraversalUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class PollRenderer extends CoreRenderer {
@@ -53,16 +51,11 @@ public class PollRenderer extends CoreRenderer {
         Poll poll = (Poll) component;
         String clientId = poll.getClientId(context);
 
-        UIComponent form = ComponentTraversalUtils.closestForm(context, poll);
-        if (form == null) {
-            throw new FacesException("Poll:" + clientId + " needs to be enclosed in a form component");
-        }
-
         AjaxRequestBuilder builder = PrimeRequestContext.getCurrentInstance(context).getAjaxRequestBuilder();
 
         String request = builder.init()
                 .source(clientId)
-                .form(form.getClientId(context))
+                .form(poll, poll)
                 .process(component, poll.getProcess())
                 .update(component, poll.getUpdate())
                 .async(poll.isAsync())
