@@ -41,7 +41,6 @@ public class VirusTotalVirusScanner implements VirusScanner {
 
     private static final Logger LOGGER = Logger.getLogger(VirusTotalVirusScanner.class.getName());
 
-    private static final String CONTEXT_PARAM_ENABLED = "primefaces.virusscan.VIRUSTOTAL_ENABLED";
     private static final String CONTEXT_PARAM_KEY = "primefaces.virusscan.VIRUSTOTAL_KEY";
 
     private static final String API_ENDPOINT = "https://www.virustotal.com/vtapi/v2/file/report?apikey=%s&resource=%s";
@@ -49,18 +48,13 @@ public class VirusTotalVirusScanner implements VirusScanner {
     @Override
     public boolean isEnabled() {
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
-        return ctx.getInitParameter(CONTEXT_PARAM_ENABLED) == null ? true : Boolean.parseBoolean(ctx.getInitParameter(CONTEXT_PARAM_ENABLED));
+        return ctx.getInitParameter(CONTEXT_PARAM_KEY) != null;
     }
 
     @Override
     public void performVirusScan(InputStream inputStream) throws VirusException {
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
         String key = ctx.getInitParameter(CONTEXT_PARAM_KEY);
-        if (key == null) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning(String.format("Cannot access VirusTotal API without key. Please specify %s context parameter accordingly.", CONTEXT_PARAM_KEY));
-            }
-        }
         try {
             byte[] content = IOUtils.toByteArray(inputStream);
             MessageDigest md = MessageDigest.getInstance("MD5");
