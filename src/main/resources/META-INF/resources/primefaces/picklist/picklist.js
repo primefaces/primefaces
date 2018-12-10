@@ -519,28 +519,14 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 matches = this.filterMatcher(itemLabel, filterValue);
 
                 if(matches) {
-                    if(animated) {
-                        item.fadeIn('fast', function() {
-                            $this.updateListRole();
-                        });
-                    }
-                    else {
-                        item.show();
-                        this.updateListRole();
-                    }
+                    item.show();
                 }
                 else {
-                    if(animated) {
-                        item.fadeOut('fast', function() {
-                            $this.updateListRole();
-                        });
-                    }
-                    else {
-                        item.hide();
-                        this.updateListRole();
-                    }
+                    item.hide();
                 }
             }
+            
+            this.updateListRole();
         }
 
     },
