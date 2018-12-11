@@ -16,6 +16,7 @@
 package org.primefaces.component.texteditor;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -28,6 +29,7 @@ import org.primefaces.context.PrimeApplicationContext;
 
 import org.primefaces.renderkit.InputRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.HtmlSanitizer;
 import org.primefaces.util.WidgetBuilder;
 
@@ -130,6 +132,20 @@ public class TextEditorRenderer extends InputRenderer {
                 .attr("readOnly", editor.isReadonly(), false)
                 .attr("placeholder", editor.getPlaceholder(), null)
                 .attr("height", editor.getHeight(), Integer.MIN_VALUE);
+
+        List formats = editor.getFormats();
+        if (formats != null) {
+            wb.append(",formats:[");
+            for (int i = 0; i < formats.size(); i++) {
+                if (i != 0) {
+                    wb.append(",");
+                }
+
+                wb.append("\"" + EscapeUtils.forJavaScript((String) formats.get(i)) + "\"");
+            }
+            wb.append("]");
+        }
+
         encodeClientBehaviors(context, editor);
         wb.finish();
     }

@@ -15,6 +15,7 @@
  */
 package org.primefaces.component.texteditor;
 
+import java.util.List;
 import javax.faces.component.UIInput;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
@@ -41,7 +42,8 @@ abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorH
         allowFormatting,
         allowLinks,
         allowStyles,
-        allowImages
+        allowImages,
+        formats
     }
 
     public TextEditorBase() {
@@ -147,6 +149,14 @@ abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorH
 
     public void setAllowImages(boolean allowImages) {
         getStateHelper().put(PropertyKeys.allowImages, allowImages);
+    }
+
+    public List getFormats() {
+        return (List) getStateHelper().eval(PropertyKeys.formats, null);
+    }
+
+    public void setFormats(List formats) {
+        getStateHelper().put(PropertyKeys.formats, formats);
     }
 
     @Override

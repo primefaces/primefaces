@@ -19570,6 +19570,12 @@
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>
+        <attribute>
+            <description><![CDATA[Define a list of formats to allow in the editor. By default all formats are allowed.]]></description>
+            <name>formats</name>
+            <required>false</required>
+            <type>java.util.List</type>
+        </attribute>
     </tag>
     <tag>
         <tag-name>themeSwitcher</tag-name>
