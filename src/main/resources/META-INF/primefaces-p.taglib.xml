@@ -20774,6 +20774,13 @@
             <required>false</required>
             <type>javax.el.MethodExpression</type>
         </attribute>
+        <attribute>
+            <description><![CDATA[Mode for filtering valid values are exact (default) and contains.]]></description>
+            <name>filterMode</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+            <defaultValue>exact</defaultValue>
+        </attribute>
     </tag>
     <tag>
         <tag-name>treeNode</tag-name>

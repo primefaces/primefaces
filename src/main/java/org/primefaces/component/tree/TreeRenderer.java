@@ -301,7 +301,8 @@ public class TreeRenderer extends CoreRenderer {
         }
 
         if (filter) {
-            wb.attr("filter", true);
+            wb.attr("filter", true)
+                    .attr("filterMode", tree.getFilterMode(), "exact");
         }
 
         encodeIconStates(context, tree, wb);
@@ -633,6 +634,7 @@ public class TreeRenderer extends CoreRenderer {
         boolean selected = node.isSelected();
         boolean partialSelected = node.isPartialSelected();
         boolean filter = (tree.getValueExpression("filterBy") != null);
+        boolean isContainsMode = tree.getFilterMode().equals("contains");
 
         UITreeNode uiTreeNode = tree.getUITreeNodeByType(node.getType());
         if (!uiTreeNode.isRendered()) {
@@ -645,7 +647,8 @@ public class TreeRenderer extends CoreRenderer {
             for (String filteredRowKey : filteredRowKeys) {
                 String rowKeyExt = rowKey + "_";
                 String filteredRowKeyExt = filteredRowKey + "_";
-                if (filteredRowKey.startsWith(rowKeyExt) || rowKey.startsWith(filteredRowKeyExt) || filteredRowKey.equals(rowKey)) {
+                if (filteredRowKey.startsWith(rowKeyExt) || (!isContainsMode && rowKey.startsWith(filteredRowKeyExt))
+                        || filteredRowKey.equals(rowKey)) {
                     match = true;
                     if (!node.isLeaf() && !rowKey.startsWith(filteredRowKey)) {
                         node.setExpanded(true);
