@@ -77,7 +77,6 @@ public class SearchExpressionFacade {
             if (splittedExpressions != null && splittedExpressions.length > 0) {
 
                 final char separatorChar = UINamingContainer.getSeparatorChar(context);
-                final String separatorString = String.valueOf(separatorChar);
 
                 for (String splittedExpression : splittedExpressions) {
                     String expression = splittedExpression.trim();
@@ -87,8 +86,8 @@ public class SearchExpressionFacade {
                     }
 
                     // if it contains a keyword and it's not a nested expression (e.g. @parent:@parent), we don't need to loop
-                    if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX) && expression.contains(separatorString)) {
-                        components.addAll(resolveComponentsByExpressionChain(context, source, expression, separatorChar, separatorString, hints));
+                    if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX) && expression.indexOf(separatorChar) != -1) {
+                        components.addAll(resolveComponentsByExpressionChain(context, source, expression, separatorChar, hints));
                     }
                     else {
                         // it's a keyword and not nested, just ask our resolvers
@@ -114,7 +113,7 @@ public class SearchExpressionFacade {
                         // default ID case
                         else {
                             ResolveComponentCallback callback = new ResolveComponentCallback();
-                            resolveComponentById(source, expression, separatorString, context, callback);
+                            resolveComponentById(source, expression, separatorChar, context, callback);
                             UIComponent component = callback.getComponent();
 
                             if (component == null) {
@@ -182,7 +181,7 @@ public class SearchExpressionFacade {
                     continue;
                 }
 
-                validateExpression(context, source, expression, separatorChar, separatorString);
+                validateExpression(context, source, expression, separatorChar);
 
                 if (isPassTroughExpression(expression)) {
                     if (expressionsBuffer.length() > 0) {
@@ -192,8 +191,8 @@ public class SearchExpressionFacade {
                 }
                 else {
                     // if it contains a keyword and it's not a nested expression (e.g. @parent:@parent), we don't need to loop
-                    if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX) && expression.contains(separatorString)) {
-                        String clientIds = resolveClientIdsByExpressionChain(context, source, expression, separatorChar, separatorString, hints);
+                    if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX) && expression.indexOf(separatorChar) != -1) {
+                        String clientIds = resolveClientIdsByExpressionChain(context, source, expression, separatorChar, hints);
                         if (!LangUtils.isValueBlank(clientIds)) {
                             if (expressionsBuffer.length() > 0) {
                                 expressionsBuffer.append(" ");
@@ -247,7 +246,7 @@ public class SearchExpressionFacade {
                         // default ID case
                         else {
                             ResolveClientIdCallback callback = new ResolveClientIdCallback(source, hints, expression);
-                            resolveComponentById(source, expression, separatorString, context, callback);
+                            resolveComponentById(source, expression, separatorChar, context, callback);
 
                             if (callback.getClientId() == null && !SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
                                 cannotFindComponent(context, source, expression);
@@ -315,7 +314,7 @@ public class SearchExpressionFacade {
 
         expression = expression.trim();
 
-        validateExpression(context, source, expression, separatorChar, separatorString);
+        validateExpression(context, source, expression, separatorChar);
 
         if (isPassTroughExpression(expression)) {
             return expression;
@@ -324,8 +323,8 @@ public class SearchExpressionFacade {
         UIComponent component;
 
         // if it contains a keyword and it's not a nested expression (e.g. @parent:@parent), we don't need to loop
-        if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX) && expression.contains(separatorString)) {
-            component = resolveComponentByExpressionChain(context, source, expression, separatorChar, separatorString, hints);
+        if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX) && expression.indexOf(separatorChar) != -1) {
+            component = resolveComponentByExpressionChain(context, source, expression, separatorChar, hints);
         }
         // it's a keyword and not nested, just ask our resolvers
         else if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX)) {
@@ -341,7 +340,7 @@ public class SearchExpressionFacade {
         // default ID case
         else {
             ResolveClientIdCallback callback = new ResolveClientIdCallback(source, hints, expression);
-            resolveComponentById(source, expression, separatorString, context, callback);
+            resolveComponentById(source, expression, separatorChar, context, callback);
 
             if (callback.getClientId() == null && !SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
                 cannotFindComponent(context, source, expression);
@@ -436,11 +435,10 @@ public class SearchExpressionFacade {
         }
 
         final char separatorChar = UINamingContainer.getSeparatorChar(context);
-        final String separatorString = String.valueOf(separatorChar);
 
         expression = expression.trim();
 
-        validateExpression(context, source, expression, separatorChar, separatorString);
+        validateExpression(context, source, expression, separatorChar);
 
         if (expression.equals(SearchExpressionConstants.NONE_KEYWORD)) {
             return null;
@@ -453,8 +451,8 @@ public class SearchExpressionFacade {
         UIComponent component;
 
         // if it contains a keyword and it's not a nested expression (e.g. @parent:@parent), we don't need to loop
-        if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX) && expression.contains(separatorString)) {
-            component = resolveComponentByExpressionChain(context, source, expression, separatorChar, separatorString, hints);
+        if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX) && expression.indexOf(separatorChar) != -1) {
+            component = resolveComponentByExpressionChain(context, source, expression, separatorChar, hints);
         }
         // it's a keyword and not nested, just ask our resolvers
         else if (expression.contains(SearchExpressionConstants.KEYWORD_PREFIX)) {
@@ -464,7 +462,7 @@ public class SearchExpressionFacade {
         // default ID case
         else {
             ResolveComponentCallback callback = new ResolveComponentCallback();
-            resolveComponentById(source, expression, separatorString, context, callback);
+            resolveComponentById(source, expression, separatorChar, context, callback);
             component = callback.getComponent();
         }
 
@@ -476,7 +474,7 @@ public class SearchExpressionFacade {
     }
 
     private static UIComponent resolveComponentByExpressionChain(FacesContext context, UIComponent source, String expression,
-            char separatorChar, String separatorString, int hints) {
+            char separatorChar, int hints) {
 
         boolean startsWithSeperator = expression.charAt(0) == separatorChar;
 
@@ -504,7 +502,7 @@ public class SearchExpressionFacade {
                 if (startsWithSeperator
                         && j == 0
                         && !subExpression.contains(SearchExpressionConstants.KEYWORD_PREFIX)) {
-                    subExpression = separatorString + subExpression;
+                    subExpression = separatorChar + subExpression;
                 }
 
                 SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(subExpression);
@@ -528,14 +526,14 @@ public class SearchExpressionFacade {
         return last;
     }
 
-    private static void resolveComponentById(UIComponent source, String expression, String separatorString, FacesContext context,
+    private static void resolveComponentById(UIComponent source, String expression, char seperatorChar, FacesContext context,
             ContextCallback callback) {
 
-        ComponentTraversalUtils.firstById(expression, source, separatorString, context, callback);
+        ComponentTraversalUtils.firstById(expression, source, seperatorChar, context, callback);
     }
 
     private static ArrayList<UIComponent> resolveComponentsByExpressionChain(FacesContext context, UIComponent source, String expression, char separatorChar,
-            String separatorString, int hints) {
+            int hints) {
 
         boolean startsWithSeperator = expression.charAt(0) == separatorChar;
 
@@ -567,7 +565,7 @@ public class SearchExpressionFacade {
                 if (startsWithSeperator
                         && i == 0
                         && !subExpression.contains(SearchExpressionConstants.KEYWORD_PREFIX)) {
-                    subExpression = separatorString + subExpression;
+                    subExpression = separatorChar + subExpression;
                 }
 
                 SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(subExpression);
@@ -607,7 +605,7 @@ public class SearchExpressionFacade {
     }
 
     private static String resolveClientIdsByExpressionChain(FacesContext context, UIComponent source, String expression, char separatorChar,
-            String separatorString, int hints) {
+            int hints) {
 
         boolean startsWithSeperator = expression.charAt(0) == separatorChar;
 
@@ -641,7 +639,7 @@ public class SearchExpressionFacade {
                 if (startsWithSeperator
                         && i == 0
                         && !subExpression.contains(SearchExpressionConstants.KEYWORD_PREFIX)) {
-                    subExpression = separatorString + subExpression;
+                    subExpression = separatorChar + subExpression;
                 }
 
                 SearchExpressionResolver resolver = SearchExpressionResolverFactory.findResolver(subExpression);
@@ -737,16 +735,15 @@ public class SearchExpressionFacade {
      * @param source The source component. E.g. a button.
      * @param expression The search expression.
      * @param separatorChar The separator as char.
-     * @param separatorString The separator as string.
      */
     protected static void validateExpression(FacesContext context, UIComponent source,
-            String expression, char separatorChar, String separatorString) {
+            String expression, char separatorChar) {
 
         if (context.isProjectStage(ProjectStage.Development)) {
 
             // checks the whole expression doesn't start with ":@"
             // keywords are always related to the current component, not absolute or relative
-            if (expression.startsWith(separatorString + SearchExpressionConstants.KEYWORD_PREFIX)) {
+            if (expression.startsWith(separatorChar + SearchExpressionConstants.KEYWORD_PREFIX)) {
                 throw new FacesException("A expression should not start with the separater char and a keyword. "
                         + "Expression: \"" + expression + "\" referenced from \"" + source.getClientId(context) + "\"");
             }
@@ -805,18 +802,18 @@ public class SearchExpressionFacade {
      */
     protected static String[] split(FacesContext context, String value, char... separators) {
 
-        if (value == null) {
+        if (LangUtils.isValueBlank(value)) {
             return null;
         }
 
-        List<String> tokens = new ArrayList<>();
+        List<String> tokens = new ArrayList<>(5);
         StringBuilder buffer = SharedStringBuilder.get(context, SHARED_SPLIT_BUFFER_KEY);
 
         int parenthesesCounter = 0;
 
-        char[] charArray = value.toCharArray();
-
-        for (char c : charArray) {
+        int length = value.length();
+        for (int i = 0; i < length; i++) {
+            char c = value.charAt(i);
             if (c == '(') {
                 parenthesesCounter++;
             }

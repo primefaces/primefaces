@@ -133,11 +133,11 @@ public class ComponentTraversalUtils {
      *
      * @param id The id.
      * @param base The base component to start the traversal.
-     * @param separatorString The seperatorString (e.g. :).
+     * @param separatorChar The separatorChar (e.g. :).
      * @param context The FacesContext.
      * @param callback the callback for the found component
      */
-    public static void firstById(String id, UIComponent base, String separatorString, FacesContext context, ContextCallback callback) {
+    public static void firstById(String id, UIComponent base, char separatorChar, FacesContext context, ContextCallback callback) {
 
         // try #findComponent first
         UIComponent component = base.findComponent(id);
@@ -147,7 +147,7 @@ public class ComponentTraversalUtils {
         if (component == null) {
             // #invokeOnComponent doesn't support the leading seperator char
             String tempExpression = id;
-            if (tempExpression.startsWith(separatorString)) {
+            if (tempExpression.charAt(0) == separatorChar) {
                 tempExpression = tempExpression.substring(1);
             }
 
