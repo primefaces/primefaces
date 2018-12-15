@@ -28,8 +28,18 @@ public class LangUtils {
         return value == null || value.isEmpty();
     }
 
-    public static boolean isValueBlank(String value) {
-        return value == null || value.trim().isEmpty();
+    public static boolean isValueBlank(String str) {
+        int strLen;
+        if (str == null || (strLen = str.length()) == 0) {
+            return true;
+        }
+
+        for (int i = 0; i < strLen; i++) {
+            if (!Character.isWhitespace(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static boolean contains(Object[] array, Object object) {
