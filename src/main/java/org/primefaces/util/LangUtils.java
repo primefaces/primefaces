@@ -29,8 +29,12 @@ public class LangUtils {
     }
 
     public static boolean isValueBlank(String str) {
-        int strLen;
-        if (str == null || (strLen = str.length()) == 0) {
+        if (str == null) {
+            return true;
+        }
+
+        int strLen = str.length();
+        if (strLen == 0) {
             return true;
         }
 
