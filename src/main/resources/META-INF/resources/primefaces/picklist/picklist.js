@@ -54,6 +54,7 @@ PrimeFaces.widget.PickList = PrimeFaces.widget.BaseWidget.extend({
                 cancel: '.ui-state-disabled,.ui-chkbox-box',
                 connectWith: this.jqId + ' .ui-picklist-list',
                 revert: 1,
+                helper: 'clone',
                 update: function(event, ui) {
                     $this.unselectItem(ui.item);
 
