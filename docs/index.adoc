@@ -6927,11 +6927,11 @@ As skinning style classes are global, see the main theming section for more info
     header attribute.
 
 
-## 3.41 Drag&Drop........................................................................................................................
+## 3.41 Drag&Drop
 
 Drag&Drop utilities of PrimeFaces consists of two components; Draggable and Droppable.
 
-### 3.41.1 Draggable...................................................................................................................
+### 3.41.1 Draggable
 
 **Info**
 
@@ -7077,7 +7077,7 @@ it’s parent.
 <p:draggable for="conpnl" containment="parent" />
 ```
 
-### 3.41.2 Droppable..................................................................................................................
+### 3.41.2 Droppable
 
 **Info**
 
