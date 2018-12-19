@@ -15,9 +15,10 @@
  */
 package org.primefaces.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public interface TreeNode {
+public interface TreeNode extends Serializable {
 
     public String getType();
 

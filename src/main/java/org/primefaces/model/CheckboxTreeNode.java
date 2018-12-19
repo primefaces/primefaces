@@ -15,10 +15,9 @@
  */
 package org.primefaces.model;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class CheckboxTreeNode implements TreeNode, Serializable {
+public class CheckboxTreeNode implements TreeNode {
 
     public static final String DEFAULT_TYPE = "default";
 

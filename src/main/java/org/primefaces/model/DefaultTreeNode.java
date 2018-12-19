@@ -15,10 +15,9 @@
  */
 package org.primefaces.model;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class DefaultTreeNode implements TreeNode, Serializable {
+public class DefaultTreeNode implements TreeNode {
 
     public static final String DEFAULT_TYPE = "default";
 
