@@ -35,7 +35,7 @@ import java.util.logging.Logger;
 /**
  * This is the default {@link VirusScanner} provider bundled with PrimeFaces.
  * The implementation makes use of the <a href="https://www.virustotal.com/de/documentation/public-api/">VirusTotal Public API v2.0</a>.
- * It requires {@link #CONTEXT_PARAM_ENABLED} to be enabled (default) and {@link #CONTEXT_PARAM_KEY} to be specified.
+ * It requires {@link #CONTEXT_PARAM_KEY} to be specified.
  */
 public class VirusTotalVirusScanner implements VirusScanner {
 
