@@ -915,7 +915,7 @@ PrimeFaces.widget.SelectOneMenu = PrimeFaces.widget.DeferredWidget.extend({
         if(this.cfg.labelTemplate && value !== '&nbsp;') {
             return this.cfg.labelTemplate.replace('{0}', value);
         }
-        return value;
+        return String(value);
     },
 
     changeAriaValue: function (item) {
