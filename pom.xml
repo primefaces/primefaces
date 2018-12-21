@@ -784,6 +784,10 @@
 
                         <configuration>
                             <backend>html5</backend>
+                            <attributes>
+                                <taglib>${basedir}/src/main/resources/META-INF/primefaces-p.taglib.xml</taglib>
+                                <ftl>${basedir}/src/main/asciidoc/ftl</ftl>
+                            </attributes>
                             <extensions>
                                 <extension>
                                     <className>org.primefaces.asciidoc.IncludeComponentProcessor</className>

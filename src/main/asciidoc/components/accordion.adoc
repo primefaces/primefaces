@@ -1,6 +1,6 @@
 ## AccordionPanel
 
-include::p-accordion[]
+include::p-accordionPanel[]
 
 **Getting Started with Accordion Panel**
 Accordion panel consists of one or more tabs and each tab can group any content. Titles can also be
