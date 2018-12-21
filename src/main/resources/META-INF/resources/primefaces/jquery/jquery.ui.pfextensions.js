@@ -60,6 +60,7 @@
                 var checkedOffset = $.datepicker._checkOffset(inst, offset, isFixed);
                 inst.dpDiv.css({top: checkedOffset.top + "px"});
             };
+            this.updateDatePickerPosition(inst);
         });
     };
 
