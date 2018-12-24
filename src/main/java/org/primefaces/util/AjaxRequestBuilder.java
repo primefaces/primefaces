@@ -29,7 +29,7 @@ import javax.faces.view.facelets.FaceletException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import javax.faces.FacesException;
+import java.util.logging.Logger;
 import javax.faces.component.UIForm;
 import org.primefaces.component.api.AjaxSource;
 
@@ -37,6 +37,8 @@ import org.primefaces.component.api.AjaxSource;
  * Helper to generate javascript code of an ajax call
  */
 public class AjaxRequestBuilder {
+
+    private static final Logger LOG = Logger.getLogger(AjaxRequestBuilder.class.getName());
 
     protected StringBuilder buffer;
     protected FacesContext context;
@@ -65,18 +67,25 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder form(AjaxSource source, UIComponent component, UIForm formComponent) {
-        String result;
+        String result = null;
 
         String form = source.getForm();
         if (LangUtils.isValueBlank(form)) {
             if (formComponent == null) {
                 formComponent = ComponentTraversalUtils.closestForm(context, component);
-                if (formComponent == null) {
-                    throw new FacesException("Component '" + component.getClientId(context)
-                            + "' must be inside a form or reference a form via its form attribute.");
+            }
+
+            if (formComponent == null) {
+                if (context.isProjectStage(ProjectStage.Development)) {
+                    String message = "Component '" + component.getClientId(context)
+                            + "' should be inside a form or should reference a form via its form attribute. "
+                            + " We will try to find a fallback form on the client side.";
+                    LOG.info(message);
                 }
             }
-            result = formComponent.getClientId(context);
+            else {
+                result = formComponent.getClientId(context);
+            }
         }
         else {
             result = SearchExpressionFacade.resolveClientId(context, component, source.getForm());
