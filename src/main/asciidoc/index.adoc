@@ -1,4 +1,6 @@
 :sectnums:
+:sectanchors:
+:sectnumlevels: 2
 :toc: left
 
 == About the Author
@@ -34,9 +36,7 @@ Manual downloads are actually links to the maven repository, for more informatio
 http://www.primefaces.org/downloads
 
 ==== Download with Maven
-Group id is _org.primefaces_ and artifact id is _primefaces._
-
-[source, xml]
+[source, xml, subs="attributes+"]
 ----
 <dependency>
     <groupId>org.primefaces</groupId>
@@ -46,23 +46,23 @@ Group id is _org.primefaces_ and artifact id is _primefaces._
 ----
 
 === Dependencies
-
 PrimeFaces only requires a JAVA 7+ runtime and a JSF 2.x implementation as mandatory
 dependencies. There’re some optional libraries for certain features. Licenses of all dependencies and
 any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 
-```
-Dependency Version * Type Description
-JSF runtime 2.0, 2.1, 2.2, 2.3 Required Apache MyFaces or Oracle Mojarra
-itext 2.1.7 Optional DataExporter (PDF)
-apache poi 3.13 Optional DataExporter (Excel)
-rome 1.5.0 Optional FeedReader
-commons-fileupload 1.3 Optional FileUpload
-commons-io 2.2 Optional FileUpload
-atmosphere 2.4.6 Optional PrimeFaces Push
-barcode4j-light 2.1 Optional Barcode
-qrgen 1.4 Optional QR Code support for Barcode
-```
+|===
+|Dependency | Version * | Type  | Description
+
+| JSF runtime | 2.0, 2.1, 2.2, 2.3 | Required | Apache MyFaces or Oracle Mojarra
+| itext | 2.1.7 | Optional | DataExporter (PDF)
+| apache poi | 3.13 | Optional | DataExporter (Excel)
+| rome | 1.5.0 | Optional | FeedReader
+| commons-fileupload | 1.3 | Optional | FileUpload
+| commons-io | 2.2 | Optional | FileUpload
+| barcode4j-light | 2.1 | Optional | Barcode
+| qrgen | 1.4 | Optional | QR Code support for Barcode
+|===
+
 *Listed versions are tested and known to be working with PrimeFaces, other versions of these
 dependencies may also work but not tested.
 
@@ -101,7 +101,6 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
     <param-value>omega</param-value>
 </context-param>
 ----
-
 
 .PrimeFaces constants
 [cols="1,1,2"]

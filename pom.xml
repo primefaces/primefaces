@@ -791,6 +791,7 @@
                                 <taglib>${basedir}/src/main/resources/META-INF/primefaces-p.taglib.xml</taglib>
                                 <ftl>${basedir}/src/main/asciidoc/ftl</ftl>
                             </attributes>
+
                             <extensions>
                                 <extension>
                                     <className>org.primefaces.asciidoc.IncludeComponentProcessor</className>
@@ -799,6 +800,8 @@
                                     <className>org.primefaces.asciidoc.IncludeFunctionsProcessor</className>
                                 </extension>
                             </extensions>
+
+                            <sourceHighlighter>coderay</sourceHighlighter>
                         </configuration>
                     </execution>
                 </executions>
