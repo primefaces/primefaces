@@ -1,16 +1,16 @@
 :sectnums:
 :toc: left
 
-## About the Author
+== About the Author
 
 Çağatay Çivici is a member of JavaServer Faces Expert Group, the founder of PrimeFaces,
 PrimeNG, PrimeReact, PrimeUI and a PMC member of open source JSF implementation Apache
 MyFaces. He is a recognized speaker in international conferences and in many local events.
 
 
-## Introduction
+== Introduction
 
-## What is PrimeFaces?
+=== What is PrimeFaces?
 
 PrimeFaces is an open source JSF component suite with various extensions.
 
@@ -23,34 +23,31 @@ PrimeFaces is an open source JSF component suite with various extensions.
 - Large, vibrant and active user community.
 - Developed with "passion" from application developers to application developers.
 
-## 2. Setup
+=== Setup
 
-### 2.1 Download
-
-PrimeFaces has a single jar called **primefaces-{version}.jar**. There are two ways to download this
+PrimeFaces has a single jar called **primefaces-{project-version}.jar**. There are two ways to download this
 jar, you can either download from PrimeFaces homepage or if you are a maven user you can define
 it as a dependency.
 
-**Download Manually**
-Manual downloads are actually links to the maven repository, for more information please visit;
-
-```
+==== Download Manually
+Manual downloads are actually links to the maven repository, for more information please visit:
 http://www.primefaces.org/downloads
-```
-**Download with Maven**
+
+==== Download with Maven
 Group id is _org.primefaces_ and artifact id is _primefaces._
 
-```
+[source, xml]
+----
 <dependency>
-<groupId>org.primefaces</groupId>
-<artifactId>primefaces</artifactId>
-<version>6.2</version>
+    <groupId>org.primefaces</groupId>
+    <artifactId>primefaces</artifactId>
+    <version>{project-version}</version>
 </dependency>
-```
+----
 
-### 2.2 Dependencies
+=== Dependencies
 
-PrimeFaces only requires a JAVA 6+ runtime and a JSF 2.x implementation as mandatory
+PrimeFaces only requires a JAVA 7+ runtime and a JSF 2.x implementation as mandatory
 dependencies. There’re some optional libraries for certain features. Licenses of all dependencies and
 any 3rd part work incorporated are compatible with the PrimeFaces Licenses.
 
@@ -69,7 +66,7 @@ qrgen 1.4 Optional QR Code support for Barcode
 *Listed versions are tested and known to be working with PrimeFaces, other versions of these
 dependencies may also work but not tested.
 
-**JSF Runtime**
+==== JSF Runtime
 PrimeFaces supports JSF 2.0, 2.1, 2.2 and 2.3 runtimes at the same time using feature detection and
 by not having compile time dependency to a specific version. As a result some features are only
 available depending on the runtime.
@@ -78,201 +75,84 @@ A good example for runtime compatibility is the passthrough attributes, a JSF 2.
 display dynamic attributes. In following page, pass through attribute placeholder only gets rendered
 if the runtime is JSF 2.2.
 
-```
+[source, xml]
+----
 <!DOCTYPE html>
 <html xmlns="http://www.w3c.org/1999/xhtml"
-xmlns:h="http://java.sun.com/jsf/html"
-xmlns:p="http://primefaces.org/ui"
-xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
-<h:head>
-</h:head>
-<h:body>
-<p:inputText value="#{bean.value}" pt:placeholder="Watermark here"/>
-</h:body>
-</html>
-```
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
-### 2.3 Configuration
+    <h:body>
+        <p:inputText value="#{bean.value}" pt:placeholder="Watermark here"/>
+    </h:body>
+</html>
+----
+
+==== Configuration
 
 PrimeFaces does not require any mandatory configuration and follows configuration by exception
 pattern of JavaEE. Here is the list of all configuration options defined with a context-param such as;
 
-```
+[source, xml]
+----
 <context-param>
-<param-name>primefaces.THEME</param-name>
-<param-value>omega</param-value>
+    <param-name>primefaces.THEME</param-name>
+    <param-value>omega</param-value>
 </context-param>
-```
-```
-Name Default Description
-THEME omega Theme of the application.
-mobile.THEME null Theme of the mobile application.
-PUSH_SERVER_URL null Custom server url for PrimeFaces Push.
-SUBMIT full Defines ajax submit mode, full or partial.
-DIR ltr Defines orientation, ltr or rtl.
-RESET_VALUES false When enabled, ajax updated inputs are reset.
-SECRET primefaces Secret key to encrypt-decrypt value expressions
-exposed in rendering StreamedContents.
-CLIENT_SIDE_VALIDATION false Controls client side validatation.
-UPLOADER auto Defines uploader mode; auto , native or commons.
-TRANSFORM_METADATA false Transforms bean validation metadata to html
-attributes.
-LEGACY_WIDGET_
-NAMESPACE
-```
-```
-false Enables window scope so that widgets can be
+----
+
+
+.PrimeFaces constants
+[cols="1,1,2"]
+|===
+|Name | Default | Description
+
+|THEME | omega |Theme of the application
+|SUBMIT | full | Defines ajax submit mode, full or partial.
+|DIR | ltr | Defines orientation, ltr or rtl.
+|RESET_VALUES | false | When enabled, ajax updated inputs are reset.
+|SECRET | primefaces | Secret key to encrypt-decrypt value expressions exposed in rendering StreamedContents.
+|CLIENT_SIDE_VALIDATION | false | Controls client side validatation.
+|UPLOADER | auto | Defines uploader mode: auto, native or commons
+|TRANSFORM_METADATA | false | Transforms bean validation metadata to html attributes.
+|LEGACY_WIDGET_NAMESPACE | false | Enables window scope so that widgets can be
 accessed using widgetVar.method() in addition to
-default PF namespace approach like
-PF('widgetVar').method().
-FONT_AWESOME false Enabled font-awesome icons.
-INTERPOLATE_CLIENT_SIDE_
-VALIDATION_MESSAGES
-```
-```
-false Whether to load the CSV messages from server.
-```
-```
-MOVE_SCRIPTS_TO_BOTTOM false Moves all inline scripts to end of body tag for better
-performance and smaller html output.
-```
-### 2.4 Hello World
+default PF namespace approach like `PF('widgetVar').method()`
+|FONT_AWESOME | false | Enabled font-awesome icons
+|INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES | false | Whether to load the CSV messages from server.
+|MOVE_SCRIPTS_TO_BOTTOM | false | Moves all inline scripts to end of body tag for better performance and smaller html output
+|===
+
+==== Hello World
 
 Once you have added the primefaces jar to your classpath, you need to add the PrimeFaces
 namespace to your page to begin using the components. Here is a simple page like test.xhtml;
 
-
-```
+[source, xml]
+----
 <!DOCTYPE html>
 <html xmlns="http://www.w3c.org/1999/xhtml"
-xmlns:h="http://xmlns.jcp.org/jsf/html"
-xmlns:p="http://primefaces.org/ui">
-<h:head></h:head>
-<h:body>
-<p:textEditor />
-</h:body>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:body>
+        <p:textEditor />
+    </h:body>
 </html>
-```
+----
+
 When you run this page through Faces Servlet mapping e.g. *.jsf, you should see a rich text editor
 when you run the page with test.jsf.
 
 
-## 3. Component Suite
+== Component Suite
 
 include::components/accordion.adoc[]
 
-### 3.2 AjaxBehavior
+include::components/ajax.adoc[]
 
-AjaxBehavior is an extension to standard f:ajax.
-
-**Info**
-
-```
-Tag ajax
-Behavior Id org.primefaces.component.AjaxBehavior
-Behavior Class org.primefaces.component.behavior.ajax.AjaxBehavior
-```
-**Attributes**
-
-```
-Name Default Type Description
-listener null Method
-Expr
-```
-```
-Method to process in partial request.
-```
-```
-immediate false boolean Boolean value that determines the phaseId, when true
-actions are processed at apply_request_values, when false
-at invoke_application phase.
-async false Boolean When set to true, ajax requests are not queued.
-process null String Component(s) to process in partial request.
-update null String Component(s) to update with ajax.
-onstart null String Callback to execute before ajax request is begins.
-oncomplete null String Callback to execute when ajax request is completed.
-onsuccess null String Callback to execute when ajax request succeeds.
-onerror null String Callback to execute when ajax request fails.
-global true Boolean Global ajax requests are listened by ajaxStatus component,
-setting global to false will not trigger ajaxStatus.
-delay null String If less than delay milliseconds elapses between calls to
-request() only the most recent one is sent and all other
-requests are discarded. If this option is not specified, or if
-the value of delay is the literal string 'none' without the
-quotes, no delay is used.
-partialSubmit false Boolean Enables serialization of values belonging to the partially
-processed components only.
-partialSubmitFilter null String Selector to use when partial submit is on, default is ":input"
-to select all descendant inputs of a partially processed
-components.
-disabled false Boolean Disables ajax behavior.
-```
-
-```
-Name Default Type Description
-event null String Client side event to trigger ajax request.
-resetValues false Boolean If true, local values of input components to be updated
-within the ajax request would be reset.
-ignoreAutoUpdate false Boolean If true, components which autoUpdate="true" will not be
-updated for this request. If not specified, or the value is
-false, no such indication is made.
-form null String Form to serialize for an ajax request. Default is the
-enclosing form.
-skipChildren true Boolean Containers components like, datatable, panel, tabview skip
-their children if the request owner is them. For example,
-sort, page event of a datatable. As children are skipped,
-input values get lost, assume a case with a datatable and
-inputs components in a column. Sorting the column
-discards the changes and data is sorted according to
-original value. Setting skipChildren to false, enabled input
-values to update the value and sorting to be happened with
-user values.
-```
-**Getting Started with AjaxBehavior**
-AjaxBehavior is attached to the component to ajaxify.
-
-```
-<h:inputText value="#{bean.text}">
-<p:ajax update="out" />
-</h:inputText>
-<h:outputText id="out" value="#{bean.text}" />
-```
-In the example above, each time the input changes, an ajax request is sent to the server. When the
-response is received output text with id "out" is updated with value of the input.
-
-**Listener**
-In case you need to execute a method on a backing bean, define a listener;
-
-```
-<h:inputText id="counter">
-<p:ajax update="out" listener="#{counterBean.increment}"/>
-</h:inputText>
-<h:outputText id="out" value="#{counterBean.count}" />
-```
-
-```
-public class CounterBean {
-private int count;
-//getter setter
-public void increment() {
-count++;
-}
-}
-```
-**Events**
-Default client side events are defined by components that support client behaviors, for input
-components it is _onchange_ and for command components it is _onclick_. In order to override the dom
-event to trigger the ajax request use _event_ option. In following example, ajax request is triggered
-when key is up on input field.
-
-```
-<h:inputText id="firstname" value="#{bean.text}">
-<p:ajax update="out" event="keyup"/>
-</h:inputText>
-<h:outputText id="out" value="#{bean.text}" />
-```
-
-### 3.3 AjaxExceptionHandler
+### AjaxExceptionHandler
 
 AjaxExceptionHandler is a utility component for the built-in ExceptionHandler.
 
@@ -303,7 +183,7 @@ type null String Exception type to handle.
 Find the detailed information about this component at ExceptionHandler section at Utilities chapter.
 
 
-### 3.4 AjaxStatus
+### AjaxStatus
 
 AjaxStatus is a global notifier for ajax requests.
 
@@ -421,7 +301,7 @@ which contains the facets.
 - AjaxStatus also supports core JSF ajax requests of f:ajax as well.
 
 
-### 3.5 AutoComplete
+### AutoComplete
 
 AutoComplete provides live suggestions while an input is being typed.
 
@@ -831,7 +711,7 @@ As skinning style classes are global, see the main theming section for more info
 - Enable caching to avoid duplicate queries.
 
 
-### 3.6 AutoUpdate
+### AutoUpdate
 
 AutoUpdate is a tag handler to mark a component to be updated at every ajax request.
 
@@ -856,7 +736,7 @@ AutoUpdate is used by nesting inside a parent component.
 </p:panel>
 ```
 
-### 3.7 Barcode
+### Barcode
 
 Barcode component is used to display various barcode formats.
 
@@ -973,7 +853,7 @@ by **qrgen** library. Following versions are supported officially.
 maven users.
 
 
-### 3.8 BlockUI
+### BlockUI
 
 BlockUI is used to block interactivity of JSF components with optional ajax integration.
 
@@ -1071,7 +951,7 @@ As skinning style classes are global, see the main theming section for more info
 - BlockUI does not support absolute or fixed positioned components. e.g. dialog.
 
 
-### 3.9 BreadCrumb
+### BreadCrumb
 
 Breadcrumb is a navigation component that provides contextual information about page hierarchy
 in the workflow.
@@ -1145,7 +1025,7 @@ As skinning style classes are global, see the main theming section for more info
     use menuitem to execute command with or without ajax, do not define the url option.
 
 
-### 3.10 Button
+### Button
 
 Button is an extension to the standard h:button component with skinning capabilities.
 
@@ -1264,7 +1144,7 @@ Style Class Applies
 .ui-button-text Label of button
 ```
 
-### 3.11 Cache
+### Cache
 
 Cache component is used to reduce page load time by caching the content after initial rendering.
 
@@ -1358,7 +1238,7 @@ For example using this API, all cache regions can be cleaned using _clear()_ met
 of CacheProvider for the full list of available methods.
 
 
-### 3.12 Calendar
+### Calendar
 
 Calendar is an input component used to select a date featuring display modes, paging, localization,
 ajax selection and more.
@@ -1757,7 +1637,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-### 3.13 Captcha
+### Captcha
 
 Captcha is a form validation component based on Recaptcha API V2.
 
@@ -1875,7 +1755,7 @@ Detail primefaces.captcha.INVALID_detail
 - See [http://www.google.com/recaptcha/learnmore](http://www.google.com/recaptcha/learnmore) to learn more about how reCaptcha works.
 
 
-### 3.14 Carousel
+### Carousel
 
 Carousel is a multi purpose component to display a set of data or general content with slide effects.
 
@@ -2101,7 +1981,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-### 3.15 CellEditor
+### CellEditor
 
 CellEditor is a helper component of datatable used for incell editing.
 
@@ -2130,7 +2010,7 @@ UIComponent instance in a backing bean
 See inline editing section in datatable documentation for more information about usage.
 
 
-### 3.16 Chart
+### Chart
 
 Chart component is a generic graph component to create various types of charts using jqplot library.
 Each chart type has its own subsection with code examples and section 3.12.10 documents the full
@@ -2165,7 +2045,7 @@ responsive false Boolean In responsive mode, chart is redrawn when
 window is resized.
 ```
 
-#### 3.16.1 PieChart.......................................................................................................................
+#### PieChart.......................................................................................................................
 
 PieChart is created with PieChartModel.
 
@@ -2217,7 +2097,7 @@ return model;
 }
 
 
-#### 3.16.2 LineChart.....................................................................................................................
+#### LineChart.....................................................................................................................
 
 LineChartModel is used to create a line chart.
 
@@ -2344,7 +2224,7 @@ return model;
 }
 ```
 
-#### 3.16.3 BarChart.......................................................................................................................
+#### BarChart.......................................................................................................................
 
 BarChartModel is used to created a BarChart.
 
@@ -2427,7 +2307,7 @@ public HorizontalBarChartModel getModel() { return model; }
 }
 ```
 
-#### 3.16.4 DonutChart..................................................................................................................
+#### DonutChart..................................................................................................................
 
 DonutChart is generated using DonutChartModel.
 
@@ -2507,7 +2387,7 @@ public DonutChartModel getModel() { return model; }
 }
 ```
 
-#### 3.16.5 BubbleChart.................................................................................................................
+#### BubbleChart.................................................................................................................
 
 BubbleChart is created with a BubbleChartModel.
 
@@ -2571,7 +2451,7 @@ public BubbleChartModel getModel() { return model; }
 }
 ```
 
-#### 3.16.6 Ohlc Chart....................................................................................................................
+#### Ohlc Chart....................................................................................................................
 
 OhlcChartModel is used to display Ohlc Charts.
 
@@ -2623,7 +2503,7 @@ public OhlcChartModel getModel() { return model; }
 }
 ```
 
-#### 3.16.7 MeterGauge Chart.......................................................................................................
+#### MeterGauge Chart.......................................................................................................
 
 MeterGauge Chart is created using MeterGaugeChartModel.
 
@@ -2677,7 +2557,7 @@ public MeterGaugeChartModel getModel() { return model; }
 }
 
 
-#### 3.16.8 Combined Chart...........................................................................................................
+#### Combined Chart...........................................................................................................
 
 On same graph, different series type can be displayed together.
 
@@ -2720,7 +2600,7 @@ public BarChartModel getModel() { return model; }
 }
 ```
 
-#### 3.16.9 Multiple Axis...............................................................................................................
+#### Multiple Axis...............................................................................................................
 
 Up to 9 axes (xaxis-x9axis, yaxis-y9axis) can be displayed on the same chart.
 
@@ -2770,7 +2650,7 @@ public LineChartModel getModel() { return model; }
 ```
 
 
-#### 3.16.10 Date Axis...................................................................................................................
+#### Date Axis...................................................................................................................
 
 Use DateAxis if you are displaying dates in an axis.
 
@@ -2815,7 +2695,7 @@ public LineChartModel getModel() { return model; }
 }
 ```
 
-#### 3.16.11 Interactive Chart........................................................................................................
+#### Interactive Chart........................................................................................................
 
 Charts are interactive components, information about selected series and items can be passed via
 ajax to a JSF backing bean using ItemSelectEvent.
@@ -2849,7 +2729,7 @@ FacesContext.getCurrentInstance().addMessage(null, msg);
 }
 ```
 
-#### 3.16.12 Export........................................................................................................................
+#### Export........................................................................................................................
 
 Chart component provides a client side method to convert the graph to an image. Example below
 demonstrates how to use a button click to export the chart as an image and display it in a dialog so
@@ -2871,7 +2751,7 @@ PF('dlg').show();
 }
 ```
 
-#### 3.16.13 Static Images..............................................................................................................
+#### Static Images..............................................................................................................
 
 JFreeChart with GraphicImage component is an alternative to the chart component.
 
@@ -2903,7 +2783,7 @@ return dataset;
 }
 ```
 
-#### 3.16.14 Skinning.....................................................................................................................
+#### Skinning.....................................................................................................................
 
 Charts can be styled using regular css. Following is the list of style classes;
 
@@ -2935,7 +2815,7 @@ charts, use these attribute to specify the dimensions of a chart.
 In case you’d like to change the colors of series, use the _seriesColors_ option in ChartModel API.
 
 
-#### 3.16.15 Extender.....................................................................................................................
+#### Extender.....................................................................................................................
 
 Chart API provide high level access to commonly used jqplot options however there are many more
 customization options available in jqplot. Extender feature provide access to low level apis to do
@@ -2957,7 +2837,7 @@ shadowDepth: 5
 Refer to jqPlot docs for available options.
 
 
-#### 3.16.16 Chart API...................................................................................................................
+#### Chart API...................................................................................................................
 
 **Axis**
 _org.primefaces.model.chart.Axis_
@@ -3168,7 +3048,7 @@ datatipEditor null String Name of client side function that returns html to
 provide custom content in datatip.
 ```
 
-## 3.17 Checkbox
+## Checkbox
 
 Checkbox is a helper component of SelectManyCheckbox to implement custom layouts.
 
@@ -3204,7 +3084,7 @@ tabindex null String Specifies the tab order of element in tab navigation.
 See custom layout part in SelectManyCheckbox section for more information.
 
 
-## 3.18 Chips
+## Chips
 
 Chips is used to enter multiple values on an inputfield.
 
@@ -3295,7 +3175,7 @@ Style Class Applies
 .ui-chips-token-icon Close icon of a token.
 ```
 
-## 3.19 Clock
+## Clock
 
 Clock displays server or client datetime live.
 
@@ -3352,7 +3232,7 @@ Style Class Applies
 .ui-clock Container element.
 ```
 
-## 3.20 Collector
+## Collector
 
 Collector is a simple utility to manage collections declaratively.
 
@@ -3396,7 +3276,7 @@ books = new ArrayList<Book>();
 </p:commandLink>
 ```
 
-## 3.21 Color Picker
+## Color Picker
 
 ColorPicker is an input component with a color palette.
 
@@ -3503,7 +3383,7 @@ Style Class Applies
 .ui-colorpicker-rgb-hex Hex input.
 ```
 
-## 3.22 Column
+## Column
 
 Column is an extended version of the standard column used by various components like datatable,
 treetable and more.
@@ -3579,7 +3459,7 @@ As column is a reused component, see documentation of components that use a colu
 Not all attributes of column are implemented by the components that utilize column.
 
 
-## 3.23 Columns
+## Columns
 
 Columns is used by datatable to create columns dynamically.
 
@@ -3649,7 +3529,7 @@ true.
 See dynamic columns section in datatable documentation for detailed information.
 
 
-## 3.24 ColumnGroup
+## ColumnGroup
 
 ColumnGroup is used by datatable for column grouping.
 
@@ -3677,7 +3557,7 @@ type null String Type of group, valid values are “header” and “footer”.
 See grouping section in datatable documentation for detailed information.
 
 
-## 3.25 ColumnToggler
+## ColumnToggler
 
 ColumnToggler is a helper component for datatable to toggle visibility of columns.
 
@@ -3711,7 +3591,7 @@ component whose columns to be toggled.
 See column toggler section in datatable documentation for detailed information.
 
 
-## 3.26 CommandButton
+## CommandButton
 
 CommandButton is an extended version of standard commandButton with ajax and theming.
 
@@ -3925,7 +3805,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.27 CommandLink
+## CommandLink
 
 CommandLink extends standard JSF commandLink with Ajax capabilities.
 
@@ -4072,7 +3952,7 @@ public void saveBook() {
 CommandLink renders an html anchor element that _style_ and _styleClass_ attributes apply.
 
 
-## 3.28 Confirm
+## Confirm
 
 Confirm is a behavior element used to integrate with global confirm dialog.
 
@@ -4096,7 +3976,7 @@ escape false Boolean Whether to escape the message.
 See global confirm dialog topic in next section for details.
 
 
-## 3.29 ConfirmDialog
+## ConfirmDialog
 
 ConfirmDialog is a replacement to the legacy javascript confirmation box. Skinning, customization
 and avoiding popup blockers are notable advantages over classic javascript confirmation.
@@ -4218,7 +4098,7 @@ Style Class Applies
 .ui-dialog-buttonpane Footer button panel
 ```
 
-## 3.30 ContentFlow
+## ContentFlow
 
 ContentFlow is a horizontal content gallery component with a slide animation.
 
@@ -4291,7 +4171,7 @@ Style Class Applies
 .caption Caption element
 ```
 
-## 3.31 ContextMenu
+## ContextMenu
 
 ContextMenu provides an overlay menu displayed on mouse right-click event.
 
@@ -4389,7 +4269,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.32 Dashboard
+## Dashboard
 
 Dashboard provides a portal like layout with drag&drop based reorder capabilities.
 
@@ -4578,7 +4458,7 @@ void addWidget(int index, String widgetId) Adds a new widget at given index
 void reorderWidget(int index, String widgetId) Updates the index of widget in column
 ```
 
-## 3.33 DataExporter
+## DataExporter
 
 DataExporter is handy for exporting data listed using a Primefaces Datatable to various formats
 such as excel, pdf, csv and xml.
@@ -4751,7 +4631,7 @@ return excelOpt;
 }
 
 
-## 3.34 DataGrid
+## DataGrid
 
 DataGrid displays a collection of data in a grid layout.
 
@@ -4990,7 +4870,7 @@ As skinning style classes are global, see the main theming section for more info
     at these locations.
 
 
-## 3.35 DataList
+## DataList
 
 DataList presents a collection of data in list layout with several display types.
 
@@ -5151,7 +5031,7 @@ As skinning style classes are global, see the main theming section for more info
     at these locations.
 
 
-## 3.36 DataScroller
+## DataScroller
 
 DataScroller displays a collection of data with on demand loading using scrolling.
 
@@ -5284,7 +5164,7 @@ Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.37 DataTable
+## DataTable
 
 DataTable displays data in tabular format.
 
@@ -6331,7 +6211,7 @@ Class Applies
 .ui-datatable-frozencolumn Frozen columns.
 
 
-## 3.38 DefaultCommand
+## DefaultCommand
 
 Which command to submit the form with when enter key is pressed a common problem in web apps
 not just specific to JSF. Browsers tend to behave differently as there doesn’t seem to be a standard
@@ -6390,7 +6270,7 @@ If you need multiple default commands on same page use scope attribute that refe
 component of the target input.
 
 
-## 3.39 Diagram
+## Diagram
 
 Diagram is generic component to create visual elements and connect them on a web page. SVG is
 used on modern browsers and VML on IE 8 and below. Component is highly flexible in terms of
@@ -6559,7 +6439,7 @@ connectionChange org.primefaces.event.diagram.ConnectionChange When a connection
 changed.
 ```
 
-## 3.40 Dialog
+## Dialog
 
 Dialog is a panel component that can overlay other elements on page.
 
@@ -6750,11 +6630,11 @@ As skinning style classes are global, see the main theming section for more info
     header attribute.
 
 
-## 3.41 Drag&Drop
+## Drag&Drop
 
 Drag&Drop utilities of PrimeFaces consists of two components; Draggable and Droppable.
 
-### 3.41.1 Draggable
+### Draggable
 
 **Info**
 
@@ -6900,7 +6780,7 @@ it’s parent.
 <p:draggable for="conpnl" containment="parent" />
 ```
 
-### 3.41.2 Droppable
+### Droppable
 
 **Info**
 
@@ -7101,7 +6981,7 @@ _hoverStyleClass_ and _activeStyleClass_ attributes are used to change the style
 interacting with a draggable.
 
 
-## 3.42 Dock
+## Dock
 
 Dock component mimics the well known dock interface of Mac OS X.
 
@@ -7173,7 +7053,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.43 Editor
+## Editor
 
 Editor is an input component with rich text editing capabilities. (Deprecated: Use TextEditor
 instead)
@@ -7335,7 +7215,7 @@ Style Class Applies
 Editor is not integrated with ThemeRoller as there is only one icon set for the controls.
 
 
-## 3.44 Effect
+## Effect
 
 Effect component is based on the jQuery UI effects library.
 
@@ -7456,7 +7336,7 @@ with pulsate effect after ajax request completes.
 <p:commandButton value="Save" actionListener="#{bean.action}" update="messages"/>
 ```
 
-## 3.45 FeedReader
+## FeedReader
 
 FeedReader is used to display content from a feed.
 
@@ -7501,7 +7381,7 @@ Something went wrong.
 Note that you need the ROME library in your classpath to make feedreader work.
 
 
-## 3.46 Fieldset
+## Fieldset
 
 Fieldset is a grouping component as an extension to html fieldset.
 
@@ -7628,7 +7508,7 @@ As skinning style classes are global, see the main theming section for more info
     internally, you don’t need to manage this using toggleListener and collapsed option.
 
 
-## 3.47 FileDownload
+## FileDownload
 
 The legacy way to present dynamic binary data to the client is to write a servlet or a filter and
 stream the binary data. FileDownload presents an easier way to do the same.
@@ -7734,7 +7614,7 @@ onclick="PrimeFaces.monitorDownload(showStatus, hideStatus)">
 Cookies must be enabled for monitoring.
 
 
-## 3.48 FileUpload
+## FileUpload
 
 FileUpload goes beyond the browser input type="file" functionality and features an HTML5
 powered rich solution with graceful degradation for legacy browsers.
@@ -8021,7 +7901,7 @@ Note that uploadDirectory is used internally, you always need to implement the l
 contents yourself in your backing bean.
 
 
-## 3.49 Focus
+## Focus
 
 Focus is a utility component that makes it easy to manage the element focus on a JSF page.
 
@@ -8101,7 +7981,7 @@ when using a dialog.
 <h:inputText id="text" value="{bean.value}" />
 ```
 
-## 3.50 Fragment
+## Fragment
 
 Fragment component is used to define automatically partially process and update sections whenever
 ajax request is triggered by a descendant component.
@@ -8156,7 +8036,7 @@ mentioned components, there is no such restriction as they are updated for every
 regardless of the source.
 
 
-## 3.51 Galleria
+## Galleria
 
 Galleria is used to display a set of images.
 
@@ -8256,7 +8136,7 @@ Style Class Applies
 .ui-galleria-frame-image Thumbnail image.
 ```
 
-## 3.52 GMap
+## GMap
 
 GMap is a map component integrated with Google Maps API V3.
 
@@ -8700,7 +8580,7 @@ latlng null LatLng Coordinates of the reverse geocode query.
 addresses null List<String> List of results represented as strings.
 ```
 
-## 3.53 GMapInfoWindow
+## GMapInfoWindow
 
 GMapInfoWindow is used with GMap component to open a window on map when an overlay is
 selected.
@@ -8730,7 +8610,7 @@ maxWidth null Integer Maximum width of the info window
 See GMap section for more information about how gmapInfoWindow is used.
 
 
-## 3.54 GraphicImage
+## GraphicImage
 
 GraphicImage extends standard JSF graphic image component with the ability of displaying binary
 data like an inputstream. Main use cases of GraphicImage is to make displaying images stored in
@@ -8884,7 +8764,7 @@ uses an InputStream and not serializable whereas the serializable ByteArrayConte
 array.
 
 
-## 3.55 Grid CSS
+## Grid CSS
 
 Grid CSS is a lightweight responsive layout utility optimized for mobile devices, tablets and
 desktops. Up to 12 columns are supported based on fluid layout.
@@ -9004,7 +8884,7 @@ phone, they all get displayed in a separate row.
 Note: A column has a default padding by default, to remove it you may apply ui-g-nopad style class.
 
 
-## 3.56 Growl
+## Growl
 
 Growl is based on the Mac’s growl notification widget and used to display FacesMessages in an
 overlay.
@@ -9149,7 +9029,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.57 HeaderRow
+## HeaderRow
 
 HeaderRow is a helper component of datatable used for dynamic grouping.
 
@@ -9177,7 +9057,7 @@ instance in a backing bean
 See DataTable section for more information.
 
 
-## 3.58 HotKey
+## HotKey
 
 HotKey is a generic key binding component that can bind any formation of keys to javascript event
 handlers or ajax calls.
@@ -9299,7 +9179,7 @@ Following form can be submitted with the _ctrl+shift+s_ combination.
 Note that hotkey will not be triggered if there is a focused input on page.
 
 
-## 3.59 IdleMonitor
+## IdleMonitor
 
 IdleMonitor watches user actions on a page and notify callbacks in case they go idle or active again.
 
@@ -9383,7 +9263,7 @@ resume() - void Resumes monitoring
 reset() - void Resets the timer of monitor.
 ```
 
-## 3.60 ImageCompare
+## ImageCompare
 
 ImageCompare provides a user interface to compare two images.
 
@@ -9432,7 +9312,7 @@ Both images are placed inside a div container element, _style_ and _styleClass_ 
 element.
 
 
-## 3.61 ImageCropper
+## ImageCropper
 
 ImageCropper allows cropping a certain region of an image. A new image is created containing the
 cropped area and assigned to a CroppedImage instanced on the server side.
@@ -9590,7 +9470,7 @@ return null;
 }
 
 
-## 3.62 ImageSwitch
+## ImageSwitch
 
 ImageSwitch component is a simple image gallery component.
 
@@ -9710,7 +9590,7 @@ are case sensitive.
 - zoom
 
 
-## 3.63 ImportConstants
+## ImportConstants
 
 In older EL versions (< 3.0), it's not possible to use constants or any other static fields/methods in
 an EL expression. As it is not really a good practive to create beans with getter/setter for each
@@ -9749,7 +9629,7 @@ public final static String PUSH_PATH = "/primepush";
 <h:outputText value="#{PFConstants.DOWNLOAD_COOKIE}" />
 ```
 
-## 3.64 ImportEnum
+## ImportEnum
 
 In older EL versions (< 3.0), it's not possible to use enum constants or any other static
 fields/methods in an EL expression. As it is not really a good practive to create beans with
@@ -9792,7 +9672,7 @@ ALL:
 </ui:repeat>>
 ```
 
-## 3.65 Inplace
+## Inplace
 
 Inplace provides easy inplace editing and inline content display. Inplace consists of two members,
 display element is the initial clickable label and inline element is the hidden content that is
@@ -9944,7 +9824,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.66 InputGroup
+## InputGroup
 
 InputGroup is a CSS utility to group forms with icons and buttons.
 
@@ -10003,7 +9883,7 @@ Style class of the addon that contains a checkbox should be _ui-inputgroup-addon
 </div>
 ```
 
-## 3.67 InputMask
+## InputMask
 
 InputMask forces an input to fit in a defined mask template.
 
@@ -10136,7 +10016,7 @@ _style_ and _styleClass_ options apply to the displayed input element. As skinni
 global, see the main theming section for more information.
 
 
-## 3.68 InputNumber
+## InputNumber
 
 InputNumber formats input fields with numeric Strings. It supports currency symbols, minimum
 and maximum value, negative numbers, and a lot of round methods.
@@ -10325,7 +10205,7 @@ emptyValue="sign" />
 <p:inputNumber id="Input8" value="1234.000000001" decimalPlaces="15" />
 
 
-## 3.69 InputSwitch
+## InputSwitch
 
 InputSwitch is used to select a boolean value.
 
@@ -10433,7 +10313,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.70 InputText
+## InputText
 
 InputText is an extension to standard inputText with skinning capabilities.
 
@@ -10564,7 +10444,7 @@ enable() - void Enables the input field.
 disable() - void Disables the input field.
 ```
 
-## 3.71 InputTextarea
+## InputTextarea
 
 InputTextarea is an extension to standard inputTextarea with autoComplete, autoResize, remaining
 characters counter and theming features.
@@ -10752,7 +10632,7 @@ ui-inputfield Textarea element.
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.72 Keyboard
+## Keyboard
 
 Keyboard is an input component that uses a virtual keyboard to provide the input. Notable features
 are the customizable layouts and skinning capabilities.
@@ -10937,7 +10817,7 @@ clicked the keyboard is shown.
 Button can also be customized using the _buttonImage_ and _buttonImageOnly_ attributes.
 
 
-## 3.73 KeyFilter
+## KeyFilter
 
 KeyFilter is used to filter keyboard input on specified input components.
 
@@ -11010,7 +10890,7 @@ alpha /[a-z_]/i
 alphanum /[a-z0-9_]/i
 
 
-## 3.74 Knob
+## Knob
 
 Knob is an input component to insert numeric values in a range.
 
@@ -11120,7 +11000,7 @@ increment() - void Increments current value by step factor.
 Decrement/( - void Decremenets current value by step factor.
 ```
 
-## 3.75 Layout
+## Layout
 
 Layout component features a highly customizable borderLayout model making it very easy to
 create complex layouts even if you’re not familiar with web design.
@@ -11272,7 +11152,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.76 LayoutUnit
+## LayoutUnit
 
 LayoutUnit represents a region in the border layout model of the Layout component.
 
@@ -11326,7 +11206,7 @@ In addition to _header_ and _footer_ attributes to display text at these locatio
 with the same name to display custom content.
 
 
-## 3.77 Lifecycle
+## Lifecycle
 
 Lifecycle is a utility component which displays the execution time of each JSF phase. It also
 synchronizes automatically after each AJAX request.
@@ -11369,7 +11249,7 @@ Then usage is simple as adding the component to the page.
 <p:lifecycle />
 ```
 
-## 3.78 LightBox
+## LightBox
 
 Lightbox is a powerful overlay that can display images, multimedia content, custom content and
 external urls.
@@ -11486,7 +11366,7 @@ Style Class Applies
 .ui-lightbox-caption Caption element.
 ```
 
-## 3.79 Link
+## Link
 
 Link is an extension to standard h:link component.
 
@@ -11588,7 +11468,7 @@ To navigate without outcome based approach, use href attribute.
 <p:link href="http://www.primefaces.org" value="Navigate"/>
 ```
 
-## 3.80 Log
+## Log
 
 Log component is a visual console to display logs on JSF pages.
 
@@ -11644,7 +11524,7 @@ show() - void Show the container element.
 hide() - void Hides the container element.
 ```
 
-## 3.81 Media
+## Media
 
 Media component is used for embedding multimedia content.
 
@@ -11729,7 +11609,7 @@ public StreamedContent getMedia() { return media; }
 }
 ```
 
-## 3.82 MegaMenu
+## MegaMenu
 
 MegaMenu is a horizontal navigation component that displays submenus together.
 
@@ -11850,7 +11730,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.83 Menu
+## Menu
 
 Menu is a navigation component with submenus and menuitems.
 
@@ -12039,7 +11919,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.84 Menubar
+## Menubar
 
 Menubar is a horizontal navigation component.
 
@@ -12164,7 +12044,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.85 MenuButton
+## MenuButton
 
 MenuButton displays different commands in a popup menu.
 
@@ -12236,7 +12116,7 @@ Style Class Applies
 .ui-button-text Label of button
 ```
 
-## 3.86 MenuItem
+## MenuItem
 
 MenuItem is used by various menu components.
 
@@ -12380,7 +12260,7 @@ width:16px;
 }
 ```
 
-## 3.87 Message
+## Message
 
 Message is a pre-skinned extended version of the standard JSF message component.
 
@@ -12456,7 +12336,7 @@ ui-message-{severity}-detail Detail text
 {severity} can be ‘info’, ‘error’, ‘warn’ and error.
 
 
-## 3.88 Messages
+## Messages
 
 Messages is a pre-skinned extended version of the standard JSF messages component.
 
@@ -12559,7 +12439,7 @@ ui-messages-{severity}-icon Icon of the message.
 {severity} can be ‘info’, ‘error’, ‘warn’ and error.
 
 
-## 3.89 Mindmap
+## Mindmap
 
 Mindmap is an interactive tool to visualize mindmap data featuring lazy loading, callbacks,
 animations and more.
@@ -12662,7 +12542,7 @@ parent null MindmapNode Parent node instance.
 - IE 7 and IE 8 are not supported due to technical limitations, IE 9 is supported.
 
 
-## 3.90 MultiSelectListbox
+## MultiSelectListbox
 
 MultiSelectListbox is used to select an item from a collection of listboxes that are in parent-child
 relationship.
@@ -12779,7 +12659,7 @@ Style Class Applies
 .ui-multiselectlistbox-item Each item in a list.
 ```
 
-## 3.91 NotificationBar
+## NotificationBar
 
 NotificationBar displays a multipurpose fixed positioned panel for notification.
 
@@ -12864,7 +12744,7 @@ Selector Applies
 .ui-notificationbar Main container element
 ```
 
-## 3.92 OrderList
+## OrderList
 
 OrderList is used to sort a collection featuring drag&drop based reordering, transition effects and
 pojo support.
@@ -13029,7 +12909,7 @@ Style Class Applies
 .ui-orderlist-caption Caption of the list.
 ```
 
-## 3.93 Organigram
+## Organigram
 
 Organigram is a data component to display an organizational hierarchy.
 
@@ -13188,7 +13068,7 @@ When a node is expanded.
 Refer to JavaDocs for more information about Organigram Model API.
 
 
-## 3.94 OrganigramNode
+## OrganigramNode
 
 Represents a node in an Organigram model.
 
@@ -13229,7 +13109,7 @@ styleClass null String Style class of the element.
 Refer to Organigram for details.
 
 
-## 3.95 OutputLabel
+## OutputLabel
 
 OutputLabel is a an extension to the standard outputLabel component.
 
@@ -13337,7 +13217,7 @@ Style Class Applies
 .ui-outputlabel-rfi Required field indicator.
 ```
 
-## 3.96 OutputPanel
+## OutputPanel
 
 OutputPanel is a panel component with the ability to deferred loading.
 
@@ -13427,7 +13307,7 @@ _style_ and _styleClass_ attributes are used to style the outputPanel, by defaul
 is added to element and _.ui-outputpanel-loading_ when content is loading in deferred loading case.
 
 
-## 3.97 OverlayPanel
+## OverlayPanel
 
 OverlayPanel is a generic panel component that can be displayed on top of other content.
 
@@ -13541,7 +13421,7 @@ As skinning style classes are global, see the main theming section for more info
     _showCloseIcon_ settings.
 
 
-## 3.98 Panel
+## Panel
 
 Panel is a grouping component with content toggle, close and menu integration.
 
@@ -13662,7 +13542,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.99 PanelGrid
+## PanelGrid
 
 PanelGrid is an extension to the standard panelGrid component with additional features such as
 theming and colspan-rowspan.
@@ -13771,7 +13651,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.100 PanelMenu
+## PanelMenu
 
 PanelMenu is a hybrid component of accordionPanel and tree components.
 
@@ -13848,7 +13728,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.101 Password
+## Password
 
 Password component is an extended version of standard inputSecret component with theme
 integration and strength indicator.
@@ -14027,7 +13907,7 @@ Name Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.102 PhotoCam
+## PhotoCam
 
 PhotoCam is used to take photos with webcam and send them to the JSF backend model.
 
@@ -14137,7 +14017,7 @@ throw new FacesException("Error in writing captured image.");
 }
 
 
-## 3.103 PickList
+## PickList
 
 PickList is used for transferring data between two different collections.
 
@@ -14421,7 +14301,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.104 Poll
+## Poll
 
 Poll is an ajax component that has the ability to send periodical ajax requests.
 
@@ -14536,7 +14416,7 @@ update="txt_count" widgetVar="myPoll" autoStart="false" />
 Or bind a boolean variable to the _stop_ attribute and set it to false at any arbitrary time.
 
 
-## 3.105 Printer
+## Printer
 
 Printer allows sending a specific JSF component to the printer, not the whole page.
 
@@ -14574,7 +14454,7 @@ demonstrates how to print a simple output text or a particular image on page;
 <p:graphicImage id="image" value="/images/nature1.jpg" />
 ```
 
-## 3.106 ProgressBar
+## ProgressBar
 
 ProgressBar is a process status indicator that can either work purely on client side or interact with
 server side using ajax.
@@ -14719,7 +14599,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.107 RadioButton
+## RadioButton
 
 RadioButton is a helper component of SelectOneRadio to implement custom layouts.
 
@@ -14755,7 +14635,7 @@ tabindex null String Specifies the tab order of element in tab navigation.
 See custom layout part in SelectOneRadio section for more information.
 
 
-## 3.108 Rating
+## Rating
 
 Rating component features a star based rating system.
 
@@ -14898,7 +14778,7 @@ Style Class Applies
 .ui-rating-on Active star
 ```
 
-## 3.109 RemoteCommand
+## RemoteCommand
 
 RemoteCommand provides a way to execute backing bean methods directly from javascript.
 
@@ -15001,13 +14881,13 @@ Remote command can send dynamic parameters in the following way;
 increment([{name:'x', value:10}, {name:'y', value:20}]);
 ```
 
-## 3.110 Repeat
+## Repeat
 
 Repeat is an extension to the standard ui:repeat component to provide compatibility between
 Mojarra and MyFaces. There are no additonal features and usage is same as ui:repeat.
 
 
-## 3.111 ResetInput
+## ResetInput
 
 Input components keep their local values at state when validation fails. ResetInput is used to clear
 the cached values from state so that components retrieve their values from the backing bean model
@@ -15082,7 +14962,7 @@ PrimeFaces.currrent().resetInputs("form:panel")
 p:ajax has built-in _resetValues_ attribute to reset values of processed components during a request.
 
 
-## 3.112 Resizable
+## Resizable
 
 Resizable component is used to make another JSF component resizable.
 
@@ -15262,7 +15142,7 @@ Style Class Applies**
 .ui-resizable-proxy Proxy helper element for visual feedback
 
 
-## 3.113 Ribbon
+## Ribbon
 
 Ribbon is container component to group different sets of controls in a tabbed layout. Special styling
 is applied to inner components for a unified look.
@@ -15366,7 +15246,7 @@ Ribbon shares the same structure with TabView for the tabbing functionality, ref
 the styles of the Tabs.
 
 
-## 3.114 RibbonGroup
+## RibbonGroup
 
 RibbonGroup is a helper component for Ribbon to define groups in a tab.
 
@@ -15398,7 +15278,7 @@ label null String Label of the group.
 Refer to Ribbon component documentation for more information.
 
 
-## 3.115 Ring
+## Ring
 
 Ring is a data display component with a circular animation.
 
@@ -15517,7 +15397,7 @@ Style Class Applies
 .ui-ring-item Each item in the list.
 ```
 
-## 3.116 Row
+## Row
 
 Row is a helper component for datatable.
 
@@ -15546,7 +15426,7 @@ styleClas null String Style class of the component.
 See datatable grouping section for more information about how row is used.
 
 
-## 3.117 RowEditor
+## RowEditor
 
 RowEditor is a helper component for datatable.
 
@@ -15580,7 +15460,7 @@ saveTitle null String Title attribute for save icon.
 See inline editing section in datatable documentation for more information about usage.
 
 
-## 3.118 RowExpansion
+## RowExpansion
 
 RowExpansion is a helper component of datatable used to implement expandable rows.
 
@@ -15608,7 +15488,7 @@ styleClass null String Style class of the component.
 See datatable expandable rows section for more information about how rowExpansion is used.
 
 
-## 3.119 RowToggler
+## RowToggler
 
 RowToggler is a helper component for datatable.
 
@@ -15637,7 +15517,7 @@ UIComponent instance in a backing bean
 See expandable rows section in datatable documentation for more information about usage.
 
 
-## 3.120 Schedule
+## Schedule
 
 Schedule provides an Outlook Calendar, iCal like JSF component to manage events.
 
@@ -15983,7 +15863,7 @@ Schedule resides in a main container which _style_ and _styleClass_ attributes a
 classes are global, see the main theming section for more information.
 
 
-## 3.121 ScrollPanel
+## ScrollPanel
 
 ScrollPanel is used to display scrollable content with theme aware scrollbars instead of native
 browser scrollbars.
@@ -16047,7 +15927,7 @@ Style Class Applies
 .ui-scrollbar-drag Drag element.
 ```
 
-## 3.122 SelectBooleanButton
+## SelectBooleanButton
 
 SelectBooleanButton is used to select a binary decision with a toggle button.
 
@@ -16139,7 +16019,7 @@ the list of structural style classes;
 .ui-selectbooleanbutton Main container element.
 
 
-## 3.123 SelectBooleanCheckbox
+## SelectBooleanCheckbox
 
 SelectBooleanCheckbox is an extended version of the standard checkbox with theme integration.
 
@@ -16237,7 +16117,7 @@ Style Class Applies
 .ui-chkbox-icon Checkbox label.
 
 
-## 3.124 SelectCheckboxMenu
+## SelectCheckboxMenu
 
 SelectCheckboxMenu is a multi select component that displays options in an overlay.
 
@@ -16376,7 +16256,7 @@ the list of structural style classes;
 .ui-chkbox-icon Checkbox icon.
 
 
-## 3.125 SelectManyButton
+## SelectManyButton
 
 SelectManyButton is a multi select component using button UI.
 
@@ -16444,7 +16324,7 @@ Style Class Applies
 .ui-selectmanybutton Main container element.
 ```
 
-## 3.126 SelectManyCheckbox
+## SelectManyCheckbox
 
 SelectManyCheckbox is an extended version of the standard SelectManyCheckbox.
 
@@ -16559,7 +16439,7 @@ Style Class Applies
 .ui-chkbox-icon Checkbox icon.
 ```
 
-## 3.127 SelectManyMenu
+## SelectManyMenu
 
 SelectManyMenu is an extended version of the standard SelectManyMenu.
 
@@ -16683,7 +16563,7 @@ Style Class Applies
 .ui-selectlistbox-item Each item in list.
 ```
 
-## 3.128 SelectOneButton
+## SelectOneButton
 
 SelectOneButton is an input component to do a single select.
 
@@ -16762,7 +16642,7 @@ Style Class Applies
 .ui-selectonebutton Main container element.
 ```
 
-## 3.129 SelectOneListbox
+## SelectOneListbox
 
 SelectOneListbox is an extended version of the standard selectOneListbox component.
 
@@ -16875,7 +16755,7 @@ Style Class Applies
 .ui-selectlistbox-item Each item in list.
 ```
 
-## 3.130 SelectOneMenu
+## SelectOneMenu
 
 SelectOneMenu is an extended version of the standard SelectOneMenu.
 
@@ -17065,7 +16945,7 @@ Style Class Applies
 .ui-selectonemenu-items Each item in the list.
 
 
-## 3.131 SelectOneRadio
+## SelectOneRadio
 
 SelectOneRadio is an extended version of the standard SelectOneRadio with theme integration.
 
@@ -17188,7 +17068,7 @@ Style Class Applies
 .ui-radiobutton-icon Radio button icon.
 ```
 
-## 3.132 Separator
+## Separator
 
 Separator displays a horizontal line to separate content.
 
@@ -17252,7 +17132,7 @@ Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.133 Sidebar
+## Sidebar
 
 Sidebar is a panel component displayed as an overlay at the edges of the screen.
 
@@ -17365,7 +17245,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.134 Signature
+## Signature
 
 Signature is used to draw a signature as an input. Various options such as background color,
 foreground color, thickness are available for customization. Signature also supports touch enabled
@@ -17533,7 +17413,7 @@ return output.toByteArray(); }
 return output.toByteArray();
 
 
-## 3.135 SlideMenu
+## SlideMenu
 
 SlideMenu is used to display nested submenus with sliding animation.
 
@@ -17641,7 +17521,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.136 Slider
+## Slider
 
 Slider is used to provide input with various customization options like orientation, display modes
 and skinning.
@@ -17828,7 +17708,7 @@ Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.137 Spotlight
+## Spotlight
 
 Spotlight highlights a certain component on page.
 
@@ -17888,7 +17768,7 @@ Class Applies
 .ui-spotlight-right Right mask element.
 ```
 
-## 3.138 Socket
+## Socket
 
 Socket component is an agent that creates a push channel between the server and the client.
 
@@ -17946,7 +17826,7 @@ autoConnect true Boolean Connects to channel on page load when enabled.
 See chapter 5, "PrimeFaces Push" for detailed information.
 
 
-## 3.139 Spacer
+## Spacer
 
 Spacer is used to put spaces between elements.
 
@@ -17984,7 +17864,7 @@ Spacer in this example separates this text <p:spacer width="100" height="10"> an
 <p:spacer width="100" height="10"> this text.
 ```
 
-## 3.140 Spinner
+## Spinner
 
 Spinner is an input component to provide a numerical input via increment and decrement buttons.
 
@@ -18171,7 +18051,7 @@ Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.141 SplitButton
+## SplitButton
 
 SplitButton displays a command by default and additional ones in an overlay.
 
@@ -18353,7 +18233,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 3.142 Submenu
+## Submenu
 
 Submenu is nested in menu components and represents a sub menu items.
 
@@ -18385,7 +18265,7 @@ expanded false Boolean Defines the state of submenu.
 Please see Menu or Menubar section to find out how submenu is used with the menus.
 
 
-## 3.143 Stack
+## Stack
 
 Stack is a navigation component that mimics the stacks feature in Mac OS X.
 
@@ -18451,7 +18331,7 @@ Class Applies**
 .ui-stack ul li span Label of a stack item
 
 
-### 3.144 Steps
+### Steps
 
 Steps components is an indicator for the steps in a workflow. Layout of steps component is
 optimized for responsive design.
@@ -18531,7 +18411,7 @@ margin-bottom: 10px;
 }
 ```
 
-### 3.145 Sticky
+### Sticky
 
 Sticky component positions other components as fixed so that these components stay in window
 viewport during scrolling.
@@ -18580,7 +18460,7 @@ There are no visual styles of sticky however, _ui-sticky_ class is applied to th
 is fixed. When target is restored to its original location this is removed.
 
 
-### 3.146 SubTable
+### SubTable
 
 SubTable is a helper component of datatable used for grouping.
 
@@ -18611,7 +18491,7 @@ var null String Name of the data iterator.
 See DataTable section for more information.
 
 
-### 3.147 SummaryRow
+### SummaryRow
 
 SummaryRow is a helper component of datatable used for dynamic grouping.
 
@@ -18641,7 +18521,7 @@ row. (e.g. to calculate totals).
 See DataTable section for more information.
 
 
-### 3.148 Tab
+### Tab
 
 Tab is a generic container component used by other PrimeFaces components such as tabView and
 accordionPanel.
@@ -18676,7 +18556,7 @@ See the sections of components who utilize tab component for more information. A
 component, not all attributes may apply to the components that use tab.
 
 
-### 3.149 TabMenu
+### TabMenu
 
 TabMenu is a navigation component that displays menuitems as tabs.
 
@@ -18735,7 +18615,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-### 3.150 TabView
+### TabView
 
 TabView is a container component to group content in tabs.
 
@@ -18925,7 +18805,7 @@ Class Applies
 .ui-tabs-scrollable Container element of a scrollable tabview.
 ```
 
-### 3.151 TagCloud
+### TagCloud
 
 TagCloud displays a collection of tag with different strengths.
 
@@ -19025,7 +18905,7 @@ applies to main container and _.ui-tagcloud-strength-[1,5]_ applies to each tag.
 classes are global, see the main theming section for more information.
 
 
-### 3.152 Terminal
+### Terminal
 
 Terminal is an ajax powered web based terminal that brings desktop terminals to JSF.
 
@@ -19101,7 +18981,7 @@ Style Class Applies
 .ui-terminal-prompt Prompt text.
 ```
 
-### 3.153 TextEditor
+### TextEditor
 
 Editor is an input component with rich text editing capabilities based on Quill.
 
@@ -19214,7 +19094,7 @@ Refer to QuillJS documentation for styling;
 https://quilljs.com/guides/how-to-customize-quill/
 
 
-### 3.154 ThemeSwitcher
+### ThemeSwitcher
 
 ThemeSwitcher enables switching PrimeFaces themes on the fly with no page refresh.
 
@@ -19293,7 +19173,7 @@ itemLabel="#{theme.name}" itemValue="#{theme}"/>
 </p:themeSwitcher>
 ```
 
-### 3.155 TimeLine
+### TimeLine
 
 Timeline is an interactive graph to visualize events in time.
 
@@ -19610,7 +19490,7 @@ drop TimelineDragDropEvent On drop from outside.
 * All events are under org.primefaces.event.timeline.* package.
 
 
-### 3.156 TieredMenu
+### TieredMenu
 
 TieredMenu is used to display nested submenus with overlays.
 
@@ -19728,7 +19608,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-### 3.157 Toolbar
+### Toolbar
 
 Toolbar is a horizontal grouping component for commands and other content.
 
@@ -19802,7 +19682,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-### 3.158 ToolbarGroup
+### ToolbarGroup
 
 ToolbarGroup is a helper component for Toolbar component to define placeholders.
 
@@ -19833,7 +19713,7 @@ styleClass null String Style class of the container element.
 See toolbar documentation for more information about how Toolbar Group is used.
 
 
-### 3.159 Tooltip
+### Tooltip
 
 Tooltip goes beyond the legacy html title attribute by providing custom effects, events, html content
 and advance theme support.
@@ -19970,7 +19850,7 @@ Tooltip has only _.ui-tooltip_ as a style class and is styled with global skinni
 skinning section for more information.
 
 
-### 3.160 Tree
+### Tree
 
 Tree is used for displaying hierarchical data and creating site navigations.
 
@@ -20377,7 +20257,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-### 3.161 TreeNode
+### TreeNode
 
 TreeNode is used with Tree component to represent a node in tree.
 
@@ -20410,7 +20290,7 @@ TreeNode is used by Tree and TreeTable components, refer to sections of these co
 more information.
 
 
-### 3.162 TreeTable
+### TreeTable
 
 Treetable is is used for displaying hierarchical data in tabular format.
 
@@ -20627,7 +20507,7 @@ Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-### 3.163 TriStateCheckbox
+### TriStateCheckbox
 
 TriStateCheckbox adds a new state to a checkbox value.
 
@@ -20732,7 +20612,7 @@ Style Class Applies
 .ui-chkbox-label Checkbox label.
 ```
 
-### 3.164 Watermark
+### Watermark
 
 Watermark displays a hint on an input field.
 
@@ -20788,7 +20668,7 @@ For browsers that do not support placeholder, there’s only one css style class
 which is ‘ _.ui-watermark_ ’, you can override this class to bring in your own style.
 
 
-### 3.165 Wizard
+### Wizard
 
 Wizard provides an ajax enhanced UI to implement a workflow easily in a single page. Wizard
 consists of several child tab components where each tab represents a step in the process.
@@ -21019,19 +20899,19 @@ Selector Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## 4. Partial Rendering and Processing
+## Partial Rendering and Processing
 
 PrimeFaces provides a partial rendering and view processing feature based on standard JSF 2 APIs
 to enable choosing what to process in JSF lifecyle and what to render in the end with ajax.
 
-### 4.1 Partial Rendering
+### Partial Rendering
 
 In addition to components like autoComplete, datatable, slider with built-in ajax capabilities,
 PrimeFaces also provides a generic PPR (Partial Page Rendering) mechanism to update JSF
 components with ajax. Several components are equipped with the common PPR attributes (e.g.
 update, process, onstart, oncomplete).
 
-#### 4.1.1 Infrastructure................................................................................................................
+#### Infrastructure................................................................................................................
 
 PrimeFaces Ajax Framework is based on standard server side APIs of JSF 2. There are no additional
 artfacts like custom AjaxViewRoot, AjaxStateManager, AjaxViewHandler, Servlet Filters,
@@ -21042,7 +20922,7 @@ Mojarra and MyFaces, PrimeFaces scripts are based on the most popular javascript
 which is far more tested, stable regarding ajax, dom handling, dom tree traversing than a JSF
 implementations scripts.
 
-#### 4.1.2 Using IDs.....................................................................................................................
+#### Using IDs.....................................................................................................................
 
 **Getting Started**
 When using PPR you need to specify which component(s) to update with ajax. If the component
@@ -21113,7 +20993,7 @@ whitespace or even both.
 </h:form>
 ```
 
-#### 4.1.3 Notifying Users............................................................................................................
+#### Notifying Users............................................................................................................
 
 ajaxStatus is the component to notify the users about the status of **global** ajax requests. See the
 ajaxStatus section to get more information about the component.
@@ -21129,13 +21009,13 @@ with commandButton would be;
 <p:commandButton value="Silent" global="false" />
 <p:commandButton value="Notify" global="true" />
 ```
-#### 4.1.4 Bits&Pieces..................................................................................................................
+#### Bits&Pieces..................................................................................................................
 
 **PrimeFaces Ajax Javascript API**
 See the javascript section to learn more about the PrimeFaces Javascript Ajax API.
 
 
-### 4.2 Partial Processing
+### Partial Processing
 
 In Partial Page Rendering, only specified components are rendered, similarly in Partial Processing
 only defined components are processed. Processing means executing Apply Request Values,
@@ -21147,7 +21027,7 @@ components, eliminating need of using immediate and many more use cases. Various
 such as commandButton, commandLink are equipped with process attribute, in examples we’ll be
 using commandButton.
 
-#### 4.2.1 Partial Validation..........................................................................................................
+#### Partial Validation..........................................................................................................
 
 A common use case of partial process is doing partial validations, suppose you have a simple
 contact form with two dropdown components for selecting city and suburb, also there’s an inputText
@@ -21195,20 +21075,20 @@ default value for process option is @this already for p:ajax as stated in AjaxBe
 documentation, it is explicitly defined here to give a better understanding of how partial processing
 works.
 
-#### 4.2.2 Using Ids......................................................................................................................
+#### Using Ids......................................................................................................................
 
 Partial Process uses the same technique applied in partial updates to specify component identifiers
 to process.
 
 
-### 4.3 Search Expression Framework
+### Search Expression Framework
 
 Core JSF component referencing is based on component identifiers only with basic keyword
 support. PrimeFaces Search Expression Framework (SEF) provides both server side and client side
 extensions to make it easier to reference components. SEF is utilized in partial update, process and
 whenever a component references another component.
 
-#### 4.3.1 Keywords.....................................................................................................................
+#### Keywords.....................................................................................................................
 
 Keywords are the easier way to reference components, they resolve to ids so that if an id changes,
 the reference does not need to change. Core JSF provides a couple of keywords and PrimeFaces
@@ -21270,7 +21150,7 @@ referencing another.
 </p:menu>
 </h:form>
 ```
-#### 4.3.2 PrimeFaces Selectors (PFS).........................................................................................
+#### PrimeFaces Selectors (PFS).........................................................................................
 
 PFS integrates jQuery Selector API with JSF component referencing model so that referencing can
 be done using jQuery Selector API instead of core id based JSF model. Best way to explain the
@@ -21349,7 +21229,7 @@ For full reference of jQuery selector api, see;
 http://api.jquery.com/category/selectors/
 ```
 
-### 4.4 PartialSubmit
+### PartialSubmit
 
 Core JSF Ajax implementation and by default PrimeFaces serializes the whole form to build the
 post data in ajax requests so the same data is posted just like in a non-ajax request. This has a
@@ -21376,12 +21256,12 @@ can override the global setting per component.
 <p:commandButton value="Submit" partialSubmit="true|false" />
 ```
 
-## 5. Javascript API
+## Javascript API
 
 PrimeFaces renders unobstrusive javascript which cleanly separates behavior from the html. Client
 side engine is powered by jQuery version 1.8.1 which is the latest at the time of the writing.
 
-### 5.1 PrimeFaces Namespace
+### PrimeFaces Namespace
 
 _PrimeFaces_ is the main javascript object providing utilities and namespace.
 
@@ -21425,7 +21305,7 @@ Most of the components have a corresponding client side widget with same name.
 PrimeFaces.ajax namespace contains the ajax API which is described in next section.
 
 
-### 5.2 Ajax API
+### Ajax API
 
 PrimeFaces Ajax Javascript API is powered by jQuery and optimized for JSF. Whole API consists
 of three properly namespaced simple javascript functions.
@@ -21508,7 +21388,7 @@ Use the abort API in case you'd like to cancel all the ongoing requests;
 PrimeFaces.ajax.Queue.abortAll()
 ```
 
-## 6. Dialog Framework
+## Dialog Framework
 
 Dialog Framework (DF) is used to open an external xhtml page in a dialog that is generated
 dynamically on runtime. This is quite different to regular usage of dialogs with declarative p:dialog
@@ -21697,7 +21577,7 @@ FacesMessage(FacesMessage.SEVERITY_INFO,
 ```
 
 
-## 7. Client Side Validation
+## Client Side Validation
 
 PrimeFaces Client Side Validation (CSV) Framework is the most complete and advanced CSV
 solution for JavaServer Faces and Java EE. CSV support for JSF is not an easy task, it is not simple
@@ -21716,7 +21596,7 @@ experience difference behaviors on client side and server side.
 - Advanced Bean Validation Integration.
 - Little footprint using HTML5.
 
-### 7.1 Configuration
+### Configuration
 
 CVS is disabled by default and a global parameter is required to turn it on.
 
@@ -21742,7 +21622,7 @@ using messages component.
 ```
 CSV works for PrimeFaces components only, standard h: * components are not supported.
 ```
-### 7.2 Ajax vs Non-Ajax
+### Ajax vs Non-Ajax
 
 CSV works differently depending on the request type of the trigger component to be compatible
 with cases where CVS is not enabled.
@@ -21758,7 +21638,7 @@ the components that would be processed at server side gets validated at client s
 update attribute is defined, only message components inside the updated parts gets rendered. Whole
 process happens at client side.
 
-### 7.3 Events
+### Events
 
 CSV provides a behavior called p:clientValidator to do instant validation in case you do not want to
 wait for the users to fill in the form and hit commandButton/commandLink. Using clientBehavior
@@ -21788,7 +21668,7 @@ validateClient="true"/>
 </p:panel>
 </h:form>
 ```
-### 7.4 Messages
+### Messages
 
 Validation errors are displayed as the same way in server side validation, texts are retrieved from a
 client side bundle and message components are required for the displays.
@@ -21826,7 +21706,7 @@ With Label:
 PrimeFaces.locales['en_US'].messages['javax.faces.validator.BeanValidator.MESSAGE'] =
 '{1}: {0}';
 ```
-### 7.5 Bean Validation
+### Bean Validation
 
 CSV has built-in integration with Bean Validation by validating the constraints defined with
 annotations at client side.
@@ -21856,7 +21736,7 @@ private Integer age;
 ```
 All of the standard constraints are supported.
 
-### 7.6 Extending CSV
+### Extending CSV
 
 Using CSV APIs, it is easy to write your own custom converters and validators.
 
@@ -22061,7 +21941,7 @@ BeanValidationMetadataMapper.removeConstraintMapping(Class<? extends Annotation>
 constraint);
 ```
 
-## 8. Themes
+## Themes
 
 PrimeFaces is integrated with powerful ThemeRoller CSS Framework. Currently there are 30+ pre-
 designed themes that you can preview and download from PrimeFaces theme gallery.
@@ -22070,7 +21950,7 @@ designed themes that you can preview and download from PrimeFaces theme gallery.
 http://www.primefaces.org/themes.html
 ```
 
-### 8.1 Applying a Theme
+### Applying a Theme
 
 Applying a theme to your PrimeFaces project is very easy. Each theme is packaged as a jar file,
 download the theme you want to use, add it to the classpath of your application and then define
@@ -22111,7 +21991,7 @@ In case you’d like to make the theme dynamic, define an EL expression as the p
 </context-param>
 ```
 
-### 8.2 Creating a New Theme
+### Creating a New Theme
 
 If you’d like to create your own theme instead of using the pre-defined ones, that is easy as well
 because ThemeRoller provides a powerful and easy to use online visual tool.
@@ -22152,7 +22032,7 @@ Once the jar of your theme is in classpath, you can use your theme like;
 </context-param>
 ```
 
-### 8.3 How Themes Work
+### How Themes Work
 
 Powered by ThemeRoller, PrimeFaces separates structural css from skinning css.
 
@@ -22189,7 +22069,7 @@ the color of a panel header you don’t need to about this class as _.ui-widget-
 the panel colors also applies to the panel header.
 
 
-### 8.4 Theming Tips
+### Theming Tips
 
 - Default font size of themes might be bigger than expected, to change the font-size of PrimeFaces
     components globally, use the .ui-widget style class. An example of smaller fonts;
@@ -22224,7 +22104,7 @@ To apply css on a particular panel;
 }
 ```
 
-### 8.5 FontAwesome
+### FontAwesome
 
 Font Awesome gives you scalable vector icons that can instantly be customized — size, color, drop
 shadow, and anything that can be done with the power of CSS. PrimeFaces bundles FontAwesome
@@ -22249,7 +22129,7 @@ For a full list of available icons please visit;
 http://www.primefaces.org/showcase/ui/misc/fa.xhtml
 ```
 
-## 9. PrimeFaces Push (Deprecated)
+## PrimeFaces Push (Deprecated)
 
 PrimeFaces Push is deprecated in favor of f:socket in JSF 2.3
 
@@ -22261,7 +22141,7 @@ see, long-polling, streaming and jsonp. For more information please visit;
 ```
 https://github.com/Atmosphere/atmosphere
 ```
-### 9.1 Setup
+### Setup
 
 **Atmosphere**
 Atmosphere is required to run PrimeFaces Push, in your pom.xml define the dependency as;
@@ -22288,7 +22168,7 @@ Push Servlet is used as a gateway for clients.
 </servlet-mapping>
 ```
 
-### 9.2 Annotations
+### Annotations
 
 Design of PFP is annotation driven centralized around the main @PushEndPoint.
 
@@ -22391,7 +22271,7 @@ private String username;
 //...
 ```
 
-### 9.3 API
+### API
 
 **RemoteEndPoint**
 The RemoteEndpoint() class represents the remote connection, e.g the Browser. An instance of
@@ -22419,7 +22299,7 @@ connected to the path by passing a Reply instance. Reply is an interface with a 
 _completed(String path)_ that is invoked when the EventBus delivered the message to the
 PushEndPoint that matches the path used to initiate the publish operation.
 
-### 9.4 Socket Component
+### Socket Component
 
 Socket is a PrimeFaces component that handles the connection between the server and the browser,
 common way to use socket is by defining a path and a callback to handle broadcasts.
@@ -22439,11 +22319,11 @@ push(json) json void Pushes data from client side.
 disconnect - void Disconnects from channel.
 ```
 
-### 9.5 Putting It All Together
+### Putting It All Together
 
 PrimeFaces Showcase has various push demos, in this section two of them are covered.
 
-#### 9.5.1 Counter........................................................................................................................
+#### Counter........................................................................................................................
 
 Counter is a global counter where each button click increments the count value and new value is
 pushed to all subscribers.
@@ -22520,7 +22400,7 @@ extra request.
 </p:socket>
 ```
 
-#### 9.5.2 FacesMessage..............................................................................................................
+#### FacesMessage..............................................................................................................
 
 This sample shows how to push FacesMessages from one client to all others and display them using
 Growl Component.
@@ -22585,7 +22465,7 @@ return message;
 }
 ```
 
-### 9.6 Tips and Tricks
+### Tips and Tricks
 
 **Dynamic Paths**
 Client side API would be handy to create dynamic channels, channel name of the socket does not
@@ -22624,7 +22504,7 @@ PushServlet extends from AtmosphereServlet so any configuration option for Atmos
 also applies PushServlet.
 
 
-## 10. PrimeFaces Mobile (Deprecated)
+## PrimeFaces Mobile (Deprecated)
 
 PrimeFaces Mobile is deprecated in favor of responsive design features of the standard renderkit.
 
@@ -22636,7 +22516,7 @@ In addition to the seamless integration with jQuery Mobile, PFM features a Mobil
 popular PrimeFaces components, ajax framework extensions, mobile ajax behavior events,
 integrated navigation model, lazy loading of pages, responsive widgets and more.
 
-### 10.1 Setup
+### Setup
 
 Mobile ships with PrimeFaces Core so no additional download is required.
 
@@ -22674,7 +22554,7 @@ file should be preferred instead of per page configuration.
 </application>
 ```
 
-### 10.2 Pages
+### Pages
 
 A mobile page is a regular facelets xhtml file with mobile page containers defined with pm:page.
 
@@ -22721,7 +22601,7 @@ xmlns:pm="http://primefaces.org/mobile">
 </h:body>
 </html>
 ```
-### 10.2 Navigations
+### Navigations
 
 PFM supports all kinds of standard navigations with the addition of a custom navigation model.
 
@@ -22776,9 +22656,9 @@ reverse: true|false,
 transition: 'fade'
 });
 ```
-### 10.3 Components
+### Components
 
-#### 10.3.1 Content.......................................................................................................................
+#### Content.......................................................................................................................
 
 Content is container component for the content area of a page.
 
@@ -22817,7 +22697,7 @@ Content is a children component of a page.
 </pm:page>
 ```
 
-#### 10.3.2 Field...........................................................................................................................
+#### Field...........................................................................................................................
 
 Field is a responsive layout component for label-input pairs.
 
@@ -22853,7 +22733,7 @@ displays the optimal placement for its children based on available width.
 </pm:field>
 ```
 
-#### 10.3.3 Footer.........................................................................................................................
+#### Footer.........................................................................................................................
 
 Footer is container component for the bottom area of a page.
 
@@ -22893,7 +22773,7 @@ Footer is a children component of a page.
 </pm:page>
 ```
 
-#### 10.3.4 Header........................................................................................................................
+#### Header........................................................................................................................
 
 Header is container component for the top area of a page.
 
@@ -22931,7 +22811,7 @@ Header is a children component of a page.
 </pm:page>
 ```
 
-#### 10.3.5 InputSlider.................................................................................................................
+#### InputSlider.................................................................................................................
 
 InputSlider is an input component with a touch enabled slider.
 
@@ -22998,7 +22878,7 @@ InputSlider requires an integer as its value.
 <pm:inputSlider minValue="100" maxValue="200" value="#{backingView.intProperty}"/>
 ```
 
-#### 10.3.6 Page............................................................................................................................
+#### Page............................................................................................................................
 
 Page is main component to define an internal page within an xhtml.
 
@@ -23033,7 +22913,7 @@ first navigated to.
 Please see section 10.1 Pages for the usage and more information.
 
 
-#### 10.3.7 RangeSlider................................................................................................................
+#### RangeSlider................................................................................................................
 
 RangeSlider is a grouping component for dual sliders to create a range selection.
 
@@ -23070,7 +22950,7 @@ RangeSlider needs two sliders as children, first slider is for the start of rang
 </pm:rangeSlider>
 ```
 
-#### 10.3.8 Switch (Deprecated)..................................................................................................
+#### Switch (Deprecated)..................................................................................................
 
 Switch is deprecated, use p:inputSwitch instead.
 
@@ -23134,78 +23014,78 @@ onLabel would be used otherwise.
 <pm:switch value="#{backingView.booleanProperty}" />
 ```
 
-### 10.4 RenderKit
+### RenderKit
 
 In addition to the mobile components, various core components have been enhanced with touch
 optimized mobile renderers so that same component can be optimized for a mobile browser. Since
 usage is same in desktop and mobile environments, refer to chapter 3 for documentation about these
 components.
 
-#### 10.4.1 AccordionPanel..........................................................................................................
+#### AccordionPanel..........................................................................................................
 
-#### 10.4.2 AutoComplete............................................................................................................
+#### AutoComplete............................................................................................................
 
-#### 10.4.3 Button........................................................................................................................
-
-
-#### 10.4.4 Calendar.....................................................................................................................
-
-#### 10.4.5 ConfirmDialog...........................................................................................................
-
-#### 10.4.6 DataList......................................................................................................................
-
-Additional supported ajax events are swiperight, swiperight, tap and taphold.
+#### Button........................................................................................................................
 
 
-#### 10.4.7 DataGrid....................................................................................................................
+#### Calendar.....................................................................................................................
 
-#### 10.4.8 DataTable...................................................................................................................
+#### ConfirmDialog...........................................................................................................
+
+#### DataList......................................................................................................................
 
 Additional supported ajax events are swiperight, swiperight, tap and taphold.
 
-#### 10.4.9 Dialog........................................................................................................................
+
+#### DataGrid....................................................................................................................
+
+#### DataTable...................................................................................................................
+
+Additional supported ajax events are swiperight, swiperight, tap and taphold.
+
+#### Dialog........................................................................................................................
 
 
-#### 10.4.10 FileUpload...............................................................................................................
+#### FileUpload...............................................................................................................
 
-#### 10.4.11 Growl.......................................................................................................................
+#### Growl.......................................................................................................................
 
-#### 10.4.12 InputText..................................................................................................................
+#### InputText..................................................................................................................
 
-#### 10.4.13 InputTextarea...........................................................................................................
+#### InputTextarea...........................................................................................................
 
-#### 10.4.14 Link..........................................................................................................................
+#### Link..........................................................................................................................
 
-#### 10.4.15 Menu........................................................................................................................
+#### Menu........................................................................................................................
 
-#### 10.4.16 Panel........................................................................................................................
-
-
-#### 10.4.17 PanelGrid.................................................................................................................
-
-#### 10.4.17 SelectBooleanCheckbox..........................................................................................
-
-#### 10.4.18 SelectCheckboxMenu..............................................................................................
-
-#### 10.4.18 SelectManyButton...................................................................................................
-
-#### 10.4.19 SelectManyCheckbox..............................................................................................
-
-#### 10.4.20 SelectOneButton......................................................................................................
-
-#### 10.4.21 SelectOneMenu........................................................................................................
-
-#### 10.4.22 SelectOneRadio.......................................................................................................
+#### Panel........................................................................................................................
 
 
-#### 10.4.23 TabMenu..................................................................................................................
+#### PanelGrid.................................................................................................................
 
-#### 10.4.24 TabView...................................................................................................................
+#### SelectBooleanCheckbox..........................................................................................
 
-#### 10.4.25 Toolbar.....................................................................................................................
+#### SelectCheckboxMenu..............................................................................................
+
+#### SelectManyButton...................................................................................................
+
+#### SelectManyCheckbox..............................................................................................
+
+#### SelectOneButton......................................................................................................
+
+#### SelectOneMenu........................................................................................................
+
+#### SelectOneRadio.......................................................................................................
 
 
-### 10.5 Themes
+#### TabMenu..................................................................................................................
+
+#### TabView...................................................................................................................
+
+#### Toolbar.....................................................................................................................
+
+
+### Themes
 
 Mobile theming is similar to the core theming documented at chapter 8. Main difference is the
 swatch concept of mobile themes where one theme can contain multiple swatches. Default theme
@@ -23253,11 +23133,11 @@ Once the jar of your theme is in classpath, you can enable the theme by the foll
 param-value can be an EL expression as well to implement dynamic theming.
 
 
-### 10.6 Framework
+### Framework
 
 In addition to the UI components, PFM provides seamless integration with jQuery Mobile.
 
-#### 10.6.1 Ajax Updates..............................................................................................................
+#### Ajax Updates..............................................................................................................
 
 Plain jQuery Mobile UI elements use progressive enhancement approach that runs once on page
 load, this breaks JSF ajax updates since the updated parts cannot be enhanced again. PFM takes care
@@ -23288,7 +23168,7 @@ update the datalist and inputtext.
 <p:inputText />
 </p:outputPanel>
 ```
-#### 10.6.2 Pass Through Elements..............................................................................................
+#### Pass Through Elements..............................................................................................
 
 jQM is data attribute driven, thanks to JSF 2.2's dynamic attributes support, PrimeFaces
 Components can have mobile specific options easily. Example below adds inset setting to a datalist.
@@ -23302,7 +23182,7 @@ Note that pt is the standard taglib; _xmlns:pt="http://xmlns.jcp.org/jsf/passthr
 of available data attributes, consult the jQuery Mobile documentation.
 
 
-#### 10.6.3 Lazy Pages.................................................................................................................
+#### Lazy Pages.................................................................................................................
 
 For a mobile device with bandwith concerns, loading all the pages in same xhtml at once in an
 eager fashion is not optimal and might cause performance issues if the page size is big. PFM
@@ -23338,7 +23218,7 @@ xmlns:pm="http://primefaces.org/mobile">
 At first page load, second page contents are not available on page, clicking the link first makes an
 ajax request to fetch the contents, create the UI and then finally navigate to it.
 
-#### 10.6.4 Touch Events..............................................................................................................
+#### Touch Events..............................................................................................................
 
 Touch events like swipe are enabled in some components. In following, items in the list can be
 removed by _swipeleft_ or _swiperight_ and detail is displayed with _taphold_.
@@ -23375,9 +23255,9 @@ new FacesMessage(FacesMessage.SEVERITY_INFO,
 Sections 10.4 and 10.5 contains supported mobile events for a component when available.
 
 
-## 11. Misc
+## Misc
 
-### 11.1 PrimeFaces.current()
+### PrimeFaces.current()
 
 PrimeFaces.current() is a simple utility that provides useful goodies such as adding parameters to
 ajax callback functions. PrimeFaces.current() is available in both ajax and non-ajax requests. Scope
@@ -23485,55 +23365,11 @@ instance.execute(“dialog.hide()”);
 }
 
 
-### 11.2 EL Functions
+### EL Functions
 
-PrimeFaces provides built-in EL extensions that are helpers to common use cases.
+include::misc/functions.adoc[]
 
-**Common Functions
-Function Description**
-resolveClientId(expression, context) Returns clientId of the component from a given
-expression.
-resolveWidgetVar(expression, context) Returns widget variable name of the component from a
-given expression.
-
-**resolveClientId**
-
-```
-//Example to search from root:
-var clientId = #{p:resolveClientId('form:tabView:myDataTable', view)};
-//Example to search from current component:
-<p:commandButton onclick="#{p:resolveClientId('@parent', component)}">
-```
-**resolveWidgetVar**
-
-```
-<cc:implementation>
-<p:dialog id="dlg">
-//contents
-</p:dialog>
-<p:commandButton type="button" value="Show"
-onclick="#{p:resolveWidgetVar(‘dlg’), cc}.show()" />
-</cc:implementation>
-```
-**Page Authorization**
-Authorization function use HttpServletRequest API for the backend information.
-
-```
-Function Description
-ifGranted(String role) Returns true if user has the given role, else false.
-ifAllGranted(String roles) Returns true if user has all of the given roles, else false.
-ifAnyGranted(String roles) Returns true if user has any of the given roles, else false.
-ifNotGranted(String roles) Returns true if user has none of the given roles, else false.
-remoteUser() Returns the name of the logged in user.
-userPrincipal() Returns the principal instance of the logged in user.
-```
-
-<p:commandButton rendered="#{p:ifGranted('ROLE_ADMIN')}" />
-<h:inputText disabled="#{p:ifGranted('ROLE_GUEST')}" />
-<p:inputMask rendered="#{p:ifAllGranted('ROLE_EDITOR, ROLE_READER')}" />
-
-
-### 11.3 Exception Handler
+### Exception Handler
 
 PrimeFaces provides a built-in exception handler to take care of exceptions in ajax and non-ajax
 requests easily.
@@ -23623,7 +23459,7 @@ _javax.faces.FACELETS_BUFFER_SIZE_ parameter. Otherwise you will probably see a
 ServletException with "Response already committed" message.
 
 
-### 11.4 BeanValidation Transformation
+### BeanValidation Transformation
 
 Since JavaEE 6, validation metadata is already available for many components via the value
 reference and BeanValidation (e.g. @NotNull, @Size). The JSF Implementations use this
@@ -23666,7 +23502,7 @@ instance has required enabled.
 <input type="text" maxlength="30" ... />
 ```
 
-### 11.5 PrimeFaces Locales
+### PrimeFaces Locales
 
 Components may require translations and other settings based on different locales. This is handled
 with a client side api called PrimeFaces Locales. A client side locale is basically a javascript object
@@ -23824,7 +23660,7 @@ _PrimeFaces.locales['de'] = {//settings}_
 It is suggested to put this code in a javascript file and include the file into your pages.
 
 
-### 11.6 Right to Left
+### Right to Left
 
 Right-To-Left language support in short RTL is provided out of the box by a subset of PrimeFaces
 components. Any component equipped with _dir_ attribute has the official support and there is also a
@@ -23854,7 +23690,7 @@ the component you use doesn’t provide it, overriding css and javascript in you
 the solution.
 
 
-### 11.7 Responsive Design
+### Responsive Design
 
 There are three ingridients to make a responsive page with PrimeFaces.
 
@@ -23903,7 +23739,7 @@ http://www.primefaces.org/showcase/ui/misc/responsive.xhtml
 Source code is available at GitHub.
 
 
-### 11.8 WAI-ARIA
+### WAI-ARIA
 
 WAI-ARIA (Web Accessibility Initiative – Accessible Rich Internet Applications) is a technical
 specification published by the World Wide Web Consortium (W3C) that specifies how to increase
@@ -23932,7 +23768,7 @@ bundle to provide your own values.
 - primefaces.datatable.SORT_DESC = Descending
 
 
-## 12. Portlets
+## Portlets
 
 PrimeFaces supports portlet environments based on JSF 2 and Portlet 2 APIs. A portlet bridge is
 necessary to run a JSF application as a portlet and we suggest LiferayFaces bridge as the
@@ -23961,9 +23797,9 @@ rich UI with the <f:ajax /> tag
 - Uses the PrimeFaces p:confirmDialog tag to popup a yes/no dialog to verify file deletion
 
 
-## 13. IDE Support
+## IDE Support
 
-### 13.1 NetBeans
+### NetBeans
 
 NetBeans 7.0+ bundles PrimeFaces, when creating a new project you can select PrimeFaces from
 components tab;
@@ -23981,12 +23817,12 @@ Starting with NetBeans 8, the IDE provides a built-in CRUD plugin for PrimeFaces
 There is also another 3rd party plugin for NetBeans called PrimeFaces CRUD Generator.
 _[http://sourceforge.net/projects/nbpfcrudgen/](http://sourceforge.net/projects/nbpfcrudgen/)_
 
-### 13.2 Eclipse
+### Eclipse
 
 Code completion works out of the box for Eclipse when JSF facet is enabled.
 
 
-## 14. Project Resources
+## Project Resources
 
 **Documentation**
 This guide is the main resource for documentation, for additional documentation like apidocs, taglib
@@ -24032,7 +23868,7 @@ You can follow PrimeFaces on twitter using @primefaces and join the Facebook gro
 and more.
 
 
-## 15. FAQ
+## FAQ
 
 **1. Who develops PrimeFaces?**
 PrimeFaces is developed and maintained by PrimeTek, a software development company

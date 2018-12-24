@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
         <groupId>org.sonatype.oss</groupId>
@@ -785,12 +786,17 @@
                         <configuration>
                             <backend>html5</backend>
                             <attributes>
+                                <project-version>${project.version}</project-version>
+                                <faces-config>${basedir}/src/main/resources/META-INF/faces-config.xml</faces-config>
                                 <taglib>${basedir}/src/main/resources/META-INF/primefaces-p.taglib.xml</taglib>
                                 <ftl>${basedir}/src/main/asciidoc/ftl</ftl>
                             </attributes>
                             <extensions>
                                 <extension>
                                     <className>org.primefaces.asciidoc.IncludeComponentProcessor</className>
+                                </extension>
+                                <extension>
+                                    <className>org.primefaces.asciidoc.IncludeFunctionsProcessor</className>
                                 </extension>
                             </extensions>
                         </configuration>

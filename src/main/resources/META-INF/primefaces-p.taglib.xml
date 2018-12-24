@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<facelet-taglib xmlns="http://java.sun.com/xml/ns/javaee"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<facelet-taglib xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns="http://java.sun.com/xml/ns/javaee"
                 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd"
                 version="2.0">
 
@@ -10,72 +10,84 @@
         <function-name>component</function-name>
         <function-class>org.primefaces.util.ComponentUtils</function-class>
         <function-signature>java.lang.String findComponentClientId(java.lang.String)</function-signature>
+        <description>Returns clientId of the component from id</description>
     </function>
 
     <function>
         <function-name>resolveClientId</function-name>
         <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
         <function-signature>java.lang.String resolveClientId(java.lang.String, javax.faces.component.UIComponent)</function-signature>
+        <description>Returns clientId of the component from a given expression</description>
     </function>
 
     <function>
         <function-name>resolveClientIds</function-name>
         <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
         <function-signature>java.lang.String resolveClientIds(java.lang.String, javax.faces.component.UIComponent)</function-signature>
+        <description>Resolves a list of UIComponent clientIds and/or passtrough expressions for the given expression</description>
     </function>
 
     <function>
         <function-name>resolveWidgetVar</function-name>
         <function-class>org.primefaces.expression.SearchExpressionUtils</function-class>
         <function-signature>java.lang.String resolveWidgetVar(java.lang.String, javax.faces.component.UIComponent)</function-signature>
+        <description>Returns widget variable name of the component from a given expression</description>
     </function>
 
     <function>
         <function-name>widgetVar</function-name>
         <function-class>org.primefaces.util.ComponentUtils</function-class>
         <function-signature>java.lang.String resolveWidgetVar(java.lang.String)</function-signature>
+        <description>Returns widget variable name of the component from a given expression</description>
     </function>
 
     <function>
         <function-name>widgetVarFromContext</function-name>
         <function-class>org.primefaces.util.ComponentUtils</function-class>
         <function-signature>java.lang.String resolveWidgetVar(java.lang.String, javax.faces.component.UIComponent)</function-signature>
+        <description>Returns widget variable name of the component from a given expression</description>
     </function>
 
     <function>
         <function-name>ifGranted</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
         <function-signature>java.lang.Boolean ifGranted(java.lang.String)</function-signature>
+        <description>Returns true if user has the given role, else false.</description>
     </function>
 
     <function>
         <function-name>ifAllGranted</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
         <function-signature>java.lang.Boolean ifAllGranted(java.lang.String)</function-signature>
+        <description>Returns true if user has all of the given roles, else false.</description>
     </function>
 
     <function>
         <function-name>ifAnyGranted</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
         <function-signature>java.lang.Boolean ifAnyGranted(java.lang.String)</function-signature>
+        <description>Returns true if user has any of the given roles, else false.</description>
     </function>
 
     <function>
         <function-name>ifNoneGranted</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
         <function-signature>java.lang.Boolean ifNoneGranted(java.lang.String)</function-signature>
+        <description>Returns true if user has none of the given roles, else false.</description>
     </function>
 
     <function>
         <function-name>remoteUser</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
         <function-signature>java.lang.String remoteUser()</function-signature>
+        <description>Returns the name of the logged in user.</description>
     </function>
 
     <function>
         <function-name>userPrincipal</function-name>
         <function-class>org.primefaces.util.SecurityUtils</function-class>
         <function-signature>java.security.Principal userPrincipal()</function-signature>
+        <description>Returns the principal instance of the logged in user.</description>
     </function>
 
     <tag>

@@ -1,8 +1,8 @@
-## AccordionPanel
+=== AccordionPanel
 
 include::p-accordionPanel[]
 
-**Getting Started with Accordion Panel**
+==== Getting Started with Accordion Panel
 Accordion panel consists of one or more tabs and each tab can group any content. Titles can also be
 defined with “title” facet.
 
@@ -19,7 +19,7 @@ defined with “title” facet.
 </p:accordionPanel>
 ```
 
-**Dynamic Content Loading**
+==== Dynamic Content Loading
 AccordionPanel supports lazy loading of tab content, when dynamic option is set true, only active
 tab contents will be rendered to the client side and clicking an inactive tab header will do an ajax
 request to load the tab contents.
@@ -67,7 +67,7 @@ that contains a reference to the new active tab and the accordion panel itself. 
 _org.primefaces.event.TabCloseEvent_ is passed to the listener of tabClose event when an active tab is
 closed.
 
-**Dynamic Number of Tabs**
+==== Dynamic Number of Tabs
 When the tabs to display are not static, use the built-in iteration feature similar to ui:repeat.
 
 
@@ -79,7 +79,7 @@ When the tabs to display are not static, use the built-in iteration feature simi
 </p:tab>
 </p:accordionPanel>
 ```
-**Disabled Tabs**
+==== Disabled Tabs
 A tab can be disabled by setting disabled attribute to true.
 
 ```
@@ -102,14 +102,14 @@ By default, only one tab at a time can be active, enable _multiple_ mode to acti
 //tabs
 </p:accordionPanel>
 ```
-**TabController**
+==== TabController
 TabController is a server side listener that can be utilized to decide if a client side tab change or tab
 close action is allowed. When one of these two events occur, an ajax call is made to invoke the tab
 controller, then the boolean return value of this controller is sent back to click to decide if the event
 should be performed. An example use case is disallowing tab change if current tab has invalid
 inputs.
 
-**Client Side API**
+==== Client Side API
 Widget: _PrimeFaces.widget.AccordionPanel_
 
 ```
