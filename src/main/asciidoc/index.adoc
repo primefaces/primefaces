@@ -115,9 +115,7 @@ pattern of JavaEE. Here is the list of all configuration options defined with a 
 |CLIENT_SIDE_VALIDATION | false | Controls client side validatation.
 |UPLOADER | auto | Defines uploader mode: auto, native or commons
 |TRANSFORM_METADATA | false | Transforms bean validation metadata to html attributes.
-|LEGACY_WIDGET_NAMESPACE | false | Enables window scope so that widgets can be
-accessed using widgetVar.method() in addition to
-default PF namespace approach like `PF('widgetVar').method()`
+|LEGACY_WIDGET_NAMESPACE | false | Enables window scope so that widgets can be accessed using widgetVar.method() in addition to default PF namespace approach like `PF('widgetVar').method()`
 |FONT_AWESOME | false | Enabled font-awesome icons
 |INTERPOLATE_CLIENT_SIDE_VALIDATION_MESSAGES | false | Whether to load the CSV messages from server.
 |MOVE_SCRIPTS_TO_BOTTOM | false | Moves all inline scripts to end of body tag for better performance and smaller html output
@@ -144,596 +142,19 @@ namespace to your page to begin using the components. Here is a simple page like
 When you run this page through Faces Servlet mapping e.g. *.jsf, you should see a rich text editor
 when you run the page with test.jsf.
 
-
 == Component Suite
 
 include::components/accordion.adoc[]
 
 include::components/ajax.adoc[]
 
-### AjaxExceptionHandler
+include::components/ajaxStatus.adoc[]
 
-AjaxExceptionHandler is a utility component for the built-in ExceptionHandler.
+include::components/ajaxExceptionHandler.adoc[]
 
-**Info**
+include::components/autoComplete.adoc[]
 
-```
-Tag ajaxExceptionHandler
-Component Class org.primefaces.component.ajaxexceptionhandler.AjaxExceptionHandler
-Component Type org.primefaces.component.AjaxExceptionHandler
-Component Family org.primefaces.component
-```
-**Attributes**
-
-```
-Name Default Type Description
-id null String Unique identifier of the component.
-rendered true Boolean Boolean value to specify the rendering of the
-component.
-binding null Object An el expression that maps to a server side
-UIComponent instance in a backing bean
-onexception null String Client side callback to execute after a exception
-with this type occured.
-update null String Components to update after a exception with this
-type occured.
-type null String Exception type to handle.
-```
-**Getting Started with AjaxExceptionHandler**
-Find the detailed information about this component at ExceptionHandler section at Utilities chapter.
-
-
-### AjaxStatus
-
-AjaxStatus is a global notifier for ajax requests.
-
-**Info**
-
-```
-Tag ajaxStatus
-Component Class org.primefaces.component.ajaxstatus.AjaxStatus
-Component Type org.primefaces.component.AjaxStatus
-Component Family org.primefaces.component
-Renderer Type org.primefaces.component.AjaxStatusRenderer
-Renderer Class org.primefaces.component.ajaxstatus.AjaxStatusRenderer
-```
-**Attributes**
-
-```
-Name Default Type Description
-id null String Unique identifier of the component.
-rendered true Boolean Boolean value to specify the rendering of the
-component.
-binding null Object An el expression that maps to a server side
-UIComponent instance in a backing bean
-onstart null String Client side callback to execute after ajax requests
-start.
-oncomplete null String Client side callback to execute after ajax requests
-complete.
-onsuccess null String Client side callback to execute after ajax requests
-completed succesfully.
-onerror null String Client side callback to execute when an ajax
-request fails.
-style null String Inline style of the component.
-styleClass null String Style class of the component.
-widgetVar null String Name of the client side widget.
-```
-
-**Getting Started with AjaxStatus**
-AjaxStatus uses facets to represent the request status. Most common used facets are _start_ and
-_complete._ Start facet will be visible once ajax request begins and stay visible until it’s completed.
-Once the ajax response is received and page is updated, start facet gets hidden and complete facet
-shows up.
-
-```
-<p:ajaxStatus>
-<f:facet name="start">
-<p:graphicImage value="ajaxloading.gif" />
-</f:facet>
-<f:facet name="complete">
-<h:outputText value="Done!" />
-</f:facet>
-</p:ajaxStatus>
-```
-**Events**
-Here is the full list of available event names;
-
-**default** : Initially visible when page is loaded.
-**start** : Before ajax request begins.
-**success** : When ajax response is received without error.
-**error** : When ajax response is received with an http error.
-**complete** : When everything finishes.
-
-```
-<p:ajaxStatus>
-<f:facet name="error">
-<h:outputText value="Error" />
-</f:facet>
-<f:facet name="success">
-<h:outputText value="Success" />
-</f:facet>
-<f:facet name="default">
-<h:outputText value="Idle" />
-</f:facet>
-<f:facet name="start">
-<h:outputText value="Sending" />
-</f:facet>
-<f:facet name="complete">
-<h:outputText value="Done" />
-</f:facet>
-</p:ajaxStatus>
-```
-**Custom Events**
-Facets are the declarative way to use, if you’d like to implement advanced cases with scripting you
-can take advantage of on* callbacks which are the event handler counterparts of the facets.
-
-```
-<p:ajaxStatus onstart="alert('Start')" oncomplete="alert('End')"/>
-```
-
-A comman usage of programmatic approach is to implement a custom status dialog;
-
-```
-<p:ajaxStatus onstart="PF('status').show()" oncomplete="PF('status').hide()"/>
-<p:dialog widgetVar="status" modal="true" closable="false">
-Please Wait
-</p:dialog>
-```
-**Client Side API**
-Widget: _PrimeFaces.widget.AjaxStatus_
-
-```
-Method Params Return Type Description
-trigger(event) event: Name of event. void Triggers given event.
-```
-**Skinning**
-AjaxStatus is equipped with _style_ and _styleClass_. Styling directly applies to a container element
-which contains the facets.
-
-```
-<p:ajaxStatus style="width:32px;height:32px" ... />
-```
-**Tips**
-
-- Avoid updating ajaxStatus itself to prevent duplicate facet/callback bindings.
-- Provide a fixed width/height to an inline ajaxStatus to prevent page layout from changing.
-- Components like commandButton has an attribute ( _global)_ to control triggering of AjaxStatus.
-- AjaxStatus also supports core JSF ajax requests of f:ajax as well.
-
-
-### AutoComplete
-
-AutoComplete provides live suggestions while an input is being typed.
-
-**Info**
-
-```
-Tag autoComplete
-Component Class org.primefaces.component.autocomplete.AutoComplete
-Component Type org.primefaces.component.AutoComplete
-Component Family org.primefaces.component
-Renderer Type org.primefaces.component.AutoCompleteRenderer
-Renderer Class org.primefaces.component.autocomplete.AutoCompleteRenderer
-```
-**Attributes**
-
-```
-Name Default Type Description
-id null String Unique identifier of the component.
-rendered true Boolean Boolean value to specify the rendering of the
-component.
-binding null Object An el expression that maps to a server side
-UIComponent instance in a backing bean.
-value null Object Value of the component than can be either an EL
-expression of a literal text.
-converter null Object An el expression or a literal text that defines a
-converter for the component. When it’s an EL
-expression, it’s resolved to a converter instance. In
-case it’s a static text, it must refer to a converter id.
-```
-
-**Name Default Type Description**
-immediate false Boolean When set true, process validations logic is executed
-at apply request values phase for this component.
-
-required false Boolean Marks component as required.
-validator null Method
-Expr
-
-A method expression that refers to a method
-validationg the input.
-valueChangeListener null Method
-Expr
-
-A method expression that refers to a method for
-handling a valuchangeevent.
-requiredMessage null String Message to be displayed when required field
-validation fails.
-converterMessage null String Message to be displayed when conversion fails.
-validatorMessage null String Message to be displayed when validation fails.
-widgetVar null String Name of the client side widget.
-completeMethod null Method
-Expr
-
-```
-Method providing suggestions.
-```
-var null String Name of the iterator used in pojo based suggestion.
-
-itemLabel null String Label of the item.
-itemValue null String Value of the item.
-maxResults unlimited Integer Maximum number of results to be displayed.
-minQueryLength true Integer Number of characters to be typed before starting to
-query.
-queryDelay 300 Integer Delay to wait in milliseconds before sending each
-query to the server.
-forceSelection false Boolean When enabled, autoComplete only accepts input
-from the selection list.
-scrollHeight null Integer Defines the height of the items viewport.
-effect null String Effect to use when showing/hiding suggestions.
-effectDuration 400 Integer Duration of effect in milliseconds.
-dropdown false Boolean Enables dropdown mode when set true.
-panelStyle null String Inline style of the items container element.
-panelStyleClass null String Style class of the items container element.
-multiple null Boolean When true, enables multiple selection.
-accesskey null String Access key that when pressed transfers focus to the
-input element.
-alt null String Alternate textual description of the input field.
-
-
-**Name Default Type Description**
-autocomplete null String Controls browser autocomplete behavior.
-dir null String Direction indication for text that does not inherit
-directionality. Valid values are LTR and RTL.
-disabled false Boolean Disables input field
-label null String A localized user presentable name.
-lang null String Code describing the language used in the generated
-markup for this component.
-maxlength null Integer Maximum number of characters that may be
-entered in this field.
-onblur null String Client side callback to execute when input element
-loses focus.
-onchange null String Client side callback to execute when input element
-loses focus and its value has been modified since
-gaining focus.
-onclick null String Client side callback to execute when input element
-is clicked.
-ondblclick null String Client side callback to execute when input element
-is double clicked.
-onfocus null String Client side callback to execute when input element
-receives focus.
-onkeydown null String Client side callback to execute when a key is
-pressed down over input element.
-onkeypress null String Client side callback to execute when a key is
-pressed and released over input element.
-onkeyup null String Client side callback to execute when a key is
-released over input element.
-onmousedown null String Client side callback to execute when a pointer
-button is pressed down over input element
-onmousemove null String Client side callback to execute when a pointer
-button is moved within input element.
-onmouseout null String Client side callback to execute when a pointer
-button is moved away from input element.
-onmouseover null String Client side callback to execute when a pointer
-button is moved onto input element.
-onmouseup null String Client side callback to execute when a pointer
-button is released over input element.
-onselect null String Client side callback to execute when text within
-input element is selected by user.
-
-
-**Name Default Type Description**
-placeholder null String Specifies a short hint.
-readonly false Boolean Flag indicating that this component will prevent
-changes by the user.
-size null Integer Number of characters used to determine the width
-of the input element.
-style null String Inline style of the container element.
-styleClass null String Style class of the container element.
-tabindex null Integer Position of the input element in the tabbing order.
-
-title null String Advisory tooltip informaton.
-itemtipMyPosition left top String Position of itemtip corner relative to item.
-itemtipAtPosition right bottom String Position of item corner relative to itemtip.
-cache false Boolean When enabled autocomplete caches the searched
-result list.
-cacheTimeout 300000 Integer Timeout value for cached results.
-emptyMessage null String Text to display when there is no data to display.
-appendTo null String Appends the overlay to the element defined by
-search expression. Defaults to document body.
-resultsMessage null String Hint text for screen readers to provide information
-about the search results.
-groupBy null Object Value to group items in categories.
-queryEvent keyup String Event to initiate the query, valid options are
-"keyup" and "enter".
-dropdownMode blank String Specifies the behavior dropdown button. Default
-"blank" mode sends an empty string and "current"
-mode sends the input value.
-autoHighlight true Boolean Highlights the first suggested item automatically.
-selectLimit null Integer Limits the multiple selection. Default is unlimited.
-inputStyle null String Inline style of the input element.
-inputStyleClass null String Style class of the input element.
-groupByTooltip null String Tooltip to display on group headers.
-my left top String Position of panel with respect to input.
-at left bottom String Position of input with respect to panel.
-active true Boolean Defines if autocomplete functionality is enabled.
-type text String Input field type.
-
-
-```
-Name Default Type Description
-moreText ... String The text shown in panel when the suggested list is
-greater than maxResults.
-unique false Boolean Ensures uniqueness of selected items.
-dynamic false Boolean Defines if dynamic loading is enabled for the
-element's panel. If the value is "true", the overlay is
-not rendered on page load to improve performance.
-autoSelection true Boolean Defines if auto selection of items that are equal to
-the typed input is enabled. If true, an item that is
-equal to the typed input is selected.
-```
-**Getting Started with AutoComplete**
-AutoComplete is an input component so it requires a value as usual. Suggestions are loaded by
-calling a server side completeMethod that takes a single string parameter which is the text entered.
-
-```
-<p:autoComplete value="#{bean.text}" completeMethod="#{bean.complete}" />
-```
-```
-public class Bean {
-private String text;
-public List<String> complete(String query) {
-List<String> results = new ArrayList<String>();
-for (int i = 0; i < 10; i++)
-results.add(query + i);
-return results;
-}
-//getter setter
-}
-```
-**Pojo Support**
-Most of the time, instead of simple strings you would need work with your domain objects,
-autoComplete supports this common use case with the use of a converter and data iterator.
-Following example loads a list of players, itemLabel is the label displayed as a suggestion and
-itemValue is the submitted value. Note that when working with pojos, you need to plug-in your own
-converter.
-
-```
-<p:autoComplete value="#{playerBean.selectedPlayer}"
-completeMethod="#{playerBean.completePlayer}"
-var="player"
-itemLabel="#{player.name}"
-itemValue="#{player}"
-converter="playerConverter"/>
-```
-
-```
-public class PlayerBean {
-private Player selectedPlayer;
-public Player getSelectedPlayer() {
-return selectedPlayer;
-}
-public void setSelectedPlayer(Player selectedPlayer) {
-this.selectedPlayer = selectedPlayer;
-}
-public List<Player> complete(String query) {
-List<Player> players = readPlayersFromDatasource(query);
-return players;
-}
-}
-```
-```
-public class Player {
-private String name;
-//getter setter
-}
-```
-**Limiting the Results**
-Number of results shown can be limited, by default there is no limit. When the suggestions exceed
-the number of results, a text defined by _moreText_ is displayed to indicate this case. There is no
-default action when the moreText is clicked, you need to use _moreText_ ajax behavior event to handle
-more results.
-
-```
-<p:autoComplete value="#{bean.text}"
-completeMethod="#{bean.complete}"
-maxResults="5" />
-```
-**Minimum Query Length**
-By default queries are sent to the server and completeMethod is called as soon as users starts typing
-at the input text. This behavior is tuned using the _minQueryLength_ attribute.
-
-```
-<p:autoComplete value="#{bean.text}" completeMethod="#{bean.complete}"
-minQueryLength="3" />
-```
-With this setting, suggestions will start when user types the 3rd character at the input field.
-
-**Query Delay**
-AutoComplete is optimized using _queryDelay_ option, by default autoComplete waits for 300
-milliseconds to query a suggestion request, if you’d like to tune the load balance, give a longer
-value. Following autoComplete waits for 1 second after user types an input.
-
-```
-<p:autoComplete value="#{bean.text}" completeMethod="#{bean.complete}"
-queryDelay="1000" />
-```
-
-**Custom Content**
-AutoComplete can display custom content by nesting columns.
-
-```
-<p:autoComplete value="#{autoCompleteBean.selectedPlayer}"
-completeMethod="#{autoCompleteBean.completePlayer}"
-var="p" itemValue="#{p}" converter="player">
-<p:column>
-<p:graphicImage value="/images/barca/#{p.photo}" width="40" height="50"/>
-</p:column>
-<p:column>
-#{p.name} - #{p.number}
-</p:column>
-</p:autoComplete>
-```
-**Dropdown Mode**
-When dropdown mode is enabled, a dropdown button is displayed next to the input field.
-Depending on dropdownMode configuration, clicking this button will either do a search with an
-empty query or search with the current value in input.
-
-```
-<p:autoComplete value="#{bean.text}" completeMethod="#{bean.complete}"
-dropdown="true" />
-```
-**Multiple Selection**
-AutoComplete supports multiple selection as well, to use this feature set multiple option to true and
-define a list as your backend model. Following example demonstrates multiple selection with
-custom content support.
-
-```
-<p:autoComplete id="advanced" value="#{autoCompleteBean.selectedPlayers}"
-completeMethod="#{autoCompleteBean.completePlayer}"
-var="p" itemLabel="#{p.name}" itemValue="#{p}" converter="player"
-multiple="true">
-<p:column style="width:20%;text-align:center">
-<p:graphicImage value="/images/barca/#{p.photo}"/>
-</p:column>
-<p:column style="width:80%">
-#{p.name} - #{p.number}
-</p:column>
-</p:autoComplete>
-```
-
-```
-public class AutoCompleteBean {
-private List<Player> selectedPlayers;
-//...
-}
-```
-**Caching**
-Suggestions can be cached on client side so that the same query does not do a request which is
-likely to return same suggestions again. To enable this, set _cache_ option to true. There is also a
-_cacheTimeout_ option to configure how long it takes to clear a cache automatically.
-
-```
-<p:autoComplete value="#{bean.text}" completeMethod="#{bean.complete}"
-cache="true"/>
-```
-**Ajax Behavior Events**
-Instead of waiting for user to submit the form manually to process the selected item, you can enable
-instant ajax selection by using the _itemSelect_ ajax behavior. Example below demonstrates how to
-display a message about the selected item instantly.
-
-```
-<p:autoComplete value="#{bean.text}" completeMethod="#{bean.complete}">
-<p:ajax event="itemSelect" listener="bean.handleSelect" update="msg" />
-</p:autoComplete>
-<p:messages id=”msg” />
-```
-```
-public class Bean {
-public void handleSelect(SelectEvent event) {
-Object item = event.getObject();
-FacesMessage msg = new FacesMessage("Selected", "Item:" + item);
-}
-//...
-}
-```
-Your listener(if defined) will be invoked with an _org.primefaces.event.Select_ instance that contains a
-reference to the selected item. Note that autoComplete also supports events inherited from regular
-input text such as blur, focus, mouseover in addition to _itemSelect_. Similarly, _itemUnselect_ event is
-
-
-provided for multiple autocomplete when an item is removed by clicking the remove icon. In this
-case _org.primefaces.event.Unselect_ instance is passed to a listener if defined.
-
-```
-Event Listener Parameter Fired
-itemSelect org.primefaces.event.SelectEvent On item selection.
-itemUnselect org.primefaces.event.UnselectEvent On item unselection.
-query - On query.
-moreText - When moreText is clicked.
-```
-**ItemTip**
-Itemtip is an advanced built-in tooltip when mouse is over on suggested items. Content of the
-tooltip is defined via the _itemtip_ facet.
-
-```
-<p:autoComplete value="#{autoCompleteBean.selectedPlayer1}" id="basicPojo"
-completeMethod="#{autoCompleteBean.completePlayer}"
-var="p" itemLabel="#{p.name}" itemValue="#{p}" converter="player">
-<f:facet name="itemtip">
-<h:panelGrid columns="2" cellpadding="5">
-<f:facet name="header">
-<p:graphicImage value="/images/barca/#{p.photo}" />
-</f:facet>
-<h:outputText value="Name: " />
-<h:outputText id="modelNo" value="#{p.name}" />
-<h:outputText value="Number " />
-<h:outputText id="year" value="#{p.number}" />
-<h:outputText value="Position " />
-<h:outputText value="#{p.position}"/>
-</h:panelGrid>
-</f:facet>
-</p:autoComplete>
-```
-**Client Side API**
-Widget: _PrimeFaces.widget.AutoComplete_
-
-
-```
-Method Params Return Type Description
-search(value) value: keyword for search void Initiates a search with given value
-close() - void Hides suggested items menu
-disable() - void Disables the input field
-enable() - void Enables the input field
-deactivate() - void Deactivates search behavior
-activate() - void Activates search behavior
-```
-**Skinning**
-Following is the list of structural style classes;
-
-```
-Class Applies
-.ui-autocomplete Container element.
-.ui-autocomplete-input Input field.
-.ui-autocomplete-panel Container of suggestions list.
-.ui-autocomplete-items List of items
-.ui-autocomplete-item Each item in the list.
-.ui-autocomplete-query Highlighted part in suggestions.
-```
-As skinning style classes are global, see the main theming section for more information.
-
-**Tips**
-
-- Do not forget to use a converter when working with pojos.
-- Enable forceSelection if you would like to accept values only from suggested list.
-- Increase query delay to avoid unnecessary load to server as a result of user typing fast.
-- Use emptyMessage option to provide feedback to the users that there are no suggestions.
-- Enable caching to avoid duplicate queries.
-
-
-### AutoUpdate
-
-AutoUpdate is a tag handler to mark a component to be updated at every ajax request.
-
-**Info**
-
-```
-Tag autoUpdate
-Handler Class org.primefaces.component.autoupdate.AutoUpdateTagHandler
-```
-**Attributes**
-
-```
-Name Default Type Description
-disabled false Boolean Whether the autoUpdate functionality is enabled.
-```
-**Getting Started with AutoUpdate**
-AutoUpdate is used by nesting inside a parent component.
-
-```
-<p:panel>
-<p:autoUpdate />
-</p:panel>
-```
+include::components/autoUpdate.adoc[]
 
 ### Barcode
 
@@ -3047,7 +2468,7 @@ datatipEditor null String Name of client side function that returns html to
 provide custom content in datatip.
 ```
 
-## Checkbox
+=== Checkbox
 
 Checkbox is a helper component of SelectManyCheckbox to implement custom layouts.
 
@@ -3083,7 +2504,7 @@ tabindex null String Specifies the tab order of element in tab navigation.
 See custom layout part in SelectManyCheckbox section for more information.
 
 
-## Chips
+=== Chips
 
 Chips is used to enter multiple values on an inputfield.
 
@@ -3174,7 +2595,7 @@ Style Class Applies
 .ui-chips-token-icon Close icon of a token.
 ```
 
-## Clock
+=== Clock
 
 Clock displays server or client datetime live.
 
@@ -3231,7 +2652,7 @@ Style Class Applies
 .ui-clock Container element.
 ```
 
-## Collector
+=== Collector
 
 Collector is a simple utility to manage collections declaratively.
 
@@ -3275,7 +2696,7 @@ books = new ArrayList<Book>();
 </p:commandLink>
 ```
 
-## Color Picker
+=== Color Picker
 
 ColorPicker is an input component with a color palette.
 
@@ -3382,7 +2803,7 @@ Style Class Applies
 .ui-colorpicker-rgb-hex Hex input.
 ```
 
-## Column
+=== Column
 
 Column is an extended version of the standard column used by various components like datatable,
 treetable and more.
@@ -3458,7 +2879,7 @@ As column is a reused component, see documentation of components that use a colu
 Not all attributes of column are implemented by the components that utilize column.
 
 
-## Columns
+=== Columns
 
 Columns is used by datatable to create columns dynamically.
 
@@ -3528,7 +2949,7 @@ true.
 See dynamic columns section in datatable documentation for detailed information.
 
 
-## ColumnGroup
+=== ColumnGroup
 
 ColumnGroup is used by datatable for column grouping.
 
@@ -3556,7 +2977,7 @@ type null String Type of group, valid values are “header” and “footer”.
 See grouping section in datatable documentation for detailed information.
 
 
-## ColumnToggler
+=== ColumnToggler
 
 ColumnToggler is a helper component for datatable to toggle visibility of columns.
 
@@ -3590,7 +3011,7 @@ component whose columns to be toggled.
 See column toggler section in datatable documentation for detailed information.
 
 
-## CommandButton
+=== CommandButton
 
 CommandButton is an extended version of standard commandButton with ajax and theming.
 
@@ -3804,7 +3225,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## CommandLink
+=== CommandLink
 
 CommandLink extends standard JSF commandLink with Ajax capabilities.
 
@@ -3951,7 +3372,7 @@ public void saveBook() {
 CommandLink renders an html anchor element that _style_ and _styleClass_ attributes apply.
 
 
-## Confirm
+=== Confirm
 
 Confirm is a behavior element used to integrate with global confirm dialog.
 
@@ -3975,7 +3396,7 @@ escape false Boolean Whether to escape the message.
 See global confirm dialog topic in next section for details.
 
 
-## ConfirmDialog
+=== ConfirmDialog
 
 ConfirmDialog is a replacement to the legacy javascript confirmation box. Skinning, customization
 and avoiding popup blockers are notable advantages over classic javascript confirmation.
@@ -4097,7 +3518,7 @@ Style Class Applies
 .ui-dialog-buttonpane Footer button panel
 ```
 
-## ContentFlow
+=== ContentFlow
 
 ContentFlow is a horizontal content gallery component with a slide animation.
 
@@ -4170,7 +3591,7 @@ Style Class Applies
 .caption Caption element
 ```
 
-## ContextMenu
+=== ContextMenu
 
 ContextMenu provides an overlay menu displayed on mouse right-click event.
 
@@ -4268,7 +3689,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## Dashboard
+=== Dashboard
 
 Dashboard provides a portal like layout with drag&drop based reorder capabilities.
 
@@ -4457,7 +3878,7 @@ void addWidget(int index, String widgetId) Adds a new widget at given index
 void reorderWidget(int index, String widgetId) Updates the index of widget in column
 ```
 
-## DataExporter
+=== DataExporter
 
 DataExporter is handy for exporting data listed using a Primefaces Datatable to various formats
 such as excel, pdf, csv and xml.
@@ -4630,7 +4051,7 @@ return excelOpt;
 }
 
 
-## DataGrid
+=== DataGrid
 
 DataGrid displays a collection of data in a grid layout.
 
@@ -4869,7 +4290,7 @@ As skinning style classes are global, see the main theming section for more info
     at these locations.
 
 
-## DataList
+=== DataList
 
 DataList presents a collection of data in list layout with several display types.
 
@@ -5030,7 +4451,7 @@ As skinning style classes are global, see the main theming section for more info
     at these locations.
 
 
-## DataScroller
+=== DataScroller
 
 DataScroller displays a collection of data with on demand loading using scrolling.
 
@@ -5163,7 +4584,7 @@ Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## DataTable
+=== DataTable
 
 DataTable displays data in tabular format.
 
@@ -6210,7 +5631,7 @@ Class Applies
 .ui-datatable-frozencolumn Frozen columns.
 
 
-## DefaultCommand
+=== DefaultCommand
 
 Which command to submit the form with when enter key is pressed a common problem in web apps
 not just specific to JSF. Browsers tend to behave differently as there doesn’t seem to be a standard
@@ -6269,7 +5690,7 @@ If you need multiple default commands on same page use scope attribute that refe
 component of the target input.
 
 
-## Diagram
+=== Diagram
 
 Diagram is generic component to create visual elements and connect them on a web page. SVG is
 used on modern browsers and VML on IE 8 and below. Component is highly flexible in terms of
@@ -6438,7 +5859,7 @@ connectionChange org.primefaces.event.diagram.ConnectionChange When a connection
 changed.
 ```
 
-## Dialog
+=== Dialog
 
 Dialog is a panel component that can overlay other elements on page.
 
@@ -6629,11 +6050,11 @@ As skinning style classes are global, see the main theming section for more info
     header attribute.
 
 
-## Drag&Drop
+=== Drag&Drop
 
 Drag&Drop utilities of PrimeFaces consists of two components; Draggable and Droppable.
 
-### Draggable
+==== Draggable
 
 **Info**
 
@@ -6779,7 +6200,7 @@ it’s parent.
 <p:draggable for="conpnl" containment="parent" />
 ```
 
-### Droppable
+==== Droppable
 
 **Info**
 
@@ -6980,7 +6401,7 @@ _hoverStyleClass_ and _activeStyleClass_ attributes are used to change the style
 interacting with a draggable.
 
 
-## Dock
+=== Dock
 
 Dock component mimics the well known dock interface of Mac OS X.
 
@@ -7052,7 +6473,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## Editor
+=== Editor
 
 Editor is an input component with rich text editing capabilities. (Deprecated: Use TextEditor
 instead)
@@ -7214,7 +6635,7 @@ Style Class Applies
 Editor is not integrated with ThemeRoller as there is only one icon set for the controls.
 
 
-## Effect
+=== Effect
 
 Effect component is based on the jQuery UI effects library.
 
@@ -7335,7 +6756,7 @@ with pulsate effect after ajax request completes.
 <p:commandButton value="Save" actionListener="#{bean.action}" update="messages"/>
 ```
 
-## FeedReader
+=== FeedReader
 
 FeedReader is used to display content from a feed.
 
@@ -7380,7 +6801,7 @@ Something went wrong.
 Note that you need the ROME library in your classpath to make feedreader work.
 
 
-## Fieldset
+=== Fieldset
 
 Fieldset is a grouping component as an extension to html fieldset.
 
@@ -7507,7 +6928,7 @@ As skinning style classes are global, see the main theming section for more info
     internally, you don’t need to manage this using toggleListener and collapsed option.
 
 
-## FileDownload
+=== FileDownload
 
 The legacy way to present dynamic binary data to the client is to write a servlet or a filter and
 stream the binary data. FileDownload presents an easier way to do the same.
@@ -7613,7 +7034,7 @@ onclick="PrimeFaces.monitorDownload(showStatus, hideStatus)">
 Cookies must be enabled for monitoring.
 
 
-## FileUpload
+=== FileUpload
 
 FileUpload goes beyond the browser input type="file" functionality and features an HTML5
 powered rich solution with graceful degradation for legacy browsers.
@@ -7900,7 +7321,7 @@ Note that uploadDirectory is used internally, you always need to implement the l
 contents yourself in your backing bean.
 
 
-## Focus
+=== Focus
 
 Focus is a utility component that makes it easy to manage the element focus on a JSF page.
 
@@ -7980,7 +7401,7 @@ when using a dialog.
 <h:inputText id="text" value="{bean.value}" />
 ```
 
-## Fragment
+=== Fragment
 
 Fragment component is used to define automatically partially process and update sections whenever
 ajax request is triggered by a descendant component.
@@ -8035,7 +7456,7 @@ mentioned components, there is no such restriction as they are updated for every
 regardless of the source.
 
 
-## Galleria
+=== Galleria
 
 Galleria is used to display a set of images.
 
@@ -8135,7 +7556,7 @@ Style Class Applies
 .ui-galleria-frame-image Thumbnail image.
 ```
 
-## GMap
+=== GMap
 
 GMap is a map component integrated with Google Maps API V3.
 
@@ -8579,7 +8000,7 @@ latlng null LatLng Coordinates of the reverse geocode query.
 addresses null List<String> List of results represented as strings.
 ```
 
-## GMapInfoWindow
+=== GMapInfoWindow
 
 GMapInfoWindow is used with GMap component to open a window on map when an overlay is
 selected.
@@ -8609,7 +8030,7 @@ maxWidth null Integer Maximum width of the info window
 See GMap section for more information about how gmapInfoWindow is used.
 
 
-## GraphicImage
+=== GraphicImage
 
 GraphicImage extends standard JSF graphic image component with the ability of displaying binary
 data like an inputstream. Main use cases of GraphicImage is to make displaying images stored in
@@ -8763,7 +8184,7 @@ uses an InputStream and not serializable whereas the serializable ByteArrayConte
 array.
 
 
-## Grid CSS
+=== Grid CSS
 
 Grid CSS is a lightweight responsive layout utility optimized for mobile devices, tablets and
 desktops. Up to 12 columns are supported based on fluid layout.
@@ -8883,7 +8304,7 @@ phone, they all get displayed in a separate row.
 Note: A column has a default padding by default, to remove it you may apply ui-g-nopad style class.
 
 
-## Growl
+=== Growl
 
 Growl is based on the Mac’s growl notification widget and used to display FacesMessages in an
 overlay.
@@ -9028,7 +8449,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## HeaderRow
+=== HeaderRow
 
 HeaderRow is a helper component of datatable used for dynamic grouping.
 
@@ -9056,7 +8477,7 @@ instance in a backing bean
 See DataTable section for more information.
 
 
-## HotKey
+=== HotKey
 
 HotKey is a generic key binding component that can bind any formation of keys to javascript event
 handlers or ajax calls.
@@ -9178,7 +8599,7 @@ Following form can be submitted with the _ctrl+shift+s_ combination.
 Note that hotkey will not be triggered if there is a focused input on page.
 
 
-## IdleMonitor
+=== IdleMonitor
 
 IdleMonitor watches user actions on a page and notify callbacks in case they go idle or active again.
 
@@ -9262,7 +8683,7 @@ resume() - void Resumes monitoring
 reset() - void Resets the timer of monitor.
 ```
 
-## ImageCompare
+=== ImageCompare
 
 ImageCompare provides a user interface to compare two images.
 
@@ -9311,7 +8732,7 @@ Both images are placed inside a div container element, _style_ and _styleClass_ 
 element.
 
 
-## ImageCropper
+=== ImageCropper
 
 ImageCropper allows cropping a certain region of an image. A new image is created containing the
 cropped area and assigned to a CroppedImage instanced on the server side.
@@ -9469,7 +8890,7 @@ return null;
 }
 
 
-## ImageSwitch
+=== ImageSwitch
 
 ImageSwitch component is a simple image gallery component.
 
@@ -9589,7 +9010,7 @@ are case sensitive.
 - zoom
 
 
-## ImportConstants
+=== ImportConstants
 
 In older EL versions (< 3.0), it's not possible to use constants or any other static fields/methods in
 an EL expression. As it is not really a good practive to create beans with getter/setter for each
@@ -9628,7 +9049,7 @@ public final static String PUSH_PATH = "/primepush";
 <h:outputText value="#{PFConstants.DOWNLOAD_COOKIE}" />
 ```
 
-## ImportEnum
+=== ImportEnum
 
 In older EL versions (< 3.0), it's not possible to use enum constants or any other static
 fields/methods in an EL expression. As it is not really a good practive to create beans with
@@ -9671,7 +9092,7 @@ ALL:
 </ui:repeat>>
 ```
 
-## Inplace
+=== Inplace
 
 Inplace provides easy inplace editing and inline content display. Inplace consists of two members,
 display element is the initial clickable label and inline element is the hidden content that is
@@ -9823,7 +9244,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## InputGroup
+=== InputGroup
 
 InputGroup is a CSS utility to group forms with icons and buttons.
 
@@ -9882,7 +9303,7 @@ Style class of the addon that contains a checkbox should be _ui-inputgroup-addon
 </div>
 ```
 
-## InputMask
+=== InputMask
 
 InputMask forces an input to fit in a defined mask template.
 
@@ -10015,7 +9436,7 @@ _style_ and _styleClass_ options apply to the displayed input element. As skinni
 global, see the main theming section for more information.
 
 
-## InputNumber
+=== InputNumber
 
 InputNumber formats input fields with numeric Strings. It supports currency symbols, minimum
 and maximum value, negative numbers, and a lot of round methods.
@@ -10204,7 +9625,7 @@ emptyValue="sign" />
 <p:inputNumber id="Input8" value="1234.000000001" decimalPlaces="15" />
 
 
-## InputSwitch
+=== InputSwitch
 
 InputSwitch is used to select a boolean value.
 
@@ -10312,7 +9733,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## InputText
+=== InputText
 
 InputText is an extension to standard inputText with skinning capabilities.
 
@@ -10443,7 +9864,7 @@ enable() - void Enables the input field.
 disable() - void Disables the input field.
 ```
 
-## InputTextarea
+=== InputTextarea
 
 InputTextarea is an extension to standard inputTextarea with autoComplete, autoResize, remaining
 characters counter and theming features.
@@ -10631,7 +10052,7 @@ ui-inputfield Textarea element.
 As skinning style classes are global, see the main theming section for more information.
 
 
-## Keyboard
+=== Keyboard
 
 Keyboard is an input component that uses a virtual keyboard to provide the input. Notable features
 are the customizable layouts and skinning capabilities.
@@ -10816,7 +10237,7 @@ clicked the keyboard is shown.
 Button can also be customized using the _buttonImage_ and _buttonImageOnly_ attributes.
 
 
-## KeyFilter
+=== KeyFilter
 
 KeyFilter is used to filter keyboard input on specified input components.
 
@@ -10889,7 +10310,7 @@ alpha /[a-z_]/i
 alphanum /[a-z0-9_]/i
 
 
-## Knob
+=== Knob
 
 Knob is an input component to insert numeric values in a range.
 
@@ -10999,7 +10420,7 @@ increment() - void Increments current value by step factor.
 Decrement/( - void Decremenets current value by step factor.
 ```
 
-## Layout
+=== Layout
 
 Layout component features a highly customizable borderLayout model making it very easy to
 create complex layouts even if you’re not familiar with web design.
@@ -11151,7 +10572,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## LayoutUnit
+=== LayoutUnit
 
 LayoutUnit represents a region in the border layout model of the Layout component.
 
@@ -11205,7 +10626,7 @@ In addition to _header_ and _footer_ attributes to display text at these locatio
 with the same name to display custom content.
 
 
-## Lifecycle
+=== Lifecycle
 
 Lifecycle is a utility component which displays the execution time of each JSF phase. It also
 synchronizes automatically after each AJAX request.
@@ -11248,7 +10669,7 @@ Then usage is simple as adding the component to the page.
 <p:lifecycle />
 ```
 
-## LightBox
+=== LightBox
 
 Lightbox is a powerful overlay that can display images, multimedia content, custom content and
 external urls.
@@ -11365,7 +10786,7 @@ Style Class Applies
 .ui-lightbox-caption Caption element.
 ```
 
-## Link
+=== Link
 
 Link is an extension to standard h:link component.
 
@@ -11467,7 +10888,7 @@ To navigate without outcome based approach, use href attribute.
 <p:link href="http://www.primefaces.org" value="Navigate"/>
 ```
 
-## Log
+=== Log
 
 Log component is a visual console to display logs on JSF pages.
 
@@ -11523,7 +10944,7 @@ show() - void Show the container element.
 hide() - void Hides the container element.
 ```
 
-## Media
+=== Media
 
 Media component is used for embedding multimedia content.
 
@@ -11608,7 +11029,7 @@ public StreamedContent getMedia() { return media; }
 }
 ```
 
-## MegaMenu
+=== MegaMenu
 
 MegaMenu is a horizontal navigation component that displays submenus together.
 
@@ -11729,7 +11150,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## Menu
+=== Menu
 
 Menu is a navigation component with submenus and menuitems.
 
@@ -11918,7 +11339,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## Menubar
+=== Menubar
 
 Menubar is a horizontal navigation component.
 
@@ -12043,7 +11464,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## MenuButton
+=== MenuButton
 
 MenuButton displays different commands in a popup menu.
 
@@ -12115,7 +11536,7 @@ Style Class Applies
 .ui-button-text Label of button
 ```
 
-## MenuItem
+=== MenuItem
 
 MenuItem is used by various menu components.
 
@@ -12259,7 +11680,7 @@ width:16px;
 }
 ```
 
-## Message
+=== Message
 
 Message is a pre-skinned extended version of the standard JSF message component.
 
@@ -12335,7 +11756,7 @@ ui-message-{severity}-detail Detail text
 {severity} can be ‘info’, ‘error’, ‘warn’ and error.
 
 
-## Messages
+=== Messages
 
 Messages is a pre-skinned extended version of the standard JSF messages component.
 
@@ -12438,7 +11859,7 @@ ui-messages-{severity}-icon Icon of the message.
 {severity} can be ‘info’, ‘error’, ‘warn’ and error.
 
 
-## Mindmap
+=== Mindmap
 
 Mindmap is an interactive tool to visualize mindmap data featuring lazy loading, callbacks,
 animations and more.
@@ -12541,7 +11962,7 @@ parent null MindmapNode Parent node instance.
 - IE 7 and IE 8 are not supported due to technical limitations, IE 9 is supported.
 
 
-## MultiSelectListbox
+=== MultiSelectListbox
 
 MultiSelectListbox is used to select an item from a collection of listboxes that are in parent-child
 relationship.
@@ -12658,7 +12079,7 @@ Style Class Applies
 .ui-multiselectlistbox-item Each item in a list.
 ```
 
-## NotificationBar
+=== NotificationBar
 
 NotificationBar displays a multipurpose fixed positioned panel for notification.
 
@@ -12743,7 +12164,7 @@ Selector Applies
 .ui-notificationbar Main container element
 ```
 
-## OrderList
+=== OrderList
 
 OrderList is used to sort a collection featuring drag&drop based reordering, transition effects and
 pojo support.
@@ -12908,7 +12329,7 @@ Style Class Applies
 .ui-orderlist-caption Caption of the list.
 ```
 
-## Organigram
+=== Organigram
 
 Organigram is a data component to display an organizational hierarchy.
 
@@ -13067,7 +12488,7 @@ When a node is expanded.
 Refer to JavaDocs for more information about Organigram Model API.
 
 
-## OrganigramNode
+=== OrganigramNode
 
 Represents a node in an Organigram model.
 
@@ -13108,7 +12529,7 @@ styleClass null String Style class of the element.
 Refer to Organigram for details.
 
 
-## OutputLabel
+=== OutputLabel
 
 OutputLabel is a an extension to the standard outputLabel component.
 
@@ -13216,7 +12637,7 @@ Style Class Applies
 .ui-outputlabel-rfi Required field indicator.
 ```
 
-## OutputPanel
+=== OutputPanel
 
 OutputPanel is a panel component with the ability to deferred loading.
 
@@ -13306,7 +12727,7 @@ _style_ and _styleClass_ attributes are used to style the outputPanel, by defaul
 is added to element and _.ui-outputpanel-loading_ when content is loading in deferred loading case.
 
 
-## OverlayPanel
+=== OverlayPanel
 
 OverlayPanel is a generic panel component that can be displayed on top of other content.
 
@@ -13420,7 +12841,7 @@ As skinning style classes are global, see the main theming section for more info
     _showCloseIcon_ settings.
 
 
-## Panel
+=== Panel
 
 Panel is a grouping component with content toggle, close and menu integration.
 
@@ -13541,7 +12962,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## PanelGrid
+=== PanelGrid
 
 PanelGrid is an extension to the standard panelGrid component with additional features such as
 theming and colspan-rowspan.
@@ -13650,7 +13071,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## PanelMenu
+=== PanelMenu
 
 PanelMenu is a hybrid component of accordionPanel and tree components.
 
@@ -13727,7 +13148,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## Password
+=== Password
 
 Password component is an extended version of standard inputSecret component with theme
 integration and strength indicator.
@@ -13906,7 +13327,7 @@ Name Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## PhotoCam
+=== PhotoCam
 
 PhotoCam is used to take photos with webcam and send them to the JSF backend model.
 
@@ -14016,7 +13437,7 @@ throw new FacesException("Error in writing captured image.");
 }
 
 
-## PickList
+=== PickList
 
 PickList is used for transferring data between two different collections.
 
@@ -14300,7 +13721,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## Poll
+=== Poll
 
 Poll is an ajax component that has the ability to send periodical ajax requests.
 
@@ -14415,7 +13836,7 @@ update="txt_count" widgetVar="myPoll" autoStart="false" />
 Or bind a boolean variable to the _stop_ attribute and set it to false at any arbitrary time.
 
 
-## Printer
+=== Printer
 
 Printer allows sending a specific JSF component to the printer, not the whole page.
 
@@ -14453,7 +13874,7 @@ demonstrates how to print a simple output text or a particular image on page;
 <p:graphicImage id="image" value="/images/nature1.jpg" />
 ```
 
-## ProgressBar
+=== ProgressBar
 
 ProgressBar is a process status indicator that can either work purely on client side or interact with
 server side using ajax.
@@ -14598,7 +14019,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## RadioButton
+=== RadioButton
 
 RadioButton is a helper component of SelectOneRadio to implement custom layouts.
 
@@ -14634,7 +14055,7 @@ tabindex null String Specifies the tab order of element in tab navigation.
 See custom layout part in SelectOneRadio section for more information.
 
 
-## Rating
+=== Rating
 
 Rating component features a star based rating system.
 
@@ -14777,7 +14198,7 @@ Style Class Applies
 .ui-rating-on Active star
 ```
 
-## RemoteCommand
+=== RemoteCommand
 
 RemoteCommand provides a way to execute backing bean methods directly from javascript.
 
@@ -14880,13 +14301,13 @@ Remote command can send dynamic parameters in the following way;
 increment([{name:'x', value:10}, {name:'y', value:20}]);
 ```
 
-## Repeat
+=== Repeat
 
 Repeat is an extension to the standard ui:repeat component to provide compatibility between
 Mojarra and MyFaces. There are no additonal features and usage is same as ui:repeat.
 
 
-## ResetInput
+=== ResetInput
 
 Input components keep their local values at state when validation fails. ResetInput is used to clear
 the cached values from state so that components retrieve their values from the backing bean model
@@ -14961,7 +14382,7 @@ PrimeFaces.currrent().resetInputs("form:panel")
 p:ajax has built-in _resetValues_ attribute to reset values of processed components during a request.
 
 
-## Resizable
+=== Resizable
 
 Resizable component is used to make another JSF component resizable.
 
@@ -15141,7 +14562,7 @@ Style Class Applies**
 .ui-resizable-proxy Proxy helper element for visual feedback
 
 
-## Ribbon
+=== Ribbon
 
 Ribbon is container component to group different sets of controls in a tabbed layout. Special styling
 is applied to inner components for a unified look.
@@ -15245,7 +14666,7 @@ Ribbon shares the same structure with TabView for the tabbing functionality, ref
 the styles of the Tabs.
 
 
-## RibbonGroup
+=== RibbonGroup
 
 RibbonGroup is a helper component for Ribbon to define groups in a tab.
 
@@ -15277,7 +14698,7 @@ label null String Label of the group.
 Refer to Ribbon component documentation for more information.
 
 
-## Ring
+=== Ring
 
 Ring is a data display component with a circular animation.
 
@@ -15396,7 +14817,7 @@ Style Class Applies
 .ui-ring-item Each item in the list.
 ```
 
-## Row
+=== Row
 
 Row is a helper component for datatable.
 
@@ -15425,7 +14846,7 @@ styleClas null String Style class of the component.
 See datatable grouping section for more information about how row is used.
 
 
-## RowEditor
+=== RowEditor
 
 RowEditor is a helper component for datatable.
 
@@ -15459,7 +14880,7 @@ saveTitle null String Title attribute for save icon.
 See inline editing section in datatable documentation for more information about usage.
 
 
-## RowExpansion
+=== RowExpansion
 
 RowExpansion is a helper component of datatable used to implement expandable rows.
 
@@ -15487,7 +14908,7 @@ styleClass null String Style class of the component.
 See datatable expandable rows section for more information about how rowExpansion is used.
 
 
-## RowToggler
+=== RowToggler
 
 RowToggler is a helper component for datatable.
 
@@ -15516,7 +14937,7 @@ UIComponent instance in a backing bean
 See expandable rows section in datatable documentation for more information about usage.
 
 
-## Schedule
+=== Schedule
 
 Schedule provides an Outlook Calendar, iCal like JSF component to manage events.
 
@@ -15862,7 +15283,7 @@ Schedule resides in a main container which _style_ and _styleClass_ attributes a
 classes are global, see the main theming section for more information.
 
 
-## ScrollPanel
+=== ScrollPanel
 
 ScrollPanel is used to display scrollable content with theme aware scrollbars instead of native
 browser scrollbars.
@@ -15926,7 +15347,7 @@ Style Class Applies
 .ui-scrollbar-drag Drag element.
 ```
 
-## SelectBooleanButton
+=== SelectBooleanButton
 
 SelectBooleanButton is used to select a binary decision with a toggle button.
 
@@ -16018,7 +15439,7 @@ the list of structural style classes;
 .ui-selectbooleanbutton Main container element.
 
 
-## SelectBooleanCheckbox
+=== SelectBooleanCheckbox
 
 SelectBooleanCheckbox is an extended version of the standard checkbox with theme integration.
 
@@ -16116,7 +15537,7 @@ Style Class Applies
 .ui-chkbox-icon Checkbox label.
 
 
-## SelectCheckboxMenu
+=== SelectCheckboxMenu
 
 SelectCheckboxMenu is a multi select component that displays options in an overlay.
 
@@ -16255,7 +15676,7 @@ the list of structural style classes;
 .ui-chkbox-icon Checkbox icon.
 
 
-## SelectManyButton
+=== SelectManyButton
 
 SelectManyButton is a multi select component using button UI.
 
@@ -16323,7 +15744,7 @@ Style Class Applies
 .ui-selectmanybutton Main container element.
 ```
 
-## SelectManyCheckbox
+=== SelectManyCheckbox
 
 SelectManyCheckbox is an extended version of the standard SelectManyCheckbox.
 
@@ -16438,7 +15859,7 @@ Style Class Applies
 .ui-chkbox-icon Checkbox icon.
 ```
 
-## SelectManyMenu
+=== SelectManyMenu
 
 SelectManyMenu is an extended version of the standard SelectManyMenu.
 
@@ -16562,7 +15983,7 @@ Style Class Applies
 .ui-selectlistbox-item Each item in list.
 ```
 
-## SelectOneButton
+=== SelectOneButton
 
 SelectOneButton is an input component to do a single select.
 
@@ -16641,7 +16062,7 @@ Style Class Applies
 .ui-selectonebutton Main container element.
 ```
 
-## SelectOneListbox
+=== SelectOneListbox
 
 SelectOneListbox is an extended version of the standard selectOneListbox component.
 
@@ -16754,7 +16175,7 @@ Style Class Applies
 .ui-selectlistbox-item Each item in list.
 ```
 
-## SelectOneMenu
+=== SelectOneMenu
 
 SelectOneMenu is an extended version of the standard SelectOneMenu.
 
@@ -16944,7 +16365,7 @@ Style Class Applies
 .ui-selectonemenu-items Each item in the list.
 
 
-## SelectOneRadio
+=== SelectOneRadio
 
 SelectOneRadio is an extended version of the standard SelectOneRadio with theme integration.
 
@@ -17067,7 +16488,7 @@ Style Class Applies
 .ui-radiobutton-icon Radio button icon.
 ```
 
-## Separator
+=== Separator
 
 Separator displays a horizontal line to separate content.
 
@@ -17131,7 +16552,7 @@ Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## Sidebar
+=== Sidebar
 
 Sidebar is a panel component displayed as an overlay at the edges of the screen.
 
@@ -17244,7 +16665,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## Signature
+=== Signature
 
 Signature is used to draw a signature as an input. Various options such as background color,
 foreground color, thickness are available for customization. Signature also supports touch enabled
@@ -17412,7 +16833,7 @@ return output.toByteArray(); }
 return output.toByteArray();
 
 
-## SlideMenu
+=== SlideMenu
 
 SlideMenu is used to display nested submenus with sliding animation.
 
@@ -17520,7 +16941,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## Slider
+=== Slider
 
 Slider is used to provide input with various customization options like orientation, display modes
 and skinning.
@@ -17707,7 +17128,7 @@ Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## Spotlight
+=== Spotlight
 
 Spotlight highlights a certain component on page.
 
@@ -17767,65 +17188,6 @@ Class Applies
 .ui-spotlight-right Right mask element.
 ```
 
-## Socket
-
-Socket component is an agent that creates a push channel between the server and the client.
-
-**Info**
-
-```
-Tag socket
-Component Class org.primefaces.component.socket.Socket
-Component Type org.primefaces.component.Socket
-Component Family org.primefaces.component
-Renderer Type org.primefaces.component.SocketRenderer
-Renderer Class org.primefaces.component.socket.SocketRenderer
-```
-**Attributes**
-
-```
-Name Default Type Description
-id null String Unique identifier of the component
-rendered true Boolean Boolean value to specify the rendering of the
-component, when set to false component will not be
-rendered.
-binding null Object An el expression that maps to a server side
-UIComponent instance in a backing bean
-channel null Object Channel name of the connection.
-transport websocket String Desired protocol to be used valid values are
-websocket (default), sse, streaming, long-polling,
-jsonp.
-fallbackTransport long-polling String Fallback protocol to be used when desired transport
-is not supported in environment, valid values are
-websocket, sse, streaming, long-polling (default),
-jsonp.
-onMessage null String Javascript event handler that is processed when
-server publishes data.
-onError null String Javascript event handler that is processed when
-there is an error.
-onClose null String Javascript event handler for onClose callback of
-atmosphere.
-onOpen null String Javascript event handler for onOpen callback of
-atmosphere.
-onReconnect null String Javascript event handler for onReconnect callback
-of atmosphere.
-```
-
-```
-Name Default Type Description
-onMessagePublished null String Javascript event handler for onMessagePublished
-callback of atmosphere.
-onTransportFailure null String Javascript event handler for onTransportFailure
-callback of atmosphere.
-onLocalMessage null String Javascript event handler for onLocalMessage
-callback of atmosphere.
-autoConnect true Boolean Connects to channel on page load when enabled.
-```
-**Getting Started with the Socket**
-See chapter 5, "PrimeFaces Push" for detailed information.
-
-
-## Spacer
 
 Spacer is used to put spaces between elements.
 
@@ -17863,7 +17225,7 @@ Spacer in this example separates this text <p:spacer width="100" height="10"> an
 <p:spacer width="100" height="10"> this text.
 ```
 
-## Spinner
+=== Spinner
 
 Spinner is an input component to provide a numerical input via increment and decrement buttons.
 
@@ -18050,7 +17412,7 @@ Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## SplitButton
+=== SplitButton
 
 SplitButton displays a command by default and additional ones in an overlay.
 
@@ -18232,7 +17594,7 @@ Style Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## Submenu
+=== Submenu
 
 Submenu is nested in menu components and represents a sub menu items.
 
@@ -18264,7 +17626,7 @@ expanded false Boolean Defines the state of submenu.
 Please see Menu or Menubar section to find out how submenu is used with the menus.
 
 
-## Stack
+=== Stack
 
 Stack is a navigation component that mimics the stacks feature in Mac OS X.
 
@@ -21255,7 +20617,7 @@ can override the global setting per component.
 <p:commandButton value="Submit" partialSubmit="true|false" />
 ```
 
-## Javascript API
+=== Javascript API
 
 PrimeFaces renders unobstrusive javascript which cleanly separates behavior from the html. Client
 side engine is powered by jQuery version 1.8.1 which is the latest at the time of the writing.
@@ -21387,7 +20749,7 @@ Use the abort API in case you'd like to cancel all the ongoing requests;
 PrimeFaces.ajax.Queue.abortAll()
 ```
 
-## Dialog Framework
+=== Dialog Framework
 
 Dialog Framework (DF) is used to open an external xhtml page in a dialog that is generated
 dynamically on runtime. This is quite different to regular usage of dialogs with declarative p:dialog
@@ -21940,7 +21302,7 @@ BeanValidationMetadataMapper.removeConstraintMapping(Class<? extends Annotation>
 constraint);
 ```
 
-## Themes
+== Themes
 
 PrimeFaces is integrated with powerful ThemeRoller CSS Framework. Currently there are 30+ pre-
 designed themes that you can preview and download from PrimeFaces theme gallery.
@@ -21949,7 +21311,7 @@ designed themes that you can preview and download from PrimeFaces theme gallery.
 http://www.primefaces.org/themes.html
 ```
 
-### Applying a Theme
+=== Applying a Theme
 
 Applying a theme to your PrimeFaces project is very easy. Each theme is packaged as a jar file,
 download the theme you want to use, add it to the classpath of your application and then define
@@ -21990,7 +21352,7 @@ In case you’d like to make the theme dynamic, define an EL expression as the p
 </context-param>
 ```
 
-### Creating a New Theme
+=== Creating a New Theme
 
 If you’d like to create your own theme instead of using the pre-defined ones, that is easy as well
 because ThemeRoller provides a powerful and easy to use online visual tool.
@@ -22031,7 +21393,7 @@ Once the jar of your theme is in classpath, you can use your theme like;
 </context-param>
 ```
 
-### How Themes Work
+=== How Themes Work
 
 Powered by ThemeRoller, PrimeFaces separates structural css from skinning css.
 
@@ -22068,7 +21430,7 @@ the color of a panel header you don’t need to about this class as _.ui-widget-
 the panel colors also applies to the panel header.
 
 
-### Theming Tips
+=== Theming Tips
 
 - Default font size of themes might be bigger than expected, to change the font-size of PrimeFaces
     components globally, use the .ui-widget style class. An example of smaller fonts;
@@ -22103,7 +21465,7 @@ To apply css on a particular panel;
 }
 ```
 
-### FontAwesome
+== FontAwesome
 
 Font Awesome gives you scalable vector icons that can instantly be customized — size, color, drop
 shadow, and anything that can be done with the power of CSS. PrimeFaces bundles FontAwesome
@@ -22127,1136 +21489,9 @@ For a full list of available icons please visit;
 ```
 http://www.primefaces.org/showcase/ui/misc/fa.xhtml
 ```
+== Misc
 
-## PrimeFaces Push (Deprecated)
-
-PrimeFaces Push is deprecated in favor of f:socket in JSF 2.3
-
-PrimeFaces Push (PFP) is a push framework built on top of Atmosphere. Atmospheres creator
-AsyncIO is a partner company of PrimeTek and the developer of PFP. Atmosphere is highly
-scalable, supports several containers and browsers, utilizes various transports such as websockets,
-see, long-polling, streaming and jsonp. For more information please visit;
-
-```
-https://github.com/Atmosphere/atmosphere
-```
-### Setup
-
-**Atmosphere**
-Atmosphere is required to run PrimeFaces Push, in your pom.xml define the dependency as;
-
-```
-<dependency>
-<groupId>org.atmosphere</groupId>
-<artifactId>atmosphere-runtime</artifactId>
-<version>2.4.6</version>
-</dependency>
-```
-**Push Servlet**
-Push Servlet is used as a gateway for clients.
-
-```
-<servlet>
-<servlet-name>Push Servlet</servlet-name>
-<servlet-class>org.primefaces.push.PushServlet</servlet-class>
-<async-supported>true</async-supported>
-</servlet>
-<servlet-mapping>
-<servlet-name>Push Servlet</servlet-name>
-<url-pattern>/primepush/*</url-pattern>
-</servlet-mapping>
-```
-
-### Annotations
-
-Design of PFP is annotation driven centralized around the main @PushEndPoint.
-
-**@PushEndPoint**
-The easiest way to create PFP application is by using the _@PushEndPoint_ annotation. This
-annotation simplifies the process to build an application using PFP avoding the need to interact with
-Atmospheres more sophisticated API. This annotation significantly reduces the number of code
-required to build a powerful real time application by transparently installing Atmospheres
-components like heartbeat, idle connections detections, disconnect state recovery etc. It also allows
-the use of external dependency injection framework like CDI, Spring or Guice. Annotation provides
-one attribute called path to define the resource path.
-
-**path** : The path to the resource.
-
-The default is "/" so if your have mapped the PushServlet to "/*", all request will be delivered to
-your annotated class. You can also customize the path. The path value will be used to map an
-incoming request uris path to an annotated PushEndpoint class.
-
-```
-@PushEndPoint("/chat")
-```
-**@Singleton**
-Singleton annotation is used to force creating a single, thread safe instance of a PushEndpoint
-annotated classes. For example, if your application set the @PushEndpoint’s path attribute with a
-path, by default a new instance of the annotated classes will be created. When annotated with
-Singleton however, a single class will be created.
-
-**@OnOpen**
-The OnOpen() will be invoked when the underlying connection is ready to be used, e.g for write
-operations. Annotated method needs to take the form of;
-
-```
-@OnOpen
-public void onOpen();
-@OnOpen
-public void onOpen(RemoteEndpoint r);
-@OnOpen
-public void onOpen(RemoteEndpoint r, EventBus e);
-```
-The RemoteEndpoint represents the physical connection and can be used to write some data back to
-the browser. The EventBus can be used to fire messages to one or more RemoteEndpoints using
-regex expressions.
-
-**@OnMessage**
-The OnMessage() will be invoked when a message is ready to be deliver, e.g as a result of a
-EventBus publish operation or when a browser is POSTing some bytes. The annotation’s attributes
-available are;
-
-
-**encoders** : A list of [Encoder]() that will be used to encode the annotated method return value. The
-returned value of an annotated OnMessage method will be broadcasted to all resource associated
-with the Broadcaster, associated with this annotated classes.
-
-**decoders** : A list of [Decoder]() used to decode a broadcasted messages into an object matching the
-methods signature.
-
-Both of the encoders and decoders can be chained, meaning the returned value of an encoder-
-decoder can be used as an input for the next one.
-
-```
-@OnMessage(encoders = {JSONEncoder.class})
-public String onMessage(String count) {
-return count;
-}
-```
-Out of the box, PrimeFaces PUSH provides JSON implementations that are;
-
-- org.primefaces.push.impl.JSONEncoder
-- org.primefaces.push.impl.JSONDecoder
-
-It is also easy to create your own encoders-decoders by implementing _org.primefaces.push.Encoder_
-and _org.primefaces.push.Decoder_ interfaces.
-
-**@OnClose**
-The @OnClose() will be invoked when the client disconnect, e.g close the connection, when a
-network outage happens or when a proxy close the connection. Annotated method needs to take the
-form of;
-
-```
-@OnClose
-public void onClose();
-@OnClose
-public void onClose(RemoteEndpoint r);
-@OnClose
-public void onClose(RemoteEndpoint r, EventBus e);
-```
-Only one method in a class can be annotated with @OnClose.
-
-**@PathParam**
-@PathParam is used to automatically parse the path and assign path tokens to class variables.
-
-```
-@PushEndpoint("/somepath/{room}/{user}")
-@Singleton
-public class ChatResource {
-@PathParam("room")
-private String room;
-@PathParam("user")
-private String username;
-//...
-```
-
-### API
-
-**RemoteEndPoint**
-The RemoteEndpoint() class represents the remote connection, e.g the Browser. An instance of
-RemoteEndpoint hold information about the headers, queryString, body, uri, path and path segments
-that can be used for manipulating the incoming request. If you are familiar with the Servlets
-"HttpServletRequest", the RemoteEndpoint can be seen as an improved version. You can also use a
-RemoteEndpoint#write to write back messages that will be delivered uniquely to the browser.
-
-**EventBus**
-A distributed lightweight event bus which can encompass multiple PushEndpoint instances. The
-event bus implements publish / subscribe and point to point messaging. Messages sent over the
-event bus can be of any type. For publish / subscribe, messages can be published to a Java class
-annotated with the [PushEndpoint#value]() using one of the method annotated with [OnMessage]().
-The EventBus is the recommended way for delivering messages. EventBus is retrieved via;
-
-```
-EventBus eventBus = EventBusFactory.getDefault().eventBus();
-```
-Once an EventBus instance is available, publishing data to subscribers is done with overloaded
-publish methods.
-**publish(Object o):** Fires given object to all connected RemoteEndPoints.
-**publish(String path, Object o):** Fires given object to RemoteEndPoints that connected to the path.
-**publish(String path, Object o, Reply reply):** Fires given object to RemoteEndPoints that
-connected to the path by passing a Reply instance. Reply is an interface with a callback called
-_completed(String path)_ that is invoked when the EventBus delivered the message to the
-PushEndPoint that matches the path used to initiate the publish operation.
-
-### Socket Component
-
-Socket is a PrimeFaces component that handles the connection between the server and the browser,
-common way to use socket is by defining a path and a callback to handle broadcasts.
-
-```
-<p:socket channel="/chat" onmessage="handlePublish"/>
-```
-See Socket component documentation for the full list of available options.
-
-**Client Side API**
-Widget: _PrimeFaces.widget.Socket_
-
-```
-Method Params Return Type Description
-connect(uri) uri void Connects to given uri.
-push(json) json void Pushes data from client side.
-disconnect - void Disconnects from channel.
-```
-
-### Putting It All Together
-
-PrimeFaces Showcase has various push demos, in this section two of them are covered.
-
-#### Counter........................................................................................................................
-
-Counter is a global counter where each button click increments the count value and new value is
-pushed to all subscribers.
-
-View page has an outputText to display the value, a button to increment current value to push, a
-socket component to connect to /counter channel and finally the onMessage client side callback to
-update the UI.
-
-```
-<h:form>
-<h:outputText value="#{counterView.count}" styleClass="display" />
-<p:commandButton value="Click" actionListener="#{counterView.increment}" />
-</h:form>
-<p:socket onMessage="handleMessage" channel="/counter" />
-<script type="text/javascript">
-function handleMessage(data) {
-$('.display').text(data);
-}
-</script>
-```
-```
-package org.primefaces.examples.push.counter;
-import java.io.Serializable;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
-import org.primefaces.push.EventBus;
-import org.primefaces.push.EventBusFactory;
-@ManagedBean
-@ApplicationScoped
-public class CounterView implements Serializable{
-private volatile int count;
-public int getCount() {
-return count;
-}
-public void setCount(int count) {
-this.count = count;
-}
-public void increment() {
-count++;
-EventBus eventBus = EventBusFactory.getDefault().eventBus();
-eventBus.publish("/counter", String.valueOf(count));
-}
-}
-```
-
-increment button actionlistener first adds one to the counter value, gets an EventBus and then
-pushes the new value to all connected clients. Final piece is writing the CounterResource to handle
-messages whenever a data is pushed.
-
-```
-package org.primefaces.examples.push.counter;
-import org.primefaces.push.annotation.OnMessage;
-import org.primefaces.push.annotation.PushEndpoint;
-import org.primefaces.push.impl.JSONEncoder;
-@PushEndpoint("/counter")
-public class CounterResource {
-@OnMessage(encoders = {JSONEncoder.class})
-public String onMessage(String count) {
-return count;
-}
-}
-```
-In case you’d like to update components and/or invoke listeners in your backing bean on broadcast,
-you can use the optional _message_ ajax behavior to implement the same functionality but with an
-extra request.
-
-```
-<h:form id="form">
-<h:outputText id="out" value="#{globalCounter.count}" />
-<p:commandButton value="Click" actionListener="#{globalCounter.increment}" />
-</h:form>
-<p:socket channel="/counter">
-<p:ajax event="message" update="form:out" />
-</p:socket>
-```
-
-#### FacesMessage..............................................................................................................
-
-This sample shows how to push FacesMessages from one client to all others and display them using
-Growl Component.
-
-```
-<p:growl widgetVar="growl" showDetail="true" />
-<h:form>
-<p:panel header="Growl">
-<h:panelGrid columns="2">
-<p:outputLabel for="summary" value="Summary: " />
-<p:inputText id="summary" value="#{growlBean.summary}" required="true" />
-<p:outputLabel for="detail" value="Detail: " />
-<p:inputText id="detail" value="#{growlBean.detail}" required="true" />
-</h:panelGrid>
-<p:commandButton value="Send" actionListener="#{growlBean.send}" />
-</p:panel>
-</h:form>
-<p:socket onMessage="handleMessage" channel="/notify" />
-<script type="text/javascript">
-function handleMessage(facesmessage) {
-facesmessage.severity = 'info';
-PF('growl').show([facesmessage]);
-}
-</script>
-```
-```
-package org.primefaces.examples.view;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import org.primefaces.push.EventBus;
-import org.primefaces.push.EventBusFactory;
-@ManagedBean
-@RequestScoped
-public class GrowlBean {
-private final static String CHANNEL = "/notify";
-private String text, summary, detail;
-//getters-setters
-public void send() {
-EventBus eventBus = EventBusFactory.getDefault().eventBus();
-eventBus.publish(CHANNEL, new FacesMessage(summary, detail));
-}
-}
-```
-
-NotifyResource simply encodes the pushed messages as JSON.
-
-```
-package org.primefaces.examples.push.notify;
-import javax.faces.application.FacesMessage;
-import org.primefaces.push.annotation.OnMessage;
-import org.primefaces.push.annotation.PushEndpoint;
-import org.primefaces.push.impl.JSONEncoder;
-@PushEndpoint("/notify")
-public class NotifyResource {
-@OnMessage(encoders = {JSONEncoder.class})
-public FacesMessage onMessage(FacesMessage message) {
-return message;
-}
-}
-```
-
-### Tips and Tricks
-
-**Dynamic Paths**
-Client side API would be handy to create dynamic channels, channel name of the socket does not
-need to be static and you can create dynamic channels on runtime since a channel is basically a path
-name. @PathParam is very handy to automatically parse the Path and assign the path tokens to
-variables.
-
-See chat sample in showcase for an example of dynamic channels used to send private messages.
-
-**Proxies**
-Proxies are problematic not just for PrimeFaces Push - Atmosphere solution but in all solutions. If
-your proxy supports websockets, make sure to add the necessary configuration. Another solution
-that is considered as a workaround is to override the default uri of the push server. Default uri is
-protocol://contextPath/primepush/channel, for example PrimeFaces online showcase is running on
-jetty that is behind an apache mod proxy which doesn’t support websockets at time of the writing.
-Solution is to configure PrimeFaces to use another push server like;
-
-```
-<context-param>
-<param-name>primefaces.PUSH_SERVER_URL</param-name>
-<param-value>http://www.primefaces.org:8080</param-value>
-</context-param>
-```
-So that socket component bypasses the proxy and directly communicates with the application.
-
-**Supported Server and Client Environments**
-Atmosphere does a agreat job in supporting different servers and browsers. See the detailed list at;
-
-```
-https://github.com/Atmosphere/atmosphere/wiki/Supported-WebServers-and-Browsers
-```
-**Scalability**
-Atmosphere is build to scale via plugins such as JMS, Redix, XMPP, Hazelcast and more. Refer to
-atmosphere documentation to see how to configure atmosphere in more than one server.
-PushServlet extends from AtmosphereServlet so any configuration option for AtmosphereServlet
-also applies PushServlet.
-
-
-## PrimeFaces Mobile (Deprecated)
-
-PrimeFaces Mobile is deprecated in favor of responsive design features of the standard renderkit.
-
-PrimeFaces Mobile (PFM) is a UI Kit to create JSF applications optimized for mobile devices. PFM
-is built on top of jQuery Mobile, a touch-optimized HTML5 UI framework providing support for
-various platforms.
-
-In addition to the seamless integration with jQuery Mobile, PFM features a Mobile Renderkit for
-popular PrimeFaces components, ajax framework extensions, mobile ajax behavior events,
-integrated navigation model, lazy loading of pages, responsive widgets and more.
-
-### Setup
-
-Mobile ships with PrimeFaces Core so no additional download is required.
-
-**Configuration**
-A mobile navigation handler is necessary inside faces configuration to enable navigations support.
-
-```
-<application>
-<navigation-handler>
-org.primefaces.mobile.application.MobileNavigationHandler
-</navigation-handler>
-</application>
-```
-**Taglib**
-PFM provides mobile specific components with the following taglib.
-
-```
-xmlns:pm="http://primefaces.org/mobile"
-```
-**RenderKit**
-RenderKit is the core part of PFM featuring optimized renderers for mobile environments. There
-are two main ways to enable PFM RenderKit.
-
-Core view tag has a renderKitId attribute to set the renderer kit of the page.
-
-```
-<f:view renderKitId="PRIMEFACES_MOBILE" />
-```
-If your application fully consists of mobile pages, then a global configuration in faces configuration
-file should be preferred instead of per page configuration.
-
-```
-<application>
-<default-render-kit-id>PRIMEFACES_MOBILE</application>
-</application>
-```
-
-### Pages
-
-A mobile page is a regular facelets xhtml file with mobile page containers defined with pm:page.
-
-```
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-xmlns:h="http://java.sun.com/jsf/html"
-xmlns:f="http://java.sun.com/jsf/core"
-xmlns:p="http://primefaces.org/ui"
-xmlns:pm="http://primefaces.org/mobile">
-<f:view renderKitId="PRIMEFACES_MOBILE" />
-<h:head>
-</h:head>
-<h:body>
-<pm:page>
-<pm:header title="Basic Page"></pm:header>
-<pm:content></pm:content>
-</pm:page>
-</h:body>
-</html>
-```
-A single page xhtml view can have more than one page. By default the first page is visible on load.
-
-
-```
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-xmlns:h="http://java.sun.com/jsf/html"
-xmlns:f="http://java.sun.com/jsf/core"
-xmlns:p="http://primefaces.org/ui"
-xmlns:pm="http://primefaces.org/mobile">
-<f:view renderKitId="PRIMEFACES_MOBILE" />
-<h:head>
-</h:head>
-<h:body>
-<pm:page id="main">
-<pm:header title="Main Page"></pm:header>
-<pm:content></pm:content>
-</pm:page>
-<pm:page id="second">
-<pm:header title="Second Page"></pm:header>
-<pm:content></pm:content>
-</pm:page>
-</h:body>
-</html>
-```
-### Navigations
-
-PFM supports all kinds of standard navigations with the addition of a custom navigation model.
-
-**Internal**
-Internal navigation is between pages in the same xhtml view. Outcome should have the **pm:** prefix
-for this kind of navigation. Using the multi page sample at section 10.1;
-
-```
-<p:button outcome="pm:second" />
-<p:link outcome="pm:second" />
-```
-Button and Link components displays the page whose id is _second_. In case you'd like to navigate
-after a POST request, usage would be similar.
-
-```
-<p:commandButton value="Go to Second" action="#{bean.go}" />
-```
-```
-public String go() {
-return "pm:second";
-}
-```
-**External**
-External navigations to another xhtml in same domain or a resource in another domain is same as
-standard approach.
-
-
-```
-<p:button outcome="/ui/home" value="Home" />
-<p:button href="http://www.primefaces.org" value="Home" />
-```
-**Transitions**
-Various animations are available to run during the navigation. Name of the effect is appended to the
-outcome. In addition, _reverse_ option is provided for back navigations.
-
-```
-<p:button outcome="pm:second?transition=pop" />
-<p:link outcome="pm:second?transition=flip&reverse=true" />
-```
-List of possible transitions is _fade_ , _pop_ , _flip_ , _turn_ , _flow_ , _slide_ , _slidefade_ , _slideup_ and _slidedown._ Fade
-is the default transition and to turn off animation, set none as the value.
-
-**Client API**
-A client side API is available to navigate manually from a custom javascript code. Signature is;
-
-```
-PrimeFaces.Mobile.navigate(to, cfg);
-```
-```
-PrimeFaces.Mobile.navigate('#second', {
-reverse: true|false,
-transition: 'fade'
-});
-```
-### Components
-
-#### Content.......................................................................................................................
-
-Content is container component for the content area of a page.
-
-**Info**
-
-```
-Tag content
-Component Class org.primefaces.mobile.component.content.Content
-Component Type org.primefaces.mobile.Content
-Component Family org.primefaces.mobile.component
-Renderer Type org.primefaces.mobile.component.ContentRenderer
-Renderer Class org.primefaces.mobile.component.content.ContentRenderer
-```
-**Attributes**
-
-
-```
-Name Default Type Description
-id null String Unique identifier of the component
-rendered true Boolean Boolean value to specify the rendering of the
-component, when set to false component will not
-be rendered.
-binding null Object An el expression that maps to a server side
-UIComponent instance in a backing bean
-style null String Inline style of the component.
-styleClass null String Style class of the component.
-```
-**Getting Started with the Content**
-Content is a children component of a page.
-
-```
-<pm:page>
-<pm:content>
-//page content
-</pm:content>
-</pm:page>
-```
-
-#### Field...........................................................................................................................
-
-Field is a responsive layout component for label-input pairs.
-
-**Info**
-
-```
-Tag field
-Component Class org.primefaces.mobile.component.field.Field
-Component Type org.primefaces.mobile.Field
-Component Family org.primefaces.mobile.component
-Renderer Type org.primefaces.mobile.component.FieldRenderer
-Renderer Class org.primefaces.mobile.component.field.FieldRenderer
-```
-**Attributes**
-
-```
-Name Default Type Description
-id null String Unique identifier of the component
-rendered true Boolean Boolean value to specify the rendering of the
-component, when set to false component will not
-be rendered.
-binding null Object An el expression that maps to a server side
-UIComponent instance in a backing bean
-```
-**Getting Started with the Field**
-Field is used as the container of a label and an input component. As a responsive component, field
-displays the optimal placement for its children based on available width.
-
-```
-<pm:field>
-<p:outputLabel for="text" value="Text:" />
-<p:inputText id="txt" />
-</pm:field>
-```
-
-#### Footer.........................................................................................................................
-
-Footer is container component for the bottom area of a page.
-
-**Info**
-
-```
-Tag footer
-Component Class org.primefaces.mobile.component.footer.Footer
-Component Type org.primefaces.mobile.Footer
-Component Family org.primefaces.mobile.component
-Renderer Type org.primefaces.mobile.component.FooterRenderer
-Renderer Class org.primefaces.mobile.component.footer.FooterRenderer
-```
-**Attributes**
-
-```
-Name Default Type Description
-id null String Unique identifier of the component
-rendered true Boolean Boolean value to specify the rendering of the component, when set
-to false component will not be rendered.
-binding null Object An el expression that maps to a server side UIComponent instance
-in a backing bean
-title null String Title text of the footer.
-fixed false Boolean Positions the footer as fixed on scroll.
-theme null String Swatch of the component.
-tapToggle true Boolean For fixed footers, sets whether the fixed toolbar's visibility can be
-toggled by tapping on the page.
-style null String Inline style of the component.
-styleClass null String Style class of the component.
-```
-**Getting Started with the Footer**
-Footer is a children component of a page.
-
-```
-<pm:page>
-<pm:footer title="Footer"></pm:footer>
-</pm:page>
-```
-
-#### Header........................................................................................................................
-
-Header is container component for the top area of a page.
-
-**Info**
-
-```
-Tag header
-Component Class org.primefaces.mobile.component.header.Header
-Component Type org.primefaces.mobile.Header
-Component Family org.primefaces.mobile.component.Header
-Renderer Type org.primefaces.mobile.component.HeaderRenderer
-Renderer Class org.primefaces.mobile.component.header.HeaderRenderer
-```
-**Attributes**
-
-```
-Name Default Type Description
-id null String Unique identifier of the component
-rendered true Boolean Boolean value to specify the rendering of the component, when set
-to false component will not be rendered.
-binding null Object An el expression that maps to a server side UIComponent instance
-in a backing bean
-title null String Title text of the header.
-fixed false Boolean Positions the header as fixed on scroll.
-theme null String Swatch of the component.
-style null String Inline style of the component.
-styleClass null String Style class of the component.
-```
-**Getting Started with the Header**
-Header is a children component of a page.
-
-```
-<pm:page>
-<pm:header title="Footer"></pm:header>
-</pm:page>
-```
-
-#### InputSlider.................................................................................................................
-
-InputSlider is an input component with a touch enabled slider.
-
-**Info**
-
-```
-Tag inputSlider
-Component Class org.primefaces.mobile.component.inputslider.InputSlider
-Component Type org.primefaces.mobile.InputSlider
-Component Family org.primefaces.mobile.component.
-Renderer Type org.primefaces.mobile.component.InputSliderRenderer
-Renderer Class org.primefaces.mobile.component.inputslider.InputSliderRenderer
-```
-**Attributes**
-
-```
-Name Default Type Description
-id null String Unique identifier of the component
-rendered true Boolean Boolean value to specify the rendering of the
-component, when set to false component will not be
-rendered.
-binding null Object An el expression that maps to a server side
-UIComponent instance in a backing bean
-value null Object Value of the component.
-converter null Object An el expression or a literal text that defines a converter
-for the component. When it’s an EL expression, it’s
-resolved to a converter instance. In case it’s a static
-text, it must refer to a converter id.
-immediate false Boolean When set true, process validations logic is executed at
-apply request values phase for this component.
-required false Boolean Marks component as required
-validator null Object A method binding expression that refers to a method
-validationg the input.
-valueChangeListener null Object A method binding expression that refers to a method for
-handling a valuechangeevent.
-requiredMessage null String Message to be displayed when required field validation
-fails.
-```
-
-```
-Name Default Type Description
-converterMessage null String Message to be displayed when conversion fails.
-validatorMessage null String Message to be displayed when validation fields.
-minValue 0 Integer Minimum value of the slider.
-maxValue 100 Integer Maximum value of the slider.
-style null String Inline style of the component.
-styleClass null String Style class of the component.
-step 1 String Step factor to apply on slider move.
-disabled false Boolean Disables or enables the slider.
-label null String User presentable name.
-highlight false Boolean Highlights the value range when enabled.
-```
-**Getting Started with the InputSlider**
-InputSlider requires an integer as its value.
-
-```
-<pm:inputSlider value="50" />
-<pm:inputSlider value="#{backingView.integerProperty}" />
-```
-**Boundaries**
-0 and 100 are the default boundaries, these can be customized using _minValue_ and _maxValue_.
-
-```
-<pm:inputSlider minValue="100" maxValue="200" value="#{backingView.intProperty}"/>
-```
-
-#### Page............................................................................................................................
-
-Page is main component to define an internal page within an xhtml.
-
-**Info**
-
-```
-Tag page
-Component Class org.primefaces.mobile.component.page.Page
-Component Type org.primefaces.mobile.Page
-Component Family org.primefaces.mobile.component
-Renderer Type org.primefaces.mobile.component.PageRenderer
-Renderer Class org.primefaces.mobile.component.page.PageRenderer
-```
-**Attributes**
-
-```
-Name Default Type Description
-id null String Unique identifier of the component
-rendered true Boolean Boolean value to specify the rendering of the component, when set
-to false component will not be rendered.
-binding null Object An el expression that maps to a server side UIComponent instance
-in a backing bean
-title null String Title text of the page.
-theme null String Swatch of the page.
-style null String Inline style of the component.
-styleClass null String Style class of the component.
-lazy false Boolean Lazy loading views are not rendered on initial page load to improve
-performance and instead lazily loaded on demand when there are
-first navigated to.
-```
-**Getting Started with the Page**
-Please see section 10.1 Pages for the usage and more information.
-
-
-#### RangeSlider................................................................................................................
-
-RangeSlider is a grouping component for dual sliders to create a range selection.
-
-**Info**
-
-```
-Tag rangeSlider
-Component Class org.primefaces.mobile.component.rangeslider.RangeSlider
-Component Type org.primefaces.mobile.RangeSlider
-Component Family org.primefaces.mobile.component
-Renderer Type org.primefaces.mobile.component.RangeSlider
-Renderer Class org.primefaces.mobile.component.rangeslider.RangeSlider
-```
-**Attributes**
-
-```
-Name Default Type Description
-id null String Unique identifier of the component
-rendered true Boolean Boolean value to specify the rendering of the component, when set
-to false component will not be rendered.
-binding null Object An el expression that maps to a server side UIComponent instance
-in a backing bean
-style null String Inline style of the component.
-styleClass null String Style class of the component.
-highlight false Boolean Highlights the value range when enabled.
-```
-**Getting Started with the RangeSlider**
-RangeSlider needs two sliders as children, first slider is for the start of range and second for the end.
-
-```
-<pm:rangeSlider>
-<pm:inputSlider value="#{backingView.start}"/>
-<pm:inputSlider value="#{backingView.end}"/>
-</pm:rangeSlider>
-```
-
-#### Switch (Deprecated)..................................................................................................
-
-Switch is deprecated, use p:inputSwitch instead.
-
-Switch is an input component to select a boolean value.
-
-**Info**
-
-```
-Tag switch
-Component Class org.primefaces.mobile.component.uiswitch.UISwitch
-Component Type org.primefaces.mobile.UISwitch
-Component Family org.primefaces.mobile.component
-Renderer Type org.primefaces.mobile.component.UISwitchRenderer
-Renderer Class org.primefaces.mobile.component.uiswitch.UISwitchRenderer
-```
-**Attributes**
-
-```
-Name Default Type Description
-id null String Unique identifier of the component
-rendered true Boolean Boolean value to specify the rendering of the
-component, when set to false component will not
-be rendered.
-binding null Object An el expression that maps to a server side
-UIComponent instance in a backing bean
-value null Object Value of the component.
-converter null Object An el expression or a literal text that defines a
-converter for the component. When it’s an EL
-expression, it’s resolved to a converter instance. In
-case it’s a static text, it must refer to a converter id.
-immediate false Boolean When set true, process validations logic is
-executed at apply request values phase for this
-component.
-required false Boolean Marks component as required
-validator null Object A method binding expression that refers to a
-method validationg the input.
-```
-
-```
-Name Default Type Description
-valueChangeListener null Object A method binding expression that refers to a
-method for handling a valuechangeevent.
-requiredMessage null String Message to be displayed when required field validation
-fails.
-converterMessage null String Message to be displayed when conversion fails.
-validatorMessage null String Message to be displayed when validation fields.
-onLabel on Integer Minimum value of the slider.
-offLabel off Integer Maximum value of the slider.
-label null String User presentable name.
-style null String Inline style of the component.
-styleClass null String Style class of the component.
-label null String User presentable name.
-disabled false Boolean Disables or enables the switch.
-onchange false String Client side callback to execute on change event.
-```
-**Getting Started with the Switch**
-Value of switch should be a boolean property, if the value is false offLabel would be displayed and
-onLabel would be used otherwise.
-
-```
-<pm:switch value="#{backingView.booleanProperty}" />
-```
-
-### RenderKit
-
-In addition to the mobile components, various core components have been enhanced with touch
-optimized mobile renderers so that same component can be optimized for a mobile browser. Since
-usage is same in desktop and mobile environments, refer to chapter 3 for documentation about these
-components.
-
-#### AccordionPanel..........................................................................................................
-
-#### AutoComplete............................................................................................................
-
-#### Button........................................................................................................................
-
-
-#### Calendar.....................................................................................................................
-
-#### ConfirmDialog...........................................................................................................
-
-#### DataList......................................................................................................................
-
-Additional supported ajax events are swiperight, swiperight, tap and taphold.
-
-
-#### DataGrid....................................................................................................................
-
-#### DataTable...................................................................................................................
-
-Additional supported ajax events are swiperight, swiperight, tap and taphold.
-
-#### Dialog........................................................................................................................
-
-
-#### FileUpload...............................................................................................................
-
-#### Growl.......................................................................................................................
-
-#### InputText..................................................................................................................
-
-#### InputTextarea...........................................................................................................
-
-#### Link..........................................................................................................................
-
-#### Menu........................................................................................................................
-
-#### Panel........................................................................................................................
-
-
-#### PanelGrid.................................................................................................................
-
-#### SelectBooleanCheckbox..........................................................................................
-
-#### SelectCheckboxMenu..............................................................................................
-
-#### SelectManyButton...................................................................................................
-
-#### SelectManyCheckbox..............................................................................................
-
-#### SelectOneButton......................................................................................................
-
-#### SelectOneMenu........................................................................................................
-
-#### SelectOneRadio.......................................................................................................
-
-
-#### TabMenu..................................................................................................................
-
-#### TabView...................................................................................................................
-
-#### Toolbar.....................................................................................................................
-
-
-### Themes
-
-Mobile theming is similar to the core theming documented at chapter 8. Main difference is the
-swatch concept of mobile themes where one theme can contain multiple swatches. Default theme
-has two swatches **a** and **b**. A swatch can be applied using swatch attribute when available.
-
-```
-<pm:header title="Header" swatch="b"></pm:header>
-```
-**Custom Theme**
-There is a mobile themeroller application to create a custom theme.
-
-```
-http://themeroller.jquerymobile.com
-```
-After creating the theme and downloading it as a zip file, a jar file has to be created to install the
-theme with the same folder structure as a desktop theme.
-
-- jar
-    - META-INF
-       - resources
-          - primefaces-mytheme
-             - theme.css
-             - images
-
-1) The theme package downloaded from ThemeRoller will have a themename.css file and images
-folder. Extract the contents of the package and rename _themename.css_ to _theme.css_.
-
-2) Image references in your theme.css must also be converted to an expression that JSF resource
-loading can understand, example would be;
-
-url("images/ui-bg_highlight-hard_100_f9f9f9_1x100.png")
-
-should be;
-
-url("#{resource['primefaces-mytheme:images/ui-bg_highlight-hard_100_f9f9f9_1x100.png']}")
-
-Once the jar of your theme is in classpath, you can enable the theme by the following configuration.
-
-```
-<context-param>
-<param-name>primefaces.mobile.THEME</param-name>
-<param-value>mytheme</param-value>
-</context-param>
-```
-param-value can be an EL expression as well to implement dynamic theming.
-
-
-### Framework
-
-In addition to the UI components, PFM provides seamless integration with jQuery Mobile.
-
-#### Ajax Updates..............................................................................................................
-
-Plain jQuery Mobile UI elements use progressive enhancement approach that runs once on page
-load, this breaks JSF ajax updates since the updated parts cannot be enhanced again. PFM takes care
-of this problem under the hood.
-As an example, the plain jquery mobile datalist and inputtext will lose all styling and functionality
-when updated with standard ajax commandbutton whereas PFM commandButton will properly
-update the datalist and inputtext.
-
-```
-<h:commandButton value="Standard">
-<f:ajax render="panel1" />
-</h:commandButton>
-<p:commandButton value="PFM" update="panel2" icon="ui-icon-refresh"/>
-<h:panelGroup id="panel1">
-<ul data-role="listview" data-inset="true">
-<li><a href="#">Item 1</a></li>
-<li><a href="#">Item 2</a></li>
-<li><a href="#">Item 3</a></li>
-</ul>
-<h:inputText />
-</h:panelGroup>
-<p:outputPanel id="panel2">
-<p:menu styleClass="ui-listview-inset ui-corner-all">
-<p:menuitem value="Item1" url="#" />
-<p:menuitem value="Item2" url="#" />
-<p:menuitem value="Item3" url="#" />
-</p:menu>
-<p:inputText />
-</p:outputPanel>
-```
-#### Pass Through Elements..............................................................................................
-
-jQM is data attribute driven, thanks to JSF 2.2's dynamic attributes support, PrimeFaces
-Components can have mobile specific options easily. Example below adds inset setting to a datalist.
-
-```
-<p:dataList value="#{ringBean.players}" var="player" pt:data-inset="true">
-//content
-</p:dataList>
-```
-Note that pt is the standard taglib; _xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"._ For the full list
-of available data attributes, consult the jQuery Mobile documentation.
-
-
-#### Lazy Pages.................................................................................................................
-
-For a mobile device with bandwith concerns, loading all the pages in same xhtml at once in an
-eager fashion is not optimal and might cause performance issues if the page size is big. PFM
-supports lazy loading pages where a page content is not rendered at first but loaded with ajax just
-before accessed for the first time. Lazy loading is disabled and activated by setting _lazy_ option on
-page component.
-
-```
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-xmlns:h="http://java.sun.com/jsf/html"
-xmlns:f="http://java.sun.com/jsf/core"
-xmlns:p="http://primefaces.org/ui"
-xmlns:pm="http://primefaces.org/mobile">
-<f:view renderKitId="PRIMEFACES_MOBILE" />
-<h:head></h:head>
-<h:body>
-<pm:page id="main">
-<pm:header title="Main Page"></pm:header>
-<pm:content>
-<p:link outcome="pm:second" value="Go" />
-</pm:content>
-</pm:page>
-<pm:page id="second" lazy="true">
-<pm:header title="Second Page"></pm:header>
-<pm:content>
-//Lazy loaded content
-</pm:content>
-</pm:page>
-</h:body>
-</html>
-```
-At first page load, second page contents are not available on page, clicking the link first makes an
-ajax request to fetch the contents, create the UI and then finally navigate to it.
-
-#### Touch Events..............................................................................................................
-
-Touch events like swipe are enabled in some components. In following, items in the list can be
-removed by _swipeleft_ or _swiperight_ and detail is displayed with _taphold_.
-
-```
-<h:form id="form">
-<p:growl id="msgs" showDetail="true" />
-<p:dataList value="#{tableBean.carsSmall}" var="car" pt:data-inset="true">
-<p:ajax event="swipeleft" listener="#{tableBean.swipeCar}"
-update=":form:msgs @this"/>
-<p:ajax event="swiperight" listener="#{tableBean.swipeCar}"
-update=":form:msgs @this"/>
-<p:ajax event="taphold" listener="#{tableBean.onRowSelect}"
-update=":form:msgs"/>
-<h:outputText value="#{car.manufacturer} - #{car.color}" />
-</p:dataList>
-</h:form>
-```
-
-```
-public void onRowSelect(SelectEvent event) {
-FacesMessage msg = new FacesMessage("Car Selected",
-((Car) event.getObject()).getModel());
-FacesContext.getCurrentInstance().addMessage(null, msg);
-}
-public void swipeCar(SwipeEvent event) {
-Car car = (Car) event.getData();
-carsSmall.remove(car);
-FacesContext.getCurrentInstance().addMessage(null,
-new FacesMessage(FacesMessage.SEVERITY_INFO,
-"Car Swiped", "Removed: " + car.getModel()));
-}
-```
-Sections 10.4 and 10.5 contains supported mobile events for a component when available.
-
-
-## Misc
-
-### PrimeFaces.current()
+=== PrimeFaces.current()
 
 PrimeFaces.current() is a simple utility that provides useful goodies such as adding parameters to
 ajax callback functions. PrimeFaces.current() is available in both ajax and non-ajax requests. Scope
@@ -23363,12 +21598,11 @@ PrimeFaces instance = PrimeFaces.current();
 instance.execute(“dialog.hide()”);
 }
 
-
-### EL Functions
+=== EL Functions
 
 include::misc/functions.adoc[]
 
-### Exception Handler
+=== Exception Handler
 
 PrimeFaces provides a built-in exception handler to take care of exceptions in ajax and non-ajax
 requests easily.
@@ -23458,7 +21692,7 @@ _javax.faces.FACELETS_BUFFER_SIZE_ parameter. Otherwise you will probably see a
 ServletException with "Response already committed" message.
 
 
-### BeanValidation Transformation
+=== BeanValidation Transformation
 
 Since JavaEE 6, validation metadata is already available for many components via the value
 reference and BeanValidation (e.g. @NotNull, @Size). The JSF Implementations use this
@@ -23501,7 +21735,7 @@ instance has required enabled.
 <input type="text" maxlength="30" ... />
 ```
 
-### PrimeFaces Locales
+=== PrimeFaces Locales
 
 Components may require translations and other settings based on different locales. This is handled
 with a client side api called PrimeFaces Locales. A client side locale is basically a javascript object
@@ -23659,7 +21893,7 @@ _PrimeFaces.locales['de'] = {//settings}_
 It is suggested to put this code in a javascript file and include the file into your pages.
 
 
-### Right to Left
+=== Right to Left
 
 Right-To-Left language support in short RTL is provided out of the box by a subset of PrimeFaces
 components. Any component equipped with _dir_ attribute has the official support and there is also a
@@ -23689,7 +21923,7 @@ the component you use doesn’t provide it, overriding css and javascript in you
 the solution.
 
 
-### Responsive Design
+=== Responsive Design
 
 There are three ingridients to make a responsive page with PrimeFaces.
 
@@ -23738,7 +21972,7 @@ http://www.primefaces.org/showcase/ui/misc/responsive.xhtml
 Source code is available at GitHub.
 
 
-### WAI-ARIA
+=== WAI-ARIA
 
 WAI-ARIA (Web Accessibility Initiative – Accessible Rich Internet Applications) is a technical
 specification published by the World Wide Web Consortium (W3C) that specifies how to increase
@@ -23766,8 +22000,7 @@ bundle to provide your own values.
 - primefaces.datatable.SORT_ASC = Ascending
 - primefaces.datatable.SORT_DESC = Descending
 
-
-## Portlets
+=== Portlets
 
 PrimeFaces supports portlet environments based on JSF 2 and Portlet 2 APIs. A portlet bridge is
 necessary to run a JSF application as a portlet and we suggest LiferayFaces bridge as the
@@ -23795,10 +22028,9 @@ rich UI with the <f:ajax /> tag
 - Uses the PrimeFaces p:dataTable tag to list the uploaded files
 - Uses the PrimeFaces p:confirmDialog tag to popup a yes/no dialog to verify file deletion
 
+=== IDE Support
 
-## IDE Support
-
-### NetBeans
+==== NetBeans
 
 NetBeans 7.0+ bundles PrimeFaces, when creating a new project you can select PrimeFaces from
 components tab;
@@ -23816,12 +22048,12 @@ Starting with NetBeans 8, the IDE provides a built-in CRUD plugin for PrimeFaces
 There is also another 3rd party plugin for NetBeans called PrimeFaces CRUD Generator.
 _[http://sourceforge.net/projects/nbpfcrudgen/](http://sourceforge.net/projects/nbpfcrudgen/)_
 
-### Eclipse
+==== Eclipse
 
 Code completion works out of the box for Eclipse when JSF facet is enabled.
 
 
-## Project Resources
+== Project Resources
 
 **Documentation**
 This guide is the main resource for documentation, for additional documentation like apidocs, taglib
@@ -23867,7 +22099,7 @@ You can follow PrimeFaces on twitter using @primefaces and join the Facebook gro
 and more.
 
 
-## FAQ
+== FAQ
 
 **1. Who develops PrimeFaces?**
 PrimeFaces is developed and maintained by PrimeTek, a software development company

@@ -1,5 +1,3 @@
-=== AjaxBehavior
-
 include::p-ajax[]
 
 ==== Getting Started with AjaxBehavior
@@ -40,8 +38,8 @@ public class CounterBean {
 
 ==== Events
 Default client side events are defined by components that support client behaviors, for input
-components it is _onchange_ and for command components it is _onclick_. In order to override the dom
-event to trigger the ajax request use _event_ option. In following example, ajax request is triggered
+components it is `onchange` and for command components it is `onclick`. In order to override the dom
+event to trigger the ajax request use `event` option. In following example, ajax request is triggered
 when key is up on input field.
 
 [source, xml]

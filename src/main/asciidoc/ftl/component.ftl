@@ -1,6 +1,10 @@
+=== ${tag.tagName?cap_first}
+
 ${tag.description}
 
+<#if renderer??>
 image::${tag.tagName}.jpg[]
+</#if>
 
 [cols="1,2", options="header"]
 .Info
@@ -35,6 +39,11 @@ image::${tag.tagName}.jpg[]
 
     | Behavior Class
     | ${behavior.handlerClass}
+</#if>
+
+<#if tag.handlerClass??>
+    | Handler Class
+    | ${tag.handlerClass}
 </#if>
 |===
 

@@ -1,5 +1,3 @@
-=== AccordionPanel
-
 include::p-accordionPanel[]
 
 ==== Getting Started with Accordion Panel
@@ -30,7 +28,7 @@ request to load the tab contents.
 
 This feature is useful to reduce bandwidth and speed up page loading time. By default activating a
 previously loaded dynamic tab does not initiate a request to load the contents again as tab is cached.
-To control this behavior use _cache_ option.
+To control this behavior use `cache` option.
 
 [source, xml]
 ----
@@ -40,7 +38,7 @@ To control this behavior use _cache_ option.
 ----
 
 ==== Client Side Callbacks
-_onTabChange_ is called before a tab is shown and _onTabShow_ is called after. Both receive container
+`onTabChange` is called before a tab is shown and `onTabShow` is called after. Both receive container
 element of the tab to show as the parameter.
 
 [source, xml]
@@ -57,7 +55,7 @@ element of the tab to show as the parameter.
 ----
 
 ==== Ajax Behavior Events
-_tabChange_ and _tabClose are_ the ajax behavior events of accordion panel. An example with
+`tabChange` and _tabClose are_ the ajax behavior events of accordion panel. An example with
 tabChange would be;
 
 [source, xml]
@@ -113,7 +111,7 @@ A tab can be disabled by setting disabled attribute to true.
 ----
 
 ==== Multiple Selection
-By default, only one tab at a time can be active, enable _multiple_ mode to activate multiple tabs.
+By default, only one tab at a time can be active, enable `multiple` mode to activate multiple tabs.
 
 [source, xml]
 ----
@@ -147,7 +145,7 @@ inputs.
 |===
 
 ==== Skinning
-AccordionPanel resides in a main container element which _style_ and _styleClass_ options apply. As
+AccordionPanel resides in a main container element which `style` and `styleClass` options apply. As
 skinning style classes are global, see the main theming section for more information. Following is
 the list of structural style classes;
 
