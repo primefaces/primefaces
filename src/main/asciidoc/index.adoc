@@ -2,6 +2,7 @@
 :sectanchors:
 :sectnumlevels: 2
 :toc: left
+:icons: font
 
 == About the Author
 
@@ -20260,19 +20261,19 @@ Selector Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-## Partial Rendering and Processing
+== Partial Rendering and Processing
 
 PrimeFaces provides a partial rendering and view processing feature based on standard JSF 2 APIs
 to enable choosing what to process in JSF lifecyle and what to render in the end with ajax.
 
-### Partial Rendering
+=== Partial Rendering
 
 In addition to components like autoComplete, datatable, slider with built-in ajax capabilities,
 PrimeFaces also provides a generic PPR (Partial Page Rendering) mechanism to update JSF
 components with ajax. Several components are equipped with the common PPR attributes (e.g.
 update, process, onstart, oncomplete).
 
-#### Infrastructure................................................................................................................
+==== Infrastructure
 
 PrimeFaces Ajax Framework is based on standard server side APIs of JSF 2. There are no additional
 artfacts like custom AjaxViewRoot, AjaxStateManager, AjaxViewHandler, Servlet Filters,
@@ -20283,104 +20284,104 @@ Mojarra and MyFaces, PrimeFaces scripts are based on the most popular javascript
 which is far more tested, stable regarding ajax, dom handling, dom tree traversing than a JSF
 implementations scripts.
 
-#### Using IDs.....................................................................................................................
+==== Using IDs
 
-**Getting Started**
+===== Getting Started
 When using PPR you need to specify which component(s) to update with ajax. If the component
 that triggers PPR request is at the same namingcontainer (eg. form) with the component(s) it
 renders, you can use the server ids directly. In this section although we’ll be using commandButton,
 same applies to every component that’s capable of PPR such as commandLink, poll,
 remoteCommand and etc.
 
-```
+[source, xml]
+----
 <h:form>
-<p:commandButton update="display" />
-<h:outputText id="display" value="#{bean.value}"/>
+    <p:commandButton update="display" />
+    <h:outputText id="display" value="#{bean.value}"/>
 </h:form>
-```
-**PrependId**
+----
+
+===== PrependId
 Setting prependId setting of a form has no effect on how PPR is used.
 
-```
+[source, xml]
+----
 <h:form prependId="false">
-<p:commandButton update="display" />
-<h:outputText id="display" value="#{bean.value}"/>
+    <p:commandButton update="display" />
+    <h:outputText id="display" value="#{bean.value}"/>
 </h:form>
-```
+----
 
-**ClientId**
+===== ClientId
 It is also possible to define the client id of the component to update.
 
-```
+[source, xml]
+----
 <h:form id="myform">
-<p:commandButton update="myform:display" />
-<h:outputText id="display" value="#{bean.value}"/>
+    <p:commandButton update="myform:display" />
+    <h:outputText id="display" value="#{bean.value}"/>
 </h:form>
-```
-**Different NamingContainers**
+----
+
+===== Different NamingContainers
 If your page has different naming containers (e.g. two forms), you also need to add the container id
 to search expression so that PPR can handle requests that are triggered inside a namingcontainer
 that updates another namingcontainer. Following is the suggested way using separator char as a
 prefix, note that this uses same search algorithm as standard JSF 2 implementation;
 
-```
+[source, xml]
+----
 <h:form id="form1">
-<p:commandButton update=":form2:display" />
+    <p:commandButton update=":form2:display" />
 </h:form>
-<h:form id="form2">
-<h:outputText id="display" value="#{bean.value}"/>
-</h:form>
-```
-Please read **findComponent** algorithm described in link below used by both JSF core and
-PrimeFaces to fully understand how component referencing works.
 
-```
-http://docs.oracle.com/javaee/6/api/javax/faces/component/UIComponent.html
-```
+<h:form id="form2">
+    <h:outputText id="display" value="#{bean.value}"/>
+</h:form>
+----
+
+Please read http://docs.oracle.com/javaee/6/api/javax/faces/component/UIComponent.html[UIComponent#findComponent] algorithm used by both JSF core and PrimeFaces to fully understand how component referencing works.
+
 JSF h:form, datatable, composite components are naming containers, in addition tabView,
 accordionPanel, dataTable, dataGrid, dataList, carousel, galleria, ring, sheet and subTable are
 PrimeFaces component that implement NamingContainer.
 
-**Multiple Components**
+===== Multiple Components
 Multiple components to update can be specified with providing a list of ids separated by a comma,
 whitespace or even both.
 
-```
+[source, xml]
+----
 <h:form>
-<p:commandButton update="display1,display2" />
-<p:commandButton update="display1 display2" />
-<h:outputText id="display1" value="#{bean.value1}"/>
-<h:outputText id="display2" value="#{bean.value2}"/>
+    <p:commandButton update="display1,display2" />
+    <p:commandButton update="display1 display2" />
+    <h:outputText id="display1" value="#{bean.value1}"/>
+    <h:outputText id="display2" value="#{bean.value2}"/>
 </h:form>
-```
+----
 
-#### Notifying Users............................................................................................................
+==== Notifying Users
 
 ajaxStatus is the component to notify the users about the status of **global** ajax requests. See the
 ajaxStatus section to get more information about the component.
 
-**Global vs Non-Global**
+===== Global vs Non-Global
 By default ajax requests are global, meaning if there is an ajaxStatus component present on page, it
 is triggered.
 
 If you want to do a "silent" request not to trigger ajaxStatus instead, set global to false. An example
 with commandButton would be;
 
-```
+[source, xml]
+----
 <p:commandButton value="Silent" global="false" />
 <p:commandButton value="Notify" global="true" />
-```
-#### Bits&Pieces..................................................................................................................
+----
 
-**PrimeFaces Ajax Javascript API**
-See the javascript section to learn more about the PrimeFaces Javascript Ajax API.
-
-
-### Partial Processing
+=== Partial Processing
 
 In Partial Page Rendering, only specified components are rendered, similarly in Partial Processing
-only defined components are processed. Processing means executing Apply Request Values,
-Process Validations, Update Model and Invoke Application JSF lifecycle phases only on defined
+only defined components are processed. Processing means executing Apply Request Values, Process Validations, Update Model and Invoke Application JSF lifecycle phases only on defined
 components.
 
 This feature is a simple but powerful enough to do group validations, avoiding validating unwanted
@@ -20388,26 +20389,29 @@ components, eliminating need of using immediate and many more use cases. Various
 such as commandButton, commandLink are equipped with process attribute, in examples we’ll be
 using commandButton.
 
-#### Partial Validation..........................................................................................................
+==== Partial Validation
 
 A common use case of partial process is doing partial validations, suppose you have a simple
 contact form with two dropdown components for selecting city and suburb, also there’s an inputText
 which is required. When city is selected, related suburbs of the selected city is populated in suburb
 dropdown.
 
-```
+[source, xml]
+----
 <h:form>
-<h:selectOneMenu id="cities" value="#{bean.city}">
-<f:selectItems value="#{bean.cityChoices}" />
-<p:ajax listener="#{bean.populateSuburbs}" update="suburbs"
-process="@all"/>
-</h:selectOneMenu>
-<h:selectOneMenu id="suburbs" value="#{bean.suburb}">
-<f:selectItems value="#{bean.suburbChoices}" />
-</h:selectOneMenu>
-<h:inputText value="#{bean.email}" required="true"/>
+    <h:selectOneMenu id="cities" value="#{bean.city}">
+        <f:selectItems value="#{bean.cityChoices}" />
+        <p:ajax listener="#{bean.populateSuburbs}" update="suburbs" process="@all"/>
+    </h:selectOneMenu>
+
+    <h:selectOneMenu id="suburbs" value="#{bean.suburb}">
+        <f:selectItems value="#{bean.suburbChoices}" />
+    </h:selectOneMenu>
+
+    <h:inputText value="#{bean.email}" required="true"/>
 </h:form>
-```
+----
+
 When the city dropdown is changed an ajax request is sent to execute populateSuburbs method
 which populates suburbChoices and finally update the suburbs dropdown. Problem is
 populateSuburbs method will not be executed as lifecycle will stop after process validations phase
@@ -20417,81 +20421,85 @@ stating to process every component on page but there is no need to process the i
 The solution is to define what to process in p:ajax. As we’re just making a city change request, only
 processing that should happen is cities dropdown.
 
-
-```
+[source, xml]
+----
 <h:form>
-<h:selectOneMenu id="cities" value="#{bean.city}">
-<f:selectItems value="#{bean.cityChoices}" />
-<p:ajax actionListener="#{bean.populateSuburbs}"
-event="change" update="suburbs" process="@this"/>
-</h:selectOneMenu>
-<h:selectOneMenu id="suburbs" value="#{bean.suburb}">
-<f:selectItems value="#{bean.suburbChoices}" />
-</h:selectOneMenu>
-<h:inputText value="#{bean.email}" required="true"/>
+    <h:selectOneMenu id="cities" value="#{bean.city}">
+        <f:selectItems value="#{bean.cityChoices}" />
+        <p:ajax actionListener="#{bean.populateSuburbs}" event="change" update="suburbs" process="@this"/>
+    </h:selectOneMenu>
+
+    <h:selectOneMenu id="suburbs" value="#{bean.suburb}">
+        <f:selectItems value="#{bean.suburbChoices}" />
+    </h:selectOneMenu>
+
+    <h:inputText value="#{bean.email}" required="true"/>
 </h:form>
-```
+----
+
 That is it, now populateSuburbs method will be called and suburbs list will be populated. Note that
 default value for process option is @this already for p:ajax as stated in AjaxBehavior
 documentation, it is explicitly defined here to give a better understanding of how partial processing
 works.
 
-#### Using Ids......................................................................................................................
+==== Using Ids
 
 Partial Process uses the same technique applied in partial updates to specify component identifiers
 to process.
 
-
-### Search Expression Framework
+=== Search Expression Framework
 
 Core JSF component referencing is based on component identifiers only with basic keyword
 support. PrimeFaces Search Expression Framework (SEF) provides both server side and client side
 extensions to make it easier to reference components. SEF is utilized in partial update, process and
 whenever a component references another component.
 
-#### Keywords.....................................................................................................................
+==== Keywords
 
 Keywords are the easier way to reference components, they resolve to ids so that if an id changes,
 the reference does not need to change. Core JSF provides a couple of keywords and PrimeFaces
 provides more along with composite expression support.
 
-```
-Keyword Type Description
-@this Standard Current component.
-@all Standard Whole view.
-@form Standard Closest ancestor form of current component.
-@none Standard No component.
-@namingcontainer PrimeFaces Closest ancestor naming container of current component.
-@parent PrimeFaces Parent of the current component.
-@composite PrimeFaces Closest composite component ancestor.
-@child(n) PrimeFaces nth child.
-@row(n) PrimeFaces nth row.
-@previous PrimeFaces Previous sibling.
-@next PrimeFaces Next sibling.
-@widgetVar(name) PrimeFaces Component with given widgetVar.
-@root PrimeFaces UIViewRoot instance of the view, can be used to start
-searching from the root instead the current component.
-@id PrimeFaces Used to search components by their id ignoring the component
-tree structure and naming containers.
-```
+|===
+|Keyword |Type |Description
+
+|@this | Standard | Current component.
+|@all | Standard | Whole view.
+|@form | Standard | Closest ancestor form of current component.
+|@none | Standard | No component.
+|@namingcontainer | PrimeFaces | Closest ancestor naming container of current component.
+|@parent | PrimeFaces | Parent of the current component.
+|@composite | PrimeFaces | Closest composite component ancestor.
+|@child(n) | PrimeFaces | nth child.
+|@row(n) | PrimeFaces | nth row.
+|@previous | PrimeFaces | Previous sibling.
+|@next | PrimeFaces | Next sibling.
+|@widgetVar(name) | PrimeFaces | Component with given widgetVar.
+|@root | PrimeFaces | UIViewRoot instance of the view, can be used to start searching from the root instead the current component.
+|@id | PrimeFaces | Used to search components by their id ignoring the component tree structure and naming containers.
+|===
+
 Consider the following case where ids are used for referencing;
 
-```
+[source, xml]
+----
 <h:form id="form1">
-<p:commandButton id="btn" update="form1" process="btn" />
-<h:outputText value="#{bean.value}"/>
+    <p:commandButton id="btn" update="form1" process="btn" />
+    <h:outputText value="#{bean.value}"/>
 </h:form>
-```
+----
+
 Using keywords, same can be written as;
 
-
-```
+[source, xml]
+----
 <h:form id="form1">
-<p:commandButton id="btn" update="@form" process="@this" />
-<h:outputText value="#{bean.value}"/>
+    <p:commandButton id="btn" update="@form" process="@this" />
+    <h:outputText value="#{bean.value}"/>
 </h:form>
-```
-**Composite Expressions**
+----
+
+===== Composite Expressions
 Multiple keywords can be combined in a single expression using colon;
 
 - @form:@parent
@@ -20499,78 +20507,36 @@ Multiple keywords can be combined in a single expression using colon;
 - @this:@parent:@parent
 - @form:@child(2)
 
-**Usage Scenarios**
+===== Usage Scenarios
 SEF is not just at partial process and update, they are also available whenever a component is
 referencing another.
 
-```
+[source, xml]
+----
 <h:form>
-<p:commandButton id="dynaButton" value="Show" type="button" />
-<p:menu overlay="true" trigger="@parent:dynaButton">
-//items
-</p:menu>
+    <p:commandButton id="dynaButton" value="Show" type="button" />
+    <p:menu overlay="true" trigger="@parent:dynaButton">
+        //items
+    </p:menu>
 </h:form>
-```
-#### PrimeFaces Selectors (PFS).........................................................................................
+----
+
+==== PrimeFaces Selectors (PFS)
 
 PFS integrates jQuery Selector API with JSF component referencing model so that referencing can
 be done using jQuery Selector API instead of core id based JSF model. Best way to explain the
-power of PFS is examples;
+power of PFS is examples:
 
-Update all forms
+- Update all forms: `update="@(form)"`
+- Update first form: `update="@(form:first)"`
+- Update all components having mystyle class : `update="@(.mystyle)"`
+- Update and process all inputs: `update="@(:input)" process="@(:input)"`
+- Update all datatables: `update="@(.ui-datatable)"`
+- Process and update input components inside panels: `process="@(.ui-panel :input)" update="@(.ui-panel)"`
+- Process input components but not select components: `process="@(:input:not(select))"`
+- Update input components that are disabled: `update="@(:input:disabled)"`
+- Update based on different PFS: `update="compId :form:compId @(:input) @parent:@child(2)"`
 
-```
-update="@(form)"
-```
-Update first form
-
-```
-update="@(form:first)"
-```
-Update all components that has styleClass named mystyle
-
-```
-update="@(.mystyle)"
-```
-Update and process all inputs
-
-```
-update="@(:input)" process="@(:input)"
-```
-
-Update all datatables
-
-```
-update="@(.ui-datatable)"
-```
-Process input components inside any panel and update all panels
-
-```
-process="@(.ui-panel :input)" update="@(.ui-panel)"
-```
-Process input components but not select components
-
-```
-process="@(:input:not(select))"
-```
-Update input components that are disabled
-
-```
-update="@(:input:disabled)"
-```
-PFS can be used with other referencing approaches as well;
-
-```
-update="compId :form:compId @(:input) @parent:@child(2)"
-```
-```
-<h:form>
-<p:commandButton id="dynaButton" value="Show" type="button" styleClass="btn"/>
-<p:menu overlay="true" trigger="@(.btn)">
-//items
-</p:menu>
-</h:form>
-```
 PFS provides an alternative, flexible, grouping based approach to reference components to partially
 process and update. There is less CPU server load compared to regular referencing because JSF
 component tree is not traversed on server side to find a component and figure out the client id as
@@ -20584,13 +20550,9 @@ defined ids on the matched set as core JSF components usually do not render auto
 though manually defined ids won't be referenced directly, they are still required for PFS to be
 collected and send in the request.
 
-For full reference of jQuery selector api, see;
+For full reference of jQuery selector api, see http://api.jquery.com/category/selectors/
 
-```
-http://api.jquery.com/category/selectors/
-```
-
-### PartialSubmit
+=== PartialSubmit
 
 Core JSF Ajax implementation and by default PrimeFaces serializes the whole form to build the
 post data in ajax requests so the same data is posted just like in a non-ajax request. This has a
@@ -20604,53 +20566,50 @@ side. When partialSubmit is enabled, only data of components that will be partia
 server side are serialized. By default partialSubmit is disabled and you can enable it globally using a
 context parameter.
 
-```
+[source, xml]
+----
 <context-param>
-<param-name>primefaces.SUBMIT</param-name>
-<param-value>partial</param-value>
+    <param-name>primefaces.SUBMIT</param-name>
+    <param-value>partial</param-value>
 </context-param>
-```
-Components like buttons and behaviors like p:ajax are equipped with partialSubmit option so you
-can override the global setting per component.
+----
 
-```
+Components like buttons and behaviors like `p:ajax` are equipped with partialSubmit option so you can override the global setting per component.
+
+[source, xml]
+----
 <p:commandButton value="Submit" partialSubmit="true|false" />
-```
+----
 
 === Javascript API
 
 PrimeFaces renders unobstrusive javascript which cleanly separates behavior from the html. Client
 side engine is powered by jQuery version 1.8.1 which is the latest at the time of the writing.
 
-### PrimeFaces Namespace
+=== PrimeFaces Namespace
 
-_PrimeFaces_ is the main javascript object providing utilities and namespace.
+`PrimeFaces` is the main javascript object providing utilities and namespace.
 
-```
-Method Description
-escapeClientId(id) Escaped JSF ids with semi colon to work with jQuery.
-addSubmitParam(el, name, param) Adds request parameters dynamically to the element.
-getCookie(name) Returns cookie with given name.
-setCookie(name, value, cfg) Sets a cookie with given name, value and options. e.g.
-PrimeFaces.setCookie('name', 'test');
-PrimeFaces.setCookie('name','test',{expires:7,
-path:'/'})
-Second example creates cookie for entire site that
-expires in 7 days.
-deleteCookie(name, cfg) Deletes a cookie with given and and options.
-skinInput(input) Progressively enhances an input element with theming.
-info(msg), debug(msg), warn(msg), error(msg) Client side log API.
-changeTheme(theme) Changes theme on the fly with no page refresh.
-cleanWatermarks() Watermark component extension, cleans all
-watermarks on page before submitting the form.
-showWatermarks() Shows watermarks on form.
-getWidgetById(clientid) Returns the widget instance from the client id
-```
-To be compatible with other javascript entities on a page, PrimeFaces defines two javascript
-namespaces;
+|===
+|Method | Description
 
-**PrimeFaces.widget.***
+|escapeClientId(id) | Escape JSF ids with semi colon to work with jQuery.
+|addSubmitParam(el, name, param) | Adds request parameters dynamically to the element.
+|getCookie(name) | Returns cookie with given name.
+|setCookie(name, value, cfg) | Sets a cookie with given name, value and options. e.g. PrimeFaces.setCookie('name', 'test'); PrimeFaces.setCookie('name','test',{expires:7,path:'/'})
+Second example creates cookie for entire site that expires in 7 days.
+|deleteCookie(name, cfg) | Deletes a cookie with given and and options.
+|skinInput(input) | Progressively enhances an input element with theming.
+|info(msg), debug(msg), warn(msg), error(msg) | Client side log API.
+|changeTheme(theme) | Changes theme on the fly with no page refresh.
+|cleanWatermarks() | Watermark component extension, cleans all watermarks on page before submitting the form.
+|showWatermarks() | Shows watermarks on form.
+|getWidgetById(clientid) | Returns the widget instance from the client id
+|===
 
+To be compatible with other javascript entities on a page, PrimeFaces defines two javascript namespaces:
+
+==== PrimeFaces.widget.*
 Contains custom PrimeFaces widgets like;
 
 - PrimeFaces.widget.DataTable
@@ -20660,110 +20619,101 @@ Contains custom PrimeFaces widgets like;
 
 Most of the components have a corresponding client side widget with same name.
 
-**_PrimeFaces.ajax.*_**
-
-
+==== PrimeFaces.ajax.*
 PrimeFaces.ajax namespace contains the ajax API which is described in next section.
 
-
-### Ajax API
+=== Ajax API
 
 PrimeFaces Ajax Javascript API is powered by jQuery and optimized for JSF. Whole API consists
 of three properly namespaced simple javascript functions.
 
-**PrimeFaces.ajax.Request**
+==== PrimeFaces.ajax.Request
 Sends ajax requests that execute JSF lifecycle and retrieve partial output. Function signature is as
-follows;
+follows: `PrimeFaces.ajax.Request.handle(cfg);`
 
-```
-PrimeFaces.ajax.Request.handle(cfg);
-```
-**Configuration Options
-Option Description**
-formId Id of the form element to serialize, if not defined parent form of
-source is used.
-async Flag to define whether request should go in ajax queue or not, default
-is false.
-global Flag to define if p:ajaxStatus should be triggered or not, default is
-true.
-update Component(s) to update with ajax.
-process Component(s) to process in partial request.
-source Client id of the source component causing the request.
-params Additional parameters to send in ajax request.
-onstart() Javascript callback to process before sending the ajax request, return
-false to cancel the request.
-onsuccess(data, status, xhr) Javascript callback to process when ajax request returns with success
-code. Takes three arguments, xml response, status code and
-xmlhttprequest.
-onerror(xhr, status, error) Javascript callback to process when ajax request fails. Takes three
-arguments, xmlhttprequest, status string and exception thrown if any.
-oncomplete(xhr, status, args) Javascript callback to process when ajax request completes. Takes
-three arguments, xmlhttprequest, status string and optional arguments
-provided by PrimeFaces.current() API.
+==== Configuration Options
+|===
+| Option | Description
+
+|formId | Id of the form element to serialize, if not defined parent form of source is used.
+|async | Flag to define whether request should go in ajax queue or not, default is false.
+|global | Flag to define if p:ajaxStatus should be triggered or not, default is true.
+|update | Component(s) to update with ajax.
+|process | Component(s) to process in partial request.
+|source | Client id of the source component causing the request.
+|params | Additional parameters to send in ajax request.
+|onstart() | Javascript callback to process before sending the ajax request, return false to cancel the request.
+|onsuccess(data, status, xhr) | Javascript callback to process when ajax request returns with success code. Takes three arguments, xml response, status code and xmlhttprequest.
+|onerror(xhr, status, error) | Javascript callback to process when ajax request fails. Takes three arguments, xmlhttprequest, status string and exception thrown if any.
+|oncomplete(xhr, status, args) | Javascript callback to process when ajax request completes. Takes three arguments, xmlhttprequest, status string and optional arguments provided by `PrimeFaces.current()` API.
+|===
 
 
-**Examples**
+===== Examples
 Suppose you have a JSF page called _createUser_ with a simple form and some input components.
 
-```
+[source, xml]
+----
 <h:form id="userForm">
 <h:inputText id="username" value="#{userBean.user.name}" />
 ... More components
 </h:form>
-```
+----
+
 You can post all the information with ajax using;
 
-```
+[source, javascript]
+----
 PrimeFaces.ajax.Request.handle({
-formId:’userForm’
-,source:’userForm’
-,process:’userForm’
+    formId:'userForm',
+    source:'userForm',
+    process:'userForm'
 });
-```
+----
+
 More complex example with additional options;
 
-```
+[source, javascript]
+----
 PrimeFaces.ajax.Request.handle({
-formId: 'userForm',
-source: 'userForm',
-process: 'userForm',
-update: 'msgs',
-params:{
-'param_name1':'value1',
-'param_name2':'value2'
-},
-oncomplete:function(xhr, status) {alert('Done');}
+    formId: 'userForm',
+    source: 'userForm',
+    process: 'userForm',
+    update: 'msgs',
+    params:{
+        'param_name1':'value1',
+        'param_name2':'value2'
+    },
+    oncomplete: function(xhr, status) {alert('Done');}
 });
-```
-We highly recommend using p:remoteComponent instead of low level javascript api as it generates
+----
+
+We highly recommend using `p:remoteComponent` instead of low level javascript api as it generates
 the same with much less effort and less possibility to do an error.
 
-**PrimeFaces.ajax.Response**
-PrimeFaces.ajax.Response.handle() updates the specified components if any and synchronizes the
+==== PrimeFaces.ajax.Response
+`PrimeFaces.ajax.Response.handle()` updates the specified components if any and synchronizes the
 client side JSF state. DOM updates are implemented using jQuery which uses a very fast algorithm.
 
-**Abort**
-Use the abort API in case you'd like to cancel all the ongoing requests;
-
-```
-PrimeFaces.ajax.Queue.abortAll()
-```
+==== Abort
+Use the abort API in case you'd like to cancel all the ongoing requests: `PrimeFaces.ajax.Queue.abortAll()`
 
 === Dialog Framework
 
-Dialog Framework (DF) is used to open an external xhtml page in a dialog that is generated
-dynamically on runtime. This is quite different to regular usage of dialogs with declarative p:dialog
+Dialog Framework aka DF, is used to open an external xhtml page in a dialog that is generated
+dynamically on runtime. This is quite different to regular usage of dialogs with declarative `p:dialog`
 components as DF is based on a programmatic API where dialogs are created and destroyed at
 runtime. Note that DF and the declarative approach are two different ways and both can even be
-used together. Usage is quite simple, PrimeFaces.current().dialog() has _openDialog_ and _closeDialog_
-methods;
+used together. Usage is quite simple, PrimeFaces.current().dialog() has `openDialog` and `closeDialog` methods;
 
-```
+[source, java]
+----
 /**
 * Open a view in dialog.
 * @param outcome The logical outcome used to resolve a navigation case.
 */
 public abstract void openDialog(String outcome);
+
 /**
 * Open a view in dialog.
 * @param outcome The logical outcome used to resolve a navigation case.
@@ -20772,173 +20722,200 @@ public abstract void openDialog(String outcome);
 */
 public abstract void openDialog(String outcome, Map<String,Object> options,
 Map<String,List<String>> params);
+
 /**
 * Close a dialog.
 * @param data Optional data to pass back to a dialogReturn event.
 */
 public abstract void closeDialog(Object data);
-```
-**Configuration**
+----
+
+===== Configuration
 DF requires the following configuration to be present in faces config file.
 
-```
+[source, xml]
+----
 <application>
-<action-listener>
-org.primefaces.application.DialogActionListener
-</action-listener>
-<navigation-handler>
-org.primefaces.application.DialogNavigationHandler
-</navigation-handler>
-<view-handler>
-org.primefaces.application.DialogViewHandler
-</view-handler>
+    <action-listener>
+        org.primefaces.application.DialogActionListener
+    </action-listener>
+
+    <navigation-handler>
+        org.primefaces.application.DialogNavigationHandler
+    </navigation-handler>
+
+    <view-handler>
+        org.primefaces.application.DialogViewHandler
+    </view-handler>
 </application>
-```
-**Getting Started**
+----
+
+===== Getting Started
 Simplest use case of DF is opening an xhtml view like _cars.xhtml_ in a dialog;
 
-
-```
+[source, xml]
+----
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-xmlns:p="http://primefaces.org/ui">
-<h:head>
-<title>Cars</title>
-</h:head>
-<h:body>
-<p:dataTable var="car" value="#{tableBean.cars}">
-//columns
-</p:dataTable>
-</h:body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Cars</title>
+    </h:head>
+    <h:body>
+        <p:dataTable var="car" value="#{tableBean.cars}">
+            //columns
+        </p:dataTable>
+    </h:body>
 </html>
-```
-On the host page, call PrimeFaces.current().dialog().openDialog("viewname");
+----
 
-```
-<p:commandButton value="View Cars" actionListener="#{hostBean.view}" />
-```
-```
+On the host page, call `PrimeFaces.current().dialog().openDialog("viewname");`
+
+[source, xml]
+----
+<p:commandButton value="View Cars" action="#{hostBean.view}" />
+----
+
+[source, java]
+----
 public void view() {
-PrimeFaces.current().dialog().openDialog("viewCars");
+    PrimeFaces.current().dialog().openDialog("viewCars");
 }
-```
+----
 Once the response is received from the request caused by command button a dialog would be
 generated with the contents of viewCars.xhtml. Title of the dialog is retrieved from the title element
 of the viewCars, in this case, Cars.
 
-**Dialog Configuration**
+===== Dialog Configuration
 Overloaded openDialog method provides advanced configuration regarding the visuals of dialog
 along with parameters to send to the dialog content.
 
-```
+[source, xml]
+----
 <p:commandButton value="View Cars" actionListener="#{hostBean.viewCustomized}" />
-```
-```
+----
+
+[source, java]
+----
 public void view() {
-Map<String,Object> options = new HashMap<String, Object>();
-options.put("modal", true);
-options.put("draggable", false);
-options.put("resizable", false);
-options.put("contentHeight", 320);
-RequestContext.getCurrentInstance().openDialog("viewCars", options, null);
+    Map<String,Object> options = new HashMap<String, Object>();
+    options.put("modal", true);
+    options.put("draggable", false);
+    options.put("resizable", false);
+    options.put("contentHeight", 320);
+    PrimeFaces.dialog().openDynamic("viewCars", options, null);
 }
-```
+----
 
 Here is the full list of configuration options;
 
-```
-Name Default Type Description
-modal false Boolean Controls modality of the dialog.
-resizable true Boolean When enabled, makes dialog resizable.
-draggable true Boolean When enabled, makes dialog draggable.
-width auto String Width of the dialog.
-height auto String Height of the dialog.
-contentWidth 640 String Width of the dialog content.
-contentHeight auto String Height of the dialog content.
-closable true Boolean Whether the dialog can be closed or not.
-includeViewParams false Boolean When enabled, includes the view parameters.
-headerElement null String Client id of the element to display inside header.
-minimizable false Boolean Makes dialog minimizable.
-maximizable false Boolean Makes dialog maximizable.
-closeOnEscape false Boolean Whether the dialog can be closed with escape key.
-```
-**Data Communication**
+|===
+|Name | Default | Type | Description
+
+|modal | false | Boolean | Controls modality of the dialog
+|resizable | true | Boolean | When enabled, makes dialog resizable
+|draggable | true | Boolean | When enabled, makes dialog draggable
+|width | auto | String | Width of the dialog
+|height | auto | String | Height of the dialog
+|contentWidth | 640 | String | Width of the dialog content
+|contentHeight | auto | String | Height of the dialog content
+|closable | true | Boolean | Whether the dialog can be closed or not
+|includeViewParams | false | Boolean | When enabled, includes the view parameters
+|headerElement | null | String | Client id of the element to display inside header
+|minimizable | false | Boolean | Makes dialog minimizable
+|maximizable | false | Boolean | Makes dialog maximizable
+|closeOnEscape | false | Boolean | Whether the dialog can be closed with escape key
+|===
+
+===== Data Communication
 Page displayed in the dialog can pass data back to the parent page. The trigger component needs to
-have _dialogReturn_ ajax behavior event to hook-in when data is returned from dialog.
+have `dialogReturn` ajax behavior event to hook-in when data is returned from dialog.
 
-```
+[source, xml]
+----
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-xmlns:p="http://primefaces.org/ui">
-<h:head>
-<title>Cars</title>
-</h:head>
-<h:body>
-<p:dataTable var="car" value="#{tableBean.cars}">
-//columns
-<p:column headerText="Select">
-<p:commandButton icon="ui-icon-search"
-actionListener="#{tableBean.selectCarFromDialog(car)}" />
-</p:column>
-</p:dataTable>
-</h:body>
-</html>
-```
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
 
-```
+    <h:head>
+        <title>Cars</title>
+    </h:head>
+
+    <h:body>
+        <p:dataTable var="car" value="#{tableBean.cars}">
+            //columns
+            <p:column headerText="Select">
+                <p:commandButton icon="ui-icon-search"
+                                 action="#{tableBean.selectCarFromDialog(car)}" />
+            </p:column>
+        </p:dataTable>
+    </h:body>
+</html>
+----
+
+[source, java]
+----
 public void selectCarFromDialog(Car car) {
-PrimeFaces.current().dialog().closeDialog(car);
+    PrimeFaces.current().dialog().closeDialog(car);
 }
-```
+----
+
 At host page, the button that triggered the dialog should have _dialogReturn_ event.
 
-```
+[source, xml]
+----
 <p:commandButton value="View Cars" actionListener="#{hostBean.viewCars}">
-<p:ajax event="dialogReturn" listener="#{hostBean.handleReturn}"
+    <p:ajax event="dialogReturn" listener="#{hostBean.handleReturn}"
 </p:commandButton>
-```
-```
-public void view() {
-PrimeFaces.current().dialog().openDialog("viewCars");
-}
-public void handleReturn(SelectEvent event) {
-Car car = (Car) event.getObject();
-}
-```
-**Remarks on Dialog Framework**
+----
 
+[source, java]
+----
+public void view() {
+    PrimeFaces.current().dialog().openDialog("viewCars");
+}
+
+public void handleReturn(SelectEvent event) {
+    Car car = (Car) event.getObject();
+}
+----
+
+===== Remarks on Dialog Framework
 - Calls to DialogFramework API within a non-ajax are ignored.
 - Content Width and Height can take percentage value like 100%.
 
-**Dialog Messages**
+===== Dialog Messages
 Displaying FacesMessages in a Dialog is a common case where a faces message needs to be added
 to the context first, dialog content containing a message component needs to be updated and finally
 dialog gets shown with client side api. DF has a simple utility to bypass this process by providing a
-shortcut;
+shortcut:
 
-```
+[source, java]
+----
 /**
 * Displays a message in a dialog.
 * @param message FacesMessage to be displayed.
 */
 public abstract void showMessageInDialog(FacesMessage message);
-```
-Using this shortcut it is just one line to implement the same functionality;
+----
+Using this shortcut it is just one line to implement the same functionality:
 
-```
-<p:commandButton value="Show" actionListener="#{bean.save}" />
-```
-```
+[source, xml]
+----
+<p:commandButton value="Show" action="#{bean.save}" />
+----
+
+[source, java]
+----
 public void save() {
-//business logic
-PrimeFaces.current().dialog().showMessageInDialog(new
-FacesMessage(FacesMessage.SEVERITY_INFO,
-"What we do in life", "Echoes in eternity."););
+    PrimeFaces.current().dialog()
+        .showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_INFO, "What we do in life", "Echoes in eternity."));
 }
-```
+----
 
-
-## Client Side Validation
+== Client Side Validation
 
 PrimeFaces Client Side Validation (CSV) Framework is the most complete and advanced CSV
 solution for JavaServer Faces and Java EE. CSV support for JSF is not an easy task, it is not simple
@@ -20957,33 +20934,35 @@ experience difference behaviors on client side and server side.
 - Advanced Bean Validation Integration.
 - Little footprint using HTML5.
 
-### Configuration
+=== Configuration
 
 CVS is disabled by default and a global parameter is required to turn it on.
 
-```
+[source, xml]
+----
 <context-param>
-<param-name>primefaces.CLIENT_SIDE_VALIDATION</param-name>
-<param-value>true</param-value>
+    <param-name>primefaces.CLIENT_SIDE_VALIDATION</param-name>
+    <param-value>true</param-value>
 </context-param>
-```
-At page level, enable _validateClient_ attribute of commandButton and commandLink components.
+----
 
-```
+At page level, enable `validateClient` attribute of commandButton and commandLink components.
+
+[source, xml]
+----
 <h:form>
-<p:messages />
-<p:inputText required="true" />
-<p:inputTextarea required="true" />
-<p:commandButton value="Save" validateClient="true" ajax="false"/>
+    <p:messages />
+    <p:inputText required="true" />
+    <p:inputTextarea required="true" />
+    <p:commandButton value="Save" validateClient="true" ajax="false"/>
 </h:form>
-```
+----
 That is all for the basics, clicking the button validates the form at client side and displays the errors
 using messages component.
 
-```
-CSV works for PrimeFaces components only, standard h: * components are not supported.
-```
-### Ajax vs Non-Ajax
+IMPORTANT: CSV works for PrimeFaces components only, standard h: * components are not supported.
+
+=== Ajax vs Non-Ajax
 
 CSV works differently depending on the request type of the trigger component to be compatible
 with cases where CVS is not enabled.
@@ -20993,62 +20972,63 @@ with cases where CVS is not enabled.
 In non-ajax case, all visible and editable input components in the form are validated and message
 components must be placed inside the form.
 
-**Ajax**
+==== Ajax
 CSV supports partial processing and updates on client side as well, if process attribute is enabled,
 the components that would be processed at server side gets validated at client side. Similary if
 update attribute is defined, only message components inside the updated parts gets rendered. Whole
 process happens at client side.
 
-### Events
+==== Events
 
 CSV provides a behavior called p:clientValidator to do instant validation in case you do not want to
 wait for the users to fill in the form and hit commandButton/commandLink. Using clientBehavior
 and custom events, CSV for a particular component can run with events such as change (default),
 blur, keyup.
 
-```
+[source xml]
+----
 <h:form>
-<p:panel header="Validate">
-<h:panelGrid columns="4" cellpadding="5">
-<h:outputLabel for="text" value="Text: (Change)" />
-<p:inputText id="text" value="#{validationBean.text}" required="true">
-<f:validateLength minimum="2" maximum="5" />
-<p:clientValidator />
-</p:inputText>
-<p:message for="text" display="icon" />
-<h:outputText value="#{validationBean.text}" />
-<h:outputLabel for="integer" value="Integer: (Keyup)" />
-<p:inputText id="integer" value="#{validationBean.integer}">
-<p:clientValidator event="keyup"/>
-</p:inputText>
-<p:message for="integer" display="icon" />
-<h:outputText value="#{validationBean.integer}" />
-</h:panelGrid>
-<p:commandButton value="Save" ajax="false" icon="ui-icon-check"
-validateClient="true"/>
-</p:panel>
+    <p:panel header="Validate">
+        <h:panelGrid columns="4" cellpadding="5">
+            <h:outputLabel for="text" value="Text: (Change)" />
+            <p:inputText id="text" value="#{validationBean.text}" required="true">
+                <f:validateLength minimum="2" maximum="5" />
+                <p:clientValidator />
+            </p:inputText>
+            <p:message for="text" display="icon" />
+            <h:outputText value="#{validationBean.text}" />
+            <h:outputLabel for="integer" value="Integer: (Keyup)" />
+            <p:inputText id="integer" value="#{validationBean.integer}">
+                <p:clientValidator event="keyup"/>
+            </p:inputText>
+            <p:message for="integer" display="icon" />
+            <h:outputText value="#{validationBean.integer}" />
+        </h:panelGrid>
+        <p:commandButton value="Save" ajax="false" icon="ui-icon-check" validateClient="true"/>
+    </p:panel>
 </h:form>
-```
-### Messages
+----
+
+=== Messages
 
 Validation errors are displayed as the same way in server side validation, texts are retrieved from a
 client side bundle and message components are required for the displays.
 
-**I18N**
+==== I18N
 Default language is English for the CSV messages and for other languages or to customize the
 default messages, PrimeFaces Locales bundle needs to be present at the page if you'd like to provide
 translations. For more info on PrimeFaces Locales, visit
 [http://code.google.com/p/primefaces/wiki/PrimeFacesLocales.](http://code.google.com/p/primefaces/wiki/PrimeFacesLocales.)
 
 
-**Rendering**
+==== Rendering
 PrimeFaces message components have client side renderers for CSV support, these are p:message,
 p:messages and p:growl. Component options like showSummary, showDetail, globalOnly, mode are
 all implemented by client side renderer for compatibility.
 
-**MyFaces vs Mojarra**
+==== MyFaces vs Mojarra
 Bean validation messages between implementations have a slight difference regarding labels,
-mojarra do not the label of the field but myfaces does. For example;
+mojarra do not the label of the field but myfaces does. For example:
 
 ```
 Mojarra:
