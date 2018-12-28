@@ -50,6 +50,7 @@ if (!PrimeFaces.utils) {
 
         addModal: function(id, zIndex, tabbablesCallback) {
             PrimeFaces.utils.preventTabbing(id, zIndex, tabbablesCallback);
+            PrimeFaces.utils.preventScrolling();
 
             var modalId = id + '_modal';
 
@@ -120,6 +121,7 @@ if (!PrimeFaces.utils) {
             // if the id does NOT contain a ':'
             $(document.body).children("[id='" + modalId + "']").remove();
 
+            PrimeFaces.utils.enableScrolling();
             PrimeFaces.utils.enableTabbing(id);
         },
 
@@ -258,6 +260,40 @@ if (!PrimeFaces.utils) {
             }
 
             scrollParent.off(scrollNamespace);
+        },
+
+        /**
+         * Disables scrolling from scrollbars, mousewheels, touchmoves and keypresses 
+         * on a given scrollable element, typically $(window).
+         * 
+         * @param {type} element the DOM element to prevent scrolling (default to $(window))
+         */
+        preventScrolling: function(element) {
+            var scrollElement = $(window);
+            if (element) {
+                scrollElement = $(element);
+            }
+
+            scrollElement.disablescroll({
+                handleScrollbar: true,
+                handleWheel: true,
+                handleKeys: true,
+                scrollEventKeys: [33,34] //page up, page down
+            });
+        },
+
+        /**
+         * Enables scrolling again if previously disabled.
+         * 
+         * @param {type} element the DOM element to allow scrolling (default to $(window))
+         */
+        enableScrolling: function(element) {
+            var scrollElement = $(window);
+            if (element) {
+                scrollElement = $(element);
+            }
+
+            scrollElement.disablescroll('undo');
         }
     };
 
