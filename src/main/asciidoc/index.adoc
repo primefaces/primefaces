@@ -19653,9 +19653,9 @@ client side JSF state. DOM updates are implemented using jQuery which uses a ver
 ==== Abort
 Use the abort API in case you'd like to cancel all the ongoing requests: `PrimeFaces.ajax.Queue.abortAll()`
 
-=== Dialog Framework
+== Dialog Framework
 
-Dialog Framework aka DF, is used to open an external xhtml page in a dialog that is generated
+Dialog Framework a.k.a DF, is used to open an external xhtml page in a dialog that is generated
 dynamically on runtime. This is quite different to regular usage of dialogs with declarative `p:dialog`
 components as DF is based on a programmatic API where dialogs are created and destroyed at
 runtime. Note that DF and the declarative approach are two different ways and both can even be
