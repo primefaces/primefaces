@@ -307,11 +307,11 @@ PrimeFaces.widget.LightBox = PrimeFaces.widget.BaseWidget.extend({
     },
 
     enableModality: function() {
-        PrimeFaces.utils.addModal(this.id, this.panel.css('z-index') - 1);
+        PrimeFaces.utils.addModal(this, this.panel.css('z-index') - 1);
     },
 
     disableModality: function() {
-        PrimeFaces.utils.removeModal(this.id);
+        PrimeFaces.utils.removeModal(this);
     },
 
     showNavigators: function() {

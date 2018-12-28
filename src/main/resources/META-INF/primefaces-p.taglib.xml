@@ -6286,6 +6286,12 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
+            <description><![CDATA[Whether to block scrolling of the document when dialog is modal.]]></description>
+            <name>blockScroll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
             <description><![CDATA[Sets dialogs visibility. Default is false.]]></description>
             <name>visible</name>
             <required>false</required>
@@ -10924,6 +10930,12 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
+            <description><![CDATA[Whether to block scrolling of the document when lightbox is active.]]></description>
+            <name>blockScroll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
             <description><![CDATA[Client side callback to execute when lightbox is displayed.]]></description>
             <name>onShow</name>
             <required>false</required>
@@ -13133,6 +13145,12 @@
             <name>for</name>
             <required>false</required>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Whether to block scrolling of the document when panel is modal.]]></description>
+            <name>blockScroll</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
             <description><![CDATA[Event to show the overlay panel, default is "click".]]></description>
@@ -18652,6 +18670,12 @@
         <attribute>
             <description><![CDATA[When true, spotlight is activated initially.]]></description>
             <name>active</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Whether to block scrolling of the document when spotlight is active.]]></description>
+            <name>blockScroll</name>
             <required>false</required>
             <type>java.lang.Boolean</type>
         </attribute>

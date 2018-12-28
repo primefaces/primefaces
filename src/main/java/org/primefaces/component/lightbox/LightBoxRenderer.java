@@ -78,6 +78,7 @@ public class LightBoxRenderer extends CoreRenderer {
                 .attr("width", lb.getWidth(), null)
                 .attr("height", lb.getHeight(), null)
                 .attr("visible", lb.isVisible(), false)
+                .attr("blockScroll", lb.isBlockScroll(), false)
                 .attr("iframeTitle", lb.getIframeTitle(), null)
                 .callback("onShow", "function()", lb.getOnShow())
                 .callback("onHide", "function()", lb.getOnHide());

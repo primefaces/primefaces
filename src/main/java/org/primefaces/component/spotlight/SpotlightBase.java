@@ -31,7 +31,8 @@ abstract class SpotlightBase extends UIComponentBase implements Widget {
 
         widgetVar,
         target,
-        active
+        active,
+        blockScroll
     }
 
     public SpotlightBase() {
@@ -65,6 +66,14 @@ abstract class SpotlightBase extends UIComponentBase implements Widget {
 
     public void setActive(boolean active) {
         getStateHelper().put(PropertyKeys.active, active);
+    }
+
+    public boolean isBlockScroll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, false);
+    }
+
+    public void setBlockScroll(boolean blockScroll) {
+        getStateHelper().put(PropertyKeys.blockScroll, blockScroll);
     }
 
     @Override

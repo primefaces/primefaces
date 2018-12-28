@@ -102,12 +102,6 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         this.modalOverlay.on('click', function() {
             $this.hide();
         });
-
-        if (this.cfg.blockScroll) {
-            PrimeFaces.utils.preventScrolling();
-        } else {
-            PrimeFaces.utils.enableScrolling();
-        }
     },
 
     //@override

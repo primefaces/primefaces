@@ -37,6 +37,7 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
         draggable,
         resizable,
         modal,
+        blockScroll,
         visible,
         width,
         height,
@@ -111,6 +112,14 @@ abstract class DialogBase extends UIPanel implements Widget, RTLAware, ClientBeh
 
     public void setModal(boolean modal) {
         getStateHelper().put(PropertyKeys.modal, modal);
+    }
+
+    public boolean isBlockScroll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, false);
+    }
+
+    public void setBlockScroll(boolean blockScroll) {
+        getStateHelper().put(PropertyKeys.blockScroll, blockScroll);
     }
 
     public boolean isVisible() {

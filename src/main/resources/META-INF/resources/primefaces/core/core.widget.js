@@ -193,7 +193,7 @@ if (!PrimeFaces.widget) {
 
         //@Override
         refresh: function(cfg) {
-            PrimeFaces.utils.removeModal(this.id);
+            PrimeFaces.utils.removeModal(this);
 
             this.appendTo = null;
             this.modalOverlay = null;
@@ -205,14 +205,14 @@ if (!PrimeFaces.widget) {
         destroy: function() {
             this._super();
 
-            PrimeFaces.utils.removeModal(this.id);
+            PrimeFaces.utils.removeModal(this);
 
             this.appendTo = null;
             this.modalOverlay = null;
         },
 
         enableModality: function() {
-            this.modalOverlay = PrimeFaces.utils.addModal(this.id,
+            this.modalOverlay = PrimeFaces.utils.addModal(this,
                 this.jq.css('z-index') - 1,
                 $.proxy(function() {
                     return this.getModalTabbables();
@@ -220,7 +220,7 @@ if (!PrimeFaces.widget) {
         },
 
         disableModality: function(){
-            PrimeFaces.utils.removeModal(this.id);
+            PrimeFaces.utils.removeModal(this);
             this.modalOverlay = null;
         },
 
