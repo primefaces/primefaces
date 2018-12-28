@@ -104,16 +104,9 @@ PrimeFaces.widget.Sidebar = PrimeFaces.widget.DynamicOverlayWidget.extend({
         });
 
         if (this.cfg.blockScroll) {
-            $(document.body).addClass('ui-overflow-hidden');
-        }
-    },
-
-    //@override
-    disableModality: function() {
-        this._super();
-
-        if (this.cfg.blockScroll) {
-            $(document.body).removeClass('ui-overflow-hidden');
+            PrimeFaces.utils.preventScrolling();
+        } else {
+            PrimeFaces.utils.enableScrolling();
         }
     },
 

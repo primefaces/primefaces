@@ -71,6 +71,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
 
         this.target.data('zindex',this.target.zIndex()).css('z-index', ++PrimeFaces.zindex);
 
+        PrimeFaces.utils.preventScrolling();
         PrimeFaces.utils.preventTabbing(this.id, $this.target.zIndex(), function() {
             return $this.target.find(':tabbable');
         });
@@ -82,6 +83,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
 
     unbindEvents: function() {
         PrimeFaces.utils.enableTabbing(this.id);
+        PrimeFaces.utils.enableScrolling();
         $(window).off('resize.spotlight');
     },
 
