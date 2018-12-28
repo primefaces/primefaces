@@ -1,4 +1,0 @@
-include::p-ajaxExceptionHandler[]
-
-==== Getting Started with AjaxExceptionHandler
-Find the detailed information about this component at ExceptionHandler section at Utilities chapter.

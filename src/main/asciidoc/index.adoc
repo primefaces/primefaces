@@ -145,17 +145,17 @@ when you run the page with test.jsf.
 
 == Component Suite
 
-include::components/accordion.adoc[]
+include::components/_accordion.adoc[]
 
-include::components/ajax.adoc[]
+include::components/_ajax.adoc[]
 
-include::components/ajaxStatus.adoc[]
+include::components/_ajaxStatus.adoc[]
 
-include::components/ajaxExceptionHandler.adoc[]
+include::components/_ajaxExceptionHandler.adoc[]
 
-include::components/autoComplete.adoc[]
+include::components/_autoComplete.adoc[]
 
-include::components/autoUpdate.adoc[]
+include::components/_autoUpdate.adoc[]
 
 ### Barcode
 
@@ -4585,7 +4585,7 @@ Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-include::components/dataTable.adoc[]
+include::components/_dataTable.adoc[]
 
 === DefaultCommand
 
@@ -20535,7 +20535,7 @@ instance.execute(“dialog.hide()”);
 
 === EL Functions
 
-include::misc/functions.adoc[]
+include::misc/_functions.adoc[]
 
 === Exception Handler
 
