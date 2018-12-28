@@ -59,3 +59,7 @@ image::${tag.tagName}.jpg[]
     | ${attr.description}
 </#list>
 |===
+
+==== Getting started with ${tag.tagName?cap_first}
+
+${content}

@@ -145,17 +145,17 @@ when you run the page with test.jsf.
 
 == Component Suite
 
-include::components/_accordion.adoc[]
+include::p-accordionPanel[]
 
-include::components/_ajax.adoc[]
+include::p-ajax[]
 
-include::components/_ajaxStatus.adoc[]
+include::p-ajaxStatus[]
 
-include::components/_ajaxExceptionHandler.adoc[]
+include::p-ajaxExceptionHandler[]
 
-include::components/_autoComplete.adoc[]
+include::p-autoComplete[]
 
-include::components/_autoUpdate.adoc[]
+include::p-autoUpdate[]
 
 ### Barcode
 
@@ -4585,7 +4585,7 @@ Class Applies
 As skinning style classes are global, see the main theming section for more information.
 
 
-include::components/_dataTable.adoc[]
+include::p-dataTable[]
 
 === DefaultCommand
 
