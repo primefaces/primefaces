@@ -57,6 +57,7 @@ public class DialogRenderer extends CoreRenderer {
                 .attr("draggable", dialog.isDraggable(), true)
                 .attr("resizable", dialog.isResizable(), true)
                 .attr("modal", dialog.isModal(), false)
+                .attr("blockScroll", dialog.isBlockScroll(), false)
                 .attr("width", dialog.getWidth(), null)
                 .attr("height", dialog.getHeight(), null)
                 .attr("minWidth", dialog.getMinWidth(), Integer.MIN_VALUE)

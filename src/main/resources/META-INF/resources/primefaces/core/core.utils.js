@@ -48,8 +48,13 @@ if (!PrimeFaces.utils) {
             }
         },
 
-        addModal: function(id, zIndex, tabbablesCallback) {
+        addModal: function(widget, zIndex, tabbablesCallback) {
+            var id = widget.id;
             PrimeFaces.utils.preventTabbing(id, zIndex, tabbablesCallback);
+
+            if (widget.cfg.blockScroll) {
+                PrimeFaces.utils.preventScrolling();
+            }
 
             var modalId = id + '_modal';
 
@@ -111,7 +116,8 @@ if (!PrimeFaces.utils) {
             });
         },
 
-        removeModal: function(id) {
+        removeModal: function(widget) {
+            var id = widget.id;
             var modalId = id + '_modal';
 
             // if the id contains a ':'
@@ -120,6 +126,9 @@ if (!PrimeFaces.utils) {
             // if the id does NOT contain a ':'
             $(document.body).children("[id='" + modalId + "']").remove();
 
+            if (widget.cfg.blockScroll) {
+                PrimeFaces.utils.enableScrolling();
+            }
             PrimeFaces.utils.enableTabbing(id);
         },
 
@@ -258,6 +267,20 @@ if (!PrimeFaces.utils) {
             }
 
             scrollParent.off(scrollNamespace);
+        },
+
+        /**
+         * Disables scrolling of the document body.
+         */
+        preventScrolling: function(element) {
+            $(document.body).addClass('ui-overflow-hidden');
+        },
+
+        /**
+         * Enables scrolling again if previously disabled.
+         */
+        enableScrolling: function(element) {
+            $(document.body).removeClass('ui-overflow-hidden');
         }
     };
 

@@ -90,6 +90,7 @@ if (!PrimeFaces.dialog) {
                             rootWindow.PF[dialogWidgetVar] = undefined;
                         },
                         modal: cfg.options.modal,
+                        blockScroll: cfg.options.blockScroll,
                         resizable: cfg.options.resizable,
                         hasIframe: true,
                         draggable: cfg.options.draggable,

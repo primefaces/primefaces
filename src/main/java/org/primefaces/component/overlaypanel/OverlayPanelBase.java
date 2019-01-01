@@ -46,6 +46,7 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
         dismissable,
         showCloseIcon,
         modal,
+        blockScroll,
         showDelay;
 
         private String toString;
@@ -206,6 +207,14 @@ abstract class OverlayPanelBase extends UIPanel implements Widget {
 
     public void setModal(boolean modal) {
         getStateHelper().put(PropertyKeys.modal, modal);
+    }
+
+    public boolean isBlockScroll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, false);
+    }
+
+    public void setBlockScroll(boolean blockScroll) {
+        getStateHelper().put(PropertyKeys.blockScroll, blockScroll);
     }
 
     public int getShowDelay() {
