@@ -180,6 +180,8 @@ public class PrimeRequestContext {
      * @return if secure or not.
      */
     public boolean isSecure() {
+        // currently called once per request - later we might cache the result per request
+        // and even the method lookup
         Object request = context.getExternalContext().getRequest();
 
         if (request instanceof HttpServletRequest) {
