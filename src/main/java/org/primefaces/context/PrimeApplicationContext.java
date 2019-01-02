@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
+import javax.portlet.PortletContext;
 import javax.servlet.ServletContext;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -29,6 +30,7 @@ import org.primefaces.cache.DefaultCacheProvider;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.util.Constants;
+import org.primefaces.virusscan.VirusScannerService;
 
 /**
  * A {@link PrimeApplicationContext} is a contextual store for the current application.
@@ -42,6 +44,7 @@ public class PrimeApplicationContext {
 
     public static final String INSTANCE_KEY = PrimeApplicationContext.class.getName();
 
+    private ClassLoader applicationClassLoader;
     private PrimeEnvironment environment;
     private PrimeConfiguration config;
     private ValidatorFactory validatorFactory;
@@ -49,6 +52,7 @@ public class PrimeApplicationContext {
     private CacheProvider cacheProvider;
     private Map<Class<?>, Map<String, Object>> enumCacheMap;
     private Map<Class<?>, Map<String, Object>> constantsCacheMap;
+    private VirusScannerService virusScannerService;
 
     public PrimeApplicationContext(FacesContext context) {
         this.environment = new PrimeEnvironment(context);
@@ -61,6 +65,13 @@ public class PrimeApplicationContext {
 
         enumCacheMap = new ConcurrentHashMap<>();
         constantsCacheMap = new ConcurrentHashMap<>();
+
+        if (environment.isPortlet()) {
+            applicationClassLoader = ((PortletContext) context.getExternalContext().getContext()).getClassLoader();
+        }
+        else {
+            applicationClassLoader = ((ServletContext) context.getExternalContext().getContext()).getClassLoader();
+        }
     }
 
     public static PrimeApplicationContext getCurrentInstance(FacesContext facesContext) {
@@ -104,7 +115,6 @@ public class PrimeApplicationContext {
     }
 
     public CacheProvider getCacheProvider() {
-
         if (cacheProvider == null) {
             initCacheProvider();
         }
@@ -113,7 +123,7 @@ public class PrimeApplicationContext {
     }
 
     /**
-     * Lazy init cache provider. Not required if no cache component is used in the application.
+     * Lazy init cacheProvider. Not required if no cache component is used in the application.
      */
     protected synchronized void initCacheProvider() {
         if (cacheProvider == null) {
@@ -142,6 +152,20 @@ public class PrimeApplicationContext {
 
     public Validator getValidator() {
         return validator;
+    }
+
+    public VirusScannerService getVirusScannerService() {
+        if (virusScannerService == null) {
+            initVirusScannerService();
+        }
+
+        return virusScannerService;
+    }
+
+    protected synchronized void initVirusScannerService() {
+        if (virusScannerService == null) {
+            virusScannerService = new VirusScannerService(applicationClassLoader);
+        }
     }
 
     public void release() {

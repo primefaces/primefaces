@@ -68,7 +68,7 @@ public class CommonsFileUploadDecoder {
 
         if (file != null && !file.getName().isEmpty()) {
             DefaultUploadedFile uploadedFile = new DefaultUploadedFile(file, fileUpload);
-            if (isValidFile(fileUpload, uploadedFile)) {
+            if (isValidFile(context, fileUpload, uploadedFile)) {
                 fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
             }
             else {
@@ -83,18 +83,18 @@ public class CommonsFileUploadDecoder {
 
         if (file != null) {
             DefaultUploadedFile uploadedFile = new DefaultUploadedFile(file, fileUpload);
-            if (isValidFile(fileUpload, uploadedFile)) {
+            if (isValidFile(context, fileUpload, uploadedFile)) {
                 fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFile));
             }
         }
     }
 
-    private static boolean isValidFile(FileUpload fileUpload, DefaultUploadedFile uploadedFile) throws IOException {
+    private static boolean isValidFile(FacesContext context, FileUpload fileUpload, DefaultUploadedFile uploadedFile) throws IOException {
         boolean valid = (fileUpload.getSizeLimit() == null || uploadedFile.getSize() <= fileUpload.getSizeLimit()) && FileUploadUtils.isValidType(fileUpload,
                 uploadedFile.getFileName(), uploadedFile.getInputstream());
         if (valid) {
             try {
-                FileUploadUtils.performVirusScan(fileUpload, uploadedFile.getInputstream());
+                FileUploadUtils.performVirusScan(context, fileUpload, uploadedFile.getInputstream());
             }
             catch (VirusException ex) {
                 return false;

@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -38,8 +39,8 @@ import org.apache.commons.io.IOUtils;
 import org.owasp.esapi.SafeFile;
 import org.owasp.esapi.errors.ValidationException;
 import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.virusscan.VirusException;
-import org.primefaces.virusscan.VirusScannerService;
 
 /**
  * Utilities for FileUpload components.
@@ -256,9 +257,9 @@ public class FileUploadUtils {
         return true;
     }
 
-    public static void performVirusScan(FileUpload fileUpload, InputStream inputStream) throws VirusException {
+    public static void performVirusScan(FacesContext facesContext, FileUpload fileUpload, InputStream inputStream) throws VirusException {
         if (fileUpload.isPerformVirusScan()) {
-            VirusScannerService.getInstance().performVirusScan(inputStream);
+            PrimeApplicationContext.getCurrentInstance(facesContext).getVirusScannerService().performVirusScan(inputStream);
         }
     }
 

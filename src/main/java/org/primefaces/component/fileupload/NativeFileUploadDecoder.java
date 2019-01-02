@@ -72,7 +72,7 @@ public class NativeFileUploadDecoder {
                 }
             }
 
-            if (!uploadedInputParts.isEmpty() && isValidFile(fileUpload, uploadedInputParts)) {
+            if (!uploadedInputParts.isEmpty() && isValidFile(context, fileUpload, uploadedInputParts)) {
                 fileUpload.setSubmittedValue(new UploadedFileWrapper(new NativeUploadedFile(uploadedInputParts, fileUpload)));
             }
             else {
@@ -84,7 +84,7 @@ public class NativeFileUploadDecoder {
 
             if (part != null) {
                 NativeUploadedFile uploadedFile = new NativeUploadedFile(part, fileUpload);
-                if (isValidFile(fileUpload, uploadedFile)) {
+                if (isValidFile(context, fileUpload, uploadedFile)) {
                     fileUpload.setSubmittedValue(new UploadedFileWrapper(uploadedFile));
                 }
             }
@@ -100,18 +100,18 @@ public class NativeFileUploadDecoder {
 
         if (part != null) {
             NativeUploadedFile uploadedFile = new NativeUploadedFile(part, fileUpload);
-            if (isValidFile(fileUpload, uploadedFile)) {
+            if (isValidFile(context, fileUpload, uploadedFile)) {
                 fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFile));
             }
         }
     }
 
-    private static boolean isValidFile(FileUpload fileUpload, NativeUploadedFile uploadedFile) throws IOException {
+    private static boolean isValidFile(FacesContext context, FileUpload fileUpload, NativeUploadedFile uploadedFile) throws IOException {
         boolean valid = (fileUpload.getSizeLimit() == null || uploadedFile.getSize() <= fileUpload.getSizeLimit()) && FileUploadUtils.isValidType(fileUpload,
                 uploadedFile.getFileName(), uploadedFile.getInputstream());
         if (valid) {
             try {
-                FileUploadUtils.performVirusScan(fileUpload, uploadedFile.getInputstream());
+                FileUploadUtils.performVirusScan(context, fileUpload, uploadedFile.getInputstream());
             }
             catch (VirusException ex) {
                 return false;
@@ -120,7 +120,7 @@ public class NativeFileUploadDecoder {
         return valid;
     }
 
-    private static boolean isValidFile(FileUpload fileUpload, List<Part> parts) throws IOException {
+    private static boolean isValidFile(FacesContext context, FileUpload fileUpload, List<Part> parts) throws IOException {
         long totalPartSize = 0;
         for (int i = 0; i < parts.size(); i++) {
             Part p = parts.get(i);
@@ -130,7 +130,7 @@ public class NativeFileUploadDecoder {
                 return false;
             }
             try {
-                FileUploadUtils.performVirusScan(fileUpload, uploadedFile.getInputstream());
+                FileUploadUtils.performVirusScan(context, fileUpload, uploadedFile.getInputstream());
             }
             catch (VirusException ex) {
                 return false;

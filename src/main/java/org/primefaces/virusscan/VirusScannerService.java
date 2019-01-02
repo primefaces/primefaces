@@ -29,18 +29,10 @@ public class VirusScannerService {
 
     private static final Logger LOGGER = Logger.getLogger(VirusScannerService.class.getName());
 
-    private static VirusScannerService service;
     private ServiceLoader<VirusScanner> loader;
 
-    private VirusScannerService() {
-        loader = ServiceLoader.load(VirusScanner.class);
-    }
-
-    public static synchronized VirusScannerService getInstance() {
-        if (service == null) {
-            service = new VirusScannerService();
-        }
-        return service;
+    public VirusScannerService(ClassLoader classLoader) {
+        loader = ServiceLoader.load(VirusScanner.class, classLoader);
     }
 
     /**

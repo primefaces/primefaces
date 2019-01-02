@@ -29,6 +29,8 @@ public class PrimeEnvironment {
 
     private static final Logger LOGGER = Logger.getLogger(PrimeEnvironment.class.getName());
 
+    private boolean portlet;
+
     private boolean beanValidationAvailable = false;
 
     private boolean atLeastEl22 = false;
@@ -69,6 +71,11 @@ public class PrimeEnvironment {
     public PrimeEnvironment(FacesContext context) {
         this();
         this.mojarra = context.getExternalContext().getApplicationMap().containsKey("com.sun.faces.ApplicationAssociate");
+
+        Class<?> portletContext = LangUtils.tryToLoadClassForName("javax.portlet.PortletContext");
+        if (portletContext != null) {
+            portlet = portletContext.isInstance(context.getExternalContext().getContext());
+        }
     }
 
     protected boolean checkIfBeanValidationIsAvailable() {
@@ -152,6 +159,10 @@ public class PrimeEnvironment {
 
     public boolean isHtmlSanitizerAvailable() {
         return htmlSanitizerAvailable;
+    }
+
+    public boolean isPortlet() {
+        return portlet;
     }
 
 }
