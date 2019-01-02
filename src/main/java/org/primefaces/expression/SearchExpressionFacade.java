@@ -170,7 +170,6 @@ public class SearchExpressionFacade {
         if (splittedExpressions != null && splittedExpressions.length > 0) {
 
             final char separatorChar = UINamingContainer.getSeparatorChar(context);
-            final String separatorString = String.valueOf(separatorChar);
 
             StringBuilder expressionsBuffer = SharedStringBuilder.get(context, SHARED_EXPRESSION_BUFFER_KEY);
 
@@ -310,7 +309,6 @@ public class SearchExpressionFacade {
         }
 
         final char separatorChar = UINamingContainer.getSeparatorChar(context);
-        final String separatorString = String.valueOf(separatorChar);
 
         expression = expression.trim();
 
