@@ -108,11 +108,36 @@ public class LangUtils {
 
     public static Class tryToLoadClassForName(String name) {
         try {
-            return Class.forName(name);
+            return Class.forName(name, false, getCurrentClassLoader(LangUtils.class));
         }
         catch (ClassNotFoundException e) {
             //do nothing - it's just a try
             return null;
         }
+    }
+
+    public static ClassLoader getContextClassLoader() {
+        // TODO we probably need to check the SecurityManager and do this via AccessController
+        return Thread.currentThread().getContextClassLoader();
+    }
+
+    public static ClassLoader getCurrentClassLoader(Object obj) {
+        ClassLoader cl = getContextClassLoader();
+
+        if (cl == null && obj != null) {
+            cl = obj.getClass().getClassLoader();
+        }
+
+        return cl;
+    }
+
+    public static ClassLoader getCurrentClassLoader(Class clazz) {
+        ClassLoader cl = getContextClassLoader();
+
+        if (cl == null && clazz != null) {
+            cl = clazz.getClassLoader();
+        }
+
+        return cl;
     }
 }

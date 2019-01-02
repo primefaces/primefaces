@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
-import javax.portlet.PortletContext;
 import javax.servlet.ServletContext;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -30,6 +29,7 @@ import org.primefaces.cache.DefaultCacheProvider;
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 import org.primefaces.virusscan.VirusScannerService;
 
 /**
@@ -67,7 +67,9 @@ public class PrimeApplicationContext {
         constantsCacheMap = new ConcurrentHashMap<>();
 
         if (environment.isPortlet()) {
-            applicationClassLoader = ((PortletContext) context.getExternalContext().getContext()).getClassLoader();
+            //the method is new in Porlets3.x, so we can't use it now
+            //applicationClassLoader = ((PortletContext) context.getExternalContext().getContext()).getClassLoader();
+            applicationClassLoader = LangUtils.getContextClassLoader();
         }
         else {
             applicationClassLoader = ((ServletContext) context.getExternalContext().getContext()).getClassLoader();

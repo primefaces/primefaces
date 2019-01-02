@@ -40,6 +40,7 @@ import javax.faces.view.facelets.*;
 import org.primefaces.behavior.ajax.AjaxBehaviorHandler;
 import org.primefaces.config.PrimeEnvironment;
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.util.LangUtils;
 
 public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         extends TagHandler implements BehaviorHolderAttachedObjectHandler {
@@ -229,7 +230,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
                 catch (ClassNotFoundException cnfe) {
                     clazz = Class.forName("org.apache.myfaces.view.facelets.FaceletCompositionContext",
                             true,
-                            Thread.currentThread().getContextClassLoader());
+                            LangUtils.getContextClassLoader());
                 }
 
                 myfacesGetCompositionContextInstance = clazz.getDeclaredMethod("getCurrentInstance", FaceletContext.class);

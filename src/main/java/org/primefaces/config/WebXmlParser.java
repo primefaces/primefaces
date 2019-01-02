@@ -81,7 +81,7 @@ public class WebXmlParser {
         Map<String, String> webFragmentXmlsErrorPages = null;
 
         try {
-            Enumeration<URL> webFragments = Thread.currentThread().getContextClassLoader().getResources("META-INF/web-fragment.xml");
+            Enumeration<URL> webFragments = LangUtils.getContextClassLoader().getResources("META-INF/web-fragment.xml");
 
             while (webFragments.hasMoreElements()) {
                 try {

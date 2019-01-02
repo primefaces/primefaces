@@ -50,7 +50,7 @@ public class MessageFactory {
         Application application = facesContext.getApplication();
         String userBundleName = application.getMessageBundle();
         ResourceBundle bundle = null;
-        ClassLoader currentClassLoader = getCurrentClassLoader(application);
+        ClassLoader currentClassLoader = LangUtils.getCurrentClassLoader(application);
 
         //try user defined bundle first
         if (userBundleName != null) {
@@ -134,15 +134,6 @@ public class MessageFactory {
         }
 
         return label;
-    }
-
-    protected static ClassLoader getCurrentClassLoader(Object clazz) {
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-
-        if (loader == null) {
-            loader = clazz.getClass().getClassLoader();
-        }
-        return loader;
     }
 
     protected static Locale getLocale() {

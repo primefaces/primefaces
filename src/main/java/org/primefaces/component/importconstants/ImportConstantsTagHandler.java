@@ -31,6 +31,7 @@ import javax.faces.view.facelets.TagConfig;
 import javax.faces.view.facelets.TagHandler;
 
 import org.primefaces.context.PrimeApplicationContext;
+import org.primefaces.util.LangUtils;
 
 /**
  * {@link TagHandler} for the <code>ImportConstants</code> component.
@@ -78,7 +79,7 @@ public class ImportConstantsTagHandler extends TagHandler {
         String type = attribute.getValue(ctx);
 
         try {
-            return Class.forName(type, true, Thread.currentThread().getContextClassLoader());
+            return Class.forName(type, true, LangUtils.getContextClassLoader());
         }
         catch (ClassNotFoundException e) {
             throw new FacesException("Class " + type + " not found.", e);
