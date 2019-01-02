@@ -38,6 +38,8 @@ import org.apache.commons.io.IOUtils;
 import org.owasp.esapi.SafeFile;
 import org.owasp.esapi.errors.ValidationException;
 import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.virusscan.VirusException;
+import org.primefaces.virusscan.VirusScannerService;
 
 /**
  * Utilities for FileUpload components.
@@ -252,6 +254,12 @@ public class FileUploadUtils {
             }
         }
         return true;
+    }
+
+    public static void performVirusScan(FileUpload fileUpload, InputStream inputStream) throws VirusException {
+        if (fileUpload.isPerformVirusScan()) {
+            VirusScannerService.getInstance().performVirusScan(inputStream);
+        }
     }
 
 }

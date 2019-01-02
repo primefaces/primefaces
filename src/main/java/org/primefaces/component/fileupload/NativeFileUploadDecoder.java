@@ -30,6 +30,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.NativeUploadedFile;
 import org.primefaces.model.UploadedFileWrapper;
 import org.primefaces.util.FileUploadUtils;
+import org.primefaces.virusscan.VirusException;
 
 public class NativeFileUploadDecoder {
 
@@ -106,8 +107,17 @@ public class NativeFileUploadDecoder {
     }
 
     private static boolean isValidFile(FileUpload fileUpload, NativeUploadedFile uploadedFile) throws IOException {
-        return (fileUpload.getSizeLimit() == null || uploadedFile.getSize() <= fileUpload.getSizeLimit()) && FileUploadUtils.isValidType(fileUpload,
+        boolean valid = (fileUpload.getSizeLimit() == null || uploadedFile.getSize() <= fileUpload.getSizeLimit()) && FileUploadUtils.isValidType(fileUpload,
                 uploadedFile.getFileName(), uploadedFile.getInputstream());
+        if (valid) {
+            try {
+                FileUploadUtils.performVirusScan(fileUpload, uploadedFile.getInputstream());
+            }
+            catch (VirusException ex) {
+                return false;
+            }
+        }
+        return valid;
     }
 
     private static boolean isValidFile(FileUpload fileUpload, List<Part> parts) throws IOException {
@@ -117,6 +127,12 @@ public class NativeFileUploadDecoder {
             totalPartSize += p.getSize();
             NativeUploadedFile uploadedFile = new NativeUploadedFile(p, fileUpload);
             if (!FileUploadUtils.isValidType(fileUpload, uploadedFile.getFileName(), uploadedFile.getInputstream())) {
+                return false;
+            }
+            try {
+                FileUploadUtils.performVirusScan(fileUpload, uploadedFile.getInputstream());
+            }
+            catch (VirusException ex) {
                 return false;
             }
         }
