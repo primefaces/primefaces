@@ -71,7 +71,7 @@ public class PrimeApplicationContext {
             //applicationClassLoader = ((PortletContext) context.getExternalContext().getContext()).getClassLoader();
             applicationClassLoader = LangUtils.getContextClassLoader();
         }
-        else {
+        else if (context.getExternalContext().getContext() instanceof ServletContext) {
             applicationClassLoader = ((ServletContext) context.getExternalContext().getContext()).getClassLoader();
         }
     }
