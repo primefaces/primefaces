@@ -33,7 +33,7 @@ PrimeFaces.widget.Spotlight = PrimeFaces.widget.BaseWidget.extend({
     calculatePositions: function() {
         var doc = $(document),
         documentBody = $(document.body),
-        offset = this.target.offset();
+        offset = PrimeFaces.utils.calculateRelativeOffset(this.target);
 
         documentBody.children('div.ui-spotlight-top').css({
             'left': 0,
