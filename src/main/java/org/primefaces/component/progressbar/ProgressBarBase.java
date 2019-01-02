@@ -41,7 +41,8 @@ abstract class ProgressBarBase extends UIComponentBase implements Widget, Client
         labelTemplate,
         displayOnly,
         global,
-        mode
+        mode,
+        animationDuration
     }
 
     public ProgressBarBase() {
@@ -139,6 +140,14 @@ abstract class ProgressBarBase extends UIComponentBase implements Widget, Client
 
     public void setMode(String mode) {
         getStateHelper().put(PropertyKeys.mode, mode);
+    }
+
+    public int getAnimationDuration() {
+        return (Integer) getStateHelper().eval(PropertyKeys.animationDuration, 500);
+    }
+
+    public void setAnimationDuration(int animationDuration) {
+        getStateHelper().put(PropertyKeys.animationDuration, animationDuration);
     }
 
     @Override

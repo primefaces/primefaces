@@ -102,6 +102,7 @@ public class ProgressBarRenderer extends CoreRenderer {
                 .attr("initialValue", progressBar.getValue())
                 .attr("ajax", isAjax)
                 .attr("labelTemplate", progressBar.getLabelTemplate(), null)
+                .attr("animationDuration", progressBar.getAnimationDuration())
                 .attr("global", progressBar.isGlobal(), true);
 
         if (isAjax) {
