@@ -14461,8 +14461,14 @@
             <type>java.lang.Boolean</type>
         </attribute>
         <attribute>
-            <description><![CDATA[Interval in seconds to do periodic requests in ajax mode. Default is 300.]]></description>
+            <description><![CDATA[Interval in milliseconds to do periodic requests in ajax mode. Default is 3000.]]></description>
             <name>interval</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description><![CDATA[Animation duration in milliseconds determining how long the animation will run. Default is 500.]]></description>
+            <name>animationDuration</name>
             <required>false</required>
             <type>java.lang.Integer</type>
         </attribute>
