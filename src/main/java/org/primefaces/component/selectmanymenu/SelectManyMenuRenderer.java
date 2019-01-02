@@ -41,8 +41,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectMany",
-                "javax.faces.Menu",
-                Renderer.class);
+                "javax.faces.Menu");
         return renderer.getConvertedValue(context, component, submittedValue);
     }
 

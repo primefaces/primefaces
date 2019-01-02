@@ -76,8 +76,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectOne",
-                "javax.faces.Menu",
-                Renderer.class);
+                "javax.faces.Menu");
         return renderer.getConvertedValue(context, component, submittedValue);
     }
 

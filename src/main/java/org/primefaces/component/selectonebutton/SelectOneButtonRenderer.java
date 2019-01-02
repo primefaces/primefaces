@@ -40,8 +40,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectOne",
-                "javax.faces.Radio",
-                Renderer.class);
+                "javax.faces.Radio");
         return renderer.getConvertedValue(context, component, submittedValue);
     }
 
