@@ -568,7 +568,7 @@ public class DataTableRenderer extends DataRenderer {
         writer.writeAttribute("class", DataTable.SCROLLABLE_BODY_CLASS, null);
         writer.writeAttribute("tabindex", "-1", null);
         if (scrollHeight != null && scrollHeight.indexOf('%') == -1) {
-            writer.writeAttribute("style", "height:" + scrollHeight + "px", null);
+            writer.writeAttribute("style", "max-height:" + scrollHeight + "px", null);
         }
         writer.startElement("table", null);
         writer.writeAttribute("role", "grid", null);
